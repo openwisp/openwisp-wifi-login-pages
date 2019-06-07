@@ -1,7 +1,13 @@
 {
-	"extends": ["airbnb", "prettier", "prettier/react"],
+	"extends": [
+		"airbnb",
+		"prettier",
+		"prettier/react",
+		"jest-enzyme",
+		"plugin:jest/recommended"
+	],
 	"parser": "babel-eslint",
-	"plugins": ["prettier"],
+	"plugins": ["prettier", "jest"],
 	"parserOptions": {
 		"ecmaVersion": 2016,
 		"sourceType": "module",
@@ -17,6 +23,7 @@
 	"rules": {
 		"array-bracket-spacing": [2, "never"],
 		"semi": [2, "always"],
+		"react/prefer-stateless-function": [0],
 		"react/jsx-filename-extension": [
 			1,
 			{
