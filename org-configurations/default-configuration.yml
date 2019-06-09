@@ -1,0 +1,90 @@
+---
+name: "default name"
+slug: "default-slug"
+
+# configuration variables for the server app
+server:
+  host: "http://127.0.0.1:8000"
+  proxy_urls:
+    password_change: "/api/v1/{org_slug}/account/password/change"
+    password_reset: "/api/v1/{org_slug}/account/password/reset"
+    password_reset_confirm: "/api/v1/{org_slug}/account/password/reset/confirm"
+    registration: "/api/v1/{org_slug}/account"
+    user_auth_token: "/api/v1/{org_slug}/account/token"
+  secret_key: organization_secret_key
+  timeout: 2 #request timeout period in seconds
+
+# configuration variables for the client
+client:
+  languages:
+    - "en"
+    - "it"
+  default_language: "en"
+  components:
+    header:
+      logo:
+        url: null # logo url
+        alternate_text: null
+      links:
+        - text:
+            en: "link1" #link text in english
+            it: null #link text in Italian
+          url: "url1"
+        - text:
+            en: "link2"
+            it: null
+          url: "link2url"
+
+    footer:
+      links:
+        - text:
+            en: "link1"
+            it: null
+          url: "url1"
+        - text:
+            en: "link2"
+            it: null
+          url: "link2url"
+
+    login_form:
+      input_field:
+        username:
+          type: "text"
+          placeholder:
+            en: "Enter phone number or username"
+            it: null
+          label:
+            en: "Phone number or username" # default username field label
+            it: null
+          regex: null #regex pattern for validation
+        password:
+          type: "password"
+          placeholder:
+            en: "Enter password"
+            it: null
+          label:
+            en: "Password" # default password field
+            it: null
+          regex: null
+      buttons:
+        login:
+          label:
+            en: null # label field text for login button
+            it: null
+          value:
+            en: 'Login' # text for login button
+            it: null
+        register:
+          label:
+            en: null # label field text for register button
+            it: null
+          value:
+            en: 'Sign up for free' # text for register button
+            it: null
+      links:
+        - forget_password :
+            en: "Forgot your password?"
+            it: null
+        - account:
+            en: "Manage your account"
+            it: null
