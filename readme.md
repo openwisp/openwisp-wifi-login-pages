@@ -43,13 +43,14 @@ yarn
 List of NPM Commands:
 
 ```
-$ npm run start				# Run the app (runs both, client and server)
-$ npm run build				# Build the app
-$ npm run server			# Run server
-$ npm run client			# Run client
-$ npm run lint				# Run ESLint
-$ npm run lint:fix  	# Run ESLint with automatically fix problems option
-$ npm test 						# Run tests
+$ npm run start			# Run the app (runs both, client and server)
+$ npm run setup			# Discover Organization configs and generate config.json and asset directories
+$ npm run build			# Build the app
+$ npm run server		# Run server
+$ npm run client		# Run client
+$ npm run lint			# Run ESLint
+$ npm run lint:fix 	 	# Run ESLint with automatically fix problems option
+$ npm test 			# Run tests
 ```
 
 ### License
