@@ -12,6 +12,7 @@ branches:
     - master
 
 script:
+  - npm run setup
   - npm run lint
   - npm test
 
