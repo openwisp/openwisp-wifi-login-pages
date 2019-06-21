@@ -5,26 +5,30 @@ import qs from "qs";
 import config from "../config.json";
 import defaultConfig from "../utils/default-config";
 
-const passwordReset = (req, res) => {
+const passwordResetConfirm = (req, res) => {
 	const reqOrg = req.params.organization;
 	const validSlug = config.some(org => {
 		if (org.slug === reqOrg) {
 			// merge default config and custom config
 			const conf = merge(defaultConfig, org);
 			const {host} = conf;
-			let resetUrl = conf.proxy_urls.password_reset;
+			let resetConfirmUrl = conf.proxy_urls.password_reset_confirm;
 			// replacing org_slug param with the slug
-			resetUrl = resetUrl.replace("{org_slug}", org.slug);
+			resetConfirmUrl = resetConfirmUrl.replace("{org_slug}", org.slug);
 			const timeout = conf.timeout * 1000;
-			const {email} = req.body;
-
+			const {newPassword1, newPassword2, uid, token} = req.body;
 			// make AJAX request
 			axios({
 				method: "post",
 				headers: {"content-type": "application/x-www-form-urlencoded"},
-				url: `${host}${resetUrl}/`,
+				url: `${host}${resetConfirmUrl}/`,
 				timeout,
-				data: qs.stringify({email}),
+				data: qs.stringify({
+					new_password1: newPassword1,
+					new_password2: newPassword2,
+					uid,
+					token,
+				}),
 			})
 				.then(response => {
 					// forward response
@@ -63,4 +67,4 @@ const passwordReset = (req, res) => {
 	}
 };
 
-export default passwordReset;
+export default passwordResetConfirm;

@@ -1,5 +1,5 @@
-import passwordReset from "./password-reset";
+import account from "./account";
 
 export default {
-	passwordReset,
+	account,
 };
