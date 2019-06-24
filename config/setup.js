@@ -14,53 +14,53 @@ const serverConfigs = [];
 
 // loop through all the config files
 fs.readdirSync(configDir).forEach(file => {
-	if (path.extname(file) === ".yml") {
-		// read document, or log exception on error
-		try {
-			const config = yaml.safeLoad(
-				fs.readFileSync(`${configDir}/${file}`, "utf8"),
-			);
+  if (path.extname(file) === ".yml") {
+    // read document, or log exception on error
+    try {
+      const config = yaml.safeLoad(
+        fs.readFileSync(`${configDir}/${file}`, "utf8"),
+      );
 
-			// extract client config from object
-			const clientConfig = {
-				name: config.name,
-				slug: config.slug,
-				...config.client,
-			};
+      // extract client config from object
+      const clientConfig = {
+        name: config.name,
+        slug: config.slug,
+        ...config.client,
+      };
 
-			// extract server config from object
-			const serverConfig = {
-				name: config.name,
-				slug: config.slug,
-				...config.server,
-			};
+      // extract server config from object
+      const serverConfig = {
+        name: config.name,
+        slug: config.slug,
+        ...config.server,
+      };
 
-			// creates directory for assets
-			if (!fs.existsSync(`${clientDir}/assets/${config.slug}`))
-				fs.mkdirSync(`${clientDir}/assets/${config.slug}`);
+      // creates directory for assets
+      if (!fs.existsSync(`${clientDir}/assets/${config.slug}`))
+        fs.mkdirSync(`${clientDir}/assets/${config.slug}`);
 
-			clientConfigs.push(clientConfig);
-			serverConfigs.push(serverConfig);
-		} catch (error) {
-			console.log(error);
-		}
-	}
+      clientConfigs.push(clientConfig);
+      serverConfigs.push(serverConfig);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 });
 
 // write server configs
 fs.writeFile(
-	`${serverDir}/config.json`,
-	JSON.stringify(serverConfigs, null, 2),
-	error => {
-		if (error) console.log(error);
-	},
+  `${serverDir}/config.json`,
+  JSON.stringify(serverConfigs, null, 2),
+  error => {
+    if (error) console.log(error);
+  },
 );
 
 // write client configs
 fs.writeFile(
-	`${clientDir}/config.json`,
-	JSON.stringify(clientConfigs, null, 2),
-	error => {
-		if (error) console.log(error);
-	},
+  `${clientDir}/config.json`,
+  JSON.stringify(clientConfigs, null, 2),
+  error => {
+    if (error) console.log(error);
+  },
 );

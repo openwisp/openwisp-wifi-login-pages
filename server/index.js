@@ -11,5 +11,5 @@ app.use(express.urlencoded({extended: false}));
 app.use("/api/v1/:organization/account", routes.account);
 
 app.listen(3030, () => {
-	console.log("Server started on port 3030");
+  console.log("Server started on port 3030");
 });
