@@ -1,4 +1,11 @@
 import {combineReducers} from "redux";
 
-const rootReducer = combineReducers({});
+import setLanguage from "./language";
+import {parseOrganizations, setOrganization} from "./organization";
+
+const rootReducer = combineReducers({
+  organizations: parseOrganizations,
+  organization: setOrganization,
+  language: setLanguage,
+});
 export default rootReducer;
