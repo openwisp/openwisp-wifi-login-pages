@@ -3,6 +3,12 @@ import {connect} from "react-redux";
 import setOrganization from "../../actions/set-organization";
 import Component from "./organization-wrapper";
 
+const mapStateToProps = state => {
+  return {
+    organization: state.organization,
+  };
+};
+
 const mapDispatchToProps = dispatch => {
   return {
     setOrganization: slug => {
@@ -11,6 +17,6 @@ const mapDispatchToProps = dispatch => {
   };
 };
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(Component);

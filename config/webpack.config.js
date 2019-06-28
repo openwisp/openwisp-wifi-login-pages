@@ -1,6 +1,8 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
+const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path = require("path");
 
 const CURRENT_WORKING_DIR = process.cwd();
 
@@ -40,10 +42,17 @@ module.exports = (env, argv) => {
     },
 
     plugins: [
+      new CleanWebpackPlugin(),
       new HtmlWebpackPlugin({
         filename: "index.html",
         template: path.resolve(CURRENT_WORKING_DIR, "public/index.html"),
       }),
+      new CopyPlugin([
+        {
+          from: path.resolve(CURRENT_WORKING_DIR, "client/assets"),
+          to: path.resolve(CURRENT_WORKING_DIR, "dist/assets"),
+        },
+      ]),
     ],
 
     devServer: {
@@ -65,6 +74,9 @@ module.exports = (env, argv) => {
         ignored: /node_modules/,
       },
       historyApiFallback: true,
+      proxy: {
+        "/api": "http://localhost:3030",
+      },
     },
   };
   return config;
