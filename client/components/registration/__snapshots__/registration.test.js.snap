@@ -1,0 +1,118 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Registration /> rendering should render correctly 1`] = `
+<div
+  className="owisp-registration-container"
+>
+  <form
+    className="owisp-registration-form "
+    onSubmit={[Function]}
+  >
+    <div
+      className="owisp-registration-header"
+    >
+      <div
+        className="owisp-registration-header-content"
+      >
+         sign up
+      </div>
+    </div>
+    <div
+      className="owisp-registration-fieldset"
+    >
+      <label
+        className="owisp-registration-label owisp-registration-label-username"
+        htmlFor="owisp-registration-username"
+      >
+        <div
+          className="owisp-registration-label-text"
+        >
+          phone number or username
+        </div>
+        <input
+          className="owisp-registration-input
+                      owisp-registration-input-username
+                      "
+          id="owisp-registration-username"
+          name="username"
+          onChange={[Function]}
+          pattern="[a-zA-Z@.+\\\\-_]{1,150}"
+          placeholder="enter phone number or username"
+          required={true}
+          title="only letters, numbers, and @/./+/-/_ characters"
+          type="text"
+          value=""
+        />
+      </label>
+      <label
+        className="owisp-registration-label owisp-registration-label-email"
+        htmlFor="owisp-registration-email"
+      >
+        <div
+          className="owisp-registration-label-text owisp-registration-label-text-email"
+        >
+          email
+        </div>
+        <input
+          className="owisp-registration-input owisp-registration-input-email "
+          id="owisp-registration-email"
+          name="email"
+          onChange={[Function]}
+          placeholder="email address"
+          required={true}
+          type="email"
+          value=""
+        />
+      </label>
+      <label
+        className="owisp-registration-label owisp-registration-label-password"
+        htmlFor="owisp-registration-password"
+      >
+        <div
+          className="owisp-registration-label-text"
+        >
+          password
+        </div>
+        <input
+          className="owisp-registration-input owisp-registration-input-password
+                      "
+          id="owisp-registration-password"
+          name="password1"
+          onChange={[Function]}
+          pattern=".{6,}"
+          placeholder="password"
+          required={true}
+          title="password must be a minimum of 6 characters"
+          type="password"
+          value=""
+        />
+      </label>
+      <label
+        className="owisp-registration-label owisp-registration-label-confirm"
+        htmlFor="owisp-registration-password-confirm"
+      >
+        <div
+          className="owisp-registration-label-text"
+        >
+          confirm
+        </div>
+        <input
+          className="owisp-registration-input owisp-registration-input-confirm "
+          id="owisp-registration-password-confirm"
+          name="password2"
+          onChange={[Function]}
+          placeholder="confirm password"
+          required={true}
+          type="password"
+          value=""
+        />
+      </label>
+    </div>
+    <input
+      className="owisp-registration-submit-btn"
+      type="submit"
+      value="sign up"
+    />
+  </form>
+</div>
+`;

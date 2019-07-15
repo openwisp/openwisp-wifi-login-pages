@@ -1,13 +1,16 @@
 import React from "react";
 import {Route, Switch} from "react-router-dom";
 
-import Header from "./components/header";
+import OrganizationWrapper from "./components/organization-wrapper";
 
 class Routes extends React.Component {
   render() {
     return (
       <Switch>
-        <Route path="/" render={props => <Header {...props} />} />
+        <Route
+          path="/:organization"
+          render={props => <OrganizationWrapper {...props} />}
+        />
       </Switch>
     );
   }

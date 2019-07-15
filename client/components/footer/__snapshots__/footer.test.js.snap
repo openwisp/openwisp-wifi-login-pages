@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Footer /> rendering should render correctly 1`] = `
+<div
+  className="owisp-footer-container"
+>
+  <div
+    className="owisp-footer-row-1"
+  >
+    <div
+      className="owisp-footer-row-1-inner"
+    >
+      <a
+        className="owisp-footer-link
+                  owisp-footer-link-1"
+        href="www.testurl.com"
+        rel="noreferrer noopener"
+        target="_blank"
+      >
+        link one
+      </a>
+      <a
+        className="owisp-footer-link
+                  owisp-footer-link-2"
+        href="www.testurl2.com"
+        rel="noreferrer noopener"
+        target="_blank"
+      >
+        link two
+      </a>
+    </div>
+  </div>
+  <div
+    className="owisp-footer-row-2"
+  >
+    <div
+      className="owisp-footer-row-2-inner"
+    >
+      this is secondary text
+    </div>
+  </div>
+</div>
+`;

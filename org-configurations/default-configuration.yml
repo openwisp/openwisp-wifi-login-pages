@@ -1,6 +1,6 @@
 ---
 name: "default name"
-slug: "default-slug"
+slug: "default"
 
 # configuration variables for the server app
 server:
@@ -15,10 +15,21 @@ server:
   timeout: 2 #request timeout period in seconds
 
 # configuration variables for the client
+# Path of all the assets should be defined relative to the organization's folder
+# in assets directory.
 client:
+  # <title> value
+  title: "Wifi Login"
+
+  # path of favicon
+  favicon: null
+
+  # path of the custom css file relative to organization's folder in
+  # assets directory.
+  css_path: null
   languages:
-    - "en"
-    - "it"
+    - text: "english"
+      slug: "en"
   default_language: "en"
   components:
     header:
@@ -27,64 +38,97 @@ client:
         alternate_text: null
       links:
         - text:
-            en: "link1" #link text in english
-            it: null #link text in Italian
-          url: "url1"
+            en: "link-1" #link text in english
+          url: "https://link-1.com"
         - text:
-            en: "link2"
-            it: null
-          url: "link2url"
+            en: "link-2"
+          url: "https://link-2.com"
 
     footer:
       links:
         - text:
-            en: "link1"
-            it: null
-          url: "url1"
+            en: "link-1"
+          url: "https://link-1.com"
         - text:
-            en: "link2"
-            it: null
-          url: "link2url"
+            en: "link-2"
+          url: "https://link-2.com"
+      # secondary text to be displayed in smaller size in next line.
+      # Eg. copyright text
+      secondary_text:
+        en: null
 
+    registration_form:
+      header:
+        en: " sign up"
+      input_fields:
+        username:
+          type: "text"
+          pattern: '[a-zA-Z@.+\-_]{1,150}'
+          pattern_description:
+            en: "only letters, numbers, and @/./+/-/_ characters"
+          placeholder:
+            en: "enter phone number or username"
+          label:
+            en: "phone number or username"
+        email:
+          type: "email"
+          pattern: null
+          pattern_description:
+            en: null
+          placeholder:
+            en: "email address"
+          label:
+            en: "email"
+        password:
+          type: "password"
+          pattern: ".{6,}"
+          pattern_description:
+            en: "password must be a minimum of 6 characters"
+          placeholder:
+            en: "password"
+          label:
+            en: "password"
+        password_confirm:
+          type: "password"
+          pattern: null
+          pattern_description:
+            en: null
+          placeholder:
+            en: "confirm password"
+          label:
+            en: "confirm"
+      buttons:
+        register:
+          en: 'sign up' # text for register button
     login_form:
       input_field:
         username:
           type: "text"
           placeholder:
             en: "Enter phone number or username"
-            it: null
           label:
             en: "Phone number or username" # default username field label
-            it: null
-          regex: null #regex pattern for validation
+          pattern: null # pattern for validation
         password:
           type: "password"
           placeholder:
             en: "Enter password"
-            it: null
           label:
             en: "Password" # default password field
-            it: null
-          regex: null
+          pattern: null
       buttons:
         login:
           label:
             en: null # label field text for login button
-            it: null
           value:
             en: 'Login' # text for login button
-            it: null
         register:
           label:
             en: null # label field text for register button
-            it: null
           value:
             en: 'Sign up for free' # text for register button
-            it: null
       links:
         - forget_password :
             en: "Forgot your password?"
-            it: null
         - account:
             en: "Manage your account"
-            it: null

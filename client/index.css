@@ -1,1 +1,10 @@
-/*  */
+body {
+  margin: 0;
+  padding: 0;
+}
+:focus {
+  outline: none;
+}
+::-moz-focus-inner {
+  border: 0;
+}

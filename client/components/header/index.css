@@ -1,0 +1,86 @@
+.owisp-header-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: nowrap;
+  font-family: sans-serif;
+}
+.owisp-header-row-1 {
+  width: 100%;
+  background: #f2f2f2;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.owisp-header-row-1-inner {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
+  width: 98%;
+  padding: 5px 0;
+}
+.owisp-header-logo-div {
+  width: auto;
+  height: 60px;
+}
+.owisp-header-logo-image {
+  height: 100%;
+  width: auto;
+}
+.owisp-header-right {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: nowrap;
+  flex-grow: 1;
+}
+
+.owisp-header-language-btn {
+  padding: 5px 2px;
+  margin: 0 5px;
+  text-transform: uppercase;
+  border: none;
+  color: #465e69;
+  background: none;
+  outline: none;
+  cursor: pointer;
+  border-bottom: 3px rgba(0, 0, 0, 0) solid;
+}
+.owisp-header-language-btn:active {
+  outline: none;
+}
+.owisp-header-language-btn.active {
+  border-bottom-color: #465e69;
+}
+.owisp-header-row-2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  width: 100%;
+  background: #2b3a42;
+}
+.owisp-header-row-2-inner {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: nowrap;
+  width: 90%;
+}
+.owisp-header-link {
+  padding: 5px;
+  color: #ffffff;
+  text-decoration: none;
+  margin: 5px;
+  outline: none;
+  font-size: large;
+}
+.owisp-header-link:hover {
+  color: #8dd6f9;
+}
