@@ -63,7 +63,9 @@ export default class OrganizationWrapper extends React.Component {
     if (organization.exists === false) {
       return (
         <React.Fragment>
-          <DoesNotExist />
+          <div className="owisp-org-wrapper-not-found">
+            <DoesNotExist />
+          </div>
           <Helmet>
             <title>Page not found</title>
           </Helmet>
@@ -86,10 +88,12 @@ OrganizationWrapper.propTypes = {
   }).isRequired,
   setOrganization: PropTypes.func.isRequired,
   organization: PropTypes.shape({
-    title: PropTypes.string,
-    cssPath: PropTypes.string,
-    orgSlug: PropTypes.string,
-    favicon: PropTypes.string,
+    configuration: PropTypes.shape({
+      title: PropTypes.string,
+      css_path: PropTypes.string,
+      slug: PropTypes.string,
+      favicon: PropTypes.string,
+    }),
     exists: PropTypes.bool,
   }).isRequired,
 };

@@ -17,16 +17,16 @@ const setOrganization = slug => {
         arrayMerge: customMerge,
       });
       dispatch({
+        type: SET_LANGUAGE,
+        payload: config.default_language,
+      });
+      dispatch({
         type: SET_ORGANIZATION_STATUS,
         payload: true,
       });
       dispatch({
         type: SET_ORGANIZATION_CONFIG,
         payload: config,
-      });
-      dispatch({
-        type: SET_LANGUAGE,
-        payload: config.default_language,
       });
     } else {
       dispatch({

@@ -4,7 +4,7 @@ import {
   SET_ORGANIZATION_STATUS,
 } from "../constants/action-types";
 
-export const parseOrganizations = (state = [], action) => {
+export const organizations = (state = [], action) => {
   switch (action.type) {
     case PARSE_ORGANIZATIONS:
       return action.payload;
@@ -13,7 +13,7 @@ export const parseOrganizations = (state = [], action) => {
   }
 };
 
-export const setOrganization = (
+export const organization = (
   state = {exists: undefined, configuration: {}},
   action,
 ) => {

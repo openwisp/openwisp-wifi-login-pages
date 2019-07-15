@@ -1,11 +1,114 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`App Header should render without crashing 1`] = `
-<Header>
+exports[`<Header /> rendering should render with links 1`] = `
+<div
+  className="owisp-header-container"
+>
   <div
-    className="header-container"
+    className="owisp-header-row-1"
   >
-    App Header
+    <div
+      className="owisp-header-row-1-inner"
+    >
+      <div
+        className="owisp-header-left"
+      >
+        <div
+          className="owisp-header-logo-div"
+        />
+      </div>
+      <div
+        className="owisp-header-right"
+      >
+        <button
+          className="active owisp-header-language-btn owisp-header-language-btn-en"
+          onClick={[Function]}
+          type="button"
+        >
+          english
+        </button>
+        <button
+          className="owisp-header-language-btn owisp-header-language-btn-it"
+          onClick={[Function]}
+          type="button"
+        >
+          italian
+        </button>
+      </div>
+    </div>
   </div>
-</Header>
+  <div
+    className="owisp-header-row-2"
+  >
+    <div
+      className="owisp-header-row-2-inner"
+    >
+      <a
+        className="owisp-header-link
+                    owisp-header-link-1"
+        href="https://testlink1.com"
+        rel="noreferrer noopener"
+        target="_blank"
+      >
+        test link 1
+      </a>
+      <a
+        className="owisp-header-link
+                    owisp-header-link-2"
+        href="https://testlink2.com"
+        rel="noreferrer noopener"
+        target="_blank"
+      >
+        test link 2
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Header /> rendering should render without links 1`] = `
+<div
+  className="owisp-header-container"
+>
+  <div
+    className="owisp-header-row-1"
+  >
+    <div
+      className="owisp-header-row-1-inner"
+    >
+      <div
+        className="owisp-header-left"
+      >
+        <div
+          className="owisp-header-logo-div"
+        />
+      </div>
+      <div
+        className="owisp-header-right"
+      >
+        <button
+          className="active owisp-header-language-btn owisp-header-language-btn-en"
+          onClick={[Function]}
+          type="button"
+        >
+          english
+        </button>
+        <button
+          className="owisp-header-language-btn owisp-header-language-btn-it"
+          onClick={[Function]}
+          type="button"
+        >
+          italian
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    className="owisp-header-row-2"
+  >
+    <div
+      className="owisp-header-row-2-inner"
+    />
+  </div>
+</div>
 `;

@@ -45,7 +45,7 @@ export default class Footer extends React.Component {
 Footer.propTypes = {
   language: PropTypes.string.isRequired,
   footer: PropTypes.shape({
-    link: PropTypes.array,
+    links: PropTypes.array,
     secondary_text: PropTypes.object,
   }).isRequired,
 };

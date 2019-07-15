@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Default",
+    "slug": "default",
+    "default_language": "en"
+  },
+  {
+    "name": "test org 1",
+    "slug": "test-org-1",
+    "default_language": "it"
+  },
+  {
+    "name": "test org 2",
+    "slug": "test-org-2"
+  }
+]
