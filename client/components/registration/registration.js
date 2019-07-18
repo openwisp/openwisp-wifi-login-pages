@@ -40,52 +40,52 @@ export default class Registration extends React.Component {
             password2: passwordConfirmError,
           },
         });
-      } else {
-        this.setState({errors: {...errors, password2: null}});
-        const url = registerApiUrl.replace("{orgSlug}", orgSlug);
-        axios({
-          method: "post",
-          headers: {
-            "content-type": "application/x-www-form-urlencoded",
-          },
-          url,
-          data: qs.stringify({
-            email,
-            username,
-            password1,
-            password2,
-          }),
-        })
-          .then(() => {
-            this.setState({
-              errors: {},
-              username: "",
-              email: "",
-              password1: "",
-              password2: "",
-              success: true,
-            });
-          })
-          .catch(error => {
-            const {data} = error.response;
-            this.setState({
-              errors: {
-                ...errors,
-                ...(data.username
-                  ? {username: data.username.toString()}
-                  : {username: ""}),
-                ...(data.email ? {email: data.email.toString()} : {email: ""}),
-                ...(data.password1
-                  ? {password1: data.password1.toString()}
-                  : {password1: ""}),
-                ...(data.password2
-                  ? {password2: data.password2.toString()}
-                  : {password2: ""}),
-              },
-            });
-          });
+        return;
       }
     }
+    this.setState({errors: {...errors, password2: null}});
+    const url = registerApiUrl.replace("{orgSlug}", orgSlug);
+    axios({
+      method: "post",
+      headers: {
+        "content-type": "application/x-www-form-urlencoded",
+      },
+      url,
+      data: qs.stringify({
+        email,
+        username,
+        password1,
+        password2,
+      }),
+    })
+      .then(() => {
+        this.setState({
+          errors: {},
+          username: "",
+          email: "",
+          password1: "",
+          password2: "",
+          success: true,
+        });
+      })
+      .catch(error => {
+        const {data} = error.response;
+        this.setState({
+          errors: {
+            ...errors,
+            ...(data.username
+              ? {username: data.username.toString()}
+              : {username: ""}),
+            ...(data.email ? {email: data.email.toString()} : {email: ""}),
+            ...(data.password1
+              ? {password1: data.password1.toString()}
+              : {password1: ""}),
+            ...(data.password2
+              ? {password2: data.password2.toString()}
+              : {password2: ""}),
+          },
+        });
+      });
   }
 
   render() {

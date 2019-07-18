@@ -100,6 +100,57 @@ client:
       buttons:
         register:
           en: 'sign up' # text for register button
+
+    reset_form:
+      heading:
+        en: "reset your password"
+      additional_text:
+        en: "enter your email and we'll send you the instructions to reset your password"
+      input_fields:
+        email:
+          type: "email"
+          pattern: null
+          pattern_description:
+            en: null
+          placeholder:
+            en: "email address"
+          label:
+            en: "email"
+      buttons:
+        send:
+          en: 'send'
+      login_page_link:
+        text:
+          en: "Take me Back to Sign In"
+
+    confirm_form:
+      heading:
+        en: "reset your password"
+      additional_text:
+        en: "please enter your new password"
+      input_fields:
+        password:
+          type: "password"
+          pattern: ".{6,}"
+          pattern_description:
+            en: "password must be a minimum of 6 characters"
+          placeholder:
+            en: "password"
+          label:
+            en: "password"
+        password_confirm:
+          type: "password"
+          pattern: null
+          pattern_description:
+            en: null
+          placeholder:
+            en: "confirm password"
+          label:
+            en: "confirm"
+      buttons:
+        submit:
+          en: 'change password'
+
     login_form:
       input_field:
         username:
