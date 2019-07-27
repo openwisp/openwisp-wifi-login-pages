@@ -1,5 +1,9 @@
 # openwisp-wifi-login-pages
 
+<!-- Badges -->
+[![Build Status](https://travis-ci.org/openwisp/openwisp-wifi-login-pages.svg?branch=master)](https://travis-ci.org/openwisp/openwisp-wifi-login-pages)
+[![Coverage Status](https://coveralls.io/repos/github/openwisp/openwisp-wifi-login-pages/badge.svg)](https://coveralls.io/github/openwisp/openwisp-wifi-login-pages)
+
 Openwisp wifi login pages app to allow users to authenticate, sign up and know more about the WiFi service they are using.
 
 **Want to help OpenWISP?** [Find out how to help us grow here](http://openwisp.io/docs/general/help-us.html)
