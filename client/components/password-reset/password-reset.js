@@ -1,0 +1,184 @@
+import "./index.css";
+
+import axios from "axios";
+import PropTypes from "prop-types";
+import qs from "qs";
+import React from "react";
+import {Link} from "react-router-dom";
+
+import {resetApiUrl} from "../../constants";
+import getText from "../../utils/get-text";
+
+export default class PasswordReset extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: "",
+      errors: {},
+      success: false,
+    };
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({[event.target.name]: event.target.value});
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    const {orgSlug} = this.props;
+    const {email, errors} = this.state;
+    const url = resetApiUrl.replace("{orgSlug}", orgSlug);
+    axios({
+      method: "post",
+      headers: {
+        "content-type": "application/x-www-form-urlencoded",
+      },
+      url,
+      data: qs.stringify({
+        email,
+      }),
+    })
+      .then(response => {
+        this.setState({
+          errors: {},
+          email: "",
+          success: response.data.detail,
+        });
+      })
+      .catch(error => {
+        const {data} = error.response;
+        // eslint-disable-next-line no-nested-ternary
+        const errorText = data.detail
+          ? data.detail
+          : data.non_field_errors
+          ? data.non_field_errors[0]
+          : "";
+
+        this.setState({
+          errors: {
+            ...errors,
+            success: false,
+            ...(errorText ? {email: errorText} : {email: ""}),
+          },
+        });
+      });
+  }
+
+  render() {
+    const {email, errors, success} = this.state;
+    const {language, passwordReset, orgSlug} = this.props;
+    const inputFields = passwordReset.input_fields;
+    const loginPageLink = passwordReset.login_page_link;
+    const {buttons} = passwordReset;
+    return (
+      <React.Fragment>
+        <div className="owisp-password-reset-container">
+          {success ? (
+            <div className="owisp-password-reset-form">
+              <div className="owisp-password-reset-success">{success}</div>
+              <Link
+                to={loginPageLink.url}
+                className="owisp-password-reset-links"
+              >
+                {getText(loginPageLink.text, language)}
+              </Link>
+            </div>
+          ) : (
+            <form
+              className="owisp-password-reset-form"
+              onSubmit={this.handleSubmit}
+            >
+              <div className="owisp-password-reset-header">
+                <div className="owisp-password-reset-heading">
+                  {getText(passwordReset.heading, language)}
+                </div>
+                <div className="owisp-password-reset-subheading">
+                  {getText(passwordReset.additional_text, language)}
+                </div>
+              </div>
+              <div className="owisp-password-reset-fieldset">
+                {inputFields.email ? (
+                  <>
+                    <label
+                      className="owisp-password-reset-label owisp-password-reset-label-email"
+                      htmlFor="owisp-password-reset-email"
+                    >
+                      <div className="owisp-password-reset-label-text owisp-password-reset-label-text-email">
+                        {getText(inputFields.email.label, language)}
+                      </div>
+                      <input
+                        className={`owisp-password-reset-input owisp-password-reset-input-email ${
+                          errors.email ? "error" : ""
+                        }`}
+                        type={inputFields.email.type}
+                        id="owisp-password-reset-email"
+                        required
+                        name="email"
+                        value={email}
+                        onChange={this.handleChange}
+                        placeholder={getText(
+                          inputFields.email.placeholder,
+                          language,
+                        )}
+                        pattern={
+                          inputFields.email.pattern
+                            ? inputFields.email.pattern
+                            : undefined
+                        }
+                        title={
+                          inputFields.email.pattern_description
+                            ? getText(
+                                inputFields.email.pattern_description,
+                                language,
+                              )
+                            : undefined
+                        }
+                      />
+                    </label>
+                    {errors.email && (
+                      <div className="owisp-password-reset-error owisp-password-reset-error-email">
+                        <span className="owisp-password-reset-error-icon">
+                          !
+                        </span>
+                        <span className="owisp-password-reset-error-text owisp-password-reset-error-text-email">
+                          {errors.email}
+                        </span>
+                      </div>
+                    )}
+                  </>
+                ) : null}
+              </div>
+              <input
+                type="submit"
+                className="owisp-password-reset-send-btn"
+                value={getText(buttons.send, language)}
+              />
+              {loginPageLink ? (
+                <Link
+                  to={`/${orgSlug}/login`}
+                  className="owisp-password-reset-links"
+                >
+                  {getText(loginPageLink.text, language)}
+                </Link>
+              ) : null}
+            </form>
+          )}
+        </div>
+      </React.Fragment>
+    );
+  }
+}
+
+PasswordReset.propTypes = {
+  passwordReset: PropTypes.shape({
+    heading: PropTypes.object,
+    additional_text: PropTypes.object,
+    input_fields: PropTypes.object,
+    buttons: PropTypes.object,
+    login_page_link: PropTypes.object,
+  }).isRequired,
+  language: PropTypes.string.isRequired,
+  orgSlug: PropTypes.string.isRequired,
+};

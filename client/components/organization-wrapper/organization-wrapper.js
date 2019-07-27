@@ -9,6 +9,8 @@ import getAssetPath from "../../utils/get-asset-path";
 import DoesNotExist from "../404";
 import Footer from "../footer";
 import Header from "../header";
+import PasswordConfirm from "../password-confirm";
+import PasswordReset from "../password-reset";
 import Registration from "../registration";
 
 export default class OrganizationWrapper extends React.Component {
@@ -34,6 +36,15 @@ export default class OrganizationWrapper extends React.Component {
               <Route
                 path={`${match.path}/register`}
                 render={() => <Registration />}
+              />
+              <Route
+                path={`${match.path}/password/reset/confirm/:uid/:token`}
+                render={props => <PasswordConfirm {...props} />}
+              />
+              <Route
+                path={`${match.path}/password/reset`}
+                exact
+                render={() => <PasswordReset />}
               />
             </Switch>
             <Route path={match.path} render={() => <Footer />} />
