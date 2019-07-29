@@ -38,13 +38,13 @@ export default class PasswordConfirm extends React.Component {
             newPassword2: passwordConfirmError,
           },
         });
-        return;
+        return false;
       }
     }
     this.setState({errors: {...errors, newPassword2: ""}});
     const url = confirmApiUrl.replace("{orgSlug}", orgSlug);
     const {uid, token} = match.params;
-    axios({
+    return axios({
       method: "post",
       headers: {
         "content-type": "application/x-www-form-urlencoded",

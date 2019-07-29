@@ -96,6 +96,7 @@ OrganizationWrapper.propTypes = {
     params: PropTypes.shape({
       organization: PropTypes.string.isRequired,
     }),
+    path: PropTypes.string,
   }).isRequired,
   setOrganization: PropTypes.func.isRequired,
   organization: PropTypes.shape({

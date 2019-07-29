@@ -30,7 +30,7 @@ export default class PasswordReset extends React.Component {
     const {orgSlug} = this.props;
     const {email, errors} = this.state;
     const url = resetApiUrl.replace("{orgSlug}", orgSlug);
-    axios({
+    return axios({
       method: "post",
       headers: {
         "content-type": "application/x-www-form-urlencoded",
@@ -55,11 +55,9 @@ export default class PasswordReset extends React.Component {
           : data.non_field_errors
           ? data.non_field_errors[0]
           : "";
-
         this.setState({
           errors: {
             ...errors,
-            success: false,
             ...(errorText ? {email: errorText} : {email: ""}),
           },
         });
@@ -79,7 +77,7 @@ export default class PasswordReset extends React.Component {
             <div className="owisp-password-reset-form">
               <div className="owisp-password-reset-success">{success}</div>
               <Link
-                to={loginPageLink.url}
+                to={`/${orgSlug}/login`}
                 className="owisp-password-reset-links"
               >
                 {getText(loginPageLink.text, language)}
