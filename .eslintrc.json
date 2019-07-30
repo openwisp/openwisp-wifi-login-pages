@@ -1,34 +1,35 @@
 {
-	"extends": [
-		"airbnb",
-		"prettier",
-		"prettier/react",
-		"jest-enzyme",
-		"plugin:jest/recommended"
-	],
-	"parser": "babel-eslint",
-	"plugins": ["prettier", "jest"],
-	"parserOptions": {
-		"ecmaVersion": 2016,
-		"sourceType": "module",
-		"ecmaFeatures": {
-			"jsx": true
-		}
-	},
-	"env": {
-		"es6": true,
-		"browser": true,
-		"node": true
-	},
-	"rules": {
-		"array-bracket-spacing": [2, "never"],
-		"semi": [2, "always"],
-		"react/prefer-stateless-function": [0],
-		"react/jsx-filename-extension": [
-			1,
-			{
-				"extensions": [".js", ".jsx"]
-			}
-		]
-	}
+  "extends": [
+    "airbnb",
+    "prettier",
+    "prettier/react",
+    "jest-enzyme",
+    "plugin:jest/recommended"
+  ],
+  "parser": "babel-eslint",
+  "plugins": ["prettier", "jest"],
+  "parserOptions": {
+    "ecmaVersion": 2016,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true
+  },
+  "rules": {
+    "array-bracket-spacing": [2, "never"],
+    "semi": [2, "always"],
+    "jsx-a11y/label-has-for": 0,
+    "react/prefer-stateless-function": [0],
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [".js", ".jsx"]
+      }
+    ]
+  }
 }

@@ -1,11 +1,13 @@
+import {withCookies} from "react-cookie";
 import {connect} from "react-redux";
 
 import setOrganization from "../../actions/set-organization";
 import Component from "./organization-wrapper";
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, ownProps) => {
   return {
     organization: state.organization,
+    cookies: ownProps.cookies,
   };
 };
 
@@ -16,7 +18,9 @@ const mapDispatchToProps = dispatch => {
     },
   };
 };
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Component);
+export default withCookies(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(Component),
+);

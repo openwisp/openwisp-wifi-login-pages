@@ -2,6 +2,7 @@ import "./index.css";
 
 import PropTypes from "prop-types";
 import React from "react";
+import {CookiesProvider} from "react-cookie";
 import {render} from "react-dom";
 import {Provider, connect} from "react-redux";
 import {BrowserRouter} from "react-router-dom";
@@ -45,8 +46,10 @@ const App = connect(
 )(BaseApp);
 
 render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+  <CookiesProvider>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </CookiesProvider>,
   document.getElementById("root"),
 );

@@ -6,55 +6,16 @@ import React from "react";
 import {BrowserRouter as Router} from "react-router-dom";
 import renderer from "react-test-renderer";
 
+import getConfig from "../../utils/get-config";
 import PasswordConfirm from "./password-confirm";
 
 jest.mock("axios");
-
+const defaultConfig = getConfig("default");
 const createTestProps = props => {
   return {
     language: "en",
     orgSlug: "default",
-    passwordConfirm: {
-      heading: {
-        en: "reset your password",
-      },
-      additional_text: {
-        en: "please enter your new password",
-      },
-      input_fields: {
-        password: {
-          type: "password",
-          pattern: ".{6,}",
-          pattern_description: {
-            en: "password must be a minimum of 6 characters",
-          },
-          placeholder: {
-            en: "password",
-          },
-          label: {
-            en: "password",
-          },
-        },
-        password_confirm: {
-          type: "password",
-          pattern: null,
-          pattern_description: {
-            en: null,
-          },
-          placeholder: {
-            en: "confirm password",
-          },
-          label: {
-            en: "confirm",
-          },
-        },
-      },
-      buttons: {
-        submit: {
-          en: "change password",
-        },
-      },
-    },
+    passwordConfirm: defaultConfig.components.confirm_form,
     match: {
       params: {
         uid: "testUid",

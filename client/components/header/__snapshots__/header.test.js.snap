@@ -46,20 +46,20 @@ exports[`<Header /> rendering should render with links 1`] = `
       <a
         className="owisp-header-link
                     owisp-header-link-1"
-        href="https://testlink1.com"
+        href="https://link-1.com"
         rel="noreferrer noopener"
         target="_blank"
       >
-        test link 1
+        link-1
       </a>
       <a
         className="owisp-header-link
                     owisp-header-link-2"
-        href="https://testlink2.com"
+        href="https://link-2.com"
         rel="noreferrer noopener"
         target="_blank"
       >
-        test link 2
+        link-2
       </a>
     </div>
   </div>
