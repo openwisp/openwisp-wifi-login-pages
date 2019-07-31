@@ -2,6 +2,7 @@ import "./index.css";
 
 import PropTypes from "prop-types";
 import React from "react";
+import {Link} from "react-router-dom";
 
 import getAssetPath from "../../utils/get-asset-path";
 import getText from "../../utils/get-text";
@@ -18,11 +19,13 @@ export default class Header extends React.Component {
               <div className="owisp-header-left">
                 <div className="owisp-header-logo-div">
                   {logo.url ? (
-                    <img
-                      src={getAssetPath(orgSlug, logo.url)}
-                      alt={logo.alternate_text}
-                      className="owisp-header-logo-image"
-                    />
+                    <Link to={`/${orgSlug}`}>
+                      <img
+                        src={getAssetPath(orgSlug, logo.url)}
+                        alt={logo.alternate_text}
+                        className="owisp-header-logo-image"
+                      />
+                    </Link>
                   ) : null}
                 </div>
               </div>

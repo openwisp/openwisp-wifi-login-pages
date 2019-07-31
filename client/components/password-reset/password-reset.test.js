@@ -5,48 +5,17 @@ import React from "react";
 import {BrowserRouter as Router} from "react-router-dom";
 import renderer from "react-test-renderer";
 
+import getConfig from "../../utils/get-config";
 import PasswordReset from "./password-reset";
 
 jest.mock("axios");
 
+const defaultConfig = getConfig("default");
 const createTestProps = props => {
   return {
     language: "en",
     orgSlug: "default",
-    passwordReset: {
-      heading: {
-        en: "reset your password",
-      },
-      additional_text: {
-        en:
-          "enter your email and we'll send you the instructions to reset your password",
-      },
-      input_fields: {
-        email: {
-          type: "email",
-          pattern: null,
-          pattern_description: {
-            en: null,
-          },
-          placeholder: {
-            en: "email address",
-          },
-          label: {
-            en: "email",
-          },
-        },
-      },
-      buttons: {
-        send: {
-          en: "send",
-        },
-      },
-      login_page_link: {
-        text: {
-          en: "Take me Back to Sign In",
-        },
-      },
-    },
+    passwordReset: defaultConfig.components.reset_form,
     ...props,
   };
 };

@@ -36,7 +36,7 @@ exports[`<Registration /> rendering should render correctly 1`] = `
           id="owisp-registration-username"
           name="username"
           onChange={[Function]}
-          pattern="[a-zA-Z@.+\\\\-_]{1,150}"
+          pattern="[a-zA-Z@.+\\\\-_\\\\d]{1,150}"
           placeholder="enter phone number or username"
           required={true}
           title="only letters, numbers, and @/./+/-/_ characters"
@@ -60,6 +60,7 @@ exports[`<Registration /> rendering should render correctly 1`] = `
           onChange={[Function]}
           placeholder="email address"
           required={true}
+          title={null}
           type="email"
           value=""
         />
@@ -103,16 +104,50 @@ exports[`<Registration /> rendering should render correctly 1`] = `
           onChange={[Function]}
           placeholder="confirm password"
           required={true}
+          title={null}
           type="password"
           value=""
         />
       </label>
     </div>
+    <div
+      className="owisp-registration-add-info"
+    >
+      By signing up, you accept the 
+      <a
+        className="owisp-registration-additional-link"
+        href="/default/registration/terms-and-conditions"
+        onClick={[Function]}
+      >
+        terms and conditions
+      </a>
+       and the 
+      <a
+        className="owisp-registration-additional-link"
+        href="/default/registration/privacy-policy"
+        onClick={[Function]}
+      >
+        privacy policy
+      </a>
+       of this WiFi service. 
+    </div>
     <input
-      className="owisp-registration-submit-btn"
+      className="owisp-registration-form-btn owisp-registration-submit-btn"
+      id="owisp-registration-submit-btn"
       type="submit"
       value="sign up"
     />
+    <div
+      className="owisp-login-links-div"
+    >
+      <a
+        className="owisp-registration-link"
+        href="/default/login"
+        onClick={[Function]}
+      >
+        Already have an account? Log in
+      </a>
+    </div>
   </form>
 </div>
 `;

@@ -9,6 +9,7 @@ import getAssetPath from "../../utils/get-asset-path";
 import DoesNotExist from "../404";
 import Footer from "../footer";
 import Header from "../header";
+import Login from "../login";
 import PasswordConfirm from "../password-confirm";
 import PasswordReset from "../password-reset";
 import Registration from "../registration";
@@ -16,14 +17,20 @@ import Registration from "../registration";
 export default class OrganizationWrapper extends React.Component {
   constructor(props) {
     super(props);
-    const {match, setOrganization} = this.props;
+    const {match, setOrganization} = props;
     const organizationSlug = match.params.organization;
     if (organizationSlug) setOrganization(organizationSlug);
   }
 
+  componentDidUpdate(prevProps) {
+    const {setOrganization, match} = this.props;
+    if (prevProps.match.params.organization !== match.params.organization) {
+      if (match.params.organization) setOrganization(match.params.organization);
+    }
+  }
+
   render() {
-    const {match} = this.props;
-    const {organization} = this.props;
+    const {organization, match} = this.props;
     const {title, favicon} = organization.configuration;
     const orgSlug = organization.configuration.slug;
     const cssPath = organization.configuration.css_path;
@@ -34,7 +41,7 @@ export default class OrganizationWrapper extends React.Component {
             <Route path={match.path} render={() => <Header />} />
             <Switch>
               <Route
-                path={`${match.path}/register`}
+                path={`${match.path}/registration`}
                 render={() => <Registration />}
               />
               <Route
@@ -46,6 +53,7 @@ export default class OrganizationWrapper extends React.Component {
                 exact
                 render={() => <PasswordReset />}
               />
+              <Route path={`${match.path}/login`} render={() => <Login />} />
             </Switch>
             <Route path={match.path} render={() => <Footer />} />
           </div>

@@ -21,12 +21,14 @@ client:
   # <title> value
   title: "Wifi Login"
 
+  auto_login: True
+
   # path of favicon
   favicon: null
 
   # path of the custom css file relative to organization's folder in
   # assets directory.
-  css_path: null
+  css_path: "index.css"
   languages:
     - text: "english"
       slug: "en"
@@ -63,7 +65,7 @@ client:
       input_fields:
         username:
           type: "text"
-          pattern: '[a-zA-Z@.+\-_]{1,150}'
+          pattern: '[a-zA-Z@.+\-_\d]{1,150}'
           pattern_description:
             en: "only letters, numbers, and @/./+/-/_ characters"
           placeholder:
@@ -99,7 +101,14 @@ client:
             en: "confirm"
       buttons:
         register:
-          en: 'sign up' # text for register button
+          label: null
+          text:
+            en: "sign up"
+      additional_info_text:
+        en: "By signing up, you accept the {terms_and_conditions} and the {privacy_policy} of this WiFi service. "
+      links:
+        login:
+          en: "Already have an account? Log in"
 
     reset_form:
       heading:
@@ -152,34 +161,54 @@ client:
           en: 'change password'
 
     login_form:
-      input_field:
+      header:
+        en: " sign in"
+      social_login:
+        divider_text:
+          en: "OR"
+        description:
+          en: "login with"
+        links:
+          -
+            text: null
+            url: null
+            icon: null #relative to organization's folder in assets directory.
+      input_fields:
         username:
           type: "text"
+          pattern: '[a-zA-Z@.+\-_\d]{1,150}'
+          pattern_description:
+            en: "only letters, numbers, and @/./+/-/_ characters"
           placeholder:
-            en: "Enter phone number or username"
+            en: "enter username"
           label:
-            en: "Phone number or username" # default username field label
-          pattern: null # pattern for validation
+            en: "username"
         password:
           type: "password"
+          pattern: ".{6,}"
+          pattern_description:
+            en: "password must be a minimum of 6 characters"
           placeholder:
-            en: "Enter password"
+            en: "password"
           label:
-            en: "Password" # default password field
-          pattern: null
+            en: "password"
+      additional_info_text:
+        en: "By logging in, you accept the {terms_and_conditions} and the {privacy_policy} of this WiFi service. "
       buttons:
         login:
-          label:
-            en: null # label field text for login button
-          value:
-            en: 'Login' # text for login button
-        register:
-          label:
-            en: null # label field text for register button
-          value:
-            en: 'Sign up for free' # text for register button
+          label: null
+          text:
+            en: "sign in"
       links:
-        - forget_password :
-            en: "Forgot your password?"
-        - account:
-            en: "Manage your account"
+        forget_password :
+          en: "Forgot your password?"
+        register:
+          en: "Not registered yet? Create an account"
+  privacy_policy:
+    title:
+      en: "privacy policy"
+    content: null
+  terms_and_conditions:
+    title:
+      en: "terms and conditions"
+    content: null

@@ -1,10 +1,10 @@
 import {connect} from "react-redux";
 
-import Component from "./registration";
+import Component from "./login";
 
 const mapStateToProps = state => {
   return {
-    registration: state.organization.configuration.components.registration_form,
+    loginForm: state.organization.configuration.components.login_form,
     privacyPolicy: state.organization.configuration.privacy_policy,
     termsAndConditions: state.organization.configuration.terms_and_conditions,
     language: state.language,

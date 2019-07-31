@@ -1,13 +1,12 @@
 /* eslint-disable prefer-promise-reject-errors */
 import axios from "axios";
-/* eslint-disable camelcase */
 import {shallow} from "enzyme";
 import React from "react";
 import {BrowserRouter as Router} from "react-router-dom";
 import renderer from "react-test-renderer";
 
 import getConfig from "../../utils/get-config";
-import Registration from "./registration";
+import Login from "./login";
 
 jest.mock("axios");
 
@@ -16,24 +15,52 @@ const createTestProps = props => {
   return {
     language: "en",
     orgSlug: "default",
-    registration: defaultConfig.components.registration_form,
+    loginForm: defaultConfig.components.login_form,
     privacyPolicy: defaultConfig.privacy_policy,
     termsAndConditions: defaultConfig.terms_and_conditions,
     ...props,
   };
 };
-
-describe("<Registration /> rendering", () => {
+describe("<Login /> rendering", () => {
   let props;
-  beforeEach(() => {
-    props = createTestProps();
-  });
-  it("should render correctly", () => {
+  it("should render correctly without social links", () => {
     props = createTestProps();
     const component = renderer
       .create(
         <Router>
-          <Registration {...props} />
+          <Login {...props} />
+        </Router>,
+      )
+      .toJSON();
+    expect(component).toMatchSnapshot();
+  });
+  it("should render correctly with social links", () => {
+    props = createTestProps({
+      loginForm: {
+        ...defaultConfig.components.login_form,
+        social_login: {
+          ...defaultConfig.components.login_form,
+          links: [
+            {
+              text: {
+                en: "Facebook",
+              },
+              url: "test url",
+              icon: null,
+            },
+            {
+              icon: "test.png",
+              url:
+                "https://control.co.ke/accounts/facebook/login/?next=%2Ffreeradius%2Fsocial-login%2Fstaging%2F%3Fcp%3Dhttp%3A%2F%2Fcontrol.brandfi.co.ke%2Floginpage%2F%26last%3D",
+            },
+          ],
+        },
+      },
+    });
+    const component = renderer
+      .create(
+        <Router>
+          <Login {...props} />
         </Router>,
       )
       .toJSON();
@@ -41,32 +68,23 @@ describe("<Registration /> rendering", () => {
   });
 });
 
-describe("<Registration /> interactions", () => {
+describe("<Login /> interactions", () => {
   let props;
   let wrapper;
   beforeEach(() => {
     props = createTestProps();
-    wrapper = shallow(<Registration {...props} />);
+    wrapper = shallow(<Login {...props} />);
   });
   it("should change state values when handleChange function is invoked", () => {
     wrapper
-      .find("#owisp-registration-username")
+      .find("#owisp-login-username")
       .simulate("change", {target: {value: "test username", name: "username"}});
     expect(wrapper.state("username")).toEqual("test username");
     wrapper
-      .find("#owisp-registration-email")
-      .simulate("change", {target: {value: "test email", name: "email"}});
-    expect(wrapper.state("email")).toEqual("test email");
-    wrapper
-      .find("#owisp-registration-password")
-      .simulate("change", {target: {value: "testpassword", name: "password1"}});
-    expect(wrapper.state("password1")).toEqual("testpassword");
-    wrapper
-      .find("#owisp-registration-password-confirm")
-      .simulate("change", {target: {value: "testpassword", name: "password2"}});
-    expect(wrapper.state("password2")).toEqual("testpassword");
+      .find("#owisp-login-password")
+      .simulate("change", {target: {value: "test password", name: "password"}});
+    expect(wrapper.state("password")).toEqual("test password");
   });
-
   it("should execute handleSubmit correctly when form is submitted", () => {
     axios
       .mockImplementationOnce(() => {
@@ -74,9 +92,9 @@ describe("<Registration /> interactions", () => {
           response: {
             data: {
               username: "username error",
-              email: "email error",
-              password1: "password1 error",
-              password2: "password2 error",
+              password: "password error",
+              detail: "error details",
+              non_field_errors: "non field errors",
             },
           },
         });
@@ -84,30 +102,17 @@ describe("<Registration /> interactions", () => {
       .mockImplementationOnce(() => {
         return Promise.resolve();
       });
-    wrapper.setState({
-      password1: "wrong password",
-      password2: "wrong password1",
-    });
     const event = {preventDefault: () => {}};
-    wrapper.instance().handleSubmit(event);
-    expect(
-      wrapper.update().find(".owisp-registration-error-confirm"),
-    ).toHaveLength(1);
-    wrapper.setState({
-      password1: "password",
-      password2: "password",
-    });
     return wrapper
       .instance()
       .handleSubmit(event)
       .then(() => {
         expect(wrapper.instance().state.errors).toEqual({
           username: "username error",
-          email: "email error",
-          password1: "password1 error",
-          password2: "password2 error",
+          nonField: "error details",
+          password: "password error",
         });
-        expect(wrapper.find(".owisp-registration-error")).toHaveLength(4);
+        expect(wrapper.find(".owisp-login-error")).toHaveLength(3);
       })
       .then(() => {
         return wrapper
@@ -115,10 +120,6 @@ describe("<Registration /> interactions", () => {
           .handleSubmit(event)
           .then(() => {
             expect(wrapper.instance().state.errors).toEqual({});
-            expect(wrapper.instance().state.success).toEqual(true);
-            expect(
-              wrapper.find(".owisp-registration-form.success"),
-            ).toHaveLength(1);
           });
       });
   });

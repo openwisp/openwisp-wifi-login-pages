@@ -3,26 +3,14 @@ import {shallow} from "enzyme";
 import React from "react";
 import renderer from "react-test-renderer";
 
+import getConfig from "../../utils/get-config";
 import Footer from "./footer";
 
+const defaultConfig = getConfig("default");
 const createTestProps = props => {
   return {
     language: "en",
-    footer: {
-      links: [
-        {
-          text: {en: "link one"},
-          url: "www.testurl.com",
-        },
-        {
-          text: {en: "link two"},
-          url: "www.testurl2.com",
-        },
-      ],
-      secondary_text: {
-        en: "this is secondary text",
-      },
-    },
+    footer: defaultConfig.components.footer,
     ...props,
   };
 };
@@ -48,9 +36,14 @@ describe("<Footer /> rendering", () => {
     expect(wrapper.find(".owisp-footer-link")).toHaveLength(0);
   });
   it("should render secondary text", () => {
-    const {secondary_text} = props.footer;
-    expect(wrapper.find(".owisp-footer-row-2-inner").text()).toBe(
-      secondary_text.en,
-    );
+    wrapper.setProps({
+      footer: {...props.footer, secondary_text: {en: "secondary text"}},
+    });
+    expect(
+      wrapper
+        .update()
+        .find(".owisp-footer-row-2-inner")
+        .text(),
+    ).toBe("secondary text");
   });
 });

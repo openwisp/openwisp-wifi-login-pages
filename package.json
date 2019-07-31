@@ -17,6 +17,7 @@
     "prop-types": "^15.7.2",
     "qs": "^6.7.0",
     "react": "^16.8.6",
+    "react-cookie": "^4.0.1",
     "react-dom": "^16.8.6",
     "react-helmet": "^5.2.1",
     "react-redux": "^7.1.0",
@@ -96,5 +97,10 @@
       "\\.(css|less|sass|scss)$": "<rootDir>/__mocks__/styleMock.js",
       "\\.(gif|ttf|eot|svg)$": "<rootDir>/__mocks__/fileMock.js"
     }
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "client/*"
+    ]
   }
 }

@@ -2,34 +2,17 @@ import {shallow} from "enzyme";
 import React from "react";
 import renderer from "react-test-renderer";
 
+import getConfig from "../../utils/get-config";
 import Header from "./header";
 
+const defaultConfig = getConfig("default");
 const createTestProps = props => {
   return {
     setLanguage: jest.fn(),
     orgSlug: "default",
     language: "en",
     languages: [{slug: "en", text: "english"}, {slug: "it", text: "italian"}],
-    header: {
-      logo: {
-        alternate_text: null,
-        url: null,
-      },
-      links: [
-        {
-          text: {
-            en: "test link 1",
-          },
-          url: "https://testlink1.com",
-        },
-        {
-          text: {
-            en: "test link 2",
-          },
-          url: "https://testlink2.com",
-        },
-      ],
-    },
+    header: defaultConfig.components.header,
     ...props,
   };
 };

@@ -13,20 +13,20 @@ exports[`<Footer /> rendering should render correctly 1`] = `
       <a
         className="owisp-footer-link
                   owisp-footer-link-1"
-        href="www.testurl.com"
+        href="https://link-1.com"
         rel="noreferrer noopener"
         target="_blank"
       >
-        link one
+        link-1
       </a>
       <a
         className="owisp-footer-link
                   owisp-footer-link-2"
-        href="www.testurl2.com"
+        href="https://link-2.com"
         rel="noreferrer noopener"
         target="_blank"
       >
-        link two
+        link-2
       </a>
     </div>
   </div>
@@ -35,9 +35,7 @@ exports[`<Footer /> rendering should render correctly 1`] = `
   >
     <div
       className="owisp-footer-row-2-inner"
-    >
-      this is secondary text
-    </div>
+    />
   </div>
 </div>
 `;
