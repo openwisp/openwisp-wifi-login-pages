@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Status /> rendering should render correctly 1`] = `
+<React.Fragment>
+  <div
+    className="owisp-status-container"
+  >
+    <div
+      className="owisp-status-inner"
+    >
+      <div
+        className="owisp-status-content-div"
+      >
+        <div
+          className="owisp-status-content-line"
+        >
+          WiFi Login Successful!
+        </div>
+        <div
+          className="owisp-status-content-line"
+        >
+          You can now use the internet.
+        </div>
+        <div
+          className="owisp-status-content-line"
+        >
+          You may leave this page open in case you want to log out.
+        </div>
+        <React.Fragment>
+          <input
+            className="owisp-status-btn owisp-status-logout-btn"
+            id="owisp-status-logout-btn"
+            onClick={[Function]}
+            type="button"
+            value="Logout"
+          />
+        </React.Fragment>
+      </div>
+      <div
+        className="owisp-status-contact-div"
+      >
+        <Memo(ConnectFunction) />
+      </div>
+    </div>
+  </div>
+</React.Fragment>
+`;

@@ -18,7 +18,7 @@ export default class Header extends React.Component {
             <div className="owisp-header-row-1-inner">
               <div className="owisp-header-left">
                 <div className="owisp-header-logo-div">
-                  {logo.url ? (
+                  {logo && logo.url ? (
                     <Link to={`/${orgSlug}`}>
                       <img
                         src={getAssetPath(orgSlug, logo.url)}

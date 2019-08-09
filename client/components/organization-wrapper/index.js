@@ -13,8 +13,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setOrganization: slug => {
-      dispatch(setOrganization(slug));
+    setOrganization: (slug, cookies) => {
+      dispatch(setOrganization(slug, cookies));
     },
   };
 };

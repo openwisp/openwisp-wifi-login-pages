@@ -1,3 +1,4 @@
+import authenticate from "./authenticate";
 import customMerge from "./custom-merge";
 import renderAdditionalInfo from "./render-additional-info";
 
@@ -68,5 +69,18 @@ describe("customMerge tests", () => {
   const arr2 = ["test3", "test4"];
   it("should return expected output", () => {
     expect(customMerge(arr1, arr2)).toEqual(arr2);
+  });
+});
+describe("authenticate tests", () => {
+  const cookies = {
+    get: jest
+      .fn()
+      .mockImplementationOnce(() => true)
+      .mockImplementationOnce(() => false),
+  };
+  const orgSlug = "test-org";
+  it("should perform authentication", () => {
+    expect(authenticate(cookies, orgSlug)).toEqual(true);
+    expect(authenticate(cookies, orgSlug)).toEqual(false);
   });
 });

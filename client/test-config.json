@@ -2,12 +2,14 @@
   {
     "name": "Default",
     "slug": "default",
-    "default_language": "en"
+    "default_language": "en",
+    "auto_login": true
   },
   {
     "name": "test org 1",
     "slug": "test-org-1",
-    "default_language": "it"
+    "default_language": "it",
+    "auto_login": false
   },
   {
     "name": "test org 2",

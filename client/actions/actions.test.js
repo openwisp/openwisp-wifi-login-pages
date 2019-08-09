@@ -4,6 +4,7 @@ import thunk from "redux-thunk";
 
 import * as types from "../constants/action-types";
 import testOrgConfig from "../test-config.json";
+import logout from "./logout";
 import parseOrganizations from "./parse-organizations";
 import setLanguage from "./set-language";
 import setOrganization from "./set-organization";
@@ -11,7 +12,10 @@ import setOrganization from "./set-organization";
 jest.mock("../utils/get-config");
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
-
+const cookies = {
+  get: jest.fn().mockImplementationOnce(() => true),
+  remove: jest.fn(),
+};
 describe("actions testing", () => {
   it("should create an action to parse organizations", () => {
     const expectedActions = [
@@ -40,6 +44,8 @@ describe("actions testing", () => {
 
   it("should create actions to set current organization", () => {
     const orgConfig = merge(testOrgConfig[0], testOrgConfig[2]);
+    const orgConfig2 = merge(testOrgConfig[0], testOrgConfig[1]);
+
     const expectedActions = [
       {
         type: types.SET_LANGUAGE,
@@ -54,13 +60,42 @@ describe("actions testing", () => {
         payload: orgConfig,
       },
       {
+        type: types.SET_AUTHENTICATION_STATUS,
+        payload: true,
+      },
+      {
+        type: types.SET_LANGUAGE,
+        payload: testOrgConfig[1].default_language,
+      },
+      {
+        type: types.SET_ORGANIZATION_STATUS,
+        payload: true,
+      },
+      {
+        type: types.SET_ORGANIZATION_CONFIG,
+        payload: orgConfig2,
+      },
+      {
         type: types.SET_ORGANIZATION_STATUS,
         payload: false,
       },
     ];
     const store = mockStore({language: "", organization: {}});
-    store.dispatch(setOrganization(testOrgConfig[2].slug));
+    store.dispatch(setOrganization(testOrgConfig[2].slug, cookies));
+    store.dispatch(setOrganization(testOrgConfig[1].slug, cookies));
     store.dispatch(setOrganization("invalid-slug"));
+    expect(store.getActions()).toEqual(expectedActions);
+  });
+  it("should create an action to logout", () => {
+    const orgSlug = "default";
+    const expectedActions = [
+      {
+        type: types.SET_AUTHENTICATION_STATUS,
+        payload: false,
+      },
+    ];
+    const store = mockStore({organization: {configuration: {}}});
+    store.dispatch(logout(cookies, orgSlug));
     expect(store.getActions()).toEqual(expectedActions);
   });
 });

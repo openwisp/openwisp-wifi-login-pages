@@ -15,7 +15,18 @@ exports[`<Header /> rendering should render with links 1`] = `
       >
         <div
           className="owisp-header-logo-div"
-        />
+        >
+          <a
+            href="/default"
+            onClick={[Function]}
+          >
+            <img
+              alt="openwisp"
+              className="owisp-header-logo-image"
+              src="/assets/default/openwisp.svg"
+            />
+          </a>
+        </div>
       </div>
       <div
         className="owisp-header-right"
@@ -81,7 +92,18 @@ exports[`<Header /> rendering should render without links 1`] = `
       >
         <div
           className="owisp-header-logo-div"
-        />
+        >
+          <a
+            href="/default"
+            onClick={[Function]}
+          >
+            <img
+              alt="openwisp"
+              className="owisp-header-logo-image"
+              src="/assets/default/openwisp.svg"
+            />
+          </a>
+        </div>
       </div>
       <div
         className="owisp-header-right"

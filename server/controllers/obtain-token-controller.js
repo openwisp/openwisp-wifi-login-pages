@@ -30,25 +30,22 @@ const obtainToken = (req, res) => {
       })
         .then(response => {
           // save token in signed cookie
-          const radTokenCookie = cookie.sign(
-            response.data.radius_user_token,
-            conf.secret_key,
-          );
           const authTokenCookie = cookie.sign(
             response.data.key,
             conf.secret_key,
           );
+          const usernameCookie = cookie.sign(username, conf.secret_key);
           // forward response
           res
             .status(response.status)
             .type("application/json")
-            .cookie(`${conf.slug}_radius_user_token`, radTokenCookie, {
-              maxAge: 1000 * 60 * 60 * 24,
-            })
             .cookie(`${conf.slug}_auth_token`, authTokenCookie, {
               maxAge: 1000 * 60 * 60 * 24,
             })
-            .send(response.data);
+            .cookie(`${conf.slug}_username`, usernameCookie, {
+              maxAge: 1000 * 60 * 60 * 24,
+            })
+            .send();
         })
         .catch(error => {
           // forward error

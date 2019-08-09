@@ -1,0 +1,81 @@
+.owisp-status-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  box-sizing: border-box;
+  padding-bottom: 27px;
+}
+.owisp-status-inner {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  width: 80%;
+}
+.owisp-status-content-div {
+  background: rgb(74, 132, 86);
+  padding: 30px;
+  color: #ffffff;
+  border-radius: 2px;
+  margin-top: 27px;
+  box-sizing: border-box;
+  width: 60%;
+}
+.owisp-status-contact-div {
+  margin-top: 27px;
+  width: 37%;
+}
+.owisp-status-content-line {
+  line-height: 1.9;
+}
+.owisp-status-logout-btn {
+  background-color: rgba(0, 0, 0, 0.3);
+  width: 100%;
+  line-height: 1.6;
+  color: #ffffff;
+  font-size: 1.6;
+  font-weight: 700;
+  margin-top: 10px;
+  padding: 8px 15px;
+  border-radius: 5px;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+}
+.owisp-status-logout-btn:hover {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.owisp-status-logout-btn:focus {
+  outline: dotted 1px #ffffff;
+  outline-offset: 0.5px;
+}
+@media screen and (min-width: 767px) and (max-width: 1000px) {
+  .owisp-status-inner {
+    width: 98%;
+    justify-content: space-between;
+  }
+  .owisp-status-content-div {
+    width: 60%;
+    margin-right: 1%;
+  }
+  .owisp-status-contact-div {
+    width: 39%;
+  }
+}
+@media screen and (min-width: 0px) and (max-width: 767px) {
+  .owisp-status-inner {
+    width: 98%;
+    justify-content: space-between;
+  }
+  .owisp-status-content-div {
+    width: 100%;
+    margin-right: 0;
+  }
+  .owisp-status-contact-div {
+    width: 100%;
+  }
+}

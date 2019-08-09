@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Status /> rendering should render correctly 1`] = `
+<React.Fragment>
+  <div
+    className="owisp-contact-container"
+  >
+    <div
+      className="owisp-contact-inner"
+    >
+      <div
+        className="owisp-contact-row"
+      >
+        <div
+          className="owisp-contact-label"
+        >
+          E-mail
+          :
+        </div>
+        <a
+          className="owisp-contact-text"
+          href="mailto:support@openwisp.co"
+        >
+          support@openwisp.co
+        </a>
+      </div>
+      <div
+        className="owisp-contact-row"
+      >
+        <div
+          className="owisp-contact-label"
+        >
+          Helpdesk
+          :
+        </div>
+        <a
+          className="owisp-contact-text"
+          href="tel:+789 948 564"
+        >
+          +789 948 564
+        </a>
+      </div>
+      <div
+        className="owisp-contact-links"
+      >
+        <a
+          className="owisp-contact-twitter-link owisp-contact-link"
+          href="https://twitter.com/openwisp"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <img
+            alt="twitter"
+            className="owisp-contact-twitter-image owisp-contact-image"
+            src="/assets/default/twitter.svg"
+          />
+        </a>
+        <a
+          className="owisp-contact-facebook-link owisp-contact-link"
+          href="https://facebook.com/openwisp"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <img
+            alt="facebook"
+            className="owisp-contact-facebook-image owisp-contact-image"
+            src="/assets/default/facebook.svg"
+          />
+        </a>
+        <a
+          className="owisp-contact-linkedIn-link owisp-contact-link"
+          href="https://www.linkedin.com/groups/4777261"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <img
+            alt="linkedIn"
+            className="owisp-contact-linkedIn-image owisp-contact-image"
+            src="/assets/default/linkedin.svg"
+          />
+        </a>
+      </div>
+      <div
+        className="owisp-contact-inner"
+      />
+    </div>
+  </div>
+</React.Fragment>
+`;
