@@ -2,8 +2,9 @@ import "./index.css";
 
 import PropTypes from "prop-types";
 import React from "react";
+import {Cookies} from "react-cookie";
 import {Helmet} from "react-helmet";
-import {Route, Switch} from "react-router-dom";
+import {Redirect, Route, Switch} from "react-router-dom";
 
 import getAssetPath from "../../utils/get-asset-path";
 import DoesNotExist from "../404";
@@ -13,25 +14,27 @@ import Login from "../login";
 import PasswordConfirm from "../password-confirm";
 import PasswordReset from "../password-reset";
 import Registration from "../registration";
+import Status from "../status";
 
 export default class OrganizationWrapper extends React.Component {
   constructor(props) {
     super(props);
-    const {match, setOrganization} = props;
+    const {match, setOrganization, cookies} = props;
     const organizationSlug = match.params.organization;
-    if (organizationSlug) setOrganization(organizationSlug);
+    if (organizationSlug) setOrganization(organizationSlug, cookies);
   }
 
   componentDidUpdate(prevProps) {
-    const {setOrganization, match} = this.props;
+    const {setOrganization, match, cookies} = this.props;
     if (prevProps.match.params.organization !== match.params.organization) {
-      if (match.params.organization) setOrganization(match.params.organization);
+      if (match.params.organization)
+        setOrganization(match.params.organization, cookies);
     }
   }
 
   render() {
-    const {organization, match} = this.props;
-    const {title, favicon} = organization.configuration;
+    const {organization, match, cookies} = this.props;
+    const {title, favicon, isAuthenticated} = organization.configuration;
     const orgSlug = organization.configuration.slug;
     const cssPath = organization.configuration.css_path;
     if (organization.exists === true) {
@@ -41,19 +44,52 @@ export default class OrganizationWrapper extends React.Component {
             <Route path={match.path} render={() => <Header />} />
             <Switch>
               <Route
+                path={`${match.path}`}
+                exact
+                render={() => {
+                  return <Redirect to={`/${orgSlug}/login`} />;
+                }}
+              />
+              <Route
                 path={`${match.path}/registration`}
-                render={() => <Registration />}
+                render={() => {
+                  if (isAuthenticated)
+                    return <Redirect to={`/${orgSlug}/status`} />;
+                  return <Registration />;
+                }}
               />
               <Route
                 path={`${match.path}/password/reset/confirm/:uid/:token`}
-                render={props => <PasswordConfirm {...props} />}
+                render={props => {
+                  if (isAuthenticated)
+                    return <Redirect to={`/${orgSlug}/status`} />;
+                  return <PasswordConfirm {...props} />;
+                }}
               />
               <Route
                 path={`${match.path}/password/reset`}
                 exact
-                render={() => <PasswordReset />}
+                render={() => {
+                  if (isAuthenticated)
+                    return <Redirect to={`/${orgSlug}/status`} />;
+                  return <PasswordReset />;
+                }}
               />
-              <Route path={`${match.path}/login`} render={() => <Login />} />
+              <Route
+                path={`${match.path}/login`}
+                render={() => {
+                  if (isAuthenticated)
+                    return <Redirect to={`/${orgSlug}/status`} />;
+                  return <Login />;
+                }}
+              />
+              <Route
+                path={`${match.path}/status`}
+                render={() => {
+                  if (isAuthenticated) return <Status cookies={cookies} />;
+                  return <Redirect to={`/${orgSlug}/login`} />;
+                }}
+              />
             </Switch>
             <Route path={match.path} render={() => <Footer />} />
           </div>
@@ -113,7 +149,9 @@ OrganizationWrapper.propTypes = {
       css_path: PropTypes.string,
       slug: PropTypes.string,
       favicon: PropTypes.string,
+      isAuthenticated: PropTypes.bool,
     }),
     exists: PropTypes.bool,
   }).isRequired,
+  cookies: PropTypes.instanceOf(Cookies).isRequired,
 };

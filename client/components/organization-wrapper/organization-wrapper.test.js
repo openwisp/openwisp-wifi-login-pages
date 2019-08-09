@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import {shallow} from "enzyme";
 import React from "react";
+import {Cookies} from "react-cookie";
 
 import OrganizationWrapper from "./organization-wrapper";
 
@@ -17,6 +18,7 @@ const createTestProps = props => {
       exists: true,
     },
     setOrganization: jest.fn(),
+    cookies: new Cookies(),
     ...props,
   };
 };

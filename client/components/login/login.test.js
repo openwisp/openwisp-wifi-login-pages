@@ -18,6 +18,7 @@ const createTestProps = props => {
     loginForm: defaultConfig.components.login_form,
     privacyPolicy: defaultConfig.privacy_policy,
     termsAndConditions: defaultConfig.terms_and_conditions,
+    authenticate: jest.fn(),
     ...props,
   };
 };
@@ -120,6 +121,9 @@ describe("<Login /> interactions", () => {
           .handleSubmit(event)
           .then(() => {
             expect(wrapper.instance().state.errors).toEqual({});
+            expect(
+              wrapper.instance().props.authenticate.mock.calls.length,
+            ).toBe(1);
           });
       });
   });

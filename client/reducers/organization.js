@@ -1,5 +1,6 @@
 import {
   PARSE_ORGANIZATIONS,
+  SET_AUTHENTICATION_STATUS,
   SET_ORGANIZATION_CONFIG,
   SET_ORGANIZATION_STATUS,
 } from "../constants/action-types";
@@ -22,6 +23,14 @@ export const organization = (
       return {...state, configuration: action.payload};
     case SET_ORGANIZATION_STATUS:
       return {...state, exists: action.payload};
+    case SET_AUTHENTICATION_STATUS:
+      return {
+        ...state,
+        configuration: {
+          ...state.configuration,
+          isAuthenticated: action.payload,
+        },
+      };
     default:
       return state;
   }

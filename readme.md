@@ -1,6 +1,7 @@
 # openwisp-wifi-login-pages
 
 <!-- Badges -->
+
 [![Build Status](https://travis-ci.org/openwisp/openwisp-wifi-login-pages.svg?branch=master)](https://travis-ci.org/openwisp/openwisp-wifi-login-pages)
 [![Coverage Status](https://coveralls.io/repos/github/openwisp/openwisp-wifi-login-pages/badge.svg)](https://coveralls.io/github/openwisp/openwisp-wifi-login-pages)
 
@@ -42,6 +43,20 @@ or
 yarn
 ```
 
+### Setup
+
+Write configuration of the organization in a yml file in `org-configuration` directory.
+List of variables required in organization configuration:
+
+- name
+- slug
+- uuid: uuid of the organization
+- secret_key: token of the organization
+
+Copy all the assets to `client/assets/{slug}` directory
+Run `$ npm run setup`
+Start servers using `$ npm run start`
+
 ### Usage
 
 List of NPM Commands:
@@ -52,6 +67,7 @@ $ npm run setup			# Discover Organization configs and generate config.json and a
 $ npm run build			# Build the app
 $ npm run server		# Run server
 $ npm run client		# Run client
+$ npm run coveralls		# Run coveralls
 $ npm run lint			# Run ESLint
 $ npm run lint:fix 	 	# Run ESLint with automatically fix problems option
 $ npm test 			# Run tests

@@ -11,6 +11,9 @@ server:
     password_reset_confirm: "/api/v1/{org_slug}/account/password/reset/confirm"
     registration: "/api/v1/{org_slug}/account"
     user_auth_token: "/api/v1/{org_slug}/account/token"
+    validate_auth_token: "/api/v1/{org_slug}/account/token/validate"
+    authorize: "/api/v1/authorize"
+  uuid: organization_uuid
   secret_key: organization_secret_key
   timeout: 2 #request timeout period in seconds
 
@@ -24,7 +27,7 @@ client:
   auto_login: True
 
   # path of favicon
-  favicon: null
+  favicon: "favicon.png"
 
   # path of the custom css file relative to organization's folder in
   # assets directory.
@@ -36,8 +39,8 @@ client:
   components:
     header:
       logo:
-        url: null # logo url
-        alternate_text: null
+        url: "openwisp.svg" # logo url
+        alternate_text: "openwisp"
       links:
         - text:
             en: "link-1" #link text in english
@@ -159,6 +162,43 @@ client:
       buttons:
         submit:
           en: 'change password'
+
+    contact_page:
+      email:
+        label:
+          en: "E-mail"
+        value:
+          en: "support@openwisp.co"
+      helpdesk:
+        label:
+          en: "Helpdesk"
+        value:
+          en: "+789 948 564"
+      social_links:
+        - alt:
+            en: "twitter"
+          icon: "twitter.svg"
+          url: "https://twitter.com/openwisp"
+        - alt:
+            en: "facebook"
+          icon: "facebook.svg"
+          url: "https://facebook.com/openwisp"
+        - alt:
+            en: "linkedIn"
+          icon: "linkedin.svg"
+          url: "https://www.linkedin.com/groups/4777261"
+
+    status_page:
+      content:
+        en: |
+           WiFi Login Successful!
+           You can now use the internet.
+           You may leave this page open in case you want to log out.
+      buttons:
+        logout:
+          label: null
+          text:
+            en: "Logout"
 
     login_form:
       header:

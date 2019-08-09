@@ -30,7 +30,7 @@ export default class Login extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const {orgSlug} = this.props;
+    const {orgSlug, authenticate} = this.props;
     const {username, password, errors} = this.state;
     const url = loginApiUrl.replace("{orgSlug}", orgSlug);
     this.setState({
@@ -48,11 +48,7 @@ export default class Login extends React.Component {
       }),
     })
       .then(() => {
-        this.setState({
-          errors: {},
-          username: "",
-          password: "",
-        });
+        authenticate(true);
       })
       .catch(error => {
         const {data} = error.response;
@@ -337,4 +333,5 @@ Login.propTypes = {
     title: PropTypes.object,
     content: PropTypes.object,
   }).isRequired,
+  authenticate: PropTypes.func.isRequired,
 };

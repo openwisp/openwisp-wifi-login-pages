@@ -32,7 +32,7 @@ export default class Registration extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const {registration, orgSlug} = this.props;
+    const {registration, orgSlug, authenticate} = this.props;
     const {input_fields} = registration;
     const {username, email, password1, password2, errors} = this.state;
     if (input_fields.password_confirm) {
@@ -70,6 +70,7 @@ export default class Registration extends React.Component {
           password2: "",
           success: true,
         });
+        authenticate(true);
       })
       .catch(error => {
         const {data} = error.response;
@@ -393,4 +394,5 @@ Registration.propTypes = {
     title: PropTypes.object,
     content: PropTypes.object,
   }).isRequired,
+  authenticate: PropTypes.func.isRequired,
 };

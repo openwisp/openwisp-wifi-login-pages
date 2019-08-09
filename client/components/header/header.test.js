@@ -1,5 +1,6 @@
 import {shallow} from "enzyme";
 import React from "react";
+import {BrowserRouter as Router} from "react-router-dom";
 import renderer from "react-test-renderer";
 
 import getConfig from "../../utils/get-config";
@@ -32,11 +33,23 @@ describe("<Header /> rendering", () => {
       },
     };
     props = createTestProps(links);
-    const component = renderer.create(<Header {...props} />).toJSON();
+    const component = renderer
+      .create(
+        <Router>
+          <Header {...props} />
+        </Router>,
+      )
+      .toJSON();
     expect(component).toMatchSnapshot();
   });
   it("should render with links", () => {
-    const component = renderer.create(<Header {...props} />).toJSON();
+    const component = renderer
+      .create(
+        <Router>
+          <Header {...props} />
+        </Router>,
+      )
+      .toJSON();
     expect(component).toMatchSnapshot();
   });
   it("should render 2 links", () => {
@@ -53,19 +66,19 @@ describe("<Header /> rendering", () => {
       0,
     );
   });
-  it("should not render logo", () => {
-    expect(wrapper.find(".owisp-header-logo-image")).toHaveLength(0);
-  });
   it("should render logo", () => {
+    expect(wrapper.find(".owisp-header-logo-image")).toHaveLength(1);
+  });
+  it("should not render logo", () => {
     const logo = {
       header: {
         ...props.header,
-        logo: {alternate_text: "test_alternate_text", url: "/test-logo.jpg"},
+        logo: null,
       },
     };
     props = createTestProps(logo);
     wrapper = shallow(<Header {...props} />);
-    expect(wrapper.find(".owisp-header-logo-image")).toHaveLength(1);
+    expect(wrapper.find(".owisp-header-logo-image")).toHaveLength(0);
   });
 });
 

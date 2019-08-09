@@ -1,5 +1,6 @@
 import {connect} from "react-redux";
 
+import {SET_AUTHENTICATION_STATUS} from "../../constants/action-types";
 import Component from "./registration";
 
 const mapStateToProps = state => {
@@ -11,8 +12,15 @@ const mapStateToProps = state => {
     orgSlug: state.organization.configuration.slug,
   };
 };
+const mapDispatchToProps = dispatch => {
+  return {
+    authenticate: status => {
+      dispatch({type: SET_AUTHENTICATION_STATUS, payload: status});
+    },
+  };
+};
 
 export default connect(
   mapStateToProps,
-  null,
+  mapDispatchToProps,
 )(Component);

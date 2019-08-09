@@ -19,6 +19,7 @@ const createTestProps = props => {
     registration: defaultConfig.components.registration_form,
     privacyPolicy: defaultConfig.privacy_policy,
     termsAndConditions: defaultConfig.terms_and_conditions,
+    authenticate: jest.fn(),
     ...props,
   };
 };
@@ -119,6 +120,9 @@ describe("<Registration /> interactions", () => {
             expect(
               wrapper.find(".owisp-registration-form.success"),
             ).toHaveLength(1);
+            expect(
+              wrapper.instance().props.authenticate.mock.calls.length,
+            ).toBe(1);
           });
       });
   });
