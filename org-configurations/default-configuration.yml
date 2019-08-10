@@ -247,8 +247,10 @@ client:
   privacy_policy:
     title:
       en: "privacy policy"
-    content: null
+    content:
+      en: "privacy-en.md"
   terms_and_conditions:
     title:
       en: "terms and conditions"
-    content: null
+    content:
+      en: "terms-en.md"

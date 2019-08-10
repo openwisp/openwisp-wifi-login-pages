@@ -1,0 +1,33 @@
+.owisp-modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 20px;
+}
+.owisp-modal-row-close {
+  width: 100%;
+  padding: 2% 2% 1% 0;
+  box-sizing: border-box;
+}
+.owisp-modal-close-btn {
+  float: right;
+  text-decoration: none;
+  color: #f3f3f3;
+  font-size: 1.5rem;
+  padding: 5px 10px;
+}
+.owisp-modal-content {
+  width: 90%;
+  background: #ffffff;
+  align-self: center;
+  overflow: auto;
+  height: 85%;
+  padding: 20px;
+  box-sizing: border-box;
+  border-radius: 3px;
+}

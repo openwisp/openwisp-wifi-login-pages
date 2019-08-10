@@ -5,12 +5,13 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import qs from "qs";
 import React from "react";
-import {Link} from "react-router-dom";
+import {Link, Route} from "react-router-dom";
 
 import {loginApiUrl} from "../../constants";
 import getAssetPath from "../../utils/get-asset-path";
 import getText from "../../utils/get-text";
 import renderAdditionalInfo from "../../utils/render-additional-info";
+import Modal from "../modal";
 
 export default class Login extends React.Component {
   constructor(props) {
@@ -74,6 +75,7 @@ export default class Login extends React.Component {
       orgSlug,
       termsAndConditions,
       privacyPolicy,
+      match,
     } = this.props;
     const {
       links,
@@ -302,6 +304,12 @@ export default class Login extends React.Component {
             ) : null}
           </form>
         </div>
+        <Route
+          path={`${match.path}/:name`}
+          render={props => {
+            return <Modal {...props} prevPath={match.url} />;
+          }}
+        />
       </React.Fragment>
     );
   }
@@ -324,6 +332,10 @@ Login.propTypes = {
     links: PropTypes.object,
   }).isRequired,
   language: PropTypes.string.isRequired,
+  match: PropTypes.shape({
+    path: PropTypes.string,
+    url: PropTypes.string,
+  }).isRequired,
   orgSlug: PropTypes.string.isRequired,
   privacyPolicy: PropTypes.shape({
     title: PropTypes.object,

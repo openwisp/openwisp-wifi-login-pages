@@ -5,11 +5,12 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import qs from "qs";
 import React from "react";
-import {Link} from "react-router-dom";
+import {Link, Route} from "react-router-dom";
 
 import {passwordConfirmError, registerApiUrl} from "../../constants";
 import getText from "../../utils/get-text";
 import renderAdditionalInfo from "../../utils/render-additional-info";
+import Modal from "../modal";
 
 export default class Registration extends React.Component {
   constructor(props) {
@@ -99,6 +100,7 @@ export default class Registration extends React.Component {
       termsAndConditions,
       privacyPolicy,
       orgSlug,
+      match,
     } = this.props;
     const {buttons, additional_info_text, input_fields, links} = registration;
     const {username, email, password1, password2, errors, success} = this.state;
@@ -364,6 +366,12 @@ export default class Registration extends React.Component {
             ) : null}
           </form>
         </div>
+        <Route
+          path={`${match.path}/:name`}
+          render={props => {
+            return <Modal {...props} prevPath={match.url} />;
+          }}
+        />
       </React.Fragment>
     );
   }
@@ -385,6 +393,10 @@ Registration.propTypes = {
     links: PropTypes.object,
   }).isRequired,
   language: PropTypes.string.isRequired,
+  match: PropTypes.shape({
+    path: PropTypes.string,
+    url: PropTypes.string,
+  }).isRequired,
   orgSlug: PropTypes.string.isRequired,
   privacyPolicy: PropTypes.shape({
     title: PropTypes.object,

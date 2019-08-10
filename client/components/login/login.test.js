@@ -19,6 +19,9 @@ const createTestProps = props => {
     privacyPolicy: defaultConfig.privacy_policy,
     termsAndConditions: defaultConfig.terms_and_conditions,
     authenticate: jest.fn(),
+    match: {
+      path: "default/login",
+    },
     ...props,
   };
 };

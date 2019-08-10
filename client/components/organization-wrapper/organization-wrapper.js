@@ -52,10 +52,10 @@ export default class OrganizationWrapper extends React.Component {
               />
               <Route
                 path={`${match.path}/registration`}
-                render={() => {
+                render={props => {
                   if (isAuthenticated)
                     return <Redirect to={`/${orgSlug}/status`} />;
-                  return <Registration />;
+                  return <Registration {...props} />;
                 }}
               />
               <Route
@@ -77,10 +77,10 @@ export default class OrganizationWrapper extends React.Component {
               />
               <Route
                 path={`${match.path}/login`}
-                render={() => {
+                render={props => {
                   if (isAuthenticated)
                     return <Redirect to={`/${orgSlug}/status`} />;
-                  return <Login />;
+                  return <Login {...props} />;
                 }}
               />
               <Route
