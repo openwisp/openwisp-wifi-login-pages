@@ -117,7 +117,7 @@ client:
       heading:
         en: "reset your password"
       additional_text:
-        en: "enter your email and we'll send you the instructions to reset your password"
+        en: "Forgotten your password? Enter your e-mail address below, and we'll send you an e-mail allowing you to reset it."
       input_fields:
         email:
           type: "email"
@@ -130,7 +130,7 @@ client:
             en: "email"
       buttons:
         send:
-          en: 'send'
+          en: 'Reset My Password'
       login_page_link:
         text:
           en: "Take me Back to Sign In"
@@ -204,10 +204,6 @@ client:
       header:
         en: " sign in"
       social_login:
-        divider_text:
-          en: "OR"
-        description:
-          en: "login with"
         links:
           -
             text: null
@@ -244,6 +240,17 @@ client:
           en: "Forgot your password?"
         register:
           en: "Not registered yet? Create an account"
+    404_page:
+      heading:
+        en: "404"
+      sub_heading:
+        en: "Not Found"
+      message:
+        en: "Sorry, we couldn't find the page you were looking for."
+      homepage_link:
+        text:
+          en: "Go back to homepage"
+
   privacy_policy:
     title:
       en: "privacy policy"

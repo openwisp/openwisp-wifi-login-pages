@@ -47,6 +47,7 @@ module.exports = (env, argv) => {
         filename: "index.html",
         template: path.resolve(CURRENT_WORKING_DIR, "public/index.html"),
       }),
+      new HardSourceWebpackPlugin(),
       new CopyPlugin([
         {
           from: path.resolve(CURRENT_WORKING_DIR, "client/assets"),

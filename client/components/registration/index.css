@@ -4,25 +4,39 @@
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
-  background: #f2f2f2;
   width: 100%;
+  box-sizing: border-box;
+  padding: 27px 0 27px 0;
+}
+.owisp-registration-container-inner {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-grow: 1;
+  max-width: 1000px;
 }
 .owisp-registration-form {
   font-family: sans-serif;
-  background: #ffffff;
+  background: #4a8456;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 40px 50px;
+  padding: 24px 50px;
+  width: 53%;
+  box-sizing: border-box;
 }
 .owisp-registration-form.success .owisp-registration-input:invalid {
   box-shadow: none;
 }
+.owisp-registration-contact-container {
+  width: 44%;
+  box-sizing: border-box;
+}
 .owisp-registration-header-content {
   text-transform: capitalize;
-  color: #444;
-  font-size: 35px;
+  color: #ffffff;
+  font-size: 28px;
   margin-bottom: 15px;
 }
 .owisp-registration-fieldset {
@@ -30,40 +44,43 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+  width: 100%;
 }
 .owisp-registration-label {
   margin-top: 15px;
   margin-bottom: 5px;
+  width: 100%;
 }
 .owisp-registration-label-text {
-  color: #6b6b6b;
+  color: #ffffff;
   text-transform: capitalize;
 }
 .owisp-registration-input {
-  padding: 10px;
+  padding: 5px 10px;
   border-radius: 3px;
   font-size: 18px;
   border: 2px solid #e7e7e7;
   margin-top: 5px;
-  width: 300px;
+  width: 100%;
+  box-sizing: border-box;
 }
 .owisp-registration-input:focus {
-  border-color: #a7a7a7;
+  border-color: #666666;
 }
 .owisp-registration-input.error {
   border-color: #d93025;
 }
 .owisp-registration-add-info {
   margin-top: 15px;
-  color: #444;
-  max-width: 330px;
+  color: #ffffff;
+  margin-bottom: 15px;
 }
 .owisp-registration-additional-link {
-  color: #444;
+  color: #ffffff;
 }
 .owisp-registration-additional-link:hover,
 .owisp-registration-additional-link:focus {
-  outline: dotted 1px #444;
+  outline: dotted 1px #ffffff;
   outline-offset: 0.5px;
 }
 .owisp-registration-label-registration-btn {
@@ -73,7 +90,7 @@
   width: 100%;
   font-size: 18px;
   height: 50px;
-  background: #293b52;
+  background-color: rgba(0, 0, 0, 0.3);
   color: #ffffff;
   text-transform: capitalize;
   border: 0;
@@ -81,42 +98,56 @@
   cursor: pointer;
 }
 .owisp-registration-submit-btn:hover {
-  background: #223144;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 .owisp-registration-submit-btn:focus {
-  outline: dotted 1px #444;
+  outline: dotted 1px #ffffff;
   outline-offset: 0.5px;
 }
 .owisp-registration-error {
-  font-size: 12px;
-  color: #d93025;
-  width: 324px;
+  margin-top: 3px;
+  font-size: 14px;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   flex-wrap: nowrap;
+  align-items: center;
+  width: 100%;
+  color: #ffffff;
+  background: #d93025;
+  border-radius: 3px;
+  padding: 4px;
+  box-sizing: border-box;
 }
 .owisp-registration-error-icon {
   display: inline-block;
-  background: #d93025;
-  color: #ffffff;
   min-width: 16px;
   height: 16px;
-  border-radius: 50%;
   text-align: center;
-  margin-right: 8px;
+  margin-right: 4px;
   font-weight: 600;
 }
 .owisp-registration-link {
   line-height: 1.4;
-  text-decoration: none;
   text-transform: capitalize;
-  color: #444;
+  color: #ffffff;
 }
 .owisp-registration-link:focus {
   outline: dotted 1px #444;
   outline-offset: 0.5px;
 }
 .owisp-registration-link:hover {
-  text-decoration: underline;
+  text-decoration: none;
+}
+@media screen and (min-width: 0px) and (max-width: 767px) {
+  .owisp-registration-container-inner {
+    flex-direction: column;
+  }
+  .owisp-registration-form {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  .owisp-registration-contact-container {
+    width: 100%;
+  }
 }

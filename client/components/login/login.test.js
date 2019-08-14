@@ -2,8 +2,7 @@
 import axios from "axios";
 import {shallow} from "enzyme";
 import React from "react";
-import {BrowserRouter as Router} from "react-router-dom";
-import renderer from "react-test-renderer";
+import ShallowRenderer from "react-test-renderer/shallow";
 
 import getConfig from "../../utils/get-config";
 import Login from "./login";
@@ -29,13 +28,8 @@ describe("<Login /> rendering", () => {
   let props;
   it("should render correctly without social links", () => {
     props = createTestProps();
-    const component = renderer
-      .create(
-        <Router>
-          <Login {...props} />
-        </Router>,
-      )
-      .toJSON();
+    const renderer = new ShallowRenderer();
+    const component = renderer.render(<Login {...props} />);
     expect(component).toMatchSnapshot();
   });
   it("should render correctly with social links", () => {
@@ -61,13 +55,8 @@ describe("<Login /> rendering", () => {
         },
       },
     });
-    const component = renderer
-      .create(
-        <Router>
-          <Login {...props} />
-        </Router>,
-      )
-      .toJSON();
+    const renderer = new ShallowRenderer();
+    const component = renderer.render(<Login {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

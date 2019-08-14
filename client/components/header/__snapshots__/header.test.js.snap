@@ -1,61 +1,136 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Header /> rendering should render with links 1`] = `
-<div
-  className="owisp-header-container"
->
+Array [
   <div
-    className="owisp-header-row-1"
+    className="owisp-header-container owisp-header-desktop"
   >
     <div
-      className="owisp-header-row-1-inner"
+      className="owisp-header-row-1"
     >
       <div
-        className="owisp-header-left"
+        className="owisp-header-row-1-inner"
       >
         <div
-          className="owisp-header-logo-div"
+          className="owisp-header-left"
         >
-          <a
-            href="/default"
-            onClick={[Function]}
+          <div
+            className="owisp-header-logo-div"
           >
-            <img
-              alt="openwisp"
-              className="owisp-header-logo-image"
-              src="/assets/default/openwisp.svg"
-            />
-          </a>
+            <a
+              href="/default"
+              onClick={[Function]}
+            >
+              <img
+                alt="openwisp"
+                className="owisp-header-logo-image owisp-header-desktop-logo-image"
+                src="/assets/default/openwisp.svg"
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="owisp-header-right"
+        >
+          <button
+            className="active owisp-header-language-btn owisp-header-desktop-language-btn owisp-header-language-btn-en"
+            onClick={[Function]}
+            type="button"
+          >
+            english
+          </button>
+          <button
+            className="owisp-header-language-btn owisp-header-desktop-language-btn owisp-header-language-btn-it"
+            onClick={[Function]}
+            type="button"
+          >
+            italian
+          </button>
         </div>
       </div>
+    </div>
+    <div
+      className="owisp-header-row-2"
+    >
       <div
-        className="owisp-header-right"
+        className="owisp-header-row-2-inner"
       >
-        <button
-          className="active owisp-header-language-btn owisp-header-language-btn-en"
-          onClick={[Function]}
-          type="button"
+        <a
+          className="owisp-header-link owisp-header-desktop-link
+                    owisp-header-link-1"
+          href="https://link-1.com"
+          rel="noreferrer noopener"
+          target="_blank"
         >
-          english
-        </button>
-        <button
-          className="owisp-header-language-btn owisp-header-language-btn-it"
-          onClick={[Function]}
-          type="button"
+          link-1
+        </a>
+        <a
+          className="owisp-header-link owisp-header-desktop-link
+                    owisp-header-link-2"
+          href="https://link-2.com"
+          rel="noreferrer noopener"
+          target="_blank"
         >
-          italian
-        </button>
+          link-2
+        </a>
       </div>
     </div>
-  </div>
+  </div>,
   <div
-    className="owisp-header-row-2"
+    className="owisp-header-mobile "
   >
     <div
-      className="owisp-header-row-2-inner"
+      className="owisp-header-row-1"
+    >
+      <div
+        className="owisp-header-row-1-inner"
+      >
+        <div
+          className="owisp-header-left"
+        >
+          <div
+            className="owisp-header-logo-div"
+          >
+            <a
+              href="/default"
+              onClick={[Function]}
+            >
+              <img
+                alt="openwisp"
+                className="owisp-header-logo-image owisp-header-mobile-logo-image"
+                src="/assets/default/openwisp.svg"
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="owisp-header-right"
+        >
+          <div
+            className="owisp-header-hamburger"
+            onClick={[Function]}
+            onKeyUp={[Function]}
+            role="button"
+            tabIndex={0}
+          >
+            <div
+              className=""
+            />
+            <div
+              className=""
+            />
+            <div
+              className=""
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="owisp-display-none owisp-header-mobile-menu"
     >
       <a
-        className="owisp-header-link
+        className="owisp-header-link owisp-mobile-link
                     owisp-header-link-1"
         href="https://link-1.com"
         rel="noreferrer noopener"
@@ -64,7 +139,7 @@ exports[`<Header /> rendering should render with links 1`] = `
         link-1
       </a>
       <a
-        className="owisp-header-link
+        className="owisp-header-link owisp-mobile-link
                     owisp-header-link-2"
         href="https://link-2.com"
         rel="noreferrer noopener"
@@ -72,51 +147,18 @@ exports[`<Header /> rendering should render with links 1`] = `
       >
         link-2
       </a>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`<Header /> rendering should render without links 1`] = `
-<div
-  className="owisp-header-container"
->
-  <div
-    className="owisp-header-row-1"
-  >
-    <div
-      className="owisp-header-row-1-inner"
-    >
       <div
-        className="owisp-header-left"
-      >
-        <div
-          className="owisp-header-logo-div"
-        >
-          <a
-            href="/default"
-            onClick={[Function]}
-          >
-            <img
-              alt="openwisp"
-              className="owisp-header-logo-image"
-              src="/assets/default/openwisp.svg"
-            />
-          </a>
-        </div>
-      </div>
-      <div
-        className="owisp-header-right"
+        className="owisp-mobile-languages-row"
       >
         <button
-          className="active owisp-header-language-btn owisp-header-language-btn-en"
+          className="active owisp-header-language-btn owisp-header-mobile-language-btn owisp-header-language-btn-en"
           onClick={[Function]}
           type="button"
         >
           english
         </button>
         <button
-          className="owisp-header-language-btn owisp-header-language-btn-it"
+          className="owisp-header-language-btn owisp-header-mobile-language-btn owisp-header-language-btn-it"
           onClick={[Function]}
           type="button"
         >
@@ -124,13 +166,139 @@ exports[`<Header /> rendering should render without links 1`] = `
         </button>
       </div>
     </div>
-  </div>
+  </div>,
+]
+`;
+
+exports[`<Header /> rendering should render without links 1`] = `
+Array [
   <div
-    className="owisp-header-row-2"
+    className="owisp-header-container owisp-header-desktop"
   >
     <div
-      className="owisp-header-row-2-inner"
-    />
-  </div>
-</div>
+      className="owisp-header-row-1"
+    >
+      <div
+        className="owisp-header-row-1-inner"
+      >
+        <div
+          className="owisp-header-left"
+        >
+          <div
+            className="owisp-header-logo-div"
+          >
+            <a
+              href="/default"
+              onClick={[Function]}
+            >
+              <img
+                alt="openwisp"
+                className="owisp-header-logo-image owisp-header-desktop-logo-image"
+                src="/assets/default/openwisp.svg"
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="owisp-header-right"
+        >
+          <button
+            className="active owisp-header-language-btn owisp-header-desktop-language-btn owisp-header-language-btn-en"
+            onClick={[Function]}
+            type="button"
+          >
+            english
+          </button>
+          <button
+            className="owisp-header-language-btn owisp-header-desktop-language-btn owisp-header-language-btn-it"
+            onClick={[Function]}
+            type="button"
+          >
+            italian
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      className="owisp-header-row-2"
+    >
+      <div
+        className="owisp-header-row-2-inner"
+      />
+    </div>
+  </div>,
+  <div
+    className="owisp-header-mobile "
+  >
+    <div
+      className="owisp-header-row-1"
+    >
+      <div
+        className="owisp-header-row-1-inner"
+      >
+        <div
+          className="owisp-header-left"
+        >
+          <div
+            className="owisp-header-logo-div"
+          >
+            <a
+              href="/default"
+              onClick={[Function]}
+            >
+              <img
+                alt="openwisp"
+                className="owisp-header-logo-image owisp-header-mobile-logo-image"
+                src="/assets/default/openwisp.svg"
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="owisp-header-right"
+        >
+          <div
+            className="owisp-header-hamburger"
+            onClick={[Function]}
+            onKeyUp={[Function]}
+            role="button"
+            tabIndex={0}
+          >
+            <div
+              className=""
+            />
+            <div
+              className=""
+            />
+            <div
+              className=""
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="owisp-display-none owisp-header-mobile-menu"
+    >
+      <div
+        className="owisp-mobile-languages-row"
+      >
+        <button
+          className="active owisp-header-language-btn owisp-header-mobile-language-btn owisp-header-language-btn-en"
+          onClick={[Function]}
+          type="button"
+        >
+          english
+        </button>
+        <button
+          className="owisp-header-language-btn owisp-header-mobile-language-btn owisp-header-language-btn-it"
+          onClick={[Function]}
+          type="button"
+        >
+          italian
+        </button>
+      </div>
+    </div>
+  </div>,
+]
 `;

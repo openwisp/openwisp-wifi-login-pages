@@ -34,7 +34,6 @@ export default class PasswordConfirm extends React.Component {
       if (newPassword1 !== newPassword2) {
         this.setState({
           errors: {
-            ...errors,
             newPassword2: passwordConfirmError,
           },
         });
@@ -93,10 +92,12 @@ export default class PasswordConfirm extends React.Component {
         <div className="owisp-password-confirm-container">
           {success ? (
             <div className="owisp-password-confirm-form">
-              <div className="owisp-password-confirm-icon">
-                <div className="owisp-password-confirm-tick" />
+              <div className="owisp-password-confirm-message-container">
+                <div className="owisp-password-confirm-icon">
+                  <div className="owisp-password-confirm-tick" />
+                </div>
+                <div className="owisp-password-confirm-success">{success}</div>
               </div>
-              <div className="owisp-password-confirm-success">{success}</div>
             </div>
           ) : (
             <form

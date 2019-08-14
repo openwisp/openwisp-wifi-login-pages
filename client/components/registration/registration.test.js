@@ -3,8 +3,7 @@ import axios from "axios";
 /* eslint-disable camelcase */
 import {shallow} from "enzyme";
 import React from "react";
-import {BrowserRouter as Router} from "react-router-dom";
-import renderer from "react-test-renderer";
+import ShallowRenderer from "react-test-renderer/shallow";
 
 import getConfig from "../../utils/get-config";
 import Registration from "./registration";
@@ -34,13 +33,8 @@ describe("<Registration /> rendering", () => {
   });
   it("should render correctly", () => {
     props = createTestProps();
-    const component = renderer
-      .create(
-        <Router>
-          <Registration {...props} />
-        </Router>,
-      )
-      .toJSON();
+    const renderer = new ShallowRenderer();
+    const component = renderer.render(<Registration {...props} />);
     expect(component).toMatchSnapshot();
   });
 });
@@ -79,6 +73,7 @@ describe("<Registration /> interactions", () => {
             data: {
               username: "username error",
               email: "email error",
+              detail: "nonField error",
               password1: "password1 error",
               password2: "password2 error",
             },
@@ -108,10 +103,11 @@ describe("<Registration /> interactions", () => {
         expect(wrapper.instance().state.errors).toEqual({
           username: "username error",
           email: "email error",
+          nonField: "nonField error",
           password1: "password1 error",
           password2: "password2 error",
         });
-        expect(wrapper.find(".owisp-registration-error")).toHaveLength(4);
+        expect(wrapper.find(".owisp-registration-error")).toHaveLength(5);
       })
       .then(() => {
         return wrapper

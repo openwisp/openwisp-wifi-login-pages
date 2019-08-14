@@ -8,12 +8,42 @@ import getAssetPath from "../../utils/get-asset-path";
 import getText from "../../utils/get-text";
 
 export default class Header extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      menu: false,
+    };
+    this.handleHamburger = this.handleHamburger.bind(this);
+    this.handleKeyUp = this.handleKeyUp.bind(this);
+  }
+
+  handleHamburger() {
+    const {menu} = this.state;
+    this.setState({
+      menu: !menu,
+    });
+  }
+
+  handleKeyUp(event) {
+    const {menu} = this.state;
+    switch (event.keyCode) {
+      case 13:
+        this.setState({
+          menu: !menu,
+        });
+        break;
+      default:
+        break;
+    }
+  }
+
   render() {
+    const {menu} = this.state;
     const {header, languages, language, orgSlug, setLanguage} = this.props;
     const {logo, links} = header;
     return (
       <React.Fragment>
-        <div className="owisp-header-container">
+        <div className="owisp-header-container owisp-header-desktop">
           <div className="owisp-header-row-1">
             <div className="owisp-header-row-1-inner">
               <div className="owisp-header-left">
@@ -23,7 +53,7 @@ export default class Header extends React.Component {
                       <img
                         src={getAssetPath(orgSlug, logo.url)}
                         alt={logo.alternate_text}
-                        className="owisp-header-logo-image"
+                        className="owisp-header-logo-image owisp-header-desktop-logo-image"
                       />
                     </Link>
                   ) : null}
@@ -36,7 +66,7 @@ export default class Header extends React.Component {
                       type="button"
                       className={`${
                         language === lang.slug ? "active " : ""
-                      }owisp-header-language-btn owisp-header-language-btn-${
+                      }owisp-header-language-btn owisp-header-desktop-language-btn owisp-header-language-btn-${
                         lang.slug
                       }`}
                       key={lang.slug}
@@ -55,7 +85,7 @@ export default class Header extends React.Component {
                 return (
                   <a
                     href={link.url}
-                    className={`owisp-header-link
+                    className={`owisp-header-link owisp-header-desktop-link
                     owisp-header-link-${index + 1}`}
                     target="_blank"
                     rel="noreferrer noopener"
@@ -63,6 +93,76 @@ export default class Header extends React.Component {
                   >
                     {getText(link.text, language)}
                   </a>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+        <div className="owisp-header-mobile ">
+          <div className="owisp-header-row-1">
+            <div className="owisp-header-row-1-inner">
+              <div className="owisp-header-left">
+                <div className="owisp-header-logo-div">
+                  {logo && logo.url ? (
+                    <Link to={`/${orgSlug}`}>
+                      <img
+                        src={getAssetPath(orgSlug, logo.url)}
+                        alt={logo.alternate_text}
+                        className="owisp-header-logo-image owisp-header-mobile-logo-image"
+                      />
+                    </Link>
+                  ) : null}
+                </div>
+              </div>
+              <div className="owisp-header-right">
+                <div
+                  role="button"
+                  tabIndex={0}
+                  className="owisp-header-hamburger"
+                  onClick={this.handleHamburger}
+                  onKeyUp={this.handleKeyUp}
+                >
+                  <div className={`${menu ? "owisp-rot45" : ""}`} />
+                  <div className={`${menu ? "owisp-rot-45" : ""}`} />
+                  <div className={`${menu ? "owisp-opacity-hidden" : ""}`} />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className={`${
+              menu ? "owisp-display-flex" : "owisp-display-none"
+            } owisp-header-mobile-menu`}
+          >
+            {links.map((link, index) => {
+              return (
+                <a
+                  href={link.url}
+                  className={`owisp-header-link owisp-mobile-link
+                    owisp-header-link-${index + 1}`}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  key={link.url}
+                >
+                  {getText(link.text, language)}
+                </a>
+              );
+            })}
+            <div className="owisp-mobile-languages-row">
+              {languages.map(lang => {
+                return (
+                  <button
+                    type="button"
+                    className={`${
+                      language === lang.slug ? "active " : ""
+                    }owisp-header-language-btn owisp-header-mobile-language-btn owisp-header-language-btn-${
+                      lang.slug
+                    }`}
+                    key={lang.slug}
+                    onClick={() => setLanguage(lang.slug)}
+                  >
+                    {lang.text}
+                  </button>
                 );
               })}
             </div>

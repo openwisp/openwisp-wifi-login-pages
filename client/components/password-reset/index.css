@@ -4,41 +4,31 @@
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
-  background: #f2f2f2;
   width: 100%;
+  padding: 27px 0 27px 0;
 }
 .owisp-password-reset-form {
   font-family: sans-serif;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  padding: 40px 50px;
-  background: #ffffff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.18);
+  align-items: flex-start;
+  width: 95%;
 }
 .owisp-password-reset-input:invalid {
   box-shadow: none;
 }
-.owisp-password-reset-header {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-}
 .owisp-password-reset-heading {
   text-transform: capitalize;
-  color: #444;
-  font-size: 28px;
+  font-size: 20px;
+  color: #666;
   font-family: "Comic Sans MS", cursive, sans-serif;
 }
 .owisp-password-reset-subheading {
-  margin-top: 4px;
-  color: #444;
-  font-size: 16px;
+  margin-top: 20px;
+  color: #333;
+  font-size: 14px;
   line-height: 1.3;
-  width: 324px;
-  text-align: center;
 }
 .owisp-password-reset-subheading::first-letter {
   text-transform: uppercase;
@@ -48,37 +38,33 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  margin-top: 28px;
+  margin-top: 8px;
 }
 .owisp-password-reset-label {
-  margin-top: 12px;
   margin-bottom: 4px;
 }
 .owisp-password-reset-label-text {
-  color: #6b6b6b;
+  color: #333;
   text-transform: capitalize;
 }
 .owisp-password-reset-input {
-  padding: 10px;
+  padding: 5px 10px;
   border-radius: 3px;
   font-size: 18px;
-  border: 2px solid #e7e7e7;
+  border: 1px solid #ccc;
   margin-top: 4px;
-  text-transform: capitalize;
-  width: 300px;
 }
 .owisp-password-reset-input:focus {
-  border-color: #c7c7c7;
+  border-color: #aaa;
 }
 .owisp-password-reset-input.error {
   border-color: #d93025;
 }
 .owisp-password-reset-send-btn {
-  width: 100%;
   margin-top: 16px;
-  font-size: 18px;
-  height: 50px;
-  background: #293b52;
+  padding: 10px 15px;
+  font-size: 14px;
+  background-color: rgba(50, 96, 59, 0.9);
   color: #ffffff;
   text-transform: capitalize;
   border: 0;
@@ -86,16 +72,14 @@
   cursor: pointer;
 }
 .owisp-password-reset-send-btn:hover {
-  background: #223144;
+  background-color: rgba(50, 96, 59, 1);
 }
 .owisp-password-reset-send-btn:focus {
-  outline: dotted 1px #444;
-  outline-offset: 0.5px;
+  outline: dotted 1px #333;
 }
 .owisp-password-reset-error {
   font-size: 12px;
   color: #d93025;
-  width: 324px;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -113,16 +97,13 @@
   font-weight: 600;
 }
 .owisp-password-reset-links {
-  color: #0d3455;
-  margin-top: 16px;
-  text-decoration: none;
+  color: #333;
+  margin-top: 12px;
 }
 .owisp-password-reset-links:hover {
-  opacity: 0.8;
+  text-decoration: none;
 }
 .owisp-password-reset-success {
-  color: #444;
-  font-size: 18px;
-  max-width: 350px;
-  text-align: center;
+  color: #333;
+  font-size: 14px;
 }

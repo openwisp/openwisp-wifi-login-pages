@@ -5,8 +5,8 @@
   align-items: center;
   flex-wrap: nowrap;
   font-family: sans-serif;
-  background: #2b3a42;
-  padding: 10px 0;
+  background: #282828;
+  padding: 20px 0;
 }
 .owisp-footer-row-1 {
   width: 100%;
@@ -20,16 +20,17 @@
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
+  flex-grow: 1;
+  max-width: 1000px;
 }
 .owisp-footer-link {
   color: #ffffff;
   padding: 0 2px;
-  margin-right: 5px;
-  text-decoration: none;
+  margin-right: 10px;
   text-transform: capitalize;
 }
 .owisp-footer-link:hover {
-  color: #8dd6f9;
+  text-decoration: none;
 }
 .owisp-footer-row-2 {
   display: flex;
@@ -37,7 +38,9 @@
   justify-content: center;
   align-items: center;
   flex-wrap: nowrap;
-  width: 100%;
+  flex-grow: 1;
+  max-width: 1000px;
+  margin-top: 4px;
 }
 .owisp-footer-row-2-inner {
   display: flex;

@@ -1,275 +1,312 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Login /> rendering should render correctly with social links 1`] = `
-<div
-  className="owisp-login-container"
->
-  <form
-    className="owisp-login-form"
-    onSubmit={[Function]}
+<React.Fragment>
+  <div
+    className="owisp-login-container"
   >
     <div
-      className="owisp-login-header"
+      className="owisp-login-container-inner"
     >
-      <div
-        className="owisp-login-header-content"
-      >
-         sign in
-      </div>
-    </div>
-    <div
-      className="owisp-login-fieldset"
-    >
-      <label
-        className="owisp-login-label owisp-login-label-username"
-        htmlFor="owisp-login-username"
+      <form
+        className="owisp-login-form"
+        onSubmit={[Function]}
       >
         <div
-          className="owisp-login-label-text"
+          className="owisp-login-header"
         >
-          username
+          <div
+            className="owisp-login-header-content"
+          >
+             sign in
+          </div>
         </div>
-        <input
-          className="owisp-login-input
+        <React.Fragment>
+          <React.Fragment>
+            <div
+              className="owisp-login-social-links-div"
+            >
+              <a
+                className="owisp-login-social-link"
+                href="test url"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <div>
+                  <div
+                    className="owisp-login-social-link-text"
+                  >
+                    Facebook
+                  </div>
+                </div>
+              </a>
+              <a
+                className="owisp-login-social-link"
+                href="https://control.co.ke/accounts/facebook/login/?next=%2Ffreeradius%2Fsocial-login%2Fstaging%2F%3Fcp%3Dhttp%3A%2F%2Fcontrol.brandfi.co.ke%2Floginpage%2F%26last%3D"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <div>
+                  <img
+                    alt="https://control.co.ke/accounts/facebook/login/?next=%2Ffreeradius%2Fsocial-login%2Fstaging%2F%3Fcp%3Dhttp%3A%2F%2Fcontrol.brandfi.co.ke%2Floginpage%2F%26last%3D"
+                    className="owisp-login-social-link-icon"
+                    src="/assets/default/test.png"
+                  />
+                </div>
+              </a>
+            </div>
+          </React.Fragment>
+        </React.Fragment>
+        <div
+          className="owisp-login-fieldset"
+        >
+          <React.Fragment>
+            <label
+              className="owisp-login-label owisp-login-label-username"
+              htmlFor="owisp-login-username"
+            >
+              <div
+                className="owisp-login-label-text"
+              >
+                username
+              </div>
+              <input
+                className="owisp-login-input
                       owisp-login-input-username
                       "
-          id="owisp-login-username"
-          name="username"
-          onChange={[Function]}
-          pattern="[a-zA-Z@.+\\\\-_\\\\d]{1,150}"
-          placeholder="enter username"
-          required={true}
-          title="only letters, numbers, and @/./+/-/_ characters"
-          type="text"
-          value=""
-        />
-      </label>
-      <label
-        className="owisp-login-label owisp-login-label-password"
-        htmlFor="owisp-login-password"
-      >
-        <div
-          className="owisp-login-label-text"
-        >
-          password
-        </div>
-        <input
-          className="owisp-login-input owisp-login-input-password
+                id="owisp-login-username"
+                name="username"
+                onChange={[Function]}
+                pattern="[a-zA-Z@.+\\\\-_\\\\d]{1,150}"
+                placeholder="enter username"
+                required={true}
+                title="only letters, numbers, and @/./+/-/_ characters"
+                type="text"
+                value=""
+              />
+            </label>
+          </React.Fragment>
+          <React.Fragment>
+            <label
+              className="owisp-login-label owisp-login-label-password"
+              htmlFor="owisp-login-password"
+            >
+              <div
+                className="owisp-login-label-text"
+              >
+                password
+              </div>
+              <input
+                className="owisp-login-input owisp-login-input-password
                       "
-          id="owisp-login-password"
-          name="password"
-          onChange={[Function]}
-          pattern=".{6,}"
-          placeholder="password"
-          required={true}
-          title="password must be a minimum of 6 characters"
-          type="password"
-          value=""
-        />
-      </label>
-    </div>
-    <div
-      className="owisp-login-add-info"
-    >
-      By logging in, you accept the 
-      <a
-        className="owisp-login-additional-link"
-        href="/default/login/terms-and-conditions"
-        onClick={[Function]}
-      >
-        terms and conditions
-      </a>
-       and the 
-      <a
-        className="owisp-login-additional-link"
-        href="/default/login/privacy-policy"
-        onClick={[Function]}
-      >
-        privacy policy
-      </a>
-       of this WiFi service. 
-    </div>
-    <input
-      className="owisp-login-form-btn owisp-login-login-btn"
-      id="owisp-login-login-btn"
-      type="submit"
-      value="sign in"
-    />
-    <div
-      className="owisp-login-social-links-div"
-    >
-      <a
-        className="owisp-login-social-link"
-        href="test url"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        <div
-          className="owisp-login-social-link-text"
-        >
-          Facebook
+                id="owisp-login-password"
+                name="password"
+                onChange={[Function]}
+                pattern=".{6,}"
+                placeholder="password"
+                required={true}
+                title="password must be a minimum of 6 characters"
+                type="password"
+                value=""
+              />
+            </label>
+          </React.Fragment>
         </div>
-      </a>
-      <a
-        className="owisp-login-social-link"
-        href="https://control.co.ke/accounts/facebook/login/?next=%2Ffreeradius%2Fsocial-login%2Fstaging%2F%3Fcp%3Dhttp%3A%2F%2Fcontrol.brandfi.co.ke%2Floginpage%2F%26last%3D"
-        rel="noopener noreferrer"
-        target="_blank"
+        <div
+          className="owisp-login-add-info"
+        >
+          By logging in, you accept the 
+          <Link
+            className="owisp-login-additional-link"
+            to="/default/login/terms-and-conditions"
+          >
+            terms and conditions
+          </Link>
+           and the 
+          <Link
+            className="owisp-login-additional-link"
+            to="/default/login/privacy-policy"
+          >
+            privacy policy
+          </Link>
+           of this WiFi service. 
+        </div>
+        <React.Fragment>
+          <input
+            className="owisp-login-form-btn owisp-login-login-btn"
+            id="owisp-login-login-btn"
+            type="submit"
+            value="sign in"
+          />
+        </React.Fragment>
+        <div
+          className="owisp-login-links-div"
+        >
+          <Link
+            className="owisp-login-link"
+            to="/default/password/reset"
+          >
+            Forgot your password?
+          </Link>
+          <Link
+            className="owisp-login-link"
+            to="/default/registration"
+          >
+            Not registered yet? Create an account
+          </Link>
+        </div>
+      </form>
+      <div
+        className="owisp-login-contact-container"
       >
-        <img
-          alt="https://control.co.ke/accounts/facebook/login/?next=%2Ffreeradius%2Fsocial-login%2Fstaging%2F%3Fcp%3Dhttp%3A%2F%2Fcontrol.brandfi.co.ke%2Floginpage%2F%26last%3D"
-          className="owisp-login-social-link-icon"
-          src="/assets/default/test.png"
-        />
-      </a>
+        <Memo(ConnectFunction) />
+      </div>
     </div>
-    <div
-      className="owisp-login-links-div"
-    >
-      <a
-        className="owisp-login-link"
-        href="/default/password/reset"
-        onClick={[Function]}
-      >
-        Forgot your password?
-      </a>
-      <a
-        className="owisp-login-link"
-        href="/default/registration"
-        onClick={[Function]}
-      >
-        Not registered yet? Create an account
-      </a>
-    </div>
-  </form>
-</div>
+  </div>
+  <Route
+    path="default/login/:name"
+    render={[Function]}
+  />
+</React.Fragment>
 `;
 
 exports[`<Login /> rendering should render correctly without social links 1`] = `
-<div
-  className="owisp-login-container"
->
-  <form
-    className="owisp-login-form"
-    onSubmit={[Function]}
+<React.Fragment>
+  <div
+    className="owisp-login-container"
   >
     <div
-      className="owisp-login-header"
+      className="owisp-login-container-inner"
     >
-      <div
-        className="owisp-login-header-content"
-      >
-         sign in
-      </div>
-    </div>
-    <div
-      className="owisp-login-fieldset"
-    >
-      <label
-        className="owisp-login-label owisp-login-label-username"
-        htmlFor="owisp-login-username"
+      <form
+        className="owisp-login-form"
+        onSubmit={[Function]}
       >
         <div
-          className="owisp-login-label-text"
+          className="owisp-login-header"
         >
-          username
+          <div
+            className="owisp-login-header-content"
+          >
+             sign in
+          </div>
         </div>
-        <input
-          className="owisp-login-input
+        <React.Fragment>
+          <React.Fragment>
+            <div
+              className="owisp-login-social-links-div"
+            />
+          </React.Fragment>
+        </React.Fragment>
+        <div
+          className="owisp-login-fieldset"
+        >
+          <React.Fragment>
+            <label
+              className="owisp-login-label owisp-login-label-username"
+              htmlFor="owisp-login-username"
+            >
+              <div
+                className="owisp-login-label-text"
+              >
+                username
+              </div>
+              <input
+                className="owisp-login-input
                       owisp-login-input-username
                       "
-          id="owisp-login-username"
-          name="username"
-          onChange={[Function]}
-          pattern="[a-zA-Z@.+\\\\-_\\\\d]{1,150}"
-          placeholder="enter username"
-          required={true}
-          title="only letters, numbers, and @/./+/-/_ characters"
-          type="text"
-          value=""
-        />
-      </label>
-      <label
-        className="owisp-login-label owisp-login-label-password"
-        htmlFor="owisp-login-password"
-      >
-        <div
-          className="owisp-login-label-text"
-        >
-          password
-        </div>
-        <input
-          className="owisp-login-input owisp-login-input-password
+                id="owisp-login-username"
+                name="username"
+                onChange={[Function]}
+                pattern="[a-zA-Z@.+\\\\-_\\\\d]{1,150}"
+                placeholder="enter username"
+                required={true}
+                title="only letters, numbers, and @/./+/-/_ characters"
+                type="text"
+                value=""
+              />
+            </label>
+          </React.Fragment>
+          <React.Fragment>
+            <label
+              className="owisp-login-label owisp-login-label-password"
+              htmlFor="owisp-login-password"
+            >
+              <div
+                className="owisp-login-label-text"
+              >
+                password
+              </div>
+              <input
+                className="owisp-login-input owisp-login-input-password
                       "
-          id="owisp-login-password"
-          name="password"
-          onChange={[Function]}
-          pattern=".{6,}"
-          placeholder="password"
-          required={true}
-          title="password must be a minimum of 6 characters"
-          type="password"
-          value=""
-        />
-      </label>
-    </div>
-    <div
-      className="owisp-login-add-info"
-    >
-      By logging in, you accept the 
-      <a
-        className="owisp-login-additional-link"
-        href="/default/login/terms-and-conditions"
-        onClick={[Function]}
+                id="owisp-login-password"
+                name="password"
+                onChange={[Function]}
+                pattern=".{6,}"
+                placeholder="password"
+                required={true}
+                title="password must be a minimum of 6 characters"
+                type="password"
+                value=""
+              />
+            </label>
+          </React.Fragment>
+        </div>
+        <div
+          className="owisp-login-add-info"
+        >
+          By logging in, you accept the 
+          <Link
+            className="owisp-login-additional-link"
+            to="/default/login/terms-and-conditions"
+          >
+            terms and conditions
+          </Link>
+           and the 
+          <Link
+            className="owisp-login-additional-link"
+            to="/default/login/privacy-policy"
+          >
+            privacy policy
+          </Link>
+           of this WiFi service. 
+        </div>
+        <React.Fragment>
+          <input
+            className="owisp-login-form-btn owisp-login-login-btn"
+            id="owisp-login-login-btn"
+            type="submit"
+            value="sign in"
+          />
+        </React.Fragment>
+        <div
+          className="owisp-login-links-div"
+        >
+          <Link
+            className="owisp-login-link"
+            to="/default/password/reset"
+          >
+            Forgot your password?
+          </Link>
+          <Link
+            className="owisp-login-link"
+            to="/default/registration"
+          >
+            Not registered yet? Create an account
+          </Link>
+        </div>
+      </form>
+      <div
+        className="owisp-login-contact-container"
       >
-        terms and conditions
-      </a>
-       and the 
-      <a
-        className="owisp-login-additional-link"
-        href="/default/login/privacy-policy"
-        onClick={[Function]}
-      >
-        privacy policy
-      </a>
-       of this WiFi service. 
+        <Memo(ConnectFunction) />
+      </div>
     </div>
-    <input
-      className="owisp-login-form-btn owisp-login-login-btn"
-      id="owisp-login-login-btn"
-      type="submit"
-      value="sign in"
-    />
-    <hr
-      className="owisp-login-social-hr"
-      data-content="OR"
-    />
-    <div
-      className="owisp-login-divider-description"
-    >
-      login with
-    </div>
-    <div
-      className="owisp-login-social-links-div"
-    />
-    <div
-      className="owisp-login-links-div"
-    >
-      <a
-        className="owisp-login-link"
-        href="/default/password/reset"
-        onClick={[Function]}
-      >
-        Forgot your password?
-      </a>
-      <a
-        className="owisp-login-link"
-        href="/default/registration"
-        onClick={[Function]}
-      >
-        Not registered yet? Create an account
-      </a>
-    </div>
-  </form>
-</div>
+  </div>
+  <Route
+    path="default/login/:name"
+    render={[Function]}
+  />
+</React.Fragment>
 `;

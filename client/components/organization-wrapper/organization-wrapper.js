@@ -7,7 +7,8 @@ import {Helmet} from "react-helmet";
 import {Redirect, Route, Switch} from "react-router-dom";
 
 import getAssetPath from "../../utils/get-asset-path";
-import DoesNotExist from "../404";
+import ConnectedDoesNotExist from "../404";
+import DoesNotExist from "../404/404";
 import Footer from "../footer";
 import Header from "../header";
 import Login from "../login";
@@ -88,6 +89,11 @@ export default class OrganizationWrapper extends React.Component {
                 render={() => {
                   if (isAuthenticated) return <Status cookies={cookies} />;
                   return <Redirect to={`/${orgSlug}/login`} />;
+                }}
+              />
+              <Route
+                render={() => {
+                  return <ConnectedDoesNotExist />;
                 }}
               />
             </Switch>

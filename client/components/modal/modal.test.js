@@ -17,6 +17,9 @@ const createTestProps = props => {
       },
     },
     prevPath: "/default/login",
+    history: {
+      push: jest.fn(),
+    },
     ...props,
   };
 };

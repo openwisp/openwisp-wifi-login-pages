@@ -53,21 +53,27 @@ describe("<Header /> rendering", () => {
     expect(component).toMatchSnapshot();
   });
   it("should render 2 links", () => {
-    expect(wrapper.find(".owisp-header-link")).toHaveLength(2);
+    expect(wrapper.find(".owisp-header-desktop-link")).toHaveLength(2);
   });
   it("should render 2 languages", () => {
-    expect(wrapper.find(".owisp-header-language-btn")).toHaveLength(2);
+    expect(wrapper.find(".owisp-header-desktop-language-btn")).toHaveLength(2);
   });
   it("should render english as default language", () => {
-    expect(wrapper.find(".owisp-header-language-btn-en.active")).toHaveLength(
-      1,
-    );
-    expect(wrapper.find(".owisp-header-language-btn-it.active")).toHaveLength(
-      0,
-    );
+    expect(
+      wrapper.find(
+        ".owisp-header-desktop-language-btn.owisp-header-language-btn-en.active",
+      ),
+    ).toHaveLength(1);
+    expect(
+      wrapper.find(
+        ".owisp-header-desktop-language-btn.owisp-header-language-btn-it.active",
+      ),
+    ).toHaveLength(0);
   });
   it("should render logo", () => {
-    expect(wrapper.find(".owisp-header-logo-image")).toHaveLength(1);
+    expect(
+      wrapper.find(".owisp-header-logo-image.owisp-header-desktop-logo-image"),
+    ).toHaveLength(1);
   });
   it("should not render logo", () => {
     const logo = {
@@ -78,7 +84,9 @@ describe("<Header /> rendering", () => {
     };
     props = createTestProps(logo);
     wrapper = shallow(<Header {...props} />);
-    expect(wrapper.find(".owisp-header-logo-image")).toHaveLength(0);
+    expect(
+      wrapper.find(".owisp-header-logo-image.owisp-header-desktop-logo-image"),
+    ).toHaveLength(0);
   });
 });
 
@@ -90,7 +98,9 @@ describe("<Header /> interactions", () => {
     wrapper = shallow(<Header {...props} />);
   });
   it("should call setLanguage function when 'language button' is clicked", () => {
-    wrapper.find(".owisp-header-language-btn-it").simulate("click");
+    wrapper
+      .find(".owisp-header-language-btn-it.owisp-header-desktop-language-btn")
+      .simulate("click");
     expect(props.setLanguage).toHaveBeenCalledTimes(1);
   });
 });
