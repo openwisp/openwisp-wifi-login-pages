@@ -15,7 +15,7 @@ export default class Status extends React.Component {
     const {cookies, orgSlug, logout} = this.props;
     const token = cookies.get(`${orgSlug}_auth_token`);
     const url = validateApiUrl.replace("{orgSlug}", orgSlug);
-    axios({
+    return axios({
       method: "post",
       headers: {
         "content-type": "application/x-www-form-urlencoded",

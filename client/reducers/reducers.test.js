@@ -52,4 +52,17 @@ describe("organization reducer", () => {
       exists: action.payload,
     });
   });
+  it("should handle SET_AUTHENTICATION_STATUS", () => {
+    const action = {
+      type: types.SET_AUTHENTICATION_STATUS,
+      payload: false,
+    };
+    expect(organization(initialState, action)).toEqual({
+      ...initialState,
+      configuration: {
+        ...initialState.configuration,
+        isAuthenticated: action.payload,
+      },
+    });
+  });
 });

@@ -75,7 +75,6 @@ describe("<Registration /> interactions", () => {
               email: "email error",
               detail: "nonField error",
               password1: "password1 error",
-              password2: "password2 error",
             },
           },
         });
@@ -96,6 +95,15 @@ describe("<Registration /> interactions", () => {
       password1: "password",
       password2: "password",
     });
+    wrapper.setProps({
+      registration: {
+        ...props.registration,
+        input_fields: {
+          ...props.registration.input_fields,
+          password_confirm: null,
+        },
+      },
+    });
     return wrapper
       .instance()
       .handleSubmit(event)
@@ -105,9 +113,9 @@ describe("<Registration /> interactions", () => {
           email: "email error",
           nonField: "nonField error",
           password1: "password1 error",
-          password2: "password2 error",
+          password2: "",
         });
-        expect(wrapper.find(".owisp-registration-error")).toHaveLength(5);
+        expect(wrapper.find(".owisp-registration-error")).toHaveLength(4);
       })
       .then(() => {
         return wrapper

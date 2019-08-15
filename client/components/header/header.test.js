@@ -102,5 +102,19 @@ describe("<Header /> interactions", () => {
       .find(".owisp-header-language-btn-it.owisp-header-desktop-language-btn")
       .simulate("click");
     expect(props.setLanguage).toHaveBeenCalledTimes(1);
+    wrapper
+      .find(".owisp-header-language-btn-it.owisp-header-mobile-language-btn")
+      .simulate("click");
+    expect(props.setLanguage).toHaveBeenCalledTimes(2);
+  });
+  it("should call handleHamburger function when 'hamburger button' is clicked", () => {
+    wrapper.find(".owisp-header-hamburger").simulate("click");
+    expect(wrapper.state().menu).toBe(true);
+  });
+  it("should call handleHamburger function on Enter key press", () => {
+    wrapper.find(".owisp-header-hamburger").simulate("keyup", {keyCode: 1});
+    expect(wrapper.state().menu).toBe(false);
+    wrapper.find(".owisp-header-hamburger").simulate("keyup", {keyCode: 13});
+    expect(wrapper.state().menu).toBe(true);
   });
 });

@@ -1,23 +1,58 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<DoesNotExist /> rendering should render correctly 1`] = `
-<div
-  className="owisp-404-container"
->
+exports[`<DoesNotExist /> rendering should render correctly custom 404 page with props 1`] = `
+<React.Fragment>
   <div
-    className="owisp-404-row-1"
+    className="owisp-404-container"
   >
-    Oops!
+    <div
+      className="owisp-404-row-1"
+    >
+      404
+    </div>
+    <div
+      className="owisp-404-row-2"
+    >
+      Not Found
+    </div>
+    <div
+      className="owisp-404-row-3"
+    >
+      Sorry, we couldn't find the page you were looking for.
+    </div>
+    <div
+      className="owisp-404-row-4"
+    >
+      <Link
+        to="/default"
+      >
+        Go back to homepage
+      </Link>
+    </div>
   </div>
+</React.Fragment>
+`;
+
+exports[`<DoesNotExist /> rendering should render correctly default 404 page without props 1`] = `
+<React.Fragment>
   <div
-    className="owisp-404-row-2"
+    className="owisp-404-container"
   >
-    404 Not Found
+    <div
+      className="owisp-404-row-1"
+    >
+      Oops!
+    </div>
+    <div
+      className="owisp-404-row-2"
+    >
+      404 Not Found
+    </div>
+    <div
+      className="owisp-404-row-3"
+    >
+      Sorry, an error has occurred, Requested page not found!
+    </div>
   </div>
-  <div
-    className="owisp-404-row-3"
-  >
-    Sorry, an error has occurred, Requested page not found!
-  </div>
-</div>
+</React.Fragment>
 `;

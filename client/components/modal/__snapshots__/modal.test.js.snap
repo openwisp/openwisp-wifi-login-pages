@@ -1,5 +1,32 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<Modal /> rendering should render nothing on incorrect param name 1`] = `
+<React.Fragment>
+  <div
+    className="owisp-modal-container"
+  >
+    <div
+      className="owisp-modal-row-close"
+    >
+      <Link
+        className="owisp-modal-close-btn"
+        to="/default/login"
+      >
+        X
+      </Link>
+    </div>
+    <div
+      className="owisp-modal-content"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": undefined,
+        }
+      }
+    />
+  </div>
+</React.Fragment>
+`;
+
 exports[`<Modal /> rendering should render privacy-policy correctly 1`] = `
 <React.Fragment>
   <div
