@@ -13,7 +13,8 @@ module.exports = (env, argv) => {
       main: "./index.js",
     },
     output: {
-      filename: "[name].bundle.js",
+      filename:
+        argv.mode === "development" ? "[name].js" : "[name].[contenthash].js",
       chunkFilename: "[name].chunk.js",
       path: path.resolve(CURRENT_WORKING_DIR, "dist"),
       publicPath: "/",
@@ -78,6 +79,33 @@ module.exports = (env, argv) => {
       proxy: {
         "/api": "http://localhost:3030",
       },
+    },
+    optimization: {
+      runtimeChunk: "single",
+      splitChunks: {
+        chunks: "all",
+        minSize: 30000,
+        maxSize: 0,
+        minChunks: 1,
+        maxAsyncRequests: 5,
+        maxInitialRequests: 3,
+        automaticNameDelimiter: "~",
+        name: true,
+        cacheGroups: {
+          vendors: {
+            test: /[\\/]node_modules[\\/]/,
+            priority: -10,
+          },
+          default: {
+            minChunks: 2,
+            priority: -20,
+            reuseExistingChunk: true,
+          },
+        },
+      },
+    },
+    node: {
+      fs: "empty",
     },
   };
   return config;
