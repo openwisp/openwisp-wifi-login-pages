@@ -153,6 +153,11 @@ export default class PasswordReset extends React.Component {
                 className="owisp-password-reset-send-btn"
                 value={getText(buttons.send, language)}
               />
+              {passwordReset.contact_text ? (
+                <div className="owisp-password-reset-contact-us">
+                  {getText(passwordReset.contact_text, language)}
+                </div>
+              ) : null}
               {loginPageLink ? (
                 <Link
                   to={`/${orgSlug}/login`}
@@ -176,6 +181,7 @@ PasswordReset.propTypes = {
     input_fields: PropTypes.object,
     buttons: PropTypes.object,
     login_page_link: PropTypes.object,
+    contact_text: PropTypes.object,
   }).isRequired,
   language: PropTypes.string.isRequired,
   orgSlug: PropTypes.string.isRequired,

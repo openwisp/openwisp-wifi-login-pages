@@ -39,15 +39,15 @@ client:
   components:
     header:
       logo:
-        url: "openwisp.svg" # logo url
+        url: "openwisp-logo-black.svg" # logo url
         alternate_text: "openwisp"
       links:
         - text:
-            en: "link-1" #link text in english
-          url: "https://link-1.com"
+            en: "Sign In" #link text in english
+          url: "/default/login"
         - text:
-            en: "link-2"
-          url: "https://link-2.com"
+            en: "Sign Up"
+          url: "/default/registration"
 
     footer:
       links:
@@ -63,8 +63,6 @@ client:
         en: null
 
     registration_form:
-      header:
-        en: " sign up"
       input_fields:
         username:
           type: "text"
@@ -72,9 +70,9 @@ client:
           pattern_description:
             en: "only letters, numbers, and @/./+/-/_ characters"
           placeholder:
-            en: "enter phone number or username"
+            en: "enter username"
           label:
-            en: "phone number or username"
+            en: "username"
         email:
           type: "email"
           pattern: null
@@ -131,6 +129,8 @@ client:
       buttons:
         send:
           en: 'Reset My Password'
+      contact_text:
+        en: "Please contact us if you have any trouble resetting your password."
       login_page_link:
         text:
           en: "Take me Back to Sign In"
@@ -162,6 +162,11 @@ client:
       buttons:
         submit:
           en: 'change password'
+      contact_text:
+        en: "Please contact us if you have any trouble resetting your password."
+      login_page_link:
+        text:
+          en: "Take me Back to Sign In"
 
     contact_page:
       email:
@@ -183,10 +188,6 @@ client:
             en: "facebook"
           icon: "facebook.svg"
           url: "https://facebook.com/openwisp"
-        - alt:
-            en: "linkedIn"
-          icon: "linkedin.svg"
-          url: "https://www.linkedin.com/groups/4777261"
 
     status_page:
       content:
@@ -201,14 +202,20 @@ client:
             en: "Logout"
 
     login_form:
-      header:
-        en: " sign in"
       social_login:
         links:
-          -
-            text: null
-            url: null
-            icon: null #relative to organization's folder in assets directory.
+          - text:
+              en: "Login with Facebook"
+            url: "#"
+            icon: "facebook.svg"
+          - text:
+              en: "Login with google"
+            icon: "google.svg"
+            url: "#"
+          - text:
+              en: "Login with Twitter"
+            icon: "twitter.svg"
+            url: "#"
       input_fields:
         username:
           type: "text"
@@ -234,12 +241,15 @@ client:
         login:
           label: null
           text:
-            en: "sign in"
+            en: "Login"
+        register:
+          label:
+            en: "Not registered yet?"
+          text:
+            en: "Sign up"
       links:
         forget_password :
           en: "Forgot your password?"
-        register:
-          en: "Not registered yet? Create an account"
     404_page:
       heading:
         en: "404"

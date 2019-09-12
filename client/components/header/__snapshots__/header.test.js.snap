@@ -57,21 +57,19 @@ Array [
       >
         <a
           className="owisp-header-link owisp-header-desktop-link
-                    owisp-header-link-1"
-          href="https://link-1.com"
-          rel="noreferrer noopener"
-          target="_blank"
+                    owisp-header-link-1 active"
+          href="/default/login"
+          onClick={[Function]}
         >
-          link-1
+          Sign In
         </a>
         <a
           className="owisp-header-link owisp-header-desktop-link
-                    owisp-header-link-2"
-          href="https://link-2.com"
-          rel="noreferrer noopener"
-          target="_blank"
+                    owisp-header-link-2 "
+          href="/default/registration"
+          onClick={[Function]}
         >
-          link-2
+          Sign Up
         </a>
       </div>
     </div>
@@ -131,21 +129,19 @@ Array [
     >
       <a
         className="owisp-header-link owisp-mobile-link
-                    owisp-header-link-1"
-        href="https://link-1.com"
-        rel="noreferrer noopener"
-        target="_blank"
+                  owisp-header-link-1 active"
+        href="/default/login"
+        onClick={[Function]}
       >
-        link-1
+        Sign In
       </a>
       <a
         className="owisp-header-link owisp-mobile-link
-                    owisp-header-link-2"
-        href="https://link-2.com"
-        rel="noreferrer noopener"
-        target="_blank"
+                  owisp-header-link-2 "
+        href="/default/registration"
+        onClick={[Function]}
       >
-        link-2
+        Sign Up
       </a>
       <div
         className="owisp-mobile-languages-row"

@@ -1,24 +1,25 @@
 .owisp-contact-container {
-  background: rgb(74, 132, 86);
+  background: #eee;
   padding: 30px;
-  color: #ffffff;
+  color: #000;
   border-radius: 2px;
   width: 100%;
   box-sizing: border-box;
+  font-weight: bold;
+  line-height: 25px;
+  font-size: 14px;
 }
 .owisp-contact-row {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  font-size: 14px;
-  line-height: 1.8;
+  margin-bottom: 10px;
 }
 .owisp-contact-label {
-  font-weight: 700;
   margin-right: 4px;
 }
 .owisp-contact-text {
-  color: #ffffff;
+  color: #000;
 }
 .owisp-contact-text:hover {
   text-decoration: none;
@@ -29,6 +30,7 @@
   justify-content: flex-start;
   flex-wrap: wrap;
   width: 100%;
+  margin-top: 15px;
 }
 .owisp-contact-link {
   display: flex;
@@ -41,7 +43,7 @@
   text-decoration: none;
 }
 .owisp-contact-image {
-  width: 50px;
+  width: 58px;
   height: auto;
-  margin: 10px 15px 0 0;
+  margin: 0px 15px 0 0;
 }

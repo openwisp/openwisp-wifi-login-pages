@@ -7,6 +7,7 @@
   width: 100%;
   box-sizing: border-box;
   padding: 27px 0 27px 0;
+  font-weight: bold;
 }
 .owisp-login-container-inner {
   display: flex;
@@ -16,15 +17,17 @@
   max-width: 1000px;
 }
 .owisp-login-form {
-  font-family: sans-serif;
-  background: #4a8456;
+  background: #d3d3d3;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 53%;
   box-sizing: border-box;
-  padding: 24px 50px;
+  font-size: 16px;
+  line-height: 30px;
+  padding: 3%;
+  border-radius: 2px;
 }
 .owisp-login-contact-container {
   width: 44%;
@@ -33,12 +36,6 @@
 .owisp-login-form.success .owisp-login-input:invalid {
   box-shadow: none;
 }
-.owisp-login-header-content {
-  text-transform: capitalize;
-  color: #ffffff;
-  font-size: 28px;
-  margin-bottom: 4px;
-}
 .owisp-login-fieldset {
   display: flex;
   flex-direction: column;
@@ -46,24 +43,25 @@
   align-items: flex-start;
   align-self: flex-start;
   width: 100%;
+  margin-top: 10px;
 }
 .owisp-login-label {
-  margin-top: 15px;
-  margin-bottom: 5px;
+  margin-top: 10px;
   width: 100%;
 }
 .owisp-login-label-text {
-  color: #ffffff;
+  color: #000;
   text-transform: capitalize;
 }
 .owisp-login-input {
-  padding: 6px 10px;
-  border-radius: 3px;
-  font-size: 18px;
-  border: 2px solid #e7e7e7;
-  margin-top: 5px;
+  padding: 0 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  height: 33px;
+  border: 1px solid #ccc;
   box-sizing: border-box;
   width: 100%;
+  font-weight: bold;
 }
 .owisp-login-input:focus {
   border-color: #a7a7a7;
@@ -73,24 +71,26 @@
 }
 .owisp-login-form-btn {
   width: 100%;
-  font-size: 18px;
-  height: 50px;
-  background-color: rgba(0, 0, 0, 0.3);
-  color: #ffffff;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #000;
   text-transform: capitalize;
   border: 0;
   border-radius: 3px;
   cursor: pointer;
+  line-height: 24px;
+  padding: 8px 15px;
+  font-weight: bold;
+  font-size: 16px;
 }
 .owisp-login-form-btn:focus {
   outline: dotted 1px #ffffff;
   outline-offset: 0.5px;
 }
 .owisp-login-login-btn {
-  margin-top: 8px;
+  margin-top: 10px;
 }
 .owisp-login-form-btn:hover {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
 }
 .owisp-login-error {
   margin-top: 3px;
@@ -110,25 +110,34 @@
 .owisp-login-error-icon {
   display: inline-block;
   min-width: 16px;
-  height: 16px;
   text-align: center;
   margin-right: 4px;
   font-weight: 600;
 }
-.owisp-login-register-link {
-  text-decoration: none;
+.owisp-login-label-register-btn {
+  margin-top: 20px;
+  text-align: center;
+}
+.owisp-login-form-register-btn-div {
   width: 100%;
 }
+.owisp-login-register-btn {
+  width: 100%;
+  display: block;
+  box-sizing: border-box;
+  text-align: center;
+  text-decoration: none;
+}
 .owisp-login-add-info {
-  margin-top: 15px;
-  color: #ffffff;
+  margin-top: 10px;
+  color: #000;
 }
 .owisp-login-additional-link {
-  color: #ffffff;
+  color: #000;
 }
 .owisp-login-additional-link:hover,
 .owisp-login-additional-link:focus {
-  outline: dotted 1px #ffffff;
+  outline: dotted 1px #000;
   outline-offset: 0.5px;
   text-decoration: none;
 }
@@ -142,12 +151,12 @@
   display: flex;
   flex-direction: row;
   text-decoration: none;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.5);
   font-size: 16px;
   font-weight: bold;
   color: #ffffff;
   align-items: center;
-  margin: 10px 0;
+  margin-top: 20px;
   padding: 8px 0;
   justify-content: center;
   border-radius: 5px;
@@ -156,10 +165,10 @@
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  width: 80%;
+  width: 60%;
 }
 .owisp-login-social-link:hover {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
 }
 .owisp-login-social-link:focus {
   outline: dotted 1px #ffffff;
@@ -167,11 +176,11 @@
 }
 .owisp-login-social-link-icon {
   width: auto;
-  height: 28px;
+  height: 24px;
 }
 .owisp-login-social-link-text {
-  line-height: 28px;
-  text-transform: capitalize;
+  line-height: 24px;
+  font-weight: bold;
   margin-left: 30px;
 }
 .owisp-login-links-div {
@@ -180,13 +189,11 @@
   width: 100%;
   justify-content: flex-start;
   align-items: center;
-  margin-top: 12px;
+  margin-top: 20px;
 }
 .owisp-login-link {
-  line-height: 1.4;
   text-transform: capitalize;
-  color: #ffffff;
-  margin-top: 6px;
+  color: #000;
 }
 .owisp-login-link:focus {
   outline: dotted 1px #ffffff;
@@ -211,5 +218,8 @@
   }
   .owisp-login-contact-container {
     width: 100%;
+  }
+  .owisp-login-social-link > div {
+    width: 80%;
   }
 }

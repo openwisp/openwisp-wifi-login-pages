@@ -67,18 +67,6 @@ exports[`<Status /> rendering should render correctly 1`] = `
             src="/assets/default/facebook.svg"
           />
         </a>
-        <a
-          className="owisp-contact-linkedIn-link owisp-contact-link"
-          href="https://www.linkedin.com/groups/4777261"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <img
-            alt="linkedIn"
-            className="owisp-contact-linkedIn-image owisp-contact-image"
-            src="/assets/default/linkedin.svg"
-          />
-        </a>
       </div>
       <div
         className="owisp-contact-inner"

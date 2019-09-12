@@ -1,5 +1,7 @@
 import authenticate from "./authenticate";
+import isInternalLink from "./check-internal-links";
 import customMerge from "./custom-merge";
+import getParameterByName from "./get-parameter-by-name";
 import renderAdditionalInfo from "./render-additional-info";
 
 describe("renderAdditionalInfo tests", () => {
@@ -82,5 +84,19 @@ describe("authenticate tests", () => {
   it("should perform authentication", () => {
     expect(authenticate(cookies, orgSlug)).toEqual(true);
     expect(authenticate(cookies, orgSlug)).toEqual(false);
+  });
+});
+describe("isInternalLink tests", () => {
+  it("should detect internal links", () => {
+    expect(isInternalLink("/default/login")).toEqual(true);
+    expect(isInternalLink("https://google.com")).toEqual(false);
+  });
+});
+describe("getParameterByName tests", () => {
+  it("should get parameter values", () => {
+    expect(getParameterByName("username")).toBe(null);
+    expect(
+      getParameterByName("username", "/default/login?username=vivek"),
+    ).toBe("vivek");
   });
 });

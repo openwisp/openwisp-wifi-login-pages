@@ -9,6 +9,7 @@ import {Link, Route} from "react-router-dom";
 
 import {loginApiUrl} from "../../constants";
 import getAssetPath from "../../utils/get-asset-path";
+import getParameterByName from "../../utils/get-parameter-by-name";
 import getText from "../../utils/get-text";
 import renderAdditionalInfo from "../../utils/render-additional-info";
 import Contact from "../contact-box";
@@ -26,12 +27,28 @@ export default class Login extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
+  componentDidMount() {
+    const username = getParameterByName("username");
+    const token = getParameterByName("token");
+    if (username && token) {
+      this.setState(
+        {
+          username,
+          password: token,
+        },
+        () => {
+          this.handleSubmit();
+        },
+      );
+    }
+  }
+
   handleChange(event) {
     this.setState({[event.target.name]: event.target.value});
   }
 
   handleSubmit(event) {
-    event.preventDefault();
+    if (event) event.preventDefault();
     const {orgSlug, authenticate} = this.props;
     const {username, password, errors} = this.state;
     const url = loginApiUrl.replace("{orgSlug}", orgSlug);
@@ -83,7 +100,6 @@ export default class Login extends React.Component {
       buttons,
       input_fields,
       social_login,
-      header,
       additional_info_text,
     } = loginForm;
     return (
@@ -91,11 +107,6 @@ export default class Login extends React.Component {
         <div className="owisp-login-container">
           <div className="owisp-login-container-inner">
             <form className="owisp-login-form" onSubmit={this.handleSubmit}>
-              <div className="owisp-login-header">
-                <div className="owisp-login-header-content">
-                  {getText(header, language)}
-                </div>
-              </div>
               {social_login ? (
                 <>
                   {social_login.links.length ? (
@@ -275,6 +286,28 @@ export default class Login extends React.Component {
                   />
                 </>
               ) : null}
+              {buttons.login ? (
+                <>
+                  {buttons.register.label ? (
+                    <label
+                      className="owisp-login-label owisp-login-label-register-btn"
+                      htmlFor="owisp-login-register-btn"
+                    >
+                      <div className="owisp-login-label-text">
+                        {getText(buttons.register.label, language)}
+                      </div>
+                    </label>
+                  ) : null}
+                  <div className="owisp-login-form-register-btn-div">
+                    <Link
+                      to={`/${orgSlug}/registration`}
+                      className="owisp-login-form-btn owisp-login-register-btn"
+                    >
+                      {getText(buttons.register.text, language)}
+                    </Link>
+                  </div>
+                </>
+              ) : null}
               {links ? (
                 <div className="owisp-login-links-div">
                   {links.forget_password ? (
@@ -283,14 +316,6 @@ export default class Login extends React.Component {
                       className="owisp-login-link"
                     >
                       {getText(links.forget_password, language)}
-                    </Link>
-                  ) : null}
-                  {links.register ? (
-                    <Link
-                      to={`/${orgSlug}/registration`}
-                      className="owisp-login-link"
-                    >
-                      {getText(links.register, language)}
                     </Link>
                   ) : null}
                 </div>
@@ -314,7 +339,6 @@ export default class Login extends React.Component {
 
 Login.propTypes = {
   loginForm: PropTypes.shape({
-    header: PropTypes.object,
     social_login: PropTypes.shape({
       divider_text: PropTypes.object,
       description: PropTypes.object,
