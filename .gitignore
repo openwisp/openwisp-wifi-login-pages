@@ -28,5 +28,7 @@ yarn-error.log*
 #other
 /org-configurations
 client/config.json
-client/assets/
+!client/assets/
+client/assets/*
+!client/assets/default/
 server/config.json

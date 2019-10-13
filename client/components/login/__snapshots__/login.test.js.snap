@@ -12,15 +12,6 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
         className="owisp-login-form"
         onSubmit={[Function]}
       >
-        <div
-          className="owisp-login-header"
-        >
-          <div
-            className="owisp-login-header-content"
-          >
-             sign in
-          </div>
-        </div>
         <React.Fragment>
           <React.Fragment>
             <div
@@ -136,8 +127,30 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
             className="owisp-login-form-btn owisp-login-login-btn"
             id="owisp-login-login-btn"
             type="submit"
-            value="sign in"
+            value="Login"
           />
+        </React.Fragment>
+        <React.Fragment>
+          <label
+            className="owisp-login-label owisp-login-label-register-btn"
+            htmlFor="owisp-login-register-btn"
+          >
+            <div
+              className="owisp-login-label-text"
+            >
+              Not registered yet?
+            </div>
+          </label>
+          <div
+            className="owisp-login-form-register-btn-div"
+          >
+            <Link
+              className="owisp-login-form-btn owisp-login-register-btn"
+              to="/default/registration"
+            >
+              Sign up
+            </Link>
+          </div>
         </React.Fragment>
         <div
           className="owisp-login-links-div"
@@ -147,12 +160,6 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
             to="/default/password/reset"
           >
             Forgot your password?
-          </Link>
-          <Link
-            className="owisp-login-link"
-            to="/default/registration"
-          >
-            Not registered yet? Create an account
           </Link>
         </div>
       </form>
@@ -182,20 +189,69 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
         className="owisp-login-form"
         onSubmit={[Function]}
       >
-        <div
-          className="owisp-login-header"
-        >
-          <div
-            className="owisp-login-header-content"
-          >
-             sign in
-          </div>
-        </div>
         <React.Fragment>
           <React.Fragment>
             <div
               className="owisp-login-social-links-div"
-            />
+            >
+              <a
+                className="owisp-login-social-link"
+                href="#"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <div>
+                  <img
+                    alt="Login with Facebook"
+                    className="owisp-login-social-link-icon"
+                    src="/assets/default/facebook.svg"
+                  />
+                  <div
+                    className="owisp-login-social-link-text"
+                  >
+                    Login with Facebook
+                  </div>
+                </div>
+              </a>
+              <a
+                className="owisp-login-social-link"
+                href="#"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <div>
+                  <img
+                    alt="Login with google"
+                    className="owisp-login-social-link-icon"
+                    src="/assets/default/google.svg"
+                  />
+                  <div
+                    className="owisp-login-social-link-text"
+                  >
+                    Login with google
+                  </div>
+                </div>
+              </a>
+              <a
+                className="owisp-login-social-link"
+                href="#"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <div>
+                  <img
+                    alt="Login with Twitter"
+                    className="owisp-login-social-link-icon"
+                    src="/assets/default/twitter.svg"
+                  />
+                  <div
+                    className="owisp-login-social-link-text"
+                  >
+                    Login with Twitter
+                  </div>
+                </div>
+              </a>
+            </div>
           </React.Fragment>
         </React.Fragment>
         <div
@@ -277,8 +333,30 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
             className="owisp-login-form-btn owisp-login-login-btn"
             id="owisp-login-login-btn"
             type="submit"
-            value="sign in"
+            value="Login"
           />
+        </React.Fragment>
+        <React.Fragment>
+          <label
+            className="owisp-login-label owisp-login-label-register-btn"
+            htmlFor="owisp-login-register-btn"
+          >
+            <div
+              className="owisp-login-label-text"
+            >
+              Not registered yet?
+            </div>
+          </label>
+          <div
+            className="owisp-login-form-register-btn-div"
+          >
+            <Link
+              className="owisp-login-form-btn owisp-login-register-btn"
+              to="/default/registration"
+            >
+              Sign up
+            </Link>
+          </div>
         </React.Fragment>
         <div
           className="owisp-login-links-div"
@@ -288,12 +366,6 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
             to="/default/password/reset"
           >
             Forgot your password?
-          </Link>
-          <Link
-            className="owisp-login-link"
-            to="/default/registration"
-          >
-            Not registered yet? Create an account
           </Link>
         </div>
       </form>

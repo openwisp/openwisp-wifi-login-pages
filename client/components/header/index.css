@@ -4,11 +4,10 @@
   justify-content: flex-start;
   align-items: center;
   flex-wrap: nowrap;
-  font-family: sans-serif;
 }
 .owisp-header-row-1 {
   width: 100%;
-  background: #4a8456;
+  background: #ccc;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -21,11 +20,16 @@
   flex-wrap: nowrap;
   flex-grow: 1;
   max-width: 1000px;
-  padding: 5px 0;
+  padding: 15px 0;
+  height: 104px;
+  box-sizing: border-box;
+}
+.owisp-header-left {
+  height: 100%;
 }
 .owisp-header-logo-div {
+  height: 100%;
   width: auto;
-  height: 60px;
 }
 .owisp-header-logo-image {
   height: 100%;
@@ -61,7 +65,7 @@
   align-items: center;
   flex-wrap: nowrap;
   width: 100%;
-  background: #6f9d78;
+  background: #555;
 }
 .owisp-header-row-2-inner {
   display: flex;
@@ -85,7 +89,8 @@
   border: 0 none;
   cursor: pointer;
 }
-.owisp-header-link:hover {
+.owisp-header-link:hover,
+.owisp-header-link.active {
   background-color: rgba(0, 0, 0, 0.5);
 }
 .owisp-header-mobile {
@@ -104,8 +109,11 @@
   .owisp-header-hamburger {
     width: 38px;
     margin-right: 10px;
-    height: 30px;
+    height: 25px;
     cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 10px 15px;
+    border-radius: 5px;
   }
   .owisp-header-hamburger:focus {
     outline: dotted 1px #fff;
@@ -144,8 +152,9 @@
     transition: 0.25s all ease-in-out;
 
     flex-direction: column;
-    background: #6f9d78;
+    background: #555;
     align-items: center;
+    padding: 20px 0;
   }
   .owisp-header-mobile-menu > .owisp-header-link {
     margin-right: 0;
@@ -158,7 +167,7 @@
   }
   .owisp-mobile-languages-row {
     width: 90%;
-    margin: 0 0 12px 0;
+    margin: 5px 0 10px 0;
   }
   .owisp-header-language-btn.active {
     cursor: auto;

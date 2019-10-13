@@ -5,15 +5,17 @@
   justify-content: center;
   align-items: flex-start;
   width: 100%;
-  padding: 27px 0 27px 0;
+  padding: 20px;
+  box-sizing: border-box;
+  color: rgb(51, 51, 51);
 }
 .owisp-password-confirm-form {
-  font-family: sans-serif;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  width: 95%;
+  width: 100%;
+  max-width: 1000px;
 }
 .owisp-password-confirm-input:invalid {
   box-shadow: none;
@@ -22,13 +24,12 @@
   text-transform: capitalize;
   color: #666;
   font-size: 20px;
-  font-family: "Comic Sans MS", cursive, sans-serif;
+  margin-bottom: 20px;
 }
 .owisp-password-confirm-subheading {
-  color: #333;
   font-size: 14px;
   line-height: 1.3;
-  margin-top: 20px;
+  margin-bottom: 10px;
 }
 .owisp-password-confirm-subheading::first-letter {
   text-transform: uppercase;
@@ -38,13 +39,11 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  margin-top: 8px;
 }
 .owisp-password-confirm-label {
-  margin-bottom: 4px;
+  margin-bottom: 10px;
 }
 .owisp-password-confirm-label-text {
-  color: #333;
   text-transform: capitalize;
 }
 .owisp-password-confirm-input {
@@ -52,7 +51,6 @@
   border-radius: 3px;
   font-size: 18px;
   border: 1px solid #ccc;
-  margin-top: 4px;
 }
 .owisp-password-confirm-input:focus {
   border-color: #aaa;
@@ -61,10 +59,10 @@
   border-color: #d93025;
 }
 .owisp-password-confirm-submit-btn {
-  margin-top: 16px;
+  margin-bottom: 10px;
   padding: 10px 15px;
   font-size: 14px;
-  background-color: rgba(50, 96, 59, 0.9);
+  background-color: rgba(0, 0, 0, 0.5);
   color: #ffffff;
   text-transform: capitalize;
   border: 0;
@@ -72,7 +70,7 @@
   cursor: pointer;
 }
 .owisp-password-confirm-submit-btn:hover {
-  background-color: rgba(50, 96, 59, 1);
+  background-color: rgba(0, 0, 0, 0.7);
 }
 .owisp-password-confirm-submit-btn:focus {
   outline: dotted 1px #333;
@@ -103,7 +101,6 @@
   font-weight: 600;
 }
 .owisp-password-confirm-success {
-  color: #333;
   margin-top: 16px;
   font-size: 14px;
 }
@@ -130,4 +127,11 @@
   border-bottom: 6px solid #ffffff;
   border-right: 6px solid #ffffff;
   margin-top: -8px;
+}
+.owisp-password-confirm-links {
+  color: rgb(51, 51, 51);
+  margin-top: 10px;
+}
+.owisp-password-confirm-links:hover {
+  text-decoration: none;
 }

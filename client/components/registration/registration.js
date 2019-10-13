@@ -115,11 +115,6 @@ export default class Registration extends React.Component {
               className={`owisp-registration-form ${success ? "success" : ""}`}
               onSubmit={this.handleSubmit}
             >
-              <div className="owisp-registration-header">
-                <div className="owisp-registration-header-content">
-                  {getText(registration.header, language)}
-                </div>
-              </div>
               <div className="owisp-registration-fieldset">
                 {errors.nonField && (
                   <div className="owisp-registration-error owisp-registration-error-non-field">

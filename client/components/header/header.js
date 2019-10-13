@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import {Link} from "react-router-dom";
 
+import isInternalLink from "../../utils/check-internal-links";
 import getAssetPath from "../../utils/get-asset-path";
 import getText from "../../utils/get-text";
 
@@ -39,8 +40,16 @@ export default class Header extends React.Component {
 
   render() {
     const {menu} = this.state;
-    const {header, languages, language, orgSlug, setLanguage} = this.props;
+    const {
+      header,
+      languages,
+      language,
+      orgSlug,
+      setLanguage,
+      location,
+    } = this.props;
     const {logo, links} = header;
+    const {pathname} = location;
     return (
       <React.Fragment>
         <div className="owisp-header-container owisp-header-desktop">
@@ -82,6 +91,19 @@ export default class Header extends React.Component {
           <div className="owisp-header-row-2">
             <div className="owisp-header-row-2-inner">
               {links.map((link, index) => {
+                if (isInternalLink(link.url)) {
+                  return (
+                    <Link
+                      className={`owisp-header-link owisp-header-desktop-link
+                    owisp-header-link-${index + 1} ${
+                        pathname === link.url ? "active" : ""
+                      }`}
+                      to={link.url}
+                    >
+                      {getText(link.text, language)}
+                    </Link>
+                  );
+                }
                 return (
                   <a
                     href={link.url}
@@ -135,6 +157,19 @@ export default class Header extends React.Component {
             } owisp-header-mobile-menu`}
           >
             {links.map((link, index) => {
+              if (isInternalLink(link.url)) {
+                return (
+                  <Link
+                    className={`owisp-header-link owisp-mobile-link
+                  owisp-header-link-${index + 1} ${
+                      pathname === link.url ? "active" : ""
+                    }`}
+                    to={link.url}
+                  >
+                    {getText(link.text, language)}
+                  </Link>
+                );
+              }
               return (
                 <a
                   href={link.url}
@@ -190,4 +225,7 @@ Header.propTypes = {
   ).isRequired,
   setLanguage: PropTypes.func.isRequired,
   orgSlug: PropTypes.string.isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+  }).isRequired,
 };

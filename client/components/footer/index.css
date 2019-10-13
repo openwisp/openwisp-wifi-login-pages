@@ -4,8 +4,7 @@
   justify-content: flex-start;
   align-items: center;
   flex-wrap: nowrap;
-  font-family: sans-serif;
-  background: #282828;
+  background: #555;
   padding: 20px 0;
 }
 .owisp-footer-row-1 {
@@ -28,6 +27,8 @@
   padding: 0 2px;
   margin-right: 10px;
   text-transform: capitalize;
+  font-size: 14px;
+  font-weight: 600;
 }
 .owisp-footer-link:hover {
   text-decoration: none;

@@ -6,7 +6,7 @@
   align-items: flex-start;
   width: 100%;
   box-sizing: border-box;
-  padding-bottom: 27px;
+  padding: 27px 0;
 }
 .owisp-status-inner {
   display: flex;
@@ -14,32 +14,31 @@
   justify-content: space-between;
   align-items: flex-start;
   flex-wrap: wrap;
-  width: 80%;
+  width: 100%;
+  max-width: 1000px;
 }
 .owisp-status-content-div {
-  background: rgb(74, 132, 86);
+  background: #eee;
   padding: 30px;
-  color: #ffffff;
+  color: #000;
   border-radius: 2px;
-  margin-top: 27px;
   box-sizing: border-box;
-  width: 60%;
+  width: 53%;
 }
 .owisp-status-contact-div {
-  margin-top: 27px;
   width: 37%;
 }
 .owisp-status-content-line {
-  line-height: 1.9;
+  line-height: 30px;
+  margin-bottom: 10px;
 }
 .owisp-status-logout-btn {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.5);
   width: 100%;
-  line-height: 1.6;
+  line-height: 24px;
   color: #ffffff;
-  font-size: 1.6;
-  font-weight: 700;
-  margin-top: 10px;
+  font-size: 16px;
+  font-weight: 600;
   padding: 8px 15px;
   border-radius: 5px;
   text-decoration: none;
@@ -47,7 +46,7 @@
   border: none;
 }
 .owisp-status-logout-btn:hover {
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.7);
 }
 .owisp-status-logout-btn:focus {
   outline: dotted 1px #ffffff;
@@ -68,7 +67,6 @@
 }
 @media screen and (min-width: 0px) and (max-width: 767px) {
   .owisp-status-inner {
-    width: 98%;
     justify-content: space-between;
   }
   .owisp-status-content-div {

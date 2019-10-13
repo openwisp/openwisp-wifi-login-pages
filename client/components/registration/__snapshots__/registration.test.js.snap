@@ -13,15 +13,6 @@ exports[`<Registration /> rendering should render correctly 1`] = `
         onSubmit={[Function]}
       >
         <div
-          className="owisp-registration-header"
-        >
-          <div
-            className="owisp-registration-header-content"
-          >
-             sign up
-          </div>
-        </div>
-        <div
           className="owisp-registration-fieldset"
         >
           <React.Fragment>
@@ -32,7 +23,7 @@ exports[`<Registration /> rendering should render correctly 1`] = `
               <div
                 className="owisp-registration-label-text"
               >
-                phone number or username
+                username
               </div>
               <input
                 className="owisp-registration-input
@@ -42,7 +33,7 @@ exports[`<Registration /> rendering should render correctly 1`] = `
                 name="username"
                 onChange={[Function]}
                 pattern="[a-zA-Z@.+\\\\-_\\\\d]{1,150}"
-                placeholder="enter phone number or username"
+                placeholder="enter username"
                 required={true}
                 title="only letters, numbers, and @/./+/-/_ characters"
                 type="text"

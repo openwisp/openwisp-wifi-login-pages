@@ -14,6 +14,9 @@ const createTestProps = props => {
     language: "en",
     languages: [{slug: "en", text: "english"}, {slug: "it", text: "italian"}],
     header: defaultConfig.components.header,
+    location: {
+      pathname: "/default/login",
+    },
     ...props,
   };
 };

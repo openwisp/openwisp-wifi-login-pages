@@ -4,6 +4,7 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import qs from "qs";
 import React from "react";
+import {Link} from "react-router-dom";
 
 import {confirmApiUrl, passwordConfirmError} from "../../constants";
 import getText from "../../utils/get-text";
@@ -84,8 +85,9 @@ export default class PasswordConfirm extends React.Component {
 
   render() {
     const {newPassword1, newPassword2, errors, success} = this.state;
-    const {language, passwordConfirm} = this.props;
+    const {language, passwordConfirm, orgSlug} = this.props;
     const inputFields = passwordConfirm.input_fields;
+    const loginPageLink = passwordConfirm.login_page_link;
     const {buttons} = passwordConfirm;
     return (
       <React.Fragment>
@@ -228,6 +230,19 @@ export default class PasswordConfirm extends React.Component {
                 className="owisp-password-confirm-submit-btn"
                 value={getText(buttons.submit, language)}
               />
+              {passwordConfirm.contact_text ? (
+                <div className="owisp-password-confirm-contact-us">
+                  {getText(passwordConfirm.contact_text, language)}
+                </div>
+              ) : null}
+              {loginPageLink ? (
+                <Link
+                  to={`/${orgSlug}/login`}
+                  className="owisp-password-confirm-links"
+                >
+                  {getText(loginPageLink.text, language)}
+                </Link>
+              ) : null}
             </form>
           )}
         </div>
@@ -242,6 +257,8 @@ PasswordConfirm.propTypes = {
     additional_text: PropTypes.object,
     input_fields: PropTypes.object,
     buttons: PropTypes.object,
+    login_page_link: PropTypes.object,
+    contact_text: PropTypes.object,
   }).isRequired,
   language: PropTypes.string.isRequired,
   orgSlug: PropTypes.string.isRequired,
