@@ -24,7 +24,7 @@ Array [
               <img
                 alt="openwisp"
                 className="owisp-header-logo-image owisp-header-desktop-logo-image"
-                src="/assets/default/openwisp.svg"
+                src="/assets/default/openwisp-logo-black.svg"
               />
             </a>
           </div>
@@ -96,7 +96,7 @@ Array [
               <img
                 alt="openwisp"
                 className="owisp-header-logo-image owisp-header-mobile-logo-image"
-                src="/assets/default/openwisp.svg"
+                src="/assets/default/openwisp-logo-black.svg"
               />
             </a>
           </div>
@@ -190,7 +190,7 @@ Array [
               <img
                 alt="openwisp"
                 className="owisp-header-logo-image owisp-header-desktop-logo-image"
-                src="/assets/default/openwisp.svg"
+                src="/assets/default/openwisp-logo-black.svg"
               />
             </a>
           </div>
@@ -245,7 +245,7 @@ Array [
               <img
                 alt="openwisp"
                 className="owisp-header-logo-image owisp-header-mobile-logo-image"
-                src="/assets/default/openwisp.svg"
+                src="/assets/default/openwisp-logo-black.svg"
               />
             </a>
           </div>

@@ -1,22 +1,21 @@
 import "./index.css";
 
 import PropTypes from "prop-types";
-import React, {Suspense, lazy} from "react";
+import React from "react";
 import {Cookies} from "react-cookie";
 import {Helmet} from "react-helmet";
 import {Redirect, Route, Switch} from "react-router-dom";
 
 import getAssetPath from "../../utils/get-asset-path";
-
-const ConnectedDoesNotExist = lazy(() => import("../404"));
-const DoesNotExist = lazy(() => import("../404/404"));
-const Footer = lazy(() => import("../footer"));
-const Header = lazy(() => import("../header"));
-const Login = lazy(() => import("../login"));
-const PasswordConfirm = lazy(() => import("../password-confirm"));
-const PasswordReset = lazy(() => import("../password-reset"));
-const Registration = lazy(() => import("../registration"));
-const Status = lazy(() => import("../status"));
+import ConnectedDoesNotExist from "../404";
+import DoesNotExist from "../404/404";
+import Footer from "../footer";
+import Header from "../header";
+import Login from "../login";
+import PasswordConfirm from "../password-confirm";
+import PasswordReset from "../password-reset";
+import Registration from "../registration";
+import Status from "../status";
 
 export default class OrganizationWrapper extends React.Component {
   constructor(props) {
@@ -42,116 +41,95 @@ export default class OrganizationWrapper extends React.Component {
     if (organization.exists === true) {
       return (
         <React.Fragment>
-          <Suspense
-            fallback={
-              <div className="owisp-loader-container">
-                <div className="owisp-loader" />
-              </div>
-            }
-          >
-            <div className="owisp-app-container">
+          <div className="owisp-app-container">
+            <Route path={match.path} render={() => <Header />} />
+            <Switch>
               <Route
-                path={match.path}
-                render={props => {
-                  return <Header {...props} />;
+                path={`${match.path}`}
+                exact
+                render={() => {
+                  return <Redirect to={`/${orgSlug}/login`} />;
                 }}
               />
-              <Switch>
-                <Route
-                  path={`${match.path}`}
-                  exact
-                  render={() => {
-                    return <Redirect to={`/${orgSlug}/login`} />;
-                  }}
-                />
-                <Route
-                  path={`${match.path}/registration`}
-                  render={props => {
-                    if (isAuthenticated)
-                      return <Redirect to={`/${orgSlug}/status`} />;
-                    return <Registration {...props} />;
-                  }}
-                />
-                <Route
-                  path={`${match.path}/password/reset/confirm/:uid/:token`}
-                  render={props => {
-                    if (isAuthenticated)
-                      return <Redirect to={`/${orgSlug}/status`} />;
-                    return <PasswordConfirm {...props} />;
-                  }}
-                />
-                <Route
-                  path={`${match.path}/password/reset`}
-                  exact
-                  render={() => {
-                    if (isAuthenticated)
-                      return <Redirect to={`/${orgSlug}/status`} />;
-                    return <PasswordReset />;
-                  }}
-                />
-                <Route
-                  path={`${match.path}/login`}
-                  render={props => {
-                    if (isAuthenticated)
-                      return <Redirect to={`/${orgSlug}/status`} />;
-                    return <Login {...props} />;
-                  }}
-                />
-                <Route
-                  path={`${match.path}/status`}
-                  render={() => {
-                    if (isAuthenticated) return <Status cookies={cookies} />;
-                    return <Redirect to={`/${orgSlug}/login`} />;
-                  }}
-                />
-                <Route
-                  render={() => {
-                    return <ConnectedDoesNotExist />;
-                  }}
-                />
-              </Switch>
-              <Route path={match.path} render={() => <Footer />} />
-            </div>
-            {title ? (
-              <Helmet>
-                <title>{title}</title>
-              </Helmet>
-            ) : null}
-            {cssPath && orgSlug ? (
-              <Helmet>
-                <link rel="stylesheet" href={getAssetPath(orgSlug, cssPath)} />
-              </Helmet>
-            ) : null}
-            {favicon && orgSlug ? (
-              <Helmet>
-                <link
-                  rel="shortcut icon"
-                  type="image/x-icon"
-                  href={getAssetPath(orgSlug, favicon)}
-                />
-              </Helmet>
-            ) : null}
-          </Suspense>
+              <Route
+                path={`${match.path}/registration`}
+                render={props => {
+                  if (isAuthenticated)
+                    return <Redirect to={`/${orgSlug}/status`} />;
+                  return <Registration {...props} />;
+                }}
+              />
+              <Route
+                path={`${match.path}/password/reset/confirm/:uid/:token`}
+                render={props => {
+                  if (isAuthenticated)
+                    return <Redirect to={`/${orgSlug}/status`} />;
+                  return <PasswordConfirm {...props} />;
+                }}
+              />
+              <Route
+                path={`${match.path}/password/reset`}
+                exact
+                render={() => {
+                  if (isAuthenticated)
+                    return <Redirect to={`/${orgSlug}/status`} />;
+                  return <PasswordReset />;
+                }}
+              />
+              <Route
+                path={`${match.path}/login`}
+                render={props => {
+                  if (isAuthenticated)
+                    return <Redirect to={`/${orgSlug}/status`} />;
+                  return <Login {...props} />;
+                }}
+              />
+              <Route
+                path={`${match.path}/status`}
+                render={() => {
+                  if (isAuthenticated) return <Status cookies={cookies} />;
+                  return <Redirect to={`/${orgSlug}/login`} />;
+                }}
+              />
+              <Route
+                render={() => {
+                  return <ConnectedDoesNotExist />;
+                }}
+              />
+            </Switch>
+            <Route path={match.path} render={() => <Footer />} />
+          </div>
+          {title ? (
+            <Helmet>
+              <title>{title}</title>
+            </Helmet>
+          ) : null}
+          {cssPath && orgSlug ? (
+            <Helmet>
+              <link rel="stylesheet" href={getAssetPath(orgSlug, cssPath)} />
+            </Helmet>
+          ) : null}
+          {favicon && orgSlug ? (
+            <Helmet>
+              <link
+                rel="shortcut icon"
+                type="image/x-icon"
+                href={getAssetPath(orgSlug, favicon)}
+              />
+            </Helmet>
+          ) : null}
         </React.Fragment>
       );
     }
     if (organization.exists === false) {
       return (
         <React.Fragment>
-          <Suspense
-            fallback={
-              <div className="owisp-loader-container">
-                <div className="owisp-loader" />
-              </div>
-            }
-          >
-            <div className="owisp-org-wrapper-not-found">
-              <DoesNotExist />
-            </div>
-            <Helmet>
-              <title>Page not found</title>
-            </Helmet>
-          </Suspense>
+          <div className="owisp-org-wrapper-not-found">
+            <DoesNotExist />
+          </div>
+          <Helmet>
+            <title>Page not found</title>
+          </Helmet>
         </React.Fragment>
       );
     }

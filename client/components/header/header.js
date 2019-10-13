@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import "./index.css";
 
 import PropTypes from "prop-types";
@@ -99,6 +100,7 @@ export default class Header extends React.Component {
                         pathname === link.url ? "active" : ""
                       }`}
                       to={link.url}
+                      key={index}
                     >
                       {getText(link.text, language)}
                     </Link>
@@ -165,6 +167,7 @@ export default class Header extends React.Component {
                       pathname === link.url ? "active" : ""
                     }`}
                     to={link.url}
+                    key={index}
                   >
                     {getText(link.text, language)}
                   </Link>
