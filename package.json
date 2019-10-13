@@ -72,7 +72,7 @@
   },
   "scripts": {
     "build": "npm run setup && webpack --mode production --progress --config config/webpack.config.js",
-    "client": "npm run setup && webpack-dev-server --mode development --config config/webpack.config.js",
+    "client": "npm run setup && webpack-dev-server --host 0.0.0.0 --port 8080 --mode development --config config/webpack.config.js",
     "coveralls": "jest --coverage && cat ./coverage/lcov.info | coveralls",
     "server": "npm run setup && nodemon server/start.js",
     "setup": "node config/setup.js",

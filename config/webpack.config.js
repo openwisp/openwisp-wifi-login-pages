@@ -67,6 +67,7 @@ module.exports = (env, argv) => {
         warnings: true,
         errors: true,
       },
+      disableHostCheck: true, 
       progress: true,
       stats: "errors-only",
       open: true,
