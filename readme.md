@@ -45,7 +45,7 @@ yarn
 
 ### Setup
 
-Write configuration of the organization in a yml file in `org-configuration` directory.
+Write the configuration of the organization in a yml file in `org-configuration` directory.
 List of variables required in organization configuration:
 
 - name
