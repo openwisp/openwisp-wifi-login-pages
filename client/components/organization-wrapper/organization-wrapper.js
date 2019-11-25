@@ -42,7 +42,10 @@ export default class OrganizationWrapper extends React.Component {
       return (
         <React.Fragment>
           <div className="owisp-app-container">
-            <Route path={match.path} render={() => <Header />} />
+            <Route
+              path={match.path}
+              render={({location}) => <Header location={location} />}
+            />
             <Switch>
               <Route
                 path={`${match.path}`}
