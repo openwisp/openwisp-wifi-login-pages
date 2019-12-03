@@ -53,3 +53,7 @@ render(
   </CookiesProvider>,
   document.getElementById("root"),
 );
+
+if (module && module.hot) {
+  module.hot.accept();
+}

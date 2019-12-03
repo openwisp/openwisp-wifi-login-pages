@@ -80,6 +80,7 @@ module.exports = (env, argv) => {
       proxy: {
         "/api": "http://localhost:3030",
       },
+      hot: true,
     },
     optimization: {
       runtimeChunk: "single",
