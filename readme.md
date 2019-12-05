@@ -73,6 +73,24 @@ $ npm run lint:fix 	 	# Run ESLint with automatically fix problems option
 $ npm test 			# Run tests
 ```
 
+#### Using custom ports
+
+To start the server on port 5000, use the following command:
+
+```
+$ npm run server -- --port=5000
+```
+
+The following command starts the client on port 4000 and tells it that the server
+runs on http://localhost:5000
+
+```
+$ npm run client -- --port=4000 --server=http://localhost:5000
+```
+
+**Note the additional -- before the port arguments!**
+This tells npm that the arguments are not for the `npm run` command itself, but the for the scripts invoked by npm (in this case _server_ or _client_).
+
 ### License
 
 See [LICENSE](https://github.com/openwisp/openwisp-wifi-login-pages/blob/master/LICENSE).

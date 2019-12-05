@@ -5,9 +5,27 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 
 const CURRENT_WORKING_DIR = process.cwd();
+const DEFAULT_PORT = 8080;
+const DEFAULT_SERVER_URL = "http://localhost:3030";
 
 module.exports = (env, argv) => {
-  const config = {
+  // Use user-specified port; if none was given, fall back to the default
+  // If the default port is already in use, webpack will automatically use
+  // the next available port
+  let port = argv.port || DEFAULT_PORT;
+
+  // The url the server is running on; if none was given, fall back to the default
+  let serverUrl = argv.server;
+  if (serverUrl != undefined) {
+    console.log(`Expecting server to run on ${serverUrl}`);
+  } else {
+    console.warn(
+      `No server url specified. It is being assumed that the server runs on ${DEFAULT_SERVER_URL}`,
+    );
+    serverUrl = DEFAULT_SERVER_URL;
+  }
+
+  return {
     context: path.resolve(CURRENT_WORKING_DIR, "client"),
     entry: {
       main: "./index.js",
@@ -58,6 +76,7 @@ module.exports = (env, argv) => {
     ],
 
     devServer: {
+      port: argv.port,
       stats: {
         colors: true,
       },
@@ -67,7 +86,7 @@ module.exports = (env, argv) => {
         warnings: true,
         errors: true,
       },
-      disableHostCheck: true, 
+      disableHostCheck: true,
       progress: true,
       stats: "errors-only",
       open: true,
@@ -78,7 +97,7 @@ module.exports = (env, argv) => {
       },
       historyApiFallback: true,
       proxy: {
-        "/api": "http://localhost:3030",
+        "/api": serverUrl,
       },
     },
     optimization: {
@@ -109,5 +128,4 @@ module.exports = (env, argv) => {
       fs: "empty",
     },
   };
-  return config;
 };
