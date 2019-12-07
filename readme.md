@@ -78,17 +78,40 @@ $ npm test 			# Run tests
 To start the client and/or server on a port of your liking, you must set environment
 variables before starting.
 
-To run the client on port 4000 and the server on port 5000, use the following command:
+**To run the client on port 4000 and the server on port 5000, use the following command:**
 
-```bash
+Bash (Linux):
+
+```
 $ CLIENT=4000 SERVER=5000 npm run start
 ```
 
-You can also run the client and server commands seperately:
+Powershell (Windows):
 
-```bash
+```
+PS> $env:CLIENT = 4000; $env:SERVER = 5000; npm run start
+```
+
+**You can also run the client and server commands separately:**
+
+Bash (Linux):
+
+```
 $ SERVER=5000 npm run server
+```
+
+```
 $ CLIENT=4000 SERVER=5000 npm run client
+```
+
+Powershell (Windows):
+
+```
+PS> $env:SERVER = 5000; npm run server
+```
+
+```
+PS> $env:CLIENT = 4000; $env:SERVER = 5000; npm run client
 ```
 
 Note that you need to tell the client the server's port
