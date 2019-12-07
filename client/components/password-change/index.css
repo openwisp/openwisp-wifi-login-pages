@@ -1,0 +1,83 @@
+.owisp-passchange-page {
+  max-width: 50%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: top;
+  margin-left: 24%;
+}
+
+.owisp-passchange-container {
+  max-width: 400px;
+  max-height: 100%;
+  margin-top: 30px;
+  background-color: #eee;
+  padding: 40px;
+  margin-bottom: 48.1vh;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.owisp-passchange-input {
+  padding: 0 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  height: 33px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  width: 21rem;
+  font-weight: bold;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.owisp-passchange-submit {
+  display: block;
+  margin-top: 10px;
+  padding: 10px 20px;
+  background: #444;
+  outline: none;
+  border-radius: 5px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  width: max-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.owisp-passchange-submit:hover {
+  transition: all 0.3s ease-in;
+  transform: translateY(-1px);
+  background-color: #2b2b2b;
+}
+
+.owisp-passchange-error {
+  color: red;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.owisp-passchange-label {
+  font-size: 14px;
+  font-weight: bold;
+  display: block;
+}
+
+@media (max-width: 700px) {
+  .owisp-passchange-page {
+    max-width: 95%;
+    margin-left: 20px;
+  }
+  .owisp-passchange-container {
+    width: 80%;
+    padding: 25px;
+  }
+  .owisp-passchange-input {
+    width: 18rem;
+  }
+}

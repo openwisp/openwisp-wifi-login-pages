@@ -128,7 +128,7 @@ client:
             en: "email"
       buttons:
         send:
-          en: 'Reset My Password'
+          en: "Reset My Password"
       contact_text:
         en: "Please contact us if you have any trouble resetting your password."
       login_page_link:
@@ -161,7 +161,7 @@ client:
             en: "confirm"
       buttons:
         submit:
-          en: 'change password'
+          en: "change password"
       contact_text:
         en: "Please contact us if you have any trouble resetting your password."
       login_page_link:
@@ -192,9 +192,13 @@ client:
     status_page:
       content:
         en: |
-           WiFi Login Successful!
-           You can now use the internet.
-           You may leave this page open in case you want to log out.
+          WiFi Login Successful!
+          You can now use the internet.
+          You may leave this page open in case you want to log out.
+      links:
+        - text:
+            en: "Change your password"
+          url: "/{orgSlug}/change-password/"
       buttons:
         logout:
           label: null
@@ -248,8 +252,37 @@ client:
           text:
             en: "Sign up"
       links:
-        forget_password :
+        forget_password:
           en: "Forgot your password?"
+
+    password_change_page:
+      title:
+        en: "Change your password"
+      input_fields:
+        password1:
+          type: "password"
+          pattern: ".{6,}"
+          pattern_description:
+            en: "New password must be a minimum of 6 characters"
+          label:
+            en: "New Password"
+          placeholder:
+            en: "Your new password"
+        password2:
+          type: "password"
+          pattern: ".{6,}"
+          pattern_description:
+            en: "New password must be a minimum of 6 characters"
+          label:
+            en: "Confirm new password"
+          placeholder:
+            en: "Repeat your new password"
+      buttons:
+        submit_button:
+          label: null
+          text:
+            en: "Change Password"
+
     404_page:
       heading:
         en: "404"

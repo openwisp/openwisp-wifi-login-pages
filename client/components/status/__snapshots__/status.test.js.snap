@@ -27,6 +27,12 @@ exports[`<Status /> rendering should render correctly 1`] = `
           You may leave this page open in case you want to log out.
         </div>
         <React.Fragment>
+          <a
+            className="owisp-status-link"
+            href="/default/change-password/"
+          >
+            Change your password
+          </a>
           <input
             className="owisp-status-btn owisp-status-logout-btn"
             id="owisp-status-logout-btn"

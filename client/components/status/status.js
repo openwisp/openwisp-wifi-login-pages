@@ -37,7 +37,7 @@ export default class Status extends React.Component {
 
   render() {
     const {statusPage, language, orgSlug, logout, cookies} = this.props;
-    const {content, buttons} = statusPage;
+    const {content, links, buttons} = statusPage;
     const contentArr = getText(content, language).split("\n");
     return (
       <React.Fragment>
@@ -67,6 +67,17 @@ export default class Status extends React.Component {
                       </label>
                     </>
                   ) : null}
+                  {links
+                    ? links.map(link => (
+                        <a
+                          className="owisp-status-link"
+                          key={link.url}
+                          href={link.url.replace("{orgSlug}", orgSlug)}
+                        >
+                          {getText(link.text, language)}
+                        </a>
+                      ))
+                    : null}
                   <input
                     type="button"
                     className="owisp-status-btn owisp-status-logout-btn"
@@ -89,10 +100,16 @@ export default class Status extends React.Component {
 
 Status.propTypes = {
   statusPage: PropTypes.shape({
+    content: PropTypes.object,
+    links: PropTypes.arrayOf(
+      PropTypes.shape({
+        text: PropTypes.object,
+        url: PropTypes.string,
+      }),
+    ),
     buttons: PropTypes.shape({
       logout: PropTypes.object,
     }),
-    content: PropTypes.object,
   }).isRequired,
   language: PropTypes.string.isRequired,
   orgSlug: PropTypes.string.isRequired,
