@@ -12,15 +12,15 @@ module.exports = (env, argv) => {
   // Use user-specified port; if none was given, fall back to the default
   // If the default port is already in use, webpack will automatically use
   // the next available port
-  let port = argv.port || DEFAULT_PORT;
+  let clientP = process.env.CLIENT;
 
   // The url the server is running on; if none was given, fall back to the default
-  let serverUrl = argv.server;
-  if (serverUrl != undefined) {
-    console.log(`Expecting server to run on ${serverUrl}`);
+  let serverUrl;
+  if (process.env.SERVER != undefined) {
+    serverUrl = `http://localhost:${process.env.SERVER}`;
   } else {
     console.warn(
-      `No server url specified. It is being assumed that the server runs on ${DEFAULT_SERVER_URL}`,
+      `No server url specified. Expecting server to run on ${DEFAULT_SERVER_URL}`,
     );
     serverUrl = DEFAULT_SERVER_URL;
   }
@@ -76,7 +76,7 @@ module.exports = (env, argv) => {
     ],
 
     devServer: {
-      port: argv.port,
+      port: clientP,
       stats: {
         colors: true,
       },

@@ -75,21 +75,25 @@ $ npm test 			# Run tests
 
 #### Using custom ports
 
-To start the server on port 5000, use the following command:
+To start the client and/or server on a port of your liking, you must set environment
+variables before starting.
 
-```
-$ npm run server -- --port=5000
-```
+To run the client on port 4000 and the server on port 5000, use the following command:
 
-The following command starts the client on port 4000 and tells it that the server
-runs on http://localhost:5000
-
-```
-$ npm run client -- --port=4000 --server=http://localhost:5000
+```bash
+$ CLIENT=4000 SERVER=5000 npm run start
 ```
 
-**Note the additional -- before the port arguments!**
-This tells npm that the arguments are not for the `npm run` command itself, but the for the scripts invoked by npm (in this case _server_ or _client_).
+You can also run the client and server commands seperately:
+
+```bash
+$ SERVER=5000 npm run server
+$ CLIENT=4000 SERVER=5000 npm run client
+```
+
+Note that you need to tell the client the server's port
+(unless you're using the default server port, which is 3030)
+so the client knows where he can find the server.
 
 ### License
 

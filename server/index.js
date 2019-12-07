@@ -20,7 +20,6 @@ app.get("*", function(req, res) {
 });
 
 const DEFAULT_PORT = 3030;
-const portArg = process.argv.find(arg => arg.startsWith("--port="));
 
 // Finds the next free port, starting at the passed port
 const nextFreePort = (port, callback) => {
@@ -43,10 +42,9 @@ const nextFreePort = (port, callback) => {
 };
 
 // If a port was passed as an argument, use that port
-if (portArg) {
-  const port = portArg.split("=")[1];
-  app.listen(port, () => {
-    console.log(`Server started on port ${port}`);
+if (process.env.SERVER !== undefined) {
+  app.listen(process.env.SERVER, () => {
+    console.log(`Server started on port ${process.env.SERVER}`);
   });
 } else {
   // Otherwise, find the next free port starting at the default port
