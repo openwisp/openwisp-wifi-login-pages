@@ -73,6 +73,51 @@ $ npm run lint:fix 	 	# Run ESLint with automatically fix problems option
 $ npm test 			# Run tests
 ```
 
+#### Using custom ports
+
+To start the client and/or server on a port of your liking, you must set environment
+variables before starting.
+
+**To run the client on port 4000 and the server on port 5000, use the following command:**
+
+Bash (Linux):
+
+```
+$ CLIENT=4000 SERVER=5000 npm run start
+```
+
+Powershell (Windows):
+
+```
+PS> $env:CLIENT = 4000; $env:SERVER = 5000; npm run start
+```
+
+**You can also run the client and server commands separately:**
+
+Bash (Linux):
+
+```
+$ SERVER=5000 npm run server
+```
+
+```
+$ CLIENT=4000 SERVER=5000 npm run client
+```
+
+Powershell (Windows):
+
+```
+PS> $env:SERVER = 5000; npm run server
+```
+
+```
+PS> $env:CLIENT = 4000; $env:SERVER = 5000; npm run client
+```
+
+Note that you need to tell the client the server's port
+(unless you're using the default server port, which is 3030)
+so the client knows where he can find the server.
+
 ### License
 
 See [LICENSE](https://github.com/openwisp/openwisp-wifi-login-pages/blob/master/LICENSE).

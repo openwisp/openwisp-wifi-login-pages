@@ -2,10 +2,10 @@ import compression from "compression";
 import cookieParser from "cookie-parser";
 import express from "express";
 import cookiesMiddleware from "universal-cookie-express";
+import path from "path";
+import net from "net";
 
 import routes from "./routes";
-
-const path = require("path");
 
 const app = express();
 app.use(compression());
@@ -18,6 +18,39 @@ app.use("/api/v1/:organization/account", routes.account);
 app.get("*", function(req, res) {
   res.sendFile(path.join(process.cwd(), "dist", "index.html"));
 });
-app.listen(3030, () => {
-  console.log("Server started on port 3030");
-});
+
+const DEFAULT_PORT = 3030;
+
+// Finds the next free port, starting at the passed port
+const nextFreePort = (port, callback) => {
+  const server = net.createServer(socket => {
+    socket.write("Testing socket..\r\n");
+    socket.pipe(socket);
+  });
+
+  // If port is already in use, try next port
+  server.listen(port, "127.0.0.1");
+  server.on("error", () => {
+    nextFreePort(port + 1, callback);
+  });
+
+  // If port is available, pass port to callback
+  server.on("listening", () => {
+    server.close();
+    callback(port);
+  });
+};
+
+// If a port was passed as an argument, use that port
+if (process.env.SERVER !== undefined) {
+  app.listen(process.env.SERVER, () => {
+    console.log(`Server started on port ${process.env.SERVER}`);
+  });
+} else {
+  // Otherwise, find the next free port starting at the default port
+  nextFreePort(DEFAULT_PORT, port => {
+    app.listen(port, () => {
+      console.log(`Server started on port ${port}`);
+    });
+  });
+}
