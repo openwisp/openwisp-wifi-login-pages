@@ -39,7 +39,7 @@ exports[`<Status /> rendering should render correctly 1`] = `
       <div
         className="owisp-status-contact-div"
       >
-        <Memo(ConnectFunction) />
+        <Memo(Connect(Contact)) />
       </div>
     </div>
   </div>

@@ -107,19 +107,19 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
           className="owisp-login-add-info"
         >
           By logging in, you accept the 
-          <Link
+          <ForwardRef
             className="owisp-login-additional-link"
             to="/default/login/terms-and-conditions"
           >
             terms and conditions
-          </Link>
+          </ForwardRef>
            and the 
-          <Link
+          <ForwardRef
             className="owisp-login-additional-link"
             to="/default/login/privacy-policy"
           >
             privacy policy
-          </Link>
+          </ForwardRef>
            of this WiFi service. 
         </div>
         <React.Fragment>
@@ -144,29 +144,29 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
           <div
             className="owisp-login-form-register-btn-div"
           >
-            <Link
+            <ForwardRef
               className="owisp-login-form-btn owisp-login-register-btn"
               to="/default/registration"
             >
               Sign up
-            </Link>
+            </ForwardRef>
           </div>
         </React.Fragment>
         <div
           className="owisp-login-links-div"
         >
-          <Link
+          <ForwardRef
             className="owisp-login-link"
             to="/default/password/reset"
           >
             Forgot your password?
-          </Link>
+          </ForwardRef>
         </div>
       </form>
       <div
         className="owisp-login-contact-container"
       >
-        <Memo(ConnectFunction) />
+        <Memo(Connect(Contact)) />
       </div>
     </div>
   </div>
@@ -313,19 +313,19 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
           className="owisp-login-add-info"
         >
           By logging in, you accept the 
-          <Link
+          <ForwardRef
             className="owisp-login-additional-link"
             to="/default/login/terms-and-conditions"
           >
             terms and conditions
-          </Link>
+          </ForwardRef>
            and the 
-          <Link
+          <ForwardRef
             className="owisp-login-additional-link"
             to="/default/login/privacy-policy"
           >
             privacy policy
-          </Link>
+          </ForwardRef>
            of this WiFi service. 
         </div>
         <React.Fragment>
@@ -350,29 +350,29 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
           <div
             className="owisp-login-form-register-btn-div"
           >
-            <Link
+            <ForwardRef
               className="owisp-login-form-btn owisp-login-register-btn"
               to="/default/registration"
             >
               Sign up
-            </Link>
+            </ForwardRef>
           </div>
         </React.Fragment>
         <div
           className="owisp-login-links-div"
         >
-          <Link
+          <ForwardRef
             className="owisp-login-link"
             to="/default/password/reset"
           >
             Forgot your password?
-          </Link>
+          </ForwardRef>
         </div>
       </form>
       <div
         className="owisp-login-contact-container"
       >
-        <Memo(ConnectFunction) />
+        <Memo(Connect(Contact)) />
       </div>
     </div>
   </div>
