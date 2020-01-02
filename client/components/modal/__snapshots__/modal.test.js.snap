@@ -8,12 +8,12 @@ exports[`<Modal /> rendering should render nothing on incorrect param name 1`] =
     <div
       className="owisp-modal-row-close"
     >
-      <Link
+      <ForwardRef
         className="owisp-modal-close-btn"
         to="/default/login"
       >
         X
-      </Link>
+      </ForwardRef>
     </div>
     <div
       className="owisp-modal-content"
@@ -35,12 +35,12 @@ exports[`<Modal /> rendering should render privacy-policy correctly 1`] = `
     <div
       className="owisp-modal-row-close"
     >
-      <Link
+      <ForwardRef
         className="owisp-modal-close-btn"
         to="/default/login"
       >
         X
-      </Link>
+      </ForwardRef>
     </div>
     <div
       className="owisp-modal-content"
@@ -79,12 +79,12 @@ exports[`<Modal /> rendering should render terms-and-conditions correctly 1`] = 
     <div
       className="owisp-modal-row-close"
     >
-      <Link
+      <ForwardRef
         className="owisp-modal-close-btn"
         to="/default/login"
       >
         X
-      </Link>
+      </ForwardRef>
     </div>
     <div
       className="owisp-modal-content"

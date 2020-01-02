@@ -62,7 +62,7 @@ export default class Contact extends React.Component {
                 );
               })}
             </div>
-            <div className="owisp-contact-inner"></div>
+            <div className="owisp-contact-inner"/>
           </div>
         </div>
       </React.Fragment>

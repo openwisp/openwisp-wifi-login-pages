@@ -51,7 +51,7 @@ export default class Modal extends React.Component {
             className="owisp-modal-content"
             // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={this.renderContent()}
-          ></div>
+          />
         </div>
       </React.Fragment>
     );
