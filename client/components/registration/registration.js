@@ -17,7 +17,6 @@ export default class Registration extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "",
       email: "",
       password1: "",
       password2: "",
@@ -36,7 +35,7 @@ export default class Registration extends React.Component {
     event.preventDefault();
     const {registration, orgSlug, authenticate} = this.props;
     const {input_fields} = registration;
-    const {username, email, password1, password2, errors} = this.state;
+    const {email, password1, password2, errors} = this.state;
     if (input_fields.password_confirm) {
       if (password1 !== password2) {
         this.setState({
@@ -57,7 +56,7 @@ export default class Registration extends React.Component {
       url,
       data: qs.stringify({
         email,
-        username,
+        "username": email,
         password1,
         password2,
       }),
@@ -65,7 +64,6 @@ export default class Registration extends React.Component {
       .then(() => {
         this.setState({
           errors: {},
-          username: "",
           email: "",
           password1: "",
           password2: "",
@@ -78,9 +76,6 @@ export default class Registration extends React.Component {
         this.setState({
           errors: {
             ...errors,
-            ...(data.username
-              ? {username: data.username.toString()}
-              : {username: ""}),
             ...(data.email ? {email: data.email.toString()} : {email: ""}),
             ...(data.password1
               ? {password1: data.password1.toString()}
@@ -106,7 +101,7 @@ export default class Registration extends React.Component {
       match,
     } = this.props;
     const {buttons, additional_info_text, input_fields, links} = registration;
-    const {username, email, password1, password2, errors, success} = this.state;
+    const {email, password1, password2, errors, success} = this.state;
     return (
       <React.Fragment>
         <div className="owisp-registration-container">
@@ -124,54 +119,6 @@ export default class Registration extends React.Component {
                     </span>
                   </div>
                 )}
-                {input_fields.username ? (
-                  <>
-                    <label
-                      className="owisp-registration-label owisp-registration-label-username"
-                      htmlFor="owisp-registration-username"
-                    >
-                      <div className="owisp-registration-label-text">
-                        {getText(input_fields.username.label, language)}
-                      </div>
-                      <input
-                        className={`owisp-registration-input
-                      owisp-registration-input-username
-                      ${errors.username ? "error" : ""}`}
-                        type={input_fields.username.type}
-                        id="owisp-registration-username"
-                        name="username"
-                        value={username}
-                        onChange={this.handleChange}
-                        required
-                        placeholder={getText(
-                          input_fields.username.placeholder,
-                          language,
-                        )}
-                        pattern={
-                          input_fields.username.pattern
-                            ? input_fields.username.pattern
-                            : undefined
-                        }
-                        title={
-                          input_fields.username.pattern_description
-                            ? getText(
-                                input_fields.username.pattern_description,
-                                language,
-                              )
-                            : undefined
-                        }
-                      />
-                    </label>
-                    {errors.username && (
-                      <div className="owisp-registration-error owisp-registration-error-username">
-                        <span className="owisp-registration-error-icon">!</span>
-                        <span className="owisp-registration-error-text owisp-registration-error-text-username">
-                          {errors.username}
-                        </span>
-                      </div>
-                    )}
-                  </>
-                ) : null}
 
                 {input_fields.email ? (
                   <>
@@ -396,10 +343,27 @@ Registration.propTypes = {
       register: PropTypes.object,
     }),
     input_fields: PropTypes.shape({
-      email: PropTypes.object,
-      password: PropTypes.object,
-      password_confirm: PropTypes.object,
-      username: PropTypes.object,
+      email: PropTypes.shape({
+        type: PropTypes.string.isRequired,
+        label: PropTypes.object,
+        placeholder: PropTypes.object,
+        pattern: PropTypes.string,
+        pattern_description: PropTypes.object
+      }),
+      password: PropTypes.shape({
+        type: PropTypes.string.isRequired,
+        label: PropTypes.object,
+        placeholder: PropTypes.object,
+        pattern: PropTypes.string,
+        pattern_description: PropTypes.object
+      }),
+      password_confirm: PropTypes.shape({
+        type: PropTypes.string.isRequired,
+        label: PropTypes.object,
+        placeholder: PropTypes.object,
+        pattern: PropTypes.string,
+        pattern_description: PropTypes.object
+      }),
     }),
     additional_info_text: PropTypes.object,
     links: PropTypes.object,

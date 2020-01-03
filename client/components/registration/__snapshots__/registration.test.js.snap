@@ -17,32 +17,6 @@ exports[`<Registration /> rendering should render correctly 1`] = `
         >
           <React.Fragment>
             <label
-              className="owisp-registration-label owisp-registration-label-username"
-              htmlFor="owisp-registration-username"
-            >
-              <div
-                className="owisp-registration-label-text"
-              >
-                username
-              </div>
-              <input
-                className="owisp-registration-input
-                      owisp-registration-input-username
-                      "
-                id="owisp-registration-username"
-                name="username"
-                onChange={[Function]}
-                pattern="[a-zA-Z@.+\\\\-_\\\\d]{1,150}"
-                placeholder="enter username"
-                required={true}
-                title="only letters, numbers, and @/./+/-/_ characters"
-                type="text"
-                value=""
-              />
-            </label>
-          </React.Fragment>
-          <React.Fragment>
-            <label
               className="owisp-registration-label owisp-registration-label-email"
               htmlFor="owisp-registration-email"
             >
@@ -56,6 +30,7 @@ exports[`<Registration /> rendering should render correctly 1`] = `
                 id="owisp-registration-email"
                 name="email"
                 onChange={[Function]}
+                pattern=".+@.+\\\\..+"
                 placeholder="email address"
                 required={true}
                 title={null}

@@ -178,7 +178,15 @@ PasswordReset.propTypes = {
   passwordReset: PropTypes.shape({
     heading: PropTypes.object,
     additional_text: PropTypes.object,
-    input_fields: PropTypes.object,
+    input_fields: PropTypes.shape({
+      email: PropTypes.shape({
+        type: PropTypes.string.isRequired,
+        label: PropTypes.object,
+        placeholder: PropTypes.object,
+        pattern: PropTypes.string,
+        pattern_description: PropTypes.object
+      }),
+    }),
     buttons: PropTypes.object,
     login_page_link: PropTypes.object,
     contact_text: PropTypes.object,

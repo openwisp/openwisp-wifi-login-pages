@@ -19,7 +19,7 @@ export default class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "",
+      email: "",
       password: "",
       errors: {},
     };
@@ -28,12 +28,12 @@ export default class Login extends React.Component {
   }
 
   componentDidMount() {
-    const username = getParameterByName("username");
+    const email = getParameterByName("email");
     const token = getParameterByName("token");
-    if (username && token) {
+    if (email && token) {
       this.setState(
         {
-          username,
+          email,
           password: token,
         },
         () => {
@@ -50,7 +50,7 @@ export default class Login extends React.Component {
   handleSubmit(event) {
     if (event) event.preventDefault();
     const {orgSlug, authenticate} = this.props;
-    const {username, password, errors} = this.state;
+    const {email, password, errors} = this.state;
     const url = loginApiUrl.replace("{orgSlug}", orgSlug);
     this.setState({
       errors: {},
@@ -62,7 +62,7 @@ export default class Login extends React.Component {
       },
       url,
       data: qs.stringify({
-        username,
+        "username": email,
         password,
       }),
     })
@@ -78,7 +78,7 @@ export default class Login extends React.Component {
               ? {nonField: data.non_field_errors[0]}
               : {nonField: ""}),
             ...(data.detail ? {nonField: data.detail} : {}),
-            ...(data.username ? {username: data.username} : {username: ""}),
+            ...(data.email ? {email: data.email.toString()} : {email: ""}),
             ...(data.password ? {password: data.password} : {password: ""}),
           },
         });
@@ -86,7 +86,7 @@ export default class Login extends React.Component {
   }
 
   render() {
-    const {errors, username, password} = this.state;
+    const {errors, email, password} = this.state;
     const {
       language,
       loginForm,
@@ -158,49 +158,49 @@ export default class Login extends React.Component {
                     </span>
                   </div>
                 )}
-                {input_fields.username ? (
+                {input_fields.email ? (
                   <>
                     <label
-                      className="owisp-login-label owisp-login-label-username"
-                      htmlFor="owisp-login-username"
+                      className="owisp-login-label owisp-login-label-email"
+                      htmlFor="owisp-login-email"
                     >
                       <div className="owisp-login-label-text">
-                        {getText(input_fields.username.label, language)}
+                        {getText(input_fields.email.label, language)}
                       </div>
                       <input
                         className={`owisp-login-input
-                      owisp-login-input-username
-                      ${errors.username ? "error" : ""}`}
-                        type={input_fields.username.type}
-                        id="owisp-login-username"
-                        name="username"
-                        value={username}
+                        owisp-login-input-email
+                        ${errors.email ? "error" : ""}`}
+                        type={input_fields.email.type}
+                        id="owisp-login-email"
+                        name="email"
+                        value={email}
                         onChange={this.handleChange}
                         required
                         placeholder={getText(
-                          input_fields.username.placeholder,
+                          input_fields.email.placeholder,
                           language,
                         )}
                         pattern={
-                          input_fields.username.pattern
-                            ? input_fields.username.pattern
+                          input_fields.email.pattern
+                            ? input_fields.email.pattern
                             : undefined
                         }
                         title={
-                          input_fields.username.pattern_description
+                          input_fields.email.pattern_description
                             ? getText(
-                                input_fields.username.pattern_description,
+                                input_fields.email.pattern_description,
                                 language,
                               )
                             : undefined
                         }
                       />
                     </label>
-                    {errors.username && (
-                      <div className="owisp-login-error owisp-login-error-username">
+                    {errors.email && (
+                      <div className="owisp-login-error owisp-login-error-email">
                         <span className="owisp-login-error-icon">!</span>
-                        <span className="owisp-login-error-text owisp-login-error-text-username">
-                          {errors.username}
+                        <span className="owisp-login-error-text owisp-login-error-text-email">
+                          {errors.email}
                         </span>
                       </div>
                     )}
@@ -345,8 +345,20 @@ Login.propTypes = {
       links: PropTypes.arrayOf(PropTypes.object),
     }),
     input_fields: PropTypes.shape({
-      username: PropTypes.object,
-      password: PropTypes.object,
+      email: PropTypes.shape({
+        type: PropTypes.string.isRequired,
+        label: PropTypes.object,
+        placeholder: PropTypes.object,
+        pattern: PropTypes.string,
+        pattern_description: PropTypes.object
+      }),
+      password: PropTypes.shape({
+        type: PropTypes.string.isRequired,
+        label: PropTypes.object,
+        placeholder: PropTypes.object,
+        pattern: PropTypes.string,
+        pattern_description: PropTypes.object
+      }),
     }),
     additional_info_text: PropTypes.object,
     buttons: PropTypes.object,
