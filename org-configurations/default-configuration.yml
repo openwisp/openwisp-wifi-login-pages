@@ -75,7 +75,7 @@ client:
             en: "username"
         email:
           type: "email"
-          pattern: null
+          pattern: '.+@.+\..+'
           pattern_description:
             en: null
           placeholder:
@@ -119,7 +119,7 @@ client:
       input_fields:
         email:
           type: "email"
-          pattern: null
+          pattern: '.+@.+\..+'
           pattern_description:
             en: null
           placeholder:
@@ -217,15 +217,15 @@ client:
             icon: "twitter.svg"
             url: "#"
       input_fields:
-        username:
-          type: "text"
-          pattern: '[a-zA-Z@.+\-_\d]{1,150}'
+        email:
+          type: "email"
+          pattern: '.+@.+\..+'
           pattern_description:
-            en: "only letters, numbers, and @/./+/-/_ characters"
+            en: null
           placeholder:
-            en: "enter username"
+            en: "email address"
           label:
-            en: "username"
+            en: "email"
         password:
           type: "password"
           pattern: ".{6,}"

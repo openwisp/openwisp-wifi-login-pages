@@ -53,26 +53,26 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
         >
           <React.Fragment>
             <label
-              className="owisp-login-label owisp-login-label-username"
-              htmlFor="owisp-login-username"
+              className="owisp-login-label owisp-login-label-email"
+              htmlFor="owisp-login-email"
             >
               <div
                 className="owisp-login-label-text"
               >
-                username
+                email
               </div>
               <input
                 className="owisp-login-input
-                      owisp-login-input-username
-                      "
-                id="owisp-login-username"
-                name="username"
+                        owisp-login-input-email
+                        "
+                id="owisp-login-email"
+                name="email"
                 onChange={[Function]}
-                pattern="[a-zA-Z@.+\\\\-_\\\\d]{1,150}"
-                placeholder="enter username"
+                pattern=".+@.+\\\\..+"
+                placeholder="email address"
                 required={true}
-                title="only letters, numbers, and @/./+/-/_ characters"
-                type="text"
+                title={null}
+                type="email"
                 value=""
               />
             </label>
@@ -259,26 +259,26 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
         >
           <React.Fragment>
             <label
-              className="owisp-login-label owisp-login-label-username"
-              htmlFor="owisp-login-username"
+              className="owisp-login-label owisp-login-label-email"
+              htmlFor="owisp-login-email"
             >
               <div
                 className="owisp-login-label-text"
               >
-                username
+                email
               </div>
               <input
                 className="owisp-login-input
-                      owisp-login-input-username
-                      "
-                id="owisp-login-username"
-                name="username"
+                        owisp-login-input-email
+                        "
+                id="owisp-login-email"
+                name="email"
                 onChange={[Function]}
-                pattern="[a-zA-Z@.+\\\\-_\\\\d]{1,150}"
-                placeholder="enter username"
+                pattern=".+@.+\\\\..+"
+                placeholder="email address"
                 required={true}
-                title="only letters, numbers, and @/./+/-/_ characters"
-                type="text"
+                title={null}
+                type="email"
                 value=""
               />
             </label>

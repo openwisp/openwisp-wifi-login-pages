@@ -48,10 +48,6 @@ describe("<Registration /> interactions", () => {
   });
   it("should change state values when handleChange function is invoked", () => {
     wrapper
-      .find("#owisp-registration-username")
-      .simulate("change", {target: {value: "test username", name: "username"}});
-    expect(wrapper.state("username")).toEqual("test username");
-    wrapper
       .find("#owisp-registration-email")
       .simulate("change", {target: {value: "test email", name: "email"}});
     expect(wrapper.state("email")).toEqual("test email");
@@ -71,7 +67,6 @@ describe("<Registration /> interactions", () => {
         return Promise.reject({
           response: {
             data: {
-              username: "username error",
               email: "email error",
               detail: "nonField error",
               password1: "password1 error",
@@ -109,13 +104,12 @@ describe("<Registration /> interactions", () => {
       .handleSubmit(event)
       .then(() => {
         expect(wrapper.instance().state.errors).toEqual({
-          username: "username error",
           email: "email error",
           nonField: "nonField error",
           password1: "password1 error",
           password2: "",
         });
-        expect(wrapper.find(".owisp-registration-error")).toHaveLength(4);
+        expect(wrapper.find(".owisp-registration-error")).toHaveLength(3);
       })
       .then(() => {
         return wrapper

@@ -70,9 +70,9 @@ describe("<Login /> interactions", () => {
   });
   it("should change state values when handleChange function is invoked", () => {
     wrapper
-      .find("#owisp-login-username")
-      .simulate("change", {target: {value: "test username", name: "username"}});
-    expect(wrapper.state("username")).toEqual("test username");
+      .find("#owisp-login-email")
+      .simulate("change", {target: {value: "test email", name: "email"}});
+    expect(wrapper.state("email")).toEqual("test email");
     wrapper
       .find("#owisp-login-password")
       .simulate("change", {target: {value: "test password", name: "password"}});
@@ -84,7 +84,7 @@ describe("<Login /> interactions", () => {
         return Promise.reject({
           response: {
             data: {
-              username: "username error",
+              email: "email error",
               password: "password error",
               detail: "error details",
               non_field_errors: "non field errors",
@@ -101,7 +101,7 @@ describe("<Login /> interactions", () => {
       .handleSubmit(event)
       .then(() => {
         expect(wrapper.instance().state.errors).toEqual({
-          username: "username error",
+          email: "email error",
           nonField: "error details",
           password: "password error",
         });
