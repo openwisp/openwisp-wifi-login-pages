@@ -4,7 +4,8 @@
 
 [![Build Status](https://travis-ci.org/openwisp/openwisp-wifi-login-pages.svg?branch=master)](https://travis-ci.org/openwisp/openwisp-wifi-login-pages)
 [![Coverage Status](https://coveralls.io/repos/github/openwisp/openwisp-wifi-login-pages/badge.svg)](https://coveralls.io/github/openwisp/openwisp-wifi-login-pages)
-[![Dependency Status](https://img.shields.io/librariesio/github/openwisp/openwisp-wifi-login-pages)](https://libraries.io/github/openwisp/openwisp-wifi-login-pages)
+[![Dependencies Status](https://david-dm.org/openwisp/openwisp-wifi-login-pages/status.svg)](https://david-dm.org/openwisp/openwisp-wifi-login-pages)
+[![devDependencies Status](https://david-dm.org/openwisp/openwisp-wifi-login-pages/dev-status.svg)](https://david-dm.org/openwisp/openwisp-wifi-login-pages?type=dev)
 
 Openwisp wifi login pages app to allow users to authenticate, sign up and know more about the WiFi service they are using.
 
