@@ -36,9 +36,27 @@ describe("<Status /> rendering", () => {
 describe("<Status /> interactions", () => {
   let props;
   let wrapper;
+  let originalError;
+  let lastConsoleOutuput;
+  beforeEach(() => {
+    originalError = console.error;
+    lastConsoleOutuput = null;
+    console.error = (data) => {
+      lastConsoleOutuput = data;
+    };
+  });
+  afterEach(() => {
+    console.error = originalError;
+  });
   it("should call logout function when logout button is clicked", () => {
     axios.mockImplementationOnce(() => {
-      return Promise.resolve({});
+      return Promise.resolve({
+        status: 200,
+        statusText: 'OK',
+        data: {
+          "control:Auth-Type": "Accept",
+        }
+      });
     });
     props = createTestProps();
     wrapper = shallow(<Status {...props} />);
@@ -48,10 +66,22 @@ describe("<Status /> interactions", () => {
   it("test componentDidMount lifecycle method", () => {
     axios
       .mockImplementationOnce(() => {
-        return Promise.reject();
+        return Promise.reject({
+          status: 500,
+          statusText: 'Internal Server Error',
+          response: {
+            data: {}
+          }
+        });
       })
       .mockImplementationOnce(() => {
-        return Promise.reject();
+        return Promise.reject({
+          status: 504,
+          statusText: "Gateway Timeout",
+          response: {
+            data: {}
+          },
+        });
       })
       .mockImplementationOnce(() => {
         return Promise.resolve({
@@ -62,6 +92,10 @@ describe("<Status /> interactions", () => {
       })
       .mockImplementationOnce(() => {
         return Promise.resolve({
+          response: {
+            status: 200,
+            statusText: 'OK',
+          },
           data: {
             "control:Auth-Type": "Reject",
           },
@@ -74,11 +108,15 @@ describe("<Status /> interactions", () => {
       .componentDidMount()
       .then(() => {
         expect(wrapper.instance().props.logout.mock.calls.length).toBe(2);
+        expect(lastConsoleOutuput).not.toBe(null);
+        lastConsoleOutuput = null;
         return wrapper
           .instance()
           .componentDidMount()
           .then(() => {
             expect(wrapper.instance().props.logout.mock.calls.length).toBe(2);
+            expect(lastConsoleOutuput).toBe(null);
+            lastConsoleOutuput = null;
             return wrapper
               .instance()
               .componentDidMount()
@@ -86,6 +124,8 @@ describe("<Status /> interactions", () => {
                 expect(wrapper.instance().props.logout.mock.calls.length).toBe(
                   3,
                 );
+                expect(lastConsoleOutuput).not.toBe(null);
+                lastConsoleOutuput = null;
               });
           });
       });

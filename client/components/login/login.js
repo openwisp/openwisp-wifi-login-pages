@@ -6,11 +6,15 @@ import PropTypes from "prop-types";
 import qs from "qs";
 import React from "react";
 import {Link, Route} from "react-router-dom";
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-import {loginApiUrl} from "../../constants";
+import {loginApiUrl, loginError, loginSuccess, mainToastId} from "../../constants";
 import getAssetPath from "../../utils/get-asset-path";
+import getErrorText from "../../utils/get-error-text";
 import getParameterByName from "../../utils/get-parameter-by-name";
 import getText from "../../utils/get-text";
+import logError from "../../utils/log-error";
 import renderAdditionalInfo from "../../utils/render-additional-info";
 import Contact from "../contact-box";
 import Modal from "../modal";
@@ -68,16 +72,18 @@ export default class Login extends React.Component {
     })
       .then(() => {
         authenticate(true);
+        toast.success(loginSuccess, {
+          toastId: mainToastId
+        });
       })
       .catch(error => {
         const {data} = error.response;
+        const errorText = getErrorText(error, loginError);
+        logError(error, errorText);
+        toast.error(errorText);
         this.setState({
           errors: {
             ...errors,
-            ...(data.non_field_errors
-              ? {nonField: data.non_field_errors[0]}
-              : {nonField: ""}),
-            ...(data.detail ? {nonField: data.detail} : {}),
             ...(data.email ? {email: data.email.toString()} : {email: ""}),
             ...(data.password ? {password: data.password} : {password: ""}),
           },

@@ -22,6 +22,7 @@
   },
   "rules": {
     "array-bracket-spacing": [2, "never"],
+    "eol-last": ["error", "always"],
     "semi": [2, "always"],
     "jsx-a11y/label-has-for": 0,
     "react/prefer-stateless-function": [0],

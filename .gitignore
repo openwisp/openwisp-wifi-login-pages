@@ -25,6 +25,10 @@ yarn-error.log*
 #vscode
 .vscode
 
+#vim
+.*.swp
+.*.swo
+
 #other
 /org-configurations
 client/config.json

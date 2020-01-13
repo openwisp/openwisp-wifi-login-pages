@@ -6,9 +6,13 @@ import PropTypes from "prop-types";
 import qs from "qs";
 import React from "react";
 import {Link, Route} from "react-router-dom";
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-import {passwordConfirmError, registerApiUrl} from "../../constants";
+import {mainToastId, passwordConfirmError, registerApiUrl, registerError, registerSuccess} from "../../constants";
+import getErrorText from "../../utils/get-error-text";
 import getText from "../../utils/get-text";
+import logError from "../../utils/log-error";
 import renderAdditionalInfo from "../../utils/render-additional-info";
 import Contact from "../contact-box";
 import Modal from "../modal";
@@ -70,9 +74,15 @@ export default class Registration extends React.Component {
           success: true,
         });
         authenticate(true);
+        toast.success(registerSuccess, {
+          toastId: mainToastId,
+        });
       })
       .catch(error => {
         const {data} = error.response;
+        const errorText = getErrorText(error, registerError);
+        logError(error, errorText);
+        toast.error(errorText);
         this.setState({
           errors: {
             ...errors,
@@ -83,9 +93,6 @@ export default class Registration extends React.Component {
             ...(data.password2
               ? {password2: data.password2.toString()}
               : {password2: ""}),
-              ...(data.detail
-                ? {nonField: data.detail.toString()}
-                : {nonField: ""}),
           },
         });
       });

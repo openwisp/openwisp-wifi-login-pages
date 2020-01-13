@@ -4,6 +4,7 @@ import axios from "axios";
 import {shallow} from "enzyme";
 import React from "react";
 import ShallowRenderer from "react-test-renderer/shallow";
+import {toast} from 'react-toastify';
 
 import getConfig from "../../utils/get-config";
 import Registration from "./registration";
@@ -42,9 +43,19 @@ describe("<Registration /> rendering", () => {
 describe("<Registration /> interactions", () => {
   let props;
   let wrapper;
+  let originalError;
+  let lastConsoleOutuput;
   beforeEach(() => {
+    originalError = console.error;
+    lastConsoleOutuput = null;
+    console.error = (data) => {
+      lastConsoleOutuput = data;
+    };
     props = createTestProps();
     wrapper = shallow(<Registration {...props} />);
+  });
+  afterEach(() => {
+    console.error = originalError;
   });
   it("should change state values when handleChange function is invoked", () => {
     wrapper
@@ -75,6 +86,26 @@ describe("<Registration /> interactions", () => {
         });
       })
       .mockImplementationOnce(() => {
+        return Promise.reject({
+          status: 500,
+          statusText: "Internal server error",
+          response: {
+            data: {
+              detail:	"Internal server error",
+            },
+          },
+        });
+      })
+      .mockImplementationOnce(() => {
+        return Promise.reject({
+          status: 504,
+          statusText: "Gateway Timeout",
+          response: {
+            data: {}
+          },
+        });
+      })
+      .mockImplementationOnce(() => {
         return Promise.resolve();
       });
     wrapper.setState({
@@ -82,6 +113,7 @@ describe("<Registration /> interactions", () => {
       password2: "wrong password1",
     });
     const event = {preventDefault: () => {}};
+    const spyToast = jest.spyOn(toast, 'error');
     wrapper.instance().handleSubmit(event);
     expect(
       wrapper.update().find(".owisp-registration-error-confirm"),
@@ -105,11 +137,42 @@ describe("<Registration /> interactions", () => {
       .then(() => {
         expect(wrapper.instance().state.errors).toEqual({
           email: "email error",
-          nonField: "nonField error",
           password1: "password1 error",
           password2: "",
         });
-        expect(wrapper.find(".owisp-registration-error")).toHaveLength(3);
+        expect(wrapper.find(".owisp-registration-error")).toHaveLength(2);
+        expect(
+          wrapper.instance().props.authenticate.mock.calls.length,
+        ).toBe(0);
+        expect(lastConsoleOutuput).not.toBe(null);
+        expect(spyToast.mock.calls.length).toBe(1);
+        lastConsoleOutuput = null;
+      })
+      .then(() => {
+        return wrapper
+          .instance()
+          .handleSubmit(event)
+          .then(() => {
+            expect(
+              wrapper.instance().props.authenticate.mock.calls.length,
+            ).toBe(0);
+            expect(lastConsoleOutuput).not.toBe(null);
+            expect(spyToast.mock.calls.length).toBe(2);
+            lastConsoleOutuput = null;
+          });
+      })
+      .then(() => {
+        return wrapper
+          .instance()
+          .handleSubmit(event)
+          .then(() => {
+            expect(
+              wrapper.instance().props.authenticate.mock.calls.length,
+            ).toBe(0);
+            expect(lastConsoleOutuput).not.toBe(null);
+            expect(spyToast.mock.calls.length).toBe(3);
+            lastConsoleOutuput = null;
+          });
       })
       .then(() => {
         return wrapper
@@ -124,6 +187,9 @@ describe("<Registration /> interactions", () => {
             expect(
               wrapper.instance().props.authenticate.mock.calls.length,
             ).toBe(1);
+            expect(lastConsoleOutuput).toBe(null);
+            expect(spyToast.mock.calls.length).toBe(3);
+            lastConsoleOutuput = null;
           });
       });
   });

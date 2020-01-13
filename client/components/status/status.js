@@ -6,9 +6,12 @@ import qs from "qs";
 import React from "react";
 import { Cookies } from "react-cookie";
 import { Link } from 'react-router-dom';
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
-import { validateApiUrl } from "../../constants";
+import { validateApiUrl, loginError, logoutSuccess, mainToastId } from "../../constants";
 import getText from "../../utils/get-text";
+import logError from "../../utils/log-error";
 import Contact from "../contact-box";
 
 export default class Status extends React.Component {
@@ -29,10 +32,18 @@ export default class Status extends React.Component {
       .then(response => {
         if (response.data["control:Auth-Type"] !== "Accept") {
           logout(cookies, orgSlug);
+          toast.error(loginError, {
+            onOpen: () => toast.dismiss(mainToastId),
+          });
+          logError(response, '"control:Auth-Type" !== "Accept"');
         }
       })
-      .catch(() => {
+      .catch((error) => {
         logout(cookies, orgSlug);
+        toast.error(loginError, {
+          onOpen: () => toast.dismiss(mainToastId),
+        });
+        logError(error, loginError);
       });
   }
 
@@ -84,7 +95,10 @@ export default class Status extends React.Component {
                     className="owisp-status-btn owisp-status-logout-btn"
                     id="owisp-status-logout-btn"
                     value={getText(buttons.logout.text, language)}
-                    onClick={() => logout(cookies, orgSlug)}
+                    onClick={() => {
+                      logout(cookies, orgSlug);
+                      toast.success(logoutSuccess);
+                    }}
                   />
                 </>
               ) : null}
