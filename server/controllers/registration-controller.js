@@ -5,6 +5,7 @@ import qs from "qs";
 
 import config from "../config.json";
 import defaultConfig from "../utils/default-config";
+import logInternalError from "../utils/log-internal-error";
 
 const registration = (req, res) => {
   const reqOrg = req.params.organization;
@@ -53,6 +54,7 @@ const registration = (req, res) => {
             .send();
         })
         .catch(error => {
+          if (error.response && error.response.status === 500) logInternalError(error);
           // forward error
           try {
             res
@@ -60,6 +62,7 @@ const registration = (req, res) => {
               .type("application/json")
               .send(error.response.data);
           } catch (err) {
+            logInternalError(error);
             res
               .status(500)
               .type("application/json")

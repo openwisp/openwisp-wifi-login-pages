@@ -3,6 +3,7 @@ import axios from "axios";
 import {shallow} from "enzyme";
 import React from "react";
 import ShallowRenderer from "react-test-renderer/shallow";
+import {toast} from 'react-toastify';
 
 import getConfig from "../../utils/get-config";
 import Login from "./login";
@@ -64,9 +65,19 @@ describe("<Login /> rendering", () => {
 describe("<Login /> interactions", () => {
   let props;
   let wrapper;
+  let originalError;
+  let lastConsoleOutuput;
   beforeEach(() => {
+    originalError = console.error;
+    lastConsoleOutuput = null;
+    console.error = (data) => {
+      lastConsoleOutuput = data;
+    };
     props = createTestProps();
     wrapper = shallow(<Login {...props} />);
+  });
+  afterEach(() => {
+    console.error = originalError;
   });
   it("should change state values when handleChange function is invoked", () => {
     wrapper
@@ -93,19 +104,71 @@ describe("<Login /> interactions", () => {
         });
       })
       .mockImplementationOnce(() => {
+        return Promise.reject({
+          status: 500,
+          statusText: "Internal server error",
+          response: {
+            data: {
+              detail:	"Internal server error",
+            }
+          }
+        });
+      })
+      .mockImplementationOnce(() => {
+        return Promise.reject({
+          response: {
+            data: {}
+          },
+          status: 504,
+          statusText: "Gateway Timeout"
+        });
+      })
+      .mockImplementationOnce(() => {
         return Promise.resolve();
       });
     const event = {preventDefault: () => {}};
+    const spyToast = jest.spyOn(toast, 'error');
     return wrapper
       .instance()
       .handleSubmit(event)
       .then(() => {
         expect(wrapper.instance().state.errors).toEqual({
           email: "email error",
-          nonField: "error details",
           password: "password error",
         });
-        expect(wrapper.find(".owisp-login-error")).toHaveLength(3);
+        expect(wrapper.find(".owisp-login-error")).toHaveLength(2);
+        expect(
+          wrapper.instance().props.authenticate.mock.calls.length,
+        ).toBe(0);
+        expect(lastConsoleOutuput).not.toBe(null);
+        expect(spyToast.mock.calls.length).toBe(1);
+        lastConsoleOutuput = null;
+      })
+      .then(() => {
+        return wrapper
+          .instance()
+          .handleSubmit(event)
+          .then(() => {
+            expect(
+              wrapper.instance().props.authenticate.mock.calls.length,
+            ).toBe(0);
+            expect(lastConsoleOutuput).not.toBe(null);
+            expect(spyToast.mock.calls.length).toBe(2);
+            lastConsoleOutuput = null;
+          });
+      })
+      .then(() => {
+        return wrapper
+          .instance()
+          .handleSubmit(event)
+          .then(() => {
+            expect(
+              wrapper.instance().props.authenticate.mock.calls.length,
+            ).toBe(0);
+            expect(lastConsoleOutuput).not.toBe(null);
+            expect(spyToast.mock.calls.length).toBe(3);
+            lastConsoleOutuput = null;
+          });
       })
       .then(() => {
         return wrapper
@@ -116,6 +179,9 @@ describe("<Login /> interactions", () => {
             expect(
               wrapper.instance().props.authenticate.mock.calls.length,
             ).toBe(1);
+            expect(lastConsoleOutuput).toBe(null);
+            expect(spyToast.mock.calls.length).toBe(3);
+            lastConsoleOutuput = null;
           });
       });
   });

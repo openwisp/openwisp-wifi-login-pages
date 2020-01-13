@@ -5,9 +5,13 @@ import PropTypes from "prop-types";
 import qs from "qs";
 import React from "react";
 import {Link} from "react-router-dom";
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import {confirmApiUrl, passwordConfirmError} from "../../constants";
+import getErrorText from "../../utils/get-error-text";
 import getText from "../../utils/get-text";
+import logError from "../../utils/log-error";
 
 export default class PasswordConfirm extends React.Component {
   constructor(props) {
@@ -62,16 +66,12 @@ export default class PasswordConfirm extends React.Component {
           errors: {},
           success: response.data.detail,
         });
+        toast.success(response.data.detail);
       })
       .catch(error => {
-        const {data} = error.response;
-
-        // eslint-disable-next-line no-nested-ternary
-        const errorText = data.detail
-          ? data.detail
-          : data.non_field_errors
-          ? data.non_field_errors[0]
-          : "";
+        const errorText = getErrorText(error);
+        logError(error, errorText);
+        toast.error(errorText);
 
         this.setState({
           success: false,

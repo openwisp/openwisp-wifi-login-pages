@@ -4,6 +4,7 @@ import qs from "qs";
 
 import config from "../config.json";
 import defaultConfig from "../utils/default-config";
+import logInternalError from "../utils/log-internal-error";
 
 const passwordResetConfirm = (req, res) => {
   const reqOrg = req.params.organization;
@@ -40,6 +41,7 @@ const passwordResetConfirm = (req, res) => {
             .send(response.data);
         })
         .catch(error => {
+          if (error.response && error.response.status === 500) logInternalError(error);
           // forward error
           try {
             res
@@ -47,6 +49,7 @@ const passwordResetConfirm = (req, res) => {
               .type("application/json")
               .send(error.response.data);
           } catch (err) {
+            logInternalError(error);
             res
               .status(500)
               .type("application/json")

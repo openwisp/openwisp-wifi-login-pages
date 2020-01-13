@@ -5,6 +5,7 @@ import {shallow} from "enzyme";
 import React from "react";
 import {BrowserRouter as Router} from "react-router-dom";
 import renderer from "react-test-renderer";
+import {toast} from 'react-toastify';
 
 import getConfig from "../../utils/get-config";
 import PasswordConfirm from "./password-confirm";
@@ -85,7 +86,17 @@ describe("<PasswordConfirm /> rendering", () => {
 describe("<PasswordConfirm /> interactions", () => {
   let props;
   let wrapper;
+  let originalError;
+  let lastConsoleOutuput;
   beforeEach(() => {
+    originalError = console.error;
+    lastConsoleOutuput = null;
+    console.error = (data) => {
+      lastConsoleOutuput = data;
+    };
+    afterEach(() => {
+      console.error = originalError;
+    });
     props = createTestProps();
     wrapper = shallow(<PasswordConfirm {...props} />);
   });
@@ -125,6 +136,8 @@ describe("<PasswordConfirm /> interactions", () => {
       newPassword1: "password",
       newPassword2: "password",
     });
+    const spyToastError = jest.spyOn(toast, "error");
+    const spyToastSuccess = jest.spyOn(toast, "success");
     return wrapper
       .instance()
       .handleSubmit({preventDefault: () => {}})
@@ -133,6 +146,10 @@ describe("<PasswordConfirm /> interactions", () => {
         expect(
           wrapper.find(".owisp-password-confirm-error-non-field"),
         ).toHaveLength(1);
+        expect(lastConsoleOutuput).not.toBe(null);
+        expect(spyToastError.mock.calls.length).toBe(1);
+        expect(spyToastSuccess.mock.calls.length).toBe(0);
+        lastConsoleOutuput = null;
       })
       .then(() => {
         return wrapper
@@ -142,6 +159,10 @@ describe("<PasswordConfirm /> interactions", () => {
             expect(wrapper.instance().state.errors.nonField).toEqual(
               "non field errors",
             );
+            expect(lastConsoleOutuput).not.toBe(null);
+            expect(spyToastError.mock.calls.length).toBe(2);
+            expect(spyToastSuccess.mock.calls.length).toBe(0);
+            lastConsoleOutuput = null;
           });
       })
       .then(() => {
@@ -157,6 +178,10 @@ describe("<PasswordConfirm /> interactions", () => {
             expect(
               wrapper.find(".owisp-password-confirm-success"),
             ).toHaveLength(1);
+            expect(lastConsoleOutuput).toBe(null);
+            expect(spyToastError.mock.calls.length).toBe(2);
+            expect(spyToastSuccess.mock.calls.length).toBe(1);
+            lastConsoleOutuput = null;
           });
       });
   });

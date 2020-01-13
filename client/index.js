@@ -6,6 +6,7 @@ import { CookiesProvider } from "react-cookie";
 import { render } from "react-dom";
 import { Provider, connect } from "react-redux";
 import { Router } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 import parseOrganizations from "./actions/parse-organizations";
 import config from "./config.json";
@@ -23,6 +24,7 @@ class BaseApp extends React.Component {
   render() {
     return (
       <Router history={history}>
+        <ToastContainer/>
         <Routes />
       </Router>
     );

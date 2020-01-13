@@ -5,6 +5,7 @@ import qs from "qs";
 
 import config from "../config.json";
 import defaultConfig from "../utils/default-config";
+import logInternalError from "../utils/log-internal-error";
 
 const obtainToken = (req, res) => {
   const reqOrg = req.params.organization;
@@ -48,6 +49,7 @@ const obtainToken = (req, res) => {
             .send();
         })
         .catch(error => {
+          if (error.response && error.response.status === 500) logInternalError(error);
           // forward error
           try {
             res
@@ -55,6 +57,7 @@ const obtainToken = (req, res) => {
               .type("application/json")
               .send(error.response.data);
           } catch (err) {
+            logInternalError(error);
             res
               .status(500)
               .type("application/json")

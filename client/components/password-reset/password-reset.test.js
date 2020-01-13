@@ -4,6 +4,7 @@ import {shallow} from "enzyme";
 import React from "react";
 import {BrowserRouter as Router} from "react-router-dom";
 import renderer from "react-test-renderer";
+import {toast} from 'react-toastify';
 
 import getConfig from "../../utils/get-config";
 import PasswordReset from "./password-reset";
@@ -62,9 +63,19 @@ describe("<PasswordReset /> rendering", () => {
 describe("<PasswordReset /> interactions", () => {
   let props;
   let wrapper;
+  let originalError;
+  let lastConsoleOutuput;
   beforeEach(() => {
+    originalError = console.error;
+    lastConsoleOutuput = null;
+    console.error = (data) => {
+      lastConsoleOutuput = data;
+    };
     props = createTestProps();
     wrapper = shallow(<PasswordReset {...props} />);
+  });
+  afterEach(() => {
+    console.error = originalError;
   });
   it("should change state values when handleChange function is invoked", () => {
     wrapper
@@ -86,6 +97,8 @@ describe("<PasswordReset /> interactions", () => {
       .mockImplementationOnce(() => {
         return Promise.resolve({data: {detail: true}});
       });
+    const spyToastError = jest.spyOn(toast, "error");
+    const spyToastSuccess = jest.spyOn(toast, "success");
     return wrapper
       .instance()
       .handleSubmit({preventDefault: () => {}})
@@ -95,6 +108,10 @@ describe("<PasswordReset /> interactions", () => {
           1,
         );
         expect(wrapper.find(".owisp-password-reset-error")).toHaveLength(1);
+        expect(lastConsoleOutuput).not.toBe(null);
+        expect(spyToastError.mock.calls.length).toBe(1);
+        expect(spyToastSuccess.mock.calls.length).toBe(0);
+        lastConsoleOutuput = null;
       })
       .then(() => {
         return wrapper
@@ -104,6 +121,10 @@ describe("<PasswordReset /> interactions", () => {
             expect(wrapper.instance().state.errors.email).toEqual(
               "non field errors",
             );
+            expect(lastConsoleOutuput).not.toBe(null);
+            expect(spyToastError.mock.calls.length).toBe(2);
+            expect(spyToastSuccess.mock.calls.length).toBe(0);
+            lastConsoleOutuput = null;
           });
       })
       .then(() => {
@@ -119,6 +140,10 @@ describe("<PasswordReset /> interactions", () => {
             expect(wrapper.find(".owisp-password-reset-success")).toHaveLength(
               1,
             );
+            expect(lastConsoleOutuput).toBe(null);
+            expect(spyToastError.mock.calls.length).toBe(2);
+            expect(spyToastSuccess.mock.calls.length).toBe(1);
+            lastConsoleOutuput = null;
           });
       });
   });

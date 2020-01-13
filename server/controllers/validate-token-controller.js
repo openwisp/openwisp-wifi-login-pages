@@ -5,6 +5,7 @@ import qs from "qs";
 
 import config from "../config.json";
 import defaultConfig from "../utils/default-config";
+import logInternalError from "../utils/log-internal-error";
 
 const validateToken = (req, res) => {
   const reqOrg = req.params.organization;
@@ -58,6 +59,7 @@ const validateToken = (req, res) => {
                 .send(responseAuth.data);
             })
             .catch(errorAuth => {
+              if (errorAuth.response && errorAuth.response.status === 500) logInternalError(errorAuth);
               res
                 .status(errorAuth.response.status)
                 .type("application/json")
@@ -65,6 +67,7 @@ const validateToken = (req, res) => {
             });
         })
         .catch(error => {
+          if (error.response && error.response.status === 500) logInternalError(error);
           // forward error
           try {
             res
@@ -72,6 +75,7 @@ const validateToken = (req, res) => {
               .type("application/json")
               .send(error.response.data);
           } catch (err) {
+            logInternalError(error);
             res
               .status(500)
               .type("application/json")
