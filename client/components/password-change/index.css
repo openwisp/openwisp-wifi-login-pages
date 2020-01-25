@@ -1,44 +1,52 @@
-.owisp-passchange-page {
-  max-width: 50%;
-  max-height: 100%;
+.owisp-password-change-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 27px 0 27px 0;
+  font-weight: bold;
+}
+
+.owisp-password-change-form {
+  max-width: 400px;
+  min-width: 400px;
+  background-color: #d3d3d3;
+  padding: 30px;
   display: flex;
   flex-direction: column;
-  align-items: top;
-  margin-left: 24%;
+  justify-content: flex-start;
 }
 
-.owisp-passchange-container {
-  max-width: 400px;
-  max-height: 100%;
-  margin-top: 30px;
-  background-color: #eee;
-  padding: 40px;
-  margin-bottom: 48.1vh;
-}
-
-.title {
+.owisp-password-change-form-title {
   font-size: 20px;
   font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 20px;
 }
 
-.owisp-passchange-input {
-  padding: 0 8px;
-  border-radius: 4px;
-  font-size: 14px;
+.owisp-password-change-input {
   height: 33px;
-  border: 1px solid #ccc;
+  line-height: 40px;
+  padding: 0 8px;
   box-sizing: border-box;
-  width: 21rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  background-color: #fff;
+  color: #000;
   font-weight: bold;
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
+  font-size: 14px;
+  width: 100%;
 }
 
-.owisp-passchange-submit {
+.owisp-password-change-btn {
   display: block;
   margin-top: 10px;
   padding: 10px 20px;
-  background: #444;
+  background-color: rgba(0, 0, 0, 0.5);
   outline: none;
   border-radius: 5px;
   color: #fff;
@@ -48,36 +56,55 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  border: none;
 }
 
-.owisp-passchange-submit:hover {
-  transition: all 0.3s ease-in;
-  transform: translateY(-1px);
-  background-color: #2b2b2b;
+.owisp-password-change-btn:hover {
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
-.owisp-passchange-error {
-  color: red;
-  font-size: 12px;
-  font-weight: bold;
-}
+.owisp-password-change-error {
+  margin-top: 3px;
 
-.owisp-passchange-label {
   font-size: 14px;
-  font-weight: bold;
-  display: block;
-}
 
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  align-items: center;
+  width: 100%;
+  color: #ffffff;
+  background: #d93025;
+  border-radius: 3px;
+  padding: 4px;
+  box-sizing: border-box;
+}
+.owisp-password-change-error-icon {
+  display: inline-block;
+  min-width: 16px;
+  text-align: center;
+  margin-right: 4px;
+  font-weight: 600;
+}
+.owisp-password-change-label {
+  width: 100%;
+  margin-bottom: 10px;
+}
+.owisp-password-change-label-text {
+  color: #000;
+  text-transform: capitalize;
+}
 @media (max-width: 700px) {
-  .owisp-passchange-page {
+  .owisp-password-change-container {
     max-width: 95%;
     margin-left: 20px;
   }
-  .owisp-passchange-container {
-    width: 80%;
+  .owisp-password-change-form {
+    min-width: 80%;
     padding: 25px;
   }
-  .owisp-passchange-input {
+  .owisp-password-change-input {
     width: 18rem;
   }
 }

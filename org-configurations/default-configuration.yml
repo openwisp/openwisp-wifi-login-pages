@@ -276,7 +276,7 @@ client:
           label:
             en: "Confirm new password"
           placeholder:
-            en: "Repeat your new password"
+            en: "Re-enter new password"
       buttons:
         submit_button:
           label: null
