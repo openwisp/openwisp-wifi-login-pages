@@ -41,6 +41,7 @@
   font-weight: 600;
   padding: 8px 15px;
   border-radius: 5px;
+  margin-top: 20px;
   text-decoration: none;
   cursor: pointer;
   border: none;
@@ -51,6 +52,11 @@
 .owisp-status-logout-btn:focus {
   outline: dotted 1px #ffffff;
   outline-offset: 0.5px;
+}
+.owisp-status-link {
+  text-decoration: underline;
+  font-weight: bold;
+  color: #333;
 }
 @media screen and (min-width: 767px) and (max-width: 1000px) {
   .owisp-status-inner {
