@@ -1,3 +1,4 @@
+const CompressionPlugin = require('compression-webpack-plugin');
 const CopyPlugin = require("copy-webpack-plugin");
 const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
@@ -67,6 +68,13 @@ module.exports = (env, argv) => {
         template: path.resolve(CURRENT_WORKING_DIR, "public/index.html"),
       }),
       new HardSourceWebpackPlugin(),
+      new CompressionPlugin({
+        filename: '[path].gz[query]',
+        algorithm: 'gzip',
+        test: /\.js$|\.css$|\.html$/,
+        threshold: 10240,
+        minRatio: 0.8,
+      }),
       new CopyPlugin([
         {
           from: path.resolve(CURRENT_WORKING_DIR, "client/assets"),
