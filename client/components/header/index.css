@@ -49,14 +49,15 @@
   margin: 0 5px;
   text-transform: uppercase;
   border: none;
-  color: #ffffff;
+  color: #000;
+  font-weight: bold;
   background: none;
   outline: none;
   cursor: pointer;
   border-bottom: 3px rgba(0, 0, 0, 0) solid;
 }
 .owisp-header-language-btn.active {
-  border-bottom-color: #ffffff;
+  border-bottom-color: #000;
 }
 .owisp-header-row-2 {
   display: flex;
@@ -81,7 +82,7 @@
   padding: 8px 15px;
   margin-right: 10px;
   border-radius: 5px;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.5);
   color: #fff;
   font-weight: bold;
   font-size: 14px;
@@ -89,9 +90,13 @@
   border: 0 none;
   cursor: pointer;
 }
-.owisp-header-link:hover,
+.owisp-header-link:hover
+ {
+  background-color: rgba(0, 0, 0, 1);
+}
 .owisp-header-link.active {
-  background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.2) !important;
+    cursor: default;
 }
 .owisp-header-mobile {
   display: none;
