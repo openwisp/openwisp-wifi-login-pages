@@ -51,7 +51,6 @@
 }
 .owisp-login-label-text {
   color: #000;
-  text-transform: capitalize;
 }
 .owisp-login-input {
   padding: 0 8px;
@@ -72,8 +71,7 @@
 .owisp-login-form-btn {
   width: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  color: #000;
-  text-transform: capitalize;
+  color: #fff;
   border: 0;
   border-radius: 3px;
   cursor: pointer;
@@ -192,7 +190,6 @@
   margin-top: 20px;
 }
 .owisp-login-link {
-  text-transform: capitalize;
   color: #000;
 }
 .owisp-login-link:focus {
