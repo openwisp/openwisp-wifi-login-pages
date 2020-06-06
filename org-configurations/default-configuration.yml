@@ -4,6 +4,7 @@ slug: "default"
 
 # configuration variables for the server app
 server:
+  # put the URL of openwisp-radius here
   host: "http://127.0.0.1:8000"
   proxy_urls:
     password_change: "/api/v1/{org_slug}/account/password/change"
