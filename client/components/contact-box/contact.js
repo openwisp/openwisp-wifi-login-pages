@@ -12,7 +12,7 @@ export default class Contact extends React.Component {
     const {contactPage, language, orgSlug} = this.props;
     const {email, helpdesk, social_links} = contactPage;
     return (
-      <React.Fragment>
+      <>
         <div className="owisp-contact-container">
           <div className="owisp-contact-inner">
             <div className="owisp-contact-row">
@@ -65,7 +65,7 @@ export default class Contact extends React.Component {
             <div className="owisp-contact-inner"/>
           </div>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

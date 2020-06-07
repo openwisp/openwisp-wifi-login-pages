@@ -45,6 +45,18 @@ or
 yarn
 ```
 
+#### Update dependencies
+
+```
+npm update
+```
+
+or
+
+```
+yarn upgrade
+```
+
 ### Setup
 
 Write the configuration of the organization in a yml file in `org-configuration` directory.
@@ -73,6 +85,7 @@ $ npm run coveralls		# Run coveralls
 $ npm run lint			# Run ESLint
 $ npm run lint:fix 	 	# Run ESLint with automatically fix problems option
 $ npm test 			# Run tests
+$ npm test -- -u 			# Update Jest Snapshots
 ```
 
 #### Using custom ports

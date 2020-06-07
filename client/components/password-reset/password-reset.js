@@ -72,7 +72,7 @@ export default class PasswordReset extends React.Component {
     const loginPageLink = passwordReset.login_page_link;
     const {buttons} = passwordReset;
     return (
-      <React.Fragment>
+      <>
         <div className="owisp-password-reset-container">
           {success ? (
             <div className="owisp-password-reset-form">
@@ -170,7 +170,7 @@ export default class PasswordReset extends React.Component {
             </form>
           )}
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

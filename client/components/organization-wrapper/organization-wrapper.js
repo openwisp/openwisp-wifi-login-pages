@@ -41,7 +41,7 @@ export default class OrganizationWrapper extends React.Component {
     const cssPath = organization.configuration.css_path;
     if (organization.exists === true) {
       return (
-        <React.Fragment>
+        <>
           <div className="owisp-app-container">
             <Route
               path={match.path}
@@ -130,19 +130,19 @@ export default class OrganizationWrapper extends React.Component {
               />
             </Helmet>
           ) : null}
-        </React.Fragment>
+        </>
       );
     }
     if (organization.exists === false) {
       return (
-        <React.Fragment>
+        <>
           <div className="owisp-org-wrapper-not-found">
             <DoesNotExist />
           </div>
           <Helmet>
             <title>Page not found</title>
           </Helmet>
-        </React.Fragment>
+        </>
       );
     }
     return (

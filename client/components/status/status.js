@@ -52,7 +52,7 @@ export default class Status extends React.Component {
     const { content, links, buttons } = statusPage;
     const contentArr = getText(content, language).split("\n");
     return (
-      <React.Fragment>
+      <>
         <div className="owisp-status-container">
           <div className="owisp-status-inner">
             <div className="owisp-status-content-div">
@@ -108,7 +108,7 @@ export default class Status extends React.Component {
             </div>
           </div>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

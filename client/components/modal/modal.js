@@ -40,7 +40,7 @@ export default class Modal extends React.Component {
   render() {
     const {prevPath} = this.props;
     return (
-      <React.Fragment>
+      <>
         <div className="owisp-modal-container">
           <div className="owisp-modal-row-close">
             <Link to={prevPath} className="owisp-modal-close-btn">
@@ -53,7 +53,7 @@ export default class Modal extends React.Component {
             dangerouslySetInnerHTML={this.renderContent()}
           />
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

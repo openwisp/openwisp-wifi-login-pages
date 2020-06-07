@@ -72,7 +72,7 @@ export default class PasswordChange extends React.Component {
     const { language, passwordChange } = this.props;
     const { errors, newPassword1, newPassword2 } = this.state;
     return (
-      <React.Fragment>
+      <>
         <div className="owisp-password-change-container">
           <form className="owisp-password-change-form" onSubmit={this.handleSubmit}>
             <div className="owisp-password-change-form-title">{getText(passwordChange.title, language)}</div>
@@ -181,7 +181,7 @@ export default class PasswordChange extends React.Component {
             />
           </form>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

@@ -110,7 +110,7 @@ export default class Registration extends React.Component {
     const {buttons, additional_info_text, input_fields, links} = registration;
     const {email, password1, password2, errors, success} = this.state;
     return (
-      <React.Fragment>
+      <>
         <div className="owisp-registration-container">
           <div className="owisp-registration-container-inner">
             <form
@@ -338,7 +338,7 @@ export default class Registration extends React.Component {
             return <Modal {...props} prevPath={match.url} />;
           }}
         />
-      </React.Fragment>
+      </>
     );
   }
 }

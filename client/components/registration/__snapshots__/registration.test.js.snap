@@ -92,19 +92,19 @@ exports[`<Registration /> rendering should render correctly 1`] = `
           className="owisp-registration-add-info"
         >
           By signing up, you accept the 
-          <ForwardRef
+          <Link
             className="owisp-registration-additional-link"
             to="/default/registration/terms-and-conditions"
           >
             terms and conditions
-          </ForwardRef>
+          </Link>
            and the 
-          <ForwardRef
+          <Link
             className="owisp-registration-additional-link"
             to="/default/registration/privacy-policy"
           >
             privacy policy
-          </ForwardRef>
+          </Link>
            of this WiFi service. 
         </div>
         <React.Fragment>
@@ -118,12 +118,12 @@ exports[`<Registration /> rendering should render correctly 1`] = `
         <div
           className="owisp-login-links-div"
         >
-          <ForwardRef
+          <Link
             className="owisp-registration-link"
             to="/default/login"
           >
             Already have an account? Log in
-          </ForwardRef>
+          </Link>
         </div>
       </form>
       <div
