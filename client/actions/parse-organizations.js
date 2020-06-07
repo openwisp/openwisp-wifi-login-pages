@@ -1,9 +1,10 @@
-import {PARSE_ORGANIZATIONS} from "../constants/action-types";
+import { PARSE_ORGANIZATIONS } from "../constants/action-types";
+import sortOrganizations from "../utils/sort-organizations";
 
 const parseOrganizations = config => {
   return {
     type: PARSE_ORGANIZATIONS,
-    payload: config,
+    payload: sortOrganizations(config),
   };
 };
 export default parseOrganizations;

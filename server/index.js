@@ -1,10 +1,9 @@
 import compression from "compression";
 import cookieParser from "cookie-parser";
-import express from "express";
 import cookiesMiddleware from "universal-cookie-express";
-import path from "path";
+import express from "express";
 import net from "net";
-
+import path from "path";
 import routes from "./routes";
 
 const app = express();
@@ -13,9 +12,9 @@ app.use(express.static(path.join(process.cwd(), "dist")));
 app.use(cookieParser());
 app.use(cookiesMiddleware());
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
 app.use("/api/v1/:organization/account", routes.account);
-app.get("*", function(req, res) {
+app.get("*", (req, res) => {
   res.sendFile(path.join(process.cwd(), "dist", "index.html"));
 });
 
@@ -44,12 +43,14 @@ const nextFreePort = (port, callback) => {
 // If a port was passed as an argument, use that port
 if (process.env.SERVER !== undefined) {
   app.listen(process.env.SERVER, () => {
+    // eslint-disable-next-line no-console
     console.log(`Server started on port ${process.env.SERVER}`);
   });
 } else {
   // Otherwise, find the next free port starting at the default port
   nextFreePort(DEFAULT_PORT, port => {
     app.listen(port, () => {
+      // eslint-disable-next-line no-console
       console.log(`Server started on port ${port}`);
     });
   });
