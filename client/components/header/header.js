@@ -52,7 +52,7 @@ export default class Header extends React.Component {
     const {logo, links} = header;
     const {pathname} = location;
     return (
-      <React.Fragment>
+      <>
         <div className="owisp-header-container owisp-header-desktop">
           <div className="owisp-header-row-1">
             <div className="owisp-header-row-1-inner">
@@ -206,7 +206,7 @@ export default class Header extends React.Component {
             </div>
           </div>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

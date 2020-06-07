@@ -109,7 +109,7 @@ export default class Login extends React.Component {
       additional_info_text,
     } = loginForm;
     return (
-      <React.Fragment>
+      <>
         <div className="owisp-login-container">
           <div className="owisp-login-container-inner">
             <form className="owisp-login-form" onSubmit={this.handleSubmit}>
@@ -338,7 +338,7 @@ export default class Login extends React.Component {
             return <Modal {...props} prevPath={match.url} />;
           }}
         />
-      </React.Fragment>
+      </>
     );
   }
 }

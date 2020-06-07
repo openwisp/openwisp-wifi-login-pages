@@ -11,7 +11,7 @@ export default class Footer extends React.Component {
     const {links} = footer;
     const secondaryText = footer.secondary_text;
     return (
-      <React.Fragment>
+      <>
         <div className="owisp-footer-container">
           <div className="owisp-footer-row-1">
             <div className="owisp-footer-row-1-inner">
@@ -37,7 +37,7 @@ export default class Footer extends React.Component {
             </div>
           </div>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

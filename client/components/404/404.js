@@ -11,7 +11,7 @@ export default class DoesNotExist extends React.Component {
   render() {
     const {orgSlug, language, page} = this.props;
     return (
-      <React.Fragment>
+      <>
         <div className="owisp-404-container">
           <div className="owisp-404-row-1">
             {page && page.heading ? getText(page.heading, language) : "Oops!"}
@@ -34,7 +34,7 @@ export default class DoesNotExist extends React.Component {
             </div>
           ) : null}
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

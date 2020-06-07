@@ -90,7 +90,7 @@ export default class PasswordConfirm extends React.Component {
     const loginPageLink = passwordConfirm.login_page_link;
     const {buttons} = passwordConfirm;
     return (
-      <React.Fragment>
+      <>
         <div className="owisp-password-confirm-container">
           {success ? (
             <div className="owisp-password-confirm-form">
@@ -246,7 +246,7 @@ export default class PasswordConfirm extends React.Component {
             </form>
           )}
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }
