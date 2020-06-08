@@ -1,18 +1,18 @@
 import "./index.css";
 
+import { Provider, connect } from "react-redux";
+
+import { CookiesProvider } from "react-cookie";
 import PropTypes from "prop-types";
 import React from "react";
-import { CookiesProvider } from "react-cookie";
+import { Router, Route } from "react-router-dom";
 import { render } from "react-dom";
-import { Provider, connect } from "react-redux";
-import { Router } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-
-import parseOrganizations from "./actions/parse-organizations";
-import config from "./config.json";
 import Routes from "./routes";
-import store from "./store";
+import config from "./config.json";
 import history from './utils/history';
+import parseOrganizations from "./actions/parse-organizations";
+import store from "./store";
 
 class BaseApp extends React.Component {
   constructor(props) {
@@ -24,8 +24,10 @@ class BaseApp extends React.Component {
   render() {
     return (
       <Router history={history}>
-        <ToastContainer/>
-        <Routes />
+        <ToastContainer />
+        <Route
+          path="/"
+          component={Routes} />
       </Router>
     );
   }
