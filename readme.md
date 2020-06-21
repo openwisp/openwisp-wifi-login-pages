@@ -27,13 +27,13 @@ Openwisp wifi login pages app to allow users to authenticate, sign up and know m
 
 ### Install
 
-#### Clone this repo
+##### Clone this repo
 
 ```
 git clone https://github.com/openwisp/openwisp-wifi-login-pages.git
 ```
 
-#### Install dependencies
+##### Install dependencies
 
 ```
 npm install
@@ -45,7 +45,7 @@ or
 yarn
 ```
 
-#### Update dependencies
+##### Update dependencies
 
 ```
 npm update
@@ -59,13 +59,17 @@ yarn upgrade
 
 ### Setup
 
-Write the configuration of the organization in a yml file in `org-configuration` directory.
-List of variables required in organization configuration:
+##### Add Organization configuration
 
-- name
-- slug
-- uuid: uuid of the organization
-- secret_key: token of the organization
+Run `$ npm run add-org`
+When you run this command you’re prompted to provide the following properties:
+
+| Property          | Description                                       |
+| ------------------| --------------------------------------------------|
+| name              | Required. Name of the organization.`              |
+| slug              | Required. Slug of the organization.               |
+| uuid              | Required. UUID of the organization.               |
+| secret_key        | Required. Token of the organization.              |
 
 Copy all the assets to `client/assets/{slug}` directory
 Run `$ npm run setup`
@@ -78,14 +82,15 @@ List of NPM Commands:
 ```
 $ npm run start			# Run the app (runs both, client and server)
 $ npm run setup			# Discover Organization configs and generate config.json and asset directories
+$ npm run add-org       # Add new Organization configuration
 $ npm run build			# Build the app
 $ npm run server		# Run server
 $ npm run client		# Run client
 $ npm run coveralls		# Run coveralls
 $ npm run lint			# Run ESLint
 $ npm run lint:fix 	 	# Run ESLint with automatically fix problems option
-$ npm test 			# Run tests
-$ npm test -- -u 			# Update Jest Snapshots
+$ npm test 		    	# Run tests
+$ npm test -- -u 		# Update Jest Snapshots
 ```
 
 #### Using custom ports
