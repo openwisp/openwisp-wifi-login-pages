@@ -5,11 +5,12 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import qs from "qs";
 import React from "react";
-import {Link, Route} from "react-router-dom";
-import {toast} from 'react-toastify';
+import { Link, Route } from "react-router-dom";
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import LoadingContext from "../../utils/loading-context";
 
-import {mainToastId, passwordConfirmError, registerApiUrl, registerError, registerSuccess} from "../../constants";
+import { mainToastId, passwordConfirmError, registerApiUrl, registerError, registerSuccess } from "../../constants";
 import getErrorText from "../../utils/get-error-text";
 import getText from "../../utils/get-text";
 import logError from "../../utils/log-error";
@@ -32,14 +33,15 @@ export default class Registration extends React.Component {
   }
 
   handleChange(event) {
-    this.setState({[event.target.name]: event.target.value});
+    this.setState({ [event.target.name]: event.target.value });
   }
 
   handleSubmit(event) {
+    const { setLoading } = this.context;
     event.preventDefault();
-    const {registration, orgSlug, authenticate} = this.props;
-    const {input_fields} = registration;
-    const {email, password1, password2, errors} = this.state;
+    const { registration, orgSlug, authenticate } = this.props;
+    const { input_fields } = registration;
+    const { email, password1, password2, errors } = this.state;
     if (input_fields.password_confirm) {
       if (password1 !== password2) {
         this.setState({
@@ -50,8 +52,9 @@ export default class Registration extends React.Component {
         return false;
       }
     }
-    this.setState({errors: {...errors, password2: null}});
+    this.setState({ errors: { ...errors, password2: null } });
     const url = registerApiUrl.replace("{orgSlug}", orgSlug);
+    setLoading(true);
     return axios({
       method: "post",
       headers: {
@@ -73,26 +76,28 @@ export default class Registration extends React.Component {
           password2: "",
           success: true,
         });
+        setLoading(false);
         authenticate(true);
         toast.success(registerSuccess, {
           toastId: mainToastId,
         });
       })
       .catch(error => {
-        const {data} = error.response;
+        const { data } = error.response;
         const errorText = getErrorText(error, registerError);
         logError(error, errorText);
+        setLoading(false);
         toast.error(errorText);
         this.setState({
           errors: {
             ...errors,
-            ...(data.email ? {email: data.email.toString()} : {email: ""}),
+            ...(data.email ? { email: data.email.toString() } : { email: "" }),
             ...(data.password1
-              ? {password1: data.password1.toString()}
-              : {password1: ""}),
+              ? { password1: data.password1.toString() }
+              : { password1: "" }),
             ...(data.password2
-              ? {password2: data.password2.toString()}
-              : {password2: ""}),
+              ? { password2: data.password2.toString() }
+              : { password2: "" }),
           },
         });
       });
@@ -107,8 +112,8 @@ export default class Registration extends React.Component {
       orgSlug,
       match,
     } = this.props;
-    const {buttons, additional_info_text, input_fields, links} = registration;
-    const {email, password1, password2, errors, success} = this.state;
+    const { buttons, additional_info_text, input_fields, links } = registration;
+    const { email, password1, password2, errors, success } = this.state;
     return (
       <>
         <div className="owisp-registration-container">
@@ -139,7 +144,7 @@ export default class Registration extends React.Component {
                       <input
                         className={`owisp-registration-input owisp-registration-input-email ${
                           errors.email ? "error" : ""
-                        }`}
+                          }`}
                         type={input_fields.email.type}
                         id="owisp-registration-email"
                         required
@@ -158,9 +163,9 @@ export default class Registration extends React.Component {
                         title={
                           input_fields.email.pattern_description
                             ? getText(
-                                input_fields.email.pattern_description,
-                                language,
-                              )
+                              input_fields.email.pattern_description,
+                              language,
+                            )
                             : undefined
                         }
                       />
@@ -206,9 +211,9 @@ export default class Registration extends React.Component {
                         title={
                           input_fields.password.pattern_description
                             ? getText(
-                                input_fields.password.pattern_description,
-                                language,
-                              )
+                              input_fields.password.pattern_description,
+                              language,
+                            )
                             : undefined
                         }
                       />
@@ -236,7 +241,7 @@ export default class Registration extends React.Component {
                       <input
                         className={`owisp-registration-input owisp-registration-input-confirm ${
                           errors.password2 ? "error" : ""
-                        }`}
+                          }`}
                         type={input_fields.password_confirm.type}
                         id="owisp-registration-password-confirm"
                         required
@@ -255,10 +260,10 @@ export default class Registration extends React.Component {
                         title={
                           input_fields.password_confirm.pattern_description
                             ? getText(
-                                input_fields.password_confirm
-                                  .pattern_description,
-                                language,
-                              )
+                              input_fields.password_confirm
+                                .pattern_description,
+                              language,
+                            )
                             : undefined
                         }
                       />
@@ -330,7 +335,7 @@ export default class Registration extends React.Component {
             <div className="owisp-registration-contact-container">
               <Contact />
             </div>
-          </div> 
+          </div>
         </div>
         <Route
           path={`${match.path}/:name`}
@@ -342,7 +347,7 @@ export default class Registration extends React.Component {
     );
   }
 }
-
+Registration.contextType = LoadingContext;
 Registration.propTypes = {
   registration: PropTypes.shape({
     header: PropTypes.object,

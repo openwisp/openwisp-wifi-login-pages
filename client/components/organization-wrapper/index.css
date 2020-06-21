@@ -7,6 +7,10 @@
   min-height: 100vh;
   min-width: min-content;
 }
+.owisp-app-container.no-scroll {
+  height: 100vh;
+  overflow: hidden;
+}
 .owisp-middle {
   flex-grow: 1;
 }
@@ -17,6 +21,18 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
+}
+.owisp-full-page-loader-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 1);
 }
 .owisp-loader {
   border: 8px solid #f3f3f3;
