@@ -5,21 +5,23 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import qs from "qs";
 import React from "react";
-import {Link, Route} from "react-router-dom";
-import {toast} from 'react-toastify';
+import { Link, Route } from "react-router-dom";
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import {loginApiUrl, loginError, loginSuccess, mainToastId} from "../../constants";
+import { loginApiUrl, loginError, loginSuccess, mainToastId } from "../../constants";
 import getAssetPath from "../../utils/get-asset-path";
 import getErrorText from "../../utils/get-error-text";
 import getParameterByName from "../../utils/get-parameter-by-name";
 import getText from "../../utils/get-text";
+import LoadingContext from "../../utils/loading-context";
 import logError from "../../utils/log-error";
 import renderAdditionalInfo from "../../utils/render-additional-info";
 import Contact from "../contact-box";
 import Modal from "../modal";
 
 export default class Login extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -48,17 +50,19 @@ export default class Login extends React.Component {
   }
 
   handleChange(event) {
-    this.setState({[event.target.name]: event.target.value});
+    this.setState({ [event.target.name]: event.target.value });
   }
 
   handleSubmit(event) {
+    const { setLoading } = this.context;
     if (event) event.preventDefault();
-    const {orgSlug, authenticate} = this.props;
-    const {email, password, errors} = this.state;
+    const { orgSlug, authenticate } = this.props;
+    const { email, password, errors } = this.state;
     const url = loginApiUrl.replace("{orgSlug}", orgSlug);
     this.setState({
       errors: {},
     });
+    setLoading(true);
     return axios({
       method: "post",
       headers: {
@@ -75,24 +79,26 @@ export default class Login extends React.Component {
         toast.success(loginSuccess, {
           toastId: mainToastId
         });
+        setLoading(false);
       })
       .catch(error => {
-        const {data} = error.response;
+        const { data } = error.response;
         const errorText = getErrorText(error, loginError);
         logError(error, errorText);
         toast.error(errorText);
         this.setState({
           errors: {
             ...errors,
-            ...(data.email ? {email: data.email.toString()} : {email: ""}),
-            ...(data.password ? {password: data.password} : {password: ""}),
+            ...(data.email ? { email: data.email.toString() } : { email: "" }),
+            ...(data.password ? { password: data.password } : { password: "" }),
           },
         });
+        setLoading(false);
       });
   }
 
   render() {
-    const {errors, email, password} = this.state;
+    const { errors, email, password } = this.state;
     const {
       language,
       loginForm,
@@ -195,9 +201,9 @@ export default class Login extends React.Component {
                         title={
                           input_fields.email.pattern_description
                             ? getText(
-                                input_fields.email.pattern_description,
-                                language,
-                              )
+                              input_fields.email.pattern_description,
+                              language,
+                            )
                             : undefined
                         }
                       />
@@ -242,9 +248,9 @@ export default class Login extends React.Component {
                         title={
                           input_fields.password.pattern_description
                             ? getText(
-                                input_fields.password.pattern_description,
-                                language,
-                              )
+                              input_fields.password.pattern_description,
+                              language,
+                            )
                             : undefined
                         }
                       />
@@ -343,6 +349,7 @@ export default class Login extends React.Component {
   }
 }
 
+Login.contextType = LoadingContext;
 Login.propTypes = {
   loginForm: PropTypes.shape({
     social_login: PropTypes.shape({

@@ -4,8 +4,9 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import qs from "qs";
 import React from "react";
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import LoadingContext from "../../utils/loading-context";
 
 import { passwordChangeApiUrl, passwordChangeError, passwordConfirmError } from "../../constants";
 import getErrorText from "../../utils/get-error-text";
@@ -26,6 +27,8 @@ export default class PasswordChange extends React.Component {
   }
 
   handleSubmit(e) {
+    const { setLoading } = this.context;
+
     if (e) e.preventDefault();
     const { orgSlug } = this.props;
     const url = passwordChangeApiUrl.replace("{orgSlug}", orgSlug);
@@ -38,7 +41,7 @@ export default class PasswordChange extends React.Component {
       });
       return null;
     }
-
+    setLoading(true);
     return axios({
       method: "post",
       headers: {
@@ -51,11 +54,13 @@ export default class PasswordChange extends React.Component {
       }),
     }).then((response) => {
       toast.success(response.data.detail);
+      setLoading(false);
       history.replace(`/${orgSlug}/status`);
     }).catch((error) => {
       const errorText = getErrorText(error, passwordChangeError);
       logError(error, errorText);
       toast.error(errorText);
+      setLoading(false);
       this.setState({
         errors: {
           nonField: passwordChangeError,
@@ -185,7 +190,7 @@ export default class PasswordChange extends React.Component {
     );
   }
 }
-
+PasswordChange.contextType = LoadingContext;
 PasswordChange.propTypes = {
   orgSlug: PropTypes.string.isRequired,
   language: PropTypes.string.isRequired,

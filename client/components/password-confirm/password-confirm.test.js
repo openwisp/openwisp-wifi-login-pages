@@ -1,12 +1,13 @@
 /* eslint-disable prefer-promise-reject-errors */
 /* eslint-disable camelcase */
 import axios from "axios";
-import {shallow} from "enzyme";
+import { shallow } from "enzyme";
 import React from "react";
-import {BrowserRouter as Router} from "react-router-dom";
+import PropTypes from "prop-types";
+import { BrowserRouter as Router } from "react-router-dom";
 import renderer from "react-test-renderer";
-import {toast} from 'react-toastify';
-
+import { toast } from 'react-toastify';
+import { loadingContextValue } from "../../utils/loading-context";
 import getConfig from "../../utils/get-config";
 import PasswordConfirm from "./password-confirm";
 
@@ -50,7 +51,7 @@ describe("<PasswordConfirm /> rendering", () => {
   });
 
   it("should render password field correctly", () => {
-    const {password} = props.passwordConfirm.input_fields;
+    const { password } = props.passwordConfirm.input_fields;
     expect(wrapper.find(".owisp-password-confirm-label-password").text()).toBe(
       password.label.en,
     );
@@ -67,7 +68,7 @@ describe("<PasswordConfirm /> rendering", () => {
     ).toBe(password.type);
   });
   it("should render password confirm field correctly", () => {
-    const {password_confirm} = props.passwordConfirm.input_fields;
+    const { password_confirm } = props.passwordConfirm.input_fields;
     expect(wrapper.find(".owisp-password-confirm-label-confirm").text()).toBe(
       password_confirm.label.en,
     );
@@ -94,41 +95,45 @@ describe("<PasswordConfirm /> interactions", () => {
     console.error = (data) => {
       lastConsoleOutuput = data;
     };
-    afterEach(() => {
-      console.error = originalError;
-    });
+    PasswordConfirm.contextTypes = {
+      setLoading: PropTypes.func,
+      getLoading: PropTypes.func
+    };
     props = createTestProps();
-    wrapper = shallow(<PasswordConfirm {...props} />);
+    wrapper = shallow(<PasswordConfirm {...props} />, { context: loadingContextValue });
+  });
+  afterEach(() => {
+    console.error = originalError;
   });
   it("should change state values when handleChange function is invoked", () => {
     wrapper
       .find("#owisp-password-confirm-password")
-      .simulate("change", {target: {value: "123456", name: "newPassword1"}});
+      .simulate("change", { target: { value: "123456", name: "newPassword1" } });
     expect(wrapper.state("newPassword1")).toEqual("123456");
     wrapper
       .find("#owisp-password-confirm-password-confirm")
-      .simulate("change", {target: {value: "123456", name: "newPassword2"}});
+      .simulate("change", { target: { value: "123456", name: "newPassword2" } });
     expect(wrapper.state("newPassword2")).toEqual("123456");
   });
 
   it("should execute handleSubmit correctly when form is submitted", () => {
     axios
       .mockImplementationOnce(() => {
-        return Promise.reject({response: {data: {detail: "errors"}}});
+        return Promise.reject({ response: { data: { detail: "errors" } } });
       })
       .mockImplementationOnce(() => {
         return Promise.reject({
-          response: {data: {non_field_errors: ["non field errors"]}},
+          response: { data: { non_field_errors: ["non field errors"] } },
         });
       })
       .mockImplementationOnce(() => {
-        return Promise.resolve({data: {detail: true}});
+        return Promise.resolve({ data: { detail: true } });
       });
     wrapper.setState({
       newPassword1: "wrong password",
       newPassword2: "wrong password1",
     });
-    wrapper.instance().handleSubmit({preventDefault: () => {}});
+    wrapper.instance().handleSubmit({ preventDefault: () => { } });
     expect(
       wrapper.update().find(".owisp-password-confirm-error-confirm"),
     ).toHaveLength(1);
@@ -140,7 +145,7 @@ describe("<PasswordConfirm /> interactions", () => {
     const spyToastSuccess = jest.spyOn(toast, "success");
     return wrapper
       .instance()
-      .handleSubmit({preventDefault: () => {}})
+      .handleSubmit({ preventDefault: () => { } })
       .then(() => {
         expect(wrapper.instance().state.errors.nonField).toEqual("errors");
         expect(
@@ -154,7 +159,7 @@ describe("<PasswordConfirm /> interactions", () => {
       .then(() => {
         return wrapper
           .instance()
-          .handleSubmit({preventDefault: () => {}})
+          .handleSubmit({ preventDefault: () => { } })
           .then(() => {
             expect(wrapper.instance().state.errors.nonField).toEqual(
               "non field errors",
@@ -168,7 +173,7 @@ describe("<PasswordConfirm /> interactions", () => {
       .then(() => {
         return wrapper
           .instance()
-          .handleSubmit({preventDefault: () => {}})
+          .handleSubmit({ preventDefault: () => { } })
           .then(() => {
             expect(wrapper.instance().state.errors).toEqual({});
             expect(wrapper.instance().state.success).toBe(true);

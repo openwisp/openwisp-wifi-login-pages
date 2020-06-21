@@ -1,10 +1,12 @@
 /* eslint-disable prefer-promise-reject-errors */
 import axios from "axios";
 /* eslint-disable camelcase */
-import {shallow} from "enzyme";
+import { shallow } from "enzyme";
 import React from "react";
 import ShallowRenderer from "react-test-renderer/shallow";
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
+import PropTypes from "prop-types";
+import { loadingContextValue } from "../../utils/loading-context";
 
 import getConfig from "../../utils/get-config";
 import Registration from "./registration";
@@ -52,7 +54,11 @@ describe("<Registration /> interactions", () => {
       lastConsoleOutuput = data;
     };
     props = createTestProps();
-    wrapper = shallow(<Registration {...props} />);
+    Registration.contextTypes = {
+      setLoading: PropTypes.func,
+      getLoading: PropTypes.func
+    };
+    wrapper = shallow(<Registration {...props} />, { context: loadingContextValue });
   });
   afterEach(() => {
     console.error = originalError;
@@ -60,15 +66,15 @@ describe("<Registration /> interactions", () => {
   it("should change state values when handleChange function is invoked", () => {
     wrapper
       .find("#owisp-registration-email")
-      .simulate("change", {target: {value: "test email", name: "email"}});
+      .simulate("change", { target: { value: "test email", name: "email" } });
     expect(wrapper.state("email")).toEqual("test email");
     wrapper
       .find("#owisp-registration-password")
-      .simulate("change", {target: {value: "testpassword", name: "password1"}});
+      .simulate("change", { target: { value: "testpassword", name: "password1" } });
     expect(wrapper.state("password1")).toEqual("testpassword");
     wrapper
       .find("#owisp-registration-password-confirm")
-      .simulate("change", {target: {value: "testpassword", name: "password2"}});
+      .simulate("change", { target: { value: "testpassword", name: "password2" } });
     expect(wrapper.state("password2")).toEqual("testpassword");
   });
 
@@ -91,7 +97,7 @@ describe("<Registration /> interactions", () => {
           statusText: "Internal server error",
           response: {
             data: {
-              detail:	"Internal server error",
+              detail: "Internal server error",
             },
           },
         });
@@ -112,7 +118,7 @@ describe("<Registration /> interactions", () => {
       password1: "wrong password",
       password2: "wrong password1",
     });
-    const event = {preventDefault: () => {}};
+    const event = { preventDefault: () => { } };
     const spyToast = jest.spyOn(toast, 'error');
     wrapper.instance().handleSubmit(event);
     expect(

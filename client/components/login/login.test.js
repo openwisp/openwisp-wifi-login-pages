@@ -1,9 +1,11 @@
 /* eslint-disable prefer-promise-reject-errors */
 import axios from "axios";
-import {shallow} from "enzyme";
+import { shallow } from "enzyme";
 import React from "react";
 import ShallowRenderer from "react-test-renderer/shallow";
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
+import PropTypes from "prop-types";
+import { loadingContextValue } from "../../utils/loading-context";
 
 import getConfig from "../../utils/get-config";
 import Login from "./login";
@@ -74,7 +76,11 @@ describe("<Login /> interactions", () => {
       lastConsoleOutuput = data;
     };
     props = createTestProps();
-    wrapper = shallow(<Login {...props} />);
+    Login.contextTypes = {
+      setLoading: PropTypes.func,
+      getLoading: PropTypes.func
+    };
+    wrapper = shallow(<Login {...props} />, { context: loadingContextValue });
   });
   afterEach(() => {
     console.error = originalError;
@@ -82,11 +88,11 @@ describe("<Login /> interactions", () => {
   it("should change state values when handleChange function is invoked", () => {
     wrapper
       .find("#owisp-login-email")
-      .simulate("change", {target: {value: "test email", name: "email"}});
+      .simulate("change", { target: { value: "test email", name: "email" } });
     expect(wrapper.state("email")).toEqual("test email");
     wrapper
       .find("#owisp-login-password")
-      .simulate("change", {target: {value: "test password", name: "password"}});
+      .simulate("change", { target: { value: "test password", name: "password" } });
     expect(wrapper.state("password")).toEqual("test password");
   });
   it("should execute handleSubmit correctly when form is submitted", () => {
@@ -109,7 +115,7 @@ describe("<Login /> interactions", () => {
           statusText: "Internal server error",
           response: {
             data: {
-              detail:	"Internal server error",
+              detail: "Internal server error",
             }
           }
         });
@@ -126,7 +132,7 @@ describe("<Login /> interactions", () => {
       .mockImplementationOnce(() => {
         return Promise.resolve();
       });
-    const event = {preventDefault: () => {}};
+    const event = { preventDefault: () => { } };
     const spyToast = jest.spyOn(toast, 'error');
     return wrapper
       .instance()
