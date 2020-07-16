@@ -33,25 +33,10 @@
   margin-bottom: 10px;
 }
 .owisp-status-logout-btn {
-  background-color: rgba(0, 0, 0, 0.5);
   width: 100%;
   line-height: 24px;
-  color: #ffffff;
-  font-size: 16px;
-  font-weight: 600;
   padding: 8px 15px;
-  border-radius: 5px;
   margin-top: 20px;
-  text-decoration: none;
-  cursor: pointer;
-  border: none;
-}
-.owisp-status-logout-btn:hover {
-  background-color: rgba(0, 0, 0, 0.7);
-}
-.owisp-status-logout-btn:focus {
-  outline: dotted 1px #ffffff;
-  outline-offset: 0.5px;
 }
 .owisp-status-link {
   text-decoration: underline;

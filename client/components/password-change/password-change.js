@@ -167,7 +167,7 @@ export default class PasswordChange extends React.Component {
               : null}
             <input
               type='submit'
-              className="owisp-password-change-btn owisp-password-change-btn-submit"
+              className="owisp-password-change-btn owisp-password-change-btn-submit owisp-btn-primary"
               value={getText(passwordChange.buttons.submit_button.text, language)}
               pattern={
                 passwordChange.input_fields.password2.pattern

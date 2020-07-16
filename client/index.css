@@ -11,3 +11,20 @@ body {
 ::-moz-focus-inner {
   border: 0;
 }
+.owisp-btn-primary {
+  background-color: rgba(0, 0, 0, 0.5);
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffffff;
+  border-radius: 5px;
+  border: 0;
+  cursor: pointer;
+  text-decoration: none;
+}
+.owisp-btn-primary:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+.owisp-btn-primary:focus {
+  outline: dotted 1px #ffffff;
+  outline-offset: 0.5px;
+}

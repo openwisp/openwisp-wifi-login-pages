@@ -88,23 +88,10 @@
 .owisp-registration-submit-btn {
   width: 100%;
   font-size: 16px;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: #ffffff;
   text-transform: capitalize;
-  border: 0;
-  cursor: pointer;
   padding: 8px 0;
-  border-radius: 5px;
   line-height: 24px;
-  font-weight: bold;
   margin-bottom: 10px;
-}
-.owisp-registration-submit-btn:hover {
-  background-color: rgba(0, 0, 0, 0.7);
-}
-.owisp-registration-submit-btn:focus {
-  outline: dotted 1px #ffffff;
-  outline-offset: 0.5px;
 }
 .owisp-registration-error {
   margin-top: 3px;

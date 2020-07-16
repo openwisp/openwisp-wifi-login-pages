@@ -305,7 +305,7 @@ export default class Registration extends React.Component {
                   ) : null}
                   <input
                     type="submit"
-                    className="owisp-registration-form-btn owisp-registration-submit-btn"
+                    className="owisp-registration-form-btn owisp-registration-submit-btn owisp-btn-primary "
                     id="owisp-registration-submit-btn"
                     value={getText(buttons.register.text, language)}
                   />
