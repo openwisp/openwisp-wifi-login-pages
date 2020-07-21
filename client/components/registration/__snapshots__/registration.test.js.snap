@@ -109,7 +109,7 @@ exports[`<Registration /> rendering should render correctly 1`] = `
         </div>
         <React.Fragment>
           <input
-            className="owisp-registration-form-btn owisp-registration-submit-btn"
+            className="owisp-registration-form-btn owisp-registration-submit-btn owisp-btn-primary "
             id="owisp-registration-submit-btn"
             type="submit"
             value="sign up"

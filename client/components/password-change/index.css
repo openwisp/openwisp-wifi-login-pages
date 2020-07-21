@@ -46,23 +46,12 @@
   display: block;
   margin-top: 10px;
   padding: 10px 20px;
-  background-color: rgba(0, 0, 0, 0.5);
-  outline: none;
-  border-radius: 5px;
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
   width: max-content;
   display: flex;
   justify-content: center;
   align-items: center;
   border: none;
 }
-
-.owisp-password-change-btn:hover {
-  background-color: rgba(0, 0, 0, 0.7);
-}
-
 .owisp-password-change-error {
   margin-top: 3px;
 

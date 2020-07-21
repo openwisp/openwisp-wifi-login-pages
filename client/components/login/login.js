@@ -131,7 +131,7 @@ export default class Login extends React.Component {
                                 href={link.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="owisp-login-social-link"
+                                className="owisp-login-social-link owisp-btn-primary"
                                 key={link.url}
                               >
                                 <div>
@@ -292,7 +292,7 @@ export default class Login extends React.Component {
                   ) : null}
                   <input
                     type="submit"
-                    className="owisp-login-form-btn owisp-login-login-btn"
+                    className="owisp-login-form-btn owisp-login-login-btn owisp-btn-primary"
                     id="owisp-login-login-btn"
                     value={getText(buttons.login.text, language)}
                   />
@@ -313,7 +313,7 @@ export default class Login extends React.Component {
                   <div className="owisp-login-form-register-btn-div">
                     <Link
                       to={`/${orgSlug}/registration`}
-                      className="owisp-login-form-btn owisp-login-register-btn"
+                      className="owisp-login-form-btn owisp-login-register-btn owisp-btn-primary"
                     >
                       {getText(buttons.register.text, language)}
                     </Link>

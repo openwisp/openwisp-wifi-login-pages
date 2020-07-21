@@ -18,7 +18,7 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
               className="owisp-login-social-links-div"
             >
               <a
-                className="owisp-login-social-link"
+                className="owisp-login-social-link owisp-btn-primary"
                 href="test url"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -32,7 +32,7 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
                 </div>
               </a>
               <a
-                className="owisp-login-social-link"
+                className="owisp-login-social-link owisp-btn-primary"
                 href="https://control.co.ke/accounts/facebook/login/?next=%2Ffreeradius%2Fsocial-login%2Fstaging%2F%3Fcp%3Dhttp%3A%2F%2Fcontrol.brandfi.co.ke%2Floginpage%2F%26last%3D"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -124,7 +124,7 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
         </div>
         <React.Fragment>
           <input
-            className="owisp-login-form-btn owisp-login-login-btn"
+            className="owisp-login-form-btn owisp-login-login-btn owisp-btn-primary"
             id="owisp-login-login-btn"
             type="submit"
             value="Login"
@@ -145,7 +145,7 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
             className="owisp-login-form-register-btn-div"
           >
             <Link
-              className="owisp-login-form-btn owisp-login-register-btn"
+              className="owisp-login-form-btn owisp-login-register-btn owisp-btn-primary"
               to="/default/registration"
             >
               Sign up
@@ -195,7 +195,7 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
               className="owisp-login-social-links-div"
             >
               <a
-                className="owisp-login-social-link"
+                className="owisp-login-social-link owisp-btn-primary"
                 href="#"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -214,7 +214,7 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
                 </div>
               </a>
               <a
-                className="owisp-login-social-link"
+                className="owisp-login-social-link owisp-btn-primary"
                 href="#"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -233,7 +233,7 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
                 </div>
               </a>
               <a
-                className="owisp-login-social-link"
+                className="owisp-login-social-link owisp-btn-primary"
                 href="#"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -330,7 +330,7 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
         </div>
         <React.Fragment>
           <input
-            className="owisp-login-form-btn owisp-login-login-btn"
+            className="owisp-login-form-btn owisp-login-login-btn owisp-btn-primary"
             id="owisp-login-login-btn"
             type="submit"
             value="Login"
@@ -351,7 +351,7 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
             className="owisp-login-form-register-btn-div"
           >
             <Link
-              className="owisp-login-form-btn owisp-login-register-btn"
+              className="owisp-login-form-btn owisp-login-register-btn owisp-btn-primary"
               to="/default/registration"
             >
               Sign up

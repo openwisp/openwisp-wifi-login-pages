@@ -65,6 +65,17 @@ export default class Status extends React.Component {
                   );
                 return null;
               })}
+              {links
+                ? links.map(link => (
+                  <Link
+                    className="owisp-status-link"
+                    key={link.url}
+                    to={link.url.replace("{orgSlug}", orgSlug)}
+                  >
+                    {getText(link.text, language)}
+                  </Link>
+                ))
+                : null}
               {buttons.logout ? (
                 <>
                   {buttons.logout.label ? (
@@ -79,20 +90,9 @@ export default class Status extends React.Component {
                       </label>
                     </>
                   ) : null}
-                  {links
-                    ? links.map(link => (
-                      <Link
-                        className="owisp-status-link"
-                        key={link.url}
-                        to={link.url.replace("{orgSlug}", orgSlug)}
-                      >
-                        {getText(link.text, language)}
-                      </Link>
-                    ))
-                    : null}
                   <input
                     type="button"
-                    className="owisp-status-btn owisp-status-logout-btn"
+                    className="owisp-status-btn owisp-status-logout-btn owisp-btn-primary "
                     id="owisp-status-logout-btn"
                     value={getText(buttons.logout.text, language)}
                     onClick={() => {

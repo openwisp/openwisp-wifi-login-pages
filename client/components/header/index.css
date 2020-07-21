@@ -67,6 +67,7 @@
   flex-wrap: nowrap;
   width: 100%;
   background: #555;
+  min-height: 54px;
 }
 .owisp-header-row-2-inner {
   display: flex;
@@ -81,22 +82,11 @@
 .owisp-header-link {
   padding: 8px 15px;
   margin-right: 10px;
-  border-radius: 5px;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: #fff;
-  font-weight: bold;
   font-size: 14px;
-  text-decoration: none;
-  border: 0 none;
-  cursor: pointer;
-}
-.owisp-header-link:hover
- {
-  background-color: rgba(0, 0, 0, 1);
 }
 .owisp-header-link.active {
-    background-color: rgba(0, 0, 0, 0.2) !important;
-    cursor: default;
+  background-color: rgba(0, 0, 0, 0.2) !important;
+  cursor: default;
 }
 .owisp-header-mobile {
   display: none;
