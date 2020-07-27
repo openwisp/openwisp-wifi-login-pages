@@ -14,9 +14,9 @@ const passwordChange = (req, res) => {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
       const {host} = conf;
-      let changeUrl = conf.proxy_urls.password_change;
+      let url = conf.proxy_urls.password_change;
       // replacing org_slug param with the slug
-      changeUrl = changeUrl.replace("{org_slug}", org.slug);
+      url = url.replace("{org_slug}", org.slug);
       const timeout = conf.timeout * 1000;
       const authTokenCookie = req.cookies[`${conf.slug}_auth_token`];
       const token = cookie.unsign(authTokenCookie, conf.secret_key);
@@ -27,9 +27,9 @@ const passwordChange = (req, res) => {
           method: "post",
           headers: {
             "content-type": "application/x-www-form-urlencoded",
-            Authorization: `Token ${token}`,
+            Authorization: `Bearer ${token}`,
           },
-          url: `${host}${changeUrl}/`,
+          url: `${host}${url}/`,
           timeout,
           data: qs.stringify({
             new_password1: newPassword1,
