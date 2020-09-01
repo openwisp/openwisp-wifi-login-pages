@@ -18,3 +18,8 @@ script:
 
 after_success:
   - npm run coveralls
+
+notifications:
+  # will post a summary as a comment on github in case of failure
+  webhooks: https://www.travisbuddy.com/
+  on_success: never
