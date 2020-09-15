@@ -1,17 +1,9 @@
 {
-    "presets": [
-        "@babel/preset-env",
-        "@babel/preset-react"
-    ],
-    "plugins": [
-        [
-            "@babel/plugin-proposal-class-properties"
-        ],
-        [
-            "@babel/plugin-transform-arrow-functions"
-        ],
-        [
-            "@babel/plugin-syntax-dynamic-import"
-        ],
-    ],
+  "presets": ["@babel/preset-env", "@babel/preset-react"],
+  "plugins": [
+    ["@babel/plugin-transform-runtime"],
+    ["@babel/plugin-proposal-class-properties"],
+    ["@babel/plugin-transform-arrow-functions"],
+    ["@babel/plugin-syntax-dynamic-import"]
+  ]
 }

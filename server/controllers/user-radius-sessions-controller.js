@@ -1,44 +1,47 @@
 import axios from "axios";
 import cookie from "cookie-signature";
 import merge from "deepmerge";
-import qs from "qs";
-
 import config from "../config.json";
 import defaultConfig from "../utils/default-config";
 import logInternalError from "../utils/log-internal-error";
 
-const validateToken = (req, res) => {
+const getUserRadiusSessions = (req, res) => {
   const reqOrg = req.params.organization;
   const validSlug = config.some(org => {
     if (org.slug === reqOrg) {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
-      const { host } = conf;
-      let validateTokenUrl = conf.proxy_urls.validate_auth_token;
+      const {host} = conf;
+      let userRadiusSessionsUrl = conf.proxy_urls.user_radius_sessions;
       // replacing org_slug param with the slug
-      validateTokenUrl = validateTokenUrl.replace("{org_slug}", org.slug);
+      userRadiusSessionsUrl = userRadiusSessionsUrl.replace(
+        "{org_slug}",
+        org.slug,
+      );
       const timeout = conf.timeout * 1000;
-      let { token } = req.body;
+      let token = req.cookies[`${reqOrg}_auth_token`] || "";
+      const macaddr = req.cookies[`${reqOrg}_macaddr`] || "";
       token = cookie.unsign(token, conf.secret_key);
       // make AJAX request
       axios({
-        method: "post",
+        method: "get",
         headers: {
           "content-type": "application/x-www-form-urlencoded",
+          Authorization: `Bearer ${token}`,
         },
-        url: `${host}${validateTokenUrl}/`,
+        url: `${host}${userRadiusSessionsUrl}/`,
         timeout,
-        data: qs.stringify({ token }),
+        params: {calling_station_id: macaddr, is_open: true},
       })
         .then(response => {
-          delete response.data.auth_token;
           res
             .status(response.status)
             .type("application/json")
             .send(response.data);
         })
         .catch(error => {
-          if (error.response && error.response.status === 500) logInternalError(error);
+          if (error.response && error.response.status === 500)
+            logInternalError(error);
           // forward error
           try {
             res
@@ -69,4 +72,4 @@ const validateToken = (req, res) => {
   }
 };
 
-export default validateToken;
+export default getUserRadiusSessions;
