@@ -56,6 +56,9 @@
     width: 39%;
   }
 }
+.owisp-auth-hidden {
+  display: none;
+}
 @media screen and (min-width: 0px) and (max-width: 767px) {
   .owisp-status-inner {
     justify-content: space-between;

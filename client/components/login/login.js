@@ -58,7 +58,7 @@ export default class Login extends React.Component {
     if (event) event.preventDefault();
     const { orgSlug, authenticate } = this.props;
     const { email, password, errors } = this.state;
-    const url = loginApiUrl.replace("{orgSlug}", orgSlug);
+    const url = loginApiUrl(orgSlug);
     this.setState({
       errors: {},
     });

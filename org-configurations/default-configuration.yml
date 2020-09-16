@@ -14,6 +14,7 @@ server:
     user_auth_token: "/api/v1/{org_slug}/account/token"
     validate_auth_token: "/api/v1/{org_slug}/account/token/validate"
     authorize: "/api/v1/authorize"
+    user_radius_sessions: "/api/v1/{org_slug}/account/session"
   uuid: organization_uuid
   secret_key: organization_secret_key
   timeout: 2 #request timeout period in seconds
@@ -294,6 +295,28 @@ client:
       homepage_link:
         text:
           en: "Go back to homepage"
+
+    captive_portal_login_form:
+      method: post
+      action: http://localhost/
+      fields:
+        username: auth_user
+        password: auth_pass
+      macaddr_param_name: macaddr
+      additional_fields:
+        - name: zone
+          value: zone_name
+        - name: redirurl
+          value: http://localhost:8080/default/status
+        - name: accept
+          value: accept
+
+    captive_portal_logout_form:
+      method: post
+      action: http://localhost:8081
+      fields:
+        id: logout_id
+      additional_fields: []
 
   privacy_policy:
     title:
