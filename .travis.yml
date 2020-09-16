@@ -11,9 +11,12 @@ branches:
   only:
     - master
 
+before_script:
+  - pip install openwisp-utils
+
 script:
   - npm run setup
-  - npm run lint
+  - ./run-qa-checks
   - npm test
 
 after_success:
