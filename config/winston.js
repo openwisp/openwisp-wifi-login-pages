@@ -1,4 +1,5 @@
 import winston from "winston";
+
 const logger = new winston.createLogger({
     level: 'info',
     transports: [
@@ -6,4 +7,5 @@ const logger = new winston.createLogger({
     ],
     exitOnError: false
   });
+
 export default logger;

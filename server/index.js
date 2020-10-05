@@ -1,11 +1,11 @@
 import compression from "compression";
 import cookieParser from "cookie-parser";
 import express from "express";
-import morgan from 'morgan';
+import morgan from "morgan";
 import net from "net";
 import path from "path";
 import cookiesMiddleware from "universal-cookie-express";
-import logger from '../config/winston';
+import logger from "../config/winston";
 import routes from "./routes";
 
 const app = express();
@@ -46,7 +46,7 @@ const nextFreePort = (port, callback) => {
 
 app.use((err, req, res, next)  => {
   logger.error(`${req.method} - ${err.message}  - ${req.originalUrl} - ${req.ip}`);
-  next(err)
+  next(err);
 });
 
 // If a port was passed as an argument, use that port
