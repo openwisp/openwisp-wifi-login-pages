@@ -35,4 +35,7 @@ client/config.json
 !client/assets/
 client/assets/*
 !client/assets/default/
+!client/assets/fonts/
 server/config.json
+!logs
+logs/*

@@ -1,9 +1,11 @@
 import compression from "compression";
 import cookieParser from "cookie-parser";
-import cookiesMiddleware from "universal-cookie-express";
 import express from "express";
+import morgan from 'morgan';
 import net from "net";
 import path from "path";
+import cookiesMiddleware from "universal-cookie-express";
+import logger from '../config/winston';
 import routes from "./routes";
 
 const app = express();
@@ -13,6 +15,8 @@ app.use(cookieParser());
 app.use(cookiesMiddleware());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(morgan("combined", { stream: logger.stream.write }));
+
 app.use("/api/v1/:organization/account", routes.account);
 app.get("*", (req, res) => {
   res.sendFile(path.join(process.cwd(), "dist", "index.html"));
@@ -39,6 +43,11 @@ const nextFreePort = (port, callback) => {
     callback(port);
   });
 };
+
+app.use((err, req, res, next)  => {
+  logger.error(`${req.method} - ${err.message}  - ${req.originalUrl} - ${req.ip}`);
+  next(err)
+});
 
 // If a port was passed as an argument, use that port
 if (process.env.SERVER !== undefined) {
