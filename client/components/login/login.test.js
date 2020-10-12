@@ -20,7 +20,9 @@ const createTestProps = props => {
     loginForm: defaultConfig.components.login_form,
     privacyPolicy: defaultConfig.privacy_policy,
     termsAndConditions: defaultConfig.terms_and_conditions,
+    settings: {mobile_phone_verification: false},
     authenticate: jest.fn(),
+    verifyMobileNumber: jest.fn(),
     match: {
       path: "default/login",
     },
@@ -194,5 +196,38 @@ describe("<Login /> interactions", () => {
             lastConsoleOutuput = null;
           });
       });
+  });
+
+  it("should execute verifyMobileNumber if mobile phone verification needed", async () => {
+    props.settings = {mobile_phone_verification: true};
+    wrapper = shallow(<Login {...props} />, { context: loadingContextValue });
+
+    axios.mockImplementationOnce(() => {
+      return Promise.reject({
+        response: {
+          status: 401,
+          statusText: "unauthorized",
+          data: "",
+        },
+      });
+    });
+
+    wrapper
+      .find("#owisp-login-email")
+      .simulate("change", { target: { value: "test email", name: "email" } });
+    expect(wrapper.state("email")).toEqual("test email");
+    wrapper
+      .find("#owisp-login-password")
+      .simulate("change", { target: { value: "test password", name: "password" } });
+    expect(wrapper.state("password")).toEqual("test password");
+
+    const event = {preventDefault: () => {}};
+    await wrapper.instance().handleSubmit(event);
+    const verifyMock = wrapper.instance().props.verifyMobileNumber.mock;
+    expect(verifyMock.calls.length).toBe(1);
+    expect(verifyMock.calls.pop()).toEqual([true]);
+    const authenticateMock = wrapper.instance().props.authenticate.mock;
+    expect(authenticateMock.calls.length).toBe(1);
+    expect(authenticateMock.calls.pop()).toEqual([true]);
   });
 });

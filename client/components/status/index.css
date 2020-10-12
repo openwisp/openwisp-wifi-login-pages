@@ -43,6 +43,9 @@
   font-weight: bold;
   color: #333;
 }
+div.fieldset {
+  margin-top: 20px
+}
 @media screen and (min-width: 767px) and (max-width: 1000px) {
   .owisp-status-inner {
     width: 98%;

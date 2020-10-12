@@ -9,7 +9,12 @@ import { Link, Route } from "react-router-dom";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { loginApiUrl, loginError, loginSuccess, mainToastId } from "../../constants";
+import {
+  loginApiUrl,
+  loginError,
+  loginSuccess,
+  mainToastId
+} from "../../constants";
 import getAssetPath from "../../utils/get-asset-path";
 import getErrorText from "../../utils/get-error-text";
 import getParameterByName from "../../utils/get-parameter-by-name";
@@ -56,13 +61,25 @@ export default class Login extends React.Component {
   handleSubmit(event) {
     const { setLoading } = this.context;
     if (event) event.preventDefault();
-    const { orgSlug, authenticate } = this.props;
+    const { orgSlug, authenticate, verifyMobileNumber, settings } = this.props;
     const { email, password, errors } = this.state;
     const url = loginApiUrl(orgSlug);
     this.setState({
       errors: {},
     });
     setLoading(true);
+
+    const handleAuthentication = function(needsMobileVerification = false) {
+      authenticate(true);
+      toast.success(loginSuccess, {
+        toastId: mainToastId
+      });
+      setLoading(false);
+      if (needsMobileVerification) {
+        verifyMobileNumber(true);
+      }
+    };
+
     return axios({
       method: "post",
       headers: {
@@ -75,14 +92,13 @@ export default class Login extends React.Component {
       }),
     })
       .then(() => {
-        authenticate(true);
-        toast.success(loginSuccess, {
-          toastId: mainToastId
-        });
-        setLoading(false);
+        return handleAuthentication();
       })
       .catch(error => {
         const { data } = error.response;
+        if (error.response.status === 401 && settings.mobile_phone_verification) {
+          return handleAuthentication(true);
+        }
         const errorText = getErrorText(error, loginError);
         logError(error, errorText);
         toast.error(errorText);
@@ -93,7 +109,7 @@ export default class Login extends React.Component {
             ...(data.password ? { password: data.password } : { password: "" }),
           },
         });
-        setLoading(false);
+        return setLoading(false);
       });
   }
 
@@ -392,4 +408,8 @@ Login.propTypes = {
     content: PropTypes.object,
   }).isRequired,
   authenticate: PropTypes.func.isRequired,
+  verifyMobileNumber: PropTypes.func.isRequired,
+  settings: PropTypes.shape({
+    mobile_phone_verification: PropTypes.bool
+  }).isRequired,
 };

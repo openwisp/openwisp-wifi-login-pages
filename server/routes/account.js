@@ -6,6 +6,8 @@ import passwordReset from "../controllers/password-reset-controller";
 import registration from "../controllers/registration-controller";
 import getUserRadiusSessions from "../controllers/user-radius-sessions-controller";
 import validateToken from "../controllers/validate-token-controller";
+import {createMobilePhoneToken, verifyMobilePhoneToken} from "../controllers/mobile-phone-token-controller";
+import mobilePhoneNumberChange from "../controllers/mobile-phone-number-change-controller";
 
 const router = Router({mergeParams: true});
 
@@ -16,5 +18,8 @@ router.post("/password/reset/confirm/", passwordResetConfirm);
 router.post("/password/reset", passwordReset);
 router.post("/", registration);
 router.get("/session/", getUserRadiusSessions);
+router.post("/phone/token", createMobilePhoneToken);
+router.post("/phone/verify", verifyMobilePhoneToken);
+router.post("/phone/change", mobilePhoneNumberChange);
 
 export default router;

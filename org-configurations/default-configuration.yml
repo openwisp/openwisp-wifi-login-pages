@@ -47,18 +47,26 @@ client:
         - text:
             en: "Sign In" #link text in english
           url: "/default/login"
+          authenticated: false
         - text:
             en: "Sign Up"
           url: "/default/registration"
+          authenticated: false
+        - text:
+            en: "Change password"
+          url: "/default/change-password"
+          authenticated: true
 
     footer:
       links:
         - text:
             en: "link-1"
           url: "https://link-1.com"
+          authenticated: false
         - text:
             en: "link-2"
           url: "https://link-2.com"
+          authenticated: true
       # secondary text to be displayed in smaller size in next line.
       # Eg. copyright text
       secondary_text:

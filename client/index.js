@@ -5,7 +5,7 @@ import { Provider, connect } from "react-redux";
 import { CookiesProvider } from "react-cookie";
 import PropTypes from "prop-types";
 import React from "react";
-import { Router, Route } from "react-router-dom";
+import { Route, Router } from "react-router-dom";
 import { render } from "react-dom";
 import { ToastContainer } from "react-toastify";
 import Routes from "./routes";

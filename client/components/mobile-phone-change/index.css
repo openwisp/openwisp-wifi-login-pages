@@ -1,0 +1,127 @@
+.owisp-phone-number-change-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 27px 0 27px 0;
+}
+.owisp-phone-number-change-container-inner {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-grow: 1;
+  max-width: 1000px;
+}
+.owisp-main-content {
+  background: #d3d3d3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 53%;
+  box-sizing: border-box;
+  font-size: 16px;
+  line-height: 30px;
+  padding: 3%;
+  border-radius: 2px;
+}
+.owisp-phone-number-change-contact-container {
+  width: 44%;
+  box-sizing: border-box;
+}
+
+form, .fieldset { width: 100% }
+.owisp-phone-number-change-form.success .owisp-phone-number-change-input:invalid {
+  box-shadow: none;
+}
+.owisp-phone-number-change-fieldset {
+  display: block;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-self: flex-start;
+  width: 100%;
+}
+.owisp-phone-number-change-label-text {
+  color: #000;
+}
+.owisp-phone-number-change-input {
+  padding: 0 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  height: 33px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  width: 100%;
+  font-weight: bold;
+}
+.owisp-phone-number-change-input:focus {
+  border-color: #a7a7a7;
+}
+.owisp-phone-number-change-input.error {
+  border-color: #d93025;
+}
+.owisp-phone-number-change-form-btn,
+.owisp-phone-number-change-container .owisp-btn-primary {
+  line-height: 24px;
+  padding: 8px 15px;
+  margin-top: 10px;
+}
+.owisp-btn-primary.full-line{
+  display: block;
+  box-sizing: border-box;
+  text-align: center;
+  width: 100%;
+}
+.owisp-phone-number-change-error {
+  margin-top: 3px;
+  font-size: 14px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  align-items: center;
+  width: 100%;
+  color: #ffffff;
+  background: #d93025;
+  border-radius: 3px;
+  padding: 4px;
+  box-sizing: border-box;
+}
+.owisp-phone-number-change-error-icon {
+  display: inline-block;
+  min-width: 16px;
+  text-align: center;
+  margin-right: 4px;
+  font-weight: 600;
+}
+.owisp-phone-number-change-submit-btn {
+  width: 100%;
+  display: block;
+  box-sizing: border-box;
+  text-align: center;
+}
+.owisp-phone-number-change-error-non-field {
+  box-sizing: border-box;
+  font-size: 16px;
+  width: 100%;
+  margin-top: 15px;
+}
+@media screen and (min-width: 0px) and (max-width: 767px) {
+  .owisp-phone-number-change-container-inner {
+    flex-direction: column;
+  }
+  .owisp-main-content {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  .owisp-phone-number-change-contact-container {
+    width: 100%;
+  }
+  .owisp-phone-number-change-social-link > div {
+    width: 80%;
+  }
+}

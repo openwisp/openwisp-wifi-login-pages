@@ -4,6 +4,7 @@ import customMerge from "./custom-merge";
 import getParameterByName from "./get-parameter-by-name";
 import renderAdditionalInfo from "./render-additional-info";
 import shouldLinkBeShown from "./should-link-be-shown";
+import tick from "./tick";
 
 describe("renderAdditionalInfo tests", () => {
   let textObj = {en: "sample test"};
@@ -116,5 +117,12 @@ describe("shouldLinkBeShown tests", () => {
     const link = {authenticated: true};
     const isAuthenticated = true;
     expect(shouldLinkBeShown(link, isAuthenticated)).toBe(true);
+  });
+});
+describe("tick tests", () => {
+  it("test tick", async () => {
+    jest.spyOn(process, "nextTick");
+    await tick();
+    expect(process.nextTick).toHaveBeenCalled();
   });
 });

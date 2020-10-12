@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Mobile Phone Token verification: standard flow should render successfully 1`] = `
+<div
+  className="owisp-mobile-phone-verification-container"
+>
+  <div
+    className="owisp-mobile-phone-verification-container-inner"
+  >
+    <div
+      className="owisp-main-content"
+    >
+      <form
+        className="owisp-mobile-phone-verification-form "
+        onSubmit={[Function]}
+      >
+        <div
+          className="owisp-mobile-phone-verification-verify-text"
+        >
+          Verify your mobile phone number (+393660011222) by inserting the code you received via SMS below.
+        </div>
+        <div
+          className="owisp-mobile-phone-verification-fieldset"
+        >
+          <div
+            className="owisp-mobile-phone-verification-label-text owisp-mobile-phone-verification-label-text-code"
+          >
+            <input
+              className="owisp-mobile-phone-verification-input owisp-mobile-phone-verification-input-code "
+              id="owisp-mobile-phone-verification-code"
+              name="code"
+              onChange={[Function]}
+              pattern="[0-9]{6,}"
+              placeholder="enter SMS verification code"
+              required={true}
+              title="this field must be a 6 digit numeric code"
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+        <button
+          className="owisp-mobile-phone-verification-form-btn owisp-mobile-phone-verification-submit-btn owisp-btn-primary "
+          id="owisp-mobile-phone-verification-submit-btn"
+          type="submit"
+        >
+          Submit
+        </button>
+      </form>
+      <div
+        className="fieldset"
+      >
+        <div
+          className="owisp-mobile-phone-verification-resend-text"
+        >
+          If you did not receive the verification SMS code, you can try sending it again by clicking below.
+        </div>
+        <button
+          className="owisp-btn-primary full-line"
+          id="owisp-mobile-phone-verification-resend-btn"
+          onClick={[Function]}
+          type="button"
+        >
+          Send a new verification code
+        </button>
+      </div>
+      <div
+        className="fieldset"
+      >
+        <div
+          className="owisp-mobile-phone-verification-change-text"
+        >
+          Wrong phone number?
+        </div>
+        <a
+          className="owisp-btn-primary full-line"
+          href="/test-org-2/change-phone-number"
+          id="owisp-mobile-phone-verification-change-btn"
+        >
+          Change your phone number
+        </a>
+      </div>
+      <div
+        className="fieldset"
+      >
+        <div
+          className="owisp-mobile-phone-verification-change-text"
+        >
+          If you need to cancel the process you can log out below.
+        </div>
+        <button
+          className="owisp-btn-primary full-line"
+          id="owisp-mobile-phone-verification-logout-btn"
+          onClick={[Function]}
+          type="button"
+        >
+          Logout
+        </button>
+      </div>
+    </div>
+    <div
+      className="owisp-mobile-phone-verification-contact-container"
+    >
+      <Connect(Contact) />
+    </div>
+  </div>
+</div>
+`;

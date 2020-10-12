@@ -17,3 +17,6 @@ export const validateApiUrl = orgSlug =>
   `/api/v1/${orgSlug}/account/token/validate`;
 export const getUserRadiusSessionsUrl = orgSlug =>
   `/api/v1/${orgSlug}/account/session`;
+export const createMobilePhoneTokenUrl = orgSlug => `/api/v1/${orgSlug}/account/phone/token`;
+export const verifyMobilePhoneTokenUrl = orgSlug => `/api/v1/${orgSlug}/account/phone/verify`;
+export const mobilePhoneChangeUrl = orgSlug => `/api/v1/${orgSlug}/account/phone/change`;

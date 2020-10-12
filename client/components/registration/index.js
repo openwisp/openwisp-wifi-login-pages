@@ -1,22 +1,23 @@
 import {connect} from "react-redux";
 
-import {SET_AUTHENTICATION_STATUS} from "../../constants/action-types";
+import {authenticate, verifyMobileNumber} from "../../actions/dispatchers";
 import Component from "./registration";
 
 const mapStateToProps = state => {
+  const conf = state.organization.configuration;
   return {
-    registration: state.organization.configuration.components.registration_form,
-    privacyPolicy: state.organization.configuration.privacy_policy,
-    termsAndConditions: state.organization.configuration.terms_and_conditions,
+    registration: conf.components.registration_form,
+    settings: conf.settings,
+    privacyPolicy: conf.privacy_policy,
+    termsAndConditions: conf.terms_and_conditions,
+    orgSlug: conf.slug,
     language: state.language,
-    orgSlug: state.organization.configuration.slug,
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
-    authenticate: status => {
-      dispatch({type: SET_AUTHENTICATION_STATUS, payload: status});
-    },
+    authenticate: authenticate(dispatch),
+    verifyMobileNumber: verifyMobileNumber(dispatch)
   };
 };
 

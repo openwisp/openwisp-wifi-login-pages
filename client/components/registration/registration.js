@@ -8,6 +8,8 @@ import React from "react";
 import { Link, Route } from "react-router-dom";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 import LoadingContext from "../../utils/loading-context";
 
 import { mainToastId, passwordConfirmError, registerApiUrl, registerError, registerSuccess } from "../../constants";
@@ -22,6 +24,7 @@ export default class Registration extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      phone_number: "",
       email: "",
       password1: "",
       password2: "",
@@ -39,9 +42,9 @@ export default class Registration extends React.Component {
   handleSubmit(event) {
     const { setLoading } = this.context;
     event.preventDefault();
-    const { registration, orgSlug, authenticate } = this.props;
+    const { registration, orgSlug, authenticate, verifyMobileNumber, settings } = this.props;
     const { input_fields } = registration;
-    const { email, password1, password2, errors } = this.state;
+    const { phone_number, email, password1, password2, errors } = this.state;
     if (input_fields.password_confirm) {
       if (password1 !== password2) {
         this.setState({
@@ -54,6 +57,17 @@ export default class Registration extends React.Component {
     }
     this.setState({ errors: { ...errors, password2: null } });
     const url = registerApiUrl.replace("{orgSlug}", orgSlug);
+    // prepare post data
+    const postData = {
+      email,
+      "username": email,
+      password1,
+      password2,
+    };
+    // add phone_number if SMS verification is enabled
+    if (settings.mobile_phone_verification) {
+      postData.phone_number = phone_number;
+    }
     setLoading(true);
     return axios({
       method: "post",
@@ -61,26 +75,28 @@ export default class Registration extends React.Component {
         "content-type": "application/x-www-form-urlencoded",
       },
       url,
-      data: qs.stringify({
-        email,
-        "username": email,
-        password1,
-        password2,
-      }),
+      data: qs.stringify(postData),
     })
       .then(() => {
         this.setState({
           errors: {},
+          phone_number: "",
           email: "",
           password1: "",
           password2: "",
           success: true,
         });
-        setLoading(false);
+        // SMS verification flow
+        if (settings.mobile_phone_verification) {
+          verifyMobileNumber(true);
+        // simple sign up flow
+        } else {
+          toast.success(registerSuccess, {
+            toastId: mainToastId,
+          });
+        }
         authenticate(true);
-        toast.success(registerSuccess, {
-          toastId: mainToastId,
-        });
+        setLoading(false);
       })
       .catch(error => {
         const { data } = error.response;
@@ -91,6 +107,7 @@ export default class Registration extends React.Component {
         this.setState({
           errors: {
             ...errors,
+            ...(data.phone_number ? { phone_number: data.phone_number } : null),
             ...(data.email ? { email: data.email.toString() } : { email: "" }),
             ...(data.password1
               ? { password1: data.password1.toString() }
@@ -106,6 +123,7 @@ export default class Registration extends React.Component {
   render() {
     const {
       registration,
+      settings,
       language,
       termsAndConditions,
       privacyPolicy,
@@ -113,7 +131,7 @@ export default class Registration extends React.Component {
       match,
     } = this.props;
     const { buttons, additional_info_text, input_fields, links } = registration;
-    const { email, password1, password2, errors, success } = this.state;
+    const { phone_number, email, password1, password2, errors, success } = this.state;
     return (
       <>
         <div className="owisp-registration-container">
@@ -132,6 +150,48 @@ export default class Registration extends React.Component {
                   </div>
                 )}
 
+                {settings.mobile_phone_verification && input_fields.phone_number ? (
+                  <>
+                    <div className="owisp-registration-label owisp-registration-label-phone-number">
+                      <label
+                        className="owisp-registration-label-text owisp-registration-label-text-phone-number"
+                        htmlFor="owisp-registration-phone-number"
+                      >
+                        {getText(input_fields.phone_number.label, language)}
+                      </label>
+
+                      {errors.phone_number && (
+                        <div className="owisp-registration-error owisp-registration-error-phone-number">
+                          <span className="owisp-registration-error-icon">!</span>
+                          <span className="owisp-registration-error-text owisp-registration-error-text-phone-number">
+                            {errors.phone_number}
+                          </span>
+                        </div>
+                      )}
+                      <PhoneInput
+                        name="phone_number"
+                        country={input_fields.phone_number.country}
+                        onlyCountries={input_fields.phone_number.only_countries || []}
+                        preferredCountries={input_fields.phone_number.preferred_countries || []}
+                        excludeCountries={input_fields.phone_number.exclude_countries || []}
+                        value={phone_number}
+                        onChange={value => this.setState({phone_number: `+${value}`})}
+                        placeholder={getText(
+                          input_fields.phone_number.placeholder,
+                          language,
+                        )}
+                        enableSearch={Boolean(input_fields.phone_number.enable_search)}
+                        inputProps={{
+                          name: "phone_number",
+                          id: "owisp-registration-phone-number",
+                          className: `form-control owisp-registration-input owisp-registration-input-phone-number ${errors.email ? "error" : ""}`,
+                          required: true,
+                        }}
+                      />
+                    </div>
+                  </>
+                ) : null}
+
                 {input_fields.email ? (
                   <>
                     <label
@@ -141,6 +201,14 @@ export default class Registration extends React.Component {
                       <div className="owisp-registration-label-text owisp-registration-label-text-email">
                         {getText(input_fields.email.label, language)}
                       </div>
+                      {errors.email && (
+                        <div className="owisp-registration-error owisp-registration-error-email">
+                          <span className="owisp-registration-error-icon">!</span>
+                          <span className="owisp-registration-error-text owisp-registration-error-text-email">
+                            {errors.email}
+                          </span>
+                        </div>
+                      )}
                       <input
                         className={`owisp-registration-input owisp-registration-input-email ${
                           errors.email ? "error" : ""
@@ -170,14 +238,7 @@ export default class Registration extends React.Component {
                         }
                       />
                     </label>
-                    {errors.email && (
-                      <div className="owisp-registration-error owisp-registration-error-email">
-                        <span className="owisp-registration-error-icon">!</span>
-                        <span className="owisp-registration-error-text owisp-registration-error-text-email">
-                          {errors.email}
-                        </span>
-                      </div>
-                    )}
+
                   </>
                 ) : null}
 
@@ -349,6 +410,9 @@ export default class Registration extends React.Component {
 }
 Registration.contextType = LoadingContext;
 Registration.propTypes = {
+  settings: PropTypes.shape({
+    mobile_phone_verification: PropTypes.bool
+  }).isRequired,
   registration: PropTypes.shape({
     header: PropTypes.object,
     buttons: PropTypes.shape({
@@ -376,6 +440,15 @@ Registration.propTypes = {
         pattern: PropTypes.string,
         pattern_description: PropTypes.object
       }),
+      phone_number: PropTypes.shape({
+        label: PropTypes.object,
+        placeholder: PropTypes.object,
+        country: PropTypes.string.isRequired,
+        only_countries: PropTypes.array,
+        preferred_countries: PropTypes.array,
+        exclude_countries: PropTypes.array,
+        enable_search: PropTypes.bool
+      })
     }),
     additional_info_text: PropTypes.object,
     links: PropTypes.object,
@@ -395,4 +468,5 @@ Registration.propTypes = {
     content: PropTypes.object,
   }).isRequired,
   authenticate: PropTypes.func.isRequired,
+  verifyMobileNumber: PropTypes.func.isRequired
 };

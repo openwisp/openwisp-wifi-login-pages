@@ -10,6 +10,7 @@ import logError from "../../utils/log-error";
 import Status from "./status";
 
 jest.mock("axios");
+jest.mock("../../utils/get-config");
 jest.mock("../../utils/log-error");
 logError.mockImplementation(jest.fn());
 
@@ -49,25 +50,29 @@ const createTestProps = props => {
     orgSlug: "default",
     statusPage: defaultConfig.components.status_page,
     cookies: new Cookies(),
-    logout: jest.fn(),
+    settings: defaultConfig.settings,
     captivePortalLoginForm: defaultConfig.components.captive_portal_login_form,
     captivePortalLogoutForm:
       defaultConfig.components.captive_portal_logout_form,
     location: {
       search: "?macaddr=4e:ed:11:2b:17:ae",
     },
+    logout: jest.fn(),
+    verifyMobileNumber: jest.fn(),
     ...props,
   };
 };
 
 describe("<Status /> rendering", () => {
   let props;
+
   it("should render correctly", () => {
     props = createTestProps();
     const renderer = new ShallowRenderer();
     const component = renderer.render(<Status {...props} />);
     expect(component).toMatchSnapshot();
   });
+
   it("should render without authenticated links when not authenticated", () => {
     const prop = createTestProps();
     prop.statusPage.links = links;
@@ -81,6 +86,7 @@ describe("<Status /> rendering", () => {
     expect(linkText).toContain("link-2");
     expect(linkText).not.toContain("link-3");
   });
+
   it("should render with authenticated links when authenticated", () => {
     const prop = createTestProps();
     prop.statusPage.links = links;
@@ -152,6 +158,10 @@ describe("<Status /> interactions", () => {
           status: 200,
           data: {
             response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+            radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
+            username: "tester@tester.com",
+            is_active: true,
+            phone_number: "",
           },
         });
       })
@@ -167,6 +177,10 @@ describe("<Status /> interactions", () => {
           status: 200,
           data: {
             response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+            radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
+            username: "tester@tester.com",
+            is_active: true,
+            phone_number: "",
           },
         });
       })
@@ -175,6 +189,10 @@ describe("<Status /> interactions", () => {
           status: 200,
           data: {
             response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+            radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
+            username: "tester@tester.com",
+            is_active: true,
+            phone_number: "",
           },
         });
       })
@@ -192,11 +210,11 @@ describe("<Status /> interactions", () => {
       context: {setLoading: jest.fn()},
     });
     await tick();
-    expect(wrapper.instance().state.sessions.length).toBe(1);
     expect(wrapper.instance().props.cookies.get("default_macaddr")).toBe(
       "4e:ed:11:2b:17:ae",
     );
     expect(Status.prototype.getUserRadiusSessions).toHaveBeenCalled();
+    expect(wrapper.instance().state.sessions.length).toBe(1);
 
     wrapper.setProps({
       location: {

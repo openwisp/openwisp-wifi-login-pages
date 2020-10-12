@@ -50,7 +50,7 @@
   color: #000;
   text-transform: capitalize;
 }
-.owisp-registration-input {
+.owisp-registration-input, .form-control {
   height: 33px;
   line-height: 40px;
   padding: 0 8px;
@@ -64,6 +64,7 @@
   font-size: 14px;
   width: 100%;
 }
+.form-control { width: 100% !important}
 .owisp-registration-input:focus {
   border-color: #666666;
 }

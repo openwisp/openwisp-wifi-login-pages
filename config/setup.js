@@ -100,6 +100,7 @@ fs.readdirSync(configDir).forEach(file => {
       const clientConfig = {
         name: config.name,
         slug: config.slug,
+        settings: config.settings,
         ...config.client,
       };
 
@@ -107,6 +108,7 @@ fs.readdirSync(configDir).forEach(file => {
       const serverConfig = {
         name: config.name,
         slug: config.slug,
+        settings: config.settings,
         ...config.server,
       };
 

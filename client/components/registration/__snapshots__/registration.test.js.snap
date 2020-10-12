@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Registration /> rendering should render correctly 1`] = `
-<React.Fragment>
+<Fragment>
   <div
     className="owisp-registration-container"
   >
@@ -15,78 +15,72 @@ exports[`<Registration /> rendering should render correctly 1`] = `
         <div
           className="owisp-registration-fieldset"
         >
-          <React.Fragment>
-            <label
-              className="owisp-registration-label owisp-registration-label-email"
-              htmlFor="owisp-registration-email"
+          <label
+            className="owisp-registration-label owisp-registration-label-email"
+            htmlFor="owisp-registration-email"
+          >
+            <div
+              className="owisp-registration-label-text owisp-registration-label-text-email"
             >
-              <div
-                className="owisp-registration-label-text owisp-registration-label-text-email"
-              >
-                email
-              </div>
-              <input
-                className="owisp-registration-input owisp-registration-input-email "
-                id="owisp-registration-email"
-                name="email"
-                onChange={[Function]}
-                pattern=".+@.+\\\\..+"
-                placeholder="email address"
-                required={true}
-                title={null}
-                type="email"
-                value=""
-              />
-            </label>
-          </React.Fragment>
-          <React.Fragment>
-            <label
-              className="owisp-registration-label owisp-registration-label-password"
-              htmlFor="owisp-registration-password"
+              email
+            </div>
+            <input
+              className="owisp-registration-input owisp-registration-input-email "
+              id="owisp-registration-email"
+              name="email"
+              onChange={[Function]}
+              pattern=".+@.+\\\\..+"
+              placeholder="email address"
+              required={true}
+              title={null}
+              type="email"
+              value=""
+            />
+          </label>
+          <label
+            className="owisp-registration-label owisp-registration-label-password"
+            htmlFor="owisp-registration-password"
+          >
+            <div
+              className="owisp-registration-label-text"
             >
-              <div
-                className="owisp-registration-label-text"
-              >
-                password
-              </div>
-              <input
-                className="owisp-registration-input owisp-registration-input-password
+              password
+            </div>
+            <input
+              className="owisp-registration-input owisp-registration-input-password
                       "
-                id="owisp-registration-password"
-                name="password1"
-                onChange={[Function]}
-                pattern=".{6,}"
-                placeholder="password"
-                required={true}
-                title="password must be a minimum of 6 characters"
-                type="password"
-                value=""
-              />
-            </label>
-          </React.Fragment>
-          <React.Fragment>
-            <label
-              className="owisp-registration-label owisp-registration-label-confirm"
-              htmlFor="owisp-registration-password-confirm"
+              id="owisp-registration-password"
+              name="password1"
+              onChange={[Function]}
+              pattern=".{6,}"
+              placeholder="password"
+              required={true}
+              title="password must be a minimum of 6 characters"
+              type="password"
+              value=""
+            />
+          </label>
+          <label
+            className="owisp-registration-label owisp-registration-label-confirm"
+            htmlFor="owisp-registration-password-confirm"
+          >
+            <div
+              className="owisp-registration-label-text"
             >
-              <div
-                className="owisp-registration-label-text"
-              >
-                confirm
-              </div>
-              <input
-                className="owisp-registration-input owisp-registration-input-confirm "
-                id="owisp-registration-password-confirm"
-                name="password2"
-                onChange={[Function]}
-                placeholder="confirm password"
-                required={true}
-                title={null}
-                type="password"
-                value=""
-              />
-            </label>
-          </React.Fragment>
+              confirm
+            </div>
+            <input
+              className="owisp-registration-input owisp-registration-input-confirm "
+              id="owisp-registration-password-confirm"
+              name="password2"
+              onChange={[Function]}
+              placeholder="confirm password"
+              required={true}
+              title={null}
+              type="password"
+              value=""
+            />
+          </label>
         </div>
         <div
           className="owisp-registration-add-info"
@@ -94,6 +88,7 @@ exports[`<Registration /> rendering should render correctly 1`] = `
           By signing up, you accept the 
           <Link
             className="owisp-registration-additional-link"
+            key="terms-and-conditions"
             to="/default/registration/terms-and-conditions"
           >
             terms and conditions
@@ -101,20 +96,19 @@ exports[`<Registration /> rendering should render correctly 1`] = `
            and the 
           <Link
             className="owisp-registration-additional-link"
+            key="privacy-policy"
             to="/default/registration/privacy-policy"
           >
             privacy policy
           </Link>
            of this WiFi service. 
         </div>
-        <React.Fragment>
-          <input
-            className="owisp-registration-form-btn owisp-registration-submit-btn owisp-btn-primary "
-            id="owisp-registration-submit-btn"
-            type="submit"
-            value="sign up"
-          />
-        </React.Fragment>
+        <input
+          className="owisp-registration-form-btn owisp-registration-submit-btn owisp-btn-primary "
+          id="owisp-registration-submit-btn"
+          type="submit"
+          value="sign up"
+        />
         <div
           className="owisp-login-links-div"
         >
@@ -129,7 +123,7 @@ exports[`<Registration /> rendering should render correctly 1`] = `
       <div
         className="owisp-registration-contact-container"
       >
-        <Memo(Connect(Contact)) />
+        <Connect(Contact) />
       </div>
     </div>
   </div>
@@ -137,5 +131,5 @@ exports[`<Registration /> rendering should render correctly 1`] = `
     path="default/registration/:name"
     render={[Function]}
   />
-</React.Fragment>
+</Fragment>
 `;

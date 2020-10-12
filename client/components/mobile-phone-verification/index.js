@@ -1,23 +1,20 @@
 import {connect} from "react-redux";
 
-import {authenticate, verifyMobileNumber} from "../../actions/dispatchers";
-import Component from "./login";
+import Component from "./mobile-phone-verification";
+import {logout, verifyMobileNumber} from "../../actions/dispatchers";
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const conf = state.organization.configuration;
   return {
-    loginForm: conf.components.login_form,
-    privacyPolicy: conf.privacy_policy,
-    termsAndConditions: conf.terms_and_conditions,
-    orgSlug: conf.slug,
+    mobile_phone_verification: conf.components.mobile_phone_verification_form,
     settings: conf.settings,
+    orgSlug: conf.slug,
     language: state.language,
   };
 };
-
 const mapDispatchToProps = dispatch => {
   return {
-    authenticate: authenticate(dispatch),
+    logout: logout(dispatch),
     verifyMobileNumber: verifyMobileNumber(dispatch)
   };
 };

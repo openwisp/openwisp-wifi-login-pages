@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import axios from "axios";
 import cookie from "cookie-signature";
 import merge from "deepmerge";
@@ -7,54 +8,36 @@ import config from "../config.json";
 import defaultConfig from "../utils/default-config";
 import logInternalError from "../utils/log-internal-error";
 
-const registration = (req, res) => {
+const mobilePhoneNumberChange = (req, res) => {
   const reqOrg = req.params.organization;
   const validSlug = config.some(org => {
     if (org.slug === reqOrg) {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
-      const {host, settings} = conf;
-      let registerUrl = conf.proxy_urls.registration;
+      const { host } = conf;
+      let url = conf.proxy_urls.mobile_phone_number_change;
       // replacing org_slug param with the slug
-      registerUrl = registerUrl.replace("{org_slug}", org.slug);
+      url = url.replace("{org_slug}", org.slug);
       const timeout = conf.timeout * 1000;
-      const {username, email, password1, password2} = req.body;
-      const postData = {
-        email,
-        username,
-        password1,
-        password2,
-      };
-      if (settings && settings.mobile_phone_verification) {
-        postData.phone_number = req.body.phone_number;
-      }
-      // send request
+      let token = req.cookies[`${reqOrg}_auth_token`] || "";
+      token = cookie.unsign(token, conf.secret_key);
+      const {phone_number} = req.body;
+      // make AJAX request
       axios({
         method: "post",
         headers: {
           "content-type": "application/x-www-form-urlencoded",
+          "Authorization": `Bearer ${token}`,
         },
-        url: `${host}${registerUrl}/`,
+        url: `${host}${url}/`,
         timeout,
-        data: qs.stringify(postData),
+        data: qs.stringify({ phone_number }),
       })
         .then(response => {
-          const authTokenCookie = cookie.sign(
-            response.data.key,
-            conf.secret_key,
-          );
-          const usernameCookie = cookie.sign(username, conf.secret_key);
-          // forward response
           res
             .status(response.status)
             .type("application/json")
-            .cookie(`${conf.slug}_auth_token`, authTokenCookie, {
-              maxAge: 1000 * 60 * 60 * 24,
-            })
-            .cookie(`${conf.slug}_username`, usernameCookie, {
-              maxAge: 1000 * 60 * 60 * 24,
-            })
-            .send();
+            .send(response.data);
         })
         .catch(error => {
           if (error.response && error.response.status === 500) logInternalError(error);
@@ -70,7 +53,7 @@ const registration = (req, res) => {
               .status(500)
               .type("application/json")
               .send({
-                detail: "Internal server error",
+                response_code: "INTERNAL_SERVER_ERROR",
               });
           }
         });
@@ -83,9 +66,9 @@ const registration = (req, res) => {
       .status(404)
       .type("application/json")
       .send({
-        detail: "Not found.",
+        response_code: "INTERNAL_SERVER_ERROR",
       });
   }
 };
 
-export default registration;
+export default mobilePhoneNumberChange;

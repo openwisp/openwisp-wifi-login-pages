@@ -1,0 +1,308 @@
+/* eslint-disable prefer-promise-reject-errors */
+/* eslint-disable camelcase */
+import axios from "axios";
+import { mount } from "enzyme";
+import React from "react";
+import PropTypes from "prop-types";
+import {Cookies} from "react-cookie";
+import { toast } from 'react-toastify';
+import { Provider } from 'react-redux';
+import { Redirect, Router } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
+import PhoneInput from 'react-phone-input-2';
+import { loadingContextValue } from "../../utils/loading-context";
+import getConfig from "../../utils/get-config";
+import tick from "../../utils/tick";
+import MobilePhoneChangeWrapped from "./mobile-phone-change";
+
+const MobilePhoneChange = MobilePhoneChangeWrapped.WrappedComponent;
+jest.mock("../../utils/get-config");
+jest.mock("axios");
+
+const createTestProps = function(props, configName = "test-org-2") {
+  const conf = getConfig(configName);
+  const componentConf = conf.components.phone_number_change_form;
+  componentConf.input_fields = {
+    phone_number: conf.components.registration_form.input_fields.phone_number
+  };
+  componentConf.text = {
+    token_sent: conf.components.mobile_phone_verification_form.text.token_sent
+  };
+  return {
+    phone_number_change: componentConf,
+    settings: conf.settings,
+    orgSlug: conf.slug,
+    language: "en",
+    cookies: new Cookies(),
+    logout: jest.fn(),
+    verifyMobileNumber: jest.fn(),
+    // needed for subcomponents
+    configuration: conf,
+    ...props,
+  };
+};
+
+const historyMock = createMemoryHistory();
+historyMock.entries = [];
+historyMock.location.key = "";
+
+const mountComponent = function(props) {
+  const mockedStore = {
+    subscribe: () => {},
+    dispatch: () => {},
+    // needed to render <Contact/>
+    getState: () => {
+      return {
+        organization: {
+          configuration: props.configuration,
+        },
+        language: props.language
+      };
+    }
+  };
+
+  return mount(
+    <Provider store={mockedStore}>
+      <Router history={historyMock}>
+        <MobilePhoneChangeWrapped {...props} />
+      </Router>
+    </Provider>,
+    {
+      context: {
+        store: mockedStore,
+        ...loadingContextValue
+      },
+      childContextTypes: {
+        store: PropTypes.object.isRequired,
+        setLoading: PropTypes.func,
+        getLoading: PropTypes.func,
+      }
+    }
+  );
+};
+
+describe("Change Phone Number: standard flow", () => {
+  let props;
+  let wrapper;
+  let lastConsoleOutuput;
+  let originalError;
+  const event = { preventDefault: jest.fn() };
+
+  beforeEach(() => {
+    props = createTestProps();
+    axios.mockImplementationOnce(() => {
+      return Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: {
+          response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+          radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
+          username: "tester@tester.com",
+          is_active: false,
+          phone_number: "+393660011222",
+        }
+      });
+    });
+    // console mocking
+    originalError = console.error;
+    lastConsoleOutuput = null;
+    console.error = (data) => {
+      lastConsoleOutuput = data;
+    };
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+    jest.resetAllMocks();
+    jest.restoreAllMocks();
+    console.error = originalError;
+  });
+
+  it("should render successfully", async () => {
+    jest.spyOn(MobilePhoneChange.prototype, "validateToken");
+    wrapper = await mountComponent(props);
+    expect(wrapper).toMatchSnapshot();
+    expect(axios).toHaveBeenCalled();
+    expect(MobilePhoneChange.prototype.validateToken).toHaveBeenCalled();
+    expect(wrapper.exists(MobilePhoneChange)).toBe(true);
+    expect(wrapper.exists(PhoneInput)).toBe(true);
+
+    const component = wrapper.find(MobilePhoneChange);
+    expect(component.instance().state.phone_number).toBe("+393660011222");
+    expect(component.find("form.owisp-phone-number-change-form")).toHaveLength(1);
+    expect(component.exists("#owisp-phone-number-change-phone-number")).toBe(true);
+    expect(component.exists("#owisp-phone-number-change-submit-btn")).toBe(true);
+    expect(component.exists("#owisp-phone-number-change-cancel-btn")).toBe(true);
+  });
+
+  it("should change phone number successfully", async () => {
+    jest.spyOn(MobilePhoneChange.prototype, "handleSubmit");
+    jest.spyOn(toast, "info");
+    jest.spyOn(historyMock, "push");
+    axios.mockImplementationOnce(() => {
+      return Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: null
+      });
+    });
+
+    wrapper = await mountComponent(props);
+    const component = wrapper.find(MobilePhoneChange);
+    component.find("#owisp-phone-number-change-phone-number")
+             .simulate("change", {target: {value: "+393660011333", name: "phone_number"}});
+    expect(component.instance().state.phone_number).toBe("+393660011333");
+
+    wrapper.find("form.owisp-phone-number-change-form").simulate("submit", event);
+    await tick();
+    expect(event.preventDefault).toHaveBeenCalled();
+    expect(MobilePhoneChange.prototype.handleSubmit).toHaveBeenCalled();
+    expect(toast.info.mock.calls.length).toBe(1);
+    expect(historyMock.push).toHaveBeenCalledWith("/test-org-2/mobile-phone-verification");
+    expect(lastConsoleOutuput).toBe(null);
+    const mockVerify = component.instance().props.verifyMobileNumber;
+    expect(mockVerify.mock.calls.length).toBe(1);
+    expect(mockVerify.mock.calls.pop()).toEqual([true]);
+  });
+
+  it("should render field error", async () => {
+    jest.spyOn(MobilePhoneChange.prototype, "handleSubmit");
+    jest.spyOn(toast, "info");
+    jest.spyOn(historyMock, "push");
+    axios.mockImplementationOnce(() => {
+      return Promise.reject({
+        response: {
+          status: 400,
+          statusText: "OK",
+          data: {
+            phone_number: [
+              "The new phone number must be different than the old one."
+            ]
+          }
+        }
+      });
+    });
+
+    wrapper = await mountComponent(props);
+    const component = wrapper.find(MobilePhoneChange);
+    wrapper.find("form.owisp-phone-number-change-form").simulate("submit", event);
+    await tick();
+    expect(toast.info).not.toHaveBeenCalled();
+    expect(historyMock.push).not.toHaveBeenCalled();
+    expect(component.instance().state.errors.phone_number).toEqual([
+      "The new phone number must be different than the old one."
+    ]);
+    expect(component.instance().state.errors.nonField).toBeFalsy();
+  });
+
+  it("should render nonField error", async () => {
+    jest.spyOn(MobilePhoneChange.prototype, "handleSubmit");
+    jest.spyOn(toast, "info");
+    jest.spyOn(historyMock, "push");
+    axios.mockImplementationOnce(() => {
+      return Promise.reject({
+        response: {
+          status: 400,
+          statusText: "OK",
+          data: {
+            non_field_errors: [
+              "Maximum daily limit reached."
+            ]
+          }
+        }
+      });
+    });
+
+    wrapper = await mountComponent(props);
+    const component = wrapper.find(MobilePhoneChange);
+    wrapper.find("form.owisp-phone-number-change-form").simulate("submit", event);
+    await tick();
+    expect(toast.info).not.toHaveBeenCalled();
+    expect(historyMock.push).not.toHaveBeenCalled();
+    expect(component.instance().state.errors.nonField).toEqual(
+      "Maximum daily limit reached."
+    );
+    expect(component.instance().state.errors.phone_number).toBeFalsy();
+    expect(lastConsoleOutuput).not.toBe(null);
+  });
+
+  it("should cancel successfully", async () => {
+    jest.spyOn(MobilePhoneChange.prototype, "handleSubmit");
+    jest.spyOn(toast, "info");
+    jest.spyOn(historyMock, "push");
+    axios.mockImplementationOnce(() => {
+      return Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: null
+      });
+    });
+
+    wrapper = await mountComponent(props);
+    const component = wrapper.find(MobilePhoneChange);
+    const cancelButton = component.find("#owisp-phone-number-change-cancel-btn");
+    cancelButton.simulate("click");
+    expect(toast.info).not.toHaveBeenCalled();
+    expect(historyMock.push).not.toHaveBeenCalled();
+    expect(lastConsoleOutuput).toBe(null);
+    const {href} = cancelButton.at(0).props();
+    expect(href).toEqual("/test-org-2/mobile-phone-verification");
+  });
+});
+
+describe("Change Phone Number: corner cases", () => {
+  let props;
+  let wrapper;
+  const mockAxios = (responseData={}) => {
+    axios.mockImplementationOnce(() => {
+      return Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: {
+          response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+          radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
+          username: "tester@tester.com",
+          is_active: false,
+          phone_number: "+393660011222",
+          ...responseData
+        }
+      });
+    });
+  };
+
+  beforeEach(() => {
+    props = createTestProps();
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+    jest.resetAllMocks();
+    jest.restoreAllMocks();
+  });
+
+  it("should recognize if user is active", async () => {
+    jest.spyOn(MobilePhoneChange.prototype, "validateToken");
+    mockAxios({is_active: true});
+    wrapper = await mountComponent(props);
+    const component = wrapper.find(MobilePhoneChange);
+    expect(component.instance().state.phone_number).toBe("+393660011222");
+    const mockVerify = component.instance().props.verifyMobileNumber;
+    expect(mockVerify.mock.calls.length).toBe(1);
+    expect(mockVerify.mock.calls.pop()).toEqual([false]);
+    expect(MobilePhoneChange.prototype.validateToken).toHaveBeenCalled();
+  });
+
+  it("should redirect if does not need verification", async () => {
+    mockAxios();
+    props.needsMobilePhoneVerification = false;
+    wrapper = await mountComponent(props);
+    expect(wrapper.find(Redirect)).toHaveLength(1);
+  });
+
+  it("should redirect if mobile_phone_verification disabled", async () => {
+    mockAxios(axios);
+    props.settings.mobile_phone_verification = false;
+    wrapper = await mountComponent(props);
+    expect(wrapper.find(Redirect)).toHaveLength(1);
+  });
+});

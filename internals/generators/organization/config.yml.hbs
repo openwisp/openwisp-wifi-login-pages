@@ -1,6 +1,8 @@
 ---
 name: "{{name}}"
 slug: "{{slug}}"
+settings:
+  mobile_phone_verification: {{mobile_phone_verification}}
 
 # configuration variables for the server app
 server:
@@ -15,6 +17,9 @@ server:
     validate_auth_token: "/api/v1/{org_slug}/account/token/validate"
     authorize: "/api/v1/authorize"
     user_radius_sessions: "/api/v1/{org_slug}/account/session"
+    create_mobile_phone_token: "/api/v1/{org_slug}/account/phone/token"
+    verify_mobile_phone_token: "/api/v1/{org_slug}/account/phone/verify"
+    mobile_phone_number_change: "/api/v1/{org_slug}/account/phone/change"
   uuid: "{{uuid}}"
   secret_key: "{{secret_key}}"
   timeout: 2 #request timeout period in seconds
@@ -60,9 +65,15 @@ client:
         - text:
             en: "Sign In" #link text in english
           url: "/{{slug}}/login"
+          authenticated: false
         - text:
             en: "Sign Up"
           url: "/{{slug}}/registration"
+          authenticated: false
+        - text:
+            en: "Change password"
+          url: "/default/change-password"
+          authenticated: true
 
     footer:
       links:
@@ -74,6 +85,15 @@ client:
 
     registration_form:
       input_fields:
+        phone_number:
+          placeholder:
+            en: "enter mobile phone number"
+          label:
+            en: "mobile phone number"
+          # default international prefix
+          # country: "it"
+          # restrict international prefixes shown
+          # only_countries: ["it", "de", "uk"]
         username:
           type: "text"
           pattern: '[a-zA-Z@.+\-_\d]{1,150}'
@@ -120,6 +140,54 @@ client:
       links:
         login:
           en: "Already have an account? Log in"
+        forget_password:
+          en: "Forgot your password?"
+
+    mobile_phone_verification_form:
+      text:
+        verify:
+          en:
+            Verify your mobile phone number ({phone_number}) by inserting the code you received via SMS below.
+        resend:
+          en:
+            If you did not receive the verification SMS code, you can try sending it again by clicking below.
+        change:
+          en:
+            Wrong phone number?
+        token_sent:
+          en:
+            SMS verification code sent successfully.
+        logout:
+          en:
+            If you need to cancel the process you can log out below.
+      input_fields:
+        code:
+          type: "text"
+          pattern: '[0-9]{6,}'
+          pattern_description:
+            en: "this field must be a 6 digit numeric code"
+          placeholder:
+            en: "enter SMS verification code"
+          label:
+            en: "code"
+      buttons:
+        verify:
+          en: "Submit"
+        resend:
+          en: "Send a new verification code"
+        change:
+          en: "Change your phone number"
+        logout:
+          en: "Logout"
+
+    phone_number_change_form:
+      buttons:
+        change_phone_number:
+          text:
+            en: "Change phone number"
+        cancel:
+          text:
+            en: "Cancel"
 
     reset_form:
       heading:

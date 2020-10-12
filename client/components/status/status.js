@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import "./index.css";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -31,6 +32,7 @@ export default class Status extends React.Component {
     this.state = {
       username: "",
       password: "",
+      is_active: null,
       sessions: [],
       loggedOut: false,
     };
@@ -39,7 +41,7 @@ export default class Status extends React.Component {
   }
 
   async componentDidMount() {
-    const {cookies, orgSlug} = this.props;
+    const {cookies, orgSlug, verifyMobileNumber, settings} = this.props;
     // to prevent recursive call in case redirect url is status page
     if (window.top === window.self) {
       try {
@@ -57,8 +59,10 @@ export default class Status extends React.Component {
         //
       }
       const isValid = await this.validateToken();
-      if (isValid) {
+      const {is_active} = this.state;
+      if (isValid && is_active) {
         const macaddr = cookies.get(`${orgSlug}_macaddr`);
+
         if (macaddr) {
           await this.getUserRadiusSessions();
           /* request to captive portal is made only if there is
@@ -70,6 +74,10 @@ export default class Status extends React.Component {
           }
         } else if (this.loginFormRef && this.loginFormRef.current)
           this.loginFormRef.current.submit();
+      }
+      // would be better to show a different button in the status page
+      if (isValid && !is_active && settings.mobile_phone_verification) {
+        verifyMobileNumber(true);
       }
     }
   }
@@ -181,8 +189,8 @@ export default class Status extends React.Component {
           '"response_code" !== "AUTH_TOKEN_VALIDATION_SUCCESSFUL"',
         );
       } else {
-        const {radius_user_token: password, username} = response.data;
-        this.setState({username, password});
+        const {radius_user_token: password, username, is_active} = response.data;
+        this.setState({username, password, is_active});
       }
       return true;
     } catch (error) {
@@ -396,4 +404,8 @@ Status.propTypes = {
     search: PropTypes.string,
   }).isRequired,
   isAuthenticated: PropTypes.bool,
+  verifyMobileNumber: PropTypes.func.isRequired,
+  settings: PropTypes.shape({
+    mobile_phone_verification: PropTypes.bool
+  }).isRequired,
 };

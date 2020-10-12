@@ -101,6 +101,7 @@ describe("actions testing", () => {
     expect(store.getActions()).toEqual(expectedActions);
   });
   it("should create an action to logout", () => {
+    sessionStorage.setItem("test", "test");
     const orgSlug = "default";
     const expectedActions = [
       {
@@ -111,5 +112,6 @@ describe("actions testing", () => {
     const store = mockStore({organization: {configuration: {}}});
     store.dispatch(logout(cookies, orgSlug));
     expect(store.getActions()).toEqual(expectedActions);
+    expect(sessionStorage.getItem("test")).toBe(null);
   });
 });

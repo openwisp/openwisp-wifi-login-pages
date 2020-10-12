@@ -39,6 +39,12 @@ module.exports = {
       },
     },
     {
+      type: "confirm",
+      name: "mobile_phone_verification",
+      message: "Does this organization require SMS verification for its users?",
+      default: false,
+    },
+    {
       type: "input",
       name: "secret_key",
       message: "What is the secret key of the organization?",
