@@ -1,7 +1,7 @@
 import { createLogger, format, transports } from "winston";
 
 const logger = new createLogger({
-    level: 'info',
+    level: 'info', // for error, warn and info logs
     format: format.combine(
         format.timestamp(),
         format.colorize(),

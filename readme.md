@@ -93,14 +93,14 @@ $ npm test 		    	# Run tests
 $ npm test -- -u 		# Update Jest Snapshots
 ```
 
-#### Error Logs :
+#### Logs :
 
+Server supports error, warnings and info as well as Log Outputs.
 Server Error logs are generated at /logs/error.log
 
-Run the command to read the logs using Bash (Linux) :
+Run the command to read the output error logs using Bash (Linux) :
 
 `$ tail -f ./logs/error.log`
-
 
 #### Using custom ports
 
