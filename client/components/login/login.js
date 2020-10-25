@@ -28,6 +28,7 @@ export default class Login extends React.Component {
       email: "",
       password: "",
       errors: {},
+      checked: false,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -268,6 +269,12 @@ export default class Login extends React.Component {
               </div>
               {additional_info_text ? (
                 <div className="owisp-login-add-info">
+                  <input
+                    name="markTerms"
+                    type="checkbox"
+                    required
+                    onClick={() => this.setState({ checked: !this.state.checked })}
+                  />
                   {renderAdditionalInfo(
                     additional_info_text,
                     language,
@@ -278,6 +285,7 @@ export default class Login extends React.Component {
                   )}
                 </div>
               ) : null}
+
               {buttons.login ? (
                 <>
                   {buttons.login.label ? (
