@@ -101,8 +101,8 @@ export default class OrganizationWrapper extends React.Component {
                 />
                 <Route
                   path={`${match.path}/status`}
-                  render={() => {
-                    if (isAuthenticated) return <Status cookies={cookies} />;
+                  render={(props) => {
+                    if (isAuthenticated) return <Status {...props} cookies={cookies} />;
                     return <Redirect to={`/${orgSlug}/login`} />;
                   }}
                 />

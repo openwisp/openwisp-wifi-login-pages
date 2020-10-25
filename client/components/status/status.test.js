@@ -1,15 +1,20 @@
 /* eslint-disable prefer-promise-reject-errors */
 import axios from "axios";
-/* eslint-disable camelcase */
 import {shallow} from "enzyme";
+import PropTypes from "prop-types";
 import React from "react";
 import {Cookies} from "react-cookie";
 import ShallowRenderer from "react-test-renderer/shallow";
-
 import getConfig from "../../utils/get-config";
 import Status from "./status";
 
 jest.mock("axios");
+
+function tick() {
+  return new Promise(resolve => {
+    setTimeout(resolve, 0);
+  });
+}
 
 const defaultConfig = getConfig("default");
 const createTestProps = props => {
@@ -19,6 +24,12 @@ const createTestProps = props => {
     statusPage: defaultConfig.components.status_page,
     cookies: new Cookies(),
     logout: jest.fn(),
+    captivePortalLoginForm: defaultConfig.components.captive_portal_login_form,
+    captivePortalLogoutForm:
+      defaultConfig.components.captive_portal_logout_form,
+    location: {
+      search: "?macaddr=0.0.0.0",
+    },
     ...props,
   };
 };
@@ -37,97 +48,201 @@ describe("<Status /> interactions", () => {
   let props;
   let wrapper;
   let originalError;
+  // eslint-disable-next-line no-unused-vars
   let lastConsoleOutuput;
   beforeEach(() => {
     originalError = console.error;
+    Status.contextTypes = {
+      setLoading: PropTypes.func,
+      getLoading: PropTypes.func,
+    };
     lastConsoleOutuput = null;
-    console.error = (data) => {
+    console.error = data => {
       lastConsoleOutuput = data;
     };
   });
   afterEach(() => {
     console.error = originalError;
+    axios.mockReset();
   });
-  it("should call logout function when logout button is clicked", () => {
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
-        status: 200,
-        statusText: 'OK',
-        data: {
-          "control:Auth-Type": "Accept",
-        }
-      });
-    });
-    props = createTestProps();
-    wrapper = shallow(<Status {...props} />);
-    wrapper.find("#owisp-status-logout-btn").simulate("click", {});
-    expect(wrapper.instance().props.logout.mock.calls.length).toBe(1);
-  });
-  it("test componentDidMount lifecycle method", () => {
+  it("should call logout function when logout button is clicked", async () => {
     axios
-      .mockImplementationOnce(() => {
-        return Promise.reject({
-          status: 500,
-          statusText: 'Internal Server Error',
-          response: {
-            data: {}
-          }
-        });
-      })
-      .mockImplementationOnce(() => {
-        return Promise.reject({
-          status: 504,
-          statusText: "Gateway Timeout",
-          response: {
-            data: {}
-          },
-        });
-      })
-      .mockImplementationOnce(() => {
-        return Promise.resolve({
-          data: {
-            "control:Auth-Type": "Accept",
-          },
-        });
-      })
       .mockImplementationOnce(() => {
         return Promise.resolve({
           response: {
             status: 200,
-            statusText: 'OK',
+            statusText: "OK",
           },
+          data: [],
+        });
+      })
+      .mockImplementationOnce(() => {
+        return Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: [{session_id: 1}],
+        });
+      });
+    props = createTestProps();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    jest.spyOn(wrapper.instance(), "handleLogout");
+    wrapper.find("#owisp-status-logout-btn").simulate("click", {});
+    await tick();
+    expect(wrapper.instance().props.logout).toHaveBeenCalled();
+    wrapper.find("#owisp-status-logout-btn").simulate("click", {});
+    await tick();
+    expect(wrapper.instance().state.sessions.length).toBe(1);
+    expect(wrapper.instance().props.logout).toHaveBeenCalled();
+  });
+
+  it("test componentDidMount lifecycle method", async () => {
+    axios
+      .mockImplementationOnce(() => {
+        return Promise.resolve({
+          status: 200,
           data: {
-            "control:Auth-Type": "Reject",
+            response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+          },
+        });
+      })
+      .mockImplementationOnce(() => {
+        return Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: [{session_id: 1}],
+        });
+      })
+      .mockImplementationOnce(() => {
+        return Promise.resolve({
+          status: 200,
+          data: {
+            response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+          },
+        });
+      })
+      .mockImplementationOnce(() => {
+        return Promise.resolve({
+          status: 200,
+          data: {
+            response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+          },
+        });
+      })
+      .mockImplementationOnce(() => {
+        return Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: [],
+        });
+      });
+    jest.spyOn(Status.prototype, "getUserRadiusSessions");
+
+    props = createTestProps();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+    });
+    await tick();
+    expect(wrapper.instance().state.sessions.length).toBe(1);
+    expect(wrapper.instance().props.cookies.get("default_macaddr")).toBe(
+      "0.0.0.0",
+    );
+    expect(Status.prototype.getUserRadiusSessions).toHaveBeenCalled();
+    wrapper.setProps({
+      location: {
+        search: "",
+      },
+      cookies: new Cookies(),
+    });
+    wrapper.instance().componentDidMount();
+    await tick();
+    expect(wrapper.instance().props.cookies.get("default_macaddr")).toBe(
+      undefined,
+    );
+    wrapper.setProps({
+      location: {
+        search: "?macaddr=0.0.0.0",
+      },
+      cookies: new Cookies(),
+    });
+    const submintFn = jest.fn();
+    const mockRef = {
+      submit: submintFn,
+    };
+    wrapper.instance().loginFormRef.current = mockRef;
+    wrapper.instance().componentDidMount();
+    await tick();
+    expect(submintFn.mock.calls.length).toBe(1);
+    Status.prototype.getUserRadiusSessions.mockRestore();
+  });
+  it("test getUserRadiusSessions method", async () => {
+    axios
+      .mockImplementationOnce(() => {
+        return Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: [],
+        });
+      })
+      .mockImplementationOnce(() => {
+        return Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: [{session_id: 1}],
+        });
+      })
+      .mockImplementationOnce(() => {
+        return Promise.reject({
+          response: {
+            status: 401,
           },
         });
       });
     props = createTestProps();
-    wrapper = shallow(<Status {...props} />);
-    return wrapper
-      .instance()
-      .componentDidMount()
-      .then(() => {
-        expect(wrapper.instance().props.logout.mock.calls.length).toBe(2);
-        expect(lastConsoleOutuput).not.toBe(null);
-        lastConsoleOutuput = null;
-        return wrapper
-          .instance()
-          .componentDidMount()
-          .then(() => {
-            expect(wrapper.instance().props.logout.mock.calls.length).toBe(2);
-            expect(lastConsoleOutuput).toBe(null);
-            lastConsoleOutuput = null;
-            return wrapper
-              .instance()
-              .componentDidMount()
-              .then(() => {
-                expect(wrapper.instance().props.logout.mock.calls.length).toBe(
-                  3,
-                );
-                expect(lastConsoleOutuput).not.toBe(null);
-                lastConsoleOutuput = null;
-              });
-          });
-      });
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    jest.spyOn(wrapper.instance(), "getUserRadiusSessions");
+    wrapper.instance().getUserRadiusSessions();
+    await tick();
+    expect(wrapper.instance().state.sessions.length).toBe(0);
+    wrapper.instance().getUserRadiusSessions();
+    await tick();
+    expect(wrapper.instance().state.sessions.length).toBe(1);
+    wrapper.instance().getUserRadiusSessions();
+    await tick();
+    expect(wrapper.instance().props.logout.mock.calls.length).toBe(1);
+  });
+  it("test handleLoginIframe method", async () => {
+    props = createTestProps();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    expect(wrapper.instance().loginIfameRef).toEqual({current: null});
+    let mockRef = {};
+    wrapper.instance().loginIfameRef.current = mockRef;
+    wrapper.instance().componentDidMount();
+    wrapper.instance().handleLoginIframe();
+    mockRef = {
+      contentWindow: {
+        location: {
+          search: "?reply=true?macaddr=0.0.0.0",
+        },
+      },
+      contentDocument: {
+        title: "404",
+      },
+    };
+    wrapper.instance().loginIfameRef.current = mockRef;
+    wrapper.instance().componentDidMount();
+    wrapper.instance().handleLoginIframe();
+    expect(wrapper.instance().props.logout.mock.calls.length).toBe(1);
+    expect(wrapper.instance().props.cookies.get("default_macaddr")).toBe(
+      "0.0.0.0",
+    );
   });
 });

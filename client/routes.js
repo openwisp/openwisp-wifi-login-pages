@@ -35,12 +35,10 @@ Routes.propTypes = {
   match: PropTypes.shape({
     isExact: PropTypes.bool
   }).isRequired,
-  organizations: PropTypes.arrayOf({
-    organization: PropTypes.shape({
-      name: PropTypes.string,
-      slug: PropTypes.string
-    })
-  })
+  organizations: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string,
+    slug: PropTypes.string
+  }))
 };
 
 export default connect(

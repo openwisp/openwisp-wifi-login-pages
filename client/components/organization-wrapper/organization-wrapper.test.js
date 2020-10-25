@@ -2,12 +2,11 @@
 import {shallow} from "enzyme";
 import React from "react";
 import {Cookies} from "react-cookie";
-
 import OrganizationWrapper from "./organization-wrapper";
 
 const createTestProps = props => {
   return {
-    match: {params: {organization: "default"}},
+    match: {params: {organization: "default"}, path: "/default"},
     organization: {
       configuration: {
         title: "Default",
@@ -56,7 +55,7 @@ describe("<OrganizationWrapper /> rendering", () => {
   });
 });
 
-describe("<OrganizationWrapper /> lifecycle method invocations", () => {
+describe("<OrganizationWrapper /> interactions", () => {
   let props;
   // eslint-disable-next-line no-unused-vars
   let wrapper;
@@ -66,5 +65,28 @@ describe("<OrganizationWrapper /> lifecycle method invocations", () => {
   });
   it("should call setOrganization once", () => {
     expect(props.setOrganization).toHaveBeenCalledTimes(1);
+  });
+  it("test componentDidUpdate lifecycle method", () => {
+    wrapper.setProps({
+      match: {params: {organization: "new-org"}},
+      organization: {
+        configuration: {
+          title: undefined,
+          css_path: "index.css",
+          slug: "default",
+          favicon: "favicon.ico",
+        },
+        exists: true,
+      },
+    });
+    expect(props.setOrganization).toHaveBeenCalledTimes(2);
+    expect(props.setOrganization).toHaveBeenCalledTimes(2);
+    wrapper.setProps({
+      match: {params: {organization: undefined}},
+    });
+  });
+  it("test setLoading method", () => {
+    wrapper.instance().setLoading(true);
+    expect(wrapper.instance().state.loading).toBe(true);
   });
 });

@@ -63,19 +63,8 @@
   margin-top: 10px;
   padding: 10px 15px;
   font-size: 14px;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: #ffffff;
   text-transform: capitalize;
-  border: 0;
-  border-radius: 3px;
-  cursor: pointer;
   margin-bottom: 10px;
-}
-.owisp-password-reset-send-btn:hover {
-  background-color: rgba(0, 0, 0, 0.7);
-}
-.owisp-password-reset-send-btn:focus {
-  outline: dotted 1px #333;
 }
 .owisp-password-reset-error {
   font-size: 12px;

@@ -155,7 +155,7 @@ export default class PasswordReset extends React.Component {
                 </div>
                 <input
                   type="submit"
-                  className="owisp-password-reset-send-btn"
+                  className="owisp-password-reset-send-btn owisp-btn-primary"
                   value={getText(buttons.send, language)}
                 />
                 {passwordReset.contact_text ? (

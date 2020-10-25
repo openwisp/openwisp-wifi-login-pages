@@ -3,7 +3,7 @@ import "./index.css";
 
 import PropTypes from "prop-types";
 import React from "react";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import isInternalLink from "../../utils/check-internal-links";
 import getAssetPath from "../../utils/get-asset-path";
@@ -20,14 +20,14 @@ export default class Header extends React.Component {
   }
 
   handleHamburger() {
-    const {menu} = this.state;
+    const { menu } = this.state;
     this.setState({
       menu: !menu,
     });
   }
 
   handleKeyUp(event) {
-    const {menu} = this.state;
+    const { menu } = this.state;
     switch (event.keyCode) {
       case 13:
         this.setState({
@@ -40,7 +40,7 @@ export default class Header extends React.Component {
   }
 
   render() {
-    const {menu} = this.state;
+    const { menu } = this.state;
     const {
       header,
       languages,
@@ -48,9 +48,11 @@ export default class Header extends React.Component {
       orgSlug,
       setLanguage,
       location,
+      isAuthenticated
     } = this.props;
-    const {logo, links} = header;
-    const {pathname} = location;
+    const { logo, links } = header;
+    const { pathname } = location;
+    const internalLinks = [`/${orgSlug}/login`, `/${orgSlug}/registration`];
     return (
       <>
         <div className="owisp-header-container owisp-header-desktop">
@@ -76,9 +78,9 @@ export default class Header extends React.Component {
                       type="button"
                       className={`${
                         language === lang.slug ? "active " : ""
-                      }owisp-header-language-btn owisp-header-desktop-language-btn owisp-header-language-btn-${
+                        }owisp-header-language-btn owisp-header-desktop-language-btn owisp-header-language-btn-${
                         lang.slug
-                      }`}
+                        }`}
                       key={lang.slug}
                       onClick={() => setLanguage(lang.slug)}
                     >
@@ -93,24 +95,26 @@ export default class Header extends React.Component {
             <div className="owisp-header-row-2-inner">
               {links.map((link, index) => {
                 if (isInternalLink(link.url)) {
-                  return (
-                    <Link
-                      className={`owisp-header-link owisp-header-desktop-link
+                  if (internalLinks.indexOf(link.url) < 0 || !isAuthenticated)
+                    return (
+                      <Link
+                        className={`owisp-header-link owisp-header-desktop-link
                     owisp-header-link-${index + 1} ${
-                        pathname === link.url ? "active" : ""
-                      }`}
-                      to={link.url}
-                      key={index}
-                    >
-                      {getText(link.text, language)}
-                    </Link>
-                  );
+                          pathname === link.url ? "active" : ""
+                          } owisp-btn-primary `}
+                        to={link.url}
+                        key={index}
+                      >
+                        {getText(link.text, language)}
+                      </Link>
+                    );
+                  return null;
                 }
                 return (
                   <a
                     href={link.url}
                     className={`owisp-header-link owisp-header-desktop-link
-                    owisp-header-link-${index + 1}`}
+                    owisp-header-link-${index + 1} owisp-btn-primary`}
                     target="_blank"
                     rel="noreferrer noopener"
                     key={link.url}
@@ -156,7 +160,7 @@ export default class Header extends React.Component {
           <div
             className={`${
               menu ? "owisp-display-flex" : "owisp-display-none"
-            } owisp-header-mobile-menu`}
+              } owisp-header-mobile-menu`}
           >
             {links.map((link, index) => {
               if (isInternalLink(link.url)) {
@@ -165,7 +169,7 @@ export default class Header extends React.Component {
                     className={`owisp-header-link owisp-mobile-link
                   owisp-header-link-${index + 1} ${
                       pathname === link.url ? "active" : ""
-                    }`}
+                      } owisp-btn-primary`}
                     to={link.url}
                     key={index}
                   >
@@ -177,7 +181,7 @@ export default class Header extends React.Component {
                 <a
                   href={link.url}
                   className={`owisp-header-link owisp-mobile-link
-                    owisp-header-link-${index + 1}`}
+                    owisp-header-link-${index + 1} owisp-btn-primary`}
                   target="_blank"
                   rel="noreferrer noopener"
                   key={link.url}
@@ -193,9 +197,9 @@ export default class Header extends React.Component {
                     type="button"
                     className={`${
                       language === lang.slug ? "active " : ""
-                    }owisp-header-language-btn owisp-header-mobile-language-btn owisp-header-language-btn-${
+                      }owisp-header-language-btn owisp-header-mobile-language-btn owisp-header-language-btn-${
                       lang.slug
-                    }`}
+                      }`}
                     key={lang.slug}
                     onClick={() => setLanguage(lang.slug)}
                   >
@@ -210,7 +214,9 @@ export default class Header extends React.Component {
     );
   }
 }
-
+Header.defaultProps = {
+  isAuthenticated: false
+};
 Header.propTypes = {
   header: PropTypes.shape({
     logo: PropTypes.shape({
@@ -231,4 +237,5 @@ Header.propTypes = {
   location: PropTypes.shape({
     pathname: PropTypes.string,
   }).isRequired,
+  isAuthenticated: PropTypes.bool,
 };

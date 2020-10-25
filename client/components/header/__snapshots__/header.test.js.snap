@@ -57,7 +57,7 @@ Array [
       >
         <a
           className="owisp-header-link owisp-header-desktop-link
-                    owisp-header-link-1 active"
+                    owisp-header-link-1 active owisp-btn-primary "
           href="/default/login"
           onClick={[Function]}
         >
@@ -65,7 +65,7 @@ Array [
         </a>
         <a
           className="owisp-header-link owisp-header-desktop-link
-                    owisp-header-link-2 "
+                    owisp-header-link-2  owisp-btn-primary "
           href="/default/registration"
           onClick={[Function]}
         >
@@ -129,7 +129,7 @@ Array [
     >
       <a
         className="owisp-header-link owisp-mobile-link
-                  owisp-header-link-1 active"
+                  owisp-header-link-1 active owisp-btn-primary"
         href="/default/login"
         onClick={[Function]}
       >
@@ -137,7 +137,7 @@ Array [
       </a>
       <a
         className="owisp-header-link owisp-mobile-link
-                  owisp-header-link-2 "
+                  owisp-header-link-2  owisp-btn-primary"
         href="/default/registration"
         onClick={[Function]}
       >

@@ -31,11 +31,11 @@ export default class Registration extends React.Component {
     };
   }
 
-  handleChange = (event) => {
+  handleChange(event) {
     this.setState({ [event.target.name]: event.target.value });
   }
 
-  handleSubmit = (event) => {
+  handleSubmit(event) {
     const { setLoading } = this.context;
     event.preventDefault();
     const { registration, orgSlug, authenticate } = this.props;
@@ -115,6 +115,7 @@ export default class Registration extends React.Component {
     } = this.props;
     const { buttons, additional_info_text, input_fields, links } = registration;
     const { email, password1, password2, checked, errors, success } = this.state;
+
     return (
       <>
         <div className="owisp-registration-container">
@@ -316,7 +317,7 @@ export default class Registration extends React.Component {
                         checked !== false ? false : true
                     }
                     type="submit"
-                    className="owisp-registration-form-btn owisp-registration-submit-btn"
+                    className="owisp-registration-form-btn owisp-registration-submit-btn owisp-btn-primary "
                     id="owisp-registration-submit-btn"
                     value={getText(buttons.register.text, language)}
                   />

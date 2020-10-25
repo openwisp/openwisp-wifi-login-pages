@@ -1,4 +1,4 @@
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 
 import setLanguage from "../../actions/set-language";
 import Component from "./header";
@@ -9,6 +9,7 @@ const mapStateToProps = state => {
     languages: state.organization.configuration.languages,
     language: state.language,
     orgSlug: state.organization.configuration.slug,
+    isAuthenticated: state.organization.configuration.isAuthenticated
   };
 };
 
