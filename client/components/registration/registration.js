@@ -27,16 +27,15 @@ export default class Registration extends React.Component {
       password2: "",
       errors: {},
       success: false,
+      checked: false,
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(event) {
+  handleChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   }
 
-  handleSubmit(event) {
+  handleSubmit = (event) => {
     const { setLoading } = this.context;
     event.preventDefault();
     const { registration, orgSlug, authenticate } = this.props;
@@ -66,6 +65,7 @@ export default class Registration extends React.Component {
         "username": email,
         password1,
         password2,
+        checked: this.state.checked
       }),
     })
       .then(() => {
@@ -75,6 +75,7 @@ export default class Registration extends React.Component {
           password1: "",
           password2: "",
           success: true,
+          checked: false,
         });
         setLoading(false);
         authenticate(true);
@@ -113,7 +114,7 @@ export default class Registration extends React.Component {
       match,
     } = this.props;
     const { buttons, additional_info_text, input_fields, links } = registration;
-    const { email, password1, password2, errors, success } = this.state;
+    const { email, password1, password2, checked, errors, success } = this.state;
     return (
       <>
         <div className="owisp-registration-container">
@@ -142,8 +143,7 @@ export default class Registration extends React.Component {
                         {getText(input_fields.email.label, language)}
                       </div>
                       <input
-                        className={`owisp-registration-input owisp-registration-input-email ${
-                          errors.email ? "error" : ""
+                        className={`owisp-registration-input owisp-registration-input-email ${errors.email ? "error" : ""
                           }`}
                         type={input_fields.email.type}
                         id="owisp-registration-email"
@@ -239,8 +239,7 @@ export default class Registration extends React.Component {
                         {getText(input_fields.password_confirm.label, language)}
                       </div>
                       <input
-                        className={`owisp-registration-input owisp-registration-input-confirm ${
-                          errors.password2 ? "error" : ""
+                        className={`owisp-registration-input owisp-registration-input-confirm ${errors.password2 ? "error" : ""
                           }`}
                         type={input_fields.password_confirm.type}
                         id="owisp-registration-password-confirm"
@@ -279,18 +278,26 @@ export default class Registration extends React.Component {
                   </>
                 ) : null}
               </div>
-              {additional_info_text ? (
-                <div className="owisp-registration-add-info">
-                  {renderAdditionalInfo(
-                    additional_info_text,
-                    language,
-                    termsAndConditions,
-                    privacyPolicy,
-                    orgSlug,
-                    "registration",
-                  )}
-                </div>
-              ) : null}
+              <div className="contentTerms" >
+                <input
+                  name="markTerms"
+                  type="checkbox"
+                  required
+                  onClick={() => this.setState({ checked: !this.state.checked })}
+                />
+                {additional_info_text ? (
+                  <div className="owisp-registration-add-info">
+                    {renderAdditionalInfo(
+                      additional_info_text,
+                      language,
+                      termsAndConditions,
+                      privacyPolicy,
+                      orgSlug,
+                      "registration",
+                    )}
+                  </div>
+                ) : null}
+              </div>
               {buttons.register ? (
                 <>
                   {buttons.register.label ? (
@@ -304,6 +311,10 @@ export default class Registration extends React.Component {
                     </label>
                   ) : null}
                   <input
+                    disabled={
+                      email !== '' && password1 !== '' && password2 !== '' &&
+                        checked !== false ? false : true
+                    }
                     type="submit"
                     className="owisp-registration-form-btn owisp-registration-submit-btn"
                     id="owisp-registration-submit-btn"

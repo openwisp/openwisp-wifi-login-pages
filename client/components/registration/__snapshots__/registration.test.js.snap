@@ -91,21 +91,21 @@ exports[`<Registration /> rendering should render correctly 1`] = `
         <div
           className="owisp-registration-add-info"
         >
-          By signing up, you accept the 
+          I have read and I accept the
           <Link
             className="owisp-registration-additional-link"
             to="/default/registration/terms-and-conditions"
           >
             terms and conditions
           </Link>
-           and the 
+           and the
           <Link
             className="owisp-registration-additional-link"
             to="/default/registration/privacy-policy"
           >
             privacy policy
           </Link>
-           of this WiFi service. 
+           of this WiFi service.
         </div>
         <React.Fragment>
           <input

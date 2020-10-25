@@ -151,3 +151,12 @@
     width: 100%;
   }
 }
+
+.contentTerms {
+  display: flex;
+}
+
+.contentTerms input {
+  margin-top: 8px;
+
+}
