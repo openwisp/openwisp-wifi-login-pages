@@ -53,14 +53,10 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
         >
           <React.Fragment>
             <label
-              className="owisp-login-label owisp-login-label-email"
+              className="owisp-login-label owisp-login-label-text owisp-login-label-email"
               htmlFor="owisp-login-email"
             >
-              <div
-                className="owisp-login-label-text"
-              >
-                email
-              </div>
+              email
               <input
                 className="owisp-login-input
                         owisp-login-input-email
@@ -79,14 +75,10 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
           </React.Fragment>
           <React.Fragment>
             <label
-              className="owisp-login-label owisp-login-label-password"
+              className="owisp-login-label owisp-login-label-text owisp-login-label-password"
               htmlFor="owisp-login-password"
             >
-              <div
-                className="owisp-login-label-text"
-              >
-                password
-              </div>
+              password
               <input
                 className="owisp-login-input owisp-login-input-password
                       "
@@ -132,14 +124,10 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
         </React.Fragment>
         <React.Fragment>
           <label
-            className="owisp-login-label owisp-login-label-register-btn"
+            className="owisp-login-label owisp-login-label-text owisp-login-label-register-btn"
             htmlFor="owisp-login-register-btn"
           >
-            <div
-              className="owisp-login-label-text"
-            >
-              Not registered yet?
-            </div>
+            Not registered yet?
           </label>
           <div
             className="owisp-login-form-register-btn-div"
@@ -259,14 +247,10 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
         >
           <React.Fragment>
             <label
-              className="owisp-login-label owisp-login-label-email"
+              className="owisp-login-label owisp-login-label-text owisp-login-label-email"
               htmlFor="owisp-login-email"
             >
-              <div
-                className="owisp-login-label-text"
-              >
-                email
-              </div>
+              email
               <input
                 className="owisp-login-input
                         owisp-login-input-email
@@ -285,14 +269,10 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
           </React.Fragment>
           <React.Fragment>
             <label
-              className="owisp-login-label owisp-login-label-password"
+              className="owisp-login-label owisp-login-label-text owisp-login-label-password"
               htmlFor="owisp-login-password"
             >
-              <div
-                className="owisp-login-label-text"
-              >
-                password
-              </div>
+              password
               <input
                 className="owisp-login-input owisp-login-input-password
                       "
@@ -338,14 +318,10 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
         </React.Fragment>
         <React.Fragment>
           <label
-            className="owisp-login-label owisp-login-label-register-btn"
+            className="owisp-login-label owisp-login-label-text owisp-login-label-register-btn"
             htmlFor="owisp-login-register-btn"
           >
-            <div
-              className="owisp-login-label-text"
-            >
-              Not registered yet?
-            </div>
+            Not registered yet?
           </label>
           <div
             className="owisp-login-form-register-btn-div"

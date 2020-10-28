@@ -105,41 +105,39 @@ export default class PasswordReset extends React.Component {
                   {inputFields.email ? (
                     <>
                       <label
-                        className="owisp-password-reset-label owisp-password-reset-label-email"
+                        className="owisp-password-reset-label owisp-password-reset-label-text owisp-password-reset-label-email"
                         htmlFor="owisp-password-reset-email"
                       >
-                        <div className="owisp-password-reset-label-text owisp-password-reset-label-text-email">
-                          {getText(inputFields.email.label, language)}
-                        </div>
-                        <input
-                          className={`owisp-password-reset-input owisp-password-reset-input-email ${
-                            errors.email ? "error" : ""
-                            }`}
-                          type={inputFields.email.type}
-                          id="owisp-password-reset-email"
-                          required
-                          name="email"
-                          value={email}
-                          onChange={this.handleChange}
-                          placeholder={getText(
-                            inputFields.email.placeholder,
-                            language,
-                          )}
-                          pattern={
-                            inputFields.email.pattern
-                              ? inputFields.email.pattern
-                              : undefined
-                          }
-                          title={
-                            inputFields.email.pattern_description
-                              ? getText(
-                                inputFields.email.pattern_description,
-                                language,
-                              )
-                              : undefined
-                          }
-                        />
+                        {getText(inputFields.email.label, language)}
                       </label>
+                      <input
+                        className={`owisp-password-reset-input owisp-password-reset-input-email ${
+                          errors.email ? "error" : ""
+                          }`}
+                        type={inputFields.email.type}
+                        id="owisp-password-reset-email"
+                        required
+                        name="email"
+                        value={email}
+                        onChange={this.handleChange}
+                        placeholder={getText(
+                          inputFields.email.placeholder,
+                          language,
+                        )}
+                        pattern={
+                          inputFields.email.pattern
+                            ? inputFields.email.pattern
+                            : undefined
+                        }
+                        title={
+                          inputFields.email.pattern_description
+                            ? getText(
+                              inputFields.email.pattern_description,
+                              language,
+                            )
+                            : undefined
+                        }
+                      />
                       {errors.email && (
                         <div className="owisp-password-reset-error owisp-password-reset-error-email">
                           <span className="owisp-password-reset-error-icon">

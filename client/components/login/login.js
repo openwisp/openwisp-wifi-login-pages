@@ -173,12 +173,10 @@ export default class Login extends React.Component {
                 {input_fields.email ? (
                   <>
                     <label
-                      className="owisp-login-label owisp-login-label-email"
+                      className="owisp-login-label owisp-login-label-text owisp-login-label-email"
                       htmlFor="owisp-login-email"
                     >
-                      <div className="owisp-login-label-text">
-                        {getText(input_fields.email.label, language)}
-                      </div>
+                      {getText(input_fields.email.label, language)}
                       <input
                         className={`owisp-login-input
                         owisp-login-input-email
@@ -221,12 +219,10 @@ export default class Login extends React.Component {
                 {input_fields.password ? (
                   <>
                     <label
-                      className="owisp-login-label owisp-login-label-password"
+                      className="owisp-login-label owisp-login-label-text owisp-login-label-password"
                       htmlFor="owisp-login-password"
                     >
-                      <div className="owisp-login-label-text">
-                        {getText(input_fields.password.label, language)}
-                      </div>
+                      {getText(input_fields.password.label, language)}
                       <input
                         className={`owisp-login-input owisp-login-input-password
                       ${errors.password1 ? "error" : ""}`}
@@ -282,12 +278,10 @@ export default class Login extends React.Component {
                 <>
                   {buttons.login.label ? (
                     <label
-                      className="owisp-login-label owisp-login-label-login-btn"
+                      className="owisp-login-label owisp-login-label-text owisp-login-label-login-btn"
                       htmlFor="owisp-login-login-btn"
                     >
-                      <div className="owisp-login-label-text">
-                        {getText(buttons.login.label, language)}
-                      </div>
+                      {getText(buttons.login.label, language)}
                     </label>
                   ) : null}
                   <input
@@ -302,12 +296,10 @@ export default class Login extends React.Component {
                 <>
                   {buttons.register.label ? (
                     <label
-                      className="owisp-login-label owisp-login-label-register-btn"
+                      className="owisp-login-label owisp-login-label-text owisp-login-label-register-btn"
                       htmlFor="owisp-login-register-btn"
                     >
-                      <div className="owisp-login-label-text">
-                        {getText(buttons.register.label, language)}
-                      </div>
+                      {getText(buttons.register.label, language)}
                     </label>
                   ) : null}
                   <div className="owisp-login-form-register-btn-div">

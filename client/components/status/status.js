@@ -233,12 +233,10 @@ export default class Status extends React.Component {
                   {buttons.logout.label ? (
                     <>
                       <label
-                        className="owisp-status-label owisp-status-label-logout-btn"
+                        className="owisp-status-label owisp-status-label-text owisp-status-label-logout-btn"
                         htmlFor="owisp-status-logout-btn"
                       >
-                        <div className="owisp-status-label-text">
-                          {getText(buttons.logout.label, language)}
-                        </div>
+                        {getText(buttons.logout.label, language)}
                       </label>
                     </>
                   ) : null}

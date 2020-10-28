@@ -94,15 +94,13 @@ export default class PasswordChange extends React.Component {
             {passwordChange.input_fields.password1 ? (
               <>
                 <label
-                  className="owisp-password-change-label owisp-password-change-label-password"
+                  className="owisp-password-change-label owisp-password-change-label-text owisp-password-change-label-password"
                   htmlFor="owisp-password-change-password"
                 >
-                  <div className="owisp-password-change-label-text">
-                    {getText(
-                      passwordChange.input_fields.password1.label,
-                      language,
-                    )}
-                  </div>
+                  {getText(
+                    passwordChange.input_fields.password1.label,
+                    language,
+                  )}
                   <input
                     className="owisp-password-change-input owisp-password-change-input-password"
                     type="password"
@@ -135,15 +133,13 @@ export default class PasswordChange extends React.Component {
             {passwordChange.input_fields.password2 ? (
               <>
                 <label
-                  className="owisp-password-change-label owisp-password-change-label-password-confirm"
+                  className="owisp-password-change-label owisp-password-change-label-text owisp-password-change-label-password-confirm"
                   htmlFor="owisp-password-change-password-confirm"
                 >
-                  <div className="owisp-password-change-label-text">
-                    {getText(
-                      passwordChange.input_fields.password1.label,
-                      language,
-                    )}
-                  </div>
+                  {getText(
+                    passwordChange.input_fields.password1.label,
+                    language,
+                  )}
                   <input
                     className="owisp-password-change-input owisp-password-change-input-password-confirm"
                     type="password"

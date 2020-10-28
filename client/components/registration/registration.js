@@ -135,12 +135,10 @@ export default class Registration extends React.Component {
                 {input_fields.email ? (
                   <>
                     <label
-                      className="owisp-registration-label owisp-registration-label-email"
+                      className="owisp-registration-label owisp-registration-label-text owisp-registration-label-email"
                       htmlFor="owisp-registration-email"
                     >
-                      <div className="owisp-registration-label-text owisp-registration-label-text-email">
-                        {getText(input_fields.email.label, language)}
-                      </div>
+                      {getText(input_fields.email.label, language)}
                       <input
                         className={`owisp-registration-input owisp-registration-input-email ${
                           errors.email ? "error" : ""
@@ -184,12 +182,10 @@ export default class Registration extends React.Component {
                 {input_fields.password ? (
                   <>
                     <label
-                      className="owisp-registration-label owisp-registration-label-password"
+                      className="owisp-registration-label owisp-registration-label-text owisp-registration-label-password"
                       htmlFor="owisp-registration-password"
                     >
-                      <div className="owisp-registration-label-text">
-                        {getText(input_fields.password.label, language)}
-                      </div>
+                      {getText(input_fields.password.label, language)}
                       <input
                         className={`owisp-registration-input owisp-registration-input-password
                       ${errors.password1 ? "error" : ""}`}
@@ -232,12 +228,10 @@ export default class Registration extends React.Component {
                 {input_fields.password_confirm ? (
                   <>
                     <label
-                      className="owisp-registration-label owisp-registration-label-confirm"
+                      className="owisp-registration-label owisp-registration-label-text owisp-registration-label-confirm"
                       htmlFor="owisp-registration-password-confirm"
                     >
-                      <div className="owisp-registration-label-text">
-                        {getText(input_fields.password_confirm.label, language)}
-                      </div>
+                      {getText(input_fields.password_confirm.label, language)}
                       <input
                         className={`owisp-registration-input owisp-registration-input-confirm ${
                           errors.password2 ? "error" : ""
@@ -295,12 +289,10 @@ export default class Registration extends React.Component {
                 <>
                   {buttons.register.label ? (
                     <label
-                      className="owisp-registration-label owisp-registration-label-registration-btn"
+                      className="owisp-registration-label owisp-registration-label-text owisp-registration-label-registration-btn"
                       htmlFor="owisp-registration-registration-btn"
                     >
-                      <div className="owisp-registration-label-text">
-                        {getText(buttons.register.label, language)}
-                      </div>
+                      {getText(buttons.register.label, language)}
                     </label>
                   ) : null}
                   <input

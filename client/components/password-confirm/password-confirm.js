@@ -130,12 +130,10 @@ export default class PasswordConfirm extends React.Component {
                   {inputFields.password ? (
                     <>
                       <label
-                        className="owisp-password-confirm-label owisp-password-confirm-label-password"
+                        className="owisp-password-confirm-label owisp-password-confirm-label-text owisp-password-confirm-label-password"
                         htmlFor="owisp-password-confirm-password"
                       >
-                        <div className="owisp-password-confirm-label-text">
-                          {getText(inputFields.password.label, language)}
-                        </div>
+                        {getText(inputFields.password.label, language)}
                         <input
                           className={`owisp-password-confirm-input owisp-password-confirm-input-password
                       ${errors.newPassword1 ? "error" : ""}`}
@@ -180,12 +178,10 @@ export default class PasswordConfirm extends React.Component {
                   {inputFields.password_confirm ? (
                     <>
                       <label
-                        className="owisp-password-confirm-label owisp-password-confirm-label-confirm"
+                        className="owisp-password-confirm-label owisp-password-confirm-label-text owisp-password-confirm-label-confirm"
                         htmlFor="owisp-password-confirm-password-confirm"
                       >
-                        <div className="owisp-password-confirm-label-text">
-                          {getText(inputFields.password_confirm.label, language)}
-                        </div>
+                        {getText(inputFields.password_confirm.label, language)}
                         <input
                           className={`owisp-password-confirm-input owisp-password-confirm-input-confirm ${
                             errors.newPassword2 ? "error" : ""

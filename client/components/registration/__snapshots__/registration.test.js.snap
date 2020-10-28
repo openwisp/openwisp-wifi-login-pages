@@ -17,14 +17,10 @@ exports[`<Registration /> rendering should render correctly 1`] = `
         >
           <React.Fragment>
             <label
-              className="owisp-registration-label owisp-registration-label-email"
+              className="owisp-registration-label owisp-registration-label-text owisp-registration-label-email"
               htmlFor="owisp-registration-email"
             >
-              <div
-                className="owisp-registration-label-text owisp-registration-label-text-email"
-              >
-                email
-              </div>
+              email
               <input
                 className="owisp-registration-input owisp-registration-input-email "
                 id="owisp-registration-email"
@@ -41,14 +37,10 @@ exports[`<Registration /> rendering should render correctly 1`] = `
           </React.Fragment>
           <React.Fragment>
             <label
-              className="owisp-registration-label owisp-registration-label-password"
+              className="owisp-registration-label owisp-registration-label-text owisp-registration-label-password"
               htmlFor="owisp-registration-password"
             >
-              <div
-                className="owisp-registration-label-text"
-              >
-                password
-              </div>
+              password
               <input
                 className="owisp-registration-input owisp-registration-input-password
                       "
@@ -66,14 +58,10 @@ exports[`<Registration /> rendering should render correctly 1`] = `
           </React.Fragment>
           <React.Fragment>
             <label
-              className="owisp-registration-label owisp-registration-label-confirm"
+              className="owisp-registration-label owisp-registration-label-text owisp-registration-label-confirm"
               htmlFor="owisp-registration-password-confirm"
             >
-              <div
-                className="owisp-registration-label-text"
-              >
-                confirm
-              </div>
+              confirm
               <input
                 className="owisp-registration-input owisp-registration-input-confirm "
                 id="owisp-registration-password-confirm"
