@@ -22,8 +22,8 @@ Openwisp wifi login pages app to allow users to authenticate, sign up and know m
 
 ### Prerequisites
 
-- [NodeJs](https://nodejs.org/en/)
-- [NPM](https://npmjs.org/) - Node package manager
+- [NodeJs](https://nodejs.org/en/) >= 12.0.0
+- [NPM](https://npmjs.org/) - Node package manager >= 6.9.0
 
 ### Install
 
