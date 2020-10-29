@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import isInternalLink from "../../utils/check-internal-links";
 import getAssetPath from "../../utils/get-asset-path";
 import getText from "../../utils/get-text";
+import shouldLinkBeShown from "../../utils/should-link-be-shown";
 
 export default class Header extends React.Component {
   constructor(props) {
@@ -94,34 +95,35 @@ export default class Header extends React.Component {
           <div className="owisp-header-row-2">
             <div className="owisp-header-row-2-inner">
               {links.map((link, index) => {
-                if (isInternalLink(link.url)) {
-                  if (internalLinks.indexOf(link.url) < 0 || !isAuthenticated)
-                    return (
-                      <Link
-                        className={`owisp-header-link owisp-header-desktop-link
-                    owisp-header-link-${index + 1} ${
-                          pathname === link.url ? "active" : ""
-                          } owisp-btn-primary `}
-                        to={link.url}
-                        key={index}
-                      >
-                        {getText(link.text, language)}
-                      </Link>
-                    );
-                  return null;
+                if (shouldLinkBeShown(link, isAuthenticated)) {
+                  if (isInternalLink(link.url) && (internalLinks.indexOf(link.url) < 0 || !isAuthenticated)) {
+                      return (
+                        <Link
+                          className={`owisp-header-link owisp-header-desktop-link
+                      owisp-header-link-${index + 1} ${
+                            pathname === link.url ? "active" : ""
+                            } owisp-btn-primary `}
+                          to={link.url}
+                          key={index}
+                        >
+                          {getText(link.text, language)}
+                        </Link>
+                      );
+                  }
+                  return (
+                    <a
+                      href={link.url}
+                      className={`owisp-header-link owisp-header-desktop-link
+                      owisp-header-link-${index + 1} owisp-btn-primary`}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      key={link.url}
+                    >
+                      {getText(link.text, language)}
+                    </a>
+                  );
                 }
-                return (
-                  <a
-                    href={link.url}
-                    className={`owisp-header-link owisp-header-desktop-link
-                    owisp-header-link-${index + 1} owisp-btn-primary`}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    key={link.url}
-                  >
-                    {getText(link.text, language)}
-                  </a>
-                );
+                return null;
               })}
             </div>
           </div>
@@ -163,32 +165,35 @@ export default class Header extends React.Component {
               } owisp-header-mobile-menu`}
           >
             {links.map((link, index) => {
-              if (isInternalLink(link.url)) {
+              if (shouldLinkBeShown(link, isAuthenticated)) {
+                if (isInternalLink(link.url)) {
+                  return (
+                    <Link
+                      className={`owisp-header-link owisp-mobile-link
+                    owisp-header-link-${index + 1} ${
+                        pathname === link.url ? "active" : ""
+                        } owisp-btn-primary`}
+                      to={link.url}
+                      key={index}
+                    >
+                      {getText(link.text, language)}
+                    </Link>
+                  );
+                }
                 return (
-                  <Link
+                  <a
+                    href={link.url}
                     className={`owisp-header-link owisp-mobile-link
-                  owisp-header-link-${index + 1} ${
-                      pathname === link.url ? "active" : ""
-                      } owisp-btn-primary`}
-                    to={link.url}
-                    key={index}
+                      owisp-header-link-${index + 1} owisp-btn-primary`}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    key={link.url}
                   >
                     {getText(link.text, language)}
-                  </Link>
+                  </a>
                 );
               }
-              return (
-                <a
-                  href={link.url}
-                  className={`owisp-header-link owisp-mobile-link
-                    owisp-header-link-${index + 1} owisp-btn-primary`}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  key={link.url}
-                >
-                  {getText(link.text, language)}
-                </a>
-              );
+              return null;
             })}
             <div className="owisp-mobile-languages-row">
               {languages.map(lang => {

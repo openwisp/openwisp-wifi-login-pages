@@ -12,6 +12,7 @@ const mapStateToProps = (state, ownProps) => {
       state.organization.configuration.components.captive_portal_login_form,
     captivePortalLogoutForm:
       state.organization.configuration.components.captive_portal_logout_form,
+      isAuthenticated: state.organization.configuration.isAuthenticated,
   };
 };
 

@@ -12,7 +12,7 @@ exports[`<Footer /> rendering should render correctly 1`] = `
     >
       <a
         className="owisp-footer-link
-                  owisp-footer-link-1"
+                    owisp-footer-link-1"
         href="https://link-1.com"
         rel="noreferrer noopener"
         target="_blank"
@@ -21,7 +21,7 @@ exports[`<Footer /> rendering should render correctly 1`] = `
       </a>
       <a
         className="owisp-footer-link
-                  owisp-footer-link-2"
+                    owisp-footer-link-2"
         href="https://link-2.com"
         rel="noreferrer noopener"
         target="_blank"

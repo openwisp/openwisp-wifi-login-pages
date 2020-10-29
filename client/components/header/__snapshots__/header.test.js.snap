@@ -57,19 +57,21 @@ Array [
       >
         <a
           className="owisp-header-link owisp-header-desktop-link
-                    owisp-header-link-1 active owisp-btn-primary "
-          href="/default/login"
-          onClick={[Function]}
+                      owisp-header-link-1 owisp-btn-primary"
+          href="link-1/"
+          rel="noreferrer noopener"
+          target="_blank"
         >
-          Sign In
+          link-1
         </a>
         <a
           className="owisp-header-link owisp-header-desktop-link
-                    owisp-header-link-2  owisp-btn-primary "
-          href="/default/registration"
-          onClick={[Function]}
+                      owisp-header-link-2 owisp-btn-primary"
+          href="link-2/"
+          rel="noreferrer noopener"
+          target="_blank"
         >
-          Sign Up
+          link-2
         </a>
       </div>
     </div>
@@ -129,19 +131,21 @@ Array [
     >
       <a
         className="owisp-header-link owisp-mobile-link
-                  owisp-header-link-1 active owisp-btn-primary"
-        href="/default/login"
-        onClick={[Function]}
+                      owisp-header-link-1 owisp-btn-primary"
+        href="link-1/"
+        rel="noreferrer noopener"
+        target="_blank"
       >
-        Sign In
+        link-1
       </a>
       <a
         className="owisp-header-link owisp-mobile-link
-                  owisp-header-link-2  owisp-btn-primary"
-        href="/default/registration"
-        onClick={[Function]}
+                      owisp-header-link-2 owisp-btn-primary"
+        href="link-2/"
+        rel="noreferrer noopener"
+        target="_blank"
       >
-        Sign Up
+        link-2
       </a>
       <div
         className="owisp-mobile-languages-row"

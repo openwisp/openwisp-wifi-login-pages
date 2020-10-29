@@ -7,6 +7,29 @@ import getConfig from "../../utils/get-config";
 import Footer from "./footer";
 
 const defaultConfig = getConfig("default");
+const footerLinks = [
+  {
+    text: {en: "status"},
+    url: "/status",
+    authenticated: true,
+  },
+  {
+    text: {en: "signUp"},
+    url: "/signUp",
+    authenticated: false,
+  },
+  {
+    text: {en: "about"},
+    url: "/about",
+  },
+];
+const getLinkText = (wrapper, text) => {
+  const texts = [];
+  wrapper.find(text).forEach( node => {
+    texts.push(node.text());
+  });
+  return texts;
+};
 const createTestProps = props => {
   return {
     language: "en",
@@ -45,5 +68,25 @@ describe("<Footer /> rendering", () => {
         .find(".owisp-footer-row-2-inner")
         .text(),
     ).toBe("secondary text");
+  });
+  it("should render without authenticated links when not authenticated", () => {
+    props = createTestProps();
+    props.footer.links = footerLinks;
+    props.isAuthenticated = false;
+    wrapper = shallow(<Footer {...props} />);
+    const linkText = getLinkText(wrapper, ".owisp-footer-link");
+    expect(linkText).toContain("about");
+    expect(linkText).toContain("signUp");
+    expect(linkText).not.toContain("status");
+  });
+  it("should render with authenticated links when authenticated", () => {
+    props = createTestProps();
+    props.footer.links = footerLinks;
+    props.isAuthenticated = true;
+    wrapper = shallow(<Footer {...props} />);
+    const linkText = getLinkText(wrapper, ".owisp-footer-link");
+    expect(linkText).not.toContain("signUp");
+    expect(linkText).toContain("about");
+    expect(linkText).toContain("status");
   });
 });

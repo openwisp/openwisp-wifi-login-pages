@@ -17,6 +17,29 @@ function tick() {
 }
 
 const defaultConfig = getConfig("default");
+const links = [
+  {
+    text: {en: "link-1"},
+    url: "/link1.com",
+  },
+  {
+    text: {en: "link-2"},
+    url: "/link2.com",
+    authenticated: false,
+  },
+  {
+    text: {en: "link-3"},
+    url: "/link3.com",
+    authenticated: true,
+  },
+];
+const getLinkText = (wrapper, text) => {
+  const texts = [];
+  wrapper.find(text).forEach( node => {
+    texts.push(node.text());
+  });
+  return texts;
+};
 const createTestProps = props => {
   return {
     language: "en",
@@ -41,6 +64,32 @@ describe("<Status /> rendering", () => {
     const renderer = new ShallowRenderer();
     const component = renderer.render(<Status {...props} />);
     expect(component).toMatchSnapshot();
+  });
+  it("should render without authenticated links when not authenticated", () => {
+    const prop = createTestProps();
+    prop.statusPage.links = links;
+    prop.isAuthenticated = false;
+    const wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    const linkText = getLinkText(wrapper, ".owisp-status-link");
+    expect(linkText).toContain("link-1");
+    expect(linkText).toContain("link-2");
+    expect(linkText).not.toContain("link-3");
+  });
+  it("should render with authenticated links when authenticated", () => {
+    const prop = createTestProps();
+    prop.statusPage.links = links;
+    prop.isAuthenticated = true;
+    const wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    const linkText = getLinkText(wrapper, ".owisp-status-link");
+    expect(linkText).toContain("link-1");
+    expect(linkText).not.toContain("link-2");
+    expect(linkText).toContain("link-3");
   });
 });
 
