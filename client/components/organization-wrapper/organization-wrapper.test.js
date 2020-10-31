@@ -25,10 +25,12 @@ const createTestProps = props => {
 describe("<OrganizationWrapper /> rendering", () => {
   let props;
   let wrapper;
+
   beforeEach(() => {
     props = createTestProps();
     wrapper = shallow(<OrganizationWrapper {...props} />);
   });
+
   it("should render correctly when in loading state", () => {
     wrapper.setProps({
       organization: {...props.organization, exists: undefined},
@@ -37,6 +39,7 @@ describe("<OrganizationWrapper /> rendering", () => {
     expect(wrapper.find(".owisp-org-wrapper-not-found")).toHaveLength(0);
     expect(wrapper.find(".owisp-loader-container")).toHaveLength(1);
   });
+
   it("should render correctly when organization doesn't exist", () => {
     wrapper.setProps({
       organization: {...props.organization, exists: false},
@@ -45,6 +48,7 @@ describe("<OrganizationWrapper /> rendering", () => {
     expect(wrapper.find(".owisp-org-wrapper-not-found")).toHaveLength(1);
     expect(wrapper.find(".owisp-loader-container")).toHaveLength(0);
   });
+
   it("should render correctly when organization exists", () => {
     wrapper.setProps({
       organization: {...props.organization, exists: true},
@@ -56,16 +60,30 @@ describe("<OrganizationWrapper /> rendering", () => {
 });
 
 describe("<OrganizationWrapper /> interactions", () => {
+  // eslint-disable-next-line
   let props;
-  // eslint-disable-next-line no-unused-vars
   let wrapper;
+  let originalError;
+  let lastConsoleOutuput;
+
   beforeEach(() => {
+    originalError = console.error;
+    lastConsoleOutuput = null;
+    console.error = (data) => {
+      lastConsoleOutuput = data;
+    };
     props = createTestProps();
     wrapper = shallow(<OrganizationWrapper {...props} />);
   });
+
+  afterEach(() => {
+    console.error = originalError;
+  });
+
   it("should call setOrganization once", () => {
     expect(props.setOrganization).toHaveBeenCalledTimes(1);
   });
+
   it("test componentDidUpdate lifecycle method", () => {
     wrapper.setProps({
       match: {params: {organization: "new-org"}},
@@ -81,10 +99,15 @@ describe("<OrganizationWrapper /> interactions", () => {
     });
     expect(props.setOrganization).toHaveBeenCalledTimes(2);
     expect(props.setOrganization).toHaveBeenCalledTimes(2);
+
+    jest.spyOn(console, "error");
     wrapper.setProps({
       match: {params: {organization: undefined}},
     });
+    expect(lastConsoleOutuput).not.toBe(null);
+    expect(console.error).toHaveBeenCalledTimes(1);
   });
+
   it("test setLoading method", () => {
     wrapper.instance().setLoading(true);
     expect(wrapper.instance().state.loading).toBe(true);

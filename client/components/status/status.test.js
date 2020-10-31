@@ -6,9 +6,12 @@ import React from "react";
 import {Cookies} from "react-cookie";
 import ShallowRenderer from "react-test-renderer/shallow";
 import getConfig from "../../utils/get-config";
+import logError from "../../utils/log-error";
 import Status from "./status";
 
 jest.mock("axios");
+jest.mock("../../utils/log-error");
+logError.mockImplementation(jest.fn());
 
 function tick() {
   return new Promise(resolve => {
@@ -51,7 +54,7 @@ const createTestProps = props => {
     captivePortalLogoutForm:
       defaultConfig.components.captive_portal_logout_form,
     location: {
-      search: "?macaddr=0.0.0.0",
+      search: "?macaddr=4e:ed:11:2b:17:ae",
     },
     ...props,
   };
@@ -94,26 +97,21 @@ describe("<Status /> rendering", () => {
 });
 
 describe("<Status /> interactions", () => {
+  // eslint-disable-next-line
   let props;
   let wrapper;
-  let originalError;
-  // eslint-disable-next-line no-unused-vars
-  let lastConsoleOutuput;
+
   beforeEach(() => {
-    originalError = console.error;
     Status.contextTypes = {
       setLoading: PropTypes.func,
       getLoading: PropTypes.func,
     };
-    lastConsoleOutuput = null;
-    console.error = data => {
-      lastConsoleOutuput = data;
-    };
   });
+
   afterEach(() => {
-    console.error = originalError;
     axios.mockReset();
   });
+
   it("should call logout function when logout button is clicked", async () => {
     axios
       .mockImplementationOnce(() => {
@@ -196,9 +194,10 @@ describe("<Status /> interactions", () => {
     await tick();
     expect(wrapper.instance().state.sessions.length).toBe(1);
     expect(wrapper.instance().props.cookies.get("default_macaddr")).toBe(
-      "0.0.0.0",
+      "4e:ed:11:2b:17:ae",
     );
     expect(Status.prototype.getUserRadiusSessions).toHaveBeenCalled();
+
     wrapper.setProps({
       location: {
         search: "",
@@ -210,9 +209,10 @@ describe("<Status /> interactions", () => {
     expect(wrapper.instance().props.cookies.get("default_macaddr")).toBe(
       undefined,
     );
+
     wrapper.setProps({
       location: {
-        search: "?macaddr=0.0.0.0",
+        search: "?macaddr=4e:ed:11:2b:17:ae",
       },
       cookies: new Cookies(),
     });
@@ -226,6 +226,7 @@ describe("<Status /> interactions", () => {
     expect(submintFn.mock.calls.length).toBe(1);
     Status.prototype.getUserRadiusSessions.mockRestore();
   });
+
   it("test getUserRadiusSessions method", async () => {
     axios
       .mockImplementationOnce(() => {
@@ -265,6 +266,7 @@ describe("<Status /> interactions", () => {
     await tick();
     expect(wrapper.instance().props.logout.mock.calls.length).toBe(1);
   });
+
   it("test handleLoginIframe method", async () => {
     props = createTestProps();
     wrapper = shallow(<Status {...props} />, {
@@ -279,7 +281,7 @@ describe("<Status /> interactions", () => {
     mockRef = {
       contentWindow: {
         location: {
-          search: "?reply=true?macaddr=0.0.0.0",
+          search: "?reply=true?macaddr=4e:ed:11:2b:17:ae",
         },
       },
       contentDocument: {
@@ -291,7 +293,7 @@ describe("<Status /> interactions", () => {
     wrapper.instance().handleLoginIframe();
     expect(wrapper.instance().props.logout.mock.calls.length).toBe(1);
     expect(wrapper.instance().props.cookies.get("default_macaddr")).toBe(
-      "0.0.0.0",
+      "4e:ed:11:2b:17:ae",
     );
   });
 });

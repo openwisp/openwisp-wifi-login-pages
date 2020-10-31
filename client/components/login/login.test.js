@@ -69,6 +69,7 @@ describe("<Login /> interactions", () => {
   let wrapper;
   let originalError;
   let lastConsoleOutuput;
+
   beforeEach(() => {
     originalError = console.error;
     lastConsoleOutuput = null;
@@ -82,9 +83,11 @@ describe("<Login /> interactions", () => {
     };
     wrapper = shallow(<Login {...props} />, { context: loadingContextValue });
   });
+
   afterEach(() => {
     console.error = originalError;
   });
+
   it("should change state values when handleChange function is invoked", () => {
     wrapper
       .find("#owisp-login-email")
@@ -95,6 +98,7 @@ describe("<Login /> interactions", () => {
       .simulate("change", { target: { value: "test password", name: "password" } });
     expect(wrapper.state("password")).toEqual("test password");
   });
+
   it("should execute handleSubmit correctly when form is submitted", () => {
     axios
       .mockImplementationOnce(() => {

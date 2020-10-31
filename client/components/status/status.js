@@ -50,6 +50,8 @@ export default class Status extends React.Component {
         );
         if (macaddr) {
           cookies.set(`${orgSlug}_macaddr`, macaddr, {path: "/"});
+        } else {
+          cookies.remove(`${orgSlug}_macaddr`, {path: "/"});
         }
       } catch {
         //

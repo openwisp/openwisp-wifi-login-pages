@@ -6,9 +6,13 @@ import React from "react";
 import ShallowRenderer from "react-test-renderer/shallow";
 import {passwordChangeError, passwordConfirmError} from "../../constants";
 import getConfig from "../../utils/get-config";
+import logError from "../../utils/log-error";
 import PasswordChange from "./password-change";
 
 jest.mock("axios");
+jest.mock("../../utils/log-error");
+logError.mockImplementation(jest.fn());
+
 const defaultConfig = getConfig("default");
 
 function tick() {
@@ -67,6 +71,7 @@ describe("<PasswordChange /> interactions", () => {
         return Promise.reject({
           response: {
             status: 401,
+            statusText: "UNAUTHORIZED",
             data: {},
           },
         });
