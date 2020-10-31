@@ -3,6 +3,7 @@ import isInternalLink from "./check-internal-links";
 import customMerge from "./custom-merge";
 import getParameterByName from "./get-parameter-by-name";
 import renderAdditionalInfo from "./render-additional-info";
+import shouldLinkBeShown from "./should-link-be-shown";
 
 describe("renderAdditionalInfo tests", () => {
   let textObj = {en: "sample test"};
@@ -98,5 +99,22 @@ describe("getParameterByName tests", () => {
     expect(
       getParameterByName("username", "/default/login?username=vivek"),
     ).toBe("vivek");
+  });
+});
+describe("shouldLinkBeShown tests", () => {
+  it("test link.authenticated is undefined", () => {
+    const link = {};
+    const isAuthenticated = false;
+    expect(shouldLinkBeShown(link, isAuthenticated)).toBe(true);
+  });
+  it("test link.authenticated is different from isAuthenticated", () => {
+    const link = {authenticated: false};
+    const isAuthenticated = true;
+    expect(shouldLinkBeShown(link, isAuthenticated)).toBe(false);
+  });
+  it("test link.authenticated is similar to isAuthenticated", () => {
+    const link = {authenticated: true};
+    const isAuthenticated = true;
+    expect(shouldLinkBeShown(link, isAuthenticated)).toBe(true);
   });
 });

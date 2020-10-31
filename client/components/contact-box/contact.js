@@ -6,10 +6,11 @@ import React from "react";
 
 import getAssetPath from "../../utils/get-asset-path";
 import getText from "../../utils/get-text";
+import shouldLinkBeShown from "../../utils/should-link-be-shown";
 
 export default class Contact extends React.Component {
   render() {
-    const {contactPage, language, orgSlug} = this.props;
+    const {contactPage, language, orgSlug, isAuthenticated} = this.props;
     const {email, helpdesk, social_links} = contactPage;
     return (
       <>
@@ -39,27 +40,30 @@ export default class Contact extends React.Component {
             </div>
             <div className="owisp-contact-links">
               {social_links.map(link => {
-                return (
-                  <a
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    key={link.url}
-                    className={`owisp-contact-${getText(
-                      link.alt,
-                      language,
-                    )}-link owisp-contact-link`}
-                  >
-                    <img
-                      src={getAssetPath(orgSlug, link.icon)}
-                      alt={getText(link.alt, language)}
+                if (shouldLinkBeShown(link, isAuthenticated)) {
+                  return (
+                    <a
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      key={link.url}
                       className={`owisp-contact-${getText(
                         link.alt,
                         language,
-                      )}-image owisp-contact-image`}
-                    />
-                  </a>
-                );
+                      )}-link owisp-contact-link`}
+                    >
+                      <img
+                        src={getAssetPath(orgSlug, link.icon)}
+                        alt={getText(link.alt, language)}
+                        className={`owisp-contact-${getText(
+                          link.alt,
+                          language,
+                        )}-image owisp-contact-image`}
+                      />
+                    </a>
+                  );
+                }
+                return null;
               })}
             </div>
             <div className="owisp-contact-inner"/>
@@ -70,6 +74,9 @@ export default class Contact extends React.Component {
   }
 }
 
+Contact.defaultProps = {
+  isAuthenticated: false
+};
 Contact.propTypes = {
   language: PropTypes.string.isRequired,
   orgSlug: PropTypes.string.isRequired,
@@ -78,4 +85,5 @@ Contact.propTypes = {
     email: PropTypes.object,
     helpdesk: PropTypes.object,
   }).isRequired,
+  isAuthenticated: PropTypes.bool,
 };

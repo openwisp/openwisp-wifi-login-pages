@@ -7,6 +7,7 @@ const mapStateToProps = state => {
     contactPage: state.organization.configuration.components.contact_page,
     language: state.language,
     orgSlug: state.organization.configuration.slug,
+    isAuthenticated: state.organization.configuration.isAuthenticated,
   };
 };
 export default connect(

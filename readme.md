@@ -18,6 +18,7 @@ Openwisp wifi login pages app to allow users to authenticate, sign up and know m
 - [Prerequisites](#prerequisites)
 - [Install](#install)
 - [Usage](#usage)
+- [Settings](#settings)
 - [License](#license)
 
 ### Prerequisites
@@ -137,6 +138,63 @@ PS> $env:CLIENT = 4000; $env:SERVER = 5000; npm run client
 Note that you need to tell the client the server's port
 (unless you're using the default server port, which is 3030)
 so the client knows where he can find the server.
+
+### Settings
+
+#### Menu items
+
+By default, menu items are visible to any user, but it's possible to
+configure some items to be visible only to authenticated users or
+to unauthenticated users by specifying the `authenticated` property.
+
+- `authenticated: true` means visible only to authenticated users.
+- `authenticated: false` means visible only to unauthenticated users.
+- unspecified: link will be visible to any user (default behavior)
+
+Let us consider the following configuration for the header, footer and contact components:
+
+```
+components:
+  header:
+    links:
+      - text:
+          en: "about"
+        url: "/about"
+      - text:
+          en: "sign uo"
+        url: "/default/registration"
+        authenticated: false
+      - text:
+          en: "change password"
+        url: "/change-password"
+        authenticated: true
+  footer:
+    links:
+      - text:
+          en: "about"
+        url: "/about"
+      - text:
+          en: "status"
+        url: "/status"
+        authenticated: true
+  contact_page:
+    social_links:
+      - text:
+          en: "support"
+        url: "/support"
+      - text:
+          en: "twitter"
+        url: "https://twitter.com/openwisp"
+        authenticated: true
+```
+
+With the configuration above:
+
+- `support` (from Contact) and `about` (from Header and Footer) links
+  will be visible to any user.
+- `sign up` (from Header) link will be visible to only unauthenticated users.
+- the link to `twitter` (from Contact) and `change password` (from Header)
+  links will be visible to only authenticated users
 
 ### License
 

@@ -7,6 +7,29 @@ import getConfig from "../../utils/get-config";
 import Header from "./header";
 
 const defaultConfig = getConfig("default");
+const headerLinks = [
+  {
+    text: {en: "link-1"},
+    url: "link-1/",
+  },
+  {
+    text: {en: "link-2"},
+    url: "link-2/",
+    authenticated: false,
+  },
+  {
+    text: {en: "link-3"},
+    url: "link-3/",
+    authenticated: true,
+  },
+];
+const getLinkText = (wrapper, text) => {
+  const texts = [];
+  wrapper.find(text).forEach( node => {
+    texts.push(node.text());
+  });
+  return texts;
+};
 const createTestProps = props => {
   return {
     setLanguage: jest.fn(),
@@ -44,6 +67,26 @@ describe("<Header /> rendering", () => {
       )
       .toJSON();
     expect(component).toMatchSnapshot();
+  });
+  it("should render without authenticated links when not authenticated", () => {
+    props = createTestProps();
+    props.isAuthenticated = false;
+    props.header.links = headerLinks;
+    wrapper = shallow(<Header {...props} />);
+    const linkText = getLinkText(wrapper, ".owisp-header-link");
+    expect(linkText).toContain("link-1");
+    expect(linkText).toContain("link-2");
+    expect(linkText).not.toContain("link-3");
+  });
+  it("should render with authenticated links when authenticated", () => {
+    props = createTestProps();
+    props.isAuthenticated = true;
+    props.header.links = headerLinks;
+    wrapper = shallow(<Header {...props} />);
+    const linkText = getLinkText(wrapper, ".owisp-header-link");
+    expect(linkText).toContain("link-1");
+    expect(linkText).not.toContain("link-2");
+    expect(linkText).toContain("link-3");
   });
   it("should render with links", () => {
     const component = renderer
