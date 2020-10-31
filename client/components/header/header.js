@@ -95,35 +95,35 @@ export default class Header extends React.Component {
           <div className="owisp-header-row-2">
             <div className="owisp-header-row-2-inner">
               {links.map((link, index) => {
-                if (shouldLinkBeShown(link, isAuthenticated)) {
-                  if (isInternalLink(link.url) && (internalLinks.indexOf(link.url) < 0 || !isAuthenticated)) {
-                      return (
-                        <Link
-                          className={`owisp-header-link owisp-header-desktop-link
-                      owisp-header-link-${index + 1} ${
-                            pathname === link.url ? "active" : ""
-                            } owisp-btn-primary `}
-                          to={link.url}
-                          key={index}
-                        >
-                          {getText(link.text, language)}
-                        </Link>
-                      );
-                  }
+                if (!shouldLinkBeShown(link, isAuthenticated)) {
+                  return null;
+                }
+                if (isInternalLink(link.url) && (internalLinks.indexOf(link.url) < 0 || !isAuthenticated)) {
                   return (
-                    <a
-                      href={link.url}
+                    <Link
                       className={`owisp-header-link owisp-header-desktop-link
-                      owisp-header-link-${index + 1} owisp-btn-primary`}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      key={link.url}
+                  owisp-header-link-${index + 1} ${
+                        pathname === link.url ? "active" : ""
+                        } owisp-btn-primary `}
+                      to={link.url}
+                      key={index}
                     >
                       {getText(link.text, language)}
-                    </a>
+                    </Link>
                   );
                 }
-                return null;
+                return (
+                  <a
+                    href={link.url}
+                    className={`owisp-header-link owisp-header-desktop-link
+                    owisp-header-link-${index + 1} owisp-btn-primary`}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    key={link.url}
+                  >
+                    {getText(link.text, language)}
+                  </a>
+                );
               })}
             </div>
           </div>

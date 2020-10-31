@@ -143,63 +143,58 @@ so the client knows where he can find the server.
 
 #### Menu items
 
-We can configure which menu items are visible to which user (any user or authenticated user or unauthenticated user) by using the `authenticated` setting.
+By default, menu items are visible to any user, but it's possible to
+configure some items to be visible only to authenticated users or
+to unauthenticated users by specifying the `authenticated` property.
 
-- Links without this setting are visible to any user (default behavior).
+- `authenticated: true` means visible only to authenticated users.
+- `authenticated: false` means visible only to unauthenticated users.
+- unspecified: link will be visible to any user (default behavior)
 
-- Links with `authenticated: true` are visible to only authenticated users.
-
-- Links with `authenticated: false` are visible to only unauthenticated users.
-
-Let us consider the links configuration of the following components
-
-- Footer:
+Let us consider the following configuration for the header, footer and contact components:
 
 ```
+components:
+  header:
     links:
-    - text:
-        en: "about"
-      url: "/about"
-    - text:
-        en: "status"
-      url: "/status"
-      authenticated: true
-```
-
-- Header:
-
-```
+      - text:
+          en: "about"
+        url: "/about"
+      - text:
+          en: "sign uo"
+        url: "/default/registration"
+        authenticated: false
+      - text:
+          en: "change password"
+        url: "/change-password"
+        authenticated: true
+  footer:
     links:
-    - text:
-        en: "about"
-      url: "/about"
-    - text:
-        en: "sign uo"
-      url: "/default/registration"
-      authenticated: false
-    - text:
-        en: "change password"
-      url: "/change-password"
-      authenticated: true
-```
-
-- Contact:
-
-```
-    links:
-    - text:
-        en: "support"
-      url: "/support"
-    - text:
-        en: "twitter"
-      url: "https://twitter.com/openwisp"
-      authenticated: true
+      - text:
+          en: "about"
+        url: "/about"
+      - text:
+          en: "status"
+        url: "/status"
+        authenticated: true
+  contact_page:
+    social_links:
+      - text:
+          en: "support"
+        url: "/support"
+      - text:
+          en: "twitter"
+        url: "https://twitter.com/openwisp"
+        authenticated: true
 ```
 
 With the configuration above:
-`support` (from Contact) and `about` (from Header and Footer) links will be visible to any user.
-`sign up` (from Header) link will be visible to only unauthenticated users.
-And the `twitter` (from Contact) and `change password` (from Header) links will be visible to only authenticated users.
+
+- `support` (from Contact) and `about` (from Header and Footer) links
+  will be visible to any user.
+- `sign up` (from Header) link will be visible to only unauthenticated users.
+- the link to `twitter` (from Contact) and `change password` (from Header)
+  links will be visible to only authenticated users
 
 ### License
 
