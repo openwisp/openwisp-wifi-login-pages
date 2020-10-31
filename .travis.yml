@@ -12,12 +12,12 @@ branches:
     - master
 
 script:
-  - npm run setup
-  - npm run lint
-  - npm test
+  - yarn setup
+  - yarn lint
+  - yarn test
 
 after_success:
-  - npm run coveralls
+  - yarn coveralls
 
 notifications:
   # will post a summary as a comment on github in case of failure

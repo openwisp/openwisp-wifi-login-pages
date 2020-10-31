@@ -25,6 +25,7 @@ Openwisp wifi login pages app to allow users to authenticate, sign up and know m
 
 - [NodeJs](https://nodejs.org/en/) >= 12.0.0
 - [NPM](https://npmjs.org/) - Node package manager >= 6.9.0
+- [yarn](https://yarnpkg.com/) - Yarn package manager >= 1.19.0
 
 ### Install
 
@@ -37,22 +38,10 @@ git clone https://github.com/openwisp/openwisp-wifi-login-pages.git
 ##### Install dependencies
 
 ```
-npm install
-```
-
-or
-
-```
 yarn
 ```
 
 ##### Update dependencies
-
-```
-npm update
-```
-
-or
 
 ```
 yarn upgrade
@@ -62,36 +51,36 @@ yarn upgrade
 
 ##### Add Organization configuration
 
-Run `$ npm run add-org`
+Run `$ yarn add-org`
 When you run this command you’re prompted to provide the following properties:
 
 | Property          | Description                                       |
 | ------------------| --------------------------------------------------|
-| name              | Required. Name of the organization.`              |
+| name              | Required. Name of the organization.               |
 | slug              | Required. Slug of the organization.               |
 | uuid              | Required. UUID of the organization.               |
 | secret_key        | Required. Token of the organization.              |
 
 Copy all the assets to `client/assets/{slug}` directory
-Run `$ npm run setup`
-Start servers using `$ npm run start`
+Run `$ yarn setup`
+Start servers using `$ yarn start`
 
 ### Usage
 
-List of NPM Commands:
+List of yarn commands:
 
 ```
-$ npm run start			# Run the app (runs both, client and server)
-$ npm run setup			# Discover Organization configs and generate config.json and asset directories
-$ npm run add-org       # Add new Organization configuration
-$ npm run build			# Build the app
-$ npm run server		# Run server
-$ npm run client		# Run client
-$ npm run coveralls		# Run coveralls
-$ npm run lint			# Run ESLint
-$ npm run lint:fix 	 	# Run ESLint with automatically fix problems option
-$ npm test 		    	# Run tests
-$ npm test -- -u 		# Update Jest Snapshots
+$ yarn start      # Run the app (runs both, client and server)
+$ yarn setup      # Discover Organization configs and generate config.json and asset directories
+$ yarn add-org    # Add new Organization configuration
+$ yarn build      # Build the app
+$ yarn server     # Run server
+$ yarn client     # Run client
+$ yarn coveralls  # Run coveralls
+$ yarn lint       # Run ESLint
+$ yarn lint:fix   # Run ESLint with automatically fix problems option
+$ yarn test       # Run tests
+$ yarn -- -u      # Update Jest Snapshots
 ```
 
 #### Using custom ports
@@ -104,13 +93,13 @@ variables before starting.
 Bash (Linux):
 
 ```
-$ CLIENT=4000 SERVER=5000 npm run start
+$ CLIENT=4000 SERVER=5000 yarn start
 ```
 
 Powershell (Windows):
 
 ```
-PS> $env:CLIENT = 4000; $env:SERVER = 5000; npm run start
+PS> $env:CLIENT = 4000; $env:SERVER = 5000; yarn start
 ```
 
 **You can also run the client and server commands separately:**
@@ -118,21 +107,21 @@ PS> $env:CLIENT = 4000; $env:SERVER = 5000; npm run start
 Bash (Linux):
 
 ```
-$ SERVER=5000 npm run server
+$ SERVER=5000 yarn server
 ```
 
 ```
-$ CLIENT=4000 SERVER=5000 npm run client
+$ CLIENT=4000 SERVER=5000 yarn client
 ```
 
 Powershell (Windows):
 
 ```
-PS> $env:SERVER = 5000; npm run server
+PS> $env:SERVER = 5000; yarn server
 ```
 
 ```
-PS> $env:CLIENT = 4000; $env:SERVER = 5000; npm run client
+PS> $env:CLIENT = 4000; $env:SERVER = 5000; yarn client
 ```
 
 Note that you need to tell the client the server's port
