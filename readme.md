@@ -29,13 +29,26 @@ Openwisp wifi login pages app to allow users to authenticate, sign up and know m
 
 ### Install
 
-##### Clone this repo
+#### Install openwisp-radius
+
+This module works with [openwisp-radius](https://github.com/openwisp/openwisp-radius). So for us to use it, we need to have a running instance of `openwisp-radius` and set it up to communicate with it. We can have a running instance of `openwisp-radius` locally by following the instructions at [openwisp-radius docs](https://openwisp-radius.readthedocs.io/en/latest/developer/setup.html#installing-for-development) on a new terminal:
+
+- After successfully starting the `openwisp-radius` server, open a browser and visit the address: `http://localhost:8000/admin/` and sign in with the credentials of the `superuser` we created during `openwisp-radius` installation.
+
+- Visit the change page of the organization we wish to add to this module and note down it's `name`, `slug`, `uuid` and `token`.
+
+#### Clone this repo
+
+On a new terminal, clone this repo with:
 
 ```
 git clone https://github.com/openwisp/openwisp-wifi-login-pages.git
+cd openwisp-wifi-login-pages
 ```
 
 ##### Install dependencies
+
+With [NodeJs](https://nodejs.org/en/) and [yarn](https://yarnpkg.com/getting-started/install) installed on our system, we can install the project's dependencies by executing the following command on our terminal:
 
 ```
 yarn
@@ -47,12 +60,23 @@ yarn
 yarn upgrade
 ```
 
-### Setup
+To verify all the dependencies were successfully installed, running the tests with the following command should be successfull:
+
+```
+yarn test
+```
+
+#### Setup
 
 ##### Add Organization configuration
 
-Run `$ yarn add-org`
-When you run this command you’re prompted to provide the following properties:
+Before users can login/signUp on the system, we need to add an organization to it. We can add the organization from `openwisp-radius` which we noted down above with the following command:
+
+```
+yarn add-org
+```
+
+The above command will prompt us to fill in some properties. Below is a table with these properties and a description of their values.
 
 | Property          | Description                                       |
 | ------------------| --------------------------------------------------|
@@ -60,6 +84,10 @@ When you run this command you’re prompted to provide the following properties:
 | slug              | Required. Slug of the organization.               |
 | uuid              | Required. UUID of the organization.               |
 | secret_key        | Required. Token of the organization.              |
+| login action url  | Required. Captive portal login action url         |
+| logout action url | Required. Captive portal logout action url        |
+
+Note: On a development environment where the `captive portal login/logout action url` might not be available, we could use `http://localhost` as a dummy url.
 
 Copy all the assets to `client/assets/{slug}` directory
 Run `$ yarn setup`
