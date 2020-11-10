@@ -103,13 +103,14 @@ describe("Mobile Phone Token verification: standard flow", () => {
     expect(MobilePhoneVerification.prototype.validateToken).toHaveBeenCalled();
     expect(MobilePhoneVerification.prototype.createPhoneToken).toHaveBeenCalled();
     expect(wrapper).toMatchSnapshot();
-    const css = ".owisp-mobile-phone-verification-form";
+    const css = "form";
+    expect(wrapper.find(css)).toHaveLength(1);
     expect(wrapper.find(`${css} button[type='submit']`)).toHaveLength(1);
     expect(wrapper.find(`${css} input[type='text']`)).toHaveLength(1);
-    expect(wrapper.find(".owisp-mobile-phone-verification-verify-text").text().includes("+393660011222")).toBe(true);
-    expect(wrapper.find("#owisp-mobile-phone-verification-resend-btn")).toHaveLength(1);
-    expect(wrapper.find("#owisp-mobile-phone-verification-change-btn")).toHaveLength(1);
-    expect(wrapper.find("#owisp-mobile-phone-verification-logout-btn")).toHaveLength(1);
+    expect(wrapper.find("form .row .label").text().includes("+393660011222")).toBe(true);
+    expect(wrapper.find(".resend .button")).toHaveLength(1);
+    expect(wrapper.find(".change .button")).toHaveLength(1);
+    expect(wrapper.find(".logout .button")).toHaveLength(1);
     expect(wrapper.instance().hasPhoneTokenBeenSent()).toBe(true);
   });
 
@@ -128,7 +129,7 @@ describe("Mobile Phone Token verification: standard flow", () => {
         data: null
       });
     });
-    wrapper.find("#owisp-mobile-phone-verification-resend-btn").simulate("click");
+    wrapper.find(".resend .button").simulate("click");
     expect(MobilePhoneVerification.prototype.resendPhoneToken.mock.calls.length).toBe(1);
     expect(toast.info.mock.calls.length).toBe(1);
     expectVerifyMobileNumber(wrapper, 0);
@@ -147,10 +148,10 @@ describe("Mobile Phone Token verification: standard flow", () => {
         data: null
       });
     });
-    wrapper.find("form.owisp-mobile-phone-verification-form input[type='text']")
+    wrapper.find("form .code input[type='text']")
            .simulate("change", {target: {value: "12345", name: "code"}});
     expect(wrapper.instance().state.code).toBe("12345");
-    wrapper.find("form.owisp-mobile-phone-verification-form").simulate("submit", event);
+    wrapper.find("form").simulate("submit", event);
     await tick();
 
     expect(MobilePhoneVerification.prototype.handleSubmit.mock.calls.length).toBe(1);
@@ -175,10 +176,10 @@ describe("Mobile Phone Token verification: standard flow", () => {
         }
       });
     });
-    wrapper.find("form.owisp-mobile-phone-verification-form input[type='text']")
+    wrapper.find("form .code input[type='text']")
            .simulate("change", {target: {value: "12345", name: "code"}});
     expect(wrapper.instance().state.code).toBe("12345");
-    wrapper.find("form.owisp-mobile-phone-verification-form").simulate("submit", event);
+    wrapper.find("form").simulate("submit", event);
     await tick();
 
     expect(MobilePhoneVerification.prototype.handleSubmit.mock.calls.length).toBe(1);
@@ -196,7 +197,7 @@ describe("Mobile Phone Token verification: standard flow", () => {
     await tick();
     expectVerifyMobileNumber(wrapper, 1, true);
 
-    wrapper.find("#owisp-mobile-phone-verification-logout-btn").simulate("click");
+    wrapper.find(".logout .button").simulate("click");
     await tick();
     expect(MobilePhoneVerification.prototype.handleLogout.mock.calls.length).toBe(1);
     expect(wrapper.instance().props.logout.mock.calls.length).toBe(1);

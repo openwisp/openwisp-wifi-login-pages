@@ -2,32 +2,33 @@
 
 exports[`Mobile Phone Token verification: standard flow should render successfully 1`] = `
 <div
-  className="owisp-mobile-phone-verification-container"
+  className="container content"
+  id="mobile-phone-verification"
 >
   <div
-    className="owisp-mobile-phone-verification-container-inner"
+    className="inner"
   >
     <div
-      className="owisp-main-content"
+      className="main-column"
     >
       <form
-        className="owisp-mobile-phone-verification-form "
+        className=""
         onSubmit={[Function]}
       >
         <div
-          className="owisp-mobile-phone-verification-verify-text"
+          className="row fieldset code"
         >
-          Verify your mobile phone number (+393660011222) by inserting the code you received via SMS below.
-        </div>
-        <div
-          className="owisp-mobile-phone-verification-fieldset"
-        >
+          <p
+            className="label"
+          >
+            Verify your mobile phone number (+393660011222) by inserting the code you received via SMS below.
+          </p>
           <div
-            className="owisp-mobile-phone-verification-label-text owisp-mobile-phone-verification-label-text-code"
+            className="row"
           >
             <input
-              className="owisp-mobile-phone-verification-input owisp-mobile-phone-verification-input-code "
-              id="owisp-mobile-phone-verification-code"
+              className="input "
+              id="code"
               name="code"
               onChange={[Function]}
               pattern="[0-9]{6,}"
@@ -38,26 +39,24 @@ exports[`Mobile Phone Token verification: standard flow should render successful
               value=""
             />
           </div>
+          <button
+            className="button full"
+            type="submit"
+          >
+            Submit
+          </button>
         </div>
-        <button
-          className="owisp-mobile-phone-verification-form-btn owisp-mobile-phone-verification-submit-btn owisp-btn-primary "
-          id="owisp-mobile-phone-verification-submit-btn"
-          type="submit"
-        >
-          Submit
-        </button>
       </form>
       <div
-        className="fieldset"
+        className="row fieldset resend"
       >
-        <div
-          className="owisp-mobile-phone-verification-resend-text"
+        <p
+          className="label"
         >
           If you did not receive the verification SMS code, you can try sending it again by clicking below.
-        </div>
+        </p>
         <button
-          className="owisp-btn-primary full-line"
-          id="owisp-mobile-phone-verification-resend-btn"
+          className="button full"
           onClick={[Function]}
           type="button"
         >
@@ -65,32 +64,30 @@ exports[`Mobile Phone Token verification: standard flow should render successful
         </button>
       </div>
       <div
-        className="fieldset"
+        className="row fieldset change"
       >
-        <div
-          className="owisp-mobile-phone-verification-change-text"
+        <p
+          className="label"
         >
           Wrong phone number?
-        </div>
+        </p>
         <a
-          className="owisp-btn-primary full-line"
+          className="button full"
           href="/test-org-2/change-phone-number"
-          id="owisp-mobile-phone-verification-change-btn"
         >
           Change your phone number
         </a>
       </div>
       <div
-        className="fieldset"
+        className="row fieldset logout"
       >
-        <div
-          className="owisp-mobile-phone-verification-change-text"
+        <p
+          className="label"
         >
           If you need to cancel the process you can log out below.
-        </div>
+        </p>
         <button
-          className="owisp-btn-primary full-line"
-          id="owisp-mobile-phone-verification-logout-btn"
+          className="button full"
           onClick={[Function]}
           type="button"
         >
@@ -98,11 +95,7 @@ exports[`Mobile Phone Token verification: standard flow should render successful
         </button>
       </div>
     </div>
-    <div
-      className="owisp-mobile-phone-verification-contact-container"
-    >
-      <Connect(Contact) />
-    </div>
+    <Connect(Contact) />
   </div>
 </div>
 `;

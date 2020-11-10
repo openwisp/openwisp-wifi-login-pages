@@ -35,27 +35,27 @@ describe("<OrganizationWrapper /> rendering", () => {
     wrapper.setProps({
       organization: {...props.organization, exists: undefined},
     });
-    expect(wrapper.find(".owisp-app-container")).toHaveLength(0);
-    expect(wrapper.find(".owisp-org-wrapper-not-found")).toHaveLength(0);
-    expect(wrapper.find(".owisp-loader-container")).toHaveLength(1);
+    expect(wrapper.find(".app-container")).toHaveLength(0);
+    expect(wrapper.find(".org-wrapper-not-found")).toHaveLength(0);
+    expect(wrapper.find(".loader-container")).toHaveLength(1);
   });
 
   it("should render correctly when organization doesn't exist", () => {
     wrapper.setProps({
       organization: {...props.organization, exists: false},
     });
-    expect(wrapper.find(".owisp-app-container")).toHaveLength(0);
-    expect(wrapper.find(".owisp-org-wrapper-not-found")).toHaveLength(1);
-    expect(wrapper.find(".owisp-loader-container")).toHaveLength(0);
+    expect(wrapper.find(".app-container")).toHaveLength(0);
+    expect(wrapper.find(".org-wrapper-not-found")).toHaveLength(1);
+    expect(wrapper.find(".loader-container")).toHaveLength(0);
   });
 
   it("should render correctly when organization exists", () => {
     wrapper.setProps({
       organization: {...props.organization, exists: true},
     });
-    expect(wrapper.find(".owisp-app-container")).toHaveLength(1);
-    expect(wrapper.find(".owisp-org-wrapper-not-found")).toHaveLength(0);
-    expect(wrapper.find(".owisp-loader-container")).toHaveLength(0);
+    expect(wrapper.find(".app-container")).toHaveLength(1);
+    expect(wrapper.find(".org-wrapper-not-found")).toHaveLength(0);
+    expect(wrapper.find(".loader-container")).toHaveLength(0);
   });
 });
 

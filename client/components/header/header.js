@@ -56,30 +56,30 @@ export default class Header extends React.Component {
     const internalLinks = [`/${orgSlug}/login`, `/${orgSlug}/registration`];
     return (
       <>
-        <div className="owisp-header-container owisp-header-desktop">
-          <div className="owisp-header-row-1">
-            <div className="owisp-header-row-1-inner">
-              <div className="owisp-header-left">
-                <div className="owisp-header-logo-div">
+        <div className="header-container header-desktop">
+          <div className="header-row-1">
+            <div className="header-row-1-inner">
+              <div className="header-left">
+                <div className="header-logo-div">
                   {logo && logo.url ? (
                     <Link to={`/${orgSlug}`}>
                       <img
                         src={getAssetPath(orgSlug, logo.url)}
                         alt={logo.alternate_text}
-                        className="owisp-header-logo-image owisp-header-desktop-logo-image"
+                        className="header-logo-image header-desktop-logo-image"
                       />
                     </Link>
                   ) : null}
                 </div>
               </div>
-              <div className="owisp-header-right">
+              <div className="header-right">
                 {languages.map(lang => {
                   return (
                     <button
                       type="button"
                       className={`${
                         language === lang.slug ? "active " : ""
-                        }owisp-header-language-btn owisp-header-desktop-language-btn owisp-header-language-btn-${
+                        }header-language-btn header-desktop-language-btn header-language-btn-${
                         lang.slug
                         }`}
                       key={lang.slug}
@@ -92,8 +92,8 @@ export default class Header extends React.Component {
               </div>
             </div>
           </div>
-          <div className="owisp-header-row-2">
-            <div className="owisp-header-row-2-inner">
+          <div className="header-row-2">
+            <div className="header-row-2-inner">
               {links.map((link, index) => {
                 if (!shouldLinkBeShown(link, isAuthenticated)) {
                   return null;
@@ -101,10 +101,10 @@ export default class Header extends React.Component {
                 if (isInternalLink(link.url) && (internalLinks.indexOf(link.url) < 0 || !isAuthenticated)) {
                   return (
                     <Link
-                      className={`owisp-header-link owisp-header-desktop-link
-                  owisp-header-link-${index + 1} ${
+                      className={`header-link header-desktop-link
+                  header-link-${index + 1} ${
                         pathname === link.url ? "active" : ""
-                        } owisp-btn-primary `}
+                        } button `}
                       to={link.url}
                       key={index}
                     >
@@ -115,8 +115,8 @@ export default class Header extends React.Component {
                 return (
                   <a
                     href={link.url}
-                    className={`owisp-header-link owisp-header-desktop-link
-                    owisp-header-link-${index + 1} owisp-btn-primary`}
+                    className={`header-link header-desktop-link
+                    header-link-${index + 1} button`}
                     target="_blank"
                     rel="noreferrer noopener"
                     key={link.url}
@@ -128,51 +128,51 @@ export default class Header extends React.Component {
             </div>
           </div>
         </div>
-        <div className="owisp-header-mobile ">
-          <div className="owisp-header-row-1">
-            <div className="owisp-header-row-1-inner">
-              <div className="owisp-header-left">
-                <div className="owisp-header-logo-div">
+        <div className="header-mobile ">
+          <div className="header-row-1">
+            <div className="header-row-1-inner">
+              <div className="header-left">
+                <div className="header-logo-div">
                   {logo && logo.url ? (
                     <Link to={`/${orgSlug}`}>
                       <img
                         src={getAssetPath(orgSlug, logo.url)}
                         alt={logo.alternate_text}
-                        className="owisp-header-logo-image owisp-header-mobile-logo-image"
+                        className="header-logo-image header-mobile-logo-image"
                       />
                     </Link>
                   ) : null}
                 </div>
               </div>
-              <div className="owisp-header-right">
+              <div className="header-right">
                 <div
                   role="button"
                   tabIndex={0}
-                  className="owisp-header-hamburger"
+                  className="header-hamburger"
                   onClick={this.handleHamburger}
                   onKeyUp={this.handleKeyUp}
                 >
-                  <div className={`${menu ? "owisp-rot45" : ""}`} />
-                  <div className={`${menu ? "owisp-rot-45" : ""}`} />
-                  <div className={`${menu ? "owisp-opacity-hidden" : ""}`} />
+                  <div className={`${menu ? "rot45" : ""}`} />
+                  <div className={`${menu ? "rot-45" : ""}`} />
+                  <div className={`${menu ? "opacity-hidden" : ""}`} />
                 </div>
               </div>
             </div>
           </div>
           <div
             className={`${
-              menu ? "owisp-display-flex" : "owisp-display-none"
-              } owisp-header-mobile-menu`}
+              menu ? "display-flex" : "display-none"
+              } header-mobile-menu`}
           >
             {links.map((link, index) => {
               if (shouldLinkBeShown(link, isAuthenticated)) {
                 if (isInternalLink(link.url)) {
                   return (
                     <Link
-                      className={`owisp-header-link owisp-mobile-link
-                    owisp-header-link-${index + 1} ${
+                      className={`header-link mobile-link
+                    header-link-${index + 1} ${
                         pathname === link.url ? "active" : ""
-                        } owisp-btn-primary`}
+                        } button`}
                       to={link.url}
                       key={index}
                     >
@@ -183,8 +183,8 @@ export default class Header extends React.Component {
                 return (
                   <a
                     href={link.url}
-                    className={`owisp-header-link owisp-mobile-link
-                      owisp-header-link-${index + 1} owisp-btn-primary`}
+                    className={`header-link mobile-link
+                      header-link-${index + 1} button`}
                     target="_blank"
                     rel="noreferrer noopener"
                     key={link.url}
@@ -195,14 +195,14 @@ export default class Header extends React.Component {
               }
               return null;
             })}
-            <div className="owisp-mobile-languages-row">
+            <div className="mobile-languages-row">
               {languages.map(lang => {
                 return (
                   <button
                     type="button"
                     className={`${
                       language === lang.slug ? "active " : ""
-                      }owisp-header-language-btn owisp-header-mobile-language-btn owisp-header-language-btn-${
+                      }header-language-btn header-mobile-language-btn header-language-btn-${
                       lang.slug
                       }`}
                     key={lang.slug}

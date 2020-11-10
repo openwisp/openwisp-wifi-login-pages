@@ -3,10 +3,11 @@ import {connect} from "react-redux";
 import Component from "./password-reset";
 
 const mapStateToProps = state => {
+  const conf = state.organization.configuration;
   return {
-    passwordReset: state.organization.configuration.components.reset_form,
+    passwordReset: conf.components.password_reset_form,
+    orgSlug: conf.slug,
     language: state.language,
-    orgSlug: state.organization.configuration.slug,
   };
 };
 export default connect(

@@ -41,14 +41,14 @@ export default class Modal extends React.Component {
     const {prevPath} = this.props;
     return (
       <>
-        <div className="owisp-modal-container">
-          <div className="owisp-modal-row-close">
-            <Link to={prevPath} className="owisp-modal-close-btn">
+        <div className="modal-container">
+          <div className="modal-row-close">
+            <Link to={prevPath} className="modal-close-btn">
               X
             </Link>
           </div>
           <div
-            className="owisp-modal-content"
+            className="modal-content"
             // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={this.renderContent()}
           />

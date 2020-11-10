@@ -623,298 +623,291 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
         }
       >
         <div
-          className="owisp-phone-number-change-container"
+          className="container content"
+          id="mobile-phone-change"
         >
           <div
-            className="owisp-phone-number-change-container-inner"
+            className="inner"
           >
-            <div
-              className="owisp-main-content"
+            <form
+              className="main-column"
+              id="mobile-phone-change-form"
+              onSubmit={[Function]}
             >
-              <form
-                className="owisp-phone-number-change-form"
-                onSubmit={[Function]}
+              <div
+                className="fieldset row"
               >
                 <div
-                  className="owisp-phone-number-change-fieldset"
+                  className="row phone-number"
                 >
-                  <div
-                    className="owisp-phone-number-change-label owisp-phone-number-change-label-phone-number"
+                  <label
+                    htmlFor="phone-number"
                   >
-                    <label
-                      className="owisp-phone-number-change-label-text owisp-phone-number-change-label-text-phone-number"
-                      htmlFor="owisp-phone-number-change-phone-number"
-                    >
-                      moible phone number
-                    </label>
-                    <t
-                      alwaysDefaultMask={false}
-                      areaCodes={null}
-                      autoFormat={true}
-                      autocompleteSearch={false}
-                      buttonClass=""
-                      buttonStyle={Object {}}
-                      containerClass=""
-                      containerStyle={Object {}}
-                      copyNumbersOnly={true}
-                      country="it"
-                      countryCodeEditable={true}
-                      defaultErrorMessage=""
-                      defaultMask="... ... ... ... .."
-                      disableCountryCode={false}
-                      disableCountryGuess={false}
-                      disableDropdown={false}
-                      disableInitialCountryGuess={false}
-                      disableSearchIcon={false}
-                      disabled={false}
-                      dropdownClass=""
-                      dropdownStyle={Object {}}
-                      enableAreaCodeStretch={false}
-                      enableAreaCodes={false}
-                      enableClickOutside={true}
-                      enableLongNumbers={false}
-                      enableSearch={false}
-                      enableTerritories={false}
-                      excludeCountries={Array []}
-                      flagsImagePath="./flags.png"
-                      inputClass=""
-                      inputProps={
-                        Object {
-                          "className": "form-control owisp-phone-number-change-input owisp-phone-number-change-input-phone-number ",
-                          "id": "owisp-phone-number-change-phone-number",
-                          "name": "phone_number",
-                          "required": true,
-                        }
+                    moible phone number
+                  </label>
+                  <t
+                    alwaysDefaultMask={false}
+                    areaCodes={null}
+                    autoFormat={true}
+                    autocompleteSearch={false}
+                    buttonClass=""
+                    buttonStyle={Object {}}
+                    containerClass=""
+                    containerStyle={Object {}}
+                    copyNumbersOnly={true}
+                    country="it"
+                    countryCodeEditable={true}
+                    defaultErrorMessage=""
+                    defaultMask="... ... ... ... .."
+                    disableCountryCode={false}
+                    disableCountryGuess={false}
+                    disableDropdown={false}
+                    disableInitialCountryGuess={false}
+                    disableSearchIcon={false}
+                    disabled={false}
+                    dropdownClass=""
+                    dropdownStyle={Object {}}
+                    enableAreaCodeStretch={false}
+                    enableAreaCodes={false}
+                    enableClickOutside={true}
+                    enableLongNumbers={false}
+                    enableSearch={false}
+                    enableTerritories={false}
+                    excludeCountries={Array []}
+                    flagsImagePath="./flags.png"
+                    inputClass=""
+                    inputProps={
+                      Object {
+                        "className": "form-control input ",
+                        "id": "phone-number",
+                        "name": "phone_number",
+                        "required": true,
                       }
-                      inputStyle={Object {}}
-                      isValid={true}
-                      jumpCursorToEnd={true}
-                      keys={
-                        Object {
-                          "A": 65,
-                          "DOWN": 40,
-                          "ENTER": 13,
-                          "ESC": 27,
-                          "LEFT": 37,
-                          "PLUS": 43,
-                          "RIGHT": 39,
-                          "SPACE": 32,
-                          "TAB": 9,
-                          "UP": 38,
-                          "Z": 90,
-                        }
+                    }
+                    inputStyle={Object {}}
+                    isValid={true}
+                    jumpCursorToEnd={true}
+                    keys={
+                      Object {
+                        "A": 65,
+                        "DOWN": 40,
+                        "ENTER": 13,
+                        "ESC": 27,
+                        "LEFT": 37,
+                        "PLUS": 43,
+                        "RIGHT": 39,
+                        "SPACE": 32,
+                        "TAB": 9,
+                        "UP": 38,
+                        "Z": 90,
                       }
-                      localization={Object {}}
-                      masks={null}
-                      name="phone_number"
-                      onChange={[Function]}
-                      onEnterKeyPress={null}
-                      onlyCountries={Array []}
-                      placeholder="enter mobile phone number"
-                      preferredCountries={Array []}
-                      prefix="+"
-                      preserveOrder={Array []}
-                      priority={null}
-                      regions=""
-                      renderStringAsFlag=""
-                      searchClass=""
-                      searchNotFound="No entries to show"
-                      searchPlaceholder="search"
-                      searchStyle={Object {}}
-                      showDropdown={false}
-                      specialLabel="Phone"
-                      value=""
+                    }
+                    localization={Object {}}
+                    masks={null}
+                    name="phone_number"
+                    onChange={[Function]}
+                    onEnterKeyPress={null}
+                    onKeyDown={[Function]}
+                    onlyCountries={Array []}
+                    placeholder="enter mobile phone number"
+                    preferredCountries={Array []}
+                    prefix="+"
+                    preserveOrder={Array []}
+                    priority={null}
+                    regions=""
+                    renderStringAsFlag=""
+                    searchClass=""
+                    searchNotFound="No entries to show"
+                    searchPlaceholder="search"
+                    searchStyle={Object {}}
+                    showDropdown={false}
+                    specialLabel="Phone"
+                    value=""
+                  >
+                    <div
+                      className=" react-tel-input"
+                      onKeyDown={[Function]}
+                      style={Object {}}
                     >
                       <div
-                        className=" react-tel-input"
+                        className="special-label"
+                      >
+                        Phone
+                      </div>
+                      <input
+                        className="form-control input "
+                        disabled={false}
+                        id="phone-number"
+                        name="phone_number"
+                        onBlur={[Function]}
+                        onChange={[Function]}
+                        onClick={[Function]}
+                        onCopy={[Function]}
+                        onDoubleClick={[Function]}
+                        onFocus={[Function]}
                         onKeyDown={[Function]}
+                        placeholder="enter mobile phone number"
+                        required={true}
+                        style={Object {}}
+                        type="tel"
+                        value="+39"
+                      />
+                      <div
+                        className=" flag-dropdown"
                         style={Object {}}
                       >
                         <div
-                          className="special-label"
-                        >
-                          Phone
-                        </div>
-                        <input
-                          className="form-control owisp-phone-number-change-input owisp-phone-number-change-input-phone-number "
-                          disabled={false}
-                          id="owisp-phone-number-change-phone-number"
-                          name="phone_number"
-                          onBlur={[Function]}
-                          onChange={[Function]}
+                          aria-haspopup="listbox"
+                          className="selected-flag"
                           onClick={[Function]}
-                          onCopy={[Function]}
-                          onDoubleClick={[Function]}
-                          onFocus={[Function]}
-                          onKeyDown={[Function]}
-                          placeholder="enter mobile phone number"
-                          required={true}
-                          style={Object {}}
-                          type="tel"
-                          value="+39"
-                        />
-                        <div
-                          className=" flag-dropdown"
-                          style={Object {}}
+                          role="button"
+                          tabIndex="0"
+                          title="Italy: + 39"
                         >
                           <div
-                            aria-haspopup="listbox"
-                            className="selected-flag"
-                            onClick={[Function]}
-                            role="button"
-                            tabIndex="0"
-                            title="Italy: + 39"
+                            className="flag it"
                           >
                             <div
-                              className="flag it"
-                            >
-                              <div
-                                className="arrow"
-                              />
-                            </div>
+                              className="arrow"
+                            />
                           </div>
                         </div>
                       </div>
-                    </t>
-                  </div>
+                    </div>
+                  </t>
                 </div>
                 <input
-                  className="owisp-phone-number-change-form-btn owisp-phone-number-change-submit-btn owisp-btn-primary"
-                  id="owisp-phone-number-change-submit-btn"
+                  className="button full"
                   type="submit"
                   value="Change phone number"
                 />
-                <a
-                  className="owisp-btn-primary full-line"
-                  href="/test-org-2/mobile-phone-verification"
-                  id="owisp-phone-number-change-cancel-btn"
+                <div
+                  className="row cancel"
                 >
-                  Cancel
-                </a>
-              </form>
-            </div>
-            <div
-              className="owisp-phone-number-change-contact-container"
-            >
-              <Connect(Contact)>
-                <Contact
-                  contactPage={
-                    Object {
-                      "email": Object {
-                        "label": Object {
-                          "en": "E-mail",
-                        },
-                        "value": Object {
-                          "en": "support@openwisp.co",
-                        },
+                  <a
+                    className="button full"
+                    href="/test-org-2/mobile-phone-verification"
+                  >
+                    Cancel
+                  </a>
+                </div>
+              </div>
+            </form>
+            <Connect(Contact)>
+              <Contact
+                contactPage={
+                  Object {
+                    "email": Object {
+                      "label": Object {
+                        "en": "E-mail",
                       },
-                      "helpdesk": Object {
-                        "label": Object {
-                          "en": "Helpdesk",
-                        },
-                        "value": Object {
-                          "en": "+789 948 564",
-                        },
+                      "value": Object {
+                        "en": "support@openwisp.co",
                       },
-                      "social_links": Array [
-                        Object {
-                          "alt": Object {
-                            "en": "twitter",
-                          },
-                          "icon": "twitter.svg",
-                          "url": "https://twitter.com/openwisp",
+                    },
+                    "helpdesk": Object {
+                      "label": Object {
+                        "en": "Helpdesk",
+                      },
+                      "value": Object {
+                        "en": "+789 948 564",
+                      },
+                    },
+                    "social_links": Array [
+                      Object {
+                        "alt": Object {
+                          "en": "twitter",
                         },
-                        Object {
-                          "alt": Object {
-                            "en": "facebook",
-                          },
-                          "icon": "facebook.svg",
-                          "url": "https://facebook.com/openwisp",
+                        "icon": "twitter.svg",
+                        "url": "https://twitter.com/openwisp",
+                      },
+                      Object {
+                        "alt": Object {
+                          "en": "facebook",
                         },
-                      ],
-                    }
+                        "icon": "facebook.svg",
+                        "url": "https://facebook.com/openwisp",
+                      },
+                    ],
                   }
-                  dispatch={[Function]}
-                  isAuthenticated={false}
-                  language="en"
-                  orgSlug="test-org-2"
+                }
+                dispatch={[Function]}
+                isAuthenticated={false}
+                language="en"
+                orgSlug="test-org-2"
+              >
+                <div
+                  className="side-column contact"
                 >
                   <div
-                    className="owisp-contact-container"
+                    className="inner"
                   >
                     <div
-                      className="owisp-contact-inner"
+                      className="row"
                     >
-                      <div
-                        className="owisp-contact-row"
+                      <span
+                        className="label"
                       >
-                        <div
-                          className="owisp-contact-label"
-                        >
-                          E-mail
-                          :
-                        </div>
-                        <a
-                          className="owisp-contact-text"
-                          href="mailto:support@openwisp.co"
-                        >
-                          support@openwisp.co
-                        </a>
-                      </div>
-                      <div
-                        className="owisp-contact-row"
+                        E-mail
+                        :
+                      </span>
+                      <a
+                        className="link"
+                        href="mailto:support@openwisp.co"
                       >
-                        <div
-                          className="owisp-contact-label"
-                        >
-                          Helpdesk
-                          :
-                        </div>
-                        <a
-                          className="owisp-contact-text"
-                          href="tel:+789 948 564"
-                        >
-                          +789 948 564
-                        </a>
-                      </div>
-                      <div
-                        className="owisp-contact-links"
+                        support@openwisp.co
+                      </a>
+                    </div>
+                    <div
+                      className="row"
+                    >
+                      <span
+                        className="label"
                       >
-                        <a
-                          className="owisp-contact-twitter-link owisp-contact-link"
-                          href="https://twitter.com/openwisp"
-                          key="https://twitter.com/openwisp"
-                          rel="noopener noreferrer"
-                          target="_blank"
-                        >
-                          <img
-                            alt="twitter"
-                            className="owisp-contact-twitter-image owisp-contact-image"
-                            src="/assets/test-org-2/twitter.svg"
-                          />
-                        </a>
-                        <a
-                          className="owisp-contact-facebook-link owisp-contact-link"
-                          href="https://facebook.com/openwisp"
-                          key="https://facebook.com/openwisp"
-                          rel="noopener noreferrer"
-                          target="_blank"
-                        >
-                          <img
-                            alt="facebook"
-                            className="owisp-contact-facebook-image owisp-contact-image"
-                            src="/assets/test-org-2/facebook.svg"
-                          />
-                        </a>
-                      </div>
-                      <div
-                        className="owisp-contact-inner"
-                      />
+                        Helpdesk
+                        :
+                      </span>
+                      <a
+                        className="link"
+                        href="tel:+789 948 564"
+                      >
+                        +789 948 564
+                      </a>
+                    </div>
+                    <div
+                      className="contact-links"
+                    >
+                      <a
+                        className="contact-twitter-link link"
+                        href="https://twitter.com/openwisp"
+                        key="https://twitter.com/openwisp"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        <img
+                          alt="twitter"
+                          className="contact-twitter-image contact-image"
+                          src="/assets/test-org-2/twitter.svg"
+                        />
+                      </a>
+                      <a
+                        className="contact-facebook-link link"
+                        href="https://facebook.com/openwisp"
+                        key="https://facebook.com/openwisp"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        <img
+                          alt="facebook"
+                          className="contact-facebook-image contact-image"
+                          src="/assets/test-org-2/facebook.svg"
+                        />
+                      </a>
                     </div>
                   </div>
-                </Contact>
-              </Connect(Contact)>
-            </div>
+                </div>
+              </Contact>
+            </Connect(Contact)>
           </div>
         </div>
       </MobilePhoneChange>

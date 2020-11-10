@@ -3,30 +3,31 @@
 exports[`<Registration /> rendering should render correctly 1`] = `
 <Fragment>
   <div
-    className="owisp-registration-container"
+    className="container content"
+    id="registration"
   >
     <div
-      className="owisp-registration-container-inner"
+      className="inner"
     >
       <form
-        className="owisp-registration-form "
+        className="main-column "
+        id="registration-form"
         onSubmit={[Function]}
       >
         <div
-          className="owisp-registration-fieldset"
+          className="fieldset"
         >
-          <label
-            className="owisp-registration-label owisp-registration-label-email"
-            htmlFor="owisp-registration-email"
+          <div
+            className="row email"
           >
-            <div
-              className="owisp-registration-label-text owisp-registration-label-text-email"
+            <label
+              htmlFor="email"
             >
               email
-            </div>
+            </label>
             <input
-              className="owisp-registration-input owisp-registration-input-email "
-              id="owisp-registration-email"
+              className="input "
+              id="email"
               name="email"
               onChange={[Function]}
               pattern=".+@.+\\\\..+"
@@ -36,20 +37,18 @@ exports[`<Registration /> rendering should render correctly 1`] = `
               type="email"
               value=""
             />
-          </label>
-          <label
-            className="owisp-registration-label owisp-registration-label-password"
-            htmlFor="owisp-registration-password"
+          </div>
+          <div
+            className="row password"
           >
-            <div
-              className="owisp-registration-label-text"
+            <label
+              htmlFor="password"
             >
               password
-            </div>
+            </label>
             <input
-              className="owisp-registration-input owisp-registration-input-password
-                      "
-              id="owisp-registration-password"
+              className="input "
+              id="password"
               name="password1"
               onChange={[Function]}
               pattern=".{6,}"
@@ -59,35 +58,35 @@ exports[`<Registration /> rendering should render correctly 1`] = `
               type="password"
               value=""
             />
-          </label>
-          <label
-            className="owisp-registration-label owisp-registration-label-confirm"
-            htmlFor="owisp-registration-password-confirm"
+          </div>
+          <div
+            className="row password-confirm"
           >
-            <div
-              className="owisp-registration-label-text"
+            <label
+              htmlFor="password-confirm"
             >
               confirm
-            </div>
+            </label>
             <input
-              className="owisp-registration-input owisp-registration-input-confirm "
-              id="owisp-registration-password-confirm"
+              className="input "
+              id="password-confirm"
               name="password2"
               onChange={[Function]}
+              pattern=".{6,}"
               placeholder="confirm password"
               required={true}
-              title={null}
+              title="password must be a minimum of 6 characters"
               type="password"
               value=""
             />
-          </label>
+          </div>
         </div>
         <div
-          className="owisp-registration-add-info"
+          className="row add-info"
         >
           By signing up, you accept the 
           <Link
-            className="owisp-registration-additional-link"
+            className="link additional registration"
             key="terms-and-conditions"
             to="/default/registration/terms-and-conditions"
           >
@@ -95,7 +94,7 @@ exports[`<Registration /> rendering should render correctly 1`] = `
           </Link>
            and the 
           <Link
-            className="owisp-registration-additional-link"
+            className="link additional registration"
             key="privacy-policy"
             to="/default/registration/privacy-policy"
           >
@@ -103,28 +102,29 @@ exports[`<Registration /> rendering should render correctly 1`] = `
           </Link>
            of this WiFi service. 
         </div>
-        <input
-          className="owisp-registration-form-btn owisp-registration-submit-btn owisp-btn-primary "
-          id="owisp-registration-submit-btn"
-          type="submit"
-          value="sign up"
-        />
         <div
-          className="owisp-login-links-div"
+          className="row register"
         >
-          <Link
-            className="owisp-registration-link"
-            to="/default/login"
-          >
-            Already have an account? Log in
-          </Link>
+          <input
+            className="button full"
+            type="submit"
+            value="sign up"
+          />
+        </div>
+        <div
+          className="row links"
+        >
+          <p>
+            <Link
+              className="link"
+              to="/default/login"
+            >
+              Already have an account? Log in
+            </Link>
+          </p>
         </div>
       </form>
-      <div
-        className="owisp-registration-contact-container"
-      >
-        <Connect(Contact) />
-      </div>
+      <Connect(Contact) />
     </div>
   </div>
   <Route

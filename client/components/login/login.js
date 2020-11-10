@@ -22,6 +22,7 @@ import getText from "../../utils/get-text";
 import LoadingContext from "../../utils/loading-context";
 import logError from "../../utils/log-error";
 import renderAdditionalInfo from "../../utils/render-additional-info";
+import handleChange from "../../utils/handle-change";
 import Contact from "../contact-box";
 import Modal from "../modal";
 
@@ -55,7 +56,7 @@ export default class Login extends React.Component {
   }
 
   handleChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
+    handleChange(event, this);
   }
 
   handleSubmit(event) {
@@ -132,158 +133,102 @@ export default class Login extends React.Component {
     } = loginForm;
     return (
       <>
-        <div className="owisp-login-container">
-          <div className="owisp-login-container-inner">
-            <form className="owisp-login-form" onSubmit={this.handleSubmit}>
-              {social_login ? (
-                <>
-                  {social_login.links.length ? (
-                    <>
-                      <div className="owisp-login-social-links-div">
-                        {social_login.links.map(link => {
-                          if (link.url)
-                            return (
-                              <a
-                                href={link.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="owisp-login-social-link owisp-btn-primary"
-                                key={link.url}
-                              >
-                                <div>
-                                  {link.icon ? (
-                                    <img
-                                      src={getAssetPath(orgSlug, link.icon)}
-                                      alt={
-                                        link.text
-                                          ? getText(link.text, language)
-                                          : link.url
-                                      }
-                                      className="owisp-login-social-link-icon"
-                                    />
-                                  ) : null}
-                                  {link.text ? (
-                                    <div className="owisp-login-social-link-text">
-                                      {getText(link.text, language)}
-                                    </div>
-                                  ) : null}
-                                </div>
-                              </a>
-                            );
-                          return null;
-                        })}
-                      </div>
-                    </>
-                  ) : null}
-                </>
-              ) : null}
-              <div className="owisp-login-fieldset">
+        <div className="container content" id="login">
+          <div className="inner">
+            <form className="main-column" onSubmit={this.handleSubmit}>
+
+              {social_login && social_login.links && (
+                <div className="social-links row">
+                  {social_login.links.map(link => {
+                    return (
+                      <p key={link.url}>
+                        <a href={link.url}
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           className="social-link button full"
+                        >
+                          <span className="inner">
+                            <img
+                              src={getAssetPath(orgSlug, link.icon)}
+                              alt={getText(link.text, language)}
+                              className="icon"
+                            />
+                            <span className="text">
+                              {getText(link.text, language)}
+                            </span>
+                          </span>
+                        </a>
+                      </p>
+                    );
+                  })}
+                </div>
+              )}
+
+              <div className="fieldset">
                 {errors.nonField && (
-                  <div className="owisp-login-error owisp-login-error-non-field">
-                    <span className="owisp-login-error-icon">!</span>
-                    <span className="owisp-login-error-text owisp-login-error-text-non-field">
+                  <div className="error non-field">
+                    <span className="icon">!</span>
+                    <span className="text">
                       {errors.nonField}
                     </span>
                   </div>
                 )}
-                {input_fields.email ? (
-                  <>
-                    <label
-                      className="owisp-login-label owisp-login-label-email"
-                      htmlFor="owisp-login-email"
-                    >
-                      <div className="owisp-login-label-text">
-                        {getText(input_fields.email.label, language)}
-                      </div>
-                      <input
-                        className={`owisp-login-input
-                        owisp-login-input-email
-                        ${errors.email ? "error" : ""}`}
-                        type={input_fields.email.type}
-                        id="owisp-login-email"
-                        name="email"
-                        value={email}
-                        onChange={this.handleChange}
-                        required
-                        placeholder={getText(
-                          input_fields.email.placeholder,
-                          language,
-                        )}
-                        pattern={
-                          input_fields.email.pattern
-                            ? input_fields.email.pattern
-                            : undefined
-                        }
-                        title={
-                          input_fields.email.pattern_description
-                            ? getText(
-                              input_fields.email.pattern_description,
-                              language,
-                            )
-                            : undefined
-                        }
-                      />
-                    </label>
-                    {errors.email && (
-                      <div className="owisp-login-error owisp-login-error-email">
-                        <span className="owisp-login-error-icon">!</span>
-                        <span className="owisp-login-error-text owisp-login-error-text-email">
-                          {errors.email}
-                        </span>
-                      </div>
-                    )}
-                  </>
-                ) : null}
-                {input_fields.password ? (
-                  <>
-                    <label
-                      className="owisp-login-label owisp-login-label-password"
-                      htmlFor="owisp-login-password"
-                    >
-                      <div className="owisp-login-label-text">
-                        {getText(input_fields.password.label, language)}
-                      </div>
-                      <input
-                        className={`owisp-login-input owisp-login-input-password
-                      ${errors.password1 ? "error" : ""}`}
-                        type={input_fields.password.type}
-                        id="owisp-login-password"
-                        required
-                        name="password"
-                        value={password}
-                        onChange={this.handleChange}
-                        placeholder={getText(
-                          input_fields.password.placeholder,
-                          language,
-                        )}
-                        pattern={
-                          input_fields.password.pattern
-                            ? input_fields.password.pattern
-                            : undefined
-                        }
-                        title={
-                          input_fields.password.pattern_description
-                            ? getText(
-                              input_fields.password.pattern_description,
-                              language,
-                            )
-                            : undefined
-                        }
-                      />
-                    </label>
-                    {errors.password && (
-                      <div className="owisp-login-error owisp-login-error-password">
-                        <span className="owisp-login-error-icon">!</span>
-                        <span className="owisp-login-error-text owisp-login-error-text-password">
-                          {errors.password1}
-                        </span>
-                      </div>
-                    )}
-                  </>
-                ) : null}
+
+                <div className="row email">
+                  <label htmlFor="email">
+                    {getText(input_fields.email.label, language)}
+                  </label>
+                  {errors.email && (
+                    <div className="error">
+                      <span className="icon">!</span>
+                      <span className="text">
+                        {errors.email}
+                      </span>
+                    </div>
+                  )}
+                  <input
+                    className={`input ${errors.email ? "error" : ""}`}
+                    type={input_fields.email.type}
+                    id="email"
+                    name="email"
+                    value={email}
+                    onChange={this.handleChange}
+                    required
+                    placeholder={getText(input_fields.email.placeholder, language)}
+                    pattern={input_fields.email.pattern}
+                    title={getText(input_fields.email.pattern_description, language)}
+                  />
+                </div>
+
+                <div className="row password">
+                  <label htmlFor="password">
+                    {getText(input_fields.password.label, language)}
+                  </label>
+                  {errors.password && (
+                    <div className="error">
+                      <span className="icon">!</span>
+                      <span className="text">
+                        {errors.password}
+                      </span>
+                    </div>
+                  )}
+                  <input
+                    className={`input ${errors.password ? "error" : ""}`}
+                    type={input_fields.password.type}
+                    id="password"
+                    required
+                    name="password"
+                    value={password}
+                    onChange={this.handleChange}
+                    placeholder={getText(input_fields.password.placeholder, language)}
+                    pattern={input_fields.password.pattern}
+                    title={getText(input_fields.password.pattern_description, language)}
+                  />
+                </div>
               </div>
-              {additional_info_text ? (
-                <div className="owisp-login-add-info">
+
+              {additional_info_text && (
+                <div className="row add-info">
                   {renderAdditionalInfo(
                     additional_info_text,
                     language,
@@ -293,65 +238,43 @@ export default class Login extends React.Component {
                     "login",
                   )}
                 </div>
-              ) : null}
-              {buttons.login ? (
-                <>
-                  {buttons.login.label ? (
-                    <label
-                      className="owisp-login-label owisp-login-label-login-btn"
-                      htmlFor="owisp-login-login-btn"
-                    >
-                      <div className="owisp-login-label-text">
-                        {getText(buttons.login.label, language)}
-                      </div>
-                    </label>
-                  ) : null}
-                  <input
-                    type="submit"
-                    className="owisp-login-form-btn owisp-login-login-btn owisp-btn-primary"
-                    id="owisp-login-login-btn"
-                    value={getText(buttons.login.text, language)}
-                  />
-                </>
-              ) : null}
-              {buttons.login ? (
-                <>
-                  {buttons.register.label ? (
-                    <label
-                      className="owisp-login-label owisp-login-label-register-btn"
-                      htmlFor="owisp-login-register-btn"
-                    >
-                      <div className="owisp-login-label-text">
-                        {getText(buttons.register.label, language)}
-                      </div>
-                    </label>
-                  ) : null}
-                  <div className="owisp-login-form-register-btn-div">
-                    <Link
-                      to={`/${orgSlug}/registration`}
-                      className="owisp-login-form-btn owisp-login-register-btn owisp-btn-primary"
-                    >
-                      {getText(buttons.register.text, language)}
-                    </Link>
-                  </div>
-                </>
-              ) : null}
-              {links ? (
-                <div className="owisp-login-links-div">
-                  {links.forget_password ? (
-                    <Link
-                      to={`/${orgSlug}/password/reset`}
-                      className="owisp-login-link"
-                    >
-                      {getText(links.forget_password, language)}
-                    </Link>
-                  ) : null}
+              )}
+
+              <div className="row login">
+                <input
+                  type="submit"
+                  className="button full"
+                  value={getText(buttons.login.text, language)}
+                />
+              </div>
+
+              {buttons.register && (
+                <div className="row register">
+                  <p>
+                    {getText(buttons.register.label, language)}
+                  </p>
+                  <Link
+                    to={`/${orgSlug}/registration`}
+                    className="button full"
+                  >
+                    {getText(buttons.register.text, language)}
+                  </Link>
                 </div>
-              ) : null}
+              )}
+
+              {links && links.forget_password && (
+                <div className="row links">
+                  <Link
+                    to={`/${orgSlug}/password/reset`}
+                    className="link"
+                  >
+                    {getText(links.forget_password, language)}
+                  </Link>
+                </div>
+              )}
             </form>
-            <div className="owisp-login-contact-container">
-              <Contact />
-            </div>
+
+            <Contact />
           </div>
         </div>
         <Route
@@ -371,27 +294,41 @@ Login.propTypes = {
     social_login: PropTypes.shape({
       divider_text: PropTypes.object,
       description: PropTypes.object,
-      links: PropTypes.arrayOf(PropTypes.object),
+      links: PropTypes.arrayOf(PropTypes.shape({
+        url: PropTypes.string.isRequired,
+        icon: PropTypes.string.isRequired,
+        text: PropTypes.shape().isRequired,
+      })),
     }),
     input_fields: PropTypes.shape({
       email: PropTypes.shape({
         type: PropTypes.string.isRequired,
-        label: PropTypes.object,
-        placeholder: PropTypes.object,
-        pattern: PropTypes.string,
-        pattern_description: PropTypes.object
-      }),
+        label: PropTypes.object.isRequired,
+        placeholder: PropTypes.object.isRequired,
+        pattern: PropTypes.string.isRequired,
+        pattern_description: PropTypes.object.isRequired
+      }).isRequired,
       password: PropTypes.shape({
         type: PropTypes.string.isRequired,
-        label: PropTypes.object,
-        placeholder: PropTypes.object,
-        pattern: PropTypes.string,
-        pattern_description: PropTypes.object
-      }),
+        label: PropTypes.object.isRequired,
+        placeholder: PropTypes.object.isRequired,
+        pattern: PropTypes.string.isRequired,
+        pattern_description: PropTypes.object.isRequired
+      }).isRequired,
     }),
     additional_info_text: PropTypes.object,
-    buttons: PropTypes.object,
-    links: PropTypes.object,
+    buttons: PropTypes.shape({
+      login: PropTypes.shape({
+        text: PropTypes.object.isRequired,
+      }).isRequired,
+      register: PropTypes.shape({
+        label: PropTypes.object.isRequired,
+        text: PropTypes.object.isRequired,
+      }),
+    }).isRequired,
+    links: PropTypes.shape({
+      forget_password: PropTypes.object.isRequired
+    }).isRequired,
   }).isRequired,
   language: PropTypes.string.isRequired,
   match: PropTypes.shape({

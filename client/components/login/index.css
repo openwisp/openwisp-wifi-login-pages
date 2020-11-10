@@ -1,193 +1,24 @@
-.owisp-login-container {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: flex-start;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 27px 0 27px 0;
-  font-weight: bold;
-}
-.owisp-login-container-inner {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  flex-grow: 1;
-  max-width: 1000px;
-}
-.owisp-login-form {
-  background: #d3d3d3;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 53%;
-  box-sizing: border-box;
-  font-size: 16px;
-  line-height: 30px;
-  padding: 3%;
-  border-radius: 2px;
-}
-.owisp-login-contact-container {
-  width: 44%;
-  box-sizing: border-box;
-}
-.owisp-login-form.success .owisp-login-input:invalid {
-  box-shadow: none;
-}
-.owisp-login-fieldset {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  align-self: flex-start;
-  width: 100%;
-  margin-top: 10px;
-}
-.owisp-login-label {
-  margin-top: 10px;
-  width: 100%;
-}
-.owisp-login-label-text {
-  color: #000;
-}
-.owisp-login-input {
-  padding: 0 8px;
-  border-radius: 4px;
-  font-size: 14px;
-  height: 33px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-  width: 100%;
-  font-weight: bold;
-}
-.owisp-login-input:focus {
-  border-color: #a7a7a7;
-}
-.owisp-login-input.error {
-  border-color: #d93025;
-}
-.owisp-login-form-btn {
-  width: 100%;
-  line-height: 24px;
-  padding: 8px 15px;
-  margin-top: 10px;
-}
-.owisp-login-error {
-  margin-top: 3px;
-  font-size: 14px;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  flex-wrap: nowrap;
-  align-items: center;
-  width: 100%;
-  color: #ffffff;
-  background: #d93025;
-  border-radius: 3px;
-  padding: 4px;
-  box-sizing: border-box;
-}
-.owisp-login-error-icon {
-  display: inline-block;
-  min-width: 16px;
-  text-align: center;
-  margin-right: 4px;
-  font-weight: 600;
-}
-.owisp-login-label-register-btn {
-  margin-top: 20px;
-  text-align: center;
-}
-.owisp-login-form-register-btn-div {
-  width: 100%;
-}
-.owisp-login-register-btn {
-  width: 100%;
-  display: block;
-  box-sizing: border-box;
-  text-align: center;
-}
-.owisp-login-add-info {
-  margin-top: 10px;
-  color: #000;
-}
-.owisp-login-additional-link {
-  color: #000;
-}
-.owisp-login-additional-link:hover,
-.owisp-login-additional-link:focus {
-  outline: dotted 1px #000;
-  outline-offset: 0.5px;
-  text-decoration: none;
-}
-.owisp-login-social-links-div {
-  width: 100%;
+.register p { margin-top: 0; text-align: center }
+.social-links {
+  margin: 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
 }
-.owisp-login-social-link {
-  display: flex;
-  flex-direction: row;
-  text-decoration: none;
-  align-items: center;
-  margin-top: 20px;
-  padding: 8px 0;
-  justify-content: center;
-}
-.owisp-login-social-link > div {
+.social-links p { margin-top: 0; margin-bottom: 15px }
+.social-links p:last-child { margin-bottom: 10px }
+a.social-link .inner {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  width: 60%;
+  min-width: 200px;
 }
-.owisp-login-social-link-icon {
+a.social-link .icon {
   width: auto;
   height: 24px;
 }
-.owisp-login-social-link-text {
+a.social-link .text {
   line-height: 24px;
   font-weight: bold;
-  margin-left: 30px;
-}
-.owisp-login-links-div {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  justify-content: flex-start;
-  align-items: center;
-  margin-top: 20px;
-}
-.owisp-login-link {
-  color: #000;
-}
-.owisp-login-link:focus {
-  outline: dotted 1px #ffffff;
-  outline-offset: 0.5px;
-}
-.owisp-login-link:hover {
-  text-decoration: none;
-}
-.owisp-login-error-non-field {
-  box-sizing: border-box;
-  font-size: 16px;
-  width: 100%;
-  margin-top: 15px;
-}
-@media screen and (min-width: 0px) and (max-width: 767px) {
-  .owisp-login-container-inner {
-    flex-direction: column;
-  }
-  .owisp-login-form {
-    width: 100%;
-    margin-bottom: 20px;
-  }
-  .owisp-login-contact-container {
-    width: 100%;
-  }
-  .owisp-login-social-link > div {
-    width: 80%;
-  }
+  margin-left: 20px;
 }

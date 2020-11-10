@@ -3,20 +3,20 @@
 exports[`<Modal /> rendering should render nothing on incorrect param name 1`] = `
 <React.Fragment>
   <div
-    className="owisp-modal-container"
+    className="modal-container"
   >
     <div
-      className="owisp-modal-row-close"
+      className="modal-row-close"
     >
       <Link
-        className="owisp-modal-close-btn"
+        className="modal-close-btn"
         to="/default/login"
       >
         X
       </Link>
     </div>
     <div
-      className="owisp-modal-content"
+      className="modal-content"
       dangerouslySetInnerHTML={
         Object {
           "__html": undefined,
@@ -30,20 +30,20 @@ exports[`<Modal /> rendering should render nothing on incorrect param name 1`] =
 exports[`<Modal /> rendering should render privacy-policy correctly 1`] = `
 <React.Fragment>
   <div
-    className="owisp-modal-container"
+    className="modal-container"
   >
     <div
-      className="owisp-modal-row-close"
+      className="modal-row-close"
     >
       <Link
-        className="owisp-modal-close-btn"
+        className="modal-close-btn"
         to="/default/login"
       >
         X
       </Link>
     </div>
     <div
-      className="owisp-modal-content"
+      className="modal-content"
       dangerouslySetInnerHTML={
         Object {
           "__html": "<h1 id=\\"openwisp-wifi-login-pages-privacy-policy\\">openwisp-wifi-login-pages Privacy Policy</h1>
@@ -74,20 +74,20 @@ exports[`<Modal /> rendering should render privacy-policy correctly 1`] = `
 exports[`<Modal /> rendering should render terms-and-conditions correctly 1`] = `
 <React.Fragment>
   <div
-    className="owisp-modal-container"
+    className="modal-container"
   >
     <div
-      className="owisp-modal-row-close"
+      className="modal-row-close"
     >
       <Link
-        className="owisp-modal-close-btn"
+        className="modal-close-btn"
         to="/default/login"
       >
         X
       </Link>
     </div>
     <div
-      className="owisp-modal-content"
+      className="modal-content"
       dangerouslySetInnerHTML={
         Object {
           "__html": "<h1 id=\\"openwisp-wifi-login-pages-terms-and-conditions\\">Openwisp-wifi-login-pages Terms and Conditions</h1>

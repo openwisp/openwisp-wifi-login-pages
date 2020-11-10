@@ -22,7 +22,6 @@
         ],
         "buttons": {
           "logout": {
-            "label": null,
             "text": {
               "en": "Logout"
             }
@@ -103,9 +102,8 @@
           },
           "password_confirm": {
             "type": "password",
-            "pattern": null,
-            "pattern_description": {
-              "en": null
+            "label": {
+              "en": "confirm password"
             },
             "placeholder": {
               "en": "confirm password"

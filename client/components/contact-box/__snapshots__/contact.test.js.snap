@@ -1,77 +1,72 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Status /> rendering should render correctly 1`] = `
-<React.Fragment>
+<div
+  className="side-column contact"
+>
   <div
-    className="owisp-contact-container"
+    className="inner"
   >
     <div
-      className="owisp-contact-inner"
+      className="row"
     >
-      <div
-        className="owisp-contact-row"
+      <span
+        className="label"
       >
-        <div
-          className="owisp-contact-label"
-        >
-          E-mail
-          :
-        </div>
-        <a
-          className="owisp-contact-text"
-          href="mailto:support@openwisp.co"
-        >
-          support@openwisp.co
-        </a>
-      </div>
-      <div
-        className="owisp-contact-row"
+        E-mail
+        :
+      </span>
+      <a
+        className="link"
+        href="mailto:support@openwisp.co"
       >
-        <div
-          className="owisp-contact-label"
-        >
-          Helpdesk
-          :
-        </div>
-        <a
-          className="owisp-contact-text"
-          href="tel:+789 948 564"
-        >
-          +789 948 564
-        </a>
-      </div>
-      <div
-        className="owisp-contact-links"
+        support@openwisp.co
+      </a>
+    </div>
+    <div
+      className="row"
+    >
+      <span
+        className="label"
       >
-        <a
-          className="owisp-contact-twitter-link owisp-contact-link"
-          href="https://twitter.com/openwisp"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <img
-            alt="twitter"
-            className="owisp-contact-twitter-image owisp-contact-image"
-            src="/assets/default/twitter.svg"
-          />
-        </a>
-        <a
-          className="owisp-contact-facebook-link owisp-contact-link"
-          href="https://facebook.com/openwisp"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <img
-            alt="facebook"
-            className="owisp-contact-facebook-image owisp-contact-image"
-            src="/assets/default/facebook.svg"
-          />
-        </a>
-      </div>
-      <div
-        className="owisp-contact-inner"
-      />
+        Helpdesk
+        :
+      </span>
+      <a
+        className="link"
+        href="tel:+789 948 564"
+      >
+        +789 948 564
+      </a>
+    </div>
+    <div
+      className="contact-links"
+    >
+      <a
+        className="contact-twitter-link link"
+        href="https://twitter.com/openwisp"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        <img
+          alt="twitter"
+          className="contact-twitter-image contact-image"
+          src="/assets/default/twitter.svg"
+        />
+      </a>
+      <a
+        className="contact-facebook-link link"
+        href="https://facebook.com/openwisp"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        <img
+          alt="facebook"
+          className="contact-facebook-image contact-image"
+          src="/assets/default/facebook.svg"
+        />
+      </a>
     </div>
   </div>
-</React.Fragment>
+</div>
 `;

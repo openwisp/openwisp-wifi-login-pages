@@ -1,6 +1,4 @@
 /* eslint-disable camelcase */
-import "./index.css";
-
 import axios from "axios";
 import PropTypes from "prop-types";
 import qs from "qs";
@@ -16,6 +14,8 @@ import { mainToastId, passwordConfirmError, registerApiUrl, registerError, regis
 import getErrorText from "../../utils/get-error-text";
 import getText from "../../utils/get-text";
 import logError from "../../utils/log-error";
+import handleChange from "../../utils/handle-change";
+import submitOnEnter from "../../utils/submit-on-enter";
 import renderAdditionalInfo from "../../utils/render-additional-info";
 import Contact from "../contact-box";
 import Modal from "../modal";
@@ -36,25 +36,24 @@ export default class Registration extends React.Component {
   }
 
   handleChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
+    handleChange(event, this);
   }
 
   handleSubmit(event) {
     const { setLoading } = this.context;
     event.preventDefault();
-    const { registration, orgSlug, authenticate, verifyMobileNumber, settings } = this.props;
-    const { input_fields } = registration;
+    const { orgSlug, authenticate, verifyMobileNumber, settings } = this.props;
     const { phone_number, email, password1, password2, errors } = this.state;
-    if (input_fields.password_confirm) {
-      if (password1 !== password2) {
-        this.setState({
-          errors: {
-            password2: passwordConfirmError,
-          },
-        });
-        return false;
-      }
+
+    if (password1 !== password2) {
+      this.setState({
+        errors: {
+          password2: passwordConfirmError,
+        },
+      });
+      return false;
     }
+
     this.setState({ errors: { ...errors, password2: null } });
     const url = registerApiUrl.replace("{orgSlug}", orgSlug);
     // prepare post data
@@ -134,214 +133,137 @@ export default class Registration extends React.Component {
     const { phone_number, email, password1, password2, errors, success } = this.state;
     return (
       <>
-        <div className="owisp-registration-container">
-          <div className="owisp-registration-container-inner">
-            <form
-              className={`owisp-registration-form ${success ? "success" : ""}`}
-              onSubmit={this.handleSubmit}
-            >
-              <div className="owisp-registration-fieldset">
+        <div className="container content" id="registration">
+          <div className="inner">
+            <form className={`main-column ${success ? "success" : ""}`}
+                  onSubmit={this.handleSubmit}
+                  id="registration-form">
+              <div className="fieldset">
                 {errors.nonField && (
-                  <div className="owisp-registration-error owisp-registration-error-non-field">
-                    <span className="owisp-registration-error-icon">!</span>
-                    <span className="owisp-registration-error-text owisp-registration-error-text-non-field">
+                  <div className="error non-field">
+                    <span className="icon">!</span>
+                    <span className="text">
                       {errors.nonField}
                     </span>
                   </div>
                 )}
 
-                {settings.mobile_phone_verification && input_fields.phone_number ? (
-                  <>
-                    <div className="owisp-registration-label owisp-registration-label-phone-number">
-                      <label
-                        className="owisp-registration-label-text owisp-registration-label-text-phone-number"
-                        htmlFor="owisp-registration-phone-number"
-                      >
-                        {getText(input_fields.phone_number.label, language)}
-                      </label>
+                {settings.mobile_phone_verification && input_fields.phone_number && (
+                  <div className="row phone-number">
+                    <label htmlFor="phone-number">
+                      {getText(input_fields.phone_number.label, language)}
+                    </label>
 
-                      {errors.phone_number && (
-                        <div className="owisp-registration-error owisp-registration-error-phone-number">
-                          <span className="owisp-registration-error-icon">!</span>
-                          <span className="owisp-registration-error-text owisp-registration-error-text-phone-number">
-                            {errors.phone_number}
-                          </span>
-                        </div>
-                      )}
-                      <PhoneInput
-                        name="phone_number"
-                        country={input_fields.phone_number.country}
-                        onlyCountries={input_fields.phone_number.only_countries || []}
-                        preferredCountries={input_fields.phone_number.preferred_countries || []}
-                        excludeCountries={input_fields.phone_number.exclude_countries || []}
-                        value={phone_number}
-                        onChange={value => this.setState({phone_number: `+${value}`})}
-                        placeholder={getText(
-                          input_fields.phone_number.placeholder,
-                          language,
-                        )}
-                        enableSearch={Boolean(input_fields.phone_number.enable_search)}
-                        inputProps={{
-                          name: "phone_number",
-                          id: "owisp-registration-phone-number",
-                          className: `form-control owisp-registration-input owisp-registration-input-phone-number ${errors.email ? "error" : ""}`,
-                          required: true,
-                        }}
-                      />
+                    {errors.phone_number && (
+                      <div className="error">
+                        <span className="icon">!</span>
+                        <span className="text">
+                          {errors.phone_number}
+                        </span>
+                      </div>
+                    )}
+                    <PhoneInput
+                      name="phone_number"
+                      country={input_fields.phone_number.country}
+                      onlyCountries={input_fields.phone_number.only_countries || []}
+                      preferredCountries={input_fields.phone_number.preferred_countries || []}
+                      excludeCountries={input_fields.phone_number.exclude_countries || []}
+                      value={phone_number}
+                      onChange={value => this.handleChange({target: {name: "phone_number", value: `+${value}`}})}
+                      onKeyDown={event => { submitOnEnter(event, this, "registration-form"); }}
+                      placeholder={getText(input_fields.phone_number.placeholder, language)}
+                      enableSearch={Boolean(input_fields.phone_number.enable_search)}
+                      inputProps={{
+                        name: "phone_number",
+                        id: "phone-number",
+                        className: `form-control input ${errors.phone_number ? "error" : ""}`,
+                        required: true,
+                      }}
+                    />
+                  </div>
+                )}
+
+                <div className="row email">
+                  <label htmlFor="email">
+                    {getText(input_fields.email.label, language)}
+                  </label>
+                  {errors.email && (
+                    <div className="error email">
+                      <span className="icon">!</span>
+                      <span className="text text-email">
+                        {errors.email}
+                      </span>
                     </div>
-                  </>
-                ) : null}
+                  )}
+                  <input
+                    className={`input ${errors.email ? "error" : ""}`}
+                    type={input_fields.email.type}
+                    id="email"
+                    required
+                    name="email"
+                    value={email}
+                    onChange={this.handleChange}
+                    placeholder={getText(input_fields.email.placeholder, language)}
+                    pattern={input_fields.email.pattern}
+                    title={getText(input_fields.email.pattern_description, language)}
+                  />
+                </div>
 
-                {input_fields.email ? (
-                  <>
-                    <label
-                      className="owisp-registration-label owisp-registration-label-email"
-                      htmlFor="owisp-registration-email"
-                    >
-                      <div className="owisp-registration-label-text owisp-registration-label-text-email">
-                        {getText(input_fields.email.label, language)}
-                      </div>
-                      {errors.email && (
-                        <div className="owisp-registration-error owisp-registration-error-email">
-                          <span className="owisp-registration-error-icon">!</span>
-                          <span className="owisp-registration-error-text owisp-registration-error-text-email">
-                            {errors.email}
-                          </span>
-                        </div>
-                      )}
-                      <input
-                        className={`owisp-registration-input owisp-registration-input-email ${
-                          errors.email ? "error" : ""
-                          }`}
-                        type={input_fields.email.type}
-                        id="owisp-registration-email"
-                        required
-                        name="email"
-                        value={email}
-                        onChange={this.handleChange}
-                        placeholder={getText(
-                          input_fields.email.placeholder,
-                          language,
-                        )}
-                        pattern={
-                          input_fields.email.pattern
-                            ? input_fields.email.pattern
-                            : undefined
-                        }
-                        title={
-                          input_fields.email.pattern_description
-                            ? getText(
-                              input_fields.email.pattern_description,
-                              language,
-                            )
-                            : undefined
-                        }
-                      />
-                    </label>
+                <div className="row password">
+                  <label htmlFor="password">
+                    {getText(input_fields.password.label, language)}
+                  </label>
+                  {errors.password1 && (
+                    <div className="error">
+                      <span className="icon">!</span>
+                      <span className="text">
+                        {errors.password1}
+                      </span>
+                    </div>
+                  )}
+                  <input
+                    className={`input ${errors.password1 ? "error" : ""}`}
+                    type={input_fields.password.type}
+                    id="password"
+                    required
+                    name="password1"
+                    value={password1}
+                    onChange={this.handleChange}
+                    placeholder={getText(input_fields.password.placeholder, language)}
+                    pattern={input_fields.password.pattern}
+                    title={getText(input_fields.password.pattern_description)}
+                  />
+                </div>
 
-                  </>
-                ) : null}
-
-                {input_fields.password ? (
-                  <>
-                    <label
-                      className="owisp-registration-label owisp-registration-label-password"
-                      htmlFor="owisp-registration-password"
-                    >
-                      <div className="owisp-registration-label-text">
-                        {getText(input_fields.password.label, language)}
-                      </div>
-                      <input
-                        className={`owisp-registration-input owisp-registration-input-password
-                      ${errors.password1 ? "error" : ""}`}
-                        type={input_fields.password.type}
-                        id="owisp-registration-password"
-                        required
-                        name="password1"
-                        value={password1}
-                        onChange={this.handleChange}
-                        placeholder={getText(
-                          input_fields.password.placeholder,
-                          language,
-                        )}
-                        pattern={
-                          input_fields.password.pattern
-                            ? input_fields.password.pattern
-                            : undefined
-                        }
-                        title={
-                          input_fields.password.pattern_description
-                            ? getText(
-                              input_fields.password.pattern_description,
-                              language,
-                            )
-                            : undefined
-                        }
-                      />
-                    </label>
-                    {errors.password1 && (
-                      <div className="owisp-registration-error owisp-registration-error-password">
-                        <span className="owisp-registration-error-icon">!</span>
-                        <span className="owisp-registration-error-text owisp-registration-error-text-password">
-                          {errors.password1}
-                        </span>
-                      </div>
-                    )}
-                  </>
-                ) : null}
-
-                {input_fields.password_confirm ? (
-                  <>
-                    <label
-                      className="owisp-registration-label owisp-registration-label-confirm"
-                      htmlFor="owisp-registration-password-confirm"
-                    >
-                      <div className="owisp-registration-label-text">
-                        {getText(input_fields.password_confirm.label, language)}
-                      </div>
-                      <input
-                        className={`owisp-registration-input owisp-registration-input-confirm ${
-                          errors.password2 ? "error" : ""
-                          }`}
-                        type={input_fields.password_confirm.type}
-                        id="owisp-registration-password-confirm"
-                        required
-                        name="password2"
-                        value={password2}
-                        onChange={this.handleChange}
-                        placeholder={getText(
-                          input_fields.password_confirm.placeholder,
-                          language,
-                        )}
-                        pattern={
-                          input_fields.password_confirm.pattern
-                            ? input_fields.password_confirm.pattern
-                            : undefined
-                        }
-                        title={
-                          input_fields.password_confirm.pattern_description
-                            ? getText(
-                              input_fields.password_confirm
-                                .pattern_description,
-                              language,
-                            )
-                            : undefined
-                        }
-                      />
-                    </label>
-                    {errors.password2 && (
-                      <div className="owisp-registration-error owisp-registration-error-confirm">
-                        <span className="owisp-registration-error-icon">!</span>
-                        <span className="owisp-registration-error-text owisp-registration-error-text-confirm">
-                          {errors.password2}
-                        </span>
-                      </div>
-                    )}
-                  </>
-                ) : null}
+                <div className="row password-confirm">
+                  <label htmlFor="password-confirm">
+                    {getText(input_fields.password_confirm.label, language)}
+                  </label>
+                  {errors.password2 && (
+                    <div className="error confirm">
+                      <span className="icon">!</span>
+                      <span className="text text-confirm">
+                        {errors.password2}
+                      </span>
+                    </div>
+                  )}
+                  <input
+                    className={`input ${errors.password2 ? "error" : ""}`}
+                    type={input_fields.password_confirm.type}
+                    id="password-confirm"
+                    required
+                    name="password2"
+                    value={password2}
+                    onChange={this.handleChange}
+                    placeholder={getText(input_fields.password_confirm.placeholder, language)}
+                    pattern={input_fields.password.pattern}
+                    title={getText(input_fields.password.pattern_description, language)}
+                  />
+                </div>
               </div>
-              {additional_info_text ? (
-                <div className="owisp-registration-add-info">
+
+              {additional_info_text && (
+                <div className="row add-info">
                   {renderAdditionalInfo(
                     additional_info_text,
                     language,
@@ -351,51 +273,43 @@ export default class Registration extends React.Component {
                     "registration",
                   )}
                 </div>
-              ) : null}
-              {buttons.register ? (
-                <>
-                  {buttons.register.label ? (
-                    <label
-                      className="owisp-registration-label owisp-registration-label-registration-btn"
-                      htmlFor="owisp-registration-registration-btn"
-                    >
-                      <div className="owisp-registration-label-text">
-                        {getText(buttons.register.label, language)}
-                      </div>
-                    </label>
-                  ) : null}
-                  <input
-                    type="submit"
-                    className="owisp-registration-form-btn owisp-registration-submit-btn owisp-btn-primary "
-                    id="owisp-registration-submit-btn"
-                    value={getText(buttons.register.text, language)}
-                  />
-                </>
-              ) : null}
-              {links ? (
-                <div className="owisp-login-links-div">
-                  {links.forget_password ? (
-                    <Link
-                      to={`/${orgSlug}/password/reset`}
-                      className="owisp-login-link"
-                    >
-                      {getText(links.forget_password, language)}
-                    </Link>
-                  ) : null}
-                  {links.login ? (
-                    <Link
-                      to={`/${orgSlug}/login`}
-                      className="owisp-registration-link"
-                    >
-                      {getText(links.login, language)}
-                    </Link>
-                  ) : null}
+              )}
+
+              <div className="row register">
+                <input
+                  type="submit"
+                  className="button full"
+                  value={getText(buttons.register.text, language)}
+                />
+              </div>
+
+              {links && (
+                <div className="row links">
+                  {links.forget_password && (
+                    <p>
+                      <Link
+                        to={`/${orgSlug}/password/reset`}
+                        className="link"
+                      >
+                        {getText(links.forget_password, language)}
+                      </Link>
+                    </p>
+                  )}
+                  {links.login && (
+                    <p>
+                      <Link
+                        to={`/${orgSlug}/login`}
+                        className="link"
+                      >
+                        {getText(links.login, language)}
+                      </Link>
+                    </p>
+                  )}
                 </div>
-              ) : null}
+              )}
             </form>
-            <div className="owisp-registration-contact-container">
-              <Contact />
-            </div>
+
+            <Contact />
           </div>
         </div>
         <Route
@@ -416,34 +330,34 @@ Registration.propTypes = {
   registration: PropTypes.shape({
     header: PropTypes.object,
     buttons: PropTypes.shape({
-      register: PropTypes.object,
-    }),
+      register: PropTypes.shape({
+        text: PropTypes.object.isRequired,
+      }).isRequired,
+    }).isRequired,
     input_fields: PropTypes.shape({
       email: PropTypes.shape({
         type: PropTypes.string.isRequired,
-        label: PropTypes.object,
-        placeholder: PropTypes.object,
-        pattern: PropTypes.string,
-        pattern_description: PropTypes.object
-      }),
+        label: PropTypes.object.isRequired,
+        placeholder: PropTypes.object.isRequired,
+        pattern: PropTypes.string.isRequired,
+        pattern_description: PropTypes.object.isRequired
+      }).isRequired,
       password: PropTypes.shape({
         type: PropTypes.string.isRequired,
-        label: PropTypes.object,
-        placeholder: PropTypes.object,
-        pattern: PropTypes.string,
-        pattern_description: PropTypes.object
-      }),
+        label: PropTypes.object.isRequired,
+        placeholder: PropTypes.object.isRequired,
+        pattern: PropTypes.string.isRequired,
+        pattern_description: PropTypes.object.isRequired
+      }).isRequired,
       password_confirm: PropTypes.shape({
         type: PropTypes.string.isRequired,
-        label: PropTypes.object,
-        placeholder: PropTypes.object,
-        pattern: PropTypes.string,
-        pattern_description: PropTypes.object
-      }),
+        label: PropTypes.object.isRequired,
+        placeholder: PropTypes.object.isRequired,
+      }).isRequired,
       phone_number: PropTypes.shape({
-        label: PropTypes.object,
-        placeholder: PropTypes.object,
-        country: PropTypes.string.isRequired,
+        label: PropTypes.object.isRequired,
+        placeholder: PropTypes.object.isRequired,
+        country: PropTypes.string,
         only_countries: PropTypes.array,
         preferred_countries: PropTypes.array,
         exclude_countries: PropTypes.array,

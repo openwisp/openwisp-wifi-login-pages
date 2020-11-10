@@ -1,5 +1,3 @@
-import "./index.css";
-
 import axios from "axios";
 import PropTypes from "prop-types";
 import qs from "qs";
@@ -7,12 +5,14 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Contact from "../contact-box";
 import LoadingContext from "../../utils/loading-context";
 
 import { confirmApiUrl, passwordConfirmError } from "../../constants";
 import getErrorText from "../../utils/get-error-text";
 import getText from "../../utils/get-text";
 import logError from "../../utils/log-error";
+import handleChange from "../../utils/handle-change";
 
 export default class PasswordConfirm extends React.Component {
   constructor(props) {
@@ -28,7 +28,7 @@ export default class PasswordConfirm extends React.Component {
   }
 
   handleChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
+    handleChange(event, this);
   }
 
   handleSubmit(event) {
@@ -73,7 +73,10 @@ export default class PasswordConfirm extends React.Component {
         toast.success(response.data.detail);
       })
       .catch(error => {
-        const errorText = getErrorText(error);
+        let errorText = getErrorText(error);
+        if (!errorText && error.response.data.token[0]) {
+          errorText = `token: ${error.response.data.token[0]}`;
+        }
         logError(error, errorText);
         toast.error(errorText);
         setLoading(false);
@@ -94,163 +97,143 @@ export default class PasswordConfirm extends React.Component {
     const loginPageLink = passwordConfirm.login_page_link;
     const { buttons } = passwordConfirm;
     return (
-      <>
-        <div className="owisp-password-confirm-container">
+      <div className="container content" id="password-confirm">
+        <div className="inner">
           {success ? (
-            <div className="owisp-password-confirm-form">
-              <div className="owisp-password-confirm-message-container">
-                <div className="owisp-password-confirm-icon">
-                  <div className="owisp-password-confirm-tick" />
+            <div className="main-column">
+              <div className="message-container">
+                <div className="icon">
+                  <div className="tick" />
                 </div>
-                <div className="owisp-password-confirm-success">{success}</div>
+                <div className="success">{success}</div>
+                <div className="row">
+                  {loginPageLink && (
+                    <Link
+                      to={`/${orgSlug}/login`}
+                      className="link"
+                    >
+                      {getText(loginPageLink.text, language)}
+                    </Link>
+                  )}
+                </div>
               </div>
             </div>
           ) : (
               <form
-                className="owisp-password-confirm-form"
+                className="main-column"
                 onSubmit={this.handleSubmit}
               >
-                <div className="owisp-password-confirm-header">
-                  <div className="owisp-password-confirm-heading">
-                    {getText(passwordConfirm.heading, language)}
-                  </div>
-                  <div className="owisp-password-confirm-subheading">
-                    {getText(passwordConfirm.additional_text, language)}
-                  </div>
-                </div>
-                <div className="owisp-password-confirm-fieldset">
+                <h1>
+                  {getText(passwordConfirm.heading, language)}
+                </h1>
+
+                <p>
+                  {getText(passwordConfirm.additional_text, language)}
+                </p>
+
+                <div className="fieldset">
                   {errors.nonField && (
-                    <div className="owisp-password-confirm-error owisp-password-confirm-error-non-field">
-                      <span className="owisp-password-confirm-error-icon">!</span>
-                      <span className="owisp-password-confirm-error-text owisp-password-confirm-error-text-non-field">
+                    <div className="error non-field">
+                      <span className="icon">!</span>
+                      <span className="text">
                         {errors.nonField}
                       </span>
                     </div>
                   )}
-                  {inputFields.password ? (
-                    <>
-                      <label
-                        className="owisp-password-confirm-label owisp-password-confirm-label-password"
-                        htmlFor="owisp-password-confirm-password"
-                      >
-                        <div className="owisp-password-confirm-label-text">
-                          {getText(inputFields.password.label, language)}
-                        </div>
-                        <input
-                          className={`owisp-password-confirm-input owisp-password-confirm-input-password
-                      ${errors.newPassword1 ? "error" : ""}`}
-                          type={inputFields.password.type}
-                          id="owisp-password-confirm-password"
-                          required
-                          name="newPassword1"
-                          value={newPassword1}
-                          onChange={this.handleChange}
-                          placeholder={getText(
-                            inputFields.password.placeholder,
-                            language,
-                          )}
-                          pattern={
-                            inputFields.password.pattern
-                              ? inputFields.password.pattern
-                              : undefined
-                          }
-                          title={
-                            inputFields.password.pattern_description
-                              ? getText(
-                                inputFields.password.pattern_description,
-                                language,
-                              )
-                              : undefined
-                          }
-                        />
-                      </label>
-                      {errors.newPassword1 && (
-                        <div className="owisp-password-confirm-error owisp-password-confirm-error-password">
-                          <span className="owisp-password-confirm-error-icon">
-                            !
-                        </span>
-                          <span className="owisp-password-confirm-error-text owisp-password-confirm-error-text-password">
-                            {errors.newPassword1}
-                          </span>
-                        </div>
-                      )}
-                    </>
-                  ) : null}
 
-                  {inputFields.password_confirm ? (
-                    <>
-                      <label
-                        className="owisp-password-confirm-label owisp-password-confirm-label-confirm"
-                        htmlFor="owisp-password-confirm-password-confirm"
-                      >
-                        <div className="owisp-password-confirm-label-text">
-                          {getText(inputFields.password_confirm.label, language)}
-                        </div>
-                        <input
-                          className={`owisp-password-confirm-input owisp-password-confirm-input-confirm ${
-                            errors.newPassword2 ? "error" : ""
-                            }`}
-                          type={inputFields.password_confirm.type}
-                          id="owisp-password-confirm-password-confirm"
-                          required
-                          name="newPassword2"
-                          value={newPassword2}
-                          onChange={this.handleChange}
-                          placeholder={getText(
-                            inputFields.password_confirm.placeholder,
-                            language,
-                          )}
-                          pattern={
-                            inputFields.password_confirm.pattern
-                              ? inputFields.password_confirm.pattern
-                              : undefined
-                          }
-                          title={
-                            inputFields.password_confirm.pattern_description
-                              ? getText(
-                                inputFields.password_confirm
-                                  .pattern_description,
-                                language,
-                              )
-                              : undefined
-                          }
-                        />
-                      </label>
-                      {errors.newPassword2 && (
-                        <div className="owisp-password-confirm-error owisp-password-confirm-error-confirm">
-                          <span className="owisp-password-confirm-error-icon">
-                            !
-                        </span>
-                          <span className="owisp-password-confirm-error-text owisp-password-confirm-error-text-confirm">
-                            {errors.newPassword2}
-                          </span>
-                        </div>
+                  <div className="row password">
+                    <label htmlFor="password">
+                      {getText(inputFields.password.label, language)}
+                    </label>
+
+                    {errors.newPassword1 && (
+                      <div className="error">
+                        <span className="icon">!</span>
+                        <span className="text ">{errors.newPassword1}</span>
+                      </div>
+                    )}
+
+                    <input
+                      className={`input ${errors.newPassword1 ? "error" : ""}`}
+                      type={inputFields.password.type}
+                      id="password"
+                      required
+                      name="newPassword1"
+                      value={newPassword1}
+                      onChange={this.handleChange}
+                      placeholder={getText(
+                        inputFields.password.placeholder,
+                        language
                       )}
-                    </>
-                  ) : null}
+                      pattern={inputFields.password.pattern}
+                      title={getText(
+                        inputFields.password.pattern_description,
+                        language
+                      )}
+                    />
+                  </div>
+
+                  <div className="row password-confirm">
+                    <label htmlFor="password-confirm">
+                      {getText(inputFields.password_confirm.label, language)}
+                    </label>
+
+                    {errors.newPassword2 && (
+                      <div className="error">
+                        <span className="icon">!</span>
+                        <span className="text ">{errors.newPassword2}</span>
+                      </div>
+                    )}
+
+                    <input
+                      className={`input ${errors.newPassword2 ? "error" : ""}`}
+                      type={inputFields.password_confirm.type}
+                      id="password-confirm"
+                      required
+                      name="newPassword2"
+                      value={newPassword2}
+                      onChange={this.handleChange}
+                      placeholder={getText(
+                        inputFields.password_confirm.placeholder,
+                        language,
+                      )}
+                      pattern={inputFields.password.pattern}
+                      title={getText(
+                        inputFields.password.pattern_description,
+                        language
+                      )}
+                    />
+                  </div>
                 </div>
-                <input
-                  type="submit"
-                  className="owisp-password-confirm-submit-btn"
-                  value={getText(buttons.submit, language)}
-                />
-                {passwordConfirm.contact_text ? (
-                  <div className="owisp-password-confirm-contact-us">
+
+                <div className="row submit">
+                  <input
+                    type="submit"
+                    className="button full"
+                    value={getText(buttons.submit, language)}
+                  />
+                </div>
+
+                {passwordConfirm.contact_text && (
+                  <div className="contact-us">
                     {getText(passwordConfirm.contact_text, language)}
                   </div>
-                ) : null}
-                {loginPageLink ? (
+                )}
+
+                {loginPageLink && (
                   <Link
                     to={`/${orgSlug}/login`}
-                    className="owisp-password-confirm-links"
+                    className="link"
                   >
                     {getText(loginPageLink.text, language)}
                   </Link>
-                ) : null}
+                )}
               </form>
             )}
-        </div>
-      </>
+
+            <Contact />
+          </div>
+      </div>
     );
   }
 }
@@ -262,18 +245,16 @@ PasswordConfirm.propTypes = {
     input_fields: PropTypes.shape({
       password: PropTypes.shape({
         type: PropTypes.string.isRequired,
-        label: PropTypes.object,
-        placeholder: PropTypes.object,
-        pattern: PropTypes.string,
-        pattern_description: PropTypes.object
+        label: PropTypes.object.isRequired,
+        placeholder: PropTypes.object.isRequired.isRequired,
+        pattern: PropTypes.string.isRequired,
+        pattern_description: PropTypes.object.isRequired
       }),
       password_confirm: PropTypes.shape({
         type: PropTypes.string.isRequired,
-        label: PropTypes.object,
-        placeholder: PropTypes.object,
-        pattern: PropTypes.string,
-        pattern_description: PropTypes.object
-      }),
+        label: PropTypes.object.isRequired,
+        placeholder: PropTypes.object.isRequired,
+      }).isRequired,
     }),
     buttons: PropTypes.object,
     login_page_link: PropTypes.object,

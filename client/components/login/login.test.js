@@ -29,14 +29,17 @@ const createTestProps = props => {
     ...props,
   };
 };
+
 describe("<Login /> rendering", () => {
   let props;
+
   it("should render correctly without social links", () => {
     props = createTestProps();
     const renderer = new ShallowRenderer();
     const component = renderer.render(<Login {...props} />);
     expect(component).toMatchSnapshot();
   });
+
   it("should render correctly with social links", () => {
     props = createTestProps({
       loginForm: {
@@ -46,15 +49,17 @@ describe("<Login /> rendering", () => {
           links: [
             {
               text: {
-                en: "Facebook",
+                en: "Google",
               },
-              url: "test url",
-              icon: null,
+              url: "https://radius.openwisp.io/login/google",
+              icon: "google.png",
             },
             {
-              icon: "test.png",
-              url:
-                "https://control.co.ke/accounts/facebook/login/?next=%2Ffreeradius%2Fsocial-login%2Fstaging%2F%3Fcp%3Dhttp%3A%2F%2Fcontrol.brandfi.co.ke%2Floginpage%2F%26last%3D",
+              text: {
+                en: "Facebook",
+              },
+              url: "https://radius.openwisp.io/login/facebook",
+              icon: "facebook.png",
             },
           ],
         },
@@ -92,11 +97,11 @@ describe("<Login /> interactions", () => {
 
   it("should change state values when handleChange function is invoked", () => {
     wrapper
-      .find("#owisp-login-email")
+      .find("#email")
       .simulate("change", { target: { value: "test email", name: "email" } });
     expect(wrapper.state("email")).toEqual("test email");
     wrapper
-      .find("#owisp-login-password")
+      .find("#password")
       .simulate("change", { target: { value: "test password", name: "password" } });
     expect(wrapper.state("password")).toEqual("test password");
   });
@@ -138,8 +143,9 @@ describe("<Login /> interactions", () => {
       .mockImplementationOnce(() => {
         return Promise.resolve();
       });
-    const event = { preventDefault: () => { } };
+    const event = { preventDefault: () => {} };
     const spyToast = jest.spyOn(toast, 'error');
+    
     return wrapper
       .instance()
       .handleSubmit(event)
@@ -148,7 +154,8 @@ describe("<Login /> interactions", () => {
           email: "email error",
           password: "password error",
         });
-        expect(wrapper.find(".owisp-login-error")).toHaveLength(2);
+        expect(wrapper.find("div.error")).toHaveLength(2);
+        expect(wrapper.find("input.error")).toHaveLength(2);
         expect(
           wrapper.instance().props.authenticate.mock.calls.length,
         ).toBe(0);
@@ -213,11 +220,11 @@ describe("<Login /> interactions", () => {
     });
 
     wrapper
-      .find("#owisp-login-email")
+      .find("#email")
       .simulate("change", { target: { value: "test email", name: "email" } });
     expect(wrapper.state("email")).toEqual("test email");
     wrapper
-      .find("#owisp-login-password")
+      .find("#password")
       .simulate("change", { target: { value: "test password", name: "password" } });
     expect(wrapper.state("password")).toEqual("test password");
 

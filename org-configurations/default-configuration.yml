@@ -2,6 +2,9 @@
 name: "default name"
 slug: "default"
 
+settings:
+  mobile_phone_verification: false
+
 # configuration variables for the server app
 server:
   # put the URL of openwisp-radius here
@@ -121,7 +124,7 @@ client:
         login:
           en: "Already have an account? Log in"
 
-    reset_form:
+    password_reset_form:
       heading:
         en: "reset your password"
       additional_text:
@@ -145,7 +148,7 @@ client:
         text:
           en: "Take me Back to Sign In"
 
-    confirm_form:
+    password_reset_confirm_form:
       heading:
         en: "reset your password"
       additional_text:
@@ -220,16 +223,16 @@ client:
         links:
           - text:
               en: "Login with Facebook"
-            url: "#"
+            url: "#facebook"
             icon: "facebook.svg"
           - text:
               en: "Login with google"
             icon: "google.svg"
-            url: "#"
+            url: "#google"
           - text:
               en: "Login with Twitter"
             icon: "twitter.svg"
-            url: "#"
+            url: "#twitter"
       input_fields:
         email:
           type: "email"
@@ -265,7 +268,7 @@ client:
         forget_password:
           en: "Forgot your password?"
 
-    password_change_page:
+    password_change_form:
       title:
         en: "Change your password"
       input_fields:

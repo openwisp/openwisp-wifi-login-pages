@@ -1,5 +1,4 @@
 /* eslint-disable camelcase */
-import "./index.css";
 import "react-toastify/dist/ReactToastify.css";
 
 import axios from "axios";
@@ -217,24 +216,26 @@ export default class Status extends React.Component {
     const contentArr = getText(content, language).split("\n");
     return (
       <>
-        <div className="owisp-status-container">
-          <div className="owisp-status-inner">
-            <div className="owisp-status-content-div">
+        <div className="container content" id="status">
+          <div className="inner">
+            <div className="main-column">
               {contentArr.map(text => {
                 if (text !== "")
                   return (
-                    <div className="owisp-status-content-line" key={text}>
+                    <p key={text}>
                       {text}
-                    </div>
+                    </p>
                   );
                 return null;
               })}
-              {links
-                ? links.map(link => {
+
+              {links && (
+                <div className="links row">
+                {links.map(link => {
                   if (shouldLinkBeShown(link, isAuthenticated)) {
                     return (
                       <Link
-                        className="owisp-status-link"
+                        className="button full status-link"
                         key={link.url}
                         to={link.url.replace("{orgSlug}", orgSlug)}
                       >
@@ -243,37 +244,24 @@ export default class Status extends React.Component {
                     );
                   }
                   return null;
-                })
-                : null}
-              {buttons.logout ? (
-                <>
-                  {buttons.logout.label ? (
-                    <>
-                      <label
-                        className="owisp-status-label owisp-status-label-logout-btn"
-                        htmlFor="owisp-status-logout-btn"
-                      >
-                        <div className="owisp-status-label-text">
-                          {getText(buttons.logout.label, language)}
-                        </div>
-                      </label>
-                    </>
-                  ) : null}
-                  <input
-                    type="button"
-                    className="owisp-status-btn owisp-status-logout-btn owisp-btn-primary "
-                    id="owisp-status-logout-btn"
-                    value={getText(buttons.logout.text, language)}
-                    onClick={this.handleLogout}
-                  />
-                </>
-              ) : null}
+                })}
+                </div>
+              )}
+
+              <div className="row logout">
+                <input
+                  type="button"
+                  className="button full"
+                  value={getText(buttons.logout.text, language)}
+                  onClick={this.handleLogout}
+                />
+              </div>
             </div>
-            <div className="owisp-status-contact-div">
-              <Contact />
-            </div>
+
+            <Contact />
           </div>
         </div>
+
         {/* check to ensure this block of code is executed in root document and not in Iframe */}
         {captivePortalLoginForm && window.top === window.self && (
           <>
@@ -283,7 +271,7 @@ export default class Status extends React.Component {
               id="cp-login-form"
               action={captivePortalLoginForm.action || ""}
               target="owisp-auth-iframe"
-              className="owisp-auth-hidden"
+              className="hidden"
             >
               <input
                 readOnly
@@ -297,17 +285,16 @@ export default class Status extends React.Component {
                 name={captivePortalLoginForm.fields.password || ""}
                 value={password}
               />
-              {captivePortalLoginForm.additional_fields.length > 0
-                ? captivePortalLoginForm.additional_fields.map(field => (
-                    <input
-                      readOnly
-                      type="text"
-                      name={field.name}
-                      value={field.value}
-                      key={field.name}
-                    />
-                  ))
-                : null}
+              {captivePortalLoginForm.additional_fields.length &&
+               captivePortalLoginForm.additional_fields.map(field => (
+                  <input
+                    readOnly
+                    type="text"
+                    name={field.name}
+                    value={field.value}
+                    key={field.name}
+                  />
+               ))}
             </form>
             {/* login form is submitted in this Iframe
             onLoad: handles response from captive portal
@@ -316,7 +303,7 @@ export default class Status extends React.Component {
               onLoad={this.handleLoginIframe}
               ref={this.loginIfameRef}
               name="owisp-auth-iframe"
-              className="owisp-auth-hidden"
+              className="hidden"
               title="owisp-auth-iframe"
             />
           </>
@@ -329,7 +316,7 @@ export default class Status extends React.Component {
               id="cp-logout-form"
               action={captivePortalLogoutForm.action || ""}
               target="owisp-auth-logout-iframe"
-              className="owisp-auth-hidden"
+              className="hidden"
             >
               <input
                 readOnly
@@ -337,22 +324,21 @@ export default class Status extends React.Component {
                 name={captivePortalLogoutForm.fields.id || ""}
                 value={sessions.length > 0 ? sessions[0].session_id : ""}
               />
-              {captivePortalLogoutForm.additional_fields.length > 0
-                ? captivePortalLogoutForm.additional_fields.map(field => (
-                    <input
-                      readOnly
-                      type="text"
-                      name={field.name}
-                      value={field.value}
-                    />
-                  ))
-                : null}
+              {captivePortalLogoutForm.additional_fields.length &&
+               captivePortalLogoutForm.additional_fields.map(field => (
+                <input
+                  readOnly
+                  type="text"
+                  name={field.name}
+                  value={field.value}
+                />
+              ))}
             </form>
             <iframe
               onLoad={this.handleLogoutIframe}
               ref={this.logoutIfameRef}
               name="owisp-auth-logout-iframe"
-              className="owisp-auth-hidden"
+              className="hidden"
               title="owisp-auth-iframe"
             />
           </>
@@ -367,16 +353,18 @@ Status.defaultProps = {
 };
 Status.propTypes = {
   statusPage: PropTypes.shape({
-    content: PropTypes.object,
+    content: PropTypes.object.isRequired,
     links: PropTypes.arrayOf(
       PropTypes.shape({
-        text: PropTypes.object,
-        url: PropTypes.string,
+        text: PropTypes.object.isRequired,
+        url: PropTypes.string.isRequired,
       }),
     ),
     buttons: PropTypes.shape({
-      logout: PropTypes.object,
-    }),
+      logout: PropTypes.shape({
+        text: PropTypes.object.isRequired,
+      }).isRequired,
+    }).isRequired,
   }).isRequired,
   language: PropTypes.string.isRequired,
   orgSlug: PropTypes.string.isRequired,

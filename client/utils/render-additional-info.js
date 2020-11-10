@@ -23,7 +23,7 @@ const renderAdditionalInfo = (
       textNodes.push(
         <Link
           to={`/${orgSlug}/${component}/privacy-policy`}
-          className={`owisp-${component}-additional-link`}
+          className={`link additional ${component}`}
           key="privacy-policy"
         >
           {privacyPolicyTitle}
@@ -33,7 +33,7 @@ const renderAdditionalInfo = (
       textNodes.push(
         <Link
           to={`/${orgSlug}/${component}/terms-and-conditions`}
-          className={`owisp-${component}-additional-link`}
+          className={`link additional ${component}`}
           key="terms-and-conditions"
         >
           {termsAndConditionsTitle}
@@ -46,7 +46,7 @@ const renderAdditionalInfo = (
       textNodes.push(
         <Link
           to={`/${orgSlug}/${component}/terms-and-conditions`}
-          className={`owisp-${component}-additional-link`}
+          className={`link additional ${component}`}
           key="terms-and-conditions"
         >
           {termsAndConditionsTitle}
@@ -56,7 +56,7 @@ const renderAdditionalInfo = (
       textNodes.push(
         <Link
           to={`/${orgSlug}/${component}/privacy-policy`}
-          className={`owisp-${component}-additional-link`}
+          className={`link additional ${component}`}
           key="privacy-policy"
         >
           {privacyPolicyTitle}
@@ -68,7 +68,7 @@ const renderAdditionalInfo = (
       textNodes.push(
         <Link
           to={`/${orgSlug}/${component}/terms-and-conditions`}
-          className={`owisp-${component}-additional-link`}
+          className={`link additional ${component}`}
           key="terms-and-conditions"
         >
           {termsAndConditionsTitle}
@@ -82,7 +82,7 @@ const renderAdditionalInfo = (
     textNodes.push(
       <Link
         to={`/${orgSlug}/${component}/privacy-policy`}
-        className={`owisp-${component}-additional-link`}
+        className={`link additional ${component}`}
         key="privacy-policy"
       >
         {privacyPolicyTitle}

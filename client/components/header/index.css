@@ -1,18 +1,18 @@
-.owisp-header-container {
+.header-container {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   flex-wrap: nowrap;
 }
-.owisp-header-row-1 {
+.header-row-1 {
   width: 100%;
   background: #ccc;
   display: flex;
   flex-direction: row;
   justify-content: center;
 }
-.owisp-header-row-1-inner {
+.header-row-1-inner {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -20,22 +20,22 @@
   flex-wrap: nowrap;
   flex-grow: 1;
   max-width: 1000px;
-  padding: 15px 0;
+  padding: 10px 0;
   height: 104px;
   box-sizing: border-box;
 }
-.owisp-header-left {
+.header-left {
   height: 100%;
 }
-.owisp-header-logo-div {
-  height: 100%;
-  width: auto;
-}
-.owisp-header-logo-image {
+.header-logo-div {
   height: 100%;
   width: auto;
 }
-.owisp-header-right {
+.header-logo-image {
+  height: 100%;
+  width: auto;
+}
+.header-right {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
@@ -44,7 +44,7 @@
   flex-grow: 1;
 }
 
-.owisp-header-language-btn {
+.header-language-btn {
   padding: 5px 2px;
   margin: 0 5px;
   text-transform: uppercase;
@@ -56,10 +56,10 @@
   cursor: pointer;
   border-bottom: 3px rgba(0, 0, 0, 0) solid;
 }
-.owisp-header-language-btn.active {
+.header-language-btn.active {
   border-bottom-color: #000;
 }
-.owisp-header-row-2 {
+.header-row-2 {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -69,7 +69,7 @@
   background: #555;
   min-height: 54px;
 }
-.owisp-header-row-2-inner {
+.header-row-2-inner {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -79,41 +79,40 @@
   flex-grow: 1;
   padding: 10px 0;
 }
-.owisp-header-link {
+.header-link {
   padding: 8px 15px;
   margin-right: 10px;
   font-size: 14px;
 }
-.owisp-header-link.active {
+.header-link.active {
   background-color: rgba(0, 0, 0, 0.2) !important;
   cursor: default;
 }
-.owisp-header-mobile {
+.header-mobile {
   display: none;
 }
-.owisp-display-none {
+.display-none {
   display: none;
 }
-.owisp-display-flex {
+.display-flex {
   display: flex;
 }
-.owisp-opacity-hidden {
+.opacity-hidden {
   opacity: 0;
 }
 @media screen and (min-width: 0px) and (max-width: 767px) {
-  .owisp-header-hamburger {
-    width: 38px;
-    margin-right: 10px;
-    height: 25px;
+  .header-hamburger {
+    width: 30px;
+    height: 26px;
     cursor: pointer;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.6);
     padding: 10px 15px;
     border-radius: 5px;
   }
-  .owisp-header-hamburger:focus {
+  .header-hamburger:focus {
     outline: dotted 1px #fff;
   }
-  .owisp-header-hamburger > div {
+  .header-hamburger > div {
     height: 5px;
     background: #fff;
     content: "";
@@ -121,29 +120,29 @@
     transition: 0.25s all ease-in-out;
     border-radius: 1px;
   }
-  .owisp-rot45 {
+  .rot45 {
     transform: rotate(45deg);
     top: 10px !important;
   }
 
-  .owisp-rot-45 {
+  .rot-45 {
     transform: rotate(-45deg);
   }
 
-  .owisp-header-hamburger div:nth-child(1) {
+  .header-hamburger div:nth-child(1) {
     top: 0;
   }
-  .owisp-header-hamburger div:nth-child(2) {
+  .header-hamburger div:nth-child(2) {
     top: 5px;
   }
-  .owisp-header-hamburger div:nth-child(3) {
+  .header-hamburger div:nth-child(3) {
     top: 10px;
   }
-  .owisp-header-mobile {
+  .header-mobile {
     display: flex;
     flex-direction: column;
   }
-  .owisp-header-mobile-menu {
+  .header-mobile-menu {
     transition: 0.25s all ease-in-out;
 
     flex-direction: column;
@@ -151,20 +150,26 @@
     align-items: center;
     padding: 20px 0;
   }
-  .owisp-header-mobile-menu > .owisp-header-link {
-    margin-right: 0;
-    margin: 4px 0;
+  .header-mobile-menu > .header-link {
+    margin: 6px 0;
     width: 90%;
     box-sizing: border-box;
+    text-align: center;
+    font-size: 15px;
+    padding: 12px 0;
   }
-  .owisp-header-desktop {
+  .header-desktop {
     display: none;
   }
-  .owisp-mobile-languages-row {
+  .mobile-languages-row {
     width: 90%;
     margin: 5px 0 10px 0;
   }
-  .owisp-header-language-btn.active {
+  .header-language-btn {
+    color: #fff;
+    border-bottom-color: #fff !important;
+  }
+  .header-language-btn.active {
     cursor: auto;
   }
 }

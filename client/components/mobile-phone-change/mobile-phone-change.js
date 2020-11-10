@@ -20,6 +20,8 @@ import {
 import getErrorText from "../../utils/get-error-text";
 import getText from "../../utils/get-text";
 import logError from "../../utils/log-error";
+import handleChange from "../../utils/handle-change";
+import submitOnEnter from "../../utils/submit-on-enter";
 import Contact from "../contact-box";
 
 class MobilePhoneChange extends React.Component {
@@ -30,6 +32,7 @@ class MobilePhoneChange extends React.Component {
       errors: {}
     };
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.validateToken = this.validateToken.bind(this);
   }
 
@@ -84,7 +87,7 @@ class MobilePhoneChange extends React.Component {
   }
 
   handleChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
+    handleChange(event, this);
   }
 
   // TODO: make reusable
@@ -149,83 +152,74 @@ class MobilePhoneChange extends React.Component {
     }
 
     return (
-        <>
-          <div className="owisp-phone-number-change-container">
-            <div className="owisp-phone-number-change-container-inner">
-              <div className="owisp-main-content">
-                <form
-                  className="owisp-phone-number-change-form"
-                  onSubmit={this.handleSubmit}
-                >
+      <div className="container content" id="mobile-phone-change">
+        <div className="inner">
+          <form className="main-column"
+                id="mobile-phone-change-form"
+                onSubmit={this.handleSubmit}>
+            <div className="fieldset row">
+              {errors.nonField && (
+                <div className="error non-field">
+                  <span className="icon">!</span>
+                  <span className="text">
+                    {errors.nonField}
+                  </span>
+                </div>
+              )}
 
-                  <div className="owisp-phone-number-change-fieldset">
-                    {errors.nonField && (
-                      <div className="owisp-phone-number-change-error owisp-phone-number-change-error-non-field">
-                        <span className="owisp-phone-number-change-error-icon">!</span>
-                        <span className="owisp-phone-number-change-error-text owisp-phone-number-change-error-text-non-field">
-                          {errors.nonField}
-                        </span>
-                      </div>
-                    )}
-
-                    <div className="owisp-phone-number-change-label owisp-phone-number-change-label-phone-number">
-                      <label
-                        className="owisp-phone-number-change-label-text owisp-phone-number-change-label-text-phone-number"
-                        htmlFor="owisp-phone-number-change-phone-number"
-                      >
-                        {getText(input_fields.phone_number.label, language)}
-                      </label>
-                      {errors.phone_number && (
-                        <div className="owisp-phone-number-change-error owisp-phone-number-change-error-code">
-                          <span className="owisp-phone-number-change-error-icon">!</span>
-                          <span className="owisp-phone-number-change-error-text owisp-phone-number-change-error-text-code">
-                            {errors.phone_number}
-                          </span>
-                        </div>
-                      )}
-                      <PhoneInput
-                        name="phone_number"
-                        country={input_fields.phone_number.country}
-                        onlyCountries={input_fields.phone_number.only_countries || []}
-                        preferredCountries={input_fields.phone_number.preferred_countries || []}
-                        excludeCountries={input_fields.phone_number.exclude_countries || []}
-                        value={phone_number}
-                        onChange={value => this.setState({phone_number: `+${value}`})}
-                        placeholder={getText(
-                          input_fields.phone_number.placeholder,
-                          language,
-                        )}
-                        enableSearch={Boolean(input_fields.phone_number.enable_search)}
-                        inputProps={{
-                          name: "phone_number",
-                          id: "owisp-phone-number-change-phone-number",
-                          className: `form-control owisp-phone-number-change-input owisp-phone-number-change-input-phone-number ${errors.email ? "error" : ""}`,
-                          required: true,
-                        }}
-                      />
-                    </div>
+              <div className="row phone-number">
+                <label htmlFor="phone-number">
+                  {getText(input_fields.phone_number.label, language)}
+                </label>
+                {errors.phone_number && (
+                  <div className="error">
+                    <span className="icon">!</span>
+                    <span className="text">
+                      {errors.phone_number}
+                    </span>
                   </div>
-
-                  <input
-                    type="submit"
-                    className="owisp-phone-number-change-form-btn owisp-phone-number-change-submit-btn owisp-btn-primary"
-                    id="owisp-phone-number-change-submit-btn"
-                    value={getText(buttons.change_phone_number.text, language)}
-                  />
-
-                  <a className="owisp-btn-primary full-line"
-                     id="owisp-phone-number-change-cancel-btn"
-                     href={`/${orgSlug}/mobile-phone-verification`}>
-                    {getText(buttons.cancel.text, language)}
-                  </a>
-                </form>
+                )}
+                <PhoneInput
+                  name="phone_number"
+                  country={input_fields.phone_number.country}
+                  onlyCountries={input_fields.phone_number.only_countries || []}
+                  preferredCountries={input_fields.phone_number.preferred_countries || []}
+                  excludeCountries={input_fields.phone_number.exclude_countries || []}
+                  value={phone_number}
+                  onChange={value => this.handleChange({target: {name: "phone_number", value: `+${value}`}})}
+                  onKeyDown={event => { submitOnEnter(event, this, "mobile-phone-change-form"); }}
+                  placeholder={getText(
+                    input_fields.phone_number.placeholder,
+                    language,
+                  )}
+                  enableSearch={Boolean(input_fields.phone_number.enable_search)}
+                  inputProps={{
+                    name: "phone_number",
+                    id: "phone-number",
+                    className: `form-control input ${errors.phone_number ? "error" : ""}`,
+                    required: true,
+                  }}
+                />
               </div>
-              <div className="owisp-phone-number-change-contact-container">
-                <Contact />
+
+              <input
+                type="submit"
+                className="button full"
+                value={getText(buttons.change_phone_number.text, language)}
+              />
+
+              <div className="row cancel">
+                <a className="button full"
+                   href={`/${orgSlug}/mobile-phone-verification`}>
+                  {getText(buttons.cancel.text, language)}
+                </a>
               </div>
             </div>
-          </div>
-        </>
+          </form>
+
+          <Contact />
+        </div>
+      </div>
     );
   }
 }

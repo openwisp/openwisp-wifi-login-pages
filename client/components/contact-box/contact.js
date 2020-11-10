@@ -13,63 +13,64 @@ export default class Contact extends React.Component {
     const {contactPage, language, orgSlug, isAuthenticated} = this.props;
     const {email, helpdesk, social_links} = contactPage;
     return (
-      <>
-        <div className="owisp-contact-container">
-          <div className="owisp-contact-inner">
-            <div className="owisp-contact-row">
-              <div className="owisp-contact-label">
-                {getText(email.label, language)}:
-              </div>
-              <a
-                href={`mailto:${getText(email.value, language)}`}
-                className="owisp-contact-text"
-              >
-                {getText(email.value, language)}
-              </a>
-            </div>
-            <div className="owisp-contact-row">
-              <div className="owisp-contact-label">
-                {getText(helpdesk.label, language)}:
-              </div>
-              <a
-                href={`tel:${getText(helpdesk.value, language)}`}
-                className="owisp-contact-text"
-              >
-                {getText(helpdesk.value, language)}
-              </a>
-            </div>
-            <div className="owisp-contact-links">
-              {social_links.map(link => {
-                if (shouldLinkBeShown(link, isAuthenticated)) {
-                  return (
-                    <a
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      key={link.url}
-                      className={`owisp-contact-${getText(
+      <div className="side-column contact">
+        <div className="inner">
+
+          <div className="row">
+            <span className="label">
+              {getText(email.label, language)}:
+            </span>
+            <a
+              href={`mailto:${getText(email.value, language)}`}
+              className="link"
+            >
+              {getText(email.value, language)}
+            </a>
+          </div>
+
+          <div className="row">
+            <span className="label">
+              {getText(helpdesk.label, language)}:
+            </span>
+            <a
+              href={`tel:${getText(helpdesk.value, language)}`}
+              className="link"
+            >
+              {getText(helpdesk.value, language)}
+            </a>
+          </div>
+
+          <div className="contact-links">
+            {social_links.map(link => {
+              if (shouldLinkBeShown(link, isAuthenticated)) {
+                return (
+                  <a
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    key={link.url}
+                    className={`contact-${getText(
+                      link.alt,
+                      language,
+                    )}-link link`}
+                  >
+                    <img
+                      src={getAssetPath(orgSlug, link.icon)}
+                      alt={getText(link.alt, language)}
+                      className={`contact-${getText(
                         link.alt,
                         language,
-                      )}-link owisp-contact-link`}
-                    >
-                      <img
-                        src={getAssetPath(orgSlug, link.icon)}
-                        alt={getText(link.alt, language)}
-                        className={`owisp-contact-${getText(
-                          link.alt,
-                          language,
-                        )}-image owisp-contact-image`}
-                      />
-                    </a>
-                  );
-                }
-                return null;
-              })}
-            </div>
-            <div className="owisp-contact-inner"/>
+                      )}-image contact-image`}
+                    />
+                  </a>
+                );
+              }
+              return null;
+            })}
           </div>
+
         </div>
-      </>
+      </div>
     );
   }
 }

@@ -3,171 +3,165 @@
 exports[`<Login /> rendering should render correctly with social links 1`] = `
 <React.Fragment>
   <div
-    className="owisp-login-container"
+    className="container content"
+    id="login"
   >
     <div
-      className="owisp-login-container-inner"
+      className="inner"
     >
       <form
-        className="owisp-login-form"
+        className="main-column"
         onSubmit={[Function]}
       >
-        <React.Fragment>
-          <React.Fragment>
-            <div
-              className="owisp-login-social-links-div"
-            >
-              <a
-                className="owisp-login-social-link owisp-btn-primary"
-                href="test url"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <div>
-                  <div
-                    className="owisp-login-social-link-text"
-                  >
-                    Facebook
-                  </div>
-                </div>
-              </a>
-              <a
-                className="owisp-login-social-link owisp-btn-primary"
-                href="https://control.co.ke/accounts/facebook/login/?next=%2Ffreeradius%2Fsocial-login%2Fstaging%2F%3Fcp%3Dhttp%3A%2F%2Fcontrol.brandfi.co.ke%2Floginpage%2F%26last%3D"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <div>
-                  <img
-                    alt="https://control.co.ke/accounts/facebook/login/?next=%2Ffreeradius%2Fsocial-login%2Fstaging%2F%3Fcp%3Dhttp%3A%2F%2Fcontrol.brandfi.co.ke%2Floginpage%2F%26last%3D"
-                    className="owisp-login-social-link-icon"
-                    src="/assets/default/test.png"
-                  />
-                </div>
-              </a>
-            </div>
-          </React.Fragment>
-        </React.Fragment>
         <div
-          className="owisp-login-fieldset"
+          className="social-links row"
         >
-          <React.Fragment>
-            <label
-              className="owisp-login-label owisp-login-label-email"
-              htmlFor="owisp-login-email"
+          <p>
+            <a
+              className="social-link button full"
+              href="https://radius.openwisp.io/login/google"
+              rel="noopener noreferrer"
+              target="_blank"
             >
-              <div
-                className="owisp-login-label-text"
+              <span
+                className="inner"
               >
-                email
-              </div>
-              <input
-                className="owisp-login-input
-                        owisp-login-input-email
-                        "
-                id="owisp-login-email"
-                name="email"
-                onChange={[Function]}
-                pattern=".+@.+\\\\..+"
-                placeholder="email address"
-                required={true}
-                title={null}
-                type="email"
-                value=""
-              />
-            </label>
-          </React.Fragment>
-          <React.Fragment>
-            <label
-              className="owisp-login-label owisp-login-label-password"
-              htmlFor="owisp-login-password"
+                <img
+                  alt="Google"
+                  className="icon"
+                  src="/assets/default/google.png"
+                />
+                <span
+                  className="text"
+                >
+                  Google
+                </span>
+              </span>
+            </a>
+          </p>
+          <p>
+            <a
+              className="social-link button full"
+              href="https://radius.openwisp.io/login/facebook"
+              rel="noopener noreferrer"
+              target="_blank"
             >
-              <div
-                className="owisp-login-label-text"
+              <span
+                className="inner"
               >
-                password
-              </div>
-              <input
-                className="owisp-login-input owisp-login-input-password
-                      "
-                id="owisp-login-password"
-                name="password"
-                onChange={[Function]}
-                pattern=".{6,}"
-                placeholder="password"
-                required={true}
-                title="password must be a minimum of 6 characters"
-                type="password"
-                value=""
-              />
-            </label>
-          </React.Fragment>
+                <img
+                  alt="Facebook"
+                  className="icon"
+                  src="/assets/default/facebook.png"
+                />
+                <span
+                  className="text"
+                >
+                  Facebook
+                </span>
+              </span>
+            </a>
+          </p>
         </div>
         <div
-          className="owisp-login-add-info"
+          className="fieldset"
+        >
+          <div
+            className="row email"
+          >
+            <label
+              htmlFor="email"
+            >
+              email
+            </label>
+            <input
+              className="input "
+              id="email"
+              name="email"
+              onChange={[Function]}
+              pattern=".+@.+\\\\..+"
+              placeholder="email address"
+              required={true}
+              title={null}
+              type="email"
+              value=""
+            />
+          </div>
+          <div
+            className="row password"
+          >
+            <label
+              htmlFor="password"
+            >
+              password
+            </label>
+            <input
+              className="input "
+              id="password"
+              name="password"
+              onChange={[Function]}
+              pattern=".{6,}"
+              placeholder="password"
+              required={true}
+              title="password must be a minimum of 6 characters"
+              type="password"
+              value=""
+            />
+          </div>
+        </div>
+        <div
+          className="row add-info"
         >
           By logging in, you accept the 
           <Link
-            className="owisp-login-additional-link"
+            className="link additional login"
             to="/default/login/terms-and-conditions"
           >
             terms and conditions
           </Link>
            and the 
           <Link
-            className="owisp-login-additional-link"
+            className="link additional login"
             to="/default/login/privacy-policy"
           >
             privacy policy
           </Link>
            of this WiFi service. 
         </div>
-        <React.Fragment>
+        <div
+          className="row login"
+        >
           <input
-            className="owisp-login-form-btn owisp-login-login-btn owisp-btn-primary"
-            id="owisp-login-login-btn"
+            className="button full"
             type="submit"
             value="Login"
           />
-        </React.Fragment>
-        <React.Fragment>
-          <label
-            className="owisp-login-label owisp-login-label-register-btn"
-            htmlFor="owisp-login-register-btn"
-          >
-            <div
-              className="owisp-login-label-text"
-            >
-              Not registered yet?
-            </div>
-          </label>
-          <div
-            className="owisp-login-form-register-btn-div"
-          >
-            <Link
-              className="owisp-login-form-btn owisp-login-register-btn owisp-btn-primary"
-              to="/default/registration"
-            >
-              Sign up
-            </Link>
-          </div>
-        </React.Fragment>
+        </div>
         <div
-          className="owisp-login-links-div"
+          className="row register"
+        >
+          <p>
+            Not registered yet?
+          </p>
+          <Link
+            className="button full"
+            to="/default/registration"
+          >
+            Sign up
+          </Link>
+        </div>
+        <div
+          className="row links"
         >
           <Link
-            className="owisp-login-link"
+            className="link"
             to="/default/password/reset"
           >
             Forgot your password?
           </Link>
         </div>
       </form>
-      <div
-        className="owisp-login-contact-container"
-      >
-        <Memo(Connect(Contact)) />
-      </div>
+      <Memo(Connect(Contact)) />
     </div>
   </div>
   <Route
@@ -180,200 +174,188 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
 exports[`<Login /> rendering should render correctly without social links 1`] = `
 <React.Fragment>
   <div
-    className="owisp-login-container"
+    className="container content"
+    id="login"
   >
     <div
-      className="owisp-login-container-inner"
+      className="inner"
     >
       <form
-        className="owisp-login-form"
+        className="main-column"
         onSubmit={[Function]}
       >
-        <React.Fragment>
-          <React.Fragment>
-            <div
-              className="owisp-login-social-links-div"
-            >
-              <a
-                className="owisp-login-social-link owisp-btn-primary"
-                href="#"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <div>
-                  <img
-                    alt="Login with Facebook"
-                    className="owisp-login-social-link-icon"
-                    src="/assets/default/facebook.svg"
-                  />
-                  <div
-                    className="owisp-login-social-link-text"
-                  >
-                    Login with Facebook
-                  </div>
-                </div>
-              </a>
-              <a
-                className="owisp-login-social-link owisp-btn-primary"
-                href="#"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <div>
-                  <img
-                    alt="Login with google"
-                    className="owisp-login-social-link-icon"
-                    src="/assets/default/google.svg"
-                  />
-                  <div
-                    className="owisp-login-social-link-text"
-                  >
-                    Login with google
-                  </div>
-                </div>
-              </a>
-              <a
-                className="owisp-login-social-link owisp-btn-primary"
-                href="#"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <div>
-                  <img
-                    alt="Login with Twitter"
-                    className="owisp-login-social-link-icon"
-                    src="/assets/default/twitter.svg"
-                  />
-                  <div
-                    className="owisp-login-social-link-text"
-                  >
-                    Login with Twitter
-                  </div>
-                </div>
-              </a>
-            </div>
-          </React.Fragment>
-        </React.Fragment>
         <div
-          className="owisp-login-fieldset"
+          className="social-links row"
         >
-          <React.Fragment>
-            <label
-              className="owisp-login-label owisp-login-label-email"
-              htmlFor="owisp-login-email"
+          <p>
+            <a
+              className="social-link button full"
+              href="#facebook"
+              rel="noopener noreferrer"
+              target="_blank"
             >
-              <div
-                className="owisp-login-label-text"
+              <span
+                className="inner"
               >
-                email
-              </div>
-              <input
-                className="owisp-login-input
-                        owisp-login-input-email
-                        "
-                id="owisp-login-email"
-                name="email"
-                onChange={[Function]}
-                pattern=".+@.+\\\\..+"
-                placeholder="email address"
-                required={true}
-                title={null}
-                type="email"
-                value=""
-              />
-            </label>
-          </React.Fragment>
-          <React.Fragment>
-            <label
-              className="owisp-login-label owisp-login-label-password"
-              htmlFor="owisp-login-password"
+                <img
+                  alt="Login with Facebook"
+                  className="icon"
+                  src="/assets/default/facebook.svg"
+                />
+                <span
+                  className="text"
+                >
+                  Login with Facebook
+                </span>
+              </span>
+            </a>
+          </p>
+          <p>
+            <a
+              className="social-link button full"
+              href="#google"
+              rel="noopener noreferrer"
+              target="_blank"
             >
-              <div
-                className="owisp-login-label-text"
+              <span
+                className="inner"
               >
-                password
-              </div>
-              <input
-                className="owisp-login-input owisp-login-input-password
-                      "
-                id="owisp-login-password"
-                name="password"
-                onChange={[Function]}
-                pattern=".{6,}"
-                placeholder="password"
-                required={true}
-                title="password must be a minimum of 6 characters"
-                type="password"
-                value=""
-              />
-            </label>
-          </React.Fragment>
+                <img
+                  alt="Login with google"
+                  className="icon"
+                  src="/assets/default/google.svg"
+                />
+                <span
+                  className="text"
+                >
+                  Login with google
+                </span>
+              </span>
+            </a>
+          </p>
+          <p>
+            <a
+              className="social-link button full"
+              href="#twitter"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <span
+                className="inner"
+              >
+                <img
+                  alt="Login with Twitter"
+                  className="icon"
+                  src="/assets/default/twitter.svg"
+                />
+                <span
+                  className="text"
+                >
+                  Login with Twitter
+                </span>
+              </span>
+            </a>
+          </p>
         </div>
         <div
-          className="owisp-login-add-info"
+          className="fieldset"
+        >
+          <div
+            className="row email"
+          >
+            <label
+              htmlFor="email"
+            >
+              email
+            </label>
+            <input
+              className="input "
+              id="email"
+              name="email"
+              onChange={[Function]}
+              pattern=".+@.+\\\\..+"
+              placeholder="email address"
+              required={true}
+              title={null}
+              type="email"
+              value=""
+            />
+          </div>
+          <div
+            className="row password"
+          >
+            <label
+              htmlFor="password"
+            >
+              password
+            </label>
+            <input
+              className="input "
+              id="password"
+              name="password"
+              onChange={[Function]}
+              pattern=".{6,}"
+              placeholder="password"
+              required={true}
+              title="password must be a minimum of 6 characters"
+              type="password"
+              value=""
+            />
+          </div>
+        </div>
+        <div
+          className="row add-info"
         >
           By logging in, you accept the 
           <Link
-            className="owisp-login-additional-link"
+            className="link additional login"
             to="/default/login/terms-and-conditions"
           >
             terms and conditions
           </Link>
            and the 
           <Link
-            className="owisp-login-additional-link"
+            className="link additional login"
             to="/default/login/privacy-policy"
           >
             privacy policy
           </Link>
            of this WiFi service. 
         </div>
-        <React.Fragment>
+        <div
+          className="row login"
+        >
           <input
-            className="owisp-login-form-btn owisp-login-login-btn owisp-btn-primary"
-            id="owisp-login-login-btn"
+            className="button full"
             type="submit"
             value="Login"
           />
-        </React.Fragment>
-        <React.Fragment>
-          <label
-            className="owisp-login-label owisp-login-label-register-btn"
-            htmlFor="owisp-login-register-btn"
-          >
-            <div
-              className="owisp-login-label-text"
-            >
-              Not registered yet?
-            </div>
-          </label>
-          <div
-            className="owisp-login-form-register-btn-div"
-          >
-            <Link
-              className="owisp-login-form-btn owisp-login-register-btn owisp-btn-primary"
-              to="/default/registration"
-            >
-              Sign up
-            </Link>
-          </div>
-        </React.Fragment>
+        </div>
         <div
-          className="owisp-login-links-div"
+          className="row register"
+        >
+          <p>
+            Not registered yet?
+          </p>
+          <Link
+            className="button full"
+            to="/default/registration"
+          >
+            Sign up
+          </Link>
+        </div>
+        <div
+          className="row links"
         >
           <Link
-            className="owisp-login-link"
+            className="link"
             to="/default/password/reset"
           >
             Forgot your password?
           </Link>
         </div>
       </form>
-      <div
-        className="owisp-login-contact-container"
-      >
-        <Memo(Connect(Contact)) />
-      </div>
+      <Memo(Connect(Contact)) />
     </div>
   </div>
   <Route

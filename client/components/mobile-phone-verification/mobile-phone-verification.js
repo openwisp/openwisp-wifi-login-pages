@@ -21,6 +21,7 @@ import {
 import getErrorText from "../../utils/get-error-text";
 import getText from "../../utils/get-text";
 import logError from "../../utils/log-error";
+import handleChange from "../../utils/handle-change";
 import Contact from "../contact-box";
 
 export default class MobilePhoneVerification extends React.Component {
@@ -56,7 +57,7 @@ export default class MobilePhoneVerification extends React.Component {
   }
 
   handleChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
+    handleChange(event, this);
   }
 
   handleSubmit(event) {
@@ -198,43 +199,37 @@ export default class MobilePhoneVerification extends React.Component {
     const { orgSlug, language, mobile_phone_verification } = this.props;
     const { input_fields, buttons, text } = mobile_phone_verification;
     return (
-      <div className="owisp-mobile-phone-verification-container">
-        <div className="owisp-mobile-phone-verification-container-inner">
-          <div className="owisp-main-content">
-            <form
-              className={`owisp-mobile-phone-verification-form ${success ? "success" : ""}`}
-              onSubmit={this.handleSubmit}
-            >
+      <div className="container content" id="mobile-phone-verification">
+        <div className="inner">
+          <div className="main-column">
+            <form className={`${success ? "success" : ""}`} onSubmit={this.handleSubmit}>
+              <div className="row fieldset code">
+                <p className="label">
+                  {getText(text.verify, language).replace("{phone_number}", phone_number)}
+                </p>
 
-              <div className="owisp-mobile-phone-verification-verify-text">
-                {getText(text.verify, language).replace("{phone_number}", phone_number)}
-              </div>
-
-              <div className="owisp-mobile-phone-verification-fieldset">
                 {errors.nonField && (
-                  <div className="owisp-mobile-phone-verification-error owisp-mobile-phone-verification-error-non-field">
-                    <span className="owisp-mobile-phone-verification-error-icon">!</span>
-                    <span className="owisp-mobile-phone-verification-error-text owisp-mobile-phone-verification-error-text-non-field">
+                  <div className="error non-field">
+                    <span className="icon">!</span>
+                    <span className="text">
                       {errors.nonField}
                     </span>
                   </div>
                 )}
 
-                <div className="owisp-mobile-phone-verification-label-text owisp-mobile-phone-verification-label-text-code">
+                <div className="row">
                   {errors.code && (
-                    <div className="owisp-mobile-phone-verification-error owisp-mobile-phone-verification-error-code">
-                      <span className="owisp-mobile-phone-verification-error-icon">!</span>
-                      <span className="owisp-mobile-phone-verification-error-text owisp-mobile-phone-verification-error-text-code">
+                    <div className="error">
+                      <span className="icon">!</span>
+                      <span className="text">
                         {errors.code}
                       </span>
                     </div>
                   )}
                   <input
-                    className={`owisp-mobile-phone-verification-input owisp-mobile-phone-verification-input-code ${
-                      errors.email ? "error" : ""
-                      }`}
+                    className={`input ${errors.code || errors.nonField ? "error" : ""}`}
                     type={input_fields.code.type}
-                    id="owisp-mobile-phone-verification-code"
+                    id="code"
                     required
                     name="code"
                     value={code}
@@ -250,58 +245,53 @@ export default class MobilePhoneVerification extends React.Component {
                     )}
                   />
                 </div>
-              </div>
 
-              <button
-                type="submit"
-                className="owisp-mobile-phone-verification-form-btn owisp-mobile-phone-verification-submit-btn owisp-btn-primary "
-                id="owisp-mobile-phone-verification-submit-btn">
-                {getText(buttons.verify, language)}
-              </button>
+                <button
+                  type="submit"
+                  className="button full"
+                >
+                  {getText(buttons.verify, language)}
+                </button>
+              </div>
             </form>
 
-            <div className="fieldset">
-              <div className="owisp-mobile-phone-verification-resend-text">
+            <div className="row fieldset resend">
+              <p className="label">
                 {getText(text.resend, language)}
-              </div>
+              </p>
 
               <button
                  type="button"
-                 className="owisp-btn-primary full-line"
-                 id="owisp-mobile-phone-verification-resend-btn"
+                 className="button full"
                  onClick={this.resendPhoneToken}>
                  {getText(buttons.resend, language)}
               </button>
             </div>
 
-            <div className="fieldset">
-              <div className="owisp-mobile-phone-verification-change-text">
+            <div className="row fieldset change">
+              <p className="label">
                 {getText(text.change, language)}
-              </div>
+              </p>
               <a href={`/${orgSlug}/change-phone-number`}
-                 className="owisp-btn-primary full-line"
-                 id="owisp-mobile-phone-verification-change-btn">
+                 className="button full"
+              >
                 {getText(buttons.change, language)}
               </a>
             </div>
 
-            <div className="fieldset">
-              <div className="owisp-mobile-phone-verification-change-text">
+            <div className="row fieldset logout">
+              <p className="label">
                 {getText(text.logout, language)}
-              </div>
+              </p>
               <button
                 type="button"
-                className="owisp-btn-primary full-line"
-                id="owisp-mobile-phone-verification-logout-btn"
+                className="button full"
                 onClick={this.handleLogout}>
                 {getText(buttons.logout, language)}
               </button>
             </div>
-
           </div>
-          <div className="owisp-mobile-phone-verification-contact-container">
-            <Contact />
-          </div>
+          <Contact />
         </div>
       </div>
     );

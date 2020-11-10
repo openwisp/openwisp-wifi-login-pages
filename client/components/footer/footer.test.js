@@ -56,7 +56,7 @@ describe("<Footer /> rendering", () => {
     };
     props = createTestProps(links);
     wrapper = shallow(<Footer {...props} />);
-    expect(wrapper.find(".owisp-footer-link")).toHaveLength(0);
+    expect(wrapper.find(".footer-link")).toHaveLength(0);
   });
   it("should render secondary text", () => {
     wrapper.setProps({
@@ -65,7 +65,7 @@ describe("<Footer /> rendering", () => {
     expect(
       wrapper
         .update()
-        .find(".owisp-footer-row-2-inner")
+        .find(".footer-row-2-inner")
         .text(),
     ).toBe("secondary text");
   });
@@ -74,7 +74,7 @@ describe("<Footer /> rendering", () => {
     props.footer.links = footerLinks;
     props.isAuthenticated = false;
     wrapper = shallow(<Footer {...props} />);
-    const linkText = getLinkText(wrapper, ".owisp-footer-link");
+    const linkText = getLinkText(wrapper, ".footer-link");
     expect(linkText).toContain("about");
     expect(linkText).toContain("signUp");
     expect(linkText).not.toContain("status");
@@ -84,7 +84,7 @@ describe("<Footer /> rendering", () => {
     props.footer.links = footerLinks;
     props.isAuthenticated = true;
     wrapper = shallow(<Footer {...props} />);
-    const linkText = getLinkText(wrapper, ".owisp-footer-link");
+    const linkText = getLinkText(wrapper, ".footer-link");
     expect(linkText).not.toContain("signUp");
     expect(linkText).toContain("about");
     expect(linkText).toContain("status");

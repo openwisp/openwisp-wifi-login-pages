@@ -11,30 +11,32 @@ export default class DoesNotExist extends React.Component {
   render() {
     const {orgSlug, language, page} = this.props;
     return (
-      <>
-        <div className="owisp-404-container">
-          <div className="owisp-404-row-1">
-            {page && page.heading ? getText(page.heading, language) : "Oops!"}
-          </div>
-          <div className="owisp-404-row-2">
-            {page && page.sub_heading
-              ? getText(page.sub_heading, language)
-              : "404 Not Found"}
-          </div>
-          <div className="owisp-404-row-3">
-            {page && page.message
-              ? getText(page.message, language)
-              : "Sorry, an error has occurred, Requested page not found!"}
-          </div>
-          {page && page.homepage_link ? (
-            <div className="owisp-404-row-4">
-              <Link to={`/${orgSlug}`}>
-                {getText(page.homepage_link.text, language)}
-              </Link>
+      <div className="container content" id="not-foud-404">
+        <div className="inner">
+          <div className="main-column">
+            <div className="row owisp-404-row-1">
+              {page && page.heading ? getText(page.heading, language) : "Oops!"}
             </div>
-          ) : null}
+            <div className="row owisp-404-row-2">
+              {page && page.sub_heading
+                ? getText(page.sub_heading, language)
+                : "404 Not Found"}
+            </div>
+            <div className="row owisp-404-row-3">
+              {page && page.message
+                ? getText(page.message, language)
+                : "Sorry, an error has occurred, Requested page not found!"}
+            </div>
+            {page && page.homepage_link && (
+              <div className="row owisp-404-row-4">
+                <Link to={`/${orgSlug}`} className="link">
+                  {getText(page.homepage_link.text, language)}
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
-      </>
+      </div>
     );
   }
 }

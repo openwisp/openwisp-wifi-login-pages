@@ -1,4 +1,4 @@
-.owisp-footer-container {
+.footer-container {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -7,13 +7,13 @@
   background: #555;
   padding: 20px 0;
 }
-.owisp-footer-row-1 {
+.footer-row-1 {
   width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: center;
 }
-.owisp-footer-row-1-inner {
+.footer-row-1-inner {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -22,7 +22,7 @@
   flex-grow: 1;
   max-width: 1000px;
 }
-.owisp-footer-link {
+.footer-link {
   color: #ffffff;
   padding: 0 2px;
   margin-right: 10px;
@@ -30,10 +30,10 @@
   font-size: 14px;
   font-weight: 600;
 }
-.owisp-footer-link:hover {
+.footer-link:hover {
   text-decoration: none;
 }
-.owisp-footer-row-2 {
+.footer-row-2 {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -43,7 +43,7 @@
   max-width: 1000px;
   margin-top: 4px;
 }
-.owisp-footer-row-2-inner {
+.footer-row-2-inner {
   display: flex;
   flex-direction: row;
   justify-content: center;

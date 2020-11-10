@@ -55,7 +55,7 @@ export default class OrganizationWrapper extends React.Component {
       return (
         <>
           <LoadingContext.Provider value={{ setLoading: this.setLoading, getLoading: () => loading }} >
-            <div className={`owisp-app-container ${loading ? 'no-scroll' : ''}`}>
+            <div className={`app-container ${loading ? 'no-scroll' : ''}`}>
               <Route
                 path={match.path}
                 render={({ location }) => <Header location={location} />}
@@ -169,8 +169,8 @@ export default class OrganizationWrapper extends React.Component {
               </Helmet>
             ) : null}
             {loading &&
-              <div className="owisp-full-page-loader-container">
-                <div className="owisp-loader" />
+              <div className="full-page-loader-container">
+                <div className="loader" />
               </div>
             }
           </LoadingContext.Provider>
@@ -180,7 +180,7 @@ export default class OrganizationWrapper extends React.Component {
     if (organization.exists === false) {
       return (
         <>
-          <div className="owisp-org-wrapper-not-found">
+          <div className="org-wrapper-not-found">
             <DoesNotExist />
           </div>
           <Helmet>
@@ -190,8 +190,8 @@ export default class OrganizationWrapper extends React.Component {
       );
     }
     return (
-      <div className="owisp-loader-container">
-        <div className="owisp-loader" />
+      <div className="loader-container">
+        <div className="loader" />
       </div>
     );
   }

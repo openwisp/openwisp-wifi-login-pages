@@ -20,6 +20,7 @@ describe("<DoesNotExist /> rendering", () => {
     const component = renderer.render(<DoesNotExist />);
     expect(component).toMatchSnapshot();
   });
+
   it("should render correctly custom 404 page with props", () => {
     const props = createTestProps();
     const renderer = new ShallowRenderer();

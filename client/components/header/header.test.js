@@ -73,7 +73,7 @@ describe("<Header /> rendering", () => {
     props.isAuthenticated = false;
     props.header.links = headerLinks;
     wrapper = shallow(<Header {...props} />);
-    const linkText = getLinkText(wrapper, ".owisp-header-link");
+    const linkText = getLinkText(wrapper, ".header-link");
     expect(linkText).toContain("link-1");
     expect(linkText).toContain("link-2");
     expect(linkText).not.toContain("link-3");
@@ -83,7 +83,7 @@ describe("<Header /> rendering", () => {
     props.isAuthenticated = true;
     props.header.links = headerLinks;
     wrapper = shallow(<Header {...props} />);
-    const linkText = getLinkText(wrapper, ".owisp-header-link");
+    const linkText = getLinkText(wrapper, ".header-link");
     expect(linkText).toContain("link-1");
     expect(linkText).not.toContain("link-2");
     expect(linkText).toContain("link-3");
@@ -99,26 +99,26 @@ describe("<Header /> rendering", () => {
     expect(component).toMatchSnapshot();
   });
   it("should render 2 links", () => {
-    expect(wrapper.find(".owisp-header-desktop-link")).toHaveLength(2);
+    expect(wrapper.find(".header-desktop-link")).toHaveLength(2);
   });
   it("should render 2 languages", () => {
-    expect(wrapper.find(".owisp-header-desktop-language-btn")).toHaveLength(2);
+    expect(wrapper.find(".header-desktop-language-btn")).toHaveLength(2);
   });
   it("should render english as default language", () => {
     expect(
       wrapper.find(
-        ".owisp-header-desktop-language-btn.owisp-header-language-btn-en.active",
+        ".header-desktop-language-btn.header-language-btn-en.active",
       ),
     ).toHaveLength(1);
     expect(
       wrapper.find(
-        ".owisp-header-desktop-language-btn.owisp-header-language-btn-it.active",
+        ".header-desktop-language-btn.header-language-btn-it.active",
       ),
     ).toHaveLength(0);
   });
   it("should render logo", () => {
     expect(
-      wrapper.find(".owisp-header-logo-image.owisp-header-desktop-logo-image"),
+      wrapper.find(".header-logo-image.header-desktop-logo-image"),
     ).toHaveLength(1);
   });
   it("should not render logo", () => {
@@ -131,7 +131,7 @@ describe("<Header /> rendering", () => {
     props = createTestProps(logo);
     wrapper = shallow(<Header {...props} />);
     expect(
-      wrapper.find(".owisp-header-logo-image.owisp-header-desktop-logo-image"),
+      wrapper.find(".header-logo-image.header-desktop-logo-image"),
     ).toHaveLength(0);
   });
 });
@@ -145,22 +145,22 @@ describe("<Header /> interactions", () => {
   });
   it("should call setLanguage function when 'language button' is clicked", () => {
     wrapper
-      .find(".owisp-header-language-btn-it.owisp-header-desktop-language-btn")
+      .find(".header-language-btn-it.header-desktop-language-btn")
       .simulate("click");
     expect(props.setLanguage).toHaveBeenCalledTimes(1);
     wrapper
-      .find(".owisp-header-language-btn-it.owisp-header-mobile-language-btn")
+      .find(".header-language-btn-it.header-mobile-language-btn")
       .simulate("click");
     expect(props.setLanguage).toHaveBeenCalledTimes(2);
   });
   it("should call handleHamburger function when 'hamburger button' is clicked", () => {
-    wrapper.find(".owisp-header-hamburger").simulate("click");
+    wrapper.find(".header-hamburger").simulate("click");
     expect(wrapper.state().menu).toBe(true);
   });
   it("should call handleHamburger function on Enter key press", () => {
-    wrapper.find(".owisp-header-hamburger").simulate("keyup", {keyCode: 1});
+    wrapper.find(".header-hamburger").simulate("keyup", {keyCode: 1});
     expect(wrapper.state().menu).toBe(false);
-    wrapper.find(".owisp-header-hamburger").simulate("keyup", {keyCode: 13});
+    wrapper.find(".header-hamburger").simulate("keyup", {keyCode: 13});
     expect(wrapper.state().menu).toBe(true);
   });
 });

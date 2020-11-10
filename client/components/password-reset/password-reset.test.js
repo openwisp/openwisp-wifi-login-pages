@@ -2,8 +2,6 @@
 import axios from "axios";
 import { shallow } from "enzyme";
 import React from "react";
-import { BrowserRouter as Router } from "react-router-dom";
-import renderer from "react-test-renderer";
 import { toast } from 'react-toastify';
 import PropTypes from "prop-types";
 import getConfig from "../../utils/get-config";
@@ -17,7 +15,7 @@ const createTestProps = props => {
   return {
     language: "en",
     orgSlug: "default",
-    passwordReset: defaultConfig.components.reset_form,
+    passwordReset: defaultConfig.components.password_reset_form,
     ...props,
   };
 };
@@ -25,39 +23,31 @@ const createTestProps = props => {
 describe("<PasswordReset /> rendering", () => {
   let props;
   let wrapper;
+
   beforeEach(() => {
     props = createTestProps();
     wrapper = shallow(<PasswordReset {...props} />);
   });
+
   it("should render correctly", () => {
-    props = createTestProps();
-    const component = renderer
-      .create(
-        <Router>
-          <PasswordReset {...props} />
-        </Router>,
-      )
-      .toJSON();
-    expect(component).toMatchSnapshot();
+    expect(wrapper).toMatchSnapshot();
   });
-  it("should render 1 input field", () => {
-    expect(wrapper.find(".owisp-password-reset-input")).toHaveLength(1);
+
+  it("should render 2 inputs", () => {
+    expect(wrapper.find("input")).toHaveLength(2);
+    expect(wrapper.find("input[type='email']")).toHaveLength(1);
+    expect(wrapper.find("input[type='submit']")).toHaveLength(1);
   });
 
   it("should render email field correctly", () => {
     const { email } = props.passwordReset.input_fields;
-    expect(wrapper.find(".owisp-password-reset-label-email").text()).toBe(
+    const emailInput = wrapper.find("input[type='email']");
+    expect(wrapper.find(".row.email label").text()).toBe(
       email.label.en,
     );
-    expect(
-      wrapper.find(".owisp-password-reset-input-email").prop("placeholder"),
-    ).toBe(email.placeholder.en);
-    expect(
-      wrapper.find(".owisp-password-reset-input-email").prop("title"),
-    ).toBe(email.pattern_description.en);
-    expect(wrapper.find(".owisp-password-reset-input-email").prop("type")).toBe(
-      email.type,
-    );
+    expect(emailInput.prop("placeholder")).toBe(email.placeholder.en);
+    expect(emailInput.prop("title")).toBe(email.pattern_description.en);
+    expect(emailInput.prop("type")).toBe(email.type);
   });
 });
 
@@ -66,6 +56,7 @@ describe("<PasswordReset /> interactions", () => {
   let wrapper;
   let originalError;
   let lastConsoleOutuput;
+
   beforeEach(() => {
     originalError = console.error;
     lastConsoleOutuput = null;
@@ -79,12 +70,14 @@ describe("<PasswordReset /> interactions", () => {
     };
     wrapper = shallow(<PasswordReset {...props} />, { context: loadingContextValue });
   });
+
   afterEach(() => {
     console.error = originalError;
   });
+
   it("should change state values when handleChange function is invoked", () => {
     wrapper
-      .find("#owisp-password-reset-email")
+      .find("input[type='email']")
       .simulate("change", { target: { value: "test@test.com", name: "email" } });
     expect(wrapper.state("email")).toEqual("test@test.com");
   });
@@ -109,10 +102,8 @@ describe("<PasswordReset /> interactions", () => {
       .handleSubmit({ preventDefault: () => { } })
       .then(() => {
         expect(wrapper.instance().state.errors.email).toEqual("errors");
-        expect(wrapper.find(".owisp-password-reset-input.error")).toHaveLength(
-          1,
-        );
-        expect(wrapper.find(".owisp-password-reset-error")).toHaveLength(1);
+        expect(wrapper.find("div.error")).toHaveLength(1);
+        expect(wrapper.find("input.error")).toHaveLength(1);
         expect(lastConsoleOutuput).not.toBe(null);
         expect(spyToastError.mock.calls.length).toBe(1);
         expect(spyToastSuccess.mock.calls.length).toBe(0);
@@ -139,12 +130,8 @@ describe("<PasswordReset /> interactions", () => {
           .then(() => {
             expect(wrapper.instance().state.errors).toEqual({});
             expect(wrapper.instance().state.success).toBe(true);
-            expect(
-              wrapper.find(".owisp-password-reset-input.error"),
-            ).toHaveLength(0);
-            expect(wrapper.find(".owisp-password-reset-success")).toHaveLength(
-              1,
-            );
+            expect(wrapper.find(".error")).toHaveLength(0);
+            expect(wrapper.find(".success")).toHaveLength(1);
             expect(lastConsoleOutuput).toBe(null);
             expect(spyToastError.mock.calls.length).toBe(2);
             expect(spyToastSuccess.mock.calls.length).toBe(1);

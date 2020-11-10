@@ -1,30 +1,11 @@
-.owisp-contact-container {
-  background: #eee;
-  padding: 30px;
-  color: #000;
-  border-radius: 2px;
-  width: 100%;
-  box-sizing: border-box;
-  font-weight: bold;
-  line-height: 25px;
-  font-size: 14px;
-}
-.owisp-contact-row {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  margin-bottom: 10px;
-}
-.owisp-contact-label {
+.contact { font-size: 15px }
+.contact .label {
   margin-right: 4px;
 }
-.owisp-contact-text {
-  color: #000;
+.contact .row:first-child {
+  margin-top: 0
 }
-.owisp-contact-text:hover {
-  text-decoration: none;
-}
-.owisp-contact-links {
+.contact-links {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -32,17 +13,14 @@
   width: 100%;
   margin-top: 15px;
 }
-.owisp-contact-link {
+.contact-links .link {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   color: #ffffff;
 }
-.owisp-contact-link:hover {
-  text-decoration: none;
-}
-.owisp-contact-image {
+.contact-image {
   width: 58px;
   height: auto;
   margin: 0px 15px 0 0;

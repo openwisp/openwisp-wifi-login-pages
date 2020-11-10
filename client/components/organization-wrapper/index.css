@@ -1,4 +1,4 @@
-.owisp-app-container {
+.app-container {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -7,14 +7,14 @@
   min-height: 100vh;
   min-width: min-content;
 }
-.owisp-app-container.no-scroll {
+.app-container.no-scroll {
   height: 100vh;
   overflow: hidden;
 }
-.owisp-middle {
+.middle {
   flex-grow: 1;
 }
-.owisp-loader-container {
+.loader-container {
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -22,7 +22,7 @@
   justify-content: center;
   align-items: center;
 }
-.owisp-full-page-loader-container {
+.full-page-loader-container {
   position: fixed;
   top: 0;
   left: 0;
@@ -34,7 +34,7 @@
   align-items: center;
   background: rgba(255, 255, 255, 1);
 }
-.owisp-loader {
+.loader {
   border: 8px solid #f3f3f3;
   border-top: 8px solid #2b3a42;
   border-radius: 50%;
@@ -42,7 +42,7 @@
   height: 50px;
   animation: spin 0.8s linear infinite;
 }
-.owisp-org-wrapper-not-found {
+.org-wrapper-not-found {
   display: flex;
   flex-direction: column;
   height: 100vh;

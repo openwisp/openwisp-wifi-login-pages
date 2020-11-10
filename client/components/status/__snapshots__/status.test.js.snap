@@ -3,56 +3,52 @@
 exports[`<Status /> rendering should render correctly 1`] = `
 <React.Fragment>
   <div
-    className="owisp-status-container"
+    className="container content"
+    id="status"
   >
     <div
-      className="owisp-status-inner"
+      className="inner"
     >
       <div
-        className="owisp-status-content-div"
+        className="main-column"
       >
-        <div
-          className="owisp-status-content-line"
-        >
+        <p>
           WiFi Login Successful!
-        </div>
-        <div
-          className="owisp-status-content-line"
-        >
+        </p>
+        <p>
           You can now use the internet.
+        </p>
+        <p>
+          You may leave this page open in case you want to log out.
+        </p>
+        <div
+          className="links row"
+        >
+          <Link
+            className="button full status-link"
+            to="/default/change-password/"
+          >
+            Change your password
+          </Link>
         </div>
         <div
-          className="owisp-status-content-line"
+          className="row logout"
         >
-          You may leave this page open in case you want to log out.
-        </div>
-        <Link
-          className="owisp-status-link"
-          to="/default/change-password/"
-        >
-          Change your password
-        </Link>
-        <React.Fragment>
           <input
-            className="owisp-status-btn owisp-status-logout-btn owisp-btn-primary "
-            id="owisp-status-logout-btn"
+            className="button full"
             onClick={[Function]}
             type="button"
             value="Logout"
           />
-        </React.Fragment>
+        </div>
       </div>
-      <div
-        className="owisp-status-contact-div"
-      >
-        <Memo(Connect(Contact)) />
-      </div>
+      <Memo(Connect(Contact)) />
     </div>
   </div>
   <React.Fragment>
     <form
       action="http://localhost/"
-      className="owisp-auth-hidden"
+      className="hidden"
       id="cp-login-form"
       method="post"
       target="owisp-auth-iframe"
@@ -89,7 +85,7 @@ exports[`<Status /> rendering should render correctly 1`] = `
       />
     </form>
     <iframe
-      className="owisp-auth-hidden"
+      className="hidden"
       name="owisp-auth-iframe"
       onLoad={[Function]}
       title="owisp-auth-iframe"
@@ -98,7 +94,7 @@ exports[`<Status /> rendering should render correctly 1`] = `
   <React.Fragment>
     <form
       action="http://localhost:8081"
-      className="owisp-auth-hidden"
+      className="hidden"
       id="cp-logout-form"
       method="post"
       target="owisp-auth-logout-iframe"
@@ -109,9 +105,10 @@ exports[`<Status /> rendering should render correctly 1`] = `
         type="hidden"
         value=""
       />
+      0
     </form>
     <iframe
-      className="owisp-auth-hidden"
+      className="hidden"
       name="owisp-auth-logout-iframe"
       onLoad={[Function]}
       title="owisp-auth-iframe"

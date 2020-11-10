@@ -129,10 +129,10 @@ describe("Change Phone Number: standard flow", () => {
 
     const component = wrapper.find(MobilePhoneChange);
     expect(component.instance().state.phone_number).toBe("+393660011222");
-    expect(component.find("form.owisp-phone-number-change-form")).toHaveLength(1);
-    expect(component.exists("#owisp-phone-number-change-phone-number")).toBe(true);
-    expect(component.exists("#owisp-phone-number-change-submit-btn")).toBe(true);
-    expect(component.exists("#owisp-phone-number-change-cancel-btn")).toBe(true);
+    expect(component.find("form")).toHaveLength(1);
+    expect(component.exists("#phone-number")).toBe(true);
+    expect(component.exists("form input[type='submit']")).toBe(true);
+    expect(component.exists(".row .button")).toBe(true);
   });
 
   it("should change phone number successfully", async () => {
@@ -149,11 +149,11 @@ describe("Change Phone Number: standard flow", () => {
 
     wrapper = await mountComponent(props);
     const component = wrapper.find(MobilePhoneChange);
-    component.find("#owisp-phone-number-change-phone-number")
+    component.find("#phone-number")
              .simulate("change", {target: {value: "+393660011333", name: "phone_number"}});
     expect(component.instance().state.phone_number).toBe("+393660011333");
 
-    wrapper.find("form.owisp-phone-number-change-form").simulate("submit", event);
+    wrapper.find("form").simulate("submit", event);
     await tick();
     expect(event.preventDefault).toHaveBeenCalled();
     expect(MobilePhoneChange.prototype.handleSubmit).toHaveBeenCalled();
@@ -185,7 +185,7 @@ describe("Change Phone Number: standard flow", () => {
 
     wrapper = await mountComponent(props);
     const component = wrapper.find(MobilePhoneChange);
-    wrapper.find("form.owisp-phone-number-change-form").simulate("submit", event);
+    wrapper.find("form").simulate("submit", event);
     await tick();
     expect(toast.info).not.toHaveBeenCalled();
     expect(historyMock.push).not.toHaveBeenCalled();
@@ -215,7 +215,7 @@ describe("Change Phone Number: standard flow", () => {
 
     wrapper = await mountComponent(props);
     const component = wrapper.find(MobilePhoneChange);
-    wrapper.find("form.owisp-phone-number-change-form").simulate("submit", event);
+    wrapper.find("form").simulate("submit", event);
     await tick();
     expect(toast.info).not.toHaveBeenCalled();
     expect(historyMock.push).not.toHaveBeenCalled();
@@ -240,7 +240,7 @@ describe("Change Phone Number: standard flow", () => {
 
     wrapper = await mountComponent(props);
     const component = wrapper.find(MobilePhoneChange);
-    const cancelButton = component.find("#owisp-phone-number-change-cancel-btn");
+    const cancelButton = component.find(".cancel .button");
     cancelButton.simulate("click");
     expect(toast.info).not.toHaveBeenCalled();
     expect(historyMock.push).not.toHaveBeenCalled();

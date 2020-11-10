@@ -73,15 +73,15 @@ describe("<Registration /> interactions", () => {
   });
   it("should change state values when handleChange function is invoked", () => {
     wrapper
-      .find("#owisp-registration-email")
+      .find(".row.email input")
       .simulate("change", { target: { value: "test email", name: "email" } });
     expect(wrapper.state("email")).toEqual("test email");
     wrapper
-      .find("#owisp-registration-password")
+      .find(".row.password input")
       .simulate("change", { target: { value: "testpassword", name: "password1" } });
     expect(wrapper.state("password1")).toEqual("testpassword");
     wrapper
-      .find("#owisp-registration-password-confirm")
+      .find(".row.password-confirm input")
       .simulate("change", { target: { value: "testpassword", name: "password2" } });
     expect(wrapper.state("password2")).toEqual("testpassword");
   });
@@ -130,7 +130,10 @@ describe("<Registration /> interactions", () => {
     const spyToast = jest.spyOn(toast, 'error');
     wrapper.instance().handleSubmit(event);
     expect(
-      wrapper.update().find(".owisp-registration-error-confirm"),
+      wrapper.update().find(".row.password-confirm div.error"),
+    ).toHaveLength(1);
+    expect(
+      wrapper.update().find(".row.password-confirm input.error"),
     ).toHaveLength(1);
     wrapper.setState({
       password1: "password",
@@ -140,8 +143,7 @@ describe("<Registration /> interactions", () => {
       registration: {
         ...props.registration,
         input_fields: {
-          ...props.registration.input_fields,
-          password_confirm: null,
+          ...props.registration.input_fields
         },
       },
     });
@@ -154,7 +156,7 @@ describe("<Registration /> interactions", () => {
           password1: "password1 error",
           password2: "",
         });
-        expect(wrapper.find(".owisp-registration-error")).toHaveLength(2);
+        expect(wrapper.find("div.error")).toHaveLength(2);
         expect(
           wrapper.instance().props.authenticate.mock.calls.length,
         ).toBe(0);
@@ -196,7 +198,7 @@ describe("<Registration /> interactions", () => {
             expect(wrapper.instance().state.errors).toEqual({});
             expect(wrapper.instance().state.success).toEqual(true);
             expect(
-              wrapper.find(".owisp-registration-form.success"),
+              wrapper.find(".success"),
             ).toHaveLength(1);
             expect(
               wrapper.instance().props.authenticate.mock.calls.length,
@@ -269,7 +271,7 @@ describe("Registration and Mobile Phone Verification interactions", () => {
   it("should process successfully", async () => {
     wrapper = await mountComponent(props);
     expect(wrapper.exists(PhoneInput)).toBe(true);
-    expect(wrapper.find("form.owisp-registration-form")).toHaveLength(1);
+    expect(wrapper.find("form")).toHaveLength(1);
     const component = wrapper.find(Registration).instance();
     const handleSubmit = jest.spyOn(component, "handleSubmit");
 
@@ -289,7 +291,7 @@ describe("Registration and Mobile Phone Verification interactions", () => {
            .simulate("change", {target: {value: "tester123", name: "password1"}});
     wrapper.find("input[name='password2']")
            .simulate("change", {target: {value: "tester123", name: "password2"}});
-    wrapper.find("form.owisp-registration-form").simulate("submit", event);
+    wrapper.find("form").simulate("submit", event);
     await tick();
     expect(wrapper.find(Registration).instance().state.errors).toEqual({});
     expect(handleSubmit).toHaveBeenCalled();

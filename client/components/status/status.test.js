@@ -7,18 +7,13 @@ import {Cookies} from "react-cookie";
 import ShallowRenderer from "react-test-renderer/shallow";
 import getConfig from "../../utils/get-config";
 import logError from "../../utils/log-error";
+import tick from "../../utils/tick";
 import Status from "./status";
 
 jest.mock("axios");
 jest.mock("../../utils/get-config");
 jest.mock("../../utils/log-error");
 logError.mockImplementation(jest.fn());
-
-function tick() {
-  return new Promise(resolve => {
-    setTimeout(resolve, 0);
-  });
-}
 
 const defaultConfig = getConfig("default");
 const links = [
@@ -37,13 +32,15 @@ const links = [
     authenticated: true,
   },
 ];
-const getLinkText = (wrapper, text) => {
+
+const getLinkText = (wrapper, selector) => {
   const texts = [];
-  wrapper.find(text).forEach( node => {
+  wrapper.find(selector).forEach( node => {
     texts.push(node.text());
   });
   return texts;
 };
+
 const createTestProps = props => {
   return {
     language: "en",
@@ -81,7 +78,7 @@ describe("<Status /> rendering", () => {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: true,
     });
-    const linkText = getLinkText(wrapper, ".owisp-status-link");
+    const linkText = getLinkText(wrapper, ".status-link");
     expect(linkText).toContain("link-1");
     expect(linkText).toContain("link-2");
     expect(linkText).not.toContain("link-3");
@@ -95,7 +92,7 @@ describe("<Status /> rendering", () => {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: true,
     });
-    const linkText = getLinkText(wrapper, ".owisp-status-link");
+    const linkText = getLinkText(wrapper, ".status-link");
     expect(linkText).toContain("link-1");
     expect(linkText).not.toContain("link-2");
     expect(linkText).toContain("link-3");
@@ -142,10 +139,10 @@ describe("<Status /> interactions", () => {
       disableLifecycleMethods: true,
     });
     jest.spyOn(wrapper.instance(), "handleLogout");
-    wrapper.find("#owisp-status-logout-btn").simulate("click", {});
+    wrapper.find(".logout input.button").simulate("click", {});
     await tick();
     expect(wrapper.instance().props.logout).toHaveBeenCalled();
-    wrapper.find("#owisp-status-logout-btn").simulate("click", {});
+    wrapper.find(".logout input.button").simulate("click", {});
     await tick();
     expect(wrapper.instance().state.sessions.length).toBe(1);
     expect(wrapper.instance().props.logout).toHaveBeenCalled();

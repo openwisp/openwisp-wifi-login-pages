@@ -2,17 +2,17 @@
 
 exports[`<Footer /> rendering should render correctly 1`] = `
 <div
-  className="owisp-footer-container"
+  className="footer-container"
 >
   <div
-    className="owisp-footer-row-1"
+    className="footer-row-1"
   >
     <div
-      className="owisp-footer-row-1-inner"
+      className="footer-row-1-inner"
     >
       <a
-        className="owisp-footer-link
-                    owisp-footer-link-1"
+        className="footer-link
+                  footer-link-1"
         href="https://link-1.com"
         rel="noreferrer noopener"
         target="_blank"
@@ -22,10 +22,10 @@ exports[`<Footer /> rendering should render correctly 1`] = `
     </div>
   </div>
   <div
-    className="owisp-footer-row-2"
+    className="footer-row-2"
   >
     <div
-      className="owisp-footer-row-2-inner"
+      className="footer-row-2-inner"
     />
   </div>
 </div>

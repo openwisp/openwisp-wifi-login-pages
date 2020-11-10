@@ -7,6 +7,7 @@ import ShallowRenderer from "react-test-renderer/shallow";
 import {passwordChangeError, passwordConfirmError} from "../../constants";
 import getConfig from "../../utils/get-config";
 import logError from "../../utils/log-error";
+import tick from "../../utils/tick";
 import PasswordChange from "./password-change";
 
 jest.mock("axios");
@@ -15,23 +16,18 @@ logError.mockImplementation(jest.fn());
 
 const defaultConfig = getConfig("default");
 
-function tick() {
-  return new Promise(resolve => {
-    setTimeout(resolve, 0);
-  });
-}
-
 const createTestProps = props => {
   return {
     language: "en",
     orgSlug: "default",
-    passwordChange: defaultConfig.components.password_change_page,
+    passwordChange: defaultConfig.components.password_change_form,
     ...props,
   };
 };
 
 describe("<PasswordChange /> rendering", () => {
   let props;
+
   it("should render correctly", () => {
     props = createTestProps();
     const renderer = new ShallowRenderer();
@@ -44,6 +40,7 @@ describe("<PasswordChange /> interactions", () => {
   let props;
   // eslint-disable-next-line no-unused-vars
   let wrapper;
+
   beforeEach(() => {
     props = createTestProps();
     PasswordChange.contextTypes = {
@@ -54,6 +51,7 @@ describe("<PasswordChange /> interactions", () => {
       context: {setLoading: jest.fn(), getLoading: jest.fn()},
     });
   });
+
   it("test handleChange method", () => {
     const e = {
       target: {
@@ -64,6 +62,7 @@ describe("<PasswordChange /> interactions", () => {
     wrapper.instance().handleChange(e);
     expect(wrapper.instance().state.newPassword1).toBe("123456");
   });
+  
   it("test handleSubmit method", async () => {
     axios
       .mockImplementationOnce(() => {

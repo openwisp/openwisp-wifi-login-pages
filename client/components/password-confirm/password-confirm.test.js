@@ -5,6 +5,7 @@ import { shallow } from "enzyme";
 import React from "react";
 import PropTypes from "prop-types";
 import { BrowserRouter as Router } from "react-router-dom";
+import { Provider } from 'react-redux';
 import renderer from "react-test-renderer";
 import { toast } from 'react-toastify';
 import { loadingContextValue } from "../../utils/loading-context";
@@ -17,7 +18,8 @@ const createTestProps = props => {
   return {
     language: "en",
     orgSlug: "default",
-    passwordConfirm: defaultConfig.components.confirm_form,
+    configuration: defaultConfig,
+    passwordConfirm: defaultConfig.components.password_reset_confirm_form,
     match: {
       params: {
         uid: "testUid",
@@ -31,56 +33,63 @@ const createTestProps = props => {
 describe("<PasswordConfirm /> rendering", () => {
   let props;
   let wrapper;
+
   beforeEach(() => {
     props = createTestProps();
     wrapper = shallow(<PasswordConfirm {...props} />);
   });
+
   it("should render correctly", () => {
     props = createTestProps();
+    const mockedStore = {
+      subscribe: () => {},
+      dispatch: () => {},
+      // needed to render <Contact/>
+      getState: () => {
+        return {
+          organization: {
+            configuration: props.configuration,
+          },
+          language: props.language
+        };
+      }
+    };
     const component = renderer
       .create(
-        <Router>
-          <PasswordConfirm {...props} />
-        </Router>,
+        <Provider store={mockedStore}>
+          <Router>
+            <PasswordConfirm {...props} />
+          </Router>
+        </Provider>,
       )
       .toJSON();
     expect(component).toMatchSnapshot();
   });
+
   it("should render 2 input fields", () => {
-    expect(wrapper.find(".owisp-password-confirm-input")).toHaveLength(2);
+    expect(wrapper.find(".input")).toHaveLength(2);
   });
 
   it("should render password field correctly", () => {
     const { password } = props.passwordConfirm.input_fields;
-    expect(wrapper.find(".owisp-password-confirm-label-password").text()).toBe(
+    expect(wrapper.find(".row.password label").text()).toBe(
       password.label.en,
     );
-    expect(
-      wrapper
-        .find(".owisp-password-confirm-input-password")
-        .prop("placeholder"),
-    ).toBe(password.placeholder.en);
-    expect(
-      wrapper.find(".owisp-password-confirm-input-password").prop("title"),
-    ).toBe(password.pattern_description.en);
-    expect(
-      wrapper.find(".owisp-password-confirm-input-password").prop("type"),
-    ).toBe(password.type);
+    const passwordInput = wrapper.find(".row.password input");
+    expect(passwordInput.prop("placeholder")).toBe(password.placeholder.en);
+    expect(passwordInput.prop("title")).toBe(password.pattern_description.en);
+    expect(passwordInput.prop("type")).toBe(password.type);
   });
+
   it("should render password confirm field correctly", () => {
-    const { password_confirm } = props.passwordConfirm.input_fields;
-    expect(wrapper.find(".owisp-password-confirm-label-confirm").text()).toBe(
+    const { password, password_confirm } = props.passwordConfirm.input_fields;
+    expect(wrapper.find(".row.password-confirm label").text()).toBe(
       password_confirm.label.en,
     );
-    expect(
-      wrapper.find(".owisp-password-confirm-input-confirm").prop("placeholder"),
-    ).toBe(password_confirm.placeholder.en);
-    expect(
-      wrapper.find(".owisp-password-confirm-input-confirm").prop("title"),
-    ).toBe(password_confirm.pattern_description.en);
-    expect(
-      wrapper.find(".owisp-password-confirm-input-confirm").prop("type"),
-    ).toBe(password_confirm.type);
+    const confirmInput = wrapper.find(".row.password-confirm input");
+    expect(confirmInput.prop("placeholder")).toBe(password_confirm.placeholder.en);
+    expect(confirmInput.prop("title")).toBe(password.pattern_description.en);
+    expect(confirmInput.prop("type")).toBe(password_confirm.type);
   });
 });
 
@@ -89,6 +98,7 @@ describe("<PasswordConfirm /> interactions", () => {
   let wrapper;
   let originalError;
   let lastConsoleOutuput;
+
   beforeEach(() => {
     originalError = console.error;
     lastConsoleOutuput = null;
@@ -102,16 +112,18 @@ describe("<PasswordConfirm /> interactions", () => {
     props = createTestProps();
     wrapper = shallow(<PasswordConfirm {...props} />, { context: loadingContextValue });
   });
+
   afterEach(() => {
     console.error = originalError;
   });
+
   it("should change state values when handleChange function is invoked", () => {
     wrapper
-      .find("#owisp-password-confirm-password")
+      .find(".password input")
       .simulate("change", { target: { value: "123456", name: "newPassword1" } });
     expect(wrapper.state("newPassword1")).toEqual("123456");
     wrapper
-      .find("#owisp-password-confirm-password-confirm")
+      .find(".password-confirm input")
       .simulate("change", { target: { value: "123456", name: "newPassword2" } });
     expect(wrapper.state("newPassword2")).toEqual("123456");
   });
@@ -135,7 +147,7 @@ describe("<PasswordConfirm /> interactions", () => {
     });
     wrapper.instance().handleSubmit({ preventDefault: () => { } });
     expect(
-      wrapper.update().find(".owisp-password-confirm-error-confirm"),
+      wrapper.update().find(".password-confirm div.error"),
     ).toHaveLength(1);
     wrapper.setState({
       newPassword1: "password",
@@ -149,7 +161,7 @@ describe("<PasswordConfirm /> interactions", () => {
       .then(() => {
         expect(wrapper.instance().state.errors.nonField).toEqual("errors");
         expect(
-          wrapper.find(".owisp-password-confirm-error-non-field"),
+          wrapper.find(".error.non-field"),
         ).toHaveLength(1);
         expect(lastConsoleOutuput).not.toBe(null);
         expect(spyToastError.mock.calls.length).toBe(1);
@@ -178,10 +190,10 @@ describe("<PasswordConfirm /> interactions", () => {
             expect(wrapper.instance().state.errors).toEqual({});
             expect(wrapper.instance().state.success).toBe(true);
             expect(
-              wrapper.find(".owisp-password-confirm-input.error"),
+              wrapper.find(".input.error"),
             ).toHaveLength(0);
             expect(
-              wrapper.find(".owisp-password-confirm-success"),
+              wrapper.find(".success"),
             ).toHaveLength(1);
             expect(lastConsoleOutuput).toBe(null);
             expect(spyToastError.mock.calls.length).toBe(2);

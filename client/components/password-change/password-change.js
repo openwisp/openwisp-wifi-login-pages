@@ -1,4 +1,3 @@
-import "./index.css";
 import "react-toastify/dist/ReactToastify.css";
 
 import axios from "axios";
@@ -14,8 +13,10 @@ import {
 import getErrorText from "../../utils/get-error-text";
 import getText from "../../utils/get-text";
 import history from "../../utils/history";
+import Contact from "../contact-box";
 import LoadingContext from "../../utils/loading-context";
 import logError from "../../utils/log-error";
+import handleChange from "../../utils/handle-change";
 
 export default class PasswordChange extends React.Component {
   constructor(props) {
@@ -74,141 +75,110 @@ export default class PasswordChange extends React.Component {
       });
   }
 
-  handleChange(e) {
-    this.setState({[e.target.name]: e.target.value});
+  handleChange(event) {
+    handleChange(event, this);
   }
 
   render() {
     const {language, passwordChange} = this.props;
     const {errors, newPassword1, newPassword2} = this.state;
     return (
-      <>
-        <div className="owisp-password-change-container">
-          <form
-            className="owisp-password-change-form"
-            onSubmit={this.handleSubmit}
-          >
-            <div className="owisp-password-change-form-title">
+      <div className="container content" id="password-change">
+        <div className="inner">
+          <form className="main-column" onSubmit={this.handleSubmit}>
+            <h1>
               {getText(passwordChange.title, language)}
-            </div>
-            {passwordChange.input_fields.password1 ? (
-              <>
-                <label
-                  className="owisp-password-change-label owisp-password-change-label-password"
-                  htmlFor="owisp-password-change-password"
-                >
-                  <div className="owisp-password-change-label-text">
-                    {getText(
-                      passwordChange.input_fields.password1.label,
-                      language,
-                    )}
-                  </div>
-                  <input
-                    className="owisp-password-change-input owisp-password-change-input-password"
-                    type="password"
-                    id="owisp-password-change-password"
-                    name="newPassword1"
-                    required
-                    value={newPassword1}
-                    placeholder={getText(
-                      passwordChange.input_fields.password1.placeholder,
-                      language,
-                    )}
-                    pattern={
-                      passwordChange.input_fields.password1.pattern
-                        ? passwordChange.input_fields.password1.pattern
-                        : undefined
-                    }
-                    onChange={e => this.handleChange(e)}
-                  />
-                </label>
-                {errors.newPassword1 ? (
-                  <div className="owisp-password-change-error">
-                    <span className="owisp-password-change-error-icon">!</span>
-                    <span className="owisp-password-change-error-text">
-                      {errors.newPassword1}
-                    </span>
-                  </div>
-                ) : null}
-              </>
-            ) : null}
-            {passwordChange.input_fields.password2 ? (
-              <>
-                <label
-                  className="owisp-password-change-label owisp-password-change-label-password-confirm"
-                  htmlFor="owisp-password-change-password-confirm"
-                >
-                  <div className="owisp-password-change-label-text">
-                    {getText(
-                      passwordChange.input_fields.password1.label,
-                      language,
-                    )}
-                  </div>
-                  <input
-                    className="owisp-password-change-input owisp-password-change-input-password-confirm"
-                    type="password"
-                    name="newPassword2"
-                    id="owisp-password-change-password-confirm"
-                    required
-                    value={newPassword2}
-                    placeholder={getText(
-                      passwordChange.input_fields.password2.placeholder,
-                      language,
-                    )}
-                    title={
-                      passwordChange.input_fields.password1.pattern_description
-                        ? getText(
-                            passwordChange.input_fields.password1
-                              .pattern_description,
-                            language,
-                          )
-                        : undefined
-                    }
-                    onChange={e => this.handleChange(e)}
-                  />
-                </label>
-                {errors.newPassword2 ? (
-                  <div className="owisp-password-change-error">
-                    <span className="owisp-password-change-error-icon">!</span>
-                    <span className="owisp-password-change-error-text">
-                      {errors.newPassword2}
-                    </span>
-                  </div>
-                ) : null}
-              </>
-            ) : null}
-            {errors.nonField ? (
-              <div className="owisp-password-change-error">
-                <span className="owisp-password-change-error-icon">!</span>
-                <span className="owisp-password-change-error-text">
+            </h1>
+
+            {errors.nonField && (
+              <div className="error">
+                <span className="icon">!</span>
+                <span className="text">
                   {errors.nonField}
                 </span>
               </div>
-            ) : null}
-            <input
-              type="submit"
-              className="owisp-password-change-btn owisp-password-change-btn-submit owisp-btn-primary"
-              value={getText(
-                passwordChange.buttons.submit_button.text,
-                language,
+            )}
+
+            <div className="row password">
+              <label htmlFor="password">
+                {getText(passwordChange.input_fields.password1.label, language)}
+              </label>
+
+              {errors.newPassword1 && (
+                <div className="error">
+                  <span className="icon">!</span>
+                  <span className="text">
+                    {errors.newPassword1}
+                  </span>
+                </div>
               )}
-              pattern={
-                passwordChange.input_fields.password2.pattern
-                  ? passwordChange.input_fields.password2.pattern
-                  : undefined
-              }
-              title={
-                passwordChange.input_fields.password2.pattern_description
-                  ? getText(
-                      passwordChange.input_fields.password2.pattern_description,
-                      language,
-                    )
-                  : undefined
-              }
-            />
+
+              <input
+                className="input"
+                type="password"
+                id="password"
+                name="newPassword1"
+                required
+                value={newPassword1}
+                placeholder={getText(
+                  passwordChange.input_fields.password1.placeholder,
+                  language,
+                )}
+                pattern={passwordChange.input_fields.password1.pattern}
+                title={getText(passwordChange.input_fields.password1.pattern_description)}
+                onChange={e => this.handleChange(e)}
+              />
+            </div>
+
+            <div className="row password-confirm">
+              <label htmlFor="password-confirm">
+                {getText(
+                  passwordChange.input_fields.password2.label,
+                  language,
+                )}
+              </label>
+
+              {errors.newPassword2 && (
+                <div className="error">
+                  <span className="icon">!</span>
+                  <span className="text">
+                    {errors.newPassword2}
+                  </span>
+                </div>
+              )}
+
+              <input
+                className="input"
+                type="password"
+                name="newPassword2"
+                id="password-confirm"
+                required
+                value={newPassword2}
+                placeholder={getText(
+                  passwordChange.input_fields.password2.placeholder,
+                  language,
+                )}
+                pattern={passwordChange.input_fields.password1.pattern}
+                title={getText(passwordChange.input_fields.password1.pattern_description)}
+                onChange={e => this.handleChange(e)}
+              />
+            </div>
+
+            <div className="row submit">
+              <input
+                type="submit"
+                className="button full"
+                value={getText(
+                  passwordChange.buttons.submit_button.text,
+                  language,
+                )}
+              />
+            </div>
           </form>
+
+          <Contact />
         </div>
-      </>
+      </div>
     );
   }
 }
@@ -221,16 +191,14 @@ PasswordChange.propTypes = {
     input_fields: PropTypes.shape({
       password1: PropTypes.shape({
         type: PropTypes.string.isRequired,
-        pattern: PropTypes.string,
-        pattern_description: PropTypes.object,
-        label: PropTypes.object,
+        pattern: PropTypes.string.isRequired,
+        pattern_description: PropTypes.object.isRequired,
+        label: PropTypes.object.isRequired,
         placeholder: PropTypes.object.isRequired,
       }).isRequired,
       password2: PropTypes.shape({
-        type: PropTypes.string.isRequired,
-        pattern: PropTypes.string,
-        pattern_description: PropTypes.object,
-        label: PropTypes.object,
+        type: PropTypes.string.isRequired.isRequired,
+        label: PropTypes.object.isRequired,
         placeholder: PropTypes.object.isRequired,
       }).isRequired,
     }),

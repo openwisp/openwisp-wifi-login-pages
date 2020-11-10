@@ -3,11 +3,11 @@ import {connect} from "react-redux";
 import Component from "./password-change";
 
 const mapStateToProps = state => {
+  const conf = state.organization.configuration;
   return {
-    passwordChange:
-      state.organization.configuration.components.password_change_page,
+    passwordChange: conf.components.password_change_form,
+    orgSlug: conf.slug,
     language: state.language,
-    orgSlug: state.organization.configuration.slug,
   };
 };
 export default connect(

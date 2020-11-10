@@ -12,36 +12,34 @@ export default class Footer extends React.Component {
     const {links} = footer;
     const secondaryText = footer.secondary_text;
     return (
-      <>
-        <div className="owisp-footer-container">
-          <div className="owisp-footer-row-1">
-            <div className="owisp-footer-row-1-inner">
-              {links.map((link, index) => {
-                if (shouldLinkBeShown(link, isAuthenticated)) {
-                  return (
-                    <a
-                      href={link.url}
-                      className={`owisp-footer-link
-                    owisp-footer-link-${index + 1}`}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      key={link.url}
-                    >
-                      {getText(link.text, language)}
-                    </a>
-                  );
-                }
-                return null;
-              })}
-            </div>
-          </div>
-          <div className="owisp-footer-row-2">
-            <div className="owisp-footer-row-2-inner">
-              {getText(secondaryText, language)}
-            </div>
+      <div className="footer-container">
+        <div className="footer-row-1">
+          <div className="footer-row-1-inner">
+            {links.map((link, index) => {
+              if (shouldLinkBeShown(link, isAuthenticated)) {
+                return (
+                  <a
+                    href={link.url}
+                    className={`footer-link
+                  footer-link-${index + 1}`}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    key={link.url}
+                  >
+                    {getText(link.text, language)}
+                  </a>
+                );
+              }
+              return null;
+            })}
           </div>
         </div>
-      </>
+        <div className="footer-row-2">
+          <div className="footer-row-2-inner">
+            {getText(secondaryText, language)}
+          </div>
+        </div>
+      </div>
     );
   }
 }

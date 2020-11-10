@@ -71,8 +71,12 @@ client:
           url: "/{{slug}}/registration"
           authenticated: false
         - text:
+            en: "Status"
+          url: "/{{slug}}/status"
+          authenticated: true
+        - text:
             en: "Change password"
-          url: "/default/change-password"
+          url: "/{{slug}}/change-password"
           authenticated: true
 
     footer:
@@ -123,18 +127,14 @@ client:
             en: "password"
         password_confirm:
           type: "password"
-          pattern: null
-          pattern_description:
-            en: null
           placeholder:
             en: "confirm password"
           label:
             en: "confirm"
       buttons:
         register:
-          label: null
           text:
-            en: "sign up"
+            en: "Sign up"
       additional_info_text:
         en: "By signing up, you accept the {terms_and_conditions} and the {privacy_policy} of this WiFi service. "
       links:
@@ -189,11 +189,11 @@ client:
           text:
             en: "Cancel"
 
-    reset_form:
+    password_reset_form:
       heading:
         en: "reset your password"
       additional_text:
-        en: "Forgotten your password? Enter your e-mail address below, and we'll send you an e-mail allowing you to reset it."
+        en: "Have you forgot your password? Enter your e-mail address below, and we'll send you an e-mail which will allow you to reset it."
       input_fields:
         email:
           type: "email"
@@ -206,18 +206,18 @@ client:
             en: "email"
       buttons:
         send:
-          en: "Reset My Password"
+          en: "Reset password"
       contact_text:
         en: "Please contact us if you have any trouble resetting your password."
       login_page_link:
         text:
-          en: "Take me Back to Sign In"
+          en: "Take me back to sign in"
 
-    confirm_form:
+    password_reset_confirm_form:
       heading:
-        en: "reset your password"
+        en: "Reset your password"
       additional_text:
-        en: "please enter your new password"
+        en: "Please enter your new password below."
       input_fields:
         password:
           type: "password"
@@ -230,21 +230,18 @@ client:
             en: "password"
         password_confirm:
           type: "password"
-          pattern: null
-          pattern_description:
-            en: null
           placeholder:
             en: "confirm password"
           label:
             en: "confirm"
       buttons:
         submit:
-          en: "change password"
+          en: "Change password"
       contact_text:
         en: "Please contact us if you have any trouble resetting your password."
       login_page_link:
         text:
-          en: "Take me Back to Sign In"
+          en: "Take me back to sign in"
 
     contact_page:
       email:
@@ -284,7 +281,6 @@ client:
           url: "/{orgSlug}/change-password/"
       buttons:
         logout:
-          label: null
           text:
             en: "Logout"
 
@@ -294,29 +290,29 @@ client:
 {{#if assets_confirm}}
           - text:
               en: "Login with Facebook"
-            url: "#"
+            url: "#facebook"
             icon: "facebook.svg"
           - text:
               en: "Login with google"
             icon: "google.svg"
-            url: "#"
+            url: "#google"
           - text:
               en: "Login with Twitter"
             icon: "twitter.svg"
-            url: "#"
+            url: "#twitter"
 {{else}}
           - text:
               en: "Login with Facebook"
-            url: "#"
+            url: "#facebook"
             icon: null
           - text:
               en: "Login with google"
             icon: null
-            url: "#"
+            url: "#google"
           - text:
               en: "Login with Twitter"
             icon: null
-            url: "#"
+            url: "#twitter"
 {{/if}}
       input_fields:
         email:
@@ -341,7 +337,6 @@ client:
         en: "By logging in, you accept the {terms_and_conditions} and the {privacy_policy} of this WiFi service. "
       buttons:
         login:
-          label: null
           text:
             en: "Login"
         register:
@@ -353,7 +348,7 @@ client:
         forget_password:
           en: "Forgot your password?"
 
-    password_change_page:
+    password_change_form:
       title:
         en: "Change your password"
       input_fields:
@@ -361,23 +356,19 @@ client:
           type: "password"
           pattern: ".{6,}"
           pattern_description:
-            en: "New password must be a minimum of 6 characters"
+            en: "The new password must be a minimum of 6 characters"
           label:
-            en: "New Password"
+            en: "new password"
           placeholder:
-            en: "Your new password"
+            en: "Enter your new password"
         password2:
           type: "password"
-          pattern: ".{6,}"
-          pattern_description:
-            en: "New password must be a minimum of 6 characters"
           label:
-            en: "Confirm new password"
+            en: "confirm new password"
           placeholder:
-            en: "Re-enter new password"
+            en: "Confirm your new password"
       buttons:
         submit_button:
-          label: null
           text:
             en: "Change Password"
 
