@@ -15,7 +15,7 @@ branches:
     - master
 
 before_script:
-  - pip install openwisp-utils
+  - pip install openwisp-utils[qa]
 
 script:
   - ./run-qa-checks
