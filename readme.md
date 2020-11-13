@@ -86,6 +86,7 @@ The above command will prompt us to fill in some properties. Below is a table wi
 | secret_key        | Required. Token of the organization.              |
 | login action url  | Required. Captive portal login action url         |
 | logout action url | Required. Captive portal logout action url        |
+| radius url        | Required. URL to openwisp-radius.                 |
 
 Note: On a development environment where the `captive portal login/logout action url` might not be available, we could use `http://localhost` as a dummy url.
 
