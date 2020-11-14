@@ -12,6 +12,8 @@
 </p>
 <p align="center">
   <img src="https://github.com/openwisp/openwisp-wifi-login-pages/raw/master/docs/sign-up-mobile.png" alt="sign-up">
+</p>
+<p align="center">
   <img src="https://github.com/openwisp/openwisp-wifi-login-pages/raw/master/docs/verify-mobile-phone-mobile.png" alt="verify mobile phone number">
 </p>
 
