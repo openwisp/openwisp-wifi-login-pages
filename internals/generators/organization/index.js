@@ -58,29 +58,31 @@ module.exports = {
     {
       type: "input",
       name: "login_action_url",
-      message: "What is the captive portal login action url?",
+      default: "http://127.0.0.1:8080/login",
+      message: "What is the captive portal login action URL?",
       validate: value => {
         if (/.+/.test(value)) {
           return true;
         }
-        return "The captive portal login action url required";
+        return "The captive portal login action URL is required";
       },
     },
     {
       type: "input",
       name: "logout_action_url",
-      message: "What is the captive portal logout action url?",
+      default: "http://127.0.0.1:8080/logout",
+      message: "What is the captive portal logout action URL?",
       validate: value => {
         if (/.+/.test(value)) {
           return true;
         }
-        return "The captive portal logout action url required";
+        return "The captive portal logout action URL is required";
       },
     },
     {
       type: "input",
       name: "openwisp_radius_url",
-      message: "What is the URL of openwisp-radius?",
+      message: "What is the URL of OpenWISP RADIUS?",
       default: "http://127.0.0.1:8000",
     },
     {
