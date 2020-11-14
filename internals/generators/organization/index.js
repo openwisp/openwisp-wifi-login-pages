@@ -78,6 +78,12 @@ module.exports = {
       },
     },
     {
+      type: "input",
+      name: "openwisp_radius_url",
+      message: "What is the URL of openwisp-radius?",
+      default: "http://127.0.0.1:8000",
+    },
+    {
       type: "confirm",
       name: "assets_confirm",
       message: "Do you want to copy the default assets for your organization?",

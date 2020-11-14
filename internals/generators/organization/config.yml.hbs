@@ -6,8 +6,8 @@ settings:
 
 # configuration variables for the server app
 server:
-  # put the URL of openwisp-radius here
-  host: "http://127.0.0.1:8000"
+  # URL to openwisp-radius
+  host: "{{openwisp_radius_url}}"
   proxy_urls:
     password_change: "/api/v1/{org_slug}/account/password/change"
     password_reset: "/api/v1/{org_slug}/account/password/reset"
