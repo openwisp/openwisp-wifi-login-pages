@@ -7,9 +7,44 @@
 [![Dependencies Status](https://david-dm.org/openwisp/openwisp-wifi-login-pages/status.svg)](https://david-dm.org/openwisp/openwisp-wifi-login-pages)
 [![devDependencies Status](https://david-dm.org/openwisp/openwisp-wifi-login-pages/dev-status.svg)](https://david-dm.org/openwisp/openwisp-wifi-login-pages?type=dev)
 
-Openwisp wifi login pages app to allow users to authenticate, sign up and know more about the WiFi service they are using.
+<p align="center">
+  <img src="https://github.com/openwisp/openwisp-wifi-login-pages/raw/master/docs/login-desktop.png" alt="login">
+</p>
+<p align="center">
+  <img src="https://github.com/openwisp/openwisp-wifi-login-pages/raw/master/docs/sign-up-mobile.png" alt="sign-up">
+  <img src="https://github.com/openwisp/openwisp-wifi-login-pages/raw/master/docs/verify-mobile-phone-mobile.png" alt="verify mobile phone number">
+</p>
 
-**Want to help OpenWISP?** [Find out how to help us grow here](http://openwisp.io/docs/general/help-us.html)
+**No more ugly and fragmented User Experience for public/private WiFi services!**
+
+OpenWISP WiFi login pages provides unified and consistent user experience for
+public/private WiFi services.
+
+In short, this app replaces the classic captive/login page of a WiFi service by integrating
+the [OpenWISP Radius API](https://openwisp-radius.readthedocs.io/) to provide the following features:
+
+- Mobile first design (responsive UI)
+- Sign up
+- Optional support for mobile phone verification:
+  verify phone number by inserting token sent via SMS, resend the SMS token
+- Login to the wifi service (by getting a radius user token from OpenWISP Radius and
+  sending a POST to the captive portal login URL behind the scenes)
+- Session status information
+- Logout from the wifi service (by sending a POST to the captive portal logout URL behind the scenes)
+- Change password
+- Reset password (password forgot)
+- Optional social login buttons (facebook, google, twitter)
+- Contact box allowing to show the support email and/or phone number, as well as
+  additional links specified via configuration
+- Navigation menu (header and footer) with possibility of specifying if links should be shown to every user or only
+  authenticated or unauthenticated users
+- Support for multiple organizations with possibility of customizing the theme via CSS
+  for each organization
+- Support for multiple languages
+- Possibility to change any text used in the pages
+- Configurable Terms of Services and Privacy Policy for each organization
+- Possibility of recognizing users thanks to signed cookies, which saves them
+  from having to re-authenticate
 
 ---
 
@@ -31,15 +66,23 @@ Openwisp wifi login pages app to allow users to authenticate, sign up and know m
 
 #### Install openwisp-radius
 
-This module works with [openwisp-radius](https://github.com/openwisp/openwisp-radius). So for us to use it, we need to have a running instance of `openwisp-radius` and set it up to communicate with it. We can have a running instance of `openwisp-radius` locally by following the instructions at [openwisp-radius docs](https://openwisp-radius.readthedocs.io/en/latest/developer/setup.html#installing-for-development) on a new terminal:
+This module is a frontend for [OpenWISP RADIUS](https://github.com/openwisp/openwisp-radius).
 
-- After successfully starting the `openwisp-radius` server, open a browser and visit the address: `http://localhost:8000/admin/` and sign in with the credentials of the `superuser` we created during `openwisp-radius` installation.
+So in order to use it, this app needs a running instance of OpenWISP RADIUS and an
+organization correctly configured, you can obtain this by following these steps:
 
-- Visit the change page of the organization we wish to add to this module and note down it's `name`, `slug`, `uuid` and `token`.
+- Follow the instructions
+[to install OpenWISP RADIUS for development](https://openwisp-radius.readthedocs.io/en/latest/developer/setup.html#installing-for-development).
+- After successfully starting the OpenWISP RADIUS server, open a browser and visit:
+  `http://localhost:8000/admin/`, then sign in with the credentials of
+  the `superuser` we created during the installation of `openwisp-radius`.
+- Visit the change page of the organization you want to add to this module
+  and note down the following parameters: `name`, `slug`, `uuid` and `token`
+  (from the Organization RADIUS Settings).
 
 #### Clone this repo
 
-On a new terminal, clone this repo with:
+In a new terminal, clone this repo with:
 
 ```
 git clone https://github.com/openwisp/openwisp-wifi-login-pages.git
@@ -48,7 +91,8 @@ cd openwisp-wifi-login-pages
 
 ##### Install dependencies
 
-With [NodeJs](https://nodejs.org/en/) and [yarn](https://yarnpkg.com/getting-started/install) installed on our system, we can install the project's dependencies by executing the following command on our terminal:
+With [NodeJs](https://nodejs.org/en/) and [yarn](https://yarnpkg.com/getting-started/install)
+installed on your system, install the dependencies with:
 
 ```
 yarn
@@ -60,7 +104,8 @@ yarn
 yarn upgrade
 ```
 
-To verify all the dependencies were successfully installed, running the tests with the following command should be successfull:
+To verify all the dependencies were successfully installed,
+try to run the tests with the following command:
 
 ```
 yarn test
@@ -70,29 +115,38 @@ yarn test
 
 ##### Add Organization configuration
 
-Before users can login/signUp on the system, we need to add an organization to it. We can add the organization from `openwisp-radius` which we noted down above with the following command:
+Before users can login and sign up, you need to create the configuration of the
+captive page for the related OpenWISP organization,
+you should have noted down the parameters performed during the
+[Installation of OpenWISP RADIUS ](#install-openwisp-radius), then you can run:
 
 ```
 yarn add-org
 ```
 
-The above command will prompt us to fill in some properties. Below is a table with these properties and a description of their values.
+The above command will prompt you to fill in some properties.
 
-| Property          | Description                                       |
-| ------------------| --------------------------------------------------|
-| name              | Required. Name of the organization.               |
-| slug              | Required. Slug of the organization.               |
-| uuid              | Required. UUID of the organization.               |
-| secret_key        | Required. Token of the organization.              |
-| login action url  | Required. Captive portal login action url         |
-| logout action url | Required. Captive portal logout action url        |
-| radius url        | Required. URL to openwisp-radius.                 |
+Below is a table with these properties and a description of their values.
 
-Note: On a development environment where the `captive portal login/logout action url` might not be available, we could use `http://localhost` as a dummy url.
+| Property                   | Description                                        |
+| -------------------------- | ---------------------------------------------------|
+| name                       | Required. Name of the organization.                |
+| slug                       | Required. Slug of the organization.                |
+| uuid                       | Required. UUID of the organization.                |
+| secret_key                 | Required. Token from organization radius settings. |
+| captive portal login URL   | Required. Captive portal login action url          |
+| captive portal logout URL  | Required. Captive portal logout action url         |
+| openwisp radius url        | Required. URL to openwisp-radius.                  |
 
-Copy all the assets to `client/assets/{slug}` directory
-Run `$ yarn setup`
-Start servers using `$ yarn start`
+Chose to copy the assets, then run:
+
+```
+yarn setup
+yarn start
+```
+
+**Note**: in a development environment where a captive portal may not be available,
+you can use the default sample captive portal login and logout URLs.
 
 ### Usage
 
