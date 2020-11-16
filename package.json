@@ -16,7 +16,7 @@
     "express": "^4.17.1",
     "history": "^4.10.1",
     "js-yaml": "^3.14.0",
-    "jsdom": "^15.2.1",
+    "jsdom": "^16.4.0",
     "marked": "^0.8.2",
     "nodemon": "^2.0.4",
     "prop-types": "^15.7.2",
