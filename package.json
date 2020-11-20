@@ -60,7 +60,7 @@
     "eslint-config-jest-enzyme": "^7.1.2",
     "eslint-config-prettier": "^6.11.0",
     "eslint-config-react": "^1.1.7",
-    "eslint-loader": "^3.0.4",
+    "eslint-loader": "^4.0.2",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-jest": "^23.13.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
