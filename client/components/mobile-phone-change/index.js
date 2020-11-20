@@ -13,7 +13,6 @@ const mapStateToProps = (state, ownProps) => {
     token_sent: conf.components.mobile_phone_verification_form.text.token_sent
   };
   return {
-    needsMobilePhoneVerification: conf.needsMobilePhoneVerification,
     phone_number_change: componentConf,
     settings: conf.settings,
     orgSlug: conf.slug,
