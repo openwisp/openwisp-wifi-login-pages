@@ -286,17 +286,19 @@ describe("Change Phone Number: corner cases", () => {
     wrapper = await mountComponent(props);
     const component = wrapper.find(MobilePhoneChange);
     expect(component.instance().state.phone_number).toBe("+393660011222");
-    const mockVerify = component.instance().props.verifyMobileNumber;
+    const instanceProps = component.instance().props;
+    const mockVerify = instanceProps.verifyMobileNumber;
+    const mobile_settings = instanceProps.settings.mobile_phone_verification;
     expect(mockVerify.mock.calls.length).toBe(1);
-    expect(mockVerify.mock.calls.pop()).toEqual([false]);
+    expect(mockVerify.mock.calls.pop()).toEqual([mobile_settings]);
     expect(MobilePhoneChange.prototype.validateToken).toHaveBeenCalled();
   });
 
-  it("should redirect if does not need verification", async () => {
+  it("should redirect only if mobile_phone_verification is disabled", async () => {
     mockAxios();
-    props.needsMobilePhoneVerification = false;
+    props.settings.mobile_phone_verification = true;
     wrapper = await mountComponent(props);
-    expect(wrapper.find(Redirect)).toHaveLength(1);
+    expect(wrapper.find(Redirect)).toHaveLength(0);
   });
 
   it("should redirect if mobile_phone_verification disabled", async () => {
@@ -304,5 +306,18 @@ describe("Change Phone Number: corner cases", () => {
     props.settings.mobile_phone_verification = false;
     wrapper = await mountComponent(props);
     expect(wrapper.find(Redirect)).toHaveLength(1);
+  });
+
+  it("shouldn't redirect if user is active and mobile verificaton is true", async () => {
+    jest.spyOn(MobilePhoneChange.prototype, "validateToken");
+    mockAxios({is_active: true});
+    props.settings.mobile_phone_verification = true;
+    wrapper = await mountComponent(props);
+    expect(wrapper.find(Redirect)).toHaveLength(0);
+    const component = wrapper.find(MobilePhoneChange);
+    const mockVerify = component.instance().props.verifyMobileNumber;
+    expect(mockVerify.mock.calls.length).toBe(1);
+    expect(mockVerify.mock.calls.pop()).toEqual([true]);
+    expect(MobilePhoneChange.prototype.validateToken).toHaveBeenCalled();
   });
 });

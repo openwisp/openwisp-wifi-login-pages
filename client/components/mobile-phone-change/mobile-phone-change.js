@@ -119,9 +119,9 @@ class MobilePhoneChange extends React.Component {
           '"response_code" !== "AUTH_TOKEN_VALIDATION_SUCCESSFUL"',
         );
       } else {
-        const {phone_number, is_active} = response.data;
+        const {phone_number} = response.data;
         this.setState({phone_number});
-        verifyMobileNumber(!is_active);
+        verifyMobileNumber(true);
       }
       return true;
     } catch (error) {
@@ -140,14 +140,13 @@ class MobilePhoneChange extends React.Component {
       orgSlug,
       language,
       phone_number_change,
-      needsMobilePhoneVerification,
       settings
     } = this.props;
     const { input_fields } = phone_number_change;
     const { buttons } = phone_number_change;
 
     // check equality to false, it may be undefined
-    if (needsMobilePhoneVerification === false || !settings.mobile_phone_verification) {
+    if (!settings.mobile_phone_verification) {
       return <Redirect to={`/${orgSlug}/status`} />;
     }
 
@@ -258,8 +257,4 @@ MobilePhoneChange.propTypes = {
   cookies: PropTypes.instanceOf(Cookies).isRequired,
   logout: PropTypes.func.isRequired,
   verifyMobileNumber: PropTypes.func.isRequired,
-  needsMobilePhoneVerification: PropTypes.bool
-};
-MobilePhoneChange.defaultProps = {
-  needsMobilePhoneVerification: null
 };

@@ -567,7 +567,6 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
             "url": "/",
           }
         }
-        needsMobilePhoneVerification={null}
         orgSlug="test-org-2"
         phone_number_change={
           Object {
