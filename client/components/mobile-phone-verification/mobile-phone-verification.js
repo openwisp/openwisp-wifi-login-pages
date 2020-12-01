@@ -152,7 +152,7 @@ export default class MobilePhoneVerification extends React.Component {
       return false;
     }
     const { orgSlug, mobile_phone_verification, language } = this.props;
-    const { errors } = this.state;
+    const { errors, phone_number } = this.state;
     const { text } = mobile_phone_verification;
     const self = this;
     const url = createMobilePhoneTokenUrl(orgSlug);
@@ -161,7 +161,10 @@ export default class MobilePhoneVerification extends React.Component {
       headers: {
         "content-type": "application/x-www-form-urlencoded"
       },
-      url
+      url,
+      data: qs.stringify({
+        phone_number,
+      }),
     })
       .then(() => {
         // flag SMS as sent to avoid resending it
