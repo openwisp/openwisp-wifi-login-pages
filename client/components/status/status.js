@@ -34,6 +34,7 @@ export default class Status extends React.Component {
       is_active: null,
       sessions: [],
       loggedOut: false,
+      user_info: {},
     };
     this.validateToken = this.validateToken.bind(this);
     this.getUserRadiusSessions = this.getUserRadiusSessions.bind(this);
@@ -163,8 +164,18 @@ export default class Status extends React.Component {
     }
   };
 
+  getTranslatedText = text => {
+    const {language, statusPage} = this.props;
+    const {content} = statusPage;
+    const textObject = {};
+    Object.keys(content.languages).forEach(key => {
+      textObject[key] = text;
+    });
+    return getText(textObject, language);
+  }
+
   async validateToken() {
-    const {cookies, orgSlug, logout} = this.props;
+    const {cookies, orgSlug, logout, settings} = this.props;
     const token = cookies.get(`${orgSlug}_auth_token`);
     const url = validateApiUrl(orgSlug);
     try {
@@ -188,8 +199,17 @@ export default class Status extends React.Component {
           '"response_code" !== "AUTH_TOKEN_VALIDATION_SUCCESSFUL"',
         );
       } else {
-        const {radius_user_token: password, username, is_active} = response.data;
-        this.setState({username, password, is_active});
+        const {radius_user_token: password, username, email, phone_number, is_active} = response.data;
+        const user_info = {};
+        user_info[this.getTranslatedText("Status")] = this.getTranslatedText("Logged in");
+        user_info[this.getTranslatedText("Email")] = email;
+        if (username !== email && username !== phone_number) {
+          user_info[this.getTranslatedText("Username")] = username;
+        }
+        if (settings.mobile_phone_verification) {
+          user_info[this.getTranslatedText("Phone number")] = phone_number;
+        }
+        this.setState({username, password, is_active, user_info});
       }
       return true;
     } catch (error) {
@@ -211,23 +231,25 @@ export default class Status extends React.Component {
       captivePortalLogoutForm,
       isAuthenticated,
     } = this.props;
-    const {content, links, buttons} = statusPage;
-    const {username, password, sessions} = this.state;
-    const contentArr = getText(content, language).split("\n");
+    const {links, buttons} = statusPage;
+    const {username, password, sessions, user_info} = this.state;
     return (
       <>
         <div className="container content" id="status">
           <div className="inner">
             <div className="main-column">
-              {contentArr.map(text => {
-                if (text !== "")
-                  return (
-                    <p key={text}>
-                      {text}
-                    </p>
-                  );
-                return null;
-              })}
+              <table>
+                <tbody>
+                  {Object.entries(user_info).map(([key, value]) => {
+                      return (
+                        <tr key={key}>
+                          <td>{key}:</td>
+                          <td>{value}</td>
+                        </tr>
+                      );
+                  })}
+                </tbody>
+              </table>
 
               {links && (
                 <div className="links row">

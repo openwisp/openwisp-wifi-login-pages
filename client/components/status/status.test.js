@@ -282,6 +282,91 @@ describe("<Status /> interactions", () => {
     expect(wrapper.instance().props.logout.mock.calls.length).toBe(1);
   });
 
+  it("test user info with mobile verification on and different username", async () => {
+    axios
+      .mockImplementationOnce(() => {
+        return Promise.resolve({
+          status: 200,
+          data: {
+            response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+            radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
+            username: "tester",
+            email: "tester@tester.com",
+            is_active: true,
+            phone_number: "+237672279436",
+          },
+        });
+      });
+      props = createTestProps();
+      props.settings.mobile_phone_verification = true;
+      wrapper = shallow(<Status {...props} />, {
+        context: {setLoading: jest.fn()},
+        disableLifecycleMethods: true,
+      });
+      wrapper.instance().validateToken();
+      await tick();
+      expect(wrapper.contains(<td>tester</td>)).toBe(true);
+      expect(wrapper.contains(<td>tester@tester.com</td>)).toBe(true);
+      expect(wrapper.contains(<td>+237672279436</td>)).toBe(true);
+
+  });
+
+  it("test user info with mobile verification on and same username", async () => {
+    axios
+      .mockImplementationOnce(() => {
+        return Promise.resolve({
+          status: 200,
+          data: {
+            response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+            radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
+            username: "tester@tester.com",
+            email: "tester@tester.com",
+            is_active: true,
+            phone_number: "+237672279436",
+          },
+        });
+      });
+      props = createTestProps();
+      props.settings.mobile_phone_verification = true;
+      wrapper = shallow(<Status {...props} />, {
+        context: {setLoading: jest.fn()},
+        disableLifecycleMethods: true,
+      });
+      wrapper.instance().validateToken();
+      await tick();
+      expect(wrapper.contains(<td>tester</td>)).toBe(false);
+      expect(wrapper.contains(<td>tester@tester.com</td>)).toBe(true);
+      expect(wrapper.contains(<td>+237672279436</td>)).toBe(true);
+  });
+
+  it("test user info with mobile verification off", async () => {
+    axios
+      .mockImplementationOnce(() => {
+        return Promise.resolve({
+          status: 200,
+          data: {
+            response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+            radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
+            username: "tester",
+            email: "tester@tester.com",
+            is_active: true,
+            phone_number: "+237672279436",
+          },
+        });
+      });
+      props = createTestProps();
+      props.settings.mobile_phone_verification = false;
+      wrapper = shallow(<Status {...props} />, {
+        context: {setLoading: jest.fn()},
+        disableLifecycleMethods: true,
+      });
+      wrapper.instance().validateToken();
+      await tick();
+      expect(wrapper.contains(<td>tester</td>)).toBe(true);
+      expect(wrapper.contains(<td>+237672279436</td>)).toBe(false);
+      expect(wrapper.contains(<td>tester@tester.com</td>)).toBe(true);
+  });
+
   it("test handleLoginIframe method", async () => {
     props = createTestProps();
     wrapper = shallow(<Status {...props} />, {

@@ -12,15 +12,9 @@ exports[`<Status /> rendering should render correctly 1`] = `
       <div
         className="main-column"
       >
-        <p>
-          WiFi Login Successful!
-        </p>
-        <p>
-          You can now use the internet.
-        </p>
-        <p>
-          You may leave this page open in case you want to log out.
-        </p>
+        <table>
+          <tbody />
+        </table>
         <div
           className="links row"
         >
