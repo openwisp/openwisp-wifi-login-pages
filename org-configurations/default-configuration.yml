@@ -204,8 +204,20 @@ client:
 
     status_page:
       content:
-        languages:
-          en: "English"
+        en: |
+          WiFi Login Successful!
+          You can now use the internet.
+          You may leave this page open in case you want to log out.
+      user_info:
+        email:
+          text:
+            en: "Email"
+        username:
+          text:
+            en: "Username"
+        phone_number:
+          text:
+            en: "Phone number"
       links:
         - text:
             en: "Change your password"

@@ -88,12 +88,14 @@ div.error {
   width: 100%;
   margin-top: 15px;
 }
-.content table, .row {
+.content p, .row {
   margin: 10px 0;
   width: 100%
 }
 .content table {
   display: flex;
+  margin: 10px 0;
+  width: 100%
 }
 body .label { margin: 0 0 5px 0 }
 body .input {

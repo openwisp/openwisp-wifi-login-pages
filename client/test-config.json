@@ -10,8 +10,18 @@
     "components": {
       "status_page": {
         "content": {
-          "languages": {
-            "en": "English"
+          "en": "WiFi Login Successful!\nYou can now use the internet.\nYou may leave this page open in case you want to log out.\n"
+        },
+        "user_info": {
+          "email": {
+            "text": {
+              "en": "Email"
+            }
+          },
+          "username": {
+            "text": {
+              "en": "Username"
+            }
           }
         },
         "links": [
