@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import axios from "axios";
 import cookie from "cookie-signature";
 import merge from "deepmerge";
@@ -21,7 +20,6 @@ const mobilePhoneNumberChange = (req, res) => {
       const timeout = conf.timeout * 1000;
       let token = req.cookies[`${reqOrg}_auth_token`] || "";
       token = cookie.unsign(token, conf.secret_key);
-      const {phone_number} = req.body;
       // make AJAX request
       axios({
         method: "post",
@@ -31,7 +29,7 @@ const mobilePhoneNumberChange = (req, res) => {
         },
         url: `${host}${url}/`,
         timeout,
-        data: qs.stringify({ phone_number }),
+        data: qs.stringify({ phone_number: req.body.phone_number }),
       })
         .then(response => {
           res

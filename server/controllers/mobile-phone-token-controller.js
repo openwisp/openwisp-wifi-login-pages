@@ -20,7 +20,6 @@ export const createMobilePhoneToken = (req, res) => {
       const timeout = conf.timeout * 1000;
       let token = req.cookies[`${reqOrg}_auth_token`] || "";
       token = cookie.unsign(token, conf.secret_key);
-      const {phone_number} = req.body;
       // make AJAX request
       axios({
         method: "post",
@@ -30,7 +29,7 @@ export const createMobilePhoneToken = (req, res) => {
         },
         url: `${host}${url}/`,
         timeout,
-        data: qs.stringify({ token, phone_number }),
+        data: qs.stringify({ token, phone_number: req.body.phone_number }),
       })
         .then(response => {
           delete response.data.auth_token;
