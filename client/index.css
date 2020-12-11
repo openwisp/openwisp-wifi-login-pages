@@ -153,6 +153,24 @@ body .input.error {
 .main-column p {
   margin-top: 1px;
 }
+.session-column {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  font-size: small;
+   
+}
+.session-column table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+.session-column td {
+  text-align: center;
+  padding: 10px;
+}
+.active-session {
+  font-weight: bold;
+}
 .side-column {
   width: 44%;
   background: #eee;

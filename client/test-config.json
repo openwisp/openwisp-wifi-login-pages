@@ -37,6 +37,48 @@
             }
           }
         },
+        "session_info": {
+          "header": {
+            "start_time": {
+              "text": {
+                "en": "Start time"
+              }
+            },
+            "stop_time": {
+              "text": {
+                "en": "Stop time"
+              }
+            },
+            "duration": {
+              "text": {
+                "en": "Duration"
+              }
+            },
+            "download": {
+              "text": {
+                "en": "Download"
+              }
+            },
+            "upload": {
+              "text": {
+                "en": "Upload"
+              }
+            },
+            "device_address": {
+              "text": {
+                "en": "Device address"
+              }
+            }
+          },
+          "settings": {
+            "active_session": {
+              "text": {
+                "en": "session is active"
+              }
+            },
+            "date_language_locale": "en-US"
+          }
+        },
         "links": [
           {
             "text": {
@@ -82,7 +124,8 @@
         "fields": {
           "id": "logout_id"
         },
-        "additional_fields": []
+        "additional_fields": [],
+        "logout_by_session": true
       },
       "registration_form": {
         "input_fields": {

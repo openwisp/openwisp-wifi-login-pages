@@ -6,9 +6,10 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import qs from "qs";
 import React from "react";
-import {Cookies} from "react-cookie";
-import {Link} from "react-router-dom";
-import {toast} from "react-toastify";
+import { Cookies } from "react-cookie";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import InfinteScroll from "react-infinite-scroll-component";
 import {
   genericError,
   getUserRadiusSessionsUrl,
@@ -33,48 +34,63 @@ export default class Status extends React.Component {
       username: "",
       password: "",
       is_active: null,
-      sessions: [],
+      activeSessions: [],
+      passedSessions: [],
+      sessionsToLogout: [],
       loggedOut: false,
       userInfo: {},
+      currentPage: 1,
+      hasMoreSessions: true,
+      intervalId: null,
     };
     this.validateToken = this.validateToken.bind(this);
     this.getUserRadiusSessions = this.getUserRadiusSessions.bind(this);
+    this.handleSessionLogout = this.handleSessionLogout.bind(this);
+    this.fetchMoreSessions = this.fetchMoreSessions.bind(this);
   }
 
   async componentDidMount() {
-    const {cookies, orgSlug, verifyMobileNumber, settings} = this.props;
+    const { cookies, orgSlug, verifyMobileNumber, settings } = this.props;
     // to prevent recursive call in case redirect url is status page
     if (window.top === window.self) {
       try {
-        const {location, captivePortalLoginForm} = this.props;
+        const { location, captivePortalLoginForm } = this.props;
         const searchParams = new URLSearchParams(location.search);
         const macaddr = searchParams.get(
           captivePortalLoginForm.macaddr_param_name,
         );
         if (macaddr) {
-          cookies.set(`${orgSlug}_macaddr`, macaddr, {path: "/"});
+          cookies.set(`${orgSlug}_macaddr`, macaddr, { path: "/" });
         } else {
-          cookies.remove(`${orgSlug}_macaddr`, {path: "/"});
+          cookies.remove(`${orgSlug}_macaddr`, { path: "/" });
         }
       } catch {
         //
       }
       const isValid = await this.validateToken();
-      const {is_active} = this.state;
+      const { is_active } = this.state;
       if (isValid && is_active) {
         const macaddr = cookies.get(`${orgSlug}_macaddr`);
 
         if (macaddr) {
-          await this.getUserRadiusSessions();
+          const params = { "macaddr": macaddr };
+          await this.getUserActiveRadiusSessions(params);
           /* request to captive portal is made only if there is
             no active session from macaddr stored in the cookie */
-          const {sessions} = this.state;
-          if (sessions && sessions.length === 0) {
+          const { activeSessions } = this.state;
+          if (activeSessions && activeSessions.length === 0) {
             if (this.loginFormRef && this.loginFormRef.current)
               this.loginFormRef.current.submit();
           }
         } else if (this.loginFormRef && this.loginFormRef.current)
           this.loginFormRef.current.submit();
+
+        await this.getUserActiveRadiusSessions();
+        await this.getUserPassedRadiusSessions();
+        const intervalId = setInterval(() => {
+          this.getUserActiveRadiusSessions();
+        }, 60000);
+        this.setState({ intervalId });
       }
       // would be better to show a different button in the status page
       if (isValid && !is_active && settings.mobile_phone_verification) {
@@ -83,9 +99,15 @@ export default class Status extends React.Component {
     }
   }
 
-  async getUserRadiusSessions() {
-    const {cookies, orgSlug, logout} = this.props;
+  componentWillUnmount = () => {
+    const { intervalId } = this.state;
+    clearInterval(intervalId);
+  }
+
+  async getUserRadiusSessions(params) {
+    const { cookies, orgSlug, logout } = this.props;
     const url = getUserRadiusSessionsUrl(orgSlug);
+    const options = {};
     try {
       const response = await axios({
         method: "get",
@@ -93,8 +115,20 @@ export default class Status extends React.Component {
           "content-type": "application/x-www-form-urlencoded",
         },
         url,
+        params,
       });
-      this.setState({sessions: response.data});
+      if (params.is_open) {
+        options.activeSessions = response.data;
+        options.sessionsToLogout = response.data;
+      } else {
+        const { passedSessions } = this.state;
+        options.passedSessions = passedSessions.concat(response.data);
+        options.currentPage = params.page;
+      }
+      if ("link" in response.headers && !response.headers.link.includes("next")) {
+        options.hasMoreSessions = false;
+      }
+      this.setState(options);
     } catch (error) {
       logout(cookies, orgSlug);
       toast.error(genericError, {
@@ -104,15 +138,34 @@ export default class Status extends React.Component {
     }
   }
 
+  async getUserActiveRadiusSessions(params = {}) {
+    const para = {
+      is_open: true,
+      ...params
+    };
+    await this.getUserRadiusSessions(para);
+  }
+
+  async getUserPassedRadiusSessions(params = {}) {
+    const para = {
+      page: 1,
+      is_open: false,
+      ...params,
+    };
+    await this.getUserRadiusSessions(para);
+  }
+
   handleLogout = async () => {
-    const {setLoading} = this.context;
-    const {orgSlug, logout, cookies} = this.props;
+    const { setLoading } = this.context;
+    const { orgSlug, logout, cookies } = this.props;
+    const macaddr = cookies.get(`${orgSlug}_macaddr`);
+    const params = { macaddr };
     setLoading(true);
-    await this.getUserRadiusSessions();
-    const {sessions} = this.state;
-    if (sessions.length > 0) {
+    await this.getUserActiveRadiusSessions(params);
+    const { sessionsToLogout } = this.state;
+    if (sessionsToLogout.length > 0) {
       if (this.logoutFormRef && this.logoutFormRef.current) {
-        this.setState({loggedOut: true}, () => {
+        this.setState({ loggedOut: true }, () => {
           this.logoutFormRef.current.submit();
         });
         return;
@@ -124,7 +177,7 @@ export default class Status extends React.Component {
   };
 
   handleLoginIframe = () => {
-    const {cookies, orgSlug, logout, captivePortalLoginForm} = this.props;
+    const { cookies, orgSlug, logout, captivePortalLoginForm } = this.props;
     if (this.loginIfameRef && this.loginIfameRef.current) {
       try {
         const searchParams = new URLSearchParams(
@@ -144,7 +197,7 @@ export default class Status extends React.Component {
           });
         }
         if (macaddr) {
-          cookies.set(`${orgSlug}_macaddr`, macaddr, {path: "/"});
+          cookies.set(`${orgSlug}_macaddr`, macaddr, { path: "/" });
         }
       } catch {
         //
@@ -154,10 +207,10 @@ export default class Status extends React.Component {
 
   handleLogoutIframe = () => {
     if (this.logoutIfameRef && this.logoutIfameRef.current) {
-      const {loggedOut} = this.state;
+      const { loggedOut } = this.state;
       if (loggedOut) {
-        const {setLoading} = this.context;
-        const {orgSlug, logout, cookies} = this.props;
+        const { setLoading } = this.context;
+        const { orgSlug, logout, cookies } = this.props;
         logout(cookies, orgSlug);
         setLoading(false);
         toast.success(logoutSuccess);
@@ -166,7 +219,7 @@ export default class Status extends React.Component {
   };
 
   async validateToken() {
-    const {cookies, orgSlug, logout, settings} = this.props;
+    const { cookies, orgSlug, logout, settings } = this.props;
     const token = cookies.get(`${orgSlug}_auth_token`);
     const url = validateApiUrl(orgSlug);
     try {
@@ -190,7 +243,7 @@ export default class Status extends React.Component {
           '"response_code" !== "AUTH_TOKEN_VALIDATION_SUCCESSFUL"',
         );
       } else {
-        const {radius_user_token: password, username, email, phone_number, is_active} = response.data;
+        const { radius_user_token: password, username, email, phone_number, is_active } = response.data;
         const userInfo = {};
         userInfo.status = "";
         userInfo.email = email;
@@ -200,7 +253,7 @@ export default class Status extends React.Component {
         if (settings.mobile_phone_verification) {
           userInfo.phone_number = phone_number;
         }
-        this.setState({username, password, is_active, userInfo});
+        this.setState({ username, password, is_active, userInfo });
       }
       return true;
     } catch (error) {
@@ -213,6 +266,85 @@ export default class Status extends React.Component {
     }
   }
 
+  handleSessionLogout(session) {
+    this.setState({
+      sessionsToLogout: [session],
+      passedSessions: [],
+      activeSessions: [],
+      currentPage: 0,
+      hasMoreSessions: true
+    });
+    if (this.logoutFormRef && this.logoutFormRef.current) {
+      this.logoutFormRef.current.submit();
+    }
+    await this.getUserPassedRadiusSessions();
+    await this.getUserActiveRadiusSessions();
+  }
+
+  async fetchMoreSessions() {
+    const { currentPage } = this.state;
+    await this.getUserPassedRadiusSessions({ page: currentPage + 1 });
+  }
+
+  getDuration = seconds => {
+    const number = Number(seconds);
+    const h = Math.floor(number / 3600);
+    const m = Math.floor(number % 3600 / 60);
+    const s = Math.floor(number % 3600 % 60);
+    const hDisplay = h > 0 ? h + (h === 1 ? " hr " : " hrs ") : "";
+    const mDisplay = m > 0 ? m + (m === 1 ? " min " : " mins ") : "";
+    const sDisplay = s > 0 ? s + (s === 1 ? " sec " : " secs ") : "";
+    return hDisplay + mDisplay + sDisplay;
+  }
+
+  getMB = bytes => {
+    const number = Number(bytes);
+    const mb = Math.round(number / 1024);
+    return `${mb}MB`;
+  }
+
+  getTableRow = (session, sessionSettings) => {
+    const { language, captivePortalLogoutForm, statusPage } = this.props;
+    const { buttons } = statusPage;
+    const time_option = {
+      dateStyle: "medium",
+      timeStyle: "short",
+      hour12: false,
+    };
+    const activeSessionText = getText(sessionSettings.active_session.text, language);
+    return (
+      <>
+        <td>
+          {new Intl.DateTimeFormat(sessionSettings.date_language_locale, time_option).format(new Date(session.start_time))}
+        </td>
+        <td>
+          {
+            session.stop_time === null ? activeSessionText :
+              new Intl.DateTimeFormat(sessionSettings.date_language_locale, time_option).format(new Date(session.stop_time))
+          }
+        </td>
+        <td>{this.getDuration(session.session_time)}</td>
+        <td>{this.getMB(session.output_octets)}</td>
+        <td>{this.getMB(session.input_octets)}</td>
+        <td>{session.calling_station_id}</td>
+        <td>
+          {captivePortalLogoutForm.logout_by_session && session.stop_time == null && (
+            <>
+              <div className="row logout">
+                <input
+                  type="button"
+                  className="button"
+                  value={getText(buttons.logout.text, language)}
+                  onClick={() => { this.handleSessionLogout(session); }}
+                />
+              </div>
+            </>
+          )}
+        </td>
+      </>
+    );
+  }
+
   render() {
     const {
       statusPage,
@@ -222,8 +354,16 @@ export default class Status extends React.Component {
       captivePortalLogoutForm,
       isAuthenticated,
     } = this.props;
-    const {content, links, buttons, user_info} = statusPage;
-    const {username, password, sessions, userInfo} = this.state;
+    const { content, links, buttons, session_info, user_info } = statusPage;
+    const {
+      username,
+      password,
+      userInfo,
+      activeSessions,
+      passedSessions,
+      sessionsToLogout,
+      hasMoreSessions
+    } = this.state;
     const contentArr = getText(content, language).split("\n");
     userInfo.status = getText(user_info.status.value, language);
     return (
@@ -239,32 +379,32 @@ export default class Status extends React.Component {
                     </p>
                   );
                 return null;
-                })}
-                {Object.keys(userInfo).map(key => {
-                  return (
-                    <p key={key}>
-                      <label>{getText(user_info[key].text, language)}:</label>
-                      <span>{userInfo[key]}</span>
-                    </p>
-                  );
-                })}
+              })}
+              {Object.keys(userInfo).map(key => {
+                return (
+                  <p key={key}>
+                    <label>{getText(user_info[key].text, language)}:</label>
+                    <span>{userInfo[key]}</span>
+                  </p>
+                );
+              })}
 
               {links && (
                 <div className="links row">
-                {links.map(link => {
-                  if (shouldLinkBeShown(link, isAuthenticated)) {
-                    return (
-                      <Link
-                        className="button full status-link"
-                        key={link.url}
-                        to={link.url.replace("{orgSlug}", orgSlug)}
-                      >
-                        {getText(link.text, language)}
-                      </Link>
-                    );
-                  }
-                  return null;
-                })}
+                  {links.map(link => {
+                    if (shouldLinkBeShown(link, isAuthenticated)) {
+                      return (
+                        <Link
+                          className="button full status-link"
+                          key={link.url}
+                          to={link.url.replace("{orgSlug}", orgSlug)}
+                        >
+                          {getText(link.text, language)}
+                        </Link>
+                      );
+                    }
+                    return null;
+                  })}
                 </div>
               )}
 
@@ -281,6 +421,49 @@ export default class Status extends React.Component {
             <Contact />
           </div>
         </div>
+        {(activeSessions.length > 0 || passedSessions.length > 0) && (
+          <div className="container" id="sessions">
+            <div className="inner">
+              <div className="main-column session-column">
+                <InfinteScroll
+                  dataLength={passedSessions.length}
+                  next={this.fetchMoreSessions}
+                  hasMore={hasMoreSessions}
+                >
+                  <>
+                    <table>
+                      <thead>
+                        <tr>
+                          {Object.keys(session_info.header).map(key => {
+                            return (
+                              <th key={key}>{getText(session_info.header[key].text, language)}</th>
+                            );
+                          })}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {activeSessions.map(session => {
+                          return (
+                            <tr key={session.session_id} className={session.stop_time === null ? "active-session" : ""}>
+                              {this.getTableRow(session, session_info.settings)}
+                            </tr>
+                          );
+                        })}
+                        {passedSessions.map(session => {
+                          return (
+                            <tr key={session.session_id} className={session.stop_time === null ? "active-session" : ""}>
+                              {this.getTableRow(session, session_info.settings)}
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </>
+                </InfinteScroll>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* check to ensure this block of code is executed in root document and not in Iframe */}
         {captivePortalLoginForm && window.top === window.self && (
@@ -306,7 +489,7 @@ export default class Status extends React.Component {
                 value={password}
               />
               {captivePortalLoginForm.additional_fields.length &&
-               captivePortalLoginForm.additional_fields.map(field => (
+                captivePortalLoginForm.additional_fields.map(field => (
                   <input
                     readOnly
                     type="text"
@@ -314,7 +497,7 @@ export default class Status extends React.Component {
                     value={field.value}
                     key={field.name}
                   />
-               ))}
+                ))}
             </form>
             {/* login form is submitted in this Iframe
             onLoad: handles response from captive portal
@@ -342,17 +525,17 @@ export default class Status extends React.Component {
                 readOnly
                 type="hidden"
                 name={captivePortalLogoutForm.fields.id || ""}
-                value={sessions.length > 0 ? sessions[0].session_id : ""}
+                value={sessionsToLogout.length > 0 ? sessionsToLogout[0].session_id : ""}
               />
               {captivePortalLogoutForm.additional_fields.length &&
-               captivePortalLogoutForm.additional_fields.map(field => (
-                <input
-                  readOnly
-                  type="text"
-                  name={field.name}
-                  value={field.value}
-                />
-              ))}
+                captivePortalLogoutForm.additional_fields.map(field => (
+                  <input
+                    readOnly
+                    type="text"
+                    name={field.name}
+                    value={field.value}
+                  />
+                ))}
             </form>
             <iframe
               onLoad={this.handleLogoutIframe}
@@ -374,6 +557,34 @@ Status.defaultProps = {
 Status.propTypes = {
   statusPage: PropTypes.shape({
     content: PropTypes.object.isRequired,
+    session_info: PropTypes.shape({
+      header: PropTypes.shape({
+        start_time: PropTypes.shape({
+          text: PropTypes.object.isRequired,
+        }).isRequired,
+        stop_time: PropTypes.shape({
+          text: PropTypes.object.isRequired,
+        }).isRequired,
+        duration: PropTypes.shape({
+          text: PropTypes.object.isRequired,
+        }).isRequired,
+        download: PropTypes.shape({
+          text: PropTypes.object.isRequired,
+        }).isRequired,
+        upload: PropTypes.shape({
+          text: PropTypes.object.isRequired,
+        }).isRequired,
+        device_address: PropTypes.shape({
+          text: PropTypes.object.isRequired,
+        }).isRequired,
+      }).isRequired,
+      settings: PropTypes.shape({
+        active_session: PropTypes.shape({
+          text: PropTypes.object.isRequired,
+        }).isRequired,
+        date_language_locale: PropTypes.string.isRequired,
+      }).isRequired,
+    }).isRequired,
     links: PropTypes.arrayOf(
       PropTypes.shape({
         text: PropTypes.object.isRequired,
@@ -422,6 +633,7 @@ Status.propTypes = {
       id: PropTypes.string,
     }),
     additional_fields: PropTypes.array,
+    logout_by_session: PropTypes.bool.isRequired,
   }).isRequired,
   location: PropTypes.shape({
     search: PropTypes.string,
