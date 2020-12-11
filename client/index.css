@@ -92,6 +92,10 @@ div.error {
   margin: 10px 0;
   width: 100%
 }
+.content label {
+  font-weight: bold;
+  margin-right: 1em;
+}
 .content table {
   display: flex;
   margin: 10px 0;
@@ -145,6 +149,9 @@ body .input.error {
   line-height: 30px;
   padding: 3%;
   border-radius: 2px;
+}
+.main-column p {
+  margin-top: 1px;
 }
 .side-column {
   width: 44%;

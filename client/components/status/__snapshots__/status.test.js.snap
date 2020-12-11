@@ -21,10 +21,15 @@ exports[`<Status /> rendering should render correctly 1`] = `
         <p>
           You may leave this page open in case you want to log out.
         </p>
-        <br />
-        <table>
-          <tbody />
-        </table>
+        <p>
+          <label>
+            Status
+            :
+          </label>
+          <span>
+            Logged in
+          </span>
+        </p>
         <div
           className="links row"
         >

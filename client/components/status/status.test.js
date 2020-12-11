@@ -306,9 +306,9 @@ describe("<Status /> interactions", () => {
       });
       wrapper.instance().validateToken();
       await tick();
-      expect(wrapper.contains(<td>tester</td>)).toBe(true);
-      expect(wrapper.contains(<td>tester@tester.com</td>)).toBe(true);
-      expect(wrapper.contains(<td>+237672279436</td>)).toBe(true);
+      expect(wrapper.contains(<span>tester</span>)).toBe(true);
+      expect(wrapper.contains(<span>tester@tester.com</span>)).toBe(true);
+      expect(wrapper.contains(<span>+237672279436</span>)).toBe(true);
 
   });
 
@@ -336,9 +336,9 @@ describe("<Status /> interactions", () => {
       });
       wrapper.instance().validateToken();
       await tick();
-      expect(wrapper.contains(<td>tester</td>)).toBe(false);
-      expect(wrapper.contains(<td>tester@tester.com</td>)).toBe(true);
-      expect(wrapper.contains(<td>+237672279436</td>)).toBe(true);
+      expect(wrapper.contains(<span>tester</span>)).toBe(false);
+      expect(wrapper.contains(<span>tester@tester.com</span>)).toBe(true);
+      expect(wrapper.contains(<span>+237672279436</span>)).toBe(true);
   });
 
   it("test user info with mobile verification off", async () => {
@@ -364,9 +364,9 @@ describe("<Status /> interactions", () => {
       });
       wrapper.instance().validateToken();
       await tick();
-      expect(wrapper.contains(<td>tester</td>)).toBe(true);
-      expect(wrapper.contains(<td>+237672279436</td>)).toBe(false);
-      expect(wrapper.contains(<td>tester@tester.com</td>)).toBe(true);
+      expect(wrapper.contains(<span>tester</span>)).toBe(true);
+      expect(wrapper.contains(<span>+237672279436</span>)).toBe(false);
+      expect(wrapper.contains(<span>tester@tester.com</span>)).toBe(true);
   });
 
   it("test handleLoginIframe method", async () => {

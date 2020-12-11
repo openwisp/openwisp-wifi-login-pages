@@ -191,6 +191,7 @@ export default class Status extends React.Component {
       } else {
         const {radius_user_token: password, username, email, phone_number, is_active} = response.data;
         const userInfo = {};
+        userInfo.status = "";
         userInfo.email = email;
         if (username !== email && username !== phone_number) {
           userInfo.username = username;
@@ -223,6 +224,7 @@ export default class Status extends React.Component {
     const {content, links, buttons, user_info} = statusPage;
     const {username, password, sessions, userInfo} = this.state;
     const contentArr = getText(content, language).split("\n");
+    userInfo.status = getText(user_info.status.value, language);
     return (
       <>
         <div className="container content" id="status">
@@ -237,19 +239,14 @@ export default class Status extends React.Component {
                     );
                   return null;
                 })}
-              <br />
-              <table>
-                <tbody>
-                  {Object.keys(userInfo).map(key => {
+                {Object.keys(userInfo).map(key => {
                     return (
-                      <tr key={key}>
-                        <td>{getText(user_info[key].text, language)}:</td>
-                        <td>{userInfo[key]}</td>
-                      </tr>
+                      <p key={key}>
+                        <label>{getText(user_info[key].text, language)}:</label>
+                        <span>{userInfo[key]}</span>
+                      </p>
                     );
-                  })}
-                </tbody>
-              </table>
+                })}
 
               {links && (
                 <div className="links row">
@@ -383,6 +380,10 @@ Status.propTypes = {
       }),
     ),
     user_info: PropTypes.shape({
+      status: PropTypes.shape({
+        text: PropTypes.object.isRequired,
+        value: PropTypes.object.isRequired,
+      }).isRequired,
       email: PropTypes.shape({
         text: PropTypes.object.isRequired
       }).isRequired,

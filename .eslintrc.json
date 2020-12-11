@@ -21,6 +21,7 @@
     "node": true
   },
   "rules": {
+    "jsx-a11y/label-has-associated-control": 0,
     "array-bracket-spacing": [2, "never"],
     "eol-last": ["error", "always"],
     "semi": [2, "always"],
