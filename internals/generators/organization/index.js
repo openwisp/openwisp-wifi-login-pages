@@ -80,6 +80,12 @@ module.exports = {
       },
     },
     {
+      type: "confirm",
+      name: "logout_by_session_ID",
+      message: "Does your captive portal support log out by session ID?",
+      default: false,
+    },
+    {
       type: "input",
       name: "openwisp_radius_url",
       message: "What is the URL of OpenWISP RADIUS?",

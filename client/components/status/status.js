@@ -266,7 +266,7 @@ export default class Status extends React.Component {
     }
   }
 
-  handleSessionLogout(session) {
+  async handleSessionLogout(session) {
     this.setState({
       sessionsToLogout: [session],
       passedSessions: [],
