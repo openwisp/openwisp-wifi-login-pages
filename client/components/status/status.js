@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+/* eslint jsx-a11y/label-has-associated-control: 0 */
 import "react-toastify/dist/ReactToastify.css";
 
 import axios from "axios";
@@ -231,21 +232,21 @@ export default class Status extends React.Component {
           <div className="inner">
             <div className="main-column">
               {contentArr.map(text => {
-                  if (text !== "")
-                    return (
-                      <p key={text}>
-                        {text}
-                      </p>
-                    );
-                  return null;
+                if (text !== "")
+                  return (
+                    <p key={text}>
+                      {text}
+                    </p>
+                  );
+                return null;
                 })}
                 {Object.keys(userInfo).map(key => {
-                    return (
-                      <p key={key}>
-                        <label>{getText(user_info[key].text, language)}:</label>
-                        <span>{userInfo[key]}</span>
-                      </p>
-                    );
+                  return (
+                    <p key={key}>
+                      <label>{getText(user_info[key].text, language)}:</label>
+                      <span>{userInfo[key]}</span>
+                    </p>
+                  );
                 })}
 
               {links && (

@@ -220,6 +220,9 @@ client:
         username:
           text:
             en: "Username"
+        phone_number:
+          text:
+            en: "Phone number"
       links:
         - text:
             en: "Change your password"
