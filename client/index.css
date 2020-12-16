@@ -130,6 +130,11 @@ body .input.error {
   box-sizing: border-box;
   padding: 27px 0 27px 0;
 }
+
+.container#sessions {
+  padding-top: 0px;
+}
+
 .container > .inner {
   display: flex;
   flex-direction: row;
@@ -156,13 +161,15 @@ body .input.error {
 .session-column {
   display: flex;
   align-items: flex-start;
-  width: 100%;
-  font-size: small;
+  width:max-content;
+  font-size: 0.82em;
    
 }
 .session-column table {
   border-collapse: collapse;
   border-spacing: 0;
+  margin-top: 0px;
+  padding-top: 0px;
 }
 .session-column td {
   text-align: center;

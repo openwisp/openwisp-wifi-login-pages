@@ -327,20 +327,18 @@ export default class Status extends React.Component {
         <td>{this.getMB(session.output_octets)}</td>
         <td>{this.getMB(session.input_octets)}</td>
         <td>{session.calling_station_id}</td>
-        <td>
-          {captivePortalLogoutForm.logout_by_session && session.stop_time == null && (
-            <>
-              <div className="row logout">
-                <input
-                  type="button"
-                  className="button"
-                  value={getText(buttons.logout.text, language)}
-                  onClick={() => { this.handleSessionLogout(session); }}
-                />
-              </div>
-            </>
-          )}
-        </td>
+        {(session.stop_time == null && captivePortalLogoutForm.logout_by_session) && (
+          <td>
+            <div className="row logout">
+              <input
+                type="button"
+                className="button"
+                value={getText(buttons.logout.text, language)}
+                onClick={() => { this.handleSessionLogout(session); }}
+              />
+            </div>
+          </td>
+        )}
       </>
     );
   }
@@ -429,6 +427,7 @@ export default class Status extends React.Component {
                   dataLength={passedSessions.length}
                   next={this.fetchMoreSessions}
                   hasMore={hasMoreSessions}
+                  loader={<h1 style={{ "textAlign": "center" }}>Loading new sessions....</h1>}
                 >
                   <>
                     <table>
