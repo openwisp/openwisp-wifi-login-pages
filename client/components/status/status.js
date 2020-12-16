@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+/* eslint jsx-a11y/label-has-associated-control: 0 */
 import "react-toastify/dist/ReactToastify.css";
 
 import axios from "axios";
@@ -34,6 +35,7 @@ export default class Status extends React.Component {
       is_active: null,
       sessions: [],
       loggedOut: false,
+      userInfo: {},
     };
     this.validateToken = this.validateToken.bind(this);
     this.getUserRadiusSessions = this.getUserRadiusSessions.bind(this);
@@ -164,7 +166,7 @@ export default class Status extends React.Component {
   };
 
   async validateToken() {
-    const {cookies, orgSlug, logout} = this.props;
+    const {cookies, orgSlug, logout, settings} = this.props;
     const token = cookies.get(`${orgSlug}_auth_token`);
     const url = validateApiUrl(orgSlug);
     try {
@@ -188,8 +190,17 @@ export default class Status extends React.Component {
           '"response_code" !== "AUTH_TOKEN_VALIDATION_SUCCESSFUL"',
         );
       } else {
-        const {radius_user_token: password, username, is_active} = response.data;
-        this.setState({username, password, is_active});
+        const {radius_user_token: password, username, email, phone_number, is_active} = response.data;
+        const userInfo = {};
+        userInfo.status = "";
+        userInfo.email = email;
+        if (username !== email && username !== phone_number) {
+          userInfo.username = username;
+        }
+        if (settings.mobile_phone_verification) {
+          userInfo.phone_number = phone_number;
+        }
+        this.setState({username, password, is_active, userInfo});
       }
       return true;
     } catch (error) {
@@ -211,9 +222,10 @@ export default class Status extends React.Component {
       captivePortalLogoutForm,
       isAuthenticated,
     } = this.props;
-    const {content, links, buttons} = statusPage;
-    const {username, password, sessions} = this.state;
+    const {content, links, buttons, user_info} = statusPage;
+    const {username, password, sessions, userInfo} = this.state;
     const contentArr = getText(content, language).split("\n");
+    userInfo.status = getText(user_info.status.value, language);
     return (
       <>
         <div className="container content" id="status">
@@ -227,7 +239,15 @@ export default class Status extends React.Component {
                     </p>
                   );
                 return null;
-              })}
+                })}
+                {Object.keys(userInfo).map(key => {
+                  return (
+                    <p key={key}>
+                      <label>{getText(user_info[key].text, language)}:</label>
+                      <span>{userInfo[key]}</span>
+                    </p>
+                  );
+                })}
 
               {links && (
                 <div className="links row">
@@ -360,6 +380,21 @@ Status.propTypes = {
         url: PropTypes.string.isRequired,
       }),
     ),
+    user_info: PropTypes.shape({
+      status: PropTypes.shape({
+        text: PropTypes.object.isRequired,
+        value: PropTypes.object.isRequired,
+      }).isRequired,
+      email: PropTypes.shape({
+        text: PropTypes.object.isRequired
+      }).isRequired,
+      username: PropTypes.shape({
+        text: PropTypes.object.isRequired
+      }).isRequired,
+      phone_number: PropTypes.shape({
+        text: PropTypes.object
+      })
+    }).isRequired,
     buttons: PropTypes.shape({
       logout: PropTypes.shape({
         text: PropTypes.object.isRequired,

@@ -12,6 +12,31 @@
         "content": {
           "en": "WiFi Login Successful!\nYou can now use the internet.\nYou may leave this page open in case you want to log out.\n"
         },
+        "user_info": {
+          "status": {
+            "text": {
+              "en": "Status"
+            },
+            "value": {
+              "en": "Logged in"
+            }
+          },
+          "email": {
+            "text": {
+              "en": "Email"
+            }
+          },
+          "username": {
+            "text": {
+              "en": "Username"
+            }
+          },
+          "phone_number": {
+            "text": {
+              "en": "Phone number"
+            }
+          }
+        },
         "links": [
           {
             "text": {
