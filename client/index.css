@@ -131,10 +131,6 @@ body .input.error {
   padding: 27px 0 27px 0;
 }
 
-.container#sessions {
-  padding-top: 0px;
-}
-
 .container > .inner {
   display: flex;
   flex-direction: row;
@@ -158,11 +154,19 @@ body .input.error {
 .main-column p {
   margin-top: 1px;
 }
+td, th { 
+  padding: 1.9rem;
+}
+table {
+  background: #d3d3d3;
+  max-width: max-content;
+  margin-bottom: 20px;
+}
 .session-column {
   display: flex;
+  justify-content: center;
   align-items: flex-start;
-  width:max-content;
-  font-size: 0.82em;
+  font-size: 0.85rem;
    
 }
 .session-column table {
@@ -223,4 +227,21 @@ h1 {
   .main-column, .side-column { width: 100% }
   .side-column { margin-top: 20px }
   /* body .header-row-1-inner { padding: 10px 15px } */
+}
+
+.loading {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #2b3a42;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

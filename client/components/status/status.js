@@ -51,6 +51,7 @@ export default class Status extends React.Component {
 
   async componentDidMount() {
     const { cookies, orgSlug, verifyMobileNumber, settings } = this.props;
+    const { setLoading } = this.context;
     // to prevent recursive call in case redirect url is status page
     if (window.top === window.self) {
       try {
@@ -85,8 +86,10 @@ export default class Status extends React.Component {
         } else if (this.loginFormRef && this.loginFormRef.current)
           this.loginFormRef.current.submit();
 
+        setLoading(true);
         await this.getUserActiveRadiusSessions();
         await this.getUserPassedRadiusSessions();
+        setLoading(false);
         const intervalId = setInterval(() => {
           this.getUserActiveRadiusSessions();
         }, 60000);
@@ -274,11 +277,14 @@ export default class Status extends React.Component {
       currentPage: 0,
       hasMoreSessions: true
     });
+    const { setLoading } = this.context;
     if (this.logoutFormRef && this.logoutFormRef.current) {
       this.logoutFormRef.current.submit();
     }
+    setLoading(true);
     await this.getUserPassedRadiusSessions();
     await this.getUserActiveRadiusSessions();
+    setLoading(false);
   }
 
   async fetchMoreSessions() {
@@ -299,7 +305,7 @@ export default class Status extends React.Component {
 
   getMB = bytes => {
     const number = Number(bytes);
-    const mb = Math.round(number / 1024);
+    const mb = Math.round(number / (1024 * 1024));
     return `${mb}MB`;
   }
 
@@ -420,47 +426,43 @@ export default class Status extends React.Component {
           </div>
         </div>
         {(activeSessions.length > 0 || passedSessions.length > 0) && (
-          <div className="container" id="sessions">
-            <div className="inner">
-              <div className="main-column session-column">
-                <InfinteScroll
-                  dataLength={passedSessions.length}
-                  next={this.fetchMoreSessions}
-                  hasMore={hasMoreSessions}
-                  loader={<h1 style={{ "textAlign": "center" }}>Loading new sessions....</h1>}
-                >
-                  <>
-                    <table>
-                      <thead>
-                        <tr>
-                          {Object.keys(session_info.header).map(key => {
-                            return (
-                              <th key={key}>{getText(session_info.header[key].text, language)}</th>
-                            );
-                          })}
+          <div className="session-column" id="sessions">
+            <InfinteScroll
+              dataLength={passedSessions.length}
+              next={this.fetchMoreSessions}
+              hasMore={hasMoreSessions}
+              loader={<div style={{ "paddingLeft": "50%" }}><p className="loading" /></div>}
+            >
+              <>
+                <table>
+                  <thead>
+                    <tr>
+                      {Object.keys(session_info.header).map(key => {
+                        return (
+                          <th key={key}>{getText(session_info.header[key].text, language)}</th>
+                        );
+                      })}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {activeSessions.map(session => {
+                      return (
+                        <tr key={session.session_id} className={session.stop_time === null ? "active-session" : ""}>
+                          {this.getTableRow(session, session_info.settings)}
                         </tr>
-                      </thead>
-                      <tbody>
-                        {activeSessions.map(session => {
-                          return (
-                            <tr key={session.session_id} className={session.stop_time === null ? "active-session" : ""}>
-                              {this.getTableRow(session, session_info.settings)}
-                            </tr>
-                          );
-                        })}
-                        {passedSessions.map(session => {
-                          return (
-                            <tr key={session.session_id} className={session.stop_time === null ? "active-session" : ""}>
-                              {this.getTableRow(session, session_info.settings)}
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  </>
-                </InfinteScroll>
-              </div>
-            </div>
+                      );
+                    })}
+                    {passedSessions.map(session => {
+                      return (
+                        <tr key={session.session_id} className={session.stop_time === null ? "active-session" : ""}>
+                          {this.getTableRow(session, session_info.settings)}
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </>
+            </InfinteScroll>
           </div>
         )}
 
