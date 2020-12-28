@@ -7,6 +7,7 @@ import qs from "qs";
 import React from "react";
 import { Link, Route } from "react-router-dom";
 import { toast } from 'react-toastify';
+import PhoneInput from 'react-phone-input-2';
 import 'react-toastify/dist/ReactToastify.css';
 
 import {
@@ -33,6 +34,7 @@ export default class Login extends React.Component {
     this.state = {
       email: "",
       password: "",
+      phone_number: "",
       errors: {},
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -63,7 +65,8 @@ export default class Login extends React.Component {
     const { setLoading } = this.context;
     if (event) event.preventDefault();
     const { orgSlug, authenticate, verifyMobileNumber, settings } = this.props;
-    const { email, password, errors } = this.state;
+    const { email, password, phone_number, errors } = this.state;
+    const username = settings.mobile_phone_verification ? phone_number : email;
     const url = loginApiUrl(orgSlug);
     this.setState({
       errors: {},
@@ -88,7 +91,7 @@ export default class Login extends React.Component {
       },
       url,
       data: qs.stringify({
-        "username": email,
+        username,
         password,
       }),
     })
@@ -108,6 +111,7 @@ export default class Login extends React.Component {
             ...errors,
             ...(data.email ? { email: data.email.toString() } : { email: "" }),
             ...(data.password ? { password: data.password } : { password: "" }),
+            ...(data.phone_number ? { phone_number: data.phone_number } : { phone_number: "" }),
           },
         });
         return setLoading(false);
@@ -115,7 +119,7 @@ export default class Login extends React.Component {
   }
 
   render() {
-    const { errors, email, password } = this.state;
+    const { errors, email, password, phone_number } = this.state;
     const {
       language,
       loginForm,
@@ -123,6 +127,7 @@ export default class Login extends React.Component {
       termsAndConditions,
       privacyPolicy,
       match,
+      settings,
     } = this.props;
     const {
       links,
@@ -174,31 +179,66 @@ export default class Login extends React.Component {
                   </div>
                 )}
 
-                <div className="row email">
-                  <label htmlFor="email">
-                    {getText(input_fields.email.label, language)}
-                  </label>
-                  {errors.email && (
-                    <div className="error">
-                      <span className="icon">!</span>
-                      <span className="text">
-                        {errors.email}
-                      </span>
-                    </div>
-                  )}
-                  <input
-                    className={`input ${errors.email ? "error" : ""}`}
-                    type={input_fields.email.type}
-                    id="email"
-                    name="email"
-                    value={email}
-                    onChange={this.handleChange}
-                    required
-                    placeholder={getText(input_fields.email.placeholder, language)}
-                    pattern={input_fields.email.pattern}
-                    title={getText(input_fields.email.pattern_description, language)}
-                  />
-                </div>
+                {settings.mobile_phone_verification && input_fields.phone_number && (
+                  <div className="row phone-number">
+                    <label htmlFor="phone-number">
+                      {getText(input_fields.phone_number.label, language)}
+                    </label>
+
+                    {errors.phone_number && (
+                      <div className="error">
+                        <span className="icon">!</span>
+                        <span className="text">
+                          {errors.phone_number}
+                        </span>
+                      </div>
+                    )}
+                    <PhoneInput
+                      name="phone_number"
+                      country={input_fields.phone_number.country}
+                      onlyCountries={input_fields.phone_number.only_countries || []}
+                      preferredCountries={input_fields.phone_number.preferred_countries || []}
+                      excludeCountries={input_fields.phone_number.exclude_countries || []}
+                      value={phone_number}
+                      onChange={value => this.handleChange({ target: { name: "phone_number", value: `+${value}` } })}
+                      placeholder={getText(input_fields.phone_number.placeholder, language)}
+                      enableSearch={Boolean(input_fields.phone_number.enable_search)}
+                      inputProps={{
+                        name: "phone_number",
+                        id: "phone-number",
+                        className: `form-control input ${errors.phone_number ? "error" : ""}`,
+                        required: true,
+                      }}
+                    />
+                  </div>
+                )}
+                {!settings.mobile_phone_verification && (
+                  <div className="row email">
+                    <label htmlFor="email">
+                      {getText(input_fields.email.label, language)}
+                    </label>
+                    {errors.email && (
+                      <div className="error">
+                        <span className="icon">!</span>
+                        <span className="text">
+                          {errors.email}
+                        </span>
+                      </div>
+                    )}
+                    <input
+                      className={`input ${errors.email ? "error" : ""}`}
+                      type={input_fields.email.type}
+                      id="email"
+                      name="email"
+                      value={email}
+                      onChange={this.handleChange}
+                      required
+                      placeholder={getText(input_fields.email.placeholder, language)}
+                      pattern={input_fields.email.pattern}
+                      title={getText(input_fields.email.pattern_description, language)}
+                    />
+                  </div>
+                )}
 
                 <div className="row password">
                   <label htmlFor="password">
@@ -315,6 +355,15 @@ Login.propTypes = {
         pattern: PropTypes.string.isRequired,
         pattern_description: PropTypes.object.isRequired
       }).isRequired,
+      phone_number: PropTypes.shape({
+        label: PropTypes.object.isRequired,
+        placeholder: PropTypes.object.isRequired,
+        country: PropTypes.string,
+        only_countries: PropTypes.array,
+        preferred_countries: PropTypes.array,
+        exclude_countries: PropTypes.array,
+        enable_search: PropTypes.bool
+      })
     }),
     additional_info_text: PropTypes.object,
     buttons: PropTypes.shape({

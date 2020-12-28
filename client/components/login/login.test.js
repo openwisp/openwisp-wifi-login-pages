@@ -96,6 +96,8 @@ describe("<Login /> interactions", () => {
   });
 
   it("should change state values when handleChange function is invoked", () => {
+    // phone_number should not be present if mobile_phone_verification is off
+    expect(wrapper.find("[name='phone_number']")).toEqual({});
     wrapper
       .find("#email")
       .simulate("change", { target: { value: "test email", name: "email" } });
@@ -153,6 +155,7 @@ describe("<Login /> interactions", () => {
         expect(wrapper.instance().state.errors).toEqual({
           email: "email error",
           password: "password error",
+          phone_number: "",
         });
         expect(wrapper.find("div.error")).toHaveLength(2);
         expect(wrapper.find("input.error")).toHaveLength(2);
@@ -219,10 +222,12 @@ describe("<Login /> interactions", () => {
       });
     });
 
+    expect(wrapper.find("#email")).toEqual({});
+    expect(wrapper.state("phone_number")).toEqual("");
     wrapper
-      .find("#email")
-      .simulate("change", { target: { value: "test email", name: "email" } });
-    expect(wrapper.state("email")).toEqual("test email");
+      .find("[name='phone_number']")
+      .simulate("change", {target: {value: "+393660011333", name: "phone_number"}});
+    expect(wrapper.state("phone_number")).not.toEqual("");
     wrapper
       .find("#password")
       .simulate("change", { target: { value: "test password", name: "password" } });

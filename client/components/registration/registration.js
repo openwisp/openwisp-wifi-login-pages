@@ -66,6 +66,7 @@ export default class Registration extends React.Component {
     // add phone_number if SMS verification is enabled
     if (settings.mobile_phone_verification) {
       postData.phone_number = phone_number;
+      postData.username = phone_number;
     }
     setLoading(true);
     return axios({
