@@ -275,6 +275,16 @@ describe("Registration and Mobile Phone Verification interactions", () => {
     const component = wrapper.find(Registration).instance();
     const handleSubmit = jest.spyOn(component, "handleSubmit");
 
+    // testing if username is equal to phone_number
+    const axiosParam = {
+      "data": "email=tester%40openwisp.io&username=%2B393660011333&password1=tester123&password2=tester123&phone_number=%2B393660011333",
+      "headers": {
+        "content-type": "application/x-www-form-urlencoded",
+      },
+      "method": "post",
+      "url": "/api/v1/test-org-2/account/",
+    };
+
     axios.mockImplementationOnce(() => {
       return Promise.resolve({
         status: 201,
@@ -295,6 +305,7 @@ describe("Registration and Mobile Phone Verification interactions", () => {
     await tick();
     expect(wrapper.find(Registration).instance().state.errors).toEqual({});
     expect(handleSubmit).toHaveBeenCalled();
+    expect(axios).toHaveBeenCalledWith(axiosParam);
     expect(event.preventDefault).toHaveBeenCalled();
     const mockVerify = component.props.verifyMobileNumber;
     expect(mockVerify.mock.calls.length).toBe(1);

@@ -77,6 +77,15 @@ client:
 
     registration_form:
       input_fields:
+        phone_number:
+          placeholder:
+            en: "enter mobile phone number"
+          label:
+            en: "mobile phone number"
+          # default international prefix
+          # country: "it"
+          # restrict international prefixes shown
+          # only_countries: ["it", "de", "uk"]
         username:
           type: "text"
           pattern: '[a-zA-Z@.+\-_\d]{1,150}'
@@ -267,11 +276,6 @@ client:
             en: "password"
           label:
             en: "password"
-        phone_number:
-          placeholder:
-            en: "enter mobile phone number"
-          label:
-            en: "mobile phone number"
       additional_info_text:
         en: "By logging in, you accept the {terms_and_conditions} and the {privacy_policy} of this WiFi service. "
       buttons:

@@ -13,11 +13,13 @@ import Login from "./login";
 jest.mock("axios");
 
 const defaultConfig = getConfig("default");
+const loginForm = defaultConfig.components.login_form;
+loginForm.input_fields.phone_number = defaultConfig.components.registration_form.input_fields.phone_number;
 const createTestProps = props => {
   return {
     language: "en",
     orgSlug: "default",
-    loginForm: defaultConfig.components.login_form,
+    loginForm,
     privacyPolicy: defaultConfig.privacy_policy,
     termsAndConditions: defaultConfig.terms_and_conditions,
     settings: {mobile_phone_verification: false},
@@ -241,5 +243,19 @@ describe("<Login /> interactions", () => {
     const authenticateMock = wrapper.instance().props.authenticate.mock;
     expect(authenticateMock.calls.length).toBe(1);
     expect(authenticateMock.calls.pop()).toEqual([true]);
+  });
+  it("phone_number field should be present if mobile phone verification is on", async () => {
+    props.settings = {mobile_phone_verification: true};
+    wrapper = shallow(<Login {...props} />, { context: loadingContextValue });
+    
+    expect(wrapper.find("#email").length).toEqual(0);
+    expect(wrapper.find("[name='phone_number']").length).toEqual(1);
+  });
+  it("email field should be present if mobile phone verification is off", async () => {
+    props.settings = {mobile_phone_verification: false};
+    wrapper = shallow(<Login {...props} />, { context: loadingContextValue });
+    
+    expect(wrapper.find("#email").length).toEqual(1);
+    expect(wrapper.find("[name='phone_number']").length).toEqual(0);
   });
 });
