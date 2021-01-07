@@ -1,0 +1,48 @@
+.large-table {
+    background: #d3d3d3;
+    max-width: 1000px;
+    width: 100%;
+    margin-bottom: 20px;
+    margin-right: auto;
+    margin-left: auto;
+    font-size: 0.85rem;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-top: 0px;
+    padding-top: 0px;
+
+}
+.large-table td {
+    text-align: center;
+    padding: 10px;
+}
+.small-table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+.small-table tbody:nth-child(odd) {
+    background: #d3d3d3;
+}
+.small-table tbody {
+    white-space: nowrap;
+    border-bottom: 15px solid white;
+}
+.active-session {
+    font-weight: bold;
+}
+.loading {
+border: 8px solid #f3f3f3;
+border-top: 8px solid #2b3a42;
+border-radius: 50%;
+width: 30px;
+height: 30px;
+animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+0% {
+    transform: rotate(0deg);
+}
+100% {
+    transform: rotate(360deg);
+}
+}

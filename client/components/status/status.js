@@ -1,5 +1,7 @@
 /* eslint-disable camelcase */
 /* eslint jsx-a11y/label-has-associated-control: 0 */
+import "./index.css";
+
 import "react-toastify/dist/ReactToastify.css";
 
 import axios from "axios";
@@ -42,16 +44,17 @@ export default class Status extends React.Component {
       currentPage: 1,
       hasMoreSessions: true,
       intervalId: null,
+      screenWidth: window.innerWidth
     };
     this.validateToken = this.validateToken.bind(this);
     this.getUserRadiusSessions = this.getUserRadiusSessions.bind(this);
     this.handleSessionLogout = this.handleSessionLogout.bind(this);
     this.fetchMoreSessions = this.fetchMoreSessions.bind(this);
+    this.updateScreenWidth = this.updateScreenWidth.bind(this);
   }
 
   async componentDidMount() {
     const { cookies, orgSlug, verifyMobileNumber, settings } = this.props;
-    const { setLoading } = this.context;
     // to prevent recursive call in case redirect url is status page
     if (window.top === window.self) {
       try {
@@ -86,14 +89,13 @@ export default class Status extends React.Component {
         } else if (this.loginFormRef && this.loginFormRef.current)
           this.loginFormRef.current.submit();
 
-        setLoading(true);
         await this.getUserActiveRadiusSessions();
         await this.getUserPassedRadiusSessions();
-        setLoading(false);
         const intervalId = setInterval(() => {
           this.getUserActiveRadiusSessions();
         }, 60000);
         this.setState({ intervalId });
+        window.addEventListener("resize", this.updateScreenWidth);
       }
       // would be better to show a different button in the status page
       if (isValid && !is_active && settings.mobile_phone_verification) {
@@ -105,6 +107,7 @@ export default class Status extends React.Component {
   componentWillUnmount = () => {
     const { intervalId } = this.state;
     clearInterval(intervalId);
+    window.removeEventListener("resize", this.updateScreenWidth);
   }
 
   async getUserRadiusSessions(params) {
@@ -269,6 +272,10 @@ export default class Status extends React.Component {
     }
   }
 
+  updateScreenWidth = () => {
+    this.setState({screenWidth: window.innerWidth});
+  }
+
   async handleSessionLogout(session) {
     this.setState({
       sessionsToLogout: [session],
@@ -309,7 +316,7 @@ export default class Status extends React.Component {
     return `${mb}MB`;
   }
 
-  getTableRow = (session, sessionSettings) => {
+  getLargeTableRow = (session, sessionSettings) => {
     const { language, captivePortalLogoutForm, statusPage } = this.props;
     const { buttons } = statusPage;
     const time_option = {
@@ -346,6 +353,131 @@ export default class Status extends React.Component {
           </td>
         )}
       </>
+    );
+  }
+
+  getSmallTableRow = (session, session_info) => {
+    const { language, captivePortalLogoutForm, statusPage } = this.props;
+    const { buttons } = statusPage;
+    const time_option = {
+      dateStyle: "medium",
+      timeStyle: "short",
+      hour12: false,
+    };
+    const activeSessionText = getText(session_info.settings.active_session.text, language);
+    return (
+      <tbody key={session.session_id}>
+        <tr key={`${session.session_id  }start_time`} className={session.stop_time === null ? "active-session" : ""}>
+          <th>{getText(session_info.header.start_time.text, language)}:</th>
+          <td>
+            {new Intl.DateTimeFormat(session_info.settings.date_language_locale, time_option).format(new Date(session.start_time))}
+          </td>
+        </tr>
+        <tr key={`${session.session_id  }stop_time`} className={session.stop_time === null ? "active-session" : ""}>
+          <th>{getText(session_info.header.stop_time.text, language)}:</th>
+          <td>
+            {
+              session.stop_time === null ? activeSessionText :
+                new Intl.DateTimeFormat(session_info.settings.date_language_locale, time_option).format(new Date(session.stop_time))
+            }
+          </td>
+        </tr>
+        <tr key={`${session.session_id  }duration`} className={session.stop_time === null ? "active-session" : ""}>
+          <th>{getText(session_info.header.duration.text, language)}:</th>
+          <td>{this.getDuration(session.session_time)}</td>
+        </tr>
+        <tr key={`${session.session_id  }download`} className={session.stop_time === null ? "active-session" : ""}>
+          <th>{getText(session_info.header.download.text, language)}:</th>
+          <td>{this.getMB(session.output_octets)}</td>
+        </tr>
+        <tr key={`${session.session_id  }upload`} className={session.stop_time === null ? "active-session" : ""}>
+          <th>{getText(session_info.header.upload.text, language)}:</th>
+          <td>{this.getMB(session.input_octets)}</td>
+        </tr>
+        <tr key={`${session.session_id  }device_address`} className={session.stop_time === null ? "active-session" : ""}>
+          <th>{getText(session_info.header.device_address.text, language)}:</th>
+          <td>{session.calling_station_id}</td>
+        </tr>
+        {(session.stop_time == null && captivePortalLogoutForm.logout_by_session) && (
+          <tr key={`${session.session_id  }logout`} className="active-session">
+            <th>{`${getText(buttons.logout.text, language)  } ?`}:</th>
+            <td className="row logout">
+              <input
+                type="button"
+                className="button"
+                value={getText(buttons.logout.text, language)}
+                onClick={() => { this.handleSessionLogout(session); }}
+              />
+            </td>
+          </tr>
+        )}
+      </tbody>
+    );
+  }
+
+  getLargeTable = (session_info) => {
+    const {activeSessions, passedSessions} = this.state;
+    const {language} = this.props;
+    return (
+      <table className="large-table">
+        <thead>
+          <tr>
+            {Object.keys(session_info.header).map(key => {
+              return (
+                <th key={key}>{getText(session_info.header[key].text, language)}</th>
+              );
+            })}
+          </tr>
+        </thead>
+        <tbody>
+          {activeSessions.map(session => {
+            return (
+              <tr key={session.session_id} className={session.stop_time === null ? "active-session" : ""}>
+                {this.getLargeTableRow(session, session_info.settings)}
+              </tr>
+            );
+          })}
+          {passedSessions.map(session => {
+            return (
+              <tr key={session.session_id} className={session.stop_time === null ? "active-session" : ""}>
+                {this.getLargeTableRow(session, session_info.settings)}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    );
+  }
+
+  getSmallTable = (session_info) => {
+    const {activeSessions, passedSessions} = this.state;
+    return (
+      <table className="small-table">
+        {activeSessions.map(session => {
+          return (
+            this.getSmallTableRow(session, session_info)
+          );
+        })}
+        {passedSessions.map(session => {
+          return (
+            this.getSmallTableRow(session, session_info)
+          );
+        })}
+      </table>
+    );
+  }
+
+  getTable = (session_info) => {
+    const {screenWidth} = this.state;
+    if (screenWidth > 656) {
+      return this.getLargeTable(session_info);
+    }
+    return this.getSmallTable(session_info);
+  }
+
+  getSpinner = () => {
+    return (
+      <div style={{ "paddingLeft": "50%" }}><p className="loading" /></div>
     );
   }
 
@@ -425,46 +557,18 @@ export default class Status extends React.Component {
             <Contact />
           </div>
         </div>
-        {(activeSessions.length > 0 || passedSessions.length > 0) && (
-          <div className="session-column" id="sessions">
-            <InfinteScroll
-              dataLength={passedSessions.length}
-              next={this.fetchMoreSessions}
-              hasMore={hasMoreSessions}
-              loader={<div style={{ "paddingLeft": "50%" }}><p className="loading" /></div>}
-            >
-              <>
-                <table>
-                  <thead>
-                    <tr>
-                      {Object.keys(session_info.header).map(key => {
-                        return (
-                          <th key={key}>{getText(session_info.header[key].text, language)}</th>
-                        );
-                      })}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {activeSessions.map(session => {
-                      return (
-                        <tr key={session.session_id} className={session.stop_time === null ? "active-session" : ""}>
-                          {this.getTableRow(session, session_info.settings)}
-                        </tr>
-                      );
-                    })}
-                    {passedSessions.map(session => {
-                      return (
-                        <tr key={session.session_id} className={session.stop_time === null ? "active-session" : ""}>
-                          {this.getTableRow(session, session_info.settings)}
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </>
-            </InfinteScroll>
-          </div>
-        )}
+        {((activeSessions.length > 0 || passedSessions.length > 0) && (
+          <InfinteScroll
+            dataLength={passedSessions.length}
+            next={this.fetchMoreSessions}
+            hasMore={hasMoreSessions}
+            loader={this.getSpinner()}
+          >
+            <>
+              {this.getTable(session_info)}
+            </>
+          </InfinteScroll>
+        )) || this.getSpinner()}
 
         {/* check to ensure this block of code is executed in root document and not in Iframe */}
         {captivePortalLoginForm && window.top === window.self && (
