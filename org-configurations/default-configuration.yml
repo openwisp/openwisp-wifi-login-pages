@@ -82,10 +82,6 @@ client:
             en: "enter mobile phone number"
           label:
             en: "mobile phone number"
-          # default international prefix
-          # country: "it"
-          # restrict international prefixes shown
-          # only_countries: ["it", "de", "uk"]
         username:
           type: "text"
           pattern: '[a-zA-Z@.+\-_\d]{1,150}'
