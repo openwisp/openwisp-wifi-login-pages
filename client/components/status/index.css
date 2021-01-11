@@ -1,56 +1,56 @@
 .large-table {
-    max-width: 1000px;
-    width: 100%;
-    margin-bottom: 20px;
-    margin-right: auto;
-    margin-left: auto;
-    font-size: 0.85rem;
-    border-collapse: collapse;
-    border-spacing: 0;
-    margin-top: 0px;
-    padding-top: 3%;
+  max-width: 1000px;
+  width: 100%;
+  margin-bottom: 20px;
+  margin-right: auto;
+  margin-left: auto;
+  font-size: 0.85rem;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-top: 0px;
+  padding-top: 3%;
 }
 .large-table th {
-    padding: 2% 0 2%;
+  padding: 2% 0 2%;
 }
 .large-table td {
-    text-align: center;
-    padding: 2% 0 2%;
-    border-top: 1px dotted rgba(0, 0, 0, 0.2);
-    border-bottom: 1px dotted rgba(0, 0, 0, 0.2);
+  text-align: center;
+  padding: 2% 0 2%;
+  border-top: 1px dotted rgba(0, 0, 0, 0.2);
+  border-bottom: 1px dotted rgba(0, 0, 0, 0.2);
 }
 .small-table {
-    border-collapse: collapse;
-    border-spacing: 0;
-    width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
 }
 .large-table  tbody tr:nth-child(odd),
 .small-table tbody:nth-child(even) { background: rgba(255, 255, 255, 0.3) }
 .small-table tbody td { padding: 1.5% 0 }
 .small-table tbody tr:first-child th,
 .small-table tbody tr:first-child td {
-    padding-top: 3%;
+  padding-top: 3%;
 }
 .small-table tbody tr:last-child td,
 .small-table tbody tr:last-child th {
-    padding-bottom: 3%;
+  padding-bottom: 3%;
 }
 .active-session {
-    font-weight: bold;
+  font-weight: bold;
 }
 .loading {
-border: 8px solid #f3f3f3;
-border-top: 8px solid #2b3a42;
-border-radius: 50%;
-width: 30px;
-height: 30px;
-animation: spin 0.8s linear infinite;
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #2b3a42;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 0.8s linear infinite;
 }
 @keyframes spin {
-0% {
+  0% {
     transform: rotate(0deg);
-}
-100% {
+  }
+  100% {
     transform: rotate(360deg);
-}
+  }
 }
