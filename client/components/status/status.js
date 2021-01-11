@@ -44,13 +44,15 @@ export default class Status extends React.Component {
       currentPage: 1,
       hasMoreSessions: true,
       intervalId: null,
-      screenWidth: window.innerWidth
+      screenWidth: window.innerWidth,
+      loadSpinner: true,
     };
     this.validateToken = this.validateToken.bind(this);
     this.getUserRadiusSessions = this.getUserRadiusSessions.bind(this);
     this.handleSessionLogout = this.handleSessionLogout.bind(this);
     this.fetchMoreSessions = this.fetchMoreSessions.bind(this);
     this.updateScreenWidth = this.updateScreenWidth.bind(this);
+    this.updateSpinner = this.updateSpinner.bind(this);
   }
 
   async componentDidMount() {
@@ -96,6 +98,7 @@ export default class Status extends React.Component {
         }, 60000);
         this.setState({ intervalId });
         window.addEventListener("resize", this.updateScreenWidth);
+        this.updateSpinner();
       }
       // would be better to show a different button in the status page
       if (isValid && !is_active && settings.mobile_phone_verification) {
@@ -274,6 +277,15 @@ export default class Status extends React.Component {
 
   updateScreenWidth = () => {
     this.setState({screenWidth: window.innerWidth});
+  }
+
+  updateSpinner = () => {
+    const {activeSessions, passedSessions} = this.state;
+    if (activeSessions.length === 0 && passedSessions.length === 0) {
+      this.setState({loadSpinner: false});
+    } else {
+      this.setState({loadSpinner: true});
+    }
   }
 
   async handleSessionLogout(session) {
@@ -498,7 +510,8 @@ export default class Status extends React.Component {
       activeSessions,
       passedSessions,
       sessionsToLogout,
-      hasMoreSessions
+      hasMoreSessions,
+      loadSpinner
     } = this.state;
     const contentArr = getText(content, language).split("\n");
     userInfo.status = getText(user_info.status.value, language);
@@ -568,7 +581,10 @@ export default class Status extends React.Component {
               {this.getTable(session_info)}
             </>
           </InfinteScroll>
-        )) || this.getSpinner()}
+        )) || loadSpinner && (
+            this.getSpinner()
+          )
+        }
 
         {/* check to ensure this block of code is executed in root document and not in Iframe */}
         {captivePortalLoginForm && window.top === window.self && (

@@ -592,4 +592,17 @@ describe("<Status /> interactions", () => {
     wrapper.instance().componentWillUnmount();
     expect(clearInterval).toHaveBeenCalledWith(intervalId);
   });
+  it("test loading spinner", async () => {
+    const prop = createTestProps();
+    prop.statusPage.links = links;
+    prop.isAuthenticated = true;
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    // spinner should not load if no sessions are available
+    wrapper.instance().updateSpinner();
+    expect(wrapper.find(".loading").length).toEqual(0);
+
+  });
 });
