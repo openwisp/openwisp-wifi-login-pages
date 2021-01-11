@@ -136,6 +136,14 @@
             "label": {
               "en": "confirm"
             }
+          },
+          "phone_number": {
+            "placeholder": {
+              "en": "enter mobile phone number"
+            },
+            "label": {
+              "en": "mobile phone number"
+            }
           }
         },
         "buttons": {

@@ -77,6 +77,11 @@ client:
 
     registration_form:
       input_fields:
+        phone_number:
+          placeholder:
+            en: "enter mobile phone number"
+          label:
+            en: "mobile phone number"
         username:
           type: "text"
           pattern: '[a-zA-Z@.+\-_\d]{1,150}'

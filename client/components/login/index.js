@@ -5,8 +5,10 @@ import Component from "./login";
 
 const mapStateToProps = state => {
   const conf = state.organization.configuration;
+  const loginForm = conf.components.login_form;
+  loginForm.input_fields.phone_number = conf.components.registration_form.input_fields.phone_number;
   return {
-    loginForm: conf.components.login_form,
+    loginForm,
     privacyPolicy: conf.privacy_policy,
     termsAndConditions: conf.terms_and_conditions,
     orgSlug: conf.slug,
