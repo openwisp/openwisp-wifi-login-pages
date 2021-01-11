@@ -1,5 +1,4 @@
 .large-table {
-    background: #d3d3d3;
     max-width: 1000px;
     width: 100%;
     margin-bottom: 20px;
@@ -9,23 +8,32 @@
     border-collapse: collapse;
     border-spacing: 0;
     margin-top: 0px;
-    padding-top: 0px;
-
+    padding-top: 3%;
+}
+.large-table th {
+    padding: 2% 0 2%;
 }
 .large-table td {
     text-align: center;
-    padding: 10px;
+    padding: 2% 0 2%;
+    border-top: 1px dotted rgba(0, 0, 0, 0.2);
+    border-bottom: 1px dotted rgba(0, 0, 0, 0.2);
 }
 .small-table {
     border-collapse: collapse;
     border-spacing: 0;
+    width: 100%;
 }
-.small-table tbody:nth-child(odd) {
-    background: #d3d3d3;
+.large-table  tbody tr:nth-child(odd),
+.small-table tbody:nth-child(even) { background: rgba(255, 255, 255, 0.3) }
+.small-table tbody td { padding: 1.5% 0 }
+.small-table tbody tr:first-child th,
+.small-table tbody tr:first-child td {
+    padding-top: 3%;
 }
-.small-table tbody {
-    white-space: nowrap;
-    border-bottom: 15px solid white;
+.small-table tbody tr:last-child td,
+.small-table tbody tr:last-child th {
+    padding-bottom: 3%;
 }
 .active-session {
     font-weight: bold;

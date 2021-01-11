@@ -419,7 +419,7 @@ export default class Status extends React.Component {
     const {activeSessions, passedSessions} = this.state;
     const {language} = this.props;
     return (
-      <table className="large-table">
+      <table className="large-table bg">
         <thead>
           <tr>
             {Object.keys(session_info.header).map(key => {
@@ -452,7 +452,7 @@ export default class Status extends React.Component {
   getSmallTable = (session_info) => {
     const {activeSessions, passedSessions} = this.state;
     return (
-      <table className="small-table">
+      <table className="small-table bg">
         {activeSessions.map(session => {
           return (
             this.getSmallTableRow(session, session_info)
