@@ -55,11 +55,7 @@ exports[`<Status /> rendering should render correctly 1`] = `
     </div>
   </div>
   <div
-    style={
-      Object {
-        "paddingLeft": "50%",
-      }
-    }
+    className="loadingContainer"
   >
     <p
       className="loading"
