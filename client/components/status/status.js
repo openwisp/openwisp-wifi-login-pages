@@ -37,7 +37,7 @@ export default class Status extends React.Component {
       password: "",
       is_active: null,
       activeSessions: [],
-      passedSessions: [],
+      pastSessions: [],
       sessionsToLogout: [],
       loggedOut: false,
       userInfo: {},
@@ -130,8 +130,8 @@ export default class Status extends React.Component {
         options.activeSessions = response.data;
         options.sessionsToLogout = response.data;
       } else {
-        const { passedSessions } = this.state;
-        options.passedSessions = passedSessions.concat(response.data);
+        const { pastSessions } = this.state;
+        options.pastSessions = pastSessions.concat(response.data);
         options.currentPage = params.page;
       }
       if ("link" in response.headers && !response.headers.link.includes("next")) {
@@ -280,18 +280,14 @@ export default class Status extends React.Component {
   }
 
   updateSpinner = () => {
-    const {activeSessions, passedSessions} = this.state;
-    if (activeSessions.length === 0 && passedSessions.length === 0) {
-      this.setState({loadSpinner: false});
-    } else {
-      this.setState({loadSpinner: true});
-    }
+    const {activeSessions, pastSessions} = this.state;
+    this.setState({loadSpinner: (activeSessions.length || pastSessions.length)});
   }
 
   async handleSessionLogout(session) {
     this.setState({
       sessionsToLogout: [session],
-      passedSessions: [],
+      pastSessions: [],
       activeSessions: [],
       currentPage: 0,
       hasMoreSessions: true
@@ -428,7 +424,7 @@ export default class Status extends React.Component {
   }
 
   getLargeTable = (session_info) => {
-    const {activeSessions, passedSessions} = this.state;
+    const {activeSessions, pastSessions} = this.state;
     const {language} = this.props;
     return (
       <table className="large-table bg">
@@ -449,7 +445,7 @@ export default class Status extends React.Component {
               </tr>
             );
           })}
-          {passedSessions.map(session => {
+          {pastSessions.map(session => {
             return (
               <tr key={session.session_id} className={session.stop_time === null ? "active-session" : ""}>
                 {this.getLargeTableRow(session, session_info.settings)}
@@ -462,7 +458,7 @@ export default class Status extends React.Component {
   }
 
   getSmallTable = (session_info) => {
-    const {activeSessions, passedSessions} = this.state;
+    const {activeSessions, pastSessions} = this.state;
     return (
       <table className="small-table bg">
         {activeSessions.map(session => {
@@ -470,7 +466,7 @@ export default class Status extends React.Component {
             this.getSmallTableRow(session, session_info)
           );
         })}
-        {passedSessions.map(session => {
+        {pastSessions.map(session => {
           return (
             this.getSmallTableRow(session, session_info)
           );
@@ -508,7 +504,7 @@ export default class Status extends React.Component {
       password,
       userInfo,
       activeSessions,
-      passedSessions,
+      pastSessions,
       sessionsToLogout,
       hasMoreSessions,
       loadSpinner
@@ -570,9 +566,9 @@ export default class Status extends React.Component {
             <Contact />
           </div>
         </div>
-        {((activeSessions.length > 0 || passedSessions.length > 0) && (
+        {((activeSessions.length > 0 || pastSessions.length > 0) && (
           <InfinteScroll
-            dataLength={passedSessions.length}
+            dataLength={pastSessions.length}
             next={this.fetchMoreSessions}
             hasMore={hasMoreSessions}
             loader={this.getSpinner()}

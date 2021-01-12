@@ -603,6 +603,5 @@ describe("<Status /> interactions", () => {
     // spinner should not load if no sessions are available
     wrapper.instance().updateSpinner();
     expect(wrapper.find(".loading").length).toEqual(0);
-
   });
 });
