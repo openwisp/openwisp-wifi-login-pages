@@ -485,7 +485,7 @@ export default class Status extends React.Component {
 
   getSpinner = () => {
     return (
-      <div style={{ "paddingLeft": "50%" }}><p className="loading" /></div>
+      <div className="loadingContainer"><p className="loading" /></div>
     );
   }
 

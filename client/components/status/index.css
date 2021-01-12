@@ -1,13 +1,13 @@
 .large-table {
   max-width: 1000px;
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 27px;
   margin-right: auto;
   margin-left: auto;
   font-size: 0.85rem;
   border-collapse: collapse;
   border-spacing: 0;
-  margin-top: 0px;
+  margin-top: 0;
   padding-top: 3%;
 }
 .large-table th {
@@ -23,6 +23,7 @@
   border-collapse: collapse;
   border-spacing: 0;
   width: 100%;
+  margin-bottom: 27px;
 }
 .large-table  tbody tr:nth-child(odd),
 .small-table tbody:nth-child(even) { background: rgba(255, 255, 255, 0.3) }
@@ -37,6 +38,11 @@
 }
 .active-session {
   font-weight: bold;
+}
+.loadingContainer{
+  padding-left: 50%;
+  position: relative;
+  top: -7px;
 }
 .loading {
   border: 8px solid #f3f3f3;
