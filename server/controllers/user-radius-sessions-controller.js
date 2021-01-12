@@ -20,7 +20,6 @@ const getUserRadiusSessions = (req, res) => {
       );
       const timeout = conf.timeout * 1000;
       let token = req.cookies[`${reqOrg}_auth_token`] || "";
-      const macaddr = req.cookies[`${reqOrg}_macaddr`] || "";
       token = cookie.unsign(token, conf.secret_key);
       // make AJAX request
       axios({
@@ -31,9 +30,12 @@ const getUserRadiusSessions = (req, res) => {
         },
         url: `${host}${userRadiusSessionsUrl}/`,
         timeout,
-        params: {calling_station_id: macaddr, is_open: true},
+        params: req.query,
       })
         .then(response => {
+          if ("link" in response.headers) {
+            res.setHeader('link', response.headers.link);
+          }
           res
             .status(response.status)
             .type("application/json")

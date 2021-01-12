@@ -54,6 +54,13 @@ exports[`<Status /> rendering should render correctly 1`] = `
       <Memo(Connect(Contact)) />
     </div>
   </div>
+  <div
+    className="loadingContainer"
+  >
+    <p
+      className="loading"
+    />
+  </div>
   <React.Fragment>
     <form
       action="http://localhost/"

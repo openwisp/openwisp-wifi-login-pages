@@ -130,6 +130,7 @@ body .input.error {
   box-sizing: border-box;
   padding: 27px 0 27px 0;
 }
+
 .container > .inner {
   display: flex;
   flex-direction: row;
@@ -138,7 +139,6 @@ body .input.error {
   max-width: 1000px;
 }
 .main-column {
-  background: #d3d3d3;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -153,6 +153,7 @@ body .input.error {
 .main-column p {
   margin-top: 1px;
 }
+.main-column, .bg { background: #d3d3d3 }
 .side-column {
   width: 44%;
   background: #eee;

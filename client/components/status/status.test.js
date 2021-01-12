@@ -124,13 +124,19 @@ describe("<Status /> interactions", () => {
             statusText: "OK",
           },
           data: [],
+          headers: {},
         });
       })
       .mockImplementationOnce(() => {
         return Promise.resolve({
           status: 200,
           statusText: "OK",
-          data: [{session_id: 1}],
+          data: [{
+            session_id: 1,
+            start_time: "2020-09-08T00:22:28-04:00",
+            stop_time: "2020-09-08T00:22:29-04:00",
+          }],
+          headers: {},
         });
       });
     props = createTestProps();
@@ -144,7 +150,7 @@ describe("<Status /> interactions", () => {
     expect(wrapper.instance().props.logout).toHaveBeenCalled();
     wrapper.find(".logout input.button").simulate("click", {});
     await tick();
-    expect(wrapper.instance().state.sessions.length).toBe(1);
+    expect(wrapper.instance().state.activeSessions.length).toBe(1);
     expect(wrapper.instance().props.logout).toHaveBeenCalled();
   });
 
@@ -166,7 +172,32 @@ describe("<Status /> interactions", () => {
         return Promise.resolve({
           status: 200,
           statusText: "OK",
-          data: [{session_id: 1}],
+          data: [{
+            session_id: 1,
+            start_time: "2020-09-08T00:22:28-04:00",
+            stop_time: "2020-09-08T00:22:29-04:00",
+          }],
+          headers: {},
+        });
+      })
+      .mockImplementationOnce(() => {
+        return Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: [{
+            session_id: 1,
+            start_time: "2020-09-08T00:22:28-04:00",
+            stop_time: "2020-09-08T00:22:29-04:00",
+          }],
+          headers: {},
+        });
+      })
+      .mockImplementationOnce(() => {
+        return Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: [],
+          headers: {},
         });
       })
       .mockImplementationOnce(() => {
@@ -179,6 +210,26 @@ describe("<Status /> interactions", () => {
             is_active: true,
             phone_number: "",
           },
+        });
+      })
+      .mockImplementationOnce(() => {
+        return Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: [{
+            session_id: 1,
+            start_time: "2020-09-08T00:22:28-04:00",
+            stop_time: "2020-09-08T00:22:29-04:00",
+          }],
+          headers: {},
+        });
+      })
+      .mockImplementationOnce(() => {
+        return Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: [],
+          headers: {},
         });
       })
       .mockImplementationOnce(() => {
@@ -198,9 +249,10 @@ describe("<Status /> interactions", () => {
           status: 200,
           statusText: "OK",
           data: [],
+          headers: {},
         });
       });
-    jest.spyOn(Status.prototype, "getUserRadiusSessions");
+    jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
 
     props = createTestProps();
     wrapper = shallow(<Status {...props} />, {
@@ -210,8 +262,8 @@ describe("<Status /> interactions", () => {
     expect(wrapper.instance().props.cookies.get("default_macaddr")).toBe(
       "4e:ed:11:2b:17:ae",
     );
-    expect(Status.prototype.getUserRadiusSessions).toHaveBeenCalled();
-    expect(wrapper.instance().state.sessions.length).toBe(1);
+    expect(Status.prototype.getUserActiveRadiusSessions).toHaveBeenCalled();
+    expect(wrapper.instance().state.activeSessions.length).toBe(1);
 
     wrapper.setProps({
       location: {
@@ -239,29 +291,36 @@ describe("<Status /> interactions", () => {
     wrapper.instance().componentDidMount();
     await tick();
     expect(submintFn.mock.calls.length).toBe(1);
-    Status.prototype.getUserRadiusSessions.mockRestore();
+    Status.prototype.getUserActiveRadiusSessions.mockRestore();
   });
 
-  it("test getUserRadiusSessions method", async () => {
+  it("test getUserActiveRadiusSessions method", async () => {
     axios
       .mockImplementationOnce(() => {
         return Promise.resolve({
           status: 200,
           statusText: "OK",
           data: [],
+          headers: {},
         });
       })
       .mockImplementationOnce(() => {
         return Promise.resolve({
           status: 200,
           statusText: "OK",
-          data: [{session_id: 1}],
+          data: [{
+            session_id: 1,
+            start_time: "2020-09-08T00:22:28-04:00",
+            stop_time: "2020-09-08T00:22:29-04:00",
+          }],
+          headers: {},
         });
       })
       .mockImplementationOnce(() => {
         return Promise.reject({
           response: {
             status: 401,
+            headers: {},
           },
         });
       });
@@ -270,14 +329,14 @@ describe("<Status /> interactions", () => {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: true,
     });
-    jest.spyOn(wrapper.instance(), "getUserRadiusSessions");
-    wrapper.instance().getUserRadiusSessions();
+    jest.spyOn(wrapper.instance(), "getUserActiveRadiusSessions");
+    wrapper.instance().getUserActiveRadiusSessions();
     await tick();
-    expect(wrapper.instance().state.sessions.length).toBe(0);
-    wrapper.instance().getUserRadiusSessions();
+    expect(wrapper.instance().state.activeSessions.length).toBe(0);
+    wrapper.instance().getUserActiveRadiusSessions();
     await tick();
-    expect(wrapper.instance().state.sessions.length).toBe(1);
-    wrapper.instance().getUserRadiusSessions();
+    expect(wrapper.instance().state.activeSessions.length).toBe(1);
+    wrapper.instance().getUserActiveRadiusSessions();
     await tick();
     expect(wrapper.instance().props.logout.mock.calls.length).toBe(1);
   });
@@ -397,5 +456,152 @@ describe("<Status /> interactions", () => {
     expect(wrapper.instance().props.cookies.get("default_macaddr")).toBe(
       "4e:ed:11:2b:17:ae",
     );
+  });
+
+  it("test active session table", async () => {
+    axios
+      .mockImplementationOnce(() => {
+        return Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: [{
+            session_id: 1,
+            start_time: "2020-09-08T00:22:28-04:00",
+            stop_time: "2020-09-08T00:22:29-04:00",
+          }],
+          headers: {},
+        });
+      });
+    props = createTestProps();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    wrapper.instance().getUserActiveRadiusSessions();
+    await tick();
+    expect(wrapper.contains(<th>Start time</th>)).toBe(true);
+    expect(wrapper.contains(<th>Stop time</th>)).toBe(true);
+    expect(wrapper.contains(<th>Duration</th>)).toBe(true);
+    expect(wrapper.contains(<th>Device address</th>)).toBe(true);
+  });
+
+  it("test passed session table", async () => {
+    axios
+      .mockImplementationOnce(() => {
+        return Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: [{
+            session_id: 1,
+            start_time: "2020-09-08T00:22:28-04:00",
+            stop_time: "2020-09-08T00:22:29-04:00",
+          }],
+          headers: {},
+        });
+      });
+    props = createTestProps();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    wrapper.instance().getUserPassedRadiusSessions();
+    await tick();
+    expect(wrapper.contains(<th>Start time</th>)).toBe(true);
+    expect(wrapper.contains(<th>Stop time</th>)).toBe(true);
+    expect(wrapper.contains(<th>Duration</th>)).toBe(true);
+    expect(wrapper.contains(<th>Device address</th>)).toBe(true);
+  });
+
+  it("test empty session table", async () => {
+    axios
+      .mockImplementationOnce(() => {
+        return Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: [],
+          headers: {},
+        });
+      })
+      .mockImplementationOnce(() => {
+        return Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: [],
+          headers: {},
+        });
+      });
+    props = createTestProps();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    wrapper.instance().getUserPassedRadiusSessions();
+    await tick();
+    expect(wrapper.contains(<th>Start time</th>)).toBe(false);
+    expect(wrapper.contains(<th>Stop time</th>)).toBe(false);
+    expect(wrapper.contains(<th>Duration</th>)).toBe(false);
+    expect(wrapper.contains(<th>Device address</th>)).toBe(false);
+  });
+
+  it("test interval cleared on componentUnmount", async () => {
+    axios
+      .mockImplementationOnce(() => {
+        return Promise.resolve({
+          status: 200,
+          data: {
+            response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+            radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
+            username: "tester@tester.com",
+            is_active: true,
+            phone_number: "",
+          },
+        });
+      })
+      .mockImplementationOnce(() => {
+        return Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: [{
+            session_id: 1,
+            start_time: "2020-09-08T00:22:28-04:00",
+            stop_time: "2020-09-08T00:22:29-04:00",
+          }],
+          headers: {},
+        });
+      })
+      .mockImplementationOnce(() => {
+        return Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: [{
+            session_id: 1,
+            start_time: "2020-09-08T00:22:28-04:00",
+            stop_time: "2020-09-08T00:22:29-04:00",
+          }],
+          headers: {},
+        });
+      });
+    props = createTestProps();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    jest.spyOn(window, "clearInterval");
+    wrapper.instance().componentDidMount();
+    const {intervalId} = wrapper.instance().state;
+    wrapper.instance().componentWillUnmount();
+    expect(clearInterval).toHaveBeenCalledWith(intervalId);
+  });
+  it("test loading spinner", async () => {
+    const prop = createTestProps();
+    prop.statusPage.links = links;
+    prop.isAuthenticated = true;
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    // spinner should not load if no sessions are available
+    wrapper.instance().updateSpinner();
+    expect(wrapper.find(".loading").length).toEqual(0);
   });
 });
