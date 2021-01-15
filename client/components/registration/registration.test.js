@@ -155,6 +155,10 @@ describe("<Registration /> interactions", () => {
           email: "email error",
           password1: "password1 error",
           password2: "",
+          first_name: "",
+          last_name: "",
+          location: "",
+          birth_date: "",
         });
         expect(wrapper.find("div.error")).toHaveLength(2);
         expect(
@@ -208,6 +212,42 @@ describe("<Registration /> interactions", () => {
             lastConsoleOutuput = null;
           });
       });
+  });
+  it("test optional fields disabled", async () => {
+    wrapper = shallow(<Registration {...props} />, {
+      context: loadingContextValue,
+      disableLifecycleMethods: true
+    });
+    expect(wrapper.find(".first_name").length).toEqual(0);
+    expect(wrapper.find(".last_name").length).toEqual(0);
+    expect(wrapper.find(".birth_date").length).toEqual(0);
+    expect(wrapper.find(".location").length).toEqual(0);
+  });
+  it("test optional fields allowed", async () => {
+    props.registration.input_fields.first_name.setting = "allowed";
+    props.registration.input_fields.location.setting = "allowed";
+    wrapper = shallow(<Registration {...props}/>, {
+      context: loadingContextValue,
+      disableLifecycleMethods: true,
+    });
+    expect(wrapper.find("[htmlFor='first_name']").text()).toEqual("first name (optional)");
+    expect(wrapper.find("[htmlFor='location']").text()).toEqual("location (optional)");
+    expect(wrapper.find(".last_name").length).toEqual(0);
+    expect(wrapper.find(".birth_date").length).toEqual(0);
+  });
+  it("test optional fields mandatory", async () => {
+    props.registration.input_fields.birth_date.setting = "mandatory";
+    props.registration.input_fields.first_name.setting = "mandatory";
+    props.registration.input_fields.last_name.setting = "allowed";
+    props.registration.input_fields.location.setting = "allowed";
+    wrapper = shallow(<Registration {...props} />, {
+      context: loadingContextValue,
+      disableLifecycleMethods: true,
+    });
+    expect(wrapper.find("[htmlFor='first_name']").text()).toEqual("first name");
+    expect(wrapper.find("[htmlFor='birth_date']").text()).toEqual("birth date");
+    expect(wrapper.find("[htmlFor='last_name']").text()).toEqual("last name (optional)");
+    expect(wrapper.find("[htmlFor='location']").text()).toEqual("location (optional)");
   });
 });
 
@@ -277,7 +317,7 @@ describe("Registration and Mobile Phone Verification interactions", () => {
 
     // testing if username is equal to phone_number
     const axiosParam = {
-      "data": "email=tester%40openwisp.io&username=%2B393660011333&password1=tester123&password2=tester123&phone_number=%2B393660011333",
+      "data": "email=tester%40openwisp.io&username=%2B393660011333&first_name=&last_name=&birth_date=&location=&password1=tester123&password2=tester123&phone_number=%2B393660011333",
       "headers": {
         "content-type": "application/x-www-form-urlencoded",
       },

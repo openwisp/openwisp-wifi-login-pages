@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import axios from "axios";
 import cookie from "cookie-signature";
 import merge from "deepmerge";
@@ -18,12 +19,25 @@ const registration = (req, res) => {
       // replacing org_slug param with the slug
       registerUrl = registerUrl.replace("{org_slug}", org.slug);
       const timeout = conf.timeout * 1000;
-      const {username, email, password1, password2} = req.body;
+      const {
+        username,
+        email,
+        first_name,
+        last_name,
+        birth_date,
+        location,
+        password1,
+        password2
+      } = req.body;
       const postData = {
         email,
         username,
         password1,
         password2,
+        first_name,
+        last_name,
+        birth_date,
+        location,
       };
       if (settings && settings.mobile_phone_verification) {
         postData.phone_number = req.body.phone_number;

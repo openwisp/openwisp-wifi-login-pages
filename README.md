@@ -270,6 +270,16 @@ With the configuration above:
 - the link to `twitter` (from Contact) and `change password` (from Header)
   links will be visible to only authenticated users
 
+#### Optional Fields
+
+We can use the `setting` attribute of optional fields `first_name`, `last_name`, `location` and `birth_date` 
+to decide if the fields should either be disabled, allowed but not required or required. `setting` can take 
+any of the following value:
+
+- `disabled`: This is the default value. fields with this setting are not shown.
+- `allowed`: Fields with this setting are shown but not required.
+- `mandatory`: Fields with this setting are shown and required.
+
 ### License
 
 See [LICENSE](https://github.com/openwisp/openwisp-wifi-login-pages/blob/master/LICENSE).
