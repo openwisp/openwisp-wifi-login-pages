@@ -28,6 +28,10 @@ export default class Registration extends React.Component {
       email: "",
       password1: "",
       password2: "",
+      first_name: "",
+      last_name: "",
+      location: "",
+      birth_date: "",
       errors: {},
       success: false,
     };
@@ -43,7 +47,17 @@ export default class Registration extends React.Component {
     const { setLoading } = this.context;
     event.preventDefault();
     const { orgSlug, authenticate, verifyMobileNumber, settings } = this.props;
-    const { phone_number, email, password1, password2, errors } = this.state;
+    const { 
+      phone_number,
+      email,
+      first_name,
+      last_name,
+      birth_date,
+      location,
+      password1,
+      password2,
+      errors
+    } = this.state;
 
     if (password1 !== password2) {
       this.setState({
@@ -60,6 +74,10 @@ export default class Registration extends React.Component {
     const postData = {
       email,
       "username": email,
+      first_name,
+      last_name,
+      birth_date,
+      location,
       password1,
       password2,
     };
@@ -109,6 +127,10 @@ export default class Registration extends React.Component {
             ...errors,
             ...(data.phone_number ? { phone_number: data.phone_number } : null),
             ...(data.email ? { email: data.email.toString() } : { email: "" }),
+            ...(data.first_name ? { first_name: data.first_name.toString() } : { first_name: "" }),
+            ...(data.last_name ? { last_name: data.last_name.toString() } : { last_name: "" }),
+            ...(data.birth_date ? { birth_date: data.birth_date.toString() } : { birth_date: "" }),
+            ...(data.location ? { location: data.location.toString() } : { location: "" }),
             ...(data.password1
               ? { password1: data.password1.toString() }
               : { password1: "" }),
@@ -118,6 +140,11 @@ export default class Registration extends React.Component {
           },
         });
       });
+  }
+
+  getLabel = (field) => {
+    const { language } = this.props;
+    return field.setting === "mandatory" ? getText(field.label, language) : getText(field.label_optional, language);
   }
 
   render() {
@@ -131,7 +158,18 @@ export default class Registration extends React.Component {
       match,
     } = this.props;
     const { buttons, additional_info_text, input_fields, links } = registration;
-    const { phone_number, email, password1, password2, errors, success } = this.state;
+    const {
+      phone_number,
+      email,
+      first_name,
+      last_name,
+      birth_date,
+      location,
+      password1,
+      password2,
+      errors,
+      success
+    } = this.state;
     return (
       <>
         <div className="container content" id="registration">
@@ -209,6 +247,115 @@ export default class Registration extends React.Component {
                     title={getText(input_fields.email.pattern_description, language)}
                   />
                 </div>
+
+                {input_fields.first_name.setting !== "disabled" && (
+                  <div className="row first_name">
+                    <label htmlFor="first_name">
+                      {this.getLabel(input_fields.first_name)}
+                    </label>
+                    {errors.first_name && (
+                      <div className="error first_name">
+                        <span className="icon">!</span>
+                        <span className="text text-first_name">
+                          {errors.first_name}
+                        </span>
+                      </div>
+                    )}
+                    <input
+                      className={`input ${errors.first_name ? "error" : ""}`}
+                      type={input_fields.first_name.type}
+                      id="first_name"
+                      required={input_fields.first_name.setting === "mandatory"}
+                      name="first_name"
+                      value={first_name}
+                      onChange={this.handleChange}
+                      placeholder={getText(input_fields.first_name.placeholder, language)}
+                      pattern={input_fields.first_name.pattern}
+                      title={getText(input_fields.first_name.pattern_description, language)}
+                    />
+                  </div>
+                )}
+
+                {input_fields.last_name.setting !== "disabled" && (
+                  <div className="row last_name">
+                    <label htmlFor="last_name">
+                      {this.getLabel(input_fields.last_name)}
+                    </label>
+                    {errors.last_name && (
+                      <div className="error last_name">
+                        <span className="icon">!</span>
+                        <span className="text text-last_name">
+                          {errors.last_name}
+                        </span>
+                      </div>
+                    )}
+                    <input
+                      className={`input ${errors.last_name ? "error" : ""}`}
+                      type={input_fields.last_name.type}
+                      id="last_name"
+                      required={input_fields.last_name.setting === "mandatory"}
+                      name="last_name"
+                      value={last_name}
+                      onChange={this.handleChange}
+                      placeholder={getText(input_fields.last_name.placeholder, language)}
+                      pattern={input_fields.last_name.pattern}
+                      title={getText(input_fields.last_name.pattern_description, language)}
+                    />
+                  </div>
+                )}
+
+                {input_fields.birth_date.setting !== "disabled" && (
+                  <div className="row birth_date">
+                    <label htmlFor="birth_date">
+                      {this.getLabel(input_fields.birth_date)}
+                    </label>
+                    {errors.birth_date && (
+                      <div className="error birth_date">
+                        <span className="icon">!</span>
+                        <span className="text text-birth_date">
+                          {errors.birth_date}
+                        </span>
+                      </div>
+                    )}
+                    <input
+                      className={`input ${errors.birth_date ? "error" : ""}`}
+                      type={input_fields.birth_date.type}
+                      id="birth_date"
+                      required={input_fields.birth_date.setting === "mandatory"}
+                      name="birth_date"
+                      value={birth_date}
+                      onChange={this.handleChange}
+                    />
+                  </div>
+                )}
+
+                {input_fields.location.setting !== "disabled" && (
+                  <div className="row location">
+                    <label htmlFor="location">
+                      {this.getLabel(input_fields.location)}
+                    </label>
+                    {errors.location && (
+                      <div className="error location">
+                        <span className="icon">!</span>
+                        <span className="text text-location">
+                          {errors.location}
+                        </span>
+                      </div>
+                    )}
+                    <input
+                      className={`input ${errors.location ? "error" : ""}`}
+                      type={input_fields.location.type}
+                      id="location"
+                      required={input_fields.location.setting === "mandatory"}
+                      name="location"
+                      value={location}
+                      onChange={this.handleChange}
+                      placeholder={getText(input_fields.location.placeholder, language)}
+                      pattern={input_fields.location.pattern}
+                      title={getText(input_fields.location.pattern_description, language)}
+                    />
+                  </div>
+                )}
 
                 <div className="row password">
                   <label htmlFor="password">
@@ -363,6 +510,39 @@ Registration.propTypes = {
         preferred_countries: PropTypes.array,
         exclude_countries: PropTypes.array,
         enable_search: PropTypes.bool
+      }),
+      first_name: PropTypes.shape({
+        type: PropTypes.string.isRequired,
+        label: PropTypes.object.isRequired,
+        label_optional: PropTypes.object.isRequired,
+        setting: PropTypes.string.isRequired,
+        placeholder: PropTypes.object.isRequired,
+        pattern: PropTypes.string.isRequired,
+        pattern_description: PropTypes.object.isRequired
+      }),
+      last_name: PropTypes.shape({
+        type: PropTypes.string.isRequired,
+        label: PropTypes.object.isRequired,
+        label_optional: PropTypes.object.isRequired,
+        setting: PropTypes.string.isRequired,
+        placeholder: PropTypes.object.isRequired,
+        pattern: PropTypes.string.isRequired,
+        pattern_description: PropTypes.object.isRequired
+      }),
+      location: PropTypes.shape({
+        type: PropTypes.string.isRequired,
+        label: PropTypes.object.isRequired,
+        label_optional: PropTypes.object.isRequired,
+        setting: PropTypes.string.isRequired,
+        placeholder: PropTypes.object.isRequired,
+        pattern: PropTypes.string.isRequired,
+        pattern_description: PropTypes.object.isRequired
+      }),
+      birth_date: PropTypes.shape({
+        type: PropTypes.string.isRequired,
+        label: PropTypes.object.isRequired,
+        label_optional: PropTypes.object.isRequired,
+        setting: PropTypes.string.isRequired,
       })
     }),
     additional_info_text: PropTypes.object,

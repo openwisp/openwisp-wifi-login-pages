@@ -270,6 +270,21 @@ With the configuration above:
 - the link to `twitter` (from Contact) and `change password` (from Header)
   links will be visible to only authenticated users
 
+#### User Fields in Registration Form
+
+The `setting` attribute of the fields `first_name`, `last_name`,
+`location` and `birth_date` can be used to indicate whether the fields
+shall be disabled (the default setting), allowed but not required or required.
+
+The `setting` option can take  any of the following values:
+
+- `disabled`: (**the default value**) fields with this setting won't be shown.
+- `allowed`: fields with this setting are shown but not required.
+- `mandatory`: fields with this setting are shown and required.
+
+Keep in mind that this configuration must mirror the
+[configuration of openwisp-radius (OPENWISP_RADIUS_OPTIONAL_REGISTRATION_FIELDS)](https://openwisp-radius.readthedocs.io/en/latest/user/settings.html#openwisp-radius-optional-registration-fields).
+
 ### License
 
 See [LICENSE](https://github.com/openwisp/openwisp-wifi-login-pages/blob/master/LICENSE).

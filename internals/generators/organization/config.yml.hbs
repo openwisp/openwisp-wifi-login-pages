@@ -137,6 +137,49 @@ client:
             en: "confirm password"
           label:
             en: "confirm"
+        first_name:
+          type: "text"
+          label:
+            en: "first name"
+          label_optional:
+            en: "first name (optional)"
+          pattern: '[a-zA-Z@.+\-_\d]{1,150}'
+          pattern_description:
+            en: "only letters, numbers, and @/./+/-/_ characters"
+          placeholder:
+            en: "enter first name"
+          setting: "disabled"
+        last_name:
+          type: "text"
+          label:
+            en: "last name"
+          label_optional:
+            en: "last name (optional)"
+          pattern: '[a-zA-Z@.+\-_\d]{1,150}'
+          pattern_description:
+            en: "only letters, numbers, and @/./+/-/_ characters"
+          placeholder:
+            en: "enter last name"
+          setting: "disabled"
+        birth_date:
+          type: "date"
+          label:
+            en: "birth date"
+          label_optional:
+            en: "birth date (optional)"
+          setting: "disabled"
+        location:
+          type: "text"
+          label:
+            en: "location"
+          label_optional:
+            en: "location (optional)"
+          pattern: '[a-zA-Z@.+\-_\d]{1,150}'
+          pattern_description:
+            en: "only letters, numbers, and @/./+/-/_ characters"
+          placeholder:
+            en: "enter location" 
+          setting: "disabled"
       buttons:
         register:
           text:

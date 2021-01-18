@@ -166,6 +166,16 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
                 },
               },
               "input_fields": Object {
+                "birth_date": Object {
+                  "label": Object {
+                    "en": "birth date",
+                  },
+                  "label_optional": Object {
+                    "en": "birth date (optional)",
+                  },
+                  "setting": "disabled",
+                  "type": "date",
+                },
                 "email": Object {
                   "label": Object {
                     "en": "email",
@@ -178,6 +188,57 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
                     "en": "email address",
                   },
                   "type": "email",
+                },
+                "first_name": Object {
+                  "label": Object {
+                    "en": "first name",
+                  },
+                  "label_optional": Object {
+                    "en": "first name (optional)",
+                  },
+                  "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
+                  "pattern_description": Object {
+                    "en": "only letters, numbers, and @/./+/-/_ characters",
+                  },
+                  "placeholder": Object {
+                    "en": "enter first_name",
+                  },
+                  "setting": "disabled",
+                  "type": "text",
+                },
+                "last_name": Object {
+                  "label": Object {
+                    "en": "last name",
+                  },
+                  "label_optional": Object {
+                    "en": "last name (optional)",
+                  },
+                  "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
+                  "pattern_description": Object {
+                    "en": "only letters, numbers, and @/./+/-/_ characters",
+                  },
+                  "placeholder": Object {
+                    "en": "enter last_name",
+                  },
+                  "setting": "disabled",
+                  "type": "text",
+                },
+                "location": Object {
+                  "label": Object {
+                    "en": "location",
+                  },
+                  "label_optional": Object {
+                    "en": "location (optional)",
+                  },
+                  "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
+                  "pattern_description": Object {
+                    "en": "only letters, numbers, and @/./+/-/_ characters",
+                  },
+                  "placeholder": Object {
+                    "en": "enter location",
+                  },
+                  "setting": "disabled",
+                  "type": "text",
                 },
                 "password": Object {
                   "label": Object {
@@ -438,6 +499,16 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
                   },
                 },
                 "input_fields": Object {
+                  "birth_date": Object {
+                    "label": Object {
+                      "en": "birth date",
+                    },
+                    "label_optional": Object {
+                      "en": "birth date (optional)",
+                    },
+                    "setting": "disabled",
+                    "type": "date",
+                  },
                   "email": Object {
                     "label": Object {
                       "en": "email",
@@ -450,6 +521,57 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
                       "en": "email address",
                     },
                     "type": "email",
+                  },
+                  "first_name": Object {
+                    "label": Object {
+                      "en": "first name",
+                    },
+                    "label_optional": Object {
+                      "en": "first name (optional)",
+                    },
+                    "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
+                    "pattern_description": Object {
+                      "en": "only letters, numbers, and @/./+/-/_ characters",
+                    },
+                    "placeholder": Object {
+                      "en": "enter first_name",
+                    },
+                    "setting": "disabled",
+                    "type": "text",
+                  },
+                  "last_name": Object {
+                    "label": Object {
+                      "en": "last name",
+                    },
+                    "label_optional": Object {
+                      "en": "last name (optional)",
+                    },
+                    "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
+                    "pattern_description": Object {
+                      "en": "only letters, numbers, and @/./+/-/_ characters",
+                    },
+                    "placeholder": Object {
+                      "en": "enter last_name",
+                    },
+                    "setting": "disabled",
+                    "type": "text",
+                  },
+                  "location": Object {
+                    "label": Object {
+                      "en": "location",
+                    },
+                    "label_optional": Object {
+                      "en": "location (optional)",
+                    },
+                    "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
+                    "pattern_description": Object {
+                      "en": "only letters, numbers, and @/./+/-/_ characters",
+                    },
+                    "placeholder": Object {
+                      "en": "enter location",
+                    },
+                    "setting": "disabled",
+                    "type": "text",
                   },
                   "password": Object {
                     "label": Object {
