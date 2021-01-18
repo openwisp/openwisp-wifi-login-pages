@@ -270,15 +270,20 @@ With the configuration above:
 - the link to `twitter` (from Contact) and `change password` (from Header)
   links will be visible to only authenticated users
 
-#### Optional Fields
+#### User Fields in Registration Form
 
-We can use the `setting` attribute of optional fields `first_name`, `last_name`, `location` and `birth_date` 
-to decide if the fields should either be disabled, allowed but not required or required. `setting` can take 
-any of the following value:
+The `setting` attribute of the fields `first_name`, `last_name`,
+`location` and `birth_date` can be used to indicate whether the fields
+shall be disabled (the default setting), allowed but not required or required.
 
-- `disabled`: This is the default value. fields with this setting are not shown.
-- `allowed`: Fields with this setting are shown but not required.
-- `mandatory`: Fields with this setting are shown and required.
+The `setting` option can take  any of the following values:
+
+- `disabled`: (**the default value**) fields with this setting won't be shown.
+- `allowed`: fields with this setting are shown but not required.
+- `mandatory`: fields with this setting are shown and required.
+
+Keep in mind that this configuration must mirror the
+[configuration of openwisp-radius (OPENWISP_RADIUS_OPTIONAL_REGISTRATION_FIELDS)](https://openwisp-radius.readthedocs.io/en/latest/user/settings.html#openwisp-radius-optional-registration-fields).
 
 ### License
 
