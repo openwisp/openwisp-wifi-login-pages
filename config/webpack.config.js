@@ -79,12 +79,14 @@ module.exports = (env, argv) => {
         threshold: 10240,
         minRatio: 0.8,
       }),
-      new CopyPlugin([
-        {
-          from: path.resolve(CURRENT_WORKING_DIR, "client/assets"),
-          to: path.resolve(CURRENT_WORKING_DIR, "dist/assets"),
-        },
-      ]),
+      new CopyPlugin({
+        "patterns": [
+          {
+            from: path.resolve(CURRENT_WORKING_DIR, "client/assets"),
+            to: path.resolve(CURRENT_WORKING_DIR, "dist/assets"),
+          }
+        ]
+      }),
     ],
 
     devServer: {
