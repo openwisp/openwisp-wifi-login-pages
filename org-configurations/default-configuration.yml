@@ -27,7 +27,11 @@ server:
 # in assets directory.
 client:
   # <title> value
-  title: "Wifi Login"
+  title:
+    en: "Wifi Login"
+    es: "Acceso Wifi"
+    fr: "Connexion Wifi"
+    it: "Accesso WiFi"
 
   auto_login: True
 
@@ -40,6 +44,12 @@ client:
   languages:
     - text: "english"
       slug: "en"
+    - text: "espanol"
+      slug: "es"
+    - text: "français"
+      slug: "fr"
+    - text: "italian"
+      slug: "it"
   default_language: "en"
   components:
     header:
@@ -49,14 +59,17 @@ client:
       links:
         - text:
             en: "Sign In" #link text in english
+            fr: "Se connecter" #link text in Français
           url: "/default/login"
           authenticated: false
         - text:
             en: "Sign Up"
+            fr: "S'inscrire"
           url: "/default/registration"
           authenticated: false
         - text:
             en: "Change password"
+            fr: "Changer le mot de passe"
           url: "/default/change-password"
           authenticated: true
 
@@ -64,261 +77,360 @@ client:
       links:
         - text:
             en: "link-1"
+            fr: "link-1"
           url: "https://link-1.com"
           authenticated: false
         - text:
             en: "link-2"
+            fr: "link-2"
           url: "https://link-2.com"
           authenticated: true
       # secondary text to be displayed in smaller size in next line.
       # Eg. copyright text
       secondary_text:
         en: null
+        fr: null
 
     registration_form:
+      title:
+        en: "Sign up - {name}"
+        fr: "S'inscrire - {name}"
       input_fields:
         phone_number:
           placeholder:
             en: "enter mobile phone number"
+            fr: "entrez numéro de téléphone"
           label:
             en: "mobile phone number"
+            fr: "numéro de téléphone"
         username:
           type: "text"
           pattern: '[a-zA-Z@.+\-_\d]{1,150}'
           pattern_description:
             en: "only letters, numbers, and @/./+/-/_ characters"
+            fr: "seulement des lettres de l'alphabet, des numéros, et des caractères spéciaux  @/./+/-/_ "
           placeholder:
             en: "enter username"
+            fr: "entréz nom d’utilisateur"
           label:
             en: "username"
+            fr: "nom d’utilisateur"
+
         email:
           type: "email"
           pattern: '.+@.+\..+'
           pattern_description:
             en: null
+            fr: null
           placeholder:
             en: "email address"
+            fr: "adresse email"
           label:
             en: "email"
+            fr: "email"
         password:
           type: "password"
           pattern: ".{6,}"
           pattern_description:
             en: "password must be a minimum of 6 characters"
+            fr: "mot de passe doit comporter au moins 6 caractères"
           placeholder:
             en: "password"
+            fr: "mot de passe"
           label:
             en: "password"
+            fr: "mot de passe"
         password_confirm:
           type: "password"
           pattern: null
           pattern_description:
             en: null
+            fr: null
           placeholder:
             en: "confirm password"
+            fr: "confirmez mot de passe"
           label:
             en: "confirm"
+            fr: "confirmez"
         first_name:
           type: "text"
           label:
             en: "first name"
+            fr: "prénom"
           label_optional:
             en: "first name (optional)"
+            fr: "prénom (optionel)"
           pattern: '[a-zA-Z@.+\-_\d]{1,150}'
           pattern_description:
             en: "only letters, numbers, and @/./+/-/_ characters"
+            fr: "seulement des lettres de l'alphabet, des numéros, et des caractères spéciaux  @/./+/-/_ "
           placeholder:
             en: "enter first name"
+            fr: "entréz prénom"
           setting: "disabled"
         last_name:
           type: "text"
           label:
             en: "last name"
+            fr: "nom de famille"
           label_optional:
             en: "last name (optional)"
+            fr: "nom de famille (optionel)"
           pattern: '[a-zA-Z@.+\-_\d]{1,150}'
           pattern_description:
             en: "only letters, numbers, and @/./+/-/_ characters"
+            fr: "seulement des lettres de l'alphabet, des numéros, et des caractères spéciaux  @/./+/-/_ "
           placeholder:
             en: "enter last name"
+            fr: "entréz nom de famille"
           setting: "disabled"
         birth_date:
           type: "date"
           label:
             en: "birth date"
+            fr: "date de naissance"
           label_optional:
             en: "birth date (optional)"
+            fr: "date de naissance (optionel)"
           setting: "disabled"
         location:
           type: "text"
           label:
             en: "location"
+            fr: "emplacement"
           label_optional:
             en: "location (optional)"
+            fr: "emplacement (optional)"
           pattern: '[a-zA-Z@.+\-_\d]{1,150}'
           pattern_description:
             en: "only letters, numbers, and @/./+/-/_ characters"
+            fr: "seulement des lettres de l'alphabet, des numéros, et des caractères spéciaux  @/./+/-/_ "
           placeholder:
-            en: "enter location" 
+            en: "enter location"
+            fr: "entréz l'emplacement"
           setting: "disabled"
       buttons:
         register:
           label: null
           text:
             en: "sign up"
+            fr: "s'inscrire"
       additional_info_text:
         en: "By signing up, you accept the {terms_and_conditions} and the {privacy_policy} of this WiFi service. "
+        fr: "En vous inscrivant, vous acceptez des termes et conditions et le politique de confidentialité de ce service de Wifi. "
       links:
         login:
           en: "Already have an account? Log in"
+          fr: "Vous avez déjà un compte? S'identifier"
 
     password_reset_form:
+      title:
+        en: "Reset Password - {name}"
+        fr: "Réinitialiser Le Mot de Passe - {name}"
       heading:
         en: "reset your password"
+        fr: "réinitialisez votre mot de passe"
       additional_text:
         en: "Forgotten your password? Enter your e-mail address below, and we'll send you an e-mail allowing you to reset it."
+        fr: "Mot de passe oublié? Entrez votre adresse e-mail ci-dessous et nous vous enverrons un e-mail pour réinitialiser votre mot de passe."
       input_fields:
         email:
           type: "email"
           pattern: '.+@.+\..+'
           pattern_description:
             en: null
+            fr: null
           placeholder:
             en: "email address"
+            fr: "adresse email"
           label:
             en: "email"
+            fr: "email"
       buttons:
         send:
           en: "Reset My Password"
+          fr: "Réinitialiser Mon Mot de Passe"
       contact_text:
         en: "Please contact us if you have any trouble resetting your password."
+        fr: "Veuillez nous contacter si vous rencontrez des difficultés pour réinitialiser votre mot de passe."
       login_page_link:
         text:
           en: "Take me Back to Sign In"
+          fr: "Ramenez-moi à page de connexion"
 
     password_reset_confirm_form:
+      title:
+        en: "Reset Password - {name}"
+        fr: "Réinitialiser le Mot de Passe - {name}"
       heading:
         en: "reset your password"
+        fr: "réinitialiser votre mot de passe"
       additional_text:
         en: "please enter your new password"
+        fr: "entréz votre mot de passe s'il vous plaît"
       input_fields:
         password:
           type: "password"
           pattern: ".{6,}"
           pattern_description:
             en: "password must be a minimum of 6 characters"
+            fr: "mot de passe doit comporter au moins 6 caractères"
           placeholder:
             en: "password"
+            fr: "mot de passe"
           label:
             en: "password"
+            fr: "mot de passe"
         password_confirm:
           type: "password"
           pattern: null
           pattern_description:
             en: null
+            fr: null
           placeholder:
             en: "confirm password"
+            fr: "confrimez le mot de passe"
           label:
             en: "confirm"
+            fr: "confirmez"
       buttons:
         submit:
           en: "change password"
+          fr: "changez mot de passe"
       contact_text:
         en: "Please contact us if you have any trouble resetting your password."
+        fr: "Veuillez nous contacter si vous rencontrez des difficultés pour réinitialiser votre mot de passe."
       login_page_link:
         text:
           en: "Take me Back to Sign In"
+          fr: "Ramenez-moi à page de connexion"
 
     contact_page:
+      title:
+        en: "Contact - {name}"
+        fr: "Contact - {name}"
       email:
         label:
           en: "E-mail"
+          fr: "E-mail"
         value:
           en: "support@openwisp.co"
+          fr: "support@openwisp.co"
       helpdesk:
         label:
           en: "Helpdesk"
+          fr: "Bureau d'Aide"
         value:
           en: "+789 948 564"
+          fr: "+789 948 564"
       social_links:
         - alt:
             en: "twitter"
+            fr: "twitter"
           icon: "twitter.svg"
           url: "https://twitter.com/openwisp"
         - alt:
             en: "facebook"
+            fr: "facebool"
           icon: "facebook.svg"
           url: "https://facebook.com/openwisp"
 
     status_page:
+      title:
+        en: "Status Page - {name}"
+        fr: "Page de Statut - {name}"
       content:
         en: |
           WiFi Login Successful!
           You can now use the internet.
           You may leave this page open in case you want to log out.
+        fr: |
+          Connexion au WiFi réussi!
+          Vous pouvez accéder à Internet maintenant.
+          Vous pouvez laisser cette page si vous souhaiteriez vous déconnecter
       user_info:
         status:
           text:
             en: "Status"
+            fr: "Statut"
           value:
             en: "Logged in"
+            fr: "Connecté"
         email:
           text:
             en: "Email"
+            fr: "Email"
         username:
           text:
             en: "Username"
+            fr: "Nom d’utilisateur"
         phone_number:
           text:
             en: "Phone number"
+            fr: "Numéro de téléphone"
       session_info:
         header:
           start_time:
             text:
               en: "Start time"
+              fr: "Heure de commencement"
           stop_time:
             text:
               en: "Stop time"
+              fr: "Heure de fin"
           duration:
             text:
               en: "Duration"
+              fr: "Durée"
           download:
             text:
               en: "Download"
+              fr: "Download"
           upload:
             text:
               en: "Upload"
+              fr: "Upload"
           device_address:
             text:
               en: "Device address"
+              fr: "Adresse de dispositif"
         settings:
           active_session:
             text:
               en: "session is active"
+              fr: "session est active"
           date_language_locale: "en-US"
       links:
         - text:
             en: "Change your password"
+            fr: "Changez votre mot de passe"
           url: "/{orgSlug}/change-password/"
       buttons:
         logout:
           label: null
           text:
             en: "Logout"
+            fr: "De-connecter"
 
     login_form:
+      title:
+        en: "Login - {name}"
+        fr: "Page de Connecter - {name}"
       social_login:
         links:
           - text:
               en: "Login with Facebook"
+              fr: "Connectez avec Facebook"
             url: "#facebook"
             icon: "facebook.svg"
           - text:
-              en: "Login with google"
+              en: "Login with Google"
+              fr: "Connectez avec Google"
             icon: "google.svg"
             url: "#google"
           - text:
               en: "Login with Twitter"
+              fr: "Connectez avec Twitter"
             icon: "twitter.svg"
             url: "#twitter"
       input_fields:
@@ -327,75 +439,104 @@ client:
           pattern: '.+@.+\..+'
           pattern_description:
             en: null
+            fr: null
           placeholder:
             en: "email address"
+            fr: "adresse email"
           label:
             en: "email"
+            fr: "email"
         password:
           type: "password"
           pattern: ".{6,}"
           pattern_description:
             en: "password must be a minimum of 6 characters"
+            fr: "mot de passe doit comporter au moins 6 caractères"
           placeholder:
             en: "password"
+            fr: "mot de passe"
           label:
             en: "password"
+            fr: "mot de passe"
       additional_info_text:
         en: "By logging in, you accept the {terms_and_conditions} and the {privacy_policy} of this WiFi service. "
+        fr: "En vous inscrivant, vous acceptez des termes et conditions et le politique de confidentialité de ce service de Wifi. "
       buttons:
         login:
           label: null
           text:
             en: "Login"
+            fr: "Connecter"
         register:
           label:
             en: "Not registered yet?"
+            fr: "Pas encore inscrit?"
           text:
             en: "Sign up"
+            fr: "S'inscrire"
       links:
         forget_password:
           en: "Forgot your password?"
+          fr: "Oublié votre mot de passe?"
 
     password_change_form:
       title:
         en: "Change your password"
+        fr: "Changez votre mot de passe"
       input_fields:
         password1:
           type: "password"
           pattern: ".{6,}"
           pattern_description:
             en: "New password must be a minimum of 6 characters"
+            fr: "mot de passe doit comporter au moins 6 caractères"
           label:
             en: "New Password"
+            fr: "Nouveaux mot de passe"
           placeholder:
             en: "Your new password"
+            fr: "Votre nouveaux mot de passe"
         password2:
           type: "password"
           pattern: ".{6,}"
           pattern_description:
             en: "New password must be a minimum of 6 characters"
+            fr: "Nouveaux mot de passe doit comporter au moins 6 caractères"
           label:
             en: "Confirm new password"
+            fr: "Confirmez nouveaux mot de passe"
           placeholder:
             en: "Re-enter new password"
+            fr: "Ré-entrez nouveaux mot de passe"
       buttons:
         submit_button:
           label: null
           text:
             en: "Change Password"
+            fr: "Changer Mot de Passe"
 
     404_page:
+      title:
+        en: "404 Not Found!"
+        fr: "404 Pas Trouvé!"
       heading:
         en: "404"
+        fr: "404"
       sub_heading:
         en: "Not Found"
+        fr: "Pas Trouvé"
       message:
         en: "Sorry, we couldn't find the page you were looking for."
+        fr: "Pardon, nous n'avons pas trouvé la page que vous recherchez"
       homepage_link:
         text:
           en: "Go back to homepage"
+          fr: "Ramenez-moi à page d'accueil"
 
     captive_portal_login_form:
+      title:
+        en: "Login to Captive Portal - {name}"
+        fr: "Connexion Portail Captif - {name}"
       method: post
       action: http://localhost/
       fields:
@@ -411,6 +552,9 @@ client:
           value: accept
 
     captive_portal_logout_form:
+      title:
+        en: "Logout of Captive Portal - {name}"
+        fr: "Deconnecter de Portail Captif - {name}"
       method: post
       action: http://localhost:8081
       fields:
@@ -420,11 +564,13 @@ client:
 
   privacy_policy:
     title:
-      en: "privacy policy"
+      en: "Privacy Policy - {name}"
+      fr: "Politique de Confidentialité"
     content:
       en: "privacy-en.md"
   terms_and_conditions:
     title:
-      en: "terms and conditions"
+      en: "Terms and Conditions - {name}"
+      fr: "Termes et Conditions - {name}"
     content:
       en: "terms-en.md"
