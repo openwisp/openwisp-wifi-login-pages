@@ -1,0 +1,52 @@
+name: build-run
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    name: Run lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # this step will use Yarn version 1.22.4 and run `yarn install` command
+      - name: Use Yarn v1.22.4
+        uses: borales/actions-yarn@v1.22.4
+        with:
+          cmd: install
+
+      # this step will upgrade dependencies with `yarn install` command
+      - name: Use Yarn v1.22.4
+        uses: borales/actions-yarn@v1.22.4
+        with:
+          cmd: upgrade
+
+      # this step will run the app with `yarn run` command
+      - name: Run yarn
+        uses: borales/actions-yarn@v1.22.4
+        with:
+          cmd: build
+
+      # this step will run tests with `yarn test` command
+      - name: Test with yarn
+        uses: borales/actions-yarn@v1.22.4
+        with:
+          cmd: test
+
+      # this step will setup the app with `yarn start` command
+      - name: Setup
+        uses: borales/actions-yarn@v1.22.4
+        with:
+          cmd: setup
+
+      # this step will start the app with `yarn start` command
+      - name: Start the app
+        uses: borales/actions-yarn@v1.22.4
+        with:
+          cmd: start
