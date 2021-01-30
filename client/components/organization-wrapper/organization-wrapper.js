@@ -11,16 +11,17 @@ import ConnectedDoesNotExist from "../404";
 import DoesNotExist from "../404/404";
 import Footer from "../footer";
 import Header from "../header";
-import Login from "../login";
-import PasswordConfirm from "../password-confirm";
-import PasswordReset from "../password-reset";
-import Registration from "../registration";
-import MobilePhoneVerification from "../mobile-phone-verification";
-import Status from "../status";
-import PasswordChange from "../password-change";
-import MobilePhoneChange from "../mobile-phone-change";
 import LoadingContext from "../../utils/loading-context";
+import Loader from "../../utils/loader";
 
+const Login = React.lazy(() => import('../login'));
+const Registration = React.lazy(() => import('../registration'));
+const PasswordChange = React.lazy(() => import('../password-change'));
+const MobilePhoneChange = React.lazy(() => import('../mobile-phone-verification'));
+const PasswordReset = React.lazy(() => import('../password-reset'));
+const PasswordConfirm = React.lazy(() => import('../password-confirm'));
+const Status = React.lazy(() => import('../status'));
+const MobilePhoneVerification = React.lazy(() => import('../mobile-phone-verification'));
 
 export default class OrganizationWrapper extends React.Component {
   constructor(props) {
@@ -76,8 +77,12 @@ export default class OrganizationWrapper extends React.Component {
                     } if (isAuthenticated && needsMobilePhoneVerification) {
                         return <Redirect to={`/${orgSlug}/mobile-phone-verification`} />;
                     }
-                    return <Registration {...props} />;
-                  }}
+                    return (<React.Suspense fallback={<Loader full={false} />}>
+                              <Registration {...props} />
+                            </React.Suspense>
+                          );
+                  }
+                }
                 />
                 <Route
                   path={`${match.path}/mobile-phone-verification`}
@@ -87,7 +92,10 @@ export default class OrganizationWrapper extends React.Component {
                     } if (!isAuthenticated) {
                         return <Redirect to={`/${orgSlug}/login`} />;
                     }
-                    return <MobilePhoneVerification {...props} cookies={cookies}/>;
+                    return (<React.Suspense fallback={<Loader full={false} />}>
+                               <MobilePhoneVerification {...props} cookies={cookies}/>
+                            </React.Suspense>
+                          );
                   }}
                 />
                 <Route
@@ -95,7 +103,10 @@ export default class OrganizationWrapper extends React.Component {
                   render={props => {
                     if (isAuthenticated)
                       return <Redirect to={`/${orgSlug}/status`} />;
-                    return <PasswordConfirm {...props} />;
+                    return (<React.Suspense fallback={<Loader full={false} />}>
+                              <PasswordConfirm {...props} />
+                            </React.Suspense>
+                          );
                   }}
                 />
                 <Route
@@ -104,7 +115,10 @@ export default class OrganizationWrapper extends React.Component {
                   render={() => {
                     if (isAuthenticated)
                       return <Redirect to={`/${orgSlug}/status`} />;
-                    return <PasswordReset />;
+                    return (<React.Suspense fallback={<Loader full={false} />}>
+                              <PasswordReset />
+                            </React.Suspense>
+                          );
                   }}
                 />
                 <Route
@@ -112,14 +126,20 @@ export default class OrganizationWrapper extends React.Component {
                   render={props => {
                     if (isAuthenticated)
                       return <Redirect to={`/${orgSlug}/status`} />;
-                    return <Login {...props} />;
+                    return (<React.Suspense fallback={<Loader full={false} />}>
+                              <Login {...props} />
+                            </React.Suspense>
+                          );
                   }}
                 />
                 <Route
                   path={`${match.path}/status`}
                   render={(props) => {
                     if (isAuthenticated && !needsMobilePhoneVerification)
-                      return <Status {...props} cookies={cookies} />;
+                      return (<React.Suspense fallback={<Loader full={false} />}>
+                                <Status {...props} cookies={cookies} />
+                              </React.Suspense>
+                            );
                     if (isAuthenticated && needsMobilePhoneVerification)
                       return <Redirect to={`/${orgSlug}/mobile-phone-verification`} />;
                     return <Redirect to={`/${orgSlug}/login`} />;
@@ -129,7 +149,10 @@ export default class OrganizationWrapper extends React.Component {
                   path={`${match.path}/change-password`}
                   render={() => {
                     if (isAuthenticated)
-                      return <PasswordChange cookies={cookies} />;
+                      return (<React.Suspense fallback={<Loader full={false} />}>
+                                <PasswordChange cookies={cookies} />
+                              </React.Suspense>
+                            );
                     return <Redirect to={`/${orgSlug}/login`} />;
                   }}
                 />
@@ -137,7 +160,10 @@ export default class OrganizationWrapper extends React.Component {
                   path={`${match.path}/change-phone-number`}
                   render={() => {
                     if (isAuthenticated)
-                      return <MobilePhoneChange cookies={cookies} />;
+                      return (<React.Suspense fallback={<Loader full={false} />}>
+                                <MobilePhoneChange cookies={cookies} />
+                              </React.Suspense>
+                            );
                     return <Redirect to={`/${orgSlug}/login`} />;
                   }}
                 />
@@ -168,11 +194,7 @@ export default class OrganizationWrapper extends React.Component {
                 />
               </Helmet>
             ) : null}
-            {loading &&
-              <div className="full-page-loader-container">
-                <div className="loader" />
-              </div>
-            }
+            {loading && <Loader full={true} />}
           </LoadingContext.Provider>
         </>
       );
