@@ -534,24 +534,22 @@ export default class Status extends React.Component {
                 );
               })}
 
-              {links && (
-                <div className="links row">
-                  {links.map(link => {
-                    if (shouldLinkBeShown(link, isAuthenticated)) {
-                      return (
-                        <Link
-                          className="button full status-link"
-                          key={link.url}
-                          to={link.url.replace("{orgSlug}", orgSlug)}
-                        >
-                          {getText(link.text, language)}
-                        </Link>
-                      );
-                    }
-                    return null;
-                  })}
-                </div>
-              )}
+              {links && links.map(link => {
+                if (shouldLinkBeShown(link, isAuthenticated)) {
+                  return (
+                    <div className="links row">
+                      <Link
+                        className="button full status-link"
+                        key={link.url}
+                        to={link.url.replace("{orgSlug}", orgSlug)}
+                      >
+                        {getText(link.text, language)}
+                      </Link>
+                    </div>
+                  );
+                }
+                return null;
+              })}
 
               <div className="row logout">
                 <input
