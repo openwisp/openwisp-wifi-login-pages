@@ -92,7 +92,7 @@ describe("<OrganizationWrapper /> interactions", () => {
           title: undefined,
           css_path: "index.css",
           slug: "default",
-          favicon: "favicon.ico",
+          favicon: "favicon.png",
         },
         exists: true,
       },
