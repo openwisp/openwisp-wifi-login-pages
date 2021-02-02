@@ -12,6 +12,11 @@
   font-display: swap;
   src: local('Montserrat SemiBold'), local('Montserrat-SemiBold'), url(assets/fonts/montserrat-semi-bold.woff2) format('woff2');
 }
+
+#preload{
+  display:none;
+}
+
 body {
   margin: 0;
   padding: 0;
