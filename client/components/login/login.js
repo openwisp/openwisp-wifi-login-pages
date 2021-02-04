@@ -8,6 +8,7 @@ import React from "react";
 import { Link, Route } from "react-router-dom";
 import { toast } from 'react-toastify';
 import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 import {
