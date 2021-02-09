@@ -20,8 +20,8 @@ const PasswordReset = React.lazy(() => import('../password-reset'));
 const PasswordConfirm = React.lazy(() => import('../password-confirm'));
 const Status = React.lazy(() => import('../status'));
 const MobilePhoneVerification = React.lazy(() => import('../mobile-phone-verification'));
-const ConnectedDoesNotExist = React.lazy(() => import('../404'))
-const DoesNotExist =React.lazy(() => import('../404/404'))
+const ConnectedDoesNotExist = React.lazy(() => import('../404'));
+const DoesNotExist =React.lazy(() => import('../404/404'));
 
 export default class OrganizationWrapper extends React.Component {
   constructor(props) {
@@ -206,7 +206,11 @@ export default class OrganizationWrapper extends React.Component {
                 />
               </Helmet>
             ) : null}
-            {loading && <Loader full={true} />}
+            {loading &&
+              <div className="loader-container">
+                <div className="loader" />
+              </div>
+            }
           </LoadingContext.Provider>
         </>
       );
