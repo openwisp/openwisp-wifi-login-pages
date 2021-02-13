@@ -14,8 +14,9 @@
 }
 
 #preload{
-  display:none;
+  display: none;
 }
+html, body{ overflow: initial }
 
 body {
   margin: 0;
