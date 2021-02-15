@@ -10,6 +10,7 @@ export const passwordChangeError =
   "Some error occured. Couldn't change password!";
 export const passwordConfirmError = "The two password fields didn't match.";
 export const registerApiUrl = "/api/v1/{orgSlug}/account/";
+export const plansApiUrl = "/api/v1/{orgSlug}/plans/";
 export const registerError = "Registration error.";
 export const registerSuccess = "Registration success";
 export const resetApiUrl = "/api/v1/{orgSlug}/account/password/reset/";

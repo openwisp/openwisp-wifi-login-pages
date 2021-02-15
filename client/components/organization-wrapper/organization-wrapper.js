@@ -25,6 +25,7 @@ const Status = React.lazy(() => import("../status"));
 const MobilePhoneVerification = React.lazy(() =>
   import("../mobile-phone-verification"),
 );
+const PaymentStatus = React.lazy(() => import("../payment-status"));
 const ConnectedDoesNotExist = React.lazy(() => import("../404"));
 const DoesNotExist = React.lazy(() => import("../404/404"));
 
@@ -54,16 +55,13 @@ export default class OrganizationWrapper extends React.Component {
   render() {
     const {organization, match, cookies} = this.props;
     const {loading} = this.state;
-    const {
-      title,
-      favicon,
-      isAuthenticated,
-      userData,
-      settings,
-    } = organization.configuration;
-    const {is_active, is_verified} = userData;
+    const {title, favicon, isAuthenticated, userData, settings} =
+      organization.configuration;
+    const {is_active, is_verified, method} = userData;
     const needsMobilePhoneVerification =
-      is_verified === false && settings.mobile_phone_verification;
+      is_verified === false &&
+      settings.mobile_phone_verification &&
+      method === "mobile_phone";
     const orgSlug = organization.configuration.slug;
     const cssPath = organization.configuration.css_path;
     const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
@@ -215,6 +213,20 @@ export default class OrganizationWrapper extends React.Component {
                       return (
                         <Suspense fallback={<Loader full={false} />}>
                           <MobilePhoneChange cookies={cookies} />
+                        </Suspense>
+                      );
+                    return <Redirect to={`/${orgSlug}/login`} />;
+                  }}
+                />
+                <Route
+                  path={`${match.path}/payment/:result`}
+                  render={(props) => {
+                    const {result} = props.match.params;
+                    const acceptedValues = ["success", "failed"];
+                    if (isAuthenticated && acceptedValues.includes(result))
+                      return (
+                        <Suspense fallback={<Loader full={false} />}>
+                          <PaymentStatus cookies={cookies} result={result} />
                         </Suspense>
                       );
                     return <Redirect to={`/${orgSlug}/login`} />;

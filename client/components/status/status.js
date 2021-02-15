@@ -25,6 +25,7 @@ import shouldLinkBeShown from "../../utils/should-link-be-shown";
 import handleSession from "../../utils/session";
 import validateToken from "../../utils/validate-token";
 import {initialState} from "../../reducers/organization";
+import verify from "../../utils/verify";
 
 export default class Status extends React.Component {
   constructor(props) {
@@ -63,6 +64,7 @@ export default class Status extends React.Component {
     this.setState({
       rememberMe: localStorage.getItem("rememberMe") === "true",
     });
+
     // to prevent recursive call in case redirect url is status page
     if (window.top === window.self) {
       try {
@@ -79,6 +81,7 @@ export default class Status extends React.Component {
       } catch {
         //
       }
+
       setLoading(true);
       const isValid = await validateToken(
         cookies,
@@ -88,6 +91,7 @@ export default class Status extends React.Component {
         logout,
       );
       setLoading(false);
+
       if (isValid) {
         const {justAuthenticated} = userData;
         ({userData} = this.props);
@@ -134,6 +138,7 @@ export default class Status extends React.Component {
             justAuthenticated
           ) {
             this.loginFormRef.current.submit();
+            userData.justAuthenticated = false;
             setUserData({...userData, justAuthenticated: false});
           }
           await this.getUserActiveRadiusSessions();
@@ -144,6 +149,11 @@ export default class Status extends React.Component {
           this.setState({intervalId});
           window.addEventListener("resize", this.updateScreenWidth);
           this.updateSpinner();
+
+          // initializes account verification if needed
+          if (verify(userData, this.props)) {
+            setLoading(true);
+          }
         }
       }
     }
@@ -563,14 +573,8 @@ export default class Status extends React.Component {
       captivePortalLogoutForm,
       isAuthenticated,
     } = this.props;
-    const {
-      content,
-      links,
-      buttons,
-      session_info,
-      user_info,
-      logout_modal,
-    } = statusPage;
+    const {content, links, buttons, session_info, user_info, logout_modal} =
+      statusPage;
     const {
       username,
       password,
@@ -872,6 +876,7 @@ Status.propTypes = {
   isAuthenticated: PropTypes.bool,
   settings: PropTypes.shape({
     mobile_phone_verification: PropTypes.bool,
+    subscriptions: PropTypes.bool,
   }).isRequired,
   setUserData: PropTypes.func.isRequired,
 };

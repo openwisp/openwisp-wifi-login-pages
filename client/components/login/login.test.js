@@ -37,6 +37,20 @@ const createTestProps = (props) => {
     ...props,
   };
 };
+const userData = {
+  is_active: true,
+  is_verified: true,
+  method: "mobile_phone",
+  email: "tester@test.com",
+  phone_number: "+393660011333",
+  username: "+393660011333",
+  key: "b72dad1cca4807dc21c00b0b2f171d29415ac541",
+  radius_user_token: "jwyVSZYOze16ej6cc1AW5cxhRjahesLzh1Tm2y0d",
+  first_name: "",
+  last_name: "",
+  birth_date: null,
+  location: "",
+};
 
 describe("<Login /> rendering", () => {
   let props;
@@ -255,9 +269,9 @@ describe("<Login /> interactions", () => {
             expect(wrapper.instance().state.errors).toEqual({});
             expect(
               wrapper.instance().props.authenticate.mock.calls.length,
-            ).toBe(1);
+            ).toBe(0);
             expect(lastConsoleOutuput).toBe(null);
-            expect(spyToast.mock.calls.length).toBe(3);
+            expect(spyToast.mock.calls.length).toBe(4);
           });
       });
   });
@@ -268,15 +282,14 @@ describe("<Login /> interactions", () => {
     const login = wrapper.find(Login);
     const handleSubmit = jest.spyOn(login.instance(), "handleSubmit");
 
+    const data = {...userData};
+    data.is_verified = false;
     axios.mockImplementationOnce(() => {
       return Promise.reject({
         response: {
           status: 401,
           statusText: "unauthorized",
-          data: {
-            is_active: true,
-            is_verified: false,
-          },
+          data,
         },
       });
     });
@@ -300,11 +313,60 @@ describe("<Login /> interactions", () => {
     const setUserDataMock = login.props().setUserData.mock;
     expect(setUserDataMock.calls.length).toBe(1);
     expect(setUserDataMock.calls.pop()).toEqual([
-      {is_active: true, is_verified: false, justAuthenticated: true},
+      {...data, justAuthenticated: true},
     ]);
     const authenticateMock = login.props().authenticate.mock;
     expect(authenticateMock.calls.length).toBe(1);
     expect(authenticateMock.calls.pop()).toEqual([true]);
+  });
+  it("should redirect if needs bank_card verification", async () => {
+    props.settings = {subscriptions: true};
+    wrapper = mountComponent(props);
+    const login = wrapper.find(Login);
+    const handleSubmit = jest.spyOn(login.instance(), "handleSubmit");
+
+    const data = {...userData};
+    data.username = "tester";
+    data.is_verified = false;
+    data.method = "bank_card";
+    data.payment_url = "https://account.openwisp.io/payment/123";
+    axios.mockImplementationOnce(() => {
+      return Promise.resolve({
+        status: 200,
+        data,
+      });
+    });
+    // mock window.location.assign
+    const location = new URL("https://wifi.openwisp.io");
+    location.assign = jest.fn();
+    delete window.location;
+    window.location = location;
+
+    expect(wrapper.exists(PhoneInput)).toBe(false);
+    wrapper.find("#username").simulate("change", {
+      target: {value: "tester", name: "username"},
+    });
+    expect(login.state("username")).toEqual("tester");
+    wrapper
+      .find("#password")
+      .simulate("change", {target: {value: "test password", name: "password"}});
+    expect(login.state("password")).toEqual("test password");
+
+    const event = {preventDefault: () => {}};
+    wrapper.find("form").simulate("submit", event);
+    await tick();
+    expect(handleSubmit).toHaveBeenCalled();
+    const setUserDataMock = login.props().setUserData.mock;
+    expect(setUserDataMock.calls.length).toBe(1);
+    expect(setUserDataMock.calls.pop()).toEqual([
+      {...data, justAuthenticated: true},
+    ]);
+    const authenticateMock = login.props().authenticate.mock;
+    expect(authenticateMock.calls.length).toBe(1);
+    expect(authenticateMock.calls.pop()).toEqual([true]);
+    // ensure user is redirected to payment URL
+    expect(location.assign.mock.calls.length).toBe(1);
+    expect(location.assign.mock.calls[0][0]).toBe(data.payment_url);
   });
   it("phone_number field should be present if mobile phone verification is on", async () => {
     props.settings = {mobile_phone_verification: true};
@@ -336,15 +398,15 @@ describe("<Login /> interactions", () => {
     props.settings = {mobile_phone_verification: true};
     wrapper = shallow(<Login {...props} />, {context: loadingContextValue});
 
+    const data = {...userData};
+    data.is_active = false;
+
     axios.mockImplementationOnce(() => {
       return Promise.reject({
         response: {
           status: 401,
           statusText: "unauthorized",
-          data: {
-            is_active: false,
-            is_verified: true,
-          },
+          data,
         },
       });
     });
@@ -363,9 +425,7 @@ describe("<Login /> interactions", () => {
     expect(authenticateMock.calls.length).toBe(0);
     const setUserDataMock = wrapper.instance().props.setUserData.mock;
     expect(setUserDataMock.calls.length).toBe(1);
-    expect(setUserDataMock.calls.pop()).toEqual([
-      {is_active: false, is_verified: true, justAuthenticated: true},
-    ]);
+    expect(setUserDataMock.calls.pop()).toEqual([data]);
     expect(wrapper.instance().state.errors).toEqual({
       username: "",
       password: "",
@@ -373,14 +433,11 @@ describe("<Login /> interactions", () => {
     expect(spyToast).toHaveBeenCalled();
   });
   it("should store token in sessionStorage when remember me is unchecked and rememberMe in localstorage", () => {
-    const data = {
-      data: {
-        key: "test-token",
-      },
-    };
+    const data = {...userData};
+    data.key = "test-token";
 
     axios.mockImplementationOnce(() => {
-      return Promise.resolve(data);
+      return Promise.resolve({data});
     });
 
     wrapper
@@ -412,10 +469,7 @@ describe("<Login /> interactions", () => {
       });
     });
     const event = {preventDefault: () => {}};
-    const errorMethod = jest.fn();
-    dependency.toast = {
-      error: errorMethod,
-    };
+    const errorMethod = jest.spyOn(dependency.toast, "error");
     return wrapper
       .instance()
       .handleSubmit(event)
@@ -432,16 +486,12 @@ describe("<Login /> interactions", () => {
         status: 504,
         statusText: "Gateway Timeout",
         response: {
-          data:
-            "Error occured while trying to proxy to: 0.0.0.0:8080/api/v1/default/account/token",
+          data: "Error occured while trying to proxy to: 0.0.0.0:8080/api/v1/default/account/token",
         },
       });
     });
     const event = {preventDefault: () => {}};
-    const errorMethod = jest.fn();
-    dependency.toast = {
-      error: errorMethod,
-    };
+    const errorMethod = jest.spyOn(dependency.toast, "error");
     wrapper = shallow(<Login {...props} />, {context: loadingContextValue});
     await wrapper.instance().handleSubmit(event);
     expect(wrapper.instance().props.authenticate.mock.calls.length).toBe(0);
@@ -455,7 +505,7 @@ describe("<Login /> interactions", () => {
         response: {
           status: 401,
           statusText: "unauthorized",
-          data: {},
+          data: userData,
         },
       });
     });
@@ -475,6 +525,8 @@ describe("<Login /> interactions", () => {
     expect(handleSubmit).toHaveBeenCalled();
     const setUserDataMock = login.props().setUserData.mock;
     expect(setUserDataMock.calls.length).toBe(1);
-    expect(setUserDataMock.calls.pop()).toEqual([{justAuthenticated: true}]);
+    expect(setUserDataMock.calls.pop()).toEqual([
+      {...userData, justAuthenticated: true},
+    ]);
   });
 });

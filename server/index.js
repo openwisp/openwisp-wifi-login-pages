@@ -17,6 +17,7 @@ app.use(cookiesMiddleware());
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use("/api/v1/:organization/account", routes.account);
+app.use("/api/v1/:organization/plans", routes.plans);
 app.get("*", (req, res) => {
   res.sendFile(path.join(process.cwd(), "dist", "index.html"));
 });

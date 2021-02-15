@@ -2,7 +2,6 @@
 import axios from "axios";
 import cookie from "cookie-signature";
 import merge from "deepmerge";
-import qs from "qs";
 
 import config from "../config.json";
 import defaultConfig from "../utils/default-config";
@@ -19,52 +18,54 @@ const registration = (req, res) => {
       // replacing org_slug param with the slug
       registerUrl = registerUrl.replace("{org_slug}", org.slug);
       const timeout = conf.timeout * 1000;
-      const {
-        username,
-        email,
-        first_name,
-        last_name,
-        birth_date,
-        location,
-        password1,
-        password2,
-      } = req.body;
-      const postData = {
-        email,
-        username,
-        password1,
-        password2,
-        first_name,
-        last_name,
-        birth_date,
-        location,
-      };
-
-      if (settings.mobile_phone_verification) {
-        postData.method = "mobile_phone";
-      } else {
-        postData.method = "";
-      }
+      const postData = req.body;
 
       if (settings && settings.mobile_phone_verification) {
         postData.phone_number = req.body.phone_number;
+        postData.method = "mobile_phone";
+      } else {
+        postData.phone_number = null;
+        postData.method = "";
       }
+      if (settings && settings.subscriptions && postData.billing_info) {
+        postData.method = "bank_card";
+      }
+
+      const optionalFields = [
+        "first_name",
+        "last_name",
+        "location",
+        "birth_date",
+        "method",
+      ];
+      optionalFields.forEach(function (value) {
+        if (!postData[value]) {
+          delete postData[value];
+        }
+      });
+
+      // console.log(settings);
+      // console.log(postData);
+
       // send request
       axios({
         method: "post",
         headers: {
-          "content-type": "application/x-www-form-urlencoded",
+          "content-type": "application/json",
         },
         url: `${host}${registerUrl}/`,
         timeout,
-        data: qs.stringify(postData),
+        data: postData,
       })
         .then((response) => {
           const authTokenCookie = cookie.sign(
             response.data.key,
             conf.secret_key,
           );
-          const usernameCookie = cookie.sign(username, conf.secret_key);
+          const usernameCookie = cookie.sign(
+            postData.username,
+            conf.secret_key,
+          );
           // forward response
           res
             .status(response.status)
@@ -75,7 +76,7 @@ const registration = (req, res) => {
             .cookie(`${conf.slug}_username`, usernameCookie, {
               maxAge: 1000 * 60 * 60 * 24,
             })
-            .send();
+            .send(response.data);
         })
         .catch((error) => {
           Logger.error(error);

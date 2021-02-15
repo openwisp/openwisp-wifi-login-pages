@@ -350,6 +350,22 @@ These URLs from OpenWISP RADIUS will be used by default in the development envir
 The captive portal login and logout URLs and their parameters can be changed by
 editing the YAML configuration file of the respective organization.
 
+#### Signup with payment flow
+
+This application supports sign up with payment flows, either a one
+time payment, a free debit/credit card transaction for identity verification
+purposes or a subscription with periodic payments.
+
+In order to work, this feature needs the premium **OpenWISP Subscriptions**
+module ([get in touch with commercial support](https://openwisp.org/support.html)
+for more information).
+
+Once the module mentioned above is installed and configured, in order to
+enable this feature, just create a new organization with the
+`yarn run add-org` command and answer `yes` to the following question:
+
+`Are you using OpenWISP Subscriptions to provide paid subscriptions for WiFi plans or identity verification via credit/debit card?`
+
 ### License
 
 See [LICENSE](https://github.com/openwisp/openwisp-wifi-login-pages/blob/master/LICENSE).

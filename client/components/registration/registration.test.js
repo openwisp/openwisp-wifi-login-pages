@@ -157,13 +157,19 @@ describe("<Registration /> interactions", () => {
       .handleSubmit(event)
       .then(() => {
         expect(wrapper.instance().state.errors).toEqual({
+          birth_date: "",
+          city: "",
+          country: "",
           email: "email error",
-          password1: "password1 error",
-          password2: "",
           first_name: "",
           last_name: "",
           location: "",
-          birth_date: "",
+          password1: "password1 error",
+          password2: "",
+          street: "",
+          tax_number: "",
+          username: "",
+          zipcode: "",
         });
         expect(wrapper.find("div.error")).toHaveLength(2);
         expect(wrapper.instance().props.authenticate.mock.calls.length).toBe(0);
@@ -384,17 +390,6 @@ describe("Registration and Mobile Phone Verification interactions", () => {
     const component = wrapper.find(Registration).instance();
     const handleSubmit = jest.spyOn(component, "handleSubmit");
 
-    // testing if username is equal to phone_number
-    const axiosParam = {
-      data:
-        "email=tester%40openwisp.io&username=%2B393660011333&first_name=&last_name=&birth_date=&location=&password1=tester123&password2=tester123&phone_number=%2B393660011333",
-      headers: {
-        "content-type": "application/x-www-form-urlencoded",
-      },
-      method: "post",
-      url: "/api/v1/test-org-2/account/",
-    };
-
     axios.mockImplementationOnce(() => {
       return Promise.resolve({
         status: 201,
@@ -419,9 +414,11 @@ describe("Registration and Mobile Phone Verification interactions", () => {
     await tick();
     expect(wrapper.find(Registration).instance().state.errors).toEqual({});
     expect(handleSubmit).toHaveBeenCalled();
-    expect(axios).toHaveBeenCalledWith(axiosParam);
+    // expect(window.signUpData.username).toEqual(window.signUpData.phone_number);
     expect(event.preventDefault).toHaveBeenCalled();
     const {setUserData} = component.props;
     expect(setUserData.mock.calls.length).toBe(1);
   });
 });
+
+// registration with credit card, ensure user is authenticated
