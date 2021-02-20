@@ -2,7 +2,7 @@
 
 <!-- Badges -->
 
-[![Build Status](https://travis-ci.org/openwisp/openwisp-wifi-login-pages.svg?branch=master)](https://travis-ci.org/openwisp/openwisp-wifi-login-pages)
+[![Build Status](https://github.com/openwisp/openwisp-wifi-login-pages/workflows/OpenWisp%20WiFi%20Login%20Pages%20CI%20BUILD/badge.svg?branch=master)](https://github.com/openwisp/openwisp-wifi-login-pages/actions)
 [![Coverage Status](https://coveralls.io/repos/github/openwisp/openwisp-wifi-login-pages/badge.svg)](https://coveralls.io/github/openwisp/openwisp-wifi-login-pages)
 [![Dependencies Status](https://david-dm.org/openwisp/openwisp-wifi-login-pages/status.svg)](https://david-dm.org/openwisp/openwisp-wifi-login-pages)
 [![devDependencies Status](https://david-dm.org/openwisp/openwisp-wifi-login-pages/dev-status.svg)](https://david-dm.org/openwisp/openwisp-wifi-login-pages?type=dev)
@@ -74,7 +74,7 @@ So in order to use it, this app needs a running instance of OpenWISP RADIUS and 
 organization correctly configured, you can obtain this by following these steps:
 
 - Follow the instructions
-[to install OpenWISP RADIUS for development](https://openwisp-radius.readthedocs.io/en/latest/developer/setup.html#installing-for-development).
+  [to install OpenWISP RADIUS for development](https://openwisp-radius.readthedocs.io/en/latest/developer/setup.html#installing-for-development).
 - After successfully starting the OpenWISP RADIUS server, open a browser and visit:
   `http://localhost:8000/admin/`, then sign in with the credentials of
   the `superuser` we created during the installation of `openwisp-radius`.
@@ -130,15 +130,15 @@ The above command will prompt you to fill in some properties.
 
 Below is a table with these properties and a description of their values.
 
-| Property                   | Description                                        |
-| -------------------------- | ---------------------------------------------------|
-| name                       | Required. Name of the organization.                |
-| slug                       | Required. Slug of the organization.                |
-| uuid                       | Required. UUID of the organization.                |
-| secret_key                 | Required. Token from organization radius settings. |
-| captive portal login URL   | Required. Captive portal login action url          |
-| captive portal logout URL  | Required. Captive portal logout action url         |
-| openwisp radius url        | Required. URL to openwisp-radius.                  |
+| Property                  | Description                                        |
+| ------------------------- | -------------------------------------------------- |
+| name                      | Required. Name of the organization.                |
+| slug                      | Required. Slug of the organization.                |
+| uuid                      | Required. UUID of the organization.                |
+| secret_key                | Required. Token from organization radius settings. |
+| captive portal login URL  | Required. Captive portal login action url          |
+| captive portal logout URL | Required. Captive portal logout action url         |
+| openwisp radius url       | Required. URL to openwisp-radius.                  |
 
 Chose to copy the assets, then run:
 
@@ -276,7 +276,7 @@ The `setting` attribute of the fields `first_name`, `last_name`,
 `location` and `birth_date` can be used to indicate whether the fields
 shall be disabled (the default setting), allowed but not required or required.
 
-The `setting` option can take  any of the following values:
+The `setting` option can take any of the following values:
 
 - `disabled`: (**the default value**) fields with this setting won't be shown.
 - `allowed`: fields with this setting are shown but not required.
