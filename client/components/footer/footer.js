@@ -24,7 +24,7 @@ export default class Footer extends React.Component {
                   footer-link-${index + 1}`}
                     target="_blank"
                     rel="noreferrer noopener"
-                    key={link.url}
+                    key={link}
                   >
                     {getText(link.text, language)}
                   </a>
