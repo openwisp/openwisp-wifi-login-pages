@@ -537,10 +537,9 @@ export default class Status extends React.Component {
               {links && links.map(link => {
                 if (shouldLinkBeShown(link, isAuthenticated)) {
                   return (
-                    <div className="links row">
+                    <div className="links row" key={link.url}>
                       <Link
                         className="button full status-link"
-                        key={link.url}
                         to={link.url.replace("{orgSlug}", orgSlug)}
                       >
                         {getText(link.text, language)}
