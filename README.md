@@ -285,9 +285,9 @@ The `setting` option can take any of the following values:
 Keep in mind that this configuration must mirror the
 [configuration of openwisp-radius (OPENWISP_RADIUS_OPTIONAL_REGISTRATION_FIELDS)](https://openwisp-radius.readthedocs.io/en/latest/user/settings.html#openwisp-radius-optional-registration-fields).
 
-#### Configure Social Login
+#### Configuring Social Login
 
-You will need to configure social login to enable users login using third-party services. Refer to ["Social Login" section of OpenWISP Radius documentation](https://openwisp-radius.readthedocs.io/en/latest/user/social_login.html) for detailed setup instructions. 
+In order to enable users to log via third-party services like Google and Facebook, the ["Social Login" feature of OpenWISP Radius](https://openwisp-radius.readthedocs.io/en/latest/user/social_login.html) must be configured and enabled. 
 
 ### License
 
