@@ -287,7 +287,7 @@ Keep in mind that this configuration must mirror the
 
 #### Configure Social Login
 
-In order to authentication to work social login has to be configured. Follow this for more info: https://openwisp-radius.readthedocs.io/en/latest/user/social_login.html
+You will need to configure social login to enable users login using third-party services. Refer to ["Social Login" section of OpenWISP Radius documentation](https://openwisp-radius.readthedocs.io/en/latest/user/social_login.html) for detailed setup instructions. 
 
 ### License
 
