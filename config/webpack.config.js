@@ -1,3 +1,4 @@
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const CompressionPlugin = require('compression-webpack-plugin');
 const CopyPlugin = require("copy-webpack-plugin");
 const {CleanWebpackPlugin} = require("clean-webpack-plugin");
@@ -68,6 +69,7 @@ module.exports = (env, argv) => {
     },
 
     plugins: [
+      new BundleAnalyzerPlugin(),
       new CleanWebpackPlugin(),
       new HtmlWebpackPlugin({
         filename: "index.html",

@@ -167,6 +167,10 @@ $ yarn lint:fix   # Run ESLint with automatically fix problems option
 $ yarn test       # Run tests
 $ yarn -- -u      # Update Jest Snapshots
 ```
+Command for running webpack-bundle-analyzer:
+
+# Run the webpack-bundle-analyzer
+$ npx webpack-cli --profile --json --config config/webpack.config.js > compilation-stats.json 
 
 #### Using custom ports
 
