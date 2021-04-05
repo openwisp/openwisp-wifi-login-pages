@@ -59,7 +59,7 @@
     "eslint": "^7.13.0",
     "eslint-config-airbnb": "^18.1.0",
     "eslint-config-jest-enzyme": "^7.1.2",
-    "eslint-config-prettier": "^6.11.0",
+    "eslint-config-prettier": "^8.1.0",
     "eslint-config-react": "^1.1.7",
     "eslint-loader": "^4.0.2",
     "eslint-plugin-import": "^2.20.2",
