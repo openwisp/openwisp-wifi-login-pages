@@ -25,9 +25,13 @@
   width: 100%;
   margin-bottom: 27px;
 }
-.large-table  tbody tr:nth-child(odd),
-.small-table tbody:nth-child(even) { background: rgba(255, 255, 255, 0.3) }
-.small-table tbody td { padding: 1.5% 0 }
+.large-table tbody tr:nth-child(odd),
+.small-table tbody:nth-child(even) {
+  background: rgba(255, 255, 255, 0.3);
+}
+.small-table tbody td {
+  padding: 1.5% 0;
+}
 .small-table tbody tr:first-child th,
 .small-table tbody tr:first-child td {
   padding-top: 3%;
@@ -39,7 +43,7 @@
 .active-session {
   font-weight: bold;
 }
-.loadingContainer{
+.loadingContainer {
   padding-left: 50%;
   position: relative;
   top: -7px;

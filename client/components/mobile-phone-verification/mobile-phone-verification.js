@@ -5,9 +5,9 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import qs from "qs";
 import React from "react";
-import { Cookies } from "react-cookie";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import {Cookies} from "react-cookie";
+import {toast} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import LoadingContext from "../../utils/loading-context";
 
 import {
@@ -16,7 +16,7 @@ import {
   mainToastId,
   logoutSuccess,
   validateApiUrl,
-  verifyMobilePhoneTokenUrl
+  verifyMobilePhoneTokenUrl,
 } from "../../constants";
 import getErrorText from "../../utils/get-error-text";
 import getText from "../../utils/get-text";
@@ -25,7 +25,7 @@ import handleChange from "../../utils/handle-change";
 import Contact from "../contact-box";
 
 export default class MobilePhoneVerification extends React.Component {
-  phoneTokenSentKey = 'owPhoneTokenSent'
+  phoneTokenSentKey = "owPhoneTokenSent";
 
   constructor(props) {
     super(props);
@@ -44,11 +44,11 @@ export default class MobilePhoneVerification extends React.Component {
   }
 
   async componentDidMount() {
-    const { setLoading } = this.context;
-    const { settings } = this.props;
+    const {setLoading} = this.context;
+    const {settings} = this.props;
     setLoading(true);
     await this.validateToken();
-    const { is_active } = this.state;
+    const {is_active} = this.state;
     // send token via SMS only if user needs to verify
     if (!is_active && settings.mobile_phone_verification) {
       await this.createPhoneToken();
@@ -61,17 +61,17 @@ export default class MobilePhoneVerification extends React.Component {
   }
 
   handleSubmit(event) {
-    const { setLoading } = this.context;
+    const {setLoading} = this.context;
     event.preventDefault();
-    const { orgSlug, verifyMobileNumber } = this.props;
-    const { code, errors } = this.state;
-    this.setState({ errors: { ...errors, code: "" } });
+    const {orgSlug, verifyMobileNumber} = this.props;
+    const {code, errors} = this.state;
+    this.setState({errors: {...errors, code: ""}});
     const url = verifyMobilePhoneTokenUrl(orgSlug);
 
     return axios({
       method: "post",
       headers: {
-        "content-type": "application/x-www-form-urlencoded"
+        "content-type": "application/x-www-form-urlencoded",
       },
       url,
       data: qs.stringify({
@@ -80,13 +80,13 @@ export default class MobilePhoneVerification extends React.Component {
     })
       .then(() => {
         this.setState({
-          errors: {}
+          errors: {},
         });
         setLoading(false);
         verifyMobileNumber(false);
       })
-      .catch(error => {
-        const { data } = error.response;
+      .catch((error) => {
+        const {data} = error.response;
         const errorText = getErrorText(error);
         logError(error, errorText);
         toast.error(errorText);
@@ -94,8 +94,8 @@ export default class MobilePhoneVerification extends React.Component {
         this.setState({
           errors: {
             ...errors,
-            ...(data.code ? { code: data.code } : null),
-            ...(errorText ? { nonField: errorText } : { nonField: "" }),
+            ...(data.code ? {code: data.code} : null),
+            ...(errorText ? {nonField: errorText} : {nonField: ""}),
           },
         });
       });
@@ -146,20 +146,20 @@ export default class MobilePhoneVerification extends React.Component {
     return sessionStorage.getItem(this.phoneTokenSentKey) !== null;
   }
 
-  async createPhoneToken(resend=false) {
+  async createPhoneToken(resend = false) {
     // do not send new SMS token if one has already been sent
     if (!resend && this.hasPhoneTokenBeenSent()) {
       return false;
     }
-    const { orgSlug, mobile_phone_verification, language } = this.props;
-    const { errors, phone_number } = this.state;
-    const { text } = mobile_phone_verification;
+    const {orgSlug, mobile_phone_verification, language} = this.props;
+    const {errors, phone_number} = this.state;
+    const {text} = mobile_phone_verification;
     const self = this;
     const url = createMobilePhoneTokenUrl(orgSlug);
     return axios({
       method: "post",
       headers: {
-        "content-type": "application/x-www-form-urlencoded"
+        "content-type": "application/x-www-form-urlencoded",
       },
       url,
       data: qs.stringify({
@@ -171,14 +171,14 @@ export default class MobilePhoneVerification extends React.Component {
         sessionStorage.setItem(self.phoneTokenSentKey, true);
         toast.info(getText(text.token_sent, language));
       })
-      .catch(error => {
+      .catch((error) => {
         const errorText = getErrorText(error);
         logError(error, errorText);
         toast.error(errorText);
         this.setState({
           errors: {
             ...errors,
-            ...(errorText ? { nonField: errorText } : { nonField: "" }),
+            ...(errorText ? {nonField: errorText} : {nonField: ""}),
           },
         });
       });
@@ -188,35 +188,39 @@ export default class MobilePhoneVerification extends React.Component {
     const {orgSlug, logout, cookies} = this.props;
     logout(cookies, orgSlug);
     toast.success(logoutSuccess);
-  };
+  }
 
   async resendPhoneToken() {
-    const { setLoading } = this.context;
+    const {setLoading} = this.context;
     setLoading(true);
     await this.createPhoneToken(true);
     setLoading(false);
   }
 
   render() {
-    const { code, errors, success, phone_number } = this.state;
-    const { orgSlug, language, mobile_phone_verification } = this.props;
-    const { input_fields, buttons, text } = mobile_phone_verification;
+    const {code, errors, success, phone_number} = this.state;
+    const {orgSlug, language, mobile_phone_verification} = this.props;
+    const {input_fields, buttons, text} = mobile_phone_verification;
     return (
       <div className="container content" id="mobile-phone-verification">
         <div className="inner">
           <div className="main-column">
-            <form className={`${success ? "success" : ""}`} onSubmit={this.handleSubmit}>
+            <form
+              className={`${success ? "success" : ""}`}
+              onSubmit={this.handleSubmit}
+            >
               <div className="row fieldset code">
                 <p className="label">
-                  {getText(text.verify, language).replace("{phone_number}", phone_number)}
+                  {getText(text.verify, language).replace(
+                    "{phone_number}",
+                    phone_number,
+                  )}
                 </p>
 
                 {errors.nonField && (
                   <div className="error non-field">
                     <span className="icon">!</span>
-                    <span className="text">
-                      {errors.nonField}
-                    </span>
+                    <span className="text">{errors.nonField}</span>
                   </div>
                 )}
 
@@ -224,13 +228,13 @@ export default class MobilePhoneVerification extends React.Component {
                   {errors.code && (
                     <div className="error">
                       <span className="icon">!</span>
-                      <span className="text">
-                        {errors.code}
-                      </span>
+                      <span className="text">{errors.code}</span>
                     </div>
                   )}
                   <input
-                    className={`input ${errors.code || errors.nonField ? "error" : ""}`}
+                    className={`input ${
+                      errors.code || errors.nonField ? "error" : ""
+                    }`}
                     type={input_fields.code.type}
                     id="code"
                     required
@@ -244,52 +248,46 @@ export default class MobilePhoneVerification extends React.Component {
                     pattern={input_fields.code.pattern}
                     title={getText(
                       input_fields.code.pattern_description,
-                      language
+                      language,
                     )}
                   />
                 </div>
 
-                <button
-                  type="submit"
-                  className="button full"
-                >
+                <button type="submit" className="button full">
                   {getText(buttons.verify, language)}
                 </button>
               </div>
             </form>
 
             <div className="row fieldset resend">
-              <p className="label">
-                {getText(text.resend, language)}
-              </p>
+              <p className="label">{getText(text.resend, language)}</p>
 
               <button
-                 type="button"
-                 className="button full"
-                 onClick={this.resendPhoneToken}>
-                 {getText(buttons.resend, language)}
+                type="button"
+                className="button full"
+                onClick={this.resendPhoneToken}
+              >
+                {getText(buttons.resend, language)}
               </button>
             </div>
 
             <div className="row fieldset change">
-              <p className="label">
-                {getText(text.change, language)}
-              </p>
-              <a href={`/${orgSlug}/change-phone-number`}
-                 className="button full"
+              <p className="label">{getText(text.change, language)}</p>
+              <a
+                href={`/${orgSlug}/change-phone-number`}
+                className="button full"
               >
                 {getText(buttons.change, language)}
               </a>
             </div>
 
             <div className="row fieldset logout">
-              <p className="label">
-                {getText(text.logout, language)}
-              </p>
+              <p className="label">{getText(text.logout, language)}</p>
               <button
                 type="button"
                 className="button full"
-                onClick={this.handleLogout}>
+                onClick={this.handleLogout}
+              >
                 {getText(buttons.logout, language)}
               </button>
             </div>
@@ -303,7 +301,7 @@ export default class MobilePhoneVerification extends React.Component {
 MobilePhoneVerification.contextType = LoadingContext;
 MobilePhoneVerification.propTypes = {
   settings: PropTypes.shape({
-    mobile_phone_verification: PropTypes.bool
+    mobile_phone_verification: PropTypes.bool,
   }).isRequired,
   language: PropTypes.string.isRequired,
   orgSlug: PropTypes.string.isRequired,

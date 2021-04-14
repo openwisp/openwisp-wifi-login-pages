@@ -5,7 +5,7 @@ import getConfig from "../../utils/get-config";
 import DoesNotExist from "./404";
 
 const defaultConfig = getConfig("default");
-const createTestProps = props => {
+const createTestProps = (props) => {
   return {
     language: "en",
     orgSlug: "default",

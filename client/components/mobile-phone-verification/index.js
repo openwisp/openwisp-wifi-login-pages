@@ -12,13 +12,10 @@ const mapStateToProps = (state) => {
     language: state.language,
   };
 };
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     logout: logout(dispatch),
-    verifyMobileNumber: verifyMobileNumber(dispatch)
+    verifyMobileNumber: verifyMobileNumber(dispatch),
   };
 };
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Component);
+export default connect(mapStateToProps, mapDispatchToProps)(Component);

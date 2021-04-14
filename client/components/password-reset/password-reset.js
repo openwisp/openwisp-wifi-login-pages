@@ -2,11 +2,11 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import qs from "qs";
 import React from "react";
-import { Link } from "react-router-dom";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import {Link} from "react-router-dom";
+import {toast} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import LoadingContext from "../../utils/loading-context";
-import { resetApiUrl } from "../../constants";
+import {resetApiUrl} from "../../constants";
 import getErrorText from "../../utils/get-error-text";
 import getText from "../../utils/get-text";
 import logError from "../../utils/log-error";
@@ -30,10 +30,10 @@ export default class PasswordReset extends React.Component {
   }
 
   handleSubmit(event) {
-    const { setLoading } = this.context;
+    const {setLoading} = this.context;
     event.preventDefault();
-    const { orgSlug } = this.props;
-    const { email, errors } = this.state;
+    const {orgSlug} = this.props;
+    const {email, errors} = this.state;
     const url = resetApiUrl.replace("{orgSlug}", orgSlug);
     setLoading(true);
     return axios({
@@ -46,7 +46,7 @@ export default class PasswordReset extends React.Component {
         email,
       }),
     })
-      .then(response => {
+      .then((response) => {
         this.setState({
           errors: {},
           email: "",
@@ -55,7 +55,7 @@ export default class PasswordReset extends React.Component {
         setLoading(false);
         toast.success(response.data.detail);
       })
-      .catch(error => {
+      .catch((error) => {
         const errorText = getErrorText(error);
         logError(error, errorText);
         setLoading(false);
@@ -63,36 +63,30 @@ export default class PasswordReset extends React.Component {
         this.setState({
           errors: {
             ...errors,
-            ...(errorText ? { email: errorText } : { email: "" }),
+            ...(errorText ? {email: errorText} : {email: ""}),
           },
         });
       });
   }
 
   render() {
-    const { email, errors, success } = this.state;
-    const { language, passwordReset, orgSlug } = this.props;
+    const {email, errors, success} = this.state;
+    const {language, passwordReset, orgSlug} = this.props;
     const inputFields = passwordReset.input_fields;
     const loginPageLink = passwordReset.login_page_link;
-    const { buttons } = passwordReset;
+    const {buttons} = passwordReset;
     return (
       <div className="container content" id="reset-password">
         <div className="inner">
           {success ? (
             <div className="main-column">
               <div className="success">{success}</div>
-              <Link
-                to={`/${orgSlug}/login`}
-                className="link"
-              >
+              <Link to={`/${orgSlug}/login`} className="link">
                 {getText(loginPageLink.text, language)}
               </Link>
             </div>
           ) : (
-            <form
-              className="main-column"
-              onSubmit={this.handleSubmit}
-            >
+            <form className="main-column" onSubmit={this.handleSubmit}>
               <p className="label">
                 {getText(passwordReset.additional_text, language)}
               </p>
@@ -105,9 +99,7 @@ export default class PasswordReset extends React.Component {
                   {errors.email && (
                     <div className="error">
                       <span className="icon">!</span>
-                      <span className="text email">
-                        {errors.email}
-                      </span>
+                      <span className="text email">{errors.email}</span>
                     </div>
                   )}
                   <input
@@ -118,7 +110,10 @@ export default class PasswordReset extends React.Component {
                     name="email"
                     value={email}
                     onChange={this.handleChange}
-                    placeholder={getText(inputFields.email.placeholder, language)}
+                    placeholder={getText(
+                      inputFields.email.placeholder,
+                      language,
+                    )}
                     pattern={inputFields.email.pattern}
                     title={getText(inputFields.email.pattern_description)}
                   />
@@ -141,10 +136,7 @@ export default class PasswordReset extends React.Component {
 
               {loginPageLink && (
                 <div className="row links">
-                  <Link
-                    to={`/${orgSlug}/login`}
-                    className="link"
-                  >
+                  <Link to={`/${orgSlug}/login`} className="link">
                     {getText(loginPageLink.text, language)}
                   </Link>
                 </div>
@@ -169,7 +161,7 @@ PasswordReset.propTypes = {
         label: PropTypes.object.isRequired,
         placeholder: PropTypes.object.isRequired,
         pattern: PropTypes.string.isRequired,
-        pattern_description: PropTypes.object.isRequired
+        pattern_description: PropTypes.object.isRequired,
       }).isRequired,
     }).isRequired,
     buttons: PropTypes.object,

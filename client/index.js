@@ -1,23 +1,23 @@
 import "./index.css";
 
-import { Provider, connect } from "react-redux";
+import {Provider, connect} from "react-redux";
 
-import { CookiesProvider } from "react-cookie";
+import {CookiesProvider} from "react-cookie";
 import PropTypes from "prop-types";
 import React from "react";
-import { Route, Router } from "react-router-dom";
-import { render } from "react-dom";
-import { ToastContainer } from "react-toastify";
+import {Route, Router} from "react-router-dom";
+import {render} from "react-dom";
+import {ToastContainer} from "react-toastify";
 import Routes from "./routes";
 import config from "./config.json";
-import history from './utils/history';
+import history from "./utils/history";
 import parseOrganizations from "./actions/parse-organizations";
 import store from "./store";
 
 class BaseApp extends React.Component {
   constructor(props) {
     super(props);
-    const { parseOrgs } = this.props;
+    const {parseOrgs} = this.props;
     parseOrgs(config);
   }
 
@@ -25,9 +25,7 @@ class BaseApp extends React.Component {
     return (
       <Router history={history}>
         <ToastContainer />
-        <Route
-          path="/"
-          component={Routes} />
+        <Route path="/" component={Routes} />
       </Router>
     );
   }
@@ -37,18 +35,15 @@ BaseApp.propTypes = {
   parseOrgs: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    parseOrgs: configuration => {
+    parseOrgs: (configuration) => {
       dispatch(parseOrganizations(configuration));
     },
   };
 };
 
-const App = connect(
-  null,
-  mapDispatchToProps,
-)(BaseApp);
+const App = connect(null, mapDispatchToProps)(BaseApp);
 
 render(
   <CookiesProvider>

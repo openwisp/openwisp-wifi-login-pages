@@ -9,11 +9,11 @@ import logInternalError from "../utils/log-internal-error";
 
 const mobilePhoneNumberChange = (req, res) => {
   const reqOrg = req.params.organization;
-  const validSlug = config.some(org => {
+  const validSlug = config.some((org) => {
     if (org.slug === reqOrg) {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
-      const { host } = conf;
+      const {host} = conf;
       let url = conf.proxy_urls.mobile_phone_number_change;
       // replacing org_slug param with the slug
       url = url.replace("{org_slug}", org.slug);
@@ -25,20 +25,21 @@ const mobilePhoneNumberChange = (req, res) => {
         method: "post",
         headers: {
           "content-type": "application/x-www-form-urlencoded",
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         url: `${host}${url}/`,
         timeout,
-        data: qs.stringify({ phone_number: req.body.phone_number }),
+        data: qs.stringify({phone_number: req.body.phone_number}),
       })
-        .then(response => {
+        .then((response) => {
           res
             .status(response.status)
             .type("application/json")
             .send(response.data);
         })
-        .catch(error => {
-          if (error.response && error.response.status === 500) logInternalError(error);
+        .catch((error) => {
+          if (error.response && error.response.status === 500)
+            logInternalError(error);
           // forward error
           try {
             res
@@ -47,12 +48,9 @@ const mobilePhoneNumberChange = (req, res) => {
               .send(error.response.data);
           } catch (err) {
             logInternalError(error);
-            res
-              .status(500)
-              .type("application/json")
-              .send({
-                response_code: "INTERNAL_SERVER_ERROR",
-              });
+            res.status(500).type("application/json").send({
+              response_code: "INTERNAL_SERVER_ERROR",
+            });
           }
         });
     }
@@ -60,12 +58,9 @@ const mobilePhoneNumberChange = (req, res) => {
   });
   // return 404 for invalid organization slug or org not listed in config
   if (!validSlug) {
-    res
-      .status(404)
-      .type("application/json")
-      .send({
-        response_code: "INTERNAL_SERVER_ERROR",
-      });
+    res.status(404).type("application/json").send({
+      response_code: "INTERNAL_SERVER_ERROR",
+    });
   }
 };
 

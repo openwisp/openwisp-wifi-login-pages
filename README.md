@@ -287,7 +287,7 @@ Keep in mind that this configuration must mirror the
 
 #### Configuring Social Login
 
-In order to enable users to log via third-party services like Google and Facebook, the ["Social Login" feature of OpenWISP Radius](https://openwisp-radius.readthedocs.io/en/latest/user/social_login.html) must be configured and enabled. 
+In order to enable users to log via third-party services like Google and Facebook, the ["Social Login" feature of OpenWISP Radius](https://openwisp-radius.readthedocs.io/en/latest/user/social_login.html) must be configured and enabled.
 
 ### License
 

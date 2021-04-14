@@ -12,7 +12,7 @@ import getConfig from "../utils/get-config";
 import logout from "./logout";
 
 const setOrganization = (slug, cookies) => {
-  return dispatch => {
+  return (dispatch) => {
     const orgConfig = getConfig(slug);
     if (orgConfig) {
       const defaultConfig = getConfig("default");

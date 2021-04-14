@@ -1,11 +1,11 @@
 const logError = (error, errorText = "") => {
-  if (Object.prototype.hasOwnProperty.call(error, 'response')) {
+  if (Object.prototype.hasOwnProperty.call(error, "response")) {
     console.error(
-      'Status',
+      "Status",
       error.response.status,
       error.response.statusText,
-      ':',
-      errorText
+      ":",
+      errorText,
     );
   } else {
     console.log(error);

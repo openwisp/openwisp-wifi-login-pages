@@ -1,4 +1,4 @@
-const CompressionPlugin = require('compression-webpack-plugin');
+const CompressionPlugin = require("compression-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
@@ -62,7 +62,7 @@ module.exports = (env, argv) => {
         },
         {
           test: /\.(eot|svg|ttf|woff|woff2)$/,
-          use: ["file-loader"]
+          use: ["file-loader"],
         },
       ],
     },
@@ -75,19 +75,19 @@ module.exports = (env, argv) => {
       }),
       new HardSourceWebpackPlugin(),
       new CompressionPlugin({
-        filename: '[path].gz[query]',
-        algorithm: 'gzip',
+        filename: "[path].gz[query]",
+        algorithm: "gzip",
         test: /\.js$|\.css$|\.html$/,
         threshold: 10240,
         minRatio: 0.8,
       }),
       new CopyPlugin({
-        "patterns": [
+        patterns: [
           {
             from: path.resolve(CURRENT_WORKING_DIR, "client/assets"),
             to: path.resolve(CURRENT_WORKING_DIR, "dist/assets"),
-          }
-        ]
+          },
+        ],
       }),
     ],
 

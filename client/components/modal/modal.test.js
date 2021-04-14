@@ -7,7 +7,7 @@ import getConfig from "../../utils/get-config";
 import Modal from "./modal";
 
 const defaultConfig = getConfig("default");
-const createTestProps = props => {
+const createTestProps = (props) => {
   return {
     language: "en",
     privacyPolicy: defaultConfig.privacy_policy,

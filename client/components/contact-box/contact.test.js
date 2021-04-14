@@ -25,7 +25,7 @@ const links = [
     url: "https://google.com/openwisp",
   },
 ];
-const createTestProps = props => {
+const createTestProps = (props) => {
   return {
     language: "en",
     orgSlug: "default",

@@ -8,9 +8,9 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import qs from "qs";
 import React from "react";
-import { Cookies } from "react-cookie";
-import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
+import {Cookies} from "react-cookie";
+import {Link} from "react-router-dom";
+import {toast} from "react-toastify";
 import InfinteScroll from "react-infinite-scroll-component";
 import {
   genericError,
@@ -56,34 +56,34 @@ export default class Status extends React.Component {
   }
 
   async componentDidMount() {
-    const { cookies, orgSlug, verifyMobileNumber, settings } = this.props;
+    const {cookies, orgSlug, verifyMobileNumber, settings} = this.props;
     // to prevent recursive call in case redirect url is status page
     if (window.top === window.self) {
       try {
-        const { location, captivePortalLoginForm } = this.props;
+        const {location, captivePortalLoginForm} = this.props;
         const searchParams = new URLSearchParams(location.search);
         const macaddr = searchParams.get(
           captivePortalLoginForm.macaddr_param_name,
         );
         if (macaddr) {
-          cookies.set(`${orgSlug}_macaddr`, macaddr, { path: "/" });
+          cookies.set(`${orgSlug}_macaddr`, macaddr, {path: "/"});
         } else {
-          cookies.remove(`${orgSlug}_macaddr`, { path: "/" });
+          cookies.remove(`${orgSlug}_macaddr`, {path: "/"});
         }
       } catch {
         //
       }
       const isValid = await this.validateToken();
-      const { is_active } = this.state;
+      const {is_active} = this.state;
       if (isValid && is_active) {
         const macaddr = cookies.get(`${orgSlug}_macaddr`);
 
         if (macaddr) {
-          const params = { "macaddr": macaddr };
+          const params = {macaddr};
           await this.getUserActiveRadiusSessions(params);
           /* request to captive portal is made only if there is
             no active session from macaddr stored in the cookie */
-          const { activeSessions } = this.state;
+          const {activeSessions} = this.state;
           if (activeSessions && activeSessions.length === 0) {
             if (this.loginFormRef && this.loginFormRef.current)
               this.loginFormRef.current.submit();
@@ -96,7 +96,7 @@ export default class Status extends React.Component {
         const intervalId = setInterval(() => {
           this.getUserActiveRadiusSessions();
         }, 60000);
-        this.setState({ intervalId });
+        this.setState({intervalId});
         window.addEventListener("resize", this.updateScreenWidth);
         this.updateSpinner();
       }
@@ -108,13 +108,13 @@ export default class Status extends React.Component {
   }
 
   componentWillUnmount = () => {
-    const { intervalId } = this.state;
+    const {intervalId} = this.state;
     clearInterval(intervalId);
     window.removeEventListener("resize", this.updateScreenWidth);
-  }
+  };
 
   async getUserRadiusSessions(params) {
-    const { cookies, orgSlug, logout } = this.props;
+    const {cookies, orgSlug, logout} = this.props;
     const url = getUserRadiusSessionsUrl(orgSlug);
     const options = {};
     try {
@@ -130,11 +130,14 @@ export default class Status extends React.Component {
         options.activeSessions = response.data;
         options.sessionsToLogout = response.data;
       } else {
-        const { pastSessions } = this.state;
+        const {pastSessions} = this.state;
         options.pastSessions = pastSessions.concat(response.data);
         options.currentPage = params.page;
       }
-      if ("link" in response.headers && !response.headers.link.includes("next")) {
+      if (
+        "link" in response.headers &&
+        !response.headers.link.includes("next")
+      ) {
         options.hasMoreSessions = false;
       }
       this.setState(options);
@@ -150,7 +153,7 @@ export default class Status extends React.Component {
   async getUserActiveRadiusSessions(params = {}) {
     const para = {
       is_open: true,
-      ...params
+      ...params,
     };
     await this.getUserRadiusSessions(para);
   }
@@ -165,16 +168,16 @@ export default class Status extends React.Component {
   }
 
   handleLogout = async () => {
-    const { setLoading } = this.context;
-    const { orgSlug, logout, cookies } = this.props;
+    const {setLoading} = this.context;
+    const {orgSlug, logout, cookies} = this.props;
     const macaddr = cookies.get(`${orgSlug}_macaddr`);
-    const params = { macaddr };
+    const params = {macaddr};
     setLoading(true);
     await this.getUserActiveRadiusSessions(params);
-    const { sessionsToLogout } = this.state;
+    const {sessionsToLogout} = this.state;
     if (sessionsToLogout.length > 0) {
       if (this.logoutFormRef && this.logoutFormRef.current) {
-        this.setState({ loggedOut: true }, () => {
+        this.setState({loggedOut: true}, () => {
           this.logoutFormRef.current.submit();
         });
         return;
@@ -186,7 +189,7 @@ export default class Status extends React.Component {
   };
 
   handleLoginIframe = () => {
-    const { cookies, orgSlug, logout, captivePortalLoginForm } = this.props;
+    const {cookies, orgSlug, logout, captivePortalLoginForm} = this.props;
     if (this.loginIfameRef && this.loginIfameRef.current) {
       try {
         const searchParams = new URLSearchParams(
@@ -206,7 +209,7 @@ export default class Status extends React.Component {
           });
         }
         if (macaddr) {
-          cookies.set(`${orgSlug}_macaddr`, macaddr, { path: "/" });
+          cookies.set(`${orgSlug}_macaddr`, macaddr, {path: "/"});
         }
       } catch {
         //
@@ -216,10 +219,10 @@ export default class Status extends React.Component {
 
   handleLogoutIframe = () => {
     if (this.logoutIfameRef && this.logoutIfameRef.current) {
-      const { loggedOut } = this.state;
+      const {loggedOut} = this.state;
       if (loggedOut) {
-        const { setLoading } = this.context;
-        const { orgSlug, logout, cookies } = this.props;
+        const {setLoading} = this.context;
+        const {orgSlug, logout, cookies} = this.props;
         logout(cookies, orgSlug);
         setLoading(false);
         toast.success(logoutSuccess);
@@ -228,7 +231,7 @@ export default class Status extends React.Component {
   };
 
   async validateToken() {
-    const { cookies, orgSlug, logout, settings } = this.props;
+    const {cookies, orgSlug, logout, settings} = this.props;
     const token = cookies.get(`${orgSlug}_auth_token`);
     const url = validateApiUrl(orgSlug);
     try {
@@ -252,7 +255,13 @@ export default class Status extends React.Component {
           '"response_code" !== "AUTH_TOKEN_VALIDATION_SUCCESSFUL"',
         );
       } else {
-        const { radius_user_token: password, username, email, phone_number, is_active } = response.data;
+        const {
+          radius_user_token: password,
+          username,
+          email,
+          phone_number,
+          is_active,
+        } = response.data;
         const userInfo = {};
         userInfo.status = "";
         userInfo.email = email;
@@ -262,7 +271,7 @@ export default class Status extends React.Component {
         if (settings.mobile_phone_verification) {
           userInfo.phone_number = phone_number;
         }
-        this.setState({ username, password, is_active, userInfo });
+        this.setState({username, password, is_active, userInfo});
       }
       return true;
     } catch (error) {
@@ -277,12 +286,12 @@ export default class Status extends React.Component {
 
   updateScreenWidth = () => {
     this.setState({screenWidth: window.innerWidth});
-  }
+  };
 
   updateSpinner = () => {
     const {activeSessions, pastSessions} = this.state;
-    this.setState({loadSpinner: (activeSessions.length || pastSessions.length)});
-  }
+    this.setState({loadSpinner: activeSessions.length || pastSessions.length});
+  };
 
   async handleSessionLogout(session) {
     this.setState({
@@ -290,9 +299,9 @@ export default class Status extends React.Component {
       pastSessions: [],
       activeSessions: [],
       currentPage: 0,
-      hasMoreSessions: true
+      hasMoreSessions: true,
     });
-    const { setLoading } = this.context;
+    const {setLoading} = this.context;
     if (this.logoutFormRef && this.logoutFormRef.current) {
       this.logoutFormRef.current.submit();
     }
@@ -303,125 +312,165 @@ export default class Status extends React.Component {
   }
 
   async fetchMoreSessions() {
-    const { currentPage } = this.state;
-    await this.getUserPassedRadiusSessions({ page: currentPage + 1 });
+    const {currentPage} = this.state;
+    await this.getUserPassedRadiusSessions({page: currentPage + 1});
   }
 
-  getDuration = seconds => {
+  getDuration = (seconds) => {
     const number = Number(seconds);
     const h = Math.floor(number / 3600);
-    const m = Math.floor(number % 3600 / 60);
-    const s = Math.floor(number % 3600 % 60);
+    const m = Math.floor((number % 3600) / 60);
+    const s = Math.floor((number % 3600) % 60);
     const hDisplay = h > 0 ? h + (h === 1 ? " hr " : " hrs ") : "";
     const mDisplay = m > 0 ? m + (m === 1 ? " min " : " mins ") : "";
     const sDisplay = s > 0 ? s + (s === 1 ? " sec " : " secs ") : "";
     return hDisplay + mDisplay + sDisplay;
-  }
+  };
 
-  getMB = bytes => {
+  getMB = (bytes) => {
     const number = Number(bytes);
     const mb = Math.round(number / (1024 * 1024));
     return `${mb}MB`;
-  }
+  };
 
   getLargeTableRow = (session, sessionSettings) => {
-    const { language, captivePortalLogoutForm, statusPage } = this.props;
-    const { buttons } = statusPage;
+    const {language, captivePortalLogoutForm, statusPage} = this.props;
+    const {buttons} = statusPage;
     const time_option = {
       dateStyle: "medium",
       timeStyle: "short",
       hour12: false,
     };
-    const activeSessionText = getText(sessionSettings.active_session.text, language);
+    const activeSessionText = getText(
+      sessionSettings.active_session.text,
+      language,
+    );
     return (
       <>
         <td>
-          {new Intl.DateTimeFormat(sessionSettings.date_language_locale, time_option).format(new Date(session.start_time))}
+          {new Intl.DateTimeFormat(
+            sessionSettings.date_language_locale,
+            time_option,
+          ).format(new Date(session.start_time))}
         </td>
         <td>
-          {
-            session.stop_time === null ? activeSessionText :
-              new Intl.DateTimeFormat(sessionSettings.date_language_locale, time_option).format(new Date(session.stop_time))
-          }
+          {session.stop_time === null
+            ? activeSessionText
+            : new Intl.DateTimeFormat(
+                sessionSettings.date_language_locale,
+                time_option,
+              ).format(new Date(session.stop_time))}
         </td>
         <td>{this.getDuration(session.session_time)}</td>
         <td>{this.getMB(session.output_octets)}</td>
         <td>{this.getMB(session.input_octets)}</td>
         <td>{session.calling_station_id}</td>
-        {(session.stop_time == null && captivePortalLogoutForm.logout_by_session) && (
-          <td>
-            <div className="row logout">
-              <input
-                type="button"
-                className="button"
-                value={getText(buttons.logout.text, language)}
-                onClick={() => { this.handleSessionLogout(session); }}
-              />
-            </div>
-          </td>
-        )}
+        {session.stop_time == null &&
+          captivePortalLogoutForm.logout_by_session && (
+            <td>
+              <div className="row logout">
+                <input
+                  type="button"
+                  className="button"
+                  value={getText(buttons.logout.text, language)}
+                  onClick={() => {
+                    this.handleSessionLogout(session);
+                  }}
+                />
+              </div>
+            </td>
+          )}
       </>
     );
-  }
+  };
 
   getSmallTableRow = (session, session_info) => {
-    const { language, captivePortalLogoutForm, statusPage } = this.props;
-    const { buttons } = statusPage;
+    const {language, captivePortalLogoutForm, statusPage} = this.props;
+    const {buttons} = statusPage;
     const time_option = {
       dateStyle: "medium",
       timeStyle: "short",
       hour12: false,
     };
-    const activeSessionText = getText(session_info.settings.active_session.text, language);
+    const activeSessionText = getText(
+      session_info.settings.active_session.text,
+      language,
+    );
     return (
       <tbody key={session.session_id}>
-        <tr key={`${session.session_id  }start_time`} className={session.stop_time === null ? "active-session" : ""}>
+        <tr
+          key={`${session.session_id}start_time`}
+          className={session.stop_time === null ? "active-session" : ""}
+        >
           <th>{getText(session_info.header.start_time.text, language)}:</th>
           <td>
-            {new Intl.DateTimeFormat(session_info.settings.date_language_locale, time_option).format(new Date(session.start_time))}
+            {new Intl.DateTimeFormat(
+              session_info.settings.date_language_locale,
+              time_option,
+            ).format(new Date(session.start_time))}
           </td>
         </tr>
-        <tr key={`${session.session_id  }stop_time`} className={session.stop_time === null ? "active-session" : ""}>
+        <tr
+          key={`${session.session_id}stop_time`}
+          className={session.stop_time === null ? "active-session" : ""}
+        >
           <th>{getText(session_info.header.stop_time.text, language)}:</th>
           <td>
-            {
-              session.stop_time === null ? activeSessionText :
-                new Intl.DateTimeFormat(session_info.settings.date_language_locale, time_option).format(new Date(session.stop_time))
-            }
+            {session.stop_time === null
+              ? activeSessionText
+              : new Intl.DateTimeFormat(
+                  session_info.settings.date_language_locale,
+                  time_option,
+                ).format(new Date(session.stop_time))}
           </td>
         </tr>
-        <tr key={`${session.session_id  }duration`} className={session.stop_time === null ? "active-session" : ""}>
+        <tr
+          key={`${session.session_id}duration`}
+          className={session.stop_time === null ? "active-session" : ""}
+        >
           <th>{getText(session_info.header.duration.text, language)}:</th>
           <td>{this.getDuration(session.session_time)}</td>
         </tr>
-        <tr key={`${session.session_id  }download`} className={session.stop_time === null ? "active-session" : ""}>
+        <tr
+          key={`${session.session_id}download`}
+          className={session.stop_time === null ? "active-session" : ""}
+        >
           <th>{getText(session_info.header.download.text, language)}:</th>
           <td>{this.getMB(session.output_octets)}</td>
         </tr>
-        <tr key={`${session.session_id  }upload`} className={session.stop_time === null ? "active-session" : ""}>
+        <tr
+          key={`${session.session_id}upload`}
+          className={session.stop_time === null ? "active-session" : ""}
+        >
           <th>{getText(session_info.header.upload.text, language)}:</th>
           <td>{this.getMB(session.input_octets)}</td>
         </tr>
-        <tr key={`${session.session_id  }device_address`} className={session.stop_time === null ? "active-session" : ""}>
+        <tr
+          key={`${session.session_id}device_address`}
+          className={session.stop_time === null ? "active-session" : ""}
+        >
           <th>{getText(session_info.header.device_address.text, language)}:</th>
           <td>{session.calling_station_id}</td>
         </tr>
-        {(session.stop_time == null && captivePortalLogoutForm.logout_by_session) && (
-          <tr key={`${session.session_id  }logout`} className="active-session">
-            <th>{`${getText(buttons.logout.text, language)  } ?`}:</th>
-            <td className="row logout">
-              <input
-                type="button"
-                className="button"
-                value={getText(buttons.logout.text, language)}
-                onClick={() => { this.handleSessionLogout(session); }}
-              />
-            </td>
-          </tr>
-        )}
+        {session.stop_time == null &&
+          captivePortalLogoutForm.logout_by_session && (
+            <tr key={`${session.session_id}logout`} className="active-session">
+              <th>{`${getText(buttons.logout.text, language)} ?`}:</th>
+              <td className="row logout">
+                <input
+                  type="button"
+                  className="button"
+                  value={getText(buttons.logout.text, language)}
+                  onClick={() => {
+                    this.handleSessionLogout(session);
+                  }}
+                />
+              </td>
+            </tr>
+          )}
       </tbody>
     );
-  }
+  };
 
   getLargeTable = (session_info) => {
     const {activeSessions, pastSessions} = this.state;
@@ -430,24 +479,32 @@ export default class Status extends React.Component {
       <table className="large-table bg">
         <thead>
           <tr>
-            {Object.keys(session_info.header).map(key => {
+            {Object.keys(session_info.header).map((key) => {
               return (
-                <th key={key}>{getText(session_info.header[key].text, language)}</th>
+                <th key={key}>
+                  {getText(session_info.header[key].text, language)}
+                </th>
               );
             })}
           </tr>
         </thead>
         <tbody>
-          {activeSessions.map(session => {
+          {activeSessions.map((session) => {
             return (
-              <tr key={session.session_id} className={session.stop_time === null ? "active-session" : ""}>
+              <tr
+                key={session.session_id}
+                className={session.stop_time === null ? "active-session" : ""}
+              >
                 {this.getLargeTableRow(session, session_info.settings)}
               </tr>
             );
           })}
-          {pastSessions.map(session => {
+          {pastSessions.map((session) => {
             return (
-              <tr key={session.session_id} className={session.stop_time === null ? "active-session" : ""}>
+              <tr
+                key={session.session_id}
+                className={session.stop_time === null ? "active-session" : ""}
+              >
                 {this.getLargeTableRow(session, session_info.settings)}
               </tr>
             );
@@ -455,25 +512,21 @@ export default class Status extends React.Component {
         </tbody>
       </table>
     );
-  }
+  };
 
   getSmallTable = (session_info) => {
     const {activeSessions, pastSessions} = this.state;
     return (
       <table className="small-table bg">
-        {activeSessions.map(session => {
-          return (
-            this.getSmallTableRow(session, session_info)
-          );
+        {activeSessions.map((session) => {
+          return this.getSmallTableRow(session, session_info);
         })}
-        {pastSessions.map(session => {
-          return (
-            this.getSmallTableRow(session, session_info)
-          );
+        {pastSessions.map((session) => {
+          return this.getSmallTableRow(session, session_info);
         })}
       </table>
     );
-  }
+  };
 
   getTable = (session_info) => {
     const {screenWidth} = this.state;
@@ -481,13 +534,15 @@ export default class Status extends React.Component {
       return this.getLargeTable(session_info);
     }
     return this.getSmallTable(session_info);
-  }
+  };
 
   getSpinner = () => {
     return (
-      <div className="loadingContainer"><p className="loading" /></div>
+      <div className="loadingContainer">
+        <p className="loading" />
+      </div>
     );
-  }
+  };
 
   render() {
     const {
@@ -498,7 +553,7 @@ export default class Status extends React.Component {
       captivePortalLogoutForm,
       isAuthenticated,
     } = this.props;
-    const { content, links, buttons, session_info, user_info } = statusPage;
+    const {content, links, buttons, session_info, user_info} = statusPage;
     const {
       username,
       password,
@@ -507,7 +562,7 @@ export default class Status extends React.Component {
       pastSessions,
       sessionsToLogout,
       hasMoreSessions,
-      loadSpinner
+      loadSpinner,
     } = this.state;
     const contentArr = getText(content, language).split("\n");
     userInfo.status = getText(user_info.status.value, language);
@@ -516,16 +571,11 @@ export default class Status extends React.Component {
         <div className="container content" id="status">
           <div className="inner">
             <div className="main-column">
-              {contentArr.map(text => {
-                if (text !== "")
-                  return (
-                    <p key={text}>
-                      {text}
-                    </p>
-                  );
+              {contentArr.map((text) => {
+                if (text !== "") return <p key={text}>{text}</p>;
                 return null;
               })}
-              {Object.keys(userInfo).map(key => {
+              {Object.keys(userInfo).map((key) => {
                 return (
                   <p key={key}>
                     <label>{getText(user_info[key].text, language)}:</label>
@@ -534,21 +584,22 @@ export default class Status extends React.Component {
                 );
               })}
 
-              {links && links.map(link => {
-                if (shouldLinkBeShown(link, isAuthenticated)) {
-                  return (
-                    <div className="links row" key={link.url}>
-                      <Link
-                        className="button full status-link"
-                        to={link.url.replace("{orgSlug}", orgSlug)}
-                      >
-                        {getText(link.text, language)}
-                      </Link>
-                    </div>
-                  );
-                }
-                return null;
-              })}
+              {links &&
+                links.map((link) => {
+                  if (shouldLinkBeShown(link, isAuthenticated)) {
+                    return (
+                      <div className="links row" key={link.url}>
+                        <Link
+                          className="button full status-link"
+                          to={link.url.replace("{orgSlug}", orgSlug)}
+                        >
+                          {getText(link.text, language)}
+                        </Link>
+                      </div>
+                    );
+                  }
+                  return null;
+                })}
 
               <div className="row logout">
                 <input
@@ -570,14 +621,10 @@ export default class Status extends React.Component {
             hasMore={hasMoreSessions}
             loader={this.getSpinner()}
           >
-            <>
-              {this.getTable(session_info)}
-            </>
+            <>{this.getTable(session_info)}</>
           </InfinteScroll>
-        )) || loadSpinner && (
-            this.getSpinner()
-          )
-        }
+        )) ||
+          (loadSpinner && this.getSpinner())}
 
         {/* check to ensure this block of code is executed in root document and not in Iframe */}
         {captivePortalLoginForm && window.top === window.self && (
@@ -603,7 +650,7 @@ export default class Status extends React.Component {
                 value={password}
               />
               {captivePortalLoginForm.additional_fields.length &&
-                captivePortalLoginForm.additional_fields.map(field => (
+                captivePortalLoginForm.additional_fields.map((field) => (
                   <input
                     readOnly
                     type="text"
@@ -639,10 +686,14 @@ export default class Status extends React.Component {
                 readOnly
                 type="hidden"
                 name={captivePortalLogoutForm.fields.id || ""}
-                value={sessionsToLogout.length > 0 ? sessionsToLogout[0].session_id : ""}
+                value={
+                  sessionsToLogout.length > 0
+                    ? sessionsToLogout[0].session_id
+                    : ""
+                }
               />
               {captivePortalLogoutForm.additional_fields.length &&
-                captivePortalLogoutForm.additional_fields.map(field => (
+                captivePortalLogoutForm.additional_fields.map((field) => (
                   <input
                     readOnly
                     type="text"
@@ -666,7 +717,7 @@ export default class Status extends React.Component {
 }
 Status.contextType = LoadingContext;
 Status.defaultProps = {
-  isAuthenticated: false
+  isAuthenticated: false,
 };
 Status.propTypes = {
   statusPage: PropTypes.shape({
@@ -711,14 +762,14 @@ Status.propTypes = {
         value: PropTypes.object.isRequired,
       }).isRequired,
       email: PropTypes.shape({
-        text: PropTypes.object.isRequired
+        text: PropTypes.object.isRequired,
       }).isRequired,
       username: PropTypes.shape({
-        text: PropTypes.object.isRequired
+        text: PropTypes.object.isRequired,
       }).isRequired,
       phone_number: PropTypes.shape({
-        text: PropTypes.object
-      })
+        text: PropTypes.object,
+      }),
     }).isRequired,
     buttons: PropTypes.shape({
       logout: PropTypes.shape({
@@ -755,6 +806,6 @@ Status.propTypes = {
   isAuthenticated: PropTypes.bool,
   verifyMobileNumber: PropTypes.func.isRequired,
   settings: PropTypes.shape({
-    mobile_phone_verification: PropTypes.bool
+    mobile_phone_verification: PropTypes.bool,
   }).isRequired,
 };

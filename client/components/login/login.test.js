@@ -1,11 +1,11 @@
 /* eslint-disable prefer-promise-reject-errors */
 import axios from "axios";
-import { shallow } from "enzyme";
+import {shallow} from "enzyme";
 import React from "react";
 import ShallowRenderer from "react-test-renderer/shallow";
-import { toast } from 'react-toastify';
+import {toast} from "react-toastify";
 import PropTypes from "prop-types";
-import { loadingContextValue } from "../../utils/loading-context";
+import {loadingContextValue} from "../../utils/loading-context";
 
 import getConfig from "../../utils/get-config";
 import Login from "./login";
@@ -14,8 +14,9 @@ jest.mock("axios");
 
 const defaultConfig = getConfig("default");
 const loginForm = defaultConfig.components.login_form;
-loginForm.input_fields.phone_number = defaultConfig.components.registration_form.input_fields.phone_number;
-const createTestProps = props => {
+loginForm.input_fields.phone_number =
+  defaultConfig.components.registration_form.input_fields.phone_number;
+const createTestProps = (props) => {
   return {
     language: "en",
     orgSlug: "default",
@@ -88,9 +89,9 @@ describe("<Login /> interactions", () => {
     props = createTestProps();
     Login.contextTypes = {
       setLoading: PropTypes.func,
-      getLoading: PropTypes.func
+      getLoading: PropTypes.func,
     };
-    wrapper = shallow(<Login {...props} />, { context: loadingContextValue });
+    wrapper = shallow(<Login {...props} />, {context: loadingContextValue});
   });
 
   afterEach(() => {
@@ -102,11 +103,11 @@ describe("<Login /> interactions", () => {
     expect(wrapper.find("[name='phone_number']")).toEqual({});
     wrapper
       .find("#email")
-      .simulate("change", { target: { value: "test email", name: "email" } });
+      .simulate("change", {target: {value: "test email", name: "email"}});
     expect(wrapper.state("email")).toEqual("test email");
     wrapper
       .find("#password")
-      .simulate("change", { target: { value: "test password", name: "password" } });
+      .simulate("change", {target: {value: "test password", name: "password"}});
     expect(wrapper.state("password")).toEqual("test password");
   });
 
@@ -131,25 +132,25 @@ describe("<Login /> interactions", () => {
           response: {
             data: {
               detail: "Internal server error",
-            }
-          }
+            },
+          },
         });
       })
       .mockImplementationOnce(() => {
         return Promise.reject({
           response: {
-            data: {}
+            data: {},
           },
           status: 504,
-          statusText: "Gateway Timeout"
+          statusText: "Gateway Timeout",
         });
       })
       .mockImplementationOnce(() => {
         return Promise.resolve();
       });
-    const event = { preventDefault: () => {} };
-    const spyToast = jest.spyOn(toast, 'error');
-    
+    const event = {preventDefault: () => {}};
+    const spyToast = jest.spyOn(toast, "error");
+
     return wrapper
       .instance()
       .handleSubmit(event)
@@ -161,9 +162,7 @@ describe("<Login /> interactions", () => {
         });
         expect(wrapper.find("div.error")).toHaveLength(2);
         expect(wrapper.find("input.error")).toHaveLength(2);
-        expect(
-          wrapper.instance().props.authenticate.mock.calls.length,
-        ).toBe(0);
+        expect(wrapper.instance().props.authenticate.mock.calls.length).toBe(0);
         expect(lastConsoleOutuput).not.toBe(null);
         expect(spyToast.mock.calls.length).toBe(1);
         lastConsoleOutuput = null;
@@ -212,7 +211,7 @@ describe("<Login /> interactions", () => {
 
   it("should execute verifyMobileNumber if mobile phone verification needed", async () => {
     props.settings = {mobile_phone_verification: true};
-    wrapper = shallow(<Login {...props} />, { context: loadingContextValue });
+    wrapper = shallow(<Login {...props} />, {context: loadingContextValue});
 
     axios.mockImplementationOnce(() => {
       return Promise.reject({
@@ -226,13 +225,13 @@ describe("<Login /> interactions", () => {
 
     expect(wrapper.find("#email")).toEqual({});
     expect(wrapper.state("phone_number")).toEqual("");
-    wrapper
-      .find("[name='phone_number']")
-      .simulate("change", {target: {value: "+393660011333", name: "phone_number"}});
+    wrapper.find("[name='phone_number']").simulate("change", {
+      target: {value: "+393660011333", name: "phone_number"},
+    });
     expect(wrapper.state("phone_number")).not.toEqual("");
     wrapper
       .find("#password")
-      .simulate("change", { target: { value: "test password", name: "password" } });
+      .simulate("change", {target: {value: "test password", name: "password"}});
     expect(wrapper.state("password")).toEqual("test password");
 
     const event = {preventDefault: () => {}};
@@ -246,15 +245,15 @@ describe("<Login /> interactions", () => {
   });
   it("phone_number field should be present if mobile phone verification is on", async () => {
     props.settings = {mobile_phone_verification: true};
-    wrapper = shallow(<Login {...props} />, { context: loadingContextValue });
-    
+    wrapper = shallow(<Login {...props} />, {context: loadingContextValue});
+
     expect(wrapper.find("#email").length).toEqual(0);
     expect(wrapper.find("[name='phone_number']").length).toEqual(1);
   });
   it("email field should be present if mobile phone verification is off", async () => {
     props.settings = {mobile_phone_verification: false};
-    wrapper = shallow(<Login {...props} />, { context: loadingContextValue });
-    
+    wrapper = shallow(<Login {...props} />, {context: loadingContextValue});
+
     expect(wrapper.find("#email").length).toEqual(1);
     expect(wrapper.find("[name='phone_number']").length).toEqual(0);
   });

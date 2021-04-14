@@ -3,14 +3,20 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import qs from "qs";
 import React from "react";
-import { Link, Route } from "react-router-dom";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import PhoneInput from 'react-phone-input-2';
-import 'react-phone-input-2/lib/style.css';
+import {Link, Route} from "react-router-dom";
+import {toast} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 import LoadingContext from "../../utils/loading-context";
 
-import { mainToastId, passwordConfirmError, registerApiUrl, registerError, registerSuccess } from "../../constants";
+import {
+  mainToastId,
+  passwordConfirmError,
+  registerApiUrl,
+  registerError,
+  registerSuccess,
+} from "../../constants";
 import getErrorText from "../../utils/get-error-text";
 import getText from "../../utils/get-text";
 import logError from "../../utils/log-error";
@@ -44,10 +50,10 @@ export default class Registration extends React.Component {
   }
 
   handleSubmit(event) {
-    const { setLoading } = this.context;
+    const {setLoading} = this.context;
     event.preventDefault();
-    const { orgSlug, authenticate, verifyMobileNumber, settings } = this.props;
-    const { 
+    const {orgSlug, authenticate, verifyMobileNumber, settings} = this.props;
+    const {
       phone_number,
       email,
       first_name,
@@ -56,7 +62,7 @@ export default class Registration extends React.Component {
       location,
       password1,
       password2,
-      errors
+      errors,
     } = this.state;
 
     if (password1 !== password2) {
@@ -68,12 +74,12 @@ export default class Registration extends React.Component {
       return false;
     }
 
-    this.setState({ errors: { ...errors, password2: null } });
+    this.setState({errors: {...errors, password2: null}});
     const url = registerApiUrl.replace("{orgSlug}", orgSlug);
     // prepare post data
     const postData = {
       email,
-      "username": email,
+      username: email,
       first_name,
       last_name,
       birth_date,
@@ -107,7 +113,7 @@ export default class Registration extends React.Component {
         // SMS verification flow
         if (settings.mobile_phone_verification) {
           verifyMobileNumber(true);
-        // simple sign up flow
+          // simple sign up flow
         } else {
           toast.success(registerSuccess, {
             toastId: mainToastId,
@@ -116,8 +122,8 @@ export default class Registration extends React.Component {
         authenticate(true);
         setLoading(false);
       })
-      .catch(error => {
-        const { data } = error.response;
+      .catch((error) => {
+        const {data} = error.response;
         const errorText = getErrorText(error, registerError);
         logError(error, errorText);
         setLoading(false);
@@ -125,27 +131,37 @@ export default class Registration extends React.Component {
         this.setState({
           errors: {
             ...errors,
-            ...(data.phone_number ? { phone_number: data.phone_number } : null),
-            ...(data.email ? { email: data.email.toString() } : { email: "" }),
-            ...(data.first_name ? { first_name: data.first_name.toString() } : { first_name: "" }),
-            ...(data.last_name ? { last_name: data.last_name.toString() } : { last_name: "" }),
-            ...(data.birth_date ? { birth_date: data.birth_date.toString() } : { birth_date: "" }),
-            ...(data.location ? { location: data.location.toString() } : { location: "" }),
+            ...(data.phone_number ? {phone_number: data.phone_number} : null),
+            ...(data.email ? {email: data.email.toString()} : {email: ""}),
+            ...(data.first_name
+              ? {first_name: data.first_name.toString()}
+              : {first_name: ""}),
+            ...(data.last_name
+              ? {last_name: data.last_name.toString()}
+              : {last_name: ""}),
+            ...(data.birth_date
+              ? {birth_date: data.birth_date.toString()}
+              : {birth_date: ""}),
+            ...(data.location
+              ? {location: data.location.toString()}
+              : {location: ""}),
             ...(data.password1
-              ? { password1: data.password1.toString() }
-              : { password1: "" }),
+              ? {password1: data.password1.toString()}
+              : {password1: ""}),
             ...(data.password2
-              ? { password2: data.password2.toString() }
-              : { password2: "" }),
+              ? {password2: data.password2.toString()}
+              : {password2: ""}),
           },
         });
       });
   }
 
   getLabel = (field) => {
-    const { language } = this.props;
-    return field.setting === "mandatory" ? getText(field.label, language) : getText(field.label_optional, language);
-  }
+    const {language} = this.props;
+    return field.setting === "mandatory"
+      ? getText(field.label, language)
+      : getText(field.label_optional, language);
+  };
 
   render() {
     const {
@@ -157,7 +173,7 @@ export default class Registration extends React.Component {
       orgSlug,
       match,
     } = this.props;
-    const { buttons, additional_info_text, input_fields, links } = registration;
+    const {buttons, additional_info_text, input_fields, links} = registration;
     const {
       phone_number,
       email,
@@ -168,59 +184,77 @@ export default class Registration extends React.Component {
       password1,
       password2,
       errors,
-      success
+      success,
     } = this.state;
     return (
       <>
         <div className="container content" id="registration">
           <div className="inner">
-            <form className={`main-column ${success ? "success" : ""}`}
-                  onSubmit={this.handleSubmit}
-                  id="registration-form">
+            <form
+              className={`main-column ${success ? "success" : ""}`}
+              onSubmit={this.handleSubmit}
+              id="registration-form"
+            >
               <div className="fieldset">
                 {errors.nonField && (
                   <div className="error non-field">
                     <span className="icon">!</span>
-                    <span className="text">
-                      {errors.nonField}
-                    </span>
+                    <span className="text">{errors.nonField}</span>
                   </div>
                 )}
 
-                {settings.mobile_phone_verification && input_fields.phone_number && (
-                  <div className="row phone-number">
-                    <label htmlFor="phone-number">
-                      {getText(input_fields.phone_number.label, language)}
-                    </label>
+                {settings.mobile_phone_verification &&
+                  input_fields.phone_number && (
+                    <div className="row phone-number">
+                      <label htmlFor="phone-number">
+                        {getText(input_fields.phone_number.label, language)}
+                      </label>
 
-                    {errors.phone_number && (
-                      <div className="error">
-                        <span className="icon">!</span>
-                        <span className="text">
-                          {errors.phone_number}
-                        </span>
-                      </div>
-                    )}
-                    <PhoneInput
-                      name="phone_number"
-                      country={input_fields.phone_number.country}
-                      onlyCountries={input_fields.phone_number.only_countries || []}
-                      preferredCountries={input_fields.phone_number.preferred_countries || []}
-                      excludeCountries={input_fields.phone_number.exclude_countries || []}
-                      value={phone_number}
-                      onChange={value => this.handleChange({target: {name: "phone_number", value: `+${value}`}})}
-                      onKeyDown={event => { submitOnEnter(event, this, "registration-form"); }}
-                      placeholder={getText(input_fields.phone_number.placeholder, language)}
-                      enableSearch={Boolean(input_fields.phone_number.enable_search)}
-                      inputProps={{
-                        name: "phone_number",
-                        id: "phone-number",
-                        className: `form-control input ${errors.phone_number ? "error" : ""}`,
-                        required: true,
-                      }}
-                    />
-                  </div>
-                )}
+                      {errors.phone_number && (
+                        <div className="error">
+                          <span className="icon">!</span>
+                          <span className="text">{errors.phone_number}</span>
+                        </div>
+                      )}
+                      <PhoneInput
+                        name="phone_number"
+                        country={input_fields.phone_number.country}
+                        onlyCountries={
+                          input_fields.phone_number.only_countries || []
+                        }
+                        preferredCountries={
+                          input_fields.phone_number.preferred_countries || []
+                        }
+                        excludeCountries={
+                          input_fields.phone_number.exclude_countries || []
+                        }
+                        value={phone_number}
+                        onChange={(value) =>
+                          this.handleChange({
+                            target: {name: "phone_number", value: `+${value}`},
+                          })
+                        }
+                        onKeyDown={(event) => {
+                          submitOnEnter(event, this, "registration-form");
+                        }}
+                        placeholder={getText(
+                          input_fields.phone_number.placeholder,
+                          language,
+                        )}
+                        enableSearch={Boolean(
+                          input_fields.phone_number.enable_search,
+                        )}
+                        inputProps={{
+                          name: "phone_number",
+                          id: "phone-number",
+                          className: `form-control input ${
+                            errors.phone_number ? "error" : ""
+                          }`,
+                          required: true,
+                        }}
+                      />
+                    </div>
+                  )}
 
                 <div className="row email">
                   <label htmlFor="email">
@@ -229,9 +263,7 @@ export default class Registration extends React.Component {
                   {errors.email && (
                     <div className="error email">
                       <span className="icon">!</span>
-                      <span className="text text-email">
-                        {errors.email}
-                      </span>
+                      <span className="text text-email">{errors.email}</span>
                     </div>
                   )}
                   <input
@@ -242,9 +274,15 @@ export default class Registration extends React.Component {
                     name="email"
                     value={email}
                     onChange={this.handleChange}
-                    placeholder={getText(input_fields.email.placeholder, language)}
+                    placeholder={getText(
+                      input_fields.email.placeholder,
+                      language,
+                    )}
                     pattern={input_fields.email.pattern}
-                    title={getText(input_fields.email.pattern_description, language)}
+                    title={getText(
+                      input_fields.email.pattern_description,
+                      language,
+                    )}
                   />
                 </div>
 
@@ -269,9 +307,15 @@ export default class Registration extends React.Component {
                       name="first_name"
                       value={first_name}
                       onChange={this.handleChange}
-                      placeholder={getText(input_fields.first_name.placeholder, language)}
+                      placeholder={getText(
+                        input_fields.first_name.placeholder,
+                        language,
+                      )}
                       pattern={input_fields.first_name.pattern}
-                      title={getText(input_fields.first_name.pattern_description, language)}
+                      title={getText(
+                        input_fields.first_name.pattern_description,
+                        language,
+                      )}
                     />
                   </div>
                 )}
@@ -297,9 +341,15 @@ export default class Registration extends React.Component {
                       name="last_name"
                       value={last_name}
                       onChange={this.handleChange}
-                      placeholder={getText(input_fields.last_name.placeholder, language)}
+                      placeholder={getText(
+                        input_fields.last_name.placeholder,
+                        language,
+                      )}
                       pattern={input_fields.last_name.pattern}
-                      title={getText(input_fields.last_name.pattern_description, language)}
+                      title={getText(
+                        input_fields.last_name.pattern_description,
+                        language,
+                      )}
                     />
                   </div>
                 )}
@@ -350,9 +400,15 @@ export default class Registration extends React.Component {
                       name="location"
                       value={location}
                       onChange={this.handleChange}
-                      placeholder={getText(input_fields.location.placeholder, language)}
+                      placeholder={getText(
+                        input_fields.location.placeholder,
+                        language,
+                      )}
                       pattern={input_fields.location.pattern}
-                      title={getText(input_fields.location.pattern_description, language)}
+                      title={getText(
+                        input_fields.location.pattern_description,
+                        language,
+                      )}
                     />
                   </div>
                 )}
@@ -364,9 +420,7 @@ export default class Registration extends React.Component {
                   {errors.password1 && (
                     <div className="error">
                       <span className="icon">!</span>
-                      <span className="text">
-                        {errors.password1}
-                      </span>
+                      <span className="text">{errors.password1}</span>
                     </div>
                   )}
                   <input
@@ -377,7 +431,10 @@ export default class Registration extends React.Component {
                     name="password1"
                     value={password1}
                     onChange={this.handleChange}
-                    placeholder={getText(input_fields.password.placeholder, language)}
+                    placeholder={getText(
+                      input_fields.password.placeholder,
+                      language,
+                    )}
                     pattern={input_fields.password.pattern}
                     title={getText(input_fields.password.pattern_description)}
                   />
@@ -403,9 +460,15 @@ export default class Registration extends React.Component {
                     name="password2"
                     value={password2}
                     onChange={this.handleChange}
-                    placeholder={getText(input_fields.password_confirm.placeholder, language)}
+                    placeholder={getText(
+                      input_fields.password_confirm.placeholder,
+                      language,
+                    )}
                     pattern={input_fields.password.pattern}
-                    title={getText(input_fields.password.pattern_description, language)}
+                    title={getText(
+                      input_fields.password.pattern_description,
+                      language,
+                    )}
                   />
                 </div>
               </div>
@@ -435,20 +498,14 @@ export default class Registration extends React.Component {
                 <div className="row links">
                   {links.forget_password && (
                     <p>
-                      <Link
-                        to={`/${orgSlug}/password/reset`}
-                        className="link"
-                      >
+                      <Link to={`/${orgSlug}/password/reset`} className="link">
                         {getText(links.forget_password, language)}
                       </Link>
                     </p>
                   )}
                   {links.login && (
                     <p>
-                      <Link
-                        to={`/${orgSlug}/login`}
-                        className="link"
-                      >
+                      <Link to={`/${orgSlug}/login`} className="link">
                         {getText(links.login, language)}
                       </Link>
                     </p>
@@ -462,7 +519,7 @@ export default class Registration extends React.Component {
         </div>
         <Route
           path={`${match.path}/:name`}
-          render={props => {
+          render={(props) => {
             return <Modal {...props} prevPath={match.url} />;
           }}
         />
@@ -473,7 +530,7 @@ export default class Registration extends React.Component {
 Registration.contextType = LoadingContext;
 Registration.propTypes = {
   settings: PropTypes.shape({
-    mobile_phone_verification: PropTypes.bool
+    mobile_phone_verification: PropTypes.bool,
   }).isRequired,
   registration: PropTypes.shape({
     header: PropTypes.object,
@@ -488,14 +545,14 @@ Registration.propTypes = {
         label: PropTypes.object.isRequired,
         placeholder: PropTypes.object.isRequired,
         pattern: PropTypes.string.isRequired,
-        pattern_description: PropTypes.object.isRequired
+        pattern_description: PropTypes.object.isRequired,
       }).isRequired,
       password: PropTypes.shape({
         type: PropTypes.string.isRequired,
         label: PropTypes.object.isRequired,
         placeholder: PropTypes.object.isRequired,
         pattern: PropTypes.string.isRequired,
-        pattern_description: PropTypes.object.isRequired
+        pattern_description: PropTypes.object.isRequired,
       }).isRequired,
       password_confirm: PropTypes.shape({
         type: PropTypes.string.isRequired,
@@ -509,7 +566,7 @@ Registration.propTypes = {
         only_countries: PropTypes.array,
         preferred_countries: PropTypes.array,
         exclude_countries: PropTypes.array,
-        enable_search: PropTypes.bool
+        enable_search: PropTypes.bool,
       }),
       first_name: PropTypes.shape({
         type: PropTypes.string.isRequired,
@@ -518,7 +575,7 @@ Registration.propTypes = {
         setting: PropTypes.string.isRequired,
         placeholder: PropTypes.object.isRequired,
         pattern: PropTypes.string.isRequired,
-        pattern_description: PropTypes.object.isRequired
+        pattern_description: PropTypes.object.isRequired,
       }),
       last_name: PropTypes.shape({
         type: PropTypes.string.isRequired,
@@ -527,7 +584,7 @@ Registration.propTypes = {
         setting: PropTypes.string.isRequired,
         placeholder: PropTypes.object.isRequired,
         pattern: PropTypes.string.isRequired,
-        pattern_description: PropTypes.object.isRequired
+        pattern_description: PropTypes.object.isRequired,
       }),
       location: PropTypes.shape({
         type: PropTypes.string.isRequired,
@@ -536,14 +593,14 @@ Registration.propTypes = {
         setting: PropTypes.string.isRequired,
         placeholder: PropTypes.object.isRequired,
         pattern: PropTypes.string.isRequired,
-        pattern_description: PropTypes.object.isRequired
+        pattern_description: PropTypes.object.isRequired,
       }),
       birth_date: PropTypes.shape({
         type: PropTypes.string.isRequired,
         label: PropTypes.object.isRequired,
         label_optional: PropTypes.object.isRequired,
         setting: PropTypes.string.isRequired,
-      })
+      }),
     }),
     additional_info_text: PropTypes.object,
     links: PropTypes.object,
@@ -563,5 +620,5 @@ Registration.propTypes = {
     content: PropTypes.object,
   }).isRequired,
   authenticate: PropTypes.func.isRequired,
-  verifyMobileNumber: PropTypes.func.isRequired
+  verifyMobileNumber: PropTypes.func.isRequired,
 };
