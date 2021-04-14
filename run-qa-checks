@@ -2,6 +2,7 @@
 
 set -e
 
+yarn format:check
 yarn setup
 yarn lint
 
