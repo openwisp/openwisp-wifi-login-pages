@@ -4,6 +4,7 @@ import {shallow} from "enzyme";
 import PropTypes from "prop-types";
 import React from "react";
 import ShallowRenderer from "react-test-renderer/shallow";
+import {Cookies} from "react-cookie";
 import {passwordChangeError, passwordConfirmError} from "../../constants";
 import getConfig from "../../utils/get-config";
 import logError from "../../utils/log-error";
@@ -21,6 +22,7 @@ const createTestProps = (props) => {
     language: "en",
     orgSlug: "default",
     passwordChange: defaultConfig.components.password_change_form,
+    cookies: new Cookies(),
     ...props,
   };
 };

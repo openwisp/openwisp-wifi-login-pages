@@ -35,6 +35,7 @@ export default class Login extends React.Component {
       email: "",
       password: "",
       phone_number: "",
+      remember_me: true,
       errors: {},
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -44,6 +45,14 @@ export default class Login extends React.Component {
   componentDidMount() {
     const email = getParameterByName("email");
     const token = getParameterByName("token");
+
+    const {loginForm} = this.props;
+    let remember_me;
+    if (localStorage.getItem("rememberMe") !== null)
+      remember_me = localStorage.getItem("rememberMe") === "true";
+    else remember_me = loginForm.input_fields.remember_me.value;
+    this.setState({remember_me});
+
     if (email && token) {
       this.setState(
         {
@@ -147,15 +156,21 @@ export default class Login extends React.Component {
     const {setLoading} = this.context;
     if (event) event.preventDefault();
     const {orgSlug, authenticate, verifyMobileNumber, settings} = this.props;
-    const {email, password, phone_number, errors} = this.state;
+    const {email, password, phone_number, remember_me, errors} = this.state;
     const username = settings.mobile_phone_verification ? phone_number : email;
     const url = loginApiUrl(orgSlug);
     this.setState({
       errors: {},
     });
+    localStorage.setItem("rememberMe", remember_me);
     setLoading(true);
 
-    const handleAuthentication = function (needsMobileVerification = false) {
+    const handleAuthentication = (
+      needsMobileVerification = false,
+      data = {},
+    ) => {
+      if (!remember_me)
+        sessionStorage.setItem(`${orgSlug}_auth_token`, data.key);
       authenticate(true);
       toast.success(loginSuccess, {
         toastId: mainToastId,
@@ -177,8 +192,11 @@ export default class Login extends React.Component {
         password,
       }),
     })
-      .then(() => {
-        return handleAuthentication();
+      .then((res = {}) => {
+        return handleAuthentication(
+          settings.mobile_phone_verification,
+          res.data,
+        );
       })
       .catch((error) => {
         const {data} = error.response;
@@ -205,8 +223,14 @@ export default class Login extends React.Component {
       });
   }
 
+  handleCheckBoxChange = (event) => {
+    this.setState({
+      remember_me: event.target.checked,
+    });
+  };
+
   render() {
-    const {errors, password} = this.state;
+    const {errors, password, remember_me} = this.state;
     const {
       language,
       loginForm,
@@ -293,6 +317,20 @@ export default class Login extends React.Component {
                       language,
                     )}
                   />
+                </div>
+
+                <div className="row remember-me">
+                  <input
+                    type={input_fields.remember_me.type}
+                    id="remember_me"
+                    name="remember_me"
+                    className="remember-me"
+                    checked={remember_me}
+                    onChange={this.handleCheckBoxChange}
+                  />
+                  <label htmlFor="remember_me">
+                    {getText(input_fields.remember_me.label, language)}
+                  </label>
                 </div>
               </div>
 
@@ -386,6 +424,11 @@ Login.propTypes = {
         preferred_countries: PropTypes.array,
         exclude_countries: PropTypes.array,
         enable_search: PropTypes.bool,
+      }),
+      remember_me: PropTypes.shape({
+        type: PropTypes.string.isRequired,
+        value: PropTypes.bool.isRequired,
+        label: PropTypes.object.isRequired,
       }),
     }),
     additional_info_text: PropTypes.object,

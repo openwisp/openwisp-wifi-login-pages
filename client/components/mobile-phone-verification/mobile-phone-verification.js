@@ -23,6 +23,7 @@ import getText from "../../utils/get-text";
 import logError from "../../utils/log-error";
 import handleChange from "../../utils/handle-change";
 import Contact from "../contact-box";
+import handleSession from "../../utils/session";
 
 export default class MobilePhoneVerification extends React.Component {
   phoneTokenSentKey = "owPhoneTokenSent";
@@ -104,7 +105,8 @@ export default class MobilePhoneVerification extends React.Component {
   // TODO: make reusable
   async validateToken() {
     const {cookies, orgSlug, logout, verifyMobileNumber, settings} = this.props;
-    const token = cookies.get(`${orgSlug}_auth_token`);
+    const auth_token = cookies.get(`${orgSlug}_auth_token`);
+    const {token, session} = handleSession(orgSlug, auth_token, cookies);
     const url = validateApiUrl(orgSlug);
     try {
       const response = await axios({
@@ -115,6 +117,7 @@ export default class MobilePhoneVerification extends React.Component {
         url,
         data: qs.stringify({
           token,
+          session,
         }),
       });
       if (response.data.response_code !== "AUTH_TOKEN_VALIDATION_SUCCESSFUL") {

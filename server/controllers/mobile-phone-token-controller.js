@@ -76,8 +76,9 @@ export const verifyMobilePhoneToken = (req, res) => {
       // replacing org_slug param with the slug
       url = url.replace("{org_slug}", org.slug);
       const timeout = conf.timeout * 1000;
-      let token = req.cookies[`${reqOrg}_auth_token`] || "";
-      token = cookie.unsign(token, conf.secret_key);
+      let {token} = req.body;
+      if (req.body.session === "false")
+        token = cookie.unsign(token, conf.secret_key);
       // make AJAX request
       axios({
         method: "post",

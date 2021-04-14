@@ -108,6 +108,23 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
               value=""
             />
           </div>
+          <div
+            className="row remember-me"
+          >
+            <input
+              checked={true}
+              className="remember-me"
+              id="remember_me"
+              name="remember_me"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            <label
+              htmlFor="remember_me"
+            >
+              Automatically log me in to the WiFi service at the next visit
+            </label>
+          </div>
         </div>
         <div
           className="row add-info"
@@ -301,6 +318,23 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
               type="password"
               value=""
             />
+          </div>
+          <div
+            className="row remember-me"
+          >
+            <input
+              checked={true}
+              className="remember-me"
+              id="remember_me"
+              name="remember_me"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            <label
+              htmlFor="remember_me"
+            >
+              Automatically log me in to the WiFi service at the next visit
+            </label>
           </div>
         </div>
         <div

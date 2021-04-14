@@ -340,6 +340,11 @@ client:
             en: "password"
           label:
             en: "password"
+        remember_me:
+          type: "checkbox"
+          value: true
+          label:
+            en: "Automatically log me in to the WiFi service at the next visit"
       additional_info_text:
         en: "By logging in, you accept the {terms_and_conditions} and the {privacy_policy} of this WiFi service. "
       buttons:

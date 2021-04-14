@@ -30,3 +30,7 @@ a.social-link .text {
   font-weight: bold;
   margin-left: 20px;
 }
+input.remember-me {
+  height: 15px;
+  width: 15px;
+}

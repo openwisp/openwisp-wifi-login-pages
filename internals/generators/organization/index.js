@@ -86,6 +86,12 @@ module.exports = {
       default: false,
     },
     {
+      type: "confirm",
+      name: "remember_me",
+      message: "Does your captive portal support automatically log me in?",
+      default: true,
+    },
+    {
       type: "input",
       name: "openwisp_radius_url",
       message: "What is the URL of OpenWISP RADIUS?",

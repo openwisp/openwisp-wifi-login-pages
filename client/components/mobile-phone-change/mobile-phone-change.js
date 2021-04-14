@@ -23,6 +23,7 @@ import logError from "../../utils/log-error";
 import handleChange from "../../utils/handle-change";
 import submitOnEnter from "../../utils/submit-on-enter";
 import Contact from "../contact-box";
+import handleSession from "../../utils/session";
 
 class MobilePhoneChange extends React.Component {
   constructor(props) {
@@ -94,7 +95,8 @@ class MobilePhoneChange extends React.Component {
   async validateToken() {
     const {setLoading} = this.context;
     const {cookies, orgSlug, logout, verifyMobileNumber} = this.props;
-    const token = cookies.get(`${orgSlug}_auth_token`);
+    const auth_token = cookies.get(`${orgSlug}_auth_token`);
+    const {token, session} = handleSession(orgSlug, auth_token, cookies);
     const url = validateApiUrl(orgSlug);
     setLoading(true);
     try {
@@ -106,6 +108,7 @@ class MobilePhoneChange extends React.Component {
         url,
         data: qs.stringify({
           token,
+          session,
         }),
       });
       setLoading(false);

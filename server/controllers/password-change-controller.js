@@ -18,9 +18,9 @@ const passwordChange = (req, res) => {
       // replacing org_slug param with the slug
       url = url.replace("{org_slug}", org.slug);
       const timeout = conf.timeout * 1000;
-      const authTokenCookie = req.cookies[`${conf.slug}_auth_token`];
-      const token = cookie.unsign(authTokenCookie, conf.secret_key);
-      const {newPassword1, newPassword2} = req.body;
+      const {newPassword1, newPassword2, session} = req.body;
+      let {token} = req.body;
+      if (session === "false") token = cookie.unsign(token, conf.secret_key);
       if (token) {
         // make AJAX request
         axios({

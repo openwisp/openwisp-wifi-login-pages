@@ -24,6 +24,7 @@ import LoadingContext from "../../utils/loading-context";
 import logError from "../../utils/log-error";
 import Contact from "../contact-box";
 import shouldLinkBeShown from "../../utils/should-link-be-shown";
+import handleSession from "../../utils/session";
 
 export default class Status extends React.Component {
   constructor(props) {
@@ -113,10 +114,17 @@ export default class Status extends React.Component {
     window.removeEventListener("resize", this.updateScreenWidth);
   };
 
-  async getUserRadiusSessions(params) {
+  async getUserRadiusSessions(para) {
     const {cookies, orgSlug, logout} = this.props;
     const url = getUserRadiusSessionsUrl(orgSlug);
+    const auth_token = cookies.get(`${orgSlug}_auth_token`);
+    const {token, session} = handleSession(orgSlug, auth_token, cookies);
     const options = {};
+    const params = {
+      token,
+      session,
+      ...para,
+    };
     try {
       const response = await axios({
         method: "get",
@@ -232,7 +240,8 @@ export default class Status extends React.Component {
 
   async validateToken() {
     const {cookies, orgSlug, logout, settings} = this.props;
-    const token = cookies.get(`${orgSlug}_auth_token`);
+    const auth_token = cookies.get(`${orgSlug}_auth_token`);
+    const {token, session} = handleSession(orgSlug, auth_token, cookies);
     const url = validateApiUrl(orgSlug);
     try {
       const response = await axios({
@@ -243,6 +252,7 @@ export default class Status extends React.Component {
         url,
         data: qs.stringify({
           token,
+          session,
         }),
       });
       if (response.data.response_code !== "AUTH_TOKEN_VALIDATION_SUCCESSFUL") {
