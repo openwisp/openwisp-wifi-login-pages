@@ -6,7 +6,10 @@ import passwordReset from "../controllers/password-reset-controller";
 import registration from "../controllers/registration-controller";
 import getUserRadiusSessions from "../controllers/user-radius-sessions-controller";
 import validateToken from "../controllers/validate-token-controller";
-import {createMobilePhoneToken, verifyMobilePhoneToken} from "../controllers/mobile-phone-token-controller";
+import {
+  createMobilePhoneToken,
+  verifyMobilePhoneToken,
+} from "../controllers/mobile-phone-token-controller";
 import mobilePhoneNumberChange from "../controllers/mobile-phone-number-change-controller";
 
 const router = Router({mergeParams: true});

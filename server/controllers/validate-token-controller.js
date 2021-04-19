@@ -9,16 +9,16 @@ import logInternalError from "../utils/log-internal-error";
 
 const validateToken = (req, res) => {
   const reqOrg = req.params.organization;
-  const validSlug = config.some(org => {
+  const validSlug = config.some((org) => {
     if (org.slug === reqOrg) {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
-      const { host } = conf;
+      const {host} = conf;
       let validateTokenUrl = conf.proxy_urls.validate_auth_token;
       // replacing org_slug param with the slug
       validateTokenUrl = validateTokenUrl.replace("{org_slug}", org.slug);
       const timeout = conf.timeout * 1000;
-      let { token } = req.body;
+      let {token} = req.body;
       token = cookie.unsign(token, conf.secret_key);
       // make AJAX request
       axios({
@@ -28,17 +28,18 @@ const validateToken = (req, res) => {
         },
         url: `${host}${validateTokenUrl}/`,
         timeout,
-        data: qs.stringify({ token }),
+        data: qs.stringify({token}),
       })
-        .then(response => {
+        .then((response) => {
           delete response.data.auth_token;
           res
             .status(response.status)
             .type("application/json")
             .send(response.data);
         })
-        .catch(error => {
-          if (error.response && error.response.status === 500) logInternalError(error);
+        .catch((error) => {
+          if (error.response && error.response.status === 500)
+            logInternalError(error);
           // forward error
           try {
             res
@@ -47,12 +48,9 @@ const validateToken = (req, res) => {
               .send(error.response.data);
           } catch (err) {
             logInternalError(error);
-            res
-              .status(500)
-              .type("application/json")
-              .send({
-                response_code: "INTERNAL_SERVER_ERROR",
-              });
+            res.status(500).type("application/json").send({
+              response_code: "INTERNAL_SERVER_ERROR",
+            });
           }
         });
     }
@@ -60,12 +58,9 @@ const validateToken = (req, res) => {
   });
   // return 404 for invalid organization slug or org not listed in config
   if (!validSlug) {
-    res
-      .status(404)
-      .type("application/json")
-      .send({
-        response_code: "INTERNAL_SERVER_ERROR",
-      });
+    res.status(404).type("application/json").send({
+      response_code: "INTERNAL_SERVER_ERROR",
+    });
   }
 };
 

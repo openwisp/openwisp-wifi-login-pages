@@ -57,12 +57,12 @@ export default class PasswordChange extends React.Component {
         newPassword2,
       }),
     })
-      .then(response => {
+      .then((response) => {
         toast.success(response.data.detail);
         setLoading(false);
         history.replace(`/${orgSlug}/status`);
       })
-      .catch(error => {
+      .catch((error) => {
         const errorText = getErrorText(error, passwordChangeError);
         logError(error, errorText);
         toast.error(errorText);
@@ -86,16 +86,12 @@ export default class PasswordChange extends React.Component {
       <div className="container content" id="password-change">
         <div className="inner">
           <form className="main-column" onSubmit={this.handleSubmit}>
-            <h1>
-              {getText(passwordChange.title, language)}
-            </h1>
+            <h1>{getText(passwordChange.title, language)}</h1>
 
             {errors.nonField && (
               <div className="error">
                 <span className="icon">!</span>
-                <span className="text">
-                  {errors.nonField}
-                </span>
+                <span className="text">{errors.nonField}</span>
               </div>
             )}
 
@@ -107,9 +103,7 @@ export default class PasswordChange extends React.Component {
               {errors.newPassword1 && (
                 <div className="error">
                   <span className="icon">!</span>
-                  <span className="text">
-                    {errors.newPassword1}
-                  </span>
+                  <span className="text">{errors.newPassword1}</span>
                 </div>
               )}
 
@@ -125,25 +119,22 @@ export default class PasswordChange extends React.Component {
                   language,
                 )}
                 pattern={passwordChange.input_fields.password1.pattern}
-                title={getText(passwordChange.input_fields.password1.pattern_description)}
-                onChange={e => this.handleChange(e)}
+                title={getText(
+                  passwordChange.input_fields.password1.pattern_description,
+                )}
+                onChange={(e) => this.handleChange(e)}
               />
             </div>
 
             <div className="row password-confirm">
               <label htmlFor="password-confirm">
-                {getText(
-                  passwordChange.input_fields.password2.label,
-                  language,
-                )}
+                {getText(passwordChange.input_fields.password2.label, language)}
               </label>
 
               {errors.newPassword2 && (
                 <div className="error">
                   <span className="icon">!</span>
-                  <span className="text">
-                    {errors.newPassword2}
-                  </span>
+                  <span className="text">{errors.newPassword2}</span>
                 </div>
               )}
 
@@ -159,8 +150,10 @@ export default class PasswordChange extends React.Component {
                   language,
                 )}
                 pattern={passwordChange.input_fields.password1.pattern}
-                title={getText(passwordChange.input_fields.password1.pattern_description)}
-                onChange={e => this.handleChange(e)}
+                title={getText(
+                  passwordChange.input_fields.password1.pattern_description,
+                )}
+                onChange={(e) => this.handleChange(e)}
               />
             </div>
 

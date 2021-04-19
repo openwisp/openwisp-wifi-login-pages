@@ -26,7 +26,7 @@ export default class Modal extends React.Component {
     return {__html: content};
   };
 
-  handleKeyDown = event => {
+  handleKeyDown = (event) => {
     const {prevPath, history} = this.props;
     switch (event.keyCode) {
       case 27:

@@ -1,9 +1,9 @@
 const handleChange = (event, instance) => {
   instance.setState({
-    [event.target.name]: event.target.value
+    [event.target.name]: event.target.value,
   });
   // clean errors
-  const { errors } = instance.state;
+  const {errors} = instance.state;
   if (errors[event.target.name]) {
     delete errors[event.target.name];
   }

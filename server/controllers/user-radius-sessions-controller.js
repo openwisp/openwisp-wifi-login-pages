@@ -7,7 +7,7 @@ import logInternalError from "../utils/log-internal-error";
 
 const getUserRadiusSessions = (req, res) => {
   const reqOrg = req.params.organization;
-  const validSlug = config.some(org => {
+  const validSlug = config.some((org) => {
     if (org.slug === reqOrg) {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
@@ -32,16 +32,16 @@ const getUserRadiusSessions = (req, res) => {
         timeout,
         params: req.query,
       })
-        .then(response => {
+        .then((response) => {
           if ("link" in response.headers) {
-            res.setHeader('link', response.headers.link);
+            res.setHeader("link", response.headers.link);
           }
           res
             .status(response.status)
             .type("application/json")
             .send(response.data);
         })
-        .catch(error => {
+        .catch((error) => {
           if (error.response && error.response.status === 500)
             logInternalError(error);
           // forward error
@@ -52,12 +52,9 @@ const getUserRadiusSessions = (req, res) => {
               .send(error.response.data);
           } catch (err) {
             logInternalError(error);
-            res
-              .status(500)
-              .type("application/json")
-              .send({
-                response_code: "INTERNAL_SERVER_ERROR",
-              });
+            res.status(500).type("application/json").send({
+              response_code: "INTERNAL_SERVER_ERROR",
+            });
           }
         });
     }
@@ -65,12 +62,9 @@ const getUserRadiusSessions = (req, res) => {
   });
   // return 404 for invalid organization slug or org not listed in config
   if (!validSlug) {
-    res
-      .status(404)
-      .type("application/json")
-      .send({
-        response_code: "INTERNAL_SERVER_ERROR",
-      });
+    res.status(404).type("application/json").send({
+      response_code: "INTERNAL_SERVER_ERROR",
+    });
   }
 };
 

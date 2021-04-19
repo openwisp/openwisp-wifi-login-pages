@@ -1,17 +1,17 @@
 /* eslint-disable prefer-promise-reject-errors */
 import axios from "axios";
-import { shallow } from "enzyme";
+import {shallow} from "enzyme";
 import React from "react";
-import { toast } from 'react-toastify';
+import {toast} from "react-toastify";
 import PropTypes from "prop-types";
 import getConfig from "../../utils/get-config";
-import { loadingContextValue } from "../../utils/loading-context";
+import {loadingContextValue} from "../../utils/loading-context";
 import PasswordReset from "./password-reset";
 
 jest.mock("axios");
 
 const defaultConfig = getConfig("default");
-const createTestProps = props => {
+const createTestProps = (props) => {
   return {
     language: "en",
     orgSlug: "default",
@@ -40,11 +40,9 @@ describe("<PasswordReset /> rendering", () => {
   });
 
   it("should render email field correctly", () => {
-    const { email } = props.passwordReset.input_fields;
+    const {email} = props.passwordReset.input_fields;
     const emailInput = wrapper.find("input[type='email']");
-    expect(wrapper.find(".row.email label").text()).toBe(
-      email.label.en,
-    );
+    expect(wrapper.find(".row.email label").text()).toBe(email.label.en);
     expect(emailInput.prop("placeholder")).toBe(email.placeholder.en);
     expect(emailInput.prop("title")).toBe(email.pattern_description.en);
     expect(emailInput.prop("type")).toBe(email.type);
@@ -66,9 +64,11 @@ describe("<PasswordReset /> interactions", () => {
     props = createTestProps();
     PasswordReset.contextTypes = {
       setLoading: PropTypes.func,
-      getLoading: PropTypes.func
+      getLoading: PropTypes.func,
     };
-    wrapper = shallow(<PasswordReset {...props} />, { context: loadingContextValue });
+    wrapper = shallow(<PasswordReset {...props} />, {
+      context: loadingContextValue,
+    });
   });
 
   afterEach(() => {
@@ -78,28 +78,28 @@ describe("<PasswordReset /> interactions", () => {
   it("should change state values when handleChange function is invoked", () => {
     wrapper
       .find("input[type='email']")
-      .simulate("change", { target: { value: "test@test.com", name: "email" } });
+      .simulate("change", {target: {value: "test@test.com", name: "email"}});
     expect(wrapper.state("email")).toEqual("test@test.com");
   });
 
   it("should execute handleSubmit correctly when form is submitted", () => {
     axios
       .mockImplementationOnce(() => {
-        return Promise.reject({ response: { data: { detail: "errors" } } });
+        return Promise.reject({response: {data: {detail: "errors"}}});
       })
       .mockImplementationOnce(() => {
         return Promise.reject({
-          response: { data: { non_field_errors: ["non field errors"] } },
+          response: {data: {non_field_errors: ["non field errors"]}},
         });
       })
       .mockImplementationOnce(() => {
-        return Promise.resolve({ data: { detail: true } });
+        return Promise.resolve({data: {detail: true}});
       });
     const spyToastError = jest.spyOn(toast, "error");
     const spyToastSuccess = jest.spyOn(toast, "success");
     return wrapper
       .instance()
-      .handleSubmit({ preventDefault: () => { } })
+      .handleSubmit({preventDefault: () => {}})
       .then(() => {
         expect(wrapper.instance().state.errors.email).toEqual("errors");
         expect(wrapper.find("div.error")).toHaveLength(1);
@@ -112,7 +112,7 @@ describe("<PasswordReset /> interactions", () => {
       .then(() => {
         return wrapper
           .instance()
-          .handleSubmit({ preventDefault: () => { } })
+          .handleSubmit({preventDefault: () => {}})
           .then(() => {
             expect(wrapper.instance().state.errors.email).toEqual(
               "non field errors",
@@ -126,7 +126,7 @@ describe("<PasswordReset /> interactions", () => {
       .then(() => {
         return wrapper
           .instance()
-          .handleSubmit({ preventDefault: () => { } })
+          .handleSubmit({preventDefault: () => {}})
           .then(() => {
             expect(wrapper.instance().state.errors).toEqual({});
             expect(wrapper.instance().state.success).toBe(true);

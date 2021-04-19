@@ -15,11 +15,8 @@ export default class Contact extends React.Component {
     return (
       <div className="side-column contact">
         <div className="inner">
-
           <div className="row">
-            <span className="label">
-              {getText(email.label, language)}:
-            </span>
+            <span className="label">{getText(email.label, language)}:</span>
             <a
               href={`mailto:${getText(email.value, language)}`}
               className="link"
@@ -29,9 +26,7 @@ export default class Contact extends React.Component {
           </div>
 
           <div className="row">
-            <span className="label">
-              {getText(helpdesk.label, language)}:
-            </span>
+            <span className="label">{getText(helpdesk.label, language)}:</span>
             <a
               href={`tel:${getText(helpdesk.value, language)}`}
               className="link"
@@ -41,7 +36,7 @@ export default class Contact extends React.Component {
           </div>
 
           <div className="contact-links">
-            {social_links.map(link => {
+            {social_links.map((link) => {
               if (shouldLinkBeShown(link, isAuthenticated)) {
                 return (
                   <a
@@ -68,7 +63,6 @@ export default class Contact extends React.Component {
               return null;
             })}
           </div>
-
         </div>
       </div>
     );
@@ -76,7 +70,7 @@ export default class Contact extends React.Component {
 }
 
 Contact.defaultProps = {
-  isAuthenticated: false
+  isAuthenticated: false,
 };
 Contact.propTypes = {
   language: PropTypes.string.isRequired,

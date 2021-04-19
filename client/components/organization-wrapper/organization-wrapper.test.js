@@ -4,7 +4,7 @@ import React from "react";
 import {Cookies} from "react-cookie";
 import OrganizationWrapper from "./organization-wrapper";
 
-const createTestProps = props => {
+const createTestProps = (props) => {
   return {
     match: {params: {organization: "default"}, path: "/default"},
     organization: {

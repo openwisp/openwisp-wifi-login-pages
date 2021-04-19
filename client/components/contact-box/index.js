@@ -2,7 +2,7 @@ import {connect} from "react-redux";
 
 import Component from "./contact";
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const conf = state.organization.configuration;
   return {
     contactPage: conf.components.contact_page,
@@ -11,7 +11,4 @@ const mapStateToProps = state => {
     language: state.language,
   };
 };
-export default connect(
-  mapStateToProps,
-  null,
-)(Component);
+export default connect(mapStateToProps, null)(Component);

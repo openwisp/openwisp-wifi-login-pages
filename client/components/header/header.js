@@ -3,7 +3,7 @@ import "./index.css";
 
 import PropTypes from "prop-types";
 import React from "react";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 
 import isInternalLink from "../../utils/check-internal-links";
 import getAssetPath from "../../utils/get-asset-path";
@@ -21,14 +21,14 @@ export default class Header extends React.Component {
   }
 
   handleHamburger() {
-    const { menu } = this.state;
+    const {menu} = this.state;
     this.setState({
       menu: !menu,
     });
   }
 
   handleKeyUp(event) {
-    const { menu } = this.state;
+    const {menu} = this.state;
     switch (event.keyCode) {
       case 13:
         this.setState({
@@ -41,7 +41,7 @@ export default class Header extends React.Component {
   }
 
   render() {
-    const { menu } = this.state;
+    const {menu} = this.state;
     const {
       header,
       languages,
@@ -49,10 +49,10 @@ export default class Header extends React.Component {
       orgSlug,
       setLanguage,
       location,
-      isAuthenticated
+      isAuthenticated,
     } = this.props;
-    const { logo, links } = header;
-    const { pathname } = location;
+    const {logo, links} = header;
+    const {pathname} = location;
     const internalLinks = [`/${orgSlug}/login`, `/${orgSlug}/registration`];
     return (
       <>
@@ -73,15 +73,15 @@ export default class Header extends React.Component {
                 </div>
               </div>
               <div className="header-right">
-                {languages.map(lang => {
+                {languages.map((lang) => {
                   return (
                     <button
                       type="button"
                       className={`${
                         language === lang.slug ? "active " : ""
-                        }header-language-btn header-desktop-language-btn header-language-btn-${
+                      }header-language-btn header-desktop-language-btn header-language-btn-${
                         lang.slug
-                        }`}
+                      }`}
                       key={lang.slug}
                       onClick={() => setLanguage(lang.slug)}
                     >
@@ -98,13 +98,16 @@ export default class Header extends React.Component {
                 if (!shouldLinkBeShown(link, isAuthenticated)) {
                   return null;
                 }
-                if (isInternalLink(link.url) && (internalLinks.indexOf(link.url) < 0 || !isAuthenticated)) {
+                if (
+                  isInternalLink(link.url) &&
+                  (internalLinks.indexOf(link.url) < 0 || !isAuthenticated)
+                ) {
                   return (
                     <Link
                       className={`header-link header-desktop-link
                   header-link-${index + 1} ${
                         pathname === link.url ? "active" : ""
-                        } button `}
+                      } button `}
                       to={link.url}
                       key={index}
                     >
@@ -162,7 +165,7 @@ export default class Header extends React.Component {
           <div
             className={`${
               menu ? "display-flex" : "display-none"
-              } header-mobile-menu`}
+            } header-mobile-menu`}
           >
             {links.map((link, index) => {
               if (shouldLinkBeShown(link, isAuthenticated)) {
@@ -172,7 +175,7 @@ export default class Header extends React.Component {
                       className={`header-link mobile-link
                     header-link-${index + 1} ${
                         pathname === link.url ? "active" : ""
-                        } button`}
+                      } button`}
                       to={link.url}
                       key={index}
                     >
@@ -196,15 +199,15 @@ export default class Header extends React.Component {
               return null;
             })}
             <div className="mobile-languages-row">
-              {languages.map(lang => {
+              {languages.map((lang) => {
                 return (
                   <button
                     type="button"
                     className={`${
                       language === lang.slug ? "active " : ""
-                      }header-language-btn header-mobile-language-btn header-language-btn-${
+                    }header-language-btn header-mobile-language-btn header-language-btn-${
                       lang.slug
-                      }`}
+                    }`}
                     key={lang.slug}
                     onClick={() => setLanguage(lang.slug)}
                   >
@@ -220,7 +223,7 @@ export default class Header extends React.Component {
   }
 }
 Header.defaultProps = {
-  isAuthenticated: false
+  isAuthenticated: false,
 };
 Header.propTypes = {
   header: PropTypes.shape({

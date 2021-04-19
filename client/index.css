@@ -1,22 +1,27 @@
 @font-face {
-  font-family: 'Montserrat';
+  font-family: "Montserrat";
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: local('Montserrat Medium'), local('Montserrat-Medium'), url(assets/fonts/montserrat-medium.woff2) format('woff2');
+  src: local("Montserrat Medium"), local("Montserrat-Medium"),
+    url(assets/fonts/montserrat-medium.woff2) format("woff2");
 }
 @font-face {
-  font-family: 'Montserrat';
+  font-family: "Montserrat";
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: local('Montserrat SemiBold'), local('Montserrat-SemiBold'), url(assets/fonts/montserrat-semi-bold.woff2) format('woff2');
+  src: local("Montserrat SemiBold"), local("Montserrat-SemiBold"),
+    url(assets/fonts/montserrat-semi-bold.woff2) format("woff2");
 }
 
-#preload{
+#preload {
   display: none;
 }
-html, body{ overflow: initial }
+html,
+body {
+  overflow: initial;
+}
 
 body {
   margin: 0;
@@ -59,7 +64,8 @@ body {
   color: #000;
   font-weight: bold;
 }
-.link:hover, .link:focus {
+.link:hover,
+.link:focus {
   text-decoration: none;
 }
 .link:focus {
@@ -94,9 +100,10 @@ div.error {
   width: 100%;
   margin-top: 15px;
 }
-.content p, .row {
+.content p,
+.row {
   margin: 10px 0;
-  width: 100%
+  width: 100%;
 }
 .content label {
   font-weight: bold;
@@ -105,9 +112,11 @@ div.error {
 .content table {
   display: flex;
   margin: 10px 0;
-  width: 100%
+  width: 100%;
 }
-body .label { margin: 0 0 5px 0 }
+body .label {
+  margin: 0 0 5px 0;
+}
 body .input {
   padding: 0 8px;
   border-radius: 4px;
@@ -118,7 +127,9 @@ body .input {
   width: 100%;
   font-weight: bold;
 }
-body .form-control { width: 100% !important }
+body .form-control {
+  width: 100% !important;
+}
 body .input:focus {
   border-color: #8b8b8b;
 }
@@ -159,7 +170,10 @@ body .input.error {
 .main-column p {
   margin-top: 1px;
 }
-.main-column, .bg { background: #d3d3d3 }
+.main-column,
+.bg {
+  background: #d3d3d3;
+}
 .side-column {
   width: 44%;
   background: #eee;
@@ -174,11 +188,21 @@ body .input.error {
 .form.success .input:invalid {
   box-shadow: none;
 }
-.links { text-align: center }
-body .links p { margin: 0 0 10px }
-body .links p:last-child { margin: 0 }
-label { font-weight: bold }
-.hidden { display: none }
+.links {
+  text-align: center;
+}
+body .links p {
+  margin: 0 0 10px;
+}
+body .links p:last-child {
+  margin: 0;
+}
+label {
+  font-weight: bold;
+}
+.hidden {
+  display: none;
+}
 
 h1 {
   font-size: 20px;
@@ -186,23 +210,42 @@ h1 {
   margin: 0 0 10px;
   width: 100%;
 }
-.row.fieldset { margin: 0 0 20px }
-.fieldset { width: 100% }
+.row.fieldset {
+  margin: 0 0 20px;
+}
+.fieldset {
+  width: 100%;
+}
 
 @media screen and (min-width: 0px) and (max-width: 1000px) {
-  body .header-row-1-inner { padding: 10px 3% }
-  body .header-row-2-inner { padding: 0 3% }
+  body .header-row-1-inner {
+    padding: 10px 3%;
+  }
+  body .header-row-2-inner {
+    padding: 0 3%;
+  }
 
-  .main-column { width: 54% }
-  .side-column { width: 44.5% }
+  .main-column {
+    width: 54%;
+  }
+  .side-column {
+    width: 44.5%;
+  }
 }
 
 @media screen and (min-width: 0px) and (max-width: 767px) {
   .container .inner {
     flex-direction: column;
   }
-  .container { padding: 20px 0 }
-  .main-column, .side-column { width: 100% }
-  .side-column { margin-top: 20px }
+  .container {
+    padding: 20px 0;
+  }
+  .main-column,
+  .side-column {
+    width: 100%;
+  }
+  .side-column {
+    margin-top: 20px;
+  }
   /* body .header-row-1-inner { padding: 10px 15px } */
 }

@@ -9,10 +9,7 @@ import logInternalError from "../utils/log-internal-error";
 
 const sendCookies = (username, response, conf, res) => {
   // save token in signed cookie
-  const authTokenCookie = cookie.sign(
-    response.data.key,
-    conf.secret_key,
-  );
+  const authTokenCookie = cookie.sign(response.data.key, conf.secret_key);
   const usernameCookie = cookie.sign(username, conf.secret_key);
   // forward response
   return res
@@ -29,7 +26,7 @@ const sendCookies = (username, response, conf, res) => {
 
 const obtainToken = (req, res) => {
   const reqOrg = req.params.organization;
-  const validSlug = config.some(org => {
+  const validSlug = config.some((org) => {
     if (org.slug === reqOrg) {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
@@ -49,11 +46,12 @@ const obtainToken = (req, res) => {
         timeout,
         data: qs.stringify({username, password}),
       })
-        .then(response => {
+        .then((response) => {
           return sendCookies(username, response, conf, res);
         })
-        .catch(error => {
-          if (error.response && error.response.status === 500) logInternalError(error);
+        .catch((error) => {
+          if (error.response && error.response.status === 500)
+            logInternalError(error);
           console.log(`status code: ${error.response.status}`);
           try {
             // inactive user recognized
@@ -62,18 +60,15 @@ const obtainToken = (req, res) => {
             }
             // forward error
             return res
-                .status(error.response.status)
-                .type("application/json")
-                .send(error.response.data);
+              .status(error.response.status)
+              .type("application/json")
+              .send(error.response.data);
           } catch (err) {
             logInternalError(error);
             console.error(err);
-            return res
-              .status(500)
-              .type("application/json")
-              .send({
-                detail: "Internal server error",
-              });
+            return res.status(500).type("application/json").send({
+              detail: "Internal server error",
+            });
           }
         });
     }
@@ -81,12 +76,9 @@ const obtainToken = (req, res) => {
   });
   // return 404 for invalid organization slug or org not listed in config
   if (!validSlug) {
-    res
-      .status(404)
-      .type("application/json")
-      .send({
-        detail: "Not found.",
-      });
+    res.status(404).type("application/json").send({
+      detail: "Not found.",
+    });
   }
 };
 

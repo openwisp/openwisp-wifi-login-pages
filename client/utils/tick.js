@@ -1,5 +1,5 @@
-const tick = function() {
-  return new Promise(resolve => {
+const tick = function () {
+  return new Promise((resolve) => {
     process.nextTick(resolve);
   });
 };

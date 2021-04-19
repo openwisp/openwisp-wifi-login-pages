@@ -16,7 +16,7 @@ logError.mockImplementation(jest.fn());
 
 const defaultConfig = getConfig("default");
 
-const createTestProps = props => {
+const createTestProps = (props) => {
   return {
     language: "en",
     orgSlug: "default",
@@ -62,7 +62,7 @@ describe("<PasswordChange /> interactions", () => {
     wrapper.instance().handleChange(e);
     expect(wrapper.instance().state.newPassword1).toBe("123456");
   });
-  
+
   it("test handleSubmit method", async () => {
     axios
       .mockImplementationOnce(() => {

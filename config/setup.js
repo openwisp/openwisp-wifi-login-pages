@@ -20,7 +20,7 @@ const clientConfigs = [];
 const serverConfigs = [];
 
 // loop through all the config files
-fs.readdirSync(configDir).forEach(file => {
+fs.readdirSync(configDir).forEach((file) => {
   if (path.extname(file) === ".yml") {
     // read document, or log exception on error
     try {
@@ -128,7 +128,7 @@ fs.readdirSync(configDir).forEach(file => {
 fs.writeFile(
   `${serverDir}/config.json`,
   JSON.stringify(serverConfigs, null, 2),
-  error => {
+  (error) => {
     if (error) console.log(error);
   },
 );
@@ -137,7 +137,7 @@ fs.writeFile(
 fs.writeFile(
   `${clientDir}/config.json`,
   JSON.stringify(clientConfigs, null, 2),
-  error => {
+  (error) => {
     if (error) console.log(error);
   },
 );

@@ -1,6 +1,6 @@
 export const confirmApiUrl = "/api/v1/{orgSlug}/account/password/reset/confirm";
 export const genericError = "Error occurred!";
-export const loginApiUrl = orgSlug => `/api/v1/${orgSlug}/account/token`;
+export const loginApiUrl = (orgSlug) => `/api/v1/${orgSlug}/account/token`;
 export const loginError = "Login error occurred.";
 export const loginSuccess = "Login successful";
 export const logoutSuccess = "Logout successful";
@@ -13,10 +13,13 @@ export const registerApiUrl = "/api/v1/{orgSlug}/account/";
 export const registerError = "Registration error.";
 export const registerSuccess = "Registration success";
 export const resetApiUrl = "/api/v1/{orgSlug}/account/password/reset/";
-export const validateApiUrl = orgSlug =>
+export const validateApiUrl = (orgSlug) =>
   `/api/v1/${orgSlug}/account/token/validate`;
-export const getUserRadiusSessionsUrl = orgSlug =>
+export const getUserRadiusSessionsUrl = (orgSlug) =>
   `/api/v1/${orgSlug}/account/session`;
-export const createMobilePhoneTokenUrl = orgSlug => `/api/v1/${orgSlug}/account/phone/token`;
-export const verifyMobilePhoneTokenUrl = orgSlug => `/api/v1/${orgSlug}/account/phone/verify`;
-export const mobilePhoneChangeUrl = orgSlug => `/api/v1/${orgSlug}/account/phone/change`;
+export const createMobilePhoneTokenUrl = (orgSlug) =>
+  `/api/v1/${orgSlug}/account/phone/token`;
+export const verifyMobilePhoneTokenUrl = (orgSlug) =>
+  `/api/v1/${orgSlug}/account/phone/verify`;
+export const mobilePhoneChangeUrl = (orgSlug) =>
+  `/api/v1/${orgSlug}/account/phone/change`;

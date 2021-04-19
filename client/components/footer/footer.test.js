@@ -25,12 +25,12 @@ const footerLinks = [
 ];
 const getLinkText = (wrapper, text) => {
   const texts = [];
-  wrapper.find(text).forEach( node => {
+  wrapper.find(text).forEach((node) => {
     texts.push(node.text());
   });
   return texts;
 };
-const createTestProps = props => {
+const createTestProps = (props) => {
   return {
     language: "en",
     footer: defaultConfig.components.footer,
@@ -62,12 +62,9 @@ describe("<Footer /> rendering", () => {
     wrapper.setProps({
       footer: {...props.footer, secondary_text: {en: "secondary text"}},
     });
-    expect(
-      wrapper
-        .update()
-        .find(".footer-row-2-inner")
-        .text(),
-    ).toBe("secondary text");
+    expect(wrapper.update().find(".footer-row-2-inner").text()).toBe(
+      "secondary text",
+    );
   });
   it("should render without authenticated links when not authenticated", () => {
     props = createTestProps();
