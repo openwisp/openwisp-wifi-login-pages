@@ -8,7 +8,7 @@ import logInternalError from "../utils/log-internal-error";
 
 const passwordReset = (req, res) => {
   const reqOrg = req.params.organization;
-  const validSlug = config.some(org => {
+  const validSlug = config.some((org) => {
     if (org.slug === reqOrg) {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
@@ -29,15 +29,16 @@ const passwordReset = (req, res) => {
         timeout,
         data: qs.stringify({email}),
       })
-        .then(response => {
+        .then((response) => {
           // forward response
           res
             .status(response.status)
             .type("application/json")
             .send(response.data);
         })
-        .catch(error => {
-          if (error.response && error.response.status === 500) logInternalError(error);
+        .catch((error) => {
+          if (error.response && error.response.status === 500)
+            logInternalError(error);
           // forward error
           try {
             res
@@ -46,12 +47,9 @@ const passwordReset = (req, res) => {
               .send(error.response.data);
           } catch (err) {
             logInternalError(error);
-            res
-              .status(500)
-              .type("application/json")
-              .send({
-                detail: "Internal server error",
-              });
+            res.status(500).type("application/json").send({
+              detail: "Internal server error",
+            });
           }
         });
     }
@@ -59,12 +57,9 @@ const passwordReset = (req, res) => {
   });
   // return 404 for invalid organization slug or org not listed in config
   if (!validSlug) {
-    res
-      .status(404)
-      .type("application/json")
-      .send({
-        detail: "Not found.",
-      });
+    res.status(404).type("application/json").send({
+      detail: "Not found.",
+    });
   }
 };
 

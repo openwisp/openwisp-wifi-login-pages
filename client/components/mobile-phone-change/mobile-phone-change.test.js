@@ -1,16 +1,16 @@
 /* eslint-disable prefer-promise-reject-errors */
 /* eslint-disable camelcase */
 import axios from "axios";
-import { mount } from "enzyme";
+import {mount} from "enzyme";
 import React from "react";
 import PropTypes from "prop-types";
 import {Cookies} from "react-cookie";
-import { toast } from 'react-toastify';
-import { Provider } from 'react-redux';
-import { Redirect, Router } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
-import PhoneInput from 'react-phone-input-2';
-import { loadingContextValue } from "../../utils/loading-context";
+import {toast} from "react-toastify";
+import {Provider} from "react-redux";
+import {Redirect, Router} from "react-router-dom";
+import {createMemoryHistory} from "history";
+import PhoneInput from "react-phone-input-2";
+import {loadingContextValue} from "../../utils/loading-context";
 import getConfig from "../../utils/get-config";
 import tick from "../../utils/tick";
 import MobilePhoneChangeWrapped from "./mobile-phone-change";
@@ -19,14 +19,14 @@ const MobilePhoneChange = MobilePhoneChangeWrapped.WrappedComponent;
 jest.mock("../../utils/get-config");
 jest.mock("axios");
 
-const createTestProps = function(props, configName = "test-org-2") {
+const createTestProps = function (props, configName = "test-org-2") {
   const conf = getConfig(configName);
   const componentConf = conf.components.phone_number_change_form;
   componentConf.input_fields = {
-    phone_number: conf.components.registration_form.input_fields.phone_number
+    phone_number: conf.components.registration_form.input_fields.phone_number,
   };
   componentConf.text = {
-    token_sent: conf.components.mobile_phone_verification_form.text.token_sent
+    token_sent: conf.components.mobile_phone_verification_form.text.token_sent,
   };
   return {
     phone_number_change: componentConf,
@@ -46,7 +46,7 @@ const historyMock = createMemoryHistory();
 historyMock.entries = [];
 historyMock.location.key = "";
 
-const mountComponent = function(props) {
+const mountComponent = function (props) {
   const mockedStore = {
     subscribe: () => {},
     dispatch: () => {},
@@ -56,9 +56,9 @@ const mountComponent = function(props) {
         organization: {
           configuration: props.configuration,
         },
-        language: props.language
+        language: props.language,
       };
-    }
+    },
   };
 
   return mount(
@@ -70,14 +70,14 @@ const mountComponent = function(props) {
     {
       context: {
         store: mockedStore,
-        ...loadingContextValue
+        ...loadingContextValue,
       },
       childContextTypes: {
         store: PropTypes.object.isRequired,
         setLoading: PropTypes.func,
         getLoading: PropTypes.func,
-      }
-    }
+      },
+    },
   );
 };
 
@@ -86,7 +86,7 @@ describe("Change Phone Number: standard flow", () => {
   let wrapper;
   let lastConsoleOutuput;
   let originalError;
-  const event = { preventDefault: jest.fn() };
+  const event = {preventDefault: jest.fn()};
 
   beforeEach(() => {
     props = createTestProps();
@@ -100,7 +100,7 @@ describe("Change Phone Number: standard flow", () => {
           username: "tester@tester.com",
           is_active: false,
           phone_number: "+393660011222",
-        }
+        },
       });
     });
     // console mocking
@@ -143,14 +143,15 @@ describe("Change Phone Number: standard flow", () => {
       return Promise.resolve({
         status: 200,
         statusText: "OK",
-        data: null
+        data: null,
       });
     });
 
     wrapper = await mountComponent(props);
     const component = wrapper.find(MobilePhoneChange);
-    component.find("#phone-number")
-             .simulate("change", {target: {value: "+393660011333", name: "phone_number"}});
+    component.find("#phone-number").simulate("change", {
+      target: {value: "+393660011333", name: "phone_number"},
+    });
     expect(component.instance().state.phone_number).toBe("+393660011333");
 
     wrapper.find("form").simulate("submit", event);
@@ -158,7 +159,9 @@ describe("Change Phone Number: standard flow", () => {
     expect(event.preventDefault).toHaveBeenCalled();
     expect(MobilePhoneChange.prototype.handleSubmit).toHaveBeenCalled();
     expect(toast.info.mock.calls.length).toBe(1);
-    expect(historyMock.push).toHaveBeenCalledWith("/test-org-2/mobile-phone-verification");
+    expect(historyMock.push).toHaveBeenCalledWith(
+      "/test-org-2/mobile-phone-verification",
+    );
     expect(lastConsoleOutuput).toBe(null);
     const mockVerify = component.instance().props.verifyMobileNumber;
     expect(mockVerify.mock.calls.length).toBe(1);
@@ -176,10 +179,10 @@ describe("Change Phone Number: standard flow", () => {
           statusText: "OK",
           data: {
             phone_number: [
-              "The new phone number must be different than the old one."
-            ]
-          }
-        }
+              "The new phone number must be different than the old one.",
+            ],
+          },
+        },
       });
     });
 
@@ -190,7 +193,7 @@ describe("Change Phone Number: standard flow", () => {
     expect(toast.info).not.toHaveBeenCalled();
     expect(historyMock.push).not.toHaveBeenCalled();
     expect(component.instance().state.errors.phone_number).toEqual([
-      "The new phone number must be different than the old one."
+      "The new phone number must be different than the old one.",
     ]);
     expect(component.instance().state.errors.nonField).toBeFalsy();
   });
@@ -205,11 +208,9 @@ describe("Change Phone Number: standard flow", () => {
           status: 400,
           statusText: "OK",
           data: {
-            non_field_errors: [
-              "Maximum daily limit reached."
-            ]
-          }
-        }
+            non_field_errors: ["Maximum daily limit reached."],
+          },
+        },
       });
     });
 
@@ -220,7 +221,7 @@ describe("Change Phone Number: standard flow", () => {
     expect(toast.info).not.toHaveBeenCalled();
     expect(historyMock.push).not.toHaveBeenCalled();
     expect(component.instance().state.errors.nonField).toEqual(
-      "Maximum daily limit reached."
+      "Maximum daily limit reached.",
     );
     expect(component.instance().state.errors.phone_number).toBeFalsy();
     expect(lastConsoleOutuput).not.toBe(null);
@@ -234,7 +235,7 @@ describe("Change Phone Number: standard flow", () => {
       return Promise.resolve({
         status: 200,
         statusText: "OK",
-        data: null
+        data: null,
       });
     });
 
@@ -253,7 +254,7 @@ describe("Change Phone Number: standard flow", () => {
 describe("Change Phone Number: corner cases", () => {
   let props;
   let wrapper;
-  const mockAxios = (responseData={}) => {
+  const mockAxios = (responseData = {}) => {
     axios.mockImplementationOnce(() => {
       return Promise.resolve({
         status: 200,
@@ -264,8 +265,8 @@ describe("Change Phone Number: corner cases", () => {
           username: "tester@tester.com",
           is_active: false,
           phone_number: "+393660011222",
-          ...responseData
-        }
+          ...responseData,
+        },
       });
     });
   };

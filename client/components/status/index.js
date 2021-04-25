@@ -8,20 +8,18 @@ const mapStateToProps = (state, ownProps) => {
     statusPage: conf.components.status_page,
     orgSlug: conf.slug,
     settings: conf.settings,
-    captivePortalLoginForm:
-      conf.components.captive_portal_login_form,
-    captivePortalLogoutForm:
-      conf.components.captive_portal_logout_form,
+    captivePortalLoginForm: conf.components.captive_portal_login_form,
+    captivePortalLogoutForm: conf.components.captive_portal_logout_form,
     isAuthenticated: conf.isAuthenticated,
     language: state.language,
     cookies: ownProps.cookies,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     logout: logout(dispatch),
-    verifyMobileNumber: verifyMobileNumber(dispatch)
+    verifyMobileNumber: verifyMobileNumber(dispatch),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Component);

@@ -1,5 +1,5 @@
-const organizationGenerator = require('./organization/index');
+const organizationGenerator = require("./organization/index");
 
 module.exports = (plop) => {
-  plop.setGenerator('organization', organizationGenerator);
+  plop.setGenerator("organization", organizationGenerator);
 };

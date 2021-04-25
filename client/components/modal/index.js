@@ -10,7 +10,4 @@ const mapStateToProps = (state, ownProps) => {
     prevPath: ownProps.prevPath,
   };
 };
-export default connect(
-  mapStateToProps,
-  null,
-)(Component);
+export default connect(mapStateToProps, null)(Component);

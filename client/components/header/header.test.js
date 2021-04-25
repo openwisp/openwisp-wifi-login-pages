@@ -25,17 +25,20 @@ const headerLinks = [
 ];
 const getLinkText = (wrapper, text) => {
   const texts = [];
-  wrapper.find(text).forEach( node => {
+  wrapper.find(text).forEach((node) => {
     texts.push(node.text());
   });
   return texts;
 };
-const createTestProps = props => {
+const createTestProps = (props) => {
   return {
     setLanguage: jest.fn(),
     orgSlug: "default",
     language: "en",
-    languages: [{slug: "en", text: "english"}, {slug: "it", text: "italian"}],
+    languages: [
+      {slug: "en", text: "english"},
+      {slug: "it", text: "italian"},
+    ],
     header: defaultConfig.components.header,
     location: {
       pathname: "/default/login",

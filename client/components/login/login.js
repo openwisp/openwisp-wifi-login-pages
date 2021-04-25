@@ -5,17 +5,17 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import qs from "qs";
 import React from "react";
-import { Link, Route } from "react-router-dom";
-import { toast } from 'react-toastify';
-import PhoneInput from 'react-phone-input-2';
-import 'react-phone-input-2/lib/style.css';
-import 'react-toastify/dist/ReactToastify.css';
+import {Link, Route} from "react-router-dom";
+import {toast} from "react-toastify";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+import "react-toastify/dist/ReactToastify.css";
 
 import {
   loginApiUrl,
   loginError,
   loginSuccess,
-  mainToastId
+  mainToastId,
 } from "../../constants";
 import getAssetPath from "../../utils/get-asset-path";
 import getErrorText from "../../utils/get-error-text";
@@ -29,7 +29,6 @@ import Contact from "../contact-box";
 import Modal from "../modal";
 
 export default class Login extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -69,9 +68,7 @@ export default class Login extends React.Component {
         {errors.email && (
           <div className="error">
             <span className="icon">!</span>
-            <span className="text">
-              {errors.email}
-            </span>
+            <span className="text">{errors.email}</span>
           </div>
         )}
         <input
@@ -88,8 +85,8 @@ export default class Login extends React.Component {
         />
       </div>
     );
-  }
-  
+  };
+
   getPhoneNumberField = (input_fields) => {
     const {phone_number, errors} = this.state;
     const {language} = this.props;
@@ -101,50 +98,56 @@ export default class Login extends React.Component {
         {errors.phone_number && (
           <div className="error">
             <span className="icon">!</span>
-            <span className="text">
-              {errors.phone_number}
-            </span>
+            <span className="text">{errors.phone_number}</span>
           </div>
         )}
         <PhoneInput
           name="phone_number"
           country={input_fields.phone_number.country}
           onlyCountries={input_fields.phone_number.only_countries || []}
-          preferredCountries={input_fields.phone_number.preferred_countries || []}
+          preferredCountries={
+            input_fields.phone_number.preferred_countries || []
+          }
           excludeCountries={input_fields.phone_number.exclude_countries || []}
           value={phone_number}
-          onChange={value => this.handleChange({ target: { name: "phone_number", value: `+${value}` } })}
+          onChange={(value) =>
+            this.handleChange({
+              target: {name: "phone_number", value: `+${value}`},
+            })
+          }
           placeholder=""
           enableSearch={Boolean(input_fields.phone_number.enable_search)}
           inputProps={{
             name: "phone_number",
             id: "phone-number",
-            className: `form-control input ${errors.phone_number ? "error" : ""}`,
+            className: `form-control input ${
+              errors.phone_number ? "error" : ""
+            }`,
             required: true,
           }}
         />
       </div>
     );
-  }
-  
+  };
+
   getPhoneNumberOrEmailField = (input_fields) => {
     const {settings} = this.props;
-  
+
     if (settings.mobile_phone_verification) {
       return this.getPhoneNumberField(input_fields);
     }
     return this.getEmailField(input_fields);
-  }
-  
+  };
+
   handleChange(event) {
     handleChange(event, this);
   }
 
   handleSubmit(event) {
-    const { setLoading } = this.context;
+    const {setLoading} = this.context;
     if (event) event.preventDefault();
-    const { orgSlug, authenticate, verifyMobileNumber, settings } = this.props;
-    const { email, password, phone_number, errors } = this.state;
+    const {orgSlug, authenticate, verifyMobileNumber, settings} = this.props;
+    const {email, password, phone_number, errors} = this.state;
     const username = settings.mobile_phone_verification ? phone_number : email;
     const url = loginApiUrl(orgSlug);
     this.setState({
@@ -152,10 +155,10 @@ export default class Login extends React.Component {
     });
     setLoading(true);
 
-    const handleAuthentication = function(needsMobileVerification = false) {
+    const handleAuthentication = function (needsMobileVerification = false) {
       authenticate(true);
       toast.success(loginSuccess, {
-        toastId: mainToastId
+        toastId: mainToastId,
       });
       setLoading(false);
       if (needsMobileVerification) {
@@ -177,9 +180,12 @@ export default class Login extends React.Component {
       .then(() => {
         return handleAuthentication();
       })
-      .catch(error => {
-        const { data } = error.response;
-        if (error.response.status === 401 && settings.mobile_phone_verification) {
+      .catch((error) => {
+        const {data} = error.response;
+        if (
+          error.response.status === 401 &&
+          settings.mobile_phone_verification
+        ) {
           return handleAuthentication(true);
         }
         const errorText = getErrorText(error, loginError);
@@ -188,9 +194,11 @@ export default class Login extends React.Component {
         this.setState({
           errors: {
             ...errors,
-            ...(data.email ? { email: data.email.toString() } : { email: "" }),
-            ...(data.password ? { password: data.password } : { password: "" }),
-            ...(data.phone_number ? { phone_number: data.phone_number } : { phone_number: "" }),
+            ...(data.email ? {email: data.email.toString()} : {email: ""}),
+            ...(data.password ? {password: data.password} : {password: ""}),
+            ...(data.phone_number
+              ? {phone_number: data.phone_number}
+              : {phone_number: ""}),
           },
         });
         return setLoading(false);
@@ -198,7 +206,7 @@ export default class Login extends React.Component {
   }
 
   render() {
-    const { errors, password} = this.state;
+    const {errors, password} = this.state;
     const {
       language,
       loginForm,
@@ -219,16 +227,16 @@ export default class Login extends React.Component {
         <div className="container content" id="login">
           <div className="inner">
             <form className="main-column" onSubmit={this.handleSubmit}>
-
               {social_login && social_login.links && (
                 <div className="social-links row">
-                  {social_login.links.map(link => {
+                  {social_login.links.map((link) => {
                     return (
                       <p key={link.url}>
-                        <a href={link.url}
-                           target="_blank"
-                           rel="noopener noreferrer"
-                           className="social-link button full"
+                        <a
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="social-link button full"
                         >
                           <span className="inner">
                             <img
@@ -251,13 +259,11 @@ export default class Login extends React.Component {
                 {errors.nonField && (
                   <div className="error non-field">
                     <span className="icon">!</span>
-                    <span className="text">
-                      {errors.nonField}
-                    </span>
+                    <span className="text">{errors.nonField}</span>
                   </div>
                 )}
 
-               {this.getPhoneNumberOrEmailField(input_fields)}
+                {this.getPhoneNumberOrEmailField(input_fields)}
 
                 <div className="row password">
                   <label htmlFor="password">
@@ -266,9 +272,7 @@ export default class Login extends React.Component {
                   {errors.password && (
                     <div className="error">
                       <span className="icon">!</span>
-                      <span className="text">
-                        {errors.password}
-                      </span>
+                      <span className="text">{errors.password}</span>
                     </div>
                   )}
                   <input
@@ -279,9 +283,15 @@ export default class Login extends React.Component {
                     name="password"
                     value={password}
                     onChange={this.handleChange}
-                    placeholder={getText(input_fields.password.placeholder, language)}
+                    placeholder={getText(
+                      input_fields.password.placeholder,
+                      language,
+                    )}
                     pattern={input_fields.password.pattern}
-                    title={getText(input_fields.password.pattern_description, language)}
+                    title={getText(
+                      input_fields.password.pattern_description,
+                      language,
+                    )}
                   />
                 </div>
               </div>
@@ -309,13 +319,8 @@ export default class Login extends React.Component {
 
               {buttons.register && (
                 <div className="row register">
-                  <p>
-                    {getText(buttons.register.label, language)}
-                  </p>
-                  <Link
-                    to={`/${orgSlug}/registration`}
-                    className="button full"
-                  >
+                  <p>{getText(buttons.register.label, language)}</p>
+                  <Link to={`/${orgSlug}/registration`} className="button full">
                     {getText(buttons.register.text, language)}
                   </Link>
                 </div>
@@ -323,10 +328,7 @@ export default class Login extends React.Component {
 
               {links && links.forget_password && (
                 <div className="row links">
-                  <Link
-                    to={`/${orgSlug}/password/reset`}
-                    className="link"
-                  >
+                  <Link to={`/${orgSlug}/password/reset`} className="link">
                     {getText(links.forget_password, language)}
                   </Link>
                 </div>
@@ -338,7 +340,7 @@ export default class Login extends React.Component {
         </div>
         <Route
           path={`${match.path}/:name`}
-          render={props => {
+          render={(props) => {
             return <Modal {...props} prevPath={match.url} />;
           }}
         />
@@ -353,11 +355,13 @@ Login.propTypes = {
     social_login: PropTypes.shape({
       divider_text: PropTypes.object,
       description: PropTypes.object,
-      links: PropTypes.arrayOf(PropTypes.shape({
-        url: PropTypes.string.isRequired,
-        icon: PropTypes.string.isRequired,
-        text: PropTypes.shape().isRequired,
-      })),
+      links: PropTypes.arrayOf(
+        PropTypes.shape({
+          url: PropTypes.string.isRequired,
+          icon: PropTypes.string.isRequired,
+          text: PropTypes.shape().isRequired,
+        }),
+      ),
     }),
     input_fields: PropTypes.shape({
       email: PropTypes.shape({
@@ -365,14 +369,14 @@ Login.propTypes = {
         label: PropTypes.object.isRequired,
         placeholder: PropTypes.object.isRequired,
         pattern: PropTypes.string.isRequired,
-        pattern_description: PropTypes.object.isRequired
+        pattern_description: PropTypes.object.isRequired,
       }).isRequired,
       password: PropTypes.shape({
         type: PropTypes.string.isRequired,
         label: PropTypes.object.isRequired,
         placeholder: PropTypes.object.isRequired,
         pattern: PropTypes.string.isRequired,
-        pattern_description: PropTypes.object.isRequired
+        pattern_description: PropTypes.object.isRequired,
       }).isRequired,
       phone_number: PropTypes.shape({
         label: PropTypes.object.isRequired,
@@ -381,8 +385,8 @@ Login.propTypes = {
         only_countries: PropTypes.array,
         preferred_countries: PropTypes.array,
         exclude_countries: PropTypes.array,
-        enable_search: PropTypes.bool
-      })
+        enable_search: PropTypes.bool,
+      }),
     }),
     additional_info_text: PropTypes.object,
     buttons: PropTypes.shape({
@@ -395,7 +399,7 @@ Login.propTypes = {
       }),
     }).isRequired,
     links: PropTypes.shape({
-      forget_password: PropTypes.object.isRequired
+      forget_password: PropTypes.object.isRequired,
     }).isRequired,
   }).isRequired,
   language: PropTypes.string.isRequired,
@@ -415,6 +419,6 @@ Login.propTypes = {
   authenticate: PropTypes.func.isRequired,
   verifyMobileNumber: PropTypes.func.isRequired,
   settings: PropTypes.shape({
-    mobile_phone_verification: PropTypes.bool
+    mobile_phone_verification: PropTypes.bool,
   }).isRequired,
 };

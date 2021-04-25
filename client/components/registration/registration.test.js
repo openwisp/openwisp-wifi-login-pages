@@ -1,15 +1,15 @@
 /* eslint-disable prefer-promise-reject-errors */
 /* eslint-disable camelcase */
 import axios from "axios";
-import { shallow, mount } from "enzyme";
+import {shallow, mount} from "enzyme";
 import React from "react";
-import { toast } from "react-toastify";
+import {toast} from "react-toastify";
 import PropTypes from "prop-types";
-import { Provider } from 'react-redux';
-import { Router } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
-import PhoneInput from 'react-phone-input-2';
-import { loadingContextValue } from "../../utils/loading-context";
+import {Provider} from "react-redux";
+import {Router} from "react-router-dom";
+import {createMemoryHistory} from "history";
+import PhoneInput from "react-phone-input-2";
+import {loadingContextValue} from "../../utils/loading-context";
 import tick from "../../utils/tick";
 
 import getConfig from "../../utils/get-config";
@@ -18,7 +18,7 @@ import Registration from "./registration";
 jest.mock("../../utils/get-config");
 jest.mock("axios");
 
-const createTestProps = function(props, configName = "default") {
+const createTestProps = function (props, configName = "default") {
   const config = getConfig(configName);
   return {
     language: "en",
@@ -44,7 +44,9 @@ describe("<Registration /> rendering", () => {
   });
   it("should render correctly", () => {
     props = createTestProps();
-    wrapper = shallow(<Registration {...props} />, { context: loadingContextValue });
+    wrapper = shallow(<Registration {...props} />, {
+      context: loadingContextValue,
+    });
     expect(wrapper).toMatchSnapshot();
   });
 });
@@ -64,9 +66,11 @@ describe("<Registration /> interactions", () => {
     props = createTestProps();
     Registration.contextTypes = {
       setLoading: PropTypes.func,
-      getLoading: PropTypes.func
+      getLoading: PropTypes.func,
     };
-    wrapper = shallow(<Registration {...props} />, { context: loadingContextValue });
+    wrapper = shallow(<Registration {...props} />, {
+      context: loadingContextValue,
+    });
   });
   afterEach(() => {
     console.error = originalError;
@@ -74,15 +78,15 @@ describe("<Registration /> interactions", () => {
   it("should change state values when handleChange function is invoked", () => {
     wrapper
       .find(".row.email input")
-      .simulate("change", { target: { value: "test email", name: "email" } });
+      .simulate("change", {target: {value: "test email", name: "email"}});
     expect(wrapper.state("email")).toEqual("test email");
     wrapper
       .find(".row.password input")
-      .simulate("change", { target: { value: "testpassword", name: "password1" } });
+      .simulate("change", {target: {value: "testpassword", name: "password1"}});
     expect(wrapper.state("password1")).toEqual("testpassword");
     wrapper
       .find(".row.password-confirm input")
-      .simulate("change", { target: { value: "testpassword", name: "password2" } });
+      .simulate("change", {target: {value: "testpassword", name: "password2"}});
     expect(wrapper.state("password2")).toEqual("testpassword");
   });
 
@@ -115,7 +119,7 @@ describe("<Registration /> interactions", () => {
           status: 504,
           statusText: "Gateway Timeout",
           response: {
-            data: {}
+            data: {},
           },
         });
       })
@@ -126,8 +130,8 @@ describe("<Registration /> interactions", () => {
       password1: "wrong password",
       password2: "wrong password1",
     });
-    const event = { preventDefault: () => { } };
-    const spyToast = jest.spyOn(toast, 'error');
+    const event = {preventDefault: () => {}};
+    const spyToast = jest.spyOn(toast, "error");
     wrapper.instance().handleSubmit(event);
     expect(
       wrapper.update().find(".row.password-confirm div.error"),
@@ -143,7 +147,7 @@ describe("<Registration /> interactions", () => {
       registration: {
         ...props.registration,
         input_fields: {
-          ...props.registration.input_fields
+          ...props.registration.input_fields,
         },
       },
     });
@@ -161,9 +165,7 @@ describe("<Registration /> interactions", () => {
           birth_date: "",
         });
         expect(wrapper.find("div.error")).toHaveLength(2);
-        expect(
-          wrapper.instance().props.authenticate.mock.calls.length,
-        ).toBe(0);
+        expect(wrapper.instance().props.authenticate.mock.calls.length).toBe(0);
         expect(lastConsoleOutuput).not.toBe(null);
         expect(spyToast.mock.calls.length).toBe(1);
         lastConsoleOutuput = null;
@@ -201,9 +203,7 @@ describe("<Registration /> interactions", () => {
           .then(() => {
             expect(wrapper.instance().state.errors).toEqual({});
             expect(wrapper.instance().state.success).toEqual(true);
-            expect(
-              wrapper.find(".success"),
-            ).toHaveLength(1);
+            expect(wrapper.find(".success")).toHaveLength(1);
             expect(
               wrapper.instance().props.authenticate.mock.calls.length,
             ).toBe(1);
@@ -216,7 +216,7 @@ describe("<Registration /> interactions", () => {
   it("test optional fields disabled", async () => {
     wrapper = shallow(<Registration {...props} />, {
       context: loadingContextValue,
-      disableLifecycleMethods: true
+      disableLifecycleMethods: true,
     });
     expect(wrapper.find(".first_name").length).toEqual(0);
     expect(wrapper.find(".last_name").length).toEqual(0);
@@ -226,12 +226,16 @@ describe("<Registration /> interactions", () => {
   it("test optional fields allowed", async () => {
     props.registration.input_fields.first_name.setting = "allowed";
     props.registration.input_fields.location.setting = "allowed";
-    wrapper = shallow(<Registration {...props}/>, {
+    wrapper = shallow(<Registration {...props} />, {
       context: loadingContextValue,
       disableLifecycleMethods: true,
     });
-    expect(wrapper.find("[htmlFor='first_name']").text()).toEqual("first name (optional)");
-    expect(wrapper.find("[htmlFor='location']").text()).toEqual("location (optional)");
+    expect(wrapper.find("[htmlFor='first_name']").text()).toEqual(
+      "first name (optional)",
+    );
+    expect(wrapper.find("[htmlFor='location']").text()).toEqual(
+      "location (optional)",
+    );
     expect(wrapper.find(".last_name").length).toEqual(0);
     expect(wrapper.find(".birth_date").length).toEqual(0);
   });
@@ -246,8 +250,12 @@ describe("<Registration /> interactions", () => {
     });
     expect(wrapper.find("[htmlFor='first_name']").text()).toEqual("first name");
     expect(wrapper.find("[htmlFor='birth_date']").text()).toEqual("birth date");
-    expect(wrapper.find("[htmlFor='last_name']").text()).toEqual("last name (optional)");
-    expect(wrapper.find("[htmlFor='location']").text()).toEqual("location (optional)");
+    expect(wrapper.find("[htmlFor='last_name']").text()).toEqual(
+      "last name (optional)",
+    );
+    expect(wrapper.find("[htmlFor='location']").text()).toEqual(
+      "location (optional)",
+    );
   });
 });
 
@@ -255,9 +263,9 @@ describe("Registration and Mobile Phone Verification interactions", () => {
   let props;
   let wrapper;
   const historyMock = createMemoryHistory();
-  const event = { preventDefault: jest.fn() };
+  const event = {preventDefault: jest.fn()};
 
-  const mountComponent = function(passedProps) {
+  const mountComponent = function (passedProps) {
     Registration.contextTypes = undefined;
     const mockedStore = {
       subscribe: () => {},
@@ -268,9 +276,9 @@ describe("Registration and Mobile Phone Verification interactions", () => {
           organization: {
             configuration: passedProps.configuration,
           },
-          language: passedProps.language
+          language: passedProps.language,
         };
-      }
+      },
     };
 
     return mount(
@@ -282,14 +290,14 @@ describe("Registration and Mobile Phone Verification interactions", () => {
       {
         context: {
           store: mockedStore,
-          ...loadingContextValue
+          ...loadingContextValue,
         },
         childContextTypes: {
           store: PropTypes.object.isRequired,
           setLoading: PropTypes.func,
           getLoading: PropTypes.func,
-        }
-      }
+        },
+      },
     );
   };
 
@@ -317,30 +325,35 @@ describe("Registration and Mobile Phone Verification interactions", () => {
 
     // testing if username is equal to phone_number
     const axiosParam = {
-      "data": "email=tester%40openwisp.io&username=%2B393660011333&first_name=&last_name=&birth_date=&location=&password1=tester123&password2=tester123&phone_number=%2B393660011333",
-      "headers": {
+      data:
+        "email=tester%40openwisp.io&username=%2B393660011333&first_name=&last_name=&birth_date=&location=&password1=tester123&password2=tester123&phone_number=%2B393660011333",
+      headers: {
         "content-type": "application/x-www-form-urlencoded",
       },
-      "method": "post",
-      "url": "/api/v1/test-org-2/account/",
+      method: "post",
+      url: "/api/v1/test-org-2/account/",
     };
 
     axios.mockImplementationOnce(() => {
       return Promise.resolve({
         status: 201,
         statusText: "CREATED",
-        data: null
+        data: null,
       });
     });
 
-    wrapper.find("input[name='phone_number']")
-           .simulate("change", {target: {value: "+393660011333", name: "phone_number"}});
-    wrapper.find("input[name='email']")
-           .simulate("change", {target: {value: "tester@openwisp.io", name: "email"}});
-    wrapper.find("input[name='password1']")
-           .simulate("change", {target: {value: "tester123", name: "password1"}});
-    wrapper.find("input[name='password2']")
-           .simulate("change", {target: {value: "tester123", name: "password2"}});
+    wrapper.find("input[name='phone_number']").simulate("change", {
+      target: {value: "+393660011333", name: "phone_number"},
+    });
+    wrapper.find("input[name='email']").simulate("change", {
+      target: {value: "tester@openwisp.io", name: "email"},
+    });
+    wrapper
+      .find("input[name='password1']")
+      .simulate("change", {target: {value: "tester123", name: "password1"}});
+    wrapper
+      .find("input[name='password2']")
+      .simulate("change", {target: {value: "tester123", name: "password2"}});
     wrapper.find("form").simulate("submit", event);
     await tick();
     expect(wrapper.find(Registration).instance().state.errors).toEqual({});

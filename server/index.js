@@ -12,7 +12,7 @@ app.use(express.static(path.join(process.cwd(), "dist")));
 app.use(cookieParser());
 app.use(cookiesMiddleware());
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({extended: false}));
 app.use("/api/v1/:organization/account", routes.account);
 app.get("*", (req, res) => {
   res.sendFile(path.join(process.cwd(), "dist", "index.html"));
@@ -22,7 +22,7 @@ const DEFAULT_PORT = 3030;
 
 // Finds the next free port, starting at the passed port
 const nextFreePort = (port, callback) => {
-  const server = net.createServer(socket => {
+  const server = net.createServer((socket) => {
     socket.write("Testing socket..\r\n");
     socket.pipe(socket);
   });
@@ -48,7 +48,7 @@ if (process.env.SERVER !== undefined) {
   });
 } else {
   // Otherwise, find the next free port starting at the default port
-  nextFreePort(DEFAULT_PORT, port => {
+  nextFreePort(DEFAULT_PORT, (port) => {
     app.listen(port, () => {
       // eslint-disable-next-line no-console
       console.log(`Server started on port ${port}`);

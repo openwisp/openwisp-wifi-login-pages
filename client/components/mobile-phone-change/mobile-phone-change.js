@@ -5,17 +5,17 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import qs from "qs";
 import React from "react";
-import { Cookies } from "react-cookie";
-import { Redirect, withRouter } from "react-router-dom";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import PhoneInput from 'react-phone-input-2';
+import {Cookies} from "react-cookie";
+import {Redirect, withRouter} from "react-router-dom";
+import {toast} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import PhoneInput from "react-phone-input-2";
 import LoadingContext from "../../utils/loading-context";
 import {
   genericError,
   mainToastId,
   mobilePhoneChangeUrl,
-  validateApiUrl
+  validateApiUrl,
 } from "../../constants";
 import getErrorText from "../../utils/get-error-text";
 import getText from "../../utils/get-text";
@@ -29,7 +29,7 @@ class MobilePhoneChange extends React.Component {
     super(props);
     this.state = {
       phone_number: "",
-      errors: {}
+      errors: {},
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -42,18 +42,18 @@ class MobilePhoneChange extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const { setLoading } = this.context;
-    const { orgSlug, language, phone_number_change } = this.props;
-    const { text } = phone_number_change;
-    const { phone_number, errors } = this.state;
+    const {setLoading} = this.context;
+    const {orgSlug, language, phone_number_change} = this.props;
+    const {text} = phone_number_change;
+    const {phone_number, errors} = this.state;
     const url = mobilePhoneChangeUrl(orgSlug);
     const self = this;
-    this.setState({ errors: { ...errors, phone_number: "" } });
+    this.setState({errors: {...errors, phone_number: ""}});
     setLoading(true);
     return axios({
       method: "post",
       headers: {
-        "content-type": "application/x-www-form-urlencoded"
+        "content-type": "application/x-www-form-urlencoded",
       },
       url,
       data: qs.stringify({
@@ -68,8 +68,8 @@ class MobilePhoneChange extends React.Component {
         toast.info(getText(text.token_sent, language));
         self.props.history.push(`/${orgSlug}/mobile-phone-verification`);
       })
-      .catch(error => {
-        const { data } = error.response;
+      .catch((error) => {
+        const {data} = error.response;
         const errorText = getErrorText(error);
         if (errorText) {
           logError(error, errorText);
@@ -79,8 +79,8 @@ class MobilePhoneChange extends React.Component {
         this.setState({
           errors: {
             ...errors,
-            ...(data.phone_number ? { phone_number: data.phone_number } : null),
-            ...(errorText ? { nonField: errorText } : { nonField: "" }),
+            ...(data.phone_number ? {phone_number: data.phone_number} : null),
+            ...(errorText ? {nonField: errorText} : {nonField: ""}),
           },
         });
       });
@@ -92,7 +92,7 @@ class MobilePhoneChange extends React.Component {
 
   // TODO: make reusable
   async validateToken() {
-    const { setLoading } = this.context;
+    const {setLoading} = this.context;
     const {cookies, orgSlug, logout, verifyMobileNumber} = this.props;
     const token = cookies.get(`${orgSlug}_auth_token`);
     const url = validateApiUrl(orgSlug);
@@ -135,15 +135,10 @@ class MobilePhoneChange extends React.Component {
   }
 
   render() {
-    const { phone_number, errors } = this.state;
-    const {
-      orgSlug,
-      language,
-      phone_number_change,
-      settings
-    } = this.props;
-    const { input_fields } = phone_number_change;
-    const { buttons } = phone_number_change;
+    const {phone_number, errors} = this.state;
+    const {orgSlug, language, phone_number_change, settings} = this.props;
+    const {input_fields} = phone_number_change;
+    const {buttons} = phone_number_change;
 
     // check equality to false, it may be undefined
     if (!settings.mobile_phone_verification) {
@@ -153,16 +148,16 @@ class MobilePhoneChange extends React.Component {
     return (
       <div className="container content" id="mobile-phone-change">
         <div className="inner">
-          <form className="main-column"
-                id="mobile-phone-change-form"
-                onSubmit={this.handleSubmit}>
+          <form
+            className="main-column"
+            id="mobile-phone-change-form"
+            onSubmit={this.handleSubmit}
+          >
             <div className="fieldset row">
               {errors.nonField && (
                 <div className="error non-field">
                   <span className="icon">!</span>
-                  <span className="text">
-                    {errors.nonField}
-                  </span>
+                  <span className="text">{errors.nonField}</span>
                 </div>
               )}
 
@@ -173,29 +168,41 @@ class MobilePhoneChange extends React.Component {
                 {errors.phone_number && (
                   <div className="error">
                     <span className="icon">!</span>
-                    <span className="text">
-                      {errors.phone_number}
-                    </span>
+                    <span className="text">{errors.phone_number}</span>
                   </div>
                 )}
                 <PhoneInput
                   name="phone_number"
                   country={input_fields.phone_number.country}
                   onlyCountries={input_fields.phone_number.only_countries || []}
-                  preferredCountries={input_fields.phone_number.preferred_countries || []}
-                  excludeCountries={input_fields.phone_number.exclude_countries || []}
+                  preferredCountries={
+                    input_fields.phone_number.preferred_countries || []
+                  }
+                  excludeCountries={
+                    input_fields.phone_number.exclude_countries || []
+                  }
                   value={phone_number}
-                  onChange={value => this.handleChange({target: {name: "phone_number", value: `+${value}`}})}
-                  onKeyDown={event => { submitOnEnter(event, this, "mobile-phone-change-form"); }}
+                  onChange={(value) =>
+                    this.handleChange({
+                      target: {name: "phone_number", value: `+${value}`},
+                    })
+                  }
+                  onKeyDown={(event) => {
+                    submitOnEnter(event, this, "mobile-phone-change-form");
+                  }}
                   placeholder={getText(
                     input_fields.phone_number.placeholder,
                     language,
                   )}
-                  enableSearch={Boolean(input_fields.phone_number.enable_search)}
+                  enableSearch={Boolean(
+                    input_fields.phone_number.enable_search,
+                  )}
                   inputProps={{
                     name: "phone_number",
                     id: "phone-number",
-                    className: `form-control input ${errors.phone_number ? "error" : ""}`,
+                    className: `form-control input ${
+                      errors.phone_number ? "error" : ""
+                    }`,
                     required: true,
                   }}
                 />
@@ -208,8 +215,10 @@ class MobilePhoneChange extends React.Component {
               />
 
               <div className="row cancel">
-                <a className="button full"
-                   href={`/${orgSlug}/mobile-phone-verification`}>
+                <a
+                  className="button full"
+                  href={`/${orgSlug}/mobile-phone-verification`}
+                >
                   {getText(buttons.cancel.text, language)}
                 </a>
               </div>
@@ -234,15 +243,15 @@ MobilePhoneChange.propTypes = {
         only_countries: PropTypes.array,
         preferred_countries: PropTypes.array,
         exclude_countries: PropTypes.array,
-        enable_search: PropTypes.bool
+        enable_search: PropTypes.bool,
       }),
     }).isRequired,
     buttons: PropTypes.shape({
       change_phone_number: PropTypes.shape({
-        text: PropTypes.object
+        text: PropTypes.object,
       }),
       cancel: PropTypes.shape({
-        text: PropTypes.object
+        text: PropTypes.object,
       }),
     }).isRequired,
     text: PropTypes.shape({
@@ -250,7 +259,7 @@ MobilePhoneChange.propTypes = {
     }).isRequired,
   }).isRequired,
   settings: PropTypes.shape({
-    mobile_phone_verification: PropTypes.bool
+    mobile_phone_verification: PropTypes.bool,
   }).isRequired,
   language: PropTypes.string.isRequired,
   orgSlug: PropTypes.string.isRequired,

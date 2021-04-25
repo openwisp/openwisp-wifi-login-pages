@@ -7,7 +7,7 @@ module.exports = {
       type: "input",
       name: "name",
       message: "What is the name of the organization?",
-      validate: value => {
+      validate: (value) => {
         if (/.+/.test(value)) {
           return true;
         }
@@ -18,7 +18,7 @@ module.exports = {
       type: "input",
       name: "slug",
       message: "What is the slug of the organization?",
-      validate: value => {
+      validate: (value) => {
         if (/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value)) {
           return organizationExists(`${value}-configuration`)
             ? "An organization with this name already exists"
@@ -31,7 +31,7 @@ module.exports = {
       type: "input",
       name: "uuid",
       message: "What is the uuid of the organization?",
-      validate: value => {
+      validate: (value) => {
         if (/.+/.test(value)) {
           return true;
         }
@@ -48,7 +48,7 @@ module.exports = {
       type: "input",
       name: "secret_key",
       message: "What is the secret key of the organization?",
-      validate: value => {
+      validate: (value) => {
         if (/.+/.test(value)) {
           return true;
         }
@@ -60,7 +60,7 @@ module.exports = {
       name: "login_action_url",
       default: "http://127.0.0.1:8080/login",
       message: "What is the captive portal login action URL?",
-      validate: value => {
+      validate: (value) => {
         if (/.+/.test(value)) {
           return true;
         }
@@ -72,7 +72,7 @@ module.exports = {
       name: "logout_action_url",
       default: "http://127.0.0.1:8080/logout",
       message: "What is the captive portal logout action URL?",
-      validate: value => {
+      validate: (value) => {
         if (/.+/.test(value)) {
           return true;
         }
@@ -98,7 +98,7 @@ module.exports = {
       default: false,
     },
   ],
-  actions: data => {
+  actions: (data) => {
     const actions = [
       {
         type: "add",

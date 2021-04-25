@@ -9,7 +9,7 @@ import logInternalError from "../utils/log-internal-error";
 
 const passwordChange = (req, res) => {
   const reqOrg = req.params.organization;
-  const validSlug = config.some(org => {
+  const validSlug = config.some((org) => {
     if (org.slug === reqOrg) {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
@@ -36,15 +36,16 @@ const passwordChange = (req, res) => {
             new_password2: newPassword2,
           }),
         })
-          .then(response => {
+          .then((response) => {
             // forward response
             res
               .status(response.status)
               .type("application/json")
               .send(response.data);
           })
-          .catch(error => {
-            if (error.response && error.response.status === 500) logInternalError(error);
+          .catch((error) => {
+            if (error.response && error.response.status === 500)
+              logInternalError(error);
             // forward error
             try {
               res
@@ -53,33 +54,24 @@ const passwordChange = (req, res) => {
                 .send(error.response.data);
             } catch (err) {
               logInternalError(error);
-              res
-                .status(500)
-                .type("application/json")
-                .send({
-                  detail: "Internal server error",
-                });
+              res.status(500).type("application/json").send({
+                detail: "Internal server error",
+              });
             }
           });
       } else {
-        res
-          .status(401)
-          .type("application/json")
-          .send({
-            detail: "Invalid Token",
-          });
+        res.status(401).type("application/json").send({
+          detail: "Invalid Token",
+        });
       }
     }
     return org.slug === reqOrg;
   });
   // return 404 for invalid organization slug or org not listed in config
   if (!validSlug) {
-    res
-      .status(404)
-      .type("application/json")
-      .send({
-        detail: "Not found.",
-      });
+    res.status(404).type("application/json").send({
+      detail: "Not found.",
+    });
   }
 };
 

@@ -11,7 +11,7 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     setOrganization: (slug, cookies) => {
       dispatch(setOrganization(slug, cookies));
@@ -19,8 +19,5 @@ const mapDispatchToProps = dispatch => {
   };
 };
 export default withCookies(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(Component),
+  connect(mapStateToProps, mapDispatchToProps)(Component),
 );
