@@ -167,10 +167,6 @@ $ yarn lint:fix   # Run ESLint with automatically fix problems option
 $ yarn test       # Run tests
 $ yarn -- -u      # Update Jest Snapshots
 ```
-Command for running webpack-bundle-analyzer:
-
-# Run the webpack-bundle-analyzer
-$ npx webpack-cli --profile --json --config config/webpack.config.js > compilation-stats.json 
 
 #### Using custom ports
 
@@ -216,6 +212,16 @@ PS> $env:CLIENT = 4000; $env:SERVER = 5000; yarn client
 Note that you need to tell the client the server's port
 (unless you're using the default server port, which is 3030)
 so the client knows where he can find the server.
+
+### Running webpack-bundle-analyzer
+
+This tool helps to keep the size of the JS files produced by the app in check.
+
+Run it with:
+
+```
+npx webpack-cli --profile --json --config config/webpack.config.js > compilation-stats.json 
+```
 
 ### Settings
 
