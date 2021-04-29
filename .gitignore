@@ -37,3 +37,4 @@ client/assets/*
 !client/assets/default/
 !client/assets/fonts/
 server/config.json
+compilation-stats.json
