@@ -19,7 +19,9 @@ const validateToken = (req, res) => {
       validateTokenUrl = validateTokenUrl.replace("{org_slug}", org.slug);
       const timeout = conf.timeout * 1000;
       let {token} = req.body;
-      token = cookie.unsign(token, conf.secret_key);
+      if (req.body.session === "false") {
+        token = cookie.unsign(token, conf.secret_key);
+      }
       // make AJAX request
       axios({
         method: "post",

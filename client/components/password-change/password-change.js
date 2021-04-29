@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import qs from "qs";
 import React from "react";
 import {toast} from "react-toastify";
+import {Cookies} from "react-cookie";
 import {
   passwordChangeApiUrl,
   passwordChangeError,
@@ -17,6 +18,7 @@ import Contact from "../contact-box";
 import LoadingContext from "../../utils/loading-context";
 import logError from "../../utils/log-error";
 import handleChange from "../../utils/handle-change";
+import handleSession from "../../utils/session";
 
 export default class PasswordChange extends React.Component {
   constructor(props) {
@@ -34,7 +36,9 @@ export default class PasswordChange extends React.Component {
     const {setLoading} = this.context;
 
     if (e) e.preventDefault();
-    const {orgSlug} = this.props;
+    const {orgSlug, cookies} = this.props;
+    const authToken = cookies.get(`${orgSlug}_auth_token`);
+    const {token, session} = handleSession(orgSlug, authToken, cookies);
     const url = passwordChangeApiUrl.replace("{orgSlug}", orgSlug);
     const {newPassword1, newPassword2} = this.state;
     if (newPassword1 !== newPassword2) {
@@ -55,6 +59,8 @@ export default class PasswordChange extends React.Component {
       data: qs.stringify({
         newPassword1,
         newPassword2,
+        token,
+        session,
       }),
     })
       .then((response) => {
@@ -178,6 +184,7 @@ export default class PasswordChange extends React.Component {
 PasswordChange.contextType = LoadingContext;
 PasswordChange.propTypes = {
   orgSlug: PropTypes.string.isRequired,
+  cookies: PropTypes.instanceOf(Cookies).isRequired,
   language: PropTypes.string.isRequired,
   passwordChange: PropTypes.shape({
     title: PropTypes.object,

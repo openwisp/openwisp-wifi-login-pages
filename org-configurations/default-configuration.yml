@@ -340,6 +340,11 @@ client:
             en: "password"
           label:
             en: "password"
+        remember_me:
+          type: "checkbox"
+          value: true
+          label:
+            en: "Remember me on this device"
       additional_info_text:
         en: "By logging in, you accept the {terms_and_conditions} and the {privacy_policy} of this WiFi service. "
       buttons:

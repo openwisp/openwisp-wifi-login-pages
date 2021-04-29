@@ -21,7 +21,7 @@ const sendCookies = (username, response, conf, res) => {
     .cookie(`${conf.slug}_username`, usernameCookie, {
       maxAge: 1000 * 60 * 60 * 24,
     })
-    .send();
+    .send(response.data);
 };
 
 const obtainToken = (req, res) => {

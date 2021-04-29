@@ -86,6 +86,13 @@ module.exports = {
       default: false,
     },
     {
+      type: "confirm",
+      name: "remember_me",
+      message:
+        "Do you want to support automatic logins (remember me checkbox)?",
+      default: true,
+    },
+    {
       type: "input",
       name: "openwisp_radius_url",
       message: "What is the URL of OpenWISP RADIUS?",

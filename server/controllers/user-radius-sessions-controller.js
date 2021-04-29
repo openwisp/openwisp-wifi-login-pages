@@ -19,8 +19,9 @@ const getUserRadiusSessions = (req, res) => {
         org.slug,
       );
       const timeout = conf.timeout * 1000;
-      let token = req.cookies[`${reqOrg}_auth_token`] || "";
-      token = cookie.unsign(token, conf.secret_key);
+      let {token} = req.query;
+      if (req.query.session === "false")
+        token = cookie.unsign(token, conf.secret_key);
       // make AJAX request
       axios({
         method: "get",

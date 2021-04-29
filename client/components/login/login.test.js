@@ -111,6 +111,15 @@ describe("<Login /> interactions", () => {
     expect(wrapper.state("password")).toEqual("test password");
   });
 
+  it("should change state value when handleCheckBoxChange function is invoked", () => {
+    // phone_number should not be present if mobile_phone_verification is off
+    expect(wrapper.find("[name='phone_number']")).toEqual({});
+    wrapper
+      .find("#remember_me")
+      .simulate("change", {target: {checked: false, name: "remember_me"}});
+    expect(wrapper.state("remember_me")).toEqual(false);
+  });
+
   it("should execute handleSubmit correctly when form is submitted", () => {
     axios
       .mockImplementationOnce(() => {
@@ -256,5 +265,32 @@ describe("<Login /> interactions", () => {
 
     expect(wrapper.find("#email").length).toEqual(1);
     expect(wrapper.find("[name='phone_number']").length).toEqual(0);
+  });
+  it("should store token in sessionStorage when remember me is unchecked and rememberMe in localstorage", () => {
+    const data = {
+      data: {
+        key: "test-token",
+      },
+    };
+
+    axios.mockImplementationOnce(() => {
+      return Promise.resolve(data);
+    });
+
+    wrapper
+      .find("#remember_me")
+      .simulate("change", {target: {checked: false, name: "remember_me"}});
+
+    return wrapper
+      .instance()
+      .handleSubmit()
+      .then(() => {
+        expect(wrapper.instance().state.errors).toEqual({});
+        expect(sessionStorage.getItem("default_auth_token")).toEqual(
+          "test-token",
+        );
+        expect(localStorage.getItem("rememberMe")).toEqual("false");
+        expect(wrapper.instance().props.authenticate.mock.calls.length).toBe(1);
+      });
   });
 });
