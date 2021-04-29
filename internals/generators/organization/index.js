@@ -88,7 +88,8 @@ module.exports = {
     {
       type: "confirm",
       name: "remember_me",
-      message: "Does your captive portal support automatically log me in?",
+      message:
+        "Do you want to support automatic logins (remember me checkbox)?",
       default: true,
     },
     {
