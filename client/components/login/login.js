@@ -324,7 +324,6 @@ export default class Login extends React.Component {
                     type={input_fields.remember_me.type}
                     id="remember_me"
                     name="remember_me"
-                    className="remember-me"
                     checked={remember_me}
                     onChange={this.handleCheckBoxChange}
                   />

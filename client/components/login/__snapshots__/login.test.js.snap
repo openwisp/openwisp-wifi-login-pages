@@ -113,7 +113,6 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
           >
             <input
               checked={true}
-              className="remember-me"
               id="remember_me"
               name="remember_me"
               onChange={[Function]}
@@ -122,7 +121,7 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
             <label
               htmlFor="remember_me"
             >
-              Remember me on this device
+              remember me on this device
             </label>
           </div>
         </div>
@@ -324,7 +323,6 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
           >
             <input
               checked={true}
-              className="remember-me"
               id="remember_me"
               name="remember_me"
               onChange={[Function]}
@@ -333,7 +331,7 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
             <label
               htmlFor="remember_me"
             >
-              Remember me on this device
+              remember me on this device
             </label>
           </div>
         </div>
