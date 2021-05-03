@@ -6,6 +6,7 @@ const mapStateToProps = (state, ownProps) => {
   const conf = state.organization.configuration;
   return {
     statusPage: conf.components.status_page,
+    logoutModal: conf.components.logout_modal,
     orgSlug: conf.slug,
     settings: conf.settings,
     captivePortalLoginForm: conf.components.captive_portal_login_form,
