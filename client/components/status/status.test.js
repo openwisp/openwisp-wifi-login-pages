@@ -4,7 +4,6 @@ import {shallow} from "enzyme";
 import PropTypes from "prop-types";
 import React from "react";
 import {Cookies} from "react-cookie";
-import {Link} from "react-router-dom";
 import ShallowRenderer from "react-test-renderer/shallow";
 import getConfig from "../../utils/get-config";
 import logError from "../../utils/log-error";
@@ -47,7 +46,6 @@ const createTestProps = (props) => {
     language: "en",
     orgSlug: "default",
     statusPage: defaultConfig.components.status_page,
-    logoutModal: defaultConfig.components.logout_modal,
     cookies: new Cookies(),
     settings: defaultConfig.settings,
     captivePortalLoginForm: defaultConfig.components.captive_portal_login_form,
@@ -631,26 +629,19 @@ describe("<Status /> interactions", () => {
     expect(wrapper.instance().state.modalActive).toEqual(true);
     expect(toggleModal).toHaveBeenCalled();
   });
-  it("should perform custom logout for auto-login", () => {
+  it("should perform logout for auto-login next time with userAutoLogin true", () => {
     const prop = createTestProps();
     wrapper = shallow(<Status {...prop} />, {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: true,
     });
     wrapper.setState({rememberMe: true});
-    const getCustomLogout = jest.spyOn(wrapper.instance(), "getCustomLogout");
-    const handleCustomLogout = jest.spyOn(
-      wrapper.instance(),
-      "handleCustomLogout",
-    );
-    expect(wrapper.instance().state.customLogout).toEqual(false);
+    const handleLogout = jest.spyOn(wrapper.instance(), "handleLogout");
     wrapper.find(".logout input.button").simulate("click", {});
     wrapper.find(".modal-buttons li:first-child button").simulate("click", {});
-    expect(wrapper.instance().state.customLogout).toEqual(true);
-    expect(getCustomLogout).toHaveBeenCalled();
-    expect(handleCustomLogout).toHaveBeenCalled();
+    expect(handleLogout).toHaveBeenCalledWith(true);
   });
-  it("should perform logout for no auto-login", () => {
+  it("should perform logout for not auto-login with userAutoLogin false", () => {
     const prop = createTestProps();
     wrapper = shallow(<Status {...prop} />, {
       context: {setLoading: jest.fn()},
@@ -660,26 +651,6 @@ describe("<Status /> interactions", () => {
     const handleLogout = jest.spyOn(wrapper.instance(), "handleLogout");
     wrapper.find(".logout input.button").simulate("click", {});
     wrapper.find(".modal-buttons li:last-child button").simulate("click", {});
-    expect(wrapper.instance().state.customLogout).toEqual(false);
-    expect(handleLogout).toHaveBeenCalled();
-  });
-  it("test passed get custom logout", async () => {
-    props = createTestProps();
-    wrapper = shallow(<Status {...props} />, {
-      context: {setLoading: jest.fn()},
-      disableLifecycleMethods: true,
-    });
-    wrapper.setState({
-      rememberMe: true,
-      customLogout: true,
-    });
-    expect(wrapper.contains(<h2>Logout Successfull !!!</h2>)).toBe(true);
-    expect(
-      wrapper.contains(
-        <Link className="button full status-link" to="/default/login">
-          Login Again
-        </Link>,
-      ),
-    ).toBe(true);
+    expect(handleLogout).toHaveBeenCalledWith(false);
   });
 });

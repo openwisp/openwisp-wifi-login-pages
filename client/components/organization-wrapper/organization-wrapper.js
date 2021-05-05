@@ -13,6 +13,7 @@ import LoadingContext from "../../utils/loading-context";
 import Loader from "../../utils/loader";
 
 const Login = React.lazy(() => import("../login"));
+const Logout = React.lazy(() => import("../logout"));
 const Registration = React.lazy(() => import("../registration"));
 const PasswordChange = React.lazy(() => import("../password-change"));
 const MobilePhoneChange = React.lazy(() => import("../mobile-phone-change"));
@@ -59,6 +60,7 @@ export default class OrganizationWrapper extends React.Component {
     } = organization.configuration;
     const orgSlug = organization.configuration.slug;
     const cssPath = organization.configuration.css_path;
+    const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
     if (organization.exists === true) {
       return (
         <>
@@ -168,6 +170,22 @@ export default class OrganizationWrapper extends React.Component {
                         <Redirect
                           to={`/${orgSlug}/mobile-phone-verification`}
                         />
+                      );
+                    if (userAutoLogin)
+                      return <Redirect to={`/${orgSlug}/logout`} />;
+                    return <Redirect to={`/${orgSlug}/login`} />;
+                  }}
+                />
+                <Route
+                  path={`${match.path}/logout`}
+                  render={(props) => {
+                    if (isAuthenticated)
+                      return <Redirect to={`/${orgSlug}/status`} />;
+                    if (userAutoLogin)
+                      return (
+                        <Suspense fallback={<Loader full={false} />}>
+                          <Logout {...props} cookies={cookies} />
+                        </Suspense>
                       );
                     return <Redirect to={`/${orgSlug}/login`} />;
                   }}

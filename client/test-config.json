@@ -94,33 +94,33 @@
             }
           }
         },
-        "custom_logout": {
+        "logout_modal": {
           "content": {
-            "text": {
-              "en": "Logout Successfull !!!"
-            }
+            "en": "Do you want to automatically log in the next time?"
           },
-          "login_again": {
-            "text": {
-              "en": "Login Again"
+          "buttons": {
+            "agree": {
+              "text": {
+                "en": "Yes"
+              }
+            },
+            "disagree": {
+              "text": {
+                "en": "No"
+              }
             }
           }
         }
       },
-      "logout_modal": {
+      "logout": {
         "content": {
-          "en": "Do you want to automatically log in the next time?"
+          "text": {
+            "en": "Logout Successfull !!!"
+          }
         },
-        "buttons": {
-          "agree": {
-            "text": {
-              "en": "Yes"
-            }
-          },
-          "disagree": {
-            "text": {
-              "en": "No"
-            }
+        "login_again": {
+          "text": {
+            "en": "Login Again"
           }
         }
       },

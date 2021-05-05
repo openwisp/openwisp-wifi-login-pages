@@ -65,10 +65,6 @@
   }
 }
 
-.w-100 {
-  width: 100%;
-}
-
 .logout-modal {
   position: fixed;
   left: 0;
@@ -78,16 +74,12 @@
   background-color: rgba(94, 110, 141, 0.9);
   opacity: 0;
   visibility: hidden;
-  -webkit-transition: opacity 0.3s 0s, visibility 0s 0.3s;
-  -moz-transition: opacity 0.3s 0s, visibility 0s 0.3s;
   transition: opacity 0.3s 0s, visibility 0s 0.3s;
 }
 
 .logout-modal.is-visible {
   opacity: 1;
   visibility: visible;
-  -webkit-transition: opacity 0.3s 0s, visibility 0s 0s;
-  -moz-transition: opacity 0.3s 0s, visibility 0s 0s;
   transition: opacity 0.3s 0s, visibility 0s 0s;
 }
 
@@ -100,16 +92,8 @@
   border-radius: 0.25em 0.25em 0.4em 0.4em;
   text-align: center;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-  -webkit-transform: translateY(-40px);
-  -moz-transform: translateY(-40px);
-  -ms-transform: translateY(-40px);
-  -o-transform: translateY(-40px);
   transform: translateY(-40px);
-  -webkit-transition-property: -webkit-transform;
-  -moz-transition-property: -moz-transform;
   transition-property: transform;
-  -webkit-transition-duration: 0.3s;
-  -moz-transition-duration: 0.3s;
   transition-duration: 0.3s;
 }
 
@@ -145,27 +129,18 @@
   text-decoration: none;
   color: #fff;
   backface-visibility: visible;
-  -webkit-transition: background-color 0.2s;
-  -webkit-backface-visibility: hidden;
-  -moz-transition: background-color 0.2s;
   transition: background-color 0.2s;
 }
 
 .logout-modal-container .modal-buttons li:first-child button {
-  background: #4bca81;
   border-radius: 0 0 0 0.25em;
 }
 
 .logout-modal-container .modal-buttons li:last-child button {
-  background: #fc7169;
   border-radius: 0 0 0.25em 0;
 }
 
 .is-visible .logout-modal-container {
-  -webkit-transform: translateY(0);
-  -moz-transform: translateY(0);
-  -ms-transform: translateY(0);
-  -o-transform: translateY(0);
   transform: translateY(0);
 }
 @media only screen and (min-width: 1170px) {
@@ -180,7 +155,6 @@
   right: 8px;
   width: 30px;
   height: 30px;
-  text-decoration: none;
   background-color: #d3d3d3;
   font-size: 1.5rem;
   padding: 5px 10px;

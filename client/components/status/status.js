@@ -49,7 +49,6 @@ export default class Status extends React.Component {
       loadSpinner: true,
       modalActive: false,
       rememberMe: false,
-      customLogout: false,
     };
     this.validateToken = this.validateToken.bind(this);
     this.getUserRadiusSessions = this.getUserRadiusSessions.bind(this);
@@ -181,7 +180,7 @@ export default class Status extends React.Component {
     await this.getUserRadiusSessions(para);
   }
 
-  handleLogout = async () => {
+  handleLogout = async (userAutoLogin) => {
     const {setLoading} = this.context;
     const {orgSlug, logout, cookies} = this.props;
     const macaddr = cookies.get(`${orgSlug}_macaddr`);
@@ -197,15 +196,10 @@ export default class Status extends React.Component {
         return;
       }
     }
-    logout(cookies, orgSlug);
+    localStorage.setItem("userAutoLogin", userAutoLogin);
+    logout(cookies, orgSlug, userAutoLogin);
     setLoading(false);
     toast.success(logoutSuccess);
-  };
-
-  handleCustomLogout = () => {
-    this.setState({
-      customLogout: true,
-    });
   };
 
   handleLoginIframe = () => {
@@ -563,28 +557,6 @@ export default class Status extends React.Component {
     return this.getSmallTable(session_info);
   };
 
-  getCustomLogout = () => {
-    const {language, statusPage, orgSlug} = this.props;
-    const {custom_logout} = statusPage;
-    return (
-      <div className="container content" id="status">
-        <div className="inner">
-          <div className="main-column w-100">
-            <h2>{getText(custom_logout.content.text, language)}</h2>
-            <div className="links row">
-              <Link
-                className="button full status-link"
-                to={`/${orgSlug}/login`}
-              >
-                {getText(custom_logout.login_again.text, language)}
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
   getSpinner = () => {
     return (
       <div className="loadingContainer">
@@ -596,14 +568,20 @@ export default class Status extends React.Component {
   render() {
     const {
       statusPage,
-      logoutModal,
       language,
       orgSlug,
       captivePortalLoginForm,
       captivePortalLogoutForm,
       isAuthenticated,
     } = this.props;
-    const {content, links, buttons, session_info, user_info} = statusPage;
+    const {
+      content,
+      links,
+      buttons,
+      session_info,
+      user_info,
+      logout_modal,
+    } = statusPage;
     const {
       username,
       password,
@@ -615,13 +593,10 @@ export default class Status extends React.Component {
       loadSpinner,
       modalActive,
       rememberMe,
-      customLogout,
     } = this.state;
     const contentArr = getText(content, language).split("\n");
     userInfo.status = getText(user_info.status.value, language);
-    return customLogout ? (
-      this.getCustomLogout()
-    ) : (
+    return (
       <>
         <div
           className={modalActive ? "logout-modal is-visible" : "logout-modal"}
@@ -634,16 +609,24 @@ export default class Status extends React.Component {
             >
               X
             </button>
-            <p>{getText(logoutModal.content, language)}</p>
+            <p>{getText(logout_modal.content, language)}</p>
             <ul className="modal-buttons">
               <li>
-                <button type="button" onClick={this.handleCustomLogout}>
-                  {getText(logoutModal.buttons.agree.text, language)}
+                <button
+                  type="button"
+                  className="button full"
+                  onClick={() => this.handleLogout(true)}
+                >
+                  {getText(logout_modal.buttons.agree.text, language)}
                 </button>
               </li>
               <li>
-                <button type="button" onClick={this.handleLogout}>
-                  {getText(logoutModal.buttons.disagree.text, language)}
+                <button
+                  type="button"
+                  className="button full"
+                  onClick={() => this.handleLogout(false)}
+                >
+                  {getText(logout_modal.buttons.disagree.text, language)}
                 </button>
               </li>
             </ul>
@@ -687,7 +670,11 @@ export default class Status extends React.Component {
                   type="button"
                   className="button full"
                   value={getText(buttons.logout.text, language)}
-                  onClick={rememberMe ? this.toggleModal : this.handleLogout}
+                  onClick={
+                    rememberMe
+                      ? this.toggleModal
+                      : () => this.handleLogout(false)
+                  }
                 />
               </div>
             </div>
@@ -857,19 +844,15 @@ Status.propTypes = {
         text: PropTypes.object.isRequired,
       }).isRequired,
     }).isRequired,
-    custom_logout: PropTypes.shape({
+    logout_modal: PropTypes.shape({
       content: PropTypes.object.isRequired,
-      login_again: PropTypes.object.isRequired,
-    }),
-  }).isRequired,
-  logoutModal: PropTypes.shape({
-    content: PropTypes.object.isRequired,
-    buttons: PropTypes.shape({
-      agree: PropTypes.shape({
-        text: PropTypes.object.isRequired,
-      }).isRequired,
-      disagree: PropTypes.shape({
-        text: PropTypes.object.isRequired,
+      buttons: PropTypes.shape({
+        agree: PropTypes.shape({
+          text: PropTypes.object.isRequired,
+        }).isRequired,
+        disagree: PropTypes.shape({
+          text: PropTypes.object.isRequired,
+        }).isRequired,
       }).isRequired,
     }).isRequired,
   }).isRequired,
