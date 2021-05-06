@@ -64,3 +64,100 @@
     transform: rotate(360deg);
   }
 }
+
+.logout-modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(94, 110, 141, 0.9);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s 0s, visibility 0s 0.3s;
+}
+
+.logout-modal.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s 0s, visibility 0s 0s;
+}
+
+.logout-modal-container {
+  position: relative;
+  width: 90%;
+  max-width: 450px;
+  margin: 4em auto;
+  background: #d3d3d3;
+  border-radius: 0.25em 0.25em 0.4em 0.4em;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  transform: translateY(-40px);
+  transition-property: transform;
+  transition-duration: 0.3s;
+}
+
+.logout-modal-container p {
+  font-weight: bold;
+  padding: 3em 1em;
+  width: auto;
+}
+
+.logout-modal-container .modal-buttons:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.logout-modal-container .modal-buttons li {
+  float: left;
+  width: 50%;
+  list-style: none;
+}
+
+.logout-modal-container .modal-buttons {
+  padding: 0;
+}
+
+.logout-modal-container .modal-buttons button {
+  display: block;
+  width: 100%;
+  border: none;
+  height: 60px;
+  line-height: 60px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #fff;
+  backface-visibility: visible;
+  transition: background-color 0.2s;
+}
+
+.logout-modal-container .modal-buttons li:first-child button {
+  border-radius: 0 0 0 0.25em;
+}
+
+.logout-modal-container .modal-buttons li:last-child button {
+  border-radius: 0 0 0.25em 0;
+}
+
+.is-visible .logout-modal-container {
+  transform: translateY(0);
+}
+@media only screen and (min-width: 1170px) {
+  .logout-modal-container {
+    margin: 8em auto;
+  }
+}
+
+.logout-modal-close-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 30px;
+  height: 30px;
+  background-color: #d3d3d3;
+  font-size: 1.5rem;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+}

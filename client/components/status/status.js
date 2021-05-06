@@ -48,6 +48,8 @@ export default class Status extends React.Component {
       intervalId: null,
       screenWidth: window.innerWidth,
       loadSpinner: true,
+      modalActive: false,
+      rememberMe: false,
     };
     this.validateToken = this.validateToken.bind(this);
     this.getUserRadiusSessions = this.getUserRadiusSessions.bind(this);
@@ -59,6 +61,9 @@ export default class Status extends React.Component {
 
   async componentDidMount() {
     const {cookies, orgSlug, verifyMobileNumber, settings} = this.props;
+    this.setState({
+      rememberMe: localStorage.getItem("rememberMe") === "true",
+    });
     // to prevent recursive call in case redirect url is status page
     if (window.top === window.self) {
       try {
@@ -176,7 +181,7 @@ export default class Status extends React.Component {
     await this.getUserRadiusSessions(para);
   }
 
-  handleLogout = async () => {
+  handleLogout = async (userAutoLogin) => {
     const {setLoading} = this.context;
     const {orgSlug, logout, cookies} = this.props;
     const macaddr = cookies.get(`${orgSlug}_macaddr`);
@@ -192,7 +197,8 @@ export default class Status extends React.Component {
         return;
       }
     }
-    logout(cookies, orgSlug);
+    localStorage.setItem("userAutoLogin", userAutoLogin);
+    logout(cookies, orgSlug, userAutoLogin);
     setLoading(false);
     toast.success(logoutSuccess);
   };
@@ -314,6 +320,11 @@ export default class Status extends React.Component {
   updateSpinner = () => {
     const {activeSessions, pastSessions} = this.state;
     this.setState({loadSpinner: activeSessions.length || pastSessions.length});
+  };
+
+  toggleModal = () => {
+    const {modalActive} = this.state;
+    this.setState({modalActive: !modalActive});
   };
 
   async handleSessionLogout(session) {
@@ -576,7 +587,14 @@ export default class Status extends React.Component {
       captivePortalLogoutForm,
       isAuthenticated,
     } = this.props;
-    const {content, links, buttons, session_info, user_info} = statusPage;
+    const {
+      content,
+      links,
+      buttons,
+      session_info,
+      user_info,
+      logout_modal,
+    } = statusPage;
     const {
       username,
       password,
@@ -586,11 +604,47 @@ export default class Status extends React.Component {
       sessionsToLogout,
       hasMoreSessions,
       loadSpinner,
+      modalActive,
+      rememberMe,
     } = this.state;
     const contentArr = getText(content, language).split("\n");
     userInfo.status = getText(user_info.status.value, language);
     return (
       <>
+        <div
+          className={modalActive ? "logout-modal is-visible" : "logout-modal"}
+        >
+          <div className="logout-modal-container">
+            <button
+              type="button"
+              className="logout-modal-close-btn"
+              onClick={this.toggleModal}
+            >
+              X
+            </button>
+            <p>{getText(logout_modal.content, language)}</p>
+            <ul className="modal-buttons">
+              <li>
+                <button
+                  type="button"
+                  className="button full"
+                  onClick={() => this.handleLogout(true)}
+                >
+                  {getText(logout_modal.buttons.agree.text, language)}
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  className="button full"
+                  onClick={() => this.handleLogout(false)}
+                >
+                  {getText(logout_modal.buttons.disagree.text, language)}
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
         <div className="container content" id="status">
           <div className="inner">
             <div className="main-column">
@@ -629,7 +683,11 @@ export default class Status extends React.Component {
                   type="button"
                   className="button full"
                   value={getText(buttons.logout.text, language)}
-                  onClick={this.handleLogout}
+                  onClick={
+                    rememberMe
+                      ? this.toggleModal
+                      : () => this.handleLogout(false)
+                  }
                 />
               </div>
             </div>
@@ -797,6 +855,17 @@ Status.propTypes = {
     buttons: PropTypes.shape({
       logout: PropTypes.shape({
         text: PropTypes.object.isRequired,
+      }).isRequired,
+    }).isRequired,
+    logout_modal: PropTypes.shape({
+      content: PropTypes.object.isRequired,
+      buttons: PropTypes.shape({
+        agree: PropTypes.shape({
+          text: PropTypes.object.isRequired,
+        }).isRequired,
+        disagree: PropTypes.shape({
+          text: PropTypes.object.isRequired,
+        }).isRequired,
       }).isRequired,
     }).isRequired,
   }).isRequired,

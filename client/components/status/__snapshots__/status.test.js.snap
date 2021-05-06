@@ -3,6 +3,46 @@
 exports[`<Status /> rendering should render correctly 1`] = `
 <React.Fragment>
   <div
+    className="logout-modal"
+  >
+    <div
+      className="logout-modal-container"
+    >
+      <button
+        className="logout-modal-close-btn"
+        onClick={[Function]}
+        type="button"
+      >
+        X
+      </button>
+      <p>
+        Do you want to automatically log in the next time?
+      </p>
+      <ul
+        className="modal-buttons"
+      >
+        <li>
+          <button
+            className="button full"
+            onClick={[Function]}
+            type="button"
+          >
+            Yes
+          </button>
+        </li>
+        <li>
+          <button
+            className="button full"
+            onClick={[Function]}
+            type="button"
+          >
+            No
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div
     className="container content"
     id="status"
   >

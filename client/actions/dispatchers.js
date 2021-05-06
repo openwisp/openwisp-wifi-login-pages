@@ -16,8 +16,8 @@ export const verifyMobileNumber = (dispatch) => {
   };
 };
 export const logout = (dispatch) => {
-  return (cookies, slug) => {
-    dispatch(logoutAction(cookies, slug));
+  return (cookies, slug, userAutoLogin) => {
+    dispatch(logoutAction(cookies, slug, userAutoLogin));
   };
 };
 export const setIsActive = (dispatch) => {

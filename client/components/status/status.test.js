@@ -639,4 +639,41 @@ describe("<Status /> interactions", () => {
     expect(setIsActiveMock.calls.length).toBe(1);
     expect(wrapper.instance().props.logout).toHaveBeenCalled();
   });
+  it("should toggle logout modal", () => {
+    const prop = createTestProps();
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    const toggleModal = jest.spyOn(wrapper.instance(), "toggleModal");
+    wrapper.setState({rememberMe: true});
+    expect(wrapper.instance().state.modalActive).toEqual(false);
+    wrapper.find(".logout input.button").simulate("click", {});
+    expect(wrapper.instance().state.modalActive).toEqual(true);
+    expect(toggleModal).toHaveBeenCalled();
+  });
+  it("should perform logout for auto-login next time with userAutoLogin true", () => {
+    const prop = createTestProps();
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    wrapper.setState({rememberMe: true});
+    const handleLogout = jest.spyOn(wrapper.instance(), "handleLogout");
+    wrapper.find(".logout input.button").simulate("click", {});
+    wrapper.find(".modal-buttons li:first-child button").simulate("click", {});
+    expect(handleLogout).toHaveBeenCalledWith(true);
+  });
+  it("should perform logout for not auto-login with userAutoLogin false", () => {
+    const prop = createTestProps();
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    wrapper.setState({rememberMe: true});
+    const handleLogout = jest.spyOn(wrapper.instance(), "handleLogout");
+    wrapper.find(".logout input.button").simulate("click", {});
+    wrapper.find(".modal-buttons li:last-child button").simulate("click", {});
+    expect(handleLogout).toHaveBeenCalledWith(false);
+  });
 });

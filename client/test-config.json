@@ -93,6 +93,35 @@
               "en": "Logout"
             }
           }
+        },
+        "logout_modal": {
+          "content": {
+            "en": "Do you want to automatically log in the next time?"
+          },
+          "buttons": {
+            "agree": {
+              "text": {
+                "en": "Yes"
+              }
+            },
+            "disagree": {
+              "text": {
+                "en": "No"
+              }
+            }
+          }
+        }
+      },
+      "logout": {
+        "content": {
+          "text": {
+            "en": "Logout Successfull !!!"
+          }
+        },
+        "login_again": {
+          "text": {
+            "en": "Login Again"
+          }
         }
       },
       "captive_portal_login_form": {
