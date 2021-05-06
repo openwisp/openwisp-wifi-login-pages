@@ -634,7 +634,7 @@ export default class Status extends React.Component {
             <>{this.getTable(session_info)}</>
           </InfinteScroll>
         )) ||
-          (loadSpinner && this.getSpinner())}
+          (loadSpinner ? this.getSpinner() : null)}
 
         {/* check to ensure this block of code is executed in root document and not in Iframe */}
         {captivePortalLoginForm && window.top === window.self && (
