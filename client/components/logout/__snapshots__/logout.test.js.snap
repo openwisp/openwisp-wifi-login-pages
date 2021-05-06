@@ -19,7 +19,7 @@ exports[`<Logout /> rendering should render correctly 1`] = `
           className="links row"
         >
           <Link
-            className="button full"
+            className="button partial"
             onClick={[Function]}
             to="/default/login"
           >

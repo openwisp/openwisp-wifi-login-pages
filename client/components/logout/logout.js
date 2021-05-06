@@ -38,7 +38,7 @@ export default class Logout extends React.Component {
               <div className="links row">
                 <Link
                   onClick={() => this.loginUser(isAuthenticated)}
-                  className="button full"
+                  className="button partial"
                   to={`/${orgSlug}/login`}
                 >
                   {getText(login_again.text, language)}

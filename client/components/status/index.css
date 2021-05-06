@@ -84,60 +84,35 @@
 }
 
 .logout-modal-container {
-  position: relative;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -55%) !important;
+  margin: 0 auto !important;
+  padding: 3.1em 1em 3em;
   width: 90%;
   max-width: 450px;
-  margin: 4em auto;
-  background: #d3d3d3;
   border-radius: 0.25em 0.25em 0.4em 0.4em;
   text-align: center;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-  transform: translateY(-40px);
+  background: #d3d3d3;
+  font-weight: bold;
   transition-property: transform;
   transition-duration: 0.3s;
 }
 
 .logout-modal-container p {
-  font-weight: bold;
-  padding: 3em 1em;
-  width: auto;
-}
-
-.logout-modal-container .modal-buttons:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-.logout-modal-container .modal-buttons li {
-  float: left;
-  width: 50%;
-  list-style: none;
+  margin-top: 0;
 }
 
 .logout-modal-container .modal-buttons {
-  padding: 0;
+  margin: 2.5em 0 0;
 }
 
 .logout-modal-container .modal-buttons button {
-  display: block;
-  width: 100%;
-  border: none;
-  height: 60px;
-  line-height: 60px;
-  text-transform: uppercase;
-  text-decoration: none;
-  color: #fff;
-  backface-visibility: visible;
-  transition: background-color 0.2s;
-}
-
-.logout-modal-container .modal-buttons li:first-child button {
-  border-radius: 0 0 0 0.25em;
-}
-
-.logout-modal-container .modal-buttons li:last-child button {
-  border-radius: 0 0 0.25em 0;
+  margin: 0 20px;
+  padding-left: 25px;
+  padding-right: 25px;
 }
 
 .is-visible .logout-modal-container {
@@ -151,13 +126,13 @@
 
 .logout-modal-close-btn {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 5px;
+  right: 10px;
   width: 30px;
   height: 30px;
-  background-color: #d3d3d3;
   font-size: 1.5rem;
-  padding: 5px 10px;
+  padding: 5px;
   border: none;
   cursor: pointer;
+  background: transparent;
 }

@@ -661,7 +661,7 @@ describe("<Status /> interactions", () => {
     wrapper.setState({rememberMe: true});
     const handleLogout = jest.spyOn(wrapper.instance(), "handleLogout");
     wrapper.find(".logout input.button").simulate("click", {});
-    wrapper.find(".modal-buttons li:first-child button").simulate("click", {});
+    wrapper.find(".modal-buttons button:first-child").simulate("click", {});
     expect(handleLogout).toHaveBeenCalledWith(true);
   });
   it("should perform logout for not auto-login with userAutoLogin false", () => {
@@ -673,7 +673,7 @@ describe("<Status /> interactions", () => {
     wrapper.setState({rememberMe: true});
     const handleLogout = jest.spyOn(wrapper.instance(), "handleLogout");
     wrapper.find(".logout input.button").simulate("click", {});
-    wrapper.find(".modal-buttons li:last-child button").simulate("click", {});
+    wrapper.find(".modal-buttons button:last-child").simulate("click", {});
     expect(handleLogout).toHaveBeenCalledWith(false);
   });
 });

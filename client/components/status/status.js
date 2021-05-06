@@ -620,29 +620,26 @@ export default class Status extends React.Component {
               className="logout-modal-close-btn"
               onClick={this.toggleModal}
             >
-              X
+              &#10006;
             </button>
             <p>{getText(logout_modal.content, language)}</p>
-            <ul className="modal-buttons">
-              <li>
-                <button
-                  type="button"
-                  className="button full"
-                  onClick={() => this.handleLogout(true)}
-                >
-                  {getText(logout_modal.buttons.agree.text, language)}
-                </button>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  className="button full"
-                  onClick={() => this.handleLogout(false)}
-                >
-                  {getText(logout_modal.buttons.disagree.text, language)}
-                </button>
-              </li>
-            </ul>
+
+            <p className="modal-buttons">
+              <button
+                type="button"
+                className="button partial"
+                onClick={() => this.handleLogout(true)}
+              >
+                {getText(logout_modal.buttons.agree.text, language)}
+              </button>
+              <button
+                type="button"
+                className="button partial"
+                onClick={() => this.handleLogout(false)}
+              >
+                {getText(logout_modal.buttons.disagree.text, language)}
+              </button>
+            </p>
           </div>
         </div>
         <div className="container content" id="status">

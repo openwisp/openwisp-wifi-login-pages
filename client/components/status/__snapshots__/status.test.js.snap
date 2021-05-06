@@ -13,33 +13,29 @@ exports[`<Status /> rendering should render correctly 1`] = `
         onClick={[Function]}
         type="button"
       >
-        X
+        ✖
       </button>
       <p>
         Do you want to automatically log in the next time?
       </p>
-      <ul
+      <p
         className="modal-buttons"
       >
-        <li>
-          <button
-            className="button full"
-            onClick={[Function]}
-            type="button"
-          >
-            Yes
-          </button>
-        </li>
-        <li>
-          <button
-            className="button full"
-            onClick={[Function]}
-            type="button"
-          >
-            No
-          </button>
-        </li>
-      </ul>
+        <button
+          className="button partial"
+          onClick={[Function]}
+          type="button"
+        >
+          Yes
+        </button>
+        <button
+          className="button partial"
+          onClick={[Function]}
+          type="button"
+        >
+          No
+        </button>
+      </p>
     </div>
   </div>
   <div
