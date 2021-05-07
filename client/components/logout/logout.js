@@ -24,6 +24,7 @@ export default class Logout extends React.Component {
     toast.success(loginSuccess, {
       toastId: mainToastId,
     });
+    localStorage.setItem("userAutoLogin", false);
   };
 
   render() {
