@@ -99,7 +99,8 @@
     "format": "prettier --write \"**/*.+(js|jsx|json|css|md)\"",
     "format:check": "prettier -c \"**/*.+(js|jsx|json|css|md)\"",
     "test": "jest",
-    "test-inspect": "node inspect ./node_modules/.bin/jest --runInBand"
+    "test-inspect": "node inspect ./node_modules/.bin/jest --runInBand",
+    "stats": "STATS=true npx webpack-cli --profile --json --config config/webpack.config.js > compilation-stats.json && webpack-bundle-analyzer dist/stats.json"
   },
   "repository": {
     "type": "git",
