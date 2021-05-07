@@ -186,6 +186,7 @@ export default class Status extends React.Component {
     const {orgSlug, logout, cookies} = this.props;
     const macaddr = cookies.get(`${orgSlug}_macaddr`);
     const params = {macaddr};
+    localStorage.setItem("userAutoLogin", userAutoLogin);
     setLoading(true);
     await this.getUserActiveRadiusSessions(params);
     const {sessionsToLogout} = this.state;
@@ -197,7 +198,6 @@ export default class Status extends React.Component {
         return;
       }
     }
-    localStorage.setItem("userAutoLogin", userAutoLogin);
     logout(cookies, orgSlug, userAutoLogin);
     setLoading(false);
     toast.success(logoutSuccess);
@@ -238,7 +238,8 @@ export default class Status extends React.Component {
       if (loggedOut) {
         const {setLoading} = this.context;
         const {orgSlug, logout, cookies} = this.props;
-        logout(cookies, orgSlug);
+        const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
+        logout(cookies, orgSlug, userAutoLogin);
         setLoading(false);
         toast.success(logoutSuccess);
       }
