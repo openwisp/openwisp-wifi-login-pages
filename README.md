@@ -220,7 +220,7 @@ This tool helps to keep the size of the JS files produced by the app in check.
 Run it with:
 
 ```
-npx webpack-cli --profile --json --config config/webpack.config.js > compilation-stats.json
+yarn stats
 ```
 
 ### Settings
