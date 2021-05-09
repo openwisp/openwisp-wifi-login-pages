@@ -19,6 +19,38 @@ module.exports = (env, argv) => {
 
   let clientP = process.env.CLIENT;
 
+  let plugins = [
+    new CleanWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      filename: "index.html",
+      template: path.resolve(CURRENT_WORKING_DIR, "public/index.html"),
+    }),
+    new HardSourceWebpackPlugin(),
+    new CompressionPlugin({
+      filename: "[path].gz[query]",
+      algorithm: "gzip",
+      test: /\.js$|\.css$|\.html$/,
+      threshold: 10240,
+      minRatio: 0.8,
+    }),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: path.resolve(CURRENT_WORKING_DIR, "client/assets"),
+          to: path.resolve(CURRENT_WORKING_DIR, "dist/assets"),
+        },
+      ],
+    }),
+  ];
+
+  if (process.env.STATS)
+    plugins.push(
+      new BundleAnalyzerPlugin({
+        analyzerMode: "disabled",
+        generateStatsFile: true,
+      }),
+    );
+
   // The url the server is running on; if none was given, fall back to the default
   let serverUrl;
   if (process.env.SERVER != undefined) {
@@ -69,30 +101,7 @@ module.exports = (env, argv) => {
       ],
     },
 
-    plugins: [
-      new BundleAnalyzerPlugin(),
-      new CleanWebpackPlugin(),
-      new HtmlWebpackPlugin({
-        filename: "index.html",
-        template: path.resolve(CURRENT_WORKING_DIR, "public/index.html"),
-      }),
-      new HardSourceWebpackPlugin(),
-      new CompressionPlugin({
-        filename: "[path].gz[query]",
-        algorithm: "gzip",
-        test: /\.js$|\.css$|\.html$/,
-        threshold: 10240,
-        minRatio: 0.8,
-      }),
-      new CopyPlugin({
-        patterns: [
-          {
-            from: path.resolve(CURRENT_WORKING_DIR, "client/assets"),
-            to: path.resolve(CURRENT_WORKING_DIR, "dist/assets"),
-          },
-        ],
-      }),
-    ],
+    plugins: plugins,
 
     devServer: {
       port: clientP,
