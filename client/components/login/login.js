@@ -16,6 +16,7 @@ import {
   loginError,
   loginSuccess,
   mainToastId,
+  userBannedError,
 } from "../../constants";
 import getAssetPath from "../../utils/get-asset-path";
 import getErrorText from "../../utils/get-error-text";
@@ -162,7 +163,7 @@ export default class Login extends React.Component {
   handleSubmit(event) {
     const {setLoading} = this.context;
     if (event) event.preventDefault();
-    const {orgSlug, authenticate, verifyMobileNumber, settings} = this.props;
+    const {orgSlug, authenticate, verifyMobileNumber, settings, userBanned} = this.props;
     const {username, password, remember_me, errors} = this.state;
     const url = loginApiUrl(orgSlug);
     this.setState({
@@ -206,13 +207,18 @@ export default class Login extends React.Component {
       })
       .catch((error) => {
         const {data} = error.response;
-        if (
+        if (!data.is_active) {
+          userBanned(!data.is_active);
+        } else if (
           error.response.status === 401 &&
           settings.mobile_phone_verification
         ) {
+          userBanned(!data.is_active);
           return handleAuthentication(true);
         }
-        const errorText = getErrorText(error, loginError);
+        const errorText = data.is_active
+          ? getErrorText(error, loginError)
+          : getErrorText(error, userBannedError);
         logError(error, errorText);
         toast.error(errorText);
         this.setState({
@@ -464,6 +470,7 @@ Login.propTypes = {
   }).isRequired,
   authenticate: PropTypes.func.isRequired,
   verifyMobileNumber: PropTypes.func.isRequired,
+  userBanned: PropTypes.func.isRequired,
   settings: PropTypes.shape({
     mobile_phone_verification: PropTypes.bool,
   }).isRequired,

@@ -56,6 +56,7 @@ export default class OrganizationWrapper extends React.Component {
       favicon,
       isAuthenticated,
       needsMobilePhoneVerification,
+      userBanned,
     } = organization.configuration;
     const orgSlug = organization.configuration.slug;
     const cssPath = organization.configuration.css_path;
@@ -103,7 +104,8 @@ export default class OrganizationWrapper extends React.Component {
                   render={(props) => {
                     if (
                       isAuthenticated &&
-                      needsMobilePhoneVerification === false
+                      needsMobilePhoneVerification === false &&
+                      !userBanned
                     ) {
                       return <Redirect to={`/${orgSlug}/status`} />;
                     }
@@ -145,7 +147,7 @@ export default class OrganizationWrapper extends React.Component {
                 <Route
                   path={`${match.path}/login`}
                   render={(props) => {
-                    if (isAuthenticated)
+                    if (isAuthenticated && !userBanned)
                       return <Redirect to={`/${orgSlug}/status`} />;
                     return (
                       <Suspense fallback={<Loader full={false} />}>
@@ -157,13 +159,21 @@ export default class OrganizationWrapper extends React.Component {
                 <Route
                   path={`${match.path}/status`}
                   render={(props) => {
-                    if (isAuthenticated && !needsMobilePhoneVerification)
+                    if (
+                      isAuthenticated &&
+                      !needsMobilePhoneVerification &&
+                      !userBanned
+                    )
                       return (
                         <Suspense fallback={<Loader full={false} />}>
                           <Status {...props} cookies={cookies} />
                         </Suspense>
                       );
-                    if (isAuthenticated && needsMobilePhoneVerification)
+                    if (
+                      isAuthenticated &&
+                      needsMobilePhoneVerification &&
+                      !userBanned
+                    )
                       return (
                         <Redirect
                           to={`/${orgSlug}/mobile-phone-verification`}
@@ -274,6 +284,7 @@ OrganizationWrapper.propTypes = {
       favicon: PropTypes.string,
       isAuthenticated: PropTypes.bool,
       needsMobilePhoneVerification: PropTypes.bool,
+      userBanned: PropTypes.bool,
     }),
     exists: PropTypes.bool,
   }).isRequired,

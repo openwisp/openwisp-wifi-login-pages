@@ -33,7 +33,7 @@ export default class MobilePhoneVerification extends React.Component {
     this.state = {
       code: "",
       phone_number: "",
-      is_active: false,
+      is_verified: false,
       errors: {},
       success: false,
     };
@@ -49,9 +49,9 @@ export default class MobilePhoneVerification extends React.Component {
     const {settings} = this.props;
     setLoading(true);
     await this.validateToken();
-    const {is_active} = this.state;
+    const {is_verified} = this.state;
     // send token via SMS only if user needs to verify
-    if (!is_active && settings.mobile_phone_verification) {
+    if (!is_verified && settings.mobile_phone_verification) {
       await this.createPhoneToken();
     }
     setLoading(false);
@@ -64,11 +64,12 @@ export default class MobilePhoneVerification extends React.Component {
   handleSubmit(event) {
     const {setLoading} = this.context;
     event.preventDefault();
-    const {orgSlug, verifyMobileNumber} = this.props;
+    const {orgSlug, verifyMobileNumber, cookies} = this.props;
     const {code, errors} = this.state;
     this.setState({errors: {...errors, code: ""}});
     const url = verifyMobilePhoneTokenUrl(orgSlug);
-
+    const auth_token = cookies.get(`${orgSlug}_auth_token`);
+    const {token, session} = handleSession(orgSlug, auth_token, cookies);
     return axios({
       method: "post",
       headers: {
@@ -77,6 +78,8 @@ export default class MobilePhoneVerification extends React.Component {
       url,
       data: qs.stringify({
         code,
+        token,
+        session,
       }),
     })
       .then(() => {
@@ -130,9 +133,9 @@ export default class MobilePhoneVerification extends React.Component {
           '"response_code" !== "AUTH_TOKEN_VALIDATION_SUCCESSFUL"',
         );
       } else {
-        const {phone_number, is_active} = response.data;
-        this.setState({phone_number, is_active});
-        verifyMobileNumber(!is_active && settings.mobile_phone_verification);
+        const {phone_number, is_verified} = response.data;
+        this.setState({phone_number, is_verified});
+        verifyMobileNumber(!is_verified && settings.mobile_phone_verification);
       }
       return true;
     } catch (error) {

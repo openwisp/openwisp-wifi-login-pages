@@ -39,6 +39,13 @@ const registration = (req, res) => {
         birth_date,
         location,
       };
+      if (
+        settings &&
+        settings.mobile_phone_verification &&
+        settings.identity_verification
+      ) {
+        postData.identity_verification = "mobile";
+      }
       if (settings && settings.mobile_phone_verification) {
         postData.phone_number = req.body.phone_number;
       }

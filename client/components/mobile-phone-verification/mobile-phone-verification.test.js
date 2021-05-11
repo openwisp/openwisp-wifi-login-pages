@@ -239,7 +239,7 @@ describe("Mobile Phone Token verification: corner cases", () => {
     sessionStorage.clear();
   });
 
-  it("should not proceed if user is already active", async () => {
+  it("should not proceed if user is already verified", async () => {
     axios.mockImplementationOnce(() => {
       return Promise.resolve({
         status: 200,
@@ -249,6 +249,7 @@ describe("Mobile Phone Token verification: corner cases", () => {
           radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
           username: "tester@tester.com",
           is_active: true,
+          is_verified: true,
           phone_number: "+393660011222",
         },
       });
@@ -264,7 +265,7 @@ describe("Mobile Phone Token verification: corner cases", () => {
     expect(
       MobilePhoneVerification.prototype.createPhoneToken,
     ).not.toHaveBeenCalled();
-    expect(wrapper.instance().state.is_active).toBe(true);
+    expect(wrapper.instance().state.is_verified).toBe(true);
     expect(wrapper.instance().state.phone_number).toBe("+393660011222");
     const verifyMobileNumberCalls = wrapper.instance().props.verifyMobileNumber
       .mock.calls;

@@ -30,6 +30,7 @@ const createTestProps = (props) => {
     settings: {mobile_phone_verification: false},
     authenticate: jest.fn(),
     verifyMobileNumber: jest.fn(),
+    userBanned: jest.fn(),
     match: {
       path: "default/login",
     },
@@ -275,7 +276,9 @@ describe("<Login /> interactions", () => {
         response: {
           status: 401,
           statusText: "unauthorized",
-          data: "",
+          data: {
+            is_active: true,
+          },
         },
       });
     });

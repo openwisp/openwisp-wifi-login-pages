@@ -1,6 +1,10 @@
 import {connect} from "react-redux";
 
-import {authenticate, verifyMobileNumber} from "../../actions/dispatchers";
+import {
+  authenticate,
+  verifyMobileNumber,
+  userBanned,
+} from "../../actions/dispatchers";
 import Component from "./login";
 
 const mapStateToProps = (state) => {
@@ -22,6 +26,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     authenticate: authenticate(dispatch),
     verifyMobileNumber: verifyMobileNumber(dispatch),
+    userBanned: userBanned(dispatch),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Component);
