@@ -159,7 +159,7 @@ client:
           pattern_description:
             en: "only letters, numbers, and @/./+/-/_ characters"
           placeholder:
-            en: "enter location" 
+            en: "enter location"
           setting: "disabled"
       buttons:
         register:
@@ -322,7 +322,7 @@ client:
             icon: "twitter.svg"
             url: "#twitter"
       input_fields:
-        email:
+        username:
           type: "email"
           pattern: '.+@.+\..+'
           pattern_description:

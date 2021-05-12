@@ -1,14 +1,18 @@
 /* eslint-disable prefer-promise-reject-errors */
 import axios from "axios";
-import {shallow} from "enzyme";
+import {shallow, mount} from "enzyme";
 import React from "react";
 import ShallowRenderer from "react-test-renderer/shallow";
 import {toast} from "react-toastify";
 import PropTypes from "prop-types";
+import {Provider} from "react-redux";
+import {Router} from "react-router-dom";
+import {createMemoryHistory} from "history";
+import PhoneInput from "react-phone-input-2";
 import {loadingContextValue} from "../../utils/loading-context";
-
 import getConfig from "../../utils/get-config";
 import Login from "./login";
+import tick from "../../utils/tick";
 
 jest.mock("axios");
 
@@ -87,6 +91,7 @@ describe("<Login /> interactions", () => {
       lastConsoleOutuput = data;
     };
     props = createTestProps();
+    props.configuration = getConfig("default");
     Login.contextTypes = {
       setLoading: PropTypes.func,
       getLoading: PropTypes.func,
@@ -98,22 +103,64 @@ describe("<Login /> interactions", () => {
     console.error = originalError;
   });
 
+  const mountComponent = function (passedProps) {
+    const mockedStore = {
+      subscribe: () => {},
+      dispatch: () => {},
+      getState: () => {
+        return {
+          organization: {
+            configuration: passedProps.configuration,
+          },
+          language: passedProps.language,
+        };
+      },
+    };
+
+    const historyMock = createMemoryHistory();
+
+    return mount(
+      <Provider store={mockedStore}>
+        <Router history={historyMock}>
+          <Login {...passedProps} />
+        </Router>
+      </Provider>,
+      {
+        context: {
+          store: mockedStore,
+          ...loadingContextValue,
+        },
+        childContextTypes: {
+          store: PropTypes.object.isRequired,
+          setLoading: PropTypes.func,
+          getLoading: PropTypes.func,
+        },
+      },
+    );
+  };
+
   it("should change state values when handleChange function is invoked", () => {
+    wrapper = mountComponent(props);
+    const login = wrapper.find(Login);
+
     // phone_number should not be present if mobile_phone_verification is off
-    expect(wrapper.find("[name='phone_number']")).toEqual({});
+    expect(wrapper.find(".row.phone-number").length).toEqual(0);
+    expect(wrapper.exists(PhoneInput)).toBe(false);
+
     wrapper
-      .find("#email")
-      .simulate("change", {target: {value: "test email", name: "email"}});
-    expect(wrapper.state("email")).toEqual("test email");
+      .find("#username")
+      .simulate("change", {target: {value: "test username", name: "username"}});
+    expect(login.state("username")).toEqual("test username");
+
     wrapper
       .find("#password")
       .simulate("change", {target: {value: "test password", name: "password"}});
-    expect(wrapper.state("password")).toEqual("test password");
+    expect(login.state("password")).toEqual("test password");
   });
 
   it("should change state value when handleCheckBoxChange function is invoked", () => {
     // phone_number should not be present if mobile_phone_verification is off
-    expect(wrapper.find("[name='phone_number']")).toEqual({});
+    expect(wrapper.find(".row.phone-number").length).toEqual(0);
     wrapper
       .find("#remember_me")
       .simulate("change", {target: {checked: false, name: "remember_me"}});
@@ -126,7 +173,7 @@ describe("<Login /> interactions", () => {
         return Promise.reject({
           response: {
             data: {
-              email: "email error",
+              username: "username error",
               password: "password error",
               detail: "error details",
               non_field_errors: "non field errors",
@@ -165,9 +212,8 @@ describe("<Login /> interactions", () => {
       .handleSubmit(event)
       .then(() => {
         expect(wrapper.instance().state.errors).toEqual({
-          email: "email error",
+          username: "username error",
           password: "password error",
-          phone_number: "",
         });
         expect(wrapper.find("div.error")).toHaveLength(2);
         expect(wrapper.find("input.error")).toHaveLength(2);
@@ -220,7 +266,9 @@ describe("<Login /> interactions", () => {
 
   it("should execute verifyMobileNumber if mobile phone verification needed", async () => {
     props.settings = {mobile_phone_verification: true};
-    wrapper = shallow(<Login {...props} />, {context: loadingContextValue});
+    wrapper = mountComponent(props);
+    const login = wrapper.find(Login);
+    const handleSubmit = jest.spyOn(login.instance(), "handleSubmit");
 
     axios.mockImplementationOnce(() => {
       return Promise.reject({
@@ -232,39 +280,55 @@ describe("<Login /> interactions", () => {
       });
     });
 
-    expect(wrapper.find("#email")).toEqual({});
-    expect(wrapper.state("phone_number")).toEqual("");
-    wrapper.find("[name='phone_number']").simulate("change", {
-      target: {value: "+393660011333", name: "phone_number"},
+    expect(wrapper.exists(PhoneInput)).toBe(true);
+    expect(wrapper.find(".row.phone-number").length).toEqual(1);
+    expect(wrapper.find("#username").length).toEqual(1);
+    expect(login.state("username")).toEqual("");
+    wrapper.find("#username").simulate("change", {
+      target: {value: "+393660011333", name: "username"},
     });
-    expect(wrapper.state("phone_number")).not.toEqual("");
+    expect(login.state("username")).not.toEqual("");
     wrapper
       .find("#password")
       .simulate("change", {target: {value: "test password", name: "password"}});
-    expect(wrapper.state("password")).toEqual("test password");
+    expect(login.state("password")).toEqual("test password");
 
     const event = {preventDefault: () => {}};
-    await wrapper.instance().handleSubmit(event);
-    const verifyMock = wrapper.instance().props.verifyMobileNumber.mock;
+    wrapper.find("form").simulate("submit", event);
+    await tick();
+    expect(handleSubmit).toHaveBeenCalled();
+    const verifyMock = login.props().verifyMobileNumber.mock;
     expect(verifyMock.calls.length).toBe(1);
     expect(verifyMock.calls.pop()).toEqual([true]);
-    const authenticateMock = wrapper.instance().props.authenticate.mock;
+    const authenticateMock = login.props().authenticate.mock;
     expect(authenticateMock.calls.length).toBe(1);
     expect(authenticateMock.calls.pop()).toEqual([true]);
   });
   it("phone_number field should be present if mobile phone verification is on", async () => {
     props.settings = {mobile_phone_verification: true};
-    wrapper = shallow(<Login {...props} />, {context: loadingContextValue});
-
-    expect(wrapper.find("#email").length).toEqual(0);
-    expect(wrapper.find("[name='phone_number']").length).toEqual(1);
+    wrapper = mountComponent(props);
+    expect(wrapper.render()).toMatchSnapshot();
+    expect(wrapper.exists(PhoneInput)).toBe(true);
+    expect(wrapper.find("#username").length).toEqual(1);
+    expect(wrapper.find(".row.phone-number").length).toEqual(1);
   });
-  it("email field should be present if mobile phone verification is off", async () => {
+  it("username should be text field if mobile phone verification is off", async () => {
     props.settings = {mobile_phone_verification: false};
-    wrapper = shallow(<Login {...props} />, {context: loadingContextValue});
-
-    expect(wrapper.find("#email").length).toEqual(1);
-    expect(wrapper.find("[name='phone_number']").length).toEqual(0);
+    wrapper = mountComponent(props);
+    expect(wrapper.render()).toMatchSnapshot();
+    expect(wrapper.exists(PhoneInput)).toBe(false);
+    expect(wrapper.find("#username").length).toEqual(1);
+    expect(wrapper.find(".row.phone-number").length).toEqual(0);
+  });
+  it("should not show phone_number field if auto_switch_phone_input is false", async () => {
+    props.settings = {mobile_phone_verification: true};
+    props.loginForm = {...loginForm};
+    props.loginForm.input_fields.username.auto_switch_phone_input = false;
+    wrapper = mountComponent(props);
+    expect(wrapper.render()).toMatchSnapshot();
+    expect(wrapper.exists(PhoneInput)).toBe(false);
+    expect(wrapper.find("#username").length).toEqual(1);
+    expect(wrapper.find(".row.phone-number").length).toEqual(0);
   });
   it("should store token in sessionStorage when remember me is unchecked and rememberMe in localstorage", () => {
     const data = {

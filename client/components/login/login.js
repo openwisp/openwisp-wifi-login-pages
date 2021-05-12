@@ -32,9 +32,8 @@ export default class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "",
+      username: "",
       password: "",
-      phone_number: "",
       remember_me: true,
       errors: {},
     };
@@ -43,20 +42,22 @@ export default class Login extends React.Component {
   }
 
   componentDidMount() {
-    const email = getParameterByName("email");
+    const username = getParameterByName("username");
     const token = getParameterByName("token");
-
     const {loginForm} = this.props;
     let remember_me;
-    if (localStorage.getItem("rememberMe") !== null)
+
+    if (localStorage.getItem("rememberMe") !== null) {
       remember_me = localStorage.getItem("rememberMe") === "true";
-    else remember_me = loginForm.input_fields.remember_me.value;
+    } else {
+      remember_me = loginForm.input_fields.remember_me.value;
+    }
     this.setState({remember_me});
 
-    if (email && token) {
+    if (username && token) {
       this.setState(
         {
-          email,
+          username,
           password: token,
         },
         () => {
@@ -66,86 +67,92 @@ export default class Login extends React.Component {
     }
   }
 
-  getEmailField = (input_fields) => {
-    const {email, errors} = this.state;
+  getUsernameField = (input_fields) => {
+    const {settings} = this.props;
+    let usePhoneNumberField;
+    if (typeof input_fields.username.auto_switch_phone_input !== "undefined") {
+      usePhoneNumberField = Boolean(
+        input_fields.username.auto_switch_phone_input,
+      );
+    } else {
+      usePhoneNumberField = settings.mobile_phone_verification;
+    }
+
+    if (usePhoneNumberField) {
+      return this.getPhoneNumberField(input_fields);
+    }
+    return this.getTextField(input_fields);
+  };
+
+  getTextField = (input_fields) => {
+    const {username, errors} = this.state;
     const {language} = this.props;
     return (
-      <div className="row email">
-        <label htmlFor="email">
-          {getText(input_fields.email.label, language)}
+      <div className="row username">
+        <label htmlFor="username">
+          {getText(input_fields.username.label, language)}
         </label>
-        {errors.email && (
+        {errors.username && (
           <div className="error">
             <span className="icon">!</span>
-            <span className="text">{errors.email}</span>
+            <span className="text">{errors.username}</span>
           </div>
         )}
         <input
-          className={`input ${errors.email ? "error" : ""}`}
-          type={input_fields.email.type}
-          id="email"
-          name="email"
-          value={email}
+          className={`input ${errors.username ? "error" : ""}`}
+          type={input_fields.username.type}
+          id="username"
+          name="username"
+          value={username}
           onChange={this.handleChange}
           required
-          placeholder={getText(input_fields.email.placeholder, language)}
-          pattern={input_fields.email.pattern}
-          title={getText(input_fields.email.pattern_description, language)}
+          placeholder={getText(input_fields.username.placeholder, language)}
+          pattern={input_fields.username.pattern}
+          title={getText(input_fields.username.pattern_description, language)}
         />
       </div>
     );
   };
 
   getPhoneNumberField = (input_fields) => {
-    const {phone_number, errors} = this.state;
+    const {username, errors} = this.state;
     const {language} = this.props;
     return (
       <div className="row phone-number">
         <label htmlFor="phone-number">
           {getText(input_fields.phone_number.label, language)}
         </label>
-        {errors.phone_number && (
+        {errors.username && (
           <div className="error">
             <span className="icon">!</span>
-            <span className="text">{errors.phone_number}</span>
+            <span className="text">{errors.username}</span>
           </div>
         )}
         <PhoneInput
-          name="phone_number"
+          name="username"
           country={input_fields.phone_number.country}
           onlyCountries={input_fields.phone_number.only_countries || []}
           preferredCountries={
             input_fields.phone_number.preferred_countries || []
           }
           excludeCountries={input_fields.phone_number.exclude_countries || []}
-          value={phone_number}
+          value={username}
           onChange={(value) =>
             this.handleChange({
-              target: {name: "phone_number", value: `+${value}`},
+              target: {name: "username", value: `+${value}`},
             })
           }
           placeholder={getText(input_fields.phone_number.placeholder, language)}
           enableSearch={Boolean(input_fields.phone_number.enable_search)}
           inputProps={{
-            name: "phone_number",
-            id: "phone-number",
-            className: `form-control input ${
-              errors.phone_number ? "error" : ""
-            }`,
+            name: "username",
+            id: "username",
+            className: `form-control input ${errors.username ? "error" : ""}`,
             required: true,
           }}
         />
       </div>
     );
-  };
-
-  getPhoneNumberOrEmailField = (input_fields) => {
-    const {settings} = this.props;
-
-    if (settings.mobile_phone_verification) {
-      return this.getPhoneNumberField(input_fields);
-    }
-    return this.getEmailField(input_fields);
   };
 
   handleChange(event) {
@@ -156,8 +163,7 @@ export default class Login extends React.Component {
     const {setLoading} = this.context;
     if (event) event.preventDefault();
     const {orgSlug, authenticate, verifyMobileNumber, settings} = this.props;
-    const {email, password, phone_number, remember_me, errors} = this.state;
-    const username = settings.mobile_phone_verification ? phone_number : email;
+    const {username, password, remember_me, errors} = this.state;
     const url = loginApiUrl(orgSlug);
     this.setState({
       errors: {},
@@ -212,11 +218,10 @@ export default class Login extends React.Component {
         this.setState({
           errors: {
             ...errors,
-            ...(data.email ? {email: data.email.toString()} : {email: ""}),
+            ...(data.username
+              ? {username: data.username.toString()}
+              : {username: ""}),
             ...(data.password ? {password: data.password} : {password: ""}),
-            ...(data.phone_number
-              ? {phone_number: data.phone_number}
-              : {phone_number: ""}),
           },
         });
         return setLoading(false);
@@ -287,7 +292,7 @@ export default class Login extends React.Component {
                   </div>
                 )}
 
-                {this.getPhoneNumberOrEmailField(input_fields)}
+                {this.getUsernameField(input_fields)}
 
                 <div className="row password">
                   <label htmlFor="password">
@@ -401,11 +406,10 @@ Login.propTypes = {
       ),
     }),
     input_fields: PropTypes.shape({
-      email: PropTypes.shape({
+      username: PropTypes.shape({
         type: PropTypes.string.isRequired,
         label: PropTypes.object.isRequired,
         placeholder: PropTypes.object.isRequired,
-        pattern: PropTypes.string.isRequired,
         pattern_description: PropTypes.object.isRequired,
       }).isRequired,
       password: PropTypes.shape({

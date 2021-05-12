@@ -295,6 +295,32 @@ The `setting` option can take any of the following values:
 Keep in mind that this configuration must mirror the
 [configuration of openwisp-radius (OPENWISP_RADIUS_OPTIONAL_REGISTRATION_FIELDS)](https://openwisp-radius.readthedocs.io/en/latest/user/settings.html#openwisp-radius-optional-registration-fields).
 
+#### Username field in login form
+
+The username field in the login form is automatically set to either a
+phone number input or an email text input depending on whether
+`mobile_phone_verification` is enabled or not.
+
+However, it is possible to force the use of a standard text field if needed,
+for example, we may need to configure the username field to accept any value
+so that the [OpenWISP Users Authentication Backend](https://github.com/openwisp/openwisp-users/#authentication-backend)
+can then figure out if the value passed is a phone number, an email or a username:
+
+```yaml
+login_form:
+  input_fields:
+    username:
+      auto_switch_phone_input: false
+      type: "text"
+      pattern: null
+      pattern_description:
+        en: null
+      placeholder:
+        en: "username, email or mobile phone number"
+      label:
+        en: "username, email or mobile phone number"
+```
+
 #### Configuring Social Login
 
 In order to enable users to log via third-party services like Google and Facebook, the ["Social Login" feature of OpenWISP Radius](https://openwisp-radius.readthedocs.io/en/latest/user/social_login.html) must be configured and enabled.

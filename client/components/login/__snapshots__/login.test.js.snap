@@ -1,5 +1,824 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<Login /> interactions phone_number field should be present if mobile phone verification is on 1`] = `
+<div
+  class="container content"
+  id="login"
+>
+  <div
+    class="inner"
+  >
+    <form
+      class="main-column"
+    >
+      <div
+        class="social-links row"
+      >
+        <p>
+          <a
+            class="social-link button full"
+            href="#facebook"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <span
+              class="inner"
+            >
+              <img
+                alt="Login with Facebook"
+                class="icon"
+                src="/assets/default/facebook.svg"
+              />
+              <span
+                class="text"
+              >
+                Login with Facebook
+              </span>
+            </span>
+          </a>
+        </p>
+        <p>
+          <a
+            class="social-link button full"
+            href="#google"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <span
+              class="inner"
+            >
+              <img
+                alt="Login with google"
+                class="icon"
+                src="/assets/default/google.svg"
+              />
+              <span
+                class="text"
+              >
+                Login with google
+              </span>
+            </span>
+          </a>
+        </p>
+        <p>
+          <a
+            class="social-link button full"
+            href="#twitter"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <span
+              class="inner"
+            >
+              <img
+                alt="Login with Twitter"
+                class="icon"
+                src="/assets/default/twitter.svg"
+              />
+              <span
+                class="text"
+              >
+                Login with Twitter
+              </span>
+            </span>
+          </a>
+        </p>
+      </div>
+      <div
+        class="fieldset"
+      >
+        <div
+          class="row phone-number"
+        >
+          <label
+            for="phone-number"
+          >
+            mobile phone number
+          </label>
+          <div
+            class=" react-tel-input"
+          >
+            <div
+              class="special-label"
+            >
+              Phone
+            </div>
+            <input
+              class="form-control input "
+              id="username"
+              name="username"
+              placeholder="enter mobile phone number"
+              required=""
+              type="tel"
+              value=""
+            />
+            <div
+              class=" flag-dropdown"
+            >
+              <div
+                aria-haspopup="listbox"
+                class="selected-flag"
+                role="button"
+                tabindex="0"
+                title=""
+              >
+                <div
+                  class="flag 0"
+                >
+                  <div
+                    class="arrow"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="row password"
+        >
+          <label
+            for="password"
+          >
+            password
+          </label>
+          <input
+            class="input "
+            id="password"
+            name="password"
+            pattern=".{6,}"
+            placeholder="password"
+            required=""
+            title="password must be a minimum of 6 characters"
+            type="password"
+            value=""
+          />
+        </div>
+        <div
+          class="row remember-me"
+        >
+          <input
+            checked=""
+            id="remember_me"
+            name="remember_me"
+            type="checkbox"
+          />
+          <label
+            for="remember_me"
+          >
+            remember me on this device
+          </label>
+        </div>
+      </div>
+      <div
+        class="row add-info"
+      >
+        By logging in, you accept the 
+        <a
+          class="link additional login"
+          href="/default/login/terms-and-conditions"
+        >
+          terms and conditions
+        </a>
+         and the 
+        <a
+          class="link additional login"
+          href="/default/login/privacy-policy"
+        >
+          privacy policy
+        </a>
+         of this WiFi service. 
+      </div>
+      <div
+        class="row login"
+      >
+        <input
+          class="button full"
+          type="submit"
+          value="Login"
+        />
+      </div>
+      <div
+        class="row register"
+      >
+        <p>
+          Not registered yet?
+        </p>
+        <a
+          class="button full"
+          href="/default/registration"
+        >
+          Sign up
+        </a>
+      </div>
+      <div
+        class="row links"
+      >
+        <a
+          class="link"
+          href="/default/password/reset"
+        >
+          Forgot your password?
+        </a>
+      </div>
+    </form>
+    <div
+      class="side-column contact"
+    >
+      <div
+        class="inner"
+      >
+        <div
+          class="row"
+        >
+          <span
+            class="label"
+          >
+            E-mail:
+          </span>
+          <a
+            class="link"
+            href="mailto:support@openwisp.co"
+          >
+            support@openwisp.co
+          </a>
+        </div>
+        <div
+          class="row"
+        >
+          <span
+            class="label"
+          >
+            Helpdesk:
+          </span>
+          <a
+            class="link"
+            href="tel:+789 948 564"
+          >
+            +789 948 564
+          </a>
+        </div>
+        <div
+          class="contact-links"
+        >
+          <a
+            class="contact-twitter-link link"
+            href="https://twitter.com/openwisp"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <img
+              alt="twitter"
+              class="contact-twitter-image contact-image"
+              src="/assets/default/twitter.svg"
+            />
+          </a>
+          <a
+            class="contact-facebook-link link"
+            href="https://facebook.com/openwisp"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <img
+              alt="facebook"
+              class="contact-facebook-image contact-image"
+              src="/assets/default/facebook.svg"
+            />
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Login /> interactions should not show phone_number field if auto_switch_phone_input is false 1`] = `
+<div
+  class="container content"
+  id="login"
+>
+  <div
+    class="inner"
+  >
+    <form
+      class="main-column"
+    >
+      <div
+        class="social-links row"
+      >
+        <p>
+          <a
+            class="social-link button full"
+            href="#facebook"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <span
+              class="inner"
+            >
+              <img
+                alt="Login with Facebook"
+                class="icon"
+                src="/assets/default/facebook.svg"
+              />
+              <span
+                class="text"
+              >
+                Login with Facebook
+              </span>
+            </span>
+          </a>
+        </p>
+        <p>
+          <a
+            class="social-link button full"
+            href="#google"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <span
+              class="inner"
+            >
+              <img
+                alt="Login with google"
+                class="icon"
+                src="/assets/default/google.svg"
+              />
+              <span
+                class="text"
+              >
+                Login with google
+              </span>
+            </span>
+          </a>
+        </p>
+        <p>
+          <a
+            class="social-link button full"
+            href="#twitter"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <span
+              class="inner"
+            >
+              <img
+                alt="Login with Twitter"
+                class="icon"
+                src="/assets/default/twitter.svg"
+              />
+              <span
+                class="text"
+              >
+                Login with Twitter
+              </span>
+            </span>
+          </a>
+        </p>
+      </div>
+      <div
+        class="fieldset"
+      >
+        <div
+          class="row username"
+        >
+          <label
+            for="username"
+          >
+            email
+          </label>
+          <input
+            class="input "
+            id="username"
+            name="username"
+            pattern=".+@.+\\\\..+"
+            placeholder="email address"
+            required=""
+            type="email"
+            value=""
+          />
+        </div>
+        <div
+          class="row password"
+        >
+          <label
+            for="password"
+          >
+            password
+          </label>
+          <input
+            class="input "
+            id="password"
+            name="password"
+            pattern=".{6,}"
+            placeholder="password"
+            required=""
+            title="password must be a minimum of 6 characters"
+            type="password"
+            value=""
+          />
+        </div>
+        <div
+          class="row remember-me"
+        >
+          <input
+            checked=""
+            id="remember_me"
+            name="remember_me"
+            type="checkbox"
+          />
+          <label
+            for="remember_me"
+          >
+            remember me on this device
+          </label>
+        </div>
+      </div>
+      <div
+        class="row add-info"
+      >
+        By logging in, you accept the 
+        <a
+          class="link additional login"
+          href="/default/login/terms-and-conditions"
+        >
+          terms and conditions
+        </a>
+         and the 
+        <a
+          class="link additional login"
+          href="/default/login/privacy-policy"
+        >
+          privacy policy
+        </a>
+         of this WiFi service. 
+      </div>
+      <div
+        class="row login"
+      >
+        <input
+          class="button full"
+          type="submit"
+          value="Login"
+        />
+      </div>
+      <div
+        class="row register"
+      >
+        <p>
+          Not registered yet?
+        </p>
+        <a
+          class="button full"
+          href="/default/registration"
+        >
+          Sign up
+        </a>
+      </div>
+      <div
+        class="row links"
+      >
+        <a
+          class="link"
+          href="/default/password/reset"
+        >
+          Forgot your password?
+        </a>
+      </div>
+    </form>
+    <div
+      class="side-column contact"
+    >
+      <div
+        class="inner"
+      >
+        <div
+          class="row"
+        >
+          <span
+            class="label"
+          >
+            E-mail:
+          </span>
+          <a
+            class="link"
+            href="mailto:support@openwisp.co"
+          >
+            support@openwisp.co
+          </a>
+        </div>
+        <div
+          class="row"
+        >
+          <span
+            class="label"
+          >
+            Helpdesk:
+          </span>
+          <a
+            class="link"
+            href="tel:+789 948 564"
+          >
+            +789 948 564
+          </a>
+        </div>
+        <div
+          class="contact-links"
+        >
+          <a
+            class="contact-twitter-link link"
+            href="https://twitter.com/openwisp"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <img
+              alt="twitter"
+              class="contact-twitter-image contact-image"
+              src="/assets/default/twitter.svg"
+            />
+          </a>
+          <a
+            class="contact-facebook-link link"
+            href="https://facebook.com/openwisp"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <img
+              alt="facebook"
+              class="contact-facebook-image contact-image"
+              src="/assets/default/facebook.svg"
+            />
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Login /> interactions username should be text field if mobile phone verification is off 1`] = `
+<div
+  class="container content"
+  id="login"
+>
+  <div
+    class="inner"
+  >
+    <form
+      class="main-column"
+    >
+      <div
+        class="social-links row"
+      >
+        <p>
+          <a
+            class="social-link button full"
+            href="#facebook"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <span
+              class="inner"
+            >
+              <img
+                alt="Login with Facebook"
+                class="icon"
+                src="/assets/default/facebook.svg"
+              />
+              <span
+                class="text"
+              >
+                Login with Facebook
+              </span>
+            </span>
+          </a>
+        </p>
+        <p>
+          <a
+            class="social-link button full"
+            href="#google"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <span
+              class="inner"
+            >
+              <img
+                alt="Login with google"
+                class="icon"
+                src="/assets/default/google.svg"
+              />
+              <span
+                class="text"
+              >
+                Login with google
+              </span>
+            </span>
+          </a>
+        </p>
+        <p>
+          <a
+            class="social-link button full"
+            href="#twitter"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <span
+              class="inner"
+            >
+              <img
+                alt="Login with Twitter"
+                class="icon"
+                src="/assets/default/twitter.svg"
+              />
+              <span
+                class="text"
+              >
+                Login with Twitter
+              </span>
+            </span>
+          </a>
+        </p>
+      </div>
+      <div
+        class="fieldset"
+      >
+        <div
+          class="row username"
+        >
+          <label
+            for="username"
+          >
+            email
+          </label>
+          <input
+            class="input "
+            id="username"
+            name="username"
+            pattern=".+@.+\\\\..+"
+            placeholder="email address"
+            required=""
+            type="email"
+            value=""
+          />
+        </div>
+        <div
+          class="row password"
+        >
+          <label
+            for="password"
+          >
+            password
+          </label>
+          <input
+            class="input "
+            id="password"
+            name="password"
+            pattern=".{6,}"
+            placeholder="password"
+            required=""
+            title="password must be a minimum of 6 characters"
+            type="password"
+            value=""
+          />
+        </div>
+        <div
+          class="row remember-me"
+        >
+          <input
+            checked=""
+            id="remember_me"
+            name="remember_me"
+            type="checkbox"
+          />
+          <label
+            for="remember_me"
+          >
+            remember me on this device
+          </label>
+        </div>
+      </div>
+      <div
+        class="row add-info"
+      >
+        By logging in, you accept the 
+        <a
+          class="link additional login"
+          href="/default/login/terms-and-conditions"
+        >
+          terms and conditions
+        </a>
+         and the 
+        <a
+          class="link additional login"
+          href="/default/login/privacy-policy"
+        >
+          privacy policy
+        </a>
+         of this WiFi service. 
+      </div>
+      <div
+        class="row login"
+      >
+        <input
+          class="button full"
+          type="submit"
+          value="Login"
+        />
+      </div>
+      <div
+        class="row register"
+      >
+        <p>
+          Not registered yet?
+        </p>
+        <a
+          class="button full"
+          href="/default/registration"
+        >
+          Sign up
+        </a>
+      </div>
+      <div
+        class="row links"
+      >
+        <a
+          class="link"
+          href="/default/password/reset"
+        >
+          Forgot your password?
+        </a>
+      </div>
+    </form>
+    <div
+      class="side-column contact"
+    >
+      <div
+        class="inner"
+      >
+        <div
+          class="row"
+        >
+          <span
+            class="label"
+          >
+            E-mail:
+          </span>
+          <a
+            class="link"
+            href="mailto:support@openwisp.co"
+          >
+            support@openwisp.co
+          </a>
+        </div>
+        <div
+          class="row"
+        >
+          <span
+            class="label"
+          >
+            Helpdesk:
+          </span>
+          <a
+            class="link"
+            href="tel:+789 948 564"
+          >
+            +789 948 564
+          </a>
+        </div>
+        <div
+          class="contact-links"
+        >
+          <a
+            class="contact-twitter-link link"
+            href="https://twitter.com/openwisp"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <img
+              alt="twitter"
+              class="contact-twitter-image contact-image"
+              src="/assets/default/twitter.svg"
+            />
+          </a>
+          <a
+            class="contact-facebook-link link"
+            href="https://facebook.com/openwisp"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <img
+              alt="facebook"
+              class="contact-facebook-image contact-image"
+              src="/assets/default/facebook.svg"
+            />
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<Login /> rendering should render correctly with social links 1`] = `
 <React.Fragment>
   <div
@@ -67,17 +886,17 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
           className="fieldset"
         >
           <div
-            className="row email"
+            className="row username"
           >
             <label
-              htmlFor="email"
+              htmlFor="username"
             >
               email
             </label>
             <input
               className="input "
-              id="email"
-              name="email"
+              id="username"
+              name="username"
               onChange={[Function]}
               pattern=".+@.+\\\\..+"
               placeholder="email address"
@@ -277,17 +1096,17 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
           className="fieldset"
         >
           <div
-            className="row email"
+            className="row username"
           >
             <label
-              htmlFor="email"
+              htmlFor="username"
             >
               email
             </label>
             <input
               className="input "
-              id="email"
-              name="email"
+              id="username"
+              name="username"
               onChange={[Function]}
               pattern=".+@.+\\\\..+"
               placeholder="email address"
