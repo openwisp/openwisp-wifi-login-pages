@@ -4,7 +4,6 @@ slug: "default"
 
 settings:
   mobile_phone_verification: false
-  identity_verification: false
 
 # configuration variables for the server app
 server:

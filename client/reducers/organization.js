@@ -4,7 +4,7 @@ import {
   SET_MOBILE_PHONE_VERIFICATION_STATUS,
   SET_ORGANIZATION_CONFIG,
   SET_ORGANIZATION_STATUS,
-  SET_USER_BANNED_STATUS,
+  IS_ACTIVE,
 } from "../constants/action-types";
 
 export const organizations = (state = [], action) => {
@@ -41,12 +41,12 @@ export const organization = (
           needsMobilePhoneVerification: action.payload,
         },
       };
-    case SET_USER_BANNED_STATUS:
+    case IS_ACTIVE:
       return {
         ...state,
         configuration: {
           ...state.configuration,
-          userBanned: action.payload,
+          isActive: action.payload,
         },
       };
     default:

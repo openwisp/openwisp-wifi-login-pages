@@ -65,6 +65,7 @@ describe("Mobile Phone Token verification: standard flow", () => {
             radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
             username: "tester@tester.com",
             is_active: false,
+            is_verified: false,
             phone_number: "+393660011222",
           },
         });
@@ -283,6 +284,7 @@ describe("Mobile Phone Token verification: corner cases", () => {
           radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
           username: "tester@tester.com",
           is_active: false,
+          is_verified: false,
           phone_number: "+393660011222",
         },
       });

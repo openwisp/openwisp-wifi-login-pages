@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {
   authenticate,
   verifyMobileNumber,
-  userBanned,
+  setIsActive,
 } from "../../actions/dispatchers";
 import Component from "./login";
 
@@ -26,7 +26,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     authenticate: authenticate(dispatch),
     verifyMobileNumber: verifyMobileNumber(dispatch),
-    userBanned: userBanned(dispatch),
+    setIsActive: setIsActive(dispatch),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Component);

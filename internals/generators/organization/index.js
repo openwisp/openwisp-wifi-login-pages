@@ -40,12 +40,6 @@ module.exports = {
     },
     {
       type: "confirm",
-      name: "identity_verification",
-      message: "Does this organization supports identity verification?",
-      default: false,
-    },
-    {
-      type: "confirm",
       name: "mobile_phone_verification",
       message: "Does this organization require SMS verification for its users?",
       default: false,

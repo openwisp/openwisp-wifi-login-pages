@@ -56,7 +56,7 @@ export default class OrganizationWrapper extends React.Component {
       favicon,
       isAuthenticated,
       needsMobilePhoneVerification,
-      userBanned,
+      isActive,
     } = organization.configuration;
     const orgSlug = organization.configuration.slug;
     const cssPath = organization.configuration.css_path;
@@ -105,7 +105,7 @@ export default class OrganizationWrapper extends React.Component {
                     if (
                       isAuthenticated &&
                       needsMobilePhoneVerification === false &&
-                      !userBanned
+                      isActive
                     ) {
                       return <Redirect to={`/${orgSlug}/status`} />;
                     }
@@ -147,7 +147,7 @@ export default class OrganizationWrapper extends React.Component {
                 <Route
                   path={`${match.path}/login`}
                   render={(props) => {
-                    if (isAuthenticated && !userBanned)
+                    if (isAuthenticated && isActive)
                       return <Redirect to={`/${orgSlug}/status`} />;
                     return (
                       <Suspense fallback={<Loader full={false} />}>
@@ -162,7 +162,7 @@ export default class OrganizationWrapper extends React.Component {
                     if (
                       isAuthenticated &&
                       !needsMobilePhoneVerification &&
-                      !userBanned
+                      isActive
                     )
                       return (
                         <Suspense fallback={<Loader full={false} />}>
@@ -172,7 +172,7 @@ export default class OrganizationWrapper extends React.Component {
                     if (
                       isAuthenticated &&
                       needsMobilePhoneVerification &&
-                      !userBanned
+                      isActive
                     )
                       return (
                         <Redirect
@@ -284,7 +284,7 @@ OrganizationWrapper.propTypes = {
       favicon: PropTypes.string,
       isAuthenticated: PropTypes.bool,
       needsMobilePhoneVerification: PropTypes.bool,
-      userBanned: PropTypes.bool,
+      isActive: PropTypes.bool,
     }),
     exists: PropTypes.bool,
   }).isRequired,

@@ -13,7 +13,7 @@ export const registerApiUrl = "/api/v1/{orgSlug}/account/";
 export const registerError = "Registration error.";
 export const registerSuccess = "Registration success";
 export const resetApiUrl = "/api/v1/{orgSlug}/account/password/reset/";
-export const userBannedError =
+export const userInactiveError =
   "Your account has been deactivated. Please contact customer support for more information.";
 export const validateApiUrl = (orgSlug) =>
   `/api/v1/${orgSlug}/account/token/validate`;
