@@ -15,9 +15,6 @@
     url(assets/fonts/montserrat-semi-bold.woff2) format("woff2");
 }
 
-#preload {
-  display: none;
-}
 html,
 body {
   overflow: initial;

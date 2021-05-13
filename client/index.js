@@ -57,3 +57,7 @@ render(
 if (module && module.hot) {
   module.hot.accept();
 }
+
+window.addEventListener("load", function () {
+  document.getElementById("preload").remove();
+});
