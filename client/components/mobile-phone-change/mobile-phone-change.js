@@ -177,7 +177,6 @@ class MobilePhoneChange extends React.Component {
                 )}
                 <PhoneInput
                   name="phone_number"
-                  country={input_fields.phone_number.country}
                   onlyCountries={input_fields.phone_number.only_countries || []}
                   preferredCountries={
                     input_fields.phone_number.preferred_countries || []
@@ -243,7 +242,6 @@ MobilePhoneChange.propTypes = {
       phone_number: PropTypes.shape({
         label: PropTypes.object,
         placeholder: PropTypes.object,
-        country: PropTypes.string.isRequired,
         only_countries: PropTypes.array,
         preferred_countries: PropTypes.array,
         exclude_countries: PropTypes.array,
