@@ -124,7 +124,7 @@ export default class Login extends React.Component {
               target: {name: "phone_number", value: `+${value}`},
             })
           }
-          placeholder=""
+          placeholder={getText(input_fields.phone_number.placeholder, language)}
           enableSearch={Boolean(input_fields.phone_number.enable_search)}
           inputProps={{
             name: "phone_number",
