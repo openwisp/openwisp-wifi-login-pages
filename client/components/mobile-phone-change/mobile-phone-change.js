@@ -10,6 +10,7 @@ import {Redirect, withRouter} from "react-router-dom";
 import {toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 import LoadingContext from "../../utils/loading-context";
 import {
   genericError,
