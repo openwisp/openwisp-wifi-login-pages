@@ -1,6 +1,7 @@
 import merge from "deepmerge";
 
 import {
+  IS_ACTIVE,
   SET_AUTHENTICATION_STATUS,
   SET_LANGUAGE,
   SET_ORGANIZATION_CONFIG,
@@ -36,6 +37,10 @@ const setOrganization = (slug, cookies) => {
         if (authenticate(cookies, slug)) {
           dispatch({
             type: SET_AUTHENTICATION_STATUS,
+            payload: true,
+          });
+          dispatch({
+            type: IS_ACTIVE,
             payload: true,
           });
         } else {

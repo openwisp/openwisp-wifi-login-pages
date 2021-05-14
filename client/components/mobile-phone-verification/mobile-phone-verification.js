@@ -64,7 +64,7 @@ export default class MobilePhoneVerification extends React.Component {
   handleSubmit(event) {
     const {setLoading} = this.context;
     event.preventDefault();
-    const {orgSlug, verifyMobileNumber, cookies} = this.props;
+    const {orgSlug, verifyMobileNumber, cookies, setIsActive} = this.props;
     const {code, errors} = this.state;
     this.setState({errors: {...errors, code: ""}});
     const url = verifyMobilePhoneTokenUrl(orgSlug);
@@ -88,6 +88,7 @@ export default class MobilePhoneVerification extends React.Component {
         });
         setLoading(false);
         verifyMobileNumber(false);
+        setIsActive(true);
       })
       .catch((error) => {
         const {data} = error.response;
@@ -107,7 +108,14 @@ export default class MobilePhoneVerification extends React.Component {
 
   // TODO: make reusable
   async validateToken() {
-    const {cookies, orgSlug, logout, verifyMobileNumber, settings} = this.props;
+    const {
+      cookies,
+      orgSlug,
+      logout,
+      verifyMobileNumber,
+      settings,
+      setIsActive,
+    } = this.props;
     const auth_token = cookies.get(`${orgSlug}_auth_token`);
     const {token, session} = handleSession(orgSlug, auth_token, cookies);
     const url = validateApiUrl(orgSlug);
@@ -133,9 +141,10 @@ export default class MobilePhoneVerification extends React.Component {
           '"response_code" !== "AUTH_TOKEN_VALIDATION_SUCCESSFUL"',
         );
       } else {
-        const {phone_number, is_verified} = response.data;
+        const {phone_number, is_verified, is_active} = response.data;
         this.setState({phone_number, is_verified});
         verifyMobileNumber(!is_verified && settings.mobile_phone_verification);
+        setIsActive(is_active);
       }
       return true;
     } catch (error) {
@@ -338,4 +347,5 @@ MobilePhoneVerification.propTypes = {
     }).isRequired,
   }).isRequired,
   verifyMobileNumber: PropTypes.func.isRequired,
+  setIsActive: PropTypes.func.isRequired,
 };

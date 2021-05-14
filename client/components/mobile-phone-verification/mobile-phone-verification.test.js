@@ -24,6 +24,7 @@ const createTestProps = function (props, configName = "test-org-2") {
     cookies: new Cookies(),
     logout: jest.fn(),
     verifyMobileNumber: jest.fn(),
+    setIsActive: jest.fn(),
     ...props,
   };
 };
@@ -147,6 +148,7 @@ describe("Mobile Phone Token verification: standard flow", () => {
   it("should verify token successfully", async () => {
     jest.spyOn(MobilePhoneVerification.prototype, "handleSubmit");
     wrapper = createShallowComponent(props);
+    const setIsActiveMock = wrapper.instance().props.setIsActive.mock;
     await tick();
     expectVerifyMobileNumber(wrapper, 1, true);
 
@@ -157,13 +159,14 @@ describe("Mobile Phone Token verification: standard flow", () => {
         data: null,
       });
     });
+    expect(setIsActiveMock.calls.length).toBe(1);
     wrapper
       .find("form .code input[type='text']")
       .simulate("change", {target: {value: "12345", name: "code"}});
     expect(wrapper.instance().state.code).toBe("12345");
     wrapper.find("form").simulate("submit", event);
     await tick();
-
+    expect(setIsActiveMock.calls.length).toBe(2);
     expect(
       MobilePhoneVerification.prototype.handleSubmit.mock.calls.length,
     ).toBe(1);
@@ -174,9 +177,10 @@ describe("Mobile Phone Token verification: standard flow", () => {
   it("should show errors", async () => {
     jest.spyOn(MobilePhoneVerification.prototype, "handleSubmit");
     wrapper = createShallowComponent(props);
+    const setIsActiveMock = wrapper.instance().props.setIsActive.mock;
     await tick();
     expectVerifyMobileNumber(wrapper, 1, true);
-
+    expect(setIsActiveMock.calls.length).toBe(1);
     axios.mockImplementationOnce(() => {
       return Promise.reject({
         response: {
@@ -194,7 +198,7 @@ describe("Mobile Phone Token verification: standard flow", () => {
     expect(wrapper.instance().state.code).toBe("12345");
     wrapper.find("form").simulate("submit", event);
     await tick();
-
+    expect(setIsActiveMock.calls.length).toBe(1);
     expect(
       MobilePhoneVerification.prototype.handleSubmit.mock.calls.length,
     ).toBe(1);

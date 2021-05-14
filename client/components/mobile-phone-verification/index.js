@@ -1,7 +1,11 @@
 import {connect} from "react-redux";
 
 import Component from "./mobile-phone-verification";
-import {logout, verifyMobileNumber} from "../../actions/dispatchers";
+import {
+  logout,
+  verifyMobileNumber,
+  setIsActive,
+} from "../../actions/dispatchers";
 
 const mapStateToProps = (state) => {
   const conf = state.organization.configuration;
@@ -16,6 +20,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     logout: logout(dispatch),
     verifyMobileNumber: verifyMobileNumber(dispatch),
+    setIsActive: setIsActive(dispatch),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Component);

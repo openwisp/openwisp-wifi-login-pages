@@ -58,7 +58,13 @@ export default class Status extends React.Component {
   }
 
   async componentDidMount() {
-    const {cookies, orgSlug, verifyMobileNumber, settings} = this.props;
+    const {
+      cookies,
+      orgSlug,
+      verifyMobileNumber,
+      settings,
+      setIsActive,
+    } = this.props;
     // to prevent recursive call in case redirect url is status page
     if (window.top === window.self) {
       try {
@@ -77,6 +83,10 @@ export default class Status extends React.Component {
       }
       const isValid = await this.validateToken();
       const {is_active, is_verified} = this.state;
+      if (!is_active) {
+        this.handleLogout();
+      }
+      setIsActive(is_active);
       if (isValid && is_active) {
         const macaddr = cookies.get(`${orgSlug}_macaddr`);
 
@@ -820,4 +830,5 @@ Status.propTypes = {
   settings: PropTypes.shape({
     mobile_phone_verification: PropTypes.bool,
   }).isRequired,
+  setIsActive: PropTypes.func.isRequired,
 };

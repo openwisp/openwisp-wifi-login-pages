@@ -56,6 +56,7 @@ const createTestProps = (props) => {
     },
     logout: jest.fn(),
     verifyMobileNumber: jest.fn(),
+    setIsActive: jest.fn(),
     ...props,
   };
 };
@@ -615,5 +616,27 @@ describe("<Status /> interactions", () => {
     // spinner should not load if no sessions are available
     wrapper.instance().updateSpinner();
     expect(wrapper.find(".loading").length).toEqual(0);
+  });
+  it("should logout if user is not active", async () => {
+    axios.mockImplementationOnce(() => {
+      return Promise.resolve({
+        status: 200,
+        data: {
+          response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+          radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
+          username: "tester@tester.com",
+          is_active: false,
+          phone_number: "",
+        },
+      });
+    });
+    props = createTestProps();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+    });
+    await tick();
+    const setIsActiveMock = wrapper.instance().props.setIsActive.mock;
+    expect(setIsActiveMock.calls.length).toBe(1);
+    expect(wrapper.instance().props.logout).toHaveBeenCalled();
   });
 });

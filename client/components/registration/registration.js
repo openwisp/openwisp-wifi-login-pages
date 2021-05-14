@@ -52,7 +52,13 @@ export default class Registration extends React.Component {
   handleSubmit(event) {
     const {setLoading} = this.context;
     event.preventDefault();
-    const {orgSlug, authenticate, verifyMobileNumber, settings} = this.props;
+    const {
+      orgSlug,
+      authenticate,
+      verifyMobileNumber,
+      settings,
+      setIsActive,
+    } = this.props;
     const {
       phone_number,
       email,
@@ -115,6 +121,7 @@ export default class Registration extends React.Component {
           verifyMobileNumber(true);
           // simple sign up flow
         } else {
+          setIsActive(true);
           toast.success(registerSuccess, {
             toastId: mainToastId,
           });
@@ -621,4 +628,5 @@ Registration.propTypes = {
   }).isRequired,
   authenticate: PropTypes.func.isRequired,
   verifyMobileNumber: PropTypes.func.isRequired,
+  setIsActive: PropTypes.func.isRequired,
 };

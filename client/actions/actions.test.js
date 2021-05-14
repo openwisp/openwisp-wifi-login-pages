@@ -89,6 +89,10 @@ describe("actions testing", () => {
         payload: true,
       },
       {
+        type: types.IS_ACTIVE,
+        payload: true,
+      },
+      {
         type: types.SET_ORGANIZATION_STATUS,
         payload: false,
       },
