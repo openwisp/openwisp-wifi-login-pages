@@ -4,6 +4,7 @@ import {
   SET_MOBILE_PHONE_VERIFICATION_STATUS,
   SET_ORGANIZATION_CONFIG,
   SET_ORGANIZATION_STATUS,
+  IS_ACTIVE,
 } from "../constants/action-types";
 
 export const organizations = (state = [], action) => {
@@ -38,6 +39,14 @@ export const organization = (
         configuration: {
           ...state.configuration,
           needsMobilePhoneVerification: action.payload,
+        },
+      };
+    case IS_ACTIVE:
+      return {
+        ...state,
+        configuration: {
+          ...state.configuration,
+          isActive: action.payload,
         },
       };
     default:

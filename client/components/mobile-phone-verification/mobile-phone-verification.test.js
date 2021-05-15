@@ -24,6 +24,7 @@ const createTestProps = function (props, configName = "test-org-2") {
     cookies: new Cookies(),
     logout: jest.fn(),
     verifyMobileNumber: jest.fn(),
+    setIsActive: jest.fn(),
     ...props,
   };
 };
@@ -65,6 +66,7 @@ describe("Mobile Phone Token verification: standard flow", () => {
             radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
             username: "tester@tester.com",
             is_active: false,
+            is_verified: false,
             phone_number: "+393660011222",
           },
         });
@@ -146,6 +148,7 @@ describe("Mobile Phone Token verification: standard flow", () => {
   it("should verify token successfully", async () => {
     jest.spyOn(MobilePhoneVerification.prototype, "handleSubmit");
     wrapper = createShallowComponent(props);
+    const setIsActiveMock = wrapper.instance().props.setIsActive.mock;
     await tick();
     expectVerifyMobileNumber(wrapper, 1, true);
 
@@ -156,13 +159,14 @@ describe("Mobile Phone Token verification: standard flow", () => {
         data: null,
       });
     });
+    expect(setIsActiveMock.calls.length).toBe(1);
     wrapper
       .find("form .code input[type='text']")
       .simulate("change", {target: {value: "12345", name: "code"}});
     expect(wrapper.instance().state.code).toBe("12345");
     wrapper.find("form").simulate("submit", event);
     await tick();
-
+    expect(setIsActiveMock.calls.length).toBe(2);
     expect(
       MobilePhoneVerification.prototype.handleSubmit.mock.calls.length,
     ).toBe(1);
@@ -173,9 +177,10 @@ describe("Mobile Phone Token verification: standard flow", () => {
   it("should show errors", async () => {
     jest.spyOn(MobilePhoneVerification.prototype, "handleSubmit");
     wrapper = createShallowComponent(props);
+    const setIsActiveMock = wrapper.instance().props.setIsActive.mock;
     await tick();
     expectVerifyMobileNumber(wrapper, 1, true);
-
+    expect(setIsActiveMock.calls.length).toBe(1);
     axios.mockImplementationOnce(() => {
       return Promise.reject({
         response: {
@@ -193,7 +198,7 @@ describe("Mobile Phone Token verification: standard flow", () => {
     expect(wrapper.instance().state.code).toBe("12345");
     wrapper.find("form").simulate("submit", event);
     await tick();
-
+    expect(setIsActiveMock.calls.length).toBe(1);
     expect(
       MobilePhoneVerification.prototype.handleSubmit.mock.calls.length,
     ).toBe(1);
@@ -239,7 +244,7 @@ describe("Mobile Phone Token verification: corner cases", () => {
     sessionStorage.clear();
   });
 
-  it("should not proceed if user is already active", async () => {
+  it("should not proceed if user is already verified", async () => {
     axios.mockImplementationOnce(() => {
       return Promise.resolve({
         status: 200,
@@ -249,6 +254,7 @@ describe("Mobile Phone Token verification: corner cases", () => {
           radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
           username: "tester@tester.com",
           is_active: true,
+          is_verified: true,
           phone_number: "+393660011222",
         },
       });
@@ -264,7 +270,7 @@ describe("Mobile Phone Token verification: corner cases", () => {
     expect(
       MobilePhoneVerification.prototype.createPhoneToken,
     ).not.toHaveBeenCalled();
-    expect(wrapper.instance().state.is_active).toBe(true);
+    expect(wrapper.instance().state.is_verified).toBe(true);
     expect(wrapper.instance().state.phone_number).toBe("+393660011222");
     const verifyMobileNumberCalls = wrapper.instance().props.verifyMobileNumber
       .mock.calls;
@@ -282,6 +288,7 @@ describe("Mobile Phone Token verification: corner cases", () => {
           radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
           username: "tester@tester.com",
           is_active: false,
+          is_verified: false,
           phone_number: "+393660011222",
         },
       });

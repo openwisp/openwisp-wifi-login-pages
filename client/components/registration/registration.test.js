@@ -29,6 +29,7 @@ const createTestProps = function (props, configName = "default") {
     termsAndConditions: config.terms_and_conditions,
     authenticate: jest.fn(),
     verifyMobileNumber: jest.fn(),
+    setIsActive: jest.fn(),
     match: {
       path: "default/registration",
     },
@@ -207,6 +208,9 @@ describe("<Registration /> interactions", () => {
             expect(
               wrapper.instance().props.authenticate.mock.calls.length,
             ).toBe(1);
+            expect(wrapper.instance().props.setIsActive.mock.calls.length).toBe(
+              1,
+            );
             expect(lastConsoleOutuput).toBe(null);
             expect(spyToast.mock.calls.length).toBe(3);
             lastConsoleOutuput = null;

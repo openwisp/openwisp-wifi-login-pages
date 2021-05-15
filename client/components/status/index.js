@@ -1,5 +1,9 @@
 import {connect} from "react-redux";
-import {logout, verifyMobileNumber} from "../../actions/dispatchers";
+import {
+  logout,
+  verifyMobileNumber,
+  setIsActive,
+} from "../../actions/dispatchers";
 import Component from "./status";
 
 const mapStateToProps = (state, ownProps) => {
@@ -20,6 +24,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     logout: logout(dispatch),
     verifyMobileNumber: verifyMobileNumber(dispatch),
+    setIsActive: setIsActive(dispatch),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Component);

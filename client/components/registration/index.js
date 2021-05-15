@@ -1,6 +1,10 @@
 import {connect} from "react-redux";
 
-import {authenticate, verifyMobileNumber} from "../../actions/dispatchers";
+import {
+  authenticate,
+  verifyMobileNumber,
+  setIsActive,
+} from "../../actions/dispatchers";
 import Component from "./registration";
 
 const mapStateToProps = (state) => {
@@ -18,6 +22,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     authenticate: authenticate(dispatch),
     verifyMobileNumber: verifyMobileNumber(dispatch),
+    setIsActive: setIsActive(dispatch),
   };
 };
 

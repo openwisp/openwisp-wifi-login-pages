@@ -37,6 +37,7 @@ export default class Status extends React.Component {
       username: "",
       password: "",
       is_active: null,
+      is_verified: null,
       activeSessions: [],
       pastSessions: [],
       sessionsToLogout: [],
@@ -75,7 +76,7 @@ export default class Status extends React.Component {
         //
       }
       const isValid = await this.validateToken();
-      const {is_active} = this.state;
+      const {is_active, is_verified} = this.state;
       if (isValid && is_active) {
         const macaddr = cookies.get(`${orgSlug}_macaddr`);
 
@@ -102,7 +103,7 @@ export default class Status extends React.Component {
         this.updateSpinner();
       }
       // would be better to show a different button in the status page
-      if (isValid && !is_active && settings.mobile_phone_verification) {
+      if (isValid && !is_verified && settings.mobile_phone_verification) {
         verifyMobileNumber(true);
       }
     }
@@ -239,7 +240,7 @@ export default class Status extends React.Component {
   };
 
   async validateToken() {
-    const {cookies, orgSlug, logout, settings} = this.props;
+    const {cookies, orgSlug, logout, settings, setIsActive} = this.props;
     const auth_token = cookies.get(`${orgSlug}_auth_token`);
     const {token, session} = handleSession(orgSlug, auth_token, cookies);
     const url = validateApiUrl(orgSlug);
@@ -271,6 +272,7 @@ export default class Status extends React.Component {
           email,
           phone_number,
           is_active,
+          is_verified,
         } = response.data;
         const userInfo = {};
         userInfo.status = "";
@@ -281,7 +283,18 @@ export default class Status extends React.Component {
         if (settings.mobile_phone_verification) {
           userInfo.phone_number = phone_number;
         }
-        this.setState({username, password, is_active, userInfo});
+        this.setState(
+          {username, password, is_active, is_verified, userInfo},
+          () => {
+            setIsActive(is_active);
+            // if the user is being automatically logged in but it's not
+            // active anymore (eg: has been banned)
+            // automatically perform log out
+            if (is_active === false) {
+              this.handleLogout();
+            }
+          },
+        );
       }
       return true;
     } catch (error) {
@@ -818,4 +831,5 @@ Status.propTypes = {
   settings: PropTypes.shape({
     mobile_phone_verification: PropTypes.bool,
   }).isRequired,
+  setIsActive: PropTypes.func.isRequired,
 };

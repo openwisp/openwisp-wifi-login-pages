@@ -30,6 +30,7 @@ const createTestProps = (props) => {
     settings: {mobile_phone_verification: false},
     authenticate: jest.fn(),
     verifyMobileNumber: jest.fn(),
+    setIsActive: jest.fn(),
     match: {
       path: "default/login",
     },
@@ -275,7 +276,9 @@ describe("<Login /> interactions", () => {
         response: {
           status: 401,
           statusText: "unauthorized",
-          data: "",
+          data: {
+            is_active: true,
+          },
         },
       });
     });
@@ -356,5 +359,37 @@ describe("<Login /> interactions", () => {
         expect(localStorage.getItem("rememberMe")).toEqual("false");
         expect(wrapper.instance().props.authenticate.mock.calls.length).toBe(1);
       });
+  });
+  it("should not execute verifyMobileNumber if user is inactive and must execute setIsActive", async () => {
+    props.settings = {mobile_phone_verification: true};
+    wrapper = shallow(<Login {...props} />, {context: loadingContextValue});
+
+    axios.mockImplementationOnce(() => {
+      return Promise.reject({
+        response: {
+          status: 401,
+          statusText: "unauthorized",
+          data: {
+            is_active: false,
+          },
+        },
+      });
+    });
+
+    wrapper.find("[name='username']").simulate("change", {
+      target: {value: "+393660011333", name: "username"},
+    });
+    wrapper
+      .find("#password")
+      .simulate("change", {target: {value: "test password", name: "password"}});
+
+    const event = {preventDefault: () => {}};
+    await wrapper.instance().handleSubmit(event);
+    const verifyMock = wrapper.instance().props.verifyMobileNumber.mock;
+    expect(verifyMock.calls.length).toBe(0);
+    const authenticateMock = wrapper.instance().props.authenticate.mock;
+    expect(authenticateMock.calls.length).toBe(0);
+    const setIsActiveMock = wrapper.instance().props.setIsActive.mock;
+    expect(setIsActiveMock.calls.length).toBe(1);
   });
 });
