@@ -286,11 +286,11 @@ export default class Status extends React.Component {
         this.setState(
           {username, password, is_active, is_verified, userInfo},
           () => {
+            setIsActive(is_active);
             // if the user is being automatically logged in but it's not
             // active anymore (eg: has been banned)
             // automatically perform log out
-            setIsActive(is_active);
-            if (!is_active) {
+            if (is_active === false) {
               this.handleLogout();
             }
           },
