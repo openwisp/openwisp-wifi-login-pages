@@ -45,10 +45,12 @@ class MobilePhoneChange extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     const {setLoading} = this.context;
-    const {orgSlug, language, phone_number_change} = this.props;
+    const {cookies, orgSlug, language, phone_number_change} = this.props;
     const {text} = phone_number_change;
     const {phone_number, errors} = this.state;
     const url = mobilePhoneChangeUrl(orgSlug);
+    const auth_token = cookies.get(`${orgSlug}_auth_token`);
+    const {token, session} = handleSession(orgSlug, auth_token, cookies);
     const self = this;
     this.setState({errors: {...errors, phone_number: ""}});
     setLoading(true);
@@ -60,6 +62,8 @@ class MobilePhoneChange extends React.Component {
       url,
       data: qs.stringify({
         phone_number,
+        token,
+        session,
       }),
     })
       .then(() => {
