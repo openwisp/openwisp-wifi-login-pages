@@ -58,13 +58,7 @@ export default class Status extends React.Component {
   }
 
   async componentDidMount() {
-    const {
-      cookies,
-      orgSlug,
-      verifyMobileNumber,
-      settings,
-      setIsActive,
-    } = this.props;
+    const {cookies, orgSlug, verifyMobileNumber, settings} = this.props;
     // to prevent recursive call in case redirect url is status page
     if (window.top === window.self) {
       try {
@@ -83,10 +77,6 @@ export default class Status extends React.Component {
       }
       const isValid = await this.validateToken();
       const {is_active, is_verified} = this.state;
-      if (!is_active) {
-        this.handleLogout();
-      }
-      setIsActive(is_active);
       if (isValid && is_active) {
         const macaddr = cookies.get(`${orgSlug}_macaddr`);
 
@@ -250,7 +240,7 @@ export default class Status extends React.Component {
   };
 
   async validateToken() {
-    const {cookies, orgSlug, logout, settings} = this.props;
+    const {cookies, orgSlug, logout, settings, setIsActive} = this.props;
     const auth_token = cookies.get(`${orgSlug}_auth_token`);
     const {token, session} = handleSession(orgSlug, auth_token, cookies);
     const url = validateApiUrl(orgSlug);
@@ -293,7 +283,18 @@ export default class Status extends React.Component {
         if (settings.mobile_phone_verification) {
           userInfo.phone_number = phone_number;
         }
-        this.setState({username, password, is_active, is_verified, userInfo});
+        this.setState(
+          {username, password, is_active, is_verified, userInfo},
+          () => {
+            // if the user is being automatically logged in but it's not
+            // active anymore (eg: has been banned)
+            // automatically perform log out
+            setIsActive(is_active);
+            if (!is_active) {
+              this.handleLogout();
+            }
+          },
+        );
       }
       return true;
     } catch (error) {

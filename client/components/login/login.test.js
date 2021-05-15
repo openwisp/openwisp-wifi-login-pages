@@ -376,8 +376,8 @@ describe("<Login /> interactions", () => {
       });
     });
 
-    wrapper.find("[name='phone_number']").simulate("change", {
-      target: {value: "+393660011333", name: "phone_number"},
+    wrapper.find("[name='username']").simulate("change", {
+      target: {value: "+393660011333", name: "username"},
     });
     wrapper
       .find("#password")

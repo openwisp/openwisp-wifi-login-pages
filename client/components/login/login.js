@@ -163,7 +163,13 @@ export default class Login extends React.Component {
   handleSubmit(event) {
     const {setLoading} = this.context;
     if (event) event.preventDefault();
-    const {orgSlug, authenticate, verifyMobileNumber, settings, setIsActive} = this.props;
+    const {
+      orgSlug,
+      authenticate,
+      verifyMobileNumber,
+      settings,
+      setIsActive,
+    } = this.props;
     const {username, password, remember_me, errors} = this.state;
     const url = loginApiUrl(orgSlug);
     this.setState({
