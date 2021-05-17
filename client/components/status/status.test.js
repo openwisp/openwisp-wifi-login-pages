@@ -634,10 +634,11 @@ describe("<Status /> interactions", () => {
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
     });
-    await tick();
+    const handleLogout = jest.spyOn(wrapper.instance(), "handleLogout");
     const setIsActiveMock = wrapper.instance().props.setIsActive.mock;
+    await tick();
     expect(setIsActiveMock.calls.length).toBe(1);
-    expect(wrapper.instance().props.logout).toHaveBeenCalled();
+    expect(handleLogout).toHaveBeenCalledWith(false);
   });
   it("should toggle logout modal", () => {
     const prop = createTestProps();

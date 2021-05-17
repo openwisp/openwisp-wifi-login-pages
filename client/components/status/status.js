@@ -298,7 +298,7 @@ export default class Status extends React.Component {
             // active anymore (eg: has been banned)
             // automatically perform log out
             if (is_active === false) {
-              this.handleLogout();
+              this.handleLogout(false);
             }
           },
         );

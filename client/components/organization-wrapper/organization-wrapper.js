@@ -11,9 +11,9 @@ import Header from "../header";
 import Footer from "../footer";
 import LoadingContext from "../../utils/loading-context";
 import Loader from "../../utils/loader";
+import Logout from "../logout";
 
 const Login = React.lazy(() => import("../login"));
-const Logout = React.lazy(() => import("../logout"));
 const Registration = React.lazy(() => import("../registration"));
 const PasswordChange = React.lazy(() => import("../password-change"));
 const MobilePhoneChange = React.lazy(() => import("../mobile-phone-change"));
@@ -191,12 +191,7 @@ export default class OrganizationWrapper extends React.Component {
                   render={(props) => {
                     if (isAuthenticated)
                       return <Redirect to={`/${orgSlug}/status`} />;
-                    if (userAutoLogin)
-                      return (
-                        <Suspense fallback={<Loader full={false} />}>
-                          <Logout {...props} cookies={cookies} />
-                        </Suspense>
-                      );
+                    if (userAutoLogin) return <Logout {...props} />;
                     return <Redirect to={`/${orgSlug}/login`} />;
                   }}
                 />
