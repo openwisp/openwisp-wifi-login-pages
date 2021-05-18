@@ -11,14 +11,17 @@ const TerserPlugin = require("terser-webpack-plugin");
 const CURRENT_WORKING_DIR = process.cwd();
 const DEFAULT_PORT = 8080;
 const DEFAULT_SERVER_URL = "http://localhost:3030";
+let minimizers = [];
+
+if (process.env.NODE_ENV === "production") {
+  minimizers = [new TerserPlugin()];
+}
 
 module.exports = (env, argv) => {
   // Use user-specified port; if none was given, fall back to the default
   // If the default port is already in use, webpack will automatically use
   // the next available port
-
   let clientP = process.env.CLIENT;
-
   let plugins = [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
@@ -75,14 +78,11 @@ module.exports = (env, argv) => {
       publicPath: "/",
       pathinfo: false,
     },
-
     devtool:
       argv.mode === "development" ? "cheap-module-source-map" : "source-map",
-
     resolve: {
       extensions: ["*", ".js", ".jsx"],
     },
-
     module: {
       rules: [
         {
@@ -100,9 +100,7 @@ module.exports = (env, argv) => {
         },
       ],
     },
-
     plugins: plugins,
-
     devServer: {
       port: clientP,
       stats: {
@@ -131,7 +129,7 @@ module.exports = (env, argv) => {
     },
     optimization: {
       runtimeChunk: "single",
-      minimizer: [new TerserPlugin()],
+      minimizer: minimizers,
       minimize: true,
       splitChunks: {
         chunks: "all",
