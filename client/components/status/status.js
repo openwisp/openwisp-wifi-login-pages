@@ -197,6 +197,11 @@ export default class Status extends React.Component {
     toast.success(logoutSuccess);
   };
 
+  /*
+   * We use <iframe> to perform the POST to the captive portal login URL
+   * so that the request is transparent for the user, which does not need
+   * to be redirected to a different URL and then come back again.
+   */
   handleLoginIframe = () => {
     const {cookies, orgSlug, logout, captivePortalLoginForm} = this.props;
     if (this.loginIfameRef && this.loginIfameRef.current) {
@@ -226,6 +231,11 @@ export default class Status extends React.Component {
     }
   };
 
+  /*
+   * We use <iframe> to perform the POST to the captive portal logout URL
+   * so that the request is transparent for the user, which does not need
+   * to be redirected to a different URL and then come back again.
+   */
   handleLogoutIframe = () => {
     if (this.logoutIfameRef && this.logoutIfameRef.current) {
       const {loggedOut} = this.state;
