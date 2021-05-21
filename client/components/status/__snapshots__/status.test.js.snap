@@ -15,7 +15,9 @@ exports[`<Status /> rendering should render correctly 1`] = `
       >
         ✖
       </button>
-      <p>
+      <p
+        className="message"
+      >
         Do you want to automatically log in the next time?
       </p>
       <p

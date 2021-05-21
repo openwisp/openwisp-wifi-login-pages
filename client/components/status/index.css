@@ -136,3 +136,10 @@
   cursor: pointer;
   background: transparent;
 }
+
+@media screen and (min-width: 0px) and (max-width: 500px) {
+  .logout-modal-container p.message {
+    margin: 0 6%;
+    line-height: 30px;
+  }
+}

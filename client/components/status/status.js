@@ -623,7 +623,7 @@ export default class Status extends React.Component {
             >
               &#10006;
             </button>
-            <p>{getText(logout_modal.content, language)}</p>
+            <p className="message">{getText(logout_modal.content, language)}</p>
 
             <p className="modal-buttons">
               <button
