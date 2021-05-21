@@ -77,6 +77,16 @@ exports[`<Status /> rendering should render correctly 1`] = `
             type="button"
             value="Logout"
           />
+          <div
+            className="links row"
+          >
+            <Link
+              className="button full status-link"
+              to="/default/change-password/"
+            >
+              Change your password
+            </Link>
+          </div>
         </div>
         <div
           className="links row"
