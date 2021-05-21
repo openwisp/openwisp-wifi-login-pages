@@ -1,10 +1,12 @@
 import {SET_AUTHENTICATION_STATUS} from "../constants/action-types";
 
-const logout = (cookies, orgSlug) => {
-  cookies.remove(`${orgSlug}_auth_token`, {path: "/"});
-  cookies.remove(`${orgSlug}_username`, {path: "/"});
-  cookies.remove(`${orgSlug}_macaddr`, {path: "/"});
-  sessionStorage.clear();
+const logout = (cookies, orgSlug, userAutoLogin = false) => {
+  if (!userAutoLogin) {
+    cookies.remove(`${orgSlug}_auth_token`, {path: "/"});
+    cookies.remove(`${orgSlug}_username`, {path: "/"});
+    cookies.remove(`${orgSlug}_macaddr`, {path: "/"});
+    sessionStorage.clear();
+  }
 
   return {
     type: SET_AUTHENTICATION_STATUS,

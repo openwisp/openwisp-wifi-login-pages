@@ -11,8 +11,9 @@ import Header from "../header";
 import Footer from "../footer";
 import LoadingContext from "../../utils/loading-context";
 import Loader from "../../utils/loader";
+import Logout from "../logout";
+import Login from "../login";
 
-const Login = React.lazy(() => import("../login"));
 const Registration = React.lazy(() => import("../registration"));
 const PasswordChange = React.lazy(() => import("../password-change"));
 const MobilePhoneChange = React.lazy(() => import("../mobile-phone-change"));
@@ -60,6 +61,7 @@ export default class OrganizationWrapper extends React.Component {
     } = organization.configuration;
     const orgSlug = organization.configuration.slug;
     const cssPath = organization.configuration.css_path;
+    const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
     if (organization.exists === true) {
       return (
         <>
@@ -149,11 +151,7 @@ export default class OrganizationWrapper extends React.Component {
                   render={(props) => {
                     if (isAuthenticated && isActive)
                       return <Redirect to={`/${orgSlug}/status`} />;
-                    return (
-                      <Suspense fallback={<Loader full={false} />}>
-                        <Login {...props} />
-                      </Suspense>
-                    );
+                    return <Login {...props} />;
                   }}
                 />
                 <Route
@@ -179,6 +177,17 @@ export default class OrganizationWrapper extends React.Component {
                           to={`/${orgSlug}/mobile-phone-verification`}
                         />
                       );
+                    if (userAutoLogin)
+                      return <Redirect to={`/${orgSlug}/logout`} />;
+                    return <Redirect to={`/${orgSlug}/login`} />;
+                  }}
+                />
+                <Route
+                  path={`${match.path}/logout`}
+                  render={(props) => {
+                    if (isAuthenticated)
+                      return <Redirect to={`/${orgSlug}/status`} />;
+                    if (userAutoLogin) return <Logout {...props} />;
                     return <Redirect to={`/${orgSlug}/login`} />;
                   }}
                 />

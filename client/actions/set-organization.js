@@ -33,6 +33,7 @@ const setOrganization = (slug, cookies) => {
         payload: config,
       });
       const autoLogin = config.auto_login;
+      const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
       if (autoLogin) {
         if (authenticate(cookies, slug)) {
           dispatch({
@@ -44,10 +45,10 @@ const setOrganization = (slug, cookies) => {
             payload: true,
           });
         } else {
-          logout(cookies, slug);
+          logout(cookies, slug, userAutoLogin);
         }
       } else {
-        logout(cookies, slug);
+        logout(cookies, slug, userAutoLogin);
       }
     } else {
       dispatch({
