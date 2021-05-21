@@ -598,14 +598,8 @@ export default class Status extends React.Component {
       captivePortalLogoutForm,
       isAuthenticated,
     } = this.props;
-    const {
-      content,
-      links,
-      buttons,
-      session_info,
-      user_info,
-      logout_modal,
-    } = statusPage;
+    const {content, links, buttons, session_info, user_info, logout_modal} =
+      statusPage;
     const {
       username,
       password,
@@ -669,23 +663,6 @@ export default class Status extends React.Component {
                 );
               })}
 
-              {links &&
-                links.map((link) => {
-                  if (shouldLinkBeShown(link, isAuthenticated)) {
-                    return (
-                      <div className="links row" key={link.url}>
-                        <Link
-                          className="button full status-link"
-                          to={link.url.replace("{orgSlug}", orgSlug)}
-                        >
-                          {getText(link.text, language)}
-                        </Link>
-                      </div>
-                    );
-                  }
-                  return null;
-                })}
-
               <div className="row logout">
                 <input
                   type="button"
@@ -697,6 +674,23 @@ export default class Status extends React.Component {
                       : () => this.handleLogout(false)
                   }
                 />
+
+                {links &&
+                  links.map((link) => {
+                    if (shouldLinkBeShown(link, isAuthenticated)) {
+                      return (
+                        <div className="links row" key={link.url}>
+                          <Link
+                            className="button full status-link"
+                            to={link.url.replace("{orgSlug}", orgSlug)}
+                          >
+                            {getText(link.text, language)}
+                          </Link>
+                        </div>
+                      );
+                    }
+                    return null;
+                  })}
               </div>
             </div>
 

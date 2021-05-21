@@ -69,16 +69,6 @@ exports[`<Status /> rendering should render correctly 1`] = `
           </span>
         </p>
         <div
-          className="links row"
-        >
-          <Link
-            className="button full status-link"
-            to="/default/change-password/"
-          >
-            Change your password
-          </Link>
-        </div>
-        <div
           className="row logout"
         >
           <input
@@ -87,6 +77,16 @@ exports[`<Status /> rendering should render correctly 1`] = `
             type="button"
             value="Logout"
           />
+          <div
+            className="links row"
+          >
+            <Link
+              className="button full status-link"
+              to="/default/change-password/"
+            >
+              Change your password
+            </Link>
+          </div>
         </div>
       </div>
       <Memo(Connect(Contact)) />
