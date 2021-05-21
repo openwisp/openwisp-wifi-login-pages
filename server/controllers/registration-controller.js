@@ -41,9 +41,9 @@ const registration = (req, res) => {
       };
 
       if (settings.mobile_phone_verification) {
-        postData.identity_verification = "mobile";
+        postData.method = "mobile_phone";
       } else {
-        postData.identity_verification = null;
+        postData.method = "";
       }
 
       if (settings && settings.mobile_phone_verification) {
