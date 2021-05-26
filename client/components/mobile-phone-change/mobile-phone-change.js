@@ -12,7 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import LoadingContext from "../../utils/loading-context";
-import {genericError, mainToastId, mobilePhoneChangeUrl} from "../../constants";
+import {mobilePhoneChangeUrl} from "../../constants";
 import getErrorText from "../../utils/get-error-text";
 import getText from "../../utils/get-text";
 import logError from "../../utils/log-error";
@@ -37,9 +37,9 @@ class MobilePhoneChange extends React.Component {
     const {
       cookies,
       orgSlug,
-      logout,
       verifyMobileNumber,
       setUserData,
+      logout,
     } = this.props;
     let {userData} = this.props;
     const isValid = await validateToken(
@@ -47,17 +47,13 @@ class MobilePhoneChange extends React.Component {
       orgSlug,
       setUserData,
       userData,
+      logout,
     );
     if (isValid) {
       ({userData} = this.props);
       const {phone_number} = userData;
       this.setState({phone_number});
       verifyMobileNumber(true);
-    } else {
-      logout(cookies, orgSlug);
-      toast.error(genericError, {
-        onOpen: () => toast.dismiss(mainToastId),
-      });
     }
   }
 

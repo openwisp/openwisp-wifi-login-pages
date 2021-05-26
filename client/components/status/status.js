@@ -63,6 +63,7 @@ export default class Status extends React.Component {
       settings,
       setUserData,
       setIsActive,
+      logout,
     } = this.props;
     let {userData} = this.props;
     this.setState({
@@ -90,6 +91,7 @@ export default class Status extends React.Component {
         orgSlug,
         setUserData,
         userData,
+        logout,
       );
       if (isValid) {
         ({userData} = this.props);
@@ -148,8 +150,6 @@ export default class Status extends React.Component {
         if (isValid && !is_verified && settings.mobile_phone_verification) {
           verifyMobileNumber(true);
         }
-      } else {
-        this.handleLogout();
       }
     }
   }

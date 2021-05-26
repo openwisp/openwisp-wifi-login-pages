@@ -12,8 +12,6 @@ import LoadingContext from "../../utils/loading-context";
 
 import {
   createMobilePhoneTokenUrl,
-  genericError,
-  mainToastId,
   logoutSuccess,
   verifyMobilePhoneTokenUrl,
 } from "../../constants";
@@ -46,11 +44,11 @@ export default class MobilePhoneVerification extends React.Component {
     const {
       cookies,
       orgSlug,
-      logout,
       verifyMobileNumber,
       settings,
       setIsActive,
       setUserData,
+      logout,
     } = this.props;
     let {userData} = this.props;
     const {setLoading} = this.context;
@@ -60,6 +58,7 @@ export default class MobilePhoneVerification extends React.Component {
       orgSlug,
       setUserData,
       userData,
+      logout,
     );
     if (isValid) {
       ({userData} = this.props);
@@ -71,12 +70,6 @@ export default class MobilePhoneVerification extends React.Component {
       if (!is_verified && settings.mobile_phone_verification) {
         await this.createPhoneToken();
       }
-    } else {
-      logout(cookies, orgSlug);
-      setUserData({});
-      toast.error(genericError, {
-        onOpen: () => toast.dismiss(mainToastId),
-      });
     }
     setLoading(false);
   }

@@ -1,10 +1,24 @@
 import qs from "qs";
 import axios from "axios";
-import {genericError, validateApiUrl} from "../constants";
+import {toast} from "react-toastify";
+import {genericError, validateApiUrl, mainToastId} from "../constants";
 import handleSession from "./session";
 import logError from "./log-error";
 
-const validateToken = async (cookies, orgSlug, setUserData, userData) => {
+const handleLogout = (logout, cookies, orgSlug) => {
+  logout(cookies, orgSlug);
+  toast.error(genericError, {
+    onOpen: () => toast.dismiss(mainToastId),
+  });
+};
+
+const validateToken = async (
+  cookies,
+  orgSlug,
+  setUserData,
+  userData,
+  logout,
+) => {
   const url = validateApiUrl(orgSlug);
   const authToken = cookies.get(`${orgSlug}_auth_token`);
   const {token, session} = handleSession(orgSlug, authToken, cookies);
@@ -23,7 +37,7 @@ const validateToken = async (cookies, orgSlug, setUserData, userData) => {
         }),
       });
       if (response.data.response_code !== "AUTH_TOKEN_VALIDATION_SUCCESSFUL") {
-        // logout will be handled from HOC
+        handleLogout(logout, cookies, orgSlug);
         logError(
           response,
           '"response_code" !== "AUTH_TOKEN_VALIDATION_SUCCESSFUL"',
@@ -33,10 +47,14 @@ const validateToken = async (cookies, orgSlug, setUserData, userData) => {
       setUserData(response.data);
       return true;
     } catch (error) {
-      // logout will be handled from HOC
+      handleLogout(logout, cookies, orgSlug);
       logError(error, genericError);
       return false;
     }
+  }
+  // returns true if user data exists and skips calling the API
+  else if (userData && Object.keys(userData).length !== 0) {
+    return true;
   } else {
     return false;
   }
