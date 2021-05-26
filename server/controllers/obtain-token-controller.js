@@ -51,8 +51,8 @@ const obtainToken = (req, res) => {
         })
         .catch((error) => {
           Logger.error(error);
-          Logger.warn(`status code: ${error.response.status}`);
           try {
+            Logger.warn(`status code: ${error.response.status}`);
             // inactive user recognized
             if (error.response.status === 401) {
               return sendCookies(username, error.response, conf, res);
@@ -63,7 +63,7 @@ const obtainToken = (req, res) => {
               .type("application/json")
               .send(error.response.data);
           } catch (err) {
-            Logger.error(error);
+            Logger.error(err);
             return res.status(500).type("application/json").send({
               detail: "Internal server error",
             });

@@ -45,7 +45,7 @@ const passwordReset = (req, res) => {
               .type("application/json")
               .send(error.response.data);
           } catch (err) {
-            Logger.error(error);
+            Logger.error(err);
             res.status(500).type("application/json").send({
               detail: "Internal server error",
             });

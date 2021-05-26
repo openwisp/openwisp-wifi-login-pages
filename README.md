@@ -329,15 +329,15 @@ In order to enable users to log via third-party services like Google and Faceboo
 
 There are certain environment variables used to configure server logging. The details of environment variables to configure logging are mentioned below:
 
-| Environment Variable | Detail                                                                                                                                                                                        |
-| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **LOG_LEVEL**        | (optional) This can be used to set the level of logging. The available values are `warn` and `debug`. By default log level is set to `debug` during development and `warn` during production. |
-| **ALL_LOG_FILE**     | (optional) To configure the path of the log file for all logs. The default path is `logs/all.log`                                                                                             |
-| **ERROR_LOG_FILE**   | (optional) To configure the path of the log file for error logs. The default path is `logs/error.log`                                                                                         |
-| **WARN_LOG_FILE**    | (optional) To configure the path of the log file for warn logs. The default path is `logs/warn.log`                                                                                           |
-| **INFO_LOG_FILE**    | (optional) To configure the path of the log file for info logs. The default path is `logs/info.log`                                                                                           |
-| **HTTP_LOG_FILE**    | (optional) To configure the path of the log file for http logs. The default path is `logs/http.log`                                                                                           |
-| **DEBUG_LOG_FILE**   | (optional) To configure the path of the log file for http logs. The default path is `logs/debug.log`                                                                                          |
+| Environment Variable | Detail                                                                                                                                                                                                                                     |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **LOG_LEVEL**        | (optional) This can be used to set the level of logging. The available values are `error`, `warn`, `info`, `http`, `verbose`, `debug` and `silly`. By default log level is set to `debug` during development and `warn` during production. |
+| **ALL_LOG_FILE**     | (optional) To configure the path of the log file for all logs. The default path is `logs/all.log`                                                                                                                                          |
+| **ERROR_LOG_FILE**   | (optional) To configure the path of the log file for error logs. The default path is `logs/error.log`                                                                                                                                      |
+| **WARN_LOG_FILE**    | (optional) To configure the path of the log file for warn logs. The default path is `logs/warn.log`                                                                                                                                        |
+| **INFO_LOG_FILE**    | (optional) To configure the path of the log file for info logs. The default path is `logs/info.log`                                                                                                                                        |
+| **HTTP_LOG_FILE**    | (optional) To configure the path of the log file for http logs. The default path is `logs/http.log`                                                                                                                                        |
+| **DEBUG_LOG_FILE**   | (optional) To configure the path of the log file for http logs. The default path is `logs/debug.log`                                                                                                                                       |
 
 All the **HTTP requests** get logged by default in the console during development.
 

@@ -51,7 +51,7 @@ const getUserRadiusSessions = (req, res) => {
               .type("application/json")
               .send(error.response.data);
           } catch (err) {
-            Logger.error(error);
+            Logger.error(err);
             res.status(500).type("application/json").send({
               response_code: "INTERNAL_SERVER_ERROR",
             });
