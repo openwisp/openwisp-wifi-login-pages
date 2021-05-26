@@ -3,7 +3,7 @@ import axios from "axios";
 import {shallow, mount} from "enzyme";
 import React from "react";
 import ShallowRenderer from "react-test-renderer/shallow";
-import {toast} from "react-toastify";
+import * as dependency from "react-toastify";
 import PropTypes from "prop-types";
 import {Provider} from "react-redux";
 import {Router} from "react-router-dom";
@@ -206,7 +206,7 @@ describe("<Login /> interactions", () => {
         return Promise.resolve();
       });
     const event = {preventDefault: () => {}};
-    const spyToast = jest.spyOn(toast, "error");
+    const spyToast = jest.spyOn(dependency.toast, "error");
 
     return wrapper
       .instance()
@@ -391,5 +391,57 @@ describe("<Login /> interactions", () => {
     expect(authenticateMock.calls.length).toBe(0);
     const setIsActiveMock = wrapper.instance().props.setIsActive.mock;
     expect(setIsActiveMock.calls.length).toBe(1);
+  });
+  it("should show error toast when server error", () => {
+    axios.mockImplementationOnce(() => {
+      return Promise.reject({
+        status: 500,
+        statusText: "Internal server error",
+        response: {
+          data: {
+            detail: "Internal server error",
+          },
+        },
+      });
+    });
+    const event = {preventDefault: () => {}};
+    const errorMethod = jest.fn();
+    dependency.toast = {
+      error: errorMethod,
+    };
+    return wrapper
+      .instance()
+      .handleSubmit(event)
+      .then(() => {
+        expect(wrapper.instance().props.authenticate.mock.calls.length).toBe(0);
+        expect(lastConsoleOutuput).not.toBe(null);
+        expect(errorMethod).toHaveBeenCalled();
+        expect(errorMethod).toBeCalledWith("Internal server error");
+        lastConsoleOutuput = null;
+      });
+  });
+  it("should show error toast when connection refused or timeout", async () => {
+    axios.mockImplementationOnce(() => {
+      return Promise.reject({
+        status: 504,
+        statusText: "Gateway Timeout",
+        response: {
+          data:
+            "Error occured while trying to proxy to: 0.0.0.0:8080/api/v1/default/account/token",
+        },
+      });
+    });
+    const event = {preventDefault: () => {}};
+    const errorMethod = jest.fn();
+    dependency.toast = {
+      error: errorMethod,
+    };
+    wrapper = shallow(<Login {...props} />, {context: loadingContextValue});
+    await wrapper.instance().handleSubmit(event);
+    expect(wrapper.instance().props.authenticate.mock.calls.length).toBe(0);
+    expect(lastConsoleOutuput).not.toBe(null);
+    expect(errorMethod).toHaveBeenCalled();
+    expect(errorMethod).toBeCalledWith("Login error occurred.");
+    lastConsoleOutuput = null;
   });
 });
