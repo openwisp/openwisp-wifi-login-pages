@@ -1,10 +1,6 @@
 import {connect} from "react-redux";
 
-import {
-  authenticate,
-  verifyMobileNumber,
-  setIsActive,
-} from "../../actions/dispatchers";
+import {authenticate, setUserData} from "../../actions/dispatchers";
 import Component from "./registration";
 
 const mapStateToProps = (state) => {
@@ -16,13 +12,13 @@ const mapStateToProps = (state) => {
     termsAndConditions: conf.terms_and_conditions,
     orgSlug: conf.slug,
     language: state.language,
+    userData: conf.userData,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
     authenticate: authenticate(dispatch),
-    verifyMobileNumber: verifyMobileNumber(dispatch),
-    setIsActive: setIsActive(dispatch),
+    setUserData: setUserData(dispatch),
   };
 };
 

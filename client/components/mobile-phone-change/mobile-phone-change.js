@@ -20,7 +20,7 @@ import handleChange from "../../utils/handle-change";
 import submitOnEnter from "../../utils/submit-on-enter";
 import Contact from "../contact-box";
 import handleSession from "../../utils/session";
-import validateToken from "../../utils/validateToken";
+import validateToken from "../../utils/validate-token";
 
 class MobilePhoneChange extends React.Component {
   constructor(props) {
@@ -34,13 +34,7 @@ class MobilePhoneChange extends React.Component {
   }
 
   async componentDidMount() {
-    const {
-      cookies,
-      orgSlug,
-      verifyMobileNumber,
-      setUserData,
-      logout,
-    } = this.props;
+    const {cookies, orgSlug, setUserData, logout} = this.props;
     let {userData} = this.props;
     const isValid = await validateToken(
       cookies,
@@ -53,7 +47,6 @@ class MobilePhoneChange extends React.Component {
       ({userData} = this.props);
       const {phone_number} = userData;
       this.setState({phone_number});
-      verifyMobileNumber(true);
     }
   }
 
@@ -66,6 +59,7 @@ class MobilePhoneChange extends React.Component {
       language,
       phone_number_change,
       setUserData,
+      userData,
     } = this.props;
     const {text} = phone_number_change;
     const {phone_number, errors} = this.state;
@@ -91,7 +85,9 @@ class MobilePhoneChange extends React.Component {
         this.setState({
           errors: {},
         });
-        setUserData({});
+        userData.is_verified = false;
+        userData.phone_number = phone_number;
+        setUserData(userData);
         setLoading(false);
         toast.info(getText(text.token_sent, language));
         self.props.history.push(`/${orgSlug}/mobile-phone-verification`);
@@ -247,7 +243,6 @@ MobilePhoneChange.propTypes = {
   orgSlug: PropTypes.string.isRequired,
   cookies: PropTypes.instanceOf(Cookies).isRequired,
   logout: PropTypes.func.isRequired,
-  verifyMobileNumber: PropTypes.func.isRequired,
   userData: PropTypes.object.isRequired,
   setUserData: PropTypes.func.isRequired,
 };

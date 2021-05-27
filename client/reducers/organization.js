@@ -1,10 +1,8 @@
 import {
   PARSE_ORGANIZATIONS,
   SET_AUTHENTICATION_STATUS,
-  SET_MOBILE_PHONE_VERIFICATION_STATUS,
   SET_ORGANIZATION_CONFIG,
   SET_ORGANIZATION_STATUS,
-  IS_ACTIVE,
   SET_USER_DATA,
 } from "../constants/action-types";
 
@@ -17,8 +15,18 @@ export const organizations = (state = [], action) => {
   }
 };
 
+export const initialState = {
+  userData: {
+    is_active: true,
+    is_verified: true,
+  },
+  settings: {
+    mobile_phone_verification: undefined,
+  },
+};
+
 export const organization = (
-  state = {exists: undefined, configuration: {}},
+  state = {exists: undefined, configuration: initialState},
   action,
 ) => {
   switch (action.type) {
@@ -32,22 +40,6 @@ export const organization = (
         configuration: {
           ...state.configuration,
           isAuthenticated: action.payload,
-        },
-      };
-    case SET_MOBILE_PHONE_VERIFICATION_STATUS:
-      return {
-        ...state,
-        configuration: {
-          ...state.configuration,
-          needsMobilePhoneVerification: action.payload,
-        },
-      };
-    case IS_ACTIVE:
-      return {
-        ...state,
-        configuration: {
-          ...state.configuration,
-          isActive: action.payload,
         },
       };
     case SET_USER_DATA:

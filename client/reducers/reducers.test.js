@@ -28,7 +28,15 @@ describe("organizations reducer", () => {
 describe("organization reducer", () => {
   const initialState = {
     exists: undefined,
-    configuration: {},
+    configuration: {
+      userData: {
+        is_active: true,
+        is_verified: true,
+      },
+      settings: {
+        mobile_phone_verification: undefined,
+      },
+    },
   };
   it("should return initial state", () => {
     expect(organization(undefined, {})).toEqual(initialState);
