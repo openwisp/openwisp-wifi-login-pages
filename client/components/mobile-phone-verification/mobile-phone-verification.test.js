@@ -10,10 +10,10 @@ import {loadingContextValue} from "../../utils/loading-context";
 import tick from "../../utils/tick";
 import getConfig from "../../utils/get-config";
 import MobilePhoneVerification from "./mobile-phone-verification";
-import validateToken from "../../utils/validateToken";
+import validateToken from "../../utils/validate-token";
 
 jest.mock("../../utils/get-config");
-jest.mock("../../utils/validateToken");
+jest.mock("../../utils/validate-token");
 jest.mock("axios");
 
 const createTestProps = function (props, configName = "test-org-2") {
@@ -25,8 +25,6 @@ const createTestProps = function (props, configName = "test-org-2") {
     language: "en",
     cookies: new Cookies(),
     logout: jest.fn(),
-    verifyMobileNumber: jest.fn(),
-    setIsActive: jest.fn(),
     setUserData: jest.fn(),
     userData: {},
     ...props,
@@ -48,15 +46,6 @@ const createShallowComponent = function (props) {
   });
 };
 
-const expectVerifyMobileNumber = function (wrapper, callLength, result) {
-  const mockedFn = wrapper.instance().props.verifyMobileNumber;
-  expect(mockedFn.mock.calls.length).toBe(callLength);
-  if (callLength) {
-    expect(mockedFn.mock.calls.pop()).toEqual([result]);
-  }
-  mockedFn.mockReset();
-};
-
 describe("Mobile Phone Token verification: standard flow", () => {
   let props;
   let wrapper;
@@ -69,28 +58,13 @@ describe("Mobile Phone Token verification: standard flow", () => {
       setLoading: PropTypes.func,
     };
     props = createTestProps();
-    axios
-      // .mockImplementationOnce(() => {
-      //   return Promise.resolve({
-      //     status: 200,
-      //     statusText: "OK",
-      //     data: {
-      //       response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
-      //       radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
-      //       username: "tester@tester.com",
-      //       is_active: false,
-      //       is_verified: false,
-      //       phone_number: "+393660011222",
-      //     },
-      //   });
-      // })
-      .mockImplementationOnce(() => {
-        return Promise.resolve({
-          status: 201,
-          statusText: "CREATED",
-          data: null,
-        });
+    axios.mockImplementationOnce(() => {
+      return Promise.resolve({
+        status: 201,
+        statusText: "CREATED",
+        data: null,
       });
+    });
     // console mocking
     validateToken.mockClear();
     originalError = console.error;
@@ -116,7 +90,6 @@ describe("Mobile Phone Token verification: standard flow", () => {
     wrapper = createShallowComponent(props);
     wrapper.setProps({userData});
     await tick();
-    expectVerifyMobileNumber(wrapper, 1, true);
 
     expect(axios).toHaveBeenCalled();
     expect(
@@ -142,7 +115,6 @@ describe("Mobile Phone Token verification: standard flow", () => {
     validateToken.mockReturnValue(true);
     wrapper = createShallowComponent(props);
     await tick();
-    expectVerifyMobileNumber(wrapper, 1, true);
 
     axios.mockImplementationOnce(() => {
       return Promise.resolve({
@@ -156,7 +128,6 @@ describe("Mobile Phone Token verification: standard flow", () => {
       MobilePhoneVerification.prototype.resendPhoneToken.mock.calls.length,
     ).toBe(1);
     expect(toast.info.mock.calls.length).toBe(1);
-    expectVerifyMobileNumber(wrapper, 0);
   });
 
   it("should verify token successfully", async () => {
@@ -164,9 +135,8 @@ describe("Mobile Phone Token verification: standard flow", () => {
     validateToken.mockReturnValue(true);
     wrapper = createShallowComponent(props);
     wrapper.setProps({userData});
-    const setIsActiveMock = wrapper.instance().props.setIsActive.mock;
+    const setUserDataMock = wrapper.instance().props.setUserData.mock;
     await tick();
-    expectVerifyMobileNumber(wrapper, 1, true);
 
     axios.mockImplementationOnce(() => {
       return Promise.resolve({
@@ -175,29 +145,29 @@ describe("Mobile Phone Token verification: standard flow", () => {
         data: null,
       });
     });
-    expect(setIsActiveMock.calls.length).toBe(1);
     wrapper
       .find("form .code input[type='text']")
       .simulate("change", {target: {value: "12345", name: "code"}});
     expect(wrapper.instance().state.code).toBe("12345");
     wrapper.find("form").simulate("submit", event);
     await tick();
-    expect(setIsActiveMock.calls.length).toBe(2);
+    expect(setUserDataMock.calls.length).toBe(1);
+    userData.is_active = true;
+    userData.is_verified = true;
+    expect(setUserDataMock.calls.pop()).toEqual([userData]);
     expect(
       MobilePhoneVerification.prototype.handleSubmit.mock.calls.length,
     ).toBe(1);
     expect(event.preventDefault).toHaveBeenCalled();
-    expectVerifyMobileNumber(wrapper, 1, false);
   });
 
   it("should show errors", async () => {
     jest.spyOn(MobilePhoneVerification.prototype, "handleSubmit");
     validateToken.mockReturnValue(true);
     wrapper = createShallowComponent(props);
-    const setIsActiveMock = wrapper.instance().props.setIsActive.mock;
+    const setUserDataMock = wrapper.instance().props.setUserData.mock;
     await tick();
-    expectVerifyMobileNumber(wrapper, 1, true);
-    expect(setIsActiveMock.calls.length).toBe(1);
+    expect(setUserDataMock.calls.length).toBe(0);
     axios.mockImplementationOnce(() => {
       return Promise.reject({
         response: {
@@ -215,13 +185,12 @@ describe("Mobile Phone Token verification: standard flow", () => {
     expect(wrapper.instance().state.code).toBe("12345");
     wrapper.find("form").simulate("submit", event);
     await tick();
-    expect(setIsActiveMock.calls.length).toBe(1);
+    expect(setUserDataMock.calls.length).toBe(0);
     expect(
       MobilePhoneVerification.prototype.handleSubmit.mock.calls.length,
     ).toBe(1);
     expect(event.preventDefault).toHaveBeenCalled();
     expect(wrapper.instance().state.errors.nonField).toBeTruthy();
-    expectVerifyMobileNumber(wrapper, 0);
     expect(lastConsoleOutuput).not.toBe(null);
   });
 
@@ -232,7 +201,6 @@ describe("Mobile Phone Token verification: standard flow", () => {
 
     wrapper = createShallowComponent(props);
     await tick();
-    expectVerifyMobileNumber(wrapper, 1, true);
 
     wrapper.find(".logout .button").simulate("click");
     await tick();
@@ -241,7 +209,6 @@ describe("Mobile Phone Token verification: standard flow", () => {
     ).toBe(1);
     expect(wrapper.instance().props.logout.mock.calls.length).toBe(1);
     expect(toast.success.mock.calls.length).toBe(1);
-    expectVerifyMobileNumber(wrapper, 0);
   });
 });
 
@@ -276,10 +243,6 @@ describe("Mobile Phone Token verification: corner cases", () => {
       MobilePhoneVerification.prototype.createPhoneToken,
     ).not.toHaveBeenCalled();
     expect(wrapper.instance().state.phone_number).toBe("+393660011222");
-    const verifyMobileNumberCalls = wrapper.instance().props.verifyMobileNumber
-      .mock.calls;
-    expect(verifyMobileNumberCalls.length).toBe(1);
-    expect(verifyMobileNumberCalls.pop()).toEqual([false]);
   });
 
   it("should not proceed if mobile verification is not enabled", async () => {
@@ -292,9 +255,5 @@ describe("Mobile Phone Token verification: corner cases", () => {
     expect(
       MobilePhoneVerification.prototype.createPhoneToken,
     ).not.toHaveBeenCalled();
-    const verifyMobileNumberCalls = wrapper.instance().props.verifyMobileNumber
-      .mock.calls;
-    expect(verifyMobileNumberCalls.length).toBe(1);
-    expect(verifyMobileNumberCalls.pop()).toEqual([false]);
   });
 });

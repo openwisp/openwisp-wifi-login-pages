@@ -363,21 +363,6 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
           "username": "tester@tester.com",
         }
       }
-      verifyMobileNumber={
-        [MockFunction] {
-          "calls": Array [
-            Array [
-              true,
-            ],
-          ],
-          "results": Array [
-            Object {
-              "type": "return",
-              "value": undefined,
-            },
-          ],
-        }
-      }
     >
       <MobilePhoneChange
         configuration={
@@ -745,21 +730,6 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
             "radius_user_token": "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
             "response_code": "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
             "username": "tester@tester.com",
-          }
-        }
-        verifyMobileNumber={
-          [MockFunction] {
-            "calls": Array [
-              Array [
-                true,
-              ],
-            ],
-            "results": Array [
-              Object {
-                "type": "return",
-                "value": undefined,
-              },
-            ],
           }
         }
       >

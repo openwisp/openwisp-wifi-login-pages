@@ -23,7 +23,8 @@ import logError from "../../utils/log-error";
 import Contact from "../contact-box";
 import shouldLinkBeShown from "../../utils/should-link-be-shown";
 import handleSession from "../../utils/session";
-import validateToken from "../../utils/validateToken";
+import validateToken from "../../utils/validate-token";
+import {initialState} from "../../reducers/organization";
 
 export default class Status extends React.Component {
   constructor(props) {
@@ -56,15 +57,8 @@ export default class Status extends React.Component {
   }
 
   async componentDidMount() {
-    const {
-      cookies,
-      orgSlug,
-      verifyMobileNumber,
-      settings,
-      setUserData,
-      setIsActive,
-      logout,
-    } = this.props;
+    const {cookies, orgSlug, settings, setUserData, logout} = this.props;
+    const {setLoading} = this.context;
     let {userData} = this.props;
     this.setState({
       rememberMe: localStorage.getItem("rememberMe") === "true",
@@ -85,7 +79,7 @@ export default class Status extends React.Component {
       } catch {
         //
       }
-
+      setLoading(true);
       const isValid = await validateToken(
         cookies,
         orgSlug,
@@ -93,6 +87,7 @@ export default class Status extends React.Component {
         userData,
         logout,
       );
+      setLoading(false);
       if (isValid) {
         ({userData} = this.props);
         const {
@@ -101,7 +96,6 @@ export default class Status extends React.Component {
           email,
           phone_number,
           is_active,
-          is_verified,
         } = userData;
         const userInfo = {};
         userInfo.status = "";
@@ -112,7 +106,6 @@ export default class Status extends React.Component {
         if (settings.mobile_phone_verification) {
           userInfo.phone_number = phone_number;
         }
-        setIsActive(is_active);
         this.setState({username, password, userInfo}, () => {
           // if the user is being automatically logged in but it's not
           // active anymore (eg: has been banned)
@@ -145,10 +138,6 @@ export default class Status extends React.Component {
           this.setState({intervalId});
           window.addEventListener("resize", this.updateScreenWidth);
           this.updateSpinner();
-        }
-        // would be better to show a different button in the status page
-        if (isValid && !is_verified && settings.mobile_phone_verification) {
-          verifyMobileNumber(true);
         }
       }
     }
@@ -238,8 +227,8 @@ export default class Status extends React.Component {
         return;
       }
     }
+    setUserData(initialState.userData);
     logout(cookies, orgSlug, userAutoLogin);
-    setUserData({});
     setLoading(false);
     toast.success(logoutSuccess);
   };
@@ -878,10 +867,8 @@ Status.propTypes = {
     search: PropTypes.string,
   }).isRequired,
   isAuthenticated: PropTypes.bool,
-  verifyMobileNumber: PropTypes.func.isRequired,
   settings: PropTypes.shape({
     mobile_phone_verification: PropTypes.bool,
   }).isRequired,
-  setIsActive: PropTypes.func.isRequired,
   setUserData: PropTypes.func.isRequired,
 };

@@ -46,7 +46,13 @@ describe("actions testing", () => {
   it("should create actions to set current organization", () => {
     const orgConfig = merge(testOrgConfig[0], testOrgConfig[2]);
     const orgConfig2 = merge(testOrgConfig[0], testOrgConfig[1]);
-
+    const userData = {
+      is_active: true,
+      is_verified: true,
+    };
+    orgConfig.userData = userData;
+    orgConfig2.userData = userData;
+    testOrgConfig[0].userData = userData;
     const expectedActions = [
       {
         type: types.SET_LANGUAGE,
@@ -62,7 +68,7 @@ describe("actions testing", () => {
       },
       {
         type: types.SET_USER_DATA,
-        payload: {},
+        payload: userData,
       },
       {
         type: types.SET_LANGUAGE,
@@ -78,7 +84,7 @@ describe("actions testing", () => {
       },
       {
         type: types.SET_USER_DATA,
-        payload: {},
+        payload: userData,
       },
       {
         type: types.SET_LANGUAGE,
@@ -94,14 +100,10 @@ describe("actions testing", () => {
       },
       {
         type: types.SET_USER_DATA,
-        payload: {},
+        payload: userData,
       },
       {
         type: types.SET_AUTHENTICATION_STATUS,
-        payload: true,
-      },
-      {
-        type: types.IS_ACTIVE,
         payload: true,
       },
       {

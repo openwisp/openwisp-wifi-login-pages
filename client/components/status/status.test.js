@@ -9,12 +9,12 @@ import getConfig from "../../utils/get-config";
 import logError from "../../utils/log-error";
 import tick from "../../utils/tick";
 import Status from "./status";
-import validateToken from "../../utils/validateToken";
+import validateToken from "../../utils/validate-token";
 
 jest.mock("axios");
 jest.mock("../../utils/get-config");
 jest.mock("../../utils/log-error");
-jest.mock("../../utils/validateToken");
+jest.mock("../../utils/validate-token");
 logError.mockImplementation(jest.fn());
 
 const defaultConfig = getConfig("default");
@@ -57,8 +57,6 @@ const createTestProps = (props) => {
       search: "?macaddr=4e:ed:11:2b:17:ae",
     },
     logout: jest.fn(),
-    verifyMobileNumber: jest.fn(),
-    setIsActive: jest.fn(),
     setUserData: jest.fn(),
     userData: {},
     ...props,
@@ -160,6 +158,10 @@ describe("<Status /> interactions", () => {
     await tick();
     expect(wrapper.instance().state.activeSessions.length).toBe(1);
     expect(wrapper.instance().props.logout).toHaveBeenCalled();
+    expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith({
+      is_active: true,
+      is_verified: true,
+    });
   });
 
   it("test componentDidMount lifecycle method", async () => {
@@ -241,8 +243,9 @@ describe("<Status /> interactions", () => {
       is_active: true,
       phone_number: "",
     };
+    const setLoading = jest.fn();
     wrapper = shallow(<Status {...props} />, {
-      context: {setLoading: jest.fn()},
+      context: {setLoading},
     });
     wrapper.setProps({userData});
     await tick();
@@ -251,7 +254,7 @@ describe("<Status /> interactions", () => {
     );
     expect(Status.prototype.getUserActiveRadiusSessions).toHaveBeenCalled();
     expect(wrapper.instance().state.activeSessions.length).toBe(1);
-
+    expect(setLoading.mock.calls.length).toBe(2);
     wrapper.setProps({
       location: {
         search: "",
@@ -598,9 +601,9 @@ describe("<Status /> interactions", () => {
     };
     wrapper.setProps({userData});
     const handleLogout = jest.spyOn(wrapper.instance(), "handleLogout");
-    const setIsActiveMock = wrapper.instance().props.setIsActive.mock;
+    const setUserDataMock = wrapper.instance().props.setUserData.mock;
     await tick();
-    expect(setIsActiveMock.calls.length).toBe(1);
+    expect(setUserDataMock.calls.length).toBe(1);
     expect(handleLogout).toHaveBeenCalledWith(false);
   });
   it("should toggle logout modal", () => {

@@ -7,7 +7,7 @@ import getParameterByName from "./get-parameter-by-name";
 import renderAdditionalInfo from "./render-additional-info";
 import shouldLinkBeShown from "./should-link-be-shown";
 import tick from "./tick";
-import validateToken from "./validateToken";
+import validateToken from "./validate-token";
 
 jest.mock("axios");
 
@@ -143,7 +143,7 @@ describe("Validate Token tests", () => {
       orgSlug: "default",
       cookies: new Cookies(),
       setUserData: jest.fn(),
-      userData: {},
+      userData: {is_active: true, is_verified: true},
       logout: jest.fn(),
     };
   };
@@ -178,9 +178,9 @@ describe("Validate Token tests", () => {
     expect(result).toBe(true);
     expect(logout.mock.calls.length).toBe(0);
   });
-  it("should return true without calling api if userData is present", async () => {
+  it("should return true without calling api if radius token is present", async () => {
     const {orgSlug, cookies, setUserData, userData, logout} = getArgs();
-    userData.response_code = "AUTH_TOKEN_VALIDATION_SUCCESSFUL";
+    userData.radius_user_token = "token";
     const result = await validateToken(cookies, orgSlug, setUserData, userData);
     expect(axios.mock.calls.length).toBe(0);
     expect(result).toBe(true);
@@ -208,7 +208,6 @@ describe("Validate Token tests", () => {
     );
     expect(axios.mock.calls.length).toBe(1);
     expect(result).toBe(false);
-    expect(setUserData.mock.calls.length).toBe(0);
-    expect(logout.mock.calls.length).toBe(1);
+    expect(setUserData.mock.calls.length).toBe(1);
   });
 });

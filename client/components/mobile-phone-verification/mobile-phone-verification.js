@@ -21,7 +21,8 @@ import logError from "../../utils/log-error";
 import handleChange from "../../utils/handle-change";
 import Contact from "../contact-box";
 import handleSession from "../../utils/session";
-import validateToken from "../../utils/validateToken";
+import validateToken from "../../utils/validate-token";
+import {initialState} from "../../reducers/organization";
 
 export default class MobilePhoneVerification extends React.Component {
   phoneTokenSentKey = "owPhoneTokenSent";
@@ -41,15 +42,7 @@ export default class MobilePhoneVerification extends React.Component {
   }
 
   async componentDidMount() {
-    const {
-      cookies,
-      orgSlug,
-      verifyMobileNumber,
-      settings,
-      setIsActive,
-      setUserData,
-      logout,
-    } = this.props;
+    const {cookies, orgSlug, settings, setUserData, logout} = this.props;
     let {userData} = this.props;
     const {setLoading} = this.context;
     setLoading(true);
@@ -62,10 +55,8 @@ export default class MobilePhoneVerification extends React.Component {
     );
     if (isValid) {
       ({userData} = this.props);
-      const {phone_number, is_verified, is_active} = userData;
+      const {phone_number, is_verified} = userData;
       this.setState({phone_number});
-      verifyMobileNumber(!is_verified && settings.mobile_phone_verification);
-      setIsActive(is_active);
       // send token via SMS only if user needs to verify
       if (!is_verified && settings.mobile_phone_verification) {
         await this.createPhoneToken();
@@ -81,13 +72,7 @@ export default class MobilePhoneVerification extends React.Component {
   handleSubmit(event) {
     const {setLoading} = this.context;
     event.preventDefault();
-    const {
-      orgSlug,
-      verifyMobileNumber,
-      cookies,
-      setIsActive,
-      setUserData,
-    } = this.props;
+    const {orgSlug, cookies, setUserData, userData} = this.props;
     const {code, errors} = this.state;
     this.setState({errors: {...errors, code: ""}});
     const url = verifyMobilePhoneTokenUrl(orgSlug);
@@ -109,11 +94,10 @@ export default class MobilePhoneVerification extends React.Component {
         this.setState({
           errors: {},
         });
-        // to validate User in the status page
-        setUserData({});
+        userData.is_active = true;
+        userData.is_verified = true;
+        setUserData(userData);
         setLoading(false);
-        verifyMobileNumber(false);
-        setIsActive(true);
       })
       .catch((error) => {
         const {data} = error.response;
@@ -174,8 +158,9 @@ export default class MobilePhoneVerification extends React.Component {
   }
 
   async handleLogout() {
-    const {orgSlug, logout, cookies} = this.props;
+    const {orgSlug, logout, cookies, setUserData} = this.props;
     logout(cookies, orgSlug);
+    setUserData(initialState.userData);
     toast.success(logoutSuccess);
   }
 
@@ -320,8 +305,6 @@ MobilePhoneVerification.propTypes = {
       logout: PropTypes.shape().isRequired,
     }).isRequired,
   }).isRequired,
-  verifyMobileNumber: PropTypes.func.isRequired,
-  setIsActive: PropTypes.func.isRequired,
   userData: PropTypes.object.isRequired,
   setUserData: PropTypes.func.isRequired,
 };
