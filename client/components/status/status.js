@@ -598,8 +598,14 @@ export default class Status extends React.Component {
       captivePortalLogoutForm,
       isAuthenticated,
     } = this.props;
-    const {content, links, buttons, session_info, user_info, logout_modal} =
-      statusPage;
+    const {
+      content,
+      links,
+      buttons,
+      session_info,
+      user_info,
+      logout_modal,
+    } = statusPage;
     const {
       username,
       password,

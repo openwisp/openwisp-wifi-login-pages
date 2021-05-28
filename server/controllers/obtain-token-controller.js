@@ -53,8 +53,11 @@ const obtainToken = (req, res) => {
           Logger.error(error);
           try {
             Logger.warn(`status code: ${error.response.status}`);
-            // inactive user recognized
-            if (error.response.status === 401) {
+            // unverified user recognized
+            if (
+              error.response.status === 401 &&
+              error.response.data.is_active
+            ) {
               return sendCookies(username, error.response, conf, res);
             }
             // forward error
