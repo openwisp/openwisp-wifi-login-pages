@@ -5,7 +5,7 @@ import qs from "qs";
 
 import config from "../config.json";
 import defaultConfig from "../utils/default-config";
-import logInternalError from "../utils/log-internal-error";
+import Logger from "../utils/logger";
 
 const sendCookies = (username, response, conf, res) => {
   // save token in signed cookie
@@ -50,11 +50,10 @@ const obtainToken = (req, res) => {
           return sendCookies(username, response, conf, res);
         })
         .catch((error) => {
-          if (error.response && error.response.status === 500)
-            logInternalError(error);
-          console.log(`status code: ${error.response.status}`);
+          Logger.error(error);
           try {
-            // inactive or unverified user recognized
+            Logger.warn(`status code: ${error.response.status}`);
+            // unverified user recognized
             if (
               error.response.status === 401 &&
               error.response.data.is_active
@@ -67,8 +66,7 @@ const obtainToken = (req, res) => {
               .type("application/json")
               .send(error.response.data);
           } catch (err) {
-            logInternalError(error);
-            console.error(err);
+            Logger.error(err);
             return res.status(500).type("application/json").send({
               detail: "Internal server error",
             });

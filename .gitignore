@@ -38,3 +38,6 @@ client/assets/*
 !client/assets/fonts/
 server/config.json
 compilation-stats.json
+
+#logs
+logs/

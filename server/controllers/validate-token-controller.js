@@ -5,7 +5,7 @@ import qs from "qs";
 
 import config from "../config.json";
 import defaultConfig from "../utils/default-config";
-import logInternalError from "../utils/log-internal-error";
+import Logger from "../utils/logger";
 
 const validateToken = (req, res) => {
   const reqOrg = req.params.organization;
@@ -40,8 +40,7 @@ const validateToken = (req, res) => {
             .send(response.data);
         })
         .catch((error) => {
-          if (error.response && error.response.status === 500)
-            logInternalError(error);
+          Logger.error(error);
           // forward error
           try {
             res
@@ -49,7 +48,7 @@ const validateToken = (req, res) => {
               .type("application/json")
               .send(error.response.data);
           } catch (err) {
-            logInternalError(error);
+            Logger.error(err);
             res.status(500).type("application/json").send({
               response_code: "INTERNAL_SERVER_ERROR",
             });
