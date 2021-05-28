@@ -5,9 +5,12 @@ import express from "express";
 import net from "net";
 import path from "path";
 import routes from "./routes";
+import morganMiddleware from "./morganMiddleware";
+import logger from "./utils/logger";
 
 const app = express();
 app.use(compression());
+app.use(morganMiddleware);
 app.use(express.static(path.join(process.cwd(), "dist")));
 app.use(cookieParser());
 app.use(cookiesMiddleware());
@@ -43,15 +46,13 @@ const nextFreePort = (port, callback) => {
 // If a port was passed as an argument, use that port
 if (process.env.SERVER !== undefined) {
   app.listen(process.env.SERVER, () => {
-    // eslint-disable-next-line no-console
-    console.log(`Server started on port ${process.env.SERVER}`);
+    logger.info(`Server started on port ${process.env.SERVER}`);
   });
 } else {
   // Otherwise, find the next free port starting at the default port
   nextFreePort(DEFAULT_PORT, (port) => {
     app.listen(port, () => {
-      // eslint-disable-next-line no-console
-      console.log(`Server started on port ${port}`);
+      logger.info(`Server started on port ${port}`);
     });
   });
 }

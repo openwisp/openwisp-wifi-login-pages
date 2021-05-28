@@ -5,6 +5,7 @@
   "main": "src/index.js",
   "dependencies": {
     "@babel/register": "^7.10.1",
+    "@types/morgan": "^1.9.2",
     "autoprefixer": "^9.8.0",
     "axios": "^0.21.1",
     "compression": "^1.7.4",
@@ -18,6 +19,7 @@
     "js-yaml": "^3.14.0",
     "jsdom": "^16.4.0",
     "marked": "^2.0.0",
+    "morgan": "^1.10.0",
     "nodemon": "^2.0.4",
     "prop-types": "^15.7.2",
     "qs": "^6.9.4",
@@ -33,7 +35,8 @@
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "tsutils": "^3.17.1",
-    "universal-cookie-express": "^4.0.3"
+    "universal-cookie-express": "^4.0.3",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.1",
