@@ -221,7 +221,6 @@ describe("<Login /> interactions", () => {
         expect(wrapper.instance().props.authenticate.mock.calls.length).toBe(0);
         expect(lastConsoleOutuput).not.toBe(null);
         expect(spyToast.mock.calls.length).toBe(1);
-        lastConsoleOutuput = null;
       })
       .then(() => {
         return wrapper
@@ -233,7 +232,6 @@ describe("<Login /> interactions", () => {
             ).toBe(0);
             expect(lastConsoleOutuput).not.toBe(null);
             expect(spyToast.mock.calls.length).toBe(2);
-            lastConsoleOutuput = null;
           });
       })
       .then(() => {
@@ -260,7 +258,6 @@ describe("<Login /> interactions", () => {
             ).toBe(1);
             expect(lastConsoleOutuput).toBe(null);
             expect(spyToast.mock.calls.length).toBe(3);
-            lastConsoleOutuput = null;
           });
       });
   });
@@ -417,7 +414,6 @@ describe("<Login /> interactions", () => {
         expect(lastConsoleOutuput).not.toBe(null);
         expect(errorMethod).toHaveBeenCalled();
         expect(errorMethod).toBeCalledWith("Internal server error");
-        lastConsoleOutuput = null;
       });
   });
   it("should show error toast when connection refused or timeout", async () => {
@@ -442,6 +438,5 @@ describe("<Login /> interactions", () => {
     expect(lastConsoleOutuput).not.toBe(null);
     expect(errorMethod).toHaveBeenCalled();
     expect(errorMethod).toBeCalledWith("Login error occurred.");
-    lastConsoleOutuput = null;
   });
 });
