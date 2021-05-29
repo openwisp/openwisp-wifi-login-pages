@@ -112,13 +112,10 @@ export default class Registration extends React.Component {
         });
         // SMS verification flow
         if (settings.mobile_phone_verification) {
-          userData.is_active = true;
-          userData.is_verified = false;
-          setUserData(userData);
+          setUserData({...userData, is_active: true, is_verified: false});
           // simple sign up flow
         } else {
-          userData.is_active = true;
-          setUserData(userData);
+          setUserData({...userData, is_active: true});
           toast.success(registerSuccess, {
             toastId: mainToastId,
           });

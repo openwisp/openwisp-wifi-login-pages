@@ -161,6 +161,7 @@ describe("<Status /> interactions", () => {
     expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith({
       is_active: true,
       is_verified: true,
+      justAuthenticated: true,
     });
   });
 
@@ -432,6 +433,53 @@ describe("<Status /> interactions", () => {
     expect(wrapper.instance().props.cookies.get("default_macaddr")).toBe(
       "4e:ed:11:2b:17:ae",
     );
+  });
+  it("should not perform captive portal login (submit loginFormRef), if user is already authenticated", async () => {
+    validateToken.mockReturnValue(true);
+    props = createTestProps();
+    props.location.search = "";
+    props.userData = {
+      response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+      radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
+      username: "tester",
+      email: "tester@tester.com",
+      is_active: true,
+      is_verified: true,
+      phone_number: "+237672279436",
+    };
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+    });
+    const spyFn = jest.fn();
+    wrapper.instance().loginFormRef.current = {submit: spyFn};
+    await tick();
+    expect(spyFn.mock.calls.length).toBe(0);
+  });
+  it("should perform captive portal login (submit loginFormRef), if user is just authenticated", async () => {
+    validateToken.mockReturnValue(true);
+    props = createTestProps();
+    props.location.search = "";
+    props.userData = {
+      response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+      radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
+      username: "tester",
+      email: "tester@tester.com",
+      is_active: true,
+      is_verified: true,
+      phone_number: "+237672279436",
+      justAuthenticated: true,
+    };
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+    });
+    const spyFn = jest.fn();
+    wrapper.instance().loginFormRef.current = {submit: spyFn};
+    const setUserDataMock = wrapper.instance().props.setUserData.mock;
+    await tick();
+    expect(spyFn.mock.calls.length).toBe(1);
+    expect(setUserDataMock.calls.pop()).toEqual([
+      {...props.userData, justAuthenticated: false},
+    ]);
   });
 
   it("test active session table", async () => {

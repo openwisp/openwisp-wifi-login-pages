@@ -23,6 +23,7 @@ const setOrganization = (slug, cookies) => {
       config.userData = {
         is_active: true,
         is_verified: true,
+        justAuthenticated: true,
       };
       dispatch({
         type: SET_LANGUAGE,
@@ -41,6 +42,7 @@ const setOrganization = (slug, cookies) => {
         payload: {
           is_active: true,
           is_verified: true,
+          justAuthenticated: true,
         },
       });
       const autoLogin = config.auto_login;

@@ -300,7 +300,7 @@ describe("<Login /> interactions", () => {
     const setUserDataMock = login.props().setUserData.mock;
     expect(setUserDataMock.calls.length).toBe(1);
     expect(setUserDataMock.calls.pop()).toEqual([
-      {is_active: true, is_verified: false},
+      {is_active: true, is_verified: false, justAuthenticated: true},
     ]);
     const authenticateMock = login.props().authenticate.mock;
     expect(authenticateMock.calls.length).toBe(1);
@@ -364,7 +364,7 @@ describe("<Login /> interactions", () => {
     const setUserDataMock = wrapper.instance().props.setUserData.mock;
     expect(setUserDataMock.calls.length).toBe(1);
     expect(setUserDataMock.calls.pop()).toEqual([
-      {is_active: false, is_verified: true, username: ""},
+      {is_active: false, is_verified: true, justAuthenticated: true},
     ]);
     expect(wrapper.instance().state.errors).toEqual({
       username: "",
@@ -448,5 +448,33 @@ describe("<Login /> interactions", () => {
     expect(lastConsoleOutuput).not.toBe(null);
     expect(errorMethod).toHaveBeenCalled();
     expect(errorMethod).toBeCalledWith("Login error occurred.");
+  });
+  it("should set justAuthenticated on login success", async () => {
+    axios.mockImplementationOnce(() => {
+      return Promise.reject({
+        response: {
+          status: 401,
+          statusText: "unauthorized",
+          data: {},
+        },
+      });
+    });
+    props.settings = {mobile_phone_verification: true};
+    wrapper = mountComponent(props);
+    const login = wrapper.find(Login);
+    const handleSubmit = jest.spyOn(login.instance(), "handleSubmit");
+    wrapper.find("#username").simulate("change", {
+      target: {value: "+393660011333", name: "username"},
+    });
+    wrapper
+      .find("#password")
+      .simulate("change", {target: {value: "test password", name: "password"}});
+    const event = {preventDefault: () => {}};
+    wrapper.find("form").simulate("submit", event);
+    await tick();
+    expect(handleSubmit).toHaveBeenCalled();
+    const setUserDataMock = login.props().setUserData.mock;
+    expect(setUserDataMock.calls.length).toBe(1);
+    expect(setUserDataMock.calls.pop()).toEqual([{justAuthenticated: true}]);
   });
 });

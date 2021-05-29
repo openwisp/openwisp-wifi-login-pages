@@ -194,12 +194,12 @@ export default class Login extends React.Component {
       }),
     })
       .then((res = {}) => {
-        setUserData(res.data);
+        setUserData({...res.data, justAuthenticated: true});
         return handleAuthentication(res.data);
       })
       .catch((error) => {
         const {data} = error.response;
-        setUserData(data);
+        setUserData({...data, justAuthenticated: true});
         if (
           error.response.status === 401 &&
           settings.mobile_phone_verification &&

@@ -19,6 +19,7 @@ export const initialState = {
   userData: {
     is_active: true,
     is_verified: true,
+    justAuthenticated: true,
   },
   settings: {
     mobile_phone_verification: undefined,
