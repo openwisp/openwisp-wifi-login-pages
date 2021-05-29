@@ -213,6 +213,7 @@ export default class Login extends React.Component {
             : getErrorText(error, loginError);
         logError(error, errorText);
         toast.error(errorText);
+        if (data.is_active === false) data.username = "";
         this.setState({
           errors: {
             ...errors,

@@ -332,7 +332,7 @@ describe("<Login /> interactions", () => {
     expect(wrapper.find("#username").length).toEqual(1);
     expect(wrapper.find(".row.phone-number").length).toEqual(0);
   });
-  it("should not execute authenticate and must execute setUserData if user is inactive", async () => {
+  it("should execute setUserData and must not show any form errors if user is inactive", async () => {
     props.settings = {mobile_phone_verification: true};
     wrapper = shallow(<Login {...props} />, {context: loadingContextValue});
 
@@ -364,7 +364,7 @@ describe("<Login /> interactions", () => {
     const setUserDataMock = wrapper.instance().props.setUserData.mock;
     expect(setUserDataMock.calls.length).toBe(1);
     expect(setUserDataMock.calls.pop()).toEqual([
-      {is_active: false, is_verified: true},
+      {is_active: false, is_verified: true, username: ""},
     ]);
     expect(wrapper.instance().state.errors).toEqual({
       username: "",
