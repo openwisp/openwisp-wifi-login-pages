@@ -49,6 +49,7 @@ describe("actions testing", () => {
     const userData = {
       is_active: true,
       is_verified: true,
+      justAuthenticated: true,
     };
     orgConfig.userData = userData;
     orgConfig2.userData = userData;

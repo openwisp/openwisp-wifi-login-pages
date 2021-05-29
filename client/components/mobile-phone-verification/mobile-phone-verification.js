@@ -94,9 +94,12 @@ export default class MobilePhoneVerification extends React.Component {
         this.setState({
           errors: {},
         });
-        userData.is_active = true;
-        userData.is_verified = true;
-        setUserData(userData);
+        setUserData({
+          ...userData,
+          is_active: true,
+          is_verified: true,
+          justAuthenticated: true,
+        });
         setLoading(false);
       })
       .catch((error) => {

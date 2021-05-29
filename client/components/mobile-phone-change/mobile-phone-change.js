@@ -85,9 +85,7 @@ class MobilePhoneChange extends React.Component {
         this.setState({
           errors: {},
         });
-        userData.is_verified = false;
-        userData.phone_number = phone_number;
-        setUserData(userData);
+        setUserData({...userData, is_verified: false, phone_number});
         setLoading(false);
         toast.info(getText(text.token_sent, language));
         self.props.history.push(`/${orgSlug}/mobile-phone-verification`);

@@ -130,7 +130,7 @@ describe("Mobile Phone Token verification: standard flow", () => {
     expect(toast.info.mock.calls.length).toBe(1);
   });
 
-  it("should verify token successfully", async () => {
+  it("should verify token successfully and must call setUserData", async () => {
     jest.spyOn(MobilePhoneVerification.prototype, "handleSubmit");
     validateToken.mockReturnValue(true);
     wrapper = createShallowComponent(props);
@@ -152,9 +152,14 @@ describe("Mobile Phone Token verification: standard flow", () => {
     wrapper.find("form").simulate("submit", event);
     await tick();
     expect(setUserDataMock.calls.length).toBe(1);
-    userData.is_active = true;
-    userData.is_verified = true;
-    expect(setUserDataMock.calls.pop()).toEqual([userData]);
+    expect(setUserDataMock.calls.pop()).toEqual([
+      {
+        ...userData,
+        is_active: true,
+        is_verified: true,
+        justAuthenticated: true,
+      },
+    ]);
     expect(
       MobilePhoneVerification.prototype.handleSubmit.mock.calls.length,
     ).toBe(1);
@@ -231,13 +236,12 @@ describe("Mobile Phone Token verification: corner cases", () => {
   });
 
   it("should not proceed if user is already verified", async () => {
-    userData.is_active = true;
-    userData.is_verified = true;
-
     jest.spyOn(MobilePhoneVerification.prototype, "createPhoneToken");
     validateToken.mockReturnValue(true);
     wrapper = createShallowComponent(props);
-    wrapper.setProps({userData});
+    wrapper.setProps({
+      userData: {...userData, is_active: true, is_verified: true},
+    });
     await tick();
     expect(
       MobilePhoneVerification.prototype.createPhoneToken,

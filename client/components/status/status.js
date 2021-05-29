@@ -89,6 +89,7 @@ export default class Status extends React.Component {
       );
       setLoading(false);
       if (isValid) {
+        const {justAuthenticated} = userData;
         ({userData} = this.props);
         const {
           radius_user_token: password,
@@ -127,9 +128,14 @@ export default class Status extends React.Component {
               if (this.loginFormRef && this.loginFormRef.current)
                 this.loginFormRef.current.submit();
             }
-          } else if (this.loginFormRef && this.loginFormRef.current)
+          } else if (
+            this.loginFormRef &&
+            this.loginFormRef.current &&
+            justAuthenticated
+          ) {
             this.loginFormRef.current.submit();
-
+            setUserData({...userData, justAuthenticated: false});
+          }
           await this.getUserActiveRadiusSessions();
           await this.getUserPassedRadiusSessions();
           const intervalId = setInterval(() => {
