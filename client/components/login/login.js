@@ -222,9 +222,10 @@ export default class Login extends React.Component {
         ) {
           return handleAuthentication(true);
         }
-        const errorText = data.is_active
-          ? getErrorText(error, loginError)
-          : getErrorText(error, userInactiveError);
+        const errorText =
+          data.is_active === false
+            ? getErrorText(error, userInactiveError)
+            : getErrorText(error, loginError);
         logError(error, errorText);
         toast.error(errorText);
         this.setState({
