@@ -420,7 +420,7 @@ client:
 
     captive_portal_login_form:
       method: post
-      action: http://localhost/
+      action: http://localhost:8000/captive-portal-mock/login/
       fields:
         username: auth_user
         password: auth_pass
@@ -435,7 +435,7 @@ client:
 
     captive_portal_logout_form:
       method: post
-      action: http://localhost:8081
+      action: http://localhost:8000/captive-portal-mock/logout/
       fields:
         id: logout_id
       additional_fields: []
