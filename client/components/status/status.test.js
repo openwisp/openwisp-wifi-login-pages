@@ -691,4 +691,28 @@ describe("<Status /> interactions", () => {
     wrapper.find(".modal-buttons button:last-child").simulate("click", {});
     expect(handleLogout).toHaveBeenCalledWith(false);
   });
+  it("should set hasMoreSessions to false if link is not in response headers", async () => {
+    axios.mockImplementationOnce(() => {
+      return Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: [
+          {
+            session_id: 1,
+            start_time: "2020-09-08T00:22:28-04:00",
+            stop_time: "2020-09-08T00:22:29-04:00",
+          },
+        ],
+        headers: {},
+      });
+    });
+    const prop = createTestProps();
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    wrapper.instance().getUserPassedRadiusSessions();
+    await tick();
+    expect(wrapper.instance().state.hasMoreSessions).toEqual(false);
+  });
 });

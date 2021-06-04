@@ -42,7 +42,7 @@ export default class Status extends React.Component {
       loggedOut: false,
       userInfo: {},
       currentPage: 1,
-      hasMoreSessions: true,
+      hasMoreSessions: false,
       intervalId: null,
       screenWidth: window.innerWidth,
       loadSpinner: true,
@@ -175,6 +175,7 @@ export default class Status extends React.Component {
         url,
         params,
       });
+      const {headers} = response;
       if (params.is_open) {
         options.activeSessions = response.data;
         options.sessionsToLogout = response.data;
@@ -183,12 +184,8 @@ export default class Status extends React.Component {
         options.pastSessions = pastSessions.concat(response.data);
         options.currentPage = params.page;
       }
-      if (
-        "link" in response.headers &&
-        !response.headers.link.includes("next")
-      ) {
-        options.hasMoreSessions = false;
-      }
+      options.hasMoreSessions =
+        "link" in headers && headers.link.includes("next");
       this.setState(options);
     } catch (error) {
       logout(cookies, orgSlug);
