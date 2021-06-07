@@ -11,6 +11,7 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import "react-toastify/dist/ReactToastify.css";
 
+import PasswordToggleIcon from "../../utils/password-toggle";
 import {
   loginApiUrl,
   loginError,
@@ -40,6 +41,7 @@ export default class Login extends React.Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.passwordToggleRef = React.createRef();
   }
 
   componentDidMount() {
@@ -320,7 +322,9 @@ export default class Login extends React.Component {
                       input_fields.password.pattern_description,
                       language,
                     )}
+                    ref={this.passwordToggleRef}
                   />
+                  <PasswordToggleIcon inputRef={this.passwordToggleRef} />
                 </div>
 
                 <div className="row remember-me">

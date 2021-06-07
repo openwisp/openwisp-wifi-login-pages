@@ -9,7 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import LoadingContext from "../../utils/loading-context";
-
+import PasswordToggleIcon from "../../utils/password-toggle";
 import {
   mainToastId,
   passwordConfirmError,
@@ -43,6 +43,8 @@ export default class Registration extends React.Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.passwordToggleRef = React.createRef();
+    this.confirmPasswordToggleRef = React.createRef();
   }
 
   handleChange(event) {
@@ -438,7 +440,9 @@ export default class Registration extends React.Component {
                     )}
                     pattern={input_fields.password.pattern}
                     title={getText(input_fields.password.pattern_description)}
+                    ref={this.passwordToggleRef}
                   />
+                  <PasswordToggleIcon inputRef={this.passwordToggleRef} />
                 </div>
 
                 <div className="row password-confirm">
@@ -470,6 +474,10 @@ export default class Registration extends React.Component {
                       input_fields.password.pattern_description,
                       language,
                     )}
+                    ref={this.confirmPasswordToggleRef}
+                  />
+                  <PasswordToggleIcon
+                    inputRef={this.confirmPasswordToggleRef}
                   />
                 </div>
               </div>

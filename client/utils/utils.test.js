@@ -1,5 +1,7 @@
+import React from "react";
 import axios from "axios";
 import {Cookies} from "react-cookie";
+import {shallow, mount} from "enzyme";
 import authenticate from "./authenticate";
 import isInternalLink from "./check-internal-links";
 import customMerge from "./custom-merge";
@@ -8,6 +10,7 @@ import renderAdditionalInfo from "./render-additional-info";
 import shouldLinkBeShown from "./should-link-be-shown";
 import tick from "./tick";
 import validateToken from "./validate-token";
+import PasswordToggleIcon from "./password-toggle";
 
 jest.mock("axios");
 
@@ -209,5 +212,47 @@ describe("Validate Token tests", () => {
     expect(axios.mock.calls.length).toBe(1);
     expect(result).toBe(false);
     expect(setUserData.mock.calls.length).toBe(1);
+  });
+});
+describe("password-toggle tests", () => {
+  const Component = React.forwardRef((props, ref) => (
+    <>
+      <input type="password" ref={ref} />
+      <PasswordToggleIcon inputRef={ref} />
+    </>
+  ));
+  const mountComponent = (ref) => {
+    return mount(<Component ref={ref} />);
+  };
+  it("should show and hide password", () => {
+    const passwordRef = React.createRef();
+    const component = mountComponent(passwordRef);
+    const toggleDiv = component.find("div");
+    expect(passwordRef.current.getAttribute("type")).toEqual("password");
+    expect(toggleDiv.instance().children[0].getAttribute("class")).toEqual(
+      "eye",
+    );
+    toggleDiv.simulate("click");
+    expect(passwordRef.current.getAttribute("type")).toEqual("text");
+    expect(toggleDiv.instance().children[0].getAttribute("class")).toEqual(
+      "eye-slash",
+    );
+  });
+  it("should call handleClick", () => {
+    const wrapper = shallow(
+      <PasswordToggleIcon inputRef={React.createRef()} />,
+    );
+    const setAttributeMock = jest.fn();
+    const getAttributeMock = jest.fn();
+    const inputRef = {
+      current: {
+        getAttribute: getAttributeMock,
+        setAttribute: setAttributeMock,
+      },
+    };
+    wrapper.instance().handleClick(inputRef);
+    expect(getAttributeMock).toHaveBeenCalledWith("type");
+    expect(setAttributeMock).toHaveBeenCalled();
+    expect(setAttributeMock).toHaveBeenCalledWith("type", "password");
   });
 });

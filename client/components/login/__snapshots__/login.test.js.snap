@@ -152,6 +152,15 @@ exports[`<Login /> interactions phone_number field should be present if mobile p
             type="password"
             value=""
           />
+          <div
+            class=""
+            role="button"
+            tabindex="0"
+          >
+            <i
+              class="eye"
+            />
+          </div>
         </div>
         <div
           class="row remember-me"
@@ -416,6 +425,15 @@ exports[`<Login /> interactions should not show phone_number field if auto_switc
             type="password"
             value=""
           />
+          <div
+            class=""
+            role="button"
+            tabindex="0"
+          >
+            <i
+              class="eye"
+            />
+          </div>
         </div>
         <div
           class="row remember-me"
@@ -680,6 +698,15 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
             type="password"
             value=""
           />
+          <div
+            class=""
+            role="button"
+            tabindex="0"
+          >
+            <i
+              class="eye"
+            />
+          </div>
         </div>
         <div
           class="row remember-me"
@@ -926,6 +953,15 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
               type="password"
               value=""
             />
+            <PasswordToggleIcon
+              inputRef={
+                Object {
+                  "current": null,
+                }
+              }
+              isVisible={false}
+              parentClassName=""
+            />
           </div>
           <div
             className="row remember-me"
@@ -1135,6 +1171,15 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
               title="password must be a minimum of 6 characters"
               type="password"
               value=""
+            />
+            <PasswordToggleIcon
+              inputRef={
+                Object {
+                  "current": null,
+                }
+              }
+              isVisible={false}
+              parentClassName=""
             />
           </div>
           <div

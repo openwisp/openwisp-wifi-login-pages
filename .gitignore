@@ -34,6 +34,7 @@ yarn-error.log*
 client/config.json
 !client/assets/
 client/assets/*
+!client/assets/**.svg
 !client/assets/default/
 !client/assets/fonts/
 server/config.json

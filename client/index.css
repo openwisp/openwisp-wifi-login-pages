@@ -265,3 +265,19 @@ h1 {
     font-size: 16px;
   }
 }
+.eye {
+  content: url("assets/eye.svg");
+  width: 30px;
+  float: right;
+  margin-top: -35px;
+  margin-right: 5px;
+  position: relative;
+}
+.eye-slash {
+  content: url("assets/eye-slash.svg");
+  width: 30px;
+  float: right;
+  margin-top: -35px;
+  margin-right: 5px;
+  position: relative;
+}

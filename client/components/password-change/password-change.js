@@ -6,6 +6,7 @@ import qs from "qs";
 import React from "react";
 import {toast} from "react-toastify";
 import {Cookies} from "react-cookie";
+import PasswordToggleIcon from "../../utils/password-toggle";
 import {
   passwordChangeApiUrl,
   passwordChangeError,
@@ -30,6 +31,8 @@ export default class PasswordChange extends React.Component {
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.passwordToggleRef = React.createRef();
+    this.confirmPasswordToggleRef = React.createRef();
   }
 
   handleSubmit(e) {
@@ -129,7 +132,9 @@ export default class PasswordChange extends React.Component {
                   passwordChange.input_fields.password1.pattern_description,
                 )}
                 onChange={(e) => this.handleChange(e)}
+                ref={this.passwordToggleRef}
               />
+              <PasswordToggleIcon inputRef={this.passwordToggleRef} />
             </div>
 
             <div className="row password-confirm">
@@ -160,7 +165,9 @@ export default class PasswordChange extends React.Component {
                   passwordChange.input_fields.password1.pattern_description,
                 )}
                 onChange={(e) => this.handleChange(e)}
+                ref={this.confirmPasswordToggleRef}
               />
+              <PasswordToggleIcon inputRef={this.confirmPasswordToggleRef} />
             </div>
 
             <div className="row submit">
