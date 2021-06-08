@@ -7,6 +7,7 @@ import {toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Contact from "../contact-box";
 import LoadingContext from "../../utils/loading-context";
+import PasswordToggleIcon from "../../utils/password-toggle";
 
 import {confirmApiUrl, passwordConfirmError} from "../../constants";
 import getErrorText from "../../utils/get-error-text";
@@ -25,6 +26,8 @@ export default class PasswordConfirm extends React.Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.passwordToggleRef = React.createRef();
+    this.confirmPasswordToggleRef = React.createRef();
   }
 
   handleChange(event) {
@@ -158,6 +161,12 @@ export default class PasswordConfirm extends React.Component {
                       inputFields.password.pattern_description,
                       language,
                     )}
+                    ref={this.passwordToggleRef}
+                  />
+                  <PasswordToggleIcon
+                    inputRef={this.passwordToggleRef}
+                    language={language}
+                    orgSlug={orgSlug}
                   />
                 </div>
 
@@ -190,6 +199,12 @@ export default class PasswordConfirm extends React.Component {
                       inputFields.password.pattern_description,
                       language,
                     )}
+                    ref={this.confirmPasswordToggleRef}
+                  />
+                  <PasswordToggleIcon
+                    inputRef={this.confirmPasswordToggleRef}
+                    language={language}
+                    orgSlug={orgSlug}
                   />
                 </div>
               </div>

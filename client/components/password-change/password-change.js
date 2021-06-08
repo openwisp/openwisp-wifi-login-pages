@@ -6,6 +6,7 @@ import qs from "qs";
 import React from "react";
 import {toast} from "react-toastify";
 import {Cookies} from "react-cookie";
+import PasswordToggleIcon from "../../utils/password-toggle";
 import {
   passwordChangeApiUrl,
   passwordChangeError,
@@ -30,6 +31,8 @@ export default class PasswordChange extends React.Component {
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.passwordToggleRef = React.createRef();
+    this.confirmPasswordToggleRef = React.createRef();
   }
 
   handleSubmit(e) {
@@ -86,7 +89,7 @@ export default class PasswordChange extends React.Component {
   }
 
   render() {
-    const {language, passwordChange} = this.props;
+    const {language, passwordChange, orgSlug} = this.props;
     const {errors, newPassword1, newPassword2} = this.state;
     return (
       <div className="container content" id="password-change">
@@ -129,6 +132,12 @@ export default class PasswordChange extends React.Component {
                   passwordChange.input_fields.password1.pattern_description,
                 )}
                 onChange={(e) => this.handleChange(e)}
+                ref={this.passwordToggleRef}
+              />
+              <PasswordToggleIcon
+                inputRef={this.passwordToggleRef}
+                language={language}
+                orgSlug={orgSlug}
               />
             </div>
 
@@ -160,6 +169,12 @@ export default class PasswordChange extends React.Component {
                   passwordChange.input_fields.password1.pattern_description,
                 )}
                 onChange={(e) => this.handleChange(e)}
+                ref={this.confirmPasswordToggleRef}
+              />
+              <PasswordToggleIcon
+                inputRef={this.confirmPasswordToggleRef}
+                language={language}
+                orgSlug={orgSlug}
               />
             </div>
 

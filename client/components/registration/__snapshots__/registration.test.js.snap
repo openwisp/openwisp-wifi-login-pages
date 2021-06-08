@@ -58,6 +58,17 @@ exports[`<Registration /> rendering should render correctly 1`] = `
               type="password"
               value=""
             />
+            <PasswordToggleIcon
+              inputRef={
+                Object {
+                  "current": null,
+                }
+              }
+              isVisible={false}
+              language="en"
+              orgSlug="default"
+              parentClassName=""
+            />
           </div>
           <div
             className="row password-confirm"
@@ -78,6 +89,17 @@ exports[`<Registration /> rendering should render correctly 1`] = `
               title="password must be a minimum of 6 characters"
               type="password"
               value=""
+            />
+            <PasswordToggleIcon
+              inputRef={
+                Object {
+                  "current": null,
+                }
+              }
+              isVisible={false}
+              language="en"
+              orgSlug="default"
+              parentClassName=""
             />
           </div>
         </div>
