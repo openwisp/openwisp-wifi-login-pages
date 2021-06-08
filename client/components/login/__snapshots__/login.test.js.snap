@@ -159,6 +159,7 @@ exports[`<Login /> interactions phone_number field should be present if mobile p
           >
             <i
               class="eye"
+              title="reveal password"
             />
           </div>
         </div>
@@ -432,6 +433,7 @@ exports[`<Login /> interactions should not show phone_number field if auto_switc
           >
             <i
               class="eye"
+              title="reveal password"
             />
           </div>
         </div>
@@ -705,6 +707,7 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
           >
             <i
               class="eye"
+              title="reveal password"
             />
           </div>
         </div>
@@ -960,6 +963,8 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
                 }
               }
               isVisible={false}
+              language="en"
+              orgSlug="default"
               parentClassName=""
             />
           </div>
@@ -1179,6 +1184,8 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
                 }
               }
               isVisible={false}
+              language="en"
+              orgSlug="default"
               parentClassName=""
             />
           </div>

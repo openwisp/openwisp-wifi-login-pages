@@ -442,7 +442,11 @@ export default class Registration extends React.Component {
                     title={getText(input_fields.password.pattern_description)}
                     ref={this.passwordToggleRef}
                   />
-                  <PasswordToggleIcon inputRef={this.passwordToggleRef} />
+                  <PasswordToggleIcon
+                    inputRef={this.passwordToggleRef}
+                    language={language}
+                    orgSlug={orgSlug}
+                  />
                 </div>
 
                 <div className="row password-confirm">
@@ -478,6 +482,8 @@ export default class Registration extends React.Component {
                   />
                   <PasswordToggleIcon
                     inputRef={this.confirmPasswordToggleRef}
+                    language={language}
+                    orgSlug={orgSlug}
                   />
                 </div>
               </div>

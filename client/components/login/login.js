@@ -324,7 +324,11 @@ export default class Login extends React.Component {
                     )}
                     ref={this.passwordToggleRef}
                   />
-                  <PasswordToggleIcon inputRef={this.passwordToggleRef} />
+                  <PasswordToggleIcon
+                    inputRef={this.passwordToggleRef}
+                    language={language}
+                    orgSlug={orgSlug}
+                  />
                 </div>
 
                 <div className="row remember-me">

@@ -89,7 +89,7 @@ export default class PasswordChange extends React.Component {
   }
 
   render() {
-    const {language, passwordChange} = this.props;
+    const {language, passwordChange, orgSlug} = this.props;
     const {errors, newPassword1, newPassword2} = this.state;
     return (
       <div className="container content" id="password-change">
@@ -134,7 +134,11 @@ export default class PasswordChange extends React.Component {
                 onChange={(e) => this.handleChange(e)}
                 ref={this.passwordToggleRef}
               />
-              <PasswordToggleIcon inputRef={this.passwordToggleRef} />
+              <PasswordToggleIcon
+                inputRef={this.passwordToggleRef}
+                language={language}
+                orgSlug={orgSlug}
+              />
             </div>
 
             <div className="row password-confirm">
@@ -167,7 +171,11 @@ export default class PasswordChange extends React.Component {
                 onChange={(e) => this.handleChange(e)}
                 ref={this.confirmPasswordToggleRef}
               />
-              <PasswordToggleIcon inputRef={this.confirmPasswordToggleRef} />
+              <PasswordToggleIcon
+                inputRef={this.confirmPasswordToggleRef}
+                language={language}
+                orgSlug={orgSlug}
+              />
             </div>
 
             <div className="row submit">

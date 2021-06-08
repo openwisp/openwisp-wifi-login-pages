@@ -65,6 +65,8 @@ exports[`<Registration /> rendering should render correctly 1`] = `
                 }
               }
               isVisible={false}
+              language="en"
+              orgSlug="default"
               parentClassName=""
             />
           </div>
@@ -95,6 +97,8 @@ exports[`<Registration /> rendering should render correctly 1`] = `
                 }
               }
               isVisible={false}
+              language="en"
+              orgSlug="default"
               parentClassName=""
             />
           </div>

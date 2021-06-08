@@ -441,6 +441,14 @@ client:
       additional_fields: []
       logout_by_session: true
 
+  password_eye_icon:
+    reveal:
+      title:
+        en: "reveal password"
+    hide:
+      title:
+        en: "hide password"
+
   privacy_policy:
     title:
       en: "privacy policy"

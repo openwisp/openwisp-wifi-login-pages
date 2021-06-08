@@ -284,6 +284,18 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
             },
           },
           "name": "test org 2 (sms)",
+          "password_eye_icon": Object {
+            "hide": Object {
+              "title": Object {
+                "en": "hide password",
+              },
+            },
+            "reveal": Object {
+              "title": Object {
+                "en": "reveal password",
+              },
+            },
+          },
           "privacy_policy": Object {
             "content": Object {
               "en": "...",
@@ -612,6 +624,18 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
               },
             },
             "name": "test org 2 (sms)",
+            "password_eye_icon": Object {
+              "hide": Object {
+                "title": Object {
+                  "en": "hide password",
+                },
+              },
+              "reveal": Object {
+                "title": Object {
+                  "en": "reveal password",
+                },
+              },
+            },
             "privacy_policy": Object {
               "content": Object {
                 "en": "...",

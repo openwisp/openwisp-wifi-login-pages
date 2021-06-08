@@ -218,7 +218,7 @@ describe("password-toggle tests", () => {
   const Component = React.forwardRef((props, ref) => (
     <>
       <input type="password" ref={ref} />
-      <PasswordToggleIcon inputRef={ref} />
+      <PasswordToggleIcon inputRef={ref} orgSlug="default" language="en" />
     </>
   ));
   const mountComponent = (ref) => {
@@ -240,7 +240,11 @@ describe("password-toggle tests", () => {
   });
   it("should call handleClick", () => {
     const wrapper = shallow(
-      <PasswordToggleIcon inputRef={React.createRef()} />,
+      <PasswordToggleIcon
+        inputRef={React.createRef()}
+        orgSlug="default"
+        language="en"
+      />,
     );
     const setAttributeMock = jest.fn();
     const getAttributeMock = jest.fn();

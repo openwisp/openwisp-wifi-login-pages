@@ -163,7 +163,11 @@ export default class PasswordConfirm extends React.Component {
                     )}
                     ref={this.passwordToggleRef}
                   />
-                  <PasswordToggleIcon inputRef={this.passwordToggleRef} />
+                  <PasswordToggleIcon
+                    inputRef={this.passwordToggleRef}
+                    language={language}
+                    orgSlug={orgSlug}
+                  />
                 </div>
 
                 <div className="row password-confirm">
@@ -199,6 +203,8 @@ export default class PasswordConfirm extends React.Component {
                   />
                   <PasswordToggleIcon
                     inputRef={this.confirmPasswordToggleRef}
+                    language={language}
+                    orgSlug={orgSlug}
                   />
                 </div>
               </div>
