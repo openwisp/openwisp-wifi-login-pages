@@ -10,8 +10,10 @@ import {loadingContextValue} from "../../utils/loading-context";
 import tick from "../../utils/tick";
 import getConfig from "../../utils/get-config";
 import MobilePhoneVerification from "./mobile-phone-verification";
+import validateToken from "../../utils/validateToken";
 
 jest.mock("../../utils/get-config");
+jest.mock("../../utils/validateToken");
 jest.mock("axios");
 
 const createTestProps = function (props, configName = "test-org-2") {
@@ -25,8 +27,19 @@ const createTestProps = function (props, configName = "test-org-2") {
     logout: jest.fn(),
     verifyMobileNumber: jest.fn(),
     setIsActive: jest.fn(),
+    setUserData: jest.fn(),
+    userData: {},
     ...props,
   };
+};
+
+const userData = {
+  response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+  radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
+  username: "tester@tester.com",
+  is_active: false,
+  is_verified: false,
+  phone_number: "+393660011222",
 };
 
 const createShallowComponent = function (props) {
@@ -57,20 +70,20 @@ describe("Mobile Phone Token verification: standard flow", () => {
     };
     props = createTestProps();
     axios
-      .mockImplementationOnce(() => {
-        return Promise.resolve({
-          status: 200,
-          statusText: "OK",
-          data: {
-            response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
-            radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
-            username: "tester@tester.com",
-            is_active: false,
-            is_verified: false,
-            phone_number: "+393660011222",
-          },
-        });
-      })
+      // .mockImplementationOnce(() => {
+      //   return Promise.resolve({
+      //     status: 200,
+      //     statusText: "OK",
+      //     data: {
+      //       response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+      //       radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
+      //       username: "tester@tester.com",
+      //       is_active: false,
+      //       is_verified: false,
+      //       phone_number: "+393660011222",
+      //     },
+      //   });
+      // })
       .mockImplementationOnce(() => {
         return Promise.resolve({
           status: 201,
@@ -79,6 +92,7 @@ describe("Mobile Phone Token verification: standard flow", () => {
         });
       });
     // console mocking
+    validateToken.mockClear();
     originalError = console.error;
     lastConsoleOutuput = null;
     console.error = (data) => {
@@ -96,15 +110,15 @@ describe("Mobile Phone Token verification: standard flow", () => {
   });
 
   it("should render successfully", async () => {
-    jest.spyOn(MobilePhoneVerification.prototype, "validateToken");
+    validateToken.mockReturnValue(true);
     jest.spyOn(MobilePhoneVerification.prototype, "createPhoneToken");
 
     wrapper = createShallowComponent(props);
+    wrapper.setProps({userData});
     await tick();
     expectVerifyMobileNumber(wrapper, 1, true);
 
     expect(axios).toHaveBeenCalled();
-    expect(MobilePhoneVerification.prototype.validateToken).toHaveBeenCalled();
     expect(
       MobilePhoneVerification.prototype.createPhoneToken,
     ).toHaveBeenCalled();
@@ -125,7 +139,7 @@ describe("Mobile Phone Token verification: standard flow", () => {
   it("should resend token successfully", async () => {
     jest.spyOn(MobilePhoneVerification.prototype, "resendPhoneToken");
     jest.spyOn(toast, "info");
-
+    validateToken.mockReturnValue(true);
     wrapper = createShallowComponent(props);
     await tick();
     expectVerifyMobileNumber(wrapper, 1, true);
@@ -147,7 +161,9 @@ describe("Mobile Phone Token verification: standard flow", () => {
 
   it("should verify token successfully", async () => {
     jest.spyOn(MobilePhoneVerification.prototype, "handleSubmit");
+    validateToken.mockReturnValue(true);
     wrapper = createShallowComponent(props);
+    wrapper.setProps({userData});
     const setIsActiveMock = wrapper.instance().props.setIsActive.mock;
     await tick();
     expectVerifyMobileNumber(wrapper, 1, true);
@@ -176,6 +192,7 @@ describe("Mobile Phone Token verification: standard flow", () => {
 
   it("should show errors", async () => {
     jest.spyOn(MobilePhoneVerification.prototype, "handleSubmit");
+    validateToken.mockReturnValue(true);
     wrapper = createShallowComponent(props);
     const setIsActiveMock = wrapper.instance().props.setIsActive.mock;
     await tick();
@@ -210,6 +227,7 @@ describe("Mobile Phone Token verification: standard flow", () => {
 
   it("should log out successfully", async () => {
     jest.spyOn(MobilePhoneVerification.prototype, "handleLogout");
+    validateToken.mockReturnValue(true);
     jest.spyOn(toast, "success");
 
     wrapper = createShallowComponent(props);
@@ -235,6 +253,7 @@ describe("Mobile Phone Token verification: corner cases", () => {
       setLoading: PropTypes.func,
     };
     props = createTestProps();
+    validateToken.mockClear();
   });
 
   afterEach(() => {
@@ -245,32 +264,17 @@ describe("Mobile Phone Token verification: corner cases", () => {
   });
 
   it("should not proceed if user is already verified", async () => {
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
-        status: 200,
-        statusText: "OK",
-        data: {
-          response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
-          radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
-          username: "tester@tester.com",
-          is_active: true,
-          is_verified: true,
-          phone_number: "+393660011222",
-        },
-      });
-    });
+    userData.is_active = true;
+    userData.is_verified = true;
 
-    jest.spyOn(MobilePhoneVerification.prototype, "validateToken");
     jest.spyOn(MobilePhoneVerification.prototype, "createPhoneToken");
-
+    validateToken.mockReturnValue(true);
     wrapper = createShallowComponent(props);
+    wrapper.setProps({userData});
     await tick();
-    expect(axios).toHaveBeenCalled();
-    expect(MobilePhoneVerification.prototype.validateToken).toHaveBeenCalled();
     expect(
       MobilePhoneVerification.prototype.createPhoneToken,
     ).not.toHaveBeenCalled();
-    expect(wrapper.instance().state.is_verified).toBe(true);
     expect(wrapper.instance().state.phone_number).toBe("+393660011222");
     const verifyMobileNumberCalls = wrapper.instance().props.verifyMobileNumber
       .mock.calls;
@@ -279,29 +283,12 @@ describe("Mobile Phone Token verification: corner cases", () => {
   });
 
   it("should not proceed if mobile verification is not enabled", async () => {
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
-        status: 200,
-        statusText: "OK",
-        data: {
-          response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
-          radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
-          username: "tester@tester.com",
-          is_active: false,
-          is_verified: false,
-          phone_number: "+393660011222",
-        },
-      });
-    });
-
-    jest.spyOn(MobilePhoneVerification.prototype, "validateToken");
     jest.spyOn(MobilePhoneVerification.prototype, "createPhoneToken");
-
+    validateToken.mockReturnValue(true);
     props.settings.mobile_phone_verification = false;
     wrapper = createShallowComponent(props);
+    wrapper.setProps({props});
     await tick();
-    expect(axios).toHaveBeenCalled();
-    expect(MobilePhoneVerification.prototype.validateToken).toHaveBeenCalled();
     expect(
       MobilePhoneVerification.prototype.createPhoneToken,
     ).not.toHaveBeenCalled();

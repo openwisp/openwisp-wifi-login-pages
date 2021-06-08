@@ -14,9 +14,11 @@ import {loadingContextValue} from "../../utils/loading-context";
 import getConfig from "../../utils/get-config";
 import tick from "../../utils/tick";
 import MobilePhoneChangeWrapped from "./mobile-phone-change";
+import validateToken from "../../utils/validateToken";
 
 const MobilePhoneChange = MobilePhoneChangeWrapped.WrappedComponent;
 jest.mock("../../utils/get-config");
+jest.mock("../../utils/validateToken");
 jest.mock("axios");
 
 const createTestProps = function (props, configName = "test-org-2") {
@@ -36,6 +38,8 @@ const createTestProps = function (props, configName = "test-org-2") {
     cookies: new Cookies(),
     logout: jest.fn(),
     verifyMobileNumber: jest.fn(),
+    setUserData: jest.fn(),
+    userData: {},
     // needed for subcomponents
     configuration: conf,
     ...props,
@@ -81,6 +85,14 @@ const mountComponent = function (props) {
   );
 };
 
+const userData = {
+  response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+  radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
+  username: "tester@tester.com",
+  is_active: false,
+  phone_number: "+393660011222",
+};
+
 describe("Change Phone Number: standard flow", () => {
   let props;
   let wrapper;
@@ -90,19 +102,7 @@ describe("Change Phone Number: standard flow", () => {
 
   beforeEach(() => {
     props = createTestProps();
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
-        status: 200,
-        statusText: "OK",
-        data: {
-          response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
-          radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
-          username: "tester@tester.com",
-          is_active: false,
-          phone_number: "+393660011222",
-        },
-      });
-    });
+    validateToken.mockClear();
     // console mocking
     originalError = console.error;
     lastConsoleOutuput = null;
@@ -119,11 +119,10 @@ describe("Change Phone Number: standard flow", () => {
   });
 
   it("should render successfully", async () => {
-    jest.spyOn(MobilePhoneChange.prototype, "validateToken");
+    validateToken.mockReturnValue(true);
+    props.userData = userData;
     wrapper = await mountComponent(props);
     expect(wrapper).toMatchSnapshot();
-    expect(axios).toHaveBeenCalled();
-    expect(MobilePhoneChange.prototype.validateToken).toHaveBeenCalled();
     expect(wrapper.exists(MobilePhoneChange)).toBe(true);
     expect(wrapper.exists(PhoneInput)).toBe(true);
 
@@ -137,6 +136,7 @@ describe("Change Phone Number: standard flow", () => {
 
   it("should change phone number successfully", async () => {
     jest.spyOn(MobilePhoneChange.prototype, "handleSubmit");
+    validateToken.mockReturnValue(true);
     jest.spyOn(toast, "info");
     jest.spyOn(historyMock, "push");
     axios.mockImplementationOnce(() => {
@@ -282,8 +282,9 @@ describe("Change Phone Number: corner cases", () => {
   });
 
   it("should recognize if user is active", async () => {
-    jest.spyOn(MobilePhoneChange.prototype, "validateToken");
-    mockAxios({is_active: true});
+    validateToken.mockReturnValue(true);
+    userData.is_active = true;
+    props.userData = userData;
     wrapper = await mountComponent(props);
     const component = wrapper.find(MobilePhoneChange);
     expect(component.instance().state.phone_number).toBe("+393660011222");
@@ -292,7 +293,6 @@ describe("Change Phone Number: corner cases", () => {
     const mobile_settings = instanceProps.settings.mobile_phone_verification;
     expect(mockVerify.mock.calls.length).toBe(1);
     expect(mockVerify.mock.calls.pop()).toEqual([mobile_settings]);
-    expect(MobilePhoneChange.prototype.validateToken).toHaveBeenCalled();
   });
 
   it("should redirect only if mobile_phone_verification is disabled", async () => {
@@ -303,15 +303,15 @@ describe("Change Phone Number: corner cases", () => {
   });
 
   it("should redirect if mobile_phone_verification disabled", async () => {
-    mockAxios(axios);
     props.settings.mobile_phone_verification = false;
     wrapper = await mountComponent(props);
     expect(wrapper.find(Redirect)).toHaveLength(1);
   });
 
   it("shouldn't redirect if user is active and mobile verificaton is true", async () => {
-    jest.spyOn(MobilePhoneChange.prototype, "validateToken");
-    mockAxios({is_active: true});
+    validateToken.mockReturnValue(true);
+    userData.is_active = true;
+    props.userData = userData;
     props.settings.mobile_phone_verification = true;
     wrapper = await mountComponent(props);
     expect(wrapper.find(Redirect)).toHaveLength(0);
@@ -319,6 +319,5 @@ describe("Change Phone Number: corner cases", () => {
     const mockVerify = component.instance().props.verifyMobileNumber;
     expect(mockVerify.mock.calls.length).toBe(1);
     expect(mockVerify.mock.calls.pop()).toEqual([true]);
-    expect(MobilePhoneChange.prototype.validateToken).toHaveBeenCalled();
   });
 });

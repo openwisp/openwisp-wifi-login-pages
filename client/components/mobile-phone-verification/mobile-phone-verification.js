@@ -15,7 +15,6 @@ import {
   genericError,
   mainToastId,
   logoutSuccess,
-  validateApiUrl,
   verifyMobilePhoneTokenUrl,
 } from "../../constants";
 import getErrorText from "../../utils/get-error-text";
@@ -24,6 +23,7 @@ import logError from "../../utils/log-error";
 import handleChange from "../../utils/handle-change";
 import Contact from "../contact-box";
 import handleSession from "../../utils/session";
+import validateToken from "../../utils/validateToken";
 
 export default class MobilePhoneVerification extends React.Component {
   phoneTokenSentKey = "owPhoneTokenSent";
@@ -33,11 +33,9 @@ export default class MobilePhoneVerification extends React.Component {
     this.state = {
       code: "",
       phone_number: "",
-      is_verified: false,
       errors: {},
       success: false,
     };
-    this.validateToken = this.validateToken.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.resendPhoneToken = this.resendPhoneToken.bind(this);
@@ -45,14 +43,40 @@ export default class MobilePhoneVerification extends React.Component {
   }
 
   async componentDidMount() {
+    const {
+      cookies,
+      orgSlug,
+      logout,
+      verifyMobileNumber,
+      settings,
+      setIsActive,
+      setUserData,
+    } = this.props;
+    let {userData} = this.props;
     const {setLoading} = this.context;
-    const {settings} = this.props;
     setLoading(true);
-    await this.validateToken();
-    const {is_verified} = this.state;
-    // send token via SMS only if user needs to verify
-    if (!is_verified && settings.mobile_phone_verification) {
-      await this.createPhoneToken();
+    const isValid = await validateToken(
+      cookies,
+      orgSlug,
+      setUserData,
+      userData,
+    );
+    if (isValid) {
+      ({userData} = this.props);
+      const {phone_number, is_verified, is_active} = userData;
+      this.setState({phone_number});
+      verifyMobileNumber(!is_verified && settings.mobile_phone_verification);
+      setIsActive(is_active);
+      // send token via SMS only if user needs to verify
+      if (!is_verified && settings.mobile_phone_verification) {
+        await this.createPhoneToken();
+      }
+    } else {
+      logout(cookies, orgSlug);
+      setUserData({});
+      toast.error(genericError, {
+        onOpen: () => toast.dismiss(mainToastId),
+      });
     }
     setLoading(false);
   }
@@ -64,7 +88,13 @@ export default class MobilePhoneVerification extends React.Component {
   handleSubmit(event) {
     const {setLoading} = this.context;
     event.preventDefault();
-    const {orgSlug, verifyMobileNumber, cookies, setIsActive} = this.props;
+    const {
+      orgSlug,
+      verifyMobileNumber,
+      cookies,
+      setIsActive,
+      setUserData,
+    } = this.props;
     const {code, errors} = this.state;
     this.setState({errors: {...errors, code: ""}});
     const url = verifyMobilePhoneTokenUrl(orgSlug);
@@ -86,6 +116,8 @@ export default class MobilePhoneVerification extends React.Component {
         this.setState({
           errors: {},
         });
+        // to validate User in the status page
+        setUserData({});
         setLoading(false);
         verifyMobileNumber(false);
         setIsActive(true);
@@ -104,57 +136,6 @@ export default class MobilePhoneVerification extends React.Component {
           },
         });
       });
-  }
-
-  // TODO: make reusable
-  async validateToken() {
-    const {
-      cookies,
-      orgSlug,
-      logout,
-      verifyMobileNumber,
-      settings,
-      setIsActive,
-    } = this.props;
-    const auth_token = cookies.get(`${orgSlug}_auth_token`);
-    const {token, session} = handleSession(orgSlug, auth_token, cookies);
-    const url = validateApiUrl(orgSlug);
-    try {
-      const response = await axios({
-        method: "post",
-        headers: {
-          "content-type": "application/x-www-form-urlencoded",
-        },
-        url,
-        data: qs.stringify({
-          token,
-          session,
-        }),
-      });
-      if (response.data.response_code !== "AUTH_TOKEN_VALIDATION_SUCCESSFUL") {
-        logout(cookies, orgSlug);
-        toast.error(genericError, {
-          onOpen: () => toast.dismiss(mainToastId),
-        });
-        logError(
-          response,
-          '"response_code" !== "AUTH_TOKEN_VALIDATION_SUCCESSFUL"',
-        );
-      } else {
-        const {phone_number, is_verified, is_active} = response.data;
-        this.setState({phone_number, is_verified});
-        verifyMobileNumber(!is_verified && settings.mobile_phone_verification);
-        setIsActive(is_active);
-      }
-      return true;
-    } catch (error) {
-      logout(cookies, orgSlug);
-      toast.error(genericError, {
-        onOpen: () => toast.dismiss(mainToastId),
-      });
-      logError(error, genericError);
-      return false;
-    }
   }
 
   hasPhoneTokenBeenSent() {
@@ -348,4 +329,6 @@ MobilePhoneVerification.propTypes = {
   }).isRequired,
   verifyMobileNumber: PropTypes.func.isRequired,
   setIsActive: PropTypes.func.isRequired,
+  userData: PropTypes.object.isRequired,
+  setUserData: PropTypes.func.isRequired,
 };

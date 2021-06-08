@@ -3,6 +3,7 @@ import {
   logout,
   verifyMobileNumber,
   setIsActive,
+  setUserData,
 } from "../../actions/dispatchers";
 import Component from "./status";
 
@@ -12,6 +13,7 @@ const mapStateToProps = (state, ownProps) => {
     statusPage: conf.components.status_page,
     orgSlug: conf.slug,
     settings: conf.settings,
+    userData: conf.userData,
     captivePortalLoginForm: conf.components.captive_portal_login_form,
     captivePortalLogoutForm: conf.components.captive_portal_logout_form,
     isAuthenticated: conf.isAuthenticated,
@@ -25,6 +27,7 @@ const mapDispatchToProps = (dispatch) => {
     logout: logout(dispatch),
     verifyMobileNumber: verifyMobileNumber(dispatch),
     setIsActive: setIsActive(dispatch),
+    setUserData: setUserData(dispatch),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Component);

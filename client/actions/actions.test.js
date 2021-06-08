@@ -61,6 +61,10 @@ describe("actions testing", () => {
         payload: orgConfig,
       },
       {
+        type: types.SET_USER_DATA,
+        payload: {},
+      },
+      {
         type: types.SET_LANGUAGE,
         payload: testOrgConfig[1].default_language,
       },
@@ -73,6 +77,10 @@ describe("actions testing", () => {
         payload: orgConfig2,
       },
       {
+        type: types.SET_USER_DATA,
+        payload: {},
+      },
+      {
         type: types.SET_LANGUAGE,
         payload: testOrgConfig[0].default_language,
       },
@@ -83,6 +91,10 @@ describe("actions testing", () => {
       {
         type: types.SET_ORGANIZATION_CONFIG,
         payload: testOrgConfig[0],
+      },
+      {
+        type: types.SET_USER_DATA,
+        payload: {},
       },
       {
         type: types.SET_AUTHENTICATION_STATUS,

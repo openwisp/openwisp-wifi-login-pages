@@ -348,9 +348,19 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
           },
         }
       }
+      setUserData={[MockFunction]}
       settings={
         Object {
           "mobile_phone_verification": true,
+        }
+      }
+      userData={
+        Object {
+          "is_active": false,
+          "phone_number": "+393660011222",
+          "radius_user_token": "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
+          "response_code": "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+          "username": "tester@tester.com",
         }
       }
       verifyMobileNumber={
@@ -722,9 +732,19 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
             },
           }
         }
+        setUserData={[MockFunction]}
         settings={
           Object {
             "mobile_phone_verification": true,
+          }
+        }
+        userData={
+          Object {
+            "is_active": false,
+            "phone_number": "+393660011222",
+            "radius_user_token": "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
+            "response_code": "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+            "username": "tester@tester.com",
           }
         }
         verifyMobileNumber={
