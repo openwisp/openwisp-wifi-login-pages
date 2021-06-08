@@ -4,6 +4,7 @@ import {
   authenticate,
   verifyMobileNumber,
   setIsActive,
+  setUserData,
 } from "../../actions/dispatchers";
 import Component from "./login";
 
@@ -27,6 +28,7 @@ const mapDispatchToProps = (dispatch) => {
     authenticate: authenticate(dispatch),
     verifyMobileNumber: verifyMobileNumber(dispatch),
     setIsActive: setIsActive(dispatch),
+    setUserData: setUserData(dispatch),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Component);

@@ -3,6 +3,7 @@ import {
   SET_AUTHENTICATION_STATUS,
   SET_MOBILE_PHONE_VERIFICATION_STATUS,
   IS_ACTIVE,
+  SET_USER_DATA,
 } from "../constants/action-types";
 
 export const authenticate = (dispatch) => {
@@ -23,5 +24,10 @@ export const logout = (dispatch) => {
 export const setIsActive = (dispatch) => {
   return (status) => {
     dispatch({type: IS_ACTIVE, payload: status});
+  };
+};
+export const setUserData = (dispatch) => {
+  return (data) => {
+    dispatch({type: SET_USER_DATA, payload: data});
   };
 };

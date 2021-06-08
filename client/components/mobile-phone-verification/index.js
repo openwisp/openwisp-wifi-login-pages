@@ -5,6 +5,7 @@ import {
   logout,
   verifyMobileNumber,
   setIsActive,
+  setUserData,
 } from "../../actions/dispatchers";
 
 const mapStateToProps = (state) => {
@@ -14,6 +15,7 @@ const mapStateToProps = (state) => {
     settings: conf.settings,
     orgSlug: conf.slug,
     language: state.language,
+    userData: conf.userData,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -21,6 +23,7 @@ const mapDispatchToProps = (dispatch) => {
     logout: logout(dispatch),
     verifyMobileNumber: verifyMobileNumber(dispatch),
     setIsActive: setIsActive(dispatch),
+    setUserData: setUserData(dispatch),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Component);

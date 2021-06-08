@@ -31,6 +31,7 @@ const createTestProps = (props) => {
     authenticate: jest.fn(),
     verifyMobileNumber: jest.fn(),
     setIsActive: jest.fn(),
+    setUserData: jest.fn(),
     match: {
       path: "default/login",
     },

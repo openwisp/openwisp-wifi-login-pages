@@ -5,6 +5,7 @@ import {
   SET_ORGANIZATION_CONFIG,
   SET_ORGANIZATION_STATUS,
   IS_ACTIVE,
+  SET_USER_DATA,
 } from "../constants/action-types";
 
 export const organizations = (state = [], action) => {
@@ -47,6 +48,14 @@ export const organization = (
         configuration: {
           ...state.configuration,
           isActive: action.payload,
+        },
+      };
+    case SET_USER_DATA:
+      return {
+        ...state,
+        configuration: {
+          ...state.configuration,
+          userData: action.payload,
         },
       };
     default:

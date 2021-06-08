@@ -6,6 +6,7 @@ import {
   SET_LANGUAGE,
   SET_ORGANIZATION_CONFIG,
   SET_ORGANIZATION_STATUS,
+  SET_USER_DATA,
 } from "../constants/action-types";
 import authenticate from "../utils/authenticate";
 import customMerge from "../utils/custom-merge";
@@ -31,6 +32,10 @@ const setOrganization = (slug, cookies) => {
       dispatch({
         type: SET_ORGANIZATION_CONFIG,
         payload: config,
+      });
+      dispatch({
+        type: SET_USER_DATA,
+        payload: {},
       });
       const autoLogin = config.auto_login;
       const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";

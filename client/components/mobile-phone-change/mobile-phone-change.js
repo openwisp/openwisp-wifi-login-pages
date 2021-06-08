@@ -12,12 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import LoadingContext from "../../utils/loading-context";
-import {
-  genericError,
-  mainToastId,
-  mobilePhoneChangeUrl,
-  validateApiUrl,
-} from "../../constants";
+import {genericError, mainToastId, mobilePhoneChangeUrl} from "../../constants";
 import getErrorText from "../../utils/get-error-text";
 import getText from "../../utils/get-text";
 import logError from "../../utils/log-error";
@@ -25,6 +20,7 @@ import handleChange from "../../utils/handle-change";
 import submitOnEnter from "../../utils/submit-on-enter";
 import Contact from "../contact-box";
 import handleSession from "../../utils/session";
+import validateToken from "../../utils/validateToken";
 
 class MobilePhoneChange extends React.Component {
   constructor(props) {
@@ -35,17 +31,46 @@ class MobilePhoneChange extends React.Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.validateToken = this.validateToken.bind(this);
   }
 
   async componentDidMount() {
-    await this.validateToken();
+    const {
+      cookies,
+      orgSlug,
+      logout,
+      verifyMobileNumber,
+      setUserData,
+    } = this.props;
+    let {userData} = this.props;
+    const isValid = await validateToken(
+      cookies,
+      orgSlug,
+      setUserData,
+      userData,
+    );
+    if (isValid) {
+      ({userData} = this.props);
+      const {phone_number} = userData;
+      this.setState({phone_number});
+      verifyMobileNumber(true);
+    } else {
+      logout(cookies, orgSlug);
+      toast.error(genericError, {
+        onOpen: () => toast.dismiss(mainToastId),
+      });
+    }
   }
 
   handleSubmit(event) {
     event.preventDefault();
     const {setLoading} = this.context;
-    const {cookies, orgSlug, language, phone_number_change} = this.props;
+    const {
+      cookies,
+      orgSlug,
+      language,
+      phone_number_change,
+      setUserData,
+    } = this.props;
     const {text} = phone_number_change;
     const {phone_number, errors} = this.state;
     const url = mobilePhoneChangeUrl(orgSlug);
@@ -70,6 +95,7 @@ class MobilePhoneChange extends React.Component {
         this.setState({
           errors: {},
         });
+        setUserData({});
         setLoading(false);
         toast.info(getText(text.token_sent, language));
         self.props.history.push(`/${orgSlug}/mobile-phone-verification`);
@@ -94,52 +120,6 @@ class MobilePhoneChange extends React.Component {
 
   handleChange(event) {
     handleChange(event, this);
-  }
-
-  // TODO: make reusable
-  async validateToken() {
-    const {setLoading} = this.context;
-    const {cookies, orgSlug, logout, verifyMobileNumber} = this.props;
-    const auth_token = cookies.get(`${orgSlug}_auth_token`);
-    const {token, session} = handleSession(orgSlug, auth_token, cookies);
-    const url = validateApiUrl(orgSlug);
-    setLoading(true);
-    try {
-      const response = await axios({
-        method: "post",
-        headers: {
-          "content-type": "application/x-www-form-urlencoded",
-        },
-        url,
-        data: qs.stringify({
-          token,
-          session,
-        }),
-      });
-      setLoading(false);
-      if (response.data.response_code !== "AUTH_TOKEN_VALIDATION_SUCCESSFUL") {
-        logout(cookies, orgSlug);
-        toast.error(genericError, {
-          onOpen: () => toast.dismiss(mainToastId),
-        });
-        logError(
-          response,
-          '"response_code" !== "AUTH_TOKEN_VALIDATION_SUCCESSFUL"',
-        );
-      } else {
-        const {phone_number} = response.data;
-        this.setState({phone_number});
-        verifyMobileNumber(true);
-      }
-      return true;
-    } catch (error) {
-      logout(cookies, orgSlug);
-      toast.error(genericError, {
-        onOpen: () => toast.dismiss(mainToastId),
-      });
-      logError(error, genericError);
-      return false;
-    }
   }
 
   render() {
@@ -272,4 +252,6 @@ MobilePhoneChange.propTypes = {
   cookies: PropTypes.instanceOf(Cookies).isRequired,
   logout: PropTypes.func.isRequired,
   verifyMobileNumber: PropTypes.func.isRequired,
+  userData: PropTypes.object.isRequired,
+  setUserData: PropTypes.func.isRequired,
 };
