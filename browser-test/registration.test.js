@@ -1,9 +1,9 @@
 import {Builder, By, until} from "selenium-webdriver";
-import {getDriver, getElementByXPath, urls, initialData} from "./utils";
+import {getDriver, getElementByXPath, urls} from "./utils";
 
 const firefox = require("selenium-webdriver/firefox");
 
-describe("Selenium tests for <Login />", () => {
+describe("Selenium tests for <Register />", () => {
   let driver;
   beforeAll(async () => {
     jest.setTimeout(30000);
@@ -14,16 +14,18 @@ describe("Selenium tests for <Login />", () => {
     driver.close();
   });
 
-  it("should render login page and submit login form", async () => {
-    await driver.get(urls.login);
-    const data = initialData();
+  it("should render registration page and submit registration form", async () => {
+    await driver.get(urls.registration);
+
     const username = await getElementByXPath(
       driver,
-      "//INPUT[@id='username']",
+      "//INPUT[@id='email']",
       until,
       By,
     );
-    username.sendKeys(data.testuser.email);
+    username.sendKeys(
+      `${Math.random().toString(36).substring(7)}@openwisp.org`,
+    );
 
     const password = await getElementByXPath(
       driver,
@@ -31,25 +33,25 @@ describe("Selenium tests for <Login />", () => {
       until,
       By,
     );
-    password.sendKeys(data.testuser.password);
+    password.sendKeys("test_password");
+
+    const confirmPassword = await getElementByXPath(
+      driver,
+      "//INPUT[@id='password-confirm']",
+      until,
+      By,
+    );
+    confirmPassword.sendKeys("test_password");
 
     const submitBtn = await getElementByXPath(
       driver,
-      "/html/body/div[1]/div[2]/div[3]/div/form/div[4]/input",
+      "//INPUT[@type='submit']",
       until,
       By,
     );
     submitBtn.click();
 
     await getElementByXPath(driver, "//DIV[@id='status']", until, By);
-    const emailElement = await getElementByXPath(
-      driver,
-      "(//SPAN)[2]",
-      until,
-      By,
-    );
-    expect(await emailElement.getText()).toEqual(data.testuser.email);
-
     const successToastDiv = await getElementByXPath(
       driver,
       "//DIV[@role='alert']",
@@ -58,6 +60,6 @@ describe("Selenium tests for <Login />", () => {
     );
     await driver.wait(until.elementIsVisible(successToastDiv));
     await driver.wait(until.urlContains("status"), 10000);
-    expect(await successToastDiv.getText()).toEqual("Login successful");
+    expect(await successToastDiv.getText()).toEqual("Registration success");
   });
 });

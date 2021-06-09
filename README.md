@@ -120,7 +120,7 @@ please install [gecko driver](https://github.com/mozilla/geckodriver/releases/) 
 yarn browser-test
 ```
 
-**NOTE**: Selenium tests needs running instances of openwisp-radius
+**NOTE**: Browser tests needs running instances of openwisp-radius
 and openwisp-wifi-login-pages.
 
 #### Setup
@@ -177,7 +177,7 @@ $ yarn lint          # Run ESLint
 $ yarn lint:fix      # Run ESLint with automatically fix problems option
 $ yarn format        # Run formatters to format the code
 $ yarn test          # Run tests
-$ yarn selenium-test # Run browser based selenium tests
+$ yarn browser-test  # Run browser based selenium tests
 $ yarn -- -u         # Update Jest Snapshots
 ```
 
