@@ -110,8 +110,18 @@ To verify all the dependencies were successfully installed,
 try to run the tests with the following command:
 
 ```
-yarn test
+yarn test # headless tests
 ```
+
+It is also possible to run browser based tests, before trying this
+please install [gecko driver](https://github.com/mozilla/geckodriver/releases/) and then run:
+
+```
+yarn browser-test
+```
+
+**NOTE**: Selenium tests needs running instances of openwisp-radius
+and openwisp-wifi-login-pages.
 
 #### Setup
 
@@ -155,17 +165,20 @@ you can use the default sample captive portal login and logout URLs.
 List of yarn commands:
 
 ```
-$ yarn start      # Run the app (runs both, client and server)
-$ yarn setup      # Discover Organization configs and generate config.json and asset directories
-$ yarn add-org    # Add new Organization configuration
-$ yarn build      # Build the app
-$ yarn server     # Run server
-$ yarn client     # Run client
-$ yarn coveralls  # Run coveralls
-$ yarn lint       # Run ESLint
-$ yarn lint:fix   # Run ESLint with automatically fix problems option
-$ yarn test       # Run tests
-$ yarn -- -u      # Update Jest Snapshots
+$ yarn start         # Run the app (runs both, client and server)
+$ yarn setup         # Discover Organization configs and generate config.json and asset directories
+$ yarn add-org       # Add new Organization configuration
+$ yarn build         # Build the app
+$ yarn server        # Run server
+$ yarn client        # Run client
+$ yarn coveralls     # Run coveralls
+$ yarn coverage      # Run tests and generate coverage files
+$ yarn lint          # Run ESLint
+$ yarn lint:fix      # Run ESLint with automatically fix problems option
+$ yarn format        # Run formatters to format the code
+$ yarn test          # Run tests
+$ yarn selenium-test # Run browser based selenium tests
+$ yarn -- -u         # Update Jest Snapshots
 ```
 
 #### Using custom ports

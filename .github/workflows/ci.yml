@@ -63,13 +63,46 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-
 
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+
       - name: Installing dependencies
         run: |
           yarn install
           yarn setup
 
+      - name: Installing OpenWISP Radius
+        run: |
+          git clone https://github.com/openwisp/openwisp-radius/
+          cd openwisp-radius && pip install -e .
+          ./tests/manage.py migrate
+
+      - name: Running OpenWISP Radius
+        run: cd openwisp-radius && ./tests/manage.py runserver &      
+
+      - name: Running OpenWISP WiFi Login Pages
+        run: yarn start &
+
       - name: Tests
         run: yarn coverage
+
+      - name: Initializing data for browser tests
+        run: |
+          export OPENWISP_RADIUS_PATH=$(pwd)/openwisp-radius
+          cd browser-test && ./initialize_data.py
+
+      - name: geckodriver/firefox
+        run: |
+          echo "geckodriver/firefox"
+          which geckodriver
+          geckodriver --version
+          which firefox
+          firefox --version
+
+      - name: Browser Tests
+        run: yarn browser-test
 
       - name: Coveralls
         uses: coverallsapp/github-action@master

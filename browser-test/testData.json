@@ -1,0 +1,7 @@
+{
+  "testuser": {
+    "email": "testuser@openwisp.org",
+    "password": "testuser",
+    "organization": "default"
+  }
+}
