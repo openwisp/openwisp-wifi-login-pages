@@ -1,5 +1,11 @@
 import {Builder, By, until} from "selenium-webdriver";
-import {getDriver, getElementByXPath, urls, initialData} from "./utils";
+import {
+  getDriver,
+  getElementByXPath,
+  urls,
+  initialData,
+  executeCommand,
+} from "./utils";
 
 const firefox = require("selenium-webdriver/firefox");
 
@@ -7,10 +13,12 @@ describe("Selenium tests for <Login />", () => {
   let driver;
   beforeAll(async () => {
     jest.setTimeout(30000);
+    await executeCommand("./browser-test/initialize_data.py", () => {});
     driver = await getDriver(Builder, new firefox.Options().headless());
   });
 
   afterAll(async () => {
+    await executeCommand("./browser-test/clear_data.py", () => {});
     driver.close();
   });
 

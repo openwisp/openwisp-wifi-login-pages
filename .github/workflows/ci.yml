@@ -88,11 +88,6 @@ jobs:
       - name: Tests
         run: yarn coverage
 
-      - name: Initializing data for browser tests
-        run: |
-          export OPENWISP_RADIUS_PATH=$(pwd)/openwisp-radius
-          cd browser-test && ./initialize_data.py
-
       - name: geckodriver/firefox
         run: |
           echo "geckodriver/firefox"
@@ -102,7 +97,9 @@ jobs:
           firefox --version
 
       - name: Browser Tests
-        run: yarn browser-test
+        run: |
+          export OPENWISP_RADIUS_PATH=$(pwd)/openwisp-radius
+          yarn browser-test
 
       - name: Coveralls
         uses: coverallsapp/github-action@master

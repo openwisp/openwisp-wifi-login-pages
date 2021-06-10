@@ -1,5 +1,11 @@
 import {Builder, By, until} from "selenium-webdriver";
-import {getDriver, getElementByXPath, urls} from "./utils";
+import {
+  getDriver,
+  getElementByXPath,
+  urls,
+  initialData,
+  executeCommand,
+} from "./utils";
 
 const firefox = require("selenium-webdriver/firefox");
 
@@ -11,21 +17,20 @@ describe("Selenium tests for <Register />", () => {
   });
 
   afterAll(async () => {
+    await executeCommand("./browser-test/clear_data.py", () => {});
     driver.close();
   });
 
   it("should render registration page and submit registration form", async () => {
     await driver.get(urls.registration);
-
+    const data = initialData();
     const username = await getElementByXPath(
       driver,
       "//INPUT[@id='email']",
       until,
       By,
     );
-    username.sendKeys(
-      `${Math.random().toString(36).substring(7)}@openwisp.org`,
-    );
+    username.sendKeys(data.testuser.email);
 
     const password = await getElementByXPath(
       driver,
@@ -33,7 +38,7 @@ describe("Selenium tests for <Register />", () => {
       until,
       By,
     );
-    password.sendKeys("test_password");
+    password.sendKeys(data.testuser.password);
 
     const confirmPassword = await getElementByXPath(
       driver,
@@ -41,7 +46,7 @@ describe("Selenium tests for <Register />", () => {
       until,
       By,
     );
-    confirmPassword.sendKeys("test_password");
+    confirmPassword.sendKeys(data.testuser.password);
 
     const submitBtn = await getElementByXPath(
       driver,

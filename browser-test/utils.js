@@ -1,3 +1,4 @@
+import {exec} from "child_process";
 import testData from "./testData.json";
 
 const waitTime = 20000;
@@ -22,6 +23,14 @@ export const sleep = async (ms) => {
 };
 
 export const initialData = () => testData;
+
+export const executeCommand = async (command, callback) => {
+  await exec(command, (error, stdout, stderr) => {
+    if (error) return callback(error.message);
+    if (stderr) return callback(stderr);
+    return callback(stdout);
+  });
+};
 
 export const urls = {
   registration: `http://0.0.0.0:8080/${orgSlug}/registration`,

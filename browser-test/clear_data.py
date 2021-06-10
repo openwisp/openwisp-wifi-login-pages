@@ -16,14 +16,10 @@ if OPENWISP_RADIUS_PATH == '':
     sys.exit(0)
 
 test_user_email = test_data['testuser']['email']
-test_user_password = test_data['testuser']['password']
-test_user_organization = test_data['testuser']['organization']
 print(
     os.popen(
         f'''
-echo "user=User.objects.create_user(username='{test_user_email}', password='{test_user_password}', email='{test_user_email}')\n
-org = Organization.objects.get(name='{test_user_organization}')\n
-OrganizationUser.objects.create(organization=org, user=user)"\
+echo "User.objects.get(username='{test_user_email}').delete()"\
 | {OPENWISP_RADIUS_PATH}/tests/manage.py shell_plus
         '''
     ).read()
