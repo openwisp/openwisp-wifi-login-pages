@@ -143,12 +143,8 @@ describe("Test <OrganizationWrapper /> routes", () => {
   let props;
   let wrapper;
   const defaultConfig = getConfig("default");
-  const {
-    components,
-    languages,
-    privacy_policy,
-    terms_and_conditions,
-  } = defaultConfig;
+  const {components, languages, privacy_policy, terms_and_conditions} =
+    defaultConfig;
 
   const mapRoutes = (component) => {
     const pathMap = {};

@@ -113,15 +113,26 @@ try to run the tests with the following command:
 yarn test # headless tests
 ```
 
-It is also possible to run browser based tests, before trying this
-please install [gecko driver](https://github.com/mozilla/geckodriver/releases/) and then run:
+##### Browser based tests
+
+Prerequisites for running browser-based tests:
+
+1. [Gecko driver](https://github.com/mozilla/geckodriver/releases/) needs to be installed.
+2. Running instances of openwisp-radius and
+   openwisp-wifi-login-pages is required.
+3. `OPENWIPS_RADIUS_PATH` environment variable is needed to initialize
+   data while running browser test. This can be set using the following command:
+   ```
+   export OPENWISP_RADIUS_PATH=< PATH TO OPENWISP RADIUS DIRECTORY >
+   ```
+4. If a virtual environment is used to run openwisp-radius then
+   this needs to be activated before running browser tests.
+
+After doing all the prerequisites, run browser based tests using the following command:
 
 ```
 yarn browser-test
 ```
-
-**NOTE**: Browser tests needs running instances of openwisp-radius
-and openwisp-wifi-login-pages.
 
 #### Setup
 
