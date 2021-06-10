@@ -11,18 +11,30 @@ import {
   verifyMobilePhoneToken,
 } from "../controllers/mobile-phone-token-controller";
 import mobilePhoneNumberChange from "../controllers/mobile-phone-number-change-controller";
+import Logger from "../utils/logger";
 
 const router = Router({mergeParams: true});
 
-router.post("/token", obtainToken);
-router.post("/token/validate", validateToken);
-router.post("/password/change", passwordChange);
-router.post("/password/reset/confirm/", passwordResetConfirm);
-router.post("/password/reset", passwordReset);
-router.post("/", registration);
-router.get("/session/", getUserRadiusSessions);
-router.post("/phone/token", createMobilePhoneToken);
-router.post("/phone/verify", verifyMobilePhoneToken);
-router.post("/phone/change", mobilePhoneNumberChange);
+const errorHandler = (fn) => (req, res, next) => {
+  try {
+    fn(req, res, next);
+  } catch (err) {
+    Logger.error(err);
+    res.status(500).type("application/json").send({
+      response_code: "INTERNAL_SERVER_ERROR",
+    });
+  }
+};
+
+router.post("/token", errorHandler(obtainToken));
+router.post("/token/validate", errorHandler(validateToken));
+router.post("/password/change", errorHandler(passwordChange));
+router.post("/password/reset/confirm/", errorHandler(passwordResetConfirm));
+router.post("/password/reset", errorHandler(passwordReset));
+router.post("/", errorHandler(registration));
+router.get("/session/", errorHandler(getUserRadiusSessions));
+router.post("/phone/token", errorHandler(createMobilePhoneToken));
+router.post("/phone/verify", errorHandler(verifyMobilePhoneToken));
+router.post("/phone/change", errorHandler(mobilePhoneNumberChange));
 
 export default router;

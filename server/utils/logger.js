@@ -31,13 +31,16 @@ const format = winston.format.combine(
   winston.format.timestamp({format: "YYYY-MM-DD HH:mm:ss:ms"}),
   winston.format.colorize({all: true}),
   winston.format.printf((info) => {
-    const log = `${info.timestamp} ${info.level}: ${info.message}`;
+    const log = `[ ${info.level} ${info.timestamp} ] ${info.message}`;
     return info.stack ? `${log}\n${info.stack}` : log;
   }),
 );
 
 const transports = [
-  new winston.transports.Console(),
+  new winston.transports.Console({
+    handleExceptions: true,
+    silent: false,
+  }),
   new winston.transports.File({
     filename: logFilePath.error,
     level: "error",
@@ -66,6 +69,13 @@ const Logger = winston.createLogger({
   levels,
   format,
   transports,
+  exitOnError: false,
+  exceptionHandlers: [
+    new winston.transports.File({filename: logFilePath.error}),
+  ],
+  rejectionHandlers: [
+    new winston.transports.File({filename: logFilePath.error}),
+  ],
 });
 
 export default Logger;
