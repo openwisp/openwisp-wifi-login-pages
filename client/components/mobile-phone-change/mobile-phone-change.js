@@ -34,7 +34,17 @@ class MobilePhoneChange extends React.Component {
   }
 
   async componentDidMount() {
-    const {cookies, orgSlug, setUserData, logout} = this.props;
+    const {
+      cookies,
+      orgSlug,
+      setUserData,
+      logout,
+      language,
+      setTitle,
+      phone_number_change,
+      orgName,
+    } = this.props;
+    setTitle(`${getText(phone_number_change.title, language)} - ${orgName}`);
     let {userData} = this.props;
     const isValid = await validateToken(
       cookies,
@@ -212,6 +222,7 @@ export default withRouter(MobilePhoneChange);
 MobilePhoneChange.contextType = LoadingContext;
 MobilePhoneChange.propTypes = {
   phone_number_change: PropTypes.shape({
+    title: PropTypes.object,
     input_fields: PropTypes.shape({
       phone_number: PropTypes.shape({
         label: PropTypes.object,
@@ -239,8 +250,10 @@ MobilePhoneChange.propTypes = {
   }).isRequired,
   language: PropTypes.string.isRequired,
   orgSlug: PropTypes.string.isRequired,
+  orgName: PropTypes.string.isRequired,
   cookies: PropTypes.instanceOf(Cookies).isRequired,
   logout: PropTypes.func.isRequired,
   userData: PropTypes.object.isRequired,
   setUserData: PropTypes.func.isRequired,
+  setTitle: PropTypes.func.isRequired,
 };

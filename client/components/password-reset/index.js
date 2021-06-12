@@ -1,4 +1,5 @@
 import {connect} from "react-redux";
+import {setTitle} from "../../actions/dispatchers";
 
 import Component from "./password-reset";
 
@@ -7,7 +8,14 @@ const mapStateToProps = (state) => {
   return {
     passwordReset: conf.components.password_reset_form,
     orgSlug: conf.slug,
+    orgName: conf.name,
     language: state.language,
   };
 };
-export default connect(mapStateToProps, null)(Component);
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setTitle: setTitle(dispatch),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Component);

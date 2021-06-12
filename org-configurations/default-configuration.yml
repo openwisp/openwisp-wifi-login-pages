@@ -28,7 +28,8 @@ server:
 # in assets directory.
 client:
   # <title> value
-  title: "Wifi Login"
+  title:
+    en: "Wifi Login"
 
   auto_login: True
 
@@ -77,6 +78,8 @@ client:
         en: null
 
     registration_form:
+      title:
+        en: "Sign up"
       input_fields:
         phone_number:
           placeholder:
@@ -202,6 +205,8 @@ client:
           en: "Already have an account? Log in"
 
     password_reset_form:
+      title:
+        en: "Reset Password"
       heading:
         en: "reset your password"
       additional_text:
@@ -226,6 +231,8 @@ client:
           en: "Go back to sign in"
 
     password_reset_confirm_form:
+      title:
+        en: "Reset Password"
       heading:
         en: "reset your password"
       additional_text:
@@ -280,6 +287,8 @@ client:
           url: "https://facebook.com/openwisp"
 
     status_page:
+      title:
+        en: "Status"
       content:
         en: |
           WiFi Login Successful!
@@ -346,6 +355,8 @@ client:
               en: "No"
 
     logout:
+      title:
+        en: "Logout"
       content:
         text:
           en: "Logout successful"
@@ -354,6 +365,8 @@ client:
           en: "Log in again"
 
     login_form:
+      title:
+        en: "Log in"
       social_login:
         links:
           - text:
@@ -437,6 +450,8 @@ client:
             en: "Change Password"
 
     404_page:
+      title:
+        en: "404 Not found"
       heading:
         en: "404"
       sub_heading:

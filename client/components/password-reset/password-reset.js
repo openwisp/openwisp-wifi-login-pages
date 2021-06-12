@@ -25,6 +25,11 @@ export default class PasswordReset extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
+  componentDidMount() {
+    const {language, setTitle, orgName, passwordReset} = this.props;
+    setTitle(`${getText(passwordReset.title, language)} - ${orgName}`);
+  }
+
   handleChange(event) {
     handleChange(event, this);
   }
@@ -153,6 +158,7 @@ export default class PasswordReset extends React.Component {
 PasswordReset.contextType = LoadingContext;
 PasswordReset.propTypes = {
   passwordReset: PropTypes.shape({
+    title: PropTypes.object,
     heading: PropTypes.object,
     additional_text: PropTypes.object,
     input_fields: PropTypes.shape({
@@ -170,4 +176,6 @@ PasswordReset.propTypes = {
   }).isRequired,
   language: PropTypes.string.isRequired,
   orgSlug: PropTypes.string.isRequired,
+  orgName: PropTypes.string.isRequired,
+  setTitle: PropTypes.func.isRequired,
 };

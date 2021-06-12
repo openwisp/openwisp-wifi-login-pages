@@ -42,7 +42,20 @@ export default class MobilePhoneVerification extends React.Component {
   }
 
   async componentDidMount() {
-    const {cookies, orgSlug, settings, setUserData, logout} = this.props;
+    const {
+      cookies,
+      orgSlug,
+      settings,
+      setUserData,
+      logout,
+      orgName,
+      language,
+      setTitle,
+      mobile_phone_verification,
+    } = this.props;
+    setTitle(
+      `${getText(mobile_phone_verification.title, language)} - ${orgName}`,
+    );
     let {userData} = this.props;
     const {setLoading} = this.context;
     setLoading(true);
@@ -282,9 +295,11 @@ MobilePhoneVerification.propTypes = {
   }).isRequired,
   language: PropTypes.string.isRequired,
   orgSlug: PropTypes.string.isRequired,
+  orgName: PropTypes.string.isRequired,
   cookies: PropTypes.instanceOf(Cookies).isRequired,
   logout: PropTypes.func.isRequired,
   mobile_phone_verification: PropTypes.shape({
+    title: PropTypes.object,
     text: PropTypes.shape({
       verify: PropTypes.shape().isRequired,
       resend: PropTypes.shape().isRequired,
@@ -310,4 +325,5 @@ MobilePhoneVerification.propTypes = {
   }).isRequired,
   userData: PropTypes.object.isRequired,
   setUserData: PropTypes.func.isRequired,
+  setTitle: PropTypes.func.isRequired,
 };

@@ -24,6 +24,7 @@ const createTestProps = (props) => {
   return {
     language: "en",
     orgSlug: "default",
+    orgName: "default name",
     loginForm,
     privacyPolicy: defaultConfig.privacy_policy,
     termsAndConditions: defaultConfig.terms_and_conditions,
@@ -31,6 +32,7 @@ const createTestProps = (props) => {
     authenticate: jest.fn(),
     setUserData: jest.fn(),
     userData: {},
+    setTitle: jest.fn(),
     match: {
       path: "default/login",
     },
@@ -520,5 +522,11 @@ describe("<Login /> interactions", () => {
     expect(setUserDataMock.calls.pop()).toEqual([
       {...userData, justAuthenticated: true},
     ]);
+  });
+  it("should set log in title", () => {
+    wrapper = mountComponent(props);
+    const login = wrapper.find(Login);
+    const setTitleMock = login.props().setTitle.mock;
+    expect(setTitleMock.calls.pop()).toEqual(["Log in - default name"]);
   });
 });

@@ -9,6 +9,9 @@
     },
     "components": {
       "status_page": {
+        "title": {
+          "en": "Status"
+        },
         "content": {
           "en": "WiFi Login Successful!\nYou can now use the internet.\nYou may leave this page open in case you want to log out.\n"
         },
@@ -113,6 +116,9 @@
         }
       },
       "logout": {
+        "title": {
+          "en": "Logout"
+        },
         "content": {
           "text": {
             "en": "Logout Successfull !!!"
@@ -157,6 +163,9 @@
         "logout_by_session": true
       },
       "registration_form": {
+        "title": {
+          "en": "Sign up"
+        },
         "input_fields": {
           "username": {
             "type": "text",
@@ -379,6 +388,9 @@
     },
     "components": {
       "mobile_phone_verification_form": {
+        "title": {
+          "en": "Verify mobile number"
+        },
         "text": {
           "verify": {
             "en": "Verify your mobile phone number ({phone_number}) by inserting the code you received via SMS below."
@@ -427,6 +439,9 @@
         }
       },
       "phone_number_change_form": {
+        "title": {
+          "en": "Change mobile number"
+        },
         "buttons": {
           "change_phone_number": {
             "text": {
@@ -475,6 +490,9 @@
         ]
       },
       "registration_form": {
+        "title": {
+          "en": "Sign up"
+        },
         "input_fields": {
           "phone_number": {
             "placeholder": {

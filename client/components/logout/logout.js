@@ -18,6 +18,11 @@ export default class Logout extends React.Component {
     this.state = {};
   }
 
+  componentDidMount() {
+    const {orgName, setTitle, logoutPage, language} = this.props;
+    setTitle(`${getText(logoutPage.title, language)} - ${orgName}`);
+  }
+
   loginUser = (isAuthenticated) => {
     const {authenticate} = this.props;
     if (!isAuthenticated) authenticate(true);
@@ -58,11 +63,14 @@ Logout.defaultProps = {
 };
 Logout.propTypes = {
   logoutPage: PropTypes.shape({
+    title: PropTypes.object,
     content: PropTypes.object.isRequired,
     login_again: PropTypes.object.isRequired,
   }).isRequired,
   language: PropTypes.string.isRequired,
   orgSlug: PropTypes.string.isRequired,
+  orgName: PropTypes.string.isRequired,
   isAuthenticated: PropTypes.bool,
   authenticate: PropTypes.func.isRequired,
+  setTitle: PropTypes.func.isRequired,
 };

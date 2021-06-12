@@ -8,6 +8,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     organization: state.organization,
     cookies: ownProps.cookies,
+    language: state.language,
   };
 };
 

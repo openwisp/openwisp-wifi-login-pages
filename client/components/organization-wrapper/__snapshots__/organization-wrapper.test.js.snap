@@ -1,0 +1,171 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<OrganizationWrapper /> interactions should render main title if pageTitle is undefined 1`] = `
+<React.Fragment>
+  <Context.Provider
+    value={
+      Object {
+        "getLoading": [Function],
+        "setLoading": [Function],
+      }
+    }
+  >
+    <div
+      className="app-container "
+    >
+      <Route
+        path="/default"
+        render={[Function]}
+      />
+      <Switch>
+        <Route
+          exact={true}
+          path="/default"
+          render={[Function]}
+        />
+        <Route
+          path="/default/registration"
+          render={[Function]}
+        />
+        <Route
+          path="/default/mobile-phone-verification"
+          render={[Function]}
+        />
+        <Route
+          path="/default/password/reset/confirm/:uid/:token"
+          render={[Function]}
+        />
+        <Route
+          exact={true}
+          path="/default/password/reset"
+          render={[Function]}
+        />
+        <Route
+          path="/default/login"
+          render={[Function]}
+        />
+        <Route
+          path="/default/status"
+          render={[Function]}
+        />
+        <Route
+          path="/default/logout"
+          render={[Function]}
+        />
+        <Route
+          path="/default/change-password"
+          render={[Function]}
+        />
+        <Route
+          path="/default/change-phone-number"
+          render={[Function]}
+        />
+        <Route
+          path="/default/payment/:result"
+          render={[Function]}
+        />
+        <Route
+          render={[Function]}
+        />
+      </Switch>
+      <Route
+        path="/default"
+        render={[Function]}
+      />
+    </div>
+    <HelmetWrapper
+      defer={true}
+      encodeSpecialCharacters={true}
+    >
+      <title>
+        Default - default name
+      </title>
+    </HelmetWrapper>
+  </Context.Provider>
+</React.Fragment>
+`;
+
+exports[`<OrganizationWrapper /> interactions should render pageTitle if it is not undefined 1`] = `
+<React.Fragment>
+  <Context.Provider
+    value={
+      Object {
+        "getLoading": [Function],
+        "setLoading": [Function],
+      }
+    }
+  >
+    <div
+      className="app-container "
+    >
+      <Route
+        path="/default"
+        render={[Function]}
+      />
+      <Switch>
+        <Route
+          exact={true}
+          path="/default"
+          render={[Function]}
+        />
+        <Route
+          path="/default/registration"
+          render={[Function]}
+        />
+        <Route
+          path="/default/mobile-phone-verification"
+          render={[Function]}
+        />
+        <Route
+          path="/default/password/reset/confirm/:uid/:token"
+          render={[Function]}
+        />
+        <Route
+          exact={true}
+          path="/default/password/reset"
+          render={[Function]}
+        />
+        <Route
+          path="/default/login"
+          render={[Function]}
+        />
+        <Route
+          path="/default/status"
+          render={[Function]}
+        />
+        <Route
+          path="/default/logout"
+          render={[Function]}
+        />
+        <Route
+          path="/default/change-password"
+          render={[Function]}
+        />
+        <Route
+          path="/default/change-phone-number"
+          render={[Function]}
+        />
+        <Route
+          path="/default/payment/:result"
+          render={[Function]}
+        />
+        <Route
+          render={[Function]}
+        />
+      </Switch>
+      <Route
+        path="/default"
+        render={[Function]}
+      />
+    </div>
+    <HelmetWrapper
+      defer={true}
+      encodeSpecialCharacters={true}
+    >
+      <title>
+        Organization Wrapper
+      </title>
+    </HelmetWrapper>
+  </Context.Provider>
+</React.Fragment>
+`;

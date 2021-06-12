@@ -34,11 +34,13 @@ const createTestProps = function (props, configName = "test-org-2") {
     phone_number_change: componentConf,
     settings: conf.settings,
     orgSlug: conf.slug,
+    orgName: conf.name,
     language: "en",
     cookies: new Cookies(),
     logout: jest.fn(),
     setUserData: jest.fn(),
     userData: {},
+    setTitle: jest.fn(),
     // needed for subcomponents
     configuration: conf,
     ...props,
@@ -249,6 +251,15 @@ describe("Change Phone Number: standard flow", () => {
     expect(lastConsoleOutuput).toBe(null);
     const {href} = cancelButton.at(0).props();
     expect(href).toEqual("/test-org-2/mobile-phone-verification");
+  });
+
+  it("should set title", async () => {
+    wrapper = await mountComponent(props);
+    const component = wrapper.find(MobilePhoneChange);
+    const setTitleMock = component.props().setTitle.mock;
+    expect(setTitleMock.calls.pop()).toEqual([
+      "Change mobile number - test org 2 (sms)",
+    ]);
   });
 });
 

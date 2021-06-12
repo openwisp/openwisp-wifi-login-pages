@@ -35,6 +35,11 @@ export default class PasswordChange extends React.Component {
     this.confirmPasswordToggleRef = React.createRef();
   }
 
+  componentDidMount() {
+    const {language, setTitle, orgName, passwordChange} = this.props;
+    setTitle(`${getText(passwordChange.title, language)} - ${orgName}`);
+  }
+
   handleSubmit(e) {
     const {setLoading} = this.context;
 
@@ -199,6 +204,7 @@ export default class PasswordChange extends React.Component {
 PasswordChange.contextType = LoadingContext;
 PasswordChange.propTypes = {
   orgSlug: PropTypes.string.isRequired,
+  orgName: PropTypes.string.isRequired,
   cookies: PropTypes.instanceOf(Cookies).isRequired,
   language: PropTypes.string.isRequired,
   passwordChange: PropTypes.shape({
@@ -223,4 +229,5 @@ PasswordChange.propTypes = {
       }).isRequired,
     }).isRequired,
   }).isRequired,
+  setTitle: PropTypes.func.isRequired,
 };

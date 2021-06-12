@@ -58,7 +58,18 @@ export default class Status extends React.Component {
   }
 
   async componentDidMount() {
-    const {cookies, orgSlug, settings, setUserData, logout} = this.props;
+    const {
+      cookies,
+      orgSlug,
+      settings,
+      setUserData,
+      logout,
+      language,
+      setTitle,
+      statusPage,
+      orgName,
+    } = this.props;
+    setTitle(`${getText(statusPage.title, language)} - ${orgName}`);
     const {setLoading} = this.context;
     let {userData} = this.props;
     this.setState({
@@ -799,6 +810,7 @@ Status.defaultProps = {
 };
 Status.propTypes = {
   statusPage: PropTypes.shape({
+    title: PropTypes.object,
     content: PropTypes.object.isRequired,
     session_info: PropTypes.shape({
       header: PropTypes.shape({
@@ -868,6 +880,7 @@ Status.propTypes = {
   }).isRequired,
   language: PropTypes.string.isRequired,
   orgSlug: PropTypes.string.isRequired,
+  orgName: PropTypes.string.isRequired,
   userData: PropTypes.object.isRequired,
   cookies: PropTypes.instanceOf(Cookies).isRequired,
   logout: PropTypes.func.isRequired,
@@ -899,4 +912,5 @@ Status.propTypes = {
     subscriptions: PropTypes.bool,
   }).isRequired,
   setUserData: PropTypes.func.isRequired,
+  setTitle: PropTypes.func.isRequired,
 };

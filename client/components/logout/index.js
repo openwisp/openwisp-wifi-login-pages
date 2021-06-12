@@ -1,5 +1,5 @@
 import {connect} from "react-redux";
-import {authenticate} from "../../actions/dispatchers";
+import {authenticate, setTitle} from "../../actions/dispatchers";
 import Component from "./logout";
 
 const mapStateToProps = (state) => {
@@ -7,6 +7,7 @@ const mapStateToProps = (state) => {
   return {
     logoutPage: conf.components.logout,
     orgSlug: conf.slug,
+    orgName: conf.name,
     isAuthenticated: conf.isAuthenticated,
     language: state.language,
   };
@@ -15,6 +16,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     authenticate: authenticate(dispatch),
+    setTitle: setTitle(dispatch),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Component);

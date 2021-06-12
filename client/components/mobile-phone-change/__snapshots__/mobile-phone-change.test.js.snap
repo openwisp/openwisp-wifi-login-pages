@@ -122,6 +122,9 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
                   "en": "Verify your mobile phone number ({phone_number}) by inserting the code you received via SMS below.",
                 },
               },
+              "title": Object {
+                "en": "Verify mobile number",
+              },
             },
             "phone_number_change_form": Object {
               "buttons": Object {
@@ -151,6 +154,9 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
                 "token_sent": Object {
                   "en": "SMS verification code sent successfully.",
                 },
+              },
+              "title": Object {
+                "en": "Change mobile number",
               },
             },
             "registration_form": Object {
@@ -341,6 +347,9 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
                   "en": "Select your plan below",
                 },
               },
+              "title": Object {
+                "en": "Sign up",
+              },
             },
           },
           "name": "test org 2 (sms)",
@@ -387,6 +396,7 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
       }
       language="en"
       logout={[MockFunction]}
+      orgName="test org 2 (sms)"
       orgSlug="test-org-2"
       phone_number_change={
         Object {
@@ -418,6 +428,24 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
               "en": "SMS verification code sent successfully.",
             },
           },
+          "title": Object {
+            "en": "Change mobile number",
+          },
+        }
+      }
+      setTitle={
+        [MockFunction] {
+          "calls": Array [
+            Array [
+              "Change mobile number - test org 2 (sms)",
+            ],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": undefined,
+            },
+          ],
         }
       }
       setUserData={[MockFunction]}
@@ -522,6 +550,9 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
                     "en": "Verify your mobile phone number ({phone_number}) by inserting the code you received via SMS below.",
                   },
                 },
+                "title": Object {
+                  "en": "Verify mobile number",
+                },
               },
               "phone_number_change_form": Object {
                 "buttons": Object {
@@ -551,6 +582,9 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
                   "token_sent": Object {
                     "en": "SMS verification code sent successfully.",
                   },
+                },
+                "title": Object {
+                  "en": "Change mobile number",
                 },
               },
               "registration_form": Object {
@@ -741,6 +775,9 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
                     "en": "Select your plan below",
                   },
                 },
+                "title": Object {
+                  "en": "Sign up",
+                },
               },
             },
             "name": "test org 2 (sms)",
@@ -828,6 +865,7 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
             "url": "/",
           }
         }
+        orgName="test org 2 (sms)"
         orgSlug="test-org-2"
         phone_number_change={
           Object {
@@ -859,6 +897,24 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
                 "en": "SMS verification code sent successfully.",
               },
             },
+            "title": Object {
+              "en": "Change mobile number",
+            },
+          }
+        }
+        setTitle={
+          [MockFunction] {
+            "calls": Array [
+              Array [
+                "Change mobile number - test org 2 (sms)",
+              ],
+            ],
+            "results": Array [
+              Object {
+                "type": "return",
+                "value": undefined,
+              },
+            ],
           }
         }
         setUserData={[MockFunction]}

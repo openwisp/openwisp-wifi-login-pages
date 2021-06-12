@@ -18,8 +18,10 @@ const createTestProps = (props) => {
   return {
     language: "en",
     orgSlug: "default",
+    orgName: "default name",
     logoutPage: defaultConfig.components.logout,
     authenticate: jest.fn(),
+    setTitle: jest.fn(),
     ...props,
   };
 };
@@ -54,5 +56,14 @@ describe("<Logout /> interactions", () => {
     const loginUser = jest.spyOn(wrapper.instance(), "loginUser");
     wrapper.find(".button").simulate("click", {});
     expect(loginUser).toHaveBeenCalled();
+  });
+
+  it("should set title", () => {
+    props = createTestProps();
+    wrapper = shallow(<Logout {...props} />, {
+      context: {setLoading: jest.fn()},
+    });
+    const setTitleMock = wrapper.instance().props.setTitle.mock;
+    expect(setTitleMock.calls.pop()).toEqual(["Logout - default name"]);
   });
 });

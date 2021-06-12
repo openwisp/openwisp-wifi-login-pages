@@ -4,6 +4,7 @@ import thunk from "redux-thunk";
 
 import * as types from "../constants/action-types";
 import testOrgConfig from "../test-config.json";
+import {setTitleAction} from "./dispatchers";
 import logout from "./logout";
 import parseOrganizations from "./parse-organizations";
 import setLanguage from "./set-language";
@@ -60,6 +61,10 @@ describe("actions testing", () => {
         payload: testOrgConfig[0].default_language,
       },
       {
+        type: types.SET_PAGE_TITLE,
+        payload: testOrgConfig[2].name,
+      },
+      {
         type: types.SET_ORGANIZATION_STATUS,
         payload: true,
       },
@@ -76,6 +81,10 @@ describe("actions testing", () => {
         payload: testOrgConfig[1].default_language,
       },
       {
+        type: types.SET_PAGE_TITLE,
+        payload: testOrgConfig[1].name,
+      },
+      {
         type: types.SET_ORGANIZATION_STATUS,
         payload: true,
       },
@@ -90,6 +99,10 @@ describe("actions testing", () => {
       {
         type: types.SET_LANGUAGE,
         payload: testOrgConfig[0].default_language,
+      },
+      {
+        type: types.SET_PAGE_TITLE,
+        payload: testOrgConfig[0].name,
       },
       {
         type: types.SET_ORGANIZATION_STATUS,
@@ -132,5 +145,17 @@ describe("actions testing", () => {
     store.dispatch(logout(cookies, orgSlug));
     expect(store.getActions()).toEqual(expectedActions);
     expect(sessionStorage.getItem("test")).toBe(null);
+  });
+  it("should create an action to set page title", () => {
+    const title = "default name";
+    const expectedActions = [
+      {
+        type: types.SET_PAGE_TITLE,
+        payload: title,
+      },
+    ];
+    const store = mockStore({pageTitle: ""});
+    store.dispatch(setTitleAction(title));
+    expect(store.getActions()).toEqual(expectedActions);
   });
 });
