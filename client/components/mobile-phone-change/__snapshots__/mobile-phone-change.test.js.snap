@@ -1090,6 +1090,7 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
                 isAuthenticated={false}
                 language="en"
                 orgSlug="test-org-2"
+                userData={Object {}}
               >
                 <div
                   className="side-column contact"

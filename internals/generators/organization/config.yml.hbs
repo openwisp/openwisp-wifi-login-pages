@@ -82,11 +82,15 @@ client:
             en: "Change password"
           url: "/{{slug}}/change-password"
           authenticated: true
+          {{#if mobile_phone_verification }}
+          verified: true
+          {{/if}}
       {{#if mobile_phone_verification }}
         - text:
             en: "Change phone number"
           url: "/{{slug}}/change-phone-number"
           authenticated: true
+          method: "mobile_phone"
       {{/if}}
 
     footer:

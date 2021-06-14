@@ -8,7 +8,7 @@ import shouldLinkBeShown from "../../utils/should-link-be-shown";
 
 export default class Footer extends React.Component {
   render() {
-    const {footer, language, isAuthenticated} = this.props;
+    const {footer, language, isAuthenticated, userData} = this.props;
     const {links} = footer;
     const secondaryText = footer.secondary_text;
     return (
@@ -16,7 +16,7 @@ export default class Footer extends React.Component {
         <div className="footer-row-1">
           <div className="footer-row-1-inner">
             {links.map((link, index) => {
-              if (shouldLinkBeShown(link, isAuthenticated)) {
+              if (shouldLinkBeShown(link, isAuthenticated, userData)) {
                 return (
                   <a
                     href={link.url}
@@ -54,4 +54,5 @@ Footer.propTypes = {
     secondary_text: PropTypes.object,
   }).isRequired,
   isAuthenticated: PropTypes.bool,
+  userData: PropTypes.object.isRequired,
 };

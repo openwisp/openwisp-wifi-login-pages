@@ -50,6 +50,7 @@ export default class Header extends React.Component {
       setLanguage,
       location,
       isAuthenticated,
+      userData,
     } = this.props;
     const {logo, links} = header;
     const {pathname} = location;
@@ -95,7 +96,7 @@ export default class Header extends React.Component {
           <div className="header-row-2">
             <div className="header-row-2-inner">
               {links.map((link, index) => {
-                if (!shouldLinkBeShown(link, isAuthenticated)) {
+                if (!shouldLinkBeShown(link, isAuthenticated, userData)) {
                   return null;
                 }
                 if (
@@ -168,7 +169,7 @@ export default class Header extends React.Component {
             } header-mobile-menu`}
           >
             {links.map((link, index) => {
-              if (shouldLinkBeShown(link, isAuthenticated)) {
+              if (shouldLinkBeShown(link, isAuthenticated, userData)) {
                 if (isInternalLink(link.url)) {
                   return (
                     <Link
@@ -246,4 +247,5 @@ Header.propTypes = {
     pathname: PropTypes.string,
   }).isRequired,
   isAuthenticated: PropTypes.bool,
+  userData: PropTypes.object.isRequired,
 };
