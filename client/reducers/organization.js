@@ -18,7 +18,7 @@ export const organizations = (state = [], action) => {
 export const initialState = {
   userData: {
     is_active: true,
-    is_verified: true,
+    is_verified: null,
     justAuthenticated: true,
   },
   settings: {

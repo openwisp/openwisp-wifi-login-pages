@@ -63,7 +63,7 @@ export default class OrganizationWrapper extends React.Component {
     } = organization.configuration;
     const {is_active, is_verified} = userData;
     const needsMobilePhoneVerification =
-      !is_verified && settings.mobile_phone_verification;
+      is_verified === false && settings.mobile_phone_verification;
     const orgSlug = organization.configuration.slug;
     const cssPath = organization.configuration.css_path;
     const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";

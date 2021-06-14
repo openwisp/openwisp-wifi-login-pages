@@ -11,6 +11,7 @@ import authenticate from "../utils/authenticate";
 import customMerge from "../utils/custom-merge";
 import getConfig from "../utils/get-config";
 import logout from "./logout";
+import {initialState} from "../reducers/organization";
 
 const setOrganization = (slug, cookies) => {
   return (dispatch) => {
@@ -20,11 +21,7 @@ const setOrganization = (slug, cookies) => {
       const config = merge(defaultConfig, orgConfig, {
         arrayMerge: customMerge,
       });
-      config.userData = {
-        is_active: true,
-        is_verified: true,
-        justAuthenticated: true,
-      };
+      config.userData = initialState.userData;
       dispatch({
         type: SET_LANGUAGE,
         payload: config.default_language,
@@ -39,11 +36,7 @@ const setOrganization = (slug, cookies) => {
       });
       dispatch({
         type: SET_USER_DATA,
-        payload: {
-          is_active: true,
-          is_verified: true,
-          justAuthenticated: true,
-        },
+        payload: initialState.userData,
       });
       const autoLogin = config.auto_login;
       const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";

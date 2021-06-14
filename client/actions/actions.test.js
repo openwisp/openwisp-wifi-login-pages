@@ -48,7 +48,7 @@ describe("actions testing", () => {
     const orgConfig2 = merge(testOrgConfig[0], testOrgConfig[1]);
     const userData = {
       is_active: true,
-      is_verified: true,
+      is_verified: null,
       justAuthenticated: true,
     };
     orgConfig.userData = userData;

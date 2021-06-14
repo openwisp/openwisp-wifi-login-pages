@@ -31,7 +31,7 @@ describe("organization reducer", () => {
     configuration: {
       userData: {
         is_active: true,
-        is_verified: true,
+        is_verified: null,
         justAuthenticated: true,
       },
       settings: {

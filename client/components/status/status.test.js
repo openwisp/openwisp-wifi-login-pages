@@ -160,7 +160,7 @@ describe("<Status /> interactions", () => {
     expect(wrapper.instance().props.logout).toHaveBeenCalled();
     expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith({
       is_active: true,
-      is_verified: true,
+      is_verified: null,
       justAuthenticated: true,
     });
   });
