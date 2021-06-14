@@ -1,7 +1,7 @@
 import {connect} from "react-redux";
 
 import Component from "./mobile-phone-change";
-import {logout, verifyMobileNumber} from "../../actions/dispatchers";
+import {logout, setUserData} from "../../actions/dispatchers";
 
 const mapStateToProps = (state, ownProps) => {
   const conf = state.organization.configuration;
@@ -18,12 +18,13 @@ const mapStateToProps = (state, ownProps) => {
     orgSlug: conf.slug,
     language: state.language,
     cookies: ownProps.cookies,
+    userData: conf.userData,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
     logout: logout(dispatch),
-    verifyMobileNumber: verifyMobileNumber(dispatch),
+    setUserData: setUserData(dispatch),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Component);

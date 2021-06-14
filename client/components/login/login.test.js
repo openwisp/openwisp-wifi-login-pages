@@ -29,8 +29,8 @@ const createTestProps = (props) => {
     termsAndConditions: defaultConfig.terms_and_conditions,
     settings: {mobile_phone_verification: false},
     authenticate: jest.fn(),
-    verifyMobileNumber: jest.fn(),
-    setIsActive: jest.fn(),
+    setUserData: jest.fn(),
+    userData: {},
     match: {
       path: "default/login",
     },
@@ -261,10 +261,10 @@ describe("<Login /> interactions", () => {
           });
       });
   });
-
-  it("should execute verifyMobileNumber if mobile phone verification needed", async () => {
+  it("should execute setUserData if mobile phone verification needed", async () => {
     props.settings = {mobile_phone_verification: true};
     wrapper = mountComponent(props);
+    expect(true).toBe(true);
     const login = wrapper.find(Login);
     const handleSubmit = jest.spyOn(login.instance(), "handleSubmit");
 
@@ -275,6 +275,7 @@ describe("<Login /> interactions", () => {
           statusText: "unauthorized",
           data: {
             is_active: true,
+            is_verified: false,
           },
         },
       });
@@ -292,14 +293,15 @@ describe("<Login /> interactions", () => {
       .find("#password")
       .simulate("change", {target: {value: "test password", name: "password"}});
     expect(login.state("password")).toEqual("test password");
-
     const event = {preventDefault: () => {}};
     wrapper.find("form").simulate("submit", event);
     await tick();
     expect(handleSubmit).toHaveBeenCalled();
-    const verifyMock = login.props().verifyMobileNumber.mock;
-    expect(verifyMock.calls.length).toBe(1);
-    expect(verifyMock.calls.pop()).toEqual([true]);
+    const setUserDataMock = login.props().setUserData.mock;
+    expect(setUserDataMock.calls.length).toBe(1);
+    expect(setUserDataMock.calls.pop()).toEqual([
+      {is_active: true, is_verified: false, justAuthenticated: true},
+    ]);
     const authenticateMock = login.props().authenticate.mock;
     expect(authenticateMock.calls.length).toBe(1);
     expect(authenticateMock.calls.pop()).toEqual([true]);
@@ -330,6 +332,46 @@ describe("<Login /> interactions", () => {
     expect(wrapper.find("#username").length).toEqual(1);
     expect(wrapper.find(".row.phone-number").length).toEqual(0);
   });
+  it("should execute setUserData and must not show any form errors if user is inactive", async () => {
+    props.settings = {mobile_phone_verification: true};
+    wrapper = shallow(<Login {...props} />, {context: loadingContextValue});
+
+    axios.mockImplementationOnce(() => {
+      return Promise.reject({
+        response: {
+          status: 401,
+          statusText: "unauthorized",
+          data: {
+            is_active: false,
+            is_verified: true,
+          },
+        },
+      });
+    });
+
+    wrapper.find("[name='username']").simulate("change", {
+      target: {value: "+393660011333", name: "username"},
+    });
+    wrapper
+      .find("#password")
+      .simulate("change", {target: {value: "test password", name: "password"}});
+
+    const event = {preventDefault: () => {}};
+    await wrapper.instance().handleSubmit(event);
+    const spyToast = jest.spyOn(dependency.toast, "error");
+    const authenticateMock = wrapper.instance().props.authenticate.mock;
+    expect(authenticateMock.calls.length).toBe(0);
+    const setUserDataMock = wrapper.instance().props.setUserData.mock;
+    expect(setUserDataMock.calls.length).toBe(1);
+    expect(setUserDataMock.calls.pop()).toEqual([
+      {is_active: false, is_verified: true, justAuthenticated: true},
+    ]);
+    expect(wrapper.instance().state.errors).toEqual({
+      username: "",
+      password: "",
+    });
+    expect(spyToast).toHaveBeenCalled();
+  });
   it("should store token in sessionStorage when remember me is unchecked and rememberMe in localstorage", () => {
     const data = {
       data: {
@@ -356,38 +398,6 @@ describe("<Login /> interactions", () => {
         expect(localStorage.getItem("rememberMe")).toEqual("false");
         expect(wrapper.instance().props.authenticate.mock.calls.length).toBe(1);
       });
-  });
-  it("should not execute verifyMobileNumber if user is inactive and must execute setIsActive", async () => {
-    props.settings = {mobile_phone_verification: true};
-    wrapper = shallow(<Login {...props} />, {context: loadingContextValue});
-
-    axios.mockImplementationOnce(() => {
-      return Promise.reject({
-        response: {
-          status: 401,
-          statusText: "unauthorized",
-          data: {
-            is_active: false,
-          },
-        },
-      });
-    });
-
-    wrapper.find("[name='username']").simulate("change", {
-      target: {value: "+393660011333", name: "username"},
-    });
-    wrapper
-      .find("#password")
-      .simulate("change", {target: {value: "test password", name: "password"}});
-
-    const event = {preventDefault: () => {}};
-    await wrapper.instance().handleSubmit(event);
-    const verifyMock = wrapper.instance().props.verifyMobileNumber.mock;
-    expect(verifyMock.calls.length).toBe(0);
-    const authenticateMock = wrapper.instance().props.authenticate.mock;
-    expect(authenticateMock.calls.length).toBe(0);
-    const setIsActiveMock = wrapper.instance().props.setIsActive.mock;
-    expect(setIsActiveMock.calls.length).toBe(1);
   });
   it("should show error toast when server error", () => {
     axios.mockImplementationOnce(() => {
@@ -438,5 +448,33 @@ describe("<Login /> interactions", () => {
     expect(lastConsoleOutuput).not.toBe(null);
     expect(errorMethod).toHaveBeenCalled();
     expect(errorMethod).toBeCalledWith("Login error occurred.");
+  });
+  it("should set justAuthenticated on login success", async () => {
+    axios.mockImplementationOnce(() => {
+      return Promise.reject({
+        response: {
+          status: 401,
+          statusText: "unauthorized",
+          data: {},
+        },
+      });
+    });
+    props.settings = {mobile_phone_verification: true};
+    wrapper = mountComponent(props);
+    const login = wrapper.find(Login);
+    const handleSubmit = jest.spyOn(login.instance(), "handleSubmit");
+    wrapper.find("#username").simulate("change", {
+      target: {value: "+393660011333", name: "username"},
+    });
+    wrapper
+      .find("#password")
+      .simulate("change", {target: {value: "test password", name: "password"}});
+    const event = {preventDefault: () => {}};
+    wrapper.find("form").simulate("submit", event);
+    await tick();
+    expect(handleSubmit).toHaveBeenCalled();
+    const setUserDataMock = login.props().setUserData.mock;
+    expect(setUserDataMock.calls.length).toBe(1);
+    expect(setUserDataMock.calls.pop()).toEqual([{justAuthenticated: true}]);
   });
 });

@@ -6,7 +6,6 @@ import "react-toastify/dist/ReactToastify.css";
 
 import axios from "axios";
 import PropTypes from "prop-types";
-import qs from "qs";
 import React from "react";
 import {Cookies} from "react-cookie";
 import {Link} from "react-router-dom";
@@ -17,7 +16,6 @@ import {
   getUserRadiusSessionsUrl,
   logoutSuccess,
   mainToastId,
-  validateApiUrl,
 } from "../../constants";
 import getText from "../../utils/get-text";
 import LoadingContext from "../../utils/loading-context";
@@ -25,6 +23,8 @@ import logError from "../../utils/log-error";
 import Contact from "../contact-box";
 import shouldLinkBeShown from "../../utils/should-link-be-shown";
 import handleSession from "../../utils/session";
+import validateToken from "../../utils/validate-token";
+import {initialState} from "../../reducers/organization";
 
 export default class Status extends React.Component {
   constructor(props) {
@@ -36,22 +36,19 @@ export default class Status extends React.Component {
     this.state = {
       username: "",
       password: "",
-      is_active: null,
-      is_verified: null,
       activeSessions: [],
       pastSessions: [],
       sessionsToLogout: [],
       loggedOut: false,
       userInfo: {},
       currentPage: 1,
-      hasMoreSessions: true,
+      hasMoreSessions: false,
       intervalId: null,
       screenWidth: window.innerWidth,
       loadSpinner: true,
       modalActive: false,
       rememberMe: false,
     };
-    this.validateToken = this.validateToken.bind(this);
     this.getUserRadiusSessions = this.getUserRadiusSessions.bind(this);
     this.handleSessionLogout = this.handleSessionLogout.bind(this);
     this.fetchMoreSessions = this.fetchMoreSessions.bind(this);
@@ -60,7 +57,9 @@ export default class Status extends React.Component {
   }
 
   async componentDidMount() {
-    const {cookies, orgSlug, verifyMobileNumber, settings} = this.props;
+    const {cookies, orgSlug, settings, setUserData, logout} = this.props;
+    const {setLoading} = this.context;
+    let {userData} = this.props;
     this.setState({
       rememberMe: localStorage.getItem("rememberMe") === "true",
     });
@@ -80,36 +79,72 @@ export default class Status extends React.Component {
       } catch {
         //
       }
-      const isValid = await this.validateToken();
-      const {is_active, is_verified} = this.state;
-      if (isValid && is_active) {
-        const macaddr = cookies.get(`${orgSlug}_macaddr`);
-
-        if (macaddr) {
-          const params = {macaddr};
-          await this.getUserActiveRadiusSessions(params);
-          /* request to captive portal is made only if there is
-            no active session from macaddr stored in the cookie */
-          const {activeSessions} = this.state;
-          if (activeSessions && activeSessions.length === 0) {
-            if (this.loginFormRef && this.loginFormRef.current)
-              this.loginFormRef.current.submit();
+      setLoading(true);
+      const isValid = await validateToken(
+        cookies,
+        orgSlug,
+        setUserData,
+        userData,
+        logout,
+      );
+      setLoading(false);
+      if (isValid) {
+        const {justAuthenticated} = userData;
+        ({userData} = this.props);
+        const {
+          radius_user_token: password,
+          username,
+          email,
+          phone_number,
+          is_active,
+        } = userData;
+        const userInfo = {};
+        userInfo.status = "";
+        userInfo.email = email;
+        if (username !== email && username !== phone_number) {
+          userInfo.username = username;
+        }
+        if (settings.mobile_phone_verification) {
+          userInfo.phone_number = phone_number;
+        }
+        this.setState({username, password, userInfo}, () => {
+          // if the user is being automatically logged in but it's not
+          // active anymore (eg: has been banned)
+          // automatically perform log out
+          if (is_active === false) {
+            this.handleLogout(false);
           }
-        } else if (this.loginFormRef && this.loginFormRef.current)
-          this.loginFormRef.current.submit();
+        });
+        if (isValid && is_active) {
+          const macaddr = cookies.get(`${orgSlug}_macaddr`);
 
-        await this.getUserActiveRadiusSessions();
-        await this.getUserPassedRadiusSessions();
-        const intervalId = setInterval(() => {
-          this.getUserActiveRadiusSessions();
-        }, 60000);
-        this.setState({intervalId});
-        window.addEventListener("resize", this.updateScreenWidth);
-        this.updateSpinner();
-      }
-      // would be better to show a different button in the status page
-      if (isValid && !is_verified && settings.mobile_phone_verification) {
-        verifyMobileNumber(true);
+          if (macaddr) {
+            const params = {macaddr};
+            await this.getUserActiveRadiusSessions(params);
+            /* request to captive portal is made only if there is
+              no active session from macaddr stored in the cookie */
+            const {activeSessions} = this.state;
+            if (activeSessions && activeSessions.length === 0) {
+              if (this.loginFormRef && this.loginFormRef.current)
+                this.loginFormRef.current.submit();
+            }
+          } else if (
+            this.loginFormRef &&
+            this.loginFormRef.current &&
+            justAuthenticated
+          ) {
+            this.loginFormRef.current.submit();
+            setUserData({...userData, justAuthenticated: false});
+          }
+          await this.getUserActiveRadiusSessions();
+          await this.getUserPassedRadiusSessions();
+          const intervalId = setInterval(() => {
+            this.getUserActiveRadiusSessions();
+          }, 60000);
+          this.setState({intervalId});
+          window.addEventListener("resize", this.updateScreenWidth);
+          this.updateSpinner();
+        }
       }
     }
   }
@@ -140,6 +175,7 @@ export default class Status extends React.Component {
         url,
         params,
       });
+      const {headers} = response;
       if (params.is_open) {
         options.activeSessions = response.data;
         options.sessionsToLogout = response.data;
@@ -148,12 +184,8 @@ export default class Status extends React.Component {
         options.pastSessions = pastSessions.concat(response.data);
         options.currentPage = params.page;
       }
-      if (
-        "link" in response.headers &&
-        !response.headers.link.includes("next")
-      ) {
-        options.hasMoreSessions = false;
-      }
+      options.hasMoreSessions =
+        "link" in headers && headers.link.includes("next");
       this.setState(options);
     } catch (error) {
       logout(cookies, orgSlug);
@@ -183,7 +215,7 @@ export default class Status extends React.Component {
 
   handleLogout = async (userAutoLogin) => {
     const {setLoading} = this.context;
-    const {orgSlug, logout, cookies} = this.props;
+    const {orgSlug, logout, cookies, setUserData} = this.props;
     const macaddr = cookies.get(`${orgSlug}_macaddr`);
     const params = {macaddr};
     localStorage.setItem("userAutoLogin", userAutoLogin);
@@ -198,6 +230,7 @@ export default class Status extends React.Component {
         return;
       }
     }
+    setUserData(initialState.userData);
     logout(cookies, orgSlug, userAutoLogin);
     setLoading(false);
     toast.success(logoutSuccess);
@@ -255,74 +288,6 @@ export default class Status extends React.Component {
       }
     }
   };
-
-  async validateToken() {
-    const {cookies, orgSlug, logout, settings, setIsActive} = this.props;
-    const auth_token = cookies.get(`${orgSlug}_auth_token`);
-    const {token, session} = handleSession(orgSlug, auth_token, cookies);
-    const url = validateApiUrl(orgSlug);
-    try {
-      const response = await axios({
-        method: "post",
-        headers: {
-          "content-type": "application/x-www-form-urlencoded",
-        },
-        url,
-        data: qs.stringify({
-          token,
-          session,
-        }),
-      });
-      if (response.data.response_code !== "AUTH_TOKEN_VALIDATION_SUCCESSFUL") {
-        logout(cookies, orgSlug);
-        toast.error(genericError, {
-          onOpen: () => toast.dismiss(mainToastId),
-        });
-        logError(
-          response,
-          '"response_code" !== "AUTH_TOKEN_VALIDATION_SUCCESSFUL"',
-        );
-      } else {
-        const {
-          radius_user_token: password,
-          username,
-          email,
-          phone_number,
-          is_active,
-          is_verified,
-        } = response.data;
-        const userInfo = {};
-        userInfo.status = "";
-        userInfo.email = email;
-        if (username !== email && username !== phone_number) {
-          userInfo.username = username;
-        }
-        if (settings.mobile_phone_verification) {
-          userInfo.phone_number = phone_number;
-        }
-        this.setState(
-          {username, password, is_active, is_verified, userInfo},
-          () => {
-            setIsActive(is_active);
-            // if the user is being automatically logged in but it's not
-            // active anymore (eg: has been banned)
-            // automatically perform log out
-            if (is_active === false) {
-              this.handleLogout(false);
-            }
-          },
-        );
-      }
-      return true;
-    } catch (error) {
-      logout(cookies, orgSlug);
-      toast.error(genericError, {
-        onOpen: () => toast.dismiss(mainToastId),
-      });
-      logError(error, genericError);
-      return false;
-    }
-  }
 
   updateScreenWidth = () => {
     this.setState({screenWidth: window.innerWidth});
@@ -879,6 +844,7 @@ Status.propTypes = {
   }).isRequired,
   language: PropTypes.string.isRequired,
   orgSlug: PropTypes.string.isRequired,
+  userData: PropTypes.object.isRequired,
   cookies: PropTypes.instanceOf(Cookies).isRequired,
   logout: PropTypes.func.isRequired,
   captivePortalLoginForm: PropTypes.shape({
@@ -904,9 +870,8 @@ Status.propTypes = {
     search: PropTypes.string,
   }).isRequired,
   isAuthenticated: PropTypes.bool,
-  verifyMobileNumber: PropTypes.func.isRequired,
   settings: PropTypes.shape({
     mobile_phone_verification: PropTypes.bool,
   }).isRequired,
-  setIsActive: PropTypes.func.isRequired,
+  setUserData: PropTypes.func.isRequired,
 };

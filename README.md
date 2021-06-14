@@ -341,6 +341,15 @@ There are certain environment variables used to configure server logging. The de
 
 All the **HTTP requests** get logged by default in the console during development.
 
+#### Mocking captive portal login and logout
+
+The captive portal login and logout operations can be mocked by using the endpoints
+mentioned in [openwisp-radius captive portal mock docs](https://openwisp-radius.readthedocs.io/en/latest/developer/captive_portal_mock.html).
+
+These URLs from OpenWISP RADIUS will be used by default in the development environment.
+The captive portal login and logout URLs and their parameters can be changed by
+editing the YAML configuration file of the respective organization.
+
 ### License
 
 See [LICENSE](https://github.com/openwisp/openwisp-wifi-login-pages/blob/master/LICENSE).

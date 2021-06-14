@@ -1,11 +1,11 @@
 import merge from "deepmerge";
 
 import {
-  IS_ACTIVE,
   SET_AUTHENTICATION_STATUS,
   SET_LANGUAGE,
   SET_ORGANIZATION_CONFIG,
   SET_ORGANIZATION_STATUS,
+  SET_USER_DATA,
 } from "../constants/action-types";
 import authenticate from "../utils/authenticate";
 import customMerge from "../utils/custom-merge";
@@ -20,6 +20,11 @@ const setOrganization = (slug, cookies) => {
       const config = merge(defaultConfig, orgConfig, {
         arrayMerge: customMerge,
       });
+      config.userData = {
+        is_active: true,
+        is_verified: true,
+        justAuthenticated: true,
+      };
       dispatch({
         type: SET_LANGUAGE,
         payload: config.default_language,
@@ -32,16 +37,20 @@ const setOrganization = (slug, cookies) => {
         type: SET_ORGANIZATION_CONFIG,
         payload: config,
       });
+      dispatch({
+        type: SET_USER_DATA,
+        payload: {
+          is_active: true,
+          is_verified: true,
+          justAuthenticated: true,
+        },
+      });
       const autoLogin = config.auto_login;
       const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
       if (autoLogin) {
         if (authenticate(cookies, slug)) {
           dispatch({
             type: SET_AUTHENTICATION_STATUS,
-            payload: true,
-          });
-          dispatch({
-            type: IS_ACTIVE,
             payload: true,
           });
         } else {

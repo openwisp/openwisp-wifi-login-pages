@@ -58,7 +58,7 @@ module.exports = {
     {
       type: "input",
       name: "login_action_url",
-      default: "http://127.0.0.1:8080/login",
+      default: "http://localhost:8000/captive-portal-mock/login/",
       message: "What is the captive portal login action URL?",
       validate: (value) => {
         if (/.+/.test(value)) {
@@ -70,7 +70,7 @@ module.exports = {
     {
       type: "input",
       name: "logout_action_url",
-      default: "http://127.0.0.1:8080/logout",
+      default: "http://localhost:8000/captive-portal-mock/logout/",
       message: "What is the captive portal logout action URL?",
       validate: (value) => {
         if (/.+/.test(value)) {

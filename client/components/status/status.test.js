@@ -9,10 +9,12 @@ import getConfig from "../../utils/get-config";
 import logError from "../../utils/log-error";
 import tick from "../../utils/tick";
 import Status from "./status";
+import validateToken from "../../utils/validate-token";
 
 jest.mock("axios");
 jest.mock("../../utils/get-config");
 jest.mock("../../utils/log-error");
+jest.mock("../../utils/validate-token");
 logError.mockImplementation(jest.fn());
 
 const defaultConfig = getConfig("default");
@@ -55,8 +57,8 @@ const createTestProps = (props) => {
       search: "?macaddr=4e:ed:11:2b:17:ae",
     },
     logout: jest.fn(),
-    verifyMobileNumber: jest.fn(),
-    setIsActive: jest.fn(),
+    setUserData: jest.fn(),
+    userData: {},
     ...props,
   };
 };
@@ -110,6 +112,7 @@ describe("<Status /> interactions", () => {
       setLoading: PropTypes.func,
       getLoading: PropTypes.func,
     };
+    validateToken.mockClear();
   });
 
   afterEach(() => {
@@ -155,6 +158,11 @@ describe("<Status /> interactions", () => {
     await tick();
     expect(wrapper.instance().state.activeSessions.length).toBe(1);
     expect(wrapper.instance().props.logout).toHaveBeenCalled();
+    expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith({
+      is_active: true,
+      is_verified: true,
+      justAuthenticated: true,
+    });
   });
 
   it("test componentDidMount lifecycle method", async () => {
@@ -162,18 +170,6 @@ describe("<Status /> interactions", () => {
       .mockImplementationOnce(() => {
         return Promise.resolve({
           status: 200,
-          data: {
-            response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
-            radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
-            username: "tester@tester.com",
-            is_active: true,
-            phone_number: "",
-          },
-        });
-      })
-      .mockImplementationOnce(() => {
-        return Promise.resolve({
-          status: 200,
           statusText: "OK",
           data: [
             {
@@ -210,18 +206,6 @@ describe("<Status /> interactions", () => {
       .mockImplementationOnce(() => {
         return Promise.resolve({
           status: 200,
-          data: {
-            response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
-            radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
-            username: "tester@tester.com",
-            is_active: true,
-            phone_number: "",
-          },
-        });
-      })
-      .mockImplementationOnce(() => {
-        return Promise.resolve({
-          status: 200,
           statusText: "OK",
           data: [
             {
@@ -239,18 +223,6 @@ describe("<Status /> interactions", () => {
           statusText: "OK",
           data: [],
           headers: {},
-        });
-      })
-      .mockImplementationOnce(() => {
-        return Promise.resolve({
-          status: 200,
-          data: {
-            response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
-            radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
-            username: "tester@tester.com",
-            is_active: true,
-            phone_number: "",
-          },
         });
       })
       .mockImplementationOnce(() => {
@@ -264,16 +236,26 @@ describe("<Status /> interactions", () => {
     jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
 
     props = createTestProps();
+    validateToken.mockReturnValue(true);
+    const userData = {
+      response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+      radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
+      username: "tester@tester.com",
+      is_active: true,
+      phone_number: "",
+    };
+    const setLoading = jest.fn();
     wrapper = shallow(<Status {...props} />, {
-      context: {setLoading: jest.fn()},
+      context: {setLoading},
     });
+    wrapper.setProps({userData});
     await tick();
     expect(wrapper.instance().props.cookies.get("default_macaddr")).toBe(
       "4e:ed:11:2b:17:ae",
     );
     expect(Status.prototype.getUserActiveRadiusSessions).toHaveBeenCalled();
     expect(wrapper.instance().state.activeSessions.length).toBe(1);
-
+    expect(setLoading.mock.calls.length).toBe(2);
     wrapper.setProps({
       location: {
         search: "",
@@ -353,27 +335,23 @@ describe("<Status /> interactions", () => {
   });
 
   it("test user info with mobile verification on and different username", async () => {
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
-        status: 200,
-        data: {
-          response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
-          radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
-          username: "tester",
-          email: "tester@tester.com",
-          is_active: true,
-          phone_number: "+237672279436",
-        },
-      });
-    });
+    const userData = {
+      response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+      radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
+      username: "tester",
+      email: "tester@tester.com",
+      is_active: true,
+      phone_number: "+237672279436",
+    };
+    validateToken.mockReturnValue(true);
     props = createTestProps();
     props.settings.mobile_phone_verification = true;
     props.statusPage.user_info.phone_number = {text: {en: "Phone number"}};
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
-      disableLifecycleMethods: true,
+      disableLifecycleMethods: false,
     });
-    wrapper.instance().validateToken();
+    wrapper.setProps({userData});
     await tick();
     expect(wrapper.contains(<span>tester</span>)).toBe(true);
     expect(wrapper.contains(<span>tester@tester.com</span>)).toBe(true);
@@ -381,27 +359,23 @@ describe("<Status /> interactions", () => {
   });
 
   it("test user info with mobile verification on and same username", async () => {
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
-        status: 200,
-        data: {
-          response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
-          radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
-          username: "tester@tester.com",
-          email: "tester@tester.com",
-          is_active: true,
-          phone_number: "+237672279436",
-        },
-      });
-    });
+    const userData = {
+      response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+      radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
+      username: "tester@tester.com",
+      email: "tester@tester.com",
+      is_active: true,
+      phone_number: "+237672279436",
+    };
+    validateToken.mockReturnValue(true);
     props = createTestProps();
     props.settings.mobile_phone_verification = true;
     props.statusPage.user_info.phone_number = {text: {en: "Phone number"}};
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
-      disableLifecycleMethods: true,
+      disableLifecycleMethods: false,
     });
-    wrapper.instance().validateToken();
+    wrapper.setProps({userData});
     await tick();
     expect(wrapper.contains(<span>tester</span>)).toBe(false);
     expect(wrapper.contains(<span>tester@tester.com</span>)).toBe(true);
@@ -409,26 +383,22 @@ describe("<Status /> interactions", () => {
   });
 
   it("test user info with mobile verification off", async () => {
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
-        status: 200,
-        data: {
-          response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
-          radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
-          username: "tester",
-          email: "tester@tester.com",
-          is_active: true,
-          phone_number: "+237672279436",
-        },
-      });
-    });
+    const userData = {
+      response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+      radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
+      username: "tester",
+      email: "tester@tester.com",
+      is_active: true,
+      phone_number: "+237672279436",
+    };
+    validateToken.mockReturnValue(true);
     props = createTestProps();
     props.settings.mobile_phone_verification = false;
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
-      disableLifecycleMethods: true,
+      disableLifecycleMethods: false,
     });
-    wrapper.instance().validateToken();
+    wrapper.setProps({userData});
     await tick();
     expect(wrapper.contains(<span>tester</span>)).toBe(true);
     expect(wrapper.contains(<span>+237672279436</span>)).toBe(false);
@@ -463,6 +433,53 @@ describe("<Status /> interactions", () => {
     expect(wrapper.instance().props.cookies.get("default_macaddr")).toBe(
       "4e:ed:11:2b:17:ae",
     );
+  });
+  it("should not perform captive portal login (submit loginFormRef), if user is already authenticated", async () => {
+    validateToken.mockReturnValue(true);
+    props = createTestProps();
+    props.location.search = "";
+    props.userData = {
+      response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+      radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
+      username: "tester",
+      email: "tester@tester.com",
+      is_active: true,
+      is_verified: true,
+      phone_number: "+237672279436",
+    };
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+    });
+    const spyFn = jest.fn();
+    wrapper.instance().loginFormRef.current = {submit: spyFn};
+    await tick();
+    expect(spyFn.mock.calls.length).toBe(0);
+  });
+  it("should perform captive portal login (submit loginFormRef), if user is just authenticated", async () => {
+    validateToken.mockReturnValue(true);
+    props = createTestProps();
+    props.location.search = "";
+    props.userData = {
+      response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+      radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
+      username: "tester",
+      email: "tester@tester.com",
+      is_active: true,
+      is_verified: true,
+      phone_number: "+237672279436",
+      justAuthenticated: true,
+    };
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+    });
+    const spyFn = jest.fn();
+    wrapper.instance().loginFormRef.current = {submit: spyFn};
+    const setUserDataMock = wrapper.instance().props.setUserData.mock;
+    await tick();
+    expect(spyFn.mock.calls.length).toBe(1);
+    expect(setUserDataMock.calls.pop()).toEqual([
+      {...props.userData, justAuthenticated: false},
+    ]);
   });
 
   it("test active session table", async () => {
@@ -618,26 +635,23 @@ describe("<Status /> interactions", () => {
     expect(wrapper.find(".loading").length).toEqual(0);
   });
   it("should logout if user is not active", async () => {
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
-        status: 200,
-        data: {
-          response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
-          radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
-          username: "tester@tester.com",
-          is_active: false,
-          phone_number: "",
-        },
-      });
-    });
+    validateToken.mockReturnValue(true);
     props = createTestProps();
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
     });
+    const userData = {
+      response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+      radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
+      username: "tester@tester.com",
+      is_active: false,
+      phone_number: "",
+    };
+    wrapper.setProps({userData});
     const handleLogout = jest.spyOn(wrapper.instance(), "handleLogout");
-    const setIsActiveMock = wrapper.instance().props.setIsActive.mock;
+    const setUserDataMock = wrapper.instance().props.setUserData.mock;
     await tick();
-    expect(setIsActiveMock.calls.length).toBe(1);
+    expect(setUserDataMock.calls.length).toBe(1);
     expect(handleLogout).toHaveBeenCalledWith(false);
   });
   it("should toggle logout modal", () => {
@@ -676,5 +690,29 @@ describe("<Status /> interactions", () => {
     wrapper.find(".logout input.button").simulate("click", {});
     wrapper.find(".modal-buttons button:last-child").simulate("click", {});
     expect(handleLogout).toHaveBeenCalledWith(false);
+  });
+  it("should set hasMoreSessions to false if link is not in response headers", async () => {
+    axios.mockImplementationOnce(() => {
+      return Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: [
+          {
+            session_id: 1,
+            start_time: "2020-09-08T00:22:28-04:00",
+            stop_time: "2020-09-08T00:22:29-04:00",
+          },
+        ],
+        headers: {},
+      });
+    });
+    const prop = createTestProps();
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    wrapper.instance().getUserPassedRadiusSessions();
+    await tick();
+    expect(wrapper.instance().state.hasMoreSessions).toEqual(false);
   });
 });

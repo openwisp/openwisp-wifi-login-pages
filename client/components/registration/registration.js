@@ -52,13 +52,7 @@ export default class Registration extends React.Component {
   handleSubmit(event) {
     const {setLoading} = this.context;
     event.preventDefault();
-    const {
-      orgSlug,
-      authenticate,
-      verifyMobileNumber,
-      settings,
-      setIsActive,
-    } = this.props;
+    const {orgSlug, authenticate, settings, setUserData, userData} = this.props;
     const {
       phone_number,
       email,
@@ -118,10 +112,10 @@ export default class Registration extends React.Component {
         });
         // SMS verification flow
         if (settings.mobile_phone_verification) {
-          verifyMobileNumber(true);
+          setUserData({...userData, is_active: true, is_verified: false});
           // simple sign up flow
         } else {
-          setIsActive(true);
+          setUserData({...userData, is_active: true});
           toast.success(registerSuccess, {
             toastId: mainToastId,
           });
@@ -627,6 +621,6 @@ Registration.propTypes = {
     content: PropTypes.object,
   }).isRequired,
   authenticate: PropTypes.func.isRequired,
-  verifyMobileNumber: PropTypes.func.isRequired,
-  setIsActive: PropTypes.func.isRequired,
+  setUserData: PropTypes.func.isRequired,
+  userData: PropTypes.object.isRequired,
 };
