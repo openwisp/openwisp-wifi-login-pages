@@ -27,11 +27,17 @@ const colors = {
 winston.addColors(colors);
 
 const format = winston.format.combine(
+  /* eslint-disable no-param-reassign */
+  winston.format((info) => {
+    info.level = info.level.toUpperCase();
+    return info;
+  })(),
+  /* eslint-enable no-param-reassign */
   winston.format.errors({stack: true}),
   winston.format.timestamp({format: "YYYY-MM-DD HH:mm:ss:ms"}),
   winston.format.colorize({all: true}),
   winston.format.printf((info) => {
-    const log = `[ ${info.level} ${info.timestamp} ] ${info.message}`;
+    const log = `[${info.level} ${info.timestamp}] ${info.message}`;
     return info.stack ? `${log}\n${info.stack}` : log;
   }),
 );
