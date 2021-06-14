@@ -6,7 +6,7 @@ import net from "net";
 import path from "path";
 import routes from "./routes";
 import morganMiddleware from "./morganMiddleware";
-import logger from "./utils/logger";
+import Logger from "./utils/logger";
 
 const app = express();
 app.use(compression());
@@ -46,13 +46,13 @@ const nextFreePort = (port, callback) => {
 // If a port was passed as an argument, use that port
 if (process.env.SERVER !== undefined) {
   app.listen(process.env.SERVER, () => {
-    logger.info(`Server started on port ${process.env.SERVER}`);
+    Logger.info(`Server started on port ${process.env.SERVER}`);
   });
 } else {
   // Otherwise, find the next free port starting at the default port
   nextFreePort(DEFAULT_PORT, (port) => {
     app.listen(port, () => {
-      logger.info(`Server started on port ${port}`);
+      Logger.info(`Server started on port ${port}`);
     });
   });
 }
