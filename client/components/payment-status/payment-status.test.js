@@ -19,6 +19,7 @@ const createTestProps = (props) => {
     language: "en",
     orgSlug: "default",
     userData: {},
+    setUserData: jest.fn(),
     page: defaultConfig.components.payment_status_page,
     cookies: new Cookies(),
     settings: {subscriptions: true},

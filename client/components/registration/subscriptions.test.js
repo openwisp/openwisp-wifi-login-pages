@@ -4,6 +4,7 @@ import axios from "axios";
 import {shallow} from "enzyme";
 import React from "react";
 import PropTypes from "prop-types";
+import {toast} from "react-toastify";
 import {loadingContextValue} from "../../utils/loading-context";
 import tick from "../../utils/tick";
 
@@ -64,34 +65,38 @@ const plans = [
   },
 ];
 
+Registration.contextTypes = {
+  setLoading: PropTypes.func,
+  getLoading: PropTypes.func,
+};
+
 describe("test subscriptions", () => {
   let props;
   let wrapper;
   let originalError;
   let lastConsoleOutuput;
   const event = {preventDefault: jest.fn()};
+  const initShallow = (passedProps) => {
+    return shallow(<Registration {...passedProps} />, {
+      context: loadingContextValue,
+    });
+  };
 
   beforeEach(() => {
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
-        status: 201,
-        statusText: "ok",
-        data: plans,
-      });
-    });
+    // axios.mockImplementationOnce(() => {
+    //   return Promise.resolve({
+    //     status: 201,
+    //     statusText: "ok",
+    //     data: plans,
+    //   });
+    // });
     originalError = console.error;
     lastConsoleOutuput = null;
     console.error = (data) => {
       lastConsoleOutuput = data;
     };
     props = createTestProps();
-    Registration.contextTypes = {
-      setLoading: PropTypes.func,
-      getLoading: PropTypes.func,
-    };
-    wrapper = shallow(<Registration {...props} />, {
-      context: loadingContextValue,
-    });
+    props.settings.subscriptions = true;
   });
   afterEach(() => {
     console.error = originalError;
@@ -99,7 +104,8 @@ describe("test subscriptions", () => {
     jest.resetAllMocks();
     jest.restoreAllMocks();
   });
-  it("should not show choice form when plans is abscent", () => {
+
+  it("should not show choice form when plans is absent", () => {
     axios.mockImplementationOnce(() => {
       return Promise.resolve({
         status: 201,
@@ -107,13 +113,10 @@ describe("test subscriptions", () => {
         data: [],
       });
     });
-    props = createTestProps();
-    props.settings.subscriptions = true;
-    wrapper = shallow(<Registration {...props} />, {
-      context: loadingContextValue,
-    });
+    wrapper = initShallow(props);
     expect(wrapper.find("input[name='plan_selection']").length).toBe(0);
   });
+
   it("should show choice form when plans is present", () => {
     axios.mockImplementationOnce(() => {
       return Promise.resolve({
@@ -122,15 +125,12 @@ describe("test subscriptions", () => {
         data: plans,
       });
     });
-    props = createTestProps();
-    props.settings.subscriptions = true;
-    wrapper = shallow(<Registration {...props} />, {
-      context: loadingContextValue,
-    });
-    wrapper.instance().setState({plans, gotPlans: true});
+    wrapper = initShallow(props);
+    wrapper.instance().setState({plans, plansFetched: true});
     expect(wrapper.find("input[name='plan_selection']").length).toBe(3);
     expect(lastConsoleOutuput).toBe(null);
   });
+
   it("show billing info only when verifies_identity is true", () => {
     axios.mockImplementationOnce(() => {
       return Promise.resolve({
@@ -139,18 +139,15 @@ describe("test subscriptions", () => {
         data: plans,
       });
     });
-    props = createTestProps();
-    props.settings.subscriptions = true;
-    wrapper = shallow(<Registration {...props} />, {
-      context: loadingContextValue,
-    });
-    wrapper.instance().setState({plans, selected_plan: 0, gotPlans: true});
+    wrapper = initShallow(props);
+    wrapper.instance().setState({plans, selected_plan: 0, plansFetched: true});
     expect(wrapper.find(".billing-info").length).toBe(0);
     expect(wrapper.find("input[name='username']").length).toBe(0);
     wrapper.instance().setState({selected_plan: 1});
     expect(wrapper.find(".billing-info").length).toBe(1);
     expect(wrapper.find("input[name='username']").length).toBe(1);
   });
+
   it("authenticate normally after registration with payment flow", async () => {
     const data = {payment_url: "https://account.openwisp.io/payment/123"};
     axios
@@ -168,14 +165,10 @@ describe("test subscriptions", () => {
           data,
         });
       });
-    props = createTestProps();
-    props.settings.subscriptions = true;
-    wrapper = shallow(<Registration {...props} />, {
-      context: loadingContextValue,
-    });
+    wrapper = initShallow(props);
     const registration = wrapper.instance();
     const handleSubmit = jest.spyOn(registration, "handleSubmit");
-    registration.setState({plans, selected_plan: 1, gotPlans: true});
+    registration.setState({plans, selected_plan: 1, plansFetched: true});
     wrapper.find("form").simulate("submit", event);
     await tick();
     expect(handleSubmit).toHaveBeenCalled();
@@ -184,5 +177,23 @@ describe("test subscriptions", () => {
     const authenticateMock = registration.props.authenticate.mock;
     expect(authenticateMock.calls.length).toBe(1);
     expect(authenticateMock.calls.pop()).toEqual([true]);
+  });
+
+  it("should show error if fetching plans fail", async () => {
+    axios.mockImplementationOnce(() => {
+      return Promise.reject({
+        status: 500,
+        statusText: "Internal server error",
+        response: {
+          data: {
+            detail: "Internal server error",
+          },
+        },
+      });
+    });
+    const spyToast = jest.spyOn(toast, "error");
+    wrapper = initShallow(props);
+    await tick();
+    expect(spyToast.mock.calls.length).toBe(1);
   });
 });

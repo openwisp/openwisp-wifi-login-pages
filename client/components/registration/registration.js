@@ -1,7 +1,5 @@
 /* eslint-disable camelcase */
 
-import "./index.css";
-
 import axios from "axios";
 import PropTypes from "prop-types";
 import React from "react";
@@ -16,6 +14,7 @@ import LoadingContext from "../../utils/loading-context";
 import PasswordToggleIcon from "../../utils/password-toggle";
 import {
   mainToastId,
+  genericError,
   passwordConfirmError,
   registerApiUrl,
   plansApiUrl,
@@ -47,7 +46,7 @@ export default class Registration extends React.Component {
       errors: {},
       success: false,
       plans: [],
-      gotPlans: false,
+      plansFetched: false,
       selected_plan: null,
       tax_number: "",
       street: "",
@@ -66,8 +65,11 @@ export default class Registration extends React.Component {
 
   componentDidMount() {
     const {orgSlug, settings} = this.props;
+    const {setLoading} = this.context;
     const plansUrl = plansApiUrl.replace("{orgSlug}", orgSlug);
+
     if (settings.subscriptions) {
+      setLoading(true);
       axios({
         method: "get",
         headers: {
@@ -76,10 +78,12 @@ export default class Registration extends React.Component {
         url: plansUrl,
       })
         .then((response) => {
-          this.setState({plans: response.data, gotPlans: true});
+          this.setState({plans: response.data, plansFetched: true});
+          setLoading(false);
         })
         .catch((error) => {
-          console.log(`error ${error}`);
+          toast.error(genericError);
+          logError(error, "Error while fetching plans");
         });
     }
   }
@@ -323,14 +327,10 @@ export default class Registration extends React.Component {
 
   getForm = () => {
     const {settings} = this.props;
-    const {gotPlans} = this.state;
+    const {plansFetched} = this.state;
 
-    if (settings.subscriptions && !gotPlans) {
-      return (
-        <div className="loadContainer">
-          <p className="load" />
-        </div>
-      );
+    if (settings.subscriptions && !plansFetched) {
+      return null;
     }
     return this.getRegistrationForm();
   };
