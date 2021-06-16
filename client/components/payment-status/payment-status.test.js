@@ -1,5 +1,4 @@
 /* eslint-disable prefer-promise-reject-errors */
-import axios from "axios";
 import {shallow} from "enzyme";
 import React from "react";
 import {toast} from "react-toastify";
@@ -9,14 +8,17 @@ import {loadingContextValue} from "../../utils/loading-context";
 import getConfig from "../../utils/get-config";
 import PaymentStatus from "./payment-status";
 import tick from "../../utils/tick";
+import validateToken from "../../utils/validate-token";
 
 jest.mock("axios");
+jest.mock("../../utils/validate-token");
 
 const defaultConfig = getConfig("default");
 const createTestProps = (props) => {
   return {
     language: "en",
     orgSlug: "default",
+    userData: {},
     page: defaultConfig.components.payment_status_page,
     cookies: new Cookies(),
     settings: {subscriptions: true},
@@ -24,7 +26,7 @@ const createTestProps = (props) => {
     ...props,
   };
 };
-const userData = {
+const responseData = {
   response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
   is_active: true,
   is_verified: false,
@@ -51,6 +53,7 @@ describe("Test <PaymentStatus /> cases", () => {
       setLoading: PropTypes.func,
     };
     console.log = jest.fn();
+    validateToken.mockClear();
   });
 
   afterEach(() => {
@@ -61,14 +64,8 @@ describe("Test <PaymentStatus /> cases", () => {
   });
 
   it("should render failed state", async () => {
-    props = createTestProps({result: "failed"});
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
-        status: 200,
-        data: userData,
-      });
-    });
-
+    props = createTestProps({userData: responseData, result: "failed"});
+    validateToken.mockReturnValue(true);
     wrapper = shallow(<PaymentStatus {...props} />, {
       context: loadingContextValue,
     });
@@ -90,14 +87,8 @@ describe("Test <PaymentStatus /> cases", () => {
 
   it("should call logout correctly when clicking on logout button", async () => {
     const spyToast = jest.spyOn(toast, "success");
-    props = createTestProps({result: "failed"});
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
-        status: 200,
-        data: userData,
-      });
-    });
-
+    props = createTestProps({userData: responseData, result: "failed"});
+    validateToken.mockReturnValue(true);
     wrapper = shallow(<PaymentStatus {...props} />, {
       context: loadingContextValue,
     });
@@ -113,16 +104,11 @@ describe("Test <PaymentStatus /> cases", () => {
 
   it("should redirect to status page if user is already verified", async () => {
     const spyToast = jest.spyOn(toast, "success");
-    const data = {...userData};
-    data.is_verified = true;
-    props = createTestProps({result: "failed"});
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
-        status: 200,
-        data,
-      });
+    props = createTestProps({
+      userData: {...responseData, is_verified: true},
+      result: "failed",
     });
-
+    validateToken.mockReturnValue(true);
     wrapper = shallow(<PaymentStatus {...props} />, {
       context: loadingContextValue,
     });
@@ -134,16 +120,11 @@ describe("Test <PaymentStatus /> cases", () => {
 
   it("should redirect to status if success + toast notification", async () => {
     const spyToast = jest.spyOn(toast, "success");
-    const data = {...userData};
-    data.is_verified = true;
-    props = createTestProps({result: "success"});
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
-        status: 200,
-        data,
-      });
+    props = createTestProps({
+      userData: {...responseData, is_verified: true},
+      result: "success",
     });
-
+    validateToken.mockReturnValue(true);
     wrapper = shallow(<PaymentStatus {...props} />, {
       context: loadingContextValue,
     });
@@ -156,16 +137,11 @@ describe("Test <PaymentStatus /> cases", () => {
 
   it("should redirect to status if success but unverified", async () => {
     const spyToast = jest.spyOn(toast, "success");
-    const data = {...userData};
-    data.is_verified = false;
-    props = createTestProps({result: "success"});
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
-        status: 200,
-        data,
-      });
+    props = createTestProps({
+      userData: {...responseData, is_verified: false},
+      result: "success",
     });
-
+    validateToken.mockReturnValue(true);
     wrapper = shallow(<PaymentStatus {...props} />, {
       context: loadingContextValue,
     });
@@ -177,22 +153,15 @@ describe("Test <PaymentStatus /> cases", () => {
 
   it("should redirect to status if success but not using bank_card method", async () => {
     const spyToast = jest.spyOn(toast, "success");
-    const data = {...userData};
-    data.method = "mobile_phone";
     props = createTestProps({
       result: "success",
       settings: {
         subscriptions: true,
         mobile_phone_verification: true,
       },
+      userData: {...responseData, method: "mobile_phone"},
     });
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
-        status: 200,
-        data,
-      });
-    });
-
+    validateToken.mockReturnValue(true);
     wrapper = shallow(<PaymentStatus {...props} />, {
       context: loadingContextValue,
     });
@@ -204,22 +173,15 @@ describe("Test <PaymentStatus /> cases", () => {
 
   it("should redirect to status if failed but not using bank_card method", async () => {
     const spyToast = jest.spyOn(toast, "success");
-    const data = {...userData};
-    data.method = "mobile_phone";
     props = createTestProps({
       result: "failed",
       settings: {
         subscriptions: true,
         mobile_phone_verification: true,
       },
+      userData: {...responseData, method: "mobile_phone"},
     });
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
-        status: 200,
-        data,
-      });
-    });
-
+    validateToken.mockReturnValue(true);
     wrapper = shallow(<PaymentStatus {...props} />, {
       context: loadingContextValue,
     });
@@ -229,26 +191,42 @@ describe("Test <PaymentStatus /> cases", () => {
     expect(spyToast.mock.calls.length).toBe(0);
   });
 
-  it("should call logout if unauthenticated", async () => {
-    const success = jest.spyOn(toast, "success");
-    const error = jest.spyOn(toast, "error");
-    const data = {...userData};
-    data.response_code = "AUTH_TOKEN_VALIDATION_FAILED";
-    props = createTestProps({result: "success"});
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
-        status: 200,
-        data,
-      });
+  it("should redirect to login if not authenticated", async () => {
+    const spyToast = jest.spyOn(toast, "success");
+    props = createTestProps({
+      result: "failed",
+      settings: {
+        subscriptions: true,
+        mobile_phone_verification: true,
+      },
+      isAuthenticated: false,
     });
-
+    validateToken.mockReturnValue(true);
     wrapper = shallow(<PaymentStatus {...props} />, {
       context: loadingContextValue,
     });
     await tick();
-    expect(wrapper.instance().props.logout).toHaveBeenCalled();
-    expect(success.mock.calls.length).toBe(0);
-    expect(error.mock.calls.length).toBe(1);
-    expect(console.log.mock.calls.length).toBe(1);
+    expect(wrapper.find("Redirect").length).toEqual(1);
+    expect(wrapper.find("Redirect").props().to).toEqual("/default/status");
+    expect(spyToast.mock.calls.length).toBe(0);
+  });
+
+  it("should redirect to status if result is not one of the expected values", async () => {
+    const spyToast = jest.spyOn(toast, "success");
+    props = createTestProps({
+      result: "unexpected",
+      settings: {
+        subscriptions: true,
+        mobile_phone_verification: true,
+      },
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    expect(wrapper.find("Redirect").length).toEqual(1);
+    expect(wrapper.find("Redirect").props().to).toEqual("/default/status");
+    expect(spyToast.mock.calls.length).toBe(0);
   });
 });

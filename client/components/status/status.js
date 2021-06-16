@@ -24,8 +24,8 @@ import Contact from "../contact-box";
 import shouldLinkBeShown from "../../utils/should-link-be-shown";
 import handleSession from "../../utils/session";
 import validateToken from "../../utils/validate-token";
+import needsVerify from "../../utils/needs-verify";
 import {initialState} from "../../reducers/organization";
-import verify from "../../utils/verify";
 
 export default class Status extends React.Component {
   constructor(props) {
@@ -90,72 +90,82 @@ export default class Status extends React.Component {
         userData,
         logout,
       );
-      setLoading(false);
 
-      if (isValid) {
-        const {justAuthenticated} = userData;
-        ({userData} = this.props);
-        const {
-          radius_user_token: password,
-          username,
-          email,
-          phone_number,
-          is_active,
-        } = userData;
-        const userInfo = {};
-        userInfo.status = "";
-        userInfo.email = email;
-        if (username !== email && username !== phone_number) {
-          userInfo.username = username;
-        }
-        if (settings.mobile_phone_verification) {
-          userInfo.phone_number = phone_number;
-        }
-        this.setState({username, password, userInfo}, () => {
-          // if the user is being automatically logged in but it's not
-          // active anymore (eg: has been banned)
-          // automatically perform log out
-          if (is_active === false) {
-            this.handleLogout(false);
-          }
-        });
-        if (isValid && is_active) {
-          const macaddr = cookies.get(`${orgSlug}_macaddr`);
-
-          if (macaddr) {
-            const params = {macaddr};
-            await this.getUserActiveRadiusSessions(params);
-            /* request to captive portal is made only if there is
-              no active session from macaddr stored in the cookie */
-            const {activeSessions} = this.state;
-            if (activeSessions && activeSessions.length === 0) {
-              if (this.loginFormRef && this.loginFormRef.current)
-                this.loginFormRef.current.submit();
-            }
-          } else if (
-            this.loginFormRef &&
-            this.loginFormRef.current &&
-            justAuthenticated
-          ) {
-            this.loginFormRef.current.submit();
-            userData.justAuthenticated = false;
-            setUserData({...userData, justAuthenticated: false});
-          }
-          await this.getUserActiveRadiusSessions();
-          await this.getUserPassedRadiusSessions();
-          const intervalId = setInterval(() => {
-            this.getUserActiveRadiusSessions();
-          }, 60000);
-          this.setState({intervalId});
-          window.addEventListener("resize", this.updateScreenWidth);
-          this.updateSpinner();
-
-          // initializes account verification if needed
-          if (verify(userData, this.props)) {
-            setLoading(true);
-          }
-        }
+      // stop here if token is invalid
+      if (isValid === false) {
+        return;
       }
+
+      const {justAuthenticated} = userData;
+      ({userData} = this.props);
+
+      if (userData.is_verified) {
+        setLoading(false);
+      }
+
+      if (needsVerify("bank_card", userData, settings)) {
+        window.location.assign(userData.payment_url);
+      }
+
+      const {
+        radius_user_token: password,
+        username,
+        email,
+        phone_number,
+        is_active,
+      } = userData;
+      const userInfo = {};
+      userInfo.status = "";
+      userInfo.email = email;
+      if (username !== email && username !== phone_number) {
+        userInfo.username = username;
+      }
+      if (settings.mobile_phone_verification && phone_number) {
+        userInfo.phone_number = phone_number;
+      }
+      this.setState({username, password, userInfo}, () => {
+        // if the user is being automatically logged in but it's not
+        // active anymore (eg: has been banned)
+        // automatically perform log out
+        if (is_active === false) {
+          this.handleLogout(false);
+        }
+      });
+
+      // stop here if user is banned
+      if (is_active === false) {
+        return;
+      }
+
+      const macaddr = cookies.get(`${orgSlug}_macaddr`);
+      if (macaddr) {
+        const params = {macaddr};
+        await this.getUserActiveRadiusSessions(params);
+        /* request to captive portal is made only if there is
+          no active session from macaddr stored in the cookie */
+        const {activeSessions} = this.state;
+        if (activeSessions && activeSessions.length === 0) {
+          if (this.loginFormRef && this.loginFormRef.current)
+            this.loginFormRef.current.submit();
+        }
+      } else if (
+        this.loginFormRef &&
+        this.loginFormRef.current &&
+        justAuthenticated
+      ) {
+        this.loginFormRef.current.submit();
+        userData.justAuthenticated = false;
+        setUserData(userData);
+      }
+
+      await this.getUserActiveRadiusSessions();
+      await this.getUserPassedRadiusSessions();
+      const intervalId = setInterval(() => {
+        this.getUserActiveRadiusSessions();
+      }, 60000);
+      this.setState({intervalId});
+      window.addEventListener("resize", this.updateScreenWidth);
+      this.updateSpinner();
     }
   }
 

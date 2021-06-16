@@ -151,7 +151,7 @@ describe("test subscriptions", () => {
     expect(wrapper.find(".billing-info").length).toBe(1);
     expect(wrapper.find("input[name='username']").length).toBe(1);
   });
-  it("mobile verification should not be used if verifies_identity of selected plan is true", async () => {
+  it("authenticate normally after registration with payment flow", async () => {
     const data = {payment_url: "https://account.openwisp.io/payment/123"};
     axios
       .mockImplementationOnce(() => {
@@ -168,11 +168,6 @@ describe("test subscriptions", () => {
           data,
         });
       });
-    // mock window.location.assign
-    const location = new URL("https://wifi.openwisp.io");
-    location.assign = jest.fn();
-    delete window.location;
-    window.location = location;
     props = createTestProps();
     props.settings.subscriptions = true;
     wrapper = shallow(<Registration {...props} />, {
@@ -189,8 +184,5 @@ describe("test subscriptions", () => {
     const authenticateMock = registration.props.authenticate.mock;
     expect(authenticateMock.calls.length).toBe(1);
     expect(authenticateMock.calls.pop()).toEqual([true]);
-    // ensure user is redirected to payment URL
-    expect(location.assign.mock.calls.length).toBe(1);
-    expect(location.assign.mock.calls[0][0]).toBe(data.payment_url);
   });
 });

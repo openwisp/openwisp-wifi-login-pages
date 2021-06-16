@@ -319,7 +319,7 @@ describe("<Login /> interactions", () => {
     expect(authenticateMock.calls.length).toBe(1);
     expect(authenticateMock.calls.pop()).toEqual([true]);
   });
-  it("should redirect if needs bank_card verification", async () => {
+  it("should authenticate normally with method bank_card", async () => {
     props.settings = {subscriptions: true};
     wrapper = mountComponent(props);
     const login = wrapper.find(Login);
@@ -336,11 +336,6 @@ describe("<Login /> interactions", () => {
         data,
       });
     });
-    // mock window.location.assign
-    const location = new URL("https://wifi.openwisp.io");
-    location.assign = jest.fn();
-    delete window.location;
-    window.location = location;
 
     expect(wrapper.exists(PhoneInput)).toBe(false);
     wrapper.find("#username").simulate("change", {
@@ -364,9 +359,6 @@ describe("<Login /> interactions", () => {
     const authenticateMock = login.props().authenticate.mock;
     expect(authenticateMock.calls.length).toBe(1);
     expect(authenticateMock.calls.pop()).toEqual([true]);
-    // ensure user is redirected to payment URL
-    expect(location.assign.mock.calls.length).toBe(1);
-    expect(location.assign.mock.calls[0][0]).toBe(data.payment_url);
   });
   it("phone_number field should be present if mobile phone verification is on", async () => {
     props.settings = {mobile_phone_verification: true};

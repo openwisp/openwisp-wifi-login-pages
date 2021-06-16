@@ -28,7 +28,6 @@ import LoadingContext from "../../utils/loading-context";
 import logError from "../../utils/log-error";
 import renderAdditionalInfo from "../../utils/render-additional-info";
 import handleChange from "../../utils/handle-change";
-import verify from "../../utils/verify";
 import Contact from "../contact-box";
 import Modal from "../modal";
 
@@ -176,23 +175,17 @@ export default class Login extends React.Component {
     localStorage.setItem("rememberMe", remember_me);
     setLoading(true);
 
-    const handleAuthentication = (data = {}, props = {}) => {
-      const {key} = data;
+    const handleAuthentication = (data = {}) => {
       // if remember me checkbox is unchecked
       // store auth token in sessionStorage instead of cookie
       if (!remember_me) {
-        sessionStorage.setItem(`${orgSlug}_auth_token`, key);
+        sessionStorage.setItem(`${orgSlug}_auth_token`, data.key);
       }
       authenticate(true);
       toast.success(loginSuccess, {
         toastId: mainToastId,
       });
       setUserData({...data, justAuthenticated: true});
-      // initializes account verification if needed
-      if (verify({...data, justAuthenticated: true}, props)) {
-        return;
-      }
-      setLoading(false);
     };
 
     return axios({
@@ -208,7 +201,7 @@ export default class Login extends React.Component {
     })
       .then((res = {}) => {
         if (!res.data) throw new Error();
-        return handleAuthentication(res.data, this.props);
+        return handleAuthentication(res.data);
       })
       .catch((error = {}) => {
         if (!error.response || !error.response.data || !error) {
@@ -224,7 +217,7 @@ export default class Login extends React.Component {
           settings.mobile_phone_verification &&
           data.is_active
         ) {
-          handleAuthentication(data, this.props);
+          handleAuthentication(data);
           return;
         }
 

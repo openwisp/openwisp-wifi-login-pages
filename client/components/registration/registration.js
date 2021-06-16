@@ -91,7 +91,7 @@ export default class Registration extends React.Component {
   handleSubmit(event) {
     const {setLoading} = this.context;
     event.preventDefault();
-    const {orgSlug, authenticate, settings, setUserData, userData} = this.props;
+    const {orgSlug, authenticate, settings} = this.props;
     const {
       phone_number,
       email,
@@ -173,8 +173,6 @@ export default class Registration extends React.Component {
       postData.username = username;
     }
     const body = JSON.parse(JSON.stringify(postData));
-    // TODO: what?
-    // window.signUpData = postData;
     setLoading(true);
     return axios({
       method: "post",
@@ -184,7 +182,7 @@ export default class Registration extends React.Component {
       url,
       data: body,
     })
-      .then((response) => {
+      .then(() => {
         this.setState({
           errors: {},
           phone_number: "",
@@ -193,38 +191,12 @@ export default class Registration extends React.Component {
           password2: "",
           success: true,
         });
-
-        // TODO: review this whole block!
-
-        // SMS verification flow
-        if (
-          // redundant
-          (settings.mobile_phone_verification && !settings.subscriptions) ||
-          (settings.mobile_phone_verification && !plan_pricing) ||
-          (settings.mobile_phone_verification &&
-            !plan_pricing.verifies_identity)
-        ) {
-          setUserData({...userData, is_active: true, is_verified: false});
-          // simple sign up flow
-        } else if (
-          settings.subscriptions &&
-          plan_pricing &&
-          plan_pricing.verifies_identity
-        ) {
-          authenticate(true);
-          window.location.assign(response.data.payment_url);
-          return;
-        } else {
-          setUserData({...userData, is_active: true});
-
-          // TODO: is this toast message being shown only during simple email based registration?
-
-          toast.success(registerSuccess, {
-            toastId: mainToastId,
-          });
-        }
+        toast.success(registerSuccess, {
+          toastId: mainToastId,
+        });
+        // will redirect to status which will validate data again
+        // and initiate any verification if needed
         authenticate(true);
-        setLoading(false);
       })
       .catch((error) => {
         const {data} = error.response;
@@ -1088,6 +1060,4 @@ Registration.propTypes = {
     content: PropTypes.object,
   }).isRequired,
   authenticate: PropTypes.func.isRequired,
-  setUserData: PropTypes.func.isRequired,
-  userData: PropTypes.object.isRequired,
 };

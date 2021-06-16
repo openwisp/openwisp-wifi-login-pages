@@ -23,6 +23,7 @@ export const initialState = {
   },
   settings: {
     mobile_phone_verification: undefined,
+    subscriptions: undefined,
   },
 };
 

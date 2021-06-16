@@ -248,20 +248,12 @@ describe("<Status /> interactions", () => {
       });
     jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
 
-    props = createTestProps();
+    props = createTestProps({userData: responseData});
     validateToken.mockReturnValue(true);
-    const userData = {
-      response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
-      radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
-      username: "tester@tester.com",
-      is_active: true,
-      phone_number: "",
-    };
     const setLoading = jest.fn();
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading},
     });
-    wrapper.setProps({userData});
     await tick();
     expect(wrapper.instance().props.cookies.get("default_macaddr")).toBe(
       "4e:ed:11:2b:17:ae",
@@ -704,7 +696,6 @@ describe("<Status /> interactions", () => {
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
     });
-    // wrapper.setProps({userData: data})
     await tick();
     // ensure user is redirected to payment URL
     expect(location.assign.mock.calls.length).toBe(1);

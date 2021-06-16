@@ -15,6 +15,7 @@ import LoadingContext from "../../utils/loading-context";
 import Loader from "../../utils/loader";
 import Logout from "../logout";
 import Login from "../login";
+import needsVerify from "../../utils/needs-verify";
 
 const Registration = React.lazy(() => import("../registration"));
 const PasswordChange = React.lazy(() => import("../password-change"));
@@ -57,19 +58,18 @@ export default class OrganizationWrapper extends React.Component {
     const {loading} = this.state;
     const {title, favicon, isAuthenticated, userData, settings} =
       organization.configuration;
-    const {is_active, is_verified, method} = userData;
-    const needsMobilePhoneVerification =
-      is_verified === false &&
-      settings.mobile_phone_verification &&
-      method === "mobile_phone";
+    const {is_active} = userData;
     const orgSlug = organization.configuration.slug;
     const cssPath = organization.configuration.css_path;
     const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
+    const needsVerifyPhone = needsVerify("mobile_phone", userData, settings);
+
     if (organization.exists === true) {
+      const {setLoading} = this;
       return (
         <>
           <LoadingContext.Provider
-            value={{setLoading: this.setLoading, getLoading: () => loading}}
+            value={{setLoading, getLoading: () => loading}}
           >
             <div className={`app-container ${loading ? "no-scroll" : ""}`}>
               <Route
@@ -87,10 +87,10 @@ export default class OrganizationWrapper extends React.Component {
                 <Route
                   path={`${match.path}/registration`}
                   render={(props) => {
-                    if (isAuthenticated && !needsMobilePhoneVerification) {
+                    if (isAuthenticated && !needsVerifyPhone) {
                       return <Redirect to={`/${orgSlug}/status`} />;
                     }
-                    if (isAuthenticated && needsMobilePhoneVerification) {
+                    if (isAuthenticated && needsVerifyPhone) {
                       return (
                         <Redirect
                           to={`/${orgSlug}/mobile-phone-verification`}
@@ -109,7 +109,7 @@ export default class OrganizationWrapper extends React.Component {
                   render={(props) => {
                     if (
                       isAuthenticated &&
-                      needsMobilePhoneVerification === false &&
+                      needsVerifyPhone === false &&
                       is_active
                     ) {
                       return <Redirect to={`/${orgSlug}/status`} />;
@@ -160,26 +160,19 @@ export default class OrganizationWrapper extends React.Component {
                 <Route
                   path={`${match.path}/status`}
                   render={(props) => {
-                    if (
-                      isAuthenticated &&
-                      !needsMobilePhoneVerification &&
-                      is_active
-                    )
-                      return (
-                        <Suspense fallback={<Loader full={false} />}>
-                          <Status {...props} cookies={cookies} />
-                        </Suspense>
-                      );
-                    if (
-                      isAuthenticated &&
-                      needsMobilePhoneVerification &&
-                      is_active
-                    )
+                    if (isAuthenticated && needsVerifyPhone)
                       return (
                         <Redirect
                           to={`/${orgSlug}/mobile-phone-verification`}
                         />
                       );
+                    if (isAuthenticated) {
+                      return (
+                        <Suspense fallback={<Loader full={false} />}>
+                          <Status {...props} cookies={cookies} />
+                        </Suspense>
+                      );
+                    }
                     if (userAutoLogin)
                       return <Redirect to={`/${orgSlug}/logout`} />;
                     return <Redirect to={`/${orgSlug}/login`} />;
@@ -222,14 +215,11 @@ export default class OrganizationWrapper extends React.Component {
                   path={`${match.path}/payment/:result`}
                   render={(props) => {
                     const {result} = props.match.params;
-                    const acceptedValues = ["success", "failed"];
-                    if (isAuthenticated && acceptedValues.includes(result))
-                      return (
-                        <Suspense fallback={<Loader full={false} />}>
-                          <PaymentStatus cookies={cookies} result={result} />
-                        </Suspense>
-                      );
-                    return <Redirect to={`/${orgSlug}/login`} />;
+                    return (
+                      <Suspense fallback={<Loader full={false} />}>
+                        <PaymentStatus cookies={cookies} result={result} />
+                      </Suspense>
+                    );
                   }}
                 />
                 <Route
@@ -309,7 +299,7 @@ OrganizationWrapper.propTypes = {
       slug: PropTypes.string,
       favicon: PropTypes.string,
       isAuthenticated: PropTypes.bool,
-      needsMobilePhoneVerification: PropTypes.bool,
+      needsVerifyPhone: PropTypes.bool,
       userData: PropTypes.object,
       settings: PropTypes.shape({
         mobile_phone_verification: PropTypes.bool,

@@ -1,92 +1,50 @@
 /* eslint-disable react/require-default-props */
-import axios from "axios";
 import {Cookies} from "react-cookie";
 import PropTypes from "prop-types";
 import React from "react";
 import {Link, Redirect} from "react-router-dom";
 import {toast} from "react-toastify";
-import qs from "qs";
 import LoadingContext from "../../utils/loading-context";
 import Contact from "../contact-box";
-import logError from "../../utils/log-error";
-import {genericError, mainToastId, validateApiUrl} from "../../constants";
 import getText from "../../utils/get-text";
-import handleSession from "../../utils/session";
+import validateToken from "../../utils/validate-token";
 
 export default class PaymentStatus extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      is_verified: null,
-      method: null,
-    };
-    this.validateToken = this.validateToken.bind(this);
-  }
-
   async componentDidMount() {
-    await this.validateToken();
-  }
-
-  // TODO: make reusable
-  async validateToken() {
+    const {cookies, orgSlug, setUserData, logout} = this.props;
     const {setLoading} = this.context;
-    const {cookies, orgSlug, logout} = this.props;
-    const authToken = cookies.get(`${orgSlug}_auth_token`);
-    const {token, session} = handleSession(orgSlug, authToken, cookies);
-    const url = validateApiUrl(orgSlug);
+    const {userData} = this.props;
     setLoading(true);
-    try {
-      const response = await axios({
-        method: "post",
-        headers: {
-          "content-type": "application/x-www-form-urlencoded",
-        },
-        url,
-        data: qs.stringify({
-          token,
-          session,
-        }),
-      });
-      setLoading(false);
-      if (response.data.response_code !== "AUTH_TOKEN_VALIDATION_SUCCESSFUL") {
-        logout(cookies, orgSlug);
-        toast.error(genericError, {
-          onOpen: () => toast.dismiss(mainToastId),
-        });
-        logError(
-          response,
-          '"response_code" !== "AUTH_TOKEN_VALIDATION_SUCCESSFUL"',
-        );
-      } else {
-        const {data} = response;
-        this.setState({
-          is_verified: data.is_verified,
-          method: data.method,
-        });
-      }
-      return true;
-    } catch (error) {
-      logout(cookies, orgSlug);
-      toast.error(genericError, {
-        onOpen: () => toast.dismiss(mainToastId),
-      });
-      logError(error, genericError);
-      return false;
-    }
+    await validateToken(cookies, orgSlug, setUserData, userData, logout);
+    setLoading(false);
   }
 
   render() {
-    const {orgSlug, cookies, language, page, result, logout} = this.props;
-    const {method, is_verified: isVerified} = this.state;
+    const {
+      orgSlug,
+      cookies,
+      language,
+      page,
+      result,
+      logout,
+      isAuthenticated,
+      userData,
+    } = this.props;
+    const {method, is_verified: isVerified} = userData;
     const redirectToStatus = () => <Redirect to={`/${orgSlug}/status`} />;
+    const acceptedValues = ["success", "failed"];
 
     // not registered with bank card flow
-    if (method && method !== "bank_card") {
+    if (
+      (method && method !== "bank_card") ||
+      !acceptedValues.includes(result)
+    ) {
       return redirectToStatus();
     }
 
     // likely somebody opening this page by mistake
     if (
+      isAuthenticated === false ||
       (result === "failed" && isVerified === true) ||
       (result === "success" && isVerified === false)
     ) {
@@ -146,6 +104,9 @@ PaymentStatus.propTypes = {
   }).isRequired,
   language: PropTypes.string,
   orgSlug: PropTypes.string,
+  userData: PropTypes.object.isRequired,
+  setUserData: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool,
   result: PropTypes.string.isRequired,
   logout: PropTypes.func.isRequired,
   cookies: PropTypes.instanceOf(Cookies).isRequired,
