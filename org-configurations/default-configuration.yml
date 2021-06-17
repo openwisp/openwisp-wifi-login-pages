@@ -125,9 +125,6 @@ client:
             en: "first name"
           label_optional:
             en: "first name (optional)"
-          pattern: '[a-zA-Z@.+\-_\d]{1,150}'
-          pattern_description:
-            en: "only letters, numbers, and @/./+/-/_ characters"
           placeholder:
             en: "enter first name"
           setting: "disabled"
@@ -137,9 +134,6 @@ client:
             en: "last name"
           label_optional:
             en: "last name (optional)"
-          pattern: '[a-zA-Z@.+\-_\d]{1,150}'
-          pattern_description:
-            en: "only letters, numbers, and @/./+/-/_ characters"
           placeholder:
             en: "enter last name"
           setting: "disabled"

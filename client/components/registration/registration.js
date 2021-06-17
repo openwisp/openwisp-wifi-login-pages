@@ -545,11 +545,6 @@ export default class Registration extends React.Component {
                             input_fields.first_name.placeholder,
                             language,
                           )}
-                          pattern={input_fields.first_name.pattern}
-                          title={getText(
-                            input_fields.first_name.pattern_description,
-                            language,
-                          )}
                         />
                       </div>
                     )}
@@ -582,11 +577,6 @@ export default class Registration extends React.Component {
                           onChange={this.handleChange}
                           placeholder={getText(
                             input_fields.last_name.placeholder,
-                            language,
-                          )}
-                          pattern={input_fields.last_name.pattern}
-                          title={getText(
-                            input_fields.last_name.pattern_description,
                             language,
                           )}
                         />
@@ -987,8 +977,6 @@ Registration.propTypes = {
         label_optional: PropTypes.object.isRequired,
         setting: PropTypes.string.isRequired,
         placeholder: PropTypes.object.isRequired,
-        pattern: PropTypes.string.isRequired,
-        pattern_description: PropTypes.object.isRequired,
       }),
       last_name: PropTypes.shape({
         type: PropTypes.string.isRequired,
@@ -996,8 +984,6 @@ Registration.propTypes = {
         label_optional: PropTypes.object.isRequired,
         setting: PropTypes.string.isRequired,
         placeholder: PropTypes.object.isRequired,
-        pattern: PropTypes.string.isRequired,
-        pattern_description: PropTypes.object.isRequired,
       }),
       location: PropTypes.shape({
         type: PropTypes.string.isRequired,
