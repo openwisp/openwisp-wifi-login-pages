@@ -99,14 +99,6 @@ export default class Status extends React.Component {
       const {justAuthenticated} = userData;
       ({userData} = this.props);
 
-      if (userData.is_verified) {
-        setLoading(false);
-      }
-
-      if (needsVerify("bank_card", userData, settings)) {
-        window.location.assign(userData.payment_url);
-      }
-
       const {
         radius_user_token: password,
         username,
@@ -156,6 +148,16 @@ export default class Status extends React.Component {
         this.loginFormRef.current.submit();
         userData.justAuthenticated = false;
         setUserData(userData);
+      }
+
+      if (needsVerify("bank_card", userData, settings)) {
+        window.location.assign(userData.payment_url);
+      }
+
+      if (userData.is_verified) {
+        setLoading(false);
+      } else {
+        return;
       }
 
       await this.getUserActiveRadiusSessions();

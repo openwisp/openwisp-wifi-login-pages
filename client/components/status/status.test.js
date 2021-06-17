@@ -678,27 +678,48 @@ describe("<Status /> interactions", () => {
   });
 
   it("should initiate bank_card verification", async () => {
-    const data = {
-      ...responseData,
-      is_verified: false,
-      method: "bank_card",
-      payment_url: "https://account.openwisp.io/payment/123",
-    };
     validateToken.mockReturnValue(true);
     // mock window.location.assign
     const location = new URL("https://wifi.openwisp.io");
     location.assign = jest.fn();
     delete window.location;
     window.location = location;
-    props = createTestProps({userData: data});
+    // mock session fetching
+    jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
+    jest.spyOn(Status.prototype, "getUserPassedRadiusSessions");
+
+    props = createTestProps();
+    props.userData = {
+      ...responseData,
+      is_verified: false,
+      method: "bank_card",
+      payment_url: "https://account.openwisp.io/payment/123",
+      justAuthenticated: true,
+    };
+    props.location.search = "";
     props.settings.mobile_phone_verification = true;
     props.settings.subscriptions = true;
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
     });
+
+    // mock loginFormRef
+    const spyFn = jest.fn();
+    wrapper.instance().loginFormRef.current = {submit: spyFn};
+    const setUserDataMock = wrapper.instance().props.setUserData.mock;
     await tick();
+
+    // ensure captive portal login is performed
+    expect(spyFn.mock.calls.length).toBe(1);
+    // ensure setUserData is called as expected
+    expect(setUserDataMock.calls.pop()).toEqual([
+      {...props.userData, justAuthenticated: false},
+    ]);
     // ensure user is redirected to payment URL
     expect(location.assign.mock.calls.length).toBe(1);
-    expect(location.assign.mock.calls[0][0]).toBe(data.payment_url);
+    expect(location.assign.mock.calls[0][0]).toBe(props.userData.payment_url);
+    // ensure sessions are not fetched
+    expect(Status.prototype.getUserActiveRadiusSessions).not.toHaveBeenCalled();
+    expect(Status.prototype.getUserPassedRadiusSessions).not.toHaveBeenCalled();
   });
 });
