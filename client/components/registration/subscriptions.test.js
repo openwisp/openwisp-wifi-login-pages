@@ -73,13 +73,6 @@ describe("test subscriptions", () => {
   };
 
   beforeEach(() => {
-    // axios.mockImplementationOnce(() => {
-    //   return Promise.resolve({
-    //     status: 201,
-    //     statusText: "ok",
-    //     data: plans,
-    //   });
-    // });
     originalError = console.error;
     lastConsoleOutuput = null;
     console.error = (data) => {

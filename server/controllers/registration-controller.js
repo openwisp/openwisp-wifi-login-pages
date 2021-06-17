@@ -44,9 +44,6 @@ const registration = (req, res) => {
         }
       });
 
-      // console.log(settings);
-      // console.log(postData);
-
       // send request
       axios({
         method: "post",
