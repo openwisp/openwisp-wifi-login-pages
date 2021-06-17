@@ -59,7 +59,7 @@ export default class Registration extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.passwordToggleRef = React.createRef();
     this.confirmPasswordToggleRef = React.createRef();
-    this.choiceFormChange = this.choiceFormChange.bind(this);
+    this.changePlan = this.changePlan.bind(this);
     this.selectedCountry = this.selectedCountry.bind(this);
   }
 
@@ -266,54 +266,42 @@ export default class Registration extends React.Component {
     this.setState({countrySelected: data, country: data.value});
   };
 
-  choiceFormChange = (event) => {
+  changePlan = (event) => {
     this.setState({selected_plan: event.target.value});
   };
 
-  getLabelText = (selection) => {
-    const {plans} = this.state;
-    const plan = plans[selection];
+  getLabelText = (plan) => {
     return `${plan.plan}. ${plan.plan_description} ${plan.pricing} ${plan.price} ${plan.currency}`;
   };
 
-  getChoiceForm = () => {
+  getPlanSelection = () => {
     const {registration, language} = this.props;
     const {plans_setting} = registration;
+    const {plans} = this.state;
+    let index = 0;
     return (
       <div>
         <p style={{textAlign: "center"}}>
           {getText(plans_setting.text, language)}
         </p>
-        <div>
-          <input
-            id="radio0"
-            type="radio"
-            value={0}
-            name="plan_selection"
-            onChange={this.choiceFormChange}
-          />
-          <label htmlFor="radio0">{this.getLabelText(0)}</label>
-        </div>
-        <div>
-          <input
-            id="radio1"
-            type="radio"
-            value={1}
-            name="plan_selection"
-            onChange={this.choiceFormChange}
-          />
-          <label htmlFor="radio1">{this.getLabelText(1)}</label>
-        </div>
-        <div>
-          <input
-            id="radio3"
-            type="radio"
-            value={2}
-            name="plan_selection"
-            onChange={this.choiceFormChange}
-          />
-          <label htmlFor="radio3">{this.getLabelText(2)}</label>
-        </div>
+        {plans.map((plan) => {
+          const currentIndex = index;
+          index += 1;
+          return (
+            <div key={currentIndex}>
+              <input
+                id={`radio${currentIndex}`}
+                type="radio"
+                value={currentIndex}
+                name="plan_selection"
+                onChange={this.changePlan}
+              />
+              <label htmlFor={`radio${currentIndex}`}>
+                {this.getLabelText(plan)}
+              </label>
+            </div>
+          );
+        })}
       </div>
     );
   };
@@ -383,7 +371,7 @@ export default class Registration extends React.Component {
                     <span className="text">{errors.nonField}</span>
                   </div>
                 )}
-                {plans.length > 0 && this.getChoiceForm()}
+                {plans.length > 0 && this.getPlanSelection()}
                 {(plans.length === 0 ||
                   (plans.length > 0 && selected_plan !== null)) && (
                   <>

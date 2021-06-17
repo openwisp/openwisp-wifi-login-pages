@@ -44,16 +44,6 @@ const plans = [
     has_automatic_renewal: false,
   },
   {
-    id: "3c60f25c-638d-43ae-9078-32697efca766",
-    plan: "Premium",
-    pricing: "per month (30 days)",
-    plan_description: "Unlimited time and traffic",
-    currency: "EUR",
-    verifies_identity: true,
-    price: "1.99",
-    has_automatic_renewal: false,
-  },
-  {
     id: "d1403161-75cd-4492-bccd-054eee9e155a",
     plan: "Premium",
     pricing: "per year (365 days)",
@@ -127,7 +117,7 @@ describe("test subscriptions", () => {
     });
     wrapper = initShallow(props);
     wrapper.instance().setState({plans, plansFetched: true});
-    expect(wrapper.find("input[name='plan_selection']").length).toBe(3);
+    expect(wrapper.find("input[name='plan_selection']").length).toBe(2);
     expect(lastConsoleOutuput).toBe(null);
   });
 
