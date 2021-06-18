@@ -262,7 +262,7 @@ describe("<Status /> interactions", () => {
       },
       cookies: new Cookies(),
     });
-    wrapper.instance().componentDidMount();
+    await wrapper.instance().componentDidMount();
     await tick();
     expect(wrapper.instance().props.cookies.get("default_macaddr")).toBe(
       undefined,
@@ -714,5 +714,24 @@ describe("<Status /> interactions", () => {
     wrapper.instance().getUserPassedRadiusSessions();
     await tick();
     expect(wrapper.instance().state.hasMoreSessions).toEqual(false);
+  });
+  it("should wait one second after submitting captive portal login form", async () => {
+    validateToken.mockReturnValue(true);
+    const userData = {
+      response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+      radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
+      username: "tester@tester.com",
+      is_active: true,
+      phone_number: "",
+    };
+    const prop = createTestProps();
+    prop.userData = userData;
+    jest.useFakeTimers();
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+    });
+    await tick();
+    expect(setTimeout).toHaveBeenCalledTimes(1);
+    expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 1000);
   });
 });

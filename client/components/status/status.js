@@ -136,6 +136,8 @@ export default class Status extends React.Component {
             this.loginFormRef.current.submit();
             setUserData({...userData, justAuthenticated: false});
           }
+          // waiting for 1 second after submitting captive portal login form
+          await new Promise((res) => setTimeout(res, 1000));
           await this.getUserActiveRadiusSessions();
           await this.getUserPassedRadiusSessions();
           const intervalId = setInterval(() => {
