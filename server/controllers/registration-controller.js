@@ -24,7 +24,7 @@ const registration = (req, res) => {
         postData.phone_number = req.body.phone_number;
         postData.method = "mobile_phone";
       } else {
-        postData.phone_number = null;
+        delete postData.phone_number;
         postData.method = "";
       }
       if (settings && settings.subscriptions && postData.billing_info) {

@@ -376,15 +376,24 @@ describe("<Status /> interactions", () => {
     validateToken.mockReturnValue(true);
     props = createTestProps();
     props.settings.mobile_phone_verification = false;
+    const setLoadingMock = jest.fn();
     wrapper = shallow(<Status {...props} />, {
-      context: {setLoading: jest.fn()},
+      context: {setLoading: setLoadingMock},
       disableLifecycleMethods: false,
     });
-    wrapper.setProps({userData: responseData});
+    wrapper.setProps({
+      userData: {
+        ...responseData,
+        is_verified: false,
+        method: "",
+      },
+    });
     await tick();
     expect(wrapper.contains(<span>tester</span>)).toBe(true);
     expect(wrapper.contains(<span>+237672279436</span>)).toBe(false);
     expect(wrapper.contains(<span>tester@tester.com</span>)).toBe(true);
+    const mockedSetLoadingCalls = JSON.stringify(setLoadingMock.mock.calls);
+    expect(mockedSetLoadingCalls).toBe("[[true],[false]]");
   });
 
   it("test handleLoginIframe method", async () => {

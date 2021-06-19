@@ -150,11 +150,19 @@ export default class Status extends React.Component {
         setUserData(userData);
       }
 
+      // if the user needs bank card verification,
+      // redirect to payment page and stop here
       if (needsVerify("bank_card", userData, settings)) {
         window.location.assign(userData.payment_url);
+        return;
       }
 
-      if (userData.is_verified) {
+      // if the user is not verified, do not remove the
+      // loading overlay unless verification is not needed
+      if (
+        userData.is_verified ||
+        !needsVerify("mobile_phone", userData, settings)
+      ) {
         setLoading(false);
       } else {
         return;
