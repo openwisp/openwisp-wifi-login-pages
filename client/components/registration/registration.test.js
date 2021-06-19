@@ -28,13 +28,49 @@ const createTestProps = function (props, configName = "default") {
     privacyPolicy: config.privacy_policy,
     termsAndConditions: config.terms_and_conditions,
     authenticate: jest.fn(),
-    userData: {},
-    setUserData: jest.fn(),
     match: {
       path: "default/registration",
     },
     ...props,
   };
+};
+
+const mountComponent = function (passedProps) {
+  const historyMock = createMemoryHistory();
+
+  Registration.contextTypes = undefined;
+  const mockedStore = {
+    subscribe: () => {},
+    dispatch: () => {},
+    // needed to render <Contact/>
+    getState: () => {
+      return {
+        organization: {
+          configuration: passedProps.configuration,
+        },
+        language: passedProps.language,
+      };
+    },
+  };
+
+  return mount(
+    <Provider store={mockedStore}>
+      <Router history={historyMock}>
+        <Registration {...passedProps} />
+      </Router>
+    </Provider>,
+    {
+      context: {
+        store: mockedStore,
+        ...loadingContextValue,
+      },
+      childContextTypes: {
+        store: PropTypes.object.isRequired,
+        setLoading: PropTypes.func,
+        getLoading: PropTypes.func,
+      },
+    },
+  );
 };
 
 describe("<Registration /> rendering", () => {
@@ -157,13 +193,19 @@ describe("<Registration /> interactions", () => {
       .handleSubmit(event)
       .then(() => {
         expect(wrapper.instance().state.errors).toEqual({
+          birth_date: "",
+          city: "",
+          country: "",
           email: "email error",
-          password1: "password1 error",
-          password2: "",
           first_name: "",
           last_name: "",
           location: "",
-          birth_date: "",
+          password1: "password1 error",
+          password2: "",
+          street: "",
+          tax_number: "",
+          username: "",
+          zipcode: "",
         });
         expect(wrapper.find("div.error")).toHaveLength(2);
         expect(wrapper.instance().props.authenticate.mock.calls.length).toBe(0);
@@ -208,9 +250,6 @@ describe("<Registration /> interactions", () => {
             expect(
               wrapper.instance().props.authenticate.mock.calls.length,
             ).toBe(1);
-            expect(wrapper.instance().props.setUserData.mock.calls.length).toBe(
-              1,
-            );
             expect(lastConsoleOutuput).toBe(null);
             expect(spyToast.mock.calls.length).toBe(3);
             lastConsoleOutuput = null;
@@ -261,35 +300,7 @@ describe("<Registration /> interactions", () => {
       "location (optional)",
     );
   });
-  it("should execute setUserData", async () => {
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve();
-    });
-    wrapper = shallow(<Registration {...props} />, {
-      context: loadingContextValue,
-      disableLifecycleMethods: true,
-    });
-    const event = {preventDefault: () => {}};
-    const errorSpyToast = jest.spyOn(toast, "error");
-    const setUserDataMock = wrapper.instance().props.setUserData.mock;
-    wrapper.setState({
-      password1: "password",
-      password2: "password",
-    });
-    wrapper.instance().handleSubmit(event);
-    await tick();
-    expect(wrapper.instance().state.errors).toEqual({});
-    expect(wrapper.instance().state.success).toEqual(true);
-    expect(wrapper.find(".success")).toHaveLength(1);
-    expect(wrapper.instance().props.authenticate.mock.calls.length).toBe(1);
-    expect(wrapper.instance().props.setUserData.mock.calls.length).toBe(1);
-    expect(lastConsoleOutuput).toBe(null);
-    expect(errorSpyToast.mock.calls.length).toBe(3);
-    lastConsoleOutuput = null;
-    expect(setUserDataMock.calls.length).toBe(1);
-    expect(setUserDataMock.calls.pop()).toEqual([{is_active: true}]);
-  });
-  it("should execute setUserData with is_verified when mobile phone verification is needed", async () => {
+  it("should execute authenticate in mobile phone verification flow", async () => {
     axios.mockImplementationOnce(() => {
       return Promise.resolve();
     });
@@ -300,7 +311,6 @@ describe("<Registration /> interactions", () => {
     });
     const event = {preventDefault: () => {}};
     const errorSpyToast = jest.spyOn(toast, "error");
-    const setUserDataMock = wrapper.instance().props.setUserData.mock;
     wrapper.setState({
       password1: "password",
       password2: "password",
@@ -311,56 +321,14 @@ describe("<Registration /> interactions", () => {
     expect(wrapper.instance().state.success).toEqual(true);
     expect(wrapper.find(".success")).toHaveLength(1);
     expect(wrapper.instance().props.authenticate.mock.calls.length).toBe(1);
-    expect(wrapper.instance().props.setUserData.mock.calls.length).toBe(1);
     expect(errorSpyToast.mock.calls.length).toBe(3);
-    expect(setUserDataMock.calls.length).toBe(1);
-    expect(setUserDataMock.calls.pop()).toEqual([
-      {is_active: true, is_verified: false},
-    ]);
   });
 });
 
 describe("Registration and Mobile Phone Verification interactions", () => {
   let props;
   let wrapper;
-  const historyMock = createMemoryHistory();
   const event = {preventDefault: jest.fn()};
-
-  const mountComponent = function (passedProps) {
-    Registration.contextTypes = undefined;
-    const mockedStore = {
-      subscribe: () => {},
-      dispatch: () => {},
-      // needed to render <Contact/>
-      getState: () => {
-        return {
-          organization: {
-            configuration: passedProps.configuration,
-          },
-          language: passedProps.language,
-        };
-      },
-    };
-
-    return mount(
-      <Provider store={mockedStore}>
-        <Router history={historyMock}>
-          <Registration {...passedProps} />
-        </Router>
-      </Provider>,
-      {
-        context: {
-          store: mockedStore,
-          ...loadingContextValue,
-        },
-        childContextTypes: {
-          store: PropTypes.object.isRequired,
-          setLoading: PropTypes.func,
-          getLoading: PropTypes.func,
-        },
-      },
-    );
-  };
 
   beforeEach(() => {
     props = createTestProps({}, "test-org-2");
@@ -383,17 +351,6 @@ describe("Registration and Mobile Phone Verification interactions", () => {
     expect(wrapper.find("form")).toHaveLength(1);
     const component = wrapper.find(Registration).instance();
     const handleSubmit = jest.spyOn(component, "handleSubmit");
-
-    // testing if username is equal to phone_number
-    const axiosParam = {
-      data:
-        "email=tester%40openwisp.io&username=%2B393660011333&first_name=&last_name=&birth_date=&location=&password1=tester123&password2=tester123&phone_number=%2B393660011333",
-      headers: {
-        "content-type": "application/x-www-form-urlencoded",
-      },
-      method: "post",
-      url: "/api/v1/test-org-2/account/",
-    };
 
     axios.mockImplementationOnce(() => {
       return Promise.resolve({
@@ -419,9 +376,63 @@ describe("Registration and Mobile Phone Verification interactions", () => {
     await tick();
     expect(wrapper.find(Registration).instance().state.errors).toEqual({});
     expect(handleSubmit).toHaveBeenCalled();
-    expect(axios).toHaveBeenCalledWith(axiosParam);
     expect(event.preventDefault).toHaveBeenCalled();
-    const {setUserData} = component.props;
-    expect(setUserData.mock.calls.length).toBe(1);
+  });
+});
+
+describe("Registration without identity verification (Email registration)", () => {
+  let props;
+  let wrapper;
+  const event = {preventDefault: jest.fn()};
+
+  beforeEach(() => {
+    props = createTestProps({}, "test-org-2");
+    props.configuration = getConfig("test-org-2");
+    props.configuration.settings.mobile_phone_verification = false;
+    props.configuration.settings.subscriptions = false;
+  });
+  afterEach(() => {
+    jest.clearAllMocks();
+    jest.resetAllMocks();
+    jest.restoreAllMocks();
+  });
+
+  it("should not show phone number field", async () => {
+    wrapper = await mountComponent(props);
+    expect(wrapper.exists(PhoneInput)).toBe(false);
+  });
+
+  it("should process successfully", async () => {
+    wrapper = await mountComponent(props);
+    expect(wrapper.exists(PhoneInput)).toBe(false);
+    expect(wrapper.find("form")).toHaveLength(1);
+    const component = wrapper.find(Registration).instance();
+    const handleSubmit = jest.spyOn(component, "handleSubmit");
+
+    axios.mockImplementationOnce(() => {
+      return Promise.resolve({
+        status: 201,
+        statusText: "CREATED",
+        data: {
+          key: "8a2b2b2dd963de23c17db30a227505f879866630",
+          radius_user_token: "Lbdh3GKD7hvXUS5NUu5yoE4x5fCPPqlsXo7Ug8ld",
+        },
+      });
+    });
+
+    wrapper.find("input[name='email']").simulate("change", {
+      target: {value: "tester@openwisp.io", name: "email"},
+    });
+    wrapper
+      .find("input[name='password1']")
+      .simulate("change", {target: {value: "tester123", name: "password1"}});
+    wrapper
+      .find("input[name='password2']")
+      .simulate("change", {target: {value: "tester123", name: "password2"}});
+    wrapper.find("form").simulate("submit", event);
+    await tick();
+    expect(wrapper.find(Registration).instance().state.errors).toEqual({});
+    expect(handleSubmit).toHaveBeenCalled();
+    expect(event.preventDefault).toHaveBeenCalled();
   });
 });

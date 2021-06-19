@@ -3,6 +3,7 @@ name: "{{name}}"
 slug: "{{slug}}"
 settings:
   mobile_phone_verification: {{mobile_phone_verification}}
+  subscriptions: {{subscriptions}}
 
 # configuration variables for the server app
 server:
@@ -13,6 +14,9 @@ server:
     password_reset: "/api/v1/{org_slug}/account/password/reset"
     password_reset_confirm: "/api/v1/{org_slug}/account/password/reset/confirm"
     registration: "/api/v1/{org_slug}/account"
+    {{#if subscriptions}}
+    plans: "/api/v1/{org_slug}/plans"
+    {{/if}}
     user_auth_token: "/api/v1/{org_slug}/account/token"
     validate_auth_token: "/api/v1/{org_slug}/account/token/validate"
     authorize: "/api/v1/authorize"
@@ -143,9 +147,6 @@ client:
             en: "first name"
           label_optional:
             en: "first name (optional)"
-          pattern: '[a-zA-Z@.+\-_\d]{1,150}'
-          pattern_description:
-            en: "only letters, numbers, and @/./+/-/_ characters"
           placeholder:
             en: "first name"
           setting: "disabled"
@@ -155,9 +156,6 @@ client:
             en: "last name"
           label_optional:
             en: "last name (optional)"
-          pattern: '[a-zA-Z@.+\-_\d]{1,150}'
-          pattern_description:
-            en: "only letters, numbers, and @/./+/-/_ characters"
           placeholder:
             en: "last name"
           setting: "disabled"
@@ -180,6 +178,40 @@ client:
           placeholder:
             en: "location"
           setting: "disabled"
+        country:
+          label:
+            en: "country"
+        zipcode:
+          type: number
+          label:
+            en: "zipcode"
+        street:
+          type: "text"
+          label:
+            en: "street"
+          placeholder:
+            en: "enter street"
+        city:
+          type: "text"
+          label:
+            en: "city"
+          placeholder:
+            en: "enter city"
+        tax_number:
+          type: "text"
+          label:
+            en: "tax number"
+          pattern: '[a-zA-Z@.+\-_\d]{1,150}'
+          pattern_description:
+            en: "only letters, numbers, and @/./+/-/_ characters"
+          placeholder:
+            en: "enter your tax identification number (optional)"
+
+      {{#if subscriptions}}
+      plans_setting:
+        text:
+          en: "Select your plan below"
+      {{/if}}
       buttons:
         register:
           text:
@@ -518,6 +550,22 @@ client:
       additional_fields: []
       logout_by_session: {{logout_by_session_ID}}
 
+    {{#if subscriptions}}
+    payment_status_page:
+      heading:
+        en: "Payment"
+      sub_heading:
+        en: "Something went wrong with the payment."
+      try_again_button:
+        en: "Try again"
+      give_up_text:
+        en: "If you cannot complete the transaction, please contact our customer support service."
+      give_up_button:
+        en: "Cancel operation and log out"
+      success:
+        en: "Payment received successfully!"
+    {{/if}}
+
   password_eye_icon:
     reveal:
       title:
@@ -525,6 +573,7 @@ client:
     hide:
       title:
         en: "hide password"
+
 {{#if assets_confirm}}
   privacy_policy:
     title:

@@ -18,6 +18,7 @@ import {
   loginSuccess,
   mainToastId,
   userInactiveError,
+  genericError,
 } from "../../constants";
 import getAssetPath from "../../utils/get-asset-path";
 import getErrorText from "../../utils/get-error-text";
@@ -174,14 +175,17 @@ export default class Login extends React.Component {
     localStorage.setItem("rememberMe", remember_me);
     setLoading(true);
 
-    const handleAuthentication = (data) => {
-      if (!remember_me)
+    const handleAuthentication = (data = {}) => {
+      // if remember me checkbox is unchecked
+      // store auth token in sessionStorage instead of cookie
+      if (!remember_me) {
         sessionStorage.setItem(`${orgSlug}_auth_token`, data.key);
+      }
       authenticate(true);
       toast.success(loginSuccess, {
         toastId: mainToastId,
       });
-      setLoading(false);
+      setUserData({...data, justAuthenticated: true});
     };
 
     return axios({
@@ -196,26 +200,40 @@ export default class Login extends React.Component {
       }),
     })
       .then((res = {}) => {
-        setUserData({...res.data, justAuthenticated: true});
+        if (!res.data) throw new Error();
         return handleAuthentication(res.data);
       })
-      .catch((error) => {
+      .catch((error = {}) => {
+        if (!error.response || !error.response.data || !error) {
+          toast.error(genericError);
+          return;
+        }
+
         const {data} = error.response;
-        setUserData({...data, justAuthenticated: true});
+        if (!data) throw new Error();
+
         if (
           error.response.status === 401 &&
           settings.mobile_phone_verification &&
           data.is_active
         ) {
-          return handleAuthentication(data);
+          handleAuthentication(data);
+          return;
         }
+
+        setUserData(data);
+
         const errorText =
           data.is_active === false
             ? getErrorText(error, userInactiveError)
             : getErrorText(error, loginError);
         logError(error, errorText);
         toast.error(errorText);
-        if (data.is_active === false) data.username = "";
+
+        if (data.is_active === false) {
+          data.username = "";
+        }
+
         this.setState({
           errors: {
             ...errors,
@@ -225,7 +243,8 @@ export default class Login extends React.Component {
             ...(data.password ? {password: data.password} : {password: ""}),
           },
         });
-        return setLoading(false);
+
+        setLoading(false);
       });
   }
 
@@ -245,13 +264,8 @@ export default class Login extends React.Component {
       privacyPolicy,
       match,
     } = this.props;
-    const {
-      links,
-      buttons,
-      input_fields,
-      social_login,
-      additional_info_text,
-    } = loginForm;
+    const {links, buttons, input_fields, social_login, additional_info_text} =
+      loginForm;
     return (
       <>
         <div className="container content" id="login">
@@ -474,5 +488,6 @@ Login.propTypes = {
   userData: PropTypes.object.isRequired,
   settings: PropTypes.shape({
     mobile_phone_verification: PropTypes.bool,
+    subscriptions: PropTypes.bool,
   }).isRequired,
 };

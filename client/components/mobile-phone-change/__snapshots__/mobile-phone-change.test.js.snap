@@ -176,6 +176,20 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
                   "setting": "disabled",
                   "type": "date",
                 },
+                "city": Object {
+                  "label": Object {
+                    "en": "city",
+                  },
+                  "placeholder": Object {
+                    "en": "enter city",
+                  },
+                  "type": "text",
+                },
+                "country": Object {
+                  "label": Object {
+                    "en": "country",
+                  },
+                },
                 "email": Object {
                   "label": Object {
                     "en": "email",
@@ -275,10 +289,56 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
                     "en": "enter mobile phone number",
                   },
                 },
+                "street": Object {
+                  "label": Object {
+                    "en": "street",
+                  },
+                  "placeholder": Object {
+                    "en": "enter street",
+                  },
+                  "type": "text",
+                },
+                "tax_number": Object {
+                  "label": Object {
+                    "en": "tax_number",
+                  },
+                  "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
+                  "pattern_description": Object {
+                    "en": "only letters, numbers, and @/./+/-/_ characters",
+                  },
+                  "placeholder": Object {
+                    "en": "enter tax_number",
+                  },
+                  "type": "text",
+                },
+                "username": Object {
+                  "label": Object {
+                    "en": "username",
+                  },
+                  "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
+                  "pattern_description": Object {
+                    "en": "only letters, numbers, and @/./+/-/_ characters",
+                  },
+                  "placeholder": Object {
+                    "en": "enter username",
+                  },
+                  "type": "text",
+                },
+                "zipcode": Object {
+                  "label": Object {
+                    "en": "zipcode",
+                  },
+                  "type": "number",
+                },
               },
               "links": Object {
                 "login": Object {
                   "en": "Already have an account? Log in",
+                },
+              },
+              "plans_setting": Object {
+                "text": Object {
+                  "en": "Select your plan below",
                 },
               },
             },
@@ -516,6 +576,20 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
                     "setting": "disabled",
                     "type": "date",
                   },
+                  "city": Object {
+                    "label": Object {
+                      "en": "city",
+                    },
+                    "placeholder": Object {
+                      "en": "enter city",
+                    },
+                    "type": "text",
+                  },
+                  "country": Object {
+                    "label": Object {
+                      "en": "country",
+                    },
+                  },
                   "email": Object {
                     "label": Object {
                       "en": "email",
@@ -615,10 +689,56 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
                       "en": "enter mobile phone number",
                     },
                   },
+                  "street": Object {
+                    "label": Object {
+                      "en": "street",
+                    },
+                    "placeholder": Object {
+                      "en": "enter street",
+                    },
+                    "type": "text",
+                  },
+                  "tax_number": Object {
+                    "label": Object {
+                      "en": "tax_number",
+                    },
+                    "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
+                    "pattern_description": Object {
+                      "en": "only letters, numbers, and @/./+/-/_ characters",
+                    },
+                    "placeholder": Object {
+                      "en": "enter tax_number",
+                    },
+                    "type": "text",
+                  },
+                  "username": Object {
+                    "label": Object {
+                      "en": "username",
+                    },
+                    "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
+                    "pattern_description": Object {
+                      "en": "only letters, numbers, and @/./+/-/_ characters",
+                    },
+                    "placeholder": Object {
+                      "en": "enter username",
+                    },
+                    "type": "text",
+                  },
+                  "zipcode": Object {
+                    "label": Object {
+                      "en": "zipcode",
+                    },
+                    "type": "number",
+                  },
                 },
                 "links": Object {
                   "login": Object {
                     "en": "Already have an account? Log in",
+                  },
+                },
+                "plans_setting": Object {
+                  "text": Object {
+                    "en": "Select your plan below",
                   },
                 },
               },

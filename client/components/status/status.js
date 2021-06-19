@@ -24,6 +24,7 @@ import Contact from "../contact-box";
 import shouldLinkBeShown from "../../utils/should-link-be-shown";
 import handleSession from "../../utils/session";
 import validateToken from "../../utils/validate-token";
+import needsVerify from "../../utils/needs-verify";
 import {initialState} from "../../reducers/organization";
 
 export default class Status extends React.Component {
@@ -63,6 +64,7 @@ export default class Status extends React.Component {
     this.setState({
       rememberMe: localStorage.getItem("rememberMe") === "true",
     });
+
     // to prevent recursive call in case redirect url is status page
     if (window.top === window.self) {
       try {
@@ -79,6 +81,7 @@ export default class Status extends React.Component {
       } catch {
         //
       }
+
       setLoading(true);
       const isValid = await validateToken(
         cookies,
@@ -87,65 +90,92 @@ export default class Status extends React.Component {
         userData,
         logout,
       );
-      setLoading(false);
-      if (isValid) {
-        const {justAuthenticated} = userData;
-        ({userData} = this.props);
-        const {
-          radius_user_token: password,
-          username,
-          email,
-          phone_number,
-          is_active,
-        } = userData;
-        const userInfo = {};
-        userInfo.status = "";
-        userInfo.email = email;
-        if (username !== email && username !== phone_number) {
-          userInfo.username = username;
-        }
-        if (settings.mobile_phone_verification) {
-          userInfo.phone_number = phone_number;
-        }
-        this.setState({username, password, userInfo}, () => {
-          // if the user is being automatically logged in but it's not
-          // active anymore (eg: has been banned)
-          // automatically perform log out
-          if (is_active === false) {
-            this.handleLogout(false);
-          }
-        });
-        if (isValid && is_active) {
-          const macaddr = cookies.get(`${orgSlug}_macaddr`);
 
-          if (macaddr) {
-            const params = {macaddr};
-            await this.getUserActiveRadiusSessions(params);
-            /* request to captive portal is made only if there is
-              no active session from macaddr stored in the cookie */
-            const {activeSessions} = this.state;
-            if (activeSessions && activeSessions.length === 0) {
-              if (this.loginFormRef && this.loginFormRef.current)
-                this.loginFormRef.current.submit();
-            }
-          } else if (
-            this.loginFormRef &&
-            this.loginFormRef.current &&
-            justAuthenticated
-          ) {
-            this.loginFormRef.current.submit();
-            setUserData({...userData, justAuthenticated: false});
-          }
-          await this.getUserActiveRadiusSessions();
-          await this.getUserPassedRadiusSessions();
-          const intervalId = setInterval(() => {
-            this.getUserActiveRadiusSessions();
-          }, 60000);
-          this.setState({intervalId});
-          window.addEventListener("resize", this.updateScreenWidth);
-          this.updateSpinner();
-        }
+      // stop here if token is invalid
+      if (isValid === false) {
+        return;
       }
+
+      const {justAuthenticated} = userData;
+      ({userData} = this.props);
+
+      const {
+        radius_user_token: password,
+        username,
+        email,
+        phone_number,
+        is_active,
+      } = userData;
+      const userInfo = {};
+      userInfo.status = "";
+      userInfo.email = email;
+      if (username !== email && username !== phone_number) {
+        userInfo.username = username;
+      }
+      if (settings.mobile_phone_verification && phone_number) {
+        userInfo.phone_number = phone_number;
+      }
+      this.setState({username, password, userInfo}, () => {
+        // if the user is being automatically logged in but it's not
+        // active anymore (eg: has been banned)
+        // automatically perform log out
+        if (is_active === false) {
+          this.handleLogout(false);
+        }
+      });
+
+      // stop here if user is banned
+      if (is_active === false) {
+        return;
+      }
+
+      const macaddr = cookies.get(`${orgSlug}_macaddr`);
+      if (macaddr) {
+        const params = {macaddr};
+        await this.getUserActiveRadiusSessions(params);
+        /* request to captive portal is made only if there is
+          no active session from macaddr stored in the cookie */
+        const {activeSessions} = this.state;
+        if (activeSessions && activeSessions.length === 0) {
+          if (this.loginFormRef && this.loginFormRef.current)
+            this.loginFormRef.current.submit();
+        }
+      } else if (
+        this.loginFormRef &&
+        this.loginFormRef.current &&
+        justAuthenticated
+      ) {
+        this.loginFormRef.current.submit();
+        userData.justAuthenticated = false;
+        setUserData(userData);
+      }
+
+      // if the user needs bank card verification,
+      // redirect to payment page and stop here
+      if (needsVerify("bank_card", userData, settings)) {
+        window.location.assign(userData.payment_url);
+        return;
+      }
+
+      // if the user is not verified, do not remove the
+      // loading overlay unless verification is not needed
+      if (
+        userData.is_verified ||
+        !needsVerify("mobile_phone", userData, settings)
+      ) {
+        setLoading(false);
+      } else {
+        return;
+      }
+
+      await this.getUserActiveRadiusSessions();
+      await this.getUserPassedRadiusSessions();
+      const intervalId = setInterval(() => {
+        this.getUserActiveRadiusSessions();
+      }, 60000);
+      this.setState({intervalId});
+      window.addEventListener("resize", this.updateScreenWidth);
+      this.updateSpinner();
     }
   }
 
@@ -563,14 +593,8 @@ export default class Status extends React.Component {
       captivePortalLogoutForm,
       isAuthenticated,
     } = this.props;
-    const {
-      content,
-      links,
-      buttons,
-      session_info,
-      user_info,
-      logout_modal,
-    } = statusPage;
+    const {content, links, buttons, session_info, user_info, logout_modal} =
+      statusPage;
     const {
       username,
       password,
@@ -872,6 +896,7 @@ Status.propTypes = {
   isAuthenticated: PropTypes.bool,
   settings: PropTypes.shape({
     mobile_phone_verification: PropTypes.bool,
+    subscriptions: PropTypes.bool,
   }).isRequired,
   setUserData: PropTypes.func.isRequired,
 };

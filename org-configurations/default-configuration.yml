@@ -4,6 +4,7 @@ slug: "default"
 
 settings:
   mobile_phone_verification: false
+  subscriptions: false
 
 # configuration variables for the server app
 server:
@@ -124,9 +125,6 @@ client:
             en: "first name"
           label_optional:
             en: "first name (optional)"
-          pattern: '[a-zA-Z@.+\-_\d]{1,150}'
-          pattern_description:
-            en: "only letters, numbers, and @/./+/-/_ characters"
           placeholder:
             en: "enter first name"
           setting: "disabled"
@@ -136,9 +134,6 @@ client:
             en: "last name"
           label_optional:
             en: "last name (optional)"
-          pattern: '[a-zA-Z@.+\-_\d]{1,150}'
-          pattern_description:
-            en: "only letters, numbers, and @/./+/-/_ characters"
           placeholder:
             en: "enter last name"
           setting: "disabled"
@@ -161,6 +156,40 @@ client:
           placeholder:
             en: "enter location"
           setting: "disabled"
+        country:
+          type: "text"
+          label:
+            en: "country"
+          pattern: '[a-zA-Z@.+\-_\d\s]{1,150}'
+          pattern_description:
+            en: "only letters, numbers, and @/./+/-/_ characters"
+          placeholder:
+            en: "enter country"
+        zipcode:
+          type: number
+          label:
+            en: "zipcode"
+        street:
+          type: "text"
+          label:
+            en: "street"
+          placeholder:
+            en: "enter street"
+        city:
+          type: "text"
+          label:
+            en: "city"
+          placeholder:
+            en: "enter city"
+        tax_number:
+          type: "text"
+          label:
+            en: "tax number"
+          pattern: '[a-zA-Z@.+\-_\d]{1,150}'
+          pattern_description:
+            en: "only letters, numbers, and @/./+/-/_ characters"
+          placeholder:
+            en: "enter your tax identification number (optional)"
       buttons:
         register:
           label: null
@@ -315,7 +344,7 @@ client:
           disagree:
             text:
               en: "No"
-    
+
     logout:
       content:
         text:
@@ -440,6 +469,20 @@ client:
         id: logout_id
       additional_fields: []
       logout_by_session: true
+
+    payment_status_page:
+      heading:
+        en: "Payment"
+      sub_heading:
+        en: "Something went wrong with the payment."
+      try_again_button:
+        en: "Try again"
+      give_up_text:
+        en: "If you cannot complete the transaction, please contact our customer support service."
+      give_up_button:
+        en: "Cancel operation and log out"
+      success:
+        en: "Payment received successfully!"
 
   password_eye_icon:
     reveal:

@@ -45,6 +45,13 @@ module.exports = {
       default: false,
     },
     {
+      type: "confirm",
+      name: "subscriptions",
+      message:
+        "Are you using OpenWISP Subscriptions to provide paid subscriptions for WiFi plans or identity verification via credit/debit card?",
+      default: false,
+    },
+    {
       type: "input",
       name: "secret_key",
       message: "What is the secret key of the organization?",
