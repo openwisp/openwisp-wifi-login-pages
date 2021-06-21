@@ -118,8 +118,7 @@ yarn test # headless tests
 Prerequisites for running browser-based tests:
 
 1. [Gecko driver](https://github.com/mozilla/geckodriver/releases/) needs to be installed.
-2. having running instances of openwisp-radius and
-   openwisp-wifi-login-pages is required.
+2. Having running instances of openwisp-radius and openwisp-wifi-login-pages is required.
 3. `OPENWIPS_RADIUS_PATH` environment variable is needed to setup/tear down the database
    data needed to run the browser tests. This can be set using the following command:
    ```
@@ -127,6 +126,8 @@ Prerequisites for running browser-based tests:
    ```
 4. If a virtual environment is used to run openwisp-radius then
    this needs to be activated before running browser tests.
+5. In the test environment of openwisp-radius, the ``default`` organization
+   must be present or alternatively
 
 After doing all the prerequisites, run browser based tests using the following command:
 
