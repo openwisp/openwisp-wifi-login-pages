@@ -143,13 +143,21 @@ describe("shouldLinkBeShown tests", () => {
     );
     expect(shouldLinkBeShown(link, isAuthenticated, userData)).toBe(false);
   });
-  it("should return false if user is authenticated and link.method is not mobile_phone", () => {
+  it("should return false if user is authenticated and link.method is not equal to userData.method", () => {
     const {link, isAuthenticated, userData} = createArgs(
-      {authenticated: true, method: "online_payment"},
+      {authenticated: true, method: "payment"},
       true,
-      {},
+      {method: "mobile_phone"},
     );
     expect(shouldLinkBeShown(link, isAuthenticated, userData)).toBe(false);
+  });
+  it("should return true if userData.method and link.method is same", () => {
+    const {link, isAuthenticated, userData} = createArgs(
+      {authenticated: true, method: "payment"},
+      true,
+      {method: "payment"},
+    );
+    expect(shouldLinkBeShown(link, isAuthenticated, userData)).toBe(true);
   });
 });
 describe("tick tests", () => {

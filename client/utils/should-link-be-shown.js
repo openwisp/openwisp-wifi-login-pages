@@ -14,7 +14,7 @@ const shouldLinkBeShown = (link, isAuthenticated, userData) => {
     isAuthenticated === true &&
     link.method !== undefined
   ) {
-    return link.method === "mobile_phone";
+    return link.method === userData.method;
   }
   return (
     link.authenticated === undefined || link.authenticated === isAuthenticated
