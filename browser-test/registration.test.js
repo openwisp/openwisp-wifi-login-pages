@@ -12,7 +12,10 @@ const firefox = require("selenium-webdriver/firefox");
 describe("Selenium tests for <Register />", () => {
   let driver;
   beforeAll(async () => {
-    jest.setTimeout(30000);
+    jest.setTimeout(10000);
+    await executeCommand("./browser-test/clear_data.py", (message) => {
+      console.log(message);
+    });
     driver = await getDriver(Builder, new firefox.Options().headless());
   });
 

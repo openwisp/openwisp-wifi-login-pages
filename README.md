@@ -126,7 +126,7 @@ Prerequisites for running browser-based tests:
    ```
 4. If a virtual environment is used to run openwisp-radius then
    this needs to be activated before running browser tests.
-5. In the test environment of openwisp-radius, the ``default`` organization
+5. In the test environment of openwisp-radius, the `default` organization
    must be present or alternatively
 
 After doing all the prerequisites, run browser based tests using the following command:
