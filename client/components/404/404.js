@@ -11,7 +11,7 @@ export default class DoesNotExist extends React.Component {
   componentDidMount() {
     const {orgName, setTitle, page, language} = this.props;
     if (page !== undefined || orgName !== undefined)
-      setTitle(`${getText(page.title, language)} - ${orgName}`);
+      setTitle(page, language, orgName);
   }
 
   render() {

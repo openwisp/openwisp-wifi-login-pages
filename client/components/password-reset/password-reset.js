@@ -27,7 +27,7 @@ export default class PasswordReset extends React.Component {
 
   componentDidMount() {
     const {language, setTitle, orgName, passwordReset} = this.props;
-    setTitle(`${getText(passwordReset.title, language)} - ${orgName}`);
+    setTitle(passwordReset, language, orgName);
   }
 
   handleChange(event) {

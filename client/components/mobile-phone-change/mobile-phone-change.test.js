@@ -258,7 +258,9 @@ describe("Change Phone Number: standard flow", () => {
     const component = wrapper.find(MobilePhoneChange);
     const setTitleMock = component.props().setTitle.mock;
     expect(setTitleMock.calls.pop()).toEqual([
-      "Change mobile number - test org 2 (sms)",
+      props.phone_number_change,
+      props.language,
+      props.orgName,
     ]);
   });
 });

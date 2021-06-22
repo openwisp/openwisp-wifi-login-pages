@@ -58,12 +58,16 @@ describe("<Logout /> interactions", () => {
     expect(loginUser).toHaveBeenCalled();
   });
 
-  it("should set title", () => {
+  it("should call setTitle to set the title", () => {
     props = createTestProps();
     wrapper = shallow(<Logout {...props} />, {
       context: {setLoading: jest.fn()},
     });
     const setTitleMock = wrapper.instance().props.setTitle.mock;
-    expect(setTitleMock.calls.pop()).toEqual(["Logout - default name"]);
+    expect(setTitleMock.calls.pop()).toEqual([
+      props.logoutPage,
+      props.language,
+      props.orgName,
+    ]);
   });
 });

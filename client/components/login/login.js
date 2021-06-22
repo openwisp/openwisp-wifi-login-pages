@@ -49,7 +49,7 @@ export default class Login extends React.Component {
     const username = getParameterByName("username");
     const token = getParameterByName("token");
     const {loginForm, setTitle, orgName, language} = this.props;
-    setTitle(`${getText(loginForm.title, language)} - ${orgName}`);
+    setTitle(loginForm, language, orgName);
 
     let remember_me;
 

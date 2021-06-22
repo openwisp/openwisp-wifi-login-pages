@@ -69,7 +69,7 @@ export default class Status extends React.Component {
       statusPage,
       orgName,
     } = this.props;
-    setTitle(`${getText(statusPage.title, language)} - ${orgName}`);
+    setTitle(statusPage, language, orgName);
     const {setLoading} = this.context;
     let {userData} = this.props;
     this.setState({

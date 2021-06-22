@@ -114,7 +114,9 @@ describe("<PasswordChange /> interactions", () => {
   it("should set title", () => {
     const setTitleMock = wrapper.instance().props.setTitle.mock;
     expect(setTitleMock.calls.pop()).toEqual([
-      "Change your password - default name",
+      props.passwordChange,
+      props.language,
+      props.orgName,
     ]);
   });
 });

@@ -280,7 +280,6 @@ describe("<Login /> interactions", () => {
   it("should execute setUserData if mobile phone verification needed", async () => {
     props.settings = {mobile_phone_verification: true};
     wrapper = mountComponent(props);
-    expect(true).toBe(true);
     const login = wrapper.find(Login);
     const handleSubmit = jest.spyOn(login.instance(), "handleSubmit");
 
@@ -523,10 +522,14 @@ describe("<Login /> interactions", () => {
       {...userData, justAuthenticated: true},
     ]);
   });
-  it("should set log in title", () => {
+  it("should call setTitle to set log in title", () => {
     wrapper = mountComponent(props);
     const login = wrapper.find(Login);
     const setTitleMock = login.props().setTitle.mock;
-    expect(setTitleMock.calls.pop()).toEqual(["Log in - default name"]);
+    expect(setTitleMock.calls.pop()).toEqual([
+      props.loginForm,
+      props.language,
+      props.orgName,
+    ]);
   });
 });

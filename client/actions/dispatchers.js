@@ -4,6 +4,7 @@ import {
   SET_USER_DATA,
   SET_PAGE_TITLE,
 } from "../constants/action-types";
+import getText from "../utils/get-text";
 
 export const authenticate = (dispatch) => {
   return (status) => {
@@ -27,7 +28,9 @@ export const setTitleAction = (title) => {
   };
 };
 export const setTitle = (dispatch) => {
-  return (title) => {
-    dispatch(setTitleAction(title));
+  return (component, language, orgName) => {
+    dispatch(
+      setTitleAction(`${getText(component.title, language)} - ${orgName}`),
+    );
   };
 };

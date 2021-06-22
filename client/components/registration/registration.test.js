@@ -29,8 +29,6 @@ const createTestProps = function (props, configName = "default") {
     privacyPolicy: config.privacy_policy,
     termsAndConditions: config.terms_and_conditions,
     authenticate: jest.fn(),
-    userData: {},
-    setUserData: jest.fn(),
     setTitle: jest.fn(),
     match: {
       path: "default/registration",
@@ -443,6 +441,10 @@ describe("Registration without identity verification (Email registration)", () =
     wrapper = await mountComponent(props);
     const component = wrapper.find(Registration);
     const setTitleMock = component.props().setTitle.mock;
-    expect(setTitleMock.calls.pop()).toEqual(["Sign up - test org 2 (sms)"]);
+    expect(setTitleMock.calls.pop()).toEqual([
+      props.registration,
+      props.language,
+      props.orgName,
+    ]);
   });
 });

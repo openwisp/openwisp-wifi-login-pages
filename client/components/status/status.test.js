@@ -740,6 +740,10 @@ describe("<Status /> interactions", () => {
       disableLifecycleMethods: false,
     });
     const setTitleMock = wrapper.instance().props.setTitle.mock;
-    expect(setTitleMock.calls.pop()).toEqual(["Status - default name"]);
+    expect(setTitleMock.calls.pop()).toEqual([
+      props.statusPage,
+      props.language,
+      props.orgName,
+    ]);
   });
 });

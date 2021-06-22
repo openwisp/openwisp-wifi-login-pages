@@ -53,9 +53,7 @@ export default class MobilePhoneVerification extends React.Component {
       setTitle,
       mobile_phone_verification,
     } = this.props;
-    setTitle(
-      `${getText(mobile_phone_verification.title, language)} - ${orgName}`,
-    );
+    setTitle(mobile_phone_verification, language, orgName);
     let {userData} = this.props;
     const {setLoading} = this.context;
     setLoading(true);

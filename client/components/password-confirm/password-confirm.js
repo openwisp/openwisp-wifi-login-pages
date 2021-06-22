@@ -32,7 +32,7 @@ export default class PasswordConfirm extends React.Component {
 
   componentDidMount() {
     const {language, setTitle, orgName, passwordConfirm} = this.props;
-    setTitle(`${getText(passwordConfirm.title, language)} - ${orgName}`);
+    setTitle(passwordConfirm, language, orgName);
   }
 
   handleChange(event) {

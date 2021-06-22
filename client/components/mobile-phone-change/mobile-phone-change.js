@@ -44,7 +44,7 @@ class MobilePhoneChange extends React.Component {
       phone_number_change,
       orgName,
     } = this.props;
-    setTitle(`${getText(phone_number_change.title, language)} - ${orgName}`);
+    setTitle(phone_number_change, language, orgName);
     let {userData} = this.props;
     const isValid = await validateToken(
       cookies,

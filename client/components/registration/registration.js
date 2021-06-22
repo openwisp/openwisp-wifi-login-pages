@@ -69,7 +69,7 @@ export default class Registration extends React.Component {
     const {setLoading} = this.context;
     const plansUrl = plansApiUrl.replace("{orgSlug}", orgSlug);
 
-    setTitle(`${getText(registration.title, language)} - ${orgName}`);
+    setTitle(registration, language, orgName);
 
     if (settings.subscriptions) {
       setLoading(true);
@@ -1039,7 +1039,5 @@ Registration.propTypes = {
     content: PropTypes.object,
   }).isRequired,
   authenticate: PropTypes.func.isRequired,
-  setUserData: PropTypes.func.isRequired,
-  userData: PropTypes.object.isRequired,
   setTitle: PropTypes.func.isRequired,
 };

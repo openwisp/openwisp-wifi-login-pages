@@ -150,7 +150,6 @@ describe("<OrganizationWrapper /> interactions", () => {
     const component = renderer.render(<OrganizationWrapper {...props} />);
     expect(component).toMatchSnapshot();
     expect(wrapper.props().pageTitle).toBe(undefined);
-    expect(true).toBe(true);
   });
   it("should render pageTitle if it is not undefined", () => {
     props.organization.configuration.pageTitle = "Organization Wrapper";

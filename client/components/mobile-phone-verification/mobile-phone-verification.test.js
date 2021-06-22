@@ -223,7 +223,9 @@ describe("Mobile Phone Token verification: standard flow", () => {
     await tick();
     const setTitleMock = wrapper.instance().props.setTitle.mock;
     expect(setTitleMock.calls.pop()).toEqual([
-      "Verify mobile number - test org 2 (sms)",
+      props.mobile_phone_verification,
+      props.language,
+      props.orgName,
     ]);
   });
 });

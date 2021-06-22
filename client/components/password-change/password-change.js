@@ -37,7 +37,7 @@ export default class PasswordChange extends React.Component {
 
   componentDidMount() {
     const {language, setTitle, orgName, passwordChange} = this.props;
-    setTitle(`${getText(passwordChange.title, language)} - ${orgName}`);
+    setTitle(passwordChange, language, orgName);
   }
 
   handleSubmit(e) {

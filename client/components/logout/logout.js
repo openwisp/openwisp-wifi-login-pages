@@ -20,7 +20,7 @@ export default class Logout extends React.Component {
 
   componentDidMount() {
     const {orgName, setTitle, logoutPage, language} = this.props;
-    setTitle(`${getText(logoutPage.title, language)} - ${orgName}`);
+    setTitle(logoutPage, language, orgName);
   }
 
   loginUser = (isAuthenticated) => {

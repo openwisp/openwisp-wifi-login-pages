@@ -202,6 +202,10 @@ describe("<PasswordConfirm /> interactions", () => {
   });
   it("should set title", () => {
     const setTitleMock = wrapper.instance().props.setTitle.mock;
-    expect(setTitleMock.calls.pop()).toEqual(["Reset Password - default name"]);
+    expect(setTitleMock.calls.pop()).toEqual([
+      props.passwordConfirm,
+      props.language,
+      props.orgName,
+    ]);
   });
 });

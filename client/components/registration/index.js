@@ -1,6 +1,6 @@
 import {connect} from "react-redux";
 
-import {authenticate, setTitle, setUserData} from "../../actions/dispatchers";
+import {authenticate, setTitle} from "../../actions/dispatchers";
 import Component from "./registration";
 
 const mapStateToProps = (state) => {
@@ -18,7 +18,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     authenticate: authenticate(dispatch),
-    setUserData: setUserData(dispatch),
     setTitle: setTitle(dispatch),
   };
 };

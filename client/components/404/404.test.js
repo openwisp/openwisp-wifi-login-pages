@@ -34,6 +34,10 @@ describe("<DoesNotExist /> rendering", () => {
     const props = createTestProps();
     const wrapper = shallow(<DoesNotExist {...props} />);
     const setTitleMock = wrapper.instance().props.setTitle.mock;
-    expect(setTitleMock.calls.pop()).toEqual(["404 Not found - default name"]);
+    expect(setTitleMock.calls.pop()).toEqual([
+      props.page,
+      props.language,
+      props.orgName,
+    ]);
   });
 });
