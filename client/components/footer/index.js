@@ -7,6 +7,7 @@ const mapStateToProps = (state) => {
     footer: state.organization.configuration.components.footer,
     language: state.language,
     isAuthenticated: state.organization.configuration.isAuthenticated,
+    userData: state.organization.configuration.userData,
   };
 };
 export default connect(mapStateToProps, null)(Component);

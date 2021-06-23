@@ -22,6 +22,12 @@ const headerLinks = [
     url: "link-3/",
     authenticated: true,
   },
+  {
+    text: {en: "link-4"},
+    url: "link-4/",
+    authenticated: true,
+    verified: true,
+  },
 ];
 const getLinkText = (wrapper, text) => {
   const texts = [];
@@ -43,6 +49,7 @@ const createTestProps = (props) => {
     location: {
       pathname: "/default/login",
     },
+    userData: {is_verified: true},
     ...props,
   };
 };
@@ -100,6 +107,18 @@ describe("<Header /> rendering", () => {
       )
       .toJSON();
     expect(component).toMatchSnapshot();
+  });
+  it("should not render with verified links if not verified", () => {
+    props = createTestProps();
+    props.isAuthenticated = true;
+    props.userData.is_verified = false;
+    props.header.links = headerLinks;
+    wrapper = shallow(<Header {...props} />);
+    const linkText = getLinkText(wrapper, ".header-link");
+    expect(linkText).toContain("link-1");
+    expect(linkText).not.toContain("link-2");
+    expect(linkText).toContain("link-3");
+    expect(linkText).not.toContain("link-4");
   });
   it("should render 2 links", () => {
     expect(wrapper.find(".header-desktop-link")).toHaveLength(2);

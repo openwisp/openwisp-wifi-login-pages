@@ -71,6 +71,12 @@ client:
             en: "link-2"
           url: "https://link-2.com"
           authenticated: true
+          verified: false
+        - text:
+            en: "link-3"
+          url: "https://link-3.com"
+          authenticated: true
+          verified: true
       # secondary text to be displayed in smaller size in next line.
       # Eg. copyright text
       secondary_text:

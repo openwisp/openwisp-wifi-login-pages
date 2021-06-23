@@ -22,6 +22,12 @@ const footerLinks = [
     text: {en: "about"},
     url: "/about",
   },
+  {
+    text: {en: "change-password"},
+    url: "/change-password",
+    authenticated: true,
+    verified: true,
+  },
 ];
 const getLinkText = (wrapper, text) => {
   const texts = [];
@@ -34,6 +40,7 @@ const createTestProps = (props) => {
   return {
     language: "en",
     footer: defaultConfig.components.footer,
+    userData: {is_verified: true},
     ...props,
   };
 };
@@ -75,6 +82,7 @@ describe("<Footer /> rendering", () => {
     expect(linkText).toContain("about");
     expect(linkText).toContain("signUp");
     expect(linkText).not.toContain("status");
+    expect(linkText).not.toContain("change-password");
   });
   it("should render with authenticated links when authenticated", () => {
     props = createTestProps();
@@ -85,5 +93,18 @@ describe("<Footer /> rendering", () => {
     expect(linkText).not.toContain("signUp");
     expect(linkText).toContain("about");
     expect(linkText).toContain("status");
+    expect(linkText).toContain("change-password");
+  });
+  it("should not render with verified links if not verified", () => {
+    props = createTestProps();
+    props.footer.links = footerLinks;
+    props.isAuthenticated = true;
+    props.userData.is_verified = false;
+    wrapper = shallow(<Footer {...props} />);
+    const linkText = getLinkText(wrapper, ".footer-link");
+    expect(linkText).not.toContain("signUp");
+    expect(linkText).toContain("about");
+    expect(linkText).toContain("status");
+    expect(linkText).not.toContain("change-password");
   });
 });

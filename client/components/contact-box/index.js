@@ -9,6 +9,7 @@ const mapStateToProps = (state) => {
     orgSlug: conf.slug,
     isAuthenticated: conf.isAuthenticated,
     language: state.language,
+    userData: conf.userData,
   };
 };
 export default connect(mapStateToProps, null)(Component);

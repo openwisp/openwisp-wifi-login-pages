@@ -592,6 +592,7 @@ export default class Status extends React.Component {
       captivePortalLoginForm,
       captivePortalLogoutForm,
       isAuthenticated,
+      userData,
     } = this.props;
     const {content, links, buttons, session_info, user_info, logout_modal} =
       statusPage;
@@ -673,7 +674,7 @@ export default class Status extends React.Component {
 
               {links &&
                 links.map((link) => {
-                  if (shouldLinkBeShown(link, isAuthenticated)) {
+                  if (shouldLinkBeShown(link, isAuthenticated, userData)) {
                     return (
                       <div className="links row" key={link.url}>
                         <Link

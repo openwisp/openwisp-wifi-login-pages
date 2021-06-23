@@ -10,7 +10,8 @@ import shouldLinkBeShown from "../../utils/should-link-be-shown";
 
 export default class Contact extends React.Component {
   render() {
-    const {contactPage, language, orgSlug, isAuthenticated} = this.props;
+    const {contactPage, language, orgSlug, isAuthenticated, userData} =
+      this.props;
     const {email, helpdesk, social_links} = contactPage;
     return (
       <div className="side-column contact">
@@ -37,7 +38,7 @@ export default class Contact extends React.Component {
 
           <div className="contact-links">
             {social_links.map((link) => {
-              if (shouldLinkBeShown(link, isAuthenticated)) {
+              if (shouldLinkBeShown(link, isAuthenticated, userData)) {
                 return (
                   <a
                     href={link.url}
@@ -71,6 +72,7 @@ export default class Contact extends React.Component {
 
 Contact.defaultProps = {
   isAuthenticated: false,
+  userData: {},
 };
 Contact.propTypes = {
   language: PropTypes.string.isRequired,
@@ -81,4 +83,5 @@ Contact.propTypes = {
     helpdesk: PropTypes.object,
   }).isRequired,
   isAuthenticated: PropTypes.bool,
+  userData: PropTypes.object,
 };

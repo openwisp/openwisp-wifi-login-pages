@@ -30,6 +30,7 @@ const createTestProps = (props) => {
     language: "en",
     orgSlug: "default",
     contactPage: defaultConfig.components.contact_page,
+    userData: {is_verified: true},
     ...props,
   };
 };
