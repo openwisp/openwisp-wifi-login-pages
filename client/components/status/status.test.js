@@ -47,6 +47,7 @@ const createTestProps = (props) => {
   return {
     language: "en",
     orgSlug: "default",
+    orgName: "default name",
     statusPage: defaultConfig.components.status_page,
     cookies: new Cookies(),
     settings: defaultConfig.settings,
@@ -59,6 +60,7 @@ const createTestProps = (props) => {
     logout: jest.fn(),
     setUserData: jest.fn(),
     userData: {},
+    setTitle: jest.fn(),
     ...props,
   };
 };
@@ -730,5 +732,18 @@ describe("<Status /> interactions", () => {
     // ensure sessions are not fetched
     expect(Status.prototype.getUserActiveRadiusSessions).not.toHaveBeenCalled();
     expect(Status.prototype.getUserPassedRadiusSessions).not.toHaveBeenCalled();
+  });
+  it("should set title", () => {
+    const prop = createTestProps();
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: false,
+    });
+    const setTitleMock = wrapper.instance().props.setTitle.mock;
+    expect(setTitleMock.calls.pop()).toEqual([
+      props.statusPage,
+      props.language,
+      props.orgName,
+    ]);
   });
 });

@@ -1,6 +1,6 @@
 import React from "react";
 import ShallowRenderer from "react-test-renderer/shallow";
-
+import {shallow} from "enzyme";
 import getConfig from "../../utils/get-config";
 import DoesNotExist from "./404";
 
@@ -9,7 +9,9 @@ const createTestProps = (props) => {
   return {
     language: "en",
     orgSlug: "default",
+    orgName: "default name",
     page: defaultConfig.components["404_page"],
+    setTitle: jest.fn(),
     ...props,
   };
 };
@@ -26,5 +28,16 @@ describe("<DoesNotExist /> rendering", () => {
     const renderer = new ShallowRenderer();
     const component = renderer.render(<DoesNotExist {...props} />);
     expect(component).toMatchSnapshot();
+  });
+
+  it("should set title with organisation name", () => {
+    const props = createTestProps();
+    const wrapper = shallow(<DoesNotExist {...props} />);
+    const setTitleMock = wrapper.instance().props.setTitle.mock;
+    expect(setTitleMock.calls.pop()).toEqual([
+      props.page,
+      props.language,
+      props.orgName,
+    ]);
   });
 });

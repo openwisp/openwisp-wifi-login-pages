@@ -1,4 +1,5 @@
 import {connect} from "react-redux";
+import {setTitle} from "../../actions/dispatchers";
 
 import Component from "./404";
 
@@ -7,7 +8,14 @@ const mapStateToProps = (state) => {
     page: state.organization.configuration.components["404_page"],
     language: state.language,
     orgSlug: state.organization.configuration.slug,
+    orgName: state.organization.configuration.name,
   };
 };
 
-export default connect(mapStateToProps, null)(Component);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setTitle: setTitle(dispatch),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Component);

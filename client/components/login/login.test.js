@@ -24,6 +24,7 @@ const createTestProps = (props) => {
   return {
     language: "en",
     orgSlug: "default",
+    orgName: "default name",
     loginForm,
     privacyPolicy: defaultConfig.privacy_policy,
     termsAndConditions: defaultConfig.terms_and_conditions,
@@ -31,6 +32,7 @@ const createTestProps = (props) => {
     authenticate: jest.fn(),
     setUserData: jest.fn(),
     userData: {},
+    setTitle: jest.fn(),
     match: {
       path: "default/login",
     },
@@ -278,7 +280,6 @@ describe("<Login /> interactions", () => {
   it("should execute setUserData if mobile phone verification needed", async () => {
     props.settings = {mobile_phone_verification: true};
     wrapper = mountComponent(props);
-    expect(true).toBe(true);
     const login = wrapper.find(Login);
     const handleSubmit = jest.spyOn(login.instance(), "handleSubmit");
 
@@ -519,6 +520,16 @@ describe("<Login /> interactions", () => {
     expect(setUserDataMock.calls.length).toBe(1);
     expect(setUserDataMock.calls.pop()).toEqual([
       {...userData, justAuthenticated: true},
+    ]);
+  });
+  it("should call setTitle to set log in title", () => {
+    wrapper = mountComponent(props);
+    const login = wrapper.find(Login);
+    const setTitleMock = login.props().setTitle.mock;
+    expect(setTitleMock.calls.pop()).toEqual([
+      props.loginForm,
+      props.language,
+      props.orgName,
     ]);
   });
 });

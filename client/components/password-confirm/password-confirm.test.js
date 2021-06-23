@@ -18,8 +18,10 @@ const createTestProps = (props) => {
   return {
     language: "en",
     orgSlug: "default",
+    orgName: "default name",
     configuration: defaultConfig,
     passwordConfirm: defaultConfig.components.password_reset_confirm_form,
+    setTitle: jest.fn(),
     match: {
       params: {
         uid: "testUid",
@@ -197,5 +199,13 @@ describe("<PasswordConfirm /> interactions", () => {
             lastConsoleOutuput = null;
           });
       });
+  });
+  it("should set title", () => {
+    const setTitleMock = wrapper.instance().props.setTitle.mock;
+    expect(setTitleMock.calls.pop()).toEqual([
+      props.passwordConfirm,
+      props.language,
+      props.orgName,
+    ]);
   });
 });

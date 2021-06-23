@@ -4,6 +4,7 @@ import React, {Suspense} from "react";
 import {MemoryRouter, Route} from "react-router-dom";
 import {Cookies} from "react-cookie";
 import {Provider} from "react-redux";
+import ShallowRenderer from "react-test-renderer/shallow";
 
 import getConfig from "../../utils/get-config";
 import OrganizationWrapper from "./organization-wrapper";
@@ -28,9 +29,13 @@ const createTestProps = (props) => {
     match: {params: {organization: "default"}, path: "/default"},
     organization: {
       configuration: {
-        title: "Default",
+        title: {
+          en: "Default",
+        },
+        pageTitle: undefined,
         css_path: null,
         slug: "default",
+        name: "default name",
         favicon: null,
         isAuthenticated: true,
         settings: {
@@ -43,6 +48,7 @@ const createTestProps = (props) => {
     },
     setOrganization: jest.fn(),
     cookies: new Cookies(),
+    language: "en",
     ...props,
   };
 };
@@ -114,7 +120,9 @@ describe("<OrganizationWrapper /> interactions", () => {
       match: {params: {organization: "new-org"}},
       organization: {
         configuration: {
-          title: undefined,
+          title: {
+            en: undefined,
+          },
           css_path: "index.css",
           slug: "default",
           favicon: "favicon.png",
@@ -136,6 +144,18 @@ describe("<OrganizationWrapper /> interactions", () => {
   it("test setLoading method", () => {
     wrapper.instance().setLoading(true);
     expect(wrapper.instance().state.loading).toBe(true);
+  });
+  it("should render main title if pageTitle is undefined", () => {
+    const renderer = new ShallowRenderer();
+    const component = renderer.render(<OrganizationWrapper {...props} />);
+    expect(component).toMatchSnapshot();
+    expect(wrapper.props().pageTitle).toBe(undefined);
+  });
+  it("should render pageTitle if it is not undefined", () => {
+    props.organization.configuration.pageTitle = "Organization Wrapper";
+    const renderer = new ShallowRenderer();
+    const component = renderer.render(<OrganizationWrapper {...props} />);
+    expect(component).toMatchSnapshot();
   });
 });
 

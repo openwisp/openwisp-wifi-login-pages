@@ -25,6 +25,7 @@ const createTestProps = function (props, configName = "default") {
     termsAndConditions: config.terms_and_conditions,
     authenticate: jest.fn(),
     verifyMobileNumber: jest.fn(),
+    setTitle: jest.fn(),
     match: {
       path: "default/registration",
     },

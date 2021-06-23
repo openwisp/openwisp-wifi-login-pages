@@ -15,6 +15,8 @@ const createTestProps = (props) => {
   return {
     language: "en",
     orgSlug: "default",
+    orgName: "default name",
+    setTitle: jest.fn(),
     passwordReset: defaultConfig.components.password_reset_form,
     ...props,
   };
@@ -138,5 +140,13 @@ describe("<PasswordReset /> interactions", () => {
             lastConsoleOutuput = null;
           });
       });
+  });
+  it("should set title", () => {
+    const setTitleMock = wrapper.instance().props.setTitle.mock;
+    expect(setTitleMock.calls.pop()).toEqual([
+      props.passwordReset,
+      props.language,
+      props.orgName,
+    ]);
   });
 });

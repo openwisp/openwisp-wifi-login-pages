@@ -22,11 +22,13 @@ const createTestProps = function (props, configName = "test-org-2") {
     mobile_phone_verification: config.components.mobile_phone_verification_form,
     settings: config.settings,
     orgSlug: config.slug,
+    orgName: config.name,
     language: "en",
     cookies: new Cookies(),
     logout: jest.fn(),
     setUserData: jest.fn(),
     userData: {},
+    setTitle: jest.fn(),
     ...props,
   };
 };
@@ -214,6 +216,17 @@ describe("Mobile Phone Token verification: standard flow", () => {
     ).toBe(1);
     expect(wrapper.instance().props.logout.mock.calls.length).toBe(1);
     expect(toast.success.mock.calls.length).toBe(1);
+  });
+
+  it("should set title", async () => {
+    wrapper = createShallowComponent(props);
+    await tick();
+    const setTitleMock = wrapper.instance().props.setTitle.mock;
+    expect(setTitleMock.calls.pop()).toEqual([
+      props.mobile_phone_verification,
+      props.language,
+      props.orgName,
+    ]);
   });
 });
 

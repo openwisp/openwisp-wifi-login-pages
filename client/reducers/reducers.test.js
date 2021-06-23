@@ -74,4 +74,17 @@ describe("organization reducer", () => {
       },
     });
   });
+  it("should handle SET_PAGE_TITLE", () => {
+    const action = {
+      type: types.SET_PAGE_TITLE,
+      payload: "default name",
+    };
+    expect(organization(initialState, action)).toEqual({
+      ...initialState,
+      configuration: {
+        ...initialState.configuration,
+        pageTitle: action.payload,
+      },
+    });
+  });
 });

@@ -6,6 +6,7 @@ import {
   SET_ORGANIZATION_CONFIG,
   SET_ORGANIZATION_STATUS,
   SET_USER_DATA,
+  SET_PAGE_TITLE,
 } from "../constants/action-types";
 import authenticate from "../utils/authenticate";
 import customMerge from "../utils/custom-merge";
@@ -25,6 +26,10 @@ const setOrganization = (slug, cookies) => {
       dispatch({
         type: SET_LANGUAGE,
         payload: config.default_language,
+      });
+      dispatch({
+        type: SET_PAGE_TITLE,
+        payload: config.name,
       });
       dispatch({
         type: SET_ORGANIZATION_STATUS,

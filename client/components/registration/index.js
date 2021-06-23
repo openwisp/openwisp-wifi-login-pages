@@ -1,6 +1,6 @@
 import {connect} from "react-redux";
 
-import {authenticate} from "../../actions/dispatchers";
+import {authenticate, setTitle} from "../../actions/dispatchers";
 import Component from "./registration";
 
 const mapStateToProps = (state) => {
@@ -11,12 +11,14 @@ const mapStateToProps = (state) => {
     privacyPolicy: conf.privacy_policy,
     termsAndConditions: conf.terms_and_conditions,
     orgSlug: conf.slug,
+    orgName: conf.name,
     language: state.language,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
     authenticate: authenticate(dispatch),
+    setTitle: setTitle(dispatch),
   };
 };
 

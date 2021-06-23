@@ -21,8 +21,10 @@ const createTestProps = (props) => {
   return {
     language: "en",
     orgSlug: "default",
+    orgName: "default name",
     passwordChange: defaultConfig.components.password_change_form,
     cookies: new Cookies(),
+    setTitle: jest.fn(),
     ...props,
   };
 };
@@ -108,5 +110,13 @@ describe("<PasswordChange /> interactions", () => {
       nonField: passwordChangeError,
     });
     wrapper.instance().handleSubmit(e);
+  });
+  it("should set title", () => {
+    const setTitleMock = wrapper.instance().props.setTitle.mock;
+    expect(setTitleMock.calls.pop()).toEqual([
+      props.passwordChange,
+      props.language,
+      props.orgName,
+    ]);
   });
 });

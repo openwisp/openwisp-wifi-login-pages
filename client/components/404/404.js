@@ -8,6 +8,12 @@ import {Link} from "react-router-dom";
 import getText from "../../utils/get-text";
 
 export default class DoesNotExist extends React.Component {
+  componentDidMount() {
+    const {orgName, setTitle, page, language} = this.props;
+    if (page !== undefined || orgName !== undefined)
+      setTitle(page, language, orgName);
+  }
+
   render() {
     const {orgSlug, language, page} = this.props;
     return (
@@ -42,6 +48,7 @@ export default class DoesNotExist extends React.Component {
 }
 DoesNotExist.propTypes = {
   page: PropTypes.shape({
+    title: PropTypes.object,
     heading: PropTypes.object,
     sub_heading: PropTypes.object,
     message: PropTypes.object,
@@ -49,4 +56,6 @@ DoesNotExist.propTypes = {
   }),
   language: PropTypes.string,
   orgSlug: PropTypes.string,
+  orgName: PropTypes.string,
+  setTitle: PropTypes.func,
 };

@@ -64,9 +64,12 @@ export default class Registration extends React.Component {
   }
 
   componentDidMount() {
-    const {orgSlug, settings} = this.props;
+    const {orgSlug, settings, language, setTitle, orgName, registration} =
+      this.props;
     const {setLoading} = this.context;
     const plansUrl = plansApiUrl.replace("{orgSlug}", orgSlug);
+
+    setTitle(registration, language, orgName);
 
     if (settings.subscriptions) {
       setLoading(true);
@@ -917,6 +920,7 @@ Registration.propTypes = {
     subscriptions: PropTypes.bool,
   }).isRequired,
   registration: PropTypes.shape({
+    title: PropTypes.object,
     header: PropTypes.object,
     buttons: PropTypes.shape({
       register: PropTypes.shape({
@@ -1025,6 +1029,7 @@ Registration.propTypes = {
     url: PropTypes.string,
   }).isRequired,
   orgSlug: PropTypes.string.isRequired,
+  orgName: PropTypes.string.isRequired,
   privacyPolicy: PropTypes.shape({
     title: PropTypes.object,
     content: PropTypes.object,
@@ -1034,4 +1039,5 @@ Registration.propTypes = {
     content: PropTypes.object,
   }).isRequired,
   authenticate: PropTypes.func.isRequired,
+  setTitle: PropTypes.func.isRequired,
 };

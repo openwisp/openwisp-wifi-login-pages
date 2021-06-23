@@ -3,6 +3,7 @@ import {
   SET_AUTHENTICATION_STATUS,
   SET_ORGANIZATION_CONFIG,
   SET_ORGANIZATION_STATUS,
+  SET_PAGE_TITLE,
   SET_USER_DATA,
 } from "../constants/action-types";
 
@@ -50,6 +51,14 @@ export const organization = (
         configuration: {
           ...state.configuration,
           userData: action.payload,
+        },
+      };
+    case SET_PAGE_TITLE:
+      return {
+        ...state,
+        configuration: {
+          ...state.configuration,
+          pageTitle: action.payload,
         },
       };
     default:

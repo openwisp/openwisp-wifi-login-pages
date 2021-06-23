@@ -30,6 +30,11 @@ export default class PasswordConfirm extends React.Component {
     this.confirmPasswordToggleRef = React.createRef();
   }
 
+  componentDidMount() {
+    const {language, setTitle, orgName, passwordConfirm} = this.props;
+    setTitle(passwordConfirm, language, orgName);
+  }
+
   handleChange(event) {
     handleChange(event, this);
   }
@@ -240,6 +245,7 @@ export default class PasswordConfirm extends React.Component {
 PasswordConfirm.contextType = LoadingContext;
 PasswordConfirm.propTypes = {
   passwordConfirm: PropTypes.shape({
+    title: PropTypes.object,
     heading: PropTypes.object,
     additional_text: PropTypes.object,
     input_fields: PropTypes.shape({
@@ -262,10 +268,12 @@ PasswordConfirm.propTypes = {
   }).isRequired,
   language: PropTypes.string.isRequired,
   orgSlug: PropTypes.string.isRequired,
+  orgName: PropTypes.string.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       uid: PropTypes.string,
       token: PropTypes.string,
     }),
   }).isRequired,
+  setTitle: PropTypes.func.isRequired,
 };

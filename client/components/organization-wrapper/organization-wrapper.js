@@ -16,6 +16,7 @@ import Loader from "../../utils/loader";
 import Logout from "../logout";
 import Login from "../login";
 import needsVerify from "../../utils/needs-verify";
+import getText from "../../utils/get-text";
 
 const Registration = React.lazy(() => import("../registration"));
 const PasswordChange = React.lazy(() => import("../password-change"));
@@ -54,12 +55,13 @@ export default class OrganizationWrapper extends React.Component {
   };
 
   render() {
-    const {organization, match, cookies} = this.props;
+    const {organization, match, cookies, language} = this.props;
     const {loading} = this.state;
-    const {title, favicon, isAuthenticated, userData, settings} =
+    const {title, favicon, isAuthenticated, userData, settings, pageTitle} =
       organization.configuration;
     const {is_active} = userData;
     const orgSlug = organization.configuration.slug;
+    const orgName = organization.configuration.name;
     const cssPath = organization.configuration.css_path;
     const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
     const needsVerifyPhone = needsVerify("mobile_phone", userData, settings);
@@ -234,11 +236,13 @@ export default class OrganizationWrapper extends React.Component {
               </Switch>
               <Route path={match.path} render={() => <Footer />} />
             </div>
-            {title ? (
-              <Helmet>
-                <title>{title}</title>
-              </Helmet>
-            ) : null}
+            <Helmet>
+              <title>
+                {pageTitle === undefined
+                  ? `${getText(title, language)} - ${orgName}`
+                  : pageTitle}
+              </title>
+            </Helmet>
             {cssPath && orgSlug ? (
               <Helmet>
                 <link rel="stylesheet" href={getAssetPath(orgSlug, cssPath)} />
@@ -294,9 +298,11 @@ OrganizationWrapper.propTypes = {
   setOrganization: PropTypes.func.isRequired,
   organization: PropTypes.shape({
     configuration: PropTypes.shape({
-      title: PropTypes.string,
+      title: PropTypes.object,
+      pageTitle: PropTypes.string,
       css_path: PropTypes.string,
       slug: PropTypes.string,
+      name: PropTypes.string,
       favicon: PropTypes.string,
       isAuthenticated: PropTypes.bool,
       needsVerifyPhone: PropTypes.bool,
@@ -308,4 +314,5 @@ OrganizationWrapper.propTypes = {
     exists: PropTypes.bool,
   }).isRequired,
   cookies: PropTypes.instanceOf(Cookies).isRequired,
+  language: PropTypes.string.isRequired,
 };

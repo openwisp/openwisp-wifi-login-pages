@@ -48,7 +48,9 @@ export default class Login extends React.Component {
   componentDidMount() {
     const username = getParameterByName("username");
     const token = getParameterByName("token");
-    const {loginForm} = this.props;
+    const {loginForm, setTitle, orgName, language} = this.props;
+    setTitle(loginForm, language, orgName);
+
     let remember_me;
 
     if (localStorage.getItem("rememberMe") !== null) {
@@ -415,6 +417,7 @@ export default class Login extends React.Component {
 Login.contextType = LoadingContext;
 Login.propTypes = {
   loginForm: PropTypes.shape({
+    title: PropTypes.object,
     social_login: PropTypes.shape({
       divider_text: PropTypes.object,
       description: PropTypes.object,
@@ -475,6 +478,7 @@ Login.propTypes = {
     url: PropTypes.string,
   }).isRequired,
   orgSlug: PropTypes.string.isRequired,
+  orgName: PropTypes.string.isRequired,
   privacyPolicy: PropTypes.shape({
     title: PropTypes.object,
     content: PropTypes.object,
@@ -490,4 +494,5 @@ Login.propTypes = {
     mobile_phone_verification: PropTypes.bool,
     subscriptions: PropTypes.bool,
   }).isRequired,
+  setTitle: PropTypes.func.isRequired,
 };

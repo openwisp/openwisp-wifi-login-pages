@@ -1,4 +1,5 @@
 import {connect} from "react-redux";
+import {setTitle} from "../../actions/dispatchers";
 
 import Component from "./password-confirm";
 
@@ -7,7 +8,15 @@ const mapStateToProps = (state) => {
   return {
     passwordConfirm: conf.components.password_reset_confirm_form,
     orgSlug: conf.slug,
+    orgName: conf.name,
     language: state.language,
   };
 };
-export default connect(mapStateToProps, null)(Component);
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setTitle: setTitle(dispatch),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Component);
