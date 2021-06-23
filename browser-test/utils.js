@@ -1,8 +1,28 @@
-import {exec} from "child_process";
+import {spawn} from "child_process";
 import testData from "./testData.json";
 
 const waitTime = 5000;
 const orgSlug = "default";
+
+export const executeCommand = async (command, argv) => {
+  const executor = await spawn(command, [argv]);
+  executor.stdout.on("data", (data) => {
+    process.stdout.write(`${data}\n`);
+  });
+
+  executor.stderr.on("data", (data) => {
+    process.stderr.write(`stderr: ${data}\n`);
+  });
+
+  executor.on("error", (error) => {
+    process.stderr.write(`error: ${error.message}\n`);
+  });
+
+  executor.on("close", (code) => {
+    process.stderr.write(`child process exited with code ${code}\n`);
+    if (code === 1) process.exit(1);
+  });
+};
 
 export const getDriver = async (Builder, options) => {
   const driver = await new Builder()
@@ -24,12 +44,12 @@ export const sleep = async (ms) => {
 
 export const initialData = () => testData;
 
-export const executeCommand = async (command, callback) => {
-  await exec(command, (error, stdout, stderr) => {
-    if (error) return process.exit(error.message);
-    if (stderr) return process.exit(stderr);
-    return callback(stdout);
-  });
+export const initializeData = async (argv = null) => {
+  await executeCommand(`./browser-test/initialize_data.py`, argv);
+};
+
+export const clearData = async () => {
+  await executeCommand("./browser-test/clear_data.py", () => {});
 };
 
 export const urls = {

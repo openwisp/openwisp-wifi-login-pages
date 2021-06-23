@@ -4,7 +4,8 @@ import {
   getElementByXPath,
   urls,
   initialData,
-  executeCommand,
+  clearData,
+  initializeData,
 } from "./utils";
 
 const firefox = require("selenium-webdriver/firefox");
@@ -12,15 +13,12 @@ const firefox = require("selenium-webdriver/firefox");
 describe("Selenium tests for <Register />", () => {
   let driver;
   beforeAll(async () => {
-    jest.setTimeout(10000);
-    await executeCommand("./browser-test/clear_data.py", (message) => {
-      console.log(message);
-    });
+    await initializeData("register");
     driver = await getDriver(Builder, new firefox.Options().headless());
   });
 
   afterAll(async () => {
-    await executeCommand("./browser-test/clear_data.py", () => {});
+    await clearData();
     driver.close();
   });
 
