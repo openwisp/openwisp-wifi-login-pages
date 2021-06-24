@@ -43,7 +43,7 @@ describe("Selenium tests for <Login />", () => {
 
     const submitBtn = await getElementByXPath(
       driver,
-      "/html/body/div[1]/div[2]/div[3]/div/form/div[4]/input",
+      "//INPUT[@type='submit']",
       until,
       By,
     );

@@ -18,9 +18,8 @@ export const executeCommand = async (command, argv) => {
     process.stderr.write(`error: ${error.message}\n`);
   });
 
-  executor.on("close", (code) => {
-    process.stderr.write(`child process exited with code ${code}\n`);
-    if (code === 1) process.exit(1);
+  executor.on("close", (exitCode) => {
+    if (exitCode !== 0) process.exit(exitCode);
   });
 };
 

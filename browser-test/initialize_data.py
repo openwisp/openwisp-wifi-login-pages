@@ -48,13 +48,18 @@ test_user_password = test_data['testuser']['password']
 test_user_organization = test_data['testuser']['organization']
 
 if registration_tests:
-    user = User.objects.filter(username=test_user_email).first()
-    if user:
-        user.delete()
+    User.objects.filter(username=test_user_email).delete()
     sys.exit(0)
 
 user = User.objects.create_user(
     username=test_user_email, password=test_user_password, email=test_user_email
 )
-org = Organization.objects.get(name=test_user_organization)
+try:
+    org = Organization.objects.get(slug=test_user_organization)
+except:
+    print(
+        f'The organization {test_user_organization} does not exist in the OpenWISP Radius environment specified ({OPENWISP_RADIUS_PATH}), please create it and repeat the tests.',
+        file=sys.stderr,
+    )
+    sys.exit(2)
 OrganizationUser.objects.create(organization=org, user=user)

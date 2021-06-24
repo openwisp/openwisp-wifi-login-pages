@@ -38,8 +38,5 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 test_data = load_test_data()
-test_user_email = test_data['testuser']['email']
 
-user = User.objects.filter(username=test_user_email).first()
-if user:
-    user.delete();
+User.objects.filter(username=test_data['testuser']['email']).delete()
