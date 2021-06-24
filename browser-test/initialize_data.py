@@ -58,7 +58,10 @@ try:
     org = Organization.objects.get(slug=test_user_organization)
 except:
     print(
-        f'The organization {test_user_organization} does not exist in the OpenWISP Radius environment specified ({OPENWISP_RADIUS_PATH}), please create it and repeat the tests.',
+        (
+            f'The organization {test_user_organization} does not exist in the OpenWISP Radius'
+            f'environment specified ({OPENWISP_RADIUS_PATH}), please create it and repeat the tests.'
+        ),
         file=sys.stderr,
     )
     sys.exit(2)
