@@ -34,6 +34,16 @@
     ],
     "react/jsx-props-no-spreading": 0,
     "react/forbid-prop-types": 0,
-    "react/sort-comp": [0]
+    "react/sort-comp": [0],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": [
+          "**/*.test.js",
+          "**/jest.config.js",
+          "browser-test/utils.js"
+        ]
+      }
+    ]
   }
 }

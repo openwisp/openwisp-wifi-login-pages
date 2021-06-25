@@ -1,4 +1,4 @@
-import {Builder, By, until} from "selenium-webdriver";
+import {By, until} from "selenium-webdriver";
 import {
   getDriver,
   getElementByXPath,
@@ -8,17 +8,16 @@ import {
   initializeData,
 } from "./utils";
 
-const firefox = require("selenium-webdriver/firefox");
-
 describe("Selenium tests for <Register />", () => {
   let driver;
+
   beforeAll(async () => {
-    await initializeData("register");
-    driver = await getDriver(Builder, new firefox.Options().headless());
-  });
+    initializeData("register");
+    driver = await getDriver();
+  }, 30000);
 
   afterAll(async () => {
-    await clearData();
+    clearData();
     driver.close();
   });
 

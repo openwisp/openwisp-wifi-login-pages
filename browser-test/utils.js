@@ -1,34 +1,31 @@
-import {spawn} from "child_process";
+import {Builder} from "selenium-webdriver";
+import {spawnSync} from "child_process";
 import testData from "./testData.json";
+
+const firefox = require("selenium-webdriver/firefox");
 
 const waitTime = 5000;
 const orgSlug = "default";
 
-export const executeCommand = async (command, argv) => {
-  const executor = await spawn(command, [argv]);
-  executor.stdout.on("data", (data) => {
-    process.stdout.write(`${data}\n`);
-  });
+export const executeCommand = (command, argv) => {
+  const result = spawnSync(command, [argv]);
 
-  executor.stderr.on("data", (data) => {
-    process.stderr.write(`stderr: ${data}\n`);
-  });
-
-  executor.on("error", (error) => {
-    process.stderr.write(`error: ${error.message}\n`);
-  });
-
-  executor.on("close", (exitCode) => {
-    if (exitCode !== 0) process.exit(exitCode);
-  });
+  if (result.stdout) {
+    process.stdout.write(`${result.stdout}\n`);
+  }
+  if (result.stderr) {
+    process.stderr.write(`${result.stderr}\n`);
+  }
+  if (result.status !== 0) {
+    process.exit(result.status);
+  }
 };
 
-export const getDriver = async (Builder, options) => {
-  const driver = await new Builder()
+export const getDriver = async () => {
+  return new Builder()
     .forBrowser("firefox")
-    .setFirefoxOptions(options)
+    .setFirefoxOptions(new firefox.Options().headless())
     .build();
-  return driver;
 };
 
 export const getElementByXPath = async (driver, xpath, until, By) => {
@@ -56,3 +53,7 @@ export const urls = {
   login: `http://0.0.0.0:8080/${orgSlug}/login`,
   status: `http://0.0.0.0:8080/${orgSlug}/status`,
 };
+
+// increase the jest global test time out
+// because browser tests can take a bit longer to complete
+jest.setTimeout(10000);

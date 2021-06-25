@@ -27,7 +27,8 @@ try:
     django.setup()
 except ImportError:
     print(
-        'OpenWISP RADIUS is not installed or python virtual environment is not activated correctly',
+        'OpenWISP RADIUS is not installed or python '
+        'virtual environment is not activated correctly',
         file=sys.stderr,
     )
     sys.exit(1)

@@ -1,4 +1,4 @@
-import {Builder, By, until} from "selenium-webdriver";
+import {By, until} from "selenium-webdriver";
 import {
   getDriver,
   getElementByXPath,
@@ -8,17 +8,16 @@ import {
   clearData,
 } from "./utils";
 
-const firefox = require("selenium-webdriver/firefox");
-
 describe("Selenium tests for <Login />", () => {
   let driver;
-  beforeAll(async () => {
-    await initializeData();
-    driver = await getDriver(Builder, new firefox.Options().headless());
-  });
 
-  afterAll(async () => {
-    await clearData();
+  beforeAll(async () => {
+    initializeData();
+    driver = await getDriver();
+  }, 30000);
+
+  afterAll(() => {
+    clearData();
     driver.close();
   });
 
