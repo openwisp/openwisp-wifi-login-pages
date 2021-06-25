@@ -110,7 +110,29 @@ To verify all the dependencies were successfully installed,
 try to run the tests with the following command:
 
 ```
-yarn test
+yarn test # headless tests
+```
+
+##### Browser based tests
+
+Prerequisites for running browser-based tests:
+
+1. [Gecko driver](https://github.com/mozilla/geckodriver/releases/) needs to be installed.
+2. Having running instances of openwisp-radius and openwisp-wifi-login-pages is required.
+3. `OPENWIPS_RADIUS_PATH` environment variable is needed to setup/tear down the database
+   data needed to run the browser tests. This can be set using the following command:
+   ```
+   export OPENWISP_RADIUS_PATH=<PATH_TO_OPENWISP_RADIUS_DIRECTORY>
+   ```
+4. If a virtual environment is used to run openwisp-radius then
+   this needs to be activated before running browser tests.
+5. In the test environment of openwisp-radius, the `default` organization
+   must be present or alternatively
+
+After doing all the prerequisites, run browser based tests using the following command:
+
+```
+yarn browser-test
 ```
 
 #### Setup
@@ -155,17 +177,20 @@ you can use the default sample captive portal login and logout URLs.
 List of yarn commands:
 
 ```
-$ yarn start      # Run the app (runs both, client and server)
-$ yarn setup      # Discover Organization configs and generate config.json and asset directories
-$ yarn add-org    # Add new Organization configuration
-$ yarn build      # Build the app
-$ yarn server     # Run server
-$ yarn client     # Run client
-$ yarn coveralls  # Run coveralls
-$ yarn lint       # Run ESLint
-$ yarn lint:fix   # Run ESLint with automatically fix problems option
-$ yarn test       # Run tests
-$ yarn -- -u      # Update Jest Snapshots
+$ yarn start         # Run the app (runs both, client and server)
+$ yarn setup         # Discover Organization configs and generate config.json and asset directories
+$ yarn add-org       # Add new Organization configuration
+$ yarn build         # Build the app
+$ yarn server        # Run server
+$ yarn client        # Run client
+$ yarn coveralls     # Run coveralls
+$ yarn coverage      # Run tests and generate coverage files
+$ yarn lint          # Run ESLint
+$ yarn lint:fix      # Run ESLint with automatically fix problems option
+$ yarn format        # Run formatters to format the code
+$ yarn test          # Run tests
+$ yarn browser-test  # Run browser based selenium tests
+$ yarn -- -u         # Update Jest Snapshots
 ```
 
 #### Using custom ports

@@ -82,6 +82,7 @@
     "prettier": "^2.2.0",
     "react-test-renderer": "^16.13.1",
     "redux-mock-store": "^1.5.4",
+    "selenium-webdriver": "^4.0.0-beta.4",
     "style-loader": "^2.0.0",
     "terser-webpack-plugin": "^4.2.3",
     "typescript": "^4.1.2",
@@ -93,7 +94,7 @@
   "scripts": {
     "build": "npm run setup && webpack --mode production --progress --config config/webpack.config.js",
     "client": "npm run setup && webpack-dev-server --host 0.0.0.0 --mode development --config config/webpack.config.js",
-    "coverage": "jest --coverage",
+    "coverage": "jest --coverage  --testPathIgnorePatterns=/browser-test/",
     "coveralls": "test -f ./coverage/lcov.info && cat ./coverage/lcov.info | coveralls || echo 'no coverage file found'",
     "add-org": "plop --plopfile internals/generators/index.js",
     "server": "npm run setup && nodemon server/start.js",
@@ -103,7 +104,8 @@
     "lint:fix": "eslint '**/*.{js,jsx}' --fix",
     "format": "prettier --write \"**/*.+(js|jsx|json|css|md)\"",
     "format:check": "prettier -c \"**/*.+(js|jsx|json|css|md)\"",
-    "test": "jest",
+    "test": "jest --testPathIgnorePatterns=/browser-test/",
+    "browser-test": "jest browser-test --runInBand",
     "test-inspect": "node inspect ./node_modules/.bin/jest --runInBand",
     "stats": "STATS=true npx webpack-cli --profile --json --config config/webpack.config.js > compilation-stats.json && webpack-bundle-analyzer dist/stats.json"
   },
