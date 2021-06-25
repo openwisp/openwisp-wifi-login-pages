@@ -15,7 +15,7 @@ describe("Selenium tests for <Register />", () => {
   beforeAll(async () => {
     await initializeData("register");
     driver = await getDriver(Builder, new firefox.Options().headless());
-  });
+  }, 30000);
 
   afterAll(async () => {
     await clearData();

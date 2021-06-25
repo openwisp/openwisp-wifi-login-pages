@@ -99,6 +99,7 @@ jobs:
       - name: Browser Tests
         run: |
           export OPENWISP_RADIUS_PATH=$(pwd)/openwisp-radius
+          sleep 5
           yarn browser-test
 
       - name: Coveralls
