@@ -33,7 +33,7 @@
     "react-router-dom": "^5.2.0",
     "react-select": "^4.1.0",
     "react-select-country-list": "^2.2.3",
-    "react-toastify": "^6.1.0",
+    "react-toastify": "^7.0.4",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "tsutils": "^3.17.1",
