@@ -1,4 +1,4 @@
-import {Builder} from "selenium-webdriver";
+import {Builder, By, until} from "selenium-webdriver";
 import {spawnSync} from "child_process";
 import testData from "./testData.json";
 
@@ -28,14 +28,10 @@ export const getDriver = async () => {
     .build();
 };
 
-export const getElementByXPath = async (driver, xpath, until, By) => {
+export const getElementByXPath = async (driver, xpath) => {
   const el = await driver.wait(until.elementLocated(By.xpath(xpath)), waitTime);
   driver.wait(until.stalenessOf(el), waitTime);
   return el;
-};
-
-export const sleep = async (ms) => {
-  return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
 export const initialData = () => testData;
