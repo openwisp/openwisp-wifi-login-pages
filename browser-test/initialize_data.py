@@ -51,12 +51,9 @@ if registration_tests:
     User.objects.filter(username=test_user_email).delete()
     sys.exit(0)
 
-user = User.objects.create_user(
-    username=test_user_email, password=test_user_password, email=test_user_email
-)
 try:
     org = Organization.objects.get(slug=test_user_organization)
-except:
+except Organization.DoesNotExist:
     print(
         (
             f'The organization {test_user_organization} does not exist in the OpenWISP Radius'
@@ -65,4 +62,8 @@ except:
         file=sys.stderr,
     )
     sys.exit(2)
+
+user = User.objects.create_user(
+    username=test_user_email, password=test_user_password, email=test_user_email
+)
 OrganizationUser.objects.create(organization=org, user=user)

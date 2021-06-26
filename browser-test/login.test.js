@@ -44,5 +44,11 @@ describe("Selenium tests for <Login />", () => {
     await driver.wait(until.elementIsVisible(successToastDiv));
     await driver.wait(until.urlContains("status"), 5000);
     expect(await successToastDiv.getText()).toEqual("Login successful");
+
+    const activeSessionTr = await getElementByCss(
+      driver,
+      "table tr.active-session",
+    );
+    await driver.wait(until.elementIsVisible(activeSessionTr));
   });
 });

@@ -159,34 +159,10 @@ export default class Status extends React.Component {
         this.loginFormRef.current.submit();
         userData.justAuthenticated = false;
         setUserData(userData);
+        // if user is already authenticated and coming from other pages
+      } else if (!justAuthenticated) {
+        this.finalOperations();
       }
-
-      // if the user needs bank card verification,
-      // redirect to payment page and stop here
-      if (needsVerify("bank_card", userData, settings)) {
-        window.location.assign(userData.payment_url);
-        return;
-      }
-
-      // if the user is not verified, do not remove the
-      // loading overlay unless verification is not needed
-      if (
-        userData.is_verified ||
-        !needsVerify("mobile_phone", userData, settings)
-      ) {
-        setLoading(false);
-      } else {
-        return;
-      }
-
-      await this.getUserActiveRadiusSessions();
-      await this.getUserPassedRadiusSessions();
-      const intervalId = setInterval(() => {
-        this.getUserActiveRadiusSessions();
-      }, 60000);
-      this.setState({intervalId});
-      window.addEventListener("resize", this.updateScreenWidth);
-      this.updateSpinner();
     }
   }
 
@@ -195,6 +171,39 @@ export default class Status extends React.Component {
     clearInterval(intervalId);
     window.removeEventListener("resize", this.updateScreenWidth);
   };
+
+  async finalOperations() {
+    const {userData, settings} = this.props;
+    const {setLoading} = this.context;
+    // if the user needs bank card verification,
+    // redirect to payment page and stop here
+    if (needsVerify("bank_card", userData, settings)) {
+      window.location.assign(userData.payment_url);
+      return;
+    }
+
+    // if the user is not verified, do not remove the
+    // loading overlay unless verification is not needed
+    if (
+      userData.is_verified ||
+      !needsVerify("mobile_phone", userData, settings)
+    ) {
+      setLoading(false);
+      // if verification is needed, stop here
+    } else {
+      return;
+    }
+
+    // if everything went fine, load the user sessions
+    await this.getUserActiveRadiusSessions();
+    await this.getUserPassedRadiusSessions();
+    const intervalId = setInterval(() => {
+      this.getUserActiveRadiusSessions();
+    }, 60000);
+    this.setState({intervalId});
+    window.addEventListener("resize", this.updateScreenWidth);
+    this.updateSpinner();
+  }
 
   async getUserRadiusSessions(para) {
     const {cookies, orgSlug, logout} = this.props;
@@ -283,32 +292,36 @@ export default class Status extends React.Component {
    * to be redirected to a different URL and then come back again.
    */
   handleLoginIframe = () => {
-    const {cookies, orgSlug, logout, captivePortalLoginForm} = this.props;
-    if (this.loginIfameRef && this.loginIfameRef.current) {
-      try {
-        const searchParams = new URLSearchParams(
-          this.loginIfameRef.current.contentWindow.location.search,
-        );
-        const reply = searchParams.get("reply");
-        const macaddr = searchParams.get(
-          captivePortalLoginForm.macaddr_param_name,
-        );
-        if (
-          reply ||
-          this.loginIfameRef.current.contentDocument.title.indexOf("404") >= 0
-        ) {
-          logout(cookies, orgSlug);
-          toast.error(reply, {
-            onOpen: () => toast.dismiss(mainToastId),
-          });
-        }
-        if (macaddr) {
-          cookies.set(`${orgSlug}_macaddr`, macaddr, {path: "/"});
-        }
-      } catch {
-        //
-      }
+    if (!this.loginIfameRef || !this.loginIfameRef.current) {
+      return;
     }
+    const {cookies, orgSlug, logout, captivePortalLoginForm} = this.props;
+
+    try {
+      const searchParams = new URLSearchParams(
+        this.loginIfameRef.current.contentWindow.location.search,
+      );
+      const reply = searchParams.get("reply");
+      const macaddr = searchParams.get(
+        captivePortalLoginForm.macaddr_param_name,
+      );
+      if (
+        reply ||
+        this.loginIfameRef.current.contentDocument.title.indexOf("404") >= 0
+      ) {
+        logout(cookies, orgSlug);
+        toast.error(reply, {
+          onOpen: () => toast.dismiss(mainToastId),
+        });
+      }
+      if (macaddr) {
+        cookies.set(`${orgSlug}_macaddr`, macaddr, {path: "/"});
+      }
+    } catch {
+      //
+    }
+
+    this.finalOperations();
   };
 
   /*
@@ -317,16 +330,17 @@ export default class Status extends React.Component {
    * to be redirected to a different URL and then come back again.
    */
   handleLogoutIframe = () => {
-    if (this.logoutIfameRef && this.logoutIfameRef.current) {
-      const {loggedOut} = this.state;
-      if (loggedOut) {
-        const {setLoading} = this.context;
-        const {orgSlug, logout, cookies} = this.props;
-        const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
-        logout(cookies, orgSlug, userAutoLogin);
-        setLoading(false);
-        toast.success(logoutSuccess);
-      }
+    if (!this.logoutIfameRef || !this.logoutIfameRef.current) {
+      return;
+    }
+    const {loggedOut} = this.state;
+    const {setLoading} = this.context;
+    if (loggedOut) {
+      const {orgSlug, logout, cookies} = this.props;
+      const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
+      logout(cookies, orgSlug, userAutoLogin);
+      setLoading(false);
+      toast.success(logoutSuccess);
     }
   };
 

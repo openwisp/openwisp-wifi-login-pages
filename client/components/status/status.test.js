@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import {Cookies} from "react-cookie";
 import ShallowRenderer from "react-test-renderer/shallow";
+import {toast} from "react-toastify";
 import getConfig from "../../utils/get-config";
 import logError from "../../utils/log-error";
 import tick from "../../utils/tick";
@@ -132,6 +133,8 @@ describe("<Status /> interactions", () => {
 
   afterEach(() => {
     axios.mockReset();
+    jest.resetAllMocks();
+    jest.restoreAllMocks();
   });
 
   it("should call logout function when logout button is clicked", async () => {
@@ -200,57 +203,15 @@ describe("<Status /> interactions", () => {
         return Promise.resolve({
           status: 200,
           statusText: "OK",
-          data: [
-            {
-              session_id: 1,
-              start_time: "2020-09-08T00:22:28-04:00",
-              stop_time: "2020-09-08T00:22:29-04:00",
-            },
-          ],
-          headers: {},
-        });
-      })
-      .mockImplementationOnce(() => {
-        return Promise.resolve({
-          status: 200,
-          statusText: "OK",
-          data: [],
-          headers: {},
-        });
-      })
-      .mockImplementationOnce(() => {
-        return Promise.resolve({
-          status: 200,
-          statusText: "OK",
-          data: [
-            {
-              session_id: 1,
-              start_time: "2020-09-08T00:22:28-04:00",
-              stop_time: "2020-09-08T00:22:29-04:00",
-            },
-          ],
-          headers: {},
-        });
-      })
-      .mockImplementationOnce(() => {
-        return Promise.resolve({
-          status: 200,
-          statusText: "OK",
-          data: [],
-          headers: {},
-        });
-      })
-      .mockImplementationOnce(() => {
-        return Promise.resolve({
-          status: 200,
-          statusText: "OK",
           data: [],
           headers: {},
         });
       });
     jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
 
-    props = createTestProps({userData: responseData});
+    props = createTestProps({
+      userData: {...responseData, justAuthenticated: true},
+    });
     validateToken.mockReturnValue(true);
     const setLoading = jest.fn();
     wrapper = shallow(<Status {...props} />, {
@@ -262,7 +223,7 @@ describe("<Status /> interactions", () => {
     );
     expect(Status.prototype.getUserActiveRadiusSessions).toHaveBeenCalled();
     expect(wrapper.instance().state.activeSessions.length).toBe(1);
-    expect(setLoading.mock.calls.length).toBe(2);
+    expect(setLoading.mock.calls.length).toBe(1);
     wrapper.setProps({
       location: {
         search: "",
@@ -274,6 +235,10 @@ describe("<Status /> interactions", () => {
     expect(wrapper.instance().props.cookies.get("default_macaddr")).toBe(
       undefined,
     );
+    expect(setLoading.mock.calls.length).toBe(2);
+
+    const spyToast = jest.spyOn(toast, "error");
+    expect(spyToast.mock.calls.length).toBe(0);
 
     wrapper.setProps({
       location: {
@@ -281,14 +246,13 @@ describe("<Status /> interactions", () => {
       },
       cookies: new Cookies(),
     });
-    const submintFn = jest.fn();
-    const mockRef = {
-      submit: submintFn,
-    };
+
+    const mockRef = {submit: jest.fn()};
+    wrapper.instance().loginIfameRef.current = {};
     wrapper.instance().loginFormRef.current = mockRef;
     wrapper.instance().componentDidMount();
     await tick();
-    expect(submintFn.mock.calls.length).toBe(1);
+    expect(mockRef.submit.mock.calls.length).toBe(1);
     Status.prototype.getUserActiveRadiusSessions.mockRestore();
   });
 
@@ -381,19 +345,26 @@ describe("<Status /> interactions", () => {
     const setLoadingMock = jest.fn();
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: setLoadingMock},
-      disableLifecycleMethods: false,
+      disableLifecycleMethods: true,
     });
     wrapper.setProps({
       userData: {
         ...responseData,
+        justAuthenticated: true,
         is_verified: false,
         method: "",
       },
     });
+    const spyFn = jest.fn();
+    wrapper.instance().loginIfameRef.current = {};
+    wrapper.instance().loginFormRef.current = {submit: spyFn};
+    wrapper.instance().componentDidMount();
     await tick();
     expect(wrapper.contains(<span>tester</span>)).toBe(true);
     expect(wrapper.contains(<span>+237672279436</span>)).toBe(false);
     expect(wrapper.contains(<span>tester@tester.com</span>)).toBe(true);
+    expect(spyFn.mock.calls.length).toBe(1);
+    wrapper.instance().handleLoginIframe();
     const mockedSetLoadingCalls = JSON.stringify(setLoadingMock.mock.calls);
     expect(mockedSetLoadingCalls).toBe("[[true],[false]]");
   });
@@ -433,13 +404,24 @@ describe("<Status /> interactions", () => {
     props = createTestProps();
     props.location.search = "";
     props.userData = responseData;
+    jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
+    jest.spyOn(Status.prototype, "getUserPassedRadiusSessions");
+    const setLoading = jest.fn();
     wrapper = shallow(<Status {...props} />, {
-      context: {setLoading: jest.fn()},
+      context: {setLoading},
     });
     const spyFn = jest.fn();
     wrapper.instance().loginFormRef.current = {submit: spyFn};
     await tick();
     expect(spyFn.mock.calls.length).toBe(0);
+    expect(setLoading.mock.calls.length).toBe(2);
+    // ensure sessions are loaded too
+    expect(Status.prototype.getUserActiveRadiusSessions.mock.calls.length).toBe(
+      1,
+    );
+    expect(Status.prototype.getUserPassedRadiusSessions.mock.calls.length).toBe(
+      1,
+    );
   });
 
   it("should perform captive portal login (submit loginFormRef), if user is just authenticated", async () => {
@@ -475,12 +457,10 @@ describe("<Status /> interactions", () => {
         headers: {},
       });
     });
-    props = createTestProps();
+    props = createTestProps({userData: responseData});
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
-      disableLifecycleMethods: true,
     });
-    wrapper.instance().getUserActiveRadiusSessions();
     await tick();
     expect(wrapper.contains(<th>Start time</th>)).toBe(true);
     expect(wrapper.contains(<th>Stop time</th>)).toBe(true);
@@ -503,12 +483,10 @@ describe("<Status /> interactions", () => {
         headers: {},
       });
     });
-    props = createTestProps();
+    props = createTestProps({userData: responseData});
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
-      disableLifecycleMethods: true,
     });
-    wrapper.instance().getUserPassedRadiusSessions();
     await tick();
     expect(wrapper.contains(<th>Start time</th>)).toBe(true);
     expect(wrapper.contains(<th>Stop time</th>)).toBe(true);
@@ -710,8 +688,9 @@ describe("<Status /> interactions", () => {
     props.location.search = "";
     props.settings.mobile_phone_verification = true;
     props.settings.subscriptions = true;
+    const setLoading = jest.fn();
     wrapper = shallow(<Status {...props} />, {
-      context: {setLoading: jest.fn()},
+      context: {setLoading},
     });
 
     // mock loginFormRef
@@ -726,13 +705,24 @@ describe("<Status /> interactions", () => {
     expect(setUserDataMock.calls.pop()).toEqual([
       {...props.userData, justAuthenticated: false},
     ]);
+    expect(location.assign.mock.calls.length).toBe(0);
+    expect(setLoading.mock.calls.length).toBe(1);
+
+    const mockRef = {submit: jest.fn()};
+    wrapper.instance().loginIfameRef.current = {};
+    wrapper.instance().loginFormRef.current = mockRef;
+    wrapper.instance().handleLoginIframe();
+
     // ensure user is redirected to payment URL
     expect(location.assign.mock.calls.length).toBe(1);
     expect(location.assign.mock.calls[0][0]).toBe(props.userData.payment_url);
     // ensure sessions are not fetched
     expect(Status.prototype.getUserActiveRadiusSessions).not.toHaveBeenCalled();
     expect(Status.prototype.getUserPassedRadiusSessions).not.toHaveBeenCalled();
+    // ensure loading overlay not removed
+    expect(setLoading.mock.calls.length).toBe(1);
   });
+
   it("should set title", () => {
     const prop = createTestProps();
     wrapper = shallow(<Status {...prop} />, {

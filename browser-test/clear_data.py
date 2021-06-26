@@ -4,6 +4,7 @@ import os
 import sys
 
 import django
+import swapper
 
 
 def load_test_data():
@@ -37,7 +38,9 @@ except ImportError:
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
+RadiusAccounting = swapper.load_model('openwisp_radius', 'RadiusAccounting')
 
 test_data = load_test_data()
 
 User.objects.filter(username=test_data['testuser']['email']).delete()
+RadiusAccounting.objects.filter(username=test_data['testuser']['email']).delete()

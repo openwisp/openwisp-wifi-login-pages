@@ -168,7 +168,7 @@ export default class Login extends React.Component {
   handleSubmit(event) {
     const {setLoading} = this.context;
     if (event) event.preventDefault();
-    const {orgSlug, authenticate, settings, setUserData} = this.props;
+    const {orgSlug, authenticate, setUserData} = this.props;
     const {username, password, remember_me, errors} = this.state;
     const url = loginApiUrl(orgSlug);
     this.setState({
@@ -183,11 +183,11 @@ export default class Login extends React.Component {
       if (!remember_me) {
         sessionStorage.setItem(`${orgSlug}_auth_token`, data.key);
       }
-      authenticate(true);
       toast.success(loginSuccess, {
         toastId: mainToastId,
       });
       setUserData({...data, justAuthenticated: true});
+      authenticate(true);
     };
 
     return axios({
@@ -214,11 +214,7 @@ export default class Login extends React.Component {
         const {data} = error.response;
         if (!data) throw new Error();
 
-        if (
-          error.response.status === 401 &&
-          settings.mobile_phone_verification &&
-          data.is_active
-        ) {
+        if (error.response.status === 401 && data.is_active) {
           handleAuthentication(data);
           return;
         }
