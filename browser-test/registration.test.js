@@ -1,7 +1,7 @@
 import {until} from "selenium-webdriver";
 import {
   getDriver,
-  getElementByXPath,
+  getElementByCss,
   urls,
   initialData,
   clearData,
@@ -24,29 +24,23 @@ describe("Selenium tests for <Register />", () => {
   it("should render registration page and submit registration form", async () => {
     await driver.get(urls.registration);
     const data = initialData();
-    const username = await getElementByXPath(driver, "//INPUT[@id='email']");
+    const username = await getElementByCss(driver, "input#email");
     username.sendKeys(data.testuser.email);
 
-    const password = await getElementByXPath(driver, "//INPUT[@id='password']");
+    const password = await getElementByCss(driver, "input#password");
     password.sendKeys(data.testuser.password);
 
-    const confirmPassword = await getElementByXPath(
+    const confirmPassword = await getElementByCss(
       driver,
-      "//INPUT[@id='password-confirm']",
+      "input#password-confirm",
     );
     confirmPassword.sendKeys(data.testuser.password);
 
-    const submitBtn = await getElementByXPath(
-      driver,
-      "//INPUT[@type='submit']",
-    );
+    const submitBtn = await getElementByCss(driver, "input[type=submit]");
     submitBtn.click();
 
-    await getElementByXPath(driver, "//DIV[@id='status']");
-    const successToastDiv = await getElementByXPath(
-      driver,
-      "//DIV[@role='alert']",
-    );
+    await getElementByCss(driver, "div#status");
+    const successToastDiv = await getElementByCss(driver, "div[role=alert]");
     await driver.wait(until.elementIsVisible(successToastDiv));
     await driver.wait(until.urlContains("status"), 5000);
     expect(await successToastDiv.getText()).toEqual("Registration success");

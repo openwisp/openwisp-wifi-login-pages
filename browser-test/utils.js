@@ -28,8 +28,8 @@ export const getDriver = async () => {
     .build();
 };
 
-export const getElementByXPath = async (driver, xpath) => {
-  const el = await driver.wait(until.elementLocated(By.xpath(xpath)), waitTime);
+export const getElementByCss = async (driver, css) => {
+  const el = await driver.wait(until.elementLocated(By.css(css)), waitTime);
   driver.wait(until.stalenessOf(el), waitTime);
   return el;
 };
