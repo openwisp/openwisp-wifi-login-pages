@@ -13,6 +13,12 @@ jest.mock("../../utils/log-error");
 logError.mockImplementation(jest.fn());
 
 const defaultConfig = getConfig("default");
+const userData = {
+  username: "tester@tester.com",
+  email: "tester@tester.com",
+  is_verified: true,
+  is_active: true,
+};
 
 const createTestProps = (props) => {
   return {
@@ -22,6 +28,8 @@ const createTestProps = (props) => {
     logoutPage: defaultConfig.components.logout,
     authenticate: jest.fn(),
     setTitle: jest.fn(),
+    setUserData: jest.fn(),
+    userData,
     ...props,
   };
 };
@@ -56,6 +64,12 @@ describe("<Logout /> interactions", () => {
     const loginUser = jest.spyOn(wrapper.instance(), "loginUser");
     wrapper.find(".button").simulate("click", {});
     expect(loginUser).toHaveBeenCalled();
+    // ensure justAuthenticated:true is passed
+    // otherwise captive portal login won't be done
+    expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith({
+      ...userData,
+      justAuthenticated: true,
+    });
   });
 
   it("should call setTitle to set the title", () => {

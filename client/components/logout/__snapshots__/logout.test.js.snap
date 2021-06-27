@@ -21,7 +21,7 @@ exports[`<Logout /> rendering should render correctly 1`] = `
           <Link
             className="button partial"
             onClick={[Function]}
-            to="/default/login"
+            to="/default/status"
           >
             Login Again
           </Link>

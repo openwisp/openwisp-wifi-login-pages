@@ -24,8 +24,11 @@ export default class Logout extends React.Component {
   }
 
   loginUser = (isAuthenticated) => {
-    const {authenticate} = this.props;
-    if (!isAuthenticated) authenticate(true);
+    const {authenticate, setUserData, userData} = this.props;
+    if (!isAuthenticated) {
+      authenticate(true);
+      setUserData({...userData, justAuthenticated: true});
+    }
     toast.success(loginSuccess, {
       toastId: mainToastId,
     });
@@ -45,7 +48,7 @@ export default class Logout extends React.Component {
                 <Link
                   onClick={() => this.loginUser(isAuthenticated)}
                   className="button partial"
-                  to={`/${orgSlug}/login`}
+                  to={`/${orgSlug}/status`}
                 >
                   {getText(login_again.text, language)}
                 </Link>
@@ -72,5 +75,7 @@ Logout.propTypes = {
   orgName: PropTypes.string.isRequired,
   isAuthenticated: PropTypes.bool,
   authenticate: PropTypes.func.isRequired,
+  userData: PropTypes.object.isRequired,
+  setUserData: PropTypes.func.isRequired,
   setTitle: PropTypes.func.isRequired,
 };
