@@ -2,15 +2,14 @@ import "./index.css";
 
 import PropTypes from "prop-types";
 import React from "react";
+import {t} from "ttag";
 
-import getText from "../../utils/get-text";
 import shouldLinkBeShown from "../../utils/should-link-be-shown";
 
 export default class Footer extends React.Component {
   render() {
-    const {footer, language, isAuthenticated, userData} = this.props;
+    const {footer, isAuthenticated, userData} = this.props;
     const {links} = footer;
-    const secondaryText = footer.secondary_text;
     return (
       <div className="footer-container">
         <div className="footer-row-1">
@@ -26,7 +25,7 @@ export default class Footer extends React.Component {
                     rel="noreferrer noopener"
                     key={link.url}
                   >
-                    {getText(link.text, language)}
+                    {t`FOOTER_LINK ${link.text}`}
                   </a>
                 );
               }
@@ -35,9 +34,7 @@ export default class Footer extends React.Component {
           </div>
         </div>
         <div className="footer-row-2">
-          <div className="footer-row-2-inner">
-            {getText(secondaryText, language)}
-          </div>
+          <div className="footer-row-2-inner">{t`FOOTER_SECONDARY_TEXT`}</div>
         </div>
       </div>
     );
@@ -48,7 +45,6 @@ Footer.defaultProps = {
   isAuthenticated: false,
 };
 Footer.propTypes = {
-  language: PropTypes.string.isRequired,
   footer: PropTypes.shape({
     links: PropTypes.array,
     secondary_text: PropTypes.object,

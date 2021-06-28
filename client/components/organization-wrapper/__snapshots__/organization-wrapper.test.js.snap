@@ -78,7 +78,7 @@ exports[`<OrganizationWrapper /> interactions should render main title if pageTi
       encodeSpecialCharacters={true}
     >
       <title>
-        Default - default name
+        Wifi Login - default name
       </title>
     </HelmetWrapper>
   </Context.Provider>

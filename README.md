@@ -420,6 +420,37 @@ enable this feature, just create a new organization with the
 
 `Are you using OpenWISP Subscriptions to provide paid subscriptions for WiFi plans or identity verification via credit/debit card?`
 
+#### Translation
+
+1. All the translation is loaded at runtime from the JSON files that were made
+   during the build process.
+2. By default, the build process uses the `{language_code}.po` files to generate
+   the translations.
+3. `{language_code}.custom.po` file can be used to override the `{language_code}.po`
+   file. The custom files need not to be duplicate of the default file i.e. translation
+   can be defined as the custom strings.
+4. Translation can also be generated for single organisation if `{orgSlug}_{language_code}.custom.po` is present in `i18n` Directory.
+5. Translation can be created by running the command:
+   `yarn create-translation {language_code} i18n/{file_name}.po`
+
+   Here `file_name` can be `{orgSlug}_{language_code}.custom.po`, `{language_code}.custom.po\` or
+   `{language_code}.po`.
+
+6. Translations inside `i18n/` directory can be updated by using this command:
+   `yarn update-translation i18n/{file_name}.po client/`
+
+   This will update all the translations by replacing the placeholder defined in the `client/`.
+
+7. If there is more than one language in `i18n/` directory then update the organization configuration file by adding the support for that language like this:
+
+   ```
+   languages:
+     - text: "english"
+       slug: "en"
+     - text: "Spanish"
+       slug: "es"
+   ```
+
 ### License
 
 See [LICENSE](https://github.com/openwisp/openwisp-wifi-login-pages/blob/master/LICENSE).

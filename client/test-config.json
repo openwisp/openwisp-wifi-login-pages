@@ -9,111 +9,12 @@
     },
     "components": {
       "status_page": {
-        "title": {
-          "en": "Status"
-        },
-        "content": {
-          "en": "WiFi Login Successful!\nYou can now use the internet.\nYou may leave this page open in case you want to log out.\n"
-        },
-        "user_info": {
-          "status": {
-            "text": {
-              "en": "Status"
-            },
-            "value": {
-              "en": "Logged in"
-            }
-          },
-          "email": {
-            "text": {
-              "en": "Email"
-            }
-          },
-          "username": {
-            "text": {
-              "en": "Username"
-            }
-          },
-          "phone_number": {
-            "text": {
-              "en": "Phone number"
-            }
-          }
-        },
-        "session_info": {
-          "header": {
-            "start_time": {
-              "text": {
-                "en": "Start time"
-              }
-            },
-            "stop_time": {
-              "text": {
-                "en": "Stop time"
-              }
-            },
-            "duration": {
-              "text": {
-                "en": "Duration"
-              }
-            },
-            "download": {
-              "text": {
-                "en": "Download"
-              }
-            },
-            "upload": {
-              "text": {
-                "en": "Upload"
-              }
-            },
-            "device_address": {
-              "text": {
-                "en": "Device address"
-              }
-            }
-          },
-          "settings": {
-            "active_session": {
-              "text": {
-                "en": "session is active"
-              }
-            },
-            "date_language_locale": "en-US"
-          }
-        },
         "links": [
           {
-            "text": {
-              "en": "Change your password"
-            },
+            "text": "Change your password",
             "url": "/{orgSlug}/change-password/"
           }
-        ],
-        "buttons": {
-          "logout": {
-            "text": {
-              "en": "Logout"
-            }
-          }
-        },
-        "logout_modal": {
-          "content": {
-            "en": "Do you want to automatically log in the next time?"
-          },
-          "buttons": {
-            "agree": {
-              "text": {
-                "en": "Yes"
-              }
-            },
-            "disagree": {
-              "text": {
-                "en": "No"
-              }
-            }
-          }
-        }
+        ]
       },
       "logout": {
         "title": {
@@ -121,12 +22,12 @@
         },
         "content": {
           "text": {
-            "en": "Logout Successfull !!!"
+            "en": "Logout successfull"
           }
         },
         "login_again": {
           "text": {
-            "en": "Login Again"
+            "en": "Log in again"
           }
         }
       },
@@ -163,193 +64,64 @@
         "logout_by_session": true
       },
       "registration_form": {
-        "title": {
-          "en": "Sign up"
-        },
         "input_fields": {
           "username": {
             "type": "text",
-            "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}",
-            "pattern_description": {
-              "en": "only letters, numbers, and @/./+/-/_ characters"
-            },
-            "placeholder": {
-              "en": "enter username"
-            },
-            "label": {
-              "en": "username"
-            }
+            "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}"
           },
           "email": {
             "type": "email",
-            "pattern": ".+@.+\\..+",
-            "pattern_description": {
-              "en": null
-            },
-            "placeholder": {
-              "en": "email address"
-            },
-            "label": {
-              "en": "email"
-            }
+            "pattern": ".+@.+\\..+"
           },
           "password": {
             "type": "password",
-            "pattern": ".{6,}",
-            "pattern_description": {
-              "en": "password must be a minimum of 6 characters"
-            },
-            "placeholder": {
-              "en": "password"
-            },
-            "label": {
-              "en": "password"
-            }
+            "pattern": ".{6,}"
           },
           "password_confirm": {
-            "type": "password",
-            "label": {
-              "en": "confirm password"
-            },
-            "placeholder": {
-              "en": "confirm password"
-            },
-            "label": {
-              "en": "confirm"
-            }
+            "type": "password"
           },
           "phone_number": {
-            "placeholder": {
-              "en": "enter mobile phone number"
-            },
-            "label": {
-              "en": "mobile phone number"
-            }
+            "type": "tel"
           },
           "first_name": {
             "type": "text",
             "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}",
-            "setting": "disabled",
-            "pattern_description": {
-              "en": "only letters, numbers, and @/./+/-/_ characters"
-            },
-            "placeholder": {
-              "en": "enter first_name"
-            },
-            "label": {
-              "en": "first name"
-            },
-            "label_optional": {
-              "en": "first name (optional)"
-            }
+            "setting": "disabled"
           },
           "last_name": {
             "type": "text",
             "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}",
-            "setting": "disabled",
-            "pattern_description": {
-              "en": "only letters, numbers, and @/./+/-/_ characters"
-            },
-            "placeholder": {
-              "en": "enter last_name"
-            },
-            "label": {
-              "en": "last name"
-            },
-            "label_optional": {
-              "en": "last name (optional)"
-            }
+            "setting": "disabled"
           },
           "location": {
             "type": "text",
             "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}",
-            "setting": "disabled",
-            "pattern_description": {
-              "en": "only letters, numbers, and @/./+/-/_ characters"
-            },
-            "placeholder": {
-              "en": "enter location"
-            },
-            "label": {
-              "en": "location"
-            },
-            "label_optional": {
-              "en": "location (optional)"
-            }
+            "setting": "disabled"
           },
           "birth_date": {
             "type": "date",
-            "setting": "disabled",
-            "label": {
-              "en": "birth date"
-            },
-            "label_optional": {
-              "en": "birth date (optional)"
-            }
+            "setting": "disabled"
           },
           "city": {
-            "type": "text",
-            "placeholder": {
-              "en": "enter city"
-            },
-            "label": {
-              "en": "city"
-            }
+            "type": "text"
           },
           "street": {
-            "type": "text",
-            "placeholder": {
-              "en": "enter street"
-            },
-            "label": {
-              "en": "street"
-            }
+            "type": "text"
           },
           "tax_number": {
             "type": "text",
-            "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}",
-            "pattern_description": {
-              "en": "only letters, numbers, and @/./+/-/_ characters"
-            },
-            "placeholder": {
-              "en": "enter tax_number"
-            },
-            "label": {
-              "en": "tax_number"
-            }
+            "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}"
           },
           "country": {
-            "label": {
-              "en": "country"
-            }
+            "type": "text"
           },
           "zipcode": {
-            "type": "number",
-            "label": {
-              "en": "zipcode"
-            }
+            "type": "number"
           }
         },
-        "plans_setting": {
-          "text": {
-            "en": "Select your plan below"
-          }
-        },
-        "buttons": {
-          "register": {
-            "label": null,
-            "text": {
-              "en": "sign up"
-            }
-          }
-        },
-        "additional_info_text": {
-          "en": "By signing up, you accept the {terms_and_conditions} and the {privacy_policy} of this WiFi service. "
-        },
+        "additional_info_text": true,
         "links": {
-          "login": {
-            "en": "Already have an account? Log in"
-          }
+          "login": true
         }
       }
     },
@@ -456,34 +228,16 @@
         }
       },
       "contact_page": {
-        "email": {
-          "label": {
-            "en": "E-mail"
-          },
-          "value": {
-            "en": "support@openwisp.co"
-          }
-        },
-        "helpdesk": {
-          "label": {
-            "en": "Helpdesk"
-          },
-          "value": {
-            "en": "+789 948 564"
-          }
-        },
+        "email": "support@openwisp.co",
+        "helpdesk": "+789 948 564",
         "social_links": [
           {
-            "alt": {
-              "en": "twitter"
-            },
+            "alt": "twitter",
             "icon": "twitter.svg",
             "url": "https://twitter.com/openwisp"
           },
           {
-            "alt": {
-              "en": "facebook"
-            },
+            "alt": "facebook",
             "icon": "facebook.svg",
             "url": "https://facebook.com/openwisp"
           }
@@ -495,190 +249,64 @@
         },
         "input_fields": {
           "phone_number": {
-            "placeholder": {
-              "en": "enter mobile phone number"
-            },
-            "label": {
-              "en": "moible phone number"
-            },
+            "type": "tel",
             "country": "it"
           },
           "email": {
             "type": "email",
-            "pattern": ".+@.+\\..+",
-            "pattern_description": {
-              "en": null
-            },
-            "placeholder": {
-              "en": "email address"
-            },
-            "label": {
-              "en": "email"
-            }
+            "pattern": ".+@.+\\..+"
           },
           "username": {
             "type": "text",
-            "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}",
-            "pattern_description": {
-              "en": "only letters, numbers, and @/./+/-/_ characters"
-            },
-            "placeholder": {
-              "en": "enter username"
-            },
-            "label": {
-              "en": "username"
-            }
+            "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}"
           },
           "password": {
             "type": "password",
-            "pattern": ".{6,}",
-            "pattern_description": {
-              "en": "password must be a minimum of 6 characters"
-            },
-            "placeholder": {
-              "en": "password"
-            },
-            "label": {
-              "en": "password"
-            }
+            "pattern": ".{6,}"
           },
           "password_confirm": {
             "type": "password",
-            "pattern": null,
-            "pattern_description": {
-              "en": null
-            },
-            "placeholder": {
-              "en": "confirm password"
-            },
-            "label": {
-              "en": "confirm"
-            }
+            "pattern": null
           },
           "first_name": {
             "type": "text",
             "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}",
-            "setting": "disabled",
-            "pattern_description": {
-              "en": "only letters, numbers, and @/./+/-/_ characters"
-            },
-            "placeholder": {
-              "en": "enter first_name"
-            },
-            "label": {
-              "en": "first name"
-            },
-            "label_optional": {
-              "en": "first name (optional)"
-            }
+            "setting": "disabled"
           },
           "last_name": {
             "type": "text",
             "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}",
-            "setting": "disabled",
-            "pattern_description": {
-              "en": "only letters, numbers, and @/./+/-/_ characters"
-            },
-            "placeholder": {
-              "en": "enter last_name"
-            },
-            "label": {
-              "en": "last name"
-            },
-            "label_optional": {
-              "en": "last name (optional)"
-            }
+            "setting": "disabled"
           },
           "location": {
             "type": "text",
             "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}",
-            "setting": "disabled",
-            "pattern_description": {
-              "en": "only letters, numbers, and @/./+/-/_ characters"
-            },
-            "placeholder": {
-              "en": "enter location"
-            },
-            "label": {
-              "en": "location"
-            },
-            "label_optional": {
-              "en": "location (optional)"
-            }
+            "setting": "disabled"
           },
           "birth_date": {
             "type": "date",
-            "setting": "disabled",
-            "label": {
-              "en": "birth date"
-            },
-            "label_optional": {
-              "en": "birth date (optional)"
-            }
+            "setting": "disabled"
           },
           "city": {
-            "type": "text",
-            "placeholder": {
-              "en": "enter city"
-            },
-            "label": {
-              "en": "city"
-            }
+            "type": "text"
           },
           "street": {
-            "type": "text",
-            "placeholder": {
-              "en": "enter street"
-            },
-            "label": {
-              "en": "street"
-            }
+            "type": "text"
           },
           "tax_number": {
             "type": "text",
-            "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}",
-            "pattern_description": {
-              "en": "only letters, numbers, and @/./+/-/_ characters"
-            },
-            "placeholder": {
-              "en": "enter tax_number"
-            },
-            "label": {
-              "en": "tax_number"
-            }
+            "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}"
           },
           "country": {
-            "label": {
-              "en": "country"
-            }
+            "type": "text"
           },
           "zipcode": {
-            "type": "number",
-            "label": {
-              "en": "zipcode"
-            }
+            "type": "number"
           }
         },
-        "plans_setting": {
-          "text": {
-            "en": "Select your plan below"
-          }
-        },
-        "buttons": {
-          "register": {
-            "label": null,
-            "text": {
-              "en": "sign up"
-            }
-          }
-        },
-        "additional_info_text": {
-          "en": "By signing up, you accept the {terms_and_conditions} and the {privacy_policy} of this WiFi service. "
-        },
+        "additional_info_text": true,
         "links": {
-          "login": {
-            "en": "Already have an account? Log in"
-          }
+          "login": true
         }
       }
     },

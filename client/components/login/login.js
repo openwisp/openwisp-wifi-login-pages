@@ -8,6 +8,7 @@ import React from "react";
 import {Link, Route} from "react-router-dom";
 import {toast} from "react-toastify";
 import PhoneInput from "react-phone-input-2";
+import {t} from "ttag";
 import "react-phone-input-2/lib/style.css";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -23,7 +24,6 @@ import {
 import getAssetPath from "../../utils/get-asset-path";
 import getErrorText from "../../utils/get-error-text";
 import getParameterByName from "../../utils/get-parameter-by-name";
-import getText from "../../utils/get-text";
 import LoadingContext from "../../utils/loading-context";
 import logError from "../../utils/log-error";
 import renderAdditionalInfo from "../../utils/render-additional-info";
@@ -48,8 +48,8 @@ export default class Login extends React.Component {
   componentDidMount() {
     const username = getParameterByName("username");
     const token = getParameterByName("token");
-    const {loginForm, setTitle, orgName, orgSlug, language} = this.props;
-    setTitle(loginForm, language, orgName);
+    const {loginForm, setTitle, orgName} = this.props;
+    setTitle(t`LOGIN_PAGE_TITLE`, orgName);
 
     let remember_me;
 
@@ -101,12 +101,9 @@ export default class Login extends React.Component {
 
   getTextField = (input_fields) => {
     const {username, errors} = this.state;
-    const {language} = this.props;
     return (
       <div className="row username">
-        <label htmlFor="username">
-          {getText(input_fields.username.label, language)}
-        </label>
+        <label htmlFor="username">{t`USERNAME_LABEL`}</label>
         {errors.username && (
           <div className="error">
             <span className="icon">!</span>
@@ -121,10 +118,10 @@ export default class Login extends React.Component {
           value={username}
           onChange={this.handleChange}
           required
-          placeholder={getText(input_fields.username.placeholder, language)}
+          placeholder={t`USERNAME_PLACEHOLDER`}
           pattern={input_fields.username.pattern}
-          title={getText(input_fields.username.pattern_description, language)}
           autoComplete="username"
+          title={t`USERNAME_TITLE`}
         />
       </div>
     );
@@ -132,12 +129,9 @@ export default class Login extends React.Component {
 
   getPhoneNumberField = (input_fields) => {
     const {username, errors} = this.state;
-    const {language} = this.props;
     return (
       <div className="row phone-number">
-        <label htmlFor="phone-number">
-          {getText(input_fields.phone_number.label, language)}
-        </label>
+        <label htmlFor="phone-number">{t`PHONENUMBER_LABEL`}</label>
         {errors.username && (
           <div className="error">
             <span className="icon">!</span>
@@ -158,7 +152,7 @@ export default class Login extends React.Component {
               target: {name: "username", value: `+${value}`},
             })
           }
-          placeholder={getText(input_fields.phone_number.placeholder, language)}
+          placeholder={t`PHONENUMBER_PLACEHOLDER`}
           enableSearch={Boolean(input_fields.phone_number.enable_search)}
           inputProps={{
             name: "username",
@@ -269,14 +263,7 @@ export default class Login extends React.Component {
 
   render() {
     const {errors, password, remember_me} = this.state;
-    const {
-      language,
-      loginForm,
-      orgSlug,
-      termsAndConditions,
-      privacyPolicy,
-      match,
-    } = this.props;
+    const {loginForm, orgSlug, match} = this.props;
     const {links, buttons, input_fields, social_login, additional_info_text} =
       loginForm;
     return (
@@ -297,11 +284,11 @@ export default class Login extends React.Component {
                           <span className="inner">
                             <img
                               src={getAssetPath(orgSlug, link.icon)}
-                              alt={getText(link.text, language)}
+                              alt={t`SOCIAL_LOGIN_TEXT ${link.text}`}
                               className="icon"
                             />
                             <span className="text">
-                              {getText(link.text, language)}
+                              {t`SOCIAL_LOGIN_TEXT ${link.text}`}
                             </span>
                           </span>
                         </a>
@@ -322,9 +309,7 @@ export default class Login extends React.Component {
                 {this.getUsernameField(input_fields)}
 
                 <div className="row password">
-                  <label htmlFor="password">
-                    {getText(input_fields.password.label, language)}
-                  </label>
+                  <label htmlFor="password">{t`PASSWORD_LABEL`}</label>
                   {errors.password && (
                     <div className="error">
                       <span className="icon">!</span>
@@ -339,23 +324,13 @@ export default class Login extends React.Component {
                     name="password"
                     value={password}
                     onChange={this.handleChange}
-                    placeholder={getText(
-                      input_fields.password.placeholder,
-                      language,
-                    )}
+                    placeholder={t`PASSWORD_PLACEHOLDER`}
                     pattern={input_fields.password.pattern}
-                    title={getText(
-                      input_fields.password.pattern_description,
-                      language,
-                    )}
+                    title={t`PASSWORD_PATTERN_DESCRIPTION`}
                     ref={this.passwordToggleRef}
                     autoComplete="current-password"
                   />
-                  <PasswordToggleIcon
-                    inputRef={this.passwordToggleRef}
-                    language={language}
-                    orgSlug={orgSlug}
-                  />
+                  <PasswordToggleIcon inputRef={this.passwordToggleRef} />
                 </div>
 
                 <div className="row remember-me">
@@ -366,19 +341,14 @@ export default class Login extends React.Component {
                     checked={remember_me}
                     onChange={this.handleCheckBoxChange}
                   />
-                  <label htmlFor="remember_me">
-                    {getText(input_fields.remember_me.label, language)}
-                  </label>
+                  <label htmlFor="remember_me">{t`REMEMBER_ME_LABEL`}</label>
                 </div>
               </div>
 
               {additional_info_text && (
                 <div className="row add-info">
                   {renderAdditionalInfo(
-                    additional_info_text,
-                    language,
-                    termsAndConditions,
-                    privacyPolicy,
+                    t`LOGIN_ADDITIONAL_INFO_TEXT`,
                     orgSlug,
                     "login",
                   )}
@@ -389,15 +359,15 @@ export default class Login extends React.Component {
                 <input
                   type="submit"
                   className="button full"
-                  value={getText(buttons.login.text, language)}
+                  value={t`LOGIN_TEXT`}
                 />
               </div>
 
               {buttons.register && (
                 <div className="row register">
-                  <p>{getText(buttons.register.label, language)}</p>
+                  <p>{t`REGISTER_BUTTON_LABEL`}</p>
                   <Link to={`/${orgSlug}/registration`} className="button full">
-                    {getText(buttons.register.text, language)}
+                    {t`REGISTER_BUTTON_TEXT`}
                   </Link>
                 </div>
               )}
@@ -405,7 +375,7 @@ export default class Login extends React.Component {
               {links && links.forget_password && (
                 <div className="row links">
                   <Link to={`/${orgSlug}/password/reset`} className="link">
-                    {getText(links.forget_password, language)}
+                    {t`FORGOT_PASSWORD`}
                   </Link>
                 </div>
               )}
@@ -428,7 +398,6 @@ export default class Login extends React.Component {
 Login.contextType = LoadingContext;
 Login.propTypes = {
   loginForm: PropTypes.shape({
-    title: PropTypes.object,
     social_login: PropTypes.shape({
       divider_text: PropTypes.object,
       description: PropTypes.object,
@@ -436,27 +405,21 @@ Login.propTypes = {
         PropTypes.shape({
           url: PropTypes.string.isRequired,
           icon: PropTypes.string.isRequired,
-          text: PropTypes.shape().isRequired,
+          text: PropTypes.string.isRequired,
         }),
       ),
     }),
     input_fields: PropTypes.shape({
       username: PropTypes.shape({
         type: PropTypes.string.isRequired,
-        label: PropTypes.object.isRequired,
-        placeholder: PropTypes.object.isRequired,
-        pattern_description: PropTypes.object.isRequired,
+        pattern: PropTypes.string.isRequired,
       }).isRequired,
       password: PropTypes.shape({
         type: PropTypes.string.isRequired,
-        label: PropTypes.object.isRequired,
-        placeholder: PropTypes.object.isRequired,
         pattern: PropTypes.string.isRequired,
-        pattern_description: PropTypes.object.isRequired,
       }).isRequired,
       phone_number: PropTypes.shape({
-        label: PropTypes.object.isRequired,
-        placeholder: PropTypes.object.isRequired,
+        type: PropTypes.string,
         country: PropTypes.string,
         only_countries: PropTypes.array,
         preferred_countries: PropTypes.array,
@@ -466,38 +429,24 @@ Login.propTypes = {
       remember_me: PropTypes.shape({
         type: PropTypes.string.isRequired,
         value: PropTypes.bool.isRequired,
-        label: PropTypes.object.isRequired,
       }),
     }),
-    additional_info_text: PropTypes.object,
+    additional_info_text: PropTypes.bool,
     buttons: PropTypes.shape({
-      login: PropTypes.shape({
-        text: PropTypes.object.isRequired,
-      }).isRequired,
-      register: PropTypes.shape({
-        label: PropTypes.object.isRequired,
-        text: PropTypes.object.isRequired,
-      }),
-    }).isRequired,
+      register: PropTypes.bool,
+    }),
     links: PropTypes.shape({
-      forget_password: PropTypes.object.isRequired,
+      forget_password: PropTypes.bool,
     }).isRequired,
   }).isRequired,
-  language: PropTypes.string.isRequired,
   match: PropTypes.shape({
     path: PropTypes.string,
     url: PropTypes.string,
   }).isRequired,
   orgSlug: PropTypes.string.isRequired,
   orgName: PropTypes.string.isRequired,
-  privacyPolicy: PropTypes.shape({
-    title: PropTypes.object,
-    content: PropTypes.object,
-  }).isRequired,
-  termsAndConditions: PropTypes.shape({
-    title: PropTypes.object,
-    content: PropTypes.object,
-  }).isRequired,
+  privacyPolicy: PropTypes.bool.isRequired,
+  termsAndConditions: PropTypes.bool.isRequired,
   authenticate: PropTypes.func.isRequired,
   setUserData: PropTypes.func.isRequired,
   userData: PropTypes.object.isRequired,

@@ -11,9 +11,11 @@ import tick from "../../utils/tick";
 import getConfig from "../../utils/get-config";
 import MobilePhoneVerification from "./mobile-phone-verification";
 import validateToken from "../../utils/validate-token";
+import loadTranslation from "../../utils/load-translation";
 
 jest.mock("../../utils/get-config");
 jest.mock("../../utils/validate-token");
+jest.mock("../../utils/load-translation");
 jest.mock("axios");
 
 const createTestProps = function (props, configName = "test-org-2") {
@@ -23,7 +25,6 @@ const createTestProps = function (props, configName = "test-org-2") {
     settings: config.settings,
     orgSlug: config.slug,
     orgName: config.name,
-    language: "en",
     cookies: new Cookies(),
     logout: jest.fn(),
     setUserData: jest.fn(),
@@ -43,6 +44,7 @@ const userData = {
 };
 
 const createShallowComponent = function (props) {
+  loadTranslation("en", "default");
   return shallow(<MobilePhoneVerification {...props} />, {
     context: {...loadingContextValue},
   });
@@ -223,8 +225,7 @@ describe("Mobile Phone Token verification: standard flow", () => {
     await tick();
     const setTitleMock = wrapper.instance().props.setTitle.mock;
     expect(setTitleMock.calls.pop()).toEqual([
-      props.mobile_phone_verification,
-      props.language,
+      "Verify mobile number",
       props.orgName,
     ]);
   });

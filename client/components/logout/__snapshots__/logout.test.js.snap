@@ -13,7 +13,7 @@ exports[`<Logout /> rendering should render correctly 1`] = `
         className="main-column w-100"
       >
         <h2>
-          Logout Successfull !!!
+          Logout successful
         </h2>
         <div
           className="links row"
@@ -23,7 +23,7 @@ exports[`<Logout /> rendering should render correctly 1`] = `
             onClick={[Function]}
             to="/default/status"
           >
-            Login Again
+            Log in again
           </Link>
         </div>
       </div>

@@ -17,7 +17,6 @@ const mapStateToProps = (state, ownProps) => {
     settings: conf.settings,
     orgSlug: conf.slug,
     orgName: conf.name,
-    language: state.language,
     cookies: ownProps.cookies,
     userData: conf.userData,
   };

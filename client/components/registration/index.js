@@ -12,7 +12,6 @@ const mapStateToProps = (state) => {
     termsAndConditions: conf.terms_and_conditions,
     orgSlug: conf.slug,
     orgName: conf.name,
-    language: state.language,
   };
 };
 const mapDispatchToProps = (dispatch) => {

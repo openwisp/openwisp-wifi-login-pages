@@ -8,8 +8,8 @@ import PropTypes from "prop-types";
 import React from "react";
 import {Link} from "react-router-dom";
 import {toast} from "react-toastify";
+import {t} from "ttag";
 import {loginSuccess, mainToastId} from "../../constants";
-import getText from "../../utils/get-text";
 import LoadingContext from "../../utils/loading-context";
 
 export default class Logout extends React.Component {
@@ -19,8 +19,8 @@ export default class Logout extends React.Component {
   }
 
   componentDidMount() {
-    const {orgName, setTitle, logoutPage, language} = this.props;
-    setTitle(logoutPage, language, orgName);
+    const {orgName, setTitle} = this.props;
+    setTitle(t`LOGOUT_PAGE_TITLE`, orgName);
   }
 
   loginUser = (isAuthenticated) => {
@@ -36,21 +36,20 @@ export default class Logout extends React.Component {
   };
 
   render() {
-    const {language, logoutPage, orgSlug, isAuthenticated} = this.props;
-    const {content, login_again} = logoutPage;
+    const {orgSlug, isAuthenticated} = this.props;
     return (
       <>
         <div className="container content" id="logout">
           <div className="inner">
             <div className="main-column w-100">
-              <h2>{getText(content.text, language)}</h2>
+              <h2>{t`LOGOUT_CONTENT`}</h2>
               <div className="links row">
                 <Link
                   onClick={() => this.loginUser(isAuthenticated)}
                   className="button partial"
                   to={`/${orgSlug}/status`}
                 >
-                  {getText(login_again.text, language)}
+                  {t`LOGIN_AGAIN`}
                 </Link>
               </div>
             </div>
@@ -70,7 +69,6 @@ Logout.propTypes = {
     content: PropTypes.object.isRequired,
     login_again: PropTypes.object.isRequired,
   }).isRequired,
-  language: PropTypes.string.isRequired,
   orgSlug: PropTypes.string.isRequired,
   orgName: PropTypes.string.isRequired,
   isAuthenticated: PropTypes.bool,

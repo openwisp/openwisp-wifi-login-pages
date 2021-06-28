@@ -26,7 +26,9 @@ exports[`<Footer /> rendering should render correctly 1`] = `
   >
     <div
       className="footer-row-2-inner"
-    />
+    >
+       
+    </div>
   </div>
 </div>
 `;

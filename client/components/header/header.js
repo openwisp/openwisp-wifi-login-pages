@@ -4,10 +4,9 @@ import "./index.css";
 import PropTypes from "prop-types";
 import React from "react";
 import {Link} from "react-router-dom";
-
+import {t} from "ttag";
 import isInternalLink from "../../utils/check-internal-links";
 import getAssetPath from "../../utils/get-asset-path";
-import getText from "../../utils/get-text";
 import shouldLinkBeShown from "../../utils/should-link-be-shown";
 
 export default class Header extends React.Component {
@@ -112,7 +111,7 @@ export default class Header extends React.Component {
                       to={link.url}
                       key={index}
                     >
-                      {getText(link.text, language)}
+                      {t`HEADER_LINK ${link.text}`}
                     </Link>
                   );
                 }
@@ -125,7 +124,7 @@ export default class Header extends React.Component {
                     rel="noreferrer noopener"
                     key={link.url}
                   >
-                    {getText(link.text, language)}
+                    {t`HEADER_LINK ${link.text}`}
                   </a>
                 );
               })}
@@ -180,7 +179,7 @@ export default class Header extends React.Component {
                       to={link.url}
                       key={index}
                     >
-                      {getText(link.text, language)}
+                      {t`HEADER_LINK ${link.text}`}
                     </Link>
                   );
                 }
@@ -193,7 +192,7 @@ export default class Header extends React.Component {
                     rel="noreferrer noopener"
                     key={link.url}
                   >
-                    {getText(link.text, language)}
+                    {t`HEADER_LINK ${link.text}`}
                   </a>
                 );
               }

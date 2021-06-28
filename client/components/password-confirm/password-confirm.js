@@ -4,6 +4,7 @@ import qs from "qs";
 import React from "react";
 import {Link} from "react-router-dom";
 import {toast} from "react-toastify";
+import {t} from "ttag";
 import "react-toastify/dist/ReactToastify.css";
 import Contact from "../contact-box";
 import LoadingContext from "../../utils/loading-context";
@@ -11,7 +12,6 @@ import PasswordToggleIcon from "../../utils/password-toggle";
 
 import {confirmApiUrl, passwordConfirmError} from "../../constants";
 import getErrorText from "../../utils/get-error-text";
-import getText from "../../utils/get-text";
 import logError from "../../utils/log-error";
 import handleChange from "../../utils/handle-change";
 
@@ -31,8 +31,8 @@ export default class PasswordConfirm extends React.Component {
   }
 
   componentDidMount() {
-    const {language, setTitle, orgName, passwordConfirm} = this.props;
-    setTitle(passwordConfirm, language, orgName);
+    const {setTitle, orgName} = this.props;
+    setTitle(t`PASSWORD_CONFIRM_PAGE_TITLE`, orgName);
   }
 
   handleChange(event) {
@@ -100,10 +100,9 @@ export default class PasswordConfirm extends React.Component {
 
   render() {
     const {newPassword1, newPassword2, errors, success} = this.state;
-    const {language, passwordConfirm, orgSlug} = this.props;
+    const {passwordConfirm, orgSlug} = this.props;
     const inputFields = passwordConfirm.input_fields;
     const loginPageLink = passwordConfirm.login_page_link;
-    const {buttons} = passwordConfirm;
     return (
       <div className="container content" id="password-confirm">
         <div className="inner">
@@ -117,7 +116,7 @@ export default class PasswordConfirm extends React.Component {
                 <div className="row">
                   {loginPageLink && (
                     <Link to={`/${orgSlug}/login`} className="link">
-                      {getText(loginPageLink.text, language)}
+                      {t`LOGIN_PAGE_LINK_TEXT`}
                     </Link>
                   )}
                 </div>
@@ -125,9 +124,11 @@ export default class PasswordConfirm extends React.Component {
             </div>
           ) : (
             <form className="main-column" onSubmit={this.handleSubmit}>
-              <h1>{getText(passwordConfirm.heading, language)}</h1>
+              <h1>{t`PASSWORD_CONFIRM_HEADING`}</h1>
 
-              <p>{getText(passwordConfirm.additional_text, language)}</p>
+              {passwordConfirm.additional_text && (
+                <p>{t`PASSWORD_CONFIRM_ADDITIONAL_TEXT`}</p>
+              )}
 
               <div className="fieldset">
                 {errors.nonField && (
@@ -138,9 +139,7 @@ export default class PasswordConfirm extends React.Component {
                 )}
 
                 <div className="row password">
-                  <label htmlFor="password">
-                    {getText(inputFields.password.label, language)}
-                  </label>
+                  <label htmlFor="password">{t`PASSWORD_LABEL`}</label>
 
                   {errors.newPassword1 && (
                     <div className="error">
@@ -157,28 +156,18 @@ export default class PasswordConfirm extends React.Component {
                     name="newPassword1"
                     value={newPassword1}
                     onChange={this.handleChange}
-                    placeholder={getText(
-                      inputFields.password.placeholder,
-                      language,
-                    )}
+                    placeholder={t`PASSWORD_PLACEHOLDER`}
                     pattern={inputFields.password.pattern}
-                    title={getText(
-                      inputFields.password.pattern_description,
-                      language,
-                    )}
+                    title={t`PASSWORD_PATTERN_DESCRIPTION`}
                     ref={this.passwordToggleRef}
                     autoComplete="new-password"
                   />
-                  <PasswordToggleIcon
-                    inputRef={this.passwordToggleRef}
-                    language={language}
-                    orgSlug={orgSlug}
-                  />
+                  <PasswordToggleIcon inputRef={this.passwordToggleRef} />
                 </div>
 
                 <div className="row password-confirm">
                   <label htmlFor="password-confirm">
-                    {getText(inputFields.password_confirm.label, language)}
+                    {t`CONFIRM_PASSWORD_LABEL`}
                   </label>
 
                   {errors.newPassword2 && (
@@ -196,22 +185,14 @@ export default class PasswordConfirm extends React.Component {
                     name="newPassword2"
                     value={newPassword2}
                     onChange={this.handleChange}
-                    placeholder={getText(
-                      inputFields.password_confirm.placeholder,
-                      language,
-                    )}
+                    placeholder={t`CONFIRM_PASSWORD_PLACEHOLDER`}
                     pattern={inputFields.password.pattern}
-                    title={getText(
-                      inputFields.password.pattern_description,
-                      language,
-                    )}
+                    title={t`CONFIRM_PASSWORD_PATTERN_DESCRIPTION`}
                     ref={this.confirmPasswordToggleRef}
                     autoComplete="new-password"
                   />
                   <PasswordToggleIcon
                     inputRef={this.confirmPasswordToggleRef}
-                    language={language}
-                    orgSlug={orgSlug}
                   />
                 </div>
               </div>
@@ -220,19 +201,19 @@ export default class PasswordConfirm extends React.Component {
                 <input
                   type="submit"
                   className="button full"
-                  value={getText(buttons.submit, language)}
+                  value={t`PASSWORD_CONFIRM_BUTTON`}
                 />
               </div>
 
               {passwordConfirm.contact_text && (
                 <div className="contact-us">
-                  {getText(passwordConfirm.contact_text, language)}
+                  {t`PASSWORD_CONFIRM_CONTACT_TEXT`}
                 </div>
               )}
 
               {loginPageLink && (
                 <Link to={`/${orgSlug}/login`} className="link">
-                  {getText(loginPageLink.text, language)}
+                  {t`LOGIN_PAGE_LINK_TEXT`}
                 </Link>
               )}
             </form>
@@ -247,28 +228,19 @@ export default class PasswordConfirm extends React.Component {
 PasswordConfirm.contextType = LoadingContext;
 PasswordConfirm.propTypes = {
   passwordConfirm: PropTypes.shape({
-    title: PropTypes.object,
-    heading: PropTypes.object,
-    additional_text: PropTypes.object,
+    additional_text: PropTypes.bool,
     input_fields: PropTypes.shape({
       password: PropTypes.shape({
         type: PropTypes.string.isRequired,
-        label: PropTypes.object.isRequired,
-        placeholder: PropTypes.object.isRequired.isRequired,
         pattern: PropTypes.string.isRequired,
-        pattern_description: PropTypes.object.isRequired,
       }),
       password_confirm: PropTypes.shape({
         type: PropTypes.string.isRequired,
-        label: PropTypes.object.isRequired,
-        placeholder: PropTypes.object.isRequired,
       }).isRequired,
     }),
-    buttons: PropTypes.object,
-    login_page_link: PropTypes.object,
-    contact_text: PropTypes.object,
+    login_page_link: PropTypes.bool,
+    contact_text: PropTypes.bool,
   }).isRequired,
-  language: PropTypes.string.isRequired,
   orgSlug: PropTypes.string.isRequired,
   orgName: PropTypes.string.isRequired,
   match: PropTypes.shape({

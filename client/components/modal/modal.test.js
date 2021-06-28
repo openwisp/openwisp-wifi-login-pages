@@ -4,12 +4,14 @@ import React from "react";
 import ShallowRenderer from "react-test-renderer/shallow";
 
 import getConfig from "../../utils/get-config";
+import loadTranslation from "../../utils/load-translation";
 import Modal from "./modal";
+
+jest.mock("../../utils/load-translation");
 
 const defaultConfig = getConfig("default");
 const createTestProps = (props) => {
   return {
-    language: "en",
     privacyPolicy: defaultConfig.privacy_policy,
     termsAndConditions: defaultConfig.terms_and_conditions,
     match: {
@@ -24,6 +26,8 @@ const createTestProps = (props) => {
     ...props,
   };
 };
+
+loadTranslation("en", "default");
 
 describe("<Modal /> rendering", () => {
   let props;

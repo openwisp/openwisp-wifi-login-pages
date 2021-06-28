@@ -2,12 +2,15 @@ import React from "react";
 import ShallowRenderer from "react-test-renderer/shallow";
 import {shallow} from "enzyme";
 import getConfig from "../../utils/get-config";
+import loadTranslation from "../../utils/load-translation";
 import DoesNotExist from "./404";
 
+jest.mock("../../utils/load-translation");
+
+loadTranslation("en", "default");
 const defaultConfig = getConfig("default");
 const createTestProps = (props) => {
   return {
-    language: "en",
     orgSlug: "default",
     orgName: "default name",
     page: defaultConfig.components["404_page"],
@@ -34,10 +37,6 @@ describe("<DoesNotExist /> rendering", () => {
     const props = createTestProps();
     const wrapper = shallow(<DoesNotExist {...props} />);
     const setTitleMock = wrapper.instance().props.setTitle.mock;
-    expect(setTitleMock.calls.pop()).toEqual([
-      props.page,
-      props.language,
-      props.orgName,
-    ]);
+    expect(setTitleMock.calls.pop()).toEqual(["404 Not found", props.orgName]);
   });
 });

@@ -11,13 +11,13 @@ import {Cookies} from "react-cookie";
 import {Link} from "react-router-dom";
 import {toast} from "react-toastify";
 import InfinteScroll from "react-infinite-scroll-component";
+import {t} from "ttag";
 import {
   genericError,
   getUserRadiusSessionsUrl,
   logoutSuccess,
   mainToastId,
 } from "../../constants";
-import getText from "../../utils/get-text";
 import LoadingContext from "../../utils/loading-context";
 import logError from "../../utils/log-error";
 import Contact from "../contact-box";
@@ -59,18 +59,9 @@ export default class Status extends React.Component {
   }
 
   async componentDidMount() {
-    const {
-      cookies,
-      orgSlug,
-      settings,
-      setUserData,
-      logout,
-      language,
-      setTitle,
-      statusPage,
-      orgName,
-    } = this.props;
-    setTitle(statusPage, language, orgName);
+    const {cookies, orgSlug, settings, setUserData, logout, setTitle, orgName} =
+      this.props;
+    setTitle(t`STATUS_PAGE_TITLE`, orgName);
     const {setLoading} = this.context;
     let {userData} = this.props;
     this.setState({
@@ -440,17 +431,12 @@ export default class Status extends React.Component {
   };
 
   getLargeTableRow = (session, sessionSettings, showLogoutButton = false) => {
-    const {language, statusPage} = this.props;
-    const {buttons} = statusPage;
     const time_option = {
       dateStyle: "medium",
       timeStyle: "short",
       hour12: false,
     };
-    const activeSessionText = getText(
-      sessionSettings.active_session.text,
-      language,
-    );
+    const activeSessionText = t`ACTIVE_SESSION_TEXT`;
     return (
       <>
         <td>
@@ -476,7 +462,7 @@ export default class Status extends React.Component {
             <input
               type="button"
               className="button small session-logout"
-              value={getText(buttons.logout.text, language)}
+              value={t`CAPTIVE_PORTAL_LOGOUT`}
               onClick={() => {
                 this.handleSessionLogout(session);
               }}
@@ -488,24 +474,20 @@ export default class Status extends React.Component {
   };
 
   getSmallTableRow = (session, session_info) => {
-    const {language, captivePortalLogoutForm, statusPage} = this.props;
-    const {buttons} = statusPage;
+    const {captivePortalLogoutForm} = this.props;
     const time_option = {
       dateStyle: "medium",
       timeStyle: "short",
       hour12: false,
     };
-    const activeSessionText = getText(
-      session_info.settings.active_session.text,
-      language,
-    );
+    const activeSessionText = session_info.settings.active_session;
     return (
       <tbody key={session.session_id}>
         <tr
           key={`${session.session_id}start_time`}
           className={session.stop_time === null ? "active-session" : ""}
         >
-          <th>{getText(session_info.header.start_time.text, language)}:</th>
+          <th>{session_info.header.start_time}:</th>
           <td>
             {new Intl.DateTimeFormat(
               session_info.settings.date_language_locale,
@@ -517,7 +499,7 @@ export default class Status extends React.Component {
           key={`${session.session_id}stop_time`}
           className={session.stop_time === null ? "active-session" : ""}
         >
-          <th>{getText(session_info.header.stop_time.text, language)}:</th>
+          <th>{session_info.header.stop_time}:</th>
           <td>
             {session.stop_time === null
               ? activeSessionText
@@ -531,28 +513,28 @@ export default class Status extends React.Component {
           key={`${session.session_id}duration`}
           className={session.stop_time === null ? "active-session" : ""}
         >
-          <th>{getText(session_info.header.duration.text, language)}:</th>
+          <th>{session_info.header.duration}:</th>
           <td>{this.getDuration(session.session_time)}</td>
         </tr>
         <tr
           key={`${session.session_id}download`}
           className={session.stop_time === null ? "active-session" : ""}
         >
-          <th>{getText(session_info.header.download.text, language)}:</th>
+          <th>{session_info.header.download}:</th>
           <td>{this.getMB(session.output_octets)}</td>
         </tr>
         <tr
           key={`${session.session_id}upload`}
           className={session.stop_time === null ? "active-session" : ""}
         >
-          <th>{getText(session_info.header.upload.text, language)}:</th>
+          <th>{session_info.header.upload}:</th>
           <td>{this.getMB(session.input_octets)}</td>
         </tr>
         <tr
           key={`${session.session_id}device_address`}
           className={session.stop_time === null ? "active-session" : ""}
         >
-          <th>{getText(session_info.header.device_address.text, language)}:</th>
+          <th>{session_info.header.device_address}:</th>
           <td>{session.calling_station_id}</td>
         </tr>
         {session.stop_time == null &&
@@ -562,7 +544,7 @@ export default class Status extends React.Component {
                 <input
                   type="button"
                   className="button full"
-                  value={getText(buttons.logout.text, language)}
+                  value={t`CAPTIVE_PORTAL_LOGOUT`}
                   onClick={() => {
                     this.handleSessionLogout(session);
                   }}
@@ -576,7 +558,7 @@ export default class Status extends React.Component {
 
   getLargeTable = (session_info) => {
     const {activeSessions, pastSessions} = this.state;
-    const {language, captivePortalLogoutForm} = this.props;
+    const {captivePortalLogoutForm} = this.props;
     const showLogoutButton =
       captivePortalLogoutForm.logout_by_session && activeSessions.length > 1;
     return (
@@ -584,11 +566,7 @@ export default class Status extends React.Component {
         <thead>
           <tr>
             {Object.keys(session_info.header).map((key) => {
-              return (
-                <th key={key}>
-                  {getText(session_info.header[key].text, language)}
-                </th>
-              );
+              return <th key={key}>{session_info.header[key]}</th>;
             })}
           </tr>
         </thead>
@@ -655,15 +633,13 @@ export default class Status extends React.Component {
   render() {
     const {
       statusPage,
-      language,
       orgSlug,
       captivePortalLoginForm,
       captivePortalLogoutForm,
       isAuthenticated,
       userData,
     } = this.props;
-    const {content, links, buttons, session_info, user_info, logout_modal} =
-      statusPage;
+    const {links} = statusPage;
     const {
       username,
       password,
@@ -676,8 +652,38 @@ export default class Status extends React.Component {
       modalActive,
       rememberMe,
     } = this.state;
-    const contentArr = getText(content, language).split("\n");
-    userInfo.status = getText(user_info.status.value, language);
+    const session_info = {
+      header: {
+        start_time: t`SESSION_HEADER_START_TIME`,
+        stop_time: t`SESSION_HEADER_STOP_TIME`,
+        duration: t`SESSION_HEADER_DURATION`,
+        download: t`SESSION_HEADER_DOWNLOAD`,
+        upload: t`SESSION_HEADER_UPLOAD`,
+        device_address: t`SESSION_HEADER_DEVICE_ADDRESS`,
+      },
+      settings: {
+        active_session: t`ACTIVE_SESSION_TEXT`,
+        date_language_locale: t`DATE_LANGUAGE_LOCALE`,
+      },
+    };
+    const user_info = {
+      status: {
+        text: t`USER_INFO_STATUS_TEXT`,
+        value: t`USER_INFO_STATUS_VALUE`,
+      },
+      email: {
+        text: t`USER_INFO_EMAIL`,
+      },
+      username: {
+        text: t`USER_INFO_USERNAME`,
+      },
+      phone_number: {
+        text: t`USER_INFO_PHONE_NUMBER`,
+      },
+    };
+    user_info.status.text = t`USER_INFO_STATUS_TEXT`;
+    const contentArr = t`STATUS_PAGE_CONTENT`.split("\n");
+    userInfo.status = user_info.status.value;
     return (
       <>
         <div
@@ -691,7 +697,7 @@ export default class Status extends React.Component {
             >
               &#10006;
             </button>
-            <p className="message">{getText(logout_modal.content, language)}</p>
+            <p className="message">{t`LOGOUT_MODAL_CONTENT`}</p>
 
             <p className="modal-buttons">
               <button
@@ -699,14 +705,14 @@ export default class Status extends React.Component {
                 className="button partial"
                 onClick={() => this.handleLogout(true)}
               >
-                {getText(logout_modal.buttons.agree.text, language)}
+                {t`LOGOUT_MODAL_AGREE`}
               </button>
               <button
                 type="button"
                 className="button partial"
                 onClick={() => this.handleLogout(false)}
               >
-                {getText(logout_modal.buttons.disagree.text, language)}
+                {t`LOGOUT_MODAL_DISAGREE`}
               </button>
             </p>
           </div>
@@ -721,7 +727,7 @@ export default class Status extends React.Component {
               {Object.keys(userInfo).map((key) => {
                 return (
                   <p key={key}>
-                    <label>{getText(user_info[key].text, language)}:</label>
+                    <label>{user_info[key].text}:</label>
                     <span>{userInfo[key]}</span>
                   </p>
                 );
@@ -731,7 +737,7 @@ export default class Status extends React.Component {
                 <input
                   type="button"
                   className="button full"
-                  value={getText(buttons.logout.text, language)}
+                  value={t`LOGOUT_BUTTON`}
                   onClick={
                     rememberMe
                       ? this.toggleModal
@@ -749,7 +755,7 @@ export default class Status extends React.Component {
                           className="button full status-link"
                           to={link.url.replace("{orgSlug}", orgSlug)}
                         >
-                          {getText(link.text, language)}
+                          {t`STATUS_PAGE_LINK_TEXT ${link.text}`}
                         </Link>
                       </div>
                     );
@@ -868,76 +874,14 @@ Status.defaultProps = {
 };
 Status.propTypes = {
   statusPage: PropTypes.shape({
-    title: PropTypes.object,
-    content: PropTypes.object.isRequired,
-    session_info: PropTypes.shape({
-      header: PropTypes.shape({
-        start_time: PropTypes.shape({
-          text: PropTypes.object.isRequired,
-        }).isRequired,
-        stop_time: PropTypes.shape({
-          text: PropTypes.object.isRequired,
-        }).isRequired,
-        duration: PropTypes.shape({
-          text: PropTypes.object.isRequired,
-        }).isRequired,
-        download: PropTypes.shape({
-          text: PropTypes.object.isRequired,
-        }).isRequired,
-        upload: PropTypes.shape({
-          text: PropTypes.object.isRequired,
-        }).isRequired,
-        device_address: PropTypes.shape({
-          text: PropTypes.object.isRequired,
-        }).isRequired,
-      }).isRequired,
-      settings: PropTypes.shape({
-        active_session: PropTypes.shape({
-          text: PropTypes.object.isRequired,
-        }).isRequired,
-        date_language_locale: PropTypes.string.isRequired,
-      }).isRequired,
-    }).isRequired,
     links: PropTypes.arrayOf(
       PropTypes.shape({
-        text: PropTypes.object.isRequired,
+        text: PropTypes.string.isRequired,
         url: PropTypes.string.isRequired,
       }),
     ),
-    user_info: PropTypes.shape({
-      status: PropTypes.shape({
-        text: PropTypes.object.isRequired,
-        value: PropTypes.object.isRequired,
-      }).isRequired,
-      email: PropTypes.shape({
-        text: PropTypes.object.isRequired,
-      }).isRequired,
-      username: PropTypes.shape({
-        text: PropTypes.object.isRequired,
-      }).isRequired,
-      phone_number: PropTypes.shape({
-        text: PropTypes.object,
-      }),
-    }).isRequired,
-    buttons: PropTypes.shape({
-      logout: PropTypes.shape({
-        text: PropTypes.object.isRequired,
-      }).isRequired,
-    }).isRequired,
-    logout_modal: PropTypes.shape({
-      content: PropTypes.object.isRequired,
-      buttons: PropTypes.shape({
-        agree: PropTypes.shape({
-          text: PropTypes.object.isRequired,
-        }).isRequired,
-        disagree: PropTypes.shape({
-          text: PropTypes.object.isRequired,
-        }).isRequired,
-      }).isRequired,
-    }).isRequired,
     saml_logout_url: PropTypes.string,
   }).isRequired,
-  language: PropTypes.string.isRequired,
   orgSlug: PropTypes.string.isRequired,
   orgName: PropTypes.string.isRequired,
   userData: PropTypes.object.isRequired,

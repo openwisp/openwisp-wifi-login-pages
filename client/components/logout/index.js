@@ -9,7 +9,6 @@ const mapStateToProps = (state) => {
     orgSlug: conf.slug,
     orgName: conf.name,
     isAuthenticated: conf.isAuthenticated,
-    language: state.language,
     userData: conf.userData,
   };
 };

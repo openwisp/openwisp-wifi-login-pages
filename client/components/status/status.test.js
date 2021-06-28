@@ -7,6 +7,7 @@ import {Cookies} from "react-cookie";
 import ShallowRenderer from "react-test-renderer/shallow";
 import {toast} from "react-toastify";
 import getConfig from "../../utils/get-config";
+import loadTranslation from "../../utils/load-translation";
 import logError from "../../utils/log-error";
 import tick from "../../utils/tick";
 import Status from "./status";
@@ -14,6 +15,7 @@ import validateToken from "../../utils/validate-token";
 
 jest.mock("axios");
 jest.mock("../../utils/get-config");
+jest.mock("../../utils/load-translation");
 jest.mock("../../utils/log-error");
 jest.mock("../../utils/validate-token");
 logError.mockImplementation(jest.fn());
@@ -21,16 +23,16 @@ logError.mockImplementation(jest.fn());
 const defaultConfig = getConfig("default");
 const links = [
   {
-    text: {en: "link-1"},
+    text: "link-1",
     url: "/link1.com",
   },
   {
-    text: {en: "link-2"},
+    text: "link-2",
     url: "/link2.com",
     authenticated: false,
   },
   {
-    text: {en: "link-3"},
+    text: "link-3",
     url: "/link3.com",
     authenticated: true,
   },
@@ -46,7 +48,6 @@ const getLinkText = (wrapper, selector) => {
 
 const createTestProps = (props) => {
   return {
-    language: "en",
     orgSlug: "default",
     orgName: "default name",
     statusPage: defaultConfig.components.status_page,
@@ -85,6 +86,7 @@ describe("<Status /> rendering", () => {
   it("should render correctly", () => {
     props = createTestProps();
     const renderer = new ShallowRenderer();
+    loadTranslation("en", "default");
     const component = renderer.render(<Status {...props} />);
     expect(component).toMatchSnapshot();
   });
@@ -93,6 +95,7 @@ describe("<Status /> rendering", () => {
     const prop = createTestProps();
     prop.statusPage.links = links;
     prop.isAuthenticated = false;
+    loadTranslation("en", "default");
     const wrapper = shallow(<Status {...prop} />, {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: true,
@@ -107,6 +110,7 @@ describe("<Status /> rendering", () => {
     const prop = createTestProps();
     prop.statusPage.links = links;
     prop.isAuthenticated = true;
+    loadTranslation("en", "default");
     const wrapper = shallow(<Status {...prop} />, {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: true,
@@ -129,6 +133,7 @@ describe("<Status /> interactions", () => {
       getLoading: PropTypes.func,
     };
     validateToken.mockClear();
+    loadTranslation("en", "default");
   });
 
   afterEach(() => {
@@ -310,7 +315,7 @@ describe("<Status /> interactions", () => {
     validateToken.mockReturnValue(true);
     props = createTestProps();
     props.settings.mobile_phone_verification = true;
-    props.statusPage.user_info.phone_number = {text: {en: "Phone number"}};
+    // props.statusPage.user_info.phone_number = {text: {en: "Phone number"}};
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: false,
@@ -326,7 +331,7 @@ describe("<Status /> interactions", () => {
     validateToken.mockReturnValue(true);
     props = createTestProps();
     props.settings.mobile_phone_verification = true;
-    props.statusPage.user_info.phone_number = {text: {en: "Phone number"}};
+    // props.statusPage.user_info.phone_number = {text: {en: "Phone number"}};
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: false,
@@ -839,11 +844,7 @@ describe("<Status /> interactions", () => {
       disableLifecycleMethods: false,
     });
     const setTitleMock = wrapper.instance().props.setTitle.mock;
-    expect(setTitleMock.calls.pop()).toEqual([
-      props.statusPage,
-      props.language,
-      props.orgName,
-    ]);
+    expect(setTitleMock.calls.pop()).toEqual(["Status", props.orgName]);
   });
 
   it("should perform call saml_logout_url if logged in via SAML", async () => {

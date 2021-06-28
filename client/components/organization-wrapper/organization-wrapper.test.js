@@ -7,7 +7,10 @@ import {Provider} from "react-redux";
 import ShallowRenderer from "react-test-renderer/shallow";
 
 import getConfig from "../../utils/get-config";
+import loadTranslation from "../../utils/load-translation";
 import OrganizationWrapper from "./organization-wrapper";
+
+jest.mock("../../utils/load-translation");
 
 const userData = {
   is_active: true,
@@ -29,9 +32,6 @@ const createTestProps = (props) => {
     match: {params: {organization: "default"}, path: "/default"},
     organization: {
       configuration: {
-        title: {
-          en: "Default",
-        },
         pageTitle: undefined,
         css_path: null,
         slug: "default",
@@ -59,6 +59,7 @@ describe("<OrganizationWrapper /> rendering", () => {
 
   beforeEach(() => {
     props = createTestProps();
+    loadTranslation("en", "default");
     wrapper = shallow(<OrganizationWrapper {...props} />);
   });
 

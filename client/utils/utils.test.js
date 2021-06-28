@@ -10,70 +10,35 @@ import renderAdditionalInfo from "./render-additional-info";
 import shouldLinkBeShown from "./should-link-be-shown";
 import tick from "./tick";
 import validateToken from "./validate-token";
+import loadTranslation from "./load-translation";
 import PasswordToggleIcon from "./password-toggle";
 
 jest.mock("axios");
+jest.mock("./load-translation");
 
 describe("renderAdditionalInfo tests", () => {
-  let textObj = {en: "sample test"};
-  const language = "en";
-  const termsAndConditions = {title: {en: "title1"}};
-  const privacyPolicy = {title: {en: "title2"}};
+  let text = "sample test";
   const orgSlug = "default";
   const component = "test";
+  loadTranslation("en", "default");
   it("should return expected output", () => {
-    let output = renderAdditionalInfo(
-      textObj,
-      language,
-      termsAndConditions,
-      privacyPolicy,
-      orgSlug,
-      component,
-    );
+    let output = renderAdditionalInfo(text, orgSlug, component);
     expect(output[0]).toEqual("sample test");
-    textObj = {en: "sample {terms_and_conditions} test"};
-    output = renderAdditionalInfo(
-      textObj,
-      language,
-      termsAndConditions,
-      privacyPolicy,
-      orgSlug,
-      component,
-    );
-    expect(output[1].props.children).toBe("title1");
-    textObj = {en: "sample {privacy_policy} test"};
-    output = renderAdditionalInfo(
-      textObj,
-      language,
-      termsAndConditions,
-      privacyPolicy,
-      orgSlug,
-      component,
-    );
-    expect(output[1].props.children).toBe("title2");
-    textObj = {en: "sample {privacy_policy} test {terms_and_conditions}"};
-    output = renderAdditionalInfo(
-      textObj,
-      language,
-      termsAndConditions,
-      privacyPolicy,
-      orgSlug,
-      component,
-    );
-    expect(output[1].props.children).toBe("title2");
-    expect(output[3].props.children).toBe("title1");
+    text = "sample {terms_and_conditions} test";
+    output = renderAdditionalInfo(text, orgSlug, component);
+    expect(output[1].props.children).toBe("terms and conditions");
+    text = "sample {privacy_policy} test";
+    output = renderAdditionalInfo(text, orgSlug, component);
+    expect(output[1].props.children).toBe("privacy policy");
+    text = "sample {privacy_policy} test {terms_and_conditions}";
+    output = renderAdditionalInfo(text, orgSlug, component);
+    expect(output[1].props.children).toBe("privacy policy");
+    expect(output[3].props.children).toBe("terms and conditions");
 
-    textObj = {en: "{terms_and_conditions} sample {privacy_policy} test"};
-    output = renderAdditionalInfo(
-      textObj,
-      language,
-      termsAndConditions,
-      privacyPolicy,
-      orgSlug,
-      component,
-    );
-    expect(output[1].props.children).toBe("title1");
-    expect(output[3].props.children).toBe("title2");
+    text = "{terms_and_conditions} sample {privacy_policy} test";
+    output = renderAdditionalInfo(text, orgSlug, component);
+    expect(output[1].props.children).toBe("terms and conditions");
+    expect(output[3].props.children).toBe("privacy policy");
   });
 });
 describe("customMerge tests", () => {
@@ -251,7 +216,7 @@ describe("password-toggle tests", () => {
   const Component = React.forwardRef((props, ref) => (
     <>
       <input type="password" ref={ref} />
-      <PasswordToggleIcon inputRef={ref} orgSlug="default" language="en" />
+      <PasswordToggleIcon inputRef={ref} />
     </>
   ));
   const mountComponent = (ref) => {
@@ -273,11 +238,7 @@ describe("password-toggle tests", () => {
   });
   it("should call handleClick", () => {
     const wrapper = shallow(
-      <PasswordToggleIcon
-        inputRef={React.createRef()}
-        orgSlug="default"
-        language="en"
-      />,
+      <PasswordToggleIcon inputRef={React.createRef()} />,
     );
     const setAttributeMock = jest.fn();
     const getAttributeMock = jest.fn();

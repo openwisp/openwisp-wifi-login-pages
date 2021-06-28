@@ -9,7 +9,6 @@ const mapStateToProps = (state, ownProps) => {
     passwordChange: conf.components.password_change_form,
     orgSlug: conf.slug,
     orgName: conf.name,
-    language: state.language,
     cookies: ownProps.cookies,
   };
 };

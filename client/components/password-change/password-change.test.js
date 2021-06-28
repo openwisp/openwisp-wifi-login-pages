@@ -9,17 +9,18 @@ import {passwordChangeError, passwordConfirmError} from "../../constants";
 import getConfig from "../../utils/get-config";
 import logError from "../../utils/log-error";
 import tick from "../../utils/tick";
+import loadTranslation from "../../utils/load-translation";
 import PasswordChange from "./password-change";
 
 jest.mock("axios");
 jest.mock("../../utils/log-error");
+jest.mock("../../utils/load-translation");
 logError.mockImplementation(jest.fn());
 
 const defaultConfig = getConfig("default");
 
 const createTestProps = (props) => {
   return {
-    language: "en",
     orgSlug: "default",
     orgName: "default name",
     passwordChange: defaultConfig.components.password_change_form,
@@ -35,6 +36,7 @@ describe("<PasswordChange /> rendering", () => {
   it("should render correctly", () => {
     props = createTestProps();
     const renderer = new ShallowRenderer();
+    loadTranslation("en", "default");
     const component = renderer.render(<PasswordChange {...props} />);
     expect(component).toMatchSnapshot();
   });
@@ -114,8 +116,7 @@ describe("<PasswordChange /> interactions", () => {
   it("should set title", () => {
     const setTitleMock = wrapper.instance().props.setTitle.mock;
     expect(setTitleMock.calls.pop()).toEqual([
-      props.passwordChange,
-      props.language,
+      "Change your password",
       props.orgName,
     ]);
   });

@@ -2,9 +2,10 @@ import "./index.css";
 
 import PropTypes from "prop-types";
 import React from "react";
+import {t} from "ttag";
 import {Link} from "react-router-dom";
-
-import getText from "../../utils/get-text";
+import DOMPurify from "dompurify";
+import marked from "marked";
 
 export default class Modal extends React.Component {
   componentDidMount() {
@@ -16,13 +17,15 @@ export default class Modal extends React.Component {
   }
 
   renderContent = () => {
-    const {privacyPolicy, termsAndConditions, language, match} = this.props;
+    const {privacyPolicy, termsAndConditions, match} = this.props;
     const {name} = match.params;
     let content;
-    if (name === "terms-and-conditions" && termsAndConditions.content)
-      content = getText(termsAndConditions.content, language);
-    else if (name === "privacy-policy" && privacyPolicy.content)
-      content = getText(privacyPolicy.content, language);
+    if (name === "terms-and-conditions" && termsAndConditions)
+      content = t`TERMS_AND_CONDITIONS_CONTENT`;
+    else if (name === "privacy-policy" && privacyPolicy)
+      content = t`PRIVACY_POLICY_CONTENT`;
+    if (content !== undefined)
+      return {__html: DOMPurify.sanitize(marked(content))};
     return {__html: content};
   };
 
@@ -67,13 +70,6 @@ Modal.propTypes = {
     push: PropTypes.func,
   }).isRequired,
   prevPath: PropTypes.string.isRequired,
-  language: PropTypes.string.isRequired,
-  privacyPolicy: PropTypes.shape({
-    title: PropTypes.object,
-    content: PropTypes.object,
-  }).isRequired,
-  termsAndConditions: PropTypes.shape({
-    title: PropTypes.object,
-    content: PropTypes.object,
-  }).isRequired,
+  privacyPolicy: PropTypes.bool.isRequired,
+  termsAndConditions: PropTypes.bool.isRequired,
 };

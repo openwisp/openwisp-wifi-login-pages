@@ -46,14 +46,14 @@ exports[`<Login /> interactions phone_number field should be present if mobile p
               class="inner"
             >
               <img
-                alt="Login with google"
+                alt="Login with Google"
                 class="icon"
                 src="/assets/default/google.svg"
               />
               <span
                 class="text"
               >
-                Login with google
+                Login with Google
               </span>
             </span>
           </a>
@@ -346,14 +346,14 @@ exports[`<Login /> interactions should not show phone_number field if auto_switc
               class="inner"
             >
               <img
-                alt="Login with google"
+                alt="Login with Google"
                 class="icon"
                 src="/assets/default/google.svg"
               />
               <span
                 class="text"
               >
-                Login with google
+                Login with Google
               </span>
             </span>
           </a>
@@ -400,6 +400,7 @@ exports[`<Login /> interactions should not show phone_number field if auto_switc
             pattern=".+@.+\\\\..+"
             placeholder="email address"
             required=""
+            title="enter valid email address"
             type="email"
             value=""
           />
@@ -619,14 +620,14 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
               class="inner"
             >
               <img
-                alt="Login with google"
+                alt="Login with Google"
                 class="icon"
                 src="/assets/default/google.svg"
               />
               <span
                 class="text"
               >
-                Login with google
+                Login with Google
               </span>
             </span>
           </a>
@@ -673,6 +674,7 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
             pattern=".+@.+\\\\..+"
             placeholder="email address"
             required=""
+            title="enter valid email address"
             type="email"
             value=""
           />
@@ -872,14 +874,14 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
                 className="inner"
               >
                 <img
-                  alt="Google"
+                  alt="Login with Google"
                   className="icon"
                   src="/assets/default/google.png"
                 />
                 <span
                   className="text"
                 >
-                  Google
+                  Login with Google
                 </span>
               </span>
             </a>
@@ -894,14 +896,14 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
                 className="inner"
               >
                 <img
-                  alt="Facebook"
+                  alt="Login with Facebook"
                   className="icon"
                   src="/assets/default/facebook.png"
                 />
                 <span
                   className="text"
                 >
-                  Facebook
+                  Login with Facebook
                 </span>
               </span>
             </a>
@@ -927,7 +929,7 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
               pattern=".+@.+\\\\..+"
               placeholder="email address"
               required={true}
-              title={null}
+              title="enter valid email address"
               type="email"
               value=""
             />
@@ -960,8 +962,6 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
                 }
               }
               isVisible={false}
-              language="en"
-              orgSlug="default"
               parentClassName=""
             />
           </div>
@@ -1092,14 +1092,14 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
                 className="inner"
               >
                 <img
-                  alt="Login with google"
+                  alt="Login with Google"
                   className="icon"
                   src="/assets/default/google.svg"
                 />
                 <span
                   className="text"
                 >
-                  Login with google
+                  Login with Google
                 </span>
               </span>
             </a>
@@ -1147,7 +1147,7 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
               pattern=".+@.+\\\\..+"
               placeholder="email address"
               required={true}
-              title={null}
+              title="enter valid email address"
               type="email"
               value=""
             />
@@ -1180,8 +1180,6 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
                 }
               }
               isVisible={false}
-              language="en"
-              orgSlug="default"
               parentClassName=""
             />
           </div>

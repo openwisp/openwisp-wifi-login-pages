@@ -11,6 +11,7 @@ import {Redirect, Router} from "react-router-dom";
 import {createMemoryHistory} from "history";
 import PhoneInput from "react-phone-input-2";
 import {loadingContextValue} from "../../utils/loading-context";
+import loadTranslation from "../../utils/load-translation";
 import getConfig from "../../utils/get-config";
 import tick from "../../utils/tick";
 import MobilePhoneChangeWrapped from "./mobile-phone-change";
@@ -19,6 +20,7 @@ import validateToken from "../../utils/validate-token";
 const MobilePhoneChange = MobilePhoneChangeWrapped.WrappedComponent;
 jest.mock("../../utils/get-config");
 jest.mock("../../utils/validate-token");
+jest.mock("../../utils/load-translation");
 jest.mock("axios");
 
 const createTestProps = function (props, configName = "test-org-2") {
@@ -35,7 +37,6 @@ const createTestProps = function (props, configName = "test-org-2") {
     settings: conf.settings,
     orgSlug: conf.slug,
     orgName: conf.name,
-    language: "en",
     cookies: new Cookies(),
     logout: jest.fn(),
     setUserData: jest.fn(),
@@ -61,7 +62,6 @@ const mountComponent = function (props) {
         organization: {
           configuration: props.configuration,
         },
-        language: props.language,
       };
     },
   };
@@ -122,6 +122,7 @@ describe("Change Phone Number: standard flow", () => {
   it("should render successfully", async () => {
     validateToken.mockReturnValue(true);
     props.userData = userData;
+    loadTranslation("en", "default");
     wrapper = await mountComponent(props);
     expect(wrapper).toMatchSnapshot();
     expect(wrapper.exists(MobilePhoneChange)).toBe(true);
@@ -258,8 +259,7 @@ describe("Change Phone Number: standard flow", () => {
     const component = wrapper.find(MobilePhoneChange);
     const setTitleMock = component.props().setTitle.mock;
     expect(setTitleMock.calls.pop()).toEqual([
-      props.phone_number_change,
-      props.language,
+      "Change mobile number",
       props.orgName,
     ]);
   });

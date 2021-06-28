@@ -4,26 +4,28 @@ import {BrowserRouter as Router} from "react-router-dom";
 import renderer from "react-test-renderer";
 
 import getConfig from "../../utils/get-config";
+import loadTranslation from "../../utils/load-translation";
 import Header from "./header";
 
 const defaultConfig = getConfig("default");
+jest.mock("../../utils/load-translation");
 const headerLinks = [
   {
-    text: {en: "link-1"},
+    text: "link-1",
     url: "link-1/",
   },
   {
-    text: {en: "link-2"},
+    text: "link-2",
     url: "link-2/",
     authenticated: false,
   },
   {
-    text: {en: "link-3"},
+    text: "link-3",
     url: "link-3/",
     authenticated: true,
   },
   {
-    text: {en: "link-4"},
+    text: "link-4",
     url: "link-4/",
     authenticated: true,
     verified: true,
@@ -60,6 +62,7 @@ describe("<Header /> rendering", () => {
   beforeEach(() => {
     props = createTestProps();
     wrapper = shallow(<Header {...props} />);
+    loadTranslation("en", "default");
   });
   it("should render without links", () => {
     const links = {

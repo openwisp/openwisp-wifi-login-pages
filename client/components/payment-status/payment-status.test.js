@@ -9,14 +9,15 @@ import getConfig from "../../utils/get-config";
 import PaymentStatus from "./payment-status";
 import tick from "../../utils/tick";
 import validateToken from "../../utils/validate-token";
+import loadTranslation from "../../utils/load-translation";
 
 jest.mock("axios");
 jest.mock("../../utils/validate-token");
+jest.mock("../../utils/load-translation");
 
 const defaultConfig = getConfig("default");
 const createTestProps = (props) => {
   return {
-    language: "en",
     orgSlug: "default",
     userData: {},
     setUserData: jest.fn(),
@@ -54,6 +55,7 @@ describe("Test <PaymentStatus /> cases", () => {
       setLoading: PropTypes.func,
     };
     console.log = jest.fn();
+    loadTranslation("en", "default");
     validateToken.mockClear();
   });
 

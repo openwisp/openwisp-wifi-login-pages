@@ -4,11 +4,11 @@ import qs from "qs";
 import React from "react";
 import {Link} from "react-router-dom";
 import {toast} from "react-toastify";
+import {t} from "ttag";
 import "react-toastify/dist/ReactToastify.css";
 import LoadingContext from "../../utils/loading-context";
 import {resetApiUrl} from "../../constants";
 import getErrorText from "../../utils/get-error-text";
-import getText from "../../utils/get-text";
 import logError from "../../utils/log-error";
 import handleChange from "../../utils/handle-change";
 import Contact from "../contact-box";
@@ -26,8 +26,8 @@ export default class PasswordReset extends React.Component {
   }
 
   componentDidMount() {
-    const {language, setTitle, orgName, passwordReset} = this.props;
-    setTitle(passwordReset, language, orgName);
+    const {setTitle, orgName} = this.props;
+    setTitle(t`PASSWORD_RESET_PAGE_TITLE`, orgName);
   }
 
   handleChange(event) {
@@ -76,10 +76,9 @@ export default class PasswordReset extends React.Component {
 
   render() {
     const {email, errors, success} = this.state;
-    const {language, passwordReset, orgSlug} = this.props;
+    const {passwordReset, orgSlug} = this.props;
     const inputFields = passwordReset.input_fields;
     const loginPageLink = passwordReset.login_page_link;
-    const {buttons} = passwordReset;
     return (
       <div className="container content" id="reset-password">
         <div className="inner">
@@ -87,20 +86,18 @@ export default class PasswordReset extends React.Component {
             <div className="main-column">
               <div className="success">{success}</div>
               <Link to={`/${orgSlug}/login`} className="link">
-                {getText(loginPageLink.text, language)}
+                {t`LOGIN_PAGE_LINK_TEXT`}
               </Link>
             </div>
           ) : (
             <form className="main-column" onSubmit={this.handleSubmit}>
-              <p className="label">
-                {getText(passwordReset.additional_text, language)}
-              </p>
+              {passwordReset.additional_text && (
+                <p className="label">{t`PASSWORD_RESET_ADDITIONAL_TEXT`}</p>
+              )}
 
               <div className="fieldset">
                 <div className="row email">
-                  <label htmlFor="email">
-                    {getText(inputFields.email.label, language)}
-                  </label>
+                  <label htmlFor="email">{t`EMAIL_LABEL`}</label>
                   {errors.email && (
                     <div className="error">
                       <span className="icon">!</span>
@@ -115,12 +112,9 @@ export default class PasswordReset extends React.Component {
                     name="email"
                     value={email}
                     onChange={this.handleChange}
-                    placeholder={getText(
-                      inputFields.email.placeholder,
-                      language,
-                    )}
+                    placeholder={t`EMAIL_PLACEHOLDER`}
                     pattern={inputFields.email.pattern}
-                    title={getText(inputFields.email.pattern_description)}
+                    title={t`EMAIL_PATTERN_DESCRIPTION`}
                     autoComplete="email"
                   />
                 </div>
@@ -129,21 +123,21 @@ export default class PasswordReset extends React.Component {
                   <input
                     type="submit"
                     className="button full"
-                    value={getText(buttons.send, language)}
+                    value={t`PASSWORD_RESET_BUTTON`}
                   />
                 </div>
               </div>
 
               {passwordReset.contact_text && (
                 <div className="row contact-us">
-                  {getText(passwordReset.contact_text, language)}
+                  {t`PASSWORD_RESET_CONTACT_TEXT`}
                 </div>
               )}
 
               {loginPageLink && (
                 <div className="row links">
                   <Link to={`/${orgSlug}/login`} className="link">
-                    {getText(loginPageLink.text, language)}
+                    {t`LOGIN_PAGE_LINK_TEXT`}
                   </Link>
                 </div>
               )}
@@ -159,23 +153,16 @@ export default class PasswordReset extends React.Component {
 PasswordReset.contextType = LoadingContext;
 PasswordReset.propTypes = {
   passwordReset: PropTypes.shape({
-    title: PropTypes.object,
-    heading: PropTypes.object,
-    additional_text: PropTypes.object,
+    additional_text: PropTypes.bool,
     input_fields: PropTypes.shape({
       email: PropTypes.shape({
         type: PropTypes.string.isRequired,
-        label: PropTypes.object.isRequired,
-        placeholder: PropTypes.object.isRequired,
         pattern: PropTypes.string.isRequired,
-        pattern_description: PropTypes.object.isRequired,
       }).isRequired,
     }).isRequired,
-    buttons: PropTypes.object,
-    login_page_link: PropTypes.object,
-    contact_text: PropTypes.object,
+    login_page_link: PropTypes.bool,
+    contact_text: PropTypes.bool,
   }).isRequired,
-  language: PropTypes.string.isRequired,
   orgSlug: PropTypes.string.isRequired,
   orgName: PropTypes.string.isRequired,
   setTitle: PropTypes.func.isRequired,

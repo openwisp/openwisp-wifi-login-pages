@@ -13,15 +13,16 @@ import {loadingContextValue} from "../../utils/loading-context";
 import tick from "../../utils/tick";
 
 import getConfig from "../../utils/get-config";
+import loadTranslation from "../../utils/load-translation";
 import Registration from "./registration";
 
 jest.mock("../../utils/get-config");
+jest.mock("../../utils/load-translation");
 jest.mock("axios");
 
 const createTestProps = function (props, configName = "default") {
   const config = getConfig(configName);
   return {
-    language: "en",
     orgSlug: configName,
     orgName: config.name,
     settings: config.settings,
@@ -50,7 +51,6 @@ const mountComponent = function (passedProps) {
         organization: {
           configuration: passedProps.configuration,
         },
-        language: passedProps.language,
       };
     },
   };
@@ -80,6 +80,7 @@ describe("<Registration /> rendering", () => {
   let wrapper;
   beforeEach(() => {
     props = createTestProps();
+    loadTranslation("en", "default");
   });
   it("should render correctly", () => {
     props = createTestProps();
@@ -441,10 +442,6 @@ describe("Registration without identity verification (Email registration)", () =
     wrapper = await mountComponent(props);
     const component = wrapper.find(Registration);
     const setTitleMock = component.props().setTitle.mock;
-    expect(setTitleMock.calls.pop()).toEqual([
-      props.registration,
-      props.language,
-      props.orgName,
-    ]);
+    expect(setTitleMock.calls.pop()).toEqual(["Sign up", props.orgName]);
   });
 });

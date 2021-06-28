@@ -4,39 +4,38 @@ import "./index.css";
 import PropTypes from "prop-types";
 import React from "react";
 import {Link} from "react-router-dom";
-
-import getText from "../../utils/get-text";
+import {t} from "ttag";
 
 export default class DoesNotExist extends React.Component {
   componentDidMount() {
-    const {orgName, setTitle, page, language} = this.props;
+    const {orgName, setTitle, page} = this.props;
     if (page !== undefined || orgName !== undefined)
-      setTitle(page, language, orgName);
+      setTitle(t`404_PAGE_TITLE`, orgName);
   }
 
   render() {
-    const {orgSlug, language, page} = this.props;
+    const {orgSlug, page} = this.props;
     return (
       <div className="container content" id="not-foud-404">
         <div className="inner">
           <div className="main-column">
             <div className="row owisp-404-row-1">
-              {page && page.heading ? getText(page.heading, language) : "Oops!"}
+              {page && page.heading ? t`404_PAGE_HEADING` : "Oops!"}
             </div>
             <div className="row owisp-404-row-2">
               {page && page.sub_heading
-                ? getText(page.sub_heading, language)
+                ? t`404_PAGE_SUBHEADING`
                 : "404 Not Found"}
             </div>
             <div className="row owisp-404-row-3">
               {page && page.message
-                ? getText(page.message, language)
+                ? t`404_PAGE_MESSAGE`
                 : "Sorry, an error has occurred, Requested page not found!"}
             </div>
             {page && page.homepage_link && (
               <div className="row owisp-404-row-4">
                 <Link to={`/${orgSlug}`} className="link">
-                  {getText(page.homepage_link.text, language)}
+                  {t`HOME_PAGE_LINK_TEXT`}
                 </Link>
               </div>
             )}
@@ -48,13 +47,11 @@ export default class DoesNotExist extends React.Component {
 }
 DoesNotExist.propTypes = {
   page: PropTypes.shape({
-    title: PropTypes.object,
-    heading: PropTypes.object,
-    sub_heading: PropTypes.object,
-    message: PropTypes.object,
-    homepage_link: PropTypes.object,
+    heading: PropTypes.bool,
+    sub_heading: PropTypes.bool,
+    message: PropTypes.bool,
+    homepage_link: PropTypes.bool,
   }),
-  language: PropTypes.string,
   orgSlug: PropTypes.string,
   orgName: PropTypes.string,
   setTitle: PropTypes.func,

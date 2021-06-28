@@ -1,28 +1,33 @@
 import {shallow} from "enzyme";
 import React from "react";
 import ShallowRenderer from "react-test-renderer/shallow";
+import {addLocale, useLocale} from "ttag";
 
 import getConfig from "../../utils/get-config";
+import loadTranslation from "../../utils/load-translation";
 import Contact from "./contact";
 
+jest.mock("../../utils/load-translation");
+
+loadTranslation("en", "default", addLocale, useLocale);
 const defaultConfig = getConfig("default");
 const links = [
   {
-    alt: {en: "twitter"},
+    alt: "twitter",
     icon: "twiter.svg",
     url: "https://twitter.com/openwisp",
     authenticated: true,
     css: "twitter",
   },
   {
-    alt: {en: "facebook"},
+    alt: "facebook",
     icon: "facebook.svg",
     url: "https://facebook.com/openwisp",
     authenticated: false,
     css: "facebook",
   },
   {
-    alt: {en: "google"},
+    alt: "google",
     icon: "google.svg",
     url: "https://google.com/openwisp",
     css: "google",
@@ -30,7 +35,6 @@ const links = [
 ];
 const createTestProps = (props) => {
   return {
-    language: "en",
     orgSlug: "default",
     contactPage: defaultConfig.components.contact_page,
     userData: {is_verified: true},

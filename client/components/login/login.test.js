@@ -11,12 +11,14 @@ import {createMemoryHistory} from "history";
 import PhoneInput from "react-phone-input-2";
 import {loadingContextValue} from "../../utils/loading-context";
 import getConfig from "../../utils/get-config";
+import loadTranslation from "../../utils/load-translation";
 import Login from "./login";
 import tick from "../../utils/tick";
 import getParameterByName from "../../utils/get-parameter-by-name";
 
 jest.mock("axios");
 jest.mock("../../utils/get-parameter-by-name");
+jest.mock("../../utils/load-translation");
 
 const defaultConfig = getConfig("default");
 const loginForm = defaultConfig.components.login_form;
@@ -24,7 +26,6 @@ loginForm.input_fields.phone_number =
   defaultConfig.components.registration_form.input_fields.phone_number;
 const createTestProps = (props) => {
   return {
-    language: "en",
     orgSlug: "default",
     orgName: "default name",
     loginForm,
@@ -62,6 +63,7 @@ describe("<Login /> rendering", () => {
   it("should render correctly without social links", () => {
     props = createTestProps();
     const renderer = new ShallowRenderer();
+    loadTranslation("en", "default");
     const component = renderer.render(<Login {...props} />);
     expect(component).toMatchSnapshot();
   });
@@ -74,16 +76,12 @@ describe("<Login /> rendering", () => {
           ...defaultConfig.components.login_form,
           links: [
             {
-              text: {
-                en: "Google",
-              },
+              text: "Google",
               url: "https://radius.openwisp.io/login/google",
               icon: "google.png",
             },
             {
-              text: {
-                en: "Facebook",
-              },
+              text: "Facebook",
               url: "https://radius.openwisp.io/login/facebook",
               icon: "facebook.png",
             },
@@ -92,6 +90,7 @@ describe("<Login /> rendering", () => {
       },
     });
     const renderer = new ShallowRenderer();
+    loadTranslation("en", "default");
     const component = renderer.render(<Login {...props} />);
     expect(component).toMatchSnapshot();
   });
@@ -116,6 +115,7 @@ describe("<Login /> interactions", () => {
       getLoading: PropTypes.func,
     };
     wrapper = shallow(<Login {...props} />, {context: loadingContextValue});
+    loadTranslation("en", "default");
   });
 
   afterEach(() => {
@@ -528,11 +528,7 @@ describe("<Login /> interactions", () => {
     wrapper = mountComponent(props);
     const login = wrapper.find(Login);
     const setTitleMock = login.props().setTitle.mock;
-    expect(setTitleMock.calls.pop()).toEqual([
-      props.loginForm,
-      props.language,
-      props.orgName,
-    ]);
+    expect(setTitleMock.calls.pop()).toEqual(["Log in", props.orgName]);
   });
 
   it("should call handleAuthentication on social login / SAML", () => {

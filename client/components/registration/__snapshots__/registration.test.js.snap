@@ -34,7 +34,7 @@ exports[`<Registration /> rendering should render correctly 1`] = `
               pattern=".+@.+\\\\..+"
               placeholder="email address"
               required={true}
-              title={null}
+              title="enter valid email address"
               type="email"
               value=""
             />
@@ -67,8 +67,6 @@ exports[`<Registration /> rendering should render correctly 1`] = `
                 }
               }
               isVisible={false}
-              language="en"
-              orgSlug="default"
               parentClassName=""
             />
           </div>
@@ -78,7 +76,7 @@ exports[`<Registration /> rendering should render correctly 1`] = `
             <label
               htmlFor="password-confirm"
             >
-              confirm
+              confirm password
             </label>
             <input
               autoComplete="new-password"
@@ -100,8 +98,6 @@ exports[`<Registration /> rendering should render correctly 1`] = `
                 }
               }
               isVisible={false}
-              language="en"
-              orgSlug="default"
               parentClassName=""
             />
           </div>
@@ -133,7 +129,7 @@ exports[`<Registration /> rendering should render correctly 1`] = `
           <input
             className="button full"
             type="submit"
-            value="sign up"
+            value="Sign up"
           />
         </div>
         <div

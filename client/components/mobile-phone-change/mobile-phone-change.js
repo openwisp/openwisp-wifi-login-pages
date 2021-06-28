@@ -10,11 +10,11 @@ import {Redirect, withRouter} from "react-router-dom";
 import {toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PhoneInput from "react-phone-input-2";
+import {t} from "ttag";
 import "react-phone-input-2/lib/style.css";
 import LoadingContext from "../../utils/loading-context";
 import {mobilePhoneChangeUrl} from "../../constants";
 import getErrorText from "../../utils/get-error-text";
-import getText from "../../utils/get-text";
 import logError from "../../utils/log-error";
 import handleChange from "../../utils/handle-change";
 import submitOnEnter from "../../utils/submit-on-enter";
@@ -34,17 +34,9 @@ class MobilePhoneChange extends React.Component {
   }
 
   async componentDidMount() {
-    const {
-      cookies,
-      orgSlug,
-      setUserData,
-      logout,
-      language,
-      setTitle,
-      phone_number_change,
-      orgName,
-    } = this.props;
-    setTitle(phone_number_change, language, orgName);
+    const {cookies, orgSlug, setUserData, logout, setTitle, orgName} =
+      this.props;
+    setTitle(t`MOBILE_PHONE_CHANGE_PAGE_TITLE`, orgName);
     let {userData} = this.props;
     const isValid = await validateToken(
       cookies,
@@ -63,15 +55,7 @@ class MobilePhoneChange extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     const {setLoading} = this.context;
-    const {
-      cookies,
-      orgSlug,
-      language,
-      phone_number_change,
-      setUserData,
-      userData,
-    } = this.props;
-    const {text} = phone_number_change;
+    const {cookies, orgSlug, setUserData, userData} = this.props;
     const {phone_number, errors} = this.state;
     const url = mobilePhoneChangeUrl(orgSlug);
     const auth_token = cookies.get(`${orgSlug}_auth_token`);
@@ -97,7 +81,7 @@ class MobilePhoneChange extends React.Component {
         });
         setUserData({...userData, is_verified: false, phone_number});
         setLoading(false);
-        toast.info(getText(text.token_sent, language));
+        toast.info(t`TOKEN_SENT_TOAST`);
         self.props.history.push(`/${orgSlug}/mobile-phone-verification`);
       })
       .catch((error) => {
@@ -124,9 +108,8 @@ class MobilePhoneChange extends React.Component {
 
   render() {
     const {phone_number, errors} = this.state;
-    const {orgSlug, language, phone_number_change, settings} = this.props;
+    const {orgSlug, phone_number_change, settings} = this.props;
     const {input_fields} = phone_number_change;
-    const {buttons} = phone_number_change;
 
     // check equality to false, it may be undefined
     if (!settings.mobile_phone_verification) {
@@ -150,9 +133,7 @@ class MobilePhoneChange extends React.Component {
               )}
 
               <div className="row phone-number">
-                <label htmlFor="phone-number">
-                  {getText(input_fields.phone_number.label, language)}
-                </label>
+                <label htmlFor="phone-number">{t`PHONENUMBER_LABEL`}</label>
                 {errors.phone_number && (
                   <div className="error">
                     <span className="icon">!</span>
@@ -177,10 +158,7 @@ class MobilePhoneChange extends React.Component {
                   onKeyDown={(event) => {
                     submitOnEnter(event, this, "mobile-phone-change-form");
                   }}
-                  placeholder={getText(
-                    input_fields.phone_number.placeholder,
-                    language,
-                  )}
+                  placeholder={t`PHONENUMBER_PLACEHOLDER`}
                   enableSearch={Boolean(
                     input_fields.phone_number.enable_search,
                   )}
@@ -198,7 +176,7 @@ class MobilePhoneChange extends React.Component {
               <input
                 type="submit"
                 className="button full"
-                value={getText(buttons.change_phone_number.text, language)}
+                value={t`CHANGE_PHONENUMBER_BUTTON`}
               />
 
               <div className="row cancel">
@@ -206,7 +184,7 @@ class MobilePhoneChange extends React.Component {
                   className="button full"
                   href={`/${orgSlug}/mobile-phone-verification`}
                 >
-                  {getText(buttons.cancel.text, language)}
+                  {t`CANCEL_BUTTON`}
                 </a>
               </div>
             </div>
@@ -248,7 +226,6 @@ MobilePhoneChange.propTypes = {
   settings: PropTypes.shape({
     mobile_phone_verification: PropTypes.bool,
   }).isRequired,
-  language: PropTypes.string.isRequired,
   orgSlug: PropTypes.string.isRequired,
   orgName: PropTypes.string.isRequired,
   cookies: PropTypes.instanceOf(Cookies).isRequired,

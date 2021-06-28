@@ -32,9 +32,6 @@ server:
 # Path of all the assets should be defined relative to the organization's folder
 # in assets directory.
 client:
-  # <title> value
-  title:
-    en: "Wifi Login"
 
   auto_login: True
 
@@ -67,28 +64,23 @@ client:
         alternate_text: "{{name}}"
 {{/if}}
       links:
-        - text:
-            en: "Sign In" #link text in english
+        - text: "Sign In" #link text in english
           url: "/{{slug}}/login"
           authenticated: false
-        - text:
-            en: "Sign Up"
+        - text: "Sign Up"
           url: "/{{slug}}/registration"
           authenticated: false
-        - text:
-            en: "Status"
+        - text: "Status"
           url: "/{{slug}}/status"
           authenticated: true
-        - text:
-            en: "Change password"
+        - text: "Change password"
           url: "/{{slug}}/change-password"
           authenticated: true
           {{#if mobile_phone_verification }}
           verified: true
           {{/if}}
       {{#if mobile_phone_verification }}
-        - text:
-            en: "Change phone number"
+        - text: "Change phone number"
           url: "/{{slug}}/change-phone-number"
           authenticated: true
           method: "mobile_phone"
@@ -96,21 +88,22 @@ client:
 
     footer:
       links:
-        - text: []
-      # secondary text to be displayed in smaller size in next line.
-      # Eg. copyright text
-      secondary_text:
-        en: null
+        - text: "link-1"
+          url: "https://link-1.com"
+          authenticated: false
+        - text: "link-2"
+          url: "https://link-2.com"
+          authenticated: true
+          verified: false
+        - text: "link-3"
+          url: "https://link-3.com"
+          authenticated: true
+          verified: true
 
     registration_form:
-      title:
-        en: "Sign up"
       input_fields:
         phone_number:
-          placeholder:
-            en: "mobile phone number"
-          label:
-            en: "mobile phone number"
+          type: "tel"
           # default international prefix
           # country: "it"
           # restrict international prefixes shown
@@ -118,122 +111,46 @@ client:
         username:
           type: "text"
           pattern: '[a-zA-Z@.+\-_\d]{1,150}'
-          pattern_description:
-            en: "only letters, numbers, and @/./+/-/_ characters"
-          placeholder:
-            en: "username"
-          label:
-            en: "username"
         email:
           type: "email"
           pattern: '.+@.+\..+'
-          pattern_description:
-            en: null
-          placeholder:
-            en: "email address"
-          label:
-            en: "email"
         password:
           type: "password"
           pattern: ".{6,}"
-          pattern_description:
-            en: "password must be a minimum of 6 characters"
-          placeholder:
-            en: "password"
-          label:
-            en: "password"
         password_confirm:
           type: "password"
-          placeholder:
-            en: "confirm password"
-          label:
-            en: "confirm"
+          pattern: ".{6,}"
         first_name:
           type: "text"
-          label:
-            en: "first name"
-          label_optional:
-            en: "first name (optional)"
-          placeholder:
-            en: "first name"
           setting: "disabled"
         last_name:
           type: "text"
-          label:
-            en: "last name"
-          label_optional:
-            en: "last name (optional)"
-          placeholder:
-            en: "last name"
           setting: "disabled"
         birth_date:
           type: "date"
-          label:
-            en: "birth date"
-          label_optional:
-            en: "birth date (optional)"
           setting: "disabled"
         location:
           type: "text"
-          label:
-            en: "location"
-          label_optional:
-            en: "location (optional)"
           pattern: '[a-zA-Z@.+\-_\d]{1,150}'
-          pattern_description:
-            en: "only letters, numbers, and @/./+/-/_ characters"
-          placeholder:
-            en: "location"
           setting: "disabled"
         country:
-          label:
-            en: "country"
+          type: "text"
+          pattern: '[a-zA-Z@.+\-_\d\s]{1,150}'
         zipcode:
           type: number
-          label:
-            en: "zipcode"
         street:
           type: "text"
-          label:
-            en: "street"
-          placeholder:
-            en: "enter street"
         city:
           type: "text"
-          label:
-            en: "city"
-          placeholder:
-            en: "enter city"
         tax_number:
           type: "text"
-          label:
-            en: "tax number"
           pattern: '[a-zA-Z@.+\-_\d]{1,150}'
-          pattern_description:
-            en: "only letters, numbers, and @/./+/-/_ characters"
-          placeholder:
-            en: "enter your tax identification number (optional)"
-
-      {{#if subscriptions}}
-      plans_setting:
-        text:
-          en: "Select your plan below"
-      {{/if}}
-      buttons:
-        register:
-          text:
-            en: "Sign up"
-      additional_info_text:
-        en: "By signing up, you accept the {terms_and_conditions} and the {privacy_policy} of this WiFi service. "
+      additional_info_text: true
       links:
-        login:
-          en: "Already have an account? Log in"
-        forget_password:
-          en: "Forgot your password?"
+        login: true
+        forget_password: true
 
     mobile_phone_verification_form:
-      title:
-        en: "Verify mobile number"
       text:
         verify:
           en:
@@ -282,82 +199,36 @@ client:
             en: "Cancel"
 
     password_reset_form:
-      title:
-        en: "Reset Password"
-      heading:
-        en: "reset your password"
-      additional_text:
-        en: "Have you forgot your password? Enter your e-mail address below, and we'll send you an e-mail which will allow you to reset it."
+      additional_text: true
       input_fields:
         email:
           type: "email"
           pattern: '.+@.+\..+'
-          pattern_description:
-            en: null
-          placeholder:
-            en: "email address"
-          label:
-            en: "email"
-      buttons:
-        send:
-          en: "Reset password"
-      contact_text:
-        en: "Please contact us if you have any trouble resetting your password."
-      login_page_link:
-        text:
-          en: "Go back to sign in"
+      contact_text: true
+      login_page_link: true
 
     password_reset_confirm_form:
-      title:
-        en: "Reset Password"
-      heading:
-        en: "Reset your password"
       additional_text:
         en: "Please enter your new password below."
       input_fields:
         password:
           type: "password"
           pattern: ".{6,}"
-          pattern_description:
-            en: "password must be a minimum of 6 characters"
-          placeholder:
-            en: "password"
-          label:
-            en: "password"
         password_confirm:
           type: "password"
-          placeholder:
-            en: "confirm password"
-          label:
-            en: "confirm"
-      buttons:
-        submit:
-          en: "Change password"
-      contact_text:
-        en: "Please contact us if you have any trouble resetting your password."
-      login_page_link:
-        text:
-          en: "Go back to sign in"
+          pattern: ".{6,}"
+      contact_text: true
+      login_page_link: true
 
     contact_page:
-      email:
-        label:
-          en: "E-mail"
-        value:
-          en: "support@openwisp.co"
-      helpdesk:
-        label:
-          en: "Helpdesk"
-        value:
-          en: "+789 948 564"
+      email: "support@openwisp.co"
+      helpdesk: "+789 948 564"
 {{#if assets_confirm}}
       social_links:
-        - alt:
-            en: "twitter"
+        - alt: "twitter"
           icon: "twitter.svg"
           url: "https://twitter.com/openwisp"
-        - alt:
-            en: "facebook"
+        - alt: "facebook"
           icon: "facebook.svg"
           url: "https://facebook.com/openwisp"
 
@@ -366,111 +237,31 @@ client:
 {{/if}}
 
     status_page:
-      title:
-        en: "Status"
-      content:
-        en: |
-          WiFi Login Successful!
-          You can now use the internet.
-          You may leave this page open in case you want to log out.
-      user_info:
-        status:
-          text:
-            en: "Status"
-          value:
-            en: "Logged in"
-        email:
-          text:
-            en: "Email"
-        username:
-          text:
-            en: "Username"
-        phone_number:
-          text:
-            en: "Phone number"
-      session_info:
-        header:
-          start_time:
-            text:
-              en: "Start time"
-          stop_time:
-            text:
-              en: "Stop time"
-          duration:
-            text:
-              en: "Duration"
-          download:
-            text:
-              en: "Download"
-          upload:
-            text:
-              en: "Upload"
-          device_address:
-            text:
-              en: "Device address"
-        settings:
-          active_session:
-            text:
-              en: "session is active"
-          date_language_locale: "en-US"
       links:
-        - text:
-            en: "Change your password"
+        - text: "Change your password"
           url: "/{orgSlug}/change-password/"
-      buttons:
-        logout:
-          text:
-            en: "Logout"
-      logout_modal:
-        content:
-          en: "Do you want to automatically log in the next time?"
-        buttons:
-          agree:
-            text:
-              en: "Yes"
-          disagree:
-            text:
-              en: "No"
-
-    logout:
-      title:
-        en: "Logout"
-      content:
-        text:
-          en: "Logout successful"
-      login_again:
-        text:
-          en: "Log in again"
 
     login_form:
-      title:
-        en: "Log in"
       social_login:
         links:
 {{#if assets_confirm}}
-          - text:
-              en: "Login with Facebook"
+          - text: "Facebook"
             url: "#facebook"
             icon: "facebook.svg"
-          - text:
-              en: "Login with google"
+          - text: "Google"
             icon: "google.svg"
             url: "#google"
-          - text:
-              en: "Login with Twitter"
+          - text: "Twitter"
             icon: "twitter.svg"
             url: "#twitter"
 {{else}}
-          - text:
-              en: "Login with Facebook"
+          - text: "Facebook"
             url: "#facebook"
             icon: null
-          - text:
-              en: "Login with google"
+          - text: "Google"
             icon: null
             url: "#google"
-          - text:
-              en: "Login with Twitter"
+          - text: "Twitter"
             icon: null
             url: "#twitter"
 {{/if}}
@@ -478,77 +269,32 @@ client:
         username:
           type: "email"
           pattern: '.+@.+\..+'
-          pattern_description:
-            en: null
-          placeholder:
-            en: "email address"
-          label:
-            en: "email"
         password:
           type: "password"
           pattern: ".{6,}"
-          pattern_description:
-            en: "password must be a minimum of 6 characters"
-          placeholder:
-            en: "password"
-          label:
-            en: "password"
         remember_me:
           type: "checkbox"
           value: {{remember_me}}
-          label:
-            en: "remember me on this device"
-      additional_info_text:
-        en: "By logging in, you accept the {terms_and_conditions} and the {privacy_policy} of this WiFi service. "
+      additional_info_text: true
       buttons:
-        login:
-          text:
-            en: "Login"
-        register:
-          label:
-            en: "Not registered yet?"
-          text:
-            en: "Sign up"
+        register: true
       links:
-        forget_password:
-          en: "Forgot your password?"
+        forget_password: true
 
     password_change_form:
-      title:
-        en: "Change your password"
       input_fields:
         password1:
           type: "password"
           pattern: ".{6,}"
-          pattern_description:
-            en: "The new password must be a minimum of 6 characters"
-          label:
-            en: "new password"
-          placeholder:
-            en: "Enter your new password"
         password2:
           type: "password"
-          label:
-            en: "confirm new password"
-          placeholder:
-            en: "Confirm your new password"
-      buttons:
-        submit_button:
-          text:
-            en: "Change Password"
+          pattern: ".{6,}"
 
     404_page:
-      title:
-        en: "404 Not found"
-      heading:
-        en: "404"
-      sub_heading:
-        en: "Not Found"
-      message:
-        en: "Sorry, we couldn't find the page you were looking for."
-      homepage_link:
-        text:
-          en: "Go back to homepage"
+      heading: true
+      sub_heading: true
+      message: true
+      homepage_link: true
 
     captive_portal_login_form:
       method: post
@@ -573,50 +319,5 @@ client:
       additional_fields: []
       logout_by_session: {{logout_by_session_ID}}
 
-    {{#if subscriptions}}
-    payment_status_page:
-      heading:
-        en: "Payment"
-      sub_heading:
-        en: "Something went wrong with the payment."
-      try_again_button:
-        en: "Try again"
-      give_up_text:
-        en: "If you cannot complete the transaction, please contact our customer support service."
-      give_up_button:
-        en: "Cancel operation and log out"
-      success:
-        en: "Payment received successfully!"
-    {{/if}}
-
-  password_eye_icon:
-    reveal:
-      title:
-        en: "reveal password"
-    hide:
-      title:
-        en: "hide password"
-
-{{#if assets_confirm}}
-  privacy_policy:
-    title:
-      en: "privacy policy"
-    content:
-      en: "privacy-en.md"
-  terms_and_conditions:
-    title:
-      en: "terms and conditions"
-    content:
-      en: "terms-en.md"
-{{else}}
-  privacy_policy:
-    title:
-      en: "privacy policy"
-    content:
-      en: null
-  terms_and_conditions:
-    title:
-      en: "terms and conditions"
-    content:
-      en: null
-{{/if}}
+  privacy_policy: true
+  terms_and_conditions: true

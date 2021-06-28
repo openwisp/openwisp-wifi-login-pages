@@ -1,7 +1,6 @@
 import React from "react";
 import propTypes from "prop-types";
-import getConfig from "./get-config";
-import getText from "./get-text";
+import {t} from "ttag";
 
 class PasswordToggleIcon extends React.PureComponent {
   constructor(props) {
@@ -37,17 +36,12 @@ class PasswordToggleIcon extends React.PureComponent {
   }
 
   render() {
-    const {inputRef, parentClassName, language, orgSlug} = this.props;
-    const config = getConfig(orgSlug);
-    const passwordIcon = config.password_eye_icon;
+    const {inputRef, parentClassName} = this.props;
     const showPasswordIcon = () => (
-      <i className="eye" title={getText(passwordIcon.reveal.title, language)} />
+      <i className="eye" title={t`PASSWORD_REVEAL_ICON_TITLE`} />
     );
     const hidePasswordIcon = () => (
-      <i
-        className="eye-slash"
-        title={getText(passwordIcon.hide.title, language)}
-      />
+      <i className="eye-slash" title={t`PASSWORD_HIDE_ICON_TITLE`} />
     );
     const {isVisible} = this.state;
     const hideVal = showPasswordIcon();
@@ -77,6 +71,4 @@ PasswordToggleIcon.propTypes = {
   inputRef: propTypes.object.isRequired,
   parentClassName: propTypes.string,
   isVisible: propTypes.bool,
-  language: propTypes.string.isRequired,
-  orgSlug: propTypes.string.isRequired,
 };
