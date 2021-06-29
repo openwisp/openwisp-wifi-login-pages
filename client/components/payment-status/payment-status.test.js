@@ -4,6 +4,7 @@ import React from "react";
 import {toast} from "react-toastify";
 import PropTypes from "prop-types";
 import {Cookies} from "react-cookie";
+import ShallowRenderer from "react-test-renderer/shallow";
 import {loadingContextValue} from "../../utils/loading-context";
 import getConfig from "../../utils/get-config";
 import PaymentStatus from "./payment-status";
@@ -43,6 +44,15 @@ const responseData = {
   birth_date: null,
   location: "",
 };
+
+describe("<PaymentStatus /> rendering with placeholder translation tags", () => {
+  const props = createTestProps({userData: responseData, result: "failed"});
+  it("should render translation placeholder correctly", () => {
+    const renderer = new ShallowRenderer();
+    const wrapper = renderer.render(<PaymentStatus {...props} />);
+    expect(wrapper).toMatchSnapshot();
+  });
+});
 
 describe("Test <PaymentStatus /> cases", () => {
   let props;

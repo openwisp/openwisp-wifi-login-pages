@@ -1,5 +1,58 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<PaymentStatus /> rendering with placeholder translation tags should render translation placeholder correctly 1`] = `
+<div
+  className="container content"
+  id="not-foud-404"
+>
+  <div
+    className="inner"
+  >
+    <div
+      className="main-column"
+    >
+      <h2
+        className="row payment-status-row-1"
+      >
+        PAYMENT_HEADING
+        : 
+        failed
+      </h2>
+      <div
+        className="row payment-status-row-2"
+      >
+        PAYMENT_SUB_HEADING
+      </div>
+      <div
+        className="row payment-status-row-3"
+      >
+        <Link
+          className="button full"
+          to="/default/status"
+        >
+          PAYMENT_TRY_AGAIN_BUTTON
+        </Link>
+      </div>
+      <div
+        className="row payment-status-row-4"
+      >
+        <p>
+          PAYMENT_GIVE_UP_TEXT
+        </p>
+        <Link
+          className="button full"
+          onClick={[Function]}
+          to="/default/login"
+        >
+          PAYMENT_GIVE_UP_BUTTON
+        </Link>
+      </div>
+    </div>
+    <Memo(Connect(Contact)) />
+  </div>
+</div>
+`;
+
 exports[`Test <PaymentStatus /> cases should render failed state 1`] = `
 <div
   className="container content"

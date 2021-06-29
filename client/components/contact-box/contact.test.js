@@ -1,7 +1,6 @@
 import {shallow} from "enzyme";
 import React from "react";
 import ShallowRenderer from "react-test-renderer/shallow";
-import {addLocale, useLocale} from "ttag";
 
 import getConfig from "../../utils/get-config";
 import loadTranslation from "../../utils/load-translation";
@@ -9,7 +8,6 @@ import Contact from "./contact";
 
 jest.mock("../../utils/load-translation");
 
-loadTranslation("en", "default", addLocale, useLocale);
 const defaultConfig = getConfig("default");
 const links = [
   {
@@ -42,9 +40,20 @@ const createTestProps = (props) => {
   };
 };
 
+describe("<Contact /> rendering with placeholder translation tags", () => {
+  const props = createTestProps();
+  it("should render translation placeholder correctly", () => {
+    const renderer = new ShallowRenderer();
+    const wrapper = renderer.render(<Contact {...props} />);
+    expect(wrapper).toMatchSnapshot();
+  });
+});
+
 describe("<Status /> rendering", () => {
   let props;
-
+  beforeEach(() => {
+    loadTranslation("en", "default");
+  });
   it("should render correctly", () => {
     props = createTestProps();
     const renderer = new ShallowRenderer();

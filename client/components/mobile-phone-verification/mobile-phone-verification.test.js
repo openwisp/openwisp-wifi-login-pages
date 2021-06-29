@@ -6,6 +6,7 @@ import {toast} from "react-toastify";
 import React from "react";
 import PropTypes from "prop-types";
 import {Cookies} from "react-cookie";
+import ShallowRenderer from "react-test-renderer/shallow";
 import {loadingContextValue} from "../../utils/loading-context";
 import tick from "../../utils/tick";
 import getConfig from "../../utils/get-config";
@@ -42,6 +43,15 @@ const userData = {
   is_verified: false,
   phone_number: "+393660011222",
 };
+
+describe("<MobilePhoneVerification /> rendering with placeholder translation tags", () => {
+  const props = createTestProps();
+  it("should render translation placeholder correctly", () => {
+    const renderer = new ShallowRenderer();
+    const wrapper = renderer.render(<MobilePhoneVerification {...props} />);
+    expect(wrapper).toMatchSnapshot();
+  });
+});
 
 const createShallowComponent = function (props) {
   loadTranslation("en", "default");

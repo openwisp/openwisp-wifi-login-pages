@@ -57,6 +57,15 @@ const userData = {
   location: "",
 };
 
+describe("<Login /> rendering with placeholder translation tags", () => {
+  const props = createTestProps();
+  it("should render translation placeholder correctly", () => {
+    const renderer = new ShallowRenderer();
+    const wrapper = renderer.render(<Login {...props} />);
+    expect(wrapper).toMatchSnapshot();
+  });
+});
+
 describe("<Login /> rendering", () => {
   let props;
 

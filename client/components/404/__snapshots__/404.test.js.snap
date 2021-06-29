@@ -71,3 +71,44 @@ exports[`<DoesNotExist /> rendering should render correctly default 404 page wit
   </div>
 </div>
 `;
+
+exports[`<DoesNotExist /> rendering with placeholder translation tags should render translation placeholder correctly 1`] = `
+<div
+  className="container content"
+  id="not-foud-404"
+>
+  <div
+    className="inner"
+  >
+    <div
+      className="main-column"
+    >
+      <div
+        className="row owisp-404-row-1"
+      >
+        404_PAGE_HEADING
+      </div>
+      <div
+        className="row owisp-404-row-2"
+      >
+        404_PAGE_SUBHEADING
+      </div>
+      <div
+        className="row owisp-404-row-3"
+      >
+        404_PAGE_MESSAGE
+      </div>
+      <div
+        className="row owisp-404-row-4"
+      >
+        <Link
+          className="link"
+          to="/default"
+        >
+          HOME_PAGE_LINK_TEXT
+        </Link>
+      </div>
+    </div>
+  </div>
+</div>
+`;

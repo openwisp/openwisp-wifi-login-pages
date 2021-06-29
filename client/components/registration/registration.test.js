@@ -20,7 +20,7 @@ jest.mock("../../utils/get-config");
 jest.mock("../../utils/load-translation");
 jest.mock("axios");
 
-const createTestProps = function (props, configName = "default") {
+const createTestProps = (props, configName = "default") => {
   const config = getConfig(configName);
   return {
     orgSlug: configName,
@@ -74,6 +74,16 @@ const mountComponent = function (passedProps) {
     },
   );
 };
+
+describe("<Registration /> rendering with placeholder translation tags", () => {
+  const props = createTestProps();
+  const wrapper = shallow(<Registration {...props} />, {
+    context: loadingContextValue,
+  });
+  it("should render translation placeholder correctly", () => {
+    expect(wrapper).toMatchSnapshot();
+  });
+});
 
 describe("<Registration /> rendering", () => {
   let props;

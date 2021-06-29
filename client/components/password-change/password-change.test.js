@@ -30,6 +30,14 @@ const createTestProps = (props) => {
   };
 };
 
+describe("<PasswordChange /> rendering with placeholder translation tags", () => {
+  const props = createTestProps();
+  it("should render translation placeholder correctly", () => {
+    const wrapper = shallow(<PasswordChange {...props} />);
+    expect(wrapper).toMatchSnapshot();
+  });
+});
+
 describe("<PasswordChange /> rendering", () => {
   let props;
 

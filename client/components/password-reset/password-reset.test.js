@@ -27,6 +27,14 @@ const createTestProps = (props) => {
 const getTranslationString = (msgid) =>
   translation.translations[""][msgid].msgstr[0];
 
+describe("<PasswordReset /> rendering with placeholder translation tags", () => {
+  const props = createTestProps();
+  it("should render translation placeholder correctly", () => {
+    const wrapper = shallow(<PasswordReset {...props} />);
+    expect(wrapper).toMatchSnapshot();
+  });
+});
+
 describe("<PasswordReset /> rendering", () => {
   let props;
   let wrapper;

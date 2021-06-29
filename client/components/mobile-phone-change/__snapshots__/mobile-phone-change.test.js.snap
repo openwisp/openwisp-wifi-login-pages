@@ -1,5 +1,131 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<MobilePhoneChange /> rendering with placeholder translation tags should render translation placeholder correctly 1`] = `
+<div
+  className="container content"
+  id="mobile-phone-change"
+>
+  <div
+    className="inner"
+  >
+    <form
+      className="main-column"
+      id="mobile-phone-change-form"
+      onSubmit={[Function]}
+    >
+      <div
+        className="fieldset row"
+      >
+        <div
+          className="row phone-number"
+        >
+          <label
+            htmlFor="phone-number"
+          >
+            PHONENUMBER_LABEL
+          </label>
+          <t
+            alwaysDefaultMask={false}
+            areaCodes={null}
+            autoFormat={true}
+            autocompleteSearch={false}
+            buttonClass=""
+            buttonStyle={Object {}}
+            containerClass=""
+            containerStyle={Object {}}
+            copyNumbersOnly={true}
+            country=""
+            countryCodeEditable={true}
+            defaultErrorMessage=""
+            defaultMask="... ... ... ... .."
+            disableCountryCode={false}
+            disableCountryGuess={false}
+            disableDropdown={false}
+            disableInitialCountryGuess={false}
+            disableSearchIcon={false}
+            disabled={false}
+            dropdownClass=""
+            dropdownStyle={Object {}}
+            enableAreaCodeStretch={false}
+            enableAreaCodes={false}
+            enableClickOutside={true}
+            enableLongNumbers={false}
+            enableSearch={false}
+            enableTerritories={false}
+            excludeCountries={Array []}
+            flagsImagePath="./flags.png"
+            inputClass=""
+            inputProps={
+              Object {
+                "className": "form-control input ",
+                "id": "phone-number",
+                "name": "phone_number",
+                "required": true,
+              }
+            }
+            inputStyle={Object {}}
+            isValid={true}
+            jumpCursorToEnd={true}
+            keys={
+              Object {
+                "A": 65,
+                "DOWN": 40,
+                "ENTER": 13,
+                "ESC": 27,
+                "LEFT": 37,
+                "PLUS": 43,
+                "RIGHT": 39,
+                "SPACE": 32,
+                "TAB": 9,
+                "UP": 38,
+                "Z": 90,
+              }
+            }
+            localization={Object {}}
+            masks={null}
+            name="phone_number"
+            onChange={[Function]}
+            onEnterKeyPress={null}
+            onKeyDown={[Function]}
+            onlyCountries={Array []}
+            placeholder="PHONENUMBER_PLACEHOLDER"
+            preferredCountries={Array []}
+            prefix="+"
+            preserveOrder={Array []}
+            priority={null}
+            regions=""
+            renderStringAsFlag=""
+            searchClass=""
+            searchNotFound="No entries to show"
+            searchPlaceholder="search"
+            searchStyle={Object {}}
+            showDropdown={false}
+            specialLabel="Phone"
+            value=""
+          />
+        </div>
+        <input
+          className="button full"
+          type="submit"
+          value="CHANGE_PHONENUMBER_BUTTON"
+        />
+        <div
+          className="row cancel"
+        >
+          <a
+            className="button full"
+            href="/test-org-2/mobile-phone-verification"
+          >
+            CANCEL_BUTTON
+          </a>
+        </div>
+      </div>
+    </form>
+    <Memo(Connect(Contact)) />
+  </div>
+</div>
+`;
+
 exports[`Change Phone Number: standard flow should render successfully 1`] = `
 <Provider
   store={

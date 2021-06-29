@@ -56,6 +56,14 @@ const createTestProps = (props) => {
   };
 };
 
+describe("<Header /> rendering with placeholder translation tags", () => {
+  const props = createTestProps();
+  it("should render translation placeholder correctly", () => {
+    const wrapper = shallow(<Header {...props} />);
+    expect(wrapper).toMatchSnapshot();
+  });
+});
+
 describe("<Header /> rendering", () => {
   let props;
   let wrapper;

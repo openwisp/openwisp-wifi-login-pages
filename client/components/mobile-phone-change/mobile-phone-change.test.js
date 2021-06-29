@@ -10,6 +10,7 @@ import {Provider} from "react-redux";
 import {Redirect, Router} from "react-router-dom";
 import {createMemoryHistory} from "history";
 import PhoneInput from "react-phone-input-2";
+import ShallowRenderer from "react-test-renderer/shallow";
 import {loadingContextValue} from "../../utils/loading-context";
 import loadTranslation from "../../utils/load-translation";
 import getConfig from "../../utils/get-config";
@@ -47,6 +48,15 @@ const createTestProps = function (props, configName = "test-org-2") {
     ...props,
   };
 };
+
+describe("<MobilePhoneChange /> rendering with placeholder translation tags", () => {
+  const props = createTestProps();
+  it("should render translation placeholder correctly", () => {
+    const renderer = new ShallowRenderer();
+    const wrapper = renderer.render(<MobilePhoneChange {...props} />);
+    expect(wrapper).toMatchSnapshot();
+  });
+});
 
 const historyMock = createMemoryHistory();
 historyMock.entries = [];

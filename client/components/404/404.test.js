@@ -7,7 +7,6 @@ import DoesNotExist from "./404";
 
 jest.mock("../../utils/load-translation");
 
-loadTranslation("en", "default");
 const defaultConfig = getConfig("default");
 const createTestProps = (props) => {
   return {
@@ -19,7 +18,20 @@ const createTestProps = (props) => {
   };
 };
 
+describe("<DoesNotExist /> rendering with placeholder translation tags", () => {
+  const props = createTestProps();
+  it("should render translation placeholder correctly", () => {
+    const renderer = new ShallowRenderer();
+    const wrapper = renderer.render(<DoesNotExist {...props} />);
+    expect(wrapper).toMatchSnapshot();
+  });
+});
+
 describe("<DoesNotExist /> rendering", () => {
+  beforeEach(() => {
+    loadTranslation("en", "default");
+  });
+
   it("should render correctly default 404 page without props", () => {
     const renderer = new ShallowRenderer();
     const component = renderer.render(<DoesNotExist />);

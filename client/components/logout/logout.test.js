@@ -35,6 +35,15 @@ const createTestProps = (props) => {
   };
 };
 
+describe("<Logout /> rendering with placeholder translation tags", () => {
+  const props = createTestProps();
+  it("should render translation placeholder correctly", () => {
+    const renderer = new ShallowRenderer();
+    const wrapper = renderer.render(<Logout {...props} />);
+    expect(wrapper).toMatchSnapshot();
+  });
+});
+
 describe("<Logout /> rendering", () => {
   let props;
 

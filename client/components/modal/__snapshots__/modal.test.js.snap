@@ -116,3 +116,59 @@ Openwisp-wifi-login-pages and using its services in the future.</p>
   </div>
 </React.Fragment>
 `;
+
+exports[`<Modal /> rendering with placeholder translation tags should render privacy policy translation placeholder correctly 1`] = `
+<React.Fragment>
+  <div
+    className="modal-container"
+  >
+    <div
+      className="modal-row-close"
+    >
+      <Link
+        className="modal-close-btn"
+        to="/default/login"
+      >
+        X
+      </Link>
+    </div>
+    <div
+      className="modal-content"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<p>PRIVACY_POLICY_CONTENT</p>
+",
+        }
+      }
+    />
+  </div>
+</React.Fragment>
+`;
+
+exports[`<Modal /> rendering with placeholder translation tags should render term and condition translation placeholder correctly 1`] = `
+<React.Fragment>
+  <div
+    className="modal-container"
+  >
+    <div
+      className="modal-row-close"
+    >
+      <Link
+        className="modal-close-btn"
+        to="/default/login"
+      >
+        X
+      </Link>
+    </div>
+    <div
+      className="modal-content"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<p>TERMS_AND_CONDITIONS_CONTENT</p>
+",
+        }
+      }
+    />
+  </div>
+</React.Fragment>
+`;

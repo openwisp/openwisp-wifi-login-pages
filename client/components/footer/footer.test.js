@@ -47,6 +47,14 @@ const createTestProps = (props) => {
   };
 };
 
+describe("<Footer /> rendering with placeholder translation tags", () => {
+  const props = createTestProps();
+  it("should render translation placeholder correctly", () => {
+    const wrapper = shallow(<Footer {...props} />);
+    expect(wrapper).toMatchSnapshot();
+  });
+});
+
 describe("<Footer /> rendering", () => {
   let props;
   let wrapper;

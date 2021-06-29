@@ -80,6 +80,15 @@ const responseData = {
   method: "mobile_phone",
 };
 
+describe("<Status /> rendering with placeholder translation tags", () => {
+  const props = createTestProps();
+  it("should render translation placeholder correctly", () => {
+    const renderer = new ShallowRenderer();
+    const wrapper = renderer.render(<Status {...props} />);
+    expect(wrapper).toMatchSnapshot();
+  });
+});
+
 describe("<Status /> rendering", () => {
   let props;
 

@@ -27,10 +27,27 @@ const createTestProps = (props) => {
   };
 };
 
-loadTranslation("en", "default");
+describe("<Modal /> rendering with placeholder translation tags", () => {
+  const props = createTestProps();
+  it("should render term and condition translation placeholder correctly", () => {
+    const renderer = new ShallowRenderer();
+    const wrapper = renderer.render(<Modal {...props} />);
+    expect(wrapper).toMatchSnapshot();
+  });
+  it("should render privacy policy translation placeholder correctly", () => {
+    props.match.params.name = "privacy-policy";
+    const renderer = new ShallowRenderer();
+    const wrapper = renderer.render(<Modal {...props} />);
+    expect(wrapper).toMatchSnapshot();
+  });
+});
 
 describe("<Modal /> rendering", () => {
   let props;
+
+  beforeEach(() => {
+    loadTranslation("en", "default");
+  });
   it("should render terms-and-conditions correctly", () => {
     props = createTestProps();
     const renderer = new ShallowRenderer();

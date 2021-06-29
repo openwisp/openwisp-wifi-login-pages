@@ -302,3 +302,171 @@ Array [
   </div>,
 ]
 `;
+
+exports[`<Header /> rendering with placeholder translation tags should render translation placeholder correctly 1`] = `
+<Fragment>
+  <div
+    className="header-container header-desktop"
+  >
+    <div
+      className="header-row-1"
+    >
+      <div
+        className="header-row-1-inner"
+      >
+        <div
+          className="header-left"
+        >
+          <div
+            className="header-logo-div"
+          >
+            <Link
+              to="/default"
+            >
+              <img
+                alt="openwisp"
+                className="header-logo-image header-desktop-logo-image"
+                src="/assets/default/openwisp-logo-black.svg"
+              />
+            </Link>
+          </div>
+        </div>
+        <div
+          className="header-right"
+        >
+          <button
+            className="active header-language-btn header-desktop-language-btn header-language-btn-en"
+            key="en"
+            onClick={[Function]}
+            type="button"
+          >
+            english
+          </button>
+          <button
+            className="header-language-btn header-desktop-language-btn header-language-btn-it"
+            key="it"
+            onClick={[Function]}
+            type="button"
+          >
+            italian
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      className="header-row-2"
+    >
+      <div
+        className="header-row-2-inner"
+      >
+        <Link
+          className="header-link header-desktop-link
+                  header-link-1 active button "
+          key="0"
+          to="/default/login"
+        >
+          HEADER_LINK Sign In
+        </Link>
+        <Link
+          className="header-link header-desktop-link
+                  header-link-2  button "
+          key="1"
+          to="/default/registration"
+        >
+          HEADER_LINK Sign Up
+        </Link>
+      </div>
+    </div>
+  </div>
+  <div
+    className="header-mobile "
+  >
+    <div
+      className="header-row-1"
+    >
+      <div
+        className="header-row-1-inner"
+      >
+        <div
+          className="header-left"
+        >
+          <div
+            className="header-logo-div"
+          >
+            <Link
+              to="/default"
+            >
+              <img
+                alt="openwisp"
+                className="header-logo-image header-mobile-logo-image"
+                src="/assets/default/openwisp-logo-black.svg"
+              />
+            </Link>
+          </div>
+        </div>
+        <div
+          className="header-right"
+        >
+          <div
+            className="header-hamburger"
+            onClick={[Function]}
+            onKeyUp={[Function]}
+            role="button"
+            tabIndex={0}
+          >
+            <div
+              className=""
+            />
+            <div
+              className=""
+            />
+            <div
+              className=""
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="display-none header-mobile-menu"
+    >
+      <Link
+        className="header-link mobile-link
+                    header-link-1 active button"
+        key="0"
+        to="/default/login"
+      >
+        HEADER_LINK Sign In
+      </Link>
+      <Link
+        className="header-link mobile-link
+                    header-link-2  button"
+        key="1"
+        to="/default/registration"
+      >
+        HEADER_LINK Sign Up
+      </Link>
+      <div
+        className="mobile-languages-row"
+      >
+        <button
+          className="active header-language-btn header-mobile-language-btn header-language-btn-en"
+          key="en"
+          onClick={[Function]}
+          type="button"
+        >
+          english
+        </button>
+        <button
+          className="header-language-btn header-mobile-language-btn header-language-btn-it"
+          key="it"
+          onClick={[Function]}
+          type="button"
+        >
+          italian
+        </button>
+      </div>
+    </div>
+  </div>
+</Fragment>
+`;
