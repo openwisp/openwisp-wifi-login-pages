@@ -364,6 +364,8 @@ export default class Status extends React.Component {
       userData.justAuthenticated = true;
       userData.mustLogout = false;
       userData.repeatLogin = false;
+      // will trigger the creation of a new radius token
+      userData.radius_user_token = undefined;
       this.repeatLogin = false;
       setUserData(userData);
       await this.componentDidMount();

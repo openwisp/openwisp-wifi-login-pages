@@ -817,18 +817,15 @@ describe("<Status /> interactions", () => {
     );
     expect(componentDidMount.mock.calls.length).toBe(1);
     expect(setUserData.mock.calls.length).toBe(1);
-    expect(setUserData).toHaveBeenCalledWith({
+    const userData = {
       ...responseData,
       justAuthenticated: true,
       mustLogout: false,
       repeatLogin: false,
-    });
-    expect(status.props.userData).toStrictEqual({
-      ...responseData,
-      justAuthenticated: true,
-      mustLogout: false,
-      repeatLogin: false,
-    });
+      radius_user_token: undefined,
+    };
+    expect(setUserData).toHaveBeenCalledWith(userData);
+    expect(status.props.userData).toStrictEqual(userData);
     expect(spyToast.mock.calls.length).toBe(0);
   });
 
