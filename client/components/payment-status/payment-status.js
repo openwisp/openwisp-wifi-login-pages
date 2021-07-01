@@ -11,12 +11,20 @@ import validateToken from "../../utils/validate-token";
 
 export default class PaymentStatus extends React.Component {
   async componentDidMount() {
-    const {cookies, orgSlug, setUserData, logout} = this.props;
+    const {cookies, orgSlug, setUserData, logout, result} = this.props;
+    let {userData} = this.props;
     const {setLoading} = this.context;
-    const {userData} = this.props;
+
     setLoading(true);
     await validateToken(cookies, orgSlug, setUserData, userData, logout);
     setLoading(false);
+
+    ({userData} = this.props);
+    const {method, is_verified: isVerified} = userData;
+    // flag user to repeat login in order to restart session with new radius group
+    if (result === "success" && method === "bank_card" && isVerified === true) {
+      setUserData({...userData, mustLogout: true, repeatLogin: true});
+    }
   }
 
   render() {

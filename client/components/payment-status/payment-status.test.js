@@ -128,12 +128,18 @@ describe("Test <PaymentStatus /> cases", () => {
     validateToken.mockReturnValue(true);
     wrapper = shallow(<PaymentStatus {...props} />, {
       context: loadingContextValue,
+      disableLifecycleMethods: true,
     });
+    const comp = wrapper.instance();
+    comp.componentDidMount();
     await tick();
     expect(wrapper.find("Redirect").length).toEqual(1);
     expect(wrapper.find("Redirect").props().to).toEqual("/default/status");
     expect(spyToast.mock.calls.length).toBe(1);
-    expect(wrapper.instance().props.logout).not.toHaveBeenCalled();
+    expect(comp.props.logout).not.toHaveBeenCalled();
+    expect(comp.props.setUserData.mock.calls.pop()).toEqual([
+      {...props.userData, mustLogout: true, repeatLogin: true},
+    ]);
   });
 
   it("should redirect to status if success but unverified", async () => {
