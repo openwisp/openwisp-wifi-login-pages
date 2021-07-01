@@ -723,9 +723,118 @@ describe("<Status /> interactions", () => {
     expect(setLoading.mock.calls.length).toBe(1);
   });
 
+  it("should logout if mustLogout is true", async () => {
+    validateToken.mockReturnValue(true);
+    jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
+    axios.mockImplementationOnce(() => {
+      return Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: [
+          {
+            session_id: 1,
+            start_time: "2020-09-08T00:22:28-04:00",
+            stop_time: "2020-09-08T00:22:29-04:00",
+          },
+        ],
+        headers: {},
+      });
+    });
+    const spyToast = jest.spyOn(toast, "success");
+    props = createTestProps({userData: {...responseData, mustLogout: true}});
+    const setLoading = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading},
+      disableLifecycleMethods: true,
+    });
+    const status = wrapper.instance();
+    const handleLogout = jest.spyOn(status, "handleLogout");
+    const mockRef = {submit: jest.fn()};
+    const {setUserData} = status.props;
+    status.logoutFormRef = {current: mockRef};
+    status.logoutIfameRef = {current: {}};
+    status.componentDidMount();
+    await tick();
+    status.handleLogoutIframe();
+    expect(status.state.loggedOut).toBe(true);
+    expect(mockRef.submit.mock.calls.length).toBe(1);
+    expect(status.repeatLogin).toBe(false);
+    expect(handleLogout).toHaveBeenCalledWith(false, undefined);
+    expect(status.props.logout).toHaveBeenCalled();
+    expect(spyToast.mock.calls.length).toBe(1);
+    expect(setLoading.mock.calls).toEqual([[true], [true], [false]]);
+    expect(setUserData).not.toHaveBeenCalled();
+    expect(Status.prototype.getUserActiveRadiusSessions.mock.calls.length).toBe(
+      1,
+    );
+  });
+
+  it("should repeat login if mustLogout and repeatLogin are true", async () => {
+    validateToken.mockReturnValue(true);
+    jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
+    axios.mockImplementationOnce(() => {
+      return Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: [
+          {
+            session_id: 1,
+            start_time: "2020-09-08T00:22:28-04:00",
+            stop_time: "2020-09-08T00:22:29-04:00",
+          },
+        ],
+        headers: {},
+      });
+    });
+    const spyToast = jest.spyOn(toast, "success");
+    props = createTestProps({
+      userData: {...responseData, mustLogout: true, repeatLogin: true},
+    });
+    const setLoading = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading},
+      disableLifecycleMethods: true,
+    });
+    const status = wrapper.instance();
+    const handleLogout = jest.spyOn(status, "handleLogout");
+    const mockRef = {submit: jest.fn()};
+    const {setUserData} = status.props;
+    status.logoutFormRef = {current: mockRef};
+    status.logoutIfameRef = {current: {}};
+    status.componentDidMount();
+    const componentDidMount = jest.spyOn(status, "componentDidMount");
+    await tick();
+    expect(status.repeatLogin).toBe(true);
+    status.handleLogoutIframe();
+    expect(status.state.loggedOut).toBe(false);
+    expect(status.repeatLogin).toBe(false);
+    expect(mockRef.submit.mock.calls.length).toBe(1);
+    expect(handleLogout).toHaveBeenCalledWith(false, true);
+    expect(status.props.logout).not.toHaveBeenCalled();
+    expect(setLoading.mock.calls).toEqual([[true], [true], [true]]);
+    expect(Status.prototype.getUserActiveRadiusSessions.mock.calls.length).toBe(
+      1,
+    );
+    expect(componentDidMount.mock.calls.length).toBe(1);
+    expect(setUserData.mock.calls.length).toBe(1);
+    expect(setUserData).toHaveBeenCalledWith({
+      ...responseData,
+      justAuthenticated: true,
+      mustLogout: false,
+      repeatLogin: false,
+    });
+    expect(status.props.userData).toStrictEqual({
+      ...responseData,
+      justAuthenticated: true,
+      mustLogout: false,
+      repeatLogin: false,
+    });
+    expect(spyToast.mock.calls.length).toBe(0);
+  });
+
   it("should set title", () => {
-    const prop = createTestProps();
-    wrapper = shallow(<Status {...prop} />, {
+    props = createTestProps();
+    wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: false,
     });

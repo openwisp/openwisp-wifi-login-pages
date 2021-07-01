@@ -50,6 +50,7 @@ export default class Status extends React.Component {
       modalActive: false,
       rememberMe: false,
     };
+    this.repeatLogin = false;
     this.getUserRadiusSessions = this.getUserRadiusSessions.bind(this);
     this.handleSessionLogout = this.handleSessionLogout.bind(this);
     this.fetchMoreSessions = this.fetchMoreSessions.bind(this);
@@ -107,7 +108,7 @@ export default class Status extends React.Component {
         return;
       }
 
-      const {justAuthenticated} = userData;
+      const {justAuthenticated, mustLogout, repeatLogin} = userData;
       ({userData} = this.props);
 
       const {
@@ -137,6 +138,11 @@ export default class Status extends React.Component {
 
       // stop here if user is banned
       if (is_active === false) {
+        return;
+      }
+
+      if (mustLogout) {
+        await this.handleLogout(false, repeatLogin);
         return;
       }
 
@@ -263,7 +269,7 @@ export default class Status extends React.Component {
     await this.getUserRadiusSessions(para);
   }
 
-  handleLogout = async (userAutoLogin) => {
+  handleLogout = async (userAutoLogin, repeatLogin = false) => {
     const {setLoading} = this.context;
     const {orgSlug, logout, cookies, setUserData} = this.props;
     const macaddr = cookies.get(`${orgSlug}_macaddr`);
@@ -272,13 +278,21 @@ export default class Status extends React.Component {
     setLoading(true);
     await this.getUserActiveRadiusSessions(params);
     const {sessionsToLogout} = this.state;
+
     if (sessionsToLogout.length > 0) {
       if (this.logoutFormRef && this.logoutFormRef.current) {
-        this.setState({loggedOut: true}, () => {
-          this.logoutFormRef.current.submit();
-        });
+        if (!repeatLogin) {
+          this.setState({loggedOut: true});
+        } else {
+          this.repeatLogin = true;
+        }
+        this.logoutFormRef.current.submit();
         return;
       }
+    }
+
+    if (repeatLogin) {
+      return;
     }
     setUserData(initialState.userData);
     logout(cookies, orgSlug, userAutoLogin);
@@ -329,18 +343,30 @@ export default class Status extends React.Component {
    * so that the request is transparent for the user, which does not need
    * to be redirected to a different URL and then come back again.
    */
-  handleLogoutIframe = () => {
+  handleLogoutIframe = async () => {
     if (!this.logoutIfameRef || !this.logoutIfameRef.current) {
       return;
     }
+    const {userData, setUserData} = this.props;
     const {loggedOut} = this.state;
+    const {repeatLogin} = this;
     const {setLoading} = this.context;
+
     if (loggedOut) {
       const {orgSlug, logout, cookies} = this.props;
       const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
       logout(cookies, orgSlug, userAutoLogin);
-      setLoading(false);
       toast.success(logoutSuccess);
+      setLoading(false);
+    }
+
+    if (repeatLogin) {
+      userData.justAuthenticated = true;
+      userData.mustLogout = false;
+      userData.repeatLogin = false;
+      this.repeatLogin = false;
+      setUserData(userData);
+      await this.componentDidMount();
     }
   };
 
