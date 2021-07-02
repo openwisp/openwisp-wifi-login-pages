@@ -82,7 +82,7 @@ describe("Test <PaymentStatus /> cases", () => {
     ).toEqual("/default/status");
     expect(
       wrapper.find(".payment-status-row-4 .button").at(0).props().to,
-    ).toEqual("/default/login");
+    ).toEqual("/default/status");
     expect(wrapper.find("Redirect").length).toEqual(0);
   });
 
@@ -96,9 +96,12 @@ describe("Test <PaymentStatus /> cases", () => {
     await tick();
     expect(
       wrapper.find(".payment-status-row-4 .button").at(0).props().to,
-    ).toEqual("/default/login");
+    ).toEqual("/default/status");
     wrapper.find(".payment-status-row-4 .button").simulate("click", {});
-    expect(wrapper.instance().props.logout).toHaveBeenCalled();
+    expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith({
+      ...responseData,
+      mustLogout: true,
+    });
     expect(wrapper.find("Redirect").length).toEqual(0);
     expect(spyToast.mock.calls.length).toBe(0);
   });

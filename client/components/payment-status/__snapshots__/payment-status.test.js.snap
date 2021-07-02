@@ -42,7 +42,7 @@ exports[`Test <PaymentStatus /> cases should render failed state 1`] = `
         <Link
           className="button full"
           onClick={[Function]}
-          to="/default/login"
+          to="/default/status"
         >
           Cancel operation and log out
         </Link>

@@ -10,6 +10,11 @@ import getText from "../../utils/get-text";
 import validateToken from "../../utils/validate-token";
 
 export default class PaymentStatus extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleLogout = this.handleLogout.bind(this);
+  }
+
   async componentDidMount() {
     const {cookies, orgSlug, setUserData, logout, result} = this.props;
     let {userData} = this.props;
@@ -27,17 +32,14 @@ export default class PaymentStatus extends React.Component {
     }
   }
 
+  handleLogout() {
+    const {setUserData, userData} = this.props;
+    setUserData({...userData, mustLogout: true});
+  }
+
   render() {
-    const {
-      orgSlug,
-      cookies,
-      language,
-      page,
-      result,
-      logout,
-      isAuthenticated,
-      userData,
-    } = this.props;
+    const {orgSlug, language, page, result, isAuthenticated, userData} =
+      this.props;
     const {method, is_verified: isVerified} = userData;
     const redirectToStatus = () => <Redirect to={`/${orgSlug}/status`} />;
     const acceptedValues = ["success", "failed"];
@@ -85,8 +87,8 @@ export default class PaymentStatus extends React.Component {
             <div className="row payment-status-row-4">
               <p>{getText(page.give_up_text, language)}</p>
               <Link
-                onClick={() => logout(cookies, orgSlug)}
-                to={`/${orgSlug}/login`}
+                onClick={this.handleLogout}
+                to={`/${orgSlug}/status`}
                 className="button full"
               >
                 {getText(page.give_up_button, language)}
