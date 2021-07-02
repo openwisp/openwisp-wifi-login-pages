@@ -802,10 +802,12 @@ describe("<Status /> interactions", () => {
     status.logoutFormRef = {current: mockRef};
     status.logoutIfameRef = {current: {}};
     status.componentDidMount();
+    jest.useFakeTimers();
     const componentDidMount = jest.spyOn(status, "componentDidMount");
     await tick();
     expect(status.repeatLogin).toBe(true);
-    status.handleLogoutIframe();
+    await status.handleLogoutIframe();
+    jest.advanceTimersByTime(1000);
     expect(status.state.loggedOut).toBe(false);
     expect(status.repeatLogin).toBe(false);
     expect(mockRef.submit.mock.calls.length).toBe(1);

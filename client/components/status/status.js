@@ -368,7 +368,9 @@ export default class Status extends React.Component {
       userData.radius_user_token = undefined;
       this.repeatLogin = false;
       setUserData(userData);
-      await this.componentDidMount();
+      // wait to trigger login to avoid getting stuck
+      // in captive portal firewall rule reloading
+      setTimeout(async () => this.componentDidMount(), 1000);
     }
   };
 
