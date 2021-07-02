@@ -115,6 +115,7 @@ export default class Login extends React.Component {
           placeholder={getText(input_fields.username.placeholder, language)}
           pattern={input_fields.username.pattern}
           title={getText(input_fields.username.pattern_description, language)}
+          autoComplete="username"
         />
       </div>
     );
@@ -155,6 +156,7 @@ export default class Login extends React.Component {
             id: "username",
             className: `form-control input ${errors.username ? "error" : ""}`,
             required: true,
+            autoComplete: "tel",
           }}
         />
       </div>
@@ -335,6 +337,7 @@ export default class Login extends React.Component {
                       language,
                     )}
                     ref={this.passwordToggleRef}
+                    autoComplete="current-password"
                   />
                   <PasswordToggleIcon
                     inputRef={this.passwordToggleRef}

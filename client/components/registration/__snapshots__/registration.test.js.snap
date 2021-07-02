@@ -26,6 +26,7 @@ exports[`<Registration /> rendering should render correctly 1`] = `
               email
             </label>
             <input
+              autoComplete="email"
               className="input "
               id="email"
               name="email"
@@ -47,6 +48,7 @@ exports[`<Registration /> rendering should render correctly 1`] = `
               password
             </label>
             <input
+              autoComplete="new-password"
               className="input "
               id="password"
               name="password1"
@@ -79,6 +81,7 @@ exports[`<Registration /> rendering should render correctly 1`] = `
               confirm
             </label>
             <input
+              autoComplete="new-password"
               className="input "
               id="password-confirm"
               name="password2"

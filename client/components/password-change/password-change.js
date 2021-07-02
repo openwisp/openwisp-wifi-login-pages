@@ -138,6 +138,7 @@ export default class PasswordChange extends React.Component {
                 )}
                 onChange={(e) => this.handleChange(e)}
                 ref={this.passwordToggleRef}
+                autoComplete="new-password"
               />
               <PasswordToggleIcon
                 inputRef={this.passwordToggleRef}
@@ -175,6 +176,7 @@ export default class PasswordChange extends React.Component {
                 )}
                 onChange={(e) => this.handleChange(e)}
                 ref={this.confirmPasswordToggleRef}
+                autoComplete="new-password"
               />
               <PasswordToggleIcon
                 inputRef={this.confirmPasswordToggleRef}

@@ -167,6 +167,7 @@ export default class PasswordConfirm extends React.Component {
                       language,
                     )}
                     ref={this.passwordToggleRef}
+                    autoComplete="new-password"
                   />
                   <PasswordToggleIcon
                     inputRef={this.passwordToggleRef}
@@ -205,6 +206,7 @@ export default class PasswordConfirm extends React.Component {
                       language,
                     )}
                     ref={this.confirmPasswordToggleRef}
+                    autoComplete="new-password"
                   />
                   <PasswordToggleIcon
                     inputRef={this.confirmPasswordToggleRef}

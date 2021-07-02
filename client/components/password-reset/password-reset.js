@@ -121,6 +121,7 @@ export default class PasswordReset extends React.Component {
                     )}
                     pattern={inputFields.email.pattern}
                     title={getText(inputFields.email.pattern_description)}
+                    autoComplete="email"
                   />
                 </div>
 

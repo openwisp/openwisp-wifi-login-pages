@@ -104,6 +104,7 @@ exports[`<Login /> interactions phone_number field should be present if mobile p
               Phone
             </div>
             <input
+              autocomplete="tel"
               class="form-control input "
               id="username"
               name="username"
@@ -142,6 +143,7 @@ exports[`<Login /> interactions phone_number field should be present if mobile p
             password
           </label>
           <input
+            autocomplete="current-password"
             class="input "
             id="password"
             name="password"
@@ -397,6 +399,7 @@ exports[`<Login /> interactions should not show phone_number field if auto_switc
             email
           </label>
           <input
+            autocomplete="username"
             class="input "
             id="username"
             name="username"
@@ -416,6 +419,7 @@ exports[`<Login /> interactions should not show phone_number field if auto_switc
             password
           </label>
           <input
+            autocomplete="current-password"
             class="input "
             id="password"
             name="password"
@@ -671,6 +675,7 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
             email
           </label>
           <input
+            autocomplete="username"
             class="input "
             id="username"
             name="username"
@@ -690,6 +695,7 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
             password
           </label>
           <input
+            autocomplete="current-password"
             class="input "
             id="password"
             name="password"
@@ -924,6 +930,7 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
               email
             </label>
             <input
+              autoComplete="username"
               className="input "
               id="username"
               name="username"
@@ -945,6 +952,7 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
               password
             </label>
             <input
+              autoComplete="current-password"
               className="input "
               id="password"
               name="password"
@@ -1145,6 +1153,7 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
               email
             </label>
             <input
+              autoComplete="username"
               className="input "
               id="username"
               name="username"
@@ -1166,6 +1175,7 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
               password
             </label>
             <input
+              autoComplete="current-password"
               className="input "
               id="password"
               name="password"
