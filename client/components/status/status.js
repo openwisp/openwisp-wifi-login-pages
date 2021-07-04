@@ -630,6 +630,41 @@ export default class Status extends React.Component {
     );
   };
 
+  getSessionInfo = () => {
+    return {
+      header: {
+        start_time: t`SESSION_HEADER_START_TIME`,
+        stop_time: t`SESSION_HEADER_STOP_TIME`,
+        duration: t`SESSION_HEADER_DURATION`,
+        download: t`SESSION_HEADER_DOWNLOAD`,
+        upload: t`SESSION_HEADER_UPLOAD`,
+        device_address: t`SESSION_HEADER_DEVICE_ADDRESS`,
+      },
+      settings: {
+        active_session: t`ACTIVE_SESSION_TEXT`,
+        date_language_locale: t`DATE_LANGUAGE_LOCALE`,
+      },
+    };
+  };
+
+  getUserInfo = () => {
+    return {
+      status: {
+        text: t`USER_INFO_STATUS_TEXT`,
+        value: t`USER_INFO_STATUS_VALUE`,
+      },
+      email: {
+        text: t`USER_INFO_EMAIL`,
+      },
+      username: {
+        text: t`USER_INFO_USERNAME`,
+      },
+      phone_number: {
+        text: t`USER_INFO_PHONE_NUMBER`,
+      },
+    };
+  };
+
   render() {
     const {
       statusPage,
@@ -652,36 +687,7 @@ export default class Status extends React.Component {
       modalActive,
       rememberMe,
     } = this.state;
-    const session_info = {
-      header: {
-        start_time: t`SESSION_HEADER_START_TIME`,
-        stop_time: t`SESSION_HEADER_STOP_TIME`,
-        duration: t`SESSION_HEADER_DURATION`,
-        download: t`SESSION_HEADER_DOWNLOAD`,
-        upload: t`SESSION_HEADER_UPLOAD`,
-        device_address: t`SESSION_HEADER_DEVICE_ADDRESS`,
-      },
-      settings: {
-        active_session: t`ACTIVE_SESSION_TEXT`,
-        date_language_locale: t`DATE_LANGUAGE_LOCALE`,
-      },
-    };
-    const user_info = {
-      status: {
-        text: t`USER_INFO_STATUS_TEXT`,
-        value: t`USER_INFO_STATUS_VALUE`,
-      },
-      email: {
-        text: t`USER_INFO_EMAIL`,
-      },
-      username: {
-        text: t`USER_INFO_USERNAME`,
-      },
-      phone_number: {
-        text: t`USER_INFO_PHONE_NUMBER`,
-      },
-    };
-    user_info.status.text = t`USER_INFO_STATUS_TEXT`;
+    const user_info = this.getUserInfo();
     const contentArr = t`STATUS_PAGE_CONTENT`.split("\n");
     userInfo.status = user_info.status.value;
     return (
@@ -774,7 +780,7 @@ export default class Status extends React.Component {
             hasMore={hasMoreSessions}
             loader={this.getSpinner()}
           >
-            <>{this.getTable(session_info)}</>
+            <>{this.getTable(this.getSessionInfo())}</>
           </InfinteScroll>
         )) ||
           (loadSpinner ? this.getSpinner() : null)}

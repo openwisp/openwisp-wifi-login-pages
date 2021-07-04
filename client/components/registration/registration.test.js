@@ -454,4 +454,26 @@ describe("Registration without identity verification (Email registration)", () =
     const setTitleMock = component.props().setTitle.mock;
     expect(setTitleMock.calls.pop()).toEqual(["Sign up", props.orgName]);
   });
+  it("should set country when selectedCountry is executed", async () => {
+    wrapper = await mountComponent(props);
+    const component = wrapper.find(Registration);
+    const data = {
+      value: "India",
+    };
+    component.instance().selectedCountry(data);
+    expect(component.instance().state.countrySelected).toEqual(data);
+    expect(component.instance().state.country).toEqual(data.value);
+  });
+  it("should change selected_plan on changePlan execution", async () => {
+    wrapper = await mountComponent(props);
+    const component = wrapper.find(Registration);
+    component.instance().setState({plans: [{verifies_identity: true}]});
+    const changeEvent = {
+      target: {
+        value: 0,
+      },
+    };
+    component.instance().changePlan(changeEvent);
+    expect(component.instance().state.selected_plan).toEqual(0);
+  });
 });

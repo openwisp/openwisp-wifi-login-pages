@@ -340,7 +340,6 @@ describe("<Status /> interactions", () => {
     validateToken.mockReturnValue(true);
     props = createTestProps();
     props.settings.mobile_phone_verification = true;
-    // props.statusPage.user_info.phone_number = {text: {en: "Phone number"}};
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: false,
@@ -905,5 +904,80 @@ describe("<Status /> interactions", () => {
       props.statusPage.saml_logout_url,
     );
     expect(localStorage.getItem("default_logout_method")).toBe(null);
+  });
+  it("should render small table row and it should contain logout if logout_by_session is enabled", () => {
+    const prop = createTestProps();
+    prop.captivePortalLogoutForm.logout_by_session = true;
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: false,
+    });
+    const handleSessionLogout = jest.spyOn(
+      wrapper.instance(),
+      "handleSessionLogout",
+    );
+    const TableRowWrapper = shallow(
+      wrapper.instance().getSmallTableRow(
+        {
+          session_id: 1,
+          start_time: new Date(),
+          stop_time: null, // needed for logout button
+        },
+        wrapper.instance().getSessionInfo(),
+      ),
+    );
+    expect(TableRowWrapper.contains(<th>Start time:</th>)).toBe(true);
+    expect(TableRowWrapper.contains(<th>Stop time:</th>)).toBe(true);
+    expect(TableRowWrapper.contains(<td>session is active</td>)).toBe(true);
+    expect(TableRowWrapper.contains(<th>Duration:</th>)).toBe(true);
+    expect(TableRowWrapper.contains(<th>Download:</th>)).toBe(true);
+    expect(TableRowWrapper.contains(<th>Upload:</th>)).toBe(true);
+    expect(TableRowWrapper.contains(<th>Device address:</th>)).toBe(true);
+    expect(TableRowWrapper.contains(<th>Logout ?:</th>)).toBe(true);
+    TableRowWrapper.find(".button").simulate("click");
+    expect(handleSessionLogout.mock.calls.length).toBe(1);
+  });
+
+  it("should execute getSmallTable correctly", () => {
+    const prop = createTestProps();
+    const activeSession = {
+      session_id: 1,
+      start_time: "2021-07-08T00:22:28-04:00",
+      stop_time: null,
+    };
+    const pastSession = {
+      session_id: 2,
+      start_time: "2021-07-08T00:22:28-04:00",
+      stop_time: "2021-07-08T00:22:29-04:00",
+    };
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: false,
+    });
+    wrapper.setState({
+      activeSessions: [activeSession],
+      pastSessions: [pastSession],
+    });
+    const getSmallTableRow = jest.spyOn(wrapper.instance(), "getSmallTableRow");
+    const getSmallTableWrapper = shallow(
+      wrapper.instance().getSmallTable(wrapper.instance().getSessionInfo()),
+    );
+    expect(getSmallTableRow.mock.calls.length).toBe(2);
+    expect(getSmallTableRow.mock.calls.pop()).toEqual([
+      pastSession,
+      wrapper.instance().getSessionInfo(),
+    ]);
+    expect(getSmallTableRow.mock.calls.pop()).toEqual([
+      activeSession,
+      wrapper.instance().getSessionInfo(),
+    ]);
+    expect(
+      getSmallTableWrapper.contains(
+        <tr className="active-session" key="1stop_time">
+          <th>Stop time:</th>
+          <td>session is active</td>
+        </tr>,
+      ),
+    ).toBe(true);
   });
 });
