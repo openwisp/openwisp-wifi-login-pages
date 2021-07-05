@@ -433,6 +433,7 @@ export default class Registration extends React.Component {
                                 errors.phone_number ? "error" : ""
                               }`,
                               required: true,
+                              autoComplete: "tel",
                             }}
                           />
                         </div>
@@ -467,6 +468,7 @@ export default class Registration extends React.Component {
                           input_fields.email.pattern_description,
                           language,
                         )}
+                        autoComplete="email"
                       />
                     </div>
 
@@ -500,6 +502,7 @@ export default class Registration extends React.Component {
                             input_fields.username.pattern_description,
                             language,
                           )}
+                          autoComplete="username"
                         />
                       </div>
                     )}
@@ -536,6 +539,7 @@ export default class Registration extends React.Component {
                             input_fields.first_name.placeholder,
                             language,
                           )}
+                          autoComplete="given-name"
                         />
                       </div>
                     )}
@@ -570,6 +574,7 @@ export default class Registration extends React.Component {
                             input_fields.last_name.placeholder,
                             language,
                           )}
+                          autoComplete="family-name"
                         />
                       </div>
                     )}
@@ -599,6 +604,7 @@ export default class Registration extends React.Component {
                           name="birth_date"
                           value={birth_date}
                           onChange={this.handleChange}
+                          autoComplete="bday"
                         />
                       </div>
                     )}
@@ -635,6 +641,7 @@ export default class Registration extends React.Component {
                             input_fields.location.pattern_description,
                             language,
                           )}
+                          autoComplete="street-address"
                         />
                       </div>
                     )}
@@ -666,6 +673,7 @@ export default class Registration extends React.Component {
                           input_fields.password.pattern_description,
                         )}
                         ref={this.passwordToggleRef}
+                        autoComplete="new-password"
                       />
                       <PasswordToggleIcon
                         inputRef={this.passwordToggleRef}
@@ -704,6 +712,7 @@ export default class Registration extends React.Component {
                           language,
                         )}
                         ref={this.confirmPasswordToggleRef}
+                        autoComplete="new-password"
                       />
                       <PasswordToggleIcon
                         inputRef={this.confirmPasswordToggleRef}
@@ -757,6 +766,7 @@ export default class Registration extends React.Component {
                                 input_fields.city.placeholder,
                                 language,
                               )}
+                              autoComplete="address-level2"
                             />
                           </div>
                           <div className="row street">
@@ -785,6 +795,7 @@ export default class Registration extends React.Component {
                                 input_fields.street.placeholder,
                                 language,
                               )}
+                              autoComplete="address"
                             />
                           </div>
                           <div className="row zipcode">
@@ -809,6 +820,7 @@ export default class Registration extends React.Component {
                               name="zipcode"
                               value={zipcode}
                               onChange={this.handleChange}
+                              autoComplete="postal-code"
                             />
                           </div>
                           <div className="row tax_number">
