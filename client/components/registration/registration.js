@@ -914,14 +914,8 @@ Registration.propTypes = {
   }).isRequired,
   orgSlug: PropTypes.string.isRequired,
   orgName: PropTypes.string.isRequired,
-  privacyPolicy: PropTypes.shape({
-    title: PropTypes.object,
-    content: PropTypes.object,
-  }).isRequired,
-  termsAndConditions: PropTypes.shape({
-    title: PropTypes.object,
-    content: PropTypes.object,
-  }).isRequired,
+  privacyPolicy: PropTypes.bool.isRequired,
+  termsAndConditions: PropTypes.bool.isRequired,
   authenticate: PropTypes.func.isRequired,
   setTitle: PropTypes.func.isRequired,
 };

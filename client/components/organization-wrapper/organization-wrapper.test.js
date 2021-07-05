@@ -121,9 +121,7 @@ describe("<OrganizationWrapper /> interactions", () => {
       match: {params: {organization: "new-org"}},
       organization: {
         configuration: {
-          title: {
-            en: undefined,
-          },
+          title: undefined,
           css_path: "index.css",
           slug: "default",
           favicon: "favicon.png",

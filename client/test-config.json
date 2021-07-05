@@ -16,21 +16,6 @@
           }
         ]
       },
-      "logout": {
-        "title": {
-          "en": "Logout"
-        },
-        "content": {
-          "text": {
-            "en": "Logout successfull"
-          }
-        },
-        "login_again": {
-          "text": {
-            "en": "Log in again"
-          }
-        }
-      },
       "captive_portal_login_form": {
         "method": "post",
         "action": "http://localhost/",
@@ -125,22 +110,8 @@
         }
       }
     },
-    "privacy_policy": {
-      "title": {
-        "en": "privacy policy"
-      },
-      "content": {
-        "en": "..."
-      }
-    },
-    "terms_and_conditions": {
-      "title": {
-        "en": "terms and conditions"
-      },
-      "content": {
-        "en": "..."
-      }
-    }
+    "privacy_policy": true,
+    "terms_and_conditions": true
   },
   {
     "name": "test org 1",
@@ -160,71 +131,17 @@
     },
     "components": {
       "mobile_phone_verification_form": {
-        "title": {
-          "en": "Verify mobile number"
-        },
-        "text": {
-          "verify": {
-            "en": "Verify your mobile phone number ({phone_number}) by inserting the code you received via SMS below."
-          },
-          "resend": {
-            "en": "If you did not receive the verification SMS code, you can try sending it again by clicking below."
-          },
-          "change": {
-            "en": "Wrong phone number?"
-          },
-          "token_sent": {
-            "en": "SMS verification code sent successfully."
-          },
-          "logout": {
-            "en": "If you need to cancel the process you can log out below."
-          }
-        },
         "input_fields": {
           "code": {
             "type": "text",
-            "pattern": "[0-9]{6,}",
-            "pattern_description": {
-              "en": "this field must be a 6 digit numeric code"
-            },
-            "placeholder": {
-              "en": "enter SMS verification code"
-            },
-            "label": {
-              "en": "code"
-            }
-          }
-        },
-        "buttons": {
-          "verify": {
-            "en": "Submit"
-          },
-          "resend": {
-            "en": "Send a new verification code"
-          },
-          "change": {
-            "en": "Change your phone number"
-          },
-          "logout": {
-            "en": "Logout"
+            "pattern": "[0-9]{6,}"
           }
         }
       },
       "phone_number_change_form": {
-        "title": {
-          "en": "Change mobile number"
-        },
         "buttons": {
-          "change_phone_number": {
-            "text": {
-              "en": "Change phone number"
-            }
-          },
-          "cancel": {
-            "text": {
-              "en": "Cancel"
-            }
-          }
+          "change_phone_number": true,
+          "cancel": true
         }
       },
       "contact_page": {
@@ -244,9 +161,6 @@
         ]
       },
       "registration_form": {
-        "title": {
-          "en": "Sign up"
-        },
         "input_fields": {
           "phone_number": {
             "type": "tel",
@@ -310,33 +224,7 @@
         }
       }
     },
-    "password_eye_icon": {
-      "reveal": {
-        "title": {
-          "en": "reveal password"
-        }
-      },
-      "hide": {
-        "title": {
-          "en": "hide password"
-        }
-      }
-    },
-    "privacy_policy": {
-      "title": {
-        "en": "privacy policy"
-      },
-      "content": {
-        "en": "..."
-      }
-    },
-    "terms_and_conditions": {
-      "title": {
-        "en": "terms and conditions"
-      },
-      "content": {
-        "en": "..."
-      }
-    }
+    "privacy_policy": true,
+    "terms_and_conditions": true
   }
 ]

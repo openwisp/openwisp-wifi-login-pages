@@ -277,28 +277,11 @@ MobilePhoneVerification.propTypes = {
   cookies: PropTypes.instanceOf(Cookies).isRequired,
   logout: PropTypes.func.isRequired,
   mobile_phone_verification: PropTypes.shape({
-    title: PropTypes.object,
-    text: PropTypes.shape({
-      verify: PropTypes.shape().isRequired,
-      resend: PropTypes.shape().isRequired,
-      change: PropTypes.shape().isRequired,
-      token_sent: PropTypes.shape().isRequired,
-      logout: PropTypes.shape().isRequired,
-    }).isRequired,
     input_fields: PropTypes.shape({
       code: PropTypes.shape({
         type: PropTypes.string.isRequired,
         pattern: PropTypes.string.isRequired,
-        pattern_description: PropTypes.shape().isRequired,
-        placeholder: PropTypes.shape().isRequired,
-        label: PropTypes.shape().isRequired,
       }).isRequired,
-    }).isRequired,
-    buttons: PropTypes.shape({
-      verify: PropTypes.shape().isRequired,
-      resend: PropTypes.shape().isRequired,
-      change: PropTypes.shape().isRequired,
-      logout: PropTypes.shape().isRequired,
     }).isRequired,
   }).isRequired,
   userData: PropTypes.object.isRequired,

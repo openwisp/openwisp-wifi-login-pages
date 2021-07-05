@@ -3,7 +3,6 @@ import {shallow} from "enzyme";
 import PropTypes from "prop-types";
 import React from "react";
 import ShallowRenderer from "react-test-renderer/shallow";
-import getConfig from "../../utils/get-config";
 import logError from "../../utils/log-error";
 import loadTranslation from "../../utils/load-translation";
 import Logout from "./logout";
@@ -14,7 +13,6 @@ jest.mock("../../utils/log-error");
 jest.mock("../../utils/load-translation");
 logError.mockImplementation(jest.fn());
 
-const defaultConfig = getConfig("default");
 const userData = {
   username: "tester@tester.com",
   email: "tester@tester.com",
@@ -26,7 +24,6 @@ const createTestProps = (props) => {
   return {
     orgSlug: "default",
     orgName: "default name",
-    logoutPage: defaultConfig.components.logout,
     authenticate: jest.fn(),
     setTitle: jest.fn(),
     setUserData: jest.fn(),

@@ -184,82 +184,23 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
               ],
             },
             "mobile_phone_verification_form": Object {
-              "buttons": Object {
-                "change": Object {
-                  "en": "Change your phone number",
-                },
-                "logout": Object {
-                  "en": "Logout",
-                },
-                "resend": Object {
-                  "en": "Send a new verification code",
-                },
-                "verify": Object {
-                  "en": "Submit",
-                },
-              },
               "input_fields": Object {
                 "code": Object {
-                  "label": Object {
-                    "en": "code",
-                  },
                   "pattern": "[0-9]{6,}",
-                  "pattern_description": Object {
-                    "en": "this field must be a 6 digit numeric code",
-                  },
-                  "placeholder": Object {
-                    "en": "enter SMS verification code",
-                  },
                   "type": "text",
                 },
-              },
-              "text": Object {
-                "change": Object {
-                  "en": "Wrong phone number?",
-                },
-                "logout": Object {
-                  "en": "If you need to cancel the process you can log out below.",
-                },
-                "resend": Object {
-                  "en": "If you did not receive the verification SMS code, you can try sending it again by clicking below.",
-                },
-                "token_sent": Object {
-                  "en": "SMS verification code sent successfully.",
-                },
-                "verify": Object {
-                  "en": "Verify your mobile phone number ({phone_number}) by inserting the code you received via SMS below.",
-                },
-              },
-              "title": Object {
-                "en": "Verify mobile number",
               },
             },
             "phone_number_change_form": Object {
               "buttons": Object {
-                "cancel": Object {
-                  "text": Object {
-                    "en": "Cancel",
-                  },
-                },
-                "change_phone_number": Object {
-                  "text": Object {
-                    "en": "Change phone number",
-                  },
-                },
+                "cancel": true,
+                "change_phone_number": true,
               },
               "input_fields": Object {
                 "phone_number": Object {
                   "country": "it",
                   "type": "tel",
                 },
-              },
-              "text": Object {
-                "token_sent": Object {
-                  "en": "SMS verification code sent successfully.",
-                },
-              },
-              "title": Object {
-                "en": "Change mobile number",
               },
             },
             "registration_form": Object {
@@ -324,44 +265,15 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
               "links": Object {
                 "login": true,
               },
-              "title": Object {
-                "en": "Sign up",
-              },
             },
           },
           "name": "test org 2 (sms)",
-          "password_eye_icon": Object {
-            "hide": Object {
-              "title": Object {
-                "en": "hide password",
-              },
-            },
-            "reveal": Object {
-              "title": Object {
-                "en": "reveal password",
-              },
-            },
-          },
-          "privacy_policy": Object {
-            "content": Object {
-              "en": "...",
-            },
-            "title": Object {
-              "en": "privacy policy",
-            },
-          },
+          "privacy_policy": true,
           "settings": Object {
             "mobile_phone_verification": true,
           },
           "slug": "test-org-2",
-          "terms_and_conditions": Object {
-            "content": Object {
-              "en": "...",
-            },
-            "title": Object {
-              "en": "terms and conditions",
-            },
-          },
+          "terms_and_conditions": true,
         }
       }
       cookies={
@@ -377,30 +289,14 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
       phone_number_change={
         Object {
           "buttons": Object {
-            "cancel": Object {
-              "text": Object {
-                "en": "Cancel",
-              },
-            },
-            "change_phone_number": Object {
-              "text": Object {
-                "en": "Change phone number",
-              },
-            },
+            "cancel": true,
+            "change_phone_number": true,
           },
           "input_fields": Object {
             "phone_number": Object {
               "country": "it",
               "type": "tel",
             },
-          },
-          "text": Object {
-            "token_sent": Object {
-              "en": "SMS verification code sent successfully.",
-            },
-          },
-          "title": Object {
-            "en": "Change mobile number",
           },
         }
       }
@@ -458,82 +354,23 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
                 ],
               },
               "mobile_phone_verification_form": Object {
-                "buttons": Object {
-                  "change": Object {
-                    "en": "Change your phone number",
-                  },
-                  "logout": Object {
-                    "en": "Logout",
-                  },
-                  "resend": Object {
-                    "en": "Send a new verification code",
-                  },
-                  "verify": Object {
-                    "en": "Submit",
-                  },
-                },
                 "input_fields": Object {
                   "code": Object {
-                    "label": Object {
-                      "en": "code",
-                    },
                     "pattern": "[0-9]{6,}",
-                    "pattern_description": Object {
-                      "en": "this field must be a 6 digit numeric code",
-                    },
-                    "placeholder": Object {
-                      "en": "enter SMS verification code",
-                    },
                     "type": "text",
                   },
-                },
-                "text": Object {
-                  "change": Object {
-                    "en": "Wrong phone number?",
-                  },
-                  "logout": Object {
-                    "en": "If you need to cancel the process you can log out below.",
-                  },
-                  "resend": Object {
-                    "en": "If you did not receive the verification SMS code, you can try sending it again by clicking below.",
-                  },
-                  "token_sent": Object {
-                    "en": "SMS verification code sent successfully.",
-                  },
-                  "verify": Object {
-                    "en": "Verify your mobile phone number ({phone_number}) by inserting the code you received via SMS below.",
-                  },
-                },
-                "title": Object {
-                  "en": "Verify mobile number",
                 },
               },
               "phone_number_change_form": Object {
                 "buttons": Object {
-                  "cancel": Object {
-                    "text": Object {
-                      "en": "Cancel",
-                    },
-                  },
-                  "change_phone_number": Object {
-                    "text": Object {
-                      "en": "Change phone number",
-                    },
-                  },
+                  "cancel": true,
+                  "change_phone_number": true,
                 },
                 "input_fields": Object {
                   "phone_number": Object {
                     "country": "it",
                     "type": "tel",
                   },
-                },
-                "text": Object {
-                  "token_sent": Object {
-                    "en": "SMS verification code sent successfully.",
-                  },
-                },
-                "title": Object {
-                  "en": "Change mobile number",
                 },
               },
               "registration_form": Object {
@@ -598,44 +435,15 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
                 "links": Object {
                   "login": true,
                 },
-                "title": Object {
-                  "en": "Sign up",
-                },
               },
             },
             "name": "test org 2 (sms)",
-            "password_eye_icon": Object {
-              "hide": Object {
-                "title": Object {
-                  "en": "hide password",
-                },
-              },
-              "reveal": Object {
-                "title": Object {
-                  "en": "reveal password",
-                },
-              },
-            },
-            "privacy_policy": Object {
-              "content": Object {
-                "en": "...",
-              },
-              "title": Object {
-                "en": "privacy policy",
-              },
-            },
+            "privacy_policy": true,
             "settings": Object {
               "mobile_phone_verification": true,
             },
             "slug": "test-org-2",
-            "terms_and_conditions": Object {
-              "content": Object {
-                "en": "...",
-              },
-              "title": Object {
-                "en": "terms and conditions",
-              },
-            },
+            "terms_and_conditions": true,
           }
         }
         cookies={
@@ -692,30 +500,14 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
         phone_number_change={
           Object {
             "buttons": Object {
-              "cancel": Object {
-                "text": Object {
-                  "en": "Cancel",
-                },
-              },
-              "change_phone_number": Object {
-                "text": Object {
-                  "en": "Change phone number",
-                },
-              },
+              "cancel": true,
+              "change_phone_number": true,
             },
             "input_fields": Object {
               "phone_number": Object {
                 "country": "it",
                 "type": "tel",
               },
-            },
-            "text": Object {
-              "token_sent": Object {
-                "en": "SMS verification code sent successfully.",
-              },
-            },
-            "title": Object {
-              "en": "Change mobile number",
             },
           }
         }

@@ -200,11 +200,9 @@ export default withRouter(MobilePhoneChange);
 MobilePhoneChange.contextType = LoadingContext;
 MobilePhoneChange.propTypes = {
   phone_number_change: PropTypes.shape({
-    title: PropTypes.object,
     input_fields: PropTypes.shape({
       phone_number: PropTypes.shape({
-        label: PropTypes.object,
-        placeholder: PropTypes.object,
+        type: PropTypes.string,
         only_countries: PropTypes.array,
         preferred_countries: PropTypes.array,
         exclude_countries: PropTypes.array,
@@ -212,15 +210,8 @@ MobilePhoneChange.propTypes = {
       }),
     }).isRequired,
     buttons: PropTypes.shape({
-      change_phone_number: PropTypes.shape({
-        text: PropTypes.object,
-      }),
-      cancel: PropTypes.shape({
-        text: PropTypes.object,
-      }),
-    }).isRequired,
-    text: PropTypes.shape({
-      token_sent: PropTypes.shape().isRequired,
+      change_phone_number: PropTypes.bool,
+      cancel: PropTypes.bool,
     }).isRequired,
   }).isRequired,
   settings: PropTypes.shape({

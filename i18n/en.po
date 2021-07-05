@@ -23,7 +23,7 @@ msgid "TERMS_AND_CONDITIONS_TITLE"
 msgstr "terms and conditions"
 
 #: client/components/status/status.js:399
-#: client/components/status/status.js:622
+#: client/components/status/status.js:601
 msgid "ACTIVE_SESSION_TEXT"
 msgstr "session is active"
 
@@ -37,76 +37,75 @@ msgstr "Logout"
 msgid "STATUS_PAGE_TITLE"
 msgstr "Status"
 
-#: client/components/status/status.js:614
+#: client/components/status/status.js:593
 msgid "SESSION_HEADER_START_TIME"
 msgstr "Start time"
 
-#: client/components/status/status.js:615
+#: client/components/status/status.js:594
 msgid "SESSION_HEADER_STOP_TIME"
 msgstr "Stop time"
 
-#: client/components/status/status.js:616
+#: client/components/status/status.js:595
 msgid "SESSION_HEADER_DURATION"
 msgstr "Duration"
 
-#: client/components/status/status.js:617
+#: client/components/status/status.js:596
 msgid "SESSION_HEADER_DOWNLOAD"
 msgstr "Download"
 
-#: client/components/status/status.js:618
+#: client/components/status/status.js:597
 msgid "SESSION_HEADER_UPLOAD"
 msgstr "Upload"
 
-#: client/components/status/status.js:619
+#: client/components/status/status.js:598
 msgid "SESSION_HEADER_DEVICE_ADDRESS"
 msgstr "Device address"
 
-#: client/components/status/status.js:628
-#: client/components/status/status.js:641
+#: client/components/status/status.js:610
 msgid "USER_INFO_STATUS_TEXT"
 msgstr "Status"
 
-#: client/components/status/status.js:629
+#: client/components/status/status.js:611
 msgid "USER_INFO_STATUS_VALUE"
 msgstr "Logged in"
 
-#: client/components/status/status.js:632
+#: client/components/status/status.js:614
 msgid "USER_INFO_EMAIL"
 msgstr "Email"
 
-#: client/components/status/status.js:635
+#: client/components/status/status.js:617
 msgid "USER_INFO_USERNAME"
 msgstr "Username"
 
-#: client/components/status/status.js:638
+#: client/components/status/status.js:620
 msgid "USER_INFO_PHONE_NUMBER"
 msgstr "Phone number"
 
-#: client/components/status/status.js:642
+#: client/components/status/status.js:648
 msgid "STATUS_PAGE_CONTENT"
 msgstr ""
 "WiFi Login Successful!\n"
 "        You can now use the internet.\n"
 "        You may leave this page open in case you want to log out."
 
-#: client/components/status/status.js:657
+#: client/components/status/status.js:663
 msgid "LOGOUT_MODAL_CONTENT"
 msgstr "Do you want to automatically log in the next time?"
 
-#: client/components/status/status.js:665
+#: client/components/status/status.js:671
 msgid "LOGOUT_MODAL_AGREE"
 msgstr "Yes"
 
-#: client/components/status/status.js:672
+#: client/components/status/status.js:678
 msgid "LOGOUT_MODAL_DISAGREE"
 msgstr "No"
 
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:260
-#: client/components/status/status.js:697
+#: client/components/status/status.js:703
 msgid "LOGOUT_BUTTON"
 msgstr "Logout"
 
-#: client/components/status/status.js:715
+#: client/components/status/status.js:721
 #, javascript-format
 msgid "STATUS_PAGE_LINK_TEXT ${ link.text }"
 msgstr "${ link.text }"
@@ -656,6 +655,6 @@ msgstr "Sorry, we couldn't find the page you were looking for."
 msgid "HOME_PAGE_LINK_TEXT"
 msgstr "Go back to homepage"
 
-#: client/components/status/status.js:623
+#: client/components/status/status.js:602
 msgid "DATE_LANGUAGE_LOCALE"
 msgstr "en-US"

@@ -64,11 +64,6 @@ Logout.defaultProps = {
   isAuthenticated: false,
 };
 Logout.propTypes = {
-  logoutPage: PropTypes.shape({
-    title: PropTypes.object,
-    content: PropTypes.object.isRequired,
-    login_again: PropTypes.object.isRequired,
-  }).isRequired,
   orgSlug: PropTypes.string.isRequired,
   orgName: PropTypes.string.isRequired,
   isAuthenticated: PropTypes.bool,

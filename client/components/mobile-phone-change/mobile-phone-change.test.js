@@ -30,9 +30,6 @@ const createTestProps = function (props, configName = "test-org-2") {
   componentConf.input_fields = {
     phone_number: conf.components.registration_form.input_fields.phone_number,
   };
-  componentConf.text = {
-    token_sent: conf.components.mobile_phone_verification_form.text.token_sent,
-  };
   return {
     phone_number_change: componentConf,
     settings: conf.settings,

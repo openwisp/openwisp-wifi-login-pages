@@ -152,19 +152,7 @@ client:
         - text: "Change your password"
           url: "/{orgSlug}/change-password/"
 
-    logout:
-      title:
-        en: "Logout"
-      content:
-        text:
-          en: "Logout successful"
-      login_again:
-        text:
-          en: "Log in again"
-
     login_form:
-      title:
-        en: "Log in"
       social_login:
         links:
           - text: "Facebook"

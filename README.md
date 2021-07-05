@@ -273,41 +273,33 @@ Let us consider the following configuration for the header, footer and contact c
 components:
   header:
     links:
-      - text:
-          en: "about"
+      - text: "about"
         url: "/about"
-      - text:
-          en: "sign up"
+      - text: "sign up"
         url: "/default/registration"
         authenticated: false
-      - text:
-          en: "change password"
+      - text: "change password"
         url: "/change-password"
         authenticated: true
         # if organization supports any verification method
         verified: true
       # if organization supports mobile verification
-      - text:
-          en: "change phone number"
+      - text: "change phone number"
         url: "/mobile/change-phone-number"
         authenticated: true
         method: "mobile_phone"
   footer:
     links:
-      - text:
-          en: "about"
+      - text: "about"
         url: "/about"
-      - text:
-          en: "status"
+      - text: "status"
         url: "/status"
         authenticated: true
   contact_page:
     social_links:
-      - text:
-          en: "support"
+      - text: "support"
         url: "/support"
-      - text:
-          en: "twitter"
+      - text: "twitter"
         url: "https://twitter.com/openwisp"
         authenticated: true
 ```
@@ -353,12 +345,6 @@ login_form:
       auto_switch_phone_input: false
       type: "text"
       pattern: null
-      pattern_description:
-        en: null
-      placeholder:
-        en: "username, email or mobile phone number"
-      label:
-        en: "username, email or mobile phone number"
 ```
 
 #### Configuring Social Login
