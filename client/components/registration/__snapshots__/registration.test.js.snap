@@ -181,6 +181,7 @@ exports[`<Registration /> rendering with placeholder translation tags should ren
               EMAIL_LABEL
             </label>
             <input
+              autoComplete="email"
               className="input "
               id="email"
               name="email"
@@ -202,6 +203,7 @@ exports[`<Registration /> rendering with placeholder translation tags should ren
               PASSWORD_LABEL
             </label>
             <input
+              autoComplete="new-password"
               className="input "
               id="password"
               name="password1"
@@ -232,6 +234,7 @@ exports[`<Registration /> rendering with placeholder translation tags should ren
               PASSWORD_CONFIRM_LABEL
             </label>
             <input
+              autoComplete="new-password"
               className="input "
               id="password-confirm"
               name="password2"

@@ -42,7 +42,7 @@ exports[`<PaymentStatus /> rendering with placeholder translation tags should re
         <Link
           className="button full"
           onClick={[Function]}
-          to="/default/login"
+          to="/default/status"
         >
           PAYMENT_GIVE_UP_BUTTON
         </Link>
