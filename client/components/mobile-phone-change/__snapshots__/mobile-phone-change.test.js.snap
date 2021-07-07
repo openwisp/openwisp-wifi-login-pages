@@ -1258,7 +1258,7 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
                       className="contact-links"
                     >
                       <a
-                        className="contact-twitter-link link"
+                        className="link "
                         href="https://twitter.com/openwisp"
                         key="https://twitter.com/openwisp"
                         rel="noopener noreferrer"
@@ -1266,12 +1266,12 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
                       >
                         <img
                           alt="twitter"
-                          className="contact-twitter-image contact-image"
+                          className="contact-image "
                           src="/assets/test-org-2/twitter.svg"
                         />
                       </a>
                       <a
-                        className="contact-facebook-link link"
+                        className="link "
                         href="https://facebook.com/openwisp"
                         key="https://facebook.com/openwisp"
                         rel="noopener noreferrer"
@@ -1279,7 +1279,7 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
                       >
                         <img
                           alt="facebook"
-                          className="contact-facebook-image contact-image"
+                          className="contact-image "
                           src="/assets/test-org-2/facebook.svg"
                         />
                       </a>

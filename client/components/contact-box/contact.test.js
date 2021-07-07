@@ -12,17 +12,20 @@ const links = [
     icon: "twiter.svg",
     url: "https://twitter.com/openwisp",
     authenticated: true,
+    css: "twitter",
   },
   {
     alt: {en: "facebook"},
     icon: "facebook.svg",
     url: "https://facebook.com/openwisp",
     authenticated: false,
+    css: "facebook",
   },
   {
     alt: {en: "google"},
     icon: "google.svg",
     url: "https://google.com/openwisp",
+    css: "google",
   },
 ];
 const createTestProps = (props) => {
@@ -51,9 +54,9 @@ describe("<Status /> rendering", () => {
     props.isAuthenticated = false;
     const wrapper = shallow(<Contact {...props} />);
     expect(wrapper.find(".contact-image")).toHaveLength(2);
-    expect(wrapper.find(".contact-google-image")).toHaveLength(1);
-    expect(wrapper.find(".contact-facebook-image")).toHaveLength(1);
-    expect(wrapper.find(".contact-twitter-image")).toHaveLength(0);
+    expect(wrapper.find(".link.google")).toHaveLength(1);
+    expect(wrapper.find(".link.facebook")).toHaveLength(1);
+    expect(wrapper.find(".link.twitter")).toHaveLength(0);
   });
 
   it("should render with authenticated links when authenticated", () => {
@@ -62,8 +65,8 @@ describe("<Status /> rendering", () => {
     props.isAuthenticated = true;
     const wrapper = shallow(<Contact {...props} />);
     expect(wrapper.find(".contact-image")).toHaveLength(2);
-    expect(wrapper.find(".contact-google-image")).toHaveLength(1);
-    expect(wrapper.find(".contact-twitter-image")).toHaveLength(1);
-    expect(wrapper.find(".contact-facebook-image")).toHaveLength(0);
+    expect(wrapper.find(".link.google")).toHaveLength(1);
+    expect(wrapper.find(".link.twitter")).toHaveLength(1);
+    expect(wrapper.find(".link.facebook")).toHaveLength(0);
   });
 });

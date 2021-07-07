@@ -39,24 +39,19 @@ export default class Contact extends React.Component {
           <div className="contact-links">
             {social_links.map((link) => {
               if (shouldLinkBeShown(link, isAuthenticated, userData)) {
+                const css = link.css || "";
                 return (
                   <a
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     key={link.url}
-                    className={`contact-${getText(
-                      link.alt,
-                      language,
-                    )}-link link`}
+                    className={`link ${css}`}
                   >
                     <img
                       src={getAssetPath(orgSlug, link.icon)}
                       alt={getText(link.alt, language)}
-                      className={`contact-${getText(
-                        link.alt,
-                        language,
-                      )}-image contact-image`}
+                      className={`contact-image ${css}`}
                     />
                   </a>
                 );
