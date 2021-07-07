@@ -278,7 +278,6 @@ export default class Login extends React.Component {
                       <p key={link.url}>
                         <a
                           href={link.url}
-                          target="_blank"
                           rel="noopener noreferrer"
                           className="social-link button full"
                         >

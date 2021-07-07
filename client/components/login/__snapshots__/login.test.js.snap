@@ -19,7 +19,6 @@ exports[`<Login /> interactions phone_number field should be present if mobile p
             class="social-link button full"
             href="#facebook"
             rel="noopener noreferrer"
-            target="_blank"
           >
             <span
               class="inner"
@@ -42,7 +41,6 @@ exports[`<Login /> interactions phone_number field should be present if mobile p
             class="social-link button full"
             href="#google"
             rel="noopener noreferrer"
-            target="_blank"
           >
             <span
               class="inner"
@@ -65,7 +63,6 @@ exports[`<Login /> interactions phone_number field should be present if mobile p
             class="social-link button full"
             href="#twitter"
             rel="noopener noreferrer"
-            target="_blank"
           >
             <span
               class="inner"
@@ -273,26 +270,26 @@ exports[`<Login /> interactions phone_number field should be present if mobile p
           class="contact-links"
         >
           <a
-            class="contact-twitter-link link"
+            class="link "
             href="https://twitter.com/openwisp"
             rel="noopener noreferrer"
             target="_blank"
           >
             <img
               alt="twitter"
-              class="contact-twitter-image contact-image"
+              class="contact-image "
               src="/assets/default/twitter.svg"
             />
           </a>
           <a
-            class="contact-facebook-link link"
+            class="link "
             href="https://facebook.com/openwisp"
             rel="noopener noreferrer"
             target="_blank"
           >
             <img
               alt="facebook"
-              class="contact-facebook-image contact-image"
+              class="contact-image "
               src="/assets/default/facebook.svg"
             />
           </a>
@@ -322,7 +319,6 @@ exports[`<Login /> interactions should not show phone_number field if auto_switc
             class="social-link button full"
             href="#facebook"
             rel="noopener noreferrer"
-            target="_blank"
           >
             <span
               class="inner"
@@ -345,7 +341,6 @@ exports[`<Login /> interactions should not show phone_number field if auto_switc
             class="social-link button full"
             href="#google"
             rel="noopener noreferrer"
-            target="_blank"
           >
             <span
               class="inner"
@@ -368,7 +363,6 @@ exports[`<Login /> interactions should not show phone_number field if auto_switc
             class="social-link button full"
             href="#twitter"
             rel="noopener noreferrer"
-            target="_blank"
           >
             <span
               class="inner"
@@ -549,26 +543,26 @@ exports[`<Login /> interactions should not show phone_number field if auto_switc
           class="contact-links"
         >
           <a
-            class="contact-twitter-link link"
+            class="link "
             href="https://twitter.com/openwisp"
             rel="noopener noreferrer"
             target="_blank"
           >
             <img
               alt="twitter"
-              class="contact-twitter-image contact-image"
+              class="contact-image "
               src="/assets/default/twitter.svg"
             />
           </a>
           <a
-            class="contact-facebook-link link"
+            class="link "
             href="https://facebook.com/openwisp"
             rel="noopener noreferrer"
             target="_blank"
           >
             <img
               alt="facebook"
-              class="contact-facebook-image contact-image"
+              class="contact-image "
               src="/assets/default/facebook.svg"
             />
           </a>
@@ -598,7 +592,6 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
             class="social-link button full"
             href="#facebook"
             rel="noopener noreferrer"
-            target="_blank"
           >
             <span
               class="inner"
@@ -621,7 +614,6 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
             class="social-link button full"
             href="#google"
             rel="noopener noreferrer"
-            target="_blank"
           >
             <span
               class="inner"
@@ -644,7 +636,6 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
             class="social-link button full"
             href="#twitter"
             rel="noopener noreferrer"
-            target="_blank"
           >
             <span
               class="inner"
@@ -825,26 +816,26 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
           class="contact-links"
         >
           <a
-            class="contact-twitter-link link"
+            class="link "
             href="https://twitter.com/openwisp"
             rel="noopener noreferrer"
             target="_blank"
           >
             <img
               alt="twitter"
-              class="contact-twitter-image contact-image"
+              class="contact-image "
               src="/assets/default/twitter.svg"
             />
           </a>
           <a
-            class="contact-facebook-link link"
+            class="link "
             href="https://facebook.com/openwisp"
             rel="noopener noreferrer"
             target="_blank"
           >
             <img
               alt="facebook"
-              class="contact-facebook-image contact-image"
+              class="contact-image "
               src="/assets/default/facebook.svg"
             />
           </a>
@@ -876,7 +867,6 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
               className="social-link button full"
               href="https://radius.openwisp.io/login/google"
               rel="noopener noreferrer"
-              target="_blank"
             >
               <span
                 className="inner"
@@ -899,7 +889,6 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
               className="social-link button full"
               href="https://radius.openwisp.io/login/facebook"
               rel="noopener noreferrer"
-              target="_blank"
             >
               <span
                 className="inner"
@@ -1076,7 +1065,6 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
               className="social-link button full"
               href="#facebook"
               rel="noopener noreferrer"
-              target="_blank"
             >
               <span
                 className="inner"
@@ -1099,7 +1087,6 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
               className="social-link button full"
               href="#google"
               rel="noopener noreferrer"
-              target="_blank"
             >
               <span
                 className="inner"
@@ -1122,7 +1109,6 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
               className="social-link button full"
               href="#twitter"
               rel="noopener noreferrer"
-              target="_blank"
             >
               <span
                 className="inner"
