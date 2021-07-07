@@ -37,17 +37,23 @@ export default class OrganizationWrapper extends React.Component {
     super(props);
     this.state = {
       loading: false,
+      translationLoaded: false,
     };
+    this.setLanguage = this.setLanguage.bind(this);
     const {match, setOrganization, cookies} = props;
     const organizationSlug = match.params.organization;
     if (organizationSlug) setOrganization(organizationSlug, cookies);
   }
 
-  componentDidUpdate(prevProps) {
-    const {setOrganization, match, cookies} = this.props;
+  async componentDidUpdate(prevProps) {
+    const {setOrganization, match, cookies, language} = this.props;
+    const {translationLoaded} = this.state;
     if (prevProps.match.params.organization !== match.params.organization) {
       if (match.params.organization)
         setOrganization(match.params.organization, cookies);
+    }
+    if (translationLoaded !== true || prevProps.language !== language) {
+      await this.setLanguage(language, match.params.organization);
     }
   }
 
@@ -55,9 +61,16 @@ export default class OrganizationWrapper extends React.Component {
     this.setState({loading: value});
   };
 
+  setLanguage = async (language, orgSlug) => {
+    await loadTranslation(language, orgSlug);
+    this.setState({
+      translationLoaded: true,
+    });
+  };
+
   render() {
-    const {organization, match, cookies, language} = this.props;
-    const {loading} = this.state;
+    const {organization, match, cookies} = this.props;
+    const {loading, translationLoaded} = this.state;
     const {title, favicon, isAuthenticated, userData, settings, pageTitle} =
       organization.configuration;
     const {is_active} = userData;
@@ -66,7 +79,6 @@ export default class OrganizationWrapper extends React.Component {
     const cssPath = organization.configuration.css_path;
     const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
     const needsVerifyPhone = needsVerify("mobile_phone", userData, settings);
-    loadTranslation(language, orgSlug);
 
     if (organization.exists === true) {
       const {setLoading} = this;
@@ -259,7 +271,7 @@ export default class OrganizationWrapper extends React.Component {
                 />
               </Helmet>
             ) : null}
-            {loading && (
+            {loading && translationLoaded && (
               <div className="loader-container">
                 <div className="loader" />
               </div>

@@ -4,7 +4,6 @@ import React, {Suspense} from "react";
 import {MemoryRouter, Route} from "react-router-dom";
 import {Cookies} from "react-cookie";
 import {Provider} from "react-redux";
-import ShallowRenderer from "react-test-renderer/shallow";
 
 import getConfig from "../../utils/get-config";
 import loadTranslation from "../../utils/load-translation";
@@ -145,16 +144,13 @@ describe("<OrganizationWrapper /> interactions", () => {
     expect(wrapper.instance().state.loading).toBe(true);
   });
   it("should render main title if pageTitle is undefined", () => {
-    const renderer = new ShallowRenderer();
-    const component = renderer.render(<OrganizationWrapper {...props} />);
-    expect(component).toMatchSnapshot();
+    expect(wrapper).toMatchSnapshot();
     expect(wrapper.props().pageTitle).toBe(undefined);
   });
   it("should render pageTitle if it is not undefined", () => {
     props.organization.configuration.pageTitle = "Organization Wrapper";
-    const renderer = new ShallowRenderer();
-    const component = renderer.render(<OrganizationWrapper {...props} />);
-    expect(component).toMatchSnapshot();
+    wrapper = shallow(<OrganizationWrapper {...props} />);
+    expect(wrapper).toMatchSnapshot();
   });
 });
 
