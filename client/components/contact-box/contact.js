@@ -16,25 +16,31 @@ export default class Contact extends React.Component {
     return (
       <div className="side-column contact">
         <div className="inner">
-          <div className="row">
-            <span className="label">{getText(email.label, language)}:</span>
-            <a
-              href={`mailto:${getText(email.value, language)}`}
-              className="link"
-            >
-              {getText(email.value, language)}
-            </a>
-          </div>
+          {email && (
+            <div className="row">
+              <span className="label">{getText(email.label, language)}:</span>
+              <a
+                href={`mailto:${getText(email.value, language)}`}
+                className="link"
+              >
+                {getText(email.value, language)}
+              </a>
+            </div>
+          )}
 
-          <div className="row">
-            <span className="label">{getText(helpdesk.label, language)}:</span>
-            <a
-              href={`tel:${getText(helpdesk.value, language)}`}
-              className="link"
-            >
-              {getText(helpdesk.value, language)}
-            </a>
-          </div>
+          {helpdesk && (
+            <div className="row">
+              <span className="label">
+                {getText(helpdesk.label, language)}:
+              </span>
+              <a
+                href={`tel:${getText(helpdesk.value, language)}`}
+                className="link"
+              >
+                {getText(helpdesk.value, language)}
+              </a>
+            </div>
+          )}
 
           <div className="contact-links">
             {social_links.map((link) => {
