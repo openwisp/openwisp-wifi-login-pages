@@ -13,8 +13,10 @@ import {loadingContextValue} from "../../utils/loading-context";
 import getConfig from "../../utils/get-config";
 import Login from "./login";
 import tick from "../../utils/tick";
+import getParameterByName from "../../utils/get-parameter-by-name";
 
 jest.mock("axios");
+jest.mock("../../utils/get-parameter-by-name");
 
 const defaultConfig = getConfig("default");
 const loginForm = defaultConfig.components.login_form;
@@ -531,5 +533,48 @@ describe("<Login /> interactions", () => {
       props.language,
       props.orgName,
     ]);
+  });
+
+  it("should call handleAuthentication on social login / SAML", () => {
+    // this is needed to spot potential errors
+    axios.mockImplementationOnce(() => {
+      return Promise.reject({
+        response: {
+          data: {
+            username: "username error",
+            password: "password error",
+            detail: "error details",
+            non_field_errors: "non field errors",
+          },
+        },
+      });
+    });
+    getParameterByName
+      .mockImplementationOnce(() => {
+        return userData.username;
+      })
+      .mockImplementationOnce(() => {
+        return userData.key;
+      });
+    const spyToast = jest.spyOn(dependency.toast, "success");
+    wrapper = mountComponent(props);
+    expect(localStorage.getItem("rememberMe")).toEqual("false");
+    expect(sessionStorage.getItem("default_auth_token")).toEqual(userData.key);
+    expect(spyToast.mock.calls.length).toBe(1);
+    const login = wrapper.find(Login);
+    const setUserDataMock = login.props().setUserData.mock;
+    expect(setUserDataMock.calls.length).toBe(1);
+    expect(setUserDataMock.calls.pop()).toEqual([
+      {
+        username: userData.username,
+        key: userData.key,
+        is_active: true,
+        radius_user_token: undefined,
+        justAuthenticated: true,
+      },
+    ]);
+    const authenticateMock = login.props().authenticate.mock;
+    expect(authenticateMock.calls.length).toBe(1);
+    expect(authenticateMock.calls.pop()).toEqual([true]);
   });
 });

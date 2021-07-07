@@ -25,7 +25,7 @@ const validateToken = async (
   const url = validateApiUrl(orgSlug);
   const authToken = cookies.get(`${orgSlug}_auth_token`);
   const {token, session} = handleSession(orgSlug, authToken, cookies);
-  // calling validate token API only if userData is undefined
+  // calling validate token API only if userData.radius_user_token is undefined
   if (token && userData && userData.radius_user_token === undefined) {
     try {
       const response = await axios({

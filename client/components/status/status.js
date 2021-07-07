@@ -105,6 +105,7 @@ export default class Status extends React.Component {
 
       // stop here if token is invalid
       if (isValid === false) {
+        setLoading(false);
         return;
       }
 

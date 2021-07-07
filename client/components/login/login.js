@@ -60,15 +60,13 @@ export default class Login extends React.Component {
     }
     this.setState({remember_me});
 
+    // social login / SAML login
     if (username && token) {
-      this.setState(
-        {
-          username,
-          password: token,
-        },
-        () => {
-          this.handleSubmit();
-        },
+      // will trigger token validation in status
+      // autologin is disabled in this mode (user has to log in each time)
+      this.handleAuthentication(
+        {username, key: token, is_active: true, radius_user_token: undefined},
+        true,
       );
     }
   }
@@ -170,27 +168,13 @@ export default class Login extends React.Component {
   handleSubmit(event) {
     const {setLoading} = this.context;
     if (event) event.preventDefault();
-    const {orgSlug, authenticate, setUserData} = this.props;
-    const {username, password, remember_me, errors} = this.state;
+    const {orgSlug, setUserData} = this.props;
+    const {username, password, errors} = this.state;
     const url = loginApiUrl(orgSlug);
     this.setState({
       errors: {},
     });
-    localStorage.setItem("rememberMe", remember_me);
     setLoading(true);
-
-    const handleAuthentication = (data = {}) => {
-      // if remember me checkbox is unchecked
-      // store auth token in sessionStorage instead of cookie
-      if (!remember_me) {
-        sessionStorage.setItem(`${orgSlug}_auth_token`, data.key);
-      }
-      toast.success(loginSuccess, {
-        toastId: mainToastId,
-      });
-      setUserData({...data, justAuthenticated: true});
-      authenticate(true);
-    };
 
     return axios({
       method: "post",
@@ -205,7 +189,7 @@ export default class Login extends React.Component {
     })
       .then((res = {}) => {
         if (!res.data) throw new Error();
-        return handleAuthentication(res.data);
+        return this.handleAuthentication(res.data);
       })
       .catch((error = {}) => {
         if (!error.response || !error.response.data || !error) {
@@ -217,7 +201,7 @@ export default class Login extends React.Component {
         if (!data) throw new Error();
 
         if (error.response.status === 401 && data.is_active) {
-          handleAuthentication(data);
+          this.handleAuthentication(data);
           return;
         }
 
@@ -247,6 +231,24 @@ export default class Login extends React.Component {
         setLoading(false);
       });
   }
+
+  handleAuthentication = (data = {}, useSessionStorage = false) => {
+    const {orgSlug, authenticate, setUserData} = this.props;
+    const {remember_me} = this.state;
+    // useSessionStorage=true is passed from social login or SAML
+    // user needs to repeat the login process each time
+    localStorage.setItem("rememberMe", remember_me && !useSessionStorage);
+    // if remember me checkbox is unchecked
+    // store auth token in sessionStorage instead of cookie
+    if (!remember_me || useSessionStorage) {
+      sessionStorage.setItem(`${orgSlug}_auth_token`, data.key);
+    }
+    toast.success(loginSuccess, {
+      toastId: mainToastId,
+    });
+    setUserData({...data, justAuthenticated: true});
+    authenticate(true);
+  };
 
   handleCheckBoxChange = (event) => {
     this.setState({
