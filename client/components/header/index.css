@@ -163,7 +163,8 @@
   }
   .mobile-languages-row {
     width: 90%;
-    margin: 5px 0 10px 0;
+    margin: 5px 0 0 0;
+    line-height: 40px;
   }
   .header-language-btn {
     color: #fff;
