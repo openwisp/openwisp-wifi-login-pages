@@ -35,6 +35,8 @@ the [OpenWISP Radius API](https://openwisp-radius.readthedocs.io/) to provide th
 - Logout from the wifi service (by sending a POST to the captive portal logout URL behind the scenes)
 - Change password
 - Reset password (password forgot)
+- Support for [Social Login](#configuring-social-login) and
+  [SAML](#configuring-saml-login--logout)
 - Optional social login buttons (facebook, google, twitter)
 - Contact box allowing to show the support email and/or phone number, as well as
   additional links specified via configuration
