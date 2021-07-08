@@ -555,6 +555,9 @@ describe("<Login /> interactions", () => {
       })
       .mockImplementationOnce(() => {
         return userData.key;
+      })
+      .mockImplementationOnce(() => {
+        return "saml";
       });
     const spyToast = jest.spyOn(dependency.toast, "success");
     wrapper = mountComponent(props);
@@ -576,5 +579,6 @@ describe("<Login /> interactions", () => {
     const authenticateMock = login.props().authenticate.mock;
     expect(authenticateMock.calls.length).toBe(1);
     expect(authenticateMock.calls.pop()).toEqual([true]);
+    expect(localStorage.getItem("default_logout_method")).toEqual("saml");
   });
 });

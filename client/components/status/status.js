@@ -348,16 +348,26 @@ export default class Status extends React.Component {
     if (!this.logoutIfameRef || !this.logoutIfameRef.current) {
       return;
     }
-    const {userData, setUserData} = this.props;
+    const {userData, setUserData, statusPage, orgSlug} = this.props;
+    const {saml_logout_url} = statusPage;
     const {loggedOut} = this.state;
     const {repeatLogin} = this;
     const {setLoading} = this.context;
+    const logoutMethodKey = `${orgSlug}_logout_method`;
+    const logoutMethod = localStorage.getItem(logoutMethodKey);
 
     if (loggedOut) {
-      const {orgSlug, logout, cookies} = this.props;
+      const {logout, cookies} = this.props;
       const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
       logout(cookies, orgSlug, userAutoLogin);
       toast.success(logoutSuccess);
+
+      if (saml_logout_url && logoutMethod === "saml") {
+        window.location.assign(saml_logout_url);
+        localStorage.removeItem(logoutMethodKey);
+        return;
+      }
+
       setLoading(false);
     }
 
@@ -923,6 +933,7 @@ Status.propTypes = {
         }).isRequired,
       }).isRequired,
     }).isRequired,
+    saml_logout_url: PropTypes.string,
   }).isRequired,
   language: PropTypes.string.isRequired,
   orgSlug: PropTypes.string.isRequired,

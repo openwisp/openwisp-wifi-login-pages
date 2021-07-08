@@ -362,6 +362,20 @@ login_form:
 
 In order to enable users to log via third-party services like Google and Facebook, the ["Social Login" feature of OpenWISP Radius](https://openwisp-radius.readthedocs.io/en/latest/user/social_login.html) must be configured and enabled.
 
+#### Configuring SAML Login & Logout
+
+To enable SAML login, the ["SAML" feature of OpenWISP Radius](https://openwisp-radius.readthedocs.io/en/latest/user/saml.html)
+must be enabled.
+
+The only additional configuration needed is `saml_logout_url`, which is needed
+to perform SAML logout.
+
+```yaml
+status_page:
+  # other conf
+  saml_logout_url: "https://openwisp.myservice.org/radius/saml2/logout/"
+```
+
 #### Configuring Logging
 
 There are certain environment variables used to configure server logging. The details of environment variables to configure logging are mentioned below:
