@@ -35,6 +35,8 @@ the [OpenWISP Radius API](https://openwisp-radius.readthedocs.io/) to provide th
 - Logout from the wifi service (by sending a POST to the captive portal logout URL behind the scenes)
 - Change password
 - Reset password (password forgot)
+- Support for [Social Login](#configuring-social-login) and
+  [SAML](#configuring-saml-login--logout)
 - Optional social login buttons (facebook, google, twitter)
 - Contact box allowing to show the support email and/or phone number, as well as
   additional links specified via configuration
@@ -362,6 +364,20 @@ login_form:
 #### Configuring Social Login
 
 In order to enable users to log via third-party services like Google and Facebook, the ["Social Login" feature of OpenWISP Radius](https://openwisp-radius.readthedocs.io/en/latest/user/social_login.html) must be configured and enabled.
+
+#### Configuring SAML Login & Logout
+
+To enable SAML login, the ["SAML" feature of OpenWISP Radius](https://openwisp-radius.readthedocs.io/en/latest/user/saml.html)
+must be enabled.
+
+The only additional configuration needed is `saml_logout_url`, which is needed
+to perform SAML logout.
+
+```yaml
+status_page:
+  # other conf
+  saml_logout_url: "https://openwisp.myservice.org/radius/saml2/logout/"
+```
 
 #### Configuring Logging
 

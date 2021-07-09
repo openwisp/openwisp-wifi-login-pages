@@ -48,7 +48,7 @@ export default class Login extends React.Component {
   componentDidMount() {
     const username = getParameterByName("username");
     const token = getParameterByName("token");
-    const {loginForm, setTitle, orgName, language} = this.props;
+    const {loginForm, setTitle, orgName, orgSlug, language} = this.props;
     setTitle(loginForm, language, orgName);
 
     let remember_me;
@@ -62,10 +62,21 @@ export default class Login extends React.Component {
 
     // social login / SAML login
     if (username && token) {
+      const loginMethod = getParameterByName("login_method");
+      if (loginMethod) {
+        // we have to use localStorage because the page may be
+        // closed and the information may be lost if we use sessionStorage
+        localStorage.setItem(`${orgSlug}_logout_method`, loginMethod);
+      }
       // will trigger token validation in status
       // autologin is disabled in this mode (user has to log in each time)
       this.handleAuthentication(
-        {username, key: token, is_active: true, radius_user_token: undefined},
+        {
+          username,
+          key: token,
+          is_active: true,
+          radius_user_token: undefined,
+        },
         true,
       );
     }

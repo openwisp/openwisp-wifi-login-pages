@@ -135,6 +135,7 @@ describe("<Status /> interactions", () => {
     axios.mockReset();
     jest.resetAllMocks();
     jest.restoreAllMocks();
+    jest.useRealTimers();
   });
 
   it("should call logout function when logout button is clicked", async () => {
@@ -843,5 +844,56 @@ describe("<Status /> interactions", () => {
       props.language,
       props.orgName,
     ]);
+  });
+
+  it("should perform call saml_logout_url if logged in via SAML", async () => {
+    axios.mockImplementationOnce(() => {
+      return Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: [
+          {
+            session_id: 1,
+            start_time: "2020-09-08T00:22:28-04:00",
+            stop_time: "2020-09-08T00:22:29-04:00",
+          },
+        ],
+        headers: {},
+      });
+    });
+
+    // mock window.location.assign
+    const location = new URL("https://wifi.openwisp.io");
+    location.assign = jest.fn();
+    delete window.location;
+    window.location = location;
+
+    props = createTestProps();
+    props.statusPage.saml_logout_url = "http://test.com/saml/logout";
+    props.radius_user_token = undefined;
+    localStorage.setItem("default_logout_method", "saml");
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    const status = wrapper.instance();
+    const handleLogout = jest.spyOn(status, "handleLogout");
+    const mockRef = {submit: jest.fn()};
+    status.logoutFormRef = {current: mockRef};
+    status.logoutIfameRef = {current: {}};
+    status.componentDidMount();
+
+    wrapper.find(".logout input.button").simulate("click", {});
+    wrapper.find(".modal-buttons button:last-child").simulate("click", {});
+    expect(handleLogout).toHaveBeenCalledWith(false);
+    expect(location.assign.mock.calls.length).toBe(0);
+    await tick();
+    status.handleLogoutIframe();
+    expect(location.assign.mock.calls.length).toBe(1);
+    expect(location.assign).toHaveBeenCalledWith(
+      props.statusPage.saml_logout_url,
+    );
+    expect(localStorage.getItem("default_logout_method")).toBe(null);
   });
 });
