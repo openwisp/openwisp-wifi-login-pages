@@ -439,8 +439,8 @@ export default class Status extends React.Component {
     return `${mb}MB`;
   };
 
-  getLargeTableRow = (session, sessionSettings) => {
-    const {language, captivePortalLogoutForm, statusPage} = this.props;
+  getLargeTableRow = (session, sessionSettings, showLogoutButton = false) => {
+    const {language, statusPage} = this.props;
     const {buttons} = statusPage;
     const time_option = {
       dateStyle: "medium",
@@ -470,22 +470,19 @@ export default class Status extends React.Component {
         <td>{this.getDuration(session.session_time)}</td>
         <td>{this.getMB(session.output_octets)}</td>
         <td>{this.getMB(session.input_octets)}</td>
-        <td>{session.calling_station_id}</td>
-        {session.stop_time == null &&
-          captivePortalLogoutForm.logout_by_session && (
-            <td>
-              <div className="row logout">
-                <input
-                  type="button"
-                  className="button"
-                  value={getText(buttons.logout.text, language)}
-                  onClick={() => {
-                    this.handleSessionLogout(session);
-                  }}
-                />
-              </div>
-            </td>
+        <td>
+          {session.calling_station_id}
+          {session.stop_time == null && showLogoutButton && (
+            <input
+              type="button"
+              className="button small session-logout"
+              value={getText(buttons.logout.text, language)}
+              onClick={() => {
+                this.handleSessionLogout(session);
+              }}
+            />
           )}
+        </td>
       </>
     );
   };
@@ -561,11 +558,10 @@ export default class Status extends React.Component {
         {session.stop_time == null &&
           captivePortalLogoutForm.logout_by_session && (
             <tr key={`${session.session_id}logout`} className="active-session">
-              <th>{`${getText(buttons.logout.text, language)} ?`}:</th>
-              <td className="row logout">
+              <td className="row logout" colSpan="2">
                 <input
                   type="button"
-                  className="button"
+                  className="button full"
                   value={getText(buttons.logout.text, language)}
                   onClick={() => {
                     this.handleSessionLogout(session);
@@ -580,7 +576,9 @@ export default class Status extends React.Component {
 
   getLargeTable = (session_info) => {
     const {activeSessions, pastSessions} = this.state;
-    const {language} = this.props;
+    const {language, captivePortalLogoutForm} = this.props;
+    const showLogoutButton =
+      captivePortalLogoutForm.logout_by_session && activeSessions.length > 1;
     return (
       <table className="large-table bg">
         <thead>
@@ -601,7 +599,11 @@ export default class Status extends React.Component {
                 key={session.session_id}
                 className={session.stop_time === null ? "active-session" : ""}
               >
-                {this.getLargeTableRow(session, session_info.settings)}
+                {this.getLargeTableRow(
+                  session,
+                  session_info.settings,
+                  showLogoutButton,
+                )}
               </tr>
             );
           })}

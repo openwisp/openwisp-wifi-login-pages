@@ -40,8 +40,23 @@
 .small-table tbody tr:last-child th {
   padding-bottom: 3%;
 }
+.small-table tbody th {
+  text-align: right;
+  padding-right: 2%;
+}
+.small-table tbody td {
+  text-align: left;
+  padding-left: 2%;
+}
 .active-session {
   font-weight: bold;
+}
+.active-session .button.session-logout {
+  margin-left: 20px;
+}
+.active-session .row.logout .button {
+  width: 75%;
+  margin: 0 auto;
 }
 .loadingContainer {
   padding-left: 50%;
