@@ -65,7 +65,7 @@ export default class Login extends React.Component {
       const loginMethod = getParameterByName("login_method");
       if (loginMethod) {
         // we have to use localStorage because the page may be
-        // reloaded and the information may be lost
+        // closed and the information may be lost if we use sessionStorage
         localStorage.setItem(`${orgSlug}_logout_method`, loginMethod);
       }
       // will trigger token validation in status
