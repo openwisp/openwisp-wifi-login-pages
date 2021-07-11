@@ -2,6 +2,7 @@ import {withCookies} from "react-cookie";
 import {connect} from "react-redux";
 import {setUserData} from "../../actions/dispatchers";
 import setOrganization from "../../actions/set-organization";
+import setLanguage from "../../actions/set-language";
 import Component from "./organization-wrapper";
 
 const mapStateToProps = (state, ownProps) => {
@@ -18,6 +19,9 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(setOrganization(slug, cookies));
     },
     setUserData: setUserData(dispatch),
+    setLanguage: (slug) => {
+      dispatch(setLanguage(slug));
+    },
   };
 };
 export default withCookies(

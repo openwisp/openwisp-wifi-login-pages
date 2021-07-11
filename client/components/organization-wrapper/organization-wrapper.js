@@ -37,23 +37,38 @@ export default class OrganizationWrapper extends React.Component {
     super(props);
     this.state = {
       loading: false,
-      translationLoaded: false,
+      translationLoaded: true,
     };
-    this.setLanguage = this.setLanguage.bind(this);
+    this.loadLanguage = this.loadLanguage.bind(this);
     const {match, setOrganization, cookies} = props;
     const organizationSlug = match.params.organization;
     if (organizationSlug) setOrganization(organizationSlug, cookies);
   }
 
+  componentDidMount() {
+    this.setState({translationLoaded: false});
+  }
+
   async componentDidUpdate(prevProps) {
-    const {setOrganization, match, cookies, language} = this.props;
+    const {setOrganization, match, cookies, setLanguage, language} = this.props;
     const {translationLoaded} = this.state;
     if (prevProps.match.params.organization !== match.params.organization) {
       if (match.params.organization)
         setOrganization(match.params.organization, cookies);
     }
-    if (translationLoaded !== true || prevProps.language !== language) {
-      await this.setLanguage(language, match.params.organization);
+    if (translationLoaded !== true) {
+      const userLangChoice = localStorage.getItem("userLangChoice");
+      if (userLangChoice) {
+        setLanguage(userLangChoice);
+        await this.loadLanguage(
+          userLangChoice,
+          match.params.organization,
+          false,
+        );
+      } else await this.loadLanguage(language, match.params.organization, true);
+    } else if (prevProps.language !== language) {
+      localStorage.setItem("userLangChoice", language);
+      await this.loadLanguage(language, match.params.organization, false);
     }
   }
 
@@ -61,8 +76,8 @@ export default class OrganizationWrapper extends React.Component {
     this.setState({loading: value});
   };
 
-  setLanguage = async (language, orgSlug) => {
-    await loadTranslation(language, orgSlug);
+  loadLanguage = async (language, orgSlug, useBrowserLang = false) => {
+    await loadTranslation(language, orgSlug, useBrowserLang);
     this.setState({
       translationLoaded: true,
     });
@@ -82,7 +97,7 @@ export default class OrganizationWrapper extends React.Component {
 
     if (organization.exists === true) {
       const {setLoading} = this;
-      return (
+      return translationLoaded ? (
         <>
           <LoadingContext.Provider
             value={{setLoading, getLoading: () => loading}}
@@ -271,14 +286,14 @@ export default class OrganizationWrapper extends React.Component {
                 />
               </Helmet>
             ) : null}
-            {loading && translationLoaded && (
+            {loading && (
               <div className="loader-container">
                 <div className="loader" />
               </div>
             )}
           </LoadingContext.Provider>
         </>
-      );
+      ) : null;
     }
     if (organization.exists === false) {
       return (
@@ -310,6 +325,7 @@ OrganizationWrapper.propTypes = {
     path: PropTypes.string,
   }).isRequired,
   setOrganization: PropTypes.func.isRequired,
+  setLanguage: PropTypes.func.isRequired,
   organization: PropTypes.shape({
     configuration: PropTypes.shape({
       title: PropTypes.string,

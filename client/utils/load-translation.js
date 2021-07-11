@@ -10,17 +10,29 @@ const loadCustomTranslation = (orgSlug, language) =>
 const loadDefaultTranslation = (language) =>
   import(`../translations/${language}.json`);
 
-const loadTranslation = async (language, orgSlug) => {
-  if (language !== "") {
+const importTranslation = async (orgSlug, lang) => {
+  try {
+    const {default: translationObj} = await loadCustomTranslation(
+      orgSlug,
+      lang,
+    );
+    setLocale(lang, translationObj);
+  } catch (err) {
+    const {default: translationObj} = await loadDefaultTranslation(lang);
+    setLocale(lang, translationObj);
+  }
+};
+
+const loadTranslation = async (language, orgSlug, useBrowserLang = false) => {
+  let lang = language;
+  if (useBrowserLang) lang = navigator.language || navigator.userLanguage;
+  if (lang !== "") {
     try {
-      const {default: translationObj} = await loadCustomTranslation(
-        orgSlug,
-        language,
-      );
-      setLocale(language, translationObj);
+      // using user preferred language
+      await importTranslation(orgSlug, lang);
     } catch (err) {
-      const {default: translationObj} = await loadDefaultTranslation(language);
-      setLocale(language, translationObj);
+      // using default language
+      await importTranslation(orgSlug, language);
     }
   }
 };

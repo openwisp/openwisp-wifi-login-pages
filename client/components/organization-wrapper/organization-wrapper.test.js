@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import {shallow, mount} from "enzyme";
-import React, {Suspense} from "react";
+import React from "react";
 import {MemoryRouter, Route} from "react-router-dom";
 import {Cookies} from "react-cookie";
 import {Provider} from "react-redux";
@@ -46,6 +46,7 @@ const createTestProps = (props) => {
       exists: true,
     },
     setOrganization: jest.fn(),
+    setLanguage: jest.fn(),
     cookies: new Cookies(),
     language: "en",
     ...props,
@@ -149,7 +150,9 @@ describe("<OrganizationWrapper /> interactions", () => {
   });
   it("should render pageTitle if it is not undefined", () => {
     props.organization.configuration.pageTitle = "Organization Wrapper";
-    wrapper = shallow(<OrganizationWrapper {...props} />);
+    wrapper = shallow(<OrganizationWrapper {...props} />, {
+      disableLifecycleMethods: true,
+    });
     expect(wrapper).toMatchSnapshot();
   });
 });
@@ -209,7 +212,7 @@ describe("Test <OrganizationWrapper /> routes", () => {
 
   it("should display status if authenticated", () => {
     wrapper = mountComponent(props, ["/default/status"]);
-    expect(mapRoutes(wrapper)["/default/status"]).toBe(Suspense);
+    expect(mapRoutes(wrapper)["/default/status"]).toBe(undefined);
     expect(wrapper.find("Router").prop("history").location.pathname).toBe(
       "/default/status",
     );

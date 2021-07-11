@@ -40,7 +40,7 @@ client/assets/*
 !client/assets/fonts/
 client/translations/
 i18n/*
-!i18n/en.po
+!i18n/*.po
 server/config.json
 compilation-stats.json
 
