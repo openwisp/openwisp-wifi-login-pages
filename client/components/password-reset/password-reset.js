@@ -27,7 +27,7 @@ export default class PasswordReset extends React.Component {
 
   componentDidMount() {
     const {setTitle, orgName} = this.props;
-    setTitle(t`PASSWORD_RESET_PAGE_TITLE`, orgName);
+    setTitle(t`PWD_RESET_TITLE`, orgName);
   }
 
   handleChange(event) {
@@ -86,18 +86,18 @@ export default class PasswordReset extends React.Component {
             <div className="main-column">
               <div className="success">{success}</div>
               <Link to={`/${orgSlug}/login`} className="link">
-                {t`LOGIN_PAGE_LINK_TEXT`}
+                {t`LOGIN_PAGE_LINK`}
               </Link>
             </div>
           ) : (
             <form className="main-column" onSubmit={this.handleSubmit}>
               {passwordReset.additional_text && (
-                <p className="label">{t`PASSWORD_RESET_ADDITIONAL_TEXT`}</p>
+                <p className="label">{t`PWD_RESET_ADDITIONAL_TEXT`}</p>
               )}
 
               <div className="fieldset">
                 <div className="row email">
-                  <label htmlFor="email">{t`EMAIL_LABEL`}</label>
+                  <label htmlFor="email">{t`EMAIL`}</label>
                   {errors.email && (
                     <div className="error">
                       <span className="icon">!</span>
@@ -123,21 +123,21 @@ export default class PasswordReset extends React.Component {
                   <input
                     type="submit"
                     className="button full"
-                    value={t`PASSWORD_RESET_BUTTON`}
+                    value={t`PWD_RESET`}
                   />
                 </div>
               </div>
 
               {passwordReset.contact_text && (
                 <div className="row contact-us">
-                  {t`PASSWORD_RESET_CONTACT_TEXT`}
+                  {t`PWD_RESET_CONTACT_TEXT`}
                 </div>
               )}
 
               {loginPageLink && (
                 <div className="row links">
                   <Link to={`/${orgSlug}/login`} className="link">
-                    {t`LOGIN_PAGE_LINK_TEXT`}
+                    {t`LOGIN_PAGE_LINK`}
                   </Link>
                 </div>
               )}

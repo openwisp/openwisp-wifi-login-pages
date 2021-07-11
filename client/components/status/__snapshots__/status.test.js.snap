@@ -222,15 +222,15 @@ exports[`<Status /> rendering with placeholder translation tags should render tr
         className="main-column"
       >
         <p>
-          STATUS_PAGE_CONTENT
+          STATUS_CONTENT
         </p>
         <p>
           <label>
-            USER_INFO_STATUS_TEXT
+            STATUS
             :
           </label>
           <span>
-            USER_INFO_STATUS_VALUE
+            LOGGED_IN
           </span>
         </p>
         <div
@@ -240,7 +240,7 @@ exports[`<Status /> rendering with placeholder translation tags should render tr
             className="button full"
             onClick={[Function]}
             type="button"
-            value="LOGOUT_BUTTON"
+            value="LOGOUT"
           />
         </div>
         <div
@@ -250,7 +250,7 @@ exports[`<Status /> rendering with placeholder translation tags should render tr
             className="button full status-link"
             to="/default/change-password/"
           >
-            STATUS_PAGE_LINK_TEXT Change your password
+            Change your password
           </Link>
         </div>
       </div>

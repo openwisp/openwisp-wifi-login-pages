@@ -203,7 +203,7 @@ exports[`<Login /> interactions phone_number field should be present if mobile p
         <input
           class="button full"
           type="submit"
-          value="Login"
+          value="Log in"
         />
       </div>
       <div
@@ -477,7 +477,7 @@ exports[`<Login /> interactions should not show phone_number field if auto_switc
         <input
           class="button full"
           type="submit"
-          value="Login"
+          value="Log in"
         />
       </div>
       <div
@@ -751,7 +751,7 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
         <input
           class="button full"
           type="submit"
-          value="Login"
+          value="Log in"
         />
       </div>
       <div
@@ -1007,7 +1007,7 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
           <input
             className="button full"
             type="submit"
-            value="Login"
+            value="Log in"
           />
         </div>
         <div
@@ -1225,7 +1225,7 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
           <input
             className="button full"
             type="submit"
-            value="Login"
+            value="Log in"
           />
         </div>
         <div
@@ -1283,20 +1283,19 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
               className="social-link button full"
               href="#facebook"
               rel="noopener noreferrer"
-              target="_blank"
             >
               <span
                 className="inner"
               >
                 <img
-                  alt="SOCIAL_LOGIN_TEXT Facebook"
+                  alt="Login with Facebook"
                   className="icon"
                   src="/assets/default/facebook.svg"
                 />
                 <span
                   className="text"
                 >
-                  SOCIAL_LOGIN_TEXT Facebook
+                  Login with Facebook
                 </span>
               </span>
             </a>
@@ -1306,20 +1305,19 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
               className="social-link button full"
               href="#google"
               rel="noopener noreferrer"
-              target="_blank"
             >
               <span
                 className="inner"
               >
                 <img
-                  alt="SOCIAL_LOGIN_TEXT Google"
+                  alt="Login with Google"
                   className="icon"
                   src="/assets/default/google.svg"
                 />
                 <span
                   className="text"
                 >
-                  SOCIAL_LOGIN_TEXT Google
+                  Login with Google
                 </span>
               </span>
             </a>
@@ -1329,20 +1327,19 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
               className="social-link button full"
               href="#twitter"
               rel="noopener noreferrer"
-              target="_blank"
             >
               <span
                 className="inner"
               >
                 <img
-                  alt="SOCIAL_LOGIN_TEXT Twitter"
+                  alt="Login with Twitter"
                   className="icon"
                   src="/assets/default/twitter.svg"
                 />
                 <span
                   className="text"
                 >
-                  SOCIAL_LOGIN_TEXT Twitter
+                  Login with Twitter
                 </span>
               </span>
             </a>
@@ -1379,7 +1376,7 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
             <label
               htmlFor="password"
             >
-              PASSWORD_LABEL
+              PWD_LABEL
             </label>
             <input
               autoComplete="current-password"
@@ -1388,9 +1385,9 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
               name="password"
               onChange={[Function]}
               pattern=".{6,}"
-              placeholder="PASSWORD_PLACEHOLDER"
+              placeholder="PWD_PLACEHOLDER"
               required={true}
-              title="PASSWORD_PATTERN_DESCRIPTION"
+              title="PWD_PATTERN_DESCRIPTION"
               type="password"
               value=""
             />
@@ -1417,7 +1414,7 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
             <label
               htmlFor="remember_me"
             >
-              REMEMBER_ME_LABEL
+              REMEMBER_ME
             </label>
           </div>
         </div>
@@ -1432,7 +1429,7 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
           <input
             className="button full"
             type="submit"
-            value="LOGIN_TEXT"
+            value="LOGIN"
           />
         </div>
         <div

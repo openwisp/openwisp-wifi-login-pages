@@ -12,21 +12,21 @@ jest.mock("../../utils/load-translation");
 
 const footerLinks = [
   {
-    text: "status",
+    text: {en: "status"},
     url: "/status",
     authenticated: true,
   },
   {
-    text: "signUp",
+    text: {en: "signUp"},
     url: "/signUp",
     authenticated: false,
   },
   {
-    text: "about",
+    text: {en: "about"},
     url: "/about",
   },
   {
-    text: "change-password",
+    text: {en: "change-password"},
     url: "/change-password",
     authenticated: true,
     verified: true,
@@ -41,7 +41,11 @@ const getLinkText = (wrapper, text) => {
 };
 const createTestProps = (props) => {
   return {
-    footer: defaultConfig.components.footer,
+    language: "en",
+    footer: {
+      links: defaultConfig.components.footer.links,
+      secondary_text: true,
+    },
     userData: {is_verified: true},
     ...props,
   };

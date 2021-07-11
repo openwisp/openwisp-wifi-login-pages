@@ -64,23 +64,28 @@ client:
         alternate_text: "{{name}}"
 {{/if}}
       links:
-        - text: "Sign In" #link text in english
+        - text:
+            en: "Sign In" #link text in english
           url: "/{{slug}}/login"
           authenticated: false
-        - text: "Sign Up"
+        - text:
+            en: "Sign Up"
           url: "/{{slug}}/registration"
           authenticated: false
-        - text: "Status"
+        - text:
+            en: "Status"
           url: "/{{slug}}/status"
           authenticated: true
-        - text: "Change password"
+        - text:
+            en: "Change password"
           url: "/{{slug}}/change-password"
           authenticated: true
           {{#if mobile_phone_verification }}
           verified: true
           {{/if}}
       {{#if mobile_phone_verification }}
-        - text: "Change phone number"
+        - text:
+            en: "Change phone number"
           url: "/{{slug}}/change-phone-number"
           authenticated: true
           method: "mobile_phone"
@@ -88,17 +93,21 @@ client:
 
     footer:
       links:
-        - text: "link-1"
+        - text:
+            en: "link-1"
           url: "https://link-1.com"
           authenticated: false
-        - text: "link-2"
+        - text:
+            en: "link-2"
           url: "https://link-2.com"
           authenticated: true
           verified: false
-        - text: "link-3"
+        - text:
+            en: "link-3"
           url: "https://link-3.com"
           authenticated: true
           verified: true
+      secondary_text: false
 
     registration_form:
       input_fields:
@@ -187,10 +196,12 @@ client:
       helpdesk: "+789 948 564"
 {{#if assets_confirm}}
       social_links:
-        - alt: "twitter"
+        - alt:
+            en: "twitter"
           icon: "twitter.svg"
           url: "https://twitter.com/openwisp"
-        - alt: "facebook"
+        - alt:
+            en: "facebook"
           icon: "facebook.svg"
           url: "https://facebook.com/openwisp"
 
@@ -200,30 +211,37 @@ client:
 
     status_page:
       links:
-        - text: "Change your password"
+        - text:
+            en: "Change your password"
           url: "/{orgSlug}/change-password/"
 
     login_form:
       social_login:
         links:
 {{#if assets_confirm}}
-          - text: "Facebook"
+          - text:
+              en: "Login with Facebook"
             url: "#facebook"
             icon: "facebook.svg"
-          - text: "Google"
+          - text:
+              en: "Login with Google"
             icon: "google.svg"
             url: "#google"
-          - text: "Twitter"
+          - text:
+              en: "Login with Twitter"
             icon: "twitter.svg"
             url: "#twitter"
 {{else}}
-          - text: "Facebook"
+          - text:
+              en: "Login with Facebook"
             url: "#facebook"
             icon: null
-          - text: "Google"
+          - text:
+              en: "Login with Google"
             icon: null
             url: "#google"
-          - text: "Twitter"
+          - text:
+              en: "Login with Twitter"
             icon: null
             url: "#twitter"
 {{/if}}
@@ -281,5 +299,14 @@ client:
       additional_fields: []
       logout_by_session: {{logout_by_session_ID}}
 
-  privacy_policy: true
-  terms_and_conditions: true
+{{#if assets_confirm}}
+  privacy_policy:
+    en: "privacy-en.md"
+  terms_and_conditions:
+    en: "terms-en.md"
+{{else}}
+  privacy_policy:
+    en: null
+  terms_and_conditions:
+    en: null
+{{/if}}

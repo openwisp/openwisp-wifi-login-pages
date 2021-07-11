@@ -14,6 +14,7 @@ const mapStateToProps = (state, ownProps) => {
     captivePortalLogoutForm: conf.components.captive_portal_logout_form,
     isAuthenticated: conf.isAuthenticated,
     cookies: ownProps.cookies,
+    language: state.language,
   };
 };
 

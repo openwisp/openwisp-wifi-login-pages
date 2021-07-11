@@ -19,6 +19,7 @@ import {
   mainToastId,
 } from "../../constants";
 import LoadingContext from "../../utils/loading-context";
+import getText from "../../utils/get-text";
 import logError from "../../utils/log-error";
 import Contact from "../contact-box";
 import shouldLinkBeShown from "../../utils/should-link-be-shown";
@@ -61,7 +62,7 @@ export default class Status extends React.Component {
   async componentDidMount() {
     const {cookies, orgSlug, settings, setUserData, logout, setTitle, orgName} =
       this.props;
-    setTitle(t`STATUS_PAGE_TITLE`, orgName);
+    setTitle(t`STATUS_TITLE`, orgName);
     const {setLoading} = this.context;
     let {userData} = this.props;
     this.setState({
@@ -436,7 +437,7 @@ export default class Status extends React.Component {
       timeStyle: "short",
       hour12: false,
     };
-    const activeSessionText = t`ACTIVE_SESSION_TEXT`;
+    const activeSessionText = t`ACCT_ACTIVE`;
     return (
       <>
         <td>
@@ -462,7 +463,7 @@ export default class Status extends React.Component {
             <input
               type="button"
               className="button small session-logout"
-              value={t`CAPTIVE_PORTAL_LOGOUT`}
+              value={t`LOGOUT`}
               onClick={() => {
                 this.handleSessionLogout(session);
               }}
@@ -544,7 +545,7 @@ export default class Status extends React.Component {
                 <input
                   type="button"
                   className="button full"
-                  value={t`CAPTIVE_PORTAL_LOGOUT`}
+                  value={t`LOGOUT`}
                   onClick={() => {
                     this.handleSessionLogout(session);
                   }}
@@ -633,15 +634,15 @@ export default class Status extends React.Component {
   getSessionInfo = () => {
     return {
       header: {
-        start_time: t`SESSION_HEADER_START_TIME`,
-        stop_time: t`SESSION_HEADER_STOP_TIME`,
-        duration: t`SESSION_HEADER_DURATION`,
-        download: t`SESSION_HEADER_DOWNLOAD`,
-        upload: t`SESSION_HEADER_UPLOAD`,
-        device_address: t`SESSION_HEADER_DEVICE_ADDRESS`,
+        start_time: t`ACCT_START_TIME`,
+        stop_time: t`ACCT_STOP_TIME`,
+        duration: t`ACCT_DURATION`,
+        download: t`ACCT_DOWNLOAD`,
+        upload: t`ACCT_UPLOAD`,
+        device_address: t`ACCT_DEVICE_ADDRESS`,
       },
       settings: {
-        active_session: t`ACTIVE_SESSION_TEXT`,
+        active_session: t`ACCT_ACTIVE`,
         date_language_locale: t`DATE_LANGUAGE_LOCALE`,
       },
     };
@@ -650,17 +651,17 @@ export default class Status extends React.Component {
   getUserInfo = () => {
     return {
       status: {
-        text: t`USER_INFO_STATUS_TEXT`,
-        value: t`USER_INFO_STATUS_VALUE`,
+        text: t`STATUS`,
+        value: t`LOGGED_IN`,
       },
       email: {
-        text: t`USER_INFO_EMAIL`,
+        text: t`EMAIL`,
       },
       username: {
-        text: t`USER_INFO_USERNAME`,
+        text: t`USERNAME`,
       },
       phone_number: {
-        text: t`USER_INFO_PHONE_NUMBER`,
+        text: t`PHONE_NUMBER`,
       },
     };
   };
@@ -668,6 +669,7 @@ export default class Status extends React.Component {
   render() {
     const {
       statusPage,
+      language,
       orgSlug,
       captivePortalLoginForm,
       captivePortalLogoutForm,
@@ -688,7 +690,7 @@ export default class Status extends React.Component {
       rememberMe,
     } = this.state;
     const user_info = this.getUserInfo();
-    const contentArr = t`STATUS_PAGE_CONTENT`.split("\n");
+    const contentArr = t`STATUS_CONTENT`.split("\n");
     userInfo.status = user_info.status.value;
     return (
       <>
@@ -743,7 +745,7 @@ export default class Status extends React.Component {
                 <input
                   type="button"
                   className="button full"
-                  value={t`LOGOUT_BUTTON`}
+                  value={t`LOGOUT`}
                   onClick={
                     rememberMe
                       ? this.toggleModal
@@ -761,7 +763,7 @@ export default class Status extends React.Component {
                           className="button full status-link"
                           to={link.url.replace("{orgSlug}", orgSlug)}
                         >
-                          {t`STATUS_PAGE_LINK_TEXT ${link.text}`}
+                          {getText(link.text, language)}
                         </Link>
                       </div>
                     );
@@ -882,12 +884,13 @@ Status.propTypes = {
   statusPage: PropTypes.shape({
     links: PropTypes.arrayOf(
       PropTypes.shape({
-        text: PropTypes.string.isRequired,
+        text: PropTypes.object.isRequired,
         url: PropTypes.string.isRequired,
       }),
     ),
     saml_logout_url: PropTypes.string,
   }).isRequired,
+  language: PropTypes.string.isRequired,
   orgSlug: PropTypes.string.isRequired,
   orgName: PropTypes.string.isRequired,
   userData: PropTypes.object.isRequired,

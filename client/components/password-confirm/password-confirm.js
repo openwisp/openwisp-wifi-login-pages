@@ -32,7 +32,7 @@ export default class PasswordConfirm extends React.Component {
 
   componentDidMount() {
     const {setTitle, orgName} = this.props;
-    setTitle(t`PASSWORD_CONFIRM_PAGE_TITLE`, orgName);
+    setTitle(t`PWD_CONFIRM_TITLE`, orgName);
   }
 
   handleChange(event) {
@@ -116,7 +116,7 @@ export default class PasswordConfirm extends React.Component {
                 <div className="row">
                   {loginPageLink && (
                     <Link to={`/${orgSlug}/login`} className="link">
-                      {t`LOGIN_PAGE_LINK_TEXT`}
+                      {t`LOGIN_PAGE_LINK`}
                     </Link>
                   )}
                 </div>
@@ -124,10 +124,10 @@ export default class PasswordConfirm extends React.Component {
             </div>
           ) : (
             <form className="main-column" onSubmit={this.handleSubmit}>
-              <h1>{t`PASSWORD_CONFIRM_HEADING`}</h1>
+              <h1>{t`PWD_CONFIRM_HEADING`}</h1>
 
               {passwordConfirm.additional_text && (
-                <p>{t`PASSWORD_CONFIRM_ADDITIONAL_TEXT`}</p>
+                <p>{t`PWD_CONFIRM_ADDITIONAL_TEXT`}</p>
               )}
 
               <div className="fieldset">
@@ -139,7 +139,7 @@ export default class PasswordConfirm extends React.Component {
                 )}
 
                 <div className="row password">
-                  <label htmlFor="password">{t`PASSWORD_LABEL`}</label>
+                  <label htmlFor="password">{t`PWD_LABEL`}</label>
 
                   {errors.newPassword1 && (
                     <div className="error">
@@ -156,9 +156,9 @@ export default class PasswordConfirm extends React.Component {
                     name="newPassword1"
                     value={newPassword1}
                     onChange={this.handleChange}
-                    placeholder={t`PASSWORD_PLACEHOLDER`}
+                    placeholder={t`PWD_PLACEHOLDER`}
                     pattern={inputFields.password.pattern}
-                    title={t`PASSWORD_PATTERN_DESCRIPTION`}
+                    title={t`PWD_PATTERN_DESCRIPTION`}
                     ref={this.passwordToggleRef}
                     autoComplete="new-password"
                   />
@@ -167,7 +167,7 @@ export default class PasswordConfirm extends React.Component {
 
                 <div className="row password-confirm">
                   <label htmlFor="password-confirm">
-                    {t`CONFIRM_PASSWORD_LABEL`}
+                    {t`CONFIRM_PWD_LABEL`}
                   </label>
 
                   {errors.newPassword2 && (
@@ -185,9 +185,9 @@ export default class PasswordConfirm extends React.Component {
                     name="newPassword2"
                     value={newPassword2}
                     onChange={this.handleChange}
-                    placeholder={t`CONFIRM_PASSWORD_PLACEHOLDER`}
+                    placeholder={t`CONFIRM_PWD_PLACEHOLDER`}
                     pattern={inputFields.password.pattern}
-                    title={t`CONFIRM_PASSWORD_PATTERN_DESCRIPTION`}
+                    title={t`PWD_PATTERN_DESCRIPTION`}
                     ref={this.confirmPasswordToggleRef}
                     autoComplete="new-password"
                   />
@@ -201,19 +201,17 @@ export default class PasswordConfirm extends React.Component {
                 <input
                   type="submit"
                   className="button full"
-                  value={t`PASSWORD_CONFIRM_BUTTON`}
+                  value={t`PWD_CONFIRM`}
                 />
               </div>
 
               {passwordConfirm.contact_text && (
-                <div className="contact-us">
-                  {t`PASSWORD_CONFIRM_CONTACT_TEXT`}
-                </div>
+                <div className="contact-us">{t`PWD_CONFIRM_CONTACT_TEXT`}</div>
               )}
 
               {loginPageLink && (
                 <Link to={`/${orgSlug}/login`} className="link">
-                  {t`LOGIN_PAGE_LINK_TEXT`}
+                  {t`LOGIN_PAGE_LINK`}
                 </Link>
               )}
             </form>

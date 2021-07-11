@@ -19,6 +19,7 @@ jest.mock("../../utils/load-translation");
 const defaultConfig = getConfig("default");
 const createTestProps = (props) => {
   return {
+    language: "en",
     orgSlug: "default",
     orgName: "default name",
     configuration: defaultConfig,
@@ -34,8 +35,15 @@ const createTestProps = (props) => {
   };
 };
 
-const getTranslationString = (msgid) =>
-  translation.translations[""][msgid].msgstr[0];
+const getTranslationString = (msgid) => {
+  try {
+    return translation.translations[""][msgid].msgstr[0];
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error(err, msgid);
+    return msgid;
+  }
+};
 
 describe("<PasswordConfirm /> rendering with placeholder translation tags", () => {
   const props = createTestProps();
@@ -66,6 +74,7 @@ describe("<PasswordConfirm /> rendering", () => {
           organization: {
             configuration: props.configuration,
           },
+          language: props.language,
         };
       },
     };
@@ -88,14 +97,14 @@ describe("<PasswordConfirm /> rendering", () => {
   it("should render password field correctly", () => {
     const {password} = props.passwordConfirm.input_fields;
     expect(wrapper.find(".row.password label").text()).toBe(
-      getTranslationString("PASSWORD_LABEL"),
+      getTranslationString("PWD_LABEL"),
     );
     const passwordInput = wrapper.find(".row.password input");
     expect(passwordInput.prop("placeholder")).toBe(
-      getTranslationString("PASSWORD_PLACEHOLDER"),
+      getTranslationString("PWD_PLACEHOLDER"),
     );
     expect(passwordInput.prop("title")).toBe(
-      getTranslationString("PASSWORD_PATTERN_DESCRIPTION"),
+      getTranslationString("PWD_PATTERN_DESCRIPTION"),
     );
     expect(passwordInput.prop("type")).toBe(password.type);
   });
@@ -103,14 +112,14 @@ describe("<PasswordConfirm /> rendering", () => {
   it("should render password confirm field correctly", () => {
     const {password_confirm} = props.passwordConfirm.input_fields;
     expect(wrapper.find(".row.password-confirm label").text()).toBe(
-      getTranslationString("CONFIRM_PASSWORD_LABEL"),
+      getTranslationString("CONFIRM_PWD_LABEL"),
     );
     const confirmInput = wrapper.find(".row.password-confirm input");
     expect(confirmInput.prop("placeholder")).toBe(
-      getTranslationString("CONFIRM_PASSWORD_PLACEHOLDER"),
+      getTranslationString("CONFIRM_PWD_PLACEHOLDER"),
     );
     expect(confirmInput.prop("title")).toBe(
-      getTranslationString("CONFIRM_PASSWORD_PATTERN_DESCRIPTION"),
+      getTranslationString("PWD_PATTERN_DESCRIPTION"),
     );
     expect(confirmInput.prop("type")).toBe(password_confirm.type);
   });

@@ -44,7 +44,7 @@ export default class MobilePhoneVerification extends React.Component {
   async componentDidMount() {
     const {cookies, orgSlug, settings, setUserData, logout, orgName, setTitle} =
       this.props;
-    setTitle(t`MOBILE_PHONE_VERIFICATION_PAGE_TITLE`, orgName);
+    setTitle(t`MOBILE_PHONE_VERIFICATION_TITLE`, orgName);
     let {userData} = this.props;
     const {setLoading} = this.context;
     setLoading(true);
@@ -189,7 +189,7 @@ export default class MobilePhoneVerification extends React.Component {
             >
               <div className="row fieldset code">
                 <p className="label">
-                  {t`PHONENUMBER_VERIFY_TEXT (${phone_number})`}
+                  {t`PHONENUMBER_VERIFY (${phone_number})`}
                 </p>
 
                 {errors.nonField && (
@@ -223,7 +223,7 @@ export default class MobilePhoneVerification extends React.Component {
                 </div>
 
                 <button type="submit" className="button full">
-                  {t`MOBILE_PHONE_VERIFY_BUTTON`}
+                  {t`MOBILE_PHONE_VERIFY`}
                 </button>
               </div>
             </form>
@@ -236,7 +236,7 @@ export default class MobilePhoneVerification extends React.Component {
                 className="button full"
                 onClick={this.resendPhoneToken}
               >
-                {t`RESEND_TOKEN_BUTTON`}
+                {t`RESEND_TOKEN`}
               </button>
             </div>
 
@@ -246,7 +246,7 @@ export default class MobilePhoneVerification extends React.Component {
                 href={`/${orgSlug}/change-phone-number`}
                 className="button full"
               >
-                {t`PHONENUMBER_CHANGE_BUTTON`}
+                {t`CHANGE_PHONENUMBER`}
               </a>
             </div>
 
@@ -257,7 +257,7 @@ export default class MobilePhoneVerification extends React.Component {
                 className="button full"
                 onClick={this.handleLogout}
               >
-                {t`LOGOUT_BUTTON`}
+                {t`LOGOUT`}
               </button>
             </div>
           </div>

@@ -20,16 +20,14 @@ export default class DoesNotExist extends React.Component {
         <div className="inner">
           <div className="main-column">
             <div className="row owisp-404-row-1">
-              {page && page.heading ? t`404_PAGE_HEADING` : "Oops!"}
+              {page && page.heading ? t`404_HEADING` : "Oops!"}
             </div>
             <div className="row owisp-404-row-2">
-              {page && page.sub_heading
-                ? t`404_PAGE_SUBHEADING`
-                : "404 Not Found"}
+              {page && page.sub_heading ? t`404_SUBHEADING` : "404 Not Found"}
             </div>
             <div className="row owisp-404-row-3">
               {page && page.message
-                ? t`404_PAGE_MESSAGE`
+                ? t`404_MESSAGE`
                 : "Sorry, an error has occurred, Requested page not found!"}
             </div>
             {page && page.homepage_link && (

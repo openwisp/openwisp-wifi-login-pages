@@ -23,6 +23,7 @@ jest.mock("axios");
 const createTestProps = (props, configName = "default") => {
   const config = getConfig(configName);
   return {
+    language: "en",
     orgSlug: configName,
     orgName: config.name,
     settings: config.settings,
@@ -51,6 +52,7 @@ const mountComponent = function (passedProps) {
         organization: {
           configuration: passedProps.configuration,
         },
+        language: passedProps.language,
       };
     },
   };

@@ -26,6 +26,7 @@ loginForm.input_fields.phone_number =
   defaultConfig.components.registration_form.input_fields.phone_number;
 const createTestProps = (props) => {
   return {
+    language: "en",
     orgSlug: "default",
     orgName: "default name",
     loginForm,
@@ -85,12 +86,16 @@ describe("<Login /> rendering", () => {
           ...defaultConfig.components.login_form,
           links: [
             {
-              text: "Google",
+              text: {
+                en: "Login with Google",
+              },
               url: "https://radius.openwisp.io/login/google",
               icon: "google.png",
             },
             {
-              text: "Facebook",
+              text: {
+                en: "Login with Facebook",
+              },
               url: "https://radius.openwisp.io/login/facebook",
               icon: "facebook.png",
             },

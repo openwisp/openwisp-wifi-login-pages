@@ -11,21 +11,21 @@ jest.mock("../../utils/load-translation");
 const defaultConfig = getConfig("default");
 const links = [
   {
-    alt: "twitter",
+    alt: {en: "twitter"},
     icon: "twiter.svg",
     url: "https://twitter.com/openwisp",
     authenticated: true,
     css: "twitter",
   },
   {
-    alt: "facebook",
+    alt: {en: "facebook"},
     icon: "facebook.svg",
     url: "https://facebook.com/openwisp",
     authenticated: false,
     css: "facebook",
   },
   {
-    alt: "google",
+    alt: {en: "google"},
     icon: "google.svg",
     url: "https://google.com/openwisp",
     css: "google",
@@ -33,6 +33,7 @@ const links = [
 ];
 const createTestProps = (props) => {
   return {
+    language: "en",
     orgSlug: "default",
     contactPage: defaultConfig.components.contact_page,
     userData: {is_verified: true},

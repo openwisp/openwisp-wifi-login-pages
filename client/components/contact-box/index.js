@@ -8,6 +8,7 @@ const mapStateToProps = (state) => {
     contactPage: conf.components.contact_page,
     orgSlug: conf.slug,
     isAuthenticated: conf.isAuthenticated,
+    language: state.language,
     userData: conf.userData,
   };
 };

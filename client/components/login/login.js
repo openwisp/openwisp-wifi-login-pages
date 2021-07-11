@@ -9,6 +9,7 @@ import {Link, Route} from "react-router-dom";
 import {toast} from "react-toastify";
 import PhoneInput from "react-phone-input-2";
 import {t} from "ttag";
+import getText from "../../utils/get-text";
 import "react-phone-input-2/lib/style.css";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -48,8 +49,8 @@ export default class Login extends React.Component {
   componentDidMount() {
     const username = getParameterByName("username");
     const token = getParameterByName("token");
-    const {loginForm, setTitle, orgName} = this.props;
-    setTitle(t`LOGIN_PAGE_TITLE`, orgName);
+    const {loginForm, setTitle, orgName, orgSlug} = this.props;
+    setTitle(t`LOGIN`, orgName);
 
     let remember_me;
 
@@ -263,7 +264,7 @@ export default class Login extends React.Component {
 
   render() {
     const {errors, password, remember_me} = this.state;
-    const {loginForm, orgSlug, match} = this.props;
+    const {loginForm, orgSlug, match, language} = this.props;
     const {links, buttons, input_fields, social_login, additional_info_text} =
       loginForm;
     return (
@@ -284,11 +285,11 @@ export default class Login extends React.Component {
                           <span className="inner">
                             <img
                               src={getAssetPath(orgSlug, link.icon)}
-                              alt={t`SOCIAL_LOGIN_TEXT ${link.text}`}
+                              alt={getText(link.text, language)}
                               className="icon"
                             />
                             <span className="text">
-                              {t`SOCIAL_LOGIN_TEXT ${link.text}`}
+                              {getText(link.text, language)}
                             </span>
                           </span>
                         </a>
@@ -309,7 +310,7 @@ export default class Login extends React.Component {
                 {this.getUsernameField(input_fields)}
 
                 <div className="row password">
-                  <label htmlFor="password">{t`PASSWORD_LABEL`}</label>
+                  <label htmlFor="password">{t`PWD_LABEL`}</label>
                   {errors.password && (
                     <div className="error">
                       <span className="icon">!</span>
@@ -324,9 +325,9 @@ export default class Login extends React.Component {
                     name="password"
                     value={password}
                     onChange={this.handleChange}
-                    placeholder={t`PASSWORD_PLACEHOLDER`}
+                    placeholder={t`PWD_PLACEHOLDER`}
                     pattern={input_fields.password.pattern}
-                    title={t`PASSWORD_PATTERN_DESCRIPTION`}
+                    title={t`PWD_PATTERN_DESCRIPTION`}
                     ref={this.passwordToggleRef}
                     autoComplete="current-password"
                   />
@@ -341,7 +342,7 @@ export default class Login extends React.Component {
                     checked={remember_me}
                     onChange={this.handleCheckBoxChange}
                   />
-                  <label htmlFor="remember_me">{t`REMEMBER_ME_LABEL`}</label>
+                  <label htmlFor="remember_me">{t`REMEMBER_ME`}</label>
                 </div>
               </div>
 
@@ -356,11 +357,7 @@ export default class Login extends React.Component {
               )}
 
               <div className="row login">
-                <input
-                  type="submit"
-                  className="button full"
-                  value={t`LOGIN_TEXT`}
-                />
+                <input type="submit" className="button full" value={t`LOGIN`} />
               </div>
 
               {buttons.register && (
@@ -405,7 +402,7 @@ Login.propTypes = {
         PropTypes.shape({
           url: PropTypes.string.isRequired,
           icon: PropTypes.string.isRequired,
-          text: PropTypes.string.isRequired,
+          text: PropTypes.object.isRequired,
         }),
       ),
     }),
@@ -439,14 +436,15 @@ Login.propTypes = {
       forget_password: PropTypes.bool,
     }).isRequired,
   }).isRequired,
+  language: PropTypes.string.isRequired,
   match: PropTypes.shape({
     path: PropTypes.string,
     url: PropTypes.string,
   }).isRequired,
   orgSlug: PropTypes.string.isRequired,
   orgName: PropTypes.string.isRequired,
-  privacyPolicy: PropTypes.bool.isRequired,
-  termsAndConditions: PropTypes.bool.isRequired,
+  privacyPolicy: PropTypes.object.isRequired,
+  termsAndConditions: PropTypes.object.isRequired,
   authenticate: PropTypes.func.isRequired,
   setUserData: PropTypes.func.isRequired,
   userData: PropTypes.object.isRequired,

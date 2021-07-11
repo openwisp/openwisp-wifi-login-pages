@@ -55,7 +55,7 @@ exports[`<Logout /> rendering with placeholder translation tags should render tr
             onClick={[Function]}
             to="/default/status"
           >
-            LOGIN_AGAIN
+            LOGIN AGAIN
           </Link>
         </div>
       </div>

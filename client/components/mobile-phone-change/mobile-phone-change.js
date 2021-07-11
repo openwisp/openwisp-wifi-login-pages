@@ -36,7 +36,7 @@ class MobilePhoneChange extends React.Component {
   async componentDidMount() {
     const {cookies, orgSlug, setUserData, logout, setTitle, orgName} =
       this.props;
-    setTitle(t`MOBILE_PHONE_CHANGE_PAGE_TITLE`, orgName);
+    setTitle(t`MOBILE_PHONE_CHANGE_TITLE`, orgName);
     let {userData} = this.props;
     const isValid = await validateToken(
       cookies,
@@ -176,7 +176,7 @@ class MobilePhoneChange extends React.Component {
               <input
                 type="submit"
                 className="button full"
-                value={t`CHANGE_PHONENUMBER_BUTTON`}
+                value={t`CHANGE_PHONENUMBER`}
               />
 
               <div className="row cancel">
@@ -184,7 +184,7 @@ class MobilePhoneChange extends React.Component {
                   className="button full"
                   href={`/${orgSlug}/mobile-phone-verification`}
                 >
-                  {t`CANCEL_BUTTON`}
+                  {t`CANCEL`}
                 </a>
               </div>
             </div>

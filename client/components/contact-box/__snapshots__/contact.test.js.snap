@@ -13,14 +13,14 @@ exports[`<Contact /> rendering with placeholder translation tags should render t
       <span
         className="label"
       >
-        CONTACT_EMAIL_LABEL
+        EMAIL
         :
       </span>
       <a
         className="link"
         href="mailto:support@openwisp.co"
       >
-        CONTACT_EMAIL
+        support@openwisp.co
       </a>
     </div>
     <div
@@ -29,40 +29,40 @@ exports[`<Contact /> rendering with placeholder translation tags should render t
       <span
         className="label"
       >
-        CONTACT_HELPDESK_LABEL
+        HELPDESK
         :
       </span>
       <a
         className="link"
         href="tel:+789 948 564"
       >
-        CONTACT_HELPDESK
+        +789 948 564
       </a>
     </div>
     <div
       className="contact-links"
     >
       <a
-        className="contact-CONTACT_SOCIAL_LINK twitter-link link"
+        className="link "
         href="https://twitter.com/openwisp"
         rel="noopener noreferrer"
         target="_blank"
       >
         <img
-          alt="CONTACT_SOCIAL_LINK twitter"
-          className="contact-CONTACT_SOCIAL_LINK twitter-image contact-image"
+          alt="twitter"
+          className="contact-image "
           src="/assets/default/twitter.svg"
         />
       </a>
       <a
-        className="contact-CONTACT_SOCIAL_LINK facebook-link link"
+        className="link "
         href="https://facebook.com/openwisp"
         rel="noopener noreferrer"
         target="_blank"
       >
         <img
-          alt="CONTACT_SOCIAL_LINK facebook"
-          className="contact-CONTACT_SOCIAL_LINK facebook-image contact-image"
+          alt="facebook"
+          className="contact-image "
           src="/assets/default/facebook.svg"
         />
       </a>

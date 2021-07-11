@@ -11,21 +11,21 @@ const defaultConfig = getConfig("default");
 jest.mock("../../utils/load-translation");
 const headerLinks = [
   {
-    text: "link-1",
+    text: {en: "link-1"},
     url: "link-1/",
   },
   {
-    text: "link-2",
+    text: {en: "link-2"},
     url: "link-2/",
     authenticated: false,
   },
   {
-    text: "link-3",
+    text: {en: "link-3"},
     url: "link-3/",
     authenticated: true,
   },
   {
-    text: "link-4",
+    text: {en: "link-4"},
     url: "link-4/",
     authenticated: true,
     verified: true,

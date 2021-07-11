@@ -23,7 +23,7 @@ exports[`<Registration /> rendering should render correctly 1`] = `
             <label
               htmlFor="email"
             >
-              email
+              E-mail
             </label>
             <input
               autoComplete="email"
@@ -178,7 +178,7 @@ exports[`<Registration /> rendering with placeholder translation tags should ren
             <label
               htmlFor="email"
             >
-              EMAIL_LABEL
+              EMAIL
             </label>
             <input
               autoComplete="email"
@@ -200,7 +200,7 @@ exports[`<Registration /> rendering with placeholder translation tags should ren
             <label
               htmlFor="password"
             >
-              PASSWORD_LABEL
+              PWD_LABEL
             </label>
             <input
               autoComplete="new-password"
@@ -209,9 +209,9 @@ exports[`<Registration /> rendering with placeholder translation tags should ren
               name="password1"
               onChange={[Function]}
               pattern=".{6,}"
-              placeholder="PASSWORD_PLACEHOLDER"
+              placeholder="PWD_PLACEHOLDER"
               required={true}
-              title="PASSWORD_PATTERN_DESCRIPTION"
+              title="PWD_PATTERN_DESCRIPTION"
               type="password"
               value=""
             />
@@ -231,7 +231,7 @@ exports[`<Registration /> rendering with placeholder translation tags should ren
             <label
               htmlFor="password-confirm"
             >
-              PASSWORD_CONFIRM_LABEL
+              CONFIRM_PWD_LABEL
             </label>
             <input
               autoComplete="new-password"
@@ -240,9 +240,9 @@ exports[`<Registration /> rendering with placeholder translation tags should ren
               name="password2"
               onChange={[Function]}
               pattern=".{6,}"
-              placeholder="PASSWORD_CONFIRM_PLACEHOLDER"
+              placeholder="CONFIRM_PWD_PLACEHOLDER"
               required={true}
-              title="PASSWORD_CONFIRM_PATTERN_DESCRIPTION"
+              title="CONFIRM_PWD_PATTERN_DESCRIPTION"
               type="password"
               value=""
             />
@@ -268,7 +268,7 @@ exports[`<Registration /> rendering with placeholder translation tags should ren
           <input
             className="button full"
             type="submit"
-            value="REGISTER_BUTTON"
+            value="REGISTER_BUTTON_TEXT"
           />
         </div>
         <div

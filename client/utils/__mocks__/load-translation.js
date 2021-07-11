@@ -1,5 +1,5 @@
 import {addLocale, useLocale} from "ttag";
-import translation from "../../test-translation.json";
+import translation from "../../translations/en.json";
 
 const getCustom = (customObject) => {
   return {

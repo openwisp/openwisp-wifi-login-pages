@@ -21,7 +21,7 @@ exports[`<MobilePhoneVerification /> rendering with placeholder translation tags
           <p
             className="label"
           >
-            PHONENUMBER_VERIFY_TEXT ()
+            PHONENUMBER_VERIFY ()
           </p>
           <div
             className="row"
@@ -43,7 +43,7 @@ exports[`<MobilePhoneVerification /> rendering with placeholder translation tags
             className="button full"
             type="submit"
           >
-            MOBILE_PHONE_VERIFY_BUTTON
+            MOBILE_PHONE_VERIFY
           </button>
         </div>
       </form>
@@ -60,7 +60,7 @@ exports[`<MobilePhoneVerification /> rendering with placeholder translation tags
           onClick={[Function]}
           type="button"
         >
-          RESEND_TOKEN_BUTTON
+          RESEND_TOKEN
         </button>
       </div>
       <div
@@ -75,7 +75,7 @@ exports[`<MobilePhoneVerification /> rendering with placeholder translation tags
           className="button full"
           href="/test-org-2/change-phone-number"
         >
-          PHONENUMBER_CHANGE_BUTTON
+          CHANGE_PHONENUMBER
         </a>
       </div>
       <div
@@ -91,7 +91,7 @@ exports[`<MobilePhoneVerification /> rendering with placeholder translation tags
           onClick={[Function]}
           type="button"
         >
-          LOGOUT_BUTTON
+          LOGOUT
         </button>
       </div>
     </div>

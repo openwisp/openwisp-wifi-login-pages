@@ -269,37 +269,45 @@ and `method` property.
 
 Let us consider the following configuration for the header, footer and contact components:
 
-```
+```yaml
 components:
   header:
     links:
-      - text: "about"
+      - text:
+          en: "about"
         url: "/about"
-      - text: "sign up"
+      - text:
+          en: "sign up"
         url: "/default/registration"
         authenticated: false
-      - text: "change password"
+      - text:
+          en: "change password"
         url: "/change-password"
         authenticated: true
         # if organization supports any verification method
         verified: true
       # if organization supports mobile verification
-      - text: "change phone number"
+      - text:
+          en: "change phone number"
         url: "/mobile/change-phone-number"
         authenticated: true
         method: "mobile_phone"
   footer:
     links:
-      - text: "about"
+      - text:
+          en: "about"
         url: "/about"
-      - text: "status"
+      - text:
+          en: "status"
         url: "/status"
         authenticated: true
   contact_page:
     social_links:
-      - text: "support"
+      - text:
+          en: "support"
         url: "/support"
-      - text: "twitter"
+      - text:
+          en: "twitter"
         url: "https://twitter.com/openwisp"
         authenticated: true
 ```
@@ -406,10 +414,9 @@ enable this feature, just create a new organization with the
 
 `Are you using OpenWISP Subscriptions to provide paid subscriptions for WiFi plans or identity verification via credit/debit card?`
 
-#### Translation
+#### Translations
 
-1. All the translation is loaded at runtime from the JSON files that were made
-   during the build process.
+1. Translations are loaded at runtime from the JSON files that were compiled during the build process.
 2. By default, the build process uses the `{language_code}.po` files to generate
    the translations.
 3. `{language_code}.custom.po` file can be used to override the `{language_code}.po`
@@ -429,7 +436,7 @@ enable this feature, just create a new organization with the
 
 7. If there is more than one language in `i18n/` directory then update the organization configuration file by adding the support for that language like this:
 
-   ```
+   ```yaml
    languages:
      - text: "english"
        slug: "en"

@@ -23,16 +23,22 @@ logError.mockImplementation(jest.fn());
 const defaultConfig = getConfig("default");
 const links = [
   {
-    text: "link-1",
+    text: {
+      en: "link-1",
+    },
     url: "/link1.com",
   },
   {
-    text: "link-2",
+    text: {
+      en: "link-2",
+    },
     url: "/link2.com",
     authenticated: false,
   },
   {
-    text: "link-3",
+    text: {
+      en: "link-3",
+    },
     url: "/link3.com",
     authenticated: true,
   },
@@ -48,6 +54,7 @@ const getLinkText = (wrapper, selector) => {
 
 const createTestProps = (props) => {
   return {
+    language: "en",
     orgSlug: "default",
     orgName: "default name",
     statusPage: defaultConfig.components.status_page,
@@ -932,7 +939,6 @@ describe("<Status /> interactions", () => {
     expect(TableRowWrapper.contains(<th>Download:</th>)).toBe(true);
     expect(TableRowWrapper.contains(<th>Upload:</th>)).toBe(true);
     expect(TableRowWrapper.contains(<th>Device address:</th>)).toBe(true);
-    expect(TableRowWrapper.contains(<th>Logout ?:</th>)).toBe(true);
     TableRowWrapper.find(".button").simulate("click");
     expect(handleSessionLogout.mock.calls.length).toBe(1);
   });

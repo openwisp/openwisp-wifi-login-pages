@@ -16,6 +16,7 @@ const mapStateToProps = (state) => {
     orgName: conf.name,
     settings: conf.settings,
     userData: conf.userData,
+    language: state.language,
   };
 };
 

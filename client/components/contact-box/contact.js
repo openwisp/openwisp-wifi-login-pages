@@ -6,30 +6,31 @@ import React from "react";
 import {t} from "ttag";
 
 import getAssetPath from "../../utils/get-asset-path";
+import getText from "../../utils/get-text";
 import shouldLinkBeShown from "../../utils/should-link-be-shown";
 
 export default class Contact extends React.Component {
   render() {
-    const {contactPage, orgSlug, isAuthenticated, userData} = this.props;
+    const {contactPage, language, orgSlug, isAuthenticated, userData} =
+      this.props;
     const {email, helpdesk, social_links} = contactPage;
-    const socialLink = (link) => t`CONTACT_SOCIAL_LINK ${link.alt}`;
     return (
       <div className="side-column contact">
         <div className="inner">
           {email && (
             <div className="row">
-              <span className="label">{t`CONTACT_EMAIL_LABEL`}:</span>
+              <span className="label">{t`EMAIL`}:</span>
               <a href={`mailto:${email}`} className="link">
-                {t`CONTACT_EMAIL`}
+                {email}
               </a>
             </div>
           )}
 
           {helpdesk && (
             <div className="row">
-              <span className="label">{t`CONTACT_HELPDESK_LABEL`}:</span>
+              <span className="label">{t`HELPDESK`}:</span>
               <a href={`tel:${helpdesk}`} className="link">
-                {t`CONTACT_HELPDESK`}
+                {helpdesk}
               </a>
             </div>
           )}
@@ -44,14 +45,12 @@ export default class Contact extends React.Component {
                     target="_blank"
                     rel="noopener noreferrer"
                     key={link.url}
-                    className={`contact-${socialLink(link)}-link link`}
+                    className={`link ${css}`}
                   >
                     <img
                       src={getAssetPath(orgSlug, link.icon)}
-                      alt={socialLink(link)}
-                      className={`contact-${socialLink(
-                        link,
-                      )}-image contact-image`}
+                      alt={getText(link.alt, language)}
+                      className={`contact-image ${css}`}
                     />
                   </a>
                 );
@@ -70,6 +69,7 @@ Contact.defaultProps = {
   userData: {},
 };
 Contact.propTypes = {
+  language: PropTypes.string.isRequired,
   orgSlug: PropTypes.string.isRequired,
   contactPage: PropTypes.shape({
     social_links: PropTypes.array,

@@ -24,8 +24,15 @@ const createTestProps = (props) => {
   };
 };
 
-const getTranslationString = (msgid) =>
-  translation.translations[""][msgid].msgstr[0];
+const getTranslationString = (msgid) => {
+  try {
+    return translation.translations[""][msgid].msgstr[0];
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error(err, msgid);
+    return msgid;
+  }
+};
 
 describe("<PasswordReset /> rendering with placeholder translation tags", () => {
   const props = createTestProps();
@@ -59,7 +66,7 @@ describe("<PasswordReset /> rendering", () => {
     const {email} = props.passwordReset.input_fields;
     const emailInput = wrapper.find("input[type='email']");
     expect(wrapper.find(".row.email label").text()).toBe(
-      getTranslationString("EMAIL_LABEL"),
+      getTranslationString("EMAIL"),
     );
     expect(emailInput.prop("placeholder")).toBe(
       getTranslationString("EMAIL_PLACEHOLDER"),

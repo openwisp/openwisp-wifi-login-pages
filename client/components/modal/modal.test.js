@@ -4,14 +4,12 @@ import React from "react";
 import ShallowRenderer from "react-test-renderer/shallow";
 
 import getConfig from "../../utils/get-config";
-import loadTranslation from "../../utils/load-translation";
 import Modal from "./modal";
-
-jest.mock("../../utils/load-translation");
 
 const defaultConfig = getConfig("default");
 const createTestProps = (props) => {
   return {
+    language: "en",
     privacyPolicy: defaultConfig.privacy_policy,
     termsAndConditions: defaultConfig.terms_and_conditions,
     match: {
@@ -27,27 +25,8 @@ const createTestProps = (props) => {
   };
 };
 
-describe("<Modal /> rendering with placeholder translation tags", () => {
-  const props = createTestProps();
-  it("should render term and condition translation placeholder correctly", () => {
-    const renderer = new ShallowRenderer();
-    const wrapper = renderer.render(<Modal {...props} />);
-    expect(wrapper).toMatchSnapshot();
-  });
-  it("should render privacy policy translation placeholder correctly", () => {
-    props.match.params.name = "privacy-policy";
-    const renderer = new ShallowRenderer();
-    const wrapper = renderer.render(<Modal {...props} />);
-    expect(wrapper).toMatchSnapshot();
-  });
-});
-
 describe("<Modal /> rendering", () => {
   let props;
-
-  beforeEach(() => {
-    loadTranslation("en", "default");
-  });
   it("should render terms-and-conditions correctly", () => {
     props = createTestProps();
     const renderer = new ShallowRenderer();

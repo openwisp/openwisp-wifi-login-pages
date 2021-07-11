@@ -20,7 +20,7 @@ export default class Logout extends React.Component {
 
   componentDidMount() {
     const {orgName, setTitle} = this.props;
-    setTitle(t`LOGOUT_PAGE_TITLE`, orgName);
+    setTitle(t`LOGOUT`, orgName);
   }
 
   loginUser = (isAuthenticated) => {
@@ -49,7 +49,7 @@ export default class Logout extends React.Component {
                   className="button partial"
                   to={`/${orgSlug}/status`}
                 >
-                  {t`LOGIN_AGAIN`}
+                  {`${t`LOGIN`} ${t`AGAIN`}`}
                 </Link>
               </div>
             </div>

@@ -51,7 +51,7 @@ exports[`<Footer /> rendering with placeholder translation tags should render tr
         rel="noreferrer noopener"
         target="_blank"
       >
-        FOOTER_LINK link-1
+        link-1
       </a>
     </div>
   </div>

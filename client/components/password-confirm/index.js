@@ -9,6 +9,7 @@ const mapStateToProps = (state) => {
     passwordConfirm: conf.components.password_reset_confirm_form,
     orgSlug: conf.slug,
     orgName: conf.name,
+    language: state.language,
   };
 };
 

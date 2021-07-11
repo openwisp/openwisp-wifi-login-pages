@@ -365,7 +365,7 @@ exports[`<Header /> rendering with placeholder translation tags should render tr
           key="0"
           to="/default/login"
         >
-          HEADER_LINK Sign In
+          Sign In
         </Link>
         <Link
           className="header-link header-desktop-link
@@ -373,7 +373,7 @@ exports[`<Header /> rendering with placeholder translation tags should render tr
           key="1"
           to="/default/registration"
         >
-          HEADER_LINK Sign Up
+          Sign Up
         </Link>
       </div>
     </div>
@@ -436,7 +436,7 @@ exports[`<Header /> rendering with placeholder translation tags should render tr
         key="0"
         to="/default/login"
       >
-        HEADER_LINK Sign In
+        Sign In
       </Link>
       <Link
         className="header-link mobile-link
@@ -444,7 +444,7 @@ exports[`<Header /> rendering with placeholder translation tags should render tr
         key="1"
         to="/default/registration"
       >
-        HEADER_LINK Sign Up
+        Sign Up
       </Link>
       <div
         className="mobile-languages-row"

@@ -2,10 +2,9 @@ import "./index.css";
 
 import PropTypes from "prop-types";
 import React from "react";
-import {t} from "ttag";
 import {Link} from "react-router-dom";
-import DOMPurify from "dompurify";
-import marked from "marked";
+
+import getText from "../../utils/get-text";
 
 export default class Modal extends React.Component {
   componentDidMount() {
@@ -17,15 +16,13 @@ export default class Modal extends React.Component {
   }
 
   renderContent = () => {
-    const {privacyPolicy, termsAndConditions, match} = this.props;
+    const {privacyPolicy, termsAndConditions, language, match} = this.props;
     const {name} = match.params;
     let content;
     if (name === "terms-and-conditions" && termsAndConditions)
-      content = t`TERMS_AND_CONDITIONS_CONTENT`;
+      content = getText(termsAndConditions, language);
     else if (name === "privacy-policy" && privacyPolicy)
-      content = t`PRIVACY_POLICY_CONTENT`;
-    if (content !== undefined)
-      return {__html: DOMPurify.sanitize(marked(content))};
+      content = getText(privacyPolicy, language);
     return {__html: content};
   };
 
@@ -70,6 +67,7 @@ Modal.propTypes = {
     push: PropTypes.func,
   }).isRequired,
   prevPath: PropTypes.string.isRequired,
-  privacyPolicy: PropTypes.bool.isRequired,
-  termsAndConditions: PropTypes.bool.isRequired,
+  language: PropTypes.string.isRequired,
+  privacyPolicy: PropTypes.object.isRequired,
+  termsAndConditions: PropTypes.object.isRequired,
 };

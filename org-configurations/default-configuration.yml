@@ -46,29 +46,36 @@ client:
         url: "openwisp-logo-black.svg" # logo url
         alternate_text: "openwisp"
       links:
-        - text: "Sign In"
+        - text:
+            en: "Sign In"
           url: "/default/login"
           authenticated: false
-        - text: "Sign Up"
+        - text:
+            en: "Sign Up"
           url: "/default/registration"
           authenticated: false
-        - text: "Change password"
+        - text:
+            en: "Change password"
           url: "/default/change-password"
           authenticated: true
 
     footer:
       links:
-        - text: "link-1"
+        - text:
+            en: "link-1"
           url: "https://link-1.com"
           authenticated: false
-        - text: "link-2"
+        - text:
+            en: "link-2"
           url: "https://link-2.com"
           authenticated: true
           verified: false
-        - text: "link-3"
+        - text:
+            en: "link-3"
           url: "https://link-3.com"
           authenticated: true
           verified: true
+      secondary_text: false
 
     registration_form:
       input_fields:
@@ -140,28 +147,34 @@ client:
       email: "support@openwisp.co"
       helpdesk: "+789 948 564"
       social_links:
-        - alt: "twitter"
+        - alt:
+            en: "twitter"
           icon: "twitter.svg"
           url: "https://twitter.com/openwisp"
-        - alt: "facebook"
+        - alt:
+            en: "facebook"
           icon: "facebook.svg"
           url: "https://facebook.com/openwisp"
 
     status_page:
       links:
-        - text: "Change your password"
+        - text:
+            en: "Change your password"
           url: "/{orgSlug}/change-password/"
 
     login_form:
       social_login:
         links:
-          - text: "Facebook"
+          - text:
+              en: "Login with Facebook"
             url: "#facebook"
             icon: "facebook.svg"
-          - text: "Google"
+          - text:
+              en: "Login with Google"
             icon: "google.svg"
             url: "#google"
-          - text: "Twitter"
+          - text:
+              en: "Login with Twitter"
             icon: "twitter.svg"
             url: "#twitter"
       input_fields:
@@ -218,5 +231,7 @@ client:
       additional_fields: []
       logout_by_session: true
 
-  privacy_policy: true
-  terms_and_conditions: true
+  privacy_policy:
+    en: "privacy-en.md"
+  terms_and_conditions:
+    en: "terms-en.md"
