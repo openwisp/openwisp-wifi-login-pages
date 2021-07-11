@@ -444,6 +444,48 @@ enable this feature, just create a new organization with the
        slug: "es"
    ```
 
+#### Customizing Translations
+
+1. **Organization specific customization**:
+
+   - Create a translation file with name `{orgSlug}_{language_code}.custom.po` by running:
+     `yarn create-translation <language-code> i18n/{orgSlug}_{language_code}.custom.po`
+   - Now to override the translation placeholders (`msgid`) add the `msgstr` in the newly generated file for that specific `msgid`:
+
+     ```
+     msgid ""
+     msgstr ""
+     "Content-Type: text/plain; charset=UTF-8\n"
+     "Plural-Forms: nplurals = 2; plural = (n != 1);\n"
+     "Language: en\n"
+     "MIME-Version: 1.0\n"
+     "Content-Transfer-Encoding: 8bit\n"
+
+     msgid "PHONENUMBER_LABEL"
+     msgstr "mobile phone number (verification needed)"
+     ```
+
+2. **Language specific customization**:
+
+   - Create a translation file with name `{language_code}.custom.po` by running:
+     `yarn create-translation <language-code> i18n/{language_code}.custom.po`
+   - Now to override the translation placeholders (`msgid`) add the `msgstr` in the newly generated file for that specific `msgid`:
+
+     ```
+     msgid ""
+     msgstr ""
+     "Content-Type: text/plain; charset=UTF-8\n"
+     "Plural-Forms: nplurals = 2; plural = (n != 1);\n"
+     "Language: en\n"
+     "MIME-Version: 1.0\n"
+     "Content-Transfer-Encoding: 8bit\n"
+
+     msgid "FORGOT_PASSWORD"
+     msgstr "Forgot password? Reset password"
+     ```
+
+**Note**: Do not remove the content headers from the `.po` files as it is needed during the build process.
+
 ### License
 
 See [LICENSE](https://github.com/openwisp/openwisp-wifi-login-pages/blob/master/LICENSE).
