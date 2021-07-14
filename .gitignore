@@ -41,6 +41,7 @@ client/assets/*
 client/translations/
 i18n/*
 !i18n/*.po
+i18n/*.custom.po
 server/config.json
 compilation-stats.json
 
