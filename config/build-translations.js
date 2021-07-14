@@ -1,3 +1,10 @@
+/*
+ * It converts PO files (i18n/*.po) to JSON files (client/translations/*.json) i.e.:
+ * <languageCode>.po -> <languageCode>.json
+ * <languageCode>.custom.po -> <languageCode>.json
+ * <orgSlug_languageCode>.custom.po -> <orgSlug_languageCode>.json
+ * Custom po files will override default translation files.
+ */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-console */
 const fs = require("fs");

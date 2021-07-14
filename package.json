@@ -101,7 +101,7 @@
     "coveralls": "test -f ./coverage/lcov.info && cat ./coverage/lcov.info | coveralls || echo 'no coverage file found'",
     "add-org": "plop --plopfile internals/generators/index.js",
     "server": "npm run setup && nodemon server/start.js",
-    "setup": "node config/setup.js && node config/translation.js",
+    "setup": "node config/setup.js && node config/build-translations.js",
     "start": "concurrently \"npm run server\" \"npm run client\"",
     "lint": "eslint '**/*.{js,jsx}' --quiet",
     "lint:fix": "eslint '**/*.{js,jsx}' --fix",
@@ -110,9 +110,9 @@
     "test": "jest --testPathIgnorePatterns=/browser-test/",
     "browser-test": "jest browser-test --runInBand",
     "test-inspect": "node inspect ./node_modules/.bin/jest --runInBand",
-    "stats": "STATS=true npx webpack-cli --profile --json --config config/webpack.config.js > compilation-stats.json && webpack-bundle-analyzer dist/stats.json",
-    "create-translation": "npx ttag init",
-    "update-translation": "npx ttag update"
+    "stats": "STATS=true webpack-cli --profile --json --config config/webpack.config.js > compilation-stats.json && webpack-bundle-analyzer dist/stats.json",
+    "translations-add": "ttag init",
+    "translations-update": "ttag update $POFILE client/"
   },
   "repository": {
     "type": "git",

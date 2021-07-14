@@ -409,7 +409,7 @@ Login.propTypes = {
     input_fields: PropTypes.shape({
       username: PropTypes.shape({
         type: PropTypes.string.isRequired,
-        pattern: PropTypes.string.isRequired,
+        pattern: PropTypes.string,
       }).isRequired,
       password: PropTypes.shape({
         type: PropTypes.string.isRequired,
