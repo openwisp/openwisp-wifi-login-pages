@@ -57,7 +57,9 @@ export default class OrganizationWrapper extends React.Component {
         setOrganization(match.params.organization, cookies);
     }
     if (translationLoaded !== true) {
-      const userLangChoice = localStorage.getItem("userLangChoice");
+      const userLangChoice = localStorage.getItem(
+        `${match.params.organization}-userLangChoice`,
+      );
       if (userLangChoice) {
         setLanguage(userLangChoice);
         await this.loadLanguage(
@@ -67,7 +69,10 @@ export default class OrganizationWrapper extends React.Component {
         );
       } else await this.loadLanguage(language, match.params.organization, true);
     } else if (prevProps.language !== language) {
-      localStorage.setItem("userLangChoice", language);
+      localStorage.setItem(
+        `${match.params.organization}-userLangChoice`,
+        language,
+      );
       await this.loadLanguage(language, match.params.organization, false);
     }
   }
