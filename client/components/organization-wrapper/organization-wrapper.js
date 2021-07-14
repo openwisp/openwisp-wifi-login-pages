@@ -50,12 +50,23 @@ export default class OrganizationWrapper extends React.Component {
   }
 
   async componentDidUpdate(prevProps) {
-    const {setOrganization, match, cookies, setLanguage, language} = this.props;
+    const {
+      setOrganization,
+      match,
+      cookies,
+      setLanguage,
+      language,
+      defaultLanguage,
+    } = this.props;
     const {translationLoaded} = this.state;
     if (prevProps.match.params.organization !== match.params.organization) {
       if (match.params.organization)
         setOrganization(match.params.organization, cookies);
     }
+    localStorage.setItem(
+      `${match.params.organization}-defaultLanguage`,
+      defaultLanguage,
+    );
     if (translationLoaded !== true) {
       const userLangChoice = localStorage.getItem(
         `${match.params.organization}-userLangChoice`,
@@ -99,7 +110,6 @@ export default class OrganizationWrapper extends React.Component {
     const cssPath = organization.configuration.css_path;
     const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
     const needsVerifyPhone = needsVerify("mobile_phone", userData, settings);
-
     if (organization.exists === true) {
       const {setLoading} = this;
       return translationLoaded ? (
@@ -321,7 +331,9 @@ export default class OrganizationWrapper extends React.Component {
     );
   }
 }
-
+OrganizationWrapper.defaultProps = {
+  defaultLanguage: "en",
+};
 OrganizationWrapper.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
@@ -350,4 +362,5 @@ OrganizationWrapper.propTypes = {
   }).isRequired,
   cookies: PropTypes.instanceOf(Cookies).isRequired,
   language: PropTypes.string.isRequired,
+  defaultLanguage: PropTypes.string,
 };

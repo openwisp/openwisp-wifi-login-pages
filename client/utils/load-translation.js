@@ -23,7 +23,11 @@ const importTranslation = async (orgSlug, lang) => {
   }
 };
 
-const loadTranslation = async (language, orgSlug, useBrowserLang = false) => {
+const loadTranslationUtil = async (
+  language,
+  orgSlug,
+  useBrowserLang = false,
+) => {
   let lang = language;
   if (useBrowserLang) lang = navigator.language || navigator.userLanguage;
   if (lang !== "") {
@@ -31,9 +35,28 @@ const loadTranslation = async (language, orgSlug, useBrowserLang = false) => {
       // using user preferred language
       await importTranslation(orgSlug, lang);
     } catch (err) {
-      // using default language
-      await importTranslation(orgSlug, language);
+      // using passed language
+      try {
+        await importTranslation(orgSlug, language);
+      } catch (error) {
+        // Using default language of that organization.
+        console.log(
+          "Cannot found translation for this language. Using default language.",
+        );
+        await importTranslation(
+          orgSlug,
+          localStorage.getItem(`${orgSlug}-defaultLanguage`),
+        );
+      }
     }
+  }
+};
+
+const loadTranslation = async (language, orgSlug, useBrowserLang = false) => {
+  try {
+    await loadTranslationUtil(language, orgSlug, useBrowserLang);
+  } catch (err) {
+    console.error("Error in loading translations.");
   }
 };
 

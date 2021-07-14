@@ -10,6 +10,7 @@ const mapStateToProps = (state, ownProps) => {
     organization: state.organization,
     cookies: ownProps.cookies,
     language: state.language,
+    defaultLanguage: state.organization.configuration.default_language,
   };
 };
 
