@@ -465,10 +465,6 @@
         "msgid": "HOME_PAGE_LINK_TEXT",
         "msgstr": ["Go back to homepage"]
       },
-      "DATE_LANGUAGE_LOCALE": {
-        "msgid": "DATE_LANGUAGE_LOCALE",
-        "msgstr": ["en-US"]
-      },
       "CHANGE_PHONENUMBER": {
         "msgid": "CHANGE_PHONENUMBER",
         "msgstr": ["Change your phone number"]

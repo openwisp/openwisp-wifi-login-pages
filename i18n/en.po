@@ -22,17 +22,16 @@ msgstr "privacy policy"
 msgid "TERMS_AND_CONDITIONS_TITLE"
 msgstr "terms and conditions"
 
-#: client/components/status/status.js:430
-#: client/components/status/status.js:632
+#: client/components/status/status.js:441
+#: client/components/status/status.js:643
 msgid "ACCT_ACTIVE"
 msgstr "session is active"
 
 #: client/components/logout/logout.js:23
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:260
-#: client/components/status/status.js:458
-#: client/components/status/status.js:537
-#: client/components/status/status.js:542
-#: client/components/status/status.js:735
+#: client/components/status/status.js:465
+#: client/components/status/status.js:546
+#: client/components/status/status.js:745
 msgid "LOGOUT"
 msgstr "Logout"
 
@@ -40,62 +39,62 @@ msgstr "Logout"
 msgid "STATUS_TITLE"
 msgstr "Status"
 
-#: client/components/status/status.js:624
+#: client/components/status/status.js:635
 msgid "ACCT_START_TIME"
 msgstr "Start time"
 
-#: client/components/status/status.js:625
+#: client/components/status/status.js:636
 msgid "ACCT_STOP_TIME"
 msgstr "Stop time"
 
-#: client/components/status/status.js:626
+#: client/components/status/status.js:637
 msgid "ACCT_DURATION"
 msgstr "Duration"
 
-#: client/components/status/status.js:627
+#: client/components/status/status.js:638
 msgid "ACCT_DOWNLOAD"
 msgstr "Download"
 
-#: client/components/status/status.js:628
+#: client/components/status/status.js:639
 msgid "ACCT_UPLOAD"
 msgstr "Upload"
 
-#: client/components/status/status.js:629
+#: client/components/status/status.js:640
 msgid "ACCT_DEVICE_ADDRESS"
 msgstr "Device address"
 
-#: client/components/status/status.js:641
+#: client/components/status/status.js:651
 msgid "STATUS"
 msgstr "Status"
 
-#: client/components/status/status.js:642
+#: client/components/status/status.js:652
 msgid "LOGGED_IN"
 msgstr "Logged in"
 
-#: client/components/status/status.js:648
+#: client/components/status/status.js:658
 msgid "USERNAME"
 msgstr "Username"
 
-#: client/components/status/status.js:651
+#: client/components/status/status.js:661
 msgid "PHONE_NUMBER"
 msgstr "Phone number"
 
-#: client/components/status/status.js:680
+#: client/components/status/status.js:690
 msgid "STATUS_CONTENT"
 msgstr ""
 "WiFi Login Successful!\n"
 "        You can now use the internet.\n"
 "        You may leave this page open in case you want to log out."
 
-#: client/components/status/status.js:695
+#: client/components/status/status.js:705
 msgid "LOGOUT_MODAL_CONTENT"
 msgstr "Do you want to automatically log in the next time?"
 
-#: client/components/status/status.js:703
+#: client/components/status/status.js:713
 msgid "LOGOUT_MODAL_AGREE"
 msgstr "Yes"
 
-#: client/components/status/status.js:710
+#: client/components/status/status.js:720
 msgid "LOGOUT_MODAL_DISAGREE"
 msgstr "No"
 
@@ -103,13 +102,13 @@ msgstr "No"
 msgid "PLAN_SETTING_TEXT"
 msgstr "Select your plan below"
 
-#: client/components/login/login.js:126
+#: client/components/login/login.js:135
 #: client/components/mobile-phone-change/mobile-phone-change.js:136
 #: client/components/registration/registration.js:366
 msgid "PHONENUMBER_LABEL"
 msgstr "mobile phone number"
 
-#: client/components/login/login.js:147
+#: client/components/login/login.js:156
 #: client/components/mobile-phone-change/mobile-phone-change.js:161
 #: client/components/registration/registration.js:402
 msgid "PHONENUMBER_PLACEHOLDER"
@@ -125,12 +124,12 @@ msgstr "email address"
 msgid "EMAIL_PATTERN_DESCRIPTION"
 msgstr "enter valid email address"
 
-#: client/components/login/login.js:98
+#: client/components/login/login.js:107
 #: client/components/registration/registration.js:446
 msgid "USERNAME_LABEL"
 msgstr "email"
 
-#: client/components/login/login.js:113
+#: client/components/login/login.js:122
 #: client/components/registration/registration.js:463
 msgid "USERNAME_PLACEHOLDER"
 msgstr "email address"
@@ -175,19 +174,19 @@ msgstr "location"
 msgid "LOCATION_PATTERN_DESCRIPTION"
 msgstr "only letters, numbers, and @/./+/-/_ characters"
 
-#: client/components/login/login.js:301
+#: client/components/login/login.js:313
 #: client/components/password-confirm/password-confirm.js:142
 #: client/components/registration/registration.js:607
 msgid "PWD_LABEL"
 msgstr "password"
 
-#: client/components/login/login.js:316
+#: client/components/login/login.js:328
 #: client/components/password-confirm/password-confirm.js:159
 #: client/components/registration/registration.js:622
 msgid "PWD_PLACEHOLDER"
 msgstr "password"
 
-#: client/components/login/login.js:318
+#: client/components/login/login.js:330
 #: client/components/password-confirm/password-confirm.js:161
 #: client/components/password-confirm/password-confirm.js:190
 #: client/components/registration/registration.js:624
@@ -240,7 +239,7 @@ msgstr ""
 "By signing up, you accept the {terms_and_conditions} and the "
 "{privacy_policy} of this WiFi service. "
 
-#: client/components/login/login.js:363
+#: client/components/login/login.js:375
 #: client/components/registration/registration.js:811
 msgid "FORGOT_PASSWORD"
 msgstr "Forgot your password?"
@@ -372,7 +371,7 @@ msgstr "New password must be a minimum of 6 characters"
 msgid "PASSWORD_CHANGE"
 msgstr "Change Password"
 
-#: client/components/organization-wrapper/organization-wrapper.js:256
+#: client/components/organization-wrapper/organization-wrapper.js:286
 #, javascript-format
 msgid "DEFAULT_TITLE - ${ orgName }"
 msgstr "Wifi Login - ${ orgName }"
@@ -435,43 +434,43 @@ msgstr "Logout successful"
 msgid "AGAIN"
 msgstr "again"
 
-#: client/components/login/login.js:116
+#: client/components/login/login.js:125
 msgid "USERNAME_TITLE"
 msgstr "enter valid email address"
 
-#: client/components/login/login.js:333
+#: client/components/login/login.js:345
 msgid "REMEMBER_ME"
 msgstr "remember me on this device"
 
-#: client/components/login/login.js:340
+#: client/components/login/login.js:352
 msgid "LOGIN_ADDITIONAL_INFO_TEXT"
 msgstr ""
 "By logging in, you accept the {terms_and_conditions} and the "
 "{privacy_policy} of this WiFi service. "
 
 #: client/components/login/login.js:53
-#: client/components/login/login.js:348
+#: client/components/login/login.js:360
 #: client/components/logout/logout.js:52
 msgid "LOGIN"
 msgstr "Log in"
 
-#: client/components/login/login.js:353
+#: client/components/login/login.js:365
 msgid "REGISTER_BUTTON_LABEL"
 msgstr "Not registered yet?"
 
-#: client/components/login/login.js:355
+#: client/components/login/login.js:367
 #: client/components/registration/registration.js:801
 msgid "REGISTER_BUTTON_TEXT"
 msgstr "Sign up"
 
-#: client/components/footer/footer.js:38
+#: client/components/footer/footer.js:40
 msgid "FOOTER_SECONDARY_TEXT"
 msgstr " "
 
 #: client/components/contact-box/contact.js:22
 #: client/components/password-reset/password-reset.js:100
 #: client/components/registration/registration.js:420
-#: client/components/status/status.js:645
+#: client/components/status/status.js:655
 msgid "EMAIL"
 msgstr "E-mail"
 
@@ -498,10 +497,6 @@ msgstr "Sorry, we couldn't find the page you were looking for."
 #: client/components/404/404.js:36
 msgid "HOME_PAGE_LINK_TEXT"
 msgstr "Go back to homepage"
-
-#: client/components/status/status.js:633
-msgid "DATE_LANGUAGE_LOCALE"
-msgstr "en-US"
 
 #: client/components/mobile-phone-change/mobile-phone-change.js:179
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:249
