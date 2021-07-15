@@ -9,7 +9,7 @@ import {toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PhoneInput from "react-phone-input-2";
 import countryList from "react-select-country-list";
-import {t} from "ttag";
+import {t, gettext} from "ttag";
 import "react-phone-input-2/lib/style.css";
 import LoadingContext from "../../utils/loading-context";
 import PasswordToggleIcon from "../../utils/password-toggle";
@@ -266,7 +266,12 @@ export default class Registration extends React.Component {
   };
 
   getLabelText = (plan) => {
-    return `${plan.plan}. ${plan.plan_description} ${plan.pricing} ${plan.price} ${plan.currency}`;
+    const planTitle = gettext(plan.plan);
+    const planDesc = gettext(plan.plan_description);
+    const pricingText = Number(plan.price)
+      ? `${plan.pricing} ${plan.price} ${plan.currency}`
+      : "";
+    return `${planTitle}. ${planDesc} ${pricingText}`;
   };
 
   getPlanSelection = () => {
