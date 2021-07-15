@@ -69,10 +69,10 @@ describe("<PasswordReset /> rendering", () => {
       getTranslationString("EMAIL"),
     );
     expect(emailInput.prop("placeholder")).toBe(
-      getTranslationString("EMAIL_PLACEHOLDER"),
+      getTranslationString("EMAIL_PHOLD"),
     );
     expect(emailInput.prop("title")).toBe(
-      getTranslationString("EMAIL_PATTERN_DESCRIPTION"),
+      getTranslationString("EMAIL_PTRN_DESC"),
     );
     expect(emailInput.prop("type")).toBe(email.type);
   });

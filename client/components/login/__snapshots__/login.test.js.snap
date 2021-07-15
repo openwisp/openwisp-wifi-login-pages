@@ -90,7 +90,7 @@ exports[`<Login /> interactions phone_number field should be present if mobile p
           <label
             for="phone-number"
           >
-            mobile phone number
+            Mobile phone number
           </label>
           <div
             class=" react-tel-input"
@@ -137,7 +137,7 @@ exports[`<Login /> interactions phone_number field should be present if mobile p
           <label
             for="password"
           >
-            password
+            Password
           </label>
           <input
             autocomplete="current-password"
@@ -242,7 +242,7 @@ exports[`<Login /> interactions phone_number field should be present if mobile p
           <span
             class="label"
           >
-            E-mail:
+            Email:
           </span>
           <a
             class="link"
@@ -390,7 +390,7 @@ exports[`<Login /> interactions should not show phone_number field if auto_switc
           <label
             for="username"
           >
-            email
+            Email, phone number or username
           </label>
           <input
             autocomplete="username"
@@ -398,9 +398,9 @@ exports[`<Login /> interactions should not show phone_number field if auto_switc
             id="username"
             name="username"
             pattern=".+@.+\\\\..+"
-            placeholder="email address"
+            placeholder="enter email, phone number or username"
             required=""
-            title="enter valid email address"
+            title="enter valid email address, an username or a phone number"
             type="email"
             value=""
           />
@@ -411,7 +411,7 @@ exports[`<Login /> interactions should not show phone_number field if auto_switc
           <label
             for="password"
           >
-            password
+            Password
           </label>
           <input
             autocomplete="current-password"
@@ -516,7 +516,7 @@ exports[`<Login /> interactions should not show phone_number field if auto_switc
           <span
             class="label"
           >
-            E-mail:
+            Email:
           </span>
           <a
             class="link"
@@ -664,7 +664,7 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
           <label
             for="username"
           >
-            email
+            Email, phone number or username
           </label>
           <input
             autocomplete="username"
@@ -672,9 +672,9 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
             id="username"
             name="username"
             pattern=".+@.+\\\\..+"
-            placeholder="email address"
+            placeholder="enter email, phone number or username"
             required=""
-            title="enter valid email address"
+            title="enter valid email address, an username or a phone number"
             type="email"
             value=""
           />
@@ -685,7 +685,7 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
           <label
             for="password"
           >
-            password
+            Password
           </label>
           <input
             autocomplete="current-password"
@@ -790,7 +790,7 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
           <span
             class="label"
           >
-            E-mail:
+            Email:
           </span>
           <a
             class="link"
@@ -918,7 +918,7 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
             <label
               htmlFor="username"
             >
-              email
+              Email, phone number or username
             </label>
             <input
               autoComplete="username"
@@ -927,9 +927,9 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
               name="username"
               onChange={[Function]}
               pattern=".+@.+\\\\..+"
-              placeholder="email address"
+              placeholder="enter email, phone number or username"
               required={true}
-              title="enter valid email address"
+              title="enter valid email address, an username or a phone number"
               type="email"
               value=""
             />
@@ -940,7 +940,7 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
             <label
               htmlFor="password"
             >
-              password
+              Password
             </label>
             <input
               autoComplete="current-password"
@@ -1136,7 +1136,7 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
             <label
               htmlFor="username"
             >
-              email
+              Email, phone number or username
             </label>
             <input
               autoComplete="username"
@@ -1145,9 +1145,9 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
               name="username"
               onChange={[Function]}
               pattern=".+@.+\\\\..+"
-              placeholder="email address"
+              placeholder="enter email, phone number or username"
               required={true}
-              title="enter valid email address"
+              title="enter valid email address, an username or a phone number"
               type="email"
               value=""
             />
@@ -1158,7 +1158,7 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
             <label
               htmlFor="password"
             >
-              password
+              Password
             </label>
             <input
               autoComplete="current-password"
@@ -1354,7 +1354,7 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
             <label
               htmlFor="username"
             >
-              USERNAME_LABEL
+              USERNAME_LBL
             </label>
             <input
               autoComplete="username"
@@ -1363,9 +1363,9 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
               name="username"
               onChange={[Function]}
               pattern=".+@.+\\\\..+"
-              placeholder="USERNAME_PLACEHOLDER"
+              placeholder="USERNAME_PHOLD"
               required={true}
-              title="USERNAME_TITLE"
+              title="USERNAME_TITL"
               type="email"
               value=""
             />
@@ -1376,7 +1376,7 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
             <label
               htmlFor="password"
             >
-              PWD_LABEL
+              PWD_LBL
             </label>
             <input
               autoComplete="current-password"
@@ -1385,9 +1385,9 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
               name="password"
               onChange={[Function]}
               pattern=".{6,}"
-              placeholder="PWD_PLACEHOLDER"
+              placeholder="PWD_PHOLD"
               required={true}
-              title="PWD_PATTERN_DESCRIPTION"
+              title="PWD_PTRN_DESC"
               type="password"
               value=""
             />
@@ -1421,7 +1421,7 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
         <div
           className="row add-info"
         >
-          LOGIN_ADDITIONAL_INFO_TEXT
+          LOGIN_ADD_INFO_TXT
         </div>
         <div
           className="row login"
@@ -1436,13 +1436,13 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
           className="row register"
         >
           <p>
-            REGISTER_BUTTON_LABEL
+            REGISTER_BTN_LBL
           </p>
           <Link
             className="button full"
             to="/default/registration"
           >
-            REGISTER_BUTTON_TEXT
+            REGISTER_BTN_TXT
           </Link>
         </div>
         <div

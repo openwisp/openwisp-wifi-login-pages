@@ -61,7 +61,7 @@ exports[`<Footer /> rendering with placeholder translation tags should render tr
     <div
       className="footer-row-2-inner"
     >
-      FOOTER_SECONDARY_TEXT
+      FOOTER_SECONDARY_TXT
     </div>
   </div>
 </div>

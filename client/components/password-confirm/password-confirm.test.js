@@ -97,14 +97,14 @@ describe("<PasswordConfirm /> rendering", () => {
   it("should render password field correctly", () => {
     const {password} = props.passwordConfirm.input_fields;
     expect(wrapper.find(".row.password label").text()).toBe(
-      getTranslationString("PWD_LABEL"),
+      getTranslationString("PWD_LBL"),
     );
     const passwordInput = wrapper.find(".row.password input");
     expect(passwordInput.prop("placeholder")).toBe(
-      getTranslationString("PWD_PLACEHOLDER"),
+      getTranslationString("PWD_PHOLD"),
     );
     expect(passwordInput.prop("title")).toBe(
-      getTranslationString("PWD_PATTERN_DESCRIPTION"),
+      getTranslationString("PWD_PTRN_DESC"),
     );
     expect(passwordInput.prop("type")).toBe(password.type);
   });
@@ -112,14 +112,14 @@ describe("<PasswordConfirm /> rendering", () => {
   it("should render password confirm field correctly", () => {
     const {password_confirm} = props.passwordConfirm.input_fields;
     expect(wrapper.find(".row.password-confirm label").text()).toBe(
-      getTranslationString("CONFIRM_PWD_LABEL"),
+      getTranslationString("CONFIRM_PWD_LBL"),
     );
     const confirmInput = wrapper.find(".row.password-confirm input");
     expect(confirmInput.prop("placeholder")).toBe(
-      getTranslationString("CONFIRM_PWD_PLACEHOLDER"),
+      getTranslationString("CONFIRM_PWD_PHOLD"),
     );
     expect(confirmInput.prop("title")).toBe(
-      getTranslationString("PWD_PATTERN_DESCRIPTION"),
+      getTranslationString("PWD_PTRN_DESC"),
     );
     expect(confirmInput.prop("type")).toBe(password_confirm.type);
   });

@@ -32,7 +32,7 @@ export default class PasswordConfirm extends React.Component {
 
   componentDidMount() {
     const {setTitle, orgName} = this.props;
-    setTitle(t`PWD_CONFIRM_TITLE`, orgName);
+    setTitle(t`PWD_CONFIRM_TITL`, orgName);
   }
 
   handleChange(event) {
@@ -116,7 +116,7 @@ export default class PasswordConfirm extends React.Component {
                 <div className="row">
                   {loginPageLink && (
                     <Link to={`/${orgSlug}/login`} className="link">
-                      {t`LOGIN_PAGE_LINK`}
+                      {t`LOGIN_PG_LNK`}
                     </Link>
                   )}
                 </div>
@@ -124,10 +124,10 @@ export default class PasswordConfirm extends React.Component {
             </div>
           ) : (
             <form className="main-column" onSubmit={this.handleSubmit}>
-              <h1>{t`PWD_CONFIRM_HEADING`}</h1>
+              <h1>{t`PWD_CONFIRM_H`}</h1>
 
               {passwordConfirm.additional_text && (
-                <p>{t`PWD_CONFIRM_ADDITIONAL_TEXT`}</p>
+                <p>{t`PWD_CONFIRM_ADD_TXT`}</p>
               )}
 
               <div className="fieldset">
@@ -139,7 +139,7 @@ export default class PasswordConfirm extends React.Component {
                 )}
 
                 <div className="row password">
-                  <label htmlFor="password">{t`PWD_LABEL`}</label>
+                  <label htmlFor="password">{t`PWD_LBL`}</label>
 
                   {errors.newPassword1 && (
                     <div className="error">
@@ -156,9 +156,9 @@ export default class PasswordConfirm extends React.Component {
                     name="newPassword1"
                     value={newPassword1}
                     onChange={this.handleChange}
-                    placeholder={t`PWD_PLACEHOLDER`}
+                    placeholder={t`PWD_PHOLD`}
                     pattern={inputFields.password.pattern}
-                    title={t`PWD_PATTERN_DESCRIPTION`}
+                    title={t`PWD_PTRN_DESC`}
                     ref={this.passwordToggleRef}
                     autoComplete="new-password"
                   />
@@ -166,9 +166,7 @@ export default class PasswordConfirm extends React.Component {
                 </div>
 
                 <div className="row password-confirm">
-                  <label htmlFor="password-confirm">
-                    {t`CONFIRM_PWD_LABEL`}
-                  </label>
+                  <label htmlFor="password-confirm">{t`CONFIRM_PWD_LBL`}</label>
 
                   {errors.newPassword2 && (
                     <div className="error">
@@ -185,9 +183,9 @@ export default class PasswordConfirm extends React.Component {
                     name="newPassword2"
                     value={newPassword2}
                     onChange={this.handleChange}
-                    placeholder={t`CONFIRM_PWD_PLACEHOLDER`}
+                    placeholder={t`CONFIRM_PWD_PHOLD`}
                     pattern={inputFields.password.pattern}
-                    title={t`PWD_PATTERN_DESCRIPTION`}
+                    title={t`PWD_PTRN_DESC`}
                     ref={this.confirmPasswordToggleRef}
                     autoComplete="new-password"
                   />
@@ -206,12 +204,12 @@ export default class PasswordConfirm extends React.Component {
               </div>
 
               {passwordConfirm.contact_text && (
-                <div className="contact-us">{t`PWD_CONFIRM_CONTACT_TEXT`}</div>
+                <div className="contact-us">{t`PWD_RESET_CNTC_TXT`}</div>
               )}
 
               {loginPageLink && (
                 <Link to={`/${orgSlug}/login`} className="link">
-                  {t`LOGIN_PAGE_LINK`}
+                  {t`LOGIN_PG_LNK`}
                 </Link>
               )}
             </form>

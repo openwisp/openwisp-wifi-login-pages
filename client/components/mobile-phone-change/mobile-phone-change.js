@@ -36,7 +36,7 @@ class MobilePhoneChange extends React.Component {
   async componentDidMount() {
     const {cookies, orgSlug, setUserData, logout, setTitle, orgName} =
       this.props;
-    setTitle(t`MOBILE_PHONE_CHANGE_TITLE`, orgName);
+    setTitle(t`PHONE_CHANGE_TITL`, orgName);
     let {userData} = this.props;
     const isValid = await validateToken(
       cookies,
@@ -81,7 +81,7 @@ class MobilePhoneChange extends React.Component {
         });
         setUserData({...userData, is_verified: false, phone_number});
         setLoading(false);
-        toast.info(t`TOKEN_SENT_TOAST`);
+        toast.info(t`TOKEN_SENT`);
         self.props.history.push(`/${orgSlug}/mobile-phone-verification`);
       })
       .catch((error) => {
@@ -133,7 +133,7 @@ class MobilePhoneChange extends React.Component {
               )}
 
               <div className="row phone-number">
-                <label htmlFor="phone-number">{t`PHONENUMBER_LABEL`}</label>
+                <label htmlFor="phone-number">{t`PHONE_LBL`}</label>
                 {errors.phone_number && (
                   <div className="error">
                     <span className="icon">!</span>
@@ -158,7 +158,7 @@ class MobilePhoneChange extends React.Component {
                   onKeyDown={(event) => {
                     submitOnEnter(event, this, "mobile-phone-change-form");
                   }}
-                  placeholder={t`PHONENUMBER_PLACEHOLDER`}
+                  placeholder={t`PHONE_PHOLD`}
                   enableSearch={Boolean(
                     input_fields.phone_number.enable_search,
                   )}
@@ -176,7 +176,7 @@ class MobilePhoneChange extends React.Component {
               <input
                 type="submit"
                 className="button full"
-                value={t`CHANGE_PHONENUMBER`}
+                value={t`PHONE_CHANGE_BTN`}
               />
 
               <div className="row cancel">

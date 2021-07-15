@@ -289,10 +289,10 @@ describe("<Registration /> interactions", () => {
       disableLifecycleMethods: true,
     });
     expect(wrapper.find("[htmlFor='first_name']").text()).toEqual(
-      "first name (optional)",
+      "First name (optional)",
     );
     expect(wrapper.find("[htmlFor='location']").text()).toEqual(
-      "location (optional)",
+      "Location (optional)",
     );
     expect(wrapper.find(".last_name").length).toEqual(0);
     expect(wrapper.find(".birth_date").length).toEqual(0);
@@ -306,13 +306,13 @@ describe("<Registration /> interactions", () => {
       context: loadingContextValue,
       disableLifecycleMethods: true,
     });
-    expect(wrapper.find("[htmlFor='first_name']").text()).toEqual("first name");
-    expect(wrapper.find("[htmlFor='birth_date']").text()).toEqual("birth date");
+    expect(wrapper.find("[htmlFor='first_name']").text()).toEqual("First name");
+    expect(wrapper.find("[htmlFor='birth_date']").text()).toEqual("Birth date");
     expect(wrapper.find("[htmlFor='last_name']").text()).toEqual(
-      "last name (optional)",
+      "Last name (optional)",
     );
     expect(wrapper.find("[htmlFor='location']").text()).toEqual(
-      "location (optional)",
+      "Location (optional)",
     );
   });
   it("should execute authenticate in mobile phone verification flow", async () => {

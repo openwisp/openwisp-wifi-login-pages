@@ -82,8 +82,8 @@ describe("<Footer /> rendering", () => {
   });
   it("should render secondary text", () => {
     loadTranslation("en", "default", {
-      FOOTER_SECONDARY_TEXT: {
-        msgid: "FOOTER_SECONDARY_TEXT",
+      FOOTER_SECONDARY_TXT: {
+        msgid: "FOOTER_SECONDARY_TXT",
         msgstr: ["secondary text"],
       },
     });

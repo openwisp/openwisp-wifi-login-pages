@@ -15,11 +15,11 @@ msgid "PWD_HIDE"
 msgstr "hide password"
 
 #: client/utils/render-additional-info.js:7
-msgid "PRIVACY_POLICY_TITLE"
+msgid "PRIV_POL_TITL"
 msgstr "privacy policy"
 
 #: client/utils/render-additional-info.js:8
-msgid "TERMS_AND_CONDITIONS_TITLE"
+msgid "TOS_TITL"
 msgstr "terms and conditions"
 
 #: client/components/status/status.js:441
@@ -36,7 +36,7 @@ msgid "LOGOUT"
 msgstr "Logout"
 
 #: client/components/status/status.js:65
-msgid "STATUS_TITLE"
+msgid "STATUS_TITL"
 msgstr "Status"
 
 #: client/components/status/status.js:635
@@ -91,150 +91,149 @@ msgid "LOGOUT_MODAL_CONTENT"
 msgstr "Do you want to automatically log in the next time?"
 
 #: client/components/status/status.js:713
-msgid "LOGOUT_MODAL_AGREE"
+msgid "YES"
 msgstr "Yes"
 
 #: client/components/status/status.js:720
-msgid "LOGOUT_MODAL_DISAGREE"
+msgid "NO"
 msgstr "No"
 
 #: client/components/registration/registration.js:277
-msgid "PLAN_SETTING_TEXT"
-msgstr "Select your plan below"
+msgid "PLAN_SETTING_TXT"
+msgstr "Please select the preferred subscription plan"
 
 #: client/components/login/login.js:135
 #: client/components/mobile-phone-change/mobile-phone-change.js:136
 #: client/components/registration/registration.js:366
-msgid "PHONENUMBER_LABEL"
-msgstr "mobile phone number"
+msgid "PHONE_LBL"
+msgstr "Mobile phone number"
 
 #: client/components/login/login.js:156
 #: client/components/mobile-phone-change/mobile-phone-change.js:161
 #: client/components/registration/registration.js:402
-msgid "PHONENUMBER_PLACEHOLDER"
+msgid "PHONE_PHOLD"
 msgstr "enter mobile phone number"
 
 #: client/components/password-reset/password-reset.js:115
 #: client/components/registration/registration.js:437
-msgid "EMAIL_PLACEHOLDER"
+msgid "EMAIL_PHOLD"
 msgstr "email address"
 
 #: client/components/password-reset/password-reset.js:117
 #: client/components/registration/registration.js:440
-msgid "EMAIL_PATTERN_DESCRIPTION"
+msgid "EMAIL_PTRN_DESC"
 msgstr "enter valid email address"
 
 #: client/components/login/login.js:107
 #: client/components/registration/registration.js:446
-msgid "USERNAME_LABEL"
-msgstr "email"
+msgid "USERNAME_LBL"
+msgstr "Email, phone number or username"
 
 #: client/components/login/login.js:122
 #: client/components/registration/registration.js:463
-msgid "USERNAME_PLACEHOLDER"
-msgstr "email address"
+msgid "USERNAME_PHOLD"
+msgstr "enter email, phone number or username"
 
 #: client/components/registration/registration.js:466
-msgid "USERNAME_PATTERN_DESCRIPTION"
-msgstr "only letters, numbers, and @/./+/-/_ characters"
+msgid "USERNAME_PTRN_DESC"
+msgstr "only letters, numbers and @/./+/-/_ characters"
 
 #: client/components/registration/registration.js:477
 #: client/components/registration/registration.js:478
-msgid "FIRST_NAME_LABEL"
-msgstr "first name"
+msgid "FIRST_NAME_LBL"
+msgstr "First name"
 
 #: client/components/registration/registration.js:502
-msgid "FIRST_NAME_PLACEHOLDER"
+msgid "FIRST_NAME_PHOLD"
 msgstr "first name"
 
 #: client/components/registration/registration.js:513
 #: client/components/registration/registration.js:514
-msgid "LAST_NAME_LABEL"
-msgstr "last name"
+msgid "LAST_NAME_LBL"
+msgstr "Last name"
 
 #: client/components/registration/registration.js:536
-msgid "LAST_NAME_PLACEHOLDER"
+msgid "LAST_NAME_PHOLD"
 msgstr "last name"
 
 #: client/components/registration/registration.js:545
 #: client/components/registration/registration.js:546
-msgid "BIRTH_DATE_LABEL"
-msgstr "birth date"
+msgid "BIRTH_DATE_LBL"
+msgstr "Birth date"
 
 #: client/components/registration/registration.js:577
 #: client/components/registration/registration.js:578
-msgid "LOCATION_LABEL"
-msgstr "location"
+msgid "LOCATION_LBL"
+msgstr "Location"
 
 #: client/components/registration/registration.js:598
-msgid "LOCATION_PLACEHOLDER"
+msgid "LOCATION_PHOLD"
 msgstr "location"
 
 #: client/components/registration/registration.js:601
-msgid "LOCATION_PATTERN_DESCRIPTION"
-msgstr "only letters, numbers, and @/./+/-/_ characters"
+msgid "LOCATION_PTRN_DESC"
+msgstr "only letters, numbers, spaces, punctuation"
 
 #: client/components/login/login.js:313
 #: client/components/password-confirm/password-confirm.js:142
 #: client/components/registration/registration.js:607
-msgid "PWD_LABEL"
-msgstr "password"
+msgid "PWD_LBL"
+msgstr "Password"
 
 #: client/components/login/login.js:328
 #: client/components/password-confirm/password-confirm.js:159
 #: client/components/registration/registration.js:622
-msgid "PWD_PLACEHOLDER"
+msgid "PWD_PHOLD"
 msgstr "password"
 
 #: client/components/login/login.js:330
+#: client/components/password-change/password-change.js:131
+#: client/components/password-change/password-change.js:158
 #: client/components/password-confirm/password-confirm.js:161
 #: client/components/password-confirm/password-confirm.js:190
 #: client/components/registration/registration.js:624
-msgid "PWD_PATTERN_DESCRIPTION"
-msgstr "password must be a minimum of 6 characters"
-
 #: client/components/registration/registration.js:653
-msgid "CONFIRM_PWD_PATTERN_DESCRIPTION"
+msgid "PWD_PTRN_DESC"
 msgstr "password must be a minimum of 6 characters"
 
 #: client/components/registration/registration.js:666
-msgid "COUNTRY_LABEL"
-msgstr "country"
+msgid "COUNTRY_LBL"
+msgstr "Country"
 
 #: client/components/registration/registration.js:682
-msgid "CITY_LABEL"
-msgstr "city"
+msgid "CITY_LBL"
+msgstr "City"
 
 #: client/components/registration/registration.js:700
-msgid "CITY_PLACEHOLDER"
+msgid "CITY_PHOLD"
 msgstr "enter city"
 
 #: client/components/registration/registration.js:704
-msgid "STREET_LABEL"
-msgstr "street"
+msgid "STREET_LBL"
+msgstr "Street"
 
 #: client/components/registration/registration.js:724
-msgid "STREET_PLACEHOLDER"
+msgid "STREET_PHOLD"
 msgstr "enter street"
 
 #: client/components/registration/registration.js:728
-msgid "ZIP_CODE_LABEL"
-msgstr "zipcode"
+msgid "ZIP_CODE_LBL"
+msgstr "Postal code"
 
 #: client/components/registration/registration.js:752
-msgid "TAX_NUMBER_LABEL"
-msgstr "tax number"
+msgid "TAX_NUMBER_LBL"
+msgstr "Tax number"
 
 #: client/components/registration/registration.js:771
-msgid "TAX_NUMBER_PLACEHOLDER"
+msgid "TAX_NUMBER_PHOLD"
 msgstr "enter your tax identification number (optional)"
 
 #: client/components/registration/registration.js:773
-msgid "TAX_NUMBER_PATTERN_DESCRIPTION"
-msgstr "only letters, numbers, and @/./+/-/_ characters"
+msgid "TAX_NUMBER_PTRN_DESC"
+msgstr "only numbers and letters"
 
 #: client/components/registration/registration.js:788
-msgid "REGISTER_ADDITIONAL_INFO_TEXT"
+msgid "REGISTER_ADD_INFO_TXT"
 msgstr ""
 "By signing up, you accept the {terms_and_conditions} and the "
 "{privacy_policy} of this WiFi service. "
@@ -245,127 +244,110 @@ msgid "FORGOT_PASSWORD"
 msgstr "Forgot your password?"
 
 #: client/components/registration/registration.js:818
-msgid "LINKS_LOGIN_TEXT"
+msgid "LINKS_LOGIN_TXT"
 msgstr "Already have an account? Log in"
 
 #: client/components/registration/registration.js:71
-msgid "REGISTRATION_TITLE"
+msgid "REGISTRATION_TITL"
 msgstr "Sign up"
 
 #: client/components/payment-status/payment-status.js:65
-msgid "PAGE_SUCCESS_TOAST"
+msgid "PAY_SUCCESS"
 msgstr "Payment received successfully!"
 
 #: client/components/payment-status/payment-status.js:75
 #. failed payment case
-msgid "PAYMENT_HEADING"
+msgid "PAY_H"
 msgstr "Payment"
 
 #: client/components/payment-status/payment-status.js:78
 #. failed payment case
-msgid "PAYMENT_SUB_HEADING"
+msgid "PAY_SUB_H"
 msgstr "Something went wrong with the payment."
 
 #: client/components/payment-status/payment-status.js:82
 #. failed payment case
-msgid "PAYMENT_TRY_AGAIN_BUTTON"
+msgid "PAY_TRY_AGAIN_BTN"
 msgstr "Try again"
 
 #: client/components/payment-status/payment-status.js:87
 #. failed payment case
-msgid "PAYMENT_GIVE_UP_TEXT"
+msgid "PAY_GIVE_UP_TXT"
 msgstr ""
-"If you cannot complete the transaction, please contact our customer support "
-"service."
+"If you cannot complete the transaction you can either try to get in touch "
+"with your bank or cancel the operation."
 
 #: client/components/payment-status/payment-status.js:93
 #. failed payment case
-msgid "PAYMENT_GIVE_UP_BUTTON"
+msgid "PAY_GIVE_UP_BTN"
 msgstr "Cancel operation and log out"
 
 #: client/components/password-reset/password-reset.js:30
-msgid "PWD_RESET_TITLE"
+msgid "PWD_RESET_TITL"
 msgstr "Reset Password"
 
 #: client/components/password-confirm/password-confirm.js:119
 #: client/components/password-confirm/password-confirm.js:214
 #: client/components/password-reset/password-reset.js:89
 #: client/components/password-reset/password-reset.js:140
-msgid "LOGIN_PAGE_LINK"
+msgid "LOGIN_PG_LNK"
 msgstr "Go back to sign in"
 
 #: client/components/password-reset/password-reset.js:95
-msgid "PWD_RESET_ADDITIONAL_TEXT"
+msgid "PWD_RESET_ADD_TXT"
 msgstr ""
-"Forgotten your password? Enter your e-mail address below, and we'll send "
-"you an e-mail allowing you to reset it."
+"Have you forgot your password? Enter your email address below and we'll "
+"send you the instructions to reset it."
 
 #: client/components/password-reset/password-reset.js:126
-msgid "PWD_RESET"
+msgid "PWD_RESET_BTN"
 msgstr "Reset My Password"
 
+#: client/components/password-confirm/password-confirm.js:209
 #: client/components/password-reset/password-reset.js:133
-msgid "PWD_RESET_CONTACT_TEXT"
+msgid "PWD_RESET_CNTC_TXT"
 msgstr "Please contact us if you have any trouble resetting your password."
 
 #: client/components/password-confirm/password-confirm.js:35
-msgid "PWD_CONFIRM_TITLE"
+msgid "PWD_CONFIRM_TITL"
 msgstr "Reset Password"
 
 #: client/components/password-confirm/password-confirm.js:127
-msgid "PWD_CONFIRM_HEADING"
+msgid "PWD_CONFIRM_H"
 msgstr "Reset your password"
 
 #: client/components/password-confirm/password-confirm.js:130
-msgid "PWD_CONFIRM_ADDITIONAL_TEXT"
+msgid "PWD_CONFIRM_ADD_TXT"
 msgstr "Please enter your new password below."
 
+#: client/components/password-change/password-change.js:140
 #: client/components/password-confirm/password-confirm.js:170
 #: client/components/registration/registration.js:633
-msgid "CONFIRM_PWD_LABEL"
-msgstr "confirm password"
+msgid "CONFIRM_PWD_LBL"
+msgstr "Confirm password"
 
+#: client/components/password-change/password-change.js:156
 #: client/components/password-confirm/password-confirm.js:188
 #: client/components/registration/registration.js:651
-msgid "CONFIRM_PWD_PLACEHOLDER"
+msgid "CONFIRM_PWD_PHOLD"
 msgstr "confirm password"
 
 #: client/components/password-confirm/password-confirm.js:204
 msgid "PWD_CONFIRM"
 msgstr "Change password"
 
-#: client/components/password-confirm/password-confirm.js:209
-msgid "PWD_CONFIRM_CONTACT_TEXT"
-msgstr "Please contact us if you have any trouble resetting your password."
-
 #: client/components/password-change/password-change.js:40
 #: client/components/password-change/password-change.js:103
-msgid "PWD_CHANGE_TITLE"
+msgid "PWD_CHANGE_TITL"
 msgstr "Change your password"
 
 #: client/components/password-change/password-change.js:113
-msgid "PWD1_LABEL"
+msgid "PWD1_LBL"
 msgstr "New Password"
 
 #: client/components/password-change/password-change.js:129
-msgid "PWD1_PLACEHOLDER"
+msgid "PWD1_PHOLD"
 msgstr "Your new Password"
-
-#: client/components/password-change/password-change.js:131
-msgid "PWD1_PATTERN_DESCRIPTION"
-msgstr "New password must be a minimum of 6 characters"
-
-#: client/components/password-change/password-change.js:140
-msgid "PWD2_LABEL"
-msgstr "Confirm new password"
-
-#: client/components/password-change/password-change.js:156
-msgid "PWD2_PLACEHOLDER"
-msgstr "Re-enter new password"
-
-#: client/components/password-change/password-change.js:158
-msgid "PWD2_PATTERN_DESCRIPTION"
-msgstr "New password must be a minimum of 6 characters"
 
 #: client/components/password-change/password-change.js:170
 msgid "PASSWORD_CHANGE"
@@ -373,39 +355,35 @@ msgstr "Change Password"
 
 #: client/components/organization-wrapper/organization-wrapper.js:286
 #, javascript-format
-msgid "DEFAULT_TITLE - ${ orgName }"
-msgstr "Wifi Login - ${ orgName }"
+msgid "DEFAULT_TITL - ${ orgName }"
+msgstr "WiFi Login - ${ orgName }"
 
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:47
-msgid "MOBILE_PHONE_VERIFICATION_TITLE"
+msgid "PHONE_VERIF_TITL"
 msgstr "Verify mobile number"
 
 #: client/components/mobile-phone-change/mobile-phone-change.js:84
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:149
-msgid "TOKEN_SENT_TOAST"
+msgid "TOKEN_SENT"
 msgstr "SMS verification code sent successfully."
 
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:192
 #, javascript-format
-msgid "PHONENUMBER_VERIFY (${ phone_number })"
+msgid "PHONE_VERIFY (${ phone_number })"
 msgstr ""
 "Verify your mobile phone number (${ phone_number }) by inserting the code "
 "you received via SMS below."
 
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:219
-msgid "MOBILE_CODE_PLACEHOLDER"
+msgid "MOBILE_CODE_PHOLD"
 msgstr "enter SMS verification code"
 
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:221
-msgid "MOBILE_CODE_TITLE"
+msgid "MOBILE_CODE_TITL"
 msgstr "this field must be a 6 digit numeric code"
 
-#: client/components/mobile-phone-verification/mobile-phone-verification.js:226
-msgid "MOBILE_PHONE_VERIFY"
-msgstr "Submit"
-
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:232
-msgid "RESEND_TOKEN_LABEL"
+msgid "RESEND_TOKEN_LBL"
 msgstr ""
 "If you did not receive the verification SMS code, you can try sending it "
 "again by clicking below."
@@ -415,15 +393,15 @@ msgid "RESEND_TOKEN"
 msgstr "Send a new verification code"
 
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:244
-msgid "PHONENUMBER_CHANGE_LABEL"
+msgid "PHONE_CHANGE_LBL"
 msgstr "Wrong phone number?"
 
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:254
-msgid "LOGOUT_LABEL"
+msgid "LOGOUT_LBL"
 msgstr "If you need to cancel the process you can log out below."
 
 #: client/components/mobile-phone-change/mobile-phone-change.js:39
-msgid "MOBILE_PHONE_CHANGE_TITLE"
+msgid "PHONE_CHANGE_TITL"
 msgstr "Change mobile number"
 
 #: client/components/logout/logout.js:45
@@ -435,15 +413,15 @@ msgid "AGAIN"
 msgstr "again"
 
 #: client/components/login/login.js:125
-msgid "USERNAME_TITLE"
-msgstr "enter valid email address"
+msgid "USERNAME_TITL"
+msgstr "enter valid email address, an username or a phone number"
 
 #: client/components/login/login.js:345
 msgid "REMEMBER_ME"
 msgstr "remember me on this device"
 
 #: client/components/login/login.js:352
-msgid "LOGIN_ADDITIONAL_INFO_TEXT"
+msgid "LOGIN_ADD_INFO_TXT"
 msgstr ""
 "By logging in, you accept the {terms_and_conditions} and the "
 "{privacy_policy} of this WiFi service. "
@@ -455,16 +433,16 @@ msgid "LOGIN"
 msgstr "Log in"
 
 #: client/components/login/login.js:365
-msgid "REGISTER_BUTTON_LABEL"
+msgid "REGISTER_BTN_LBL"
 msgstr "Not registered yet?"
 
 #: client/components/login/login.js:367
 #: client/components/registration/registration.js:801
-msgid "REGISTER_BUTTON_TEXT"
+msgid "REGISTER_BTN_TXT"
 msgstr "Sign up"
 
 #: client/components/footer/footer.js:40
-msgid "FOOTER_SECONDARY_TEXT"
+msgid "FOOTER_SECONDARY_TXT"
 msgstr " "
 
 #: client/components/contact-box/contact.js:22
@@ -472,35 +450,31 @@ msgstr " "
 #: client/components/registration/registration.js:420
 #: client/components/status/status.js:655
 msgid "EMAIL"
-msgstr "E-mail"
+msgstr "Email"
 
 #: client/components/contact-box/contact.js:31
 msgid "HELPDESK"
 msgstr "Helpdesk"
 
 #: client/components/404/404.js:13
-msgid "404_PAGE_TITLE"
+msgid "404_PG_TITL"
 msgstr "404 Not found"
 
 #: client/components/404/404.js:23
-msgid "404_HEADING"
+msgid "404_H"
 msgstr "404"
 
 #: client/components/404/404.js:26
-msgid "404_SUBHEADING"
+msgid "404_SUBH"
 msgstr "Not Found"
 
 #: client/components/404/404.js:30
 msgid "404_MESSAGE"
 msgstr "Sorry, we couldn't find the page you were looking for."
 
-#: client/components/404/404.js:36
-msgid "HOME_PAGE_LINK_TEXT"
-msgstr "Go back to homepage"
-
 #: client/components/mobile-phone-change/mobile-phone-change.js:179
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:249
-msgid "CHANGE_PHONENUMBER"
+msgid "PHONE_CHANGE_BTN"
 msgstr "Change your phone number"
 
 #: client/components/mobile-phone-change/mobile-phone-change.js:187
@@ -513,3 +487,11 @@ msgstr "Cancel"
 #: client/components/registration/registration.js:578
 msgid "OPTIONAL"
 msgstr "optional"
+
+#: client/components/mobile-phone-verification/mobile-phone-verification.js:226
+msgid "MOBILE_PHONE_VERIFY"
+msgstr ""
+
+#: client/components/404/404.js:36
+msgid "HOME_PG_LINK_TXT"
+msgstr ""

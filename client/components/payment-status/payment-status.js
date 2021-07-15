@@ -62,7 +62,7 @@ export default class PaymentStatus extends React.Component {
 
     // success case
     if (result === "success" && isVerified === true) {
-      toast.success(t`PAGE_SUCCESS_TOAST`);
+      toast.success(t`PAY_SUCCESS`);
       return redirectToStatus();
     }
 
@@ -72,25 +72,23 @@ export default class PaymentStatus extends React.Component {
         <div className="inner">
           <div className="main-column">
             <h2 className="row payment-status-row-1">
-              {t`PAYMENT_HEADING`}: {result}
+              {t`PAY_H`}: {result}
             </h2>
-            <div className="row payment-status-row-2">
-              {t`PAYMENT_SUB_HEADING`}
-            </div>
+            <div className="row payment-status-row-2">{t`PAY_SUB_H`}</div>
             <div className="row payment-status-row-3">
               <Link className="button full" to={`/${orgSlug}/status`}>
-                {t`PAYMENT_TRY_AGAIN_BUTTON`}
+                {t`PAY_TRY_AGAIN_BTN`}
               </Link>
             </div>
 
             <div className="row payment-status-row-4">
-              <p>{t`PAYMENT_GIVE_UP_TEXT`}</p>
+              <p>{t`PAY_GIVE_UP_TXT`}</p>
               <Link
                 onClick={this.handleLogout}
                 to={`/${orgSlug}/status`}
                 className="button full"
               >
-                {t`PAYMENT_GIVE_UP_BUTTON`}
+                {t`PAY_GIVE_UP_BTN`}
               </Link>
             </div>
           </div>

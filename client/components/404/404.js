@@ -10,7 +10,7 @@ export default class DoesNotExist extends React.Component {
   componentDidMount() {
     const {orgName, setTitle, page} = this.props;
     if (page !== undefined || orgName !== undefined)
-      setTitle(t`404_PAGE_TITLE`, orgName);
+      setTitle(t`404_PG_TITL`, orgName);
   }
 
   render() {
@@ -20,10 +20,10 @@ export default class DoesNotExist extends React.Component {
         <div className="inner">
           <div className="main-column">
             <div className="row owisp-404-row-1">
-              {page && page.heading ? t`404_HEADING` : "Oops!"}
+              {page && page.heading ? t`404_H` : "Oops!"}
             </div>
             <div className="row owisp-404-row-2">
-              {page && page.sub_heading ? t`404_SUBHEADING` : "404 Not Found"}
+              {page && page.sub_heading ? t`404_SUBH` : "404 Not Found"}
             </div>
             <div className="row owisp-404-row-3">
               {page && page.message
@@ -33,7 +33,7 @@ export default class DoesNotExist extends React.Component {
             {page && page.homepage_link && (
               <div className="row owisp-404-row-4">
                 <Link to={`/${orgSlug}`} className="link">
-                  {t`HOME_PAGE_LINK_TEXT`}
+                  {t`HOME_PG_LINK_TXT`}
                 </Link>
               </div>
             )}

@@ -22,7 +22,7 @@ exports[`<MobilePhoneChange /> rendering with placeholder translation tags shoul
           <label
             htmlFor="phone-number"
           >
-            PHONENUMBER_LABEL
+            PHONE_LBL
           </label>
           <t
             alwaysDefaultMask={false}
@@ -88,7 +88,7 @@ exports[`<MobilePhoneChange /> rendering with placeholder translation tags shoul
             onEnterKeyPress={null}
             onKeyDown={[Function]}
             onlyCountries={Array []}
-            placeholder="PHONENUMBER_PLACEHOLDER"
+            placeholder="PHONE_PHOLD"
             preferredCountries={Array []}
             prefix="+"
             preserveOrder={Array []}
@@ -107,7 +107,7 @@ exports[`<MobilePhoneChange /> rendering with placeholder translation tags shoul
         <input
           className="button full"
           type="submit"
-          value="CHANGE_PHONENUMBER"
+          value="PHONE_CHANGE_BTN"
         />
         <div
           className="row cancel"
@@ -644,7 +644,7 @@ Openwisp-wifi-login-pages and using its services in the future.</p>
                   <label
                     htmlFor="phone-number"
                   >
-                    mobile phone number
+                    Mobile phone number
                   </label>
                   <t
                     alwaysDefaultMask={false}
@@ -831,7 +831,7 @@ Openwisp-wifi-login-pages and using its services in the future.</p>
                       <span
                         className="label"
                       >
-                        E-mail
+                        Email
                         :
                       </span>
                       <a

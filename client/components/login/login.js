@@ -104,7 +104,7 @@ export default class Login extends React.Component {
     const {username, errors} = this.state;
     return (
       <div className="row username">
-        <label htmlFor="username">{t`USERNAME_LABEL`}</label>
+        <label htmlFor="username">{t`USERNAME_LBL`}</label>
         {errors.username && (
           <div className="error">
             <span className="icon">!</span>
@@ -119,10 +119,10 @@ export default class Login extends React.Component {
           value={username}
           onChange={this.handleChange}
           required
-          placeholder={t`USERNAME_PLACEHOLDER`}
+          placeholder={t`USERNAME_PHOLD`}
           pattern={input_fields.username.pattern}
           autoComplete="username"
-          title={t`USERNAME_TITLE`}
+          title={t`USERNAME_TITL`}
         />
       </div>
     );
@@ -132,7 +132,7 @@ export default class Login extends React.Component {
     const {username, errors} = this.state;
     return (
       <div className="row phone-number">
-        <label htmlFor="phone-number">{t`PHONENUMBER_LABEL`}</label>
+        <label htmlFor="phone-number">{t`PHONE_LBL`}</label>
         {errors.username && (
           <div className="error">
             <span className="icon">!</span>
@@ -153,7 +153,7 @@ export default class Login extends React.Component {
               target: {name: "username", value: `+${value}`},
             })
           }
-          placeholder={t`PHONENUMBER_PLACEHOLDER`}
+          placeholder={t`PHONE_PHOLD`}
           enableSearch={Boolean(input_fields.phone_number.enable_search)}
           inputProps={{
             name: "username",
@@ -310,7 +310,7 @@ export default class Login extends React.Component {
                 {this.getUsernameField(input_fields)}
 
                 <div className="row password">
-                  <label htmlFor="password">{t`PWD_LABEL`}</label>
+                  <label htmlFor="password">{t`PWD_LBL`}</label>
                   {errors.password && (
                     <div className="error">
                       <span className="icon">!</span>
@@ -325,9 +325,9 @@ export default class Login extends React.Component {
                     name="password"
                     value={password}
                     onChange={this.handleChange}
-                    placeholder={t`PWD_PLACEHOLDER`}
+                    placeholder={t`PWD_PHOLD`}
                     pattern={input_fields.password.pattern}
-                    title={t`PWD_PATTERN_DESCRIPTION`}
+                    title={t`PWD_PTRN_DESC`}
                     ref={this.passwordToggleRef}
                     autoComplete="current-password"
                   />
@@ -349,7 +349,7 @@ export default class Login extends React.Component {
               {additional_info_text && (
                 <div className="row add-info">
                   {renderAdditionalInfo(
-                    t`LOGIN_ADDITIONAL_INFO_TEXT`,
+                    t`LOGIN_ADD_INFO_TXT`,
                     orgSlug,
                     "login",
                   )}
@@ -362,9 +362,9 @@ export default class Login extends React.Component {
 
               {buttons.register && (
                 <div className="row register">
-                  <p>{t`REGISTER_BUTTON_LABEL`}</p>
+                  <p>{t`REGISTER_BTN_LBL`}</p>
                   <Link to={`/${orgSlug}/registration`} className="button full">
-                    {t`REGISTER_BUTTON_TEXT`}
+                    {t`REGISTER_BTN_TXT`}
                   </Link>
                 </div>
               )}

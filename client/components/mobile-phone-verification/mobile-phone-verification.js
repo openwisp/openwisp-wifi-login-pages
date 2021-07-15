@@ -44,7 +44,7 @@ export default class MobilePhoneVerification extends React.Component {
   async componentDidMount() {
     const {cookies, orgSlug, settings, setUserData, logout, orgName, setTitle} =
       this.props;
-    setTitle(t`MOBILE_PHONE_VERIFICATION_TITLE`, orgName);
+    setTitle(t`PHONE_VERIF_TITL`, orgName);
     let {userData} = this.props;
     const {setLoading} = this.context;
     setLoading(true);
@@ -146,7 +146,7 @@ export default class MobilePhoneVerification extends React.Component {
       .then(() => {
         // flag SMS as sent to avoid resending it
         sessionStorage.setItem(self.phoneTokenSentKey, true);
-        toast.info(t`TOKEN_SENT_TOAST`);
+        toast.info(t`TOKEN_SENT`);
       })
       .catch((error) => {
         const errorText = getErrorText(error);
@@ -188,9 +188,7 @@ export default class MobilePhoneVerification extends React.Component {
               onSubmit={this.handleSubmit}
             >
               <div className="row fieldset code">
-                <p className="label">
-                  {t`PHONENUMBER_VERIFY (${phone_number})`}
-                </p>
+                <p className="label">{t`PHONE_VERIFY (${phone_number})`}</p>
 
                 {errors.nonField && (
                   <div className="error non-field">
@@ -216,9 +214,9 @@ export default class MobilePhoneVerification extends React.Component {
                     name="code"
                     value={code}
                     onChange={this.handleChange}
-                    placeholder={t`MOBILE_CODE_PLACEHOLDER`}
+                    placeholder={t`MOBILE_CODE_PHOLD`}
                     pattern={input_fields.code.pattern}
-                    title={t`MOBILE_CODE_TITLE`}
+                    title={t`MOBILE_CODE_TITL`}
                   />
                 </div>
 
@@ -229,7 +227,7 @@ export default class MobilePhoneVerification extends React.Component {
             </form>
 
             <div className="row fieldset resend">
-              <p className="label">{t`RESEND_TOKEN_LABEL`}</p>
+              <p className="label">{t`RESEND_TOKEN_LBL`}</p>
 
               <button
                 type="button"
@@ -241,17 +239,17 @@ export default class MobilePhoneVerification extends React.Component {
             </div>
 
             <div className="row fieldset change">
-              <p className="label">{t`PHONENUMBER_CHANGE_LABEL`}</p>
+              <p className="label">{t`PHONE_CHANGE_LBL`}</p>
               <a
                 href={`/${orgSlug}/change-phone-number`}
                 className="button full"
               >
-                {t`CHANGE_PHONENUMBER`}
+                {t`PHONE_CHANGE_BTN`}
               </a>
             </div>
 
             <div className="row fieldset logout">
-              <p className="label">{t`LOGOUT_LABEL`}</p>
+              <p className="label">{t`LOGOUT_LBL`}</p>
               <button
                 type="button"
                 className="button full"

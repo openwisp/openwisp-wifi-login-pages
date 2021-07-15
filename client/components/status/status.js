@@ -62,7 +62,7 @@ export default class Status extends React.Component {
   async componentDidMount() {
     const {cookies, orgSlug, settings, setUserData, logout, setTitle, orgName} =
       this.props;
-    setTitle(t`STATUS_TITLE`, orgName);
+    setTitle(t`STATUS_TITL`, orgName);
     const {setLoading} = this.context;
     let {userData} = this.props;
     this.setState({
@@ -710,14 +710,14 @@ export default class Status extends React.Component {
                 className="button partial"
                 onClick={() => this.handleLogout(true)}
               >
-                {t`LOGOUT_MODAL_AGREE`}
+                {t`YES`}
               </button>
               <button
                 type="button"
                 className="button partial"
                 onClick={() => this.handleLogout(false)}
               >
-                {t`LOGOUT_MODAL_DISAGREE`}
+                {t`NO`}
               </button>
             </p>
           </div>

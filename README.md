@@ -498,7 +498,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "PHONENUMBER_LABEL"
+msgid "PHONE_LBL"
 msgstr "mobile phone number (verification needed)"
 ```
 

@@ -4,8 +4,8 @@ import {t} from "ttag";
 
 const renderAdditionalInfo = (text, orgSlug, component) => {
   const textNodes = [];
-  const privacyPolicyTitle = t`PRIVACY_POLICY_TITLE`;
-  const termsAndConditionsTitle = t`TERMS_AND_CONDITIONS_TITLE`;
+  const privacyPolicyTitle = t`PRIV_POL_TITL`;
+  const termsAndConditionsTitle = t`TOS_TITL`;
   if (text.includes("{terms_and_conditions}")) {
     const Array1 = text.split("{terms_and_conditions}");
     if (Array1[0].includes("{privacy_policy}")) {

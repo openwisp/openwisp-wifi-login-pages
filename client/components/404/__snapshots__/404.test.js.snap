@@ -33,7 +33,7 @@ exports[`<DoesNotExist /> rendering should render correctly custom 404 page with
           className="link"
           to="/default"
         >
-          Go back to homepage
+          HOME_PG_LINK_TXT
         </Link>
       </div>
     </div>
@@ -86,12 +86,12 @@ exports[`<DoesNotExist /> rendering with placeholder translation tags should ren
       <div
         className="row owisp-404-row-1"
       >
-        404_HEADING
+        404_H
       </div>
       <div
         className="row owisp-404-row-2"
       >
-        404_SUBHEADING
+        404_SUBH
       </div>
       <div
         className="row owisp-404-row-3"
@@ -105,7 +105,7 @@ exports[`<DoesNotExist /> rendering with placeholder translation tags should ren
           className="link"
           to="/default"
         >
-          HOME_PAGE_LINK_TEXT
+          HOME_PG_LINK_TXT
         </Link>
       </div>
     </div>

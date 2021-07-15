@@ -37,7 +37,7 @@ export default class Footer extends React.Component {
         </div>
         {secondary_text && (
           <div className="footer-row-2">
-            <div className="footer-row-2-inner">{t`FOOTER_SECONDARY_TEXT`}</div>
+            <div className="footer-row-2-inner">{t`FOOTER_SECONDARY_TXT`}</div>
           </div>
         )}
       </div>

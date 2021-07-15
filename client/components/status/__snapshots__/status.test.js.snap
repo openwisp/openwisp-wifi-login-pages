@@ -199,14 +199,14 @@ exports[`<Status /> rendering with placeholder translation tags should render tr
           onClick={[Function]}
           type="button"
         >
-          LOGOUT_MODAL_AGREE
+          YES
         </button>
         <button
           className="button partial"
           onClick={[Function]}
           type="button"
         >
-          LOGOUT_MODAL_DISAGREE
+          NO
         </button>
       </p>
     </div>

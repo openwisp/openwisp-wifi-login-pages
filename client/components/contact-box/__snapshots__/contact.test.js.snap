@@ -84,7 +84,7 @@ exports[`<Status /> rendering should render correctly 1`] = `
       <span
         className="label"
       >
-        E-mail
+        Email
         :
       </span>
       <a

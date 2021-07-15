@@ -68,7 +68,7 @@ export default class Registration extends React.Component {
     const {setLoading} = this.context;
     const plansUrl = plansApiUrl.replace("{orgSlug}", orgSlug);
 
-    setTitle(t`REGISTRATION_TITLE`, orgName);
+    setTitle(t`REGISTRATION_TITL`, orgName);
 
     if (settings.subscriptions) {
       setLoading(true);
@@ -274,7 +274,7 @@ export default class Registration extends React.Component {
     let index = 0;
     return (
       <div>
-        <p style={{textAlign: "center"}}>{t`PLAN_SETTING_TEXT`}</p>
+        <p style={{textAlign: "center"}}>{t`PLAN_SETTING_TXT`}</p>
         {plans.map((plan) => {
           const currentIndex = index;
           index += 1;
@@ -362,9 +362,7 @@ export default class Registration extends React.Component {
                       settings.mobile_phone_verification &&
                       input_fields.phone_number && (
                         <div className="row phone-number">
-                          <label htmlFor="phone-number">
-                            {t`PHONENUMBER_LABEL`}
-                          </label>
+                          <label htmlFor="phone-number">{t`PHONE_LBL`}</label>
 
                           {errors.phone_number && (
                             <div className="error">
@@ -399,7 +397,7 @@ export default class Registration extends React.Component {
                             onKeyDown={(event) => {
                               submitOnEnter(event, this, "registration-form");
                             }}
-                            placeholder={t`PHONENUMBER_PLACEHOLDER`}
+                            placeholder={t`PHONE_PHOLD`}
                             enableSearch={Boolean(
                               input_fields.phone_number.enable_search,
                             )}
@@ -434,16 +432,16 @@ export default class Registration extends React.Component {
                         name="email"
                         value={email}
                         onChange={this.handleChange}
-                        placeholder={t`EMAIL_PLACEHOLDER`}
+                        placeholder={t`EMAIL_PHOLD`}
                         pattern={input_fields.email.pattern}
                         autoComplete="email"
-                        title={t`EMAIL_PATTERN_DESCRIPTION`}
+                        title={t`EMAIL_PTRN_DESC`}
                       />
                     </div>
 
                     {this.isPlanIdentityVerifier() && (
                       <div className="row username">
-                        <label htmlFor="username">{t`USERNAME_LABEL`}</label>
+                        <label htmlFor="username">{t`USERNAME_LBL`}</label>
                         {errors.email && (
                           <div className="error username">
                             <span className="icon">!</span>
@@ -460,10 +458,10 @@ export default class Registration extends React.Component {
                           name="username"
                           value={username}
                           onChange={this.handleChange}
-                          placeholder={t`USERNAME_PLACEHOLDER`}
+                          placeholder={t`USERNAME_PHOLD`}
                           pattern={input_fields.username.pattern}
                           autoComplete="username"
-                          title={t`USERNAME_PATTERN_DESCRIPTION`}
+                          title={t`USERNAME_PTRN_DESC`}
                         />
                       </div>
                     )}
@@ -474,8 +472,8 @@ export default class Registration extends React.Component {
                       <div className="row first_name">
                         <label htmlFor="first_name">
                           {input_fields.first_name.setting === "mandatory"
-                            ? t`FIRST_NAME_LABEL`
-                            : `${t`FIRST_NAME_LABEL`} (${t`OPTIONAL`})`}
+                            ? t`FIRST_NAME_LBL`
+                            : `${t`FIRST_NAME_LBL`} (${t`OPTIONAL`})`}
                         </label>
                         {errors.first_name && (
                           <div className="error first_name">
@@ -499,7 +497,7 @@ export default class Registration extends React.Component {
                           value={first_name}
                           onChange={this.handleChange}
                           autoComplete="given-name"
-                          placeholder={t`FIRST_NAME_PLACEHOLDER`}
+                          placeholder={t`FIRST_NAME_PHOLD`}
                         />
                       </div>
                     )}
@@ -510,8 +508,8 @@ export default class Registration extends React.Component {
                       <div className="row last_name">
                         <label htmlFor="last_name">
                           {input_fields.last_name.setting === "mandatory"
-                            ? t`LAST_NAME_LABEL`
-                            : `${t`LAST_NAME_LABEL`} (${t`OPTIONAL`})`}
+                            ? t`LAST_NAME_LBL`
+                            : `${t`LAST_NAME_LBL`} (${t`OPTIONAL`})`}
                         </label>
                         {errors.last_name && (
                           <div className="error last_name">
@@ -533,7 +531,7 @@ export default class Registration extends React.Component {
                           value={last_name}
                           onChange={this.handleChange}
                           autoComplete="family-name"
-                          placeholder={t`LAST_NAME_PLACEHOLDER`}
+                          placeholder={t`LAST_NAME_PHOLD`}
                         />
                       </div>
                     )}
@@ -542,8 +540,8 @@ export default class Registration extends React.Component {
                       <div className="row birth_date">
                         <label htmlFor="birth_date">
                           {input_fields.birth_date.setting === "mandatory"
-                            ? t`BIRTH_DATE_LABEL`
-                            : `${t`BIRTH_DATE_LABEL`} (${t`OPTIONAL`})`}
+                            ? t`BIRTH_DATE_LBL`
+                            : `${t`BIRTH_DATE_LBL`} (${t`OPTIONAL`})`}
                         </label>
                         {errors.birth_date && (
                           <div className="error birth_date">
@@ -574,8 +572,8 @@ export default class Registration extends React.Component {
                       <div className="row location">
                         <label htmlFor="location">
                           {input_fields.location.setting === "mandatory"
-                            ? t`LOCATION_LABEL`
-                            : `${t`LOCATION_LABEL`} (${t`OPTIONAL`})`}
+                            ? t`LOCATION_LBL`
+                            : `${t`LOCATION_LBL`} (${t`OPTIONAL`})`}
                         </label>
                         {errors.location && (
                           <div className="error location">
@@ -595,16 +593,16 @@ export default class Registration extends React.Component {
                           name="location"
                           value={location}
                           onChange={this.handleChange}
-                          placeholder={t`LOCATION_PLACEHOLDER`}
+                          placeholder={t`LOCATION_PHOLD`}
                           pattern={input_fields.location.pattern}
                           autoComplete="street-address"
-                          title={t`LOCATION_PATTERN_DESCRIPTION`}
+                          title={t`LOCATION_PTRN_DESC`}
                         />
                       </div>
                     )}
 
                     <div className="row password">
-                      <label htmlFor="password">{t`PWD_LABEL`}</label>
+                      <label htmlFor="password">{t`PWD_LBL`}</label>
                       {errors.password1 && (
                         <div className="error">
                           <span className="icon">!</span>
@@ -619,9 +617,9 @@ export default class Registration extends React.Component {
                         name="password1"
                         value={password1}
                         onChange={this.handleChange}
-                        placeholder={t`PWD_PLACEHOLDER`}
+                        placeholder={t`PWD_PHOLD`}
                         pattern={input_fields.password.pattern}
-                        title={t`PWD_PATTERN_DESCRIPTION`}
+                        title={t`PWD_PTRN_DESC`}
                         ref={this.passwordToggleRef}
                         autoComplete="new-password"
                       />
@@ -630,7 +628,7 @@ export default class Registration extends React.Component {
 
                     <div className="row password-confirm">
                       <label htmlFor="password-confirm">
-                        {t`CONFIRM_PWD_LABEL`}
+                        {t`CONFIRM_PWD_LBL`}
                       </label>
                       {errors.password2 && (
                         <div className="error confirm">
@@ -648,9 +646,9 @@ export default class Registration extends React.Component {
                         name="password2"
                         value={password2}
                         onChange={this.handleChange}
-                        placeholder={t`CONFIRM_PWD_PLACEHOLDER`}
+                        placeholder={t`CONFIRM_PWD_PHOLD`}
                         pattern={input_fields.password.pattern}
-                        title={t`CONFIRM_PWD_PATTERN_DESCRIPTION`}
+                        title={t`PWD_PTRN_DESC`}
                         ref={this.confirmPasswordToggleRef}
                         autoComplete="new-password"
                       />
@@ -663,7 +661,7 @@ export default class Registration extends React.Component {
                       <>
                         <div className="billing-info">
                           <div className="row country">
-                            <label htmlFor="country">{t`COUNTRY_LABEL`}</label>
+                            <label htmlFor="country">{t`COUNTRY_LBL`}</label>
                             {errors.country && (
                               <div className="error country">
                                 <span className="icon">!</span>
@@ -679,7 +677,7 @@ export default class Registration extends React.Component {
                             />
                           </div>
                           <div className="row city">
-                            <label htmlFor="city">{t`CITY_LABEL`}</label>
+                            <label htmlFor="city">{t`CITY_LBL`}</label>
                             {errors.city && (
                               <div className="error city">
                                 <span className="icon">!</span>
@@ -697,11 +695,11 @@ export default class Registration extends React.Component {
                               value={city}
                               onChange={this.handleChange}
                               autoComplete="address-level2"
-                              placeholder={t`CITY_PLACEHOLDER`}
+                              placeholder={t`CITY_PHOLD`}
                             />
                           </div>
                           <div className="row street">
-                            <label htmlFor="street">{t`STREET_LABEL`}</label>
+                            <label htmlFor="street">{t`STREET_LBL`}</label>
                             {errors.street && (
                               <div className="error street">
                                 <span className="icon">!</span>
@@ -721,11 +719,11 @@ export default class Registration extends React.Component {
                               value={street}
                               onChange={this.handleChange}
                               autoComplete="address"
-                              placeholder={t`STREET_PLACEHOLDER`}
+                              placeholder={t`STREET_PHOLD`}
                             />
                           </div>
                           <div className="row zipcode">
-                            <label htmlFor="zipcode">{t`ZIP_CODE_LABEL`}</label>
+                            <label htmlFor="zipcode">{t`ZIP_CODE_LBL`}</label>
                             {errors.zipcode && (
                               <div className="error zipcode">
                                 <span className="icon">!</span>
@@ -749,7 +747,7 @@ export default class Registration extends React.Component {
                           </div>
                           <div className="row tax_number">
                             <label htmlFor="tax_number">
-                              {t`TAX_NUMBER_LABEL`}
+                              {t`TAX_NUMBER_LBL`}
                             </label>
                             {errors.tax_number && (
                               <div className="error tax_number">
@@ -768,9 +766,9 @@ export default class Registration extends React.Component {
                               name="tax_number"
                               value={tax_number}
                               onChange={this.handleChange}
-                              placeholder={t`TAX_NUMBER_PLACEHOLDER`}
+                              placeholder={t`TAX_NUMBER_PHOLD`}
                               pattern={input_fields.tax_number.pattern}
-                              title={t`TAX_NUMBER_PATTERN_DESCRIPTION`}
+                              title={t`TAX_NUMBER_PTRN_DESC`}
                             />
                           </div>
                         </div>
@@ -785,7 +783,7 @@ export default class Registration extends React.Component {
                 additional_info_text && (
                   <div className="row add-info">
                     {renderAdditionalInfo(
-                      t`REGISTER_ADDITIONAL_INFO_TEXT`,
+                      t`REGISTER_ADD_INFO_TXT`,
                       orgSlug,
                       "registration",
                     )}
@@ -798,7 +796,7 @@ export default class Registration extends React.Component {
                   <input
                     type="submit"
                     className="button full"
-                    value={t`REGISTER_BUTTON_TEXT`}
+                    value={t`REGISTER_BTN_TXT`}
                   />
                 )}
               </div>
@@ -815,7 +813,7 @@ export default class Registration extends React.Component {
                   {links.login && (
                     <p>
                       <Link to={`/${orgSlug}/login`} className="link">
-                        {t`LINKS_LOGIN_TEXT`}
+                        {t`LINKS_LOGIN_TXT`}
                       </Link>
                     </p>
                   )}
