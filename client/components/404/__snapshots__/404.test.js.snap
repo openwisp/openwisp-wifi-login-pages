@@ -33,7 +33,7 @@ exports[`<DoesNotExist /> rendering should render correctly custom 404 page with
           className="link"
           to="/default"
         >
-          HOME_PG_LINK_TXT
+          Go back to homepage
         </Link>
       </div>
     </div>

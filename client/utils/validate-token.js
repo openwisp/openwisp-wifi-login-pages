@@ -1,14 +1,15 @@
 import qs from "qs";
 import axios from "axios";
 import {toast} from "react-toastify";
-import {genericError, validateApiUrl, mainToastId} from "../constants";
+import {t} from "ttag";
+import {validateApiUrl, mainToastId} from "../constants";
 import handleSession from "./session";
 import logError from "./log-error";
 import {initialState} from "../reducers/organization";
 
 const handleLogout = (logout, cookies, orgSlug, setUserData) => {
   logout(cookies, orgSlug);
-  toast.error(genericError, {
+  toast.error(t`ERR_OCCUR`, {
     onOpen: () => toast.dismiss(mainToastId),
   });
   const {userData} = initialState;
@@ -51,7 +52,7 @@ const validateToken = async (
       return true;
     } catch (error) {
       handleLogout(logout, cookies, orgSlug, setUserData);
-      logError(error, genericError);
+      logError(error, t`ERR_OCCUR`);
       return false;
     }
   }

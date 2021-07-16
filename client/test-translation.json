@@ -445,11 +445,49 @@
       },
       "MOBILE_PHONE_VERIFY": {
         "msgid": "MOBILE_PHONE_VERIFY",
-        "msgstr": [""]
+        "msgstr": ["Submit"]
       },
       "HOME_PG_LINK_TXT": {
         "msgid": "HOME_PG_LINK_TXT",
-        "msgstr": [""]
+        "msgstr": ["Go back to homepage"]
+      },
+      "ERR_OCCUR": {
+        "msgid": "ERR_OCCUR",
+        "msgstr": ["Error occurred!"]
+      },
+      "LOGIN_ERR": {
+        "msgid": "LOGIN_ERR",
+        "msgstr": ["Login error occurred."]
+      },
+      "LOGIN_SUCCESS": {
+        "msgid": "LOGIN_SUCCESS",
+        "msgstr": ["Login successful"]
+      },
+      "LOGOUT_SUCCESS": {
+        "msgid": "LOGOUT_SUCCESS",
+        "msgstr": ["Logout successful"]
+      },
+      "PWD_CHNG_ERR": {
+        "msgid": "PWD_CHNG_ERR",
+        "msgstr": ["Some error occured. Couldn't change password!"]
+      },
+      "PWD_CNF_ERR": {
+        "msgid": "PWD_CNF_ERR",
+        "msgstr": ["The two password fields didn't match."]
+      },
+      "REGISTER_ERR": {
+        "msgid": "REGISTER_ERR",
+        "msgstr": ["Registration error."]
+      },
+      "REGISTER_SUCCESS": {
+        "msgid": "REGISTER_SUCCESS",
+        "msgstr": ["Registration success"]
+      },
+      "USER_INACTIVE": {
+        "msgid": "USER_INACTIVE",
+        "msgstr": [
+          "Your account has been deactivated. Please contact customer support for more information."
+        ]
       }
     }
   }

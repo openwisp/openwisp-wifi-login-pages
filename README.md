@@ -59,6 +59,7 @@ the [OpenWISP Radius API](https://openwisp-radius.readthedocs.io/) to provide th
 - [Install](#install)
 - [Usage](#usage)
 - [Settings](#settings)
+- [Translations](#translations)
 - [License](#license)
 
 ### Prerequisites
@@ -427,6 +428,7 @@ If there is more than one language in `i18n/` directory then update the organiza
 configuration file by adding the support for that language like this:
 
 ```yaml
+default_language: "en"
 languages:
   - text: "English"
     slug: "en"

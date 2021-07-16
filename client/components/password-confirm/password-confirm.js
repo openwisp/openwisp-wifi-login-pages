@@ -10,7 +10,7 @@ import Contact from "../contact-box";
 import LoadingContext from "../../utils/loading-context";
 import PasswordToggleIcon from "../../utils/password-toggle";
 
-import {confirmApiUrl, passwordConfirmError} from "../../constants";
+import {confirmApiUrl} from "../../constants";
 import getErrorText from "../../utils/get-error-text";
 import logError from "../../utils/log-error";
 import handleChange from "../../utils/handle-change";
@@ -49,7 +49,7 @@ export default class PasswordConfirm extends React.Component {
       if (newPassword1 !== newPassword2) {
         this.setState({
           errors: {
-            newPassword2: passwordConfirmError,
+            newPassword2: t`PWD_CNF_ERR`,
           },
         });
         return false;

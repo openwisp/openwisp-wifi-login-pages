@@ -14,14 +14,7 @@ import "react-phone-input-2/lib/style.css";
 import "react-toastify/dist/ReactToastify.css";
 
 import PasswordToggleIcon from "../../utils/password-toggle";
-import {
-  loginApiUrl,
-  loginError,
-  loginSuccess,
-  mainToastId,
-  userInactiveError,
-  genericError,
-} from "../../constants";
+import {loginApiUrl, mainToastId} from "../../constants";
 import getAssetPath from "../../utils/get-asset-path";
 import getErrorText from "../../utils/get-error-text";
 import getParameterByName from "../../utils/get-parameter-by-name";
@@ -199,7 +192,7 @@ export default class Login extends React.Component {
       })
       .catch((error = {}) => {
         if (!error.response || !error.response.data || !error) {
-          toast.error(genericError);
+          toast.error(t`ERR_OCCUR`);
           return;
         }
 
@@ -215,8 +208,8 @@ export default class Login extends React.Component {
 
         const errorText =
           data.is_active === false
-            ? getErrorText(error, userInactiveError)
-            : getErrorText(error, loginError);
+            ? getErrorText(error, t`USER_INACTIVE`)
+            : getErrorText(error, t`LOGIN_ERR`);
         logError(error, errorText);
         toast.error(errorText);
 
@@ -249,7 +242,7 @@ export default class Login extends React.Component {
     if (!remember_me || useSessionStorage) {
       sessionStorage.setItem(`${orgSlug}_auth_token`, data.key);
     }
-    toast.success(loginSuccess, {
+    toast.success(t`LOGIN_SUCCESS`, {
       toastId: mainToastId,
     });
     setUserData({...data, justAuthenticated: true});

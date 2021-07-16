@@ -8,11 +8,7 @@ import {toast} from "react-toastify";
 import {Cookies} from "react-cookie";
 import {t} from "ttag";
 import PasswordToggleIcon from "../../utils/password-toggle";
-import {
-  passwordChangeApiUrl,
-  passwordChangeError,
-  passwordConfirmError,
-} from "../../constants";
+import {passwordChangeApiUrl} from "../../constants";
 import getErrorText from "../../utils/get-error-text";
 import history from "../../utils/history";
 import Contact from "../contact-box";
@@ -52,7 +48,7 @@ export default class PasswordChange extends React.Component {
     if (newPassword1 !== newPassword2) {
       this.setState({
         errors: {
-          newPassword2: passwordConfirmError,
+          newPassword2: t`PWD_CNF_ERR`,
         },
       });
       return null;
@@ -77,13 +73,13 @@ export default class PasswordChange extends React.Component {
         history.replace(`/${orgSlug}/status`);
       })
       .catch((error) => {
-        const errorText = getErrorText(error, passwordChangeError);
+        const errorText = getErrorText(error, t`PWD_CHNG_ERR`);
         logError(error, errorText);
         toast.error(errorText);
         setLoading(false);
         this.setState({
           errors: {
-            nonField: passwordChangeError,
+            nonField: t`PWD_CHNG_ERR`,
           },
         });
       });

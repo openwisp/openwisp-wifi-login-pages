@@ -12,12 +12,7 @@ import {Link} from "react-router-dom";
 import {toast} from "react-toastify";
 import InfinteScroll from "react-infinite-scroll-component";
 import {t} from "ttag";
-import {
-  genericError,
-  getUserRadiusSessionsUrl,
-  logoutSuccess,
-  mainToastId,
-} from "../../constants";
+import {getUserRadiusSessionsUrl, mainToastId} from "../../constants";
 import LoadingContext from "../../utils/loading-context";
 import getText from "../../utils/get-text";
 import logError from "../../utils/log-error";
@@ -238,10 +233,10 @@ export default class Status extends React.Component {
       this.setState(options);
     } catch (error) {
       logout(cookies, orgSlug);
-      toast.error(genericError, {
+      toast.error(t`ERR_OCCUR`, {
         onOpen: () => toast.dismiss(mainToastId),
       });
-      logError(error, genericError);
+      logError(error, t`ERR_OCCUR`);
     }
   }
 
@@ -290,7 +285,7 @@ export default class Status extends React.Component {
     setUserData(initialState.userData);
     logout(cookies, orgSlug, userAutoLogin);
     setLoading(false);
-    toast.success(logoutSuccess);
+    toast.success(t`LOGOUT_SUCCESS`);
   };
 
   /*
@@ -352,7 +347,7 @@ export default class Status extends React.Component {
       const {logout, cookies} = this.props;
       const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
       logout(cookies, orgSlug, userAutoLogin);
-      toast.success(logoutSuccess);
+      toast.success(t`LOGOUT_SUCCESS`);
 
       if (saml_logout_url && logoutMethod === "saml") {
         window.location.assign(saml_logout_url);

@@ -13,7 +13,6 @@ import LoadingContext from "../../utils/loading-context";
 
 import {
   createMobilePhoneTokenUrl,
-  logoutSuccess,
   verifyMobilePhoneTokenUrl,
 } from "../../constants";
 import getErrorText from "../../utils/get-error-text";
@@ -165,7 +164,7 @@ export default class MobilePhoneVerification extends React.Component {
     const {orgSlug, logout, cookies, setUserData} = this.props;
     logout(cookies, orgSlug);
     setUserData(initialState.userData);
-    toast.success(logoutSuccess);
+    toast.success(t`LOGOUT_SUCCESS`);
   }
 
   async resendPhoneToken() {

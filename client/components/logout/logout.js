@@ -9,7 +9,7 @@ import React from "react";
 import {Link} from "react-router-dom";
 import {toast} from "react-toastify";
 import {t} from "ttag";
-import {loginSuccess, mainToastId} from "../../constants";
+import {mainToastId} from "../../constants";
 import LoadingContext from "../../utils/loading-context";
 
 export default class Logout extends React.Component {
@@ -29,7 +29,7 @@ export default class Logout extends React.Component {
       authenticate(true);
       setUserData({...userData, justAuthenticated: true});
     }
-    toast.success(loginSuccess, {
+    toast.success(t`LOGIN_SUCCESS`, {
       toastId: mainToastId,
     });
     localStorage.setItem("userAutoLogin", false);

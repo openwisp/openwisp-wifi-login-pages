@@ -143,7 +143,7 @@ exports[`Mobile Phone Token verification: standard flow should render successful
             className="button full"
             type="submit"
           >
-            MOBILE_PHONE_VERIFY
+            Submit
           </button>
         </div>
       </form>

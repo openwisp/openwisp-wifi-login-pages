@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import ShallowRenderer from "react-test-renderer/shallow";
 import {Cookies} from "react-cookie";
-import {passwordChangeError, passwordConfirmError} from "../../constants";
+import {t} from "ttag";
 import getConfig from "../../utils/get-config";
 import logError from "../../utils/log-error";
 import tick from "../../utils/tick";
@@ -103,12 +103,12 @@ describe("<PasswordChange /> interactions", () => {
       newPassword1: "123456",
       newPassword2: "wrong-pass",
       errors: {
-        newPassword1: passwordConfirmError,
+        newPassword1: t`PWD_CNF_ERR`,
       },
     });
     wrapper.instance().handleSubmit();
     expect(wrapper.instance().state.errors).toStrictEqual({
-      newPassword2: passwordConfirmError,
+      newPassword2: t`PWD_CNF_ERR`,
     });
     wrapper.setState({
       newPassword1: "123456",
@@ -117,7 +117,7 @@ describe("<PasswordChange /> interactions", () => {
     wrapper.instance().handleSubmit(e);
     await tick();
     expect(wrapper.instance().state.errors).toStrictEqual({
-      nonField: passwordChangeError,
+      nonField: t`PWD_CHNG_ERR`,
     });
     wrapper.instance().handleSubmit(e);
   });

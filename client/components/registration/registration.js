@@ -13,15 +13,7 @@ import {t, gettext} from "ttag";
 import "react-phone-input-2/lib/style.css";
 import LoadingContext from "../../utils/loading-context";
 import PasswordToggleIcon from "../../utils/password-toggle";
-import {
-  mainToastId,
-  genericError,
-  passwordConfirmError,
-  registerApiUrl,
-  plansApiUrl,
-  registerError,
-  registerSuccess,
-} from "../../constants";
+import {mainToastId, registerApiUrl, plansApiUrl} from "../../constants";
 import getErrorText from "../../utils/get-error-text";
 import logError from "../../utils/log-error";
 import handleChange from "../../utils/handle-change";
@@ -84,7 +76,7 @@ export default class Registration extends React.Component {
           setLoading(false);
         })
         .catch((error) => {
-          toast.error(genericError);
+          toast.error(t`ERR_OCCUR`);
           logError(error, "Error while fetching plans");
         });
     }
@@ -121,7 +113,7 @@ export default class Registration extends React.Component {
     if (password1 !== password2) {
       this.setState({
         errors: {
-          password2: passwordConfirmError,
+          password2: t`PWD_CNF_ERR`,
         },
       });
       return false;
@@ -197,7 +189,7 @@ export default class Registration extends React.Component {
           password2: "",
           success: true,
         });
-        toast.success(registerSuccess, {
+        toast.success(t`REGISTER_SUCCESS`, {
           toastId: mainToastId,
         });
         // will redirect to status which will validate data again
@@ -211,7 +203,7 @@ export default class Registration extends React.Component {
             data[key] = data.billing_info[key];
           });
         }
-        const errorText = getErrorText(error, registerError);
+        const errorText = getErrorText(error, t`REGISTER_ERR`);
         logError(error, errorText);
         setLoading(false);
         toast.error(errorText);
