@@ -93,7 +93,8 @@ export default class OrganizationWrapper extends React.Component {
   };
 
   loadLanguage = async (language, orgSlug, useBrowserLang = false) => {
-    await loadTranslation(language, orgSlug, useBrowserLang);
+    const {languages} = this.props;
+    await loadTranslation(language, orgSlug, useBrowserLang, languages);
     this.setState({
       translationLoaded: true,
     });
@@ -332,7 +333,8 @@ export default class OrganizationWrapper extends React.Component {
   }
 }
 OrganizationWrapper.defaultProps = {
-  defaultLanguage: "en",
+  defaultLanguage: "",
+  languages: [],
 };
 OrganizationWrapper.propTypes = {
   match: PropTypes.shape({
@@ -363,4 +365,10 @@ OrganizationWrapper.propTypes = {
   cookies: PropTypes.instanceOf(Cookies).isRequired,
   language: PropTypes.string.isRequired,
   defaultLanguage: PropTypes.string,
+  languages: PropTypes.arrayOf(
+    PropTypes.shape({
+      slug: PropTypes.string,
+      text: PropTypes.string,
+    }),
+  ),
 };

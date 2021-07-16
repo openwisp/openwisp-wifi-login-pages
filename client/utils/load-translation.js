@@ -26,10 +26,26 @@ const importTranslation = async (orgSlug, lang) => {
 const loadTranslationUtil = async (
   language,
   orgSlug,
-  useBrowserLang = false,
+  useBrowserLang,
+  availableLanguages,
 ) => {
   let lang = language;
-  if (useBrowserLang) lang = navigator.language || navigator.userLanguage;
+  if (useBrowserLang) {
+    const availLangs = availableLanguages.map((langObj) => {
+      return langObj.slug;
+    });
+    navigator.languages.every((browserLang) => {
+      if (availLangs.includes(browserLang)) {
+        lang = browserLang;
+        return false;
+      }
+      if (availLangs.includes(browserLang.substr(0, 2))) {
+        lang = browserLang.substr(0, 2);
+        return false;
+      }
+      return true;
+    });
+  }
   if (lang !== "") {
     try {
       // using user preferred language
@@ -52,9 +68,19 @@ const loadTranslationUtil = async (
   }
 };
 
-const loadTranslation = async (language, orgSlug, useBrowserLang = false) => {
+const loadTranslation = async (
+  language,
+  orgSlug,
+  useBrowserLang = false,
+  availableLanguages = [],
+) => {
   try {
-    await loadTranslationUtil(language, orgSlug, useBrowserLang);
+    await loadTranslationUtil(
+      language,
+      orgSlug,
+      useBrowserLang,
+      availableLanguages,
+    );
   } catch (err) {
     console.error("Error in loading translations.");
   }
