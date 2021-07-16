@@ -6,6 +6,7 @@ import Component from "./registration";
 const mapStateToProps = (state) => {
   const conf = state.organization.configuration;
   return {
+    language: state.language,
     registration: conf.components.registration_form,
     settings: conf.settings,
     privacyPolicy: conf.privacy_policy,

@@ -95,9 +95,16 @@ export default class Login extends React.Component {
 
   getTextField = (input_fields) => {
     const {username, errors} = this.state;
+    const {language} = this.props;
+    const label = input_fields.username.label
+      ? getText(input_fields.username.label, language)
+      : t`USERNAME_LBL`;
+    const placeholder = input_fields.username.placeholder
+      ? getText(input_fields.username.placeholder, language)
+      : t`USERNAME_PHOLD`;
     return (
       <div className="row username">
-        <label htmlFor="username">{t`USERNAME_LBL`}</label>
+        <label htmlFor="username">{label}</label>
         {errors.username && (
           <div className="error">
             <span className="icon">!</span>
@@ -112,7 +119,7 @@ export default class Login extends React.Component {
           value={username}
           onChange={this.handleChange}
           required
-          placeholder={t`USERNAME_PHOLD`}
+          placeholder={placeholder}
           pattern={input_fields.username.pattern}
           autoComplete="username"
           title={t`USERNAME_TITL`}
@@ -403,6 +410,8 @@ Login.propTypes = {
       username: PropTypes.shape({
         type: PropTypes.string.isRequired,
         pattern: PropTypes.string,
+        label: PropTypes.object,
+        placeholder: PropTypes.object,
       }).isRequired,
       password: PropTypes.shape({
         type: PropTypes.string.isRequired,

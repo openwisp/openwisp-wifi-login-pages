@@ -390,7 +390,7 @@ exports[`<Login /> interactions should not show phone_number field if auto_switc
           <label
             for="username"
           >
-            Email, phone number or username
+            email
           </label>
           <input
             autocomplete="username"
@@ -398,7 +398,7 @@ exports[`<Login /> interactions should not show phone_number field if auto_switc
             id="username"
             name="username"
             pattern=".+@.+\\\\..+"
-            placeholder="enter email, phone number or username"
+            placeholder="enter email"
             required=""
             title="enter valid email address, an username or a phone number"
             type="email"
@@ -664,7 +664,7 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
           <label
             for="username"
           >
-            Email, phone number or username
+            email
           </label>
           <input
             autocomplete="username"
@@ -672,7 +672,7 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
             id="username"
             name="username"
             pattern=".+@.+\\\\..+"
-            placeholder="enter email, phone number or username"
+            placeholder="enter email"
             required=""
             title="enter valid email address, an username or a phone number"
             type="email"
@@ -918,7 +918,7 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
             <label
               htmlFor="username"
             >
-              Email, phone number or username
+              email
             </label>
             <input
               autoComplete="username"
@@ -927,7 +927,7 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
               name="username"
               onChange={[Function]}
               pattern=".+@.+\\\\..+"
-              placeholder="enter email, phone number or username"
+              placeholder="enter email"
               required={true}
               title="enter valid email address, an username or a phone number"
               type="email"
@@ -1136,7 +1136,7 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
             <label
               htmlFor="username"
             >
-              Email, phone number or username
+              email
             </label>
             <input
               autoComplete="username"
@@ -1145,7 +1145,7 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
               name="username"
               onChange={[Function]}
               pattern=".+@.+\\\\..+"
-              placeholder="enter email, phone number or username"
+              placeholder="enter email"
               required={true}
               title="enter valid email address, an username or a phone number"
               type="email"
@@ -1354,7 +1354,7 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
             <label
               htmlFor="username"
             >
-              USERNAME_LBL
+              email
             </label>
             <input
               autoComplete="username"
@@ -1363,7 +1363,7 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
               name="username"
               onChange={[Function]}
               pattern=".+@.+\\\\..+"
-              placeholder="USERNAME_PHOLD"
+              placeholder="enter email"
               required={true}
               title="USERNAME_TITL"
               type="email"

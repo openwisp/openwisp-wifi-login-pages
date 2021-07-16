@@ -98,156 +98,156 @@ msgstr "Yes"
 msgid "NO"
 msgstr "No"
 
-#: client/components/registration/registration.js:274
+#: client/components/registration/registration.js:275
 msgid "PLAN_SETTING_TXT"
 msgstr "Please select the preferred subscription plan"
 
-#: client/components/login/login.js:128
+#: client/components/login/login.js:135
 #: client/components/mobile-phone-change/mobile-phone-change.js:136
-#: client/components/registration/registration.js:362
+#: client/components/registration/registration.js:363
 msgid "PHONE_LBL"
 msgstr "Mobile phone number"
 
-#: client/components/login/login.js:149
+#: client/components/login/login.js:156
 #: client/components/mobile-phone-change/mobile-phone-change.js:161
-#: client/components/registration/registration.js:397
+#: client/components/registration/registration.js:398
 msgid "PHONE_PHOLD"
 msgstr "enter mobile phone number"
 
 #: client/components/password-reset/password-reset.js:115
-#: client/components/registration/registration.js:432
+#: client/components/registration/registration.js:433
 msgid "EMAIL_PHOLD"
 msgstr "email address"
 
 #: client/components/password-reset/password-reset.js:117
-#: client/components/registration/registration.js:435
+#: client/components/registration/registration.js:436
 msgid "EMAIL_PTRN_DESC"
 msgstr "enter valid email address"
 
-#: client/components/login/login.js:100
-#: client/components/registration/registration.js:441
+#: client/components/login/login.js:101
+#: client/components/registration/registration.js:445
 msgid "USERNAME_LBL"
 msgstr "Email, phone number or username"
 
-#: client/components/login/login.js:115
-#: client/components/registration/registration.js:458
+#: client/components/login/login.js:104
+#: client/components/registration/registration.js:469
 msgid "USERNAME_PHOLD"
 msgstr "enter email, phone number or username"
 
-#: client/components/registration/registration.js:461
+#: client/components/registration/registration.js:473
 msgid "USERNAME_PTRN_DESC"
 msgstr "only letters, numbers and @/./+/-/_ characters"
 
-#: client/components/registration/registration.js:472
-#: client/components/registration/registration.js:473
+#: client/components/registration/registration.js:484
+#: client/components/registration/registration.js:485
 msgid "FIRST_NAME_LBL"
 msgstr "First name"
 
-#: client/components/registration/registration.js:497
+#: client/components/registration/registration.js:509
 msgid "FIRST_NAME_PHOLD"
 msgstr "first name"
 
-#: client/components/registration/registration.js:508
-#: client/components/registration/registration.js:509
+#: client/components/registration/registration.js:520
+#: client/components/registration/registration.js:521
 msgid "LAST_NAME_LBL"
 msgstr "Last name"
 
-#: client/components/registration/registration.js:531
+#: client/components/registration/registration.js:543
 msgid "LAST_NAME_PHOLD"
 msgstr "last name"
 
-#: client/components/registration/registration.js:540
-#: client/components/registration/registration.js:541
+#: client/components/registration/registration.js:552
+#: client/components/registration/registration.js:553
 msgid "BIRTH_DATE_LBL"
 msgstr "Birth date"
 
-#: client/components/registration/registration.js:572
-#: client/components/registration/registration.js:573
+#: client/components/registration/registration.js:584
+#: client/components/registration/registration.js:585
 msgid "LOCATION_LBL"
 msgstr "Location"
 
-#: client/components/registration/registration.js:593
+#: client/components/registration/registration.js:605
 msgid "LOCATION_PHOLD"
 msgstr "location"
 
-#: client/components/registration/registration.js:596
+#: client/components/registration/registration.js:608
 msgid "LOCATION_PTRN_DESC"
 msgstr "only letters, numbers, spaces, punctuation"
 
-#: client/components/login/login.js:306
+#: client/components/login/login.js:313
 #: client/components/password-confirm/password-confirm.js:142
-#: client/components/registration/registration.js:602
+#: client/components/registration/registration.js:614
 msgid "PWD_LBL"
 msgstr "Password"
 
-#: client/components/login/login.js:321
+#: client/components/login/login.js:328
 #: client/components/password-confirm/password-confirm.js:159
-#: client/components/registration/registration.js:617
+#: client/components/registration/registration.js:629
 msgid "PWD_PHOLD"
 msgstr "password"
 
-#: client/components/login/login.js:323
+#: client/components/login/login.js:330
 #: client/components/password-change/password-change.js:127
 #: client/components/password-change/password-change.js:154
 #: client/components/password-confirm/password-confirm.js:161
 #: client/components/password-confirm/password-confirm.js:188
-#: client/components/registration/registration.js:619
-#: client/components/registration/registration.js:648
+#: client/components/registration/registration.js:631
+#: client/components/registration/registration.js:660
 msgid "PWD_PTRN_DESC"
 msgstr "password must be a minimum of 6 characters"
 
-#: client/components/registration/registration.js:661
+#: client/components/registration/registration.js:673
 msgid "COUNTRY_LBL"
 msgstr "Country"
 
-#: client/components/registration/registration.js:677
+#: client/components/registration/registration.js:689
 msgid "CITY_LBL"
 msgstr "City"
 
-#: client/components/registration/registration.js:695
+#: client/components/registration/registration.js:707
 msgid "CITY_PHOLD"
 msgstr "enter city"
 
-#: client/components/registration/registration.js:699
+#: client/components/registration/registration.js:711
 msgid "STREET_LBL"
 msgstr "Street"
 
-#: client/components/registration/registration.js:719
+#: client/components/registration/registration.js:731
 msgid "STREET_PHOLD"
 msgstr "enter street"
 
-#: client/components/registration/registration.js:723
+#: client/components/registration/registration.js:735
 msgid "ZIP_CODE_LBL"
 msgstr "Postal code"
 
-#: client/components/registration/registration.js:747
+#: client/components/registration/registration.js:759
 msgid "TAX_NUMBER_LBL"
 msgstr "Tax number"
 
-#: client/components/registration/registration.js:766
+#: client/components/registration/registration.js:778
 msgid "TAX_NUMBER_PHOLD"
 msgstr "enter your tax identification number (optional)"
 
-#: client/components/registration/registration.js:768
+#: client/components/registration/registration.js:780
 msgid "TAX_NUMBER_PTRN_DESC"
 msgstr "only numbers and letters"
 
-#: client/components/registration/registration.js:783
+#: client/components/registration/registration.js:795
 msgid "REGISTER_ADD_INFO_TXT"
 msgstr ""
 "By signing up, you accept the {terms_and_conditions} and the "
 "{privacy_policy} of this WiFi service. "
 
-#: client/components/login/login.js:368
-#: client/components/registration/registration.js:806
+#: client/components/login/login.js:375
+#: client/components/registration/registration.js:818
 msgid "FORGOT_PASSWORD"
 msgstr "Forgot your password?"
 
-#: client/components/registration/registration.js:813
+#: client/components/registration/registration.js:825
 msgid "LINKS_LOGIN_TXT"
 msgstr "Already have an account? Log in"
 
-#: client/components/registration/registration.js:63
+#: client/components/registration/registration.js:64
 msgid "REGISTRATION_TITL"
 msgstr "Sign up"
 
@@ -322,13 +322,13 @@ msgstr "Please enter your new password below."
 
 #: client/components/password-change/password-change.js:136
 #: client/components/password-confirm/password-confirm.js:169
-#: client/components/registration/registration.js:628
+#: client/components/registration/registration.js:640
 msgid "CONFIRM_PWD_LBL"
 msgstr "Confirm password"
 
 #: client/components/password-change/password-change.js:152
 #: client/components/password-confirm/password-confirm.js:186
-#: client/components/registration/registration.js:646
+#: client/components/registration/registration.js:658
 msgid "CONFIRM_PWD_PHOLD"
 msgstr "confirm password"
 
@@ -412,32 +412,32 @@ msgstr "Logout successful"
 msgid "AGAIN"
 msgstr "again"
 
-#: client/components/login/login.js:118
+#: client/components/login/login.js:125
 msgid "USERNAME_TITL"
 msgstr "enter valid email address, an username or a phone number"
 
-#: client/components/login/login.js:338
+#: client/components/login/login.js:345
 msgid "REMEMBER_ME"
 msgstr "remember me on this device"
 
-#: client/components/login/login.js:345
+#: client/components/login/login.js:352
 msgid "LOGIN_ADD_INFO_TXT"
 msgstr ""
 "By logging in, you accept the {terms_and_conditions} and the "
 "{privacy_policy} of this WiFi service. "
 
 #: client/components/login/login.js:46
-#: client/components/login/login.js:353
+#: client/components/login/login.js:360
 #: client/components/logout/logout.js:52
 msgid "LOGIN"
 msgstr "Log in"
 
-#: client/components/login/login.js:358
+#: client/components/login/login.js:365
 msgid "REGISTER_BTN_LBL"
 msgstr "Not registered yet?"
 
-#: client/components/login/login.js:360
-#: client/components/registration/registration.js:796
+#: client/components/login/login.js:367
+#: client/components/registration/registration.js:808
 msgid "REGISTER_BTN_TXT"
 msgstr "Sign up"
 
@@ -447,7 +447,7 @@ msgstr " "
 
 #: client/components/contact-box/contact.js:22
 #: client/components/password-reset/password-reset.js:100
-#: client/components/registration/registration.js:415
+#: client/components/registration/registration.js:416
 #: client/components/status/status.js:650
 msgid "EMAIL"
 msgstr "Email"
@@ -481,10 +481,10 @@ msgstr "Change your phone number"
 msgid "CANCEL"
 msgstr "Cancel"
 
-#: client/components/registration/registration.js:473
-#: client/components/registration/registration.js:509
-#: client/components/registration/registration.js:541
-#: client/components/registration/registration.js:573
+#: client/components/registration/registration.js:485
+#: client/components/registration/registration.js:521
+#: client/components/registration/registration.js:553
+#: client/components/registration/registration.js:585
 msgid "OPTIONAL"
 msgstr "optional"
 
@@ -496,8 +496,8 @@ msgstr "Submit"
 msgid "HOME_PG_LINK_TXT"
 msgstr "Go back to homepage"
 
-#: client/components/login/login.js:195
-#: client/components/registration/registration.js:79
+#: client/components/login/login.js:202
+#: client/components/registration/registration.js:80
 #: client/components/status/status.js:236
 #: client/components/status/status.js:239
 #: client/utils/validate-token.js:12
@@ -505,11 +505,11 @@ msgstr "Go back to homepage"
 msgid "ERR_OCCUR"
 msgstr "Error occurred!"
 
-#: client/components/login/login.js:212
+#: client/components/login/login.js:219
 msgid "LOGIN_ERR"
 msgstr "Login error occurred."
 
-#: client/components/login/login.js:245
+#: client/components/login/login.js:252
 #: client/components/logout/logout.js:32
 msgid "LOGIN_SUCCESS"
 msgstr "Login successful"
@@ -530,19 +530,19 @@ msgstr "Some error occured. Couldn't change password!"
 #: client/components/password-change/password-change.test.js:106
 #: client/components/password-change/password-change.test.js:111
 #: client/components/password-confirm/password-confirm.js:52
-#: client/components/registration/registration.js:116
+#: client/components/registration/registration.js:117
 msgid "PWD_CNF_ERR"
 msgstr "The two password fields didn't match."
 
-#: client/components/registration/registration.js:206
+#: client/components/registration/registration.js:207
 msgid "REGISTER_ERR"
 msgstr "Registration error."
 
-#: client/components/registration/registration.js:192
+#: client/components/registration/registration.js:193
 msgid "REGISTER_SUCCESS"
 msgstr "Registration success"
 
-#: client/components/login/login.js:211
+#: client/components/login/login.js:218
 msgid "USER_INACTIVE"
 msgstr ""
 "Your account has been deactivated. Please contact customer support for more "

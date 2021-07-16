@@ -111,8 +111,7 @@ client:
 
     registration_form:
       input_fields:
-        phone_number:
-          type: "tel"
+        phone_number: {}
           # default international prefix
           # country: "it"
           # restrict international prefixes shown
@@ -249,6 +248,11 @@ client:
         username:
           type: "email"
           pattern: '.+@.+\..+'
+          pattern: '.+@.+\..+'
+          label:
+            en: "email"
+          placeholder:
+            en: "enter email"
         password:
           type: "password"
           pattern: ".{6,}"
