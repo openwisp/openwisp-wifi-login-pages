@@ -1,7 +1,13 @@
+/* eslint-disable global-require */
 import {useLocale, addLocale} from "ttag";
-import translation from "../test-translation.json";
 import loadTranslation from "./load-translation";
 
+let translation = {};
+try {
+  translation = require("../translations/en.json");
+} catch (err) {
+  translation = require("../test-translation.json");
+}
 jest.mock("ttag");
 
 describe("Translations tests", () => {
