@@ -115,7 +115,7 @@ module.exports = (env, argv) => {
       disableHostCheck: true,
       progress: true,
       stats: "errors-only",
-      open: true,
+      open: false,
       contentBase: path.join(CURRENT_WORKING_DIR, "public"),
       watchContentBase: true,
       watchOptions: {
