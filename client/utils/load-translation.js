@@ -26,6 +26,7 @@ const importTranslation = async (orgSlug, lang) => {
 const loadTranslationUtil = async (
   language,
   orgSlug,
+  defaultLanguage,
   useBrowserLang,
   availableLanguages,
 ) => {
@@ -34,16 +35,14 @@ const loadTranslationUtil = async (
     const availLangs = availableLanguages.map((langObj) => {
       return langObj.slug;
     });
-    navigator.languages.every((browserLang) => {
-      if (availLangs.includes(browserLang)) {
-        lang = browserLang;
-        return false;
-      }
-      if (availLangs.includes(browserLang.substr(0, 2))) {
+    navigator.languages.some((browserLang) => {
+      if (availLangs.includes(browserLang)) lang = browserLang;
+      else if (availLangs.includes(browserLang.substr(0, 2)))
         lang = browserLang.substr(0, 2);
-        return false;
-      }
-      return true;
+      return (
+        availLangs.includes(browserLang) ||
+        availLangs.includes(browserLang.substr(0, 2))
+      );
     });
   }
   if (lang !== "") {
@@ -59,10 +58,7 @@ const loadTranslationUtil = async (
         console.log(
           "Cannot found translation for this language. Using default language.",
         );
-        await importTranslation(
-          orgSlug,
-          localStorage.getItem(`${orgSlug}-defaultLanguage`),
-        );
+        await importTranslation(orgSlug, defaultLanguage);
       }
     }
   }
@@ -71,6 +67,7 @@ const loadTranslationUtil = async (
 const loadTranslation = async (
   language,
   orgSlug,
+  defaultLanguage,
   useBrowserLang = false,
   availableLanguages = [],
 ) => {
@@ -78,6 +75,7 @@ const loadTranslation = async (
     await loadTranslationUtil(
       language,
       orgSlug,
+      defaultLanguage,
       useBrowserLang,
       availableLanguages,
     );

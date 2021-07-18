@@ -50,23 +50,12 @@ export default class OrganizationWrapper extends React.Component {
   }
 
   async componentDidUpdate(prevProps) {
-    const {
-      setOrganization,
-      match,
-      cookies,
-      setLanguage,
-      language,
-      defaultLanguage,
-    } = this.props;
+    const {setOrganization, match, cookies, setLanguage, language} = this.props;
     const {translationLoaded} = this.state;
     if (prevProps.match.params.organization !== match.params.organization) {
       if (match.params.organization)
         setOrganization(match.params.organization, cookies);
     }
-    localStorage.setItem(
-      `${match.params.organization}-defaultLanguage`,
-      defaultLanguage,
-    );
     if (translationLoaded !== true) {
       const userLangChoice = localStorage.getItem(
         `${match.params.organization}-userLangChoice`,
@@ -93,8 +82,15 @@ export default class OrganizationWrapper extends React.Component {
   };
 
   loadLanguage = async (language, orgSlug, useBrowserLang = false) => {
-    const {languages} = this.props;
-    await loadTranslation(language, orgSlug, useBrowserLang, languages);
+    const {languages, defaultLanguage} = this.props;
+    await loadTranslation(
+      language,
+      orgSlug,
+      defaultLanguage,
+      useBrowserLang,
+      languages,
+      defaultLanguage,
+    );
     this.setState({
       translationLoaded: true,
     });

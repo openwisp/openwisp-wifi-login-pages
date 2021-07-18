@@ -25,24 +25,39 @@ describe("Translations tests", () => {
     jest.clearAllMocks();
   });
   it("should load translation", async () => {
-    await loadTranslation("en", "default");
+    await loadTranslation("en", "default", "en");
     expect(addLocale).toHaveBeenCalledWith("en", translation);
     expect(useLocale).toHaveBeenCalledWith("en");
     expect(consoleError.mock.calls.length).toBe(0);
     expect(consoleLog.mock.calls.length).toBe(0);
   });
-  it("should give error if language JSON file does not exists and must use default language", async () => {
-    await loadTranslation("hi", "default");
-    expect(consoleError.mock.calls.length).toBe(1);
-    expect(consoleError).toHaveBeenCalledWith("Error in loading translations.");
+  it("should log if language JSON file does not exists and must use default language", async () => {
+    await loadTranslation("hi", "default", "en");
     expect(consoleLog.mock.calls.length).toBe(1);
     expect(consoleLog).toHaveBeenCalledWith(
       "Cannot found translation for this language. Using default language.",
     );
+    expect(addLocale).toHaveBeenCalledWith("en", translation);
+    expect(useLocale).toHaveBeenCalledWith("en");
   });
   it("should use language code if sub language code is not found", async () => {
     languages.mockReturnValue(["en-US", "en-GB", "en"]);
-    await loadTranslation("hi", "default", true, [
+    await loadTranslation("hi", "default", "en", true, [
+      {slug: "en"},
+      {slug: "it"},
+      {slug: "hi"},
+    ]);
+    expect(addLocale).toHaveBeenCalledWith("en", translation);
+    expect(useLocale).toHaveBeenCalledWith("en");
+  });
+  it("should give error if default translation is not found", async () => {
+    await loadTranslation("hi", "default", "hi");
+    expect(consoleError.mock.calls.length).toBe(1);
+    expect(consoleError).toHaveBeenCalledWith("Error in loading translations.");
+  });
+  it("should load browser language if default language is different", async () => {
+    languages.mockReturnValue(["en-US", "en-GB", "en"]);
+    await loadTranslation("it", "default", "it", true, [
       {slug: "en"},
       {slug: "it"},
       {slug: "hi"},
