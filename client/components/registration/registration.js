@@ -259,6 +259,7 @@ export default class Registration extends React.Component {
   };
 
   getLabelText = (plan) => {
+    /* disable ttag */
     const planTitle = gettext(plan.plan);
     const planDesc = gettext(plan.plan_description);
     const pricingText = Number(plan.price)
