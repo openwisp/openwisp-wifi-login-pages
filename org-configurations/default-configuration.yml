@@ -181,10 +181,6 @@ client:
         username:
           type: "email"
           pattern: '.+@.+\..+'
-          label:
-            en: "email"
-          placeholder:
-            en: "enter email"
         password:
           type: "password"
           pattern: ".{6,}"
