@@ -7,6 +7,7 @@ import {Cookies} from "react-cookie";
 import ShallowRenderer from "react-test-renderer/shallow";
 import {toast} from "react-toastify";
 import getConfig from "../../utils/get-config";
+import loadTranslation from "../../utils/load-translation";
 import logError from "../../utils/log-error";
 import tick from "../../utils/tick";
 import Status from "./status";
@@ -14,6 +15,7 @@ import validateToken from "../../utils/validate-token";
 
 jest.mock("axios");
 jest.mock("../../utils/get-config");
+jest.mock("../../utils/load-translation");
 jest.mock("../../utils/log-error");
 jest.mock("../../utils/validate-token");
 logError.mockImplementation(jest.fn());
@@ -21,16 +23,22 @@ logError.mockImplementation(jest.fn());
 const defaultConfig = getConfig("default");
 const links = [
   {
-    text: {en: "link-1"},
+    text: {
+      en: "link-1",
+    },
     url: "/link1.com",
   },
   {
-    text: {en: "link-2"},
+    text: {
+      en: "link-2",
+    },
     url: "/link2.com",
     authenticated: false,
   },
   {
-    text: {en: "link-3"},
+    text: {
+      en: "link-3",
+    },
     url: "/link3.com",
     authenticated: true,
   },
@@ -79,12 +87,22 @@ const responseData = {
   method: "mobile_phone",
 };
 
+describe("<Status /> rendering with placeholder translation tags", () => {
+  const props = createTestProps();
+  it("should render translation placeholder correctly", () => {
+    const renderer = new ShallowRenderer();
+    const wrapper = renderer.render(<Status {...props} />);
+    expect(wrapper).toMatchSnapshot();
+  });
+});
+
 describe("<Status /> rendering", () => {
   let props;
 
   it("should render correctly", () => {
     props = createTestProps();
     const renderer = new ShallowRenderer();
+    loadTranslation("en", "default");
     const component = renderer.render(<Status {...props} />);
     expect(component).toMatchSnapshot();
   });
@@ -93,6 +111,7 @@ describe("<Status /> rendering", () => {
     const prop = createTestProps();
     prop.statusPage.links = links;
     prop.isAuthenticated = false;
+    loadTranslation("en", "default");
     const wrapper = shallow(<Status {...prop} />, {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: true,
@@ -107,6 +126,7 @@ describe("<Status /> rendering", () => {
     const prop = createTestProps();
     prop.statusPage.links = links;
     prop.isAuthenticated = true;
+    loadTranslation("en", "default");
     const wrapper = shallow(<Status {...prop} />, {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: true,
@@ -129,6 +149,7 @@ describe("<Status /> interactions", () => {
       getLoading: PropTypes.func,
     };
     validateToken.mockClear();
+    loadTranslation("en", "default");
   });
 
   afterEach(() => {
@@ -310,7 +331,6 @@ describe("<Status /> interactions", () => {
     validateToken.mockReturnValue(true);
     props = createTestProps();
     props.settings.mobile_phone_verification = true;
-    props.statusPage.user_info.phone_number = {text: {en: "Phone number"}};
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: false,
@@ -326,7 +346,6 @@ describe("<Status /> interactions", () => {
     validateToken.mockReturnValue(true);
     props = createTestProps();
     props.settings.mobile_phone_verification = true;
-    props.statusPage.user_info.phone_number = {text: {en: "Phone number"}};
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: false,
@@ -839,11 +858,7 @@ describe("<Status /> interactions", () => {
       disableLifecycleMethods: false,
     });
     const setTitleMock = wrapper.instance().props.setTitle.mock;
-    expect(setTitleMock.calls.pop()).toEqual([
-      props.statusPage,
-      props.language,
-      props.orgName,
-    ]);
+    expect(setTitleMock.calls.pop()).toEqual(["Status", props.orgName]);
   });
 
   it("should perform call saml_logout_url if logged in via SAML", async () => {
@@ -895,5 +910,79 @@ describe("<Status /> interactions", () => {
       props.statusPage.saml_logout_url,
     );
     expect(localStorage.getItem("default_logout_method")).toBe(null);
+  });
+  it("should render small table row and it should contain logout if logout_by_session is enabled", () => {
+    const prop = createTestProps();
+    prop.captivePortalLogoutForm.logout_by_session = true;
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: false,
+    });
+    const handleSessionLogout = jest.spyOn(
+      wrapper.instance(),
+      "handleSessionLogout",
+    );
+    const TableRowWrapper = shallow(
+      wrapper.instance().getSmallTableRow(
+        {
+          session_id: 1,
+          start_time: new Date(),
+          stop_time: null, // needed for logout button
+        },
+        wrapper.instance().getSessionInfo(),
+      ),
+    );
+    expect(TableRowWrapper.contains(<th>Start time:</th>)).toBe(true);
+    expect(TableRowWrapper.contains(<th>Stop time:</th>)).toBe(true);
+    expect(TableRowWrapper.contains(<td>session is active</td>)).toBe(true);
+    expect(TableRowWrapper.contains(<th>Duration:</th>)).toBe(true);
+    expect(TableRowWrapper.contains(<th>Download:</th>)).toBe(true);
+    expect(TableRowWrapper.contains(<th>Upload:</th>)).toBe(true);
+    expect(TableRowWrapper.contains(<th>Device address:</th>)).toBe(true);
+    TableRowWrapper.find(".button").simulate("click");
+    expect(handleSessionLogout.mock.calls.length).toBe(1);
+  });
+
+  it("should execute getSmallTable correctly", () => {
+    const prop = createTestProps();
+    const activeSession = {
+      session_id: 1,
+      start_time: "2021-07-08T00:22:28-04:00",
+      stop_time: null,
+    };
+    const pastSession = {
+      session_id: 2,
+      start_time: "2021-07-08T00:22:28-04:00",
+      stop_time: "2021-07-08T00:22:29-04:00",
+    };
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: false,
+    });
+    wrapper.setState({
+      activeSessions: [activeSession],
+      pastSessions: [pastSession],
+    });
+    const getSmallTableRow = jest.spyOn(wrapper.instance(), "getSmallTableRow");
+    const getSmallTableWrapper = shallow(
+      wrapper.instance().getSmallTable(wrapper.instance().getSessionInfo()),
+    );
+    expect(getSmallTableRow.mock.calls.length).toBe(2);
+    expect(getSmallTableRow.mock.calls.pop()).toEqual([
+      pastSession,
+      wrapper.instance().getSessionInfo(),
+    ]);
+    expect(getSmallTableRow.mock.calls.pop()).toEqual([
+      activeSession,
+      wrapper.instance().getSessionInfo(),
+    ]);
+    expect(
+      getSmallTableWrapper.contains(
+        <tr className="active-session" key="1stop_time">
+          <th>Stop time:</th>
+          <td>session is active</td>
+        </tr>,
+      ),
+    ).toBe(true);
   });
 });

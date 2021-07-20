@@ -38,6 +38,10 @@ client/assets/*
 !client/assets/eye-slash.svg
 !client/assets/default/
 !client/assets/fonts/
+client/translations/
+i18n/*
+!i18n/*.po
+i18n/*.custom.po
 server/config.json
 compilation-stats.json
 

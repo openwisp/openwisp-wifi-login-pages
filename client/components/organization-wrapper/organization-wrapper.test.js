@@ -1,13 +1,15 @@
 /* eslint-disable camelcase */
 import {shallow, mount} from "enzyme";
-import React, {Suspense} from "react";
+import React from "react";
 import {MemoryRouter, Route} from "react-router-dom";
 import {Cookies} from "react-cookie";
 import {Provider} from "react-redux";
-import ShallowRenderer from "react-test-renderer/shallow";
 
 import getConfig from "../../utils/get-config";
+import loadTranslation from "../../utils/load-translation";
 import OrganizationWrapper from "./organization-wrapper";
+
+jest.mock("../../utils/load-translation");
 
 const userData = {
   is_active: true,
@@ -29,9 +31,6 @@ const createTestProps = (props) => {
     match: {params: {organization: "default"}, path: "/default"},
     organization: {
       configuration: {
-        title: {
-          en: "Default",
-        },
         pageTitle: undefined,
         css_path: null,
         slug: "default",
@@ -42,11 +41,13 @@ const createTestProps = (props) => {
           mobile_phone_verification: true,
           subscriptions: true,
         },
+        default_language: "en",
         userData,
       },
       exists: true,
     },
     setOrganization: jest.fn(),
+    setLanguage: jest.fn(),
     cookies: new Cookies(),
     language: "en",
     ...props,
@@ -59,6 +60,7 @@ describe("<OrganizationWrapper /> rendering", () => {
 
   beforeEach(() => {
     props = createTestProps();
+    loadTranslation("en", "default");
     wrapper = shallow(<OrganizationWrapper {...props} />);
   });
 
@@ -120,12 +122,11 @@ describe("<OrganizationWrapper /> interactions", () => {
       match: {params: {organization: "new-org"}},
       organization: {
         configuration: {
-          title: {
-            en: undefined,
-          },
+          title: undefined,
           css_path: "index.css",
           slug: "default",
           favicon: "favicon.png",
+          default_language: "en",
           userData: {is_active: true, is_verified: true},
         },
         exists: true,
@@ -146,16 +147,15 @@ describe("<OrganizationWrapper /> interactions", () => {
     expect(wrapper.instance().state.loading).toBe(true);
   });
   it("should render main title if pageTitle is undefined", () => {
-    const renderer = new ShallowRenderer();
-    const component = renderer.render(<OrganizationWrapper {...props} />);
-    expect(component).toMatchSnapshot();
+    expect(wrapper).toMatchSnapshot();
     expect(wrapper.props().pageTitle).toBe(undefined);
   });
   it("should render pageTitle if it is not undefined", () => {
     props.organization.configuration.pageTitle = "Organization Wrapper";
-    const renderer = new ShallowRenderer();
-    const component = renderer.render(<OrganizationWrapper {...props} />);
-    expect(component).toMatchSnapshot();
+    wrapper = shallow(<OrganizationWrapper {...props} />, {
+      disableLifecycleMethods: true,
+    });
+    expect(wrapper).toMatchSnapshot();
   });
 });
 
@@ -214,7 +214,7 @@ describe("Test <OrganizationWrapper /> routes", () => {
 
   it("should display status if authenticated", () => {
     wrapper = mountComponent(props, ["/default/status"]);
-    expect(mapRoutes(wrapper)["/default/status"]).toBe(Suspense);
+    expect(mapRoutes(wrapper)["/default/status"]).toBe(undefined);
     expect(wrapper.find("Router").prop("history").location.pathname).toBe(
       "/default/status",
     );

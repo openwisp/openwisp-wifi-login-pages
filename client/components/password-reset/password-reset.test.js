@@ -6,14 +6,16 @@ import {toast} from "react-toastify";
 import PropTypes from "prop-types";
 import getConfig from "../../utils/get-config";
 import {loadingContextValue} from "../../utils/loading-context";
+import loadTranslation from "../../utils/load-translation";
 import PasswordReset from "./password-reset";
+import translation from "../../test-translation.json";
 
 jest.mock("axios");
+jest.mock("../../utils/load-translation");
 
 const defaultConfig = getConfig("default");
 const createTestProps = (props) => {
   return {
-    language: "en",
     orgSlug: "default",
     orgName: "default name",
     setTitle: jest.fn(),
@@ -22,12 +24,31 @@ const createTestProps = (props) => {
   };
 };
 
+const getTranslationString = (msgid) => {
+  try {
+    return translation.translations[""][msgid].msgstr[0];
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error(err, msgid);
+    return msgid;
+  }
+};
+
+describe("<PasswordReset /> rendering with placeholder translation tags", () => {
+  const props = createTestProps();
+  it("should render translation placeholder correctly", () => {
+    const wrapper = shallow(<PasswordReset {...props} />);
+    expect(wrapper).toMatchSnapshot();
+  });
+});
+
 describe("<PasswordReset /> rendering", () => {
   let props;
   let wrapper;
 
   beforeEach(() => {
     props = createTestProps();
+    loadTranslation("en", "default");
     wrapper = shallow(<PasswordReset {...props} />);
   });
 
@@ -44,9 +65,15 @@ describe("<PasswordReset /> rendering", () => {
   it("should render email field correctly", () => {
     const {email} = props.passwordReset.input_fields;
     const emailInput = wrapper.find("input[type='email']");
-    expect(wrapper.find(".row.email label").text()).toBe(email.label.en);
-    expect(emailInput.prop("placeholder")).toBe(email.placeholder.en);
-    expect(emailInput.prop("title")).toBe(email.pattern_description.en);
+    expect(wrapper.find(".row.email label").text()).toBe(
+      getTranslationString("EMAIL"),
+    );
+    expect(emailInput.prop("placeholder")).toBe(
+      getTranslationString("EMAIL_PHOLD"),
+    );
+    expect(emailInput.prop("title")).toBe(
+      getTranslationString("EMAIL_PTRN_DESC"),
+    );
     expect(emailInput.prop("type")).toBe(email.type);
   });
 });
@@ -143,10 +170,6 @@ describe("<PasswordReset /> interactions", () => {
   });
   it("should set title", () => {
     const setTitleMock = wrapper.instance().props.setTitle.mock;
-    expect(setTitleMock.calls.pop()).toEqual([
-      props.passwordReset,
-      props.language,
-      props.orgName,
-    ]);
+    expect(setTitleMock.calls.pop()).toEqual(["Reset Password", props.orgName]);
   });
 });

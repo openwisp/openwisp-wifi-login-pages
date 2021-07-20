@@ -30,7 +30,7 @@ fs.readdirSync(configDir).forEach((file) => {
       // convert markdown to html
       if (config.client && config.client.privacy_policy) {
         const {slug} = config;
-        const {content} = config.client.privacy_policy;
+        const content = config.client.privacy_policy;
         if (content) {
           for (const key of Object.keys(content)) {
             if (
@@ -64,7 +64,7 @@ fs.readdirSync(configDir).forEach((file) => {
       }
       if (config.client && config.client.terms_and_conditions) {
         const {slug} = config;
-        const {content} = config.client.terms_and_conditions;
+        const content = config.client.terms_and_conditions;
         if (content) {
           for (const key of Object.keys(content)) {
             if (

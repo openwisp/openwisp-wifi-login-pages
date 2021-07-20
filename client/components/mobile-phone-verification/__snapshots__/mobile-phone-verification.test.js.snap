@@ -1,5 +1,105 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<MobilePhoneVerification /> rendering with placeholder translation tags should render translation placeholder correctly 1`] = `
+<div
+  className="container content"
+  id="mobile-phone-verification"
+>
+  <div
+    className="inner"
+  >
+    <div
+      className="main-column"
+    >
+      <form
+        className=""
+        onSubmit={[Function]}
+      >
+        <div
+          className="row fieldset code"
+        >
+          <p
+            className="label"
+          >
+            PHONE_VERIFY ()
+          </p>
+          <div
+            className="row"
+          >
+            <input
+              className="input "
+              id="code"
+              name="code"
+              onChange={[Function]}
+              pattern="[0-9]{6,}"
+              placeholder="MOBILE_CODE_PHOLD"
+              required={true}
+              title="MOBILE_CODE_TITL"
+              type="text"
+              value=""
+            />
+          </div>
+          <button
+            className="button full"
+            type="submit"
+          >
+            MOBILE_PHONE_VERIFY
+          </button>
+        </div>
+      </form>
+      <div
+        className="row fieldset resend"
+      >
+        <p
+          className="label"
+        >
+          RESEND_TOKEN_LBL
+        </p>
+        <button
+          className="button full"
+          onClick={[Function]}
+          type="button"
+        >
+          RESEND_TOKEN
+        </button>
+      </div>
+      <div
+        className="row fieldset change"
+      >
+        <p
+          className="label"
+        >
+          PHONE_CHANGE_LBL
+        </p>
+        <a
+          className="button full"
+          href="/test-org-2/change-phone-number"
+        >
+          PHONE_CHANGE_BTN
+        </a>
+      </div>
+      <div
+        className="row fieldset logout"
+      >
+        <p
+          className="label"
+        >
+          LOGOUT_LBL
+        </p>
+        <button
+          className="button full"
+          onClick={[Function]}
+          type="button"
+        >
+          LOGOUT
+        </button>
+      </div>
+    </div>
+    <Memo(Connect(Contact)) />
+  </div>
+</div>
+`;
+
 exports[`Mobile Phone Token verification: standard flow should render successfully 1`] = `
 <div
   className="container content"

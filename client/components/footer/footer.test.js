@@ -4,9 +4,12 @@ import React from "react";
 import renderer from "react-test-renderer";
 
 import getConfig from "../../utils/get-config";
+import loadTranslation from "../../utils/load-translation";
 import Footer from "./footer";
 
 const defaultConfig = getConfig("default");
+jest.mock("../../utils/load-translation");
+
 const footerLinks = [
   {
     text: {en: "status"},
@@ -39,11 +42,22 @@ const getLinkText = (wrapper, text) => {
 const createTestProps = (props) => {
   return {
     language: "en",
-    footer: defaultConfig.components.footer,
+    footer: {
+      links: defaultConfig.components.footer.links,
+      secondary_text: true,
+    },
     userData: {is_verified: true},
     ...props,
   };
 };
+
+describe("<Footer /> rendering with placeholder translation tags", () => {
+  const props = createTestProps();
+  it("should render translation placeholder correctly", () => {
+    const wrapper = shallow(<Footer {...props} />);
+    expect(wrapper).toMatchSnapshot();
+  });
+});
 
 describe("<Footer /> rendering", () => {
   let props;
@@ -51,6 +65,7 @@ describe("<Footer /> rendering", () => {
   beforeEach(() => {
     props = createTestProps();
     wrapper = shallow(<Footer {...props} />);
+    loadTranslation("en", "default");
   });
   it("should render correctly", () => {
     props = createTestProps();
@@ -66,9 +81,13 @@ describe("<Footer /> rendering", () => {
     expect(wrapper.find(".footer-link")).toHaveLength(0);
   });
   it("should render secondary text", () => {
-    wrapper.setProps({
-      footer: {...props.footer, secondary_text: {en: "secondary text"}},
+    loadTranslation("en", "default", {
+      FOOTER_SECONDARY_TXT: {
+        msgid: "FOOTER_SECONDARY_TXT",
+        msgstr: ["secondary text"],
+      },
     });
+    wrapper.setProps({}); // for force re-render of wrapper
     expect(wrapper.update().find(".footer-row-2-inner").text()).toBe(
       "secondary text",
     );

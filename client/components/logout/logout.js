@@ -8,8 +8,8 @@ import PropTypes from "prop-types";
 import React from "react";
 import {Link} from "react-router-dom";
 import {toast} from "react-toastify";
-import {loginSuccess, mainToastId} from "../../constants";
-import getText from "../../utils/get-text";
+import {t} from "ttag";
+import {mainToastId} from "../../constants";
 import LoadingContext from "../../utils/loading-context";
 
 export default class Logout extends React.Component {
@@ -19,8 +19,8 @@ export default class Logout extends React.Component {
   }
 
   componentDidMount() {
-    const {orgName, setTitle, logoutPage, language} = this.props;
-    setTitle(logoutPage, language, orgName);
+    const {orgName, setTitle} = this.props;
+    setTitle(t`LOGOUT`, orgName);
   }
 
   loginUser = (isAuthenticated) => {
@@ -29,28 +29,27 @@ export default class Logout extends React.Component {
       authenticate(true);
       setUserData({...userData, justAuthenticated: true});
     }
-    toast.success(loginSuccess, {
+    toast.success(t`LOGIN_SUCCESS`, {
       toastId: mainToastId,
     });
     localStorage.setItem("userAutoLogin", false);
   };
 
   render() {
-    const {language, logoutPage, orgSlug, isAuthenticated} = this.props;
-    const {content, login_again} = logoutPage;
+    const {orgSlug, isAuthenticated} = this.props;
     return (
       <>
         <div className="container content" id="logout">
           <div className="inner">
             <div className="main-column w-100">
-              <h2>{getText(content.text, language)}</h2>
+              <h2>{t`LOGOUT_CONTENT`}</h2>
               <div className="links row">
                 <Link
                   onClick={() => this.loginUser(isAuthenticated)}
                   className="button partial"
                   to={`/${orgSlug}/status`}
                 >
-                  {getText(login_again.text, language)}
+                  {`${t`LOGIN`} ${t`AGAIN`}`}
                 </Link>
               </div>
             </div>
@@ -65,12 +64,6 @@ Logout.defaultProps = {
   isAuthenticated: false,
 };
 Logout.propTypes = {
-  logoutPage: PropTypes.shape({
-    title: PropTypes.object,
-    content: PropTypes.object.isRequired,
-    login_again: PropTypes.object.isRequired,
-  }).isRequired,
-  language: PropTypes.string.isRequired,
   orgSlug: PropTypes.string.isRequired,
   orgName: PropTypes.string.isRequired,
   isAuthenticated: PropTypes.bool,

@@ -4,19 +4,21 @@ import React from "react";
 import {toast} from "react-toastify";
 import PropTypes from "prop-types";
 import {Cookies} from "react-cookie";
+import ShallowRenderer from "react-test-renderer/shallow";
 import {loadingContextValue} from "../../utils/loading-context";
 import getConfig from "../../utils/get-config";
 import PaymentStatus from "./payment-status";
 import tick from "../../utils/tick";
 import validateToken from "../../utils/validate-token";
+import loadTranslation from "../../utils/load-translation";
 
 jest.mock("axios");
 jest.mock("../../utils/validate-token");
+jest.mock("../../utils/load-translation");
 
 const defaultConfig = getConfig("default");
 const createTestProps = (props) => {
   return {
-    language: "en",
     orgSlug: "default",
     userData: {},
     setUserData: jest.fn(),
@@ -43,6 +45,15 @@ const responseData = {
   location: "",
 };
 
+describe("<PaymentStatus /> rendering with placeholder translation tags", () => {
+  const props = createTestProps({userData: responseData, result: "failed"});
+  it("should render translation placeholder correctly", () => {
+    const renderer = new ShallowRenderer();
+    const wrapper = renderer.render(<PaymentStatus {...props} />);
+    expect(wrapper).toMatchSnapshot();
+  });
+});
+
 describe("Test <PaymentStatus /> cases", () => {
   let props;
   let wrapper;
@@ -54,6 +65,7 @@ describe("Test <PaymentStatus /> cases", () => {
       setLoading: PropTypes.func,
     };
     console.log = jest.fn();
+    loadTranslation("en", "default");
     validateToken.mockClear();
   });
 

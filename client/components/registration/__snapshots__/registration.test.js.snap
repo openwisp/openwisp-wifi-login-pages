@@ -23,7 +23,7 @@ exports[`<Registration /> rendering should render correctly 1`] = `
             <label
               htmlFor="email"
             >
-              email
+              Email
             </label>
             <input
               autoComplete="email"
@@ -34,7 +34,7 @@ exports[`<Registration /> rendering should render correctly 1`] = `
               pattern=".+@.+\\\\..+"
               placeholder="email address"
               required={true}
-              title={null}
+              title="enter valid email address"
               type="email"
               value=""
             />
@@ -45,7 +45,7 @@ exports[`<Registration /> rendering should render correctly 1`] = `
             <label
               htmlFor="password"
             >
-              password
+              Password
             </label>
             <input
               autoComplete="new-password"
@@ -67,8 +67,6 @@ exports[`<Registration /> rendering should render correctly 1`] = `
                 }
               }
               isVisible={false}
-              language="en"
-              orgSlug="default"
               parentClassName=""
             />
           </div>
@@ -78,7 +76,7 @@ exports[`<Registration /> rendering should render correctly 1`] = `
             <label
               htmlFor="password-confirm"
             >
-              confirm
+              Confirm password
             </label>
             <input
               autoComplete="new-password"
@@ -100,8 +98,6 @@ exports[`<Registration /> rendering should render correctly 1`] = `
                 }
               }
               isVisible={false}
-              language="en"
-              orgSlug="default"
               parentClassName=""
             />
           </div>
@@ -133,7 +129,7 @@ exports[`<Registration /> rendering should render correctly 1`] = `
           <input
             className="button full"
             type="submit"
-            value="sign up"
+            value="Sign up"
           />
         </div>
         <div
@@ -145,6 +141,145 @@ exports[`<Registration /> rendering should render correctly 1`] = `
               to="/default/login"
             >
               Already have an account? Log in
+            </Link>
+          </p>
+        </div>
+      </form>
+      <Connect(Contact) />
+    </div>
+  </div>
+  <Route
+    path="default/registration/:name"
+    render={[Function]}
+  />
+</Fragment>
+`;
+
+exports[`<Registration /> rendering with placeholder translation tags should render translation placeholder correctly 1`] = `
+<Fragment>
+  <div
+    className="container content"
+    id="registration"
+  >
+    <div
+      className="inner"
+    >
+      <form
+        className="main-column "
+        id="registration-form"
+        onSubmit={[Function]}
+      >
+        <div
+          className="fieldset"
+        >
+          <div
+            className="row email"
+          >
+            <label
+              htmlFor="email"
+            >
+              EMAIL
+            </label>
+            <input
+              autoComplete="email"
+              className="input "
+              id="email"
+              name="email"
+              onChange={[Function]}
+              pattern=".+@.+\\\\..+"
+              placeholder="EMAIL_PHOLD"
+              required={true}
+              title="EMAIL_PTRN_DESC"
+              type="email"
+              value=""
+            />
+          </div>
+          <div
+            className="row password"
+          >
+            <label
+              htmlFor="password"
+            >
+              PWD_LBL
+            </label>
+            <input
+              autoComplete="new-password"
+              className="input "
+              id="password"
+              name="password1"
+              onChange={[Function]}
+              pattern=".{6,}"
+              placeholder="PWD_PHOLD"
+              required={true}
+              title="PWD_PTRN_DESC"
+              type="password"
+              value=""
+            />
+            <PasswordToggleIcon
+              inputRef={
+                Object {
+                  "current": null,
+                }
+              }
+              isVisible={false}
+              parentClassName=""
+            />
+          </div>
+          <div
+            className="row password-confirm"
+          >
+            <label
+              htmlFor="password-confirm"
+            >
+              CONFIRM_PWD_LBL
+            </label>
+            <input
+              autoComplete="new-password"
+              className="input "
+              id="password-confirm"
+              name="password2"
+              onChange={[Function]}
+              pattern=".{6,}"
+              placeholder="CONFIRM_PWD_PHOLD"
+              required={true}
+              title="PWD_PTRN_DESC"
+              type="password"
+              value=""
+            />
+            <PasswordToggleIcon
+              inputRef={
+                Object {
+                  "current": null,
+                }
+              }
+              isVisible={false}
+              parentClassName=""
+            />
+          </div>
+        </div>
+        <div
+          className="row add-info"
+        >
+          REGISTER_ADD_INFO_TXT
+        </div>
+        <div
+          className="row register"
+        >
+          <input
+            className="button full"
+            type="submit"
+            value="REGISTER_BTN_TXT"
+          />
+        </div>
+        <div
+          className="row links"
+        >
+          <p>
+            <Link
+              className="link"
+              to="/default/login"
+            >
+              LINKS_LOGIN_TXT
             </Link>
           </p>
         </div>

@@ -59,6 +59,7 @@ the [OpenWISP Radius API](https://openwisp-radius.readthedocs.io/) to provide th
 - [Install](#install)
 - [Usage](#usage)
 - [Settings](#settings)
+- [Translations](#translations)
 - [License](#license)
 
 ### Prerequisites
@@ -269,7 +270,7 @@ and `method` property.
 
 Let us consider the following configuration for the header, footer and contact components:
 
-```
+```yaml
 components:
   header:
     links:
@@ -353,12 +354,6 @@ login_form:
       auto_switch_phone_input: false
       type: "text"
       pattern: null
-      pattern_description:
-        en: null
-      placeholder:
-        en: "username, email or mobile phone number"
-      label:
-        en: "username, email or mobile phone number"
 ```
 
 #### Configuring Social Login
@@ -419,6 +414,112 @@ enable this feature, just create a new organization with the
 `yarn run add-org` command and answer `yes` to the following question:
 
 `Are you using OpenWISP Subscriptions to provide paid subscriptions for WiFi plans or identity verification via credit/debit card?`
+
+### Translations
+
+Translations are loaded at runtime from the JSON files that were compiled during
+the build process according to the available languages defined and taking into
+account any customization of the translations (more on [defining-available-languages](#defining-available-languages),
+[add translations](#add-translations) and [customizing translations](#customizing-translations-for-a-specific-language)).
+
+#### Defining available languages
+
+If there is more than one language in `i18n/` directory then update the organization
+configuration file by adding the support for that language like this:
+
+```yaml
+default_language: "en"
+languages:
+  - text: "English"
+    slug: "en"
+  - text: "Italian"
+    slug: "it"
+```
+
+#### Add translations
+
+Translation file with content headers can be created by running:
+
+```
+yarn translations-add {language_code} i18n/{file_name}.po
+```
+
+Here `file_name` can be `{orgSlug}_{language_code}.custom.po`, `{language_code}.custom.po\` or
+`{language_code}.po`.
+
+The files created with the command above are mostly empty because when
+adding custom translations it is not needed to extract all the message
+identifiers from the code.
+
+If instead you are adding support to a new language or updating the
+translations after having changed the code, you will need to extract the
+message identifiers, see [update-translations](#update-translations)
+for more information.
+
+#### Update translations
+
+To extract or update translations in the `.po` file,
+use the following command:
+
+```
+yarn translations-update <path-to-po-file>
+```
+
+This will extract all the translations tags from the code and update `.po` file passed as argument.
+
+#### Customizing translations for a specific language
+
+Create a translation file with name `{language_code}.custom.po` by running:
+`yarn translations-add <language-code> i18n/{language_code}.custom.po`
+
+Now to override the translation placeholders (`msgid`) add the `msgstr` in the
+newly generated file for that specific `msgid`:
+
+```
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals = 2; plural = (n != 1);\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "FORGOT_PASSWORD"
+msgstr "Forgot password? Reset password"
+```
+
+During the build process customized language files will override all the msgid
+defined in the default language files.
+
+**NOTE**: The custom files need not be duplicates of the default file i.e.
+translations can be defined for custom strings (i.e. msgid and msgstr).
+
+#### Customizing translations for a specific organization and language
+
+Create a translation file with name `{orgSlug}_{language_code}.custom.po` by running:
+`yarn translations-add <language-code> i18n/{orgSlug}_{language_code}.custom.po`
+
+To override the translation placeholders (`msgid`) add the `msgstr` in the newly
+generated file for that specific `msgid`:
+
+```
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals = 2; plural = (n != 1);\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "PHONE_LBL"
+msgstr "mobile phone number (verification needed)"
+```
+
+During the build process custom organization language file will be used to create a
+JSON translation file used by that specific organization.
+
+**Note**: Do not remove the content headers from the `.po` files as it is needed
+during the build process.
 
 ### License
 

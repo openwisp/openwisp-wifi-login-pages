@@ -7,6 +7,7 @@ import React, {Suspense} from "react";
 import {Cookies} from "react-cookie";
 import {Helmet} from "react-helmet";
 import {Redirect, Route, Switch} from "react-router-dom";
+import {t} from "ttag";
 
 import getAssetPath from "../../utils/get-asset-path";
 import Header from "../header";
@@ -16,7 +17,7 @@ import Loader from "../../utils/loader";
 import Logout from "../logout";
 import Login from "../login";
 import needsVerify from "../../utils/needs-verify";
-import getText from "../../utils/get-text";
+import loadTranslation from "../../utils/load-translation";
 
 const Registration = React.lazy(() => import("../registration"));
 const PasswordChange = React.lazy(() => import("../password-change"));
@@ -36,17 +37,42 @@ export default class OrganizationWrapper extends React.Component {
     super(props);
     this.state = {
       loading: false,
+      translationLoaded: true,
     };
+    this.loadLanguage = this.loadLanguage.bind(this);
     const {match, setOrganization, cookies} = props;
     const organizationSlug = match.params.organization;
     if (organizationSlug) setOrganization(organizationSlug, cookies);
   }
 
-  componentDidUpdate(prevProps) {
-    const {setOrganization, match, cookies} = this.props;
+  componentDidMount() {
+    this.setState({translationLoaded: false});
+  }
+
+  async componentDidUpdate(prevProps) {
+    const {setOrganization, match, cookies, language} = this.props;
+    const {translationLoaded} = this.state;
     if (prevProps.match.params.organization !== match.params.organization) {
       if (match.params.organization)
         setOrganization(match.params.organization, cookies);
+    }
+    if (translationLoaded !== true) {
+      const userLangChoice = localStorage.getItem(
+        `${match.params.organization}-userLangChoice`,
+      );
+      if (userLangChoice) {
+        await this.loadLanguage(
+          userLangChoice,
+          match.params.organization,
+          false,
+        );
+      } else await this.loadLanguage(language, match.params.organization, true);
+    } else if (prevProps.language !== language) {
+      localStorage.setItem(
+        `${match.params.organization}-userLangChoice`,
+        language,
+      );
+      await this.loadLanguage(language, match.params.organization, false);
     }
   }
 
@@ -54,9 +80,25 @@ export default class OrganizationWrapper extends React.Component {
     this.setState({loading: value});
   };
 
+  loadLanguage = async (language, orgSlug, useBrowserLang = false) => {
+    const {languages, defaultLanguage, setLanguage} = this.props;
+    await loadTranslation(
+      language,
+      orgSlug,
+      defaultLanguage,
+      setLanguage,
+      useBrowserLang,
+      languages,
+      defaultLanguage,
+    );
+    this.setState({
+      translationLoaded: true,
+    });
+  };
+
   render() {
-    const {organization, match, cookies, language} = this.props;
-    const {loading} = this.state;
+    const {organization, match, cookies} = this.props;
+    const {loading, translationLoaded} = this.state;
     const {title, favicon, isAuthenticated, userData, settings, pageTitle} =
       organization.configuration;
     const {is_active} = userData;
@@ -65,10 +107,9 @@ export default class OrganizationWrapper extends React.Component {
     const cssPath = organization.configuration.css_path;
     const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
     const needsVerifyPhone = needsVerify("mobile_phone", userData, settings);
-
     if (organization.exists === true) {
       const {setLoading} = this;
-      return (
+      return translationLoaded ? (
         <>
           <LoadingContext.Provider
             value={{setLoading, getLoading: () => loading}}
@@ -239,7 +280,7 @@ export default class OrganizationWrapper extends React.Component {
             <Helmet>
               <title>
                 {pageTitle === undefined
-                  ? `${getText(title, language)} - ${orgName}`
+                  ? t`DEFAULT_TITL - ${orgName}`
                   : pageTitle}
               </title>
             </Helmet>
@@ -264,7 +305,7 @@ export default class OrganizationWrapper extends React.Component {
             )}
           </LoadingContext.Provider>
         </>
-      );
+      ) : null;
     }
     if (organization.exists === false) {
       return (
@@ -287,7 +328,10 @@ export default class OrganizationWrapper extends React.Component {
     );
   }
 }
-
+OrganizationWrapper.defaultProps = {
+  defaultLanguage: "",
+  languages: [],
+};
 OrganizationWrapper.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
@@ -296,9 +340,10 @@ OrganizationWrapper.propTypes = {
     path: PropTypes.string,
   }).isRequired,
   setOrganization: PropTypes.func.isRequired,
+  setLanguage: PropTypes.func.isRequired,
   organization: PropTypes.shape({
     configuration: PropTypes.shape({
-      title: PropTypes.object,
+      title: PropTypes.string,
       pageTitle: PropTypes.string,
       css_path: PropTypes.string,
       slug: PropTypes.string,
@@ -315,4 +360,11 @@ OrganizationWrapper.propTypes = {
   }).isRequired,
   cookies: PropTypes.instanceOf(Cookies).isRequired,
   language: PropTypes.string.isRequired,
+  defaultLanguage: PropTypes.string,
+  languages: PropTypes.arrayOf(
+    PropTypes.shape({
+      slug: PropTypes.string,
+      text: PropTypes.string,
+    }),
+  ),
 };

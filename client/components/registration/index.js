@@ -6,13 +6,13 @@ import Component from "./registration";
 const mapStateToProps = (state) => {
   const conf = state.organization.configuration;
   return {
+    language: state.language,
     registration: conf.components.registration_form,
     settings: conf.settings,
     privacyPolicy: conf.privacy_policy,
     termsAndConditions: conf.terms_and_conditions,
     orgSlug: conf.slug,
     orgName: conf.name,
-    language: state.language,
   };
 };
 const mapDispatchToProps = (dispatch) => {

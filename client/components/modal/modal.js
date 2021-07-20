@@ -19,10 +19,10 @@ export default class Modal extends React.Component {
     const {privacyPolicy, termsAndConditions, language, match} = this.props;
     const {name} = match.params;
     let content;
-    if (name === "terms-and-conditions" && termsAndConditions.content)
-      content = getText(termsAndConditions.content, language);
-    else if (name === "privacy-policy" && privacyPolicy.content)
-      content = getText(privacyPolicy.content, language);
+    if (name === "terms-and-conditions" && termsAndConditions)
+      content = getText(termsAndConditions, language);
+    else if (name === "privacy-policy" && privacyPolicy)
+      content = getText(privacyPolicy, language);
     return {__html: content};
   };
 
@@ -68,12 +68,6 @@ Modal.propTypes = {
   }).isRequired,
   prevPath: PropTypes.string.isRequired,
   language: PropTypes.string.isRequired,
-  privacyPolicy: PropTypes.shape({
-    title: PropTypes.object,
-    content: PropTypes.object,
-  }).isRequired,
-  termsAndConditions: PropTypes.shape({
-    title: PropTypes.object,
-    content: PropTypes.object,
-  }).isRequired,
+  privacyPolicy: PropTypes.object.isRequired,
+  termsAndConditions: PropTypes.object.isRequired,
 };

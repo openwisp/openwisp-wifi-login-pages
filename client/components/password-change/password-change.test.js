@@ -5,21 +5,22 @@ import PropTypes from "prop-types";
 import React from "react";
 import ShallowRenderer from "react-test-renderer/shallow";
 import {Cookies} from "react-cookie";
-import {passwordChangeError, passwordConfirmError} from "../../constants";
+import {t} from "ttag";
 import getConfig from "../../utils/get-config";
 import logError from "../../utils/log-error";
 import tick from "../../utils/tick";
+import loadTranslation from "../../utils/load-translation";
 import PasswordChange from "./password-change";
 
 jest.mock("axios");
 jest.mock("../../utils/log-error");
+jest.mock("../../utils/load-translation");
 logError.mockImplementation(jest.fn());
 
 const defaultConfig = getConfig("default");
 
 const createTestProps = (props) => {
   return {
-    language: "en",
     orgSlug: "default",
     orgName: "default name",
     passwordChange: defaultConfig.components.password_change_form,
@@ -29,12 +30,21 @@ const createTestProps = (props) => {
   };
 };
 
+describe("<PasswordChange /> rendering with placeholder translation tags", () => {
+  const props = createTestProps();
+  it("should render translation placeholder correctly", () => {
+    const wrapper = shallow(<PasswordChange {...props} />);
+    expect(wrapper).toMatchSnapshot();
+  });
+});
+
 describe("<PasswordChange /> rendering", () => {
   let props;
 
   it("should render correctly", () => {
     props = createTestProps();
     const renderer = new ShallowRenderer();
+    loadTranslation("en", "default");
     const component = renderer.render(<PasswordChange {...props} />);
     expect(component).toMatchSnapshot();
   });
@@ -93,12 +103,12 @@ describe("<PasswordChange /> interactions", () => {
       newPassword1: "123456",
       newPassword2: "wrong-pass",
       errors: {
-        newPassword1: passwordConfirmError,
+        newPassword1: t`PWD_CNF_ERR`,
       },
     });
     wrapper.instance().handleSubmit();
     expect(wrapper.instance().state.errors).toStrictEqual({
-      newPassword2: passwordConfirmError,
+      newPassword2: t`PWD_CNF_ERR`,
     });
     wrapper.setState({
       newPassword1: "123456",
@@ -107,15 +117,14 @@ describe("<PasswordChange /> interactions", () => {
     wrapper.instance().handleSubmit(e);
     await tick();
     expect(wrapper.instance().state.errors).toStrictEqual({
-      nonField: passwordChangeError,
+      nonField: t`PWD_CHNG_ERR`,
     });
     wrapper.instance().handleSubmit(e);
   });
   it("should set title", () => {
     const setTitleMock = wrapper.instance().props.setTitle.mock;
     expect(setTitleMock.calls.pop()).toEqual([
-      props.passwordChange,
-      props.language,
+      "Change your password",
       props.orgName,
     ]);
   });

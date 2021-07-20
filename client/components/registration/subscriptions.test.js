@@ -17,7 +17,6 @@ jest.mock("axios");
 const createTestProps = function (props, configName = "default") {
   const config = getConfig(configName);
   return {
-    language: "en",
     orgSlug: configName,
     settings: config.settings,
     registration: config.components.registration_form,

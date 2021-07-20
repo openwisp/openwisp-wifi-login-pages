@@ -3,6 +3,7 @@ import "./index.css";
 
 import PropTypes from "prop-types";
 import React from "react";
+import {t} from "ttag";
 
 import getAssetPath from "../../utils/get-asset-path";
 import getText from "../../utils/get-text";
@@ -18,26 +19,18 @@ export default class Contact extends React.Component {
         <div className="inner">
           {email && (
             <div className="row">
-              <span className="label">{getText(email.label, language)}:</span>
-              <a
-                href={`mailto:${getText(email.value, language)}`}
-                className="link"
-              >
-                {getText(email.value, language)}
+              <span className="label">{t`EMAIL`}:</span>
+              <a href={`mailto:${email}`} className="link">
+                {email}
               </a>
             </div>
           )}
 
           {helpdesk && (
             <div className="row">
-              <span className="label">
-                {getText(helpdesk.label, language)}:
-              </span>
-              <a
-                href={`tel:${getText(helpdesk.value, language)}`}
-                className="link"
-              >
-                {getText(helpdesk.value, language)}
+              <span className="label">{t`HELPDESK`}:</span>
+              <a href={`tel:${helpdesk}`} className="link">
+                {helpdesk}
               </a>
             </div>
           )}
@@ -80,8 +73,8 @@ Contact.propTypes = {
   orgSlug: PropTypes.string.isRequired,
   contactPage: PropTypes.shape({
     social_links: PropTypes.array,
-    email: PropTypes.object,
-    helpdesk: PropTypes.object,
+    email: PropTypes.string,
+    helpdesk: PropTypes.string,
   }).isRequired,
   isAuthenticated: PropTypes.bool,
   userData: PropTypes.object,

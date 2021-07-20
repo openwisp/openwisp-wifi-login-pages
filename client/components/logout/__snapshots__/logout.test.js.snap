@@ -13,7 +13,7 @@ exports[`<Logout /> rendering should render correctly 1`] = `
         className="main-column w-100"
       >
         <h2>
-          Logout Successfull !!!
+          Logout successful
         </h2>
         <div
           className="links row"
@@ -23,7 +23,39 @@ exports[`<Logout /> rendering should render correctly 1`] = `
             onClick={[Function]}
             to="/default/status"
           >
-            Login Again
+            Log in again
+          </Link>
+        </div>
+      </div>
+    </div>
+  </div>
+</React.Fragment>
+`;
+
+exports[`<Logout /> rendering with placeholder translation tags should render translation placeholder correctly 1`] = `
+<React.Fragment>
+  <div
+    className="container content"
+    id="logout"
+  >
+    <div
+      className="inner"
+    >
+      <div
+        className="main-column w-100"
+      >
+        <h2>
+          LOGOUT_CONTENT
+        </h2>
+        <div
+          className="links row"
+        >
+          <Link
+            className="button partial"
+            onClick={[Function]}
+            to="/default/status"
+          >
+            LOGIN AGAIN
           </Link>
         </div>
       </div>

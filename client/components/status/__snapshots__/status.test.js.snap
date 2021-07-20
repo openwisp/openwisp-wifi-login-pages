@@ -170,3 +170,168 @@ exports[`<Status /> rendering should render correctly 1`] = `
   </React.Fragment>
 </React.Fragment>
 `;
+
+exports[`<Status /> rendering with placeholder translation tags should render translation placeholder correctly 1`] = `
+<React.Fragment>
+  <div
+    className="logout-modal"
+  >
+    <div
+      className="logout-modal-container"
+    >
+      <button
+        className="logout-modal-close-btn"
+        onClick={[Function]}
+        type="button"
+      >
+        ✖
+      </button>
+      <p
+        className="message"
+      >
+        LOGOUT_MODAL_CONTENT
+      </p>
+      <p
+        className="modal-buttons"
+      >
+        <button
+          className="button partial"
+          onClick={[Function]}
+          type="button"
+        >
+          YES
+        </button>
+        <button
+          className="button partial"
+          onClick={[Function]}
+          type="button"
+        >
+          NO
+        </button>
+      </p>
+    </div>
+  </div>
+  <div
+    className="container content"
+    id="status"
+  >
+    <div
+      className="inner"
+    >
+      <div
+        className="main-column"
+      >
+        <p>
+          STATUS_CONTENT
+        </p>
+        <p>
+          <label>
+            STATUS
+            :
+          </label>
+          <span>
+            LOGGED_IN
+          </span>
+        </p>
+        <div
+          className="row logout"
+        >
+          <input
+            className="button full"
+            onClick={[Function]}
+            type="button"
+            value="LOGOUT"
+          />
+        </div>
+        <div
+          className="links row"
+        >
+          <Link
+            className="button full status-link"
+            to="/default/change-password/"
+          >
+            Change your password
+          </Link>
+        </div>
+      </div>
+      <Memo(Connect(Contact)) />
+    </div>
+  </div>
+  <div
+    className="loadingContainer"
+  >
+    <p
+      className="loading"
+    />
+  </div>
+  <React.Fragment>
+    <form
+      action="http://localhost/"
+      className="hidden"
+      id="cp-login-form"
+      method="post"
+      target="owisp-auth-iframe"
+    >
+      <input
+        name="auth_user"
+        readOnly={true}
+        type="text"
+        value=""
+      />
+      <input
+        name="auth_pass"
+        readOnly={true}
+        type="text"
+        value=""
+      />
+      <input
+        name="zone"
+        readOnly={true}
+        type="text"
+        value="zone_name"
+      />
+      <input
+        name="redirurl"
+        readOnly={true}
+        type="text"
+        value="http://localhost:8080/default/status"
+      />
+      <input
+        name="accept"
+        readOnly={true}
+        type="text"
+        value="accept"
+      />
+    </form>
+    <iframe
+      className="hidden"
+      name="owisp-auth-iframe"
+      onLoad={[Function]}
+      title="owisp-auth-iframe"
+    />
+  </React.Fragment>
+  <React.Fragment>
+    <form
+      action="http://localhost:8081"
+      className="hidden"
+      id="cp-logout-form"
+      method="post"
+      target="owisp-auth-logout-iframe"
+    >
+      <input
+        name="logout_id"
+        readOnly={true}
+        type="hidden"
+        value=""
+      />
+      0
+    </form>
+    <iframe
+      className="hidden"
+      name="owisp-auth-logout-iframe"
+      onLoad={[Function]}
+      title="owisp-auth-iframe"
+    />
+  </React.Fragment>
+</React.Fragment>
+`;

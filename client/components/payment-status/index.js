@@ -10,7 +10,6 @@ const mapStateToProps = (state, ownProps) => {
     userData: conf.userData,
     settings: conf.settings,
     isAuthenticated: conf.isAuthenticated,
-    language: state.language,
     cookies: ownProps.cookies,
     result: ownProps.result,
   };

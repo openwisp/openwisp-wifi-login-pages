@@ -4,9 +4,11 @@ import {BrowserRouter as Router} from "react-router-dom";
 import renderer from "react-test-renderer";
 
 import getConfig from "../../utils/get-config";
+import loadTranslation from "../../utils/load-translation";
 import Header from "./header";
 
 const defaultConfig = getConfig("default");
+jest.mock("../../utils/load-translation");
 const headerLinks = [
   {
     text: {en: "link-1"},
@@ -54,12 +56,21 @@ const createTestProps = (props) => {
   };
 };
 
+describe("<Header /> rendering with placeholder translation tags", () => {
+  const props = createTestProps();
+  it("should render translation placeholder correctly", () => {
+    const wrapper = shallow(<Header {...props} />);
+    expect(wrapper).toMatchSnapshot();
+  });
+});
+
 describe("<Header /> rendering", () => {
   let props;
   let wrapper;
   beforeEach(() => {
     props = createTestProps();
     wrapper = shallow(<Header {...props} />);
+    loadTranslation("en", "default");
   });
   it("should render without links", () => {
     const links = {

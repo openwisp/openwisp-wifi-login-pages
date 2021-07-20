@@ -4,9 +4,9 @@ import PropTypes from "prop-types";
 import React from "react";
 import {Link, Redirect} from "react-router-dom";
 import {toast} from "react-toastify";
+import {t} from "ttag";
 import LoadingContext from "../../utils/loading-context";
 import Contact from "../contact-box";
-import getText from "../../utils/get-text";
 import validateToken from "../../utils/validate-token";
 
 export default class PaymentStatus extends React.Component {
@@ -38,8 +38,7 @@ export default class PaymentStatus extends React.Component {
   }
 
   render() {
-    const {orgSlug, language, page, result, isAuthenticated, userData} =
-      this.props;
+    const {orgSlug, result, isAuthenticated, userData} = this.props;
     const {method, is_verified: isVerified} = userData;
     const redirectToStatus = () => <Redirect to={`/${orgSlug}/status`} />;
     const acceptedValues = ["success", "failed"];
@@ -63,7 +62,7 @@ export default class PaymentStatus extends React.Component {
 
     // success case
     if (result === "success" && isVerified === true) {
-      toast.success(getText(page.success, language));
+      toast.success(t`PAY_SUCCESS`);
       return redirectToStatus();
     }
 
@@ -73,25 +72,23 @@ export default class PaymentStatus extends React.Component {
         <div className="inner">
           <div className="main-column">
             <h2 className="row payment-status-row-1">
-              {getText(page.heading, language)}: {result}
+              {t`PAY_H`}: {result}
             </h2>
-            <div className="row payment-status-row-2">
-              {getText(page.sub_heading, language)}
-            </div>
+            <div className="row payment-status-row-2">{t`PAY_SUB_H`}</div>
             <div className="row payment-status-row-3">
               <Link className="button full" to={`/${orgSlug}/status`}>
-                {getText(page.try_again_button, language)}
+                {t`PAY_TRY_AGAIN_BTN`}
               </Link>
             </div>
 
             <div className="row payment-status-row-4">
-              <p>{getText(page.give_up_text, language)}</p>
+              <p>{t`PAY_GIVE_UP_TXT`}</p>
               <Link
                 onClick={this.handleLogout}
                 to={`/${orgSlug}/status`}
                 className="button full"
               >
-                {getText(page.give_up_button, language)}
+                {t`PAY_GIVE_UP_BTN`}
               </Link>
             </div>
           </div>
@@ -104,15 +101,6 @@ export default class PaymentStatus extends React.Component {
 }
 PaymentStatus.contextType = LoadingContext;
 PaymentStatus.propTypes = {
-  page: PropTypes.shape({
-    heading: PropTypes.object.isRequired,
-    sub_heading: PropTypes.object.isRequired,
-    try_again_button: PropTypes.object.isRequired,
-    give_up_text: PropTypes.object.isRequired,
-    give_up_button: PropTypes.object.isRequired,
-    success: PropTypes.object.isRequired,
-  }).isRequired,
-  language: PropTypes.string,
   orgSlug: PropTypes.string,
   userData: PropTypes.object.isRequired,
   setUserData: PropTypes.func.isRequired,

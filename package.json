@@ -18,6 +18,7 @@
     "history": "^4.10.1",
     "js-yaml": "^3.14.0",
     "jsdom": "^16.4.0",
+    "lodash": "^4.17.21",
     "marked": "^2.0.0",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.4",
@@ -37,6 +38,7 @@
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "tsutils": "^3.17.1",
+    "ttag": "^1.7.24",
     "universal-cookie-express": "^4.0.3",
     "winston": "^3.3.3"
   },
@@ -85,6 +87,7 @@
     "selenium-webdriver": "^4.0.0-beta.4",
     "style-loader": "^2.0.0",
     "terser-webpack-plugin": "^4.2.3",
+    "ttag-cli": "^1.9.2",
     "typescript": "^4.1.2",
     "webpack": "^4.43.0",
     "webpack-bundle-analyzer": "^4.4.0",
@@ -98,7 +101,7 @@
     "coveralls": "test -f ./coverage/lcov.info && cat ./coverage/lcov.info | coveralls || echo 'no coverage file found'",
     "add-org": "plop --plopfile internals/generators/index.js",
     "server": "npm run setup && nodemon server/start.js",
-    "setup": "node config/setup.js",
+    "setup": "node config/setup.js && node config/build-translations.js",
     "start": "concurrently \"npm run server\" \"npm run client\"",
     "lint": "eslint '**/*.{js,jsx}' --quiet",
     "lint:fix": "eslint '**/*.{js,jsx}' --fix",
@@ -107,7 +110,9 @@
     "test": "jest --testPathIgnorePatterns=/browser-test/",
     "browser-test": "jest browser-test --runInBand",
     "test-inspect": "node inspect ./node_modules/.bin/jest --runInBand",
-    "stats": "STATS=true npx webpack-cli --profile --json --config config/webpack.config.js > compilation-stats.json && webpack-bundle-analyzer dist/stats.json"
+    "stats": "STATS=true webpack-cli --profile --json --config config/webpack.config.js > compilation-stats.json && webpack-bundle-analyzer dist/stats.json",
+    "translations-add": "ttag init",
+    "translations-update": "sh -c 'ttag update $0 client/'"
   },
   "repository": {
     "type": "git",

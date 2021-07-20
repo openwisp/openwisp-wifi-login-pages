@@ -9,79 +9,6 @@
     },
     "components": {
       "status_page": {
-        "title": {
-          "en": "Status"
-        },
-        "content": {
-          "en": "WiFi Login Successful!\nYou can now use the internet.\nYou may leave this page open in case you want to log out.\n"
-        },
-        "user_info": {
-          "status": {
-            "text": {
-              "en": "Status"
-            },
-            "value": {
-              "en": "Logged in"
-            }
-          },
-          "email": {
-            "text": {
-              "en": "Email"
-            }
-          },
-          "username": {
-            "text": {
-              "en": "Username"
-            }
-          },
-          "phone_number": {
-            "text": {
-              "en": "Phone number"
-            }
-          }
-        },
-        "session_info": {
-          "header": {
-            "start_time": {
-              "text": {
-                "en": "Start time"
-              }
-            },
-            "stop_time": {
-              "text": {
-                "en": "Stop time"
-              }
-            },
-            "duration": {
-              "text": {
-                "en": "Duration"
-              }
-            },
-            "download": {
-              "text": {
-                "en": "Download"
-              }
-            },
-            "upload": {
-              "text": {
-                "en": "Upload"
-              }
-            },
-            "device_address": {
-              "text": {
-                "en": "Device address"
-              }
-            }
-          },
-          "settings": {
-            "active_session": {
-              "text": {
-                "en": "session is active"
-              }
-            },
-            "date_language_locale": "en-US"
-          }
-        },
         "links": [
           {
             "text": {
@@ -89,46 +16,7 @@
             },
             "url": "/{orgSlug}/change-password/"
           }
-        ],
-        "buttons": {
-          "logout": {
-            "text": {
-              "en": "Logout"
-            }
-          }
-        },
-        "logout_modal": {
-          "content": {
-            "en": "Do you want to automatically log in the next time?"
-          },
-          "buttons": {
-            "agree": {
-              "text": {
-                "en": "Yes"
-              }
-            },
-            "disagree": {
-              "text": {
-                "en": "No"
-              }
-            }
-          }
-        }
-      },
-      "logout": {
-        "title": {
-          "en": "Logout"
-        },
-        "content": {
-          "text": {
-            "en": "Logout Successfull !!!"
-          }
-        },
-        "login_again": {
-          "text": {
-            "en": "Login Again"
-          }
-        }
+        ]
       },
       "captive_portal_login_form": {
         "method": "post",
@@ -163,211 +51,72 @@
         "logout_by_session": true
       },
       "registration_form": {
-        "title": {
-          "en": "Sign up"
-        },
         "input_fields": {
           "username": {
             "type": "text",
-            "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}",
-            "pattern_description": {
-              "en": "only letters, numbers, and @/./+/-/_ characters"
-            },
-            "placeholder": {
-              "en": "enter username"
-            },
-            "label": {
-              "en": "username"
-            }
+            "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}"
           },
           "email": {
             "type": "email",
-            "pattern": ".+@.+\\..+",
-            "pattern_description": {
-              "en": null
-            },
-            "placeholder": {
-              "en": "email address"
-            },
-            "label": {
-              "en": "email"
-            }
+            "pattern": ".+@.+\\..+"
           },
           "password": {
             "type": "password",
-            "pattern": ".{6,}",
-            "pattern_description": {
-              "en": "password must be a minimum of 6 characters"
-            },
-            "placeholder": {
-              "en": "password"
-            },
-            "label": {
-              "en": "password"
-            }
+            "pattern": ".{6,}"
           },
           "password_confirm": {
-            "type": "password",
-            "label": {
-              "en": "confirm password"
-            },
-            "placeholder": {
-              "en": "confirm password"
-            },
-            "label": {
-              "en": "confirm"
-            }
+            "type": "password"
           },
           "phone_number": {
-            "placeholder": {
-              "en": "enter mobile phone number"
-            },
-            "label": {
-              "en": "mobile phone number"
-            }
+            "type": "tel"
           },
           "first_name": {
             "type": "text",
             "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}",
-            "setting": "disabled",
-            "pattern_description": {
-              "en": "only letters, numbers, and @/./+/-/_ characters"
-            },
-            "placeholder": {
-              "en": "enter first_name"
-            },
-            "label": {
-              "en": "first name"
-            },
-            "label_optional": {
-              "en": "first name (optional)"
-            }
+            "setting": "disabled"
           },
           "last_name": {
             "type": "text",
             "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}",
-            "setting": "disabled",
-            "pattern_description": {
-              "en": "only letters, numbers, and @/./+/-/_ characters"
-            },
-            "placeholder": {
-              "en": "enter last_name"
-            },
-            "label": {
-              "en": "last name"
-            },
-            "label_optional": {
-              "en": "last name (optional)"
-            }
+            "setting": "disabled"
           },
           "location": {
             "type": "text",
             "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}",
-            "setting": "disabled",
-            "pattern_description": {
-              "en": "only letters, numbers, and @/./+/-/_ characters"
-            },
-            "placeholder": {
-              "en": "enter location"
-            },
-            "label": {
-              "en": "location"
-            },
-            "label_optional": {
-              "en": "location (optional)"
-            }
+            "setting": "disabled"
           },
           "birth_date": {
             "type": "date",
-            "setting": "disabled",
-            "label": {
-              "en": "birth date"
-            },
-            "label_optional": {
-              "en": "birth date (optional)"
-            }
+            "setting": "disabled"
           },
           "city": {
-            "type": "text",
-            "placeholder": {
-              "en": "enter city"
-            },
-            "label": {
-              "en": "city"
-            }
+            "type": "text"
           },
           "street": {
-            "type": "text",
-            "placeholder": {
-              "en": "enter street"
-            },
-            "label": {
-              "en": "street"
-            }
+            "type": "text"
           },
           "tax_number": {
             "type": "text",
-            "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}",
-            "pattern_description": {
-              "en": "only letters, numbers, and @/./+/-/_ characters"
-            },
-            "placeholder": {
-              "en": "enter tax_number"
-            },
-            "label": {
-              "en": "tax_number"
-            }
+            "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}"
           },
           "country": {
-            "label": {
-              "en": "country"
-            }
+            "type": "text"
           },
           "zipcode": {
-            "type": "number",
-            "label": {
-              "en": "zipcode"
-            }
+            "type": "number"
           }
         },
-        "plans_setting": {
-          "text": {
-            "en": "Select your plan below"
-          }
-        },
-        "buttons": {
-          "register": {
-            "label": null,
-            "text": {
-              "en": "sign up"
-            }
-          }
-        },
-        "additional_info_text": {
-          "en": "By signing up, you accept the {terms_and_conditions} and the {privacy_policy} of this WiFi service. "
-        },
+        "additional_info_text": true,
         "links": {
-          "login": {
-            "en": "Already have an account? Log in"
-          }
+          "login": true
         }
       }
     },
     "privacy_policy": {
-      "title": {
-        "en": "privacy policy"
-      },
-      "content": {
-        "en": "..."
-      }
+      "en": "<h1 id=\"openwisp-wifi-login-pages-privacy-policy\">openwisp-wifi-login-pages Privacy Policy</h1>\n<ul>\n<li><p>Your privacy is important to us. It is Openwisp's policy to respect your privacy regarding any information we may collect from you across openwisp-wifi-login-pages.</p>\n</li>\n<li><p>We only ask for personal information when we truly need it to provide a service to you. We collect it by fair and lawful means, with your knowledge and consent. We also let you know why we’re collecting it and how it will be used.</p>\n</li>\n<li><p>We only retain collected information for as long as necessary to provide you with your requested service. What data we store, we’ll protect within commercially acceptable means to prevent loss and theft, as well as unauthorised access, disclosure, copying, use or modification.</p>\n</li>\n<li><p>We don’t share any personally identifying information publicly or with third-parties, except when required to by law.</p>\n</li>\n<li><p>Our website may link to external sites that are not operated by us. Please be aware that we have no control over the content and practices of these sites, and cannot accept responsibility or liability for their respective privacy policies.</p>\n</li>\n<li><p>You are free to refuse our request for your personal information, with the understanding that we may be unable to provide you with some of your desired services.</p>\n</li>\n<li><p>Your continued use of our website will be regarded as acceptance of our practices around privacy and personal information. If you have any questions about how we handle user data and personal information, feel free to contact us.</p>\n</li>\n</ul>\n"
     },
     "terms_and_conditions": {
-      "title": {
-        "en": "terms and conditions"
-      },
-      "content": {
-        "en": "..."
-      }
+      "en": "<h1 id=\"openwisp-wifi-login-pages-terms-and-conditions\">Openwisp-wifi-login-pages Terms and Conditions</h1>\n<ul>\n<li><p>By using or visiting the Openwisp-wifi-login-pages, you signify your agreement\nto these terms and conditions (the \"Terms of Service\") and the Privacy policy.</p>\n</li>\n<li><p>In order to access the wifi service, you need to be a registered user of the\ndefault organization.</p>\n</li>\n<li><p>Openwisp-wifi-login-pages is not liable for any unauthorized use of your account,\nyou may be liable for the losses of the services or others due to such unauthorized use.</p>\n</li>\n<li><p>Openwisp reserves the right to discontinue or disallow any user, group or any\nspecific IP (internal or external) from using its services without any prior notice.</p>\n</li>\n<li><p>Violating the above mentioned Terms and Conditions may result in the termination\nof the particular user account or the particular IP address from accessing\nOpenwisp-wifi-login-pages and using its services in the future.</p>\n</li>\n</ul>\n"
     }
   },
   {
@@ -388,327 +137,104 @@
     },
     "components": {
       "mobile_phone_verification_form": {
-        "title": {
-          "en": "Verify mobile number"
-        },
-        "text": {
-          "verify": {
-            "en": "Verify your mobile phone number ({phone_number}) by inserting the code you received via SMS below."
-          },
-          "resend": {
-            "en": "If you did not receive the verification SMS code, you can try sending it again by clicking below."
-          },
-          "change": {
-            "en": "Wrong phone number?"
-          },
-          "token_sent": {
-            "en": "SMS verification code sent successfully."
-          },
-          "logout": {
-            "en": "If you need to cancel the process you can log out below."
-          }
-        },
         "input_fields": {
           "code": {
             "type": "text",
-            "pattern": "[0-9]{6,}",
-            "pattern_description": {
-              "en": "this field must be a 6 digit numeric code"
-            },
-            "placeholder": {
-              "en": "enter SMS verification code"
-            },
-            "label": {
-              "en": "code"
-            }
-          }
-        },
-        "buttons": {
-          "verify": {
-            "en": "Submit"
-          },
-          "resend": {
-            "en": "Send a new verification code"
-          },
-          "change": {
-            "en": "Change your phone number"
-          },
-          "logout": {
-            "en": "Logout"
+            "pattern": "[0-9]{6,}"
           }
         }
       },
       "phone_number_change_form": {
-        "title": {
-          "en": "Change mobile number"
-        },
         "buttons": {
-          "change_phone_number": {
-            "text": {
-              "en": "Change phone number"
-            }
-          },
-          "cancel": {
-            "text": {
-              "en": "Cancel"
-            }
-          }
+          "change_phone_number": true,
+          "cancel": true
         }
       },
       "contact_page": {
-        "email": {
-          "label": {
-            "en": "E-mail"
-          },
-          "value": {
-            "en": "support@openwisp.co"
-          }
-        },
-        "helpdesk": {
-          "label": {
-            "en": "Helpdesk"
-          },
-          "value": {
-            "en": "+789 948 564"
-          }
-        },
+        "email": "support@openwisp.co",
+        "helpdesk": "+789 948 564",
         "social_links": [
           {
-            "alt": {
-              "en": "twitter"
-            },
+            "alt": "twitter",
             "icon": "twitter.svg",
             "url": "https://twitter.com/openwisp"
           },
           {
-            "alt": {
-              "en": "facebook"
-            },
+            "alt": "facebook",
             "icon": "facebook.svg",
             "url": "https://facebook.com/openwisp"
           }
         ]
       },
       "registration_form": {
-        "title": {
-          "en": "Sign up"
-        },
         "input_fields": {
           "phone_number": {
-            "placeholder": {
-              "en": "enter mobile phone number"
-            },
-            "label": {
-              "en": "moible phone number"
-            },
+            "type": "tel",
             "country": "it"
           },
           "email": {
             "type": "email",
-            "pattern": ".+@.+\\..+",
-            "pattern_description": {
-              "en": null
-            },
-            "placeholder": {
-              "en": "email address"
-            },
-            "label": {
-              "en": "email"
-            }
+            "pattern": ".+@.+\\..+"
           },
           "username": {
             "type": "text",
-            "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}",
-            "pattern_description": {
-              "en": "only letters, numbers, and @/./+/-/_ characters"
-            },
-            "placeholder": {
-              "en": "enter username"
-            },
-            "label": {
-              "en": "username"
-            }
+            "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}"
           },
           "password": {
             "type": "password",
-            "pattern": ".{6,}",
-            "pattern_description": {
-              "en": "password must be a minimum of 6 characters"
-            },
-            "placeholder": {
-              "en": "password"
-            },
-            "label": {
-              "en": "password"
-            }
+            "pattern": ".{6,}"
           },
           "password_confirm": {
             "type": "password",
-            "pattern": null,
-            "pattern_description": {
-              "en": null
-            },
-            "placeholder": {
-              "en": "confirm password"
-            },
-            "label": {
-              "en": "confirm"
-            }
+            "pattern": null
           },
           "first_name": {
             "type": "text",
             "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}",
-            "setting": "disabled",
-            "pattern_description": {
-              "en": "only letters, numbers, and @/./+/-/_ characters"
-            },
-            "placeholder": {
-              "en": "enter first_name"
-            },
-            "label": {
-              "en": "first name"
-            },
-            "label_optional": {
-              "en": "first name (optional)"
-            }
+            "setting": "disabled"
           },
           "last_name": {
             "type": "text",
             "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}",
-            "setting": "disabled",
-            "pattern_description": {
-              "en": "only letters, numbers, and @/./+/-/_ characters"
-            },
-            "placeholder": {
-              "en": "enter last_name"
-            },
-            "label": {
-              "en": "last name"
-            },
-            "label_optional": {
-              "en": "last name (optional)"
-            }
+            "setting": "disabled"
           },
           "location": {
             "type": "text",
             "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}",
-            "setting": "disabled",
-            "pattern_description": {
-              "en": "only letters, numbers, and @/./+/-/_ characters"
-            },
-            "placeholder": {
-              "en": "enter location"
-            },
-            "label": {
-              "en": "location"
-            },
-            "label_optional": {
-              "en": "location (optional)"
-            }
+            "setting": "disabled"
           },
           "birth_date": {
             "type": "date",
-            "setting": "disabled",
-            "label": {
-              "en": "birth date"
-            },
-            "label_optional": {
-              "en": "birth date (optional)"
-            }
+            "setting": "disabled"
           },
           "city": {
-            "type": "text",
-            "placeholder": {
-              "en": "enter city"
-            },
-            "label": {
-              "en": "city"
-            }
+            "type": "text"
           },
           "street": {
-            "type": "text",
-            "placeholder": {
-              "en": "enter street"
-            },
-            "label": {
-              "en": "street"
-            }
+            "type": "text"
           },
           "tax_number": {
             "type": "text",
-            "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}",
-            "pattern_description": {
-              "en": "only letters, numbers, and @/./+/-/_ characters"
-            },
-            "placeholder": {
-              "en": "enter tax_number"
-            },
-            "label": {
-              "en": "tax_number"
-            }
+            "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}"
           },
           "country": {
-            "label": {
-              "en": "country"
-            }
+            "type": "text"
           },
           "zipcode": {
-            "type": "number",
-            "label": {
-              "en": "zipcode"
-            }
+            "type": "number"
           }
         },
-        "plans_setting": {
-          "text": {
-            "en": "Select your plan below"
-          }
-        },
-        "buttons": {
-          "register": {
-            "label": null,
-            "text": {
-              "en": "sign up"
-            }
-          }
-        },
-        "additional_info_text": {
-          "en": "By signing up, you accept the {terms_and_conditions} and the {privacy_policy} of this WiFi service. "
-        },
+        "additional_info_text": true,
         "links": {
-          "login": {
-            "en": "Already have an account? Log in"
-          }
-        }
-      }
-    },
-    "password_eye_icon": {
-      "reveal": {
-        "title": {
-          "en": "reveal password"
-        }
-      },
-      "hide": {
-        "title": {
-          "en": "hide password"
+          "login": true
         }
       }
     },
     "privacy_policy": {
-      "title": {
-        "en": "privacy policy"
-      },
-      "content": {
-        "en": "..."
-      }
+      "en": "<h1 id=\"openwisp-wifi-login-pages-privacy-policy\">openwisp-wifi-login-pages Privacy Policy</h1>\n<ul>\n<li><p>Your privacy is important to us. It is Openwisp's policy to respect your privacy regarding any information we may collect from you across openwisp-wifi-login-pages.</p>\n</li>\n<li><p>We only ask for personal information when we truly need it to provide a service to you. We collect it by fair and lawful means, with your knowledge and consent. We also let you know why we’re collecting it and how it will be used.</p>\n</li>\n<li><p>We only retain collected information for as long as necessary to provide you with your requested service. What data we store, we’ll protect within commercially acceptable means to prevent loss and theft, as well as unauthorised access, disclosure, copying, use or modification.</p>\n</li>\n<li><p>We don’t share any personally identifying information publicly or with third-parties, except when required to by law.</p>\n</li>\n<li><p>Our website may link to external sites that are not operated by us. Please be aware that we have no control over the content and practices of these sites, and cannot accept responsibility or liability for their respective privacy policies.</p>\n</li>\n<li><p>You are free to refuse our request for your personal information, with the understanding that we may be unable to provide you with some of your desired services.</p>\n</li>\n<li><p>Your continued use of our website will be regarded as acceptance of our practices around privacy and personal information. If you have any questions about how we handle user data and personal information, feel free to contact us.</p>\n</li>\n</ul>\n"
     },
     "terms_and_conditions": {
-      "title": {
-        "en": "terms and conditions"
-      },
-      "content": {
-        "en": "..."
-      }
+      "en": "<h1 id=\"openwisp-wifi-login-pages-terms-and-conditions\">Openwisp-wifi-login-pages Terms and Conditions</h1>\n<ul>\n<li><p>By using or visiting the Openwisp-wifi-login-pages, you signify your agreement\nto these terms and conditions (the \"Terms of Service\") and the Privacy policy.</p>\n</li>\n<li><p>In order to access the wifi service, you need to be a registered user of the\ndefault organization.</p>\n</li>\n<li><p>Openwisp-wifi-login-pages is not liable for any unauthorized use of your account,\nyou may be liable for the losses of the services or others due to such unauthorized use.</p>\n</li>\n<li><p>Openwisp reserves the right to discontinue or disallow any user, group or any\nspecific IP (internal or external) from using its services without any prior notice.</p>\n</li>\n<li><p>Violating the above mentioned Terms and Conditions may result in the termination\nof the particular user account or the particular IP address from accessing\nOpenwisp-wifi-login-pages and using its services in the future.</p>\n</li>\n</ul>\n"
     }
   }
 ]

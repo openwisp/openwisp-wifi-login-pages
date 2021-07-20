@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<OrganizationWrapper /> interactions should render main title if pageTitle is undefined 1`] = `
-<React.Fragment>
-  <Context.Provider
+<Fragment>
+  <ContextProvider
     value={
       Object {
         "getLoading": [Function],
@@ -78,16 +78,16 @@ exports[`<OrganizationWrapper /> interactions should render main title if pageTi
       encodeSpecialCharacters={true}
     >
       <title>
-        Default - default name
+        WiFi Login - default name
       </title>
     </HelmetWrapper>
-  </Context.Provider>
-</React.Fragment>
+  </ContextProvider>
+</Fragment>
 `;
 
 exports[`<OrganizationWrapper /> interactions should render pageTitle if it is not undefined 1`] = `
-<React.Fragment>
-  <Context.Provider
+<Fragment>
+  <ContextProvider
     value={
       Object {
         "getLoading": [Function],
@@ -166,6 +166,6 @@ exports[`<OrganizationWrapper /> interactions should render pageTitle if it is n
         Organization Wrapper
       </title>
     </HelmetWrapper>
-  </Context.Provider>
-</React.Fragment>
+  </ContextProvider>
+</Fragment>
 `;

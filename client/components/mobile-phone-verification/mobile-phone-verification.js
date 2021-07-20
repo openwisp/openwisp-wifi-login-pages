@@ -7,16 +7,15 @@ import qs from "qs";
 import React from "react";
 import {Cookies} from "react-cookie";
 import {toast} from "react-toastify";
+import {t} from "ttag";
 import "react-toastify/dist/ReactToastify.css";
 import LoadingContext from "../../utils/loading-context";
 
 import {
   createMobilePhoneTokenUrl,
-  logoutSuccess,
   verifyMobilePhoneTokenUrl,
 } from "../../constants";
 import getErrorText from "../../utils/get-error-text";
-import getText from "../../utils/get-text";
 import logError from "../../utils/log-error";
 import handleChange from "../../utils/handle-change";
 import Contact from "../contact-box";
@@ -42,18 +41,9 @@ export default class MobilePhoneVerification extends React.Component {
   }
 
   async componentDidMount() {
-    const {
-      cookies,
-      orgSlug,
-      settings,
-      setUserData,
-      logout,
-      orgName,
-      language,
-      setTitle,
-      mobile_phone_verification,
-    } = this.props;
-    setTitle(mobile_phone_verification, language, orgName);
+    const {cookies, orgSlug, settings, setUserData, logout, orgName, setTitle} =
+      this.props;
+    setTitle(t`PHONE_VERIF_TITL`, orgName);
     let {userData} = this.props;
     const {setLoading} = this.context;
     setLoading(true);
@@ -138,9 +128,8 @@ export default class MobilePhoneVerification extends React.Component {
     if (!resend && this.hasPhoneTokenBeenSent()) {
       return false;
     }
-    const {orgSlug, mobile_phone_verification, language} = this.props;
+    const {orgSlug} = this.props;
     const {errors, phone_number} = this.state;
-    const {text} = mobile_phone_verification;
     const self = this;
     const url = createMobilePhoneTokenUrl(orgSlug);
     return axios({
@@ -156,7 +145,7 @@ export default class MobilePhoneVerification extends React.Component {
       .then(() => {
         // flag SMS as sent to avoid resending it
         sessionStorage.setItem(self.phoneTokenSentKey, true);
-        toast.info(getText(text.token_sent, language));
+        toast.info(t`TOKEN_SENT`);
       })
       .catch((error) => {
         const errorText = getErrorText(error);
@@ -175,7 +164,7 @@ export default class MobilePhoneVerification extends React.Component {
     const {orgSlug, logout, cookies, setUserData} = this.props;
     logout(cookies, orgSlug);
     setUserData(initialState.userData);
-    toast.success(logoutSuccess);
+    toast.success(t`LOGOUT_SUCCESS`);
   }
 
   async resendPhoneToken() {
@@ -187,8 +176,8 @@ export default class MobilePhoneVerification extends React.Component {
 
   render() {
     const {code, errors, success, phone_number} = this.state;
-    const {orgSlug, language, mobile_phone_verification} = this.props;
-    const {input_fields, buttons, text} = mobile_phone_verification;
+    const {orgSlug, mobile_phone_verification} = this.props;
+    const {input_fields} = mobile_phone_verification;
     return (
       <div className="container content" id="mobile-phone-verification">
         <div className="inner">
@@ -198,12 +187,7 @@ export default class MobilePhoneVerification extends React.Component {
               onSubmit={this.handleSubmit}
             >
               <div className="row fieldset code">
-                <p className="label">
-                  {getText(text.verify, language).replace(
-                    "{phone_number}",
-                    phone_number,
-                  )}
-                </p>
+                <p className="label">{t`PHONE_VERIFY (${phone_number})`}</p>
 
                 {errors.nonField && (
                   <div className="error non-field">
@@ -229,54 +213,48 @@ export default class MobilePhoneVerification extends React.Component {
                     name="code"
                     value={code}
                     onChange={this.handleChange}
-                    placeholder={getText(
-                      input_fields.code.placeholder,
-                      language,
-                    )}
+                    placeholder={t`MOBILE_CODE_PHOLD`}
                     pattern={input_fields.code.pattern}
-                    title={getText(
-                      input_fields.code.pattern_description,
-                      language,
-                    )}
+                    title={t`MOBILE_CODE_TITL`}
                   />
                 </div>
 
                 <button type="submit" className="button full">
-                  {getText(buttons.verify, language)}
+                  {t`MOBILE_PHONE_VERIFY`}
                 </button>
               </div>
             </form>
 
             <div className="row fieldset resend">
-              <p className="label">{getText(text.resend, language)}</p>
+              <p className="label">{t`RESEND_TOKEN_LBL`}</p>
 
               <button
                 type="button"
                 className="button full"
                 onClick={this.resendPhoneToken}
               >
-                {getText(buttons.resend, language)}
+                {t`RESEND_TOKEN`}
               </button>
             </div>
 
             <div className="row fieldset change">
-              <p className="label">{getText(text.change, language)}</p>
+              <p className="label">{t`PHONE_CHANGE_LBL`}</p>
               <a
                 href={`/${orgSlug}/change-phone-number`}
                 className="button full"
               >
-                {getText(buttons.change, language)}
+                {t`PHONE_CHANGE_BTN`}
               </a>
             </div>
 
             <div className="row fieldset logout">
-              <p className="label">{getText(text.logout, language)}</p>
+              <p className="label">{t`LOGOUT_LBL`}</p>
               <button
                 type="button"
                 className="button full"
                 onClick={this.handleLogout}
               >
-                {getText(buttons.logout, language)}
+                {t`LOGOUT`}
               </button>
             </div>
           </div>
@@ -291,34 +269,16 @@ MobilePhoneVerification.propTypes = {
   settings: PropTypes.shape({
     mobile_phone_verification: PropTypes.bool,
   }).isRequired,
-  language: PropTypes.string.isRequired,
   orgSlug: PropTypes.string.isRequired,
   orgName: PropTypes.string.isRequired,
   cookies: PropTypes.instanceOf(Cookies).isRequired,
   logout: PropTypes.func.isRequired,
   mobile_phone_verification: PropTypes.shape({
-    title: PropTypes.object,
-    text: PropTypes.shape({
-      verify: PropTypes.shape().isRequired,
-      resend: PropTypes.shape().isRequired,
-      change: PropTypes.shape().isRequired,
-      token_sent: PropTypes.shape().isRequired,
-      logout: PropTypes.shape().isRequired,
-    }).isRequired,
     input_fields: PropTypes.shape({
       code: PropTypes.shape({
         type: PropTypes.string.isRequired,
         pattern: PropTypes.string.isRequired,
-        pattern_description: PropTypes.shape().isRequired,
-        placeholder: PropTypes.shape().isRequired,
-        label: PropTypes.shape().isRequired,
       }).isRequired,
-    }).isRequired,
-    buttons: PropTypes.shape({
-      verify: PropTypes.shape().isRequired,
-      resend: PropTypes.shape().isRequired,
-      change: PropTypes.shape().isRequired,
-      logout: PropTypes.shape().isRequired,
     }).isRequired,
   }).isRequired,
   userData: PropTypes.object.isRequired,

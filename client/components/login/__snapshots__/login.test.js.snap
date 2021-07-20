@@ -46,14 +46,14 @@ exports[`<Login /> interactions phone_number field should be present if mobile p
               class="inner"
             >
               <img
-                alt="Login with google"
+                alt="Login with Google"
                 class="icon"
                 src="/assets/default/google.svg"
               />
               <span
                 class="text"
               >
-                Login with google
+                Login with Google
               </span>
             </span>
           </a>
@@ -90,7 +90,7 @@ exports[`<Login /> interactions phone_number field should be present if mobile p
           <label
             for="phone-number"
           >
-            mobile phone number
+            Mobile phone number
           </label>
           <div
             class=" react-tel-input"
@@ -137,7 +137,7 @@ exports[`<Login /> interactions phone_number field should be present if mobile p
           <label
             for="password"
           >
-            password
+            Password
           </label>
           <input
             autocomplete="current-password"
@@ -203,7 +203,7 @@ exports[`<Login /> interactions phone_number field should be present if mobile p
         <input
           class="button full"
           type="submit"
-          value="Login"
+          value="Log in"
         />
       </div>
       <div
@@ -242,7 +242,7 @@ exports[`<Login /> interactions phone_number field should be present if mobile p
           <span
             class="label"
           >
-            E-mail:
+            Email:
           </span>
           <a
             class="link"
@@ -346,14 +346,14 @@ exports[`<Login /> interactions should not show phone_number field if auto_switc
               class="inner"
             >
               <img
-                alt="Login with google"
+                alt="Login with Google"
                 class="icon"
                 src="/assets/default/google.svg"
               />
               <span
                 class="text"
               >
-                Login with google
+                Login with Google
               </span>
             </span>
           </a>
@@ -390,7 +390,7 @@ exports[`<Login /> interactions should not show phone_number field if auto_switc
           <label
             for="username"
           >
-            email
+            Email, phone number or username
           </label>
           <input
             autocomplete="username"
@@ -398,8 +398,9 @@ exports[`<Login /> interactions should not show phone_number field if auto_switc
             id="username"
             name="username"
             pattern=".+@.+\\\\..+"
-            placeholder="email address"
+            placeholder="enter email, phone number or username"
             required=""
+            title="enter valid email address, an username or a phone number"
             type="email"
             value=""
           />
@@ -410,7 +411,7 @@ exports[`<Login /> interactions should not show phone_number field if auto_switc
           <label
             for="password"
           >
-            password
+            Password
           </label>
           <input
             autocomplete="current-password"
@@ -476,7 +477,7 @@ exports[`<Login /> interactions should not show phone_number field if auto_switc
         <input
           class="button full"
           type="submit"
-          value="Login"
+          value="Log in"
         />
       </div>
       <div
@@ -515,7 +516,7 @@ exports[`<Login /> interactions should not show phone_number field if auto_switc
           <span
             class="label"
           >
-            E-mail:
+            Email:
           </span>
           <a
             class="link"
@@ -619,14 +620,14 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
               class="inner"
             >
               <img
-                alt="Login with google"
+                alt="Login with Google"
                 class="icon"
                 src="/assets/default/google.svg"
               />
               <span
                 class="text"
               >
-                Login with google
+                Login with Google
               </span>
             </span>
           </a>
@@ -663,7 +664,7 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
           <label
             for="username"
           >
-            email
+            Email, phone number or username
           </label>
           <input
             autocomplete="username"
@@ -671,8 +672,9 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
             id="username"
             name="username"
             pattern=".+@.+\\\\..+"
-            placeholder="email address"
+            placeholder="enter email, phone number or username"
             required=""
+            title="enter valid email address, an username or a phone number"
             type="email"
             value=""
           />
@@ -683,7 +685,7 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
           <label
             for="password"
           >
-            password
+            Password
           </label>
           <input
             autocomplete="current-password"
@@ -749,7 +751,7 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
         <input
           class="button full"
           type="submit"
-          value="Login"
+          value="Log in"
         />
       </div>
       <div
@@ -788,7 +790,7 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
           <span
             class="label"
           >
-            E-mail:
+            Email:
           </span>
           <a
             class="link"
@@ -872,14 +874,14 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
                 className="inner"
               >
                 <img
-                  alt="Google"
+                  alt="Login with Google"
                   className="icon"
                   src="/assets/default/google.png"
                 />
                 <span
                   className="text"
                 >
-                  Google
+                  Login with Google
                 </span>
               </span>
             </a>
@@ -894,14 +896,14 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
                 className="inner"
               >
                 <img
-                  alt="Facebook"
+                  alt="Login with Facebook"
                   className="icon"
                   src="/assets/default/facebook.png"
                 />
                 <span
                   className="text"
                 >
-                  Facebook
+                  Login with Facebook
                 </span>
               </span>
             </a>
@@ -916,7 +918,7 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
             <label
               htmlFor="username"
             >
-              email
+              Email, phone number or username
             </label>
             <input
               autoComplete="username"
@@ -925,9 +927,9 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
               name="username"
               onChange={[Function]}
               pattern=".+@.+\\\\..+"
-              placeholder="email address"
+              placeholder="enter email, phone number or username"
               required={true}
-              title={null}
+              title="enter valid email address, an username or a phone number"
               type="email"
               value=""
             />
@@ -938,7 +940,7 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
             <label
               htmlFor="password"
             >
-              password
+              Password
             </label>
             <input
               autoComplete="current-password"
@@ -960,8 +962,6 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
                 }
               }
               isVisible={false}
-              language="en"
-              orgSlug="default"
               parentClassName=""
             />
           </div>
@@ -1007,7 +1007,7 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
           <input
             className="button full"
             type="submit"
-            value="Login"
+            value="Log in"
           />
         </div>
         <div
@@ -1092,14 +1092,14 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
                 className="inner"
               >
                 <img
-                  alt="Login with google"
+                  alt="Login with Google"
                   className="icon"
                   src="/assets/default/google.svg"
                 />
                 <span
                   className="text"
                 >
-                  Login with google
+                  Login with Google
                 </span>
               </span>
             </a>
@@ -1136,7 +1136,7 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
             <label
               htmlFor="username"
             >
-              email
+              Email, phone number or username
             </label>
             <input
               autoComplete="username"
@@ -1145,9 +1145,9 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
               name="username"
               onChange={[Function]}
               pattern=".+@.+\\\\..+"
-              placeholder="email address"
+              placeholder="enter email, phone number or username"
               required={true}
-              title={null}
+              title="enter valid email address, an username or a phone number"
               type="email"
               value=""
             />
@@ -1158,7 +1158,7 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
             <label
               htmlFor="password"
             >
-              password
+              Password
             </label>
             <input
               autoComplete="current-password"
@@ -1180,8 +1180,6 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
                 }
               }
               isVisible={false}
-              language="en"
-              orgSlug="default"
               parentClassName=""
             />
           </div>
@@ -1227,7 +1225,7 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
           <input
             className="button full"
             type="submit"
-            value="Login"
+            value="Log in"
           />
         </div>
         <div
@@ -1251,6 +1249,210 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
             to="/default/password/reset"
           >
             Forgot your password?
+          </Link>
+        </div>
+      </form>
+      <Memo(Connect(Contact)) />
+    </div>
+  </div>
+  <Route
+    path="default/login/:name"
+    render={[Function]}
+  />
+</React.Fragment>
+`;
+
+exports[`<Login /> rendering with placeholder translation tags should render translation placeholder correctly 1`] = `
+<React.Fragment>
+  <div
+    className="container content"
+    id="login"
+  >
+    <div
+      className="inner"
+    >
+      <form
+        className="main-column"
+        onSubmit={[Function]}
+      >
+        <div
+          className="social-links row"
+        >
+          <p>
+            <a
+              className="social-link button full"
+              href="#facebook"
+              rel="noopener noreferrer"
+            >
+              <span
+                className="inner"
+              >
+                <img
+                  alt="Login with Facebook"
+                  className="icon"
+                  src="/assets/default/facebook.svg"
+                />
+                <span
+                  className="text"
+                >
+                  Login with Facebook
+                </span>
+              </span>
+            </a>
+          </p>
+          <p>
+            <a
+              className="social-link button full"
+              href="#google"
+              rel="noopener noreferrer"
+            >
+              <span
+                className="inner"
+              >
+                <img
+                  alt="Login with Google"
+                  className="icon"
+                  src="/assets/default/google.svg"
+                />
+                <span
+                  className="text"
+                >
+                  Login with Google
+                </span>
+              </span>
+            </a>
+          </p>
+          <p>
+            <a
+              className="social-link button full"
+              href="#twitter"
+              rel="noopener noreferrer"
+            >
+              <span
+                className="inner"
+              >
+                <img
+                  alt="Login with Twitter"
+                  className="icon"
+                  src="/assets/default/twitter.svg"
+                />
+                <span
+                  className="text"
+                >
+                  Login with Twitter
+                </span>
+              </span>
+            </a>
+          </p>
+        </div>
+        <div
+          className="fieldset"
+        >
+          <div
+            className="row username"
+          >
+            <label
+              htmlFor="username"
+            >
+              USERNAME_LBL
+            </label>
+            <input
+              autoComplete="username"
+              className="input "
+              id="username"
+              name="username"
+              onChange={[Function]}
+              pattern=".+@.+\\\\..+"
+              placeholder="USERNAME_PHOLD"
+              required={true}
+              title="USERNAME_TITL"
+              type="email"
+              value=""
+            />
+          </div>
+          <div
+            className="row password"
+          >
+            <label
+              htmlFor="password"
+            >
+              PWD_LBL
+            </label>
+            <input
+              autoComplete="current-password"
+              className="input "
+              id="password"
+              name="password"
+              onChange={[Function]}
+              pattern=".{6,}"
+              placeholder="PWD_PHOLD"
+              required={true}
+              title="PWD_PTRN_DESC"
+              type="password"
+              value=""
+            />
+            <PasswordToggleIcon
+              inputRef={
+                Object {
+                  "current": null,
+                }
+              }
+              isVisible={false}
+              parentClassName=""
+            />
+          </div>
+          <div
+            className="row remember-me"
+          >
+            <input
+              checked={true}
+              id="remember_me"
+              name="remember_me"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            <label
+              htmlFor="remember_me"
+            >
+              REMEMBER_ME
+            </label>
+          </div>
+        </div>
+        <div
+          className="row add-info"
+        >
+          LOGIN_ADD_INFO_TXT
+        </div>
+        <div
+          className="row login"
+        >
+          <input
+            className="button full"
+            type="submit"
+            value="LOGIN"
+          />
+        </div>
+        <div
+          className="row register"
+        >
+          <p>
+            REGISTER_BTN_LBL
+          </p>
+          <Link
+            className="button full"
+            to="/default/registration"
+          >
+            REGISTER_BTN_TXT
+          </Link>
+        </div>
+        <div
+          className="row links"
+        >
+          <Link
+            className="link"
+            to="/default/password/reset"
+          >
+            FORGOT_PASSWORD
           </Link>
         </div>
       </form>

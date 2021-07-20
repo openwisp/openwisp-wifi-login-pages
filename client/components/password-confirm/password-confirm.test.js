@@ -10,9 +10,12 @@ import renderer from "react-test-renderer";
 import {toast} from "react-toastify";
 import {loadingContextValue} from "../../utils/loading-context";
 import getConfig from "../../utils/get-config";
+import loadTranslation from "../../utils/load-translation";
 import PasswordConfirm from "./password-confirm";
+import translation from "../../test-translation.json";
 
 jest.mock("axios");
+jest.mock("../../utils/load-translation");
 const defaultConfig = getConfig("default");
 const createTestProps = (props) => {
   return {
@@ -32,12 +35,31 @@ const createTestProps = (props) => {
   };
 };
 
+const getTranslationString = (msgid) => {
+  try {
+    return translation.translations[""][msgid].msgstr[0];
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error(err, msgid);
+    return msgid;
+  }
+};
+
+describe("<PasswordConfirm /> rendering with placeholder translation tags", () => {
+  const props = createTestProps();
+  it("should render translation placeholder correctly", () => {
+    const wrapper = shallow(<PasswordConfirm {...props} />);
+    expect(wrapper).toMatchSnapshot();
+  });
+});
+
 describe("<PasswordConfirm /> rendering", () => {
   let props;
   let wrapper;
 
   beforeEach(() => {
     props = createTestProps();
+    loadTranslation("en", "default");
     wrapper = shallow(<PasswordConfirm {...props} />);
   });
 
@@ -74,23 +96,31 @@ describe("<PasswordConfirm /> rendering", () => {
 
   it("should render password field correctly", () => {
     const {password} = props.passwordConfirm.input_fields;
-    expect(wrapper.find(".row.password label").text()).toBe(password.label.en);
+    expect(wrapper.find(".row.password label").text()).toBe(
+      getTranslationString("PWD_LBL"),
+    );
     const passwordInput = wrapper.find(".row.password input");
-    expect(passwordInput.prop("placeholder")).toBe(password.placeholder.en);
-    expect(passwordInput.prop("title")).toBe(password.pattern_description.en);
+    expect(passwordInput.prop("placeholder")).toBe(
+      getTranslationString("PWD_PHOLD"),
+    );
+    expect(passwordInput.prop("title")).toBe(
+      getTranslationString("PWD_PTRN_DESC"),
+    );
     expect(passwordInput.prop("type")).toBe(password.type);
   });
 
   it("should render password confirm field correctly", () => {
-    const {password, password_confirm} = props.passwordConfirm.input_fields;
+    const {password_confirm} = props.passwordConfirm.input_fields;
     expect(wrapper.find(".row.password-confirm label").text()).toBe(
-      password_confirm.label.en,
+      getTranslationString("CONFIRM_PWD_LBL"),
     );
     const confirmInput = wrapper.find(".row.password-confirm input");
     expect(confirmInput.prop("placeholder")).toBe(
-      password_confirm.placeholder.en,
+      getTranslationString("CONFIRM_PWD_PHOLD"),
     );
-    expect(confirmInput.prop("title")).toBe(password.pattern_description.en);
+    expect(confirmInput.prop("title")).toBe(
+      getTranslationString("PWD_PTRN_DESC"),
+    );
     expect(confirmInput.prop("type")).toBe(password_confirm.type);
   });
 });
@@ -202,10 +232,6 @@ describe("<PasswordConfirm /> interactions", () => {
   });
   it("should set title", () => {
     const setTitleMock = wrapper.instance().props.setTitle.mock;
-    expect(setTitleMock.calls.pop()).toEqual([
-      props.passwordConfirm,
-      props.language,
-      props.orgName,
-    ]);
+    expect(setTitleMock.calls.pop()).toEqual(["Reset Password", props.orgName]);
   });
 });

@@ -1,20 +1,11 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import {t} from "ttag";
 
-import getText from "./get-text";
-
-const renderAdditionalInfo = (
-  textObj,
-  language,
-  termsAndConditions,
-  privacyPolicy,
-  orgSlug,
-  component,
-) => {
+const renderAdditionalInfo = (text, orgSlug, component) => {
   const textNodes = [];
-  const text = getText(textObj, language);
-  const privacyPolicyTitle = getText(privacyPolicy.title, language);
-  const termsAndConditionsTitle = getText(termsAndConditions.title, language);
+  const privacyPolicyTitle = t`PRIV_POL_TITL`;
+  const termsAndConditionsTitle = t`TOS_TITL`;
   if (text.includes("{terms_and_conditions}")) {
     const Array1 = text.split("{terms_and_conditions}");
     if (Array1[0].includes("{privacy_policy}")) {

@@ -6,14 +6,10 @@ import qs from "qs";
 import React from "react";
 import {toast} from "react-toastify";
 import {Cookies} from "react-cookie";
+import {t} from "ttag";
 import PasswordToggleIcon from "../../utils/password-toggle";
-import {
-  passwordChangeApiUrl,
-  passwordChangeError,
-  passwordConfirmError,
-} from "../../constants";
+import {passwordChangeApiUrl} from "../../constants";
 import getErrorText from "../../utils/get-error-text";
-import getText from "../../utils/get-text";
 import history from "../../utils/history";
 import Contact from "../contact-box";
 import LoadingContext from "../../utils/loading-context";
@@ -36,8 +32,8 @@ export default class PasswordChange extends React.Component {
   }
 
   componentDidMount() {
-    const {language, setTitle, orgName, passwordChange} = this.props;
-    setTitle(passwordChange, language, orgName);
+    const {setTitle, orgName} = this.props;
+    setTitle(t`PWD_CHANGE_TITL`, orgName);
   }
 
   handleSubmit(e) {
@@ -52,7 +48,7 @@ export default class PasswordChange extends React.Component {
     if (newPassword1 !== newPassword2) {
       this.setState({
         errors: {
-          newPassword2: passwordConfirmError,
+          newPassword2: t`PWD_CNF_ERR`,
         },
       });
       return null;
@@ -77,13 +73,13 @@ export default class PasswordChange extends React.Component {
         history.replace(`/${orgSlug}/status`);
       })
       .catch((error) => {
-        const errorText = getErrorText(error, passwordChangeError);
+        const errorText = getErrorText(error, t`PWD_CHNG_ERR`);
         logError(error, errorText);
         toast.error(errorText);
         setLoading(false);
         this.setState({
           errors: {
-            nonField: passwordChangeError,
+            nonField: t`PWD_CHNG_ERR`,
           },
         });
       });
@@ -94,13 +90,13 @@ export default class PasswordChange extends React.Component {
   }
 
   render() {
-    const {language, passwordChange, orgSlug} = this.props;
+    const {passwordChange} = this.props;
     const {errors, newPassword1, newPassword2} = this.state;
     return (
       <div className="container content" id="password-change">
         <div className="inner">
           <form className="main-column" onSubmit={this.handleSubmit}>
-            <h1>{getText(passwordChange.title, language)}</h1>
+            <h1>{t`PWD_CHANGE_TITL`}</h1>
 
             {errors.nonField && (
               <div className="error">
@@ -110,9 +106,7 @@ export default class PasswordChange extends React.Component {
             )}
 
             <div className="row password">
-              <label htmlFor="password">
-                {getText(passwordChange.input_fields.password1.label, language)}
-              </label>
+              <label htmlFor="password">{t`PWD1_LBL`}</label>
 
               {errors.newPassword1 && (
                 <div className="error">
@@ -128,29 +122,18 @@ export default class PasswordChange extends React.Component {
                 name="newPassword1"
                 required
                 value={newPassword1}
-                placeholder={getText(
-                  passwordChange.input_fields.password1.placeholder,
-                  language,
-                )}
+                placeholder={t`PWD1_PHOLD`}
                 pattern={passwordChange.input_fields.password1.pattern}
-                title={getText(
-                  passwordChange.input_fields.password1.pattern_description,
-                )}
+                title={t`PWD_PTRN_DESC`}
                 onChange={(e) => this.handleChange(e)}
                 ref={this.passwordToggleRef}
                 autoComplete="new-password"
               />
-              <PasswordToggleIcon
-                inputRef={this.passwordToggleRef}
-                language={language}
-                orgSlug={orgSlug}
-              />
+              <PasswordToggleIcon inputRef={this.passwordToggleRef} />
             </div>
 
             <div className="row password-confirm">
-              <label htmlFor="password-confirm">
-                {getText(passwordChange.input_fields.password2.label, language)}
-              </label>
+              <label htmlFor="password-confirm">{t`CONFIRM_PWD_LBL`}</label>
 
               {errors.newPassword2 && (
                 <div className="error">
@@ -166,33 +149,21 @@ export default class PasswordChange extends React.Component {
                 id="password-confirm"
                 required
                 value={newPassword2}
-                placeholder={getText(
-                  passwordChange.input_fields.password2.placeholder,
-                  language,
-                )}
+                placeholder={t`CONFIRM_PWD_PHOLD`}
                 pattern={passwordChange.input_fields.password1.pattern}
-                title={getText(
-                  passwordChange.input_fields.password1.pattern_description,
-                )}
+                title={t`PWD_PTRN_DESC`}
                 onChange={(e) => this.handleChange(e)}
                 ref={this.confirmPasswordToggleRef}
                 autoComplete="new-password"
               />
-              <PasswordToggleIcon
-                inputRef={this.confirmPasswordToggleRef}
-                language={language}
-                orgSlug={orgSlug}
-              />
+              <PasswordToggleIcon inputRef={this.confirmPasswordToggleRef} />
             </div>
 
             <div className="row submit">
               <input
                 type="submit"
                 className="button full"
-                value={getText(
-                  passwordChange.buttons.submit_button.text,
-                  language,
-                )}
+                value={t`PASSWORD_CHANGE`}
               />
             </div>
           </form>
@@ -208,28 +179,17 @@ PasswordChange.propTypes = {
   orgSlug: PropTypes.string.isRequired,
   orgName: PropTypes.string.isRequired,
   cookies: PropTypes.instanceOf(Cookies).isRequired,
-  language: PropTypes.string.isRequired,
   passwordChange: PropTypes.shape({
-    title: PropTypes.object,
     input_fields: PropTypes.shape({
       password1: PropTypes.shape({
         type: PropTypes.string.isRequired,
         pattern: PropTypes.string.isRequired,
-        pattern_description: PropTypes.object.isRequired,
-        label: PropTypes.object.isRequired,
-        placeholder: PropTypes.object.isRequired,
       }).isRequired,
       password2: PropTypes.shape({
         type: PropTypes.string.isRequired.isRequired,
-        label: PropTypes.object.isRequired,
-        placeholder: PropTypes.object.isRequired,
+        pattern: PropTypes.string,
       }).isRequired,
     }),
-    buttons: PropTypes.shape({
-      submit_button: PropTypes.shape({
-        text: PropTypes.object.isRequired,
-      }).isRequired,
-    }).isRequired,
   }).isRequired,
   setTitle: PropTypes.func.isRequired,
 };

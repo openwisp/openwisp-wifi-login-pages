@@ -13,12 +13,14 @@ import {loadingContextValue} from "../../utils/loading-context";
 import tick from "../../utils/tick";
 
 import getConfig from "../../utils/get-config";
+import loadTranslation from "../../utils/load-translation";
 import Registration from "./registration";
 
 jest.mock("../../utils/get-config");
+jest.mock("../../utils/load-translation");
 jest.mock("axios");
 
-const createTestProps = function (props, configName = "default") {
+const createTestProps = (props, configName = "default") => {
   const config = getConfig(configName);
   return {
     language: "en",
@@ -75,11 +77,22 @@ const mountComponent = function (passedProps) {
   );
 };
 
+describe("<Registration /> rendering with placeholder translation tags", () => {
+  const props = createTestProps();
+  const wrapper = shallow(<Registration {...props} />, {
+    context: loadingContextValue,
+  });
+  it("should render translation placeholder correctly", () => {
+    expect(wrapper).toMatchSnapshot();
+  });
+});
+
 describe("<Registration /> rendering", () => {
   let props;
   let wrapper;
   beforeEach(() => {
     props = createTestProps();
+    loadTranslation("en", "default");
   });
   it("should render correctly", () => {
     props = createTestProps();
@@ -276,10 +289,10 @@ describe("<Registration /> interactions", () => {
       disableLifecycleMethods: true,
     });
     expect(wrapper.find("[htmlFor='first_name']").text()).toEqual(
-      "first name (optional)",
+      "First name (optional)",
     );
     expect(wrapper.find("[htmlFor='location']").text()).toEqual(
-      "location (optional)",
+      "Location (optional)",
     );
     expect(wrapper.find(".last_name").length).toEqual(0);
     expect(wrapper.find(".birth_date").length).toEqual(0);
@@ -293,13 +306,13 @@ describe("<Registration /> interactions", () => {
       context: loadingContextValue,
       disableLifecycleMethods: true,
     });
-    expect(wrapper.find("[htmlFor='first_name']").text()).toEqual("first name");
-    expect(wrapper.find("[htmlFor='birth_date']").text()).toEqual("birth date");
+    expect(wrapper.find("[htmlFor='first_name']").text()).toEqual("First name");
+    expect(wrapper.find("[htmlFor='birth_date']").text()).toEqual("Birth date");
     expect(wrapper.find("[htmlFor='last_name']").text()).toEqual(
-      "last name (optional)",
+      "Last name (optional)",
     );
     expect(wrapper.find("[htmlFor='location']").text()).toEqual(
-      "location (optional)",
+      "Location (optional)",
     );
   });
   it("should execute authenticate in mobile phone verification flow", async () => {
@@ -441,10 +454,28 @@ describe("Registration without identity verification (Email registration)", () =
     wrapper = await mountComponent(props);
     const component = wrapper.find(Registration);
     const setTitleMock = component.props().setTitle.mock;
-    expect(setTitleMock.calls.pop()).toEqual([
-      props.registration,
-      props.language,
-      props.orgName,
-    ]);
+    expect(setTitleMock.calls.pop()).toEqual(["Sign up", props.orgName]);
+  });
+  it("should set country when selectedCountry is executed", async () => {
+    wrapper = await mountComponent(props);
+    const component = wrapper.find(Registration);
+    const data = {
+      value: "India",
+    };
+    component.instance().selectedCountry(data);
+    expect(component.instance().state.countrySelected).toEqual(data);
+    expect(component.instance().state.country).toEqual(data.value);
+  });
+  it("should change selected_plan on changePlan execution", async () => {
+    wrapper = await mountComponent(props);
+    const component = wrapper.find(Registration);
+    component.instance().setState({plans: [{verifies_identity: true}]});
+    const changeEvent = {
+      target: {
+        value: 0,
+      },
+    };
+    component.instance().changePlan(changeEvent);
+    expect(component.instance().state.selected_plan).toEqual(0);
   });
 });

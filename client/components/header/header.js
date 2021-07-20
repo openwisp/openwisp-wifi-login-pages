@@ -4,7 +4,6 @@ import "./index.css";
 import PropTypes from "prop-types";
 import React from "react";
 import {Link} from "react-router-dom";
-
 import isInternalLink from "../../utils/check-internal-links";
 import getAssetPath from "../../utils/get-asset-path";
 import getText from "../../utils/get-text";

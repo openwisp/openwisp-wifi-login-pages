@@ -1,5 +1,131 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<MobilePhoneChange /> rendering with placeholder translation tags should render translation placeholder correctly 1`] = `
+<div
+  className="container content"
+  id="mobile-phone-change"
+>
+  <div
+    className="inner"
+  >
+    <form
+      className="main-column"
+      id="mobile-phone-change-form"
+      onSubmit={[Function]}
+    >
+      <div
+        className="fieldset row"
+      >
+        <div
+          className="row phone-number"
+        >
+          <label
+            htmlFor="phone-number"
+          >
+            PHONE_LBL
+          </label>
+          <t
+            alwaysDefaultMask={false}
+            areaCodes={null}
+            autoFormat={true}
+            autocompleteSearch={false}
+            buttonClass=""
+            buttonStyle={Object {}}
+            containerClass=""
+            containerStyle={Object {}}
+            copyNumbersOnly={true}
+            country=""
+            countryCodeEditable={true}
+            defaultErrorMessage=""
+            defaultMask="... ... ... ... .."
+            disableCountryCode={false}
+            disableCountryGuess={false}
+            disableDropdown={false}
+            disableInitialCountryGuess={false}
+            disableSearchIcon={false}
+            disabled={false}
+            dropdownClass=""
+            dropdownStyle={Object {}}
+            enableAreaCodeStretch={false}
+            enableAreaCodes={false}
+            enableClickOutside={true}
+            enableLongNumbers={false}
+            enableSearch={false}
+            enableTerritories={false}
+            excludeCountries={Array []}
+            flagsImagePath="./flags.png"
+            inputClass=""
+            inputProps={
+              Object {
+                "className": "form-control input ",
+                "id": "phone-number",
+                "name": "phone_number",
+                "required": true,
+              }
+            }
+            inputStyle={Object {}}
+            isValid={true}
+            jumpCursorToEnd={true}
+            keys={
+              Object {
+                "A": 65,
+                "DOWN": 40,
+                "ENTER": 13,
+                "ESC": 27,
+                "LEFT": 37,
+                "PLUS": 43,
+                "RIGHT": 39,
+                "SPACE": 32,
+                "TAB": 9,
+                "UP": 38,
+                "Z": 90,
+              }
+            }
+            localization={Object {}}
+            masks={null}
+            name="phone_number"
+            onChange={[Function]}
+            onEnterKeyPress={null}
+            onKeyDown={[Function]}
+            onlyCountries={Array []}
+            placeholder="PHONE_PHOLD"
+            preferredCountries={Array []}
+            prefix="+"
+            preserveOrder={Array []}
+            priority={null}
+            regions=""
+            renderStringAsFlag=""
+            searchClass=""
+            searchNotFound="No entries to show"
+            searchPlaceholder="search"
+            searchStyle={Object {}}
+            showDropdown={false}
+            specialLabel="Phone"
+            value=""
+          />
+        </div>
+        <input
+          className="button full"
+          type="submit"
+          value="PHONE_CHANGE_BTN"
+        />
+        <div
+          className="row cancel"
+        >
+          <a
+            className="button full"
+            href="/test-org-2/mobile-phone-verification"
+          >
+            CANCEL
+          </a>
+        </div>
+      </div>
+    </form>
+    <Memo(Connect(Contact)) />
+  </div>
+</div>
+`;
+
 exports[`Change Phone Number: standard flow should render successfully 1`] = `
 <Provider
   store={
@@ -42,348 +168,151 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
           "auto_login": true,
           "components": Object {
             "contact_page": Object {
-              "email": Object {
-                "label": Object {
-                  "en": "E-mail",
-                },
-                "value": Object {
-                  "en": "support@openwisp.co",
-                },
-              },
-              "helpdesk": Object {
-                "label": Object {
-                  "en": "Helpdesk",
-                },
-                "value": Object {
-                  "en": "+789 948 564",
-                },
-              },
+              "email": "support@openwisp.co",
+              "helpdesk": "+789 948 564",
               "social_links": Array [
                 Object {
-                  "alt": Object {
-                    "en": "twitter",
-                  },
+                  "alt": "twitter",
                   "icon": "twitter.svg",
                   "url": "https://twitter.com/openwisp",
                 },
                 Object {
-                  "alt": Object {
-                    "en": "facebook",
-                  },
+                  "alt": "facebook",
                   "icon": "facebook.svg",
                   "url": "https://facebook.com/openwisp",
                 },
               ],
             },
             "mobile_phone_verification_form": Object {
-              "buttons": Object {
-                "change": Object {
-                  "en": "Change your phone number",
-                },
-                "logout": Object {
-                  "en": "Logout",
-                },
-                "resend": Object {
-                  "en": "Send a new verification code",
-                },
-                "verify": Object {
-                  "en": "Submit",
-                },
-              },
               "input_fields": Object {
                 "code": Object {
-                  "label": Object {
-                    "en": "code",
-                  },
                   "pattern": "[0-9]{6,}",
-                  "pattern_description": Object {
-                    "en": "this field must be a 6 digit numeric code",
-                  },
-                  "placeholder": Object {
-                    "en": "enter SMS verification code",
-                  },
                   "type": "text",
                 },
-              },
-              "text": Object {
-                "change": Object {
-                  "en": "Wrong phone number?",
-                },
-                "logout": Object {
-                  "en": "If you need to cancel the process you can log out below.",
-                },
-                "resend": Object {
-                  "en": "If you did not receive the verification SMS code, you can try sending it again by clicking below.",
-                },
-                "token_sent": Object {
-                  "en": "SMS verification code sent successfully.",
-                },
-                "verify": Object {
-                  "en": "Verify your mobile phone number ({phone_number}) by inserting the code you received via SMS below.",
-                },
-              },
-              "title": Object {
-                "en": "Verify mobile number",
               },
             },
             "phone_number_change_form": Object {
               "buttons": Object {
-                "cancel": Object {
-                  "text": Object {
-                    "en": "Cancel",
-                  },
-                },
-                "change_phone_number": Object {
-                  "text": Object {
-                    "en": "Change phone number",
-                  },
-                },
+                "cancel": true,
+                "change_phone_number": true,
               },
               "input_fields": Object {
                 "phone_number": Object {
                   "country": "it",
-                  "label": Object {
-                    "en": "moible phone number",
-                  },
-                  "placeholder": Object {
-                    "en": "enter mobile phone number",
-                  },
+                  "type": "tel",
                 },
-              },
-              "text": Object {
-                "token_sent": Object {
-                  "en": "SMS verification code sent successfully.",
-                },
-              },
-              "title": Object {
-                "en": "Change mobile number",
               },
             },
             "registration_form": Object {
-              "additional_info_text": Object {
-                "en": "By signing up, you accept the {terms_and_conditions} and the {privacy_policy} of this WiFi service. ",
-              },
-              "buttons": Object {
-                "register": Object {
-                  "label": null,
-                  "text": Object {
-                    "en": "sign up",
-                  },
-                },
-              },
+              "additional_info_text": true,
               "input_fields": Object {
                 "birth_date": Object {
-                  "label": Object {
-                    "en": "birth date",
-                  },
-                  "label_optional": Object {
-                    "en": "birth date (optional)",
-                  },
                   "setting": "disabled",
                   "type": "date",
                 },
                 "city": Object {
-                  "label": Object {
-                    "en": "city",
-                  },
-                  "placeholder": Object {
-                    "en": "enter city",
-                  },
                   "type": "text",
                 },
                 "country": Object {
-                  "label": Object {
-                    "en": "country",
-                  },
+                  "type": "text",
                 },
                 "email": Object {
-                  "label": Object {
-                    "en": "email",
-                  },
                   "pattern": ".+@.+\\\\..+",
-                  "pattern_description": Object {
-                    "en": null,
-                  },
-                  "placeholder": Object {
-                    "en": "email address",
-                  },
                   "type": "email",
                 },
                 "first_name": Object {
-                  "label": Object {
-                    "en": "first name",
-                  },
-                  "label_optional": Object {
-                    "en": "first name (optional)",
-                  },
                   "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
-                  "pattern_description": Object {
-                    "en": "only letters, numbers, and @/./+/-/_ characters",
-                  },
-                  "placeholder": Object {
-                    "en": "enter first_name",
-                  },
                   "setting": "disabled",
                   "type": "text",
                 },
                 "last_name": Object {
-                  "label": Object {
-                    "en": "last name",
-                  },
-                  "label_optional": Object {
-                    "en": "last name (optional)",
-                  },
                   "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
-                  "pattern_description": Object {
-                    "en": "only letters, numbers, and @/./+/-/_ characters",
-                  },
-                  "placeholder": Object {
-                    "en": "enter last_name",
-                  },
                   "setting": "disabled",
                   "type": "text",
                 },
                 "location": Object {
-                  "label": Object {
-                    "en": "location",
-                  },
-                  "label_optional": Object {
-                    "en": "location (optional)",
-                  },
                   "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
-                  "pattern_description": Object {
-                    "en": "only letters, numbers, and @/./+/-/_ characters",
-                  },
-                  "placeholder": Object {
-                    "en": "enter location",
-                  },
                   "setting": "disabled",
                   "type": "text",
                 },
                 "password": Object {
-                  "label": Object {
-                    "en": "password",
-                  },
                   "pattern": ".{6,}",
-                  "pattern_description": Object {
-                    "en": "password must be a minimum of 6 characters",
-                  },
-                  "placeholder": Object {
-                    "en": "password",
-                  },
                   "type": "password",
                 },
                 "password_confirm": Object {
-                  "label": Object {
-                    "en": "confirm",
-                  },
                   "pattern": null,
-                  "pattern_description": Object {
-                    "en": null,
-                  },
-                  "placeholder": Object {
-                    "en": "confirm password",
-                  },
                   "type": "password",
                 },
                 "phone_number": Object {
                   "country": "it",
-                  "label": Object {
-                    "en": "moible phone number",
-                  },
-                  "placeholder": Object {
-                    "en": "enter mobile phone number",
-                  },
+                  "type": "tel",
                 },
                 "street": Object {
-                  "label": Object {
-                    "en": "street",
-                  },
-                  "placeholder": Object {
-                    "en": "enter street",
-                  },
                   "type": "text",
                 },
                 "tax_number": Object {
-                  "label": Object {
-                    "en": "tax_number",
-                  },
                   "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
-                  "pattern_description": Object {
-                    "en": "only letters, numbers, and @/./+/-/_ characters",
-                  },
-                  "placeholder": Object {
-                    "en": "enter tax_number",
-                  },
                   "type": "text",
                 },
                 "username": Object {
-                  "label": Object {
-                    "en": "username",
-                  },
                   "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
-                  "pattern_description": Object {
-                    "en": "only letters, numbers, and @/./+/-/_ characters",
-                  },
-                  "placeholder": Object {
-                    "en": "enter username",
-                  },
                   "type": "text",
                 },
                 "zipcode": Object {
-                  "label": Object {
-                    "en": "zipcode",
-                  },
                   "type": "number",
                 },
               },
               "links": Object {
-                "login": Object {
-                  "en": "Already have an account? Log in",
-                },
-              },
-              "plans_setting": Object {
-                "text": Object {
-                  "en": "Select your plan below",
-                },
-              },
-              "title": Object {
-                "en": "Sign up",
+                "login": true,
               },
             },
           },
           "name": "test org 2 (sms)",
-          "password_eye_icon": Object {
-            "hide": Object {
-              "title": Object {
-                "en": "hide password",
-              },
-            },
-            "reveal": Object {
-              "title": Object {
-                "en": "reveal password",
-              },
-            },
-          },
           "privacy_policy": Object {
-            "content": Object {
-              "en": "...",
-            },
-            "title": Object {
-              "en": "privacy policy",
-            },
+            "en": "<h1 id=\\"openwisp-wifi-login-pages-privacy-policy\\">openwisp-wifi-login-pages Privacy Policy</h1>
+<ul>
+<li><p>Your privacy is important to us. It is Openwisp's policy to respect your privacy regarding any information we may collect from you across openwisp-wifi-login-pages.</p>
+</li>
+<li><p>We only ask for personal information when we truly need it to provide a service to you. We collect it by fair and lawful means, with your knowledge and consent. We also let you know why we’re collecting it and how it will be used.</p>
+</li>
+<li><p>We only retain collected information for as long as necessary to provide you with your requested service. What data we store, we’ll protect within commercially acceptable means to prevent loss and theft, as well as unauthorised access, disclosure, copying, use or modification.</p>
+</li>
+<li><p>We don’t share any personally identifying information publicly or with third-parties, except when required to by law.</p>
+</li>
+<li><p>Our website may link to external sites that are not operated by us. Please be aware that we have no control over the content and practices of these sites, and cannot accept responsibility or liability for their respective privacy policies.</p>
+</li>
+<li><p>You are free to refuse our request for your personal information, with the understanding that we may be unable to provide you with some of your desired services.</p>
+</li>
+<li><p>Your continued use of our website will be regarded as acceptance of our practices around privacy and personal information. If you have any questions about how we handle user data and personal information, feel free to contact us.</p>
+</li>
+</ul>
+",
           },
           "settings": Object {
             "mobile_phone_verification": true,
           },
           "slug": "test-org-2",
           "terms_and_conditions": Object {
-            "content": Object {
-              "en": "...",
-            },
-            "title": Object {
-              "en": "terms and conditions",
-            },
+            "en": "<h1 id=\\"openwisp-wifi-login-pages-terms-and-conditions\\">Openwisp-wifi-login-pages Terms and Conditions</h1>
+<ul>
+<li><p>By using or visiting the Openwisp-wifi-login-pages, you signify your agreement
+to these terms and conditions (the \\"Terms of Service\\") and the Privacy policy.</p>
+</li>
+<li><p>In order to access the wifi service, you need to be a registered user of the
+default organization.</p>
+</li>
+<li><p>Openwisp-wifi-login-pages is not liable for any unauthorized use of your account,
+you may be liable for the losses of the services or others due to such unauthorized use.</p>
+</li>
+<li><p>Openwisp reserves the right to discontinue or disallow any user, group or any
+specific IP (internal or external) from using its services without any prior notice.</p>
+</li>
+<li><p>Violating the above mentioned Terms and Conditions may result in the termination
+of the particular user account or the particular IP address from accessing
+Openwisp-wifi-login-pages and using its services in the future.</p>
+</li>
+</ul>
+",
           },
         }
       }
@@ -394,42 +323,20 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
           "cookies": Object {},
         }
       }
-      language="en"
       logout={[MockFunction]}
       orgName="test org 2 (sms)"
       orgSlug="test-org-2"
       phone_number_change={
         Object {
           "buttons": Object {
-            "cancel": Object {
-              "text": Object {
-                "en": "Cancel",
-              },
-            },
-            "change_phone_number": Object {
-              "text": Object {
-                "en": "Change phone number",
-              },
-            },
+            "cancel": true,
+            "change_phone_number": true,
           },
           "input_fields": Object {
             "phone_number": Object {
               "country": "it",
-              "label": Object {
-                "en": "moible phone number",
-              },
-              "placeholder": Object {
-                "en": "enter mobile phone number",
-              },
+              "type": "tel",
             },
-          },
-          "text": Object {
-            "token_sent": Object {
-              "en": "SMS verification code sent successfully.",
-            },
-          },
-          "title": Object {
-            "en": "Change mobile number",
           },
         }
       }
@@ -437,40 +344,7 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
         [MockFunction] {
           "calls": Array [
             Array [
-              Object {
-                "buttons": Object {
-                  "cancel": Object {
-                    "text": Object {
-                      "en": "Cancel",
-                    },
-                  },
-                  "change_phone_number": Object {
-                    "text": Object {
-                      "en": "Change phone number",
-                    },
-                  },
-                },
-                "input_fields": Object {
-                  "phone_number": Object {
-                    "country": "it",
-                    "label": Object {
-                      "en": "moible phone number",
-                    },
-                    "placeholder": Object {
-                      "en": "enter mobile phone number",
-                    },
-                  },
-                },
-                "text": Object {
-                  "token_sent": Object {
-                    "en": "SMS verification code sent successfully.",
-                  },
-                },
-                "title": Object {
-                  "en": "Change mobile number",
-                },
-              },
-              "en",
+              "Change mobile number",
               "test org 2 (sms)",
             ],
           ],
@@ -504,348 +378,151 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
             "auto_login": true,
             "components": Object {
               "contact_page": Object {
-                "email": Object {
-                  "label": Object {
-                    "en": "E-mail",
-                  },
-                  "value": Object {
-                    "en": "support@openwisp.co",
-                  },
-                },
-                "helpdesk": Object {
-                  "label": Object {
-                    "en": "Helpdesk",
-                  },
-                  "value": Object {
-                    "en": "+789 948 564",
-                  },
-                },
+                "email": "support@openwisp.co",
+                "helpdesk": "+789 948 564",
                 "social_links": Array [
                   Object {
-                    "alt": Object {
-                      "en": "twitter",
-                    },
+                    "alt": "twitter",
                     "icon": "twitter.svg",
                     "url": "https://twitter.com/openwisp",
                   },
                   Object {
-                    "alt": Object {
-                      "en": "facebook",
-                    },
+                    "alt": "facebook",
                     "icon": "facebook.svg",
                     "url": "https://facebook.com/openwisp",
                   },
                 ],
               },
               "mobile_phone_verification_form": Object {
-                "buttons": Object {
-                  "change": Object {
-                    "en": "Change your phone number",
-                  },
-                  "logout": Object {
-                    "en": "Logout",
-                  },
-                  "resend": Object {
-                    "en": "Send a new verification code",
-                  },
-                  "verify": Object {
-                    "en": "Submit",
-                  },
-                },
                 "input_fields": Object {
                   "code": Object {
-                    "label": Object {
-                      "en": "code",
-                    },
                     "pattern": "[0-9]{6,}",
-                    "pattern_description": Object {
-                      "en": "this field must be a 6 digit numeric code",
-                    },
-                    "placeholder": Object {
-                      "en": "enter SMS verification code",
-                    },
                     "type": "text",
                   },
-                },
-                "text": Object {
-                  "change": Object {
-                    "en": "Wrong phone number?",
-                  },
-                  "logout": Object {
-                    "en": "If you need to cancel the process you can log out below.",
-                  },
-                  "resend": Object {
-                    "en": "If you did not receive the verification SMS code, you can try sending it again by clicking below.",
-                  },
-                  "token_sent": Object {
-                    "en": "SMS verification code sent successfully.",
-                  },
-                  "verify": Object {
-                    "en": "Verify your mobile phone number ({phone_number}) by inserting the code you received via SMS below.",
-                  },
-                },
-                "title": Object {
-                  "en": "Verify mobile number",
                 },
               },
               "phone_number_change_form": Object {
                 "buttons": Object {
-                  "cancel": Object {
-                    "text": Object {
-                      "en": "Cancel",
-                    },
-                  },
-                  "change_phone_number": Object {
-                    "text": Object {
-                      "en": "Change phone number",
-                    },
-                  },
+                  "cancel": true,
+                  "change_phone_number": true,
                 },
                 "input_fields": Object {
                   "phone_number": Object {
                     "country": "it",
-                    "label": Object {
-                      "en": "moible phone number",
-                    },
-                    "placeholder": Object {
-                      "en": "enter mobile phone number",
-                    },
+                    "type": "tel",
                   },
-                },
-                "text": Object {
-                  "token_sent": Object {
-                    "en": "SMS verification code sent successfully.",
-                  },
-                },
-                "title": Object {
-                  "en": "Change mobile number",
                 },
               },
               "registration_form": Object {
-                "additional_info_text": Object {
-                  "en": "By signing up, you accept the {terms_and_conditions} and the {privacy_policy} of this WiFi service. ",
-                },
-                "buttons": Object {
-                  "register": Object {
-                    "label": null,
-                    "text": Object {
-                      "en": "sign up",
-                    },
-                  },
-                },
+                "additional_info_text": true,
                 "input_fields": Object {
                   "birth_date": Object {
-                    "label": Object {
-                      "en": "birth date",
-                    },
-                    "label_optional": Object {
-                      "en": "birth date (optional)",
-                    },
                     "setting": "disabled",
                     "type": "date",
                   },
                   "city": Object {
-                    "label": Object {
-                      "en": "city",
-                    },
-                    "placeholder": Object {
-                      "en": "enter city",
-                    },
                     "type": "text",
                   },
                   "country": Object {
-                    "label": Object {
-                      "en": "country",
-                    },
+                    "type": "text",
                   },
                   "email": Object {
-                    "label": Object {
-                      "en": "email",
-                    },
                     "pattern": ".+@.+\\\\..+",
-                    "pattern_description": Object {
-                      "en": null,
-                    },
-                    "placeholder": Object {
-                      "en": "email address",
-                    },
                     "type": "email",
                   },
                   "first_name": Object {
-                    "label": Object {
-                      "en": "first name",
-                    },
-                    "label_optional": Object {
-                      "en": "first name (optional)",
-                    },
                     "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
-                    "pattern_description": Object {
-                      "en": "only letters, numbers, and @/./+/-/_ characters",
-                    },
-                    "placeholder": Object {
-                      "en": "enter first_name",
-                    },
                     "setting": "disabled",
                     "type": "text",
                   },
                   "last_name": Object {
-                    "label": Object {
-                      "en": "last name",
-                    },
-                    "label_optional": Object {
-                      "en": "last name (optional)",
-                    },
                     "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
-                    "pattern_description": Object {
-                      "en": "only letters, numbers, and @/./+/-/_ characters",
-                    },
-                    "placeholder": Object {
-                      "en": "enter last_name",
-                    },
                     "setting": "disabled",
                     "type": "text",
                   },
                   "location": Object {
-                    "label": Object {
-                      "en": "location",
-                    },
-                    "label_optional": Object {
-                      "en": "location (optional)",
-                    },
                     "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
-                    "pattern_description": Object {
-                      "en": "only letters, numbers, and @/./+/-/_ characters",
-                    },
-                    "placeholder": Object {
-                      "en": "enter location",
-                    },
                     "setting": "disabled",
                     "type": "text",
                   },
                   "password": Object {
-                    "label": Object {
-                      "en": "password",
-                    },
                     "pattern": ".{6,}",
-                    "pattern_description": Object {
-                      "en": "password must be a minimum of 6 characters",
-                    },
-                    "placeholder": Object {
-                      "en": "password",
-                    },
                     "type": "password",
                   },
                   "password_confirm": Object {
-                    "label": Object {
-                      "en": "confirm",
-                    },
                     "pattern": null,
-                    "pattern_description": Object {
-                      "en": null,
-                    },
-                    "placeholder": Object {
-                      "en": "confirm password",
-                    },
                     "type": "password",
                   },
                   "phone_number": Object {
                     "country": "it",
-                    "label": Object {
-                      "en": "moible phone number",
-                    },
-                    "placeholder": Object {
-                      "en": "enter mobile phone number",
-                    },
+                    "type": "tel",
                   },
                   "street": Object {
-                    "label": Object {
-                      "en": "street",
-                    },
-                    "placeholder": Object {
-                      "en": "enter street",
-                    },
                     "type": "text",
                   },
                   "tax_number": Object {
-                    "label": Object {
-                      "en": "tax_number",
-                    },
                     "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
-                    "pattern_description": Object {
-                      "en": "only letters, numbers, and @/./+/-/_ characters",
-                    },
-                    "placeholder": Object {
-                      "en": "enter tax_number",
-                    },
                     "type": "text",
                   },
                   "username": Object {
-                    "label": Object {
-                      "en": "username",
-                    },
                     "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
-                    "pattern_description": Object {
-                      "en": "only letters, numbers, and @/./+/-/_ characters",
-                    },
-                    "placeholder": Object {
-                      "en": "enter username",
-                    },
                     "type": "text",
                   },
                   "zipcode": Object {
-                    "label": Object {
-                      "en": "zipcode",
-                    },
                     "type": "number",
                   },
                 },
                 "links": Object {
-                  "login": Object {
-                    "en": "Already have an account? Log in",
-                  },
-                },
-                "plans_setting": Object {
-                  "text": Object {
-                    "en": "Select your plan below",
-                  },
-                },
-                "title": Object {
-                  "en": "Sign up",
+                  "login": true,
                 },
               },
             },
             "name": "test org 2 (sms)",
-            "password_eye_icon": Object {
-              "hide": Object {
-                "title": Object {
-                  "en": "hide password",
-                },
-              },
-              "reveal": Object {
-                "title": Object {
-                  "en": "reveal password",
-                },
-              },
-            },
             "privacy_policy": Object {
-              "content": Object {
-                "en": "...",
-              },
-              "title": Object {
-                "en": "privacy policy",
-              },
+              "en": "<h1 id=\\"openwisp-wifi-login-pages-privacy-policy\\">openwisp-wifi-login-pages Privacy Policy</h1>
+<ul>
+<li><p>Your privacy is important to us. It is Openwisp's policy to respect your privacy regarding any information we may collect from you across openwisp-wifi-login-pages.</p>
+</li>
+<li><p>We only ask for personal information when we truly need it to provide a service to you. We collect it by fair and lawful means, with your knowledge and consent. We also let you know why we’re collecting it and how it will be used.</p>
+</li>
+<li><p>We only retain collected information for as long as necessary to provide you with your requested service. What data we store, we’ll protect within commercially acceptable means to prevent loss and theft, as well as unauthorised access, disclosure, copying, use or modification.</p>
+</li>
+<li><p>We don’t share any personally identifying information publicly or with third-parties, except when required to by law.</p>
+</li>
+<li><p>Our website may link to external sites that are not operated by us. Please be aware that we have no control over the content and practices of these sites, and cannot accept responsibility or liability for their respective privacy policies.</p>
+</li>
+<li><p>You are free to refuse our request for your personal information, with the understanding that we may be unable to provide you with some of your desired services.</p>
+</li>
+<li><p>Your continued use of our website will be regarded as acceptance of our practices around privacy and personal information. If you have any questions about how we handle user data and personal information, feel free to contact us.</p>
+</li>
+</ul>
+",
             },
             "settings": Object {
               "mobile_phone_verification": true,
             },
             "slug": "test-org-2",
             "terms_and_conditions": Object {
-              "content": Object {
-                "en": "...",
-              },
-              "title": Object {
-                "en": "terms and conditions",
-              },
+              "en": "<h1 id=\\"openwisp-wifi-login-pages-terms-and-conditions\\">Openwisp-wifi-login-pages Terms and Conditions</h1>
+<ul>
+<li><p>By using or visiting the Openwisp-wifi-login-pages, you signify your agreement
+to these terms and conditions (the \\"Terms of Service\\") and the Privacy policy.</p>
+</li>
+<li><p>In order to access the wifi service, you need to be a registered user of the
+default organization.</p>
+</li>
+<li><p>Openwisp-wifi-login-pages is not liable for any unauthorized use of your account,
+you may be liable for the losses of the services or others due to such unauthorized use.</p>
+</li>
+<li><p>Openwisp reserves the right to discontinue or disallow any user, group or any
+specific IP (internal or external) from using its services without any prior notice.</p>
+</li>
+<li><p>Violating the above mentioned Terms and Conditions may result in the termination
+of the particular user account or the particular IP address from accessing
+Openwisp-wifi-login-pages and using its services in the future.</p>
+</li>
+</ul>
+",
             },
           }
         }
@@ -880,7 +557,6 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
             "replace": [Function],
           }
         }
-        language="en"
         location={
           Object {
             "hash": "",
@@ -904,35 +580,14 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
         phone_number_change={
           Object {
             "buttons": Object {
-              "cancel": Object {
-                "text": Object {
-                  "en": "Cancel",
-                },
-              },
-              "change_phone_number": Object {
-                "text": Object {
-                  "en": "Change phone number",
-                },
-              },
+              "cancel": true,
+              "change_phone_number": true,
             },
             "input_fields": Object {
               "phone_number": Object {
                 "country": "it",
-                "label": Object {
-                  "en": "moible phone number",
-                },
-                "placeholder": Object {
-                  "en": "enter mobile phone number",
-                },
+                "type": "tel",
               },
-            },
-            "text": Object {
-              "token_sent": Object {
-                "en": "SMS verification code sent successfully.",
-              },
-            },
-            "title": Object {
-              "en": "Change mobile number",
             },
           }
         }
@@ -940,40 +595,7 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
           [MockFunction] {
             "calls": Array [
               Array [
-                Object {
-                  "buttons": Object {
-                    "cancel": Object {
-                      "text": Object {
-                        "en": "Cancel",
-                      },
-                    },
-                    "change_phone_number": Object {
-                      "text": Object {
-                        "en": "Change phone number",
-                      },
-                    },
-                  },
-                  "input_fields": Object {
-                    "phone_number": Object {
-                      "country": "it",
-                      "label": Object {
-                        "en": "moible phone number",
-                      },
-                      "placeholder": Object {
-                        "en": "enter mobile phone number",
-                      },
-                    },
-                  },
-                  "text": Object {
-                    "token_sent": Object {
-                      "en": "SMS verification code sent successfully.",
-                    },
-                  },
-                  "title": Object {
-                    "en": "Change mobile number",
-                  },
-                },
-                "en",
+                "Change mobile number",
                 "test org 2 (sms)",
               ],
             ],
@@ -1022,7 +644,7 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
                   <label
                     htmlFor="phone-number"
                   >
-                    moible phone number
+                    Mobile phone number
                   </label>
                   <t
                     alwaysDefaultMask={false}
@@ -1158,7 +780,7 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
                 <input
                   className="button full"
                   type="submit"
-                  value="Change phone number"
+                  value="Change your phone number"
                 />
                 <div
                   className="row cancel"
@@ -1176,34 +798,16 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
               <Contact
                 contactPage={
                   Object {
-                    "email": Object {
-                      "label": Object {
-                        "en": "E-mail",
-                      },
-                      "value": Object {
-                        "en": "support@openwisp.co",
-                      },
-                    },
-                    "helpdesk": Object {
-                      "label": Object {
-                        "en": "Helpdesk",
-                      },
-                      "value": Object {
-                        "en": "+789 948 564",
-                      },
-                    },
+                    "email": "support@openwisp.co",
+                    "helpdesk": "+789 948 564",
                     "social_links": Array [
                       Object {
-                        "alt": Object {
-                          "en": "twitter",
-                        },
+                        "alt": "twitter",
                         "icon": "twitter.svg",
                         "url": "https://twitter.com/openwisp",
                       },
                       Object {
-                        "alt": Object {
-                          "en": "facebook",
-                        },
+                        "alt": "facebook",
                         "icon": "facebook.svg",
                         "url": "https://facebook.com/openwisp",
                       },
@@ -1212,7 +816,6 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
                 }
                 dispatch={[Function]}
                 isAuthenticated={false}
-                language="en"
                 orgSlug="test-org-2"
                 userData={Object {}}
               >
@@ -1228,7 +831,7 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
                       <span
                         className="label"
                       >
-                        E-mail
+                        Email
                         :
                       </span>
                       <a
@@ -1265,7 +868,6 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
                         target="_blank"
                       >
                         <img
-                          alt="twitter"
                           className="contact-image "
                           src="/assets/test-org-2/twitter.svg"
                         />
@@ -1278,7 +880,6 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
                         target="_blank"
                       >
                         <img
-                          alt="facebook"
                           className="contact-image "
                           src="/assets/test-org-2/facebook.svg"
                         />
