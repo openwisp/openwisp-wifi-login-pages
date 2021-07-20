@@ -253,7 +253,7 @@ msgstr "Sign up"
 
 #: client/components/payment-status/payment-status.js:65
 msgid "PAY_SUCCESS"
-msgstr "Payment received successfully!"
+msgstr "Payment received successfully."
 
 #: client/components/payment-status/payment-status.js:75
 #. failed payment case
@@ -524,7 +524,7 @@ msgstr "Logout successful"
 #: client/components/password-change/password-change.js:82
 #: client/components/password-change/password-change.test.js:120
 msgid "PWD_CHNG_ERR"
-msgstr "Some error occured. Couldn't change password!"
+msgstr "An error occurred, the password has not been changed."
 
 #: client/components/password-change/password-change.js:51
 #: client/components/password-change/password-change.test.js:106
