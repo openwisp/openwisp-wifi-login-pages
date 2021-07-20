@@ -112,7 +112,7 @@
     "test-inspect": "node inspect ./node_modules/.bin/jest --runInBand",
     "stats": "STATS=true webpack-cli --profile --json --config config/webpack.config.js > compilation-stats.json && webpack-bundle-analyzer dist/stats.json",
     "translations-add": "ttag init",
-    "translations-update": "ttag update $POFILE client/"
+    "translations-update": "sh -c 'ttag update $0 client/'"
   },
   "repository": {
     "type": "git",

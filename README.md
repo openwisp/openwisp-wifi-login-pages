@@ -440,21 +440,32 @@ languages:
 
 Translation file with content headers can be created by running:
 
-`yarn translations-add {language_code} i18n/{file_name}.po`
+```
+yarn translations-add {language_code} i18n/{file_name}.po
+```
 
 Here `file_name` can be `{orgSlug}_{language_code}.custom.po`, `{language_code}.custom.po\` or
 `{language_code}.po`.
 
-See [update-translations](#update-translations) for extracting translation placeholders
-from the code.
+The files created with the command above are mostly empty because when
+adding custom translations it is not needed to extract all the message
+identifiers from the code.
+
+If instead you are adding support to a new language or updating the
+translations after having changed the code, you will need to extract the
+message identifiers, see [update-translations](#update-translations)
+for more information.
 
 #### Update translations
 
-For extraction or updating translations in the `.po` file, Use the command:
+To extract or update translations in the `.po` file,
+use the following command:
 
-`POFILE=<path-to-po-file> yarn translations-update`
+```
+yarn translations-update <path-to-po-file>
+```
 
-This will extract all the translations tags from the `client/` and updates the passed `po` file.
+This will extract all the translations tags from the code and update `.po` file passed as argument.
 
 #### Customizing translations for a specific language
 
