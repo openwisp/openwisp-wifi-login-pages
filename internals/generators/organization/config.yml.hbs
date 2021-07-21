@@ -66,19 +66,19 @@ client:
       links:
         - text:
             en: "Sign In" #link text in english
-          url: "/{{slug}}/login"
+          url: "/{orgSlug}/login"
           authenticated: false
         - text:
             en: "Sign Up"
-          url: "/{{slug}}/registration"
+          url: "/{orgSlug}/registration"
           authenticated: false
         - text:
             en: "Status"
-          url: "/{{slug}}/status"
+          url: "/{orgSlug}/status"
           authenticated: true
         - text:
             en: "Change password"
-          url: "/{{slug}}/change-password"
+          url: "/{orgSlug}/change-password"
           authenticated: true
           {{#if mobile_phone_verification }}
           verified: true
@@ -86,7 +86,7 @@ client:
       {{#if mobile_phone_verification }}
         - text:
             en: "Change phone number"
-          url: "/{{slug}}/change-phone-number"
+          url: "/{orgSlug}/change-phone-number"
           authenticated: true
           method: "mobile_phone"
       {{/if}}
@@ -117,41 +117,28 @@ client:
           # restrict international prefixes shown
           # only_countries: ["it", "de", "uk"]
         username:
-          type: "text"
           pattern: '[a-zA-Z@.+\-_\d]{1,150}'
         email:
-          type: "email"
           pattern: '.+@.+\..+'
         password:
-          type: "password"
           pattern: ".{6,}"
         password_confirm:
-          type: "password"
           pattern: ".{6,}"
         first_name:
-          type: "text"
           setting: "disabled"
         last_name:
-          type: "text"
           setting: "disabled"
         birth_date:
-          type: "date"
           setting: "disabled"
         location:
-          type: "text"
           pattern: '[a-zA-Z@.+\-_\d]{1,150}'
           setting: "disabled"
         country:
-          type: "text"
           pattern: '[a-zA-Z@.+\-_\d\s]{1,150}'
-        zipcode:
-          type: number
-        street:
-          type: "text"
-        city:
-          type: "text"
+        zipcode: {}
+        street: {}
+        city: {}
         tax_number:
-          type: "text"
           pattern: '[a-zA-Z@.+\-_\d]{1,150}'
       additional_info_text: true
       links:
@@ -161,7 +148,6 @@ client:
     mobile_phone_verification_form:
       input_fields:
         code:
-          type: "text"
           pattern: '[0-9]{6,}'
 
     phone_number_change_form:
@@ -173,7 +159,6 @@ client:
       additional_text: true
       input_fields:
         email:
-          type: "email"
           pattern: '.+@.+\..+'
       contact_text: true
       login_page_link: true
@@ -182,10 +167,8 @@ client:
       additional_text: true
       input_fields:
         password:
-          type: "password"
           pattern: ".{6,}"
         password_confirm:
-          type: "password"
           pattern: ".{6,}"
       contact_text: true
       login_page_link: true
@@ -248,12 +231,9 @@ client:
         username:
           type: "email"
           pattern: '.+@.+\..+'
-          pattern: '.+@.+\..+'
         password:
-          type: "password"
           pattern: ".{6,}"
         remember_me:
-          type: "checkbox"
           value: {{remember_me}}
       additional_info_text: true
       buttons:
@@ -264,10 +244,8 @@ client:
     password_change_form:
       input_fields:
         password1:
-          type: "password"
           pattern: ".{6,}"
         password2:
-          type: "password"
           pattern: ".{6,}"
 
     404_page:

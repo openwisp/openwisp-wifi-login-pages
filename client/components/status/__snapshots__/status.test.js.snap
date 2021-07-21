@@ -154,7 +154,6 @@ exports[`<Status /> rendering should render correctly 1`] = `
         type="hidden"
         value=""
       />
-      0
     </form>
     <iframe
       className="hidden"
@@ -314,7 +313,6 @@ exports[`<Status /> rendering with placeholder translation tags should render tr
         type="hidden"
         value=""
       />
-      0
     </form>
     <iframe
       className="hidden"

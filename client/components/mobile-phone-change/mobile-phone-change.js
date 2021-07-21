@@ -202,7 +202,6 @@ MobilePhoneChange.propTypes = {
   phone_number_change: PropTypes.shape({
     input_fields: PropTypes.shape({
       phone_number: PropTypes.shape({
-        type: PropTypes.string,
         only_countries: PropTypes.array,
         preferred_countries: PropTypes.array,
         exclude_countries: PropTypes.array,

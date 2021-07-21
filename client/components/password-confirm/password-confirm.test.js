@@ -96,7 +96,6 @@ describe("<PasswordConfirm /> rendering", () => {
   });
 
   it("should render password field correctly", () => {
-    const {password} = props.passwordConfirm.input_fields;
     expect(wrapper.find(".row.password label").text()).toBe(
       getTranslationString("PWD_LBL"),
     );
@@ -107,11 +106,10 @@ describe("<PasswordConfirm /> rendering", () => {
     expect(passwordInput.prop("title")).toBe(
       getTranslationString("PWD_PTRN_DESC"),
     );
-    expect(passwordInput.prop("type")).toBe(password.type);
+    expect(passwordInput.prop("type")).toBe("password");
   });
 
   it("should render password confirm field correctly", () => {
-    const {password_confirm} = props.passwordConfirm.input_fields;
     expect(wrapper.find(".row.password-confirm label").text()).toBe(
       getTranslationString("CONFIRM_PWD_LBL"),
     );
@@ -122,7 +120,7 @@ describe("<PasswordConfirm /> rendering", () => {
     expect(confirmInput.prop("title")).toBe(
       getTranslationString("PWD_PTRN_DESC"),
     );
-    expect(confirmInput.prop("type")).toBe(password_confirm.type);
+    expect(confirmInput.prop("type")).toBe("password");
   });
 });
 

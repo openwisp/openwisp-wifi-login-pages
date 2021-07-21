@@ -425,7 +425,7 @@ export default class Registration extends React.Component {
                       )}
                       <input
                         className={`input ${errors.email ? "error" : ""}`}
-                        type={input_fields.email.type}
+                        type="email"
                         id="email"
                         required
                         name="email"
@@ -455,7 +455,7 @@ export default class Registration extends React.Component {
                         )}
                         <input
                           className={`input ${errors.username ? "error" : ""}`}
-                          type={input_fields.username.type}
+                          type="text"
                           id="username"
                           required
                           name="username"
@@ -497,7 +497,7 @@ export default class Registration extends React.Component {
                           className={`input ${
                             errors.first_name ? "error" : ""
                           }`}
-                          type={input_fields.first_name.type}
+                          type="text"
                           id="first_name"
                           required={
                             input_fields.first_name.setting === "mandatory" ||
@@ -531,7 +531,7 @@ export default class Registration extends React.Component {
                         )}
                         <input
                           className={`input ${errors.last_name ? "error" : ""}`}
-                          type={input_fields.last_name.type}
+                          type="text"
                           id="last_name"
                           required={
                             input_fields.last_name.setting === "mandatory" ||
@@ -565,7 +565,7 @@ export default class Registration extends React.Component {
                           className={`input ${
                             errors.birth_date ? "error" : ""
                           }`}
-                          type={input_fields.birth_date.type}
+                          type="date"
                           id="birth_date"
                           required={
                             input_fields.birth_date.setting === "mandatory"
@@ -595,7 +595,7 @@ export default class Registration extends React.Component {
                         )}
                         <input
                           className={`input ${errors.location ? "error" : ""}`}
-                          type={input_fields.location.type}
+                          type="text"
                           id="location"
                           required={
                             input_fields.location.setting === "mandatory"
@@ -621,7 +621,7 @@ export default class Registration extends React.Component {
                       )}
                       <input
                         className={`input ${errors.password1 ? "error" : ""}`}
-                        type={input_fields.password.type}
+                        type="password"
                         id="password"
                         required
                         name="password1"
@@ -650,7 +650,7 @@ export default class Registration extends React.Component {
                       )}
                       <input
                         className={`input ${errors.password2 ? "error" : ""}`}
-                        type={input_fields.password_confirm.type}
+                        type="password"
                         id="password-confirm"
                         required
                         name="password2"
@@ -698,7 +698,7 @@ export default class Registration extends React.Component {
                             )}
                             <input
                               className={`input ${errors.city ? "error" : ""}`}
-                              type={input_fields.city.type}
+                              type="text"
                               id="city"
                               required
                               name="city"
@@ -722,7 +722,7 @@ export default class Registration extends React.Component {
                               className={`input ${
                                 errors.street ? "error" : ""
                               }`}
-                              type={input_fields.street.type}
+                              type="text"
                               id="street"
                               required
                               name="street"
@@ -746,7 +746,7 @@ export default class Registration extends React.Component {
                               className={`input ${
                                 errors.zipcode ? "error" : ""
                               }`}
-                              type={input_fields.zipcode.type}
+                              type="number"
                               id="zipcode"
                               required
                               name="zipcode"
@@ -771,7 +771,7 @@ export default class Registration extends React.Component {
                               className={`input ${
                                 errors.tax_number ? "error" : ""
                               }`}
-                              type={input_fields.tax_number.type}
+                              type="text"
                               id="tax_number"
                               name="tax_number"
                               value={tax_number}
@@ -857,21 +857,18 @@ Registration.propTypes = {
   registration: PropTypes.shape({
     input_fields: PropTypes.shape({
       email: PropTypes.shape({
-        type: PropTypes.string.isRequired,
         pattern: PropTypes.string.isRequired,
       }).isRequired,
       username: PropTypes.shape({
-        type: PropTypes.string.isRequired,
         pattern: PropTypes.string.isRequired,
         label: PropTypes.object,
         placeholder: PropTypes.object,
       }),
       password: PropTypes.shape({
-        type: PropTypes.string.isRequired,
         pattern: PropTypes.string.isRequired,
       }).isRequired,
       password_confirm: PropTypes.shape({
-        type: PropTypes.string.isRequired,
+        pattern: PropTypes.string,
       }).isRequired,
       phone_number: PropTypes.shape({
         country: PropTypes.string,
@@ -881,37 +878,25 @@ Registration.propTypes = {
         enable_search: PropTypes.bool,
       }),
       first_name: PropTypes.shape({
-        type: PropTypes.string.isRequired,
         setting: PropTypes.string.isRequired,
       }),
       last_name: PropTypes.shape({
-        type: PropTypes.string.isRequired,
         setting: PropTypes.string.isRequired,
       }),
       location: PropTypes.shape({
-        type: PropTypes.string.isRequired,
         setting: PropTypes.string.isRequired,
         pattern: PropTypes.string.isRequired,
       }),
       birth_date: PropTypes.shape({
-        type: PropTypes.string.isRequired,
         setting: PropTypes.string.isRequired,
       }),
       country: PropTypes.shape({
-        type: PropTypes.string,
         pattern: PropTypes.string,
       }),
-      zipcode: PropTypes.shape({
-        type: PropTypes.string.isRequired,
-      }),
-      city: PropTypes.shape({
-        type: PropTypes.string.isRequired,
-      }),
-      street: PropTypes.shape({
-        type: PropTypes.string.isRequired,
-      }),
+      zipcode: PropTypes.shape({}),
+      city: PropTypes.shape({}),
+      street: PropTypes.shape({}),
       tax_number: PropTypes.shape({
-        type: PropTypes.string.isRequired,
         pattern: PropTypes.string.isRequired,
       }),
     }),

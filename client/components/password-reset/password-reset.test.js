@@ -64,7 +64,6 @@ describe("<PasswordReset /> rendering", () => {
   });
 
   it("should render email field correctly", () => {
-    const {email} = props.passwordReset.input_fields;
     const emailInput = wrapper.find("input[type='email']");
     expect(wrapper.find(".row.email label").text()).toBe(
       getTranslationString("EMAIL"),
@@ -75,7 +74,7 @@ describe("<PasswordReset /> rendering", () => {
     expect(emailInput.prop("title")).toBe(
       getTranslationString("EMAIL_PTRN_DESC"),
     );
-    expect(emailInput.prop("type")).toBe(email.type);
+    expect(emailInput.prop("type")).toBe("email");
   });
 });
 

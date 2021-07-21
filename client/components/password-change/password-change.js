@@ -182,11 +182,9 @@ PasswordChange.propTypes = {
   passwordChange: PropTypes.shape({
     input_fields: PropTypes.shape({
       password1: PropTypes.shape({
-        type: PropTypes.string.isRequired,
         pattern: PropTypes.string.isRequired,
       }).isRequired,
       password2: PropTypes.shape({
-        type: PropTypes.string.isRequired.isRequired,
         pattern: PropTypes.string,
       }).isRequired,
     }),

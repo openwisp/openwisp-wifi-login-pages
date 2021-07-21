@@ -847,7 +847,7 @@ export default class Status extends React.Component {
                     : ""
                 }
               />
-              {captivePortalLogoutForm.additional_fields.length &&
+              {captivePortalLogoutForm.additional_fields &&
                 captivePortalLogoutForm.additional_fields.map((field) => (
                   <input
                     readOnly

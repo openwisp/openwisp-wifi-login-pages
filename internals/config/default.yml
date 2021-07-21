@@ -19,6 +19,10 @@ server:
     validate_auth_token: "/api/v1/{org_slug}/account/token/validate"
     authorize: "/api/v1/authorize"
     user_radius_sessions: "/api/v1/{org_slug}/account/session"
+    plans: '/api/v1/{org_slug}/plans'
+    create_mobile_phone_token: '/api/v1/{org_slug}/account/phone/token'
+    verify_mobile_phone_token: '/api/v1/{org_slug}/account/phone/verify'
+    mobile_phone_number_change: '/api/v1/{org_slug}/account/phone/change'
   uuid: organization_uuid
   secret_key: organization_secret_key
   timeout: 2 #request timeout period in seconds
@@ -45,36 +49,10 @@ client:
       logo:
         url: "openwisp-logo-black.svg" # logo url
         alternate_text: "openwisp"
-      links:
-        - text:
-            en: "Sign In"
-          url: "/{orgSlug}/login"
-          authenticated: false
-        - text:
-            en: "Sign Up"
-          url: "/{orgSlug}/registration"
-          authenticated: false
-        - text:
-            en: "Change password"
-          url: "/{orgSlug}/change-password"
-          authenticated: true
+      links: []
 
     footer:
-      links:
-        - text:
-            en: "link-1"
-          url: "https://link-1.com"
-          authenticated: false
-        - text:
-            en: "link-2"
-          url: "https://link-2.com"
-          authenticated: true
-          verified: false
-        - text:
-            en: "link-3"
-          url: "https://link-3.com"
-          authenticated: true
-          verified: true
+      links: []
       secondary_text: false
 
     registration_form:
@@ -127,39 +105,16 @@ client:
       login_page_link: true
 
     contact_page:
-      email: "support@openwisp.co"
-      helpdesk: "+789 948 564"
-      social_links:
-        - alt:
-            en: "twitter"
-          icon: "twitter.svg"
-          url: "https://twitter.com/openwisp"
-        - alt:
-            en: "facebook"
-          icon: "facebook.svg"
-          url: "https://facebook.com/openwisp"
+      email: null
+      helpdesk: null
+      social_links: []
 
     status_page:
-      links:
-        - text:
-            en: "Change your password"
-          url: "/{orgSlug}/change-password/"
+      links: []
 
     login_form:
       social_login:
-        links:
-          - text:
-              en: "Login with Facebook"
-            url: "#facebook"
-            icon: "facebook.svg"
-          - text:
-              en: "Login with Google"
-            icon: "google.svg"
-            url: "#google"
-          - text:
-              en: "Login with Twitter"
-            icon: "twitter.svg"
-            url: "#twitter"
+        links: []
       input_fields:
         username:
           type: "email"
@@ -209,6 +164,16 @@ client:
         id: logout_id
       additional_fields: []
       logout_by_session: true
+
+    mobile_phone_verification_form:
+      input_fields:
+        code:
+          pattern: '[0-9]{6,}'
+
+    phone_number_change_form:
+      buttons:
+        change_phone_number: true
+        cancel: true
 
   privacy_policy:
     en: "privacy-en.md"

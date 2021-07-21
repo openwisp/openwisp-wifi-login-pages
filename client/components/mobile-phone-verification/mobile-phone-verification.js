@@ -207,7 +207,7 @@ export default class MobilePhoneVerification extends React.Component {
                     className={`input ${
                       errors.code || errors.nonField ? "error" : ""
                     }`}
-                    type={input_fields.code.type}
+                    type="text"
                     id="code"
                     required
                     name="code"
@@ -276,7 +276,6 @@ MobilePhoneVerification.propTypes = {
   mobile_phone_verification: PropTypes.shape({
     input_fields: PropTypes.shape({
       code: PropTypes.shape({
-        type: PropTypes.string.isRequired,
         pattern: PropTypes.string.isRequired,
       }).isRequired,
     }).isRequired,

@@ -9,25 +9,55 @@ const {JSDOM} = require("jsdom");
 
 const {window} = new JSDOM("");
 const DOMPurify = createDOMPurify(window);
+const _ = require("lodash");
 
 const rootDir = process.cwd();
-const configDir = `${rootDir}/org-configurations`;
-const clientDir = `${rootDir}/client`;
-const serverDir = `${rootDir}/server`;
+const configDir = path.join(rootDir, "org-configurations");
+const internalConfigDir = path.join(path.join(rootDir, "internals"), "config");
+const clientDir = path.join(rootDir, "client");
+const serverDir = path.join(rootDir, "server");
 
 // array to store configurations of the organizations
 const clientConfigs = [];
 const serverConfigs = [];
 const organizations = [];
+const defaultConfigFile = path.join(internalConfigDir, "default.yml");
+
+const removeNullKeys = (obj) => {
+  const object = obj;
+  Object.entries(object).forEach(([k, v]) => {
+    if (v && typeof v === "object") {
+      removeNullKeys(v);
+    }
+    if ((v && typeof v === "object" && !Object.keys(v).length) || v === null) {
+      if (Array.isArray(object)) {
+        object.splice(k, 1);
+      } else if (!_.isEqual(object[k], {})) {
+        delete object[k];
+      }
+    }
+  });
+  return object;
+};
+
+const getConfig = (file) => {
+  let defaultConfig = {};
+  if (fs.existsSync(defaultConfigFile))
+    defaultConfig = removeNullKeys(
+      yaml.safeLoad(fs.readFileSync(defaultConfigFile, "utf-8")),
+    );
+  const config = yaml.safeLoad(
+    fs.readFileSync(path.join(configDir, file), "utf-8"),
+  );
+  return removeNullKeys(_.merge(defaultConfig, config));
+};
 
 // loop through all the config files
 fs.readdirSync(configDir).forEach((file) => {
   if (path.extname(file) === ".yml") {
     // read document, or log exception on error
     try {
-      const config = yaml.safeLoad(
-        fs.readFileSync(`${configDir}/${file}`, "utf8"),
-      );
+      const config = getConfig(file);
       // convert markdown to html
       if (config.client && config.client.privacy_policy) {
         const {slug} = config;

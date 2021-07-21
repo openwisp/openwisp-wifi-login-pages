@@ -37,3 +37,7 @@ client/assets/*
 server/config.json
 compilation-stats.json
 internals/generators/organization/config.yml.hbs
+client/translations/
+i18n/*
+client/configs/
+client/organizations.json

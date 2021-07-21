@@ -106,9 +106,11 @@ export default class Header extends React.Component {
                     <Link
                       className={`header-link header-desktop-link
                   header-link-${index + 1} ${
-                        pathname === link.url ? "active" : ""
+                        pathname === link.url.replace("{orgSlug}", orgSlug)
+                          ? "active"
+                          : ""
                       } button `}
-                      to={link.url}
+                      to={link.url.replace("{orgSlug}", orgSlug)}
                       key={index}
                     >
                       {getText(link.text, language)}
@@ -174,9 +176,11 @@ export default class Header extends React.Component {
                     <Link
                       className={`header-link mobile-link
                     header-link-${index + 1} ${
-                        pathname === link.url ? "active" : ""
+                        pathname === link.url.replace("{orgSlug}", orgSlug)
+                          ? "active"
+                          : ""
                       } button`}
-                      to={link.url}
+                      to={link.url.replace("{orgSlug}", orgSlug)}
                       key={index}
                     >
                       {getText(link.text, language)}

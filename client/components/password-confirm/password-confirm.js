@@ -150,7 +150,7 @@ export default class PasswordConfirm extends React.Component {
 
                   <input
                     className={`input ${errors.newPassword1 ? "error" : ""}`}
-                    type={inputFields.password.type}
+                    type="password"
                     id="password"
                     required
                     name="newPassword1"
@@ -177,7 +177,7 @@ export default class PasswordConfirm extends React.Component {
 
                   <input
                     className={`input ${errors.newPassword2 ? "error" : ""}`}
-                    type={inputFields.password_confirm.type}
+                    type="password"
                     id="password-confirm"
                     required
                     name="newPassword2"
@@ -227,11 +227,10 @@ PasswordConfirm.propTypes = {
     additional_text: PropTypes.bool,
     input_fields: PropTypes.shape({
       password: PropTypes.shape({
-        type: PropTypes.string.isRequired,
         pattern: PropTypes.string.isRequired,
       }),
       password_confirm: PropTypes.shape({
-        type: PropTypes.string.isRequired,
+        pattern: PropTypes.string,
       }).isRequired,
     }),
     login_page_link: PropTypes.bool,

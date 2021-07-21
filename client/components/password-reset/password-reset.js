@@ -106,7 +106,7 @@ export default class PasswordReset extends React.Component {
                   )}
                   <input
                     className={`input ${errors.email ? "error" : ""}`}
-                    type={inputFields.email.type}
+                    type="email"
                     id="email"
                     required
                     name="email"
@@ -154,7 +154,6 @@ PasswordReset.propTypes = {
     additional_text: PropTypes.bool,
     input_fields: PropTypes.shape({
       email: PropTypes.shape({
-        type: PropTypes.string.isRequired,
         pattern: PropTypes.string.isRequired,
       }).isRequired,
     }).isRequired,

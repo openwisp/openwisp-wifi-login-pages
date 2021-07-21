@@ -319,7 +319,7 @@ export default class Login extends React.Component {
                   )}
                   <input
                     className={`input ${errors.password ? "error" : ""}`}
-                    type={input_fields.password.type}
+                    type="password"
                     id="password"
                     required
                     name="password"
@@ -336,7 +336,7 @@ export default class Login extends React.Component {
 
                 <div className="row remember-me">
                   <input
-                    type={input_fields.remember_me.type}
+                    type="checkbox"
                     id="remember_me"
                     name="remember_me"
                     checked={remember_me}
@@ -414,7 +414,6 @@ Login.propTypes = {
         placeholder: PropTypes.object,
       }).isRequired,
       password: PropTypes.shape({
-        type: PropTypes.string.isRequired,
         pattern: PropTypes.string.isRequired,
       }).isRequired,
       phone_number: PropTypes.shape({
@@ -426,7 +425,6 @@ Login.propTypes = {
         enable_search: PropTypes.bool,
       }),
       remember_me: PropTypes.shape({
-        type: PropTypes.string.isRequired,
         value: PropTypes.bool.isRequired,
       }),
     }),

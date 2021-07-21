@@ -152,6 +152,11 @@ you should have noted down the parameters performed during the
 yarn add-org
 ```
 
+The configuration of organizations is generated from the template present in `internals/generators/config.yml.hbs`.
+The default configuration is present in `internals/config/default.yml`. If the configuration file of a specific
+organization misses a piece of configuration then this default configuration is used to generate a
+complete configuration.
+
 The above command will prompt you to fill in some properties.
 
 Below is a table with these properties and a description of their values.
@@ -175,6 +180,20 @@ yarn start
 
 **Note**: in a development environment where a captive portal may not be available,
 you can use the default sample captive portal login and logout URLs.
+
+#### Removing sections of configuration
+
+To remove the specific section of the configuration, you can use the `null` keyword to delete
+that field or section during the building process. For example, to remove social login links, use
+
+```yaml
+login_form:
+  social_login:
+    links: null
+```
+
+**Note:** Do not delete or edit default configuration (`internals/config/default.yml`) as it
+is required to build and compile organization configurations. Edit it at your own will.
 
 ### Usage
 
