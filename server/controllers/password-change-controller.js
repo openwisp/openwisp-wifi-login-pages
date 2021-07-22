@@ -6,6 +6,7 @@ import qs from "qs";
 import config from "../config.json";
 import defaultConfig from "../utils/default-config";
 import Logger from "../utils/logger";
+import reverse from "../utils/proxy-urls";
 
 const passwordChange = (req, res) => {
   const reqOrg = req.params.organization;
@@ -14,9 +15,7 @@ const passwordChange = (req, res) => {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
       const {host} = conf;
-      let url = conf.proxy_urls.password_change;
-      // replacing org_slug param with the slug
-      url = url.replace("{org_slug}", org.slug);
+      const url = reverse("password_change", org.slug);
       const timeout = conf.timeout * 1000;
       const {newPassword1, newPassword2, session} = req.body;
       let {token} = req.body;

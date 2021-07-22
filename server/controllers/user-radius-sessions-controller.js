@@ -4,6 +4,7 @@ import merge from "deepmerge";
 import config from "../config.json";
 import defaultConfig from "../utils/default-config";
 import Logger from "../utils/logger";
+import reverse from "../utils/proxy-urls";
 
 const getUserRadiusSessions = (req, res) => {
   const reqOrg = req.params.organization;
@@ -12,12 +13,7 @@ const getUserRadiusSessions = (req, res) => {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
       const {host} = conf;
-      let userRadiusSessionsUrl = conf.proxy_urls.user_radius_sessions;
-      // replacing org_slug param with the slug
-      userRadiusSessionsUrl = userRadiusSessionsUrl.replace(
-        "{org_slug}",
-        org.slug,
-      );
+      const userRadiusSessionsUrl = reverse("user_radius_sessions", org.slug);
       const timeout = conf.timeout * 1000;
       let {token} = req.query;
       if (req.query.session === "false")

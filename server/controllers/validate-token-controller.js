@@ -6,6 +6,7 @@ import qs from "qs";
 import config from "../config.json";
 import defaultConfig from "../utils/default-config";
 import Logger from "../utils/logger";
+import reverse from "../utils/proxy-urls";
 
 const validateToken = (req, res) => {
   const reqOrg = req.params.organization;
@@ -14,9 +15,7 @@ const validateToken = (req, res) => {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
       const {host} = conf;
-      let validateTokenUrl = conf.proxy_urls.validate_auth_token;
-      // replacing org_slug param with the slug
-      validateTokenUrl = validateTokenUrl.replace("{org_slug}", org.slug);
+      const validateTokenUrl = reverse("validate_auth_token", org.slug);
       const timeout = conf.timeout * 1000;
       let {token} = req.body;
       if (req.body.session === "false") {

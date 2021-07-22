@@ -5,6 +5,7 @@ import qs from "qs";
 import config from "../config.json";
 import defaultConfig from "../utils/default-config";
 import Logger from "../utils/logger";
+import reverse from "../utils/proxy-urls";
 
 const passwordResetConfirm = (req, res) => {
   const reqOrg = req.params.organization;
@@ -13,11 +14,10 @@ const passwordResetConfirm = (req, res) => {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
       const {host} = conf;
-      let resetConfirmUrl = conf.proxy_urls.password_reset_confirm;
-      // replacing org_slug param with the slug
-      resetConfirmUrl = resetConfirmUrl.replace("{org_slug}", org.slug);
+      const resetConfirmUrl = reverse("password_reset_confirm", org.slug);
       const timeout = conf.timeout * 1000;
       const {newPassword1, newPassword2, uid, token} = req.body;
+      console.log({newPassword1, newPassword2, uid, token});
       // make AJAX request
       axios({
         method: "post",

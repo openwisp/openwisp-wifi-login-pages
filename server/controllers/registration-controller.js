@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import axios from "axios";
 import cookie from "cookie-signature";
 import merge from "deepmerge";
@@ -6,6 +5,7 @@ import merge from "deepmerge";
 import config from "../config.json";
 import defaultConfig from "../utils/default-config";
 import Logger from "../utils/logger";
+import reverse from "../utils/proxy-urls";
 
 const registration = (req, res) => {
   const reqOrg = req.params.organization;
@@ -14,9 +14,7 @@ const registration = (req, res) => {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
       const {host, settings} = conf;
-      let registerUrl = conf.proxy_urls.registration;
-      // replacing org_slug param with the slug
-      registerUrl = registerUrl.replace("{org_slug}", org.slug);
+      const registerUrl = reverse("registration", org.slug);
       const timeout = conf.timeout * 1000;
       const postData = req.body;
 

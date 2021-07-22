@@ -10,19 +10,6 @@ settings:
 server:
   # put the URL of openwisp-radius here
   host: "http://127.0.0.1:8000"
-  proxy_urls:
-    password_change: "/api/v1/{org_slug}/account/password/change"
-    password_reset: "/api/v1/{org_slug}/account/password/reset"
-    password_reset_confirm: "/api/v1/{org_slug}/account/password/reset/confirm"
-    registration: "/api/v1/{org_slug}/account"
-    user_auth_token: "/api/v1/{org_slug}/account/token"
-    validate_auth_token: "/api/v1/{org_slug}/account/token/validate"
-    authorize: "/api/v1/authorize"
-    user_radius_sessions: "/api/v1/{org_slug}/account/session"
-    plans: '/api/v1/{org_slug}/plans'
-    create_mobile_phone_token: '/api/v1/{org_slug}/account/phone/token'
-    verify_mobile_phone_token: '/api/v1/{org_slug}/account/phone/verify'
-    mobile_phone_number_change: '/api/v1/{org_slug}/account/phone/change'
   uuid: organization_uuid
   secret_key: organization_secret_key
   timeout: 2 #request timeout period in seconds

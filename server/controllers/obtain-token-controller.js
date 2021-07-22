@@ -6,6 +6,7 @@ import qs from "qs";
 import config from "../config.json";
 import defaultConfig from "../utils/default-config";
 import Logger from "../utils/logger";
+import reverse from "../utils/proxy-urls";
 
 const sendCookies = (username, response, conf, res) => {
   // save token in signed cookie
@@ -31,9 +32,7 @@ const obtainToken = (req, res) => {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
       const {host} = conf;
-      let obtainTokenUrl = conf.proxy_urls.user_auth_token;
-      // replacing org_slug param with the slug
-      obtainTokenUrl = obtainTokenUrl.replace("{org_slug}", org.slug);
+      const obtainTokenUrl = reverse("user_auth_token", org.slug);
       const timeout = conf.timeout * 1000;
       const {username, password} = req.body;
       // make AJAX request

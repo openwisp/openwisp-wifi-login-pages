@@ -5,6 +5,7 @@ import qs from "qs";
 import config from "../config.json";
 import defaultConfig from "../utils/default-config";
 import Logger from "../utils/logger";
+import reverse from "../utils/proxy-urls";
 
 const passwordReset = (req, res) => {
   const reqOrg = req.params.organization;
@@ -13,9 +14,7 @@ const passwordReset = (req, res) => {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
       const {host} = conf;
-      let resetUrl = conf.proxy_urls.password_reset;
-      // replacing org_slug param with the slug
-      resetUrl = resetUrl.replace("{org_slug}", org.slug);
+      const resetUrl = reverse("password_reset", org.slug);
       const timeout = conf.timeout * 1000;
       const {email} = req.body;
 

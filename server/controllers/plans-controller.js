@@ -3,6 +3,7 @@ import merge from "deepmerge";
 import config from "../config.json";
 import defaultConfig from "../utils/default-config";
 import Logger from "../utils/logger";
+import reverse from "../utils/proxy-urls";
 
 const plans = (req, res) => {
   const reqOrg = req.params.organization;
@@ -11,9 +12,7 @@ const plans = (req, res) => {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
       const {host} = conf;
-      let plansUrl = conf.proxy_urls.plans;
-      // replacing org_slug param with the slug
-      plansUrl = plansUrl.replace("{org_slug}", org.slug);
+      const plansUrl = reverse("plans", org.slug);
       const timeout = conf.timeout * 1000;
       // make AJAX request
       axios({

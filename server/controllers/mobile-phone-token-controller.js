@@ -6,6 +6,7 @@ import qs from "qs";
 import config from "../config.json";
 import defaultConfig from "../utils/default-config";
 import Logger from "../utils/logger";
+import reverse from "../utils/proxy-urls";
 
 export const createMobilePhoneToken = (req, res) => {
   const reqOrg = req.params.organization;
@@ -14,9 +15,7 @@ export const createMobilePhoneToken = (req, res) => {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
       const {host} = conf;
-      let url = conf.proxy_urls.create_mobile_phone_token;
-      // replacing org_slug param with the slug
-      url = url.replace("{org_slug}", org.slug);
+      const url = reverse("create_mobile_phone_token", org.slug);
       const timeout = conf.timeout * 1000;
       let token = req.cookies[`${reqOrg}_auth_token`] || "";
       token = cookie.unsign(token, conf.secret_key);
@@ -71,9 +70,7 @@ export const verifyMobilePhoneToken = (req, res) => {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
       const {host} = conf;
-      let url = conf.proxy_urls.verify_mobile_phone_token;
-      // replacing org_slug param with the slug
-      url = url.replace("{org_slug}", org.slug);
+      const url = reverse("verify_mobile_phone_token", org.slug);
       const timeout = conf.timeout * 1000;
       let {token} = req.body;
       if (req.body.session === "false")
