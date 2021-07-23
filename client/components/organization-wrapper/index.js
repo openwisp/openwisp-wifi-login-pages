@@ -17,8 +17,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setOrganization: (slug, cookies) => {
-      dispatch(setOrganization(slug, cookies));
+    setOrganization: async (slug, cookies) => {
+      await dispatch(setOrganization(slug, cookies));
     },
     setUserData: setUserData(dispatch),
     setLanguage: (slug) => {

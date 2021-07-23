@@ -9,6 +9,7 @@ import getConfig from "../../utils/get-config";
 import loadTranslation from "../../utils/load-translation";
 import OrganizationWrapper from "./organization-wrapper";
 
+jest.mock("../../utils/get-config");
 jest.mock("../../utils/load-translation");
 
 const userData = {
@@ -155,6 +156,7 @@ describe("<OrganizationWrapper /> interactions", () => {
     wrapper = shallow(<OrganizationWrapper {...props} />, {
       disableLifecycleMethods: true,
     });
+    wrapper.instance().setState({configLoaded: true});
     expect(wrapper).toMatchSnapshot();
   });
 });
@@ -162,7 +164,7 @@ describe("<OrganizationWrapper /> interactions", () => {
 describe("Test <OrganizationWrapper /> routes", () => {
   let props;
   let wrapper;
-  const defaultConfig = getConfig("default");
+  const defaultConfig = getConfig("default", true);
   const {components, languages, privacy_policy, terms_and_conditions} =
     defaultConfig;
 
@@ -187,14 +189,15 @@ describe("Test <OrganizationWrapper /> routes", () => {
     },
   };
 
-  const mountComponent = (passedProps, initialEntries) => {
-    return mount(
+  const mountComponent = async (passedProps, initialEntries) => {
+    const component = await mount(
       <MemoryRouter initialEntries={initialEntries}>
         <Provider store={mockedStore}>
           <OrganizationWrapper {...passedProps} />
         </Provider>
       </MemoryRouter>,
     );
+    return component;
   };
 
   beforeEach(() => {
@@ -212,17 +215,17 @@ describe("Test <OrganizationWrapper /> routes", () => {
     jest.clearAllMocks();
   });
 
-  it("should display status if authenticated", () => {
-    wrapper = mountComponent(props, ["/default/status"]);
+  it("should display status if authenticated", async () => {
+    wrapper = await mountComponent(props, ["/default/status"]);
     expect(mapRoutes(wrapper)["/default/status"]).toBe(undefined);
     expect(wrapper.find("Router").prop("history").location.pathname).toBe(
       "/default/status",
     );
   });
 
-  it("should redirect to login if not authenticated", () => {
+  it("should redirect to login if not authenticated", async () => {
     props.organization.configuration.isAuthenticated = false;
-    wrapper = mountComponent(props, ["/default/status"]);
+    wrapper = await mountComponent(props, ["/default/status"]);
     expect(wrapper.find("Router").prop("history").location.pathname).toBe(
       "/default/login",
     );

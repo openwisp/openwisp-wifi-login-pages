@@ -18,6 +18,7 @@ const serverDir = `${rootDir}/server`;
 // array to store configurations of the organizations
 const clientConfigs = [];
 const serverConfigs = [];
+const organizations = [];
 
 // loop through all the config files
 fs.readdirSync(configDir).forEach((file) => {
@@ -118,25 +119,43 @@ fs.readdirSync(configDir).forEach((file) => {
 
       clientConfigs.push(clientConfig);
       serverConfigs.push(serverConfig);
+      organizations.push({slug: config.slug});
     } catch (error) {
       console.log(error);
     }
   }
 });
 
-// write server configs
+const clientConfigsDir = path.join(clientDir, "configs");
+if (fs.existsSync(clientConfigsDir))
+  fs.rmSync(clientConfigsDir, {recursive: true});
+if (!fs.existsSync(clientConfigsDir))
+  fs.mkdirSync(clientConfigsDir, {recursive: true});
+
+clientConfigs.forEach((config) => {
+  // write client configs
+  fs.writeFile(
+    `${path.join(clientConfigsDir, config.slug)}.json`,
+    JSON.stringify(config, null, 2),
+    (error) => {
+      if (error) console.log(error);
+    },
+  );
+});
+
+// write organizations
 fs.writeFile(
-  `${serverDir}/config.json`,
-  JSON.stringify(serverConfigs, null, 2),
+  `${clientDir}/organizations.json`,
+  JSON.stringify(organizations, null, 2),
   (error) => {
     if (error) console.log(error);
   },
 );
 
-// write client configs
+// write server configs
 fs.writeFile(
-  `${clientDir}/config.json`,
-  JSON.stringify(clientConfigs, null, 2),
+  `${serverDir}/config.json`,
+  JSON.stringify(serverConfigs, null, 2),
   (error) => {
     if (error) console.log(error);
   },

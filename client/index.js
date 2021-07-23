@@ -9,7 +9,7 @@ import {Route, Router} from "react-router-dom";
 import {render} from "react-dom";
 import {ToastContainer} from "react-toastify";
 import Routes from "./routes";
-import config from "./config.json";
+import organizations from "./organizations.json";
 import history from "./utils/history";
 import parseOrganizations from "./actions/parse-organizations";
 import store from "./store";
@@ -18,7 +18,7 @@ class BaseApp extends React.Component {
   constructor(props) {
     super(props);
     const {parseOrgs} = this.props;
-    parseOrgs(config);
+    parseOrgs(organizations);
   }
 
   render() {
@@ -37,8 +37,8 @@ BaseApp.propTypes = {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    parseOrgs: (configuration) => {
-      dispatch(parseOrganizations(configuration));
+    parseOrgs: (orgSlugs) => {
+      dispatch(parseOrganizations(orgSlugs));
     },
   };
 };

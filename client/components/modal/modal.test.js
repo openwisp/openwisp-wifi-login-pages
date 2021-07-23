@@ -6,7 +6,9 @@ import ShallowRenderer from "react-test-renderer/shallow";
 import getConfig from "../../utils/get-config";
 import Modal from "./modal";
 
-const defaultConfig = getConfig("default");
+jest.mock("../../utils/get-config");
+
+const defaultConfig = getConfig("default", true);
 const createTestProps = (props) => {
   return {
     language: "en",

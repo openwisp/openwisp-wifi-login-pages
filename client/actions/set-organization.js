@@ -1,5 +1,3 @@
-import merge from "deepmerge";
-
 import {
   SET_AUTHENTICATION_STATUS,
   SET_LANGUAGE,
@@ -9,19 +7,15 @@ import {
   SET_PAGE_TITLE,
 } from "../constants/action-types";
 import authenticate from "../utils/authenticate";
-import customMerge from "../utils/custom-merge";
 import getConfig from "../utils/get-config";
 import logout from "./logout";
 import {initialState} from "../reducers/organization";
 
 const setOrganization = (slug, cookies) => {
-  return (dispatch) => {
-    const orgConfig = getConfig(slug);
+  return async (dispatch) => {
+    const orgConfig = await getConfig(slug);
     if (orgConfig) {
-      const defaultConfig = getConfig("default");
-      const config = merge(defaultConfig, orgConfig, {
-        arrayMerge: customMerge,
-      });
+      const config = orgConfig;
       config.userData = initialState.userData;
       dispatch({
         type: SET_LANGUAGE,

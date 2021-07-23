@@ -13,11 +13,12 @@ import loadTranslation from "../../utils/load-translation";
 import PasswordChange from "./password-change";
 
 jest.mock("axios");
+jest.mock("../../utils/get-config");
 jest.mock("../../utils/log-error");
 jest.mock("../../utils/load-translation");
 logError.mockImplementation(jest.fn());
 
-const defaultConfig = getConfig("default");
+const defaultConfig = getConfig("default", true);
 
 const createTestProps = (props) => {
   return {

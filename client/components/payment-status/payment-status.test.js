@@ -13,10 +13,11 @@ import validateToken from "../../utils/validate-token";
 import loadTranslation from "../../utils/load-translation";
 
 jest.mock("axios");
+jest.mock("../../utils/get-config");
 jest.mock("../../utils/validate-token");
 jest.mock("../../utils/load-translation");
 
-const defaultConfig = getConfig("default");
+const defaultConfig = getConfig("default", true);
 const createTestProps = (props) => {
   return {
     orgSlug: "default",

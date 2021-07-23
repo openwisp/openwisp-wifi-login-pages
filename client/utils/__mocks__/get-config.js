@@ -1,7 +1,18 @@
+/* eslint-disable global-require */
 import config from "../../test-config.json";
 
-const getConfig = (slug) =>
-  config.find((org) => {
+let defaultConfig = {};
+try {
+  defaultConfig = require("../../configs/default.json");
+} catch (err) {
+  console.error("Forget to run yarn setup before tests?");
+}
+const getConfig = (slug, loadDefault = false) => {
+  if (loadDefault) {
+    return defaultConfig;
+  }
+  return config.find((org) => {
     return org.slug === slug;
   });
+};
 export default getConfig;

@@ -31,7 +31,8 @@ yarn-error.log*
 
 #other
 /org-configurations
-client/config.json
+client/configs/
+client/organizations.json
 !client/assets/
 client/assets/*
 !client/assets/eye.svg
