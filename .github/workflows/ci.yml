@@ -73,6 +73,9 @@ jobs:
           yarn install
           yarn setup
 
+      - name: Tests
+        run: yarn coverage
+
       - name: Installing OpenWISP Radius
         run: |
           git clone https://github.com/openwisp/openwisp-radius/
@@ -84,9 +87,6 @@ jobs:
 
       - name: Running OpenWISP WiFi Login Pages
         run: yarn start &
-
-      - name: Tests
-        run: yarn coverage
 
       - name: geckodriver/firefox
         run: |
