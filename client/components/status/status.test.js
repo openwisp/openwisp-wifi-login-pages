@@ -270,7 +270,7 @@ describe("<Status /> interactions", () => {
     });
 
     const mockRef = {submit: jest.fn()};
-    wrapper.instance().loginIfameRef.current = {};
+    wrapper.instance().loginIframeRef.current = {};
     wrapper.instance().loginFormRef.current = mockRef;
     wrapper.instance().componentDidMount();
     await tick();
@@ -376,7 +376,7 @@ describe("<Status /> interactions", () => {
       },
     });
     const spyFn = jest.fn();
-    wrapper.instance().loginIfameRef.current = {};
+    wrapper.instance().loginIframeRef.current = {};
     wrapper.instance().loginFormRef.current = {submit: spyFn};
     wrapper.instance().componentDidMount();
     await tick();
@@ -395,9 +395,9 @@ describe("<Status /> interactions", () => {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: true,
     });
-    expect(wrapper.instance().loginIfameRef).toEqual({current: null});
+    expect(wrapper.instance().loginIframeRef).toEqual({current: null});
     let mockRef = {};
-    wrapper.instance().loginIfameRef.current = mockRef;
+    wrapper.instance().loginIframeRef.current = mockRef;
     wrapper.instance().componentDidMount();
     wrapper.instance().handleLoginIframe();
     mockRef = {
@@ -410,7 +410,7 @@ describe("<Status /> interactions", () => {
         title: "404",
       },
     };
-    wrapper.instance().loginIfameRef.current = mockRef;
+    wrapper.instance().loginIframeRef.current = mockRef;
     wrapper.instance().componentDidMount();
     wrapper.instance().handleLoginIframe();
     expect(wrapper.instance().props.logout.mock.calls.length).toBe(1);
@@ -729,7 +729,7 @@ describe("<Status /> interactions", () => {
     expect(setLoading.mock.calls.length).toBe(1);
 
     const mockRef = {submit: jest.fn()};
-    wrapper.instance().loginIfameRef.current = {};
+    wrapper.instance().loginIframeRef.current = {};
     wrapper.instance().loginFormRef.current = mockRef;
     wrapper.instance().handleLoginIframe();
 
@@ -772,7 +772,7 @@ describe("<Status /> interactions", () => {
     const mockRef = {submit: jest.fn()};
     const {setUserData} = status.props;
     status.logoutFormRef = {current: mockRef};
-    status.logoutIfameRef = {current: {}};
+    status.logoutIframeRef = {current: {}};
     status.componentDidMount();
     await tick();
     status.handleLogoutIframe();
@@ -820,7 +820,7 @@ describe("<Status /> interactions", () => {
     const mockRef = {submit: jest.fn()};
     const {setUserData} = status.props;
     status.logoutFormRef = {current: mockRef};
-    status.logoutIfameRef = {current: {}};
+    status.logoutIframeRef = {current: {}};
     status.componentDidMount();
     jest.useFakeTimers();
     const componentDidMount = jest.spyOn(status, "componentDidMount");
@@ -896,7 +896,7 @@ describe("<Status /> interactions", () => {
     const handleLogout = jest.spyOn(status, "handleLogout");
     const mockRef = {submit: jest.fn()};
     status.logoutFormRef = {current: mockRef};
-    status.logoutIfameRef = {current: {}};
+    status.logoutIframeRef = {current: {}};
     status.componentDidMount();
 
     wrapper.find(".logout input.button").simulate("click", {});
