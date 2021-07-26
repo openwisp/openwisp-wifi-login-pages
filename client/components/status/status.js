@@ -26,9 +26,9 @@ import {initialState} from "../../reducers/organization";
 export default class Status extends React.Component {
   constructor(props) {
     super(props);
-    this.loginIfameRef = React.createRef();
+    this.loginIframeRef = React.createRef();
     this.loginFormRef = React.createRef();
-    this.logoutIfameRef = React.createRef();
+    this.logoutIframeRef = React.createRef();
     this.logoutFormRef = React.createRef();
     this.state = {
       username: "",
@@ -294,14 +294,14 @@ export default class Status extends React.Component {
    * to be redirected to a different URL and then come back again.
    */
   handleLoginIframe = () => {
-    if (!this.loginIfameRef || !this.loginIfameRef.current) {
+    if (!this.loginIframeRef || !this.loginIframeRef.current) {
       return;
     }
     const {cookies, orgSlug, logout, captivePortalLoginForm} = this.props;
 
     try {
       const searchParams = new URLSearchParams(
-        this.loginIfameRef.current.contentWindow.location.search,
+        this.loginIframeRef.current.contentWindow.location.search,
       );
       const reply = searchParams.get("reply");
       const macaddr = searchParams.get(
@@ -309,7 +309,7 @@ export default class Status extends React.Component {
       );
       if (
         reply ||
-        this.loginIfameRef.current.contentDocument.title.indexOf("404") >= 0
+        this.loginIframeRef.current.contentDocument.title.indexOf("404") >= 0
       ) {
         logout(cookies, orgSlug);
         toast.error(reply, {
@@ -332,7 +332,7 @@ export default class Status extends React.Component {
    * to be redirected to a different URL and then come back again.
    */
   handleLogoutIframe = async () => {
-    if (!this.logoutIfameRef || !this.logoutIfameRef.current) {
+    if (!this.logoutIframeRef || !this.logoutIframeRef.current) {
       return;
     }
     const {userData, setUserData, statusPage, orgSlug} = this.props;
@@ -818,7 +818,7 @@ export default class Status extends React.Component {
             */}
             <iframe
               onLoad={this.handleLoginIframe}
-              ref={this.loginIfameRef}
+              ref={this.loginIframeRef}
               name="owisp-auth-iframe"
               className="hidden"
               title="owisp-auth-iframe"
@@ -857,7 +857,7 @@ export default class Status extends React.Component {
             </form>
             <iframe
               onLoad={this.handleLogoutIframe}
-              ref={this.logoutIfameRef}
+              ref={this.logoutIframeRef}
               name="owisp-auth-logout-iframe"
               className="hidden"
               title="owisp-auth-iframe"
