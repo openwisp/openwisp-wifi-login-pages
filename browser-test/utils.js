@@ -47,6 +47,7 @@ export const urls = {
   registration: `http://0.0.0.0:8080/${orgSlug}/registration`,
   login: `http://0.0.0.0:8080/${orgSlug}/login`,
   status: `http://0.0.0.0:8080/${orgSlug}/status`,
+  passwordChange: `http://0.0.0.0:8080/${orgSlug}/change-password`,
 };
 
 // increase the jest global test time out

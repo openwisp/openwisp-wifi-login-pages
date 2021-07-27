@@ -18,6 +18,7 @@ describe("Selenium tests for <Register />", () => {
 
   afterAll(async () => {
     clearData();
+    await driver.manage().deleteAllCookies();
     driver.close();
   });
 

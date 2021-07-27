@@ -16,8 +16,9 @@ describe("Selenium tests for <Login />", () => {
     driver = await getDriver();
   }, 30000);
 
-  afterAll(() => {
+  afterAll(async () => {
     clearData();
+    await driver.manage().deleteAllCookies();
     driver.close();
   });
 
