@@ -84,61 +84,65 @@ export default class PasswordReset extends React.Component {
         <div className="inner">
           {success ? (
             <div className="main-column">
-              <div className="success">{success}</div>
-              <Link to={`/${orgSlug}/login`} className="link">
-                {t`LOGIN_PG_LNK`}
-              </Link>
+              <div className="inner">
+                <div className="success">{success}</div>
+                <Link to={`/${orgSlug}/login`} className="link">
+                  {t`LOGIN_PG_LNK`}
+                </Link>
+              </div>
             </div>
           ) : (
             <form className="main-column" onSubmit={this.handleSubmit}>
-              {passwordReset.additional_text && (
-                <p className="label">{t`PWD_RESET_ADD_TXT`}</p>
-              )}
+              <div className="inner">
+                {passwordReset.additional_text && (
+                  <p className="label">{t`PWD_RESET_ADD_TXT`}</p>
+                )}
 
-              <div className="fieldset">
-                <div className="row email">
-                  <label htmlFor="email">{t`EMAIL`}</label>
-                  {errors.email && (
-                    <div className="error">
-                      <span className="icon">!</span>
-                      <span className="text email">{errors.email}</span>
-                    </div>
-                  )}
-                  <input
-                    className={`input ${errors.email ? "error" : ""}`}
-                    type="email"
-                    id="email"
-                    required
-                    name="email"
-                    value={email}
-                    onChange={this.handleChange}
-                    placeholder={t`EMAIL_PHOLD`}
-                    pattern={inputFields.email.pattern}
-                    title={t`EMAIL_PTRN_DESC`}
-                    autoComplete="email"
-                  />
+                <div className="fieldset">
+                  <div className="row email">
+                    <label htmlFor="email">{t`EMAIL`}</label>
+                    {errors.email && (
+                      <div className="error">
+                        <span className="icon">!</span>
+                        <span className="text email">{errors.email}</span>
+                      </div>
+                    )}
+                    <input
+                      className={`input ${errors.email ? "error" : ""}`}
+                      type="email"
+                      id="email"
+                      required
+                      name="email"
+                      value={email}
+                      onChange={this.handleChange}
+                      placeholder={t`EMAIL_PHOLD`}
+                      pattern={inputFields.email.pattern}
+                      title={t`EMAIL_PTRN_DESC`}
+                      autoComplete="email"
+                    />
+                  </div>
+
+                  <div className="row submit">
+                    <input
+                      type="submit"
+                      className="button full"
+                      value={t`PWD_RESET_BTN`}
+                    />
+                  </div>
                 </div>
 
-                <div className="row submit">
-                  <input
-                    type="submit"
-                    className="button full"
-                    value={t`PWD_RESET_BTN`}
-                  />
-                </div>
+                {passwordReset.contact_text && (
+                  <div className="row contact-us">{t`PWD_RESET_CNTC_TXT`}</div>
+                )}
+
+                {loginPageLink && (
+                  <div className="row links">
+                    <Link to={`/${orgSlug}/login`} className="link">
+                      {t`LOGIN_PG_LNK`}
+                    </Link>
+                  </div>
+                )}
               </div>
-
-              {passwordReset.contact_text && (
-                <div className="row contact-us">{t`PWD_RESET_CNTC_TXT`}</div>
-              )}
-
-              {loginPageLink && (
-                <div className="row links">
-                  <Link to={`/${orgSlug}/login`} className="link">
-                    {t`LOGIN_PG_LNK`}
-                  </Link>
-                </div>
-              )}
             </form>
           )}
 

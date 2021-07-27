@@ -124,68 +124,72 @@ class MobilePhoneChange extends React.Component {
             id="mobile-phone-change-form"
             onSubmit={this.handleSubmit}
           >
-            <div className="fieldset row">
-              {errors.nonField && (
-                <div className="error non-field">
-                  <span className="icon">!</span>
-                  <span className="text">{errors.nonField}</span>
-                </div>
-              )}
-
-              <div className="row phone-number">
-                <label htmlFor="phone-number">{t`PHONE_LBL`}</label>
-                {errors.phone_number && (
-                  <div className="error">
+            <div className="inner">
+              <div className="fieldset row">
+                {errors.nonField && (
+                  <div className="error non-field">
                     <span className="icon">!</span>
-                    <span className="text">{errors.phone_number}</span>
+                    <span className="text">{errors.nonField}</span>
                   </div>
                 )}
-                <PhoneInput
-                  name="phone_number"
-                  onlyCountries={input_fields.phone_number.only_countries || []}
-                  preferredCountries={
-                    input_fields.phone_number.preferred_countries || []
-                  }
-                  excludeCountries={
-                    input_fields.phone_number.exclude_countries || []
-                  }
-                  value={phone_number}
-                  onChange={(value) =>
-                    this.handleChange({
-                      target: {name: "phone_number", value: `+${value}`},
-                    })
-                  }
-                  onKeyDown={(event) => {
-                    submitOnEnter(event, this, "mobile-phone-change-form");
-                  }}
-                  placeholder={t`PHONE_PHOLD`}
-                  enableSearch={Boolean(
-                    input_fields.phone_number.enable_search,
+
+                <div className="row phone-number">
+                  <label htmlFor="phone-number">{t`PHONE_LBL`}</label>
+                  {errors.phone_number && (
+                    <div className="error">
+                      <span className="icon">!</span>
+                      <span className="text">{errors.phone_number}</span>
+                    </div>
                   )}
-                  inputProps={{
-                    name: "phone_number",
-                    id: "phone-number",
-                    className: `form-control input ${
-                      errors.phone_number ? "error" : ""
-                    }`,
-                    required: true,
-                  }}
-                />
-              </div>
+                  <PhoneInput
+                    name="phone_number"
+                    onlyCountries={
+                      input_fields.phone_number.only_countries || []
+                    }
+                    preferredCountries={
+                      input_fields.phone_number.preferred_countries || []
+                    }
+                    excludeCountries={
+                      input_fields.phone_number.exclude_countries || []
+                    }
+                    value={phone_number}
+                    onChange={(value) =>
+                      this.handleChange({
+                        target: {name: "phone_number", value: `+${value}`},
+                      })
+                    }
+                    onKeyDown={(event) => {
+                      submitOnEnter(event, this, "mobile-phone-change-form");
+                    }}
+                    placeholder={t`PHONE_PHOLD`}
+                    enableSearch={Boolean(
+                      input_fields.phone_number.enable_search,
+                    )}
+                    inputProps={{
+                      name: "phone_number",
+                      id: "phone-number",
+                      className: `form-control input ${
+                        errors.phone_number ? "error" : ""
+                      }`,
+                      required: true,
+                    }}
+                  />
+                </div>
 
-              <input
-                type="submit"
-                className="button full"
-                value={t`PHONE_CHANGE_BTN`}
-              />
-
-              <div className="row cancel">
-                <a
+                <input
+                  type="submit"
                   className="button full"
-                  href={`/${orgSlug}/mobile-phone-verification`}
-                >
-                  {t`CANCEL`}
-                </a>
+                  value={t`PHONE_CHANGE_BTN`}
+                />
+
+                <div className="row cancel">
+                  <a
+                    className="button full"
+                    href={`/${orgSlug}/mobile-phone-verification`}
+                  >
+                    {t`CANCEL`}
+                  </a>
+                </div>
               </div>
             </div>
           </form>

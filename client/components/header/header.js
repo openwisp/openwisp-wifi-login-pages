@@ -51,7 +51,7 @@ export default class Header extends React.Component {
       isAuthenticated,
       userData,
     } = this.props;
-    const {logo, links} = header;
+    const {logo, links, second_logo: secondLogo} = header;
     const {pathname} = location;
     const internalLinks = [`/${orgSlug}/login`, `/${orgSlug}/registration`];
     return (
@@ -72,6 +72,17 @@ export default class Header extends React.Component {
                   ) : null}
                 </div>
               </div>
+
+              {secondLogo && (
+                <div className="header-logo-2">
+                  <img
+                    src={getAssetPath(orgSlug, secondLogo.url)}
+                    alt={secondLogo.alternate_text}
+                    className="header-logo-image header-desktop-logo-image"
+                  />
+                </div>
+              )}
+
               <div className="header-right">
                 {languages.map((lang) => (
                   <button
@@ -147,6 +158,15 @@ export default class Header extends React.Component {
                   ) : null}
                 </div>
               </div>
+              {secondLogo && (
+                <div className="header-logo-2">
+                  <img
+                    src={getAssetPath(orgSlug, secondLogo.url)}
+                    alt={secondLogo.alternate_text}
+                    className="header-logo-image header-mobile-logo-image"
+                  />
+                </div>
+              )}
               <div className="header-right">
                 <div
                   role="button"
@@ -228,6 +248,10 @@ Header.defaultProps = {
 Header.propTypes = {
   header: PropTypes.shape({
     logo: PropTypes.shape({
+      alternate_text: PropTypes.string,
+      url: PropTypes.string,
+    }),
+    second_logo: PropTypes.shape({
       alternate_text: PropTypes.string,
       url: PropTypes.string,
     }),

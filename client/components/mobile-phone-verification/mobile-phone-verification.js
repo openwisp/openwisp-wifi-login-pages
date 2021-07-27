@@ -182,80 +182,82 @@ export default class MobilePhoneVerification extends React.Component {
       <div className="container content" id="mobile-phone-verification">
         <div className="inner">
           <div className="main-column">
-            <form
-              className={`${success ? "success" : ""}`}
-              onSubmit={this.handleSubmit}
-            >
-              <div className="row fieldset code">
-                <p className="label">{t`PHONE_VERIFY (${phone_number})`}</p>
+            <div className="inner">
+              <form
+                className={`${success ? "success" : ""}`}
+                onSubmit={this.handleSubmit}
+              >
+                <div className="row fieldset code">
+                  <p className="label">{t`PHONE_VERIFY (${phone_number})`}</p>
 
-                {errors.nonField && (
-                  <div className="error non-field">
-                    <span className="icon">!</span>
-                    <span className="text">{errors.nonField}</span>
-                  </div>
-                )}
-
-                <div className="row">
-                  {errors.code && (
-                    <div className="error">
+                  {errors.nonField && (
+                    <div className="error non-field">
                       <span className="icon">!</span>
-                      <span className="text">{errors.code}</span>
+                      <span className="text">{errors.nonField}</span>
                     </div>
                   )}
-                  <input
-                    className={`input ${
-                      errors.code || errors.nonField ? "error" : ""
-                    }`}
-                    type="text"
-                    id="code"
-                    required
-                    name="code"
-                    value={code}
-                    onChange={this.handleChange}
-                    placeholder={t`MOBILE_CODE_PHOLD`}
-                    pattern={input_fields.code.pattern}
-                    title={t`MOBILE_CODE_TITL`}
-                  />
-                </div>
 
-                <button type="submit" className="button full">
-                  {t`MOBILE_PHONE_VERIFY`}
+                  <div className="row">
+                    {errors.code && (
+                      <div className="error">
+                        <span className="icon">!</span>
+                        <span className="text">{errors.code}</span>
+                      </div>
+                    )}
+                    <input
+                      className={`input ${
+                        errors.code || errors.nonField ? "error" : ""
+                      }`}
+                      type="text"
+                      id="code"
+                      required
+                      name="code"
+                      value={code}
+                      onChange={this.handleChange}
+                      placeholder={t`MOBILE_CODE_PHOLD`}
+                      pattern={input_fields.code.pattern}
+                      title={t`MOBILE_CODE_TITL`}
+                    />
+                  </div>
+
+                  <button type="submit" className="button full">
+                    {t`MOBILE_PHONE_VERIFY`}
+                  </button>
+                </div>
+              </form>
+
+              <div className="row fieldset resend">
+                <p className="label">{t`RESEND_TOKEN_LBL`}</p>
+
+                <button
+                  type="button"
+                  className="button full"
+                  onClick={this.resendPhoneToken}
+                >
+                  {t`RESEND_TOKEN`}
                 </button>
               </div>
-            </form>
 
-            <div className="row fieldset resend">
-              <p className="label">{t`RESEND_TOKEN_LBL`}</p>
+              <div className="row fieldset change">
+                <p className="label">{t`PHONE_CHANGE_LBL`}</p>
+                <a
+                  href={`/${orgSlug}/change-phone-number`}
+                  className="button full"
+                >
+                  {t`PHONE_CHANGE_BTN`}
+                </a>
+              </div>
 
-              <button
-                type="button"
-                className="button full"
-                onClick={this.resendPhoneToken}
-              >
-                {t`RESEND_TOKEN`}
-              </button>
-            </div>
-
-            <div className="row fieldset change">
-              <p className="label">{t`PHONE_CHANGE_LBL`}</p>
-              <a
-                href={`/${orgSlug}/change-phone-number`}
-                className="button full"
-              >
-                {t`PHONE_CHANGE_BTN`}
-              </a>
-            </div>
-
-            <div className="row fieldset logout">
-              <p className="label">{t`LOGOUT_LBL`}</p>
-              <button
-                type="button"
-                className="button full"
-                onClick={this.handleLogout}
-              >
-                {t`LOGOUT`}
-              </button>
+              <div className="row fieldset logout">
+                <p className="label">{t`LOGOUT_LBL`}</p>
+                <button
+                  type="button"
+                  className="button full"
+                  onClick={this.handleLogout}
+                >
+                  {t`LOGOUT`}
+                </button>
+              </div>
             </div>
           </div>
           <Contact />

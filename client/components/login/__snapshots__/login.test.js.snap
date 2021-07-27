@@ -12,222 +12,226 @@ exports[`<Login /> interactions phone_number field should be present if mobile p
       class="main-column"
     >
       <div
-        class="social-links row"
-      >
-        <p>
-          <a
-            class="social-link button full"
-            href="#facebook"
-            rel="noopener noreferrer"
-          >
-            <span
-              class="inner"
-            >
-              <img
-                alt="Login with Facebook"
-                class="icon"
-                src="/assets/default/facebook.svg"
-              />
-              <span
-                class="text"
-              >
-                Login with Facebook
-              </span>
-            </span>
-          </a>
-        </p>
-        <p>
-          <a
-            class="social-link button full"
-            href="#google"
-            rel="noopener noreferrer"
-          >
-            <span
-              class="inner"
-            >
-              <img
-                alt="Login with Google"
-                class="icon"
-                src="/assets/default/google.svg"
-              />
-              <span
-                class="text"
-              >
-                Login with Google
-              </span>
-            </span>
-          </a>
-        </p>
-        <p>
-          <a
-            class="social-link button full"
-            href="#twitter"
-            rel="noopener noreferrer"
-          >
-            <span
-              class="inner"
-            >
-              <img
-                alt="Login with Twitter"
-                class="icon"
-                src="/assets/default/twitter.svg"
-              />
-              <span
-                class="text"
-              >
-                Login with Twitter
-              </span>
-            </span>
-          </a>
-        </p>
-      </div>
-      <div
-        class="fieldset"
+        class="inner"
       >
         <div
-          class="row phone-number"
+          class="social-links row"
         >
-          <label
-            for="phone-number"
-          >
-            Mobile phone number
-          </label>
-          <div
-            class=" react-tel-input"
-          >
-            <div
-              class="special-label"
+          <p>
+            <a
+              class="social-link button full"
+              href="#facebook"
+              rel="noopener noreferrer"
             >
-              Phone
-            </div>
-            <input
-              autocomplete="tel"
-              class="form-control input "
-              id="username"
-              name="username"
-              placeholder="enter mobile phone number"
-              required=""
-              type="tel"
-              value=""
-            />
+              <span
+                class="inner"
+              >
+                <img
+                  alt="Login with Facebook"
+                  class="icon"
+                  src="/assets/default/facebook.svg"
+                />
+                <span
+                  class="text"
+                >
+                  Login with Facebook
+                </span>
+              </span>
+            </a>
+          </p>
+          <p>
+            <a
+              class="social-link button full"
+              href="#google"
+              rel="noopener noreferrer"
+            >
+              <span
+                class="inner"
+              >
+                <img
+                  alt="Login with Google"
+                  class="icon"
+                  src="/assets/default/google.svg"
+                />
+                <span
+                  class="text"
+                >
+                  Login with Google
+                </span>
+              </span>
+            </a>
+          </p>
+          <p>
+            <a
+              class="social-link button full"
+              href="#twitter"
+              rel="noopener noreferrer"
+            >
+              <span
+                class="inner"
+              >
+                <img
+                  alt="Login with Twitter"
+                  class="icon"
+                  src="/assets/default/twitter.svg"
+                />
+                <span
+                  class="text"
+                >
+                  Login with Twitter
+                </span>
+              </span>
+            </a>
+          </p>
+        </div>
+        <div
+          class="fieldset"
+        >
+          <div
+            class="row phone-number"
+          >
+            <label
+              for="phone-number"
+            >
+              Mobile phone number
+            </label>
             <div
-              class=" flag-dropdown"
+              class=" react-tel-input"
             >
               <div
-                aria-haspopup="listbox"
-                class="selected-flag"
-                role="button"
-                tabindex="0"
-                title=""
+                class="special-label"
+              >
+                Phone
+              </div>
+              <input
+                autocomplete="tel"
+                class="form-control input "
+                id="username"
+                name="username"
+                placeholder="enter mobile phone number"
+                required=""
+                type="tel"
+                value=""
+              />
+              <div
+                class=" flag-dropdown"
               >
                 <div
-                  class="flag 0"
+                  aria-haspopup="listbox"
+                  class="selected-flag"
+                  role="button"
+                  tabindex="0"
+                  title=""
                 >
                   <div
-                    class="arrow"
-                  />
+                    class="flag 0"
+                  >
+                    <div
+                      class="arrow"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div
-          class="row password"
-        >
-          <label
-            for="password"
-          >
-            Password
-          </label>
-          <input
-            autocomplete="current-password"
-            class="input "
-            id="password"
-            name="password"
-            pattern=".{6,}"
-            placeholder="password"
-            required=""
-            title="password must be a minimum of 6 characters"
-            type="password"
-            value=""
-          />
           <div
-            class=""
-            role="button"
-            tabindex="0"
+            class="row password"
           >
-            <i
-              class="eye"
-              title="reveal password"
+            <label
+              for="password"
+            >
+              Password
+            </label>
+            <input
+              autocomplete="current-password"
+              class="input "
+              id="password"
+              name="password"
+              pattern=".{6,}"
+              placeholder="password"
+              required=""
+              title="password must be a minimum of 6 characters"
+              type="password"
+              value=""
             />
+            <div
+              class=""
+              role="button"
+              tabindex="0"
+            >
+              <i
+                class="eye"
+                title="reveal password"
+              />
+            </div>
+          </div>
+          <div
+            class="row remember-me"
+          >
+            <input
+              checked=""
+              id="remember_me"
+              name="remember_me"
+              type="checkbox"
+            />
+            <label
+              for="remember_me"
+            >
+              remember me on this device
+            </label>
           </div>
         </div>
         <div
-          class="row remember-me"
+          class="row add-info"
+        >
+          By logging in, you accept the 
+          <a
+            class="link additional login"
+            href="/default/login/terms-and-conditions"
+          >
+            terms and conditions
+          </a>
+           and the 
+          <a
+            class="link additional login"
+            href="/default/login/privacy-policy"
+          >
+            privacy policy
+          </a>
+           of this WiFi service. 
+        </div>
+        <div
+          class="row login"
         >
           <input
-            checked=""
-            id="remember_me"
-            name="remember_me"
-            type="checkbox"
+            class="button full"
+            type="submit"
+            value="Log in"
           />
-          <label
-            for="remember_me"
-          >
-            remember me on this device
-          </label>
         </div>
-      </div>
-      <div
-        class="row add-info"
-      >
-        By logging in, you accept the 
-        <a
-          class="link additional login"
-          href="/default/login/terms-and-conditions"
+        <div
+          class="row register"
         >
-          terms and conditions
-        </a>
-         and the 
-        <a
-          class="link additional login"
-          href="/default/login/privacy-policy"
+          <p>
+            Not registered yet?
+          </p>
+          <a
+            class="button full"
+            href="/default/registration"
+          >
+            Sign up
+          </a>
+        </div>
+        <div
+          class="row links"
         >
-          privacy policy
-        </a>
-         of this WiFi service. 
-      </div>
-      <div
-        class="row login"
-      >
-        <input
-          class="button full"
-          type="submit"
-          value="Log in"
-        />
-      </div>
-      <div
-        class="row register"
-      >
-        <p>
-          Not registered yet?
-        </p>
-        <a
-          class="button full"
-          href="/default/registration"
-        >
-          Sign up
-        </a>
-      </div>
-      <div
-        class="row links"
-      >
-        <a
-          class="link"
-          href="/default/password/reset"
-        >
-          Forgot your password?
-        </a>
+          <a
+            class="link"
+            href="/default/password/reset"
+          >
+            Forgot your password?
+          </a>
+        </div>
       </div>
     </form>
     <div
@@ -312,196 +316,200 @@ exports[`<Login /> interactions should not show phone_number field if auto_switc
       class="main-column"
     >
       <div
-        class="social-links row"
-      >
-        <p>
-          <a
-            class="social-link button full"
-            href="#facebook"
-            rel="noopener noreferrer"
-          >
-            <span
-              class="inner"
-            >
-              <img
-                alt="Login with Facebook"
-                class="icon"
-                src="/assets/default/facebook.svg"
-              />
-              <span
-                class="text"
-              >
-                Login with Facebook
-              </span>
-            </span>
-          </a>
-        </p>
-        <p>
-          <a
-            class="social-link button full"
-            href="#google"
-            rel="noopener noreferrer"
-          >
-            <span
-              class="inner"
-            >
-              <img
-                alt="Login with Google"
-                class="icon"
-                src="/assets/default/google.svg"
-              />
-              <span
-                class="text"
-              >
-                Login with Google
-              </span>
-            </span>
-          </a>
-        </p>
-        <p>
-          <a
-            class="social-link button full"
-            href="#twitter"
-            rel="noopener noreferrer"
-          >
-            <span
-              class="inner"
-            >
-              <img
-                alt="Login with Twitter"
-                class="icon"
-                src="/assets/default/twitter.svg"
-              />
-              <span
-                class="text"
-              >
-                Login with Twitter
-              </span>
-            </span>
-          </a>
-        </p>
-      </div>
-      <div
-        class="fieldset"
+        class="inner"
       >
         <div
-          class="row username"
+          class="social-links row"
         >
-          <label
-            for="username"
-          >
-            Email, phone number or username
-          </label>
-          <input
-            autocomplete="username"
-            class="input "
-            id="username"
-            name="username"
-            pattern=".+@.+\\\\..+"
-            placeholder="enter email, phone number or username"
-            required=""
-            title="enter valid email address, an username or a phone number"
-            type="email"
-            value=""
-          />
+          <p>
+            <a
+              class="social-link button full"
+              href="#facebook"
+              rel="noopener noreferrer"
+            >
+              <span
+                class="inner"
+              >
+                <img
+                  alt="Login with Facebook"
+                  class="icon"
+                  src="/assets/default/facebook.svg"
+                />
+                <span
+                  class="text"
+                >
+                  Login with Facebook
+                </span>
+              </span>
+            </a>
+          </p>
+          <p>
+            <a
+              class="social-link button full"
+              href="#google"
+              rel="noopener noreferrer"
+            >
+              <span
+                class="inner"
+              >
+                <img
+                  alt="Login with Google"
+                  class="icon"
+                  src="/assets/default/google.svg"
+                />
+                <span
+                  class="text"
+                >
+                  Login with Google
+                </span>
+              </span>
+            </a>
+          </p>
+          <p>
+            <a
+              class="social-link button full"
+              href="#twitter"
+              rel="noopener noreferrer"
+            >
+              <span
+                class="inner"
+              >
+                <img
+                  alt="Login with Twitter"
+                  class="icon"
+                  src="/assets/default/twitter.svg"
+                />
+                <span
+                  class="text"
+                >
+                  Login with Twitter
+                </span>
+              </span>
+            </a>
+          </p>
         </div>
         <div
-          class="row password"
+          class="fieldset"
         >
-          <label
-            for="password"
-          >
-            Password
-          </label>
-          <input
-            autocomplete="current-password"
-            class="input "
-            id="password"
-            name="password"
-            pattern=".{6,}"
-            placeholder="password"
-            required=""
-            title="password must be a minimum of 6 characters"
-            type="password"
-            value=""
-          />
           <div
-            class=""
-            role="button"
-            tabindex="0"
+            class="row username"
           >
-            <i
-              class="eye"
-              title="reveal password"
+            <label
+              for="username"
+            >
+              Email, phone number or username
+            </label>
+            <input
+              autocomplete="username"
+              class="input "
+              id="username"
+              name="username"
+              pattern=".+@.+\\\\..+"
+              placeholder="enter email, phone number or username"
+              required=""
+              title="enter valid email address, an username or a phone number"
+              type="email"
+              value=""
             />
+          </div>
+          <div
+            class="row password"
+          >
+            <label
+              for="password"
+            >
+              Password
+            </label>
+            <input
+              autocomplete="current-password"
+              class="input "
+              id="password"
+              name="password"
+              pattern=".{6,}"
+              placeholder="password"
+              required=""
+              title="password must be a minimum of 6 characters"
+              type="password"
+              value=""
+            />
+            <div
+              class=""
+              role="button"
+              tabindex="0"
+            >
+              <i
+                class="eye"
+                title="reveal password"
+              />
+            </div>
+          </div>
+          <div
+            class="row remember-me"
+          >
+            <input
+              checked=""
+              id="remember_me"
+              name="remember_me"
+              type="checkbox"
+            />
+            <label
+              for="remember_me"
+            >
+              remember me on this device
+            </label>
           </div>
         </div>
         <div
-          class="row remember-me"
+          class="row add-info"
+        >
+          By logging in, you accept the 
+          <a
+            class="link additional login"
+            href="/default/login/terms-and-conditions"
+          >
+            terms and conditions
+          </a>
+           and the 
+          <a
+            class="link additional login"
+            href="/default/login/privacy-policy"
+          >
+            privacy policy
+          </a>
+           of this WiFi service. 
+        </div>
+        <div
+          class="row login"
         >
           <input
-            checked=""
-            id="remember_me"
-            name="remember_me"
-            type="checkbox"
+            class="button full"
+            type="submit"
+            value="Log in"
           />
-          <label
-            for="remember_me"
-          >
-            remember me on this device
-          </label>
         </div>
-      </div>
-      <div
-        class="row add-info"
-      >
-        By logging in, you accept the 
-        <a
-          class="link additional login"
-          href="/default/login/terms-and-conditions"
+        <div
+          class="row register"
         >
-          terms and conditions
-        </a>
-         and the 
-        <a
-          class="link additional login"
-          href="/default/login/privacy-policy"
+          <p>
+            Not registered yet?
+          </p>
+          <a
+            class="button full"
+            href="/default/registration"
+          >
+            Sign up
+          </a>
+        </div>
+        <div
+          class="row links"
         >
-          privacy policy
-        </a>
-         of this WiFi service. 
-      </div>
-      <div
-        class="row login"
-      >
-        <input
-          class="button full"
-          type="submit"
-          value="Log in"
-        />
-      </div>
-      <div
-        class="row register"
-      >
-        <p>
-          Not registered yet?
-        </p>
-        <a
-          class="button full"
-          href="/default/registration"
-        >
-          Sign up
-        </a>
-      </div>
-      <div
-        class="row links"
-      >
-        <a
-          class="link"
-          href="/default/password/reset"
-        >
-          Forgot your password?
-        </a>
+          <a
+            class="link"
+            href="/default/password/reset"
+          >
+            Forgot your password?
+          </a>
+        </div>
       </div>
     </form>
     <div
@@ -586,196 +594,200 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
       class="main-column"
     >
       <div
-        class="social-links row"
-      >
-        <p>
-          <a
-            class="social-link button full"
-            href="#facebook"
-            rel="noopener noreferrer"
-          >
-            <span
-              class="inner"
-            >
-              <img
-                alt="Login with Facebook"
-                class="icon"
-                src="/assets/default/facebook.svg"
-              />
-              <span
-                class="text"
-              >
-                Login with Facebook
-              </span>
-            </span>
-          </a>
-        </p>
-        <p>
-          <a
-            class="social-link button full"
-            href="#google"
-            rel="noopener noreferrer"
-          >
-            <span
-              class="inner"
-            >
-              <img
-                alt="Login with Google"
-                class="icon"
-                src="/assets/default/google.svg"
-              />
-              <span
-                class="text"
-              >
-                Login with Google
-              </span>
-            </span>
-          </a>
-        </p>
-        <p>
-          <a
-            class="social-link button full"
-            href="#twitter"
-            rel="noopener noreferrer"
-          >
-            <span
-              class="inner"
-            >
-              <img
-                alt="Login with Twitter"
-                class="icon"
-                src="/assets/default/twitter.svg"
-              />
-              <span
-                class="text"
-              >
-                Login with Twitter
-              </span>
-            </span>
-          </a>
-        </p>
-      </div>
-      <div
-        class="fieldset"
+        class="inner"
       >
         <div
-          class="row username"
+          class="social-links row"
         >
-          <label
-            for="username"
-          >
-            Email, phone number or username
-          </label>
-          <input
-            autocomplete="username"
-            class="input "
-            id="username"
-            name="username"
-            pattern=".+@.+\\\\..+"
-            placeholder="enter email, phone number or username"
-            required=""
-            title="enter valid email address, an username or a phone number"
-            type="email"
-            value=""
-          />
+          <p>
+            <a
+              class="social-link button full"
+              href="#facebook"
+              rel="noopener noreferrer"
+            >
+              <span
+                class="inner"
+              >
+                <img
+                  alt="Login with Facebook"
+                  class="icon"
+                  src="/assets/default/facebook.svg"
+                />
+                <span
+                  class="text"
+                >
+                  Login with Facebook
+                </span>
+              </span>
+            </a>
+          </p>
+          <p>
+            <a
+              class="social-link button full"
+              href="#google"
+              rel="noopener noreferrer"
+            >
+              <span
+                class="inner"
+              >
+                <img
+                  alt="Login with Google"
+                  class="icon"
+                  src="/assets/default/google.svg"
+                />
+                <span
+                  class="text"
+                >
+                  Login with Google
+                </span>
+              </span>
+            </a>
+          </p>
+          <p>
+            <a
+              class="social-link button full"
+              href="#twitter"
+              rel="noopener noreferrer"
+            >
+              <span
+                class="inner"
+              >
+                <img
+                  alt="Login with Twitter"
+                  class="icon"
+                  src="/assets/default/twitter.svg"
+                />
+                <span
+                  class="text"
+                >
+                  Login with Twitter
+                </span>
+              </span>
+            </a>
+          </p>
         </div>
         <div
-          class="row password"
+          class="fieldset"
         >
-          <label
-            for="password"
-          >
-            Password
-          </label>
-          <input
-            autocomplete="current-password"
-            class="input "
-            id="password"
-            name="password"
-            pattern=".{6,}"
-            placeholder="password"
-            required=""
-            title="password must be a minimum of 6 characters"
-            type="password"
-            value=""
-          />
           <div
-            class=""
-            role="button"
-            tabindex="0"
+            class="row username"
           >
-            <i
-              class="eye"
-              title="reveal password"
+            <label
+              for="username"
+            >
+              Email, phone number or username
+            </label>
+            <input
+              autocomplete="username"
+              class="input "
+              id="username"
+              name="username"
+              pattern=".+@.+\\\\..+"
+              placeholder="enter email, phone number or username"
+              required=""
+              title="enter valid email address, an username or a phone number"
+              type="email"
+              value=""
             />
+          </div>
+          <div
+            class="row password"
+          >
+            <label
+              for="password"
+            >
+              Password
+            </label>
+            <input
+              autocomplete="current-password"
+              class="input "
+              id="password"
+              name="password"
+              pattern=".{6,}"
+              placeholder="password"
+              required=""
+              title="password must be a minimum of 6 characters"
+              type="password"
+              value=""
+            />
+            <div
+              class=""
+              role="button"
+              tabindex="0"
+            >
+              <i
+                class="eye"
+                title="reveal password"
+              />
+            </div>
+          </div>
+          <div
+            class="row remember-me"
+          >
+            <input
+              checked=""
+              id="remember_me"
+              name="remember_me"
+              type="checkbox"
+            />
+            <label
+              for="remember_me"
+            >
+              remember me on this device
+            </label>
           </div>
         </div>
         <div
-          class="row remember-me"
+          class="row add-info"
+        >
+          By logging in, you accept the 
+          <a
+            class="link additional login"
+            href="/default/login/terms-and-conditions"
+          >
+            terms and conditions
+          </a>
+           and the 
+          <a
+            class="link additional login"
+            href="/default/login/privacy-policy"
+          >
+            privacy policy
+          </a>
+           of this WiFi service. 
+        </div>
+        <div
+          class="row login"
         >
           <input
-            checked=""
-            id="remember_me"
-            name="remember_me"
-            type="checkbox"
+            class="button full"
+            type="submit"
+            value="Log in"
           />
-          <label
-            for="remember_me"
-          >
-            remember me on this device
-          </label>
         </div>
-      </div>
-      <div
-        class="row add-info"
-      >
-        By logging in, you accept the 
-        <a
-          class="link additional login"
-          href="/default/login/terms-and-conditions"
+        <div
+          class="row register"
         >
-          terms and conditions
-        </a>
-         and the 
-        <a
-          class="link additional login"
-          href="/default/login/privacy-policy"
+          <p>
+            Not registered yet?
+          </p>
+          <a
+            class="button full"
+            href="/default/registration"
+          >
+            Sign up
+          </a>
+        </div>
+        <div
+          class="row links"
         >
-          privacy policy
-        </a>
-         of this WiFi service. 
-      </div>
-      <div
-        class="row login"
-      >
-        <input
-          class="button full"
-          type="submit"
-          value="Log in"
-        />
-      </div>
-      <div
-        class="row register"
-      >
-        <p>
-          Not registered yet?
-        </p>
-        <a
-          class="button full"
-          href="/default/registration"
-        >
-          Sign up
-        </a>
-      </div>
-      <div
-        class="row links"
-      >
-        <a
-          class="link"
-          href="/default/password/reset"
-        >
-          Forgot your password?
-        </a>
+          <a
+            class="link"
+            href="/default/password/reset"
+          >
+            Forgot your password?
+          </a>
+        </div>
       </div>
     </form>
     <div
@@ -862,179 +874,186 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
         onSubmit={[Function]}
       >
         <div
-          className="social-links row"
+          className="inner"
         >
-          <p>
-            <a
-              className="social-link button full"
-              href="https://radius.openwisp.io/login/google"
-              rel="noopener noreferrer"
-            >
-              <span
-                className="inner"
-              >
-                <img
-                  alt="Login with Google"
-                  className="icon"
-                  src="/assets/default/google.png"
-                />
-                <span
-                  className="text"
-                >
-                  Login with Google
-                </span>
-              </span>
-            </a>
-          </p>
-          <p>
-            <a
-              className="social-link button full"
-              href="https://radius.openwisp.io/login/facebook"
-              rel="noopener noreferrer"
-            >
-              <span
-                className="inner"
-              >
-                <img
-                  alt="Login with Facebook"
-                  className="icon"
-                  src="/assets/default/facebook.png"
-                />
-                <span
-                  className="text"
-                >
-                  Login with Facebook
-                </span>
-              </span>
-            </a>
-          </p>
-        </div>
-        <div
-          className="fieldset"
-        >
+          
           <div
-            className="row username"
+            className="social-links row"
           >
-            <label
-              htmlFor="username"
-            >
-              Email, phone number or username
-            </label>
-            <input
-              autoComplete="username"
-              className="input "
-              id="username"
-              name="username"
-              onChange={[Function]}
-              pattern=".+@.+\\\\..+"
-              placeholder="enter email, phone number or username"
-              required={true}
-              title="enter valid email address, an username or a phone number"
-              type="email"
-              value=""
-            />
+            <p>
+              <a
+                className="social-link button full"
+                href="https://radius.openwisp.io/login/google"
+                rel="noopener noreferrer"
+              >
+                <span
+                  className="inner"
+                >
+                  <img
+                    alt="Login with Google"
+                    className="icon"
+                    src="/assets/default/google.png"
+                  />
+                  <span
+                    className="text"
+                  >
+                    Login with Google
+                  </span>
+                </span>
+              </a>
+            </p>
+            <p>
+              <a
+                className="social-link button full"
+                href="https://radius.openwisp.io/login/facebook"
+                rel="noopener noreferrer"
+              >
+                <span
+                  className="inner"
+                >
+                  <img
+                    alt="Login with Facebook"
+                    className="icon"
+                    src="/assets/default/facebook.png"
+                  />
+                  <span
+                    className="text"
+                  >
+                    Login with Facebook
+                  </span>
+                </span>
+              </a>
+            </p>
           </div>
+          
           <div
-            className="row password"
+            className="fieldset"
           >
-            <label
-              htmlFor="password"
+            <div
+              className="row username"
             >
-              Password
-            </label>
-            <input
-              autoComplete="current-password"
-              className="input "
-              id="password"
-              name="password"
-              onChange={[Function]}
-              pattern=".{6,}"
-              placeholder="password"
-              required={true}
-              title="password must be a minimum of 6 characters"
-              type="password"
-              value=""
-            />
-            <PasswordToggleIcon
-              hidePassword={true}
-              inputRef={
-                Object {
-                  "current": null,
+              <label
+                htmlFor="username"
+              >
+                Email, phone number or username
+              </label>
+              <input
+                autoComplete="username"
+                className="input "
+                id="username"
+                name="username"
+                onChange={[Function]}
+                pattern=".+@.+\\\\..+"
+                placeholder="enter email, phone number or username"
+                required={true}
+                title="enter valid email address, an username or a phone number"
+                type="email"
+                value=""
+              />
+            </div>
+            <div
+              className="row password"
+            >
+              <label
+                htmlFor="password"
+              >
+                Password
+              </label>
+              <input
+                autoComplete="current-password"
+                className="input "
+                id="password"
+                name="password"
+                onChange={[Function]}
+                pattern=".{6,}"
+                placeholder="password"
+                required={true}
+                title="password must be a minimum of 6 characters"
+                type="password"
+                value=""
+              />
+              <PasswordToggleIcon
+                hidePassword={true}
+                inputRef={
+                  Object {
+                    "current": null,
+                  }
                 }
-              }
-              isVisible={false}
-              parentClassName=""
-              secondInputRef={Object {}}
-              toggler={[Function]}
+                isVisible={false}
+                parentClassName=""
+                secondInputRef={Object {}}
+                toggler={[Function]}
+              />
+            </div>
+            <div
+              className="row remember-me"
+            >
+              <input
+                checked={true}
+                id="remember_me"
+                name="remember_me"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <label
+                htmlFor="remember_me"
+              >
+                remember me on this device
+              </label>
+            </div>
+          </div>
+          <div
+            className="row add-info"
+          >
+            By logging in, you accept the 
+            <Link
+              className="link additional login"
+              to="/default/login/terms-and-conditions"
+            >
+              terms and conditions
+            </Link>
+             and the 
+            <Link
+              className="link additional login"
+              to="/default/login/privacy-policy"
+            >
+              privacy policy
+            </Link>
+             of this WiFi service. 
+          </div>
+          <div
+            className="row login"
+          >
+            <input
+              className="button full"
+              type="submit"
+              value="Log in"
             />
           </div>
           <div
-            className="row remember-me"
+            className="row register"
           >
-            <input
-              checked={true}
-              id="remember_me"
-              name="remember_me"
-              onChange={[Function]}
-              type="checkbox"
-            />
-            <label
-              htmlFor="remember_me"
+            <p>
+              Not registered yet?
+            </p>
+            <Link
+              className="button full"
+              to="/default/registration"
             >
-              remember me on this device
-            </label>
+              Sign up
+            </Link>
           </div>
-        </div>
-        <div
-          className="row add-info"
-        >
-          By logging in, you accept the 
-          <Link
-            className="link additional login"
-            to="/default/login/terms-and-conditions"
+          <div
+            className="row links"
           >
-            terms and conditions
-          </Link>
-           and the 
-          <Link
-            className="link additional login"
-            to="/default/login/privacy-policy"
-          >
-            privacy policy
-          </Link>
-           of this WiFi service. 
-        </div>
-        <div
-          className="row login"
-        >
-          <input
-            className="button full"
-            type="submit"
-            value="Log in"
-          />
-        </div>
-        <div
-          className="row register"
-        >
-          <p>
-            Not registered yet?
-          </p>
-          <Link
-            className="button full"
-            to="/default/registration"
-          >
-            Sign up
-          </Link>
-        </div>
-        <div
-          className="row links"
-        >
-          <Link
-            className="link"
-            to="/default/password/reset"
-          >
-            Forgot your password?
-          </Link>
+            <Link
+              className="link"
+              to="/default/password/reset"
+            >
+              Forgot your password?
+            </Link>
+          </div>
+          
         </div>
       </form>
       <Memo(Connect(Contact)) />
@@ -1061,201 +1080,208 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
         onSubmit={[Function]}
       >
         <div
-          className="social-links row"
+          className="inner"
         >
-          <p>
-            <a
-              className="social-link button full"
-              href="#facebook"
-              rel="noopener noreferrer"
-            >
-              <span
-                className="inner"
-              >
-                <img
-                  alt="Login with Facebook"
-                  className="icon"
-                  src="/assets/default/facebook.svg"
-                />
-                <span
-                  className="text"
-                >
-                  Login with Facebook
-                </span>
-              </span>
-            </a>
-          </p>
-          <p>
-            <a
-              className="social-link button full"
-              href="#google"
-              rel="noopener noreferrer"
-            >
-              <span
-                className="inner"
-              >
-                <img
-                  alt="Login with Google"
-                  className="icon"
-                  src="/assets/default/google.svg"
-                />
-                <span
-                  className="text"
-                >
-                  Login with Google
-                </span>
-              </span>
-            </a>
-          </p>
-          <p>
-            <a
-              className="social-link button full"
-              href="#twitter"
-              rel="noopener noreferrer"
-            >
-              <span
-                className="inner"
-              >
-                <img
-                  alt="Login with Twitter"
-                  className="icon"
-                  src="/assets/default/twitter.svg"
-                />
-                <span
-                  className="text"
-                >
-                  Login with Twitter
-                </span>
-              </span>
-            </a>
-          </p>
-        </div>
-        <div
-          className="fieldset"
-        >
+          
           <div
-            className="row username"
+            className="social-links row"
           >
-            <label
-              htmlFor="username"
-            >
-              Email, phone number or username
-            </label>
-            <input
-              autoComplete="username"
-              className="input "
-              id="username"
-              name="username"
-              onChange={[Function]}
-              pattern=".+@.+\\\\..+"
-              placeholder="enter email, phone number or username"
-              required={true}
-              title="enter valid email address, an username or a phone number"
-              type="email"
-              value=""
-            />
+            <p>
+              <a
+                className="social-link button full"
+                href="#facebook"
+                rel="noopener noreferrer"
+              >
+                <span
+                  className="inner"
+                >
+                  <img
+                    alt="Login with Facebook"
+                    className="icon"
+                    src="/assets/default/facebook.svg"
+                  />
+                  <span
+                    className="text"
+                  >
+                    Login with Facebook
+                  </span>
+                </span>
+              </a>
+            </p>
+            <p>
+              <a
+                className="social-link button full"
+                href="#google"
+                rel="noopener noreferrer"
+              >
+                <span
+                  className="inner"
+                >
+                  <img
+                    alt="Login with Google"
+                    className="icon"
+                    src="/assets/default/google.svg"
+                  />
+                  <span
+                    className="text"
+                  >
+                    Login with Google
+                  </span>
+                </span>
+              </a>
+            </p>
+            <p>
+              <a
+                className="social-link button full"
+                href="#twitter"
+                rel="noopener noreferrer"
+              >
+                <span
+                  className="inner"
+                >
+                  <img
+                    alt="Login with Twitter"
+                    className="icon"
+                    src="/assets/default/twitter.svg"
+                  />
+                  <span
+                    className="text"
+                  >
+                    Login with Twitter
+                  </span>
+                </span>
+              </a>
+            </p>
           </div>
+          
           <div
-            className="row password"
+            className="fieldset"
           >
-            <label
-              htmlFor="password"
+            <div
+              className="row username"
             >
-              Password
-            </label>
-            <input
-              autoComplete="current-password"
-              className="input "
-              id="password"
-              name="password"
-              onChange={[Function]}
-              pattern=".{6,}"
-              placeholder="password"
-              required={true}
-              title="password must be a minimum of 6 characters"
-              type="password"
-              value=""
-            />
-            <PasswordToggleIcon
-              hidePassword={true}
-              inputRef={
-                Object {
-                  "current": null,
+              <label
+                htmlFor="username"
+              >
+                Email, phone number or username
+              </label>
+              <input
+                autoComplete="username"
+                className="input "
+                id="username"
+                name="username"
+                onChange={[Function]}
+                pattern=".+@.+\\\\..+"
+                placeholder="enter email, phone number or username"
+                required={true}
+                title="enter valid email address, an username or a phone number"
+                type="email"
+                value=""
+              />
+            </div>
+            <div
+              className="row password"
+            >
+              <label
+                htmlFor="password"
+              >
+                Password
+              </label>
+              <input
+                autoComplete="current-password"
+                className="input "
+                id="password"
+                name="password"
+                onChange={[Function]}
+                pattern=".{6,}"
+                placeholder="password"
+                required={true}
+                title="password must be a minimum of 6 characters"
+                type="password"
+                value=""
+              />
+              <PasswordToggleIcon
+                hidePassword={true}
+                inputRef={
+                  Object {
+                    "current": null,
+                  }
                 }
-              }
-              isVisible={false}
-              parentClassName=""
-              secondInputRef={Object {}}
-              toggler={[Function]}
+                isVisible={false}
+                parentClassName=""
+                secondInputRef={Object {}}
+                toggler={[Function]}
+              />
+            </div>
+            <div
+              className="row remember-me"
+            >
+              <input
+                checked={true}
+                id="remember_me"
+                name="remember_me"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <label
+                htmlFor="remember_me"
+              >
+                remember me on this device
+              </label>
+            </div>
+          </div>
+          <div
+            className="row add-info"
+          >
+            By logging in, you accept the 
+            <Link
+              className="link additional login"
+              to="/default/login/terms-and-conditions"
+            >
+              terms and conditions
+            </Link>
+             and the 
+            <Link
+              className="link additional login"
+              to="/default/login/privacy-policy"
+            >
+              privacy policy
+            </Link>
+             of this WiFi service. 
+          </div>
+          <div
+            className="row login"
+          >
+            <input
+              className="button full"
+              type="submit"
+              value="Log in"
             />
           </div>
           <div
-            className="row remember-me"
+            className="row register"
           >
-            <input
-              checked={true}
-              id="remember_me"
-              name="remember_me"
-              onChange={[Function]}
-              type="checkbox"
-            />
-            <label
-              htmlFor="remember_me"
+            <p>
+              Not registered yet?
+            </p>
+            <Link
+              className="button full"
+              to="/default/registration"
             >
-              remember me on this device
-            </label>
+              Sign up
+            </Link>
           </div>
-        </div>
-        <div
-          className="row add-info"
-        >
-          By logging in, you accept the 
-          <Link
-            className="link additional login"
-            to="/default/login/terms-and-conditions"
+          <div
+            className="row links"
           >
-            terms and conditions
-          </Link>
-           and the 
-          <Link
-            className="link additional login"
-            to="/default/login/privacy-policy"
-          >
-            privacy policy
-          </Link>
-           of this WiFi service. 
-        </div>
-        <div
-          className="row login"
-        >
-          <input
-            className="button full"
-            type="submit"
-            value="Log in"
-          />
-        </div>
-        <div
-          className="row register"
-        >
-          <p>
-            Not registered yet?
-          </p>
-          <Link
-            className="button full"
-            to="/default/registration"
-          >
-            Sign up
-          </Link>
-        </div>
-        <div
-          className="row links"
-        >
-          <Link
-            className="link"
-            to="/default/password/reset"
-          >
-            Forgot your password?
-          </Link>
+            <Link
+              className="link"
+              to="/default/password/reset"
+            >
+              Forgot your password?
+            </Link>
+          </div>
+          
         </div>
       </form>
       <Memo(Connect(Contact)) />
@@ -1282,187 +1308,194 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
         onSubmit={[Function]}
       >
         <div
-          className="social-links row"
+          className="inner"
         >
-          <p>
-            <a
-              className="social-link button full"
-              href="#facebook"
-              rel="noopener noreferrer"
-            >
-              <span
-                className="inner"
-              >
-                <img
-                  alt="Login with Facebook"
-                  className="icon"
-                  src="/assets/default/facebook.svg"
-                />
-                <span
-                  className="text"
-                >
-                  Login with Facebook
-                </span>
-              </span>
-            </a>
-          </p>
-          <p>
-            <a
-              className="social-link button full"
-              href="#google"
-              rel="noopener noreferrer"
-            >
-              <span
-                className="inner"
-              >
-                <img
-                  alt="Login with Google"
-                  className="icon"
-                  src="/assets/default/google.svg"
-                />
-                <span
-                  className="text"
-                >
-                  Login with Google
-                </span>
-              </span>
-            </a>
-          </p>
-          <p>
-            <a
-              className="social-link button full"
-              href="#twitter"
-              rel="noopener noreferrer"
-            >
-              <span
-                className="inner"
-              >
-                <img
-                  alt="Login with Twitter"
-                  className="icon"
-                  src="/assets/default/twitter.svg"
-                />
-                <span
-                  className="text"
-                >
-                  Login with Twitter
-                </span>
-              </span>
-            </a>
-          </p>
-        </div>
-        <div
-          className="fieldset"
-        >
+          
           <div
-            className="row username"
+            className="social-links row"
           >
-            <label
-              htmlFor="username"
-            >
-              USERNAME_LBL
-            </label>
-            <input
-              autoComplete="username"
-              className="input "
-              id="username"
-              name="username"
-              onChange={[Function]}
-              pattern=".+@.+\\\\..+"
-              placeholder="USERNAME_PHOLD"
-              required={true}
-              title="USERNAME_TITL"
-              type="email"
-              value=""
-            />
+            <p>
+              <a
+                className="social-link button full"
+                href="#facebook"
+                rel="noopener noreferrer"
+              >
+                <span
+                  className="inner"
+                >
+                  <img
+                    alt="Login with Facebook"
+                    className="icon"
+                    src="/assets/default/facebook.svg"
+                  />
+                  <span
+                    className="text"
+                  >
+                    Login with Facebook
+                  </span>
+                </span>
+              </a>
+            </p>
+            <p>
+              <a
+                className="social-link button full"
+                href="#google"
+                rel="noopener noreferrer"
+              >
+                <span
+                  className="inner"
+                >
+                  <img
+                    alt="Login with Google"
+                    className="icon"
+                    src="/assets/default/google.svg"
+                  />
+                  <span
+                    className="text"
+                  >
+                    Login with Google
+                  </span>
+                </span>
+              </a>
+            </p>
+            <p>
+              <a
+                className="social-link button full"
+                href="#twitter"
+                rel="noopener noreferrer"
+              >
+                <span
+                  className="inner"
+                >
+                  <img
+                    alt="Login with Twitter"
+                    className="icon"
+                    src="/assets/default/twitter.svg"
+                  />
+                  <span
+                    className="text"
+                  >
+                    Login with Twitter
+                  </span>
+                </span>
+              </a>
+            </p>
           </div>
+          
           <div
-            className="row password"
+            className="fieldset"
           >
-            <label
-              htmlFor="password"
+            <div
+              className="row username"
             >
-              PWD_LBL
-            </label>
-            <input
-              autoComplete="current-password"
-              className="input "
-              id="password"
-              name="password"
-              onChange={[Function]}
-              pattern=".{6,}"
-              placeholder="PWD_PHOLD"
-              required={true}
-              title="PWD_PTRN_DESC"
-              type="password"
-              value=""
-            />
-            <PasswordToggleIcon
-              hidePassword={true}
-              inputRef={
-                Object {
-                  "current": null,
+              <label
+                htmlFor="username"
+              >
+                USERNAME_LBL
+              </label>
+              <input
+                autoComplete="username"
+                className="input "
+                id="username"
+                name="username"
+                onChange={[Function]}
+                pattern=".+@.+\\\\..+"
+                placeholder="USERNAME_PHOLD"
+                required={true}
+                title="USERNAME_TITL"
+                type="email"
+                value=""
+              />
+            </div>
+            <div
+              className="row password"
+            >
+              <label
+                htmlFor="password"
+              >
+                PWD_LBL
+              </label>
+              <input
+                autoComplete="current-password"
+                className="input "
+                id="password"
+                name="password"
+                onChange={[Function]}
+                pattern=".{6,}"
+                placeholder="PWD_PHOLD"
+                required={true}
+                title="PWD_PTRN_DESC"
+                type="password"
+                value=""
+              />
+              <PasswordToggleIcon
+                hidePassword={true}
+                inputRef={
+                  Object {
+                    "current": null,
+                  }
                 }
-              }
-              isVisible={false}
-              parentClassName=""
-              secondInputRef={Object {}}
-              toggler={[Function]}
+                isVisible={false}
+                parentClassName=""
+                secondInputRef={Object {}}
+                toggler={[Function]}
+              />
+            </div>
+            <div
+              className="row remember-me"
+            >
+              <input
+                checked={true}
+                id="remember_me"
+                name="remember_me"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <label
+                htmlFor="remember_me"
+              >
+                REMEMBER_ME
+              </label>
+            </div>
+          </div>
+          <div
+            className="row add-info"
+          >
+            LOGIN_ADD_INFO_TXT
+          </div>
+          <div
+            className="row login"
+          >
+            <input
+              className="button full"
+              type="submit"
+              value="LOGIN"
             />
           </div>
           <div
-            className="row remember-me"
+            className="row register"
           >
-            <input
-              checked={true}
-              id="remember_me"
-              name="remember_me"
-              onChange={[Function]}
-              type="checkbox"
-            />
-            <label
-              htmlFor="remember_me"
+            <p>
+              REGISTER_BTN_LBL
+            </p>
+            <Link
+              className="button full"
+              to="/default/registration"
             >
-              REMEMBER_ME
-            </label>
+              REGISTER_BTN_TXT
+            </Link>
           </div>
-        </div>
-        <div
-          className="row add-info"
-        >
-          LOGIN_ADD_INFO_TXT
-        </div>
-        <div
-          className="row login"
-        >
-          <input
-            className="button full"
-            type="submit"
-            value="LOGIN"
-          />
-        </div>
-        <div
-          className="row register"
-        >
-          <p>
-            REGISTER_BTN_LBL
-          </p>
-          <Link
-            className="button full"
-            to="/default/registration"
+          <div
+            className="row links"
           >
-            REGISTER_BTN_TXT
-          </Link>
-        </div>
-        <div
-          className="row links"
-        >
-          <Link
-            className="link"
-            to="/default/password/reset"
-          >
-            FORGOT_PASSWORD
-          </Link>
+            <Link
+              className="link"
+              to="/default/password/reset"
+            >
+              FORGOT_PASSWORD
+            </Link>
+          </div>
+          
         </div>
       </form>
       <Memo(Connect(Contact)) />

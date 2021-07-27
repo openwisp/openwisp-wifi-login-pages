@@ -594,4 +594,26 @@ describe("<Login /> interactions", () => {
     const Comp = React.createElement(Modal).type;
     expect(JSON.stringify(render({}))).toStrictEqual(JSON.stringify(<Comp />));
   });
+
+  it("should show custom HTML", () => {
+    wrapper = mountComponent(props);
+    expect(wrapper.find(".intro").length).toEqual(0);
+    expect(wrapper.find(".pre-html").length).toEqual(0);
+    expect(wrapper.find(".help-container").length).toEqual(0);
+    expect(wrapper.find(".after-html").length).toEqual(0);
+
+    const htmlProps = {...props};
+    htmlProps.loginForm = {
+      ...htmlProps.loginForm,
+      intro_html: {en: "<div class='intro-html'></div>"},
+      pre_html: {en: "<div class='pre-html'></div>"},
+      help_html: {en: "<div class='help-html'></div>"},
+      after_html: {en: "<div class='after-html'></div>"},
+    };
+    wrapper = mountComponent(htmlProps);
+    expect(wrapper.find(".intro").length).toEqual(1);
+    expect(wrapper.find(".pre-html").length).toEqual(1);
+    expect(wrapper.find(".help-container").length).toEqual(1);
+    expect(wrapper.find(".after-html").length).toEqual(1);
+  });
 });

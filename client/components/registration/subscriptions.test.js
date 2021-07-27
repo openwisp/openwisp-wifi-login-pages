@@ -18,6 +18,7 @@ const createTestProps = function (props, configName = "default") {
   const config = getConfig(configName);
   return {
     orgSlug: configName,
+    orgName: "test",
     settings: config.settings,
     registration: config.components.registration_form,
     privacyPolicy: config.privacy_policy,
@@ -111,6 +112,30 @@ describe("test subscriptions", () => {
     wrapper.instance().setState({plans, plansFetched: true});
     expect(wrapper.find("input[name='plan_selection']").length).toBe(2);
     expect(lastConsoleOutuput).toBe(null);
+    expect(wrapper.find(".plan").length).toBe(2);
+    expect(wrapper.find("#radio0").exists()).toBe(true);
+    expect(wrapper.find("#radio1").exists()).toBe(true);
+
+    // form inputs not visible
+    expect(wrapper.find(".row.register").exists()).toBe(true);
+    expect(wrapper.find(".row.username").exists()).toBe(false);
+    expect(wrapper.find(".row.email").exists()).toBe(false);
+
+    // show first plan
+    wrapper.find("#radio0").simulate("focus", {target: {value: "0"}});
+    expect(wrapper.instance().state.selected_plan).toBe("0");
+    expect(wrapper.find(".row.email").exists()).toBe(true);
+    expect(wrapper.find(".row.username").exists()).toBe(false);
+    expect(wrapper.find(".plan.active").length).toBe(1);
+    expect(wrapper.find(".plan.inactive").length).toBe(1);
+
+    // show second plan
+    wrapper.find("#radio1").simulate("focus", {target: {value: "1"}});
+    expect(wrapper.instance().state.selected_plan).toBe("1");
+    expect(wrapper.find(".row.email").exists()).toBe(true);
+    expect(wrapper.find(".row.username").exists()).toBe(true);
+    expect(wrapper.find(".plan.active").length).toBe(1);
+    expect(wrapper.find(".plan.inactive").length).toBe(1);
   });
 
   it("show billing info only when verifies_identity is true", () => {

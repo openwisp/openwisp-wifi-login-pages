@@ -6,7 +6,7 @@ exports[`<Status /> rendering should render correctly 1`] = `
     className="modal"
   >
     <div
-      className="modal-container"
+      className="modal-container bg"
     >
       <button
         className="modal-close-btn"
@@ -50,43 +50,47 @@ exports[`<Status /> rendering should render correctly 1`] = `
       <div
         className="main-column"
       >
-        <p>
-          WiFi Login Successful!
-        </p>
-        <p>
-          You can now use the internet.
-        </p>
-        <p>
-          You may leave this page open in case you want to log out.
-        </p>
-        <p>
-          <label>
-            Status
-            :
-          </label>
-          <span>
-            Logged in
-          </span>
-        </p>
         <div
-          className="row logout"
+          className="inner"
         >
-          <input
-            className="button full"
-            onClick={[Function]}
-            type="button"
-            value="Logout"
-          />
-        </div>
-        <div
-          className="links row"
-        >
-          <Link
-            className="button full status-link"
-            to="/default/change-password/"
+          <p>
+            WiFi Login Successful!
+          </p>
+          <p>
+            You can now use the internet.
+          </p>
+          <p>
+            You may leave this page open in case you want to log out.
+          </p>
+          <p>
+            <label>
+              Status
+              :
+            </label>
+            <span>
+              Logged in
+            </span>
+          </p>
+          <div
+            className="row logout"
           >
-            Change your password
-          </Link>
+            <input
+              className="button full"
+              onClick={[Function]}
+              type="button"
+              value="Logout"
+            />
+          </div>
+          <div
+            className="links row"
+          >
+            <Link
+              className="button full status-link"
+              to="/default/change-password/"
+            >
+              Change your password
+            </Link>
+          </div>
         </div>
       </div>
       <Memo(Connect(Contact)) />
@@ -171,7 +175,7 @@ exports[`<Status /> rendering with placeholder translation tags should render tr
     className="modal"
   >
     <div
-      className="modal-container"
+      className="modal-container bg"
     >
       <button
         className="modal-close-btn"
@@ -215,37 +219,41 @@ exports[`<Status /> rendering with placeholder translation tags should render tr
       <div
         className="main-column"
       >
-        <p>
-          STATUS_CONTENT
-        </p>
-        <p>
-          <label>
-            STATUS
-            :
-          </label>
-          <span>
-            LOGGED_IN
-          </span>
-        </p>
         <div
-          className="row logout"
+          className="inner"
         >
-          <input
-            className="button full"
-            onClick={[Function]}
-            type="button"
-            value="LOGOUT"
-          />
-        </div>
-        <div
-          className="links row"
-        >
-          <Link
-            className="button full status-link"
-            to="/default/change-password/"
+          <p>
+            STATUS_CONTENT
+          </p>
+          <p>
+            <label>
+              STATUS
+              :
+            </label>
+            <span>
+              LOGGED_IN
+            </span>
+          </p>
+          <div
+            className="row logout"
           >
-            Change your password
-          </Link>
+            <input
+              className="button full"
+              onClick={[Function]}
+              type="button"
+              value="LOGOUT"
+            />
+          </div>
+          <div
+            className="links row"
+          >
+            <Link
+              className="button full status-link"
+              to="/default/change-password/"
+            >
+              Change your password
+            </Link>
+          </div>
         </div>
       </div>
       <Memo(Connect(Contact)) />

@@ -33,6 +33,11 @@ a.social-link .text {
 div.remember-me {
   margin-bottom: 0;
 }
+#login .intro,
+#login .ending,
+#login .pre-content {
+  width: 100%;
+}
 .remember-me input {
   height: 16px;
   width: 16px;

@@ -42,15 +42,17 @@ export default class Logout extends React.Component {
         <div className="container content" id="logout">
           <div className="inner">
             <div className="main-column w-100">
-              <h2>{t`LOGOUT_CONTENT`}</h2>
-              <div className="links row">
-                <Link
-                  onClick={() => this.loginUser(isAuthenticated)}
-                  className="button partial"
-                  to={`/${orgSlug}/status`}
-                >
-                  {`${t`LOGIN`} ${t`AGAIN`}`}
-                </Link>
+              <div className="inner">
+                <h2>{t`LOGOUT_CONTENT`}</h2>
+                <div className="links row">
+                  <Link
+                    onClick={() => this.loginUser(isAuthenticated)}
+                    className="button partial"
+                    to={`/${orgSlug}/status`}
+                  >
+                    {`${t`LOGIN`} ${t`AGAIN`}`}
+                  </Link>
+                </div>
               </div>
             </div>
           </div>

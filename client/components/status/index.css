@@ -80,7 +80,42 @@
   }
 }
 
-.modal-container p {
+.logout-modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(94, 110, 141, 0.9);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s 0s, visibility 0s 0.3s;
+}
+
+.logout-modal.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s 0s, visibility 0s 0s;
+}
+
+.logout-modal-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -55%) !important;
+  margin: 0 auto !important;
+  padding: 3.1em 1em 3em;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 0.25em 0.25em 0.4em 0.4em;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  background: #d3d3d3;
+  transition-property: transform;
+  transition-duration: 0.3s;
+}
+
+.logout-modal-container p {
   margin-top: 0;
 }
 

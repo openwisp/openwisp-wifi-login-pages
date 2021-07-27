@@ -12,29 +12,33 @@ exports[`<DoesNotExist /> rendering should render correctly custom 404 page with
       className="main-column"
     >
       <div
-        className="row owisp-404-row-1"
+        className="inner"
       >
-        404
-      </div>
-      <div
-        className="row owisp-404-row-2"
-      >
-        Not Found
-      </div>
-      <div
-        className="row owisp-404-row-3"
-      >
-        Sorry, we couldn't find the page you were looking for.
-      </div>
-      <div
-        className="row owisp-404-row-4"
-      >
-        <Link
-          className="link"
-          to="/default"
+        <div
+          className="row owisp-404-row-1"
         >
-          Go back to homepage
-        </Link>
+          404
+        </div>
+        <div
+          className="row owisp-404-row-2"
+        >
+          Not Found
+        </div>
+        <div
+          className="row owisp-404-row-3"
+        >
+          Sorry, we couldn't find the page you were looking for.
+        </div>
+        <div
+          className="row owisp-404-row-4"
+        >
+          <Link
+            className="link"
+            to="/default"
+          >
+            Go back to homepage
+          </Link>
+        </div>
       </div>
     </div>
   </div>
@@ -53,19 +57,23 @@ exports[`<DoesNotExist /> rendering should render correctly default 404 page wit
       className="main-column"
     >
       <div
-        className="row owisp-404-row-1"
+        className="inner"
       >
-        Oops!
-      </div>
-      <div
-        className="row owisp-404-row-2"
-      >
-        404 Not Found
-      </div>
-      <div
-        className="row owisp-404-row-3"
-      >
-        Sorry, an error has occurred, Requested page not found!
+        <div
+          className="row owisp-404-row-1"
+        >
+          Oops!
+        </div>
+        <div
+          className="row owisp-404-row-2"
+        >
+          404 Not Found
+        </div>
+        <div
+          className="row owisp-404-row-3"
+        >
+          Sorry, an error has occurred, Requested page not found!
+        </div>
       </div>
     </div>
   </div>
@@ -84,29 +92,33 @@ exports[`<DoesNotExist /> rendering with placeholder translation tags should ren
       className="main-column"
     >
       <div
-        className="row owisp-404-row-1"
+        className="inner"
       >
-        404_H
-      </div>
-      <div
-        className="row owisp-404-row-2"
-      >
-        404_SUBH
-      </div>
-      <div
-        className="row owisp-404-row-3"
-      >
-        404_MESSAGE
-      </div>
-      <div
-        className="row owisp-404-row-4"
-      >
-        <Link
-          className="link"
-          to="/default"
+        <div
+          className="row owisp-404-row-1"
         >
-          HOME_PG_LINK_TXT
-        </Link>
+          404_H
+        </div>
+        <div
+          className="row owisp-404-row-2"
+        >
+          404_SUBH
+        </div>
+        <div
+          className="row owisp-404-row-3"
+        >
+          404_MESSAGE
+        </div>
+        <div
+          className="row owisp-404-row-4"
+        >
+          <Link
+            className="link"
+            to="/default"
+          >
+            HOME_PG_LINK_TXT
+          </Link>
+        </div>
       </div>
     </div>
   </div>

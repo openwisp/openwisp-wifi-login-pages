@@ -15,148 +15,152 @@ exports[`<Registration /> rendering should render correctly 1`] = `
         onSubmit={[Function]}
       >
         <div
-          className="fieldset"
+          className="inner"
         >
           <div
-            className="row email"
+            className="fieldset"
           >
-            <label
-              htmlFor="email"
+            <div
+              className="row email"
             >
-              Email
-            </label>
-            <input
-              autoComplete="email"
-              className="input "
-              id="email"
-              name="email"
-              onChange={[Function]}
-              pattern=".+@.+\\\\..+"
-              placeholder="email address"
-              required={true}
-              title="enter valid email address"
-              type="email"
-              value=""
-            />
+              <label
+                htmlFor="email"
+              >
+                Email
+              </label>
+              <input
+                autoComplete="email"
+                className="input "
+                id="email"
+                name="email"
+                onChange={[Function]}
+                pattern=".+@.+\\\\..+"
+                placeholder="email address"
+                required={true}
+                title="enter valid email address"
+                type="email"
+                value=""
+              />
+            </div>
+            <div
+              className="row password"
+            >
+              <label
+                htmlFor="password"
+              >
+                Password
+              </label>
+              <input
+                autoComplete="new-password"
+                className="input "
+                id="password"
+                name="password1"
+                onChange={[Function]}
+                pattern=".{6,}"
+                placeholder="password"
+                required={true}
+                title="password must be a minimum of 6 characters"
+                type="password"
+                value=""
+              />
+              <PasswordToggleIcon
+                hidePassword={true}
+                inputRef={
+                  Object {
+                    "current": null,
+                  }
+                }
+                isVisible={false}
+                parentClassName=""
+                secondInputRef={
+                  Object {
+                    "current": null,
+                  }
+                }
+                toggler={[Function]}
+              />
+            </div>
+            <div
+              className="row password-confirm"
+            >
+              <label
+                htmlFor="password-confirm"
+              >
+                Confirm password
+              </label>
+              <input
+                autoComplete="new-password"
+                className="input "
+                id="password-confirm"
+                name="password2"
+                onChange={[Function]}
+                pattern=".{6,}"
+                placeholder="confirm password"
+                required={true}
+                title="password must be a minimum of 6 characters"
+                type="password"
+                value=""
+              />
+              <PasswordToggleIcon
+                hidePassword={true}
+                inputRef={
+                  Object {
+                    "current": null,
+                  }
+                }
+                isVisible={false}
+                parentClassName=""
+                secondInputRef={
+                  Object {
+                    "current": null,
+                  }
+                }
+                toggler={[Function]}
+              />
+            </div>
           </div>
           <div
-            className="row password"
+            className="row add-info"
           >
-            <label
-              htmlFor="password"
-            >
-              Password
-            </label>
-            <input
-              autoComplete="new-password"
-              className="input "
-              id="password"
-              name="password1"
-              onChange={[Function]}
-              pattern=".{6,}"
-              placeholder="password"
-              required={true}
-              title="password must be a minimum of 6 characters"
-              type="password"
-              value=""
-            />
-            <PasswordToggleIcon
-              hidePassword={true}
-              inputRef={
-                Object {
-                  "current": null,
-                }
-              }
-              isVisible={false}
-              parentClassName=""
-              secondInputRef={
-                Object {
-                  "current": null,
-                }
-              }
-              toggler={[Function]}
-            />
-          </div>
-          <div
-            className="row password-confirm"
-          >
-            <label
-              htmlFor="password-confirm"
-            >
-              Confirm password
-            </label>
-            <input
-              autoComplete="new-password"
-              className="input "
-              id="password-confirm"
-              name="password2"
-              onChange={[Function]}
-              pattern=".{6,}"
-              placeholder="confirm password"
-              required={true}
-              title="password must be a minimum of 6 characters"
-              type="password"
-              value=""
-            />
-            <PasswordToggleIcon
-              hidePassword={true}
-              inputRef={
-                Object {
-                  "current": null,
-                }
-              }
-              isVisible={false}
-              parentClassName=""
-              secondInputRef={
-                Object {
-                  "current": null,
-                }
-              }
-              toggler={[Function]}
-            />
-          </div>
-        </div>
-        <div
-          className="row add-info"
-        >
-          By signing up, you accept the 
-          <Link
-            className="link additional registration"
-            key="terms-and-conditions"
-            to="/default/registration/terms-and-conditions"
-          >
-            terms and conditions
-          </Link>
-           and the 
-          <Link
-            className="link additional registration"
-            key="privacy-policy"
-            to="/default/registration/privacy-policy"
-          >
-            privacy policy
-          </Link>
-           of this WiFi service. 
-        </div>
-        <div
-          className="row register"
-        >
-          <input
-            className="button full"
-            type="submit"
-            value="Sign up"
-          />
-        </div>
-        <div
-          className="row links"
-        >
-          <p>
+            By signing up, you accept the 
             <Link
-              className="link"
-              to="/default/login"
+              className="link additional registration"
+              key="terms-and-conditions"
+              to="/default/registration/terms-and-conditions"
             >
-              Already have an account? Log in
+              terms and conditions
             </Link>
-          </p>
+             and the 
+            <Link
+              className="link additional registration"
+              key="privacy-policy"
+              to="/default/registration/privacy-policy"
+            >
+              privacy policy
+            </Link>
+             of this WiFi service. 
+          </div>
+          <div
+            className="row register"
+          >
+            <input
+              className="button full"
+              type="submit"
+              value="Sign up"
+            />
+          </div>
+          <div
+            className="row links"
+          >
+            <p>
+              <Link
+                className="link"
+                to="/default/login"
+              >
+                Already have an account? Log in
+              </Link>
+            </p>
+          </div>
         </div>
       </form>
       <Connect(Contact) />
@@ -184,132 +188,136 @@ exports[`<Registration /> rendering with placeholder translation tags should ren
         onSubmit={[Function]}
       >
         <div
-          className="fieldset"
+          className="inner"
         >
           <div
-            className="row email"
+            className="fieldset"
           >
-            <label
-              htmlFor="email"
+            <div
+              className="row email"
             >
-              EMAIL
-            </label>
+              <label
+                htmlFor="email"
+              >
+                EMAIL
+              </label>
+              <input
+                autoComplete="email"
+                className="input "
+                id="email"
+                name="email"
+                onChange={[Function]}
+                pattern=".+@.+\\\\..+"
+                placeholder="EMAIL_PHOLD"
+                required={true}
+                title="EMAIL_PTRN_DESC"
+                type="email"
+                value=""
+              />
+            </div>
+            <div
+              className="row password"
+            >
+              <label
+                htmlFor="password"
+              >
+                PWD_LBL
+              </label>
+              <input
+                autoComplete="new-password"
+                className="input "
+                id="password"
+                name="password1"
+                onChange={[Function]}
+                pattern=".{6,}"
+                placeholder="PWD_PHOLD"
+                required={true}
+                title="PWD_PTRN_DESC"
+                type="password"
+                value=""
+              />
+              <PasswordToggleIcon
+                hidePassword={true}
+                inputRef={
+                  Object {
+                    "current": null,
+                  }
+                }
+                isVisible={false}
+                parentClassName=""
+                secondInputRef={
+                  Object {
+                    "current": null,
+                  }
+                }
+                toggler={[Function]}
+              />
+            </div>
+            <div
+              className="row password-confirm"
+            >
+              <label
+                htmlFor="password-confirm"
+              >
+                CONFIRM_PWD_LBL
+              </label>
+              <input
+                autoComplete="new-password"
+                className="input "
+                id="password-confirm"
+                name="password2"
+                onChange={[Function]}
+                pattern=".{6,}"
+                placeholder="CONFIRM_PWD_PHOLD"
+                required={true}
+                title="PWD_PTRN_DESC"
+                type="password"
+                value=""
+              />
+              <PasswordToggleIcon
+                hidePassword={true}
+                inputRef={
+                  Object {
+                    "current": null,
+                  }
+                }
+                isVisible={false}
+                parentClassName=""
+                secondInputRef={
+                  Object {
+                    "current": null,
+                  }
+                }
+                toggler={[Function]}
+              />
+            </div>
+          </div>
+          <div
+            className="row add-info"
+          >
+            REGISTER_ADD_INFO_TXT
+          </div>
+          <div
+            className="row register"
+          >
             <input
-              autoComplete="email"
-              className="input "
-              id="email"
-              name="email"
-              onChange={[Function]}
-              pattern=".+@.+\\\\..+"
-              placeholder="EMAIL_PHOLD"
-              required={true}
-              title="EMAIL_PTRN_DESC"
-              type="email"
-              value=""
+              className="button full"
+              type="submit"
+              value="REGISTER_BTN_TXT"
             />
           </div>
           <div
-            className="row password"
+            className="row links"
           >
-            <label
-              htmlFor="password"
-            >
-              PWD_LBL
-            </label>
-            <input
-              autoComplete="new-password"
-              className="input "
-              id="password"
-              name="password1"
-              onChange={[Function]}
-              pattern=".{6,}"
-              placeholder="PWD_PHOLD"
-              required={true}
-              title="PWD_PTRN_DESC"
-              type="password"
-              value=""
-            />
-            <PasswordToggleIcon
-              hidePassword={true}
-              inputRef={
-                Object {
-                  "current": null,
-                }
-              }
-              isVisible={false}
-              parentClassName=""
-              secondInputRef={
-                Object {
-                  "current": null,
-                }
-              }
-              toggler={[Function]}
-            />
+            <p>
+              <Link
+                className="link"
+                to="/default/login"
+              >
+                LINKS_LOGIN_TXT
+              </Link>
+            </p>
           </div>
-          <div
-            className="row password-confirm"
-          >
-            <label
-              htmlFor="password-confirm"
-            >
-              CONFIRM_PWD_LBL
-            </label>
-            <input
-              autoComplete="new-password"
-              className="input "
-              id="password-confirm"
-              name="password2"
-              onChange={[Function]}
-              pattern=".{6,}"
-              placeholder="CONFIRM_PWD_PHOLD"
-              required={true}
-              title="PWD_PTRN_DESC"
-              type="password"
-              value=""
-            />
-            <PasswordToggleIcon
-              hidePassword={true}
-              inputRef={
-                Object {
-                  "current": null,
-                }
-              }
-              isVisible={false}
-              parentClassName=""
-              secondInputRef={
-                Object {
-                  "current": null,
-                }
-              }
-              toggler={[Function]}
-            />
-          </div>
-        </div>
-        <div
-          className="row add-info"
-        >
-          REGISTER_ADD_INFO_TXT
-        </div>
-        <div
-          className="row register"
-        >
-          <input
-            className="button full"
-            type="submit"
-            value="REGISTER_BTN_TXT"
-          />
-        </div>
-        <div
-          className="row links"
-        >
-          <p>
-            <Link
-              className="link"
-              to="/default/login"
-            >
-              LINKS_LOGIN_TXT
-            </Link>
-          </p>
         </div>
       </form>
       <Connect(Contact) />

@@ -71,25 +71,27 @@ export default class PaymentStatus extends React.Component {
       <div className="container content" id="not-foud-404">
         <div className="inner">
           <div className="main-column">
-            <h2 className="row payment-status-row-1">
-              {t`PAY_H`}: {result}
-            </h2>
-            <div className="row payment-status-row-2">{t`PAY_SUB_H`}</div>
-            <div className="row payment-status-row-3">
-              <Link className="button full" to={`/${orgSlug}/status`}>
-                {t`PAY_TRY_AGAIN_BTN`}
-              </Link>
-            </div>
+            <div className="inner">
+              <h2 className="row payment-status-row-1">
+                {t`PAY_H`}: {result}
+              </h2>
+              <div className="row payment-status-row-2">{t`PAY_SUB_H`}</div>
+              <div className="row payment-status-row-3">
+                <Link className="button full" to={`/${orgSlug}/status`}>
+                  {t`PAY_TRY_AGAIN_BTN`}
+                </Link>
+              </div>
 
-            <div className="row payment-status-row-4">
-              <p>{t`PAY_GIVE_UP_TXT`}</p>
-              <Link
-                onClick={this.handleLogout}
-                to={`/${orgSlug}/status`}
-                className="button full"
-              >
-                {t`PAY_GIVE_UP_BTN`}
-              </Link>
+              <div className="row payment-status-row-4">
+                <p>{t`PAY_GIVE_UP_TXT`}</p>
+                <Link
+                  onClick={this.handleLogout}
+                  to={`/${orgSlug}/status`}
+                  className="button full"
+                >
+                  {t`PAY_GIVE_UP_BTN`}
+                </Link>
+              </div>
             </div>
           </div>
 

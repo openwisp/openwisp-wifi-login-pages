@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import {shallow} from "enzyme";
+import {shallow, mount} from "enzyme";
 import React from "react";
 import renderer from "react-test-renderer";
 
@@ -45,8 +45,11 @@ const createTestProps = (props) => ({
   language: "en",
   footer: {
     links: defaultConfig.components.footer.links,
-    secondary_text: true,
+    after_html: {
+      en: "after html",
+    },
   },
+  orgSlug: "default",
   userData: {is_verified: true},
   ...props,
 });
@@ -80,16 +83,11 @@ describe("<Footer /> rendering", () => {
     wrapper = shallow(<Footer {...props} />);
     expect(wrapper.find(".footer-link")).toHaveLength(0);
   });
-  it("should render secondary text", () => {
-    loadTranslation("en", "default", {
-      FOOTER_SECONDARY_TXT: {
-        msgid: "FOOTER_SECONDARY_TXT",
-        msgstr: ["secondary text"],
-      },
-    });
+  it("should render after html", () => {
+    wrapper = mount(<Footer {...props} />);
     wrapper.setProps({}); // for force re-render of wrapper
     expect(wrapper.update().find(".footer-row-2-inner").text()).toBe(
-      "secondary text",
+      "after html",
     );
   });
   it("should render without authenticated links when not authenticated", () => {
