@@ -12,6 +12,7 @@ import tick from "./tick";
 import validateToken from "./validate-token";
 import loadTranslation from "./load-translation";
 import PasswordToggleIcon from "./password-toggle";
+import submitOnEnter from "./submit-on-enter";
 
 jest.mock("axios");
 jest.mock("./load-translation");
@@ -252,5 +253,33 @@ describe("password-toggle tests", () => {
     expect(getAttributeMock).toHaveBeenCalledWith("type");
     expect(setAttributeMock).toHaveBeenCalled();
     expect(setAttributeMock).toHaveBeenCalledWith("type", "password");
+  });
+});
+describe("submit-on-enter tests", () => {
+  document.body.innerHTML = `<form id="formID">
+    <input type="email">
+    <input type="submit">
+    </form>`;
+  const event = {keyCode: 13};
+  it("should call handleSubmit", () => {
+    const spyFn = jest.fn();
+    const instance = {handleSubmit: spyFn};
+    submitOnEnter(event, instance, "formID");
+    expect(spyFn).toHaveBeenCalled();
+  });
+  it("should call getElementById", () => {
+    const spyFn = jest.fn();
+    spyFn.mockReturnValueOnce({reportValidity: () => {}});
+    const instance = {handleSubmit: () => {}};
+    document.getElementById = spyFn;
+    submitOnEnter(event, instance, "formID");
+    expect(spyFn).toHaveBeenCalledWith("formID");
+  });
+  it("should not call anything if enter is not pressed", () => {
+    event.keyCode = 18;
+    const spyFn = jest.fn();
+    const instance = {handleSubmit: spyFn};
+    submitOnEnter(event, instance, "formID");
+    expect(spyFn.mock.calls.length).toBe(0);
   });
 });
