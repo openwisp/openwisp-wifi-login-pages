@@ -138,12 +138,7 @@ exports[`<Status /> rendering should render correctly 1`] = `
         value="accept"
       />
     </form>
-    <iframe
-      className="hidden"
-      name="owisp-auth-iframe"
-      onLoad={[Function]}
-      title="owisp-auth-iframe"
-    />
+    
   </React.Fragment>
   <React.Fragment>
     <form
@@ -303,12 +298,7 @@ exports[`<Status /> rendering with placeholder translation tags should render tr
         value="accept"
       />
     </form>
-    <iframe
-      className="hidden"
-      name="owisp-auth-iframe"
-      onLoad={[Function]}
-      title="owisp-auth-iframe"
-    />
+    
   </React.Fragment>
   <React.Fragment>
     <form

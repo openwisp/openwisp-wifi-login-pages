@@ -985,4 +985,26 @@ describe("<Status /> interactions", () => {
       ),
     ).toBe(true);
   });
+  it("should call finalOperations once after loading userData", async () => {
+    validateToken.mockReturnValue(true);
+    const prop = createTestProps();
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    wrapper.instance().componentDidMount();
+    await tick();
+    const spyFn = jest.fn();
+    wrapper.instance().loginIframeRef.current = {submit: spyFn};
+    const finalOperationsMock = jest.fn();
+    wrapper.instance().finalOperations = finalOperationsMock;
+    expect(wrapper.find("iframe").length).toBe(1);
+    wrapper.find("iframe").first().simulate("load");
+    wrapper.setProps({userData: responseData});
+    wrapper.instance().componentDidMount();
+    await tick();
+    expect(wrapper.find("iframe").length).toBe(2);
+    wrapper.find("iframe").first().simulate("load");
+    expect(finalOperationsMock.mock.calls.length).toEqual(1);
+  });
 });
