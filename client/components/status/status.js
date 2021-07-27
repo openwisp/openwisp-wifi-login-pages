@@ -816,13 +816,15 @@ export default class Status extends React.Component {
             {/* login form is submitted in this Iframe
             onLoad: handles response from captive portal
             */}
-            <iframe
-              onLoad={this.handleLoginIframe}
-              ref={this.loginIframeRef}
-              name="owisp-auth-iframe"
-              className="hidden"
-              title="owisp-auth-iframe"
-            />
+            {username && (
+              <iframe
+                onLoad={this.handleLoginIframe}
+                ref={this.loginIframeRef}
+                name="owisp-auth-iframe"
+                className="hidden"
+                title="owisp-auth-iframe"
+              />
+            )}
           </>
         )}
         {captivePortalLogoutForm && window.top === window.self && (
