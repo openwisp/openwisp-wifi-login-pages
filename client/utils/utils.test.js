@@ -15,6 +15,7 @@ import PasswordToggleIcon from "./password-toggle";
 import submitOnEnter from "./submit-on-enter";
 import handleSession from "./session";
 import sortOrganizations from "./sort-organizations";
+import logError from "./log-error";
 
 jest.mock("axios");
 jest.mock("./load-translation");
@@ -305,5 +306,35 @@ describe("sort organizations tests", () => {
       {slug: "default"},
       {slug: "mobile"},
     ]);
+  });
+});
+describe("log-error tests", () => {
+  let consoleLog;
+  let consoleError;
+  beforeEach(() => {
+    consoleError = jest.spyOn(global.console, "error").mockImplementation();
+    consoleLog = jest.spyOn(global.console, "log").mockImplementation();
+  });
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+  it("should log on executing logError", () => {
+    logError("normal log");
+    expect(consoleLog).toHaveBeenCalledWith("normal log");
+    expect(consoleError.mock.calls.length).toEqual(0);
+  });
+  it("should log error on executing logError with error response", () => {
+    logError(
+      {response: {status: "400", statusText: "Bad request"}},
+      "Invalid Credentials",
+    );
+    expect(consoleError).toHaveBeenCalledWith(
+      "Status",
+      "400",
+      "Bad request",
+      ":",
+      "Invalid Credentials",
+    );
+    expect(consoleLog.mock.calls.length).toEqual(0);
   });
 });
