@@ -13,6 +13,8 @@ import validateToken from "./validate-token";
 import loadTranslation from "./load-translation";
 import PasswordToggleIcon from "./password-toggle";
 import submitOnEnter from "./submit-on-enter";
+import handleSession from "./session";
+import sortOrganizations from "./sort-organizations";
 
 jest.mock("axios");
 jest.mock("./load-translation");
@@ -281,5 +283,27 @@ describe("submit-on-enter tests", () => {
     const instance = {handleSubmit: spyFn};
     submitOnEnter(event, instance, "formID");
     expect(spyFn.mock.calls.length).toBe(0);
+  });
+});
+describe("handleSession tests", () => {
+  const orgSlug = "default";
+  const token = "token";
+  it("should clear auth_token cookie if sessionKey is present", () => {
+    const spyFn = jest.fn();
+    const cookies = {
+      remove: spyFn,
+    };
+    sessionStorage.setItem(`${orgSlug}_auth_token`, token);
+    handleSession(orgSlug, token, cookies);
+    expect(spyFn).toHaveBeenCalledWith(`${orgSlug}_auth_token`, {path: "/"});
+  });
+});
+describe("sort organizations tests", () => {
+  it("should sort organization with compareFunc", () => {
+    const organizations = [{slug: "mobile"}, {slug: "default"}];
+    expect(sortOrganizations(organizations)).toEqual([
+      {slug: "default"},
+      {slug: "mobile"},
+    ]);
   });
 });
