@@ -18,6 +18,7 @@ import sortOrganizations from "./sort-organizations";
 import logError from "./log-error";
 import needsVerify from "./needs-verify";
 import loader from "./loader";
+import handleChange from "./handle-change";
 
 jest.mock("axios");
 jest.mock("./load-translation");
@@ -406,5 +407,32 @@ describe("loader tests", () => {
         </div>,
       ),
     ).toBe(true);
+  });
+});
+describe("handle-change tests", () => {
+  const event = {
+    target: {
+      name: "email",
+      value: "openwisp@openwisp.org",
+    },
+  };
+  const instance = {
+    setState: jest.fn(),
+    state: {
+      errors: [],
+    },
+  };
+  it("should execute handleChange normally", () => {
+    handleChange(event, instance);
+    expect(instance.setState).toHaveBeenCalledWith({
+      email: "openwisp@openwisp.org",
+      username: "openwisp",
+    });
+  });
+  it("should delete errors on correct value", () => {
+    instance.state.errors.email = "Invalid Email";
+    instance.state.errors.nonField = "Email existw";
+    handleChange(event, instance);
+    expect(instance.state.errors).toEqual([]);
   });
 });
