@@ -16,6 +16,7 @@ import submitOnEnter from "./submit-on-enter";
 import handleSession from "./session";
 import sortOrganizations from "./sort-organizations";
 import logError from "./log-error";
+import needsVerify from "./needs-verify";
 
 jest.mock("axios");
 jest.mock("./load-translation");
@@ -336,5 +337,35 @@ describe("log-error tests", () => {
       "Invalid Credentials",
     );
     expect(consoleLog.mock.calls.length).toEqual(0);
+  });
+});
+describe("needs-verify tests", () => {
+  let settings;
+  let userData;
+  beforeEach(() => {
+    settings = {mobile_phone_verification: true, subscriptions: true};
+    userData = {is_active: true, is_verified: false};
+  });
+  it("should return false if method is none", () => {
+    expect(needsVerify("", {}, {})).toBe(false);
+  });
+  it("should return false if user is verified but not active", () => {
+    expect(needsVerify("", {is_active: false, is_verified: true}, {})).toBe(
+      false,
+    );
+  });
+  it("should return true or false for mobile_phone method", () => {
+    const method = "mobile_phone";
+    userData.method = method;
+    expect(needsVerify(method, userData, settings)).toBe(true);
+    userData.is_verified = true;
+    expect(needsVerify(method, userData, settings)).toBe(false);
+  });
+  it("should return true or false for bank_card method", () => {
+    const method = "bank_card";
+    userData.method = method;
+    expect(needsVerify(method, userData, settings)).toBe(false);
+    userData.payment_url = "https://payment/";
+    expect(needsVerify(method, userData, settings)).toBe(true);
   });
 });
