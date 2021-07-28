@@ -55,7 +55,7 @@ describe("customMerge tests", () => {
   });
 });
 describe("authenticate tests", () => {
-  const cookies = {
+  let cookies = {
     get: jest
       .fn()
       .mockImplementationOnce(() => true)
@@ -65,6 +65,22 @@ describe("authenticate tests", () => {
   it("should perform authentication", () => {
     expect(authenticate(cookies, orgSlug)).toEqual(true);
     expect(authenticate(cookies, orgSlug)).toEqual(false);
+  });
+  it("should clear cookies if sessionKey is used", () => {
+    cookies = {
+      remove: jest.fn(),
+      get: jest.fn(),
+    };
+    const sessionKey = "sessionKey";
+    sessionStorage.setItem(`${orgSlug}_auth_token`, sessionKey);
+    expect(authenticate(cookies, orgSlug)).toBe(true);
+    expect(cookies.remove).toHaveBeenCalledWith(`${orgSlug}_auth_token`, {
+      path: "/",
+    });
+    expect(cookies.remove).toHaveBeenCalledWith(`${orgSlug}_username`, {
+      path: "/",
+    });
+    expect(cookies.get).toHaveBeenCalledWith(`${orgSlug}_auth_token`);
   });
 });
 describe("isInternalLink tests", () => {
