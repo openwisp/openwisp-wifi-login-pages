@@ -17,6 +17,7 @@ import handleSession from "./session";
 import sortOrganizations from "./sort-organizations";
 import logError from "./log-error";
 import needsVerify from "./needs-verify";
+import loader from "./loader";
 
 jest.mock("axios");
 jest.mock("./load-translation");
@@ -367,5 +368,27 @@ describe("needs-verify tests", () => {
     expect(needsVerify(method, userData, settings)).toBe(false);
     userData.payment_url = "https://payment/";
     expect(needsVerify(method, userData, settings)).toBe(true);
+  });
+});
+describe("loader tests", () => {
+  it("should show loader with class full-page-loader-container", () => {
+    const wrapper = shallow(loader({full: true}));
+    expect(
+      wrapper.contains(
+        <div className="full-page-loader-container">
+          <div className="loader" />
+        </div>,
+      ),
+    ).toBe(true);
+  });
+  it("should show loader with class loader-container", () => {
+    const wrapper = shallow(loader({full: false}));
+    expect(
+      wrapper.contains(
+        <div className="loader-container">
+          <div className="loader" />
+        </div>,
+      ),
+    ).toBe(true);
   });
 });
