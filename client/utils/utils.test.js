@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import {Cookies} from "react-cookie";
 import {shallow, mount} from "enzyme";
+import * as dependency from "react-toastify";
 import authenticate from "./authenticate";
 import isInternalLink from "./check-internal-links";
 import customMerge from "./custom-merge";
@@ -212,16 +213,18 @@ describe("Validate Token tests", () => {
     expect(logout.mock.calls.length).toBe(0);
   });
   it("should return false when internal server error", async () => {
+    const response = {
+      status: 500,
+      statusText: "INTERNAL_SERVER_ERROR",
+      data: {
+        response_code: "INTERNAL_SERVER_ERROR",
+      },
+    };
     jest.spyOn(global.console, "log").mockImplementation();
     axios.mockImplementationOnce(() => {
-      return Promise.resolve({
-        status: 500,
-        statusText: "INTERNAL_SERVER_ERROR",
-        data: {
-          response_code: "INTERNAL_SERVER_ERROR",
-        },
-      });
+      return Promise.resolve(response);
     });
+    const errorMethod = jest.spyOn(dependency.toast, "error");
     const {orgSlug, cookies, setUserData, userData, logout} = getArgs();
     const result = await validateToken(
       cookies,
@@ -233,6 +236,53 @@ describe("Validate Token tests", () => {
     expect(axios.mock.calls.length).toBe(1);
     expect(result).toBe(false);
     expect(setUserData.mock.calls.length).toBe(1);
+    expect(errorMethod).toBeCalledWith("Error occurred!");
+    expect(logout).toHaveBeenCalledWith(
+      {
+        HAS_DOCUMENT_COOKIE: true,
+        changeListeners: [],
+        cookies: {default_auth_token: "token"},
+      },
+      "default",
+    );
+    expect(console.log).toHaveBeenCalledWith(response);
+  });
+  it("should show error toast on invalid token", async () => {
+    const response = {
+      status: 401,
+      statusText: "BLANK_OR_INVALID_TOKEN",
+      data: {
+        response_code: "BLANK_OR_INVALID_TOKEN",
+      },
+    };
+    axios.mockImplementationOnce(() => {
+      return Promise.reject(response);
+    });
+    jest.spyOn(global.console, "log").mockImplementation();
+    const errorMethod = jest.spyOn(dependency.toast, "error");
+    const {orgSlug, cookies, setUserData, userData, logout} = getArgs();
+    const result = await validateToken(
+      cookies,
+      orgSlug,
+      setUserData,
+      userData,
+      logout,
+    );
+    expect(result).toEqual(false);
+    expect(errorMethod).toBeCalledWith("Error occurred!");
+    expect(logout).toHaveBeenCalledWith(
+      {
+        HAS_DOCUMENT_COOKIE: true,
+        changeListeners: [],
+        cookies: {default_auth_token: "token"},
+      },
+      "default",
+    );
+    expect(setUserData.mock.calls.length).toBe(1);
+    expect(console.log).toHaveBeenCalledWith(response);
+    expect(setUserData.mock.calls.pop()).toEqual([
+      {is_active: true, is_verified: null, justAuthenticated: true},
+    ]);
   });
 });
 describe("password-toggle tests", () => {

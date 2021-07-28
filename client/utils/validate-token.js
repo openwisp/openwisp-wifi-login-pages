@@ -2,16 +2,14 @@ import qs from "qs";
 import axios from "axios";
 import {toast} from "react-toastify";
 import {t} from "ttag";
-import {validateApiUrl, mainToastId} from "../constants";
+import {validateApiUrl} from "../constants";
 import handleSession from "./session";
 import logError from "./log-error";
 import {initialState} from "../reducers/organization";
 
 const handleLogout = (logout, cookies, orgSlug, setUserData) => {
   logout(cookies, orgSlug);
-  toast.error(t`ERR_OCCUR`, {
-    onOpen: () => toast.dismiss(mainToastId),
-  });
+  toast.error(t`ERR_OCCUR`);
   const {userData} = initialState;
   setUserData(userData);
 };
