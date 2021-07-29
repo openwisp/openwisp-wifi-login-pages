@@ -38,15 +38,16 @@ export default class OrganizationWrapper extends React.Component {
     this.state = {
       loading: false,
       translationLoaded: true,
+      configLoaded: false,
     };
     this.loadLanguage = this.loadLanguage.bind(this);
-    const {match, setOrganization, cookies} = props;
-    const organizationSlug = match.params.organization;
-    if (organizationSlug) setOrganization(organizationSlug, cookies);
   }
 
-  componentDidMount() {
-    this.setState({translationLoaded: false});
+  async componentDidMount() {
+    const {match, setOrganization, cookies} = this.props;
+    const organizationSlug = match.params.organization;
+    if (organizationSlug) await setOrganization(organizationSlug, cookies);
+    this.setState({translationLoaded: false, configLoaded: true});
   }
 
   async componentDidUpdate(prevProps) {
@@ -98,7 +99,7 @@ export default class OrganizationWrapper extends React.Component {
 
   render() {
     const {organization, match, cookies} = this.props;
-    const {loading, translationLoaded} = this.state;
+    const {loading, translationLoaded, configLoaded} = this.state;
     const {title, favicon, isAuthenticated, userData, settings, pageTitle} =
       organization.configuration;
     const {is_active} = userData;
@@ -109,7 +110,7 @@ export default class OrganizationWrapper extends React.Component {
     const needsVerifyPhone = needsVerify("mobile_phone", userData, settings);
     if (organization.exists === true) {
       const {setLoading} = this;
-      return translationLoaded ? (
+      return translationLoaded && configLoaded ? (
         <>
           <LoadingContext.Provider
             value={{setLoading, getLoading: () => loading}}

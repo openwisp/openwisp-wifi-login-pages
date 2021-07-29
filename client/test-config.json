@@ -131,6 +131,7 @@
   {
     "name": "test org 2 (sms)",
     "slug": "test-org-2",
+    "default_language": "en",
     "auto_login": true,
     "settings": {
       "mobile_phone_verification": true

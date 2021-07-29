@@ -17,10 +17,11 @@ import tick from "../../utils/tick";
 import getParameterByName from "../../utils/get-parameter-by-name";
 
 jest.mock("axios");
+jest.mock("../../utils/get-config");
 jest.mock("../../utils/get-parameter-by-name");
 jest.mock("../../utils/load-translation");
 
-const defaultConfig = getConfig("default");
+const defaultConfig = getConfig("default", true);
 const loginForm = defaultConfig.components.login_form;
 loginForm.input_fields.phone_number =
   defaultConfig.components.registration_form.input_fields.phone_number;
@@ -123,7 +124,7 @@ describe("<Login /> interactions", () => {
       lastConsoleOutuput = data;
     };
     props = createTestProps();
-    props.configuration = getConfig("default");
+    props.configuration = getConfig("default", true);
     Login.contextTypes = {
       setLoading: PropTypes.func,
       getLoading: PropTypes.func,

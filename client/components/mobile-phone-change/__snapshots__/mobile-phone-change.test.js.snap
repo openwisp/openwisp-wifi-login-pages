@@ -267,6 +267,7 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
               },
             },
           },
+          "default_language": "en",
           "name": "test org 2 (sms)",
           "privacy_policy": Object {
             "en": "<h1 id=\\"openwisp-wifi-login-pages-privacy-policy\\">openwisp-wifi-login-pages Privacy Policy</h1>
@@ -477,6 +478,7 @@ Openwisp-wifi-login-pages and using its services in the future.</p>
                 },
               },
             },
+            "default_language": "en",
             "name": "test org 2 (sms)",
             "privacy_policy": Object {
               "en": "<h1 id=\\"openwisp-wifi-login-pages-privacy-policy\\">openwisp-wifi-login-pages Privacy Policy</h1>

@@ -1,4 +1,3 @@
-import merge from "deepmerge";
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
 
@@ -44,9 +43,9 @@ describe("actions testing", () => {
     expect(store.getActions()).toEqual(expectedActions);
   });
 
-  it("should create actions to set current organization", () => {
-    const orgConfig = merge(testOrgConfig[0], testOrgConfig[2]);
-    const orgConfig2 = merge(testOrgConfig[0], testOrgConfig[1]);
+  it("should create actions to set current organization", async () => {
+    const orgConfig = testOrgConfig[2];
+    const orgConfig2 = testOrgConfig[1];
     const userData = {
       is_active: true,
       is_verified: null,
@@ -126,10 +125,10 @@ describe("actions testing", () => {
       },
     ];
     const store = mockStore({language: "", organization: {}});
-    store.dispatch(setOrganization(testOrgConfig[2].slug, cookies));
-    store.dispatch(setOrganization(testOrgConfig[1].slug, cookies));
-    store.dispatch(setOrganization(testOrgConfig[0].slug, cookies));
-    store.dispatch(setOrganization("invalid-slug"));
+    await store.dispatch(setOrganization(testOrgConfig[2].slug, cookies));
+    await store.dispatch(setOrganization(testOrgConfig[1].slug, cookies));
+    await store.dispatch(setOrganization(testOrgConfig[0].slug, cookies));
+    await store.dispatch(setOrganization("invalid-slug"));
     expect(store.getActions()).toEqual(expectedActions);
   });
   it("should create an action to logout", () => {

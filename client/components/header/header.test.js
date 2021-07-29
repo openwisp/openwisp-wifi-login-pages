@@ -7,8 +7,9 @@ import getConfig from "../../utils/get-config";
 import loadTranslation from "../../utils/load-translation";
 import Header from "./header";
 
-const defaultConfig = getConfig("default");
+jest.mock("../../utils/get-config");
 jest.mock("../../utils/load-translation");
+const defaultConfig = getConfig("default", true);
 const headerLinks = [
   {
     text: {en: "link-1"},

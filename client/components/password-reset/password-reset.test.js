@@ -11,9 +11,10 @@ import PasswordReset from "./password-reset";
 import translation from "../../test-translation.json";
 
 jest.mock("axios");
+jest.mock("../../utils/get-config");
 jest.mock("../../utils/load-translation");
 
-const defaultConfig = getConfig("default");
+const defaultConfig = getConfig("default", true);
 const createTestProps = (props) => {
   return {
     orgSlug: "default",
