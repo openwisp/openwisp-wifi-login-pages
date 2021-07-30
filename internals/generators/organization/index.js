@@ -4,7 +4,7 @@ module.exports = {
     const actions = [
       {
         type: "add",
-        path: "../../org-configurations/{{slug}}-configuration.yml",
+        path: "../../organizations/{{slug}}.yml",
         templateFile: "./organization/config.yml.hbs",
         abortOnFail: true,
       },

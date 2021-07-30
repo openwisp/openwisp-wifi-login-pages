@@ -8,7 +8,7 @@ const {detailedDiff} = require("deep-object-diff");
 const organizationExists = require("../internals/generators/utils/organizationExists");
 
 const rootDir = process.cwd();
-const orgConfigurationDir = path.join(rootDir, "org-configurations");
+const orgConfigurationDir = path.join(rootDir, "organizations");
 const internalConfigDir = path.join(path.join(rootDir, "internals"), "config");
 const defaultConfigFile = path.join(internalConfigDir, "default.yml");
 
@@ -30,7 +30,7 @@ const prompts = [
     message: "What is the slug of the organization?",
     validate: (value) => {
       if (/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value)) {
-        return organizationExists(`${value}-configuration.yml`)
+        return organizationExists(`${value}.yml`)
           ? "An organization with this slug already exists"
           : true;
       }
@@ -183,7 +183,7 @@ const createConfiguration = async () => {
     );
     const generatedConfig = yaml.safeLoad(
       fs.readFileSync(
-        path.join(orgConfigurationDir, `${response.slug}-configuration.yml`),
+        path.join(orgConfigurationDir, `${response.slug}.yml`),
         "utf-8",
       ),
     );
@@ -205,7 +205,7 @@ const createConfiguration = async () => {
         return _.isEqual(v, {}) ? undefined : value;
       }),
     );
-    writeConfigFile(`${response.slug}-configuration.yml`, config);
+    writeConfigFile(`${response.slug}.yml`, config);
   }
 };
 
