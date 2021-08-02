@@ -14,7 +14,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+export const mapDispatchToProps = (dispatch) => {
   return {
     setLanguage: (slug) => {
       dispatch(setLanguage(slug));

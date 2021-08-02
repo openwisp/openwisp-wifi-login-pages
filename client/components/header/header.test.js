@@ -5,10 +5,14 @@ import renderer from "react-test-renderer";
 
 import getConfig from "../../utils/get-config";
 import loadTranslation from "../../utils/load-translation";
+import isInternalLink from "../../utils/check-internal-links";
 import Header from "./header";
+import {mapDispatchToProps} from "./index";
 
 jest.mock("../../utils/get-config");
 jest.mock("../../utils/load-translation");
+jest.mock("../../utils/check-internal-links");
+
 const defaultConfig = getConfig("default", true);
 const headerLinks = [
   {
@@ -69,6 +73,7 @@ describe("<Header /> rendering", () => {
   let props;
   let wrapper;
   beforeEach(() => {
+    jest.resetAllMocks();
     props = createTestProps();
     wrapper = shallow(<Header {...props} />);
     loadTranslation("en", "default");
@@ -89,6 +94,21 @@ describe("<Header /> rendering", () => {
       )
       .toJSON();
     expect(component).toMatchSnapshot();
+  });
+  it("should call isInternalLink and render if the link is internal", () => {
+    isInternalLink.mockReturnValue(true);
+    props = createTestProps();
+    props.isAuthenticated = true;
+    props.header.links = [
+      {
+        text: {en: "Status"},
+        url: "/default/login",
+        authenticated: true,
+      },
+    ];
+    wrapper = shallow(<Header {...props} />);
+    expect(isInternalLink).toHaveBeenCalledTimes(6);
+    expect(isInternalLink).toHaveBeenCalledWith("/default/login");
   });
   it("should render without authenticated links when not authenticated", () => {
     props = createTestProps();
@@ -196,5 +216,17 @@ describe("<Header /> interactions", () => {
     expect(wrapper.state().menu).toBe(false);
     wrapper.find(".header-hamburger").simulate("keyup", {keyCode: 13});
     expect(wrapper.state().menu).toBe(true);
+  });
+  it("should dispatch to props correctly", () => {
+    const dispatch = jest.fn();
+    const result = mapDispatchToProps(dispatch);
+    expect(result).toEqual({
+      setLanguage: expect.any(Function),
+    });
+    result.setLanguage("en");
+    expect(dispatch).toHaveBeenCalledWith({
+      payload: "en",
+      type: "SET_LANGUAGE",
+    });
   });
 });
