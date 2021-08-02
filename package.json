@@ -81,7 +81,7 @@
     "file-loader": "^6.1.0",
     "hard-source-webpack-plugin": "^0.13.1",
     "html-webpack-plugin": "^4.5.2",
-    "jest": "^26.6.3",
+    "jest": "^27.0.6",
     "mock-local-storage": "^1.1.17",
     "prettier": "^2.2.0",
     "react-test-renderer": "^16.13.1",
