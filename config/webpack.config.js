@@ -153,6 +153,13 @@ module.exports = (env, argv) => {
         automaticNameDelimiter: "~",
         name: true,
         cacheGroups: {
+          status: {
+            test: /[\\/]client\/components\/[status,login,logout].*[\\/](.*).js/,
+            priority: -20,
+            chunks: "all",
+            enforce: true,
+            reuseExistingChunk: true,
+          },
           styles: {
             name(module) {
               const match = module.context.match(/[\\/](.*).css/);

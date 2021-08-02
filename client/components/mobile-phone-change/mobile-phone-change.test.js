@@ -202,6 +202,12 @@ describe("Change Phone Number: standard flow", () => {
       value: "",
     });
     prop.onChange("+911234567890");
+    expect(handleChange).toHaveBeenCalledWith({
+      target: {
+        name: "phone_number",
+        value: "++911234567890",
+      },
+    });
     component.find("lazy").props().onKeyDown({});
     expect(submitOnEnter.mock.calls.length).toEqual(1);
     expect(submitOnEnter.mock.calls.pop()).toEqual([
