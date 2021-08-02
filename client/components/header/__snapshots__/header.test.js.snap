@@ -359,22 +359,26 @@ exports[`<Header /> rendering with placeholder translation tags should render tr
       <div
         className="header-row-2-inner"
       >
-        <Link
+        <a
           className="header-link header-desktop-link
-                  header-link-1 active button "
-          key="0"
-          to="/default/login"
+                    header-link-1 button"
+          href="/{orgSlug}/login"
+          key="/{orgSlug}/login"
+          rel="noreferrer noopener"
+          target="_blank"
         >
           Sign In
-        </Link>
-        <Link
+        </a>
+        <a
           className="header-link header-desktop-link
-                  header-link-2  button "
-          key="1"
-          to="/default/registration"
+                    header-link-2 button"
+          href="/{orgSlug}/registration"
+          key="/{orgSlug}/registration"
+          rel="noreferrer noopener"
+          target="_blank"
         >
           Sign Up
-        </Link>
+        </a>
       </div>
     </div>
   </div>
@@ -430,22 +434,26 @@ exports[`<Header /> rendering with placeholder translation tags should render tr
     <div
       className="display-none header-mobile-menu"
     >
-      <Link
+      <a
         className="header-link mobile-link
-                    header-link-1 active button"
-        key="0"
-        to="/default/login"
+                      header-link-1 button"
+        href="/{orgSlug}/login"
+        key="/{orgSlug}/login"
+        rel="noreferrer noopener"
+        target="_blank"
       >
         Sign In
-      </Link>
-      <Link
+      </a>
+      <a
         className="header-link mobile-link
-                    header-link-2  button"
-        key="1"
-        to="/default/registration"
+                      header-link-2 button"
+        href="/{orgSlug}/registration"
+        key="/{orgSlug}/registration"
+        rel="noreferrer noopener"
+        target="_blank"
       >
         Sign Up
-      </Link>
+      </a>
       <div
         className="mobile-languages-row"
       >
