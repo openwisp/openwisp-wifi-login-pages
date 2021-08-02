@@ -3,7 +3,12 @@ import thunk from "redux-thunk";
 
 import * as types from "../constants/action-types";
 import testOrgConfig from "../test-config.json";
-import {setTitleAction} from "./dispatchers";
+import {
+  setTitleAction,
+  authenticate,
+  logout as logoutAction,
+  setUserData,
+} from "./dispatchers";
 import logout from "./logout";
 import parseOrganizations from "./parse-organizations";
 import setLanguage from "./set-language";
@@ -13,11 +18,19 @@ jest.mock("../utils/get-config");
 jest.mock("../utils/authenticate");
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
-const cookies = {
-  get: jest.fn().mockImplementationOnce(() => true),
-  remove: jest.fn(),
-};
 describe("actions testing", () => {
+  let cookies;
+  let dispatch;
+  beforeEach(() => {
+    dispatch = jest.fn();
+    cookies = {
+      get: jest.fn().mockImplementationOnce(() => true),
+      remove: jest.fn(),
+    };
+  });
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
   it("should create an action to parse organizations", () => {
     const expectedActions = [
       {
@@ -156,5 +169,41 @@ describe("actions testing", () => {
     const store = mockStore({pageTitle: ""});
     store.dispatch(setTitleAction(title));
     expect(store.getActions()).toEqual(expectedActions);
+  });
+  it("should dispatch authenticate action", () => {
+    const action = authenticate(dispatch);
+    action(true);
+    expect(dispatch).toHaveBeenCalledWith({
+      payload: true,
+      type: types.SET_AUTHENTICATION_STATUS,
+    });
+  });
+  it("should dispatch logout action", () => {
+    const action = logoutAction(dispatch);
+    action(cookies, "default");
+    expect(cookies.remove).toHaveBeenCalledWith("default_auth_token", {
+      path: "/",
+    });
+    expect(cookies.remove).toHaveBeenCalledWith("default_username", {
+      path: "/",
+    });
+    expect(cookies.remove).toHaveBeenCalledWith("default_macaddr", {path: "/"});
+    expect(dispatch).toHaveBeenCalledWith({
+      payload: false,
+      type: types.SET_AUTHENTICATION_STATUS,
+    });
+    action(cookies, "default", true);
+    expect(dispatch).toHaveBeenCalledWith({
+      payload: false,
+      type: types.SET_AUTHENTICATION_STATUS,
+    });
+  });
+  it("should dispatch setUserData action", () => {
+    const action = setUserData(dispatch);
+    action({username: "openwisp"});
+    expect(dispatch).toHaveBeenCalledWith({
+      payload: {username: "openwisp"},
+      type: types.SET_USER_DATA,
+    });
   });
 });
