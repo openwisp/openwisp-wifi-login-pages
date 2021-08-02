@@ -3,9 +3,11 @@ import {shallow} from "enzyme";
 import PropTypes from "prop-types";
 import React from "react";
 import ShallowRenderer from "react-test-renderer/shallow";
+import * as toastify from "react-toastify";
 import logError from "../../utils/log-error";
 import loadTranslation from "../../utils/load-translation";
 import Logout from "./logout";
+import {mapStateToProps, mapDispatchToProps} from "./index";
 
 jest.mock("axios");
 jest.mock("../../utils/get-config");
@@ -18,6 +20,7 @@ const userData = {
   email: "tester@tester.com",
   is_verified: true,
   is_active: true,
+  justAuthenticated: false,
 };
 
 const createTestProps = (props) => {
@@ -88,5 +91,47 @@ describe("<Logout /> interactions", () => {
     });
     const setTitleMock = wrapper.instance().props.setTitle.mock;
     expect(setTitleMock.calls.pop()).toEqual(["Logout", props.orgName]);
+  });
+
+  it("should login if user is already authenticated and clicks log in again", () => {
+    const spyToast = jest.spyOn(toastify.toast, "success");
+    props = createTestProps();
+    props.isAuthenticated = true;
+    wrapper = shallow(<Logout {...props} />, {
+      context: {setLoading: jest.fn()},
+    });
+    wrapper.instance().loginUser(true);
+    expect(spyToast).toHaveBeenCalled();
+    expect(spyToast).toBeCalledWith("Login successful", {
+      toastId: "main_toast_id",
+    });
+    expect(props.userData.justAuthenticated).toBe(false);
+  });
+
+  it("should mapStatetoProps and dispatchtoProps correctly", () => {
+    const state = {
+      organization: {
+        configuration: {
+          slug: "default",
+          name: "default name",
+          isAuthenticated: false,
+          userData,
+        },
+      },
+    };
+    const dispatch = jest.fn();
+    let result = mapStateToProps(state);
+    expect(result).toEqual({
+      orgSlug: "default",
+      orgName: "default name",
+      isAuthenticated: false,
+      userData,
+    });
+    result = mapDispatchToProps(dispatch);
+    expect(result).toEqual({
+      authenticate: expect.any(Function),
+      setUserData: expect.any(Function),
+      setTitle: expect.any(Function),
+    });
   });
 });
