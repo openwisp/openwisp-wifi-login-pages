@@ -202,13 +202,37 @@ describe("Change Phone Number: standard flow", () => {
       value: "",
     });
     prop.onChange("+911234567890");
+    component.find("lazy").props().onKeyDown({});
+    expect(submitOnEnter.mock.calls.length).toEqual(1);
+    expect(submitOnEnter.mock.calls.pop()).toEqual([
+      {},
+      expect.any(Object),
+      "mobile-phone-change-form",
+    ]);
+  });
+
+  it("should load fallback before PhoneInput and handlers should work correctly", async () => {
+    wrapper = shallow(<MobilePhoneChange {...props} />);
+    const handleChange = jest.spyOn(wrapper.instance(), "handleChange");
+    const component = wrapper.find("Suspense");
+    const {fallback} = component.props();
+    expect(fallback.type).toEqual("input");
+    expect(fallback.props).toEqual({
+      name: "phone_number",
+      value: "",
+      onChange: expect.any(Function),
+      onKeyDown: expect.any(Function),
+      placeholder: "enter mobile phone number",
+      id: "phone-number",
+    });
+    fallback.props.onChange("+911234567890");
     expect(handleChange).toHaveBeenCalledWith({
       target: {
         name: "phone_number",
         value: "++911234567890",
       },
     });
-    prop.onKeyDown({});
+    fallback.props.onKeyDown({});
     expect(submitOnEnter.mock.calls.length).toEqual(1);
     expect(submitOnEnter.mock.calls.pop()).toEqual([
       {},
