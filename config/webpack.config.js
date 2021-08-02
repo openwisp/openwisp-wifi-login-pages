@@ -1,6 +1,7 @@
 const BundleAnalyzerPlugin =
   require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const CompressionPlugin = require("compression-webpack-plugin");
+const BrotliPlugin = require("brotli-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
@@ -8,6 +9,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 const TerserPlugin = require("terser-webpack-plugin");
 const setup = require("./setup");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
 const CURRENT_WORKING_DIR = process.cwd();
 const DEFAULT_PORT = 8080;
@@ -19,7 +21,10 @@ module.exports = (env, argv) => {
   // If the default port is already in use, webpack will automatically use
   // the next available port
   if (argv.mode === "production") {
-    minimizers = [new TerserPlugin()];
+    minimizers = [
+      new TerserPlugin(),
+      new UglifyJsPlugin({parallel: true, extractComments: true}),
+    ];
     setup.removeDefaultConfig();
   }
   let clientP = process.env.CLIENT;
@@ -35,7 +40,13 @@ module.exports = (env, argv) => {
       algorithm: "gzip",
       test: /\.js$|\.css$|\.html$/,
       threshold: 10240,
-      minRatio: 0.8,
+      minRatio: 0.7,
+    }),
+    new BrotliPlugin({
+      asset: "[path].br[query]",
+      test: /\.js$|\.css$|\.html$/,
+      threshold: 10240,
+      minRatio: 0.7,
     }),
     new CopyPlugin({
       patterns: [
@@ -142,6 +153,22 @@ module.exports = (env, argv) => {
         automaticNameDelimiter: "~",
         name: true,
         cacheGroups: {
+          styles: {
+            name(module) {
+              const match = module.context.match(/[\\/](.*).css/);
+
+              if (!match) {
+                return false;
+              }
+
+              const moduleName = match[1];
+
+              return moduleName;
+            },
+            test: /\.css$/,
+            chunks: "all",
+            enforce: true,
+          },
           vendors: {
             test: /[\\/]node_modules[\\/]/,
             priority: -10,

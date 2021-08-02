@@ -3,12 +3,11 @@ import "./index.css";
 
 import axios from "axios";
 import PropTypes from "prop-types";
-import React from "react";
+import React, {Suspense} from "react";
 import Select from "react-select";
 import {Link, Route} from "react-router-dom";
 import {toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import PhoneInput from "react-phone-input-2";
 import countryList from "react-select-country-list";
 import {t, gettext} from "ttag";
 import "react-phone-input-2/lib/style.css";
@@ -23,6 +22,8 @@ import submitOnEnter from "../../utils/submit-on-enter";
 import renderAdditionalInfo from "../../utils/render-additional-info";
 import Contact from "../contact-box";
 import Modal from "../modal";
+
+const PhoneInput = React.lazy(() => import("react-phone-input-2"));
 
 export default class Registration extends React.Component {
   constructor(props) {
@@ -387,46 +388,76 @@ export default class Registration extends React.Component {
                                 </span>
                               </div>
                             )}
-                            <PhoneInput
-                              name="phone_number"
-                              country={input_fields.phone_number.country}
-                              onlyCountries={
-                                input_fields.phone_number.only_countries || []
+                            <Suspense
+                              fallback={
+                                <input
+                                  type="tel"
+                                  name="phone_number"
+                                  value={phone_number}
+                                  onChange={(value) =>
+                                    this.handleChange({
+                                      target: {
+                                        name: "phone_number",
+                                        value: `+${value}`,
+                                      },
+                                    })
+                                  }
+                                  onKeyDown={(event) => {
+                                    submitOnEnter(
+                                      event,
+                                      this,
+                                      "registration-form",
+                                    );
+                                  }}
+                                  placeholder={t`PHONE_PHOLD`}
+                                />
                               }
-                              preferredCountries={
-                                input_fields.phone_number.preferred_countries ||
-                                []
-                              }
-                              excludeCountries={
-                                input_fields.phone_number.exclude_countries ||
-                                []
-                              }
-                              value={phone_number}
-                              onChange={(value) =>
-                                this.handleChange({
-                                  target: {
-                                    name: "phone_number",
-                                    value: `+${value}`,
-                                  },
-                                })
-                              }
-                              onKeyDown={(event) => {
-                                submitOnEnter(event, this, "registration-form");
-                              }}
-                              placeholder={t`PHONE_PHOLD`}
-                              enableSearch={Boolean(
-                                input_fields.phone_number.enable_search,
-                              )}
-                              inputProps={{
-                                name: "phone_number",
-                                id: "phone-number",
-                                className: `form-control input ${
-                                  errors.phone_number ? "error" : ""
-                                }`,
-                                required: true,
-                                autoComplete: "tel",
-                              }}
-                            />
+                            >
+                              <PhoneInput
+                                name="phone_number"
+                                country={input_fields.phone_number.country}
+                                onlyCountries={
+                                  input_fields.phone_number.only_countries || []
+                                }
+                                preferredCountries={
+                                  input_fields.phone_number
+                                    .preferred_countries || []
+                                }
+                                excludeCountries={
+                                  input_fields.phone_number.exclude_countries ||
+                                  []
+                                }
+                                value={phone_number}
+                                onChange={(value) =>
+                                  this.handleChange({
+                                    target: {
+                                      name: "phone_number",
+                                      value: `+${value}`,
+                                    },
+                                  })
+                                }
+                                onKeyDown={(event) => {
+                                  submitOnEnter(
+                                    event,
+                                    this,
+                                    "registration-form",
+                                  );
+                                }}
+                                placeholder={t`PHONE_PHOLD`}
+                                enableSearch={Boolean(
+                                  input_fields.phone_number.enable_search,
+                                )}
+                                inputProps={{
+                                  name: "phone_number",
+                                  id: "phone-number",
+                                  className: `form-control input ${
+                                    errors.phone_number ? "error" : ""
+                                  }`,
+                                  required: true,
+                                  autoComplete: "tel",
+                                }}
+                              />
+                            </Suspense>
                           </div>
                         )}
 

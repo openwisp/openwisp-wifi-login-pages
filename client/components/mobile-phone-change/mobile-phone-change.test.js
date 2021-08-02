@@ -9,7 +9,6 @@ import {toast} from "react-toastify";
 import {Provider} from "react-redux";
 import {Redirect, Router} from "react-router-dom";
 import {createMemoryHistory} from "history";
-import PhoneInput from "react-phone-input-2";
 import ShallowRenderer from "react-test-renderer/shallow";
 import {loadingContextValue} from "../../utils/loading-context";
 import loadTranslation from "../../utils/load-translation";
@@ -133,7 +132,7 @@ describe("Change Phone Number: standard flow", () => {
     wrapper = await mountComponent(props);
     expect(wrapper).toMatchSnapshot();
     expect(wrapper.exists(MobilePhoneChange)).toBe(true);
-    expect(wrapper.exists(PhoneInput)).toBe(true);
+    expect(wrapper.find("input[name='phone_number']").length).toBe(1);
 
     const component = wrapper.find(MobilePhoneChange);
     expect(component.instance().state.phone_number).toBe("+393660011222");
@@ -178,16 +177,29 @@ describe("Change Phone Number: standard flow", () => {
       {is_verified: false, phone_number: "+393660011333"},
     ]);
   });
-  it("should load PhoneInput and handlers should work correctly", async () => {
+  it("should render PhoneInput lazily and handlers should work correctly", async () => {
     wrapper = shallow(<MobilePhoneChange {...props} />);
     const handleChange = jest.spyOn(wrapper.instance(), "handleChange");
-    const component = wrapper.find(PhoneInput);
-    const prop = component.props();
-    expect(prop.inputProps).toEqual({
+    const component = wrapper.find("Suspense");
+    expect(component).toMatchSnapshot();
+    expect(component.find("lazy").length).toBe(1);
+    const prop = component.find("lazy").props();
+    expect(prop).toEqual({
+      enableSearch: false,
+      excludeCountries: [],
+      inputProps: {
+        className: "form-control input ",
+        id: "phone-number",
+        name: "phone_number",
+        required: true,
+      },
       name: "phone_number",
-      id: "phone-number",
-      className: "form-control input ",
-      required: true,
+      onChange: expect.any(Function),
+      onKeyDown: expect.any(Function),
+      onlyCountries: [],
+      placeholder: "enter mobile phone number",
+      preferredCountries: [],
+      value: "",
     });
     prop.onChange("+911234567890");
     expect(handleChange).toHaveBeenCalledWith({

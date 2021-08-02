@@ -8,7 +8,6 @@ import PropTypes from "prop-types";
 import {Provider} from "react-redux";
 import {Router, Route} from "react-router-dom";
 import {createMemoryHistory} from "history";
-import PhoneInput from "react-phone-input-2";
 import {loadingContextValue} from "../../utils/loading-context";
 import getConfig from "../../utils/get-config";
 import loadTranslation from "../../utils/load-translation";
@@ -108,6 +107,32 @@ describe("<Login /> rendering", () => {
     const component = renderer.render(<Login {...props} />);
     expect(component).toMatchSnapshot();
   });
+
+  it("should render PhoneInput lazily", async () => {
+    props.settings.mobile_phone_verification = true;
+    const wrapper = shallow(<Login {...props} />);
+    const component = wrapper.find("Suspense");
+    expect(component).toMatchSnapshot();
+    expect(component.find("lazy").length).toBe(1);
+    expect(component.find("lazy").props()).toEqual({
+      country: undefined,
+      enableSearch: false,
+      excludeCountries: [],
+      inputProps: {
+        autoComplete: "tel",
+        className: "form-control input ",
+        id: "username",
+        name: "username",
+        required: true,
+      },
+      name: "username",
+      onChange: expect.any(Function),
+      onlyCountries: [],
+      placeholder: "enter mobile phone number",
+      preferredCountries: [],
+      value: "",
+    });
+  });
 });
 
 describe("<Login /> interactions", () => {
@@ -176,7 +201,7 @@ describe("<Login /> interactions", () => {
 
     // phone_number should not be present if mobile_phone_verification is off
     expect(wrapper.find(".row.phone-number").length).toEqual(0);
-    expect(wrapper.exists(PhoneInput)).toBe(false);
+    expect(wrapper.find("input[type='tel']").length).toBe(0);
 
     wrapper
       .find("#username")
@@ -306,8 +331,8 @@ describe("<Login /> interactions", () => {
         },
       }),
     );
+    expect(wrapper.find("input[type='tel']").length).toBe(1);
 
-    expect(wrapper.exists(PhoneInput)).toBe(true);
     expect(wrapper.find(".row.phone-number").length).toEqual(1);
     expect(wrapper.find("#username").length).toEqual(1);
     expect(login.state("username")).toEqual("");
@@ -350,7 +375,7 @@ describe("<Login /> interactions", () => {
       }),
     );
 
-    expect(wrapper.exists(PhoneInput)).toBe(false);
+    expect(wrapper.find("input[type='tel']").length).toBe(0);
     wrapper.find("#username").simulate("change", {
       target: {value: "tester", name: "username"},
     });
@@ -377,7 +402,7 @@ describe("<Login /> interactions", () => {
     props.settings = {mobile_phone_verification: true};
     wrapper = mountComponent(props);
     expect(wrapper.render()).toMatchSnapshot();
-    expect(wrapper.exists(PhoneInput)).toBe(true);
+    expect(wrapper.find("input[type='tel']").length).toBe(1);
     expect(wrapper.find("#username").length).toEqual(1);
     expect(wrapper.find(".row.phone-number").length).toEqual(1);
   });
@@ -385,7 +410,7 @@ describe("<Login /> interactions", () => {
     props.settings = {mobile_phone_verification: false};
     wrapper = mountComponent(props);
     expect(wrapper.render()).toMatchSnapshot();
-    expect(wrapper.exists(PhoneInput)).toBe(false);
+    expect(wrapper.find("input[type='tel']").length).toBe(0);
     expect(wrapper.find("#username").length).toEqual(1);
     expect(wrapper.find(".row.phone-number").length).toEqual(0);
   });
@@ -395,7 +420,7 @@ describe("<Login /> interactions", () => {
     props.loginForm.input_fields.username.auto_switch_phone_input = false;
     wrapper = mountComponent(props);
     expect(wrapper.render()).toMatchSnapshot();
-    expect(wrapper.exists(PhoneInput)).toBe(false);
+    expect(wrapper.find("input[type='tel']").length).toBe(0);
     expect(wrapper.find("#username").length).toEqual(1);
     expect(wrapper.find(".row.phone-number").length).toEqual(0);
   });

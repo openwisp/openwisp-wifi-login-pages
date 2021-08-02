@@ -4,10 +4,9 @@ import "./index.css";
 import axios from "axios";
 import PropTypes from "prop-types";
 import qs from "qs";
-import React from "react";
+import React, {Suspense} from "react";
 import {Link, Route} from "react-router-dom";
 import {toast} from "react-toastify";
-import PhoneInput from "react-phone-input-2";
 import {t} from "ttag";
 import getText from "../../utils/get-text";
 import getHtml from "../../utils/get-html";
@@ -25,6 +24,8 @@ import renderAdditionalInfo from "../../utils/render-additional-info";
 import handleChange from "../../utils/handle-change";
 import Contact from "../contact-box";
 import Modal from "../modal";
+
+const PhoneInput = React.lazy(() => import("react-phone-input-2"));
 
 export default class Login extends React.Component {
   constructor(props) {
@@ -143,30 +144,47 @@ export default class Login extends React.Component {
             <span className="text">{errors.username}</span>
           </div>
         )}
-        <PhoneInput
-          name="username"
-          country={input_fields.phone_number.country}
-          onlyCountries={input_fields.phone_number.only_countries || []}
-          preferredCountries={
-            input_fields.phone_number.preferred_countries || []
+        <Suspense
+          fallback={
+            <input
+              type="tel"
+              name="username"
+              value={username}
+              id="username"
+              onChange={(value) =>
+                this.handleChange({
+                  target: {name: "username", value: `+${value}`},
+                })
+              }
+              placeholder={t`PHONE_PHOLD`}
+            />
           }
-          excludeCountries={input_fields.phone_number.exclude_countries || []}
-          value={username}
-          onChange={(value) =>
-            this.handleChange({
-              target: {name: "username", value: `+${value}`},
-            })
-          }
-          placeholder={t`PHONE_PHOLD`}
-          enableSearch={Boolean(input_fields.phone_number.enable_search)}
-          inputProps={{
-            name: "username",
-            id: "username",
-            className: `form-control input ${errors.username ? "error" : ""}`,
-            required: true,
-            autoComplete: "tel",
-          }}
-        />
+        >
+          <PhoneInput
+            name="username"
+            country={input_fields.phone_number.country}
+            onlyCountries={input_fields.phone_number.only_countries || []}
+            preferredCountries={
+              input_fields.phone_number.preferred_countries || []
+            }
+            excludeCountries={input_fields.phone_number.exclude_countries || []}
+            value={username}
+            onChange={(value) =>
+              this.handleChange({
+                target: {name: "username", value: `+${value}`},
+              })
+            }
+            placeholder={t`PHONE_PHOLD`}
+            enableSearch={Boolean(input_fields.phone_number.enable_search)}
+            inputProps={{
+              name: "username",
+              id: "username",
+              className: `form-control input ${errors.username ? "error" : ""}`,
+              required: true,
+              autoComplete: "tel",
+            }}
+          />
+        </Suspense>
       </div>
     );
   };

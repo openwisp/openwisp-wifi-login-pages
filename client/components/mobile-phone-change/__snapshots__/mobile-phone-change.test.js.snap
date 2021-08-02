@@ -27,85 +27,38 @@ exports[`<MobilePhoneChange /> rendering with placeholder translation tags shoul
             >
               PHONE_LBL
             </label>
-            <t
-              alwaysDefaultMask={false}
-              areaCodes={null}
-              autoFormat={true}
-              autocompleteSearch={false}
-              buttonClass=""
-              buttonStyle={Object {}}
-              containerClass=""
-              containerStyle={Object {}}
-              copyNumbersOnly={true}
-              country=""
-              countryCodeEditable={true}
-              defaultErrorMessage=""
-              defaultMask="... ... ... ... .."
-              disableCountryCode={false}
-              disableCountryGuess={false}
-              disableDropdown={false}
-              disableInitialCountryGuess={false}
-              disableSearchIcon={false}
-              disabled={false}
-              dropdownClass=""
-              dropdownStyle={Object {}}
-              enableAreaCodeStretch={false}
-              enableAreaCodes={false}
-              enableClickOutside={true}
-              enableLongNumbers={false}
-              enableSearch={false}
-              enableTerritories={false}
-              excludeCountries={Array []}
-              flagsImagePath="./flags.png"
-              inputClass=""
-              inputProps={
-                Object {
-                  "className": "form-control input ",
-                  "id": "phone-number",
-                  "name": "phone_number",
-                  "required": true,
-                }
+            <React.Suspense
+              fallback={
+                <input
+                  id="phone-number"
+                  name="phone_number"
+                  onChange={[Function]}
+                  onKeyDown={[Function]}
+                  placeholder="PHONE_PHOLD"
+                  value=""
+                />
               }
-              inputStyle={Object {}}
-              isValid={true}
-              jumpCursorToEnd={true}
-              keys={
-                Object {
-                  "A": 65,
-                  "DOWN": 40,
-                  "ENTER": 13,
-                  "ESC": 27,
-                  "LEFT": 37,
-                  "PLUS": 43,
-                  "RIGHT": 39,
-                  "SPACE": 32,
-                  "TAB": 9,
-                  "UP": 38,
-                  "Z": 90,
+            >
+              <UNDEFINED
+                enableSearch={false}
+                excludeCountries={Array []}
+                inputProps={
+                  Object {
+                    "className": "form-control input ",
+                    "id": "phone-number",
+                    "name": "phone_number",
+                    "required": true,
+                  }
                 }
-              }
-              localization={Object {}}
-              masks={null}
-              name="phone_number"
-              onChange={[Function]}
-              onEnterKeyPress={null}
-              onKeyDown={[Function]}
-              onlyCountries={Array []}
-              placeholder="PHONE_PHOLD"
-              preferredCountries={Array []}
-              prefix="+"
-              preserveOrder={Array []}
-              priority={null}
-              regions=""
-              renderStringAsFlag=""
-              searchClass=""
-              searchNotFound="No entries to show"
-              searchPlaceholder="search"
-              searchStyle={Object {}}
-              showDropdown={false}
-              specialLabel="Phone"
-              value=""
-            />
+                name="phone_number"
+                onChange={[Function]}
+                onKeyDown={[Function]}
+                onlyCountries={Array []}
+                placeholder="PHONE_PHOLD"
+                preferredCountries={Array []}
+                value=""
+              />
+            </React.Suspense>
           </div>
           <input
             className="button full"
@@ -128,6 +81,41 @@ exports[`<MobilePhoneChange /> rendering with placeholder translation tags shoul
     <Memo(Connect(Contact)) />
   </div>
 </div>
+`;
+
+exports[`Change Phone Number: standard flow should render PhoneInput lazily and handlers should work correctly 1`] = `
+<Suspense
+  fallback={
+    <input
+      id="phone-number"
+      name="phone_number"
+      onChange={[Function]}
+      onKeyDown={[Function]}
+      placeholder="enter mobile phone number"
+      value=""
+    />
+  }
+>
+  <lazy
+    enableSearch={false}
+    excludeCountries={Array []}
+    inputProps={
+      Object {
+        "className": "form-control input ",
+        "id": "phone-number",
+        "name": "phone_number",
+        "required": true,
+      }
+    }
+    name="phone_number"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    onlyCountries={Array []}
+    placeholder="enter mobile phone number"
+    preferredCountries={Array []}
+    value=""
+  />
+</Suspense>
 `;
 
 exports[`Change Phone Number: standard flow should render successfully 1`] = `
@@ -655,136 +643,27 @@ Openwisp-wifi-login-pages and using its services in the future.</p>
                     >
                       Mobile phone number
                     </label>
-                    <t
-                      alwaysDefaultMask={false}
-                      areaCodes={null}
-                      autoFormat={true}
-                      autocompleteSearch={false}
-                      buttonClass=""
-                      buttonStyle={Object {}}
-                      containerClass=""
-                      containerStyle={Object {}}
-                      copyNumbersOnly={true}
-                      country=""
-                      countryCodeEditable={true}
-                      defaultErrorMessage=""
-                      defaultMask="... ... ... ... .."
-                      disableCountryCode={false}
-                      disableCountryGuess={false}
-                      disableDropdown={false}
-                      disableInitialCountryGuess={false}
-                      disableSearchIcon={false}
-                      disabled={false}
-                      dropdownClass=""
-                      dropdownStyle={Object {}}
-                      enableAreaCodeStretch={false}
-                      enableAreaCodes={false}
-                      enableClickOutside={true}
-                      enableLongNumbers={false}
-                      enableSearch={false}
-                      enableTerritories={false}
-                      excludeCountries={Array []}
-                      flagsImagePath="./flags.png"
-                      inputClass=""
-                      inputProps={
-                        Object {
-                          "className": "form-control input ",
-                          "id": "phone-number",
-                          "name": "phone_number",
-                          "required": true,
-                        }
-                      }
-                      inputStyle={Object {}}
-                      isValid={true}
-                      jumpCursorToEnd={true}
-                      keys={
-                        Object {
-                          "A": 65,
-                          "DOWN": 40,
-                          "ENTER": 13,
-                          "ESC": 27,
-                          "LEFT": 37,
-                          "PLUS": 43,
-                          "RIGHT": 39,
-                          "SPACE": 32,
-                          "TAB": 9,
-                          "UP": 38,
-                          "Z": 90,
-                        }
-                      }
-                      localization={Object {}}
-                      masks={null}
-                      name="phone_number"
-                      onChange={[Function]}
-                      onEnterKeyPress={null}
-                      onKeyDown={[Function]}
-                      onlyCountries={Array []}
-                      placeholder="enter mobile phone number"
-                      preferredCountries={Array []}
-                      prefix="+"
-                      preserveOrder={Array []}
-                      priority={null}
-                      regions=""
-                      renderStringAsFlag=""
-                      searchClass=""
-                      searchNotFound="No entries to show"
-                      searchPlaceholder="search"
-                      searchStyle={Object {}}
-                      showDropdown={false}
-                      specialLabel="Phone"
-                      value=""
-                    >
-                      <div
-                        className=" react-tel-input"
-                        onKeyDown={[Function]}
-                        style={Object {}}
-                      >
-                        <div
-                          className="special-label"
-                        >
-                          Phone
-                        </div>
+                    <Suspense
+                      fallback={
                         <input
-                          className="form-control input "
-                          disabled={false}
                           id="phone-number"
                           name="phone_number"
-                          onBlur={[Function]}
                           onChange={[Function]}
-                          onClick={[Function]}
-                          onCopy={[Function]}
-                          onDoubleClick={[Function]}
-                          onFocus={[Function]}
                           onKeyDown={[Function]}
                           placeholder="enter mobile phone number"
-                          required={true}
-                          style={Object {}}
-                          type="tel"
                           value=""
                         />
-                        <div
-                          className=" flag-dropdown"
-                          style={Object {}}
-                        >
-                          <div
-                            aria-haspopup="listbox"
-                            className="selected-flag"
-                            onClick={[Function]}
-                            role="button"
-                            tabIndex="0"
-                            title=""
-                          >
-                            <div
-                              className="flag 0"
-                            >
-                              <div
-                                className="arrow"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </t>
+                      }
+                    >
+                      <input
+                        id="phone-number"
+                        name="phone_number"
+                        onChange={[Function]}
+                        onKeyDown={[Function]}
+                        placeholder="enter mobile phone number"
+                        value=""
+                      />
+                    </Suspense>
                   </div>
                   <input
                     className="button full"

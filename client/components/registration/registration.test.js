@@ -43,7 +43,7 @@ const createTestProps = (props, configName = "default") => {
   };
 };
 
-const mountComponent = function (passedProps) {
+const mountComponent = async (passedProps) => {
   const historyMock = createMemoryHistory();
 
   Registration.contextTypes = undefined;
@@ -59,7 +59,7 @@ const mountComponent = function (passedProps) {
     }),
   };
 
-  return mount(
+  const component = await mount(
     <Provider store={mockedStore}>
       <Router history={historyMock}>
         <Registration {...passedProps} />
@@ -77,6 +77,7 @@ const mountComponent = function (passedProps) {
       },
     },
   );
+  return component;
 };
 
 describe("<Registration /> rendering with placeholder translation tags", () => {
@@ -381,12 +382,38 @@ describe("Registration and Mobile Phone Verification interactions", () => {
 
   it("should show phone number field", async () => {
     wrapper = await mountComponent(props);
-    expect(wrapper.exists(PhoneInput)).toBe(true);
+    expect(wrapper.find("input[name='phone_number']").length).toBe(1);
+  });
+
+  it("should render PhoneInput lazily", async () => {
+    wrapper = shallow(<Registration {...props} />);
+    const component = wrapper.find("Suspense");
+    expect(component).toMatchSnapshot();
+    expect(component.find("lazy").length).toBe(1);
+    expect(component.find("lazy").props()).toEqual({
+      country: "it",
+      enableSearch: false,
+      excludeCountries: [],
+      inputProps: {
+        autoComplete: "tel",
+        className: "form-control input ",
+        id: "phone-number",
+        name: "phone_number",
+        required: true,
+      },
+      name: "phone_number",
+      onChange: expect.any(Function),
+      onKeyDown: expect.any(Function),
+      onlyCountries: [],
+      placeholder: "enter mobile phone number",
+      preferredCountries: [],
+      value: "",
+    });
   });
 
   it("should process successfully", async () => {
     wrapper = await mountComponent(props);
-    expect(wrapper.exists(PhoneInput)).toBe(true);
+    expect(wrapper.find("input[name='phone_number']").length).toBe(1);
     expect(wrapper.find("form")).toHaveLength(1);
     const component = wrapper.find(Registration).instance();
     const handleSubmit = jest.spyOn(component, "handleSubmit");
@@ -543,12 +570,12 @@ describe("Registration without identity verification (Email registration)", () =
 
   it("should not show phone number field", async () => {
     wrapper = await mountComponent(props);
-    expect(wrapper.exists(PhoneInput)).toBe(false);
+    expect(wrapper.find("input[name='phone_number']").length).toBe(0);
   });
 
   it("should process successfully", async () => {
     wrapper = await mountComponent(props);
-    expect(wrapper.exists(PhoneInput)).toBe(false);
+    expect(wrapper.find("input[name='phone_number']").length).toBe(0);
     expect(wrapper.find("form")).toHaveLength(1);
     const component = wrapper.find(Registration).instance();
     const handleChange = jest.spyOn(component, "handleChange");
