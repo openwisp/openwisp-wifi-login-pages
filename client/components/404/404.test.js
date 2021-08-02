@@ -52,4 +52,13 @@ describe("<DoesNotExist /> rendering", () => {
     const setTitleMock = wrapper.instance().props.setTitle.mock;
     expect(setTitleMock.calls.pop()).toEqual(["404 Not found", props.orgName]);
   });
+
+  it("should not call setTitle if organization is undefined", () => {
+    const props = createTestProps();
+    props.page = undefined;
+    props.orgName = undefined;
+    const wrapper = shallow(<DoesNotExist {...props} />);
+    const setTitleMock = wrapper.instance().props.setTitle.mock;
+    expect(setTitleMock.calls.length).toBe(0);
+  });
 });
