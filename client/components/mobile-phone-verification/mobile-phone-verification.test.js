@@ -13,10 +13,12 @@ import getConfig from "../../utils/get-config";
 import MobilePhoneVerification from "./mobile-phone-verification";
 import validateToken from "../../utils/validate-token";
 import loadTranslation from "../../utils/load-translation";
+import logError from "../../utils/log-error";
 
 jest.mock("../../utils/get-config");
 jest.mock("../../utils/validate-token");
 jest.mock("../../utils/load-translation");
+jest.mock("../../utils/log-error");
 jest.mock("axios");
 
 const createTestProps = function (props, configName = "test-org-2") {
@@ -210,7 +212,19 @@ describe("Mobile Phone Token verification: standard flow", () => {
     ).toBe(1);
     expect(event.preventDefault).toHaveBeenCalled();
     expect(wrapper.instance().state.errors.nonField).toBeTruthy();
-    expect(lastConsoleOutuput).not.toBe(null);
+    expect(lastConsoleOutuput).toBe(null);
+    expect(logError).toHaveBeenCalledWith(
+      {
+        response: {
+          data: {
+            non_field_errors: ["Invalid code."],
+          },
+          status: 400,
+          statusText: "BAD REQUEST",
+        },
+      },
+      "Invalid code.",
+    );
   });
 
   it("should log out successfully", async () => {
@@ -238,6 +252,45 @@ describe("Mobile Phone Token verification: standard flow", () => {
       "Verify mobile number",
       props.orgName,
     ]);
+  });
+
+  it("should not call API to resend token if one has already sent", async () => {
+    wrapper = createShallowComponent(props);
+    await tick();
+    sessionStorage.setItem("owPhoneTokenSent", true);
+    const result = await wrapper.instance().createPhoneToken();
+    expect(result).toBe(false);
+    sessionStorage.removeItem("owPhoneTokenSent");
+  });
+
+  it("should show error on rejection", async () => {
+    axios.mockImplementationOnce(() => {
+      return Promise.reject({
+        response: {
+          status: 400,
+          statusText: "BAD REQUEST",
+          data: {
+            non_field_errors: ["Bad request"],
+          },
+        },
+      });
+    });
+    validateToken.mockReturnValue(true);
+    jest.spyOn(toast, "error");
+    wrapper = createShallowComponent(props);
+    await tick();
+    await wrapper.instance().createPhoneToken(true);
+    expect(logError).toHaveBeenCalledWith(
+      {
+        response: {
+          data: {non_field_errors: ["Bad request"]},
+          status: 400,
+          statusText: "BAD REQUEST",
+        },
+      },
+      "Bad request",
+    );
+    expect(toast.error.mock.calls.length).toBe(1);
   });
 });
 
