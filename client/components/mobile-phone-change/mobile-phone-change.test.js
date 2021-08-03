@@ -1,7 +1,7 @@
 /* eslint-disable prefer-promise-reject-errors */
 /* eslint-disable camelcase */
 import axios from "axios";
-import {mount} from "enzyme";
+import {mount, shallow} from "enzyme";
 import React from "react";
 import PropTypes from "prop-types";
 import {Cookies} from "react-cookie";
@@ -17,11 +17,13 @@ import getConfig from "../../utils/get-config";
 import tick from "../../utils/tick";
 import MobilePhoneChangeWrapped from "./mobile-phone-change";
 import validateToken from "../../utils/validate-token";
+import submitOnEnter from "../../utils/submit-on-enter";
 
 const MobilePhoneChange = MobilePhoneChangeWrapped.WrappedComponent;
 jest.mock("../../utils/get-config");
 jest.mock("../../utils/validate-token");
 jest.mock("../../utils/load-translation");
+jest.mock("../../utils/submit-on-enter");
 jest.mock("axios");
 
 const createTestProps = function (props, configName = "test-org-2") {
@@ -176,6 +178,32 @@ describe("Change Phone Number: standard flow", () => {
     expect(setUserDataMock.calls.length).toBe(1);
     expect(setUserDataMock.calls.pop()).toEqual([
       {is_verified: false, phone_number: "+393660011333"},
+    ]);
+  });
+  it("should load PhoneInput and handlers should work correctly", async () => {
+    wrapper = shallow(<MobilePhoneChange {...props} />);
+    const handleChange = jest.spyOn(wrapper.instance(), "handleChange");
+    const component = wrapper.find(PhoneInput);
+    const prop = component.props();
+    expect(prop.inputProps).toEqual({
+      name: "phone_number",
+      id: "phone-number",
+      className: "form-control input ",
+      required: true,
+    });
+    prop.onChange("+911234567890");
+    expect(handleChange).toHaveBeenCalledWith({
+      target: {
+        name: "phone_number",
+        value: "++911234567890",
+      },
+    });
+    prop.onKeyDown({});
+    expect(submitOnEnter.mock.calls.length).toEqual(1);
+    expect(submitOnEnter.mock.calls.pop()).toEqual([
+      {},
+      expect.any(Object),
+      "mobile-phone-change-form",
     ]);
   });
 
