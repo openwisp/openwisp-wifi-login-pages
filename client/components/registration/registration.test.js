@@ -6,18 +6,21 @@ import React from "react";
 import {toast} from "react-toastify";
 import PropTypes from "prop-types";
 import {Provider} from "react-redux";
-import {Router} from "react-router-dom";
+import {Router, Route} from "react-router-dom";
 import {createMemoryHistory} from "history";
 import PhoneInput from "react-phone-input-2";
+import Modal from "../modal";
 import {loadingContextValue} from "../../utils/loading-context";
 import tick from "../../utils/tick";
 
 import getConfig from "../../utils/get-config";
 import loadTranslation from "../../utils/load-translation";
 import Registration from "./registration";
+import submitOnEnter from "../../utils/submit-on-enter";
 
 jest.mock("../../utils/get-config");
 jest.mock("../../utils/load-translation");
+jest.mock("../../utils/submit-on-enter");
 jest.mock("axios");
 
 const createTestProps = (props, configName = "default") => {
@@ -177,6 +180,19 @@ describe("<Registration /> interactions", () => {
       })
       .mockImplementationOnce(() => {
         return Promise.resolve();
+      })
+      .mockImplementationOnce(() => {
+        return Promise.reject({
+          status: 400,
+          statusText: "Bad Request",
+          response: {
+            data: {
+              billing_info: {
+                billingError: "registration error",
+              },
+            },
+          },
+        });
       });
     wrapper.setState({
       password1: "wrong password",
@@ -269,6 +285,19 @@ describe("<Registration /> interactions", () => {
             expect(spyToast.mock.calls.length).toBe(3);
             lastConsoleOutuput = null;
           });
+      })
+      .then(() => {
+        return wrapper
+          .instance()
+          .handleSubmit(event)
+          .then(() => {
+            expect(
+              wrapper.instance().props.authenticate.mock.calls.length,
+            ).toBe(1);
+            expect(lastConsoleOutuput).not.toBe(null);
+            expect(spyToast.mock.calls.length).toBe(4);
+            lastConsoleOutuput = null;
+          });
       });
   });
   it("test optional fields disabled", async () => {
@@ -336,7 +365,7 @@ describe("<Registration /> interactions", () => {
     expect(wrapper.instance().state.success).toEqual(true);
     expect(wrapper.find(".success")).toHaveLength(1);
     expect(wrapper.instance().props.authenticate.mock.calls.length).toBe(1);
-    expect(errorSpyToast.mock.calls.length).toBe(3);
+    expect(errorSpyToast.mock.calls.length).toBe(4);
   });
 });
 
@@ -393,6 +422,82 @@ describe("Registration and Mobile Phone Verification interactions", () => {
     expect(handleSubmit).toHaveBeenCalled();
     expect(event.preventDefault).toHaveBeenCalled();
   });
+  it("should load PhoneInput and its methods correctly", async () => {
+    wrapper = await mountComponent(props);
+    const component = wrapper.find(Registration);
+    const spyFn = jest.fn();
+    component.instance().handleChange = spyFn;
+    const phoneField = component.find(PhoneInput);
+    expect(phoneField.props().inputProps).toEqual({
+      autoComplete: "tel",
+      className: "form-control input ",
+      id: "phone-number",
+      name: "phone_number",
+      required: true,
+    });
+    phoneField.props().onKeyDown({});
+    expect(submitOnEnter).toHaveBeenCalledWith(
+      {},
+      expect.any(Object),
+      "registration-form",
+    );
+    phoneField.props().onChange("+911234567890");
+    expect(spyFn).toHaveBeenCalledWith({
+      target: {name: "phone_number", value: "++911234567890"},
+    });
+  });
+  it("should render modal", () => {
+    props = createTestProps();
+    wrapper = shallow(<Registration {...props} />);
+    let pathMap = {};
+    pathMap = wrapper.find(Route).reduce((mapRoute, route) => {
+      const map = mapRoute;
+      const routeProps = route.props();
+      map[routeProps.path] = routeProps.render;
+      return map;
+    }, {});
+    expect(pathMap["default/registration/:name"]).toEqual(expect.any(Function));
+    const render = pathMap["default/registration/:name"];
+    const Comp = React.createElement(Modal).type;
+    expect(JSON.stringify(render({}))).toStrictEqual(JSON.stringify(<Comp />));
+  });
+  it("should send post data with optional fields", async () => {
+    axios.mockImplementationOnce(() => {
+      return Promise.resolve({
+        status: 201,
+        statusText: "CREATED",
+        data: null,
+      });
+    });
+    props = createTestProps();
+    Registration.contextTypes = {
+      setLoading: PropTypes.func,
+      getLoading: PropTypes.func,
+    };
+    wrapper = shallow(<Registration {...props} />, {
+      context: loadingContextValue,
+      disableLifecycleMethods: true,
+    });
+    wrapper.instance().setState({first_name: "OpenWISP"});
+    wrapper.instance().handleSubmit(event);
+    expect(axios).toHaveBeenCalledWith({
+      data: {
+        birth_date: "",
+        email: "",
+        first_name: "OpenWISP",
+        last_name: "",
+        location: "",
+        password1: "",
+        password2: "",
+        username: "",
+      },
+      headers: {
+        "content-type": "application/json",
+      },
+      method: "post",
+      url: "/api/v1/default/account/",
+    });
+  });
 });
 
 describe("Registration without identity verification (Email registration)", () => {
@@ -422,6 +527,7 @@ describe("Registration without identity verification (Email registration)", () =
     expect(wrapper.exists(PhoneInput)).toBe(false);
     expect(wrapper.find("form")).toHaveLength(1);
     const component = wrapper.find(Registration).instance();
+    const handleChange = jest.spyOn(component, "handleChange");
     const handleSubmit = jest.spyOn(component, "handleSubmit");
 
     axios.mockImplementationOnce(() => {
@@ -447,6 +553,7 @@ describe("Registration without identity verification (Email registration)", () =
     wrapper.find("form").simulate("submit", event);
     await tick();
     expect(wrapper.find(Registration).instance().state.errors).toEqual({});
+    expect(handleChange.mock.calls.length).toEqual(2);
     expect(handleSubmit).toHaveBeenCalled();
     expect(event.preventDefault).toHaveBeenCalled();
   });
