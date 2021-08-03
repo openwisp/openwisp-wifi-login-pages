@@ -391,6 +391,9 @@ describe("<Status /> interactions", () => {
 
   it("test handleLoginIframe method", async () => {
     props = createTestProps();
+    jest.spyOn(toast, "error");
+    jest.spyOn(toast, "dismiss");
+    jest.spyOn(props.cookies, "set");
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: true,
@@ -417,6 +420,16 @@ describe("<Status /> interactions", () => {
     expect(wrapper.instance().props.cookies.get("default_macaddr")).toBe(
       "4e:ed:11:2b:17:ae",
     );
+    expect(props.cookies.set).toHaveBeenCalledWith(
+      "default_macaddr",
+      "4e:ed:11:2b:17:ae",
+      {path: "/"},
+    );
+    expect(toast.error).toHaveBeenCalledWith("true?macaddr=4e:ed:11:2b:17:ae", {
+      onOpen: expect.any(Function),
+    });
+    toast.error.mock.calls.pop()[1].onOpen();
+    expect(toast.dismiss).toHaveBeenCalledWith("main_toast_id");
   });
 
   it("should not perform captive portal login (submit loginFormRef), if user is already authenticated", async () => {
@@ -1006,5 +1019,194 @@ describe("<Status /> interactions", () => {
     expect(wrapper.find("iframe").length).toBe(2);
     wrapper.find("iframe").first().simulate("load");
     expect(finalOperationsMock.mock.calls.length).toEqual(1);
+  });
+  it("should not get account sessions if user needs verification", async () => {
+    validateToken.mockReturnValue(true);
+    const prop = createTestProps();
+    prop.userData.is_verified = false;
+    prop.userData.method = "mobile_phone";
+    prop.settings = {mobile_phone_verification: true};
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    const getSessionInfo = jest.spyOn(wrapper.instance(), "getSessionInfo");
+    const result = await wrapper.instance().finalOperations();
+    expect(result).toEqual();
+    expect(getSessionInfo).not.toHaveBeenCalled();
+  });
+  it("should call logout if getUserRadiusSessions is rejected", async () => {
+    axios.mockImplementationOnce(() => {
+      return Promise.reject({
+        response: {
+          status: 401,
+          data: {
+            error: "Unauthorized",
+          },
+        },
+      });
+    });
+    validateToken.mockReturnValue(true);
+    const prop = createTestProps();
+    jest.spyOn(toast, "error");
+    jest.spyOn(toast, "dismiss");
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    await wrapper.instance().getUserRadiusSessions();
+    expect(prop.logout).toHaveBeenCalledWith(
+      {
+        HAS_DOCUMENT_COOKIE: true,
+        changeListeners: [],
+        cookies: {default_macaddr: "4e:ed:11:2b:17:ae"},
+      },
+      "default",
+    );
+    expect(toast.error).toHaveBeenCalledWith("Error occurred!", {
+      onOpen: expect.any(Function),
+    });
+    toast.error.mock.calls.pop()[1].onOpen();
+    expect(toast.dismiss).toHaveBeenCalledWith("main_toast_id");
+  });
+  it("should return if repeatLogin is true in handleLogout", async () => {
+    validateToken.mockReturnValue(true);
+    const prop = createTestProps();
+    jest.spyOn(toast, "success");
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    const result = await wrapper.instance().handleLogout(true, true);
+    expect(localStorage).toEqual({userAutoLogin: "true"});
+    expect(prop.setUserData).not.toHaveBeenCalled();
+    expect(toast.success).not.toHaveBeenCalled();
+    expect(result).toBe();
+  });
+  it("should return if loginIframe is not loaded", async () => {
+    validateToken.mockReturnValue(true);
+    const prop = createTestProps();
+    jest.spyOn(toast, "success");
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    const finalOperationsMock = jest.fn();
+    wrapper.instance().finalOperations = finalOperationsMock;
+    expect(wrapper.instance().handleLoginIframe()).toEqual();
+    expect(finalOperationsMock).not.toHaveBeenCalled();
+  });
+  it("should update screen width", () => {
+    validateToken.mockReturnValue(true);
+    const prop = createTestProps();
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    window.innerWidth = 1920;
+    wrapper.instance().updateScreenWidth();
+    expect(wrapper.instance().state.screenWidth).toEqual(1920);
+  });
+  it("should execute fetchMoreSessions correctly", async () => {
+    validateToken.mockReturnValue(true);
+    const prop = createTestProps();
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    const getUserPassedRadiusSessions = jest.spyOn(
+      wrapper.instance(),
+      "getUserPassedRadiusSessions",
+    );
+    await wrapper.instance().fetchMoreSessions();
+    expect(getUserPassedRadiusSessions).toHaveBeenCalledWith({page: 2});
+    wrapper.instance().setState({currentPage: 10});
+    await wrapper.instance().fetchMoreSessions();
+    expect(getUserPassedRadiusSessions).toHaveBeenCalledWith({page: 11});
+  });
+  it("should submit logoutForm in iframe on calling handleSessionLogout", async () => {
+    validateToken.mockReturnValue(true);
+    const prop = createTestProps();
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    const mockRef = {submit: jest.fn()};
+    wrapper.instance().logoutFormRef = {current: mockRef};
+    wrapper
+      .instance()
+      .handleSessionLogout({start_time: "2021-07-08T00:22:28-04:00"});
+    expect(wrapper.instance().state.sessionsToLogout).toEqual([
+      {start_time: "2021-07-08T00:22:28-04:00"},
+    ]);
+    expect(wrapper.instance().state.pastSessions).toEqual([]);
+    expect(wrapper.instance().state.activeSessions).toEqual([]);
+    expect(wrapper.instance().state.currentPage).toEqual(0);
+    expect(wrapper.instance().state.hasMoreSessions).toEqual(true);
+    expect(mockRef.submit).toHaveBeenCalledWith();
+  });
+  it("should call handleSessionLogout if clicked on session row of large table", async () => {
+    validateToken.mockReturnValue(true);
+    const prop = createTestProps();
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    const handleSessionLogout = jest.spyOn(
+      wrapper.instance(),
+      "handleSessionLogout",
+    );
+    const session = {start_time: "2021-07-08T00:22:28-04:00", stop_time: null};
+    const row = wrapper.instance().getLargeTableRow(session, {}, true);
+    const inputBtn =
+      row.props.children[row.props.children.length - 1].props.children[1];
+    expect(inputBtn.props).toEqual({
+      type: "button",
+      className: "button small session-logout",
+      value: "Logout",
+      onClick: expect.any(Function),
+    });
+    inputBtn.props.onClick();
+    expect(handleSessionLogout).toHaveBeenCalledWith(session);
+  });
+  it("should call getSmallTable if screenWidth is less than or equal to 656", () => {
+    validateToken.mockReturnValue(true);
+    const prop = createTestProps();
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    const session = wrapper.instance().getSessionInfo();
+    const getLargeTable = jest.spyOn(wrapper.instance(), "getLargeTable");
+    const getSmallTable = jest.spyOn(wrapper.instance(), "getSmallTable");
+    wrapper.instance().setState({screenWidth: 656});
+    wrapper.instance().getTable(session);
+    expect(getSmallTable).toHaveBeenCalledWith(session);
+    wrapper.instance().setState({screenWidth: 450});
+    wrapper.instance().getTable(session);
+    expect(getSmallTable).toHaveBeenCalledWith(session);
+    wrapper.instance().setState({screenWidth: 720});
+    wrapper.instance().getTable(session);
+    expect(getLargeTable).toHaveBeenCalledWith(session);
+  });
+  it("should render additional fields in captivePortalLogoutForm", async () => {
+    validateToken.mockReturnValue(true);
+    const prop = createTestProps();
+    console.error = jest.fn();
+    prop.captivePortalLogoutForm.additional_fields = [
+      {name: "mac_address", value: "4e:ed:11:2b:17:ae"},
+    ];
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    const additionalField = wrapper.find("input[name='mac_address']");
+    expect(additionalField.length).toEqual(1);
+    expect(additionalField.props()).toEqual({
+      name: "mac_address",
+      readOnly: true,
+      type: "text",
+      value: "4e:ed:11:2b:17:ae",
+    });
   });
 });
