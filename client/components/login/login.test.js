@@ -6,7 +6,7 @@ import ShallowRenderer from "react-test-renderer/shallow";
 import * as dependency from "react-toastify";
 import PropTypes from "prop-types";
 import {Provider} from "react-redux";
-import {Router} from "react-router-dom";
+import {Router, Route} from "react-router-dom";
 import {createMemoryHistory} from "history";
 import PhoneInput from "react-phone-input-2";
 import {loadingContextValue} from "../../utils/loading-context";
@@ -14,6 +14,7 @@ import getConfig from "../../utils/get-config";
 import loadTranslation from "../../utils/load-translation";
 import Login from "./login";
 import tick from "../../utils/tick";
+import Modal from "../modal";
 import getParameterByName from "../../utils/get-parameter-by-name";
 
 jest.mock("axios");
@@ -591,5 +592,20 @@ describe("<Login /> interactions", () => {
     expect(authenticateMock.calls.length).toBe(1);
     expect(authenticateMock.calls.pop()).toEqual([true]);
     expect(localStorage.getItem("default_logout_method")).toEqual("saml");
+  });
+  it("should render modal", () => {
+    props = createTestProps();
+    wrapper = shallow(<Login {...props} />);
+    let pathMap = {};
+    pathMap = wrapper.find(Route).reduce((mapRoute, route) => {
+      const map = mapRoute;
+      const routeProps = route.props();
+      map[routeProps.path] = routeProps.render;
+      return map;
+    }, {});
+    expect(pathMap["default/login/:name"]).toEqual(expect.any(Function));
+    const render = pathMap["default/login/:name"];
+    const Comp = React.createElement(Modal).type;
+    expect(JSON.stringify(render({}))).toStrictEqual(JSON.stringify(<Comp />));
   });
 });
