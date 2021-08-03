@@ -5,6 +5,7 @@ import ShallowRenderer from "react-test-renderer/shallow";
 
 import getConfig from "../../utils/get-config";
 import Modal from "./modal";
+import {mapStateToProps} from "./index";
 
 jest.mock("../../utils/get-config");
 
@@ -79,5 +80,25 @@ describe("<Modal /> interactions", () => {
     wrapper.instance().componentWillUnmount();
     expect(global.document.addEventListener).toHaveBeenCalled();
     expect(global.document.removeEventListener).toHaveBeenCalled();
+  });
+  it("should map state to props", () => {
+    const result = mapStateToProps(
+      {
+        organization: {
+          configuration: {
+            privacy_policy: "# Privacy Policy",
+            terms_and_conditions: "# Terms and Conditions",
+          },
+        },
+        language: "en",
+      },
+      {prevPath: "/default/login"},
+    );
+    expect(result).toEqual({
+      privacyPolicy: "# Privacy Policy",
+      termsAndConditions: "# Terms and Conditions",
+      language: "en",
+      prevPath: "/default/login",
+    });
   });
 });
