@@ -169,3 +169,258 @@ exports[`<OrganizationWrapper /> interactions should render pageTitle if it is n
   </ContextProvider>
 </Fragment>
 `;
+
+exports[`<OrganizationWrapper /> interactions should show route for authenticated users 1`] = `
+<Fragment>
+  <ContextProvider
+    value={
+      Object {
+        "getLoading": [Function],
+        "setLoading": [Function],
+      }
+    }
+  >
+    <div
+      className="app-container "
+    >
+      <Route
+        path="/default"
+        render={[Function]}
+      />
+      <Switch>
+        <Route
+          exact={true}
+          path="/default"
+          render={[Function]}
+        />
+        <Route
+          path="/default/registration"
+          render={[Function]}
+        />
+        <Route
+          path="/default/mobile-phone-verification"
+          render={[Function]}
+        />
+        <Route
+          path="/default/password/reset/confirm/:uid/:token"
+          render={[Function]}
+        />
+        <Route
+          exact={true}
+          path="/default/password/reset"
+          render={[Function]}
+        />
+        <Route
+          path="/default/login"
+          render={[Function]}
+        />
+        <Route
+          path="/default/status"
+          render={[Function]}
+        />
+        <Route
+          path="/default/logout"
+          render={[Function]}
+        />
+        <Route
+          path="/default/change-password"
+          render={[Function]}
+        />
+        <Route
+          path="/default/change-phone-number"
+          render={[Function]}
+        />
+        <Route
+          path="/default/payment/:result"
+          render={[Function]}
+        />
+        <Route
+          render={[Function]}
+        />
+      </Switch>
+      <Route
+        path="/default"
+        render={[Function]}
+      />
+    </div>
+    <HelmetWrapper
+      defer={true}
+      encodeSpecialCharacters={true}
+    >
+      <title>
+        WiFi Login - default name
+      </title>
+    </HelmetWrapper>
+  </ContextProvider>
+</Fragment>
+`;
+
+exports[`Test Organization Wrapper for authenticated and unverified users should show route for unverified users 1`] = `
+<Fragment>
+  <ContextProvider
+    value={
+      Object {
+        "getLoading": [Function],
+        "setLoading": [Function],
+      }
+    }
+  >
+    <div
+      className="app-container "
+    >
+      <Route
+        path="/default"
+        render={[Function]}
+      />
+      <Switch>
+        <Route
+          exact={true}
+          path="/default"
+          render={[Function]}
+        />
+        <Route
+          path="/default/registration"
+          render={[Function]}
+        />
+        <Route
+          path="/default/mobile-phone-verification"
+          render={[Function]}
+        />
+        <Route
+          path="/default/password/reset/confirm/:uid/:token"
+          render={[Function]}
+        />
+        <Route
+          exact={true}
+          path="/default/password/reset"
+          render={[Function]}
+        />
+        <Route
+          path="/default/login"
+          render={[Function]}
+        />
+        <Route
+          path="/default/status"
+          render={[Function]}
+        />
+        <Route
+          path="/default/logout"
+          render={[Function]}
+        />
+        <Route
+          path="/default/change-password"
+          render={[Function]}
+        />
+        <Route
+          path="/default/change-phone-number"
+          render={[Function]}
+        />
+        <Route
+          path="/default/payment/:result"
+          render={[Function]}
+        />
+        <Route
+          render={[Function]}
+        />
+      </Switch>
+      <Route
+        path="/default"
+        render={[Function]}
+      />
+    </div>
+    <HelmetWrapper
+      defer={true}
+      encodeSpecialCharacters={true}
+    >
+      <title>
+        WiFi Login - default name
+      </title>
+    </HelmetWrapper>
+  </ContextProvider>
+</Fragment>
+`;
+
+exports[`Test Organization Wrapper for unauthenticated users should show route for unauthenticated users 1`] = `
+<Fragment>
+  <ContextProvider
+    value={
+      Object {
+        "getLoading": [Function],
+        "setLoading": [Function],
+      }
+    }
+  >
+    <div
+      className="app-container "
+    >
+      <Route
+        path="/default"
+        render={[Function]}
+      />
+      <Switch>
+        <Route
+          exact={true}
+          path="/default"
+          render={[Function]}
+        />
+        <Route
+          path="/default/registration"
+          render={[Function]}
+        />
+        <Route
+          path="/default/mobile-phone-verification"
+          render={[Function]}
+        />
+        <Route
+          path="/default/password/reset/confirm/:uid/:token"
+          render={[Function]}
+        />
+        <Route
+          exact={true}
+          path="/default/password/reset"
+          render={[Function]}
+        />
+        <Route
+          path="/default/login"
+          render={[Function]}
+        />
+        <Route
+          path="/default/status"
+          render={[Function]}
+        />
+        <Route
+          path="/default/logout"
+          render={[Function]}
+        />
+        <Route
+          path="/default/change-password"
+          render={[Function]}
+        />
+        <Route
+          path="/default/change-phone-number"
+          render={[Function]}
+        />
+        <Route
+          path="/default/payment/:result"
+          render={[Function]}
+        />
+        <Route
+          render={[Function]}
+        />
+      </Switch>
+      <Route
+        path="/default"
+        render={[Function]}
+      />
+    </div>
+    <HelmetWrapper
+      defer={true}
+      encodeSpecialCharacters={true}
+    >
+      <title>
+        WiFi Login - default name
+      </title>
+    </HelmetWrapper>
+  </ContextProvider>
+</Fragment>
+`;

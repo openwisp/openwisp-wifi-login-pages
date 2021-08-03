@@ -1,16 +1,32 @@
 /* eslint-disable camelcase */
 import {shallow, mount} from "enzyme";
-import React from "react";
-import {MemoryRouter, Route} from "react-router-dom";
+import React, {Suspense} from "react";
+import {MemoryRouter, Redirect, Route} from "react-router-dom";
 import {Cookies} from "react-cookie";
 import {Provider} from "react-redux";
-
 import getConfig from "../../utils/get-config";
 import loadTranslation from "../../utils/load-translation";
 import OrganizationWrapper from "./organization-wrapper";
+import Footer from "../footer";
+import Loader from "../../utils/loader";
+import Login from "../login";
+import needsVerify from "../../utils/needs-verify";
+
+const Registration = React.lazy(() => import("../registration"));
+const PasswordChange = React.lazy(() => import("../password-change"));
+const MobilePhoneChange = React.lazy(() => import("../mobile-phone-change"));
+const PasswordReset = React.lazy(() => import("../password-reset"));
+const PasswordConfirm = React.lazy(() => import("../password-confirm"));
+const Status = React.lazy(() => import("../status"));
+const MobilePhoneVerification = React.lazy(() =>
+  import("../mobile-phone-verification"),
+);
+const PaymentStatus = React.lazy(() => import("../payment-status"));
+const ConnectedDoesNotExist = React.lazy(() => import("../404"));
 
 jest.mock("../../utils/get-config");
 jest.mock("../../utils/load-translation");
+jest.mock("../../utils/needs-verify");
 
 const userData = {
   is_active: true,
@@ -94,13 +110,13 @@ describe("<OrganizationWrapper /> rendering", () => {
 });
 
 describe("<OrganizationWrapper /> interactions", () => {
-  // eslint-disable-next-line
   let props;
   let wrapper;
   let originalError;
   let lastConsoleOutuput;
 
   beforeEach(() => {
+    needsVerify.mockReturnValue(false);
     originalError = console.error;
     lastConsoleOutuput = null;
     console.error = (data) => {
@@ -159,6 +175,282 @@ describe("<OrganizationWrapper /> interactions", () => {
     wrapper.instance().setState({configLoaded: true});
     expect(wrapper).toMatchSnapshot();
   });
+  it("should not use BrowserLang if userLangChoice is present", async () => {
+    localStorage.setItem(
+      `${props.organization.configuration.slug}-userLangChoice`,
+      "en",
+    );
+    const loadLanguage = jest.spyOn(wrapper.instance(), "loadLanguage");
+    wrapper.instance().setState({translationLoaded: false});
+    await wrapper.instance().componentDidUpdate(props);
+    expect(loadLanguage).toHaveBeenCalledWith("en", "default", false);
+    localStorage.removeItem(
+      `${props.organization.configuration.slug}-userLangChoice`,
+    );
+  });
+  it("should change language if different language is selected", async () => {
+    props.language = "it";
+    wrapper = shallow(<OrganizationWrapper {...props} />);
+    wrapper.instance().setState({translationLoaded: true});
+    const loadLanguage = jest.spyOn(wrapper.instance(), "loadLanguage");
+    props.language = "en";
+    await wrapper.instance().componentDidUpdate(props);
+    expect(localStorage).toEqual({"default-userLangChoice": "it"});
+    expect(loadLanguage).toHaveBeenCalledWith("it", "default", false);
+  });
+  it("should show route for authenticated users", async () => {
+    let pathMap = {};
+    pathMap = wrapper.find(Route).reduce((mapRoute, route) => {
+      const map = mapRoute;
+      const routeProps = route.props();
+      if (routeProps.path === undefined) map.notFound = routeProps.render;
+      else map[routeProps.path] = routeProps.render;
+      return map;
+    }, {});
+    Object.keys(pathMap).forEach((path) => {
+      expect(pathMap[path]).toEqual(expect.any(Function));
+    });
+    expect(wrapper).toMatchSnapshot();
+    let render = pathMap["/default"];
+    const Component = React.createElement(Footer).type;
+    expect(JSON.stringify(render())).toEqual(JSON.stringify(<Component />));
+    render = pathMap["/default/registration"];
+    expect(render()).toEqual(<Redirect to="/default/status" />);
+    render = pathMap["/default/mobile-phone-verification"];
+    expect(render()).toEqual(<Redirect to="/default/status" />);
+    render = pathMap["/default/password/reset/confirm/:uid/:token"];
+    expect(render()).toEqual(<Redirect to="/default/status" />);
+    render = pathMap["/default/password/reset"];
+    expect(render()).toEqual(<Redirect to="/default/status" />);
+    render = pathMap["/default/login"];
+    expect(render()).toEqual(<Redirect to="/default/status" />);
+    render = pathMap["/default/status"];
+    const cookies = new Cookies();
+    expect(JSON.stringify(render())).toEqual(
+      JSON.stringify(
+        <Suspense fallback={<Loader full={false} />}>
+          <Status cookies={cookies} />
+        </Suspense>,
+      ),
+    );
+    render = pathMap["/default/logout"];
+    expect(render()).toEqual(<Redirect to="/default/status" />);
+    render = pathMap["/default/change-password"];
+    expect(JSON.stringify(render())).toEqual(
+      JSON.stringify(
+        <Suspense fallback={<Loader full={false} />}>
+          <PasswordChange cookies={cookies} />
+        </Suspense>,
+      ),
+    );
+    render = pathMap["/default/change-phone-number"];
+    expect(JSON.stringify(render())).toEqual(
+      JSON.stringify(
+        <Suspense fallback={<Loader full={false} />}>
+          <MobilePhoneChange cookies={cookies} />
+        </Suspense>,
+      ),
+    );
+    render = pathMap["/default/payment/:result"];
+    expect(JSON.stringify(render(createTestProps()))).toEqual(
+      JSON.stringify(
+        <Suspense fallback={<Loader full={false} />}>
+          <PaymentStatus cookies={cookies} />
+        </Suspense>,
+      ),
+    );
+    render = pathMap.notFound;
+    expect(JSON.stringify(render())).toEqual(
+      JSON.stringify(
+        <Suspense fallback={<Loader full={false} />}>
+          <ConnectedDoesNotExist />
+        </Suspense>,
+      ),
+    );
+  });
+});
+
+describe("Test Organization Wrapper for unauthenticated users", () => {
+  let props;
+  let wrapper;
+  let originalError;
+
+  beforeEach(() => {
+    originalError = console.error;
+    console.error = () => {};
+    props = createTestProps();
+    props.organization.configuration.isAuthenticated = false;
+    wrapper = shallow(<OrganizationWrapper {...props} />);
+  });
+
+  afterEach(() => {
+    console.error = originalError;
+  });
+
+  it("should show route for unauthenticated users", async () => {
+    expect(wrapper).toMatchSnapshot();
+    let pathMap = {};
+    pathMap = wrapper.find(Route).reduce((mapRoute, route) => {
+      const map = mapRoute;
+      const routeProps = route.props();
+      if (routeProps.path === undefined) map.notFound = routeProps.render;
+      else map[routeProps.path] = routeProps.render;
+      return map;
+    }, {});
+    Object.keys(pathMap).forEach((path) => {
+      expect(pathMap[path]).toEqual(expect.any(Function));
+    });
+    const cookies = new Cookies();
+    let render = pathMap["/default"];
+    let Component = React.createElement(Footer).type;
+    expect(JSON.stringify(render())).toEqual(JSON.stringify(<Component />));
+    render = pathMap["/default/registration"];
+    expect(JSON.stringify(render())).toEqual(
+      JSON.stringify(
+        <Suspense fallback={<Loader full={false} />}>
+          <Registration />
+        </Suspense>,
+      ),
+    );
+    render = pathMap["/default/mobile-phone-verification"];
+    expect(render()).toEqual(<Redirect to="/default/login" />);
+    render = pathMap["/default/password/reset/confirm/:uid/:token"];
+    expect(JSON.stringify(render())).toEqual(
+      JSON.stringify(
+        <Suspense fallback={<Loader full={false} />}>
+          <PasswordConfirm />
+        </Suspense>,
+      ),
+    );
+    render = pathMap["/default/password/reset"];
+    expect(JSON.stringify(render())).toEqual(
+      JSON.stringify(
+        <Suspense fallback={<Loader full={false} />}>
+          <PasswordReset />
+        </Suspense>,
+      ),
+    );
+    render = pathMap["/default/login"];
+    Component = React.createElement(Login).type;
+    expect(JSON.stringify(render())).toEqual(JSON.stringify(<Component />));
+    render = pathMap["/default/status"];
+    expect(render()).toEqual(<Redirect to="/default/login" />);
+    render = pathMap["/default/logout"];
+    expect(render()).toEqual(<Redirect to="/default/login" />);
+    render = pathMap["/default/change-password"];
+    expect(render()).toEqual(<Redirect to="/default/login" />);
+    render = pathMap["/default/change-phone-number"];
+    expect(render()).toEqual(<Redirect to="/default/login" />);
+    render = pathMap["/default/payment/:result"];
+    expect(JSON.stringify(render(createTestProps()))).toEqual(
+      JSON.stringify(
+        <Suspense fallback={<Loader full={false} />}>
+          <PaymentStatus cookies={cookies} />
+        </Suspense>,
+      ),
+    );
+    render = pathMap.notFound;
+    expect(JSON.stringify(render())).toEqual(
+      JSON.stringify(
+        <Suspense fallback={<Loader full={false} />}>
+          <ConnectedDoesNotExist />
+        </Suspense>,
+      ),
+    );
+  });
+});
+
+describe("Test Organization Wrapper for authenticated and unverified users", () => {
+  let props;
+  let wrapper;
+  let originalError;
+
+  beforeEach(() => {
+    originalError = console.error;
+    console.error = () => {};
+    props = createTestProps();
+    needsVerify.mockReturnValue(true);
+    wrapper = shallow(<OrganizationWrapper {...props} />);
+  });
+
+  afterEach(() => {
+    console.error = originalError;
+  });
+
+  it("should show route for unverified users", async () => {
+    let pathMap = {};
+    pathMap = wrapper.find(Route).reduce((mapRoute, route) => {
+      const map = mapRoute;
+      const routeProps = route.props();
+      if (routeProps.path === undefined) map.notFound = routeProps.render;
+      else map[routeProps.path] = routeProps.render;
+      return map;
+    }, {});
+    Object.keys(pathMap).forEach((path) => {
+      expect(pathMap[path]).toEqual(expect.any(Function));
+    });
+    expect(wrapper).toMatchSnapshot();
+    let render = pathMap["/default"];
+    const Component = React.createElement(Footer).type;
+    expect(JSON.stringify(render())).toEqual(JSON.stringify(<Component />));
+    render = pathMap["/default/registration"];
+    expect(render()).toEqual(
+      <Redirect to="/default/mobile-phone-verification" />,
+    );
+    render = pathMap["/default/mobile-phone-verification"];
+    const cookies = new Cookies();
+    expect(JSON.stringify(render())).toEqual(
+      JSON.stringify(
+        <Suspense fallback={<Loader full={false} />}>
+          <MobilePhoneVerification cookies={cookies} />
+        </Suspense>,
+      ),
+    );
+    render = pathMap["/default/password/reset/confirm/:uid/:token"];
+    expect(render()).toEqual(<Redirect to="/default/status" />);
+    render = pathMap["/default/password/reset"];
+    expect(render()).toEqual(<Redirect to="/default/status" />);
+    render = pathMap["/default/login"];
+    expect(render()).toEqual(<Redirect to="/default/status" />);
+    render = pathMap["/default/status"];
+    expect(render()).toEqual(
+      <Redirect to="/default/mobile-phone-verification" />,
+    );
+    render = pathMap["/default/logout"];
+    expect(render()).toEqual(<Redirect to="/default/status" />);
+    render = pathMap["/default/change-password"];
+    expect(JSON.stringify(render())).toEqual(
+      JSON.stringify(
+        <Suspense fallback={<Loader full={false} />}>
+          <PasswordChange cookies={cookies} />
+        </Suspense>,
+      ),
+    );
+    render = pathMap["/default/change-phone-number"];
+    expect(JSON.stringify(render())).toEqual(
+      JSON.stringify(
+        <Suspense fallback={<Loader full={false} />}>
+          <MobilePhoneChange cookies={cookies} />
+        </Suspense>,
+      ),
+    );
+    render = pathMap["/default/payment/:result"];
+    expect(JSON.stringify(render(createTestProps()))).toEqual(
+      JSON.stringify(
+        <Suspense fallback={<Loader full={false} />}>
+          <PaymentStatus cookies={cookies} />
+        </Suspense>,
+      ),
+    );
+    render = pathMap.notFound;
+    expect(JSON.stringify(render())).toEqual(
+      JSON.stringify(
+        <Suspense fallback={<Loader full={false} />}>
+          <ConnectedDoesNotExist />
+        </Suspense>,
+      ),
+    );
+  });
 });
 
 describe("Test <OrganizationWrapper /> routes", () => {
@@ -201,6 +493,7 @@ describe("Test <OrganizationWrapper /> routes", () => {
   };
 
   beforeEach(() => {
+    needsVerify.mockReturnValue(false);
     props = createTestProps();
     props.organization.configuration = {
       ...props.organization.configuration,
