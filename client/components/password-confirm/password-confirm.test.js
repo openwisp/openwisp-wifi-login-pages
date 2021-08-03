@@ -172,6 +172,11 @@ describe("<PasswordConfirm /> interactions", () => {
         });
       })
       .mockImplementationOnce(() => {
+        return Promise.reject({
+          response: {data: {token: ["Invalid token"]}},
+        });
+      })
+      .mockImplementationOnce(() => {
         return Promise.resolve({data: {detail: true}});
       });
     wrapper.setState({
@@ -218,12 +223,26 @@ describe("<PasswordConfirm /> interactions", () => {
           .instance()
           .handleSubmit({preventDefault: () => {}})
           .then(() => {
+            expect(wrapper.instance().state.errors.nonField).toEqual(
+              "token: Invalid token",
+            );
+            expect(lastConsoleOutuput).not.toBe(null);
+            expect(spyToastError.mock.calls.length).toBe(3);
+            expect(spyToastSuccess.mock.calls.length).toBe(0);
+            lastConsoleOutuput = null;
+          });
+      })
+      .then(() => {
+        return wrapper
+          .instance()
+          .handleSubmit({preventDefault: () => {}})
+          .then(() => {
             expect(wrapper.instance().state.errors).toEqual({});
             expect(wrapper.instance().state.success).toBe(true);
             expect(wrapper.find(".input.error")).toHaveLength(0);
             expect(wrapper.find(".success")).toHaveLength(1);
             expect(lastConsoleOutuput).toBe(null);
-            expect(spyToastError.mock.calls.length).toBe(2);
+            expect(spyToastError.mock.calls.length).toBe(3);
             expect(spyToastSuccess.mock.calls.length).toBe(1);
             lastConsoleOutuput = null;
           });

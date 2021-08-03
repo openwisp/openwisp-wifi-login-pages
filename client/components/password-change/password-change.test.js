@@ -11,11 +11,13 @@ import logError from "../../utils/log-error";
 import tick from "../../utils/tick";
 import loadTranslation from "../../utils/load-translation";
 import PasswordChange from "./password-change";
+// import handleChange from "../../utils/handle-change";
 
 jest.mock("axios");
 jest.mock("../../utils/get-config");
 jest.mock("../../utils/log-error");
 jest.mock("../../utils/load-translation");
+// jest.mock("../../utils/handle-change");
 logError.mockImplementation(jest.fn());
 
 const defaultConfig = getConfig("default", true);
@@ -128,5 +130,47 @@ describe("<PasswordChange /> interactions", () => {
       "Change your password",
       props.orgName,
     ]);
+  });
+  it("should execute handleChange if field value is changes", () => {
+    expect(wrapper.find("input[name='newPassword1']").length).toEqual(1);
+    expect(wrapper.find("input[name='newPassword1']").props()).toEqual({
+      autoComplete: "new-password",
+      className: "input",
+      id: "password",
+      name: "newPassword1",
+      onChange: expect.any(Function),
+      pattern: ".{6,}",
+      placeholder: "Your new Password",
+      required: true,
+      title: "password must be a minimum of 6 characters",
+      type: "password",
+      value: "",
+    });
+    wrapper.instance().handleChange = jest.fn();
+    const e = {
+      target: {
+        name: "newPassword1",
+        value: "123456",
+      },
+    };
+    wrapper.find("input[name='newPassword1']").props().onChange(e);
+    expect(wrapper.instance().handleChange).toHaveBeenCalledWith(e);
+    expect(wrapper.find("input[name='newPassword2']").length).toEqual(1);
+    expect(wrapper.find("input[name='newPassword2']").props()).toEqual({
+      autoComplete: "new-password",
+      className: "input",
+      id: "password-confirm",
+      name: "newPassword2",
+      onChange: expect.any(Function),
+      pattern: ".{6,}",
+      placeholder: "confirm password",
+      required: true,
+      title: "password must be a minimum of 6 characters",
+      type: "password",
+      value: "",
+    });
+    wrapper.instance().handleChange = jest.fn();
+    wrapper.find("input[name='newPassword2']").props().onChange(e);
+    expect(wrapper.instance().handleChange).toHaveBeenCalledWith(e);
   });
 });

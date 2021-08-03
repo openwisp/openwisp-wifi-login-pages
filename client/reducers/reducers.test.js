@@ -87,4 +87,31 @@ describe("organization reducer", () => {
       },
     });
   });
+  it("should handle SET_USER_DATA", () => {
+    const userData = {
+      is_active: true,
+      is_verified: true,
+      method: "mobile_phone",
+      email: "tester@test.com",
+      phone_number: "+393664050800",
+      username: "+393664050800",
+      key: "b72dad1cca4807dc21c00b0b2f171d29415ac541",
+      radius_user_token: "jwyVSZYOze16ej6cc1AW5cxhRjahesLzh1Tm2y0d",
+      first_name: "",
+      last_name: "",
+      birth_date: null,
+      location: "",
+    };
+    const action = {
+      type: types.SET_USER_DATA,
+      payload: userData,
+    };
+    expect(organization(initialState, action)).toEqual({
+      ...initialState,
+      configuration: {
+        ...initialState.configuration,
+        userData: action.payload,
+      },
+    });
+  });
 });
