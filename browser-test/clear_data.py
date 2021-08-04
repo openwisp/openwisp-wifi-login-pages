@@ -44,6 +44,10 @@ Organization = swapper.load_model('openwisp_users', 'Organization')
 test_data = load_test_data()
 
 User.objects.filter(username=test_data['testuser']['email']).delete()
-User.objects.filter(username=test_data['mobileVerificationTestUser']['phoneNumber']).delete()
-Organization.objects.filter(name=test_data['mobileVerificationTestUser']['organization']).delete()
+User.objects.filter(
+    username=test_data['mobileVerificationTestUser']['phoneNumber']
+).delete()
+Organization.objects.filter(
+    name=test_data['mobileVerificationTestUser']['organization']
+).delete()
 RadiusAccounting.objects.filter(username=test_data['testuser']['email']).delete()

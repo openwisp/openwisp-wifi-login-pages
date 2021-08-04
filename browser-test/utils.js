@@ -59,6 +59,8 @@ export const urls = {
   verificationLogin: (slug) => `http://0.0.0.0:8080/${slug}/login`,
   mobileVerification: (slug) =>
     `http://0.0.0.0:8080/${slug}/mobile-phone-verification`,
+  mobilePhoneChange: (slug) =>
+    `http://0.0.0.0:8080/${slug}/change-phone-number`,
 };
 
 // increase the jest global test time out
