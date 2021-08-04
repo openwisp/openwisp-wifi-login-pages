@@ -158,8 +158,7 @@ const isArray = (arr) => {
   return nums.every((num) => checkArr.includes(num));
 };
 
-const createConfiguration = async () => {
-  const response = await prompt(prompts);
+const createConfiguration = async (response) => {
   const plop = nodePlop(`./internals/generators/index.js`);
   const organizationGenerator = plop.getGenerator("organization");
   await organizationGenerator.runActions(response).then((results) => {
@@ -207,4 +206,37 @@ const createConfiguration = async () => {
   }
 };
 
-createConfiguration();
+const createConfigurationWithPrompts = async () => {
+  const response = await prompt(prompts);
+  createConfiguration(response);
+};
+
+const createConfigurationWithoutPrompts = (passedData) => {
+  const requiredKeys = [
+    "name",
+    "slug",
+    "uuid",
+    "secret_key",
+    "mobile_phone_verification",
+    "subscriptions",
+    "login_action_url",
+    "logout_action_url",
+    "logout_by_session_ID",
+    "remember_me",
+    "openwisp_radius_url",
+    "assets_confirm",
+  ];
+  try {
+    const response = JSON.parse(passedData);
+    // eslint-disable-next-line no-prototype-builtins
+    if (requiredKeys.every((key) => response.hasOwnProperty(key)))
+      createConfiguration(response);
+    else console.error("Key is missing");
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+if (process.argv.includes("--noprompt"))
+  createConfigurationWithoutPrompts(process.argv[process.argv.length - 1]);
+else createConfigurationWithPrompts();

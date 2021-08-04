@@ -43,6 +43,11 @@ export const clearData = async () => {
   await executeCommand("./browser-test/clear_data.py", () => {});
 };
 
+export const getPhoneToken = () => {
+  const result = spawnSync("./browser-test/get_token.py");
+  return result.stdout.toString();
+};
+
 export const urls = {
   registration: `http://0.0.0.0:8080/${orgSlug}/registration`,
   login: `http://0.0.0.0:8080/${orgSlug}/login`,
@@ -51,6 +56,9 @@ export const urls = {
   passwordReset: `http://0.0.0.0:8080/${orgSlug}/password/reset`,
   passwordConfirm: (uid, token) =>
     `http://0.0.0.0:8080/${orgSlug}/password/reset/confirm/${uid}/${token}`,
+  verificationLogin: (slug) => `http://0.0.0.0:8080/${slug}/login`,
+  mobileVerification: (slug) =>
+    `http://0.0.0.0:8080/${slug}/mobile-phone-verification`,
 };
 
 // increase the jest global test time out

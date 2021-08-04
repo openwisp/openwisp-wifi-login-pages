@@ -3,5 +3,14 @@
     "email": "testuser@openwisp.org",
     "password": "testuser",
     "organization": "default"
+  },
+  "mobileVerificationTestUser": {
+    "phoneNumber": "+911234567890",
+    "password": "testuser",
+    "organization": "mobile",
+    "email": "testuser2@openwisp.org",
+    "uuid": "organization_uuid",
+    "secretKey": "organization_secret_key",
+    "method": "mobile_phone"
   }
 }

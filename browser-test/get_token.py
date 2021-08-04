@@ -4,7 +4,6 @@ import os
 import sys
 
 import django
-import swapper
 
 
 def load_test_data():
@@ -28,22 +27,23 @@ try:
     django.setup()
 except ImportError:
     print(
-        'OpenWISP RADIUS is not installed or python '
-        'virtual environment is not activated correctly',
+        'OpenWISP RADIUS is not installed or python virtual environment is not activated correctly',
         file=sys.stderr,
     )
     sys.exit(1)
 
-
 from django.contrib.auth import get_user_model
+from swapper import load_model
 
 User = get_user_model()
-RadiusAccounting = swapper.load_model('openwisp_radius', 'RadiusAccounting')
-Organization = swapper.load_model('openwisp_users', 'Organization')
+PhoneToken = load_model('openwisp_radius', 'PhoneToken')
 
 test_data = load_test_data()
-
-User.objects.filter(username=test_data['testuser']['email']).delete()
-User.objects.filter(username=test_data['mobileVerificationTestUser']['phoneNumber']).delete()
-Organization.objects.filter(name=test_data['mobileVerificationTestUser']['organization']).delete()
-RadiusAccounting.objects.filter(username=test_data['testuser']['email']).delete()
+try:
+    user = User.objects.filter(username=test_data['mobileVerificationTestUser']['phoneNumber']).first()
+    phone_token = PhoneToken.objects.filter(user=user).first()
+    sys.stdout.write(phone_token.token)
+    sys.exit(0)
+except Exception as e:
+    sys.stderr.write(f'{e}');
+    sys.exit(1)
