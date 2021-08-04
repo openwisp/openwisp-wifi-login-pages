@@ -3,13 +3,13 @@
 exports[`<Status /> rendering should render correctly 1`] = `
 <React.Fragment>
   <div
-    className="logout-modal"
+    className="modal"
   >
     <div
-      className="logout-modal-container"
+      className="modal-container"
     >
       <button
-        className="logout-modal-close-btn"
+        className="modal-close-btn"
         onClick={[Function]}
         type="button"
       >
@@ -168,13 +168,13 @@ exports[`<Status /> rendering should render correctly 1`] = `
 exports[`<Status /> rendering with placeholder translation tags should render translation placeholder correctly 1`] = `
 <React.Fragment>
   <div
-    className="logout-modal"
+    className="modal"
   >
     <div
-      className="logout-modal-container"
+      className="modal-container"
     >
       <button
-        className="logout-modal-close-btn"
+        className="modal-close-btn"
         onClick={[Function]}
         type="button"
       >

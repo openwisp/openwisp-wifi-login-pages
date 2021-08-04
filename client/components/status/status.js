@@ -686,13 +686,11 @@ export default class Status extends React.Component {
     userInfo.status = user_info.status.value;
     return (
       <>
-        <div
-          className={modalActive ? "logout-modal is-visible" : "logout-modal"}
-        >
-          <div className="logout-modal-container">
+        <div className={modalActive ? "modal is-visible" : "modal"}>
+          <div className="modal-container">
             <button
               type="button"
-              className="logout-modal-close-btn"
+              className="modal-close-btn"
               onClick={this.toggleModal}
             >
               &#10006;
