@@ -20,13 +20,6 @@ module.exports = (env, argv) => {
   // Use user-specified port; if none was given, fall back to the default
   // If the default port is already in use, webpack will automatically use
   // the next available port
-  if (argv.mode === "production") {
-    minimizers = [
-      new TerserPlugin(),
-      new UglifyJsPlugin({parallel: true, extractComments: true}),
-    ];
-    setup.removeDefaultConfig();
-  }
   let clientP = process.env.CLIENT;
   let plugins = [
     new CleanWebpackPlugin(),
@@ -36,14 +29,8 @@ module.exports = (env, argv) => {
     }),
     new HardSourceWebpackPlugin(),
     new CompressionPlugin({
-      filename: "[path].gz[query]",
+      filename: "[name].[contenthash].gz[query]",
       algorithm: "gzip",
-      test: /\.js$|\.css$|\.html$/,
-      threshold: 10240,
-      minRatio: 0.7,
-    }),
-    new BrotliPlugin({
-      asset: "[path].br[query]",
       test: /\.js$|\.css$|\.html$/,
       threshold: 10240,
       minRatio: 0.7,
@@ -65,6 +52,22 @@ module.exports = (env, argv) => {
         generateStatsFile: true,
       }),
     );
+
+  if (argv.mode === "production") {
+    minimizers = [
+      new TerserPlugin(),
+      new UglifyJsPlugin({parallel: true, extractComments: true}),
+    ];
+    setup.removeDefaultConfig();
+    plugins.push(
+      new BrotliPlugin({
+        asset: "[path].br[query]",
+        test: /\.js$|\.css$|\.html$/,
+        threshold: 10240,
+        minRatio: 0.7,
+      }),
+    );
+  }
 
   // The url the server is running on; if none was given, fall back to the default
   let serverUrl;
