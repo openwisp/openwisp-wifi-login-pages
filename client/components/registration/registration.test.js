@@ -8,7 +8,6 @@ import PropTypes from "prop-types";
 import {Provider} from "react-redux";
 import {Router, Route} from "react-router-dom";
 import {createMemoryHistory} from "history";
-import PhoneInput from "react-phone-input-2";
 import Modal from "../modal";
 import {loadingContextValue} from "../../utils/loading-context";
 import tick from "../../utils/tick";
@@ -385,12 +384,15 @@ describe("Registration and Mobile Phone Verification interactions", () => {
     expect(wrapper.find("input[name='phone_number']").length).toBe(1);
   });
 
-  it("should render PhoneInput lazily", async () => {
+  it("should render PhoneInput lazily and handlers should work correctly", async () => {
     wrapper = shallow(<Registration {...props} />);
+    const spyFn = jest.fn();
+    wrapper.instance().handleChange = spyFn;
     const component = wrapper.find("Suspense");
     expect(component).toMatchSnapshot();
     expect(component.find("lazy").length).toBe(1);
-    expect(component.find("lazy").props()).toEqual({
+    const prop = component.find("lazy").props();
+    expect(prop).toEqual({
       country: "it",
       enableSearch: false,
       excludeCountries: [],
@@ -409,6 +411,20 @@ describe("Registration and Mobile Phone Verification interactions", () => {
       preferredCountries: [],
       value: "",
     });
+    prop.onChange("+911234567890");
+    expect(spyFn).toHaveBeenCalledWith({
+      target: {
+        name: "phone_number",
+        value: "++911234567890",
+      },
+    });
+    component.find("lazy").props().onKeyDown({});
+    expect(submitOnEnter.mock.calls.length).toEqual(1);
+    expect(submitOnEnter.mock.calls.pop()).toEqual([
+      {},
+      expect.any(Object),
+      "registration-form",
+    ]);
   });
 
   it("should process successfully", async () => {
@@ -444,29 +460,34 @@ describe("Registration and Mobile Phone Verification interactions", () => {
     expect(handleSubmit).toHaveBeenCalled();
     expect(event.preventDefault).toHaveBeenCalled();
   });
-  it("should load PhoneInput and its methods correctly", async () => {
-    wrapper = await mountComponent(props);
-    const component = wrapper.find(Registration);
-    const spyFn = jest.fn();
-    component.instance().handleChange = spyFn;
-    const phoneField = component.find(PhoneInput);
-    expect(phoneField.props().inputProps).toEqual({
-      autoComplete: "tel",
-      className: "form-control input ",
-      id: "phone-number",
+  it("should load fallback before PhoneInput and handlers should work correctly", async () => {
+    wrapper = shallow(<Registration {...props} />);
+    const handleChange = jest.spyOn(wrapper.instance(), "handleChange");
+    const component = wrapper.find("Suspense");
+    const {fallback} = component.props();
+    expect(fallback.type).toEqual("input");
+    expect(fallback.props).toEqual({
       name: "phone_number",
-      required: true,
+      value: "",
+      onChange: expect.any(Function),
+      onKeyDown: expect.any(Function),
+      placeholder: "enter mobile phone number",
+      type: "tel",
     });
-    phoneField.props().onKeyDown({});
-    expect(submitOnEnter).toHaveBeenCalledWith(
+    fallback.props.onChange("+911234567890");
+    expect(handleChange).toHaveBeenCalledWith({
+      target: {
+        name: "phone_number",
+        value: "++911234567890",
+      },
+    });
+    fallback.props.onKeyDown({});
+    expect(submitOnEnter.mock.calls.length).toEqual(1);
+    expect(submitOnEnter.mock.calls.pop()).toEqual([
       {},
       expect.any(Object),
       "registration-form",
-    );
-    phoneField.props().onChange("+911234567890");
-    expect(spyFn).toHaveBeenCalledWith({
-      target: {name: "phone_number", value: "++911234567890"},
-    });
+    ]);
   });
   it("should render modal", () => {
     props = createTestProps();

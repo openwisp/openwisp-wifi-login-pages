@@ -330,7 +330,7 @@ exports[`<Registration /> rendering with placeholder translation tags should ren
 </Fragment>
 `;
 
-exports[`Registration and Mobile Phone Verification interactions should render PhoneInput lazily 1`] = `
+exports[`Registration and Mobile Phone Verification interactions should render PhoneInput lazily and handlers should work correctly 1`] = `
 <Suspense
   fallback={
     <input

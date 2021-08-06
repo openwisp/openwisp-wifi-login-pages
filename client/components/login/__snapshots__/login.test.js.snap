@@ -860,7 +860,7 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
 </div>
 `;
 
-exports[`<Login /> rendering should render PhoneInput lazily 1`] = `
+exports[`<Login /> rendering should render PhoneInput lazily and handlers should work correctly 1`] = `
 <Suspense
   fallback={
     <input

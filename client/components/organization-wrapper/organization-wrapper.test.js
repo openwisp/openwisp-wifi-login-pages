@@ -21,6 +21,7 @@ import {
   MobilePhoneVerification,
   PaymentStatus,
   ConnectedDoesNotExist,
+  Logout,
 } from "./lazy-import";
 
 jest.mock("../../utils/get-config");
@@ -277,11 +278,13 @@ describe("Test Organization Wrapper for unauthenticated users", () => {
     console.error = () => {};
     props = createTestProps();
     props.organization.configuration.isAuthenticated = false;
+    localStorage.setItem("userAutoLogin", true);
     wrapper = shallow(<OrganizationWrapper {...props} />);
   });
 
   afterEach(() => {
     console.error = originalError;
+    localStorage.removeItem("userAutoLogin");
   });
 
   it("should show route for unauthenticated users", async () => {
@@ -336,9 +339,16 @@ describe("Test Organization Wrapper for unauthenticated users", () => {
       ),
     );
     render = pathMap["/default/status"];
-    expect(render()).toEqual(<Redirect to="/default/login" />);
+    // userAutoLogin is true
+    expect(render()).toEqual(<Redirect to="/default/logout" />);
     render = pathMap["/default/logout"];
-    expect(render()).toEqual(<Redirect to="/default/login" />);
+    expect(JSON.stringify(render())).toEqual(
+      JSON.stringify(
+        <Suspense fallback={<Loader full={false} />}>
+          <Logout />
+        </Suspense>,
+      ),
+    );
     render = pathMap["/default/change-password"];
     expect(render()).toEqual(<Redirect to="/default/login" />);
     render = pathMap["/default/change-phone-number"];
@@ -359,6 +369,7 @@ describe("Test Organization Wrapper for unauthenticated users", () => {
         </Suspense>,
       ),
     );
+    localStorage.removeItem("userAutoLogin");
   });
 });
 

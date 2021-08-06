@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {authenticate, setUserData, setTitle} from "../../actions/dispatchers";
 import Component from "./login";
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const conf = state.organization.configuration;
   const loginForm = conf.components.login_form;
   loginForm.input_fields.phone_number =
@@ -20,7 +20,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => ({
+export const mapDispatchToProps = (dispatch) => ({
   authenticate: authenticate(dispatch),
   setUserData: setUserData(dispatch),
   setTitle: setTitle(dispatch),
