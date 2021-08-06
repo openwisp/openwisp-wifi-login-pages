@@ -127,6 +127,7 @@
   },
   "homepage": "https://github.com/openwisp/openwisp-wifi-login-pages#readme",
   "jest": {
+    "testEnvironment": "jsdom",
     "setupFilesAfterEnv": [
       "<rootDir>/config/jest.config.js",
       "mock-local-storage"
