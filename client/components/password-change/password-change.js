@@ -129,7 +129,10 @@ export default class PasswordChange extends React.Component {
                 ref={this.passwordToggleRef}
                 autoComplete="new-password"
               />
-              <PasswordToggleIcon inputRef={this.passwordToggleRef} />
+              <PasswordToggleIcon
+                inputRef={this.passwordToggleRef}
+                secondInputRef={this.confirmPasswordToggleRef}
+              />
             </div>
 
             <div className="row password-confirm">
@@ -156,7 +159,10 @@ export default class PasswordChange extends React.Component {
                 ref={this.confirmPasswordToggleRef}
                 autoComplete="new-password"
               />
-              <PasswordToggleIcon inputRef={this.confirmPasswordToggleRef} />
+              <PasswordToggleIcon
+                inputRef={this.confirmPasswordToggleRef}
+                secondInputRef={this.passwordToggleRef}
+              />
             </div>
 
             <div className="row submit">

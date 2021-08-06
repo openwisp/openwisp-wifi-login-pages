@@ -18,7 +18,7 @@ class PasswordToggleIcon extends React.PureComponent {
     });
   }
 
-  handleClick(inputRef) {
+  handleClick(inputRef, secondInputRef) {
     const {isVisible} = this.state;
     this.setState(
       {
@@ -31,12 +31,20 @@ class PasswordToggleIcon extends React.PureComponent {
             ? "text"
             : "password",
         );
+        inputRef.current.focus();
+        if (Object.keys(secondInputRef).length !== 0)
+          secondInputRef.current.setAttribute(
+            "type",
+            secondInputRef.current.getAttribute("type") === "password"
+              ? "text"
+              : "password",
+          );
       },
     );
   }
 
   render() {
-    const {inputRef, parentClassName} = this.props;
+    const {inputRef, secondInputRef, parentClassName} = this.props;
     const showPasswordIcon = () => <i className="eye" title={t`PWD_REVEAL`} />;
     const hidePasswordIcon = () => (
       <i className="eye-slash" title={t`PWD_HIDE`} />
@@ -47,7 +55,7 @@ class PasswordToggleIcon extends React.PureComponent {
     return (
       <div
         className={parentClassName}
-        onClick={() => this.handleClick(inputRef)}
+        onClick={() => this.handleClick(inputRef, secondInputRef)}
         role="button"
         tabIndex={0}
         onKeyDown={() => {}}
@@ -62,11 +70,13 @@ export default PasswordToggleIcon;
 
 PasswordToggleIcon.defaultProps = {
   parentClassName: "",
+  secondInputRef: {},
   isVisible: false,
 };
 
 PasswordToggleIcon.propTypes = {
   inputRef: propTypes.object.isRequired,
+  secondInputRef: propTypes.object,
   parentClassName: propTypes.string,
   isVisible: propTypes.bool,
 };

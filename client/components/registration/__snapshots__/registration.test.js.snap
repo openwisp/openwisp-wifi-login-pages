@@ -68,6 +68,11 @@ exports[`<Registration /> rendering should render correctly 1`] = `
               }
               isVisible={false}
               parentClassName=""
+              secondInputRef={
+                Object {
+                  "current": null,
+                }
+              }
             />
           </div>
           <div
@@ -99,6 +104,11 @@ exports[`<Registration /> rendering should render correctly 1`] = `
               }
               isVisible={false}
               parentClassName=""
+              secondInputRef={
+                Object {
+                  "current": null,
+                }
+              }
             />
           </div>
         </div>
@@ -223,6 +233,11 @@ exports[`<Registration /> rendering with placeholder translation tags should ren
               }
               isVisible={false}
               parentClassName=""
+              secondInputRef={
+                Object {
+                  "current": null,
+                }
+              }
             />
           </div>
           <div
@@ -254,6 +269,11 @@ exports[`<Registration /> rendering with placeholder translation tags should ren
               }
               isVisible={false}
               parentClassName=""
+              secondInputRef={
+                Object {
+                  "current": null,
+                }
+              }
             />
           </div>
         </div>

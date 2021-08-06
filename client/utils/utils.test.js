@@ -304,21 +304,70 @@ describe("password-toggle tests", () => {
     );
   });
   it("should call handleClick", () => {
-    const wrapper = shallow(
-      <PasswordToggleIcon inputRef={React.createRef()} />,
-    );
     const setAttributeMock = jest.fn();
     const getAttributeMock = jest.fn();
+    const focusMock = jest.fn();
     const inputRef = {
       current: {
         getAttribute: getAttributeMock,
         setAttribute: setAttributeMock,
+        focus: focusMock,
       },
     };
-    wrapper.instance().handleClick(inputRef);
+    const wrapper = shallow(<PasswordToggleIcon inputRef={inputRef} />);
+
+    wrapper.instance().handleClick(inputRef, {});
     expect(getAttributeMock).toHaveBeenCalledWith("type");
     expect(setAttributeMock).toHaveBeenCalled();
     expect(setAttributeMock).toHaveBeenCalledWith("type", "password");
+    expect(focusMock).toHaveBeenCalled();
+  });
+  it("should show password for two fields", () => {
+    const setAttributeMock = jest.fn();
+    const getAttributeMock = jest.fn();
+    const focusMock = jest.fn();
+    const inputRef = {
+      current: {
+        getAttribute: getAttributeMock,
+        setAttribute: setAttributeMock,
+        focus: focusMock,
+      },
+    };
+    const secondInputRef = {
+      current: {
+        getAttribute: jest.fn(),
+        setAttribute: jest.fn(),
+        focus: jest.fn(),
+      },
+    };
+    const wrapper = shallow(
+      <PasswordToggleIcon
+        inputRef={inputRef}
+        secondInputRef={secondInputRef}
+      />,
+    );
+    wrapper.instance().handleClick(inputRef, secondInputRef);
+    expect(getAttributeMock).toHaveBeenCalledWith("type");
+    expect(secondInputRef.current.getAttribute).toHaveBeenCalledWith("type");
+    expect(setAttributeMock).toHaveBeenCalledWith("type", "password");
+    expect(secondInputRef.current.setAttribute).toHaveBeenCalledWith(
+      "type",
+      "password",
+    );
+    expect(focusMock).toHaveBeenCalled();
+    expect(secondInputRef.current.focus).not.toHaveBeenCalled();
+    getAttributeMock.mockReturnValueOnce("password");
+    secondInputRef.current.getAttribute.mockReturnValueOnce("password");
+    wrapper.instance().handleClick(inputRef, secondInputRef);
+    expect(getAttributeMock).toHaveBeenCalledWith("type");
+    expect(secondInputRef.current.getAttribute).toHaveBeenCalledWith("type");
+    expect(setAttributeMock).toHaveBeenCalledWith("type", "text");
+    expect(secondInputRef.current.setAttribute).toHaveBeenCalledWith(
+      "type",
+      "text",
+    );
+    expect(focusMock).toHaveBeenCalled();
+    expect(secondInputRef.current.focus).not.toHaveBeenCalled();
   });
 });
 describe("submit-on-enter tests", () => {

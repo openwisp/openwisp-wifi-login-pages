@@ -963,6 +963,7 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
               }
               isVisible={false}
               parentClassName=""
+              secondInputRef={Object {}}
             />
           </div>
           <div
@@ -1181,6 +1182,7 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
               }
               isVisible={false}
               parentClassName=""
+              secondInputRef={Object {}}
             />
           </div>
           <div
@@ -1399,6 +1401,7 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
               }
               isVisible={false}
               parentClassName=""
+              secondInputRef={Object {}}
             />
           </div>
           <div

@@ -633,7 +633,10 @@ export default class Registration extends React.Component {
                         ref={this.passwordToggleRef}
                         autoComplete="new-password"
                       />
-                      <PasswordToggleIcon inputRef={this.passwordToggleRef} />
+                      <PasswordToggleIcon
+                        inputRef={this.passwordToggleRef}
+                        secondInputRef={this.confirmPasswordToggleRef}
+                      />
                     </div>
 
                     <div className="row password-confirm">
@@ -664,6 +667,7 @@ export default class Registration extends React.Component {
                       />
                       <PasswordToggleIcon
                         inputRef={this.confirmPasswordToggleRef}
+                        secondInputRef={this.passwordToggleRef}
                       />
                     </div>
 
