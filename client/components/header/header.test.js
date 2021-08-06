@@ -43,23 +43,21 @@ const getLinkText = (wrapper, text) => {
   });
   return texts;
 };
-const createTestProps = (props) => {
-  return {
-    setLanguage: jest.fn(),
-    orgSlug: "default",
-    language: "en",
-    languages: [
-      {slug: "en", text: "english"},
-      {slug: "it", text: "italian"},
-    ],
-    header: defaultConfig.components.header,
-    location: {
-      pathname: "/default/login",
-    },
-    userData: {is_verified: true},
-    ...props,
-  };
-};
+const createTestProps = (props) => ({
+  setLanguage: jest.fn(),
+  orgSlug: "default",
+  language: "en",
+  languages: [
+    {slug: "en", text: "english"},
+    {slug: "it", text: "italian"},
+  ],
+  header: defaultConfig.components.header,
+  location: {
+    pathname: "/default/login",
+  },
+  userData: {is_verified: true},
+  ...props,
+});
 
 describe("<Header /> rendering with placeholder translation tags", () => {
   const props = createTestProps();

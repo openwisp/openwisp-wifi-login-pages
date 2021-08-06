@@ -1,4 +1,2 @@
-const getAssetPath = (slug, relativePath) => {
-  return `/assets/${slug}/${relativePath}`;
-};
+const getAssetPath = (slug, relativePath) => `/assets/${slug}/${relativePath}`;
 export default getAssetPath;

@@ -22,11 +22,9 @@ class Routes extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    organizations: state.organizations,
-  };
-};
+const mapStateToProps = (state) => ({
+  organizations: state.organizations,
+});
 Routes.defaultProps = {
   organizations: [],
 };

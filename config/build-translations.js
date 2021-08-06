@@ -16,15 +16,12 @@ const rootDir = process.cwd();
 const i18nDir = path.join(rootDir, "i18n");
 const translationDir = path.join(path.join(rootDir, "client"), "translations");
 
-const deepMerge = (initialObject, customObject) => {
-  return _.merge(initialObject, customObject);
-};
+const deepMerge = (initialObject, customObject) =>
+  _.merge(initialObject, customObject);
 
 const getCustomFiles = (allFiles, translationFile) => {
   const customFile = `${path.basename(translationFile, ".po")}.custom.po`;
-  return allFiles.filter((file) => {
-    return file.indexOf(customFile) !== -1;
-  });
+  return allFiles.filter((file) => file.indexOf(customFile) !== -1);
 };
 
 const poToObject = (file) => {
@@ -57,9 +54,9 @@ if (fs.existsSync(translationDir)) {
 if (!fs.existsSync(translationDir))
   fs.mkdirSync(translationDir, {recursive: true});
 const allFiles = fs.readdirSync(i18nDir);
-const translationFiles = allFiles.filter((file) => {
-  return file.indexOf("custom") === -1 && path.extname(file) === ".po";
-});
+const translationFiles = allFiles.filter(
+  (file) => file.indexOf("custom") === -1 && path.extname(file) === ".po",
+);
 translationFiles.forEach((file) => {
   const translation = poToObject(file);
   const fileName = `${path.basename(file, ".po")}`;

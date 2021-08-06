@@ -15,11 +15,9 @@ const mapStateToProps = (state) => {
     orgName: conf.name,
   };
 };
-const mapDispatchToProps = (dispatch) => {
-  return {
-    authenticate: authenticate(dispatch),
-    setTitle: setTitle(dispatch),
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  authenticate: authenticate(dispatch),
+  setTitle: setTitle(dispatch),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Component);

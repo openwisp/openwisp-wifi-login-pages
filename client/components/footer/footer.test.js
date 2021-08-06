@@ -41,17 +41,15 @@ const getLinkText = (wrapper, text) => {
   });
   return texts;
 };
-const createTestProps = (props) => {
-  return {
-    language: "en",
-    footer: {
-      links: defaultConfig.components.footer.links,
-      secondary_text: true,
-    },
-    userData: {is_verified: true},
-    ...props,
-  };
-};
+const createTestProps = (props) => ({
+  language: "en",
+  footer: {
+    links: defaultConfig.components.footer.links,
+    secondary_text: true,
+  },
+  userData: {is_verified: true},
+  ...props,
+});
 
 describe("<Footer /> rendering with placeholder translation tags", () => {
   const props = createTestProps();

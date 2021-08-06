@@ -21,12 +21,11 @@ export const executeCommand = (command, argv) => {
   }
 };
 
-export const getDriver = async () => {
-  return new Builder()
+export const getDriver = async () =>
+  new Builder()
     .forBrowser("firefox")
     .setFirefoxOptions(new firefox.Options().headless())
     .build();
-};
 
 export const getElementByCss = async (driver, css) => {
   const el = await driver.wait(until.elementLocated(By.css(css)), waitTime);

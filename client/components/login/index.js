@@ -20,11 +20,9 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    authenticate: authenticate(dispatch),
-    setUserData: setUserData(dispatch),
-    setTitle: setTitle(dispatch),
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  authenticate: authenticate(dispatch),
+  setUserData: setUserData(dispatch),
+  setTitle: setTitle(dispatch),
+});
 export default connect(mapStateToProps, mapDispatchToProps)(Component);

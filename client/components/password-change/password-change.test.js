@@ -22,16 +22,14 @@ logError.mockImplementation(jest.fn());
 
 const defaultConfig = getConfig("default", true);
 
-const createTestProps = (props) => {
-  return {
-    orgSlug: "default",
-    orgName: "default name",
-    passwordChange: defaultConfig.components.password_change_form,
-    cookies: new Cookies(),
-    setTitle: jest.fn(),
-    ...props,
-  };
-};
+const createTestProps = (props) => ({
+  orgSlug: "default",
+  orgName: "default name",
+  passwordChange: defaultConfig.components.password_change_form,
+  cookies: new Cookies(),
+  setTitle: jest.fn(),
+  ...props,
+});
 
 describe("<PasswordChange /> rendering with placeholder translation tags", () => {
   const props = createTestProps();
@@ -82,25 +80,25 @@ describe("<PasswordChange /> interactions", () => {
 
   it("test handleSubmit method", async () => {
     axios
-      .mockImplementationOnce(() => {
+      .mockImplementationOnce(() =>
         // eslint-disable-next-line prefer-promise-reject-errors
-        return Promise.reject({
+        Promise.reject({
           response: {
             status: 401,
             statusText: "UNAUTHORIZED",
             data: {},
           },
-        });
-      })
-      .mockImplementationOnce(() => {
-        return Promise.resolve({
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
           status: 200,
           statusText: "OK",
           data: {
             detail: "password changed",
           },
-        });
-      });
+        }),
+      );
     const e = {preventDefault: jest.fn()};
     wrapper.setState({
       newPassword1: "123456",

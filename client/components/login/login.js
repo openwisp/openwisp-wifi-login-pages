@@ -274,28 +274,26 @@ export default class Login extends React.Component {
             <form className="main-column" onSubmit={this.handleSubmit}>
               {social_login && social_login.links && (
                 <div className="social-links row">
-                  {social_login.links.map((link) => {
-                    return (
-                      <p key={link.url}>
-                        <a
-                          href={link.url}
-                          rel="noopener noreferrer"
-                          className="social-link button full"
-                        >
-                          <span className="inner">
-                            <img
-                              src={getAssetPath(orgSlug, link.icon)}
-                              alt={getText(link.text, language)}
-                              className="icon"
-                            />
-                            <span className="text">
-                              {getText(link.text, language)}
-                            </span>
+                  {social_login.links.map((link) => (
+                    <p key={link.url}>
+                      <a
+                        href={link.url}
+                        rel="noopener noreferrer"
+                        className="social-link button full"
+                      >
+                        <span className="inner">
+                          <img
+                            src={getAssetPath(orgSlug, link.icon)}
+                            alt={getText(link.text, language)}
+                            className="icon"
+                          />
+                          <span className="text">
+                            {getText(link.text, language)}
                           </span>
-                        </a>
-                      </p>
-                    );
-                  })}
+                        </span>
+                      </a>
+                    </p>
+                  ))}
                 </div>
               )}
 
@@ -383,9 +381,7 @@ export default class Login extends React.Component {
         </div>
         <Route
           path={`${match.path}/:name`}
-          render={(props) => {
-            return <Modal {...props} prevPath={match.url} />;
-          }}
+          render={(props) => <Modal {...props} prevPath={match.url} />}
         />
       </>
     );

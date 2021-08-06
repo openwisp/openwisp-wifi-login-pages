@@ -52,9 +52,7 @@ const removeDefaultConfig = () => {
     fs.writeFileSync(
       organizationsFile,
       JSON.stringify(
-        organization.filter((org) => {
-          return org.slug !== "default";
-        }),
+        organization.filter((org) => org.slug !== "default"),
         null,
         2,
       ),
@@ -67,9 +65,7 @@ const removeDefaultConfig = () => {
     fs.writeFileSync(
       serverConfigFile,
       JSON.stringify(
-        serverConfig.filter((org) => {
-          return org.slug !== "default";
-        }),
+        serverConfig.filter((org) => org.slug !== "default"),
         null,
         2,
       ),

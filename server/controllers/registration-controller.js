@@ -36,7 +36,7 @@ const registration = (req, res) => {
         "birth_date",
         "method",
       ];
-      optionalFields.forEach(function (value) {
+      optionalFields.forEach((value) => {
         if (!postData[value]) {
           delete postData[value];
         }

@@ -26,25 +26,23 @@ const defaultConfig = getConfig("default", true);
 const loginForm = defaultConfig.components.login_form;
 loginForm.input_fields.phone_number =
   defaultConfig.components.registration_form.input_fields.phone_number;
-const createTestProps = (props) => {
-  return {
-    language: "en",
-    orgSlug: "default",
-    orgName: "default name",
-    loginForm,
-    privacyPolicy: defaultConfig.privacy_policy,
-    termsAndConditions: defaultConfig.terms_and_conditions,
-    settings: {mobile_phone_verification: false},
-    authenticate: jest.fn(),
-    setUserData: jest.fn(),
-    userData: {},
-    setTitle: jest.fn(),
-    match: {
-      path: "default/login",
-    },
-    ...props,
-  };
-};
+const createTestProps = (props) => ({
+  language: "en",
+  orgSlug: "default",
+  orgName: "default name",
+  loginForm,
+  privacyPolicy: defaultConfig.privacy_policy,
+  termsAndConditions: defaultConfig.terms_and_conditions,
+  settings: {mobile_phone_verification: false},
+  authenticate: jest.fn(),
+  setUserData: jest.fn(),
+  userData: {},
+  setTitle: jest.fn(),
+  match: {
+    path: "default/login",
+  },
+  ...props,
+});
 const userData = {
   is_active: true,
   is_verified: true,
@@ -142,14 +140,12 @@ describe("<Login /> interactions", () => {
     const mockedStore = {
       subscribe: () => {},
       dispatch: () => {},
-      getState: () => {
-        return {
-          organization: {
-            configuration: passedProps.configuration,
-          },
-          language: passedProps.language,
-        };
-      },
+      getState: () => ({
+        organization: {
+          configuration: passedProps.configuration,
+        },
+        language: passedProps.language,
+      }),
     };
 
     const historyMock = createMemoryHistory();
@@ -204,8 +200,8 @@ describe("<Login /> interactions", () => {
 
   it("should execute handleSubmit correctly when form is submitted", () => {
     axios
-      .mockImplementationOnce(() => {
-        return Promise.reject({
+      .mockImplementationOnce(() =>
+        Promise.reject({
           response: {
             data: {
               username: "username error",
@@ -214,10 +210,10 @@ describe("<Login /> interactions", () => {
               non_field_errors: "non field errors",
             },
           },
-        });
-      })
-      .mockImplementationOnce(() => {
-        return Promise.reject({
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.reject({
           status: 500,
           statusText: "Internal server error",
           response: {
@@ -225,20 +221,18 @@ describe("<Login /> interactions", () => {
               detail: "Internal server error",
             },
           },
-        });
-      })
-      .mockImplementationOnce(() => {
-        return Promise.reject({
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.reject({
           response: {
             data: {},
           },
           status: 504,
           statusText: "Gateway Timeout",
-        });
-      })
-      .mockImplementationOnce(() => {
-        return Promise.resolve();
-      });
+        }),
+      )
+      .mockImplementationOnce(() => Promise.resolve());
     const event = {preventDefault: () => {}};
     const spyToast = jest.spyOn(dependency.toast, "error");
 
@@ -256,8 +250,8 @@ describe("<Login /> interactions", () => {
         expect(lastConsoleOutuput).not.toBe(null);
         expect(spyToast.mock.calls.length).toBe(1);
       })
-      .then(() => {
-        return wrapper
+      .then(() =>
+        wrapper
           .instance()
           .handleSubmit(event)
           .then(() => {
@@ -266,10 +260,10 @@ describe("<Login /> interactions", () => {
             ).toBe(0);
             expect(lastConsoleOutuput).not.toBe(null);
             expect(spyToast.mock.calls.length).toBe(2);
-          });
-      })
-      .then(() => {
-        return wrapper
+          }),
+      )
+      .then(() =>
+        wrapper
           .instance()
           .handleSubmit(event)
           .then(() => {
@@ -279,10 +273,10 @@ describe("<Login /> interactions", () => {
             expect(lastConsoleOutuput).not.toBe(null);
             expect(spyToast.mock.calls.length).toBe(3);
             lastConsoleOutuput = null;
-          });
-      })
-      .then(() => {
-        return wrapper
+          }),
+      )
+      .then(() =>
+        wrapper
           .instance()
           .handleSubmit(event)
           .then(() => {
@@ -292,8 +286,8 @@ describe("<Login /> interactions", () => {
             ).toBe(0);
             expect(lastConsoleOutuput).toBe(null);
             expect(spyToast.mock.calls.length).toBe(4);
-          });
-      });
+          }),
+      );
   });
   it("should execute setUserData if mobile phone verification needed", async () => {
     props.settings = {mobile_phone_verification: true};
@@ -303,15 +297,15 @@ describe("<Login /> interactions", () => {
 
     const data = {...userData};
     data.is_verified = false;
-    axios.mockImplementationOnce(() => {
-      return Promise.reject({
+    axios.mockImplementationOnce(() =>
+      Promise.reject({
         response: {
           status: 401,
           statusText: "unauthorized",
           data,
         },
-      });
-    });
+      }),
+    );
 
     expect(wrapper.exists(PhoneInput)).toBe(true);
     expect(wrapper.find(".row.phone-number").length).toEqual(1);
@@ -349,12 +343,12 @@ describe("<Login /> interactions", () => {
     data.is_verified = false;
     data.method = "bank_card";
     data.payment_url = "https://account.openwisp.io/payment/123";
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
         status: 200,
         data,
-      });
-    });
+      }),
+    );
 
     expect(wrapper.exists(PhoneInput)).toBe(false);
     wrapper.find("#username").simulate("change", {
@@ -412,15 +406,15 @@ describe("<Login /> interactions", () => {
     const data = {...userData};
     data.is_active = false;
 
-    axios.mockImplementationOnce(() => {
-      return Promise.reject({
+    axios.mockImplementationOnce(() =>
+      Promise.reject({
         response: {
           status: 401,
           statusText: "unauthorized",
           data,
         },
-      });
-    });
+      }),
+    );
 
     wrapper.find("[name='username']").simulate("change", {
       target: {value: "+393660011333", name: "username"},
@@ -447,9 +441,7 @@ describe("<Login /> interactions", () => {
     const data = {...userData};
     data.key = "test-token";
 
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({data});
-    });
+    axios.mockImplementationOnce(() => Promise.resolve({data}));
 
     wrapper
       .find("#remember_me")
@@ -468,8 +460,8 @@ describe("<Login /> interactions", () => {
       });
   });
   it("should show error toast when server error", () => {
-    axios.mockImplementationOnce(() => {
-      return Promise.reject({
+    axios.mockImplementationOnce(() =>
+      Promise.reject({
         status: 500,
         statusText: "Internal server error",
         response: {
@@ -477,8 +469,8 @@ describe("<Login /> interactions", () => {
             detail: "Internal server error",
           },
         },
-      });
-    });
+      }),
+    );
     const event = {preventDefault: () => {}};
     const errorMethod = jest.spyOn(dependency.toast, "error");
     return wrapper
@@ -492,15 +484,15 @@ describe("<Login /> interactions", () => {
       });
   });
   it("should show error toast when connection refused or timeout", async () => {
-    axios.mockImplementationOnce(() => {
-      return Promise.reject({
+    axios.mockImplementationOnce(() =>
+      Promise.reject({
         status: 504,
         statusText: "Gateway Timeout",
         response: {
           data: "Error occured while trying to proxy to: 0.0.0.0:8080/api/v1/default/account/token",
         },
-      });
-    });
+      }),
+    );
     const event = {preventDefault: () => {}};
     const errorMethod = jest.spyOn(dependency.toast, "error");
     wrapper = shallow(<Login {...props} />, {context: loadingContextValue});
@@ -511,15 +503,15 @@ describe("<Login /> interactions", () => {
     expect(errorMethod).toBeCalledWith("Login error occurred.");
   });
   it("should set justAuthenticated on login success", async () => {
-    axios.mockImplementationOnce(() => {
-      return Promise.reject({
+    axios.mockImplementationOnce(() =>
+      Promise.reject({
         response: {
           status: 401,
           statusText: "unauthorized",
           data: userData,
         },
-      });
-    });
+      }),
+    );
     props.settings = {mobile_phone_verification: true};
     wrapper = mountComponent(props);
     const login = wrapper.find(Login);
@@ -549,8 +541,8 @@ describe("<Login /> interactions", () => {
 
   it("should call handleAuthentication on social login / SAML", () => {
     // this is needed to spot potential errors
-    axios.mockImplementationOnce(() => {
-      return Promise.reject({
+    axios.mockImplementationOnce(() =>
+      Promise.reject({
         response: {
           data: {
             username: "username error",
@@ -559,18 +551,12 @@ describe("<Login /> interactions", () => {
             non_field_errors: "non field errors",
           },
         },
-      });
-    });
+      }),
+    );
     getParameterByName
-      .mockImplementationOnce(() => {
-        return userData.username;
-      })
-      .mockImplementationOnce(() => {
-        return userData.key;
-      })
-      .mockImplementationOnce(() => {
-        return "saml";
-      });
+      .mockImplementationOnce(() => userData.username)
+      .mockImplementationOnce(() => userData.key)
+      .mockImplementationOnce(() => "saml");
     const spyToast = jest.spyOn(dependency.toast, "success");
     wrapper = mountComponent(props);
     expect(localStorage.getItem("rememberMe")).toEqual("false");

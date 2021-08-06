@@ -11,8 +11,6 @@ const getConfig = (slug, loadDefault = false) => {
   if (loadDefault) {
     return defaultConfig;
   }
-  return config.find((org) => {
-    return org.slug === slug;
-  });
+  return config.find((org) => org.slug === slug);
 };
 export default getConfig;

@@ -10,23 +10,21 @@ import {mapStateToProps} from "./index";
 jest.mock("../../utils/get-config");
 
 const defaultConfig = getConfig("default", true);
-const createTestProps = (props) => {
-  return {
-    language: "en",
-    privacyPolicy: defaultConfig.privacy_policy,
-    termsAndConditions: defaultConfig.terms_and_conditions,
-    match: {
-      params: {
-        name: "terms-and-conditions",
-      },
+const createTestProps = (props) => ({
+  language: "en",
+  privacyPolicy: defaultConfig.privacy_policy,
+  termsAndConditions: defaultConfig.terms_and_conditions,
+  match: {
+    params: {
+      name: "terms-and-conditions",
     },
-    prevPath: "/default/login",
-    history: {
-      push: jest.fn(),
-    },
-    ...props,
-  };
-};
+  },
+  prevPath: "/default/login",
+  history: {
+    push: jest.fn(),
+  },
+  ...props,
+});
 
 describe("<Modal /> rendering", () => {
   let props;

@@ -50,14 +50,12 @@ const mountComponent = function (passedProps) {
     subscribe: () => {},
     dispatch: () => {},
     // needed to render <Contact/>
-    getState: () => {
-      return {
-        organization: {
-          configuration: passedProps.configuration,
-        },
-        language: passedProps.language,
-      };
-    },
+    getState: () => ({
+      organization: {
+        configuration: passedProps.configuration,
+      },
+      language: passedProps.language,
+    }),
   };
 
   return mount(
@@ -147,8 +145,8 @@ describe("<Registration /> interactions", () => {
 
   it("should execute handleSubmit correctly when form is submitted", () => {
     axios
-      .mockImplementationOnce(() => {
-        return Promise.reject({
+      .mockImplementationOnce(() =>
+        Promise.reject({
           response: {
             data: {
               email: "email error",
@@ -156,10 +154,10 @@ describe("<Registration /> interactions", () => {
               password1: "password1 error",
             },
           },
-        });
-      })
-      .mockImplementationOnce(() => {
-        return Promise.reject({
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.reject({
           status: 500,
           statusText: "Internal server error",
           response: {
@@ -167,22 +165,20 @@ describe("<Registration /> interactions", () => {
               detail: "Internal server error",
             },
           },
-        });
-      })
-      .mockImplementationOnce(() => {
-        return Promise.reject({
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.reject({
           status: 504,
           statusText: "Gateway Timeout",
           response: {
             data: {},
           },
-        });
-      })
-      .mockImplementationOnce(() => {
-        return Promise.resolve();
-      })
-      .mockImplementationOnce(() => {
-        return Promise.reject({
+        }),
+      )
+      .mockImplementationOnce(() => Promise.resolve())
+      .mockImplementationOnce(() =>
+        Promise.reject({
           status: 400,
           statusText: "Bad Request",
           response: {
@@ -192,8 +188,8 @@ describe("<Registration /> interactions", () => {
               },
             },
           },
-        });
-      });
+        }),
+      );
     wrapper.setState({
       password1: "wrong password",
       password2: "wrong password1",
@@ -244,8 +240,8 @@ describe("<Registration /> interactions", () => {
         expect(spyToast.mock.calls.length).toBe(1);
         lastConsoleOutuput = null;
       })
-      .then(() => {
-        return wrapper
+      .then(() =>
+        wrapper
           .instance()
           .handleSubmit(event)
           .then(() => {
@@ -255,10 +251,10 @@ describe("<Registration /> interactions", () => {
             expect(lastConsoleOutuput).not.toBe(null);
             expect(spyToast.mock.calls.length).toBe(2);
             lastConsoleOutuput = null;
-          });
-      })
-      .then(() => {
-        return wrapper
+          }),
+      )
+      .then(() =>
+        wrapper
           .instance()
           .handleSubmit(event)
           .then(() => {
@@ -268,10 +264,10 @@ describe("<Registration /> interactions", () => {
             expect(lastConsoleOutuput).not.toBe(null);
             expect(spyToast.mock.calls.length).toBe(3);
             lastConsoleOutuput = null;
-          });
-      })
-      .then(() => {
-        return wrapper
+          }),
+      )
+      .then(() =>
+        wrapper
           .instance()
           .handleSubmit(event)
           .then(() => {
@@ -284,10 +280,10 @@ describe("<Registration /> interactions", () => {
             expect(lastConsoleOutuput).toBe(null);
             expect(spyToast.mock.calls.length).toBe(3);
             lastConsoleOutuput = null;
-          });
-      })
-      .then(() => {
-        return wrapper
+          }),
+      )
+      .then(() =>
+        wrapper
           .instance()
           .handleSubmit(event)
           .then(() => {
@@ -297,8 +293,8 @@ describe("<Registration /> interactions", () => {
             expect(lastConsoleOutuput).not.toBe(null);
             expect(spyToast.mock.calls.length).toBe(4);
             lastConsoleOutuput = null;
-          });
-      });
+          }),
+      );
   });
   it("test optional fields disabled", async () => {
     wrapper = shallow(<Registration {...props} />, {
@@ -345,9 +341,7 @@ describe("<Registration /> interactions", () => {
     );
   });
   it("should execute authenticate in mobile phone verification flow", async () => {
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve();
-    });
+    axios.mockImplementationOnce(() => Promise.resolve());
     props.settings = {mobile_phone_verification: true};
     wrapper = shallow(<Registration {...props} />, {
       context: loadingContextValue,
@@ -396,13 +390,13 @@ describe("Registration and Mobile Phone Verification interactions", () => {
     const component = wrapper.find(Registration).instance();
     const handleSubmit = jest.spyOn(component, "handleSubmit");
 
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
         status: 201,
         statusText: "CREATED",
         data: null,
-      });
-    });
+      }),
+    );
 
     wrapper.find("input[name='phone_number']").simulate("change", {
       target: {value: "+393660011333", name: "phone_number"},
@@ -462,13 +456,13 @@ describe("Registration and Mobile Phone Verification interactions", () => {
     expect(JSON.stringify(render({}))).toStrictEqual(JSON.stringify(<Comp />));
   });
   it("should send post data with optional fields", async () => {
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
         status: 201,
         statusText: "CREATED",
         data: null,
-      });
-    });
+      }),
+    );
     props = createTestProps();
     Registration.contextTypes = {
       setLoading: PropTypes.func,
@@ -530,16 +524,16 @@ describe("Registration without identity verification (Email registration)", () =
     const handleChange = jest.spyOn(component, "handleChange");
     const handleSubmit = jest.spyOn(component, "handleSubmit");
 
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
         status: 201,
         statusText: "CREATED",
         data: {
           key: "8a2b2b2dd963de23c17db30a227505f879866630",
           radius_user_token: "Lbdh3GKD7hvXUS5NUu5yoE4x5fCPPqlsXo7Ug8ld",
         },
-      });
-    });
+      }),
+    );
 
     wrapper.find("input[name='email']").simulate("change", {
       target: {value: "tester@openwisp.io", name: "email"},

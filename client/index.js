@@ -35,13 +35,11 @@ BaseApp.propTypes = {
   parseOrgs: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    parseOrgs: (orgSlugs) => {
-      dispatch(parseOrganizations(orgSlugs));
-    },
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  parseOrgs: (orgSlugs) => {
+    dispatch(parseOrganizations(orgSlugs));
+  },
+});
 
 const App = connect(null, mapDispatchToProps)(BaseApp);
 
@@ -58,6 +56,6 @@ if (module && module.hot) {
   module.hot.accept();
 }
 
-window.addEventListener("load", function () {
+window.addEventListener("load", () => {
   document.getElementById("preload").remove();
 });

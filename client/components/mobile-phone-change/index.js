@@ -18,11 +18,9 @@ const mapStateToProps = (state, ownProps) => {
     userData: conf.userData,
   };
 };
-const mapDispatchToProps = (dispatch) => {
-  return {
-    logout: logout(dispatch),
-    setUserData: setUserData(dispatch),
-    setTitle: setTitle(dispatch),
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  logout: logout(dispatch),
+  setUserData: setUserData(dispatch),
+  setTitle: setTitle(dispatch),
+});
 export default connect(mapStateToProps, mapDispatchToProps)(Component);

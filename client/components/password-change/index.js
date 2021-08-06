@@ -13,10 +13,8 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setTitle: setTitle(dispatch),
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  setTitle: setTitle(dispatch),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Component);

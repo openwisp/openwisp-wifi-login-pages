@@ -74,13 +74,13 @@ describe("Mobile Phone Token verification: standard flow", () => {
       setLoading: PropTypes.func,
     };
     props = createTestProps();
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
         status: 201,
         statusText: "CREATED",
         data: null,
-      });
-    });
+      }),
+    );
     // console mocking
     validateToken.mockClear();
     originalError = console.error;
@@ -132,13 +132,13 @@ describe("Mobile Phone Token verification: standard flow", () => {
     wrapper = createShallowComponent(props);
     await tick();
 
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
         status: 201,
         statusText: "CREATED",
         data: null,
-      });
-    });
+      }),
+    );
     wrapper.find(".resend .button").simulate("click");
     expect(
       MobilePhoneVerification.prototype.resendPhoneToken.mock.calls.length,
@@ -154,13 +154,13 @@ describe("Mobile Phone Token verification: standard flow", () => {
     const setUserDataMock = wrapper.instance().props.setUserData.mock;
     await tick();
 
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
         status: 200,
         statusText: "OK",
         data: null,
-      });
-    });
+      }),
+    );
     wrapper
       .find("form .code input[type='text']")
       .simulate("change", {target: {value: "12345", name: "code"}});
@@ -189,8 +189,8 @@ describe("Mobile Phone Token verification: standard flow", () => {
     const setUserDataMock = wrapper.instance().props.setUserData.mock;
     await tick();
     expect(setUserDataMock.calls.length).toBe(0);
-    axios.mockImplementationOnce(() => {
-      return Promise.reject({
+    axios.mockImplementationOnce(() =>
+      Promise.reject({
         response: {
           status: 400,
           statusText: "BAD REQUEST",
@@ -198,8 +198,8 @@ describe("Mobile Phone Token verification: standard flow", () => {
             non_field_errors: ["Invalid code."],
           },
         },
-      });
-    });
+      }),
+    );
     wrapper
       .find("form .code input[type='text']")
       .simulate("change", {target: {value: "12345", name: "code"}});
@@ -264,8 +264,8 @@ describe("Mobile Phone Token verification: standard flow", () => {
   });
 
   it("should show error on rejection", async () => {
-    axios.mockImplementationOnce(() => {
-      return Promise.reject({
+    axios.mockImplementationOnce(() =>
+      Promise.reject({
         response: {
           status: 400,
           statusText: "BAD REQUEST",
@@ -273,8 +273,8 @@ describe("Mobile Phone Token verification: standard flow", () => {
             non_field_errors: ["Bad request"],
           },
         },
-      });
-    });
+      }),
+    );
     validateToken.mockReturnValue(true);
     jest.spyOn(toast, "error");
     wrapper = createShallowComponent(props);
