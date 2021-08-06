@@ -9,20 +9,19 @@ import loadTranslation from "../../utils/load-translation";
 import OrganizationWrapper from "./organization-wrapper";
 import Footer from "../footer";
 import Loader from "../../utils/loader";
-import Login from "../login";
 import needsVerify from "../../utils/needs-verify";
-
-const Registration = React.lazy(() => import("../registration"));
-const PasswordChange = React.lazy(() => import("../password-change"));
-const MobilePhoneChange = React.lazy(() => import("../mobile-phone-change"));
-const PasswordReset = React.lazy(() => import("../password-reset"));
-const PasswordConfirm = React.lazy(() => import("../password-confirm"));
-const Status = React.lazy(() => import("../status"));
-const MobilePhoneVerification = React.lazy(() =>
-  import("../mobile-phone-verification"),
-);
-const PaymentStatus = React.lazy(() => import("../payment-status"));
-const ConnectedDoesNotExist = React.lazy(() => import("../404"));
+import {
+  Login,
+  Registration,
+  Status,
+  PasswordChange,
+  MobilePhoneChange,
+  PasswordReset,
+  PasswordConfirm,
+  MobilePhoneVerification,
+  PaymentStatus,
+  ConnectedDoesNotExist,
+} from "./lazy-import";
 
 jest.mock("../../utils/get-config");
 jest.mock("../../utils/load-translation");
@@ -300,7 +299,7 @@ describe("Test Organization Wrapper for unauthenticated users", () => {
     });
     const cookies = new Cookies();
     let render = pathMap["/default"];
-    let Component = React.createElement(Footer).type;
+    const Component = React.createElement(Footer).type;
     expect(JSON.stringify(render())).toEqual(JSON.stringify(<Component />));
     render = pathMap["/default/registration"];
     expect(JSON.stringify(render())).toEqual(
@@ -329,8 +328,13 @@ describe("Test Organization Wrapper for unauthenticated users", () => {
       ),
     );
     render = pathMap["/default/login"];
-    Component = React.createElement(Login).type;
-    expect(JSON.stringify(render())).toEqual(JSON.stringify(<Component />));
+    expect(JSON.stringify(render())).toEqual(
+      JSON.stringify(
+        <Suspense fallback={<Loader full={false} />}>
+          <Login />
+        </Suspense>,
+      ),
+    );
     render = pathMap["/default/status"];
     expect(render()).toEqual(<Redirect to="/default/login" />);
     render = pathMap["/default/logout"];

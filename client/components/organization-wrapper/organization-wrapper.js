@@ -14,23 +14,22 @@ import Header from "../header";
 import Footer from "../footer";
 import LoadingContext from "../../utils/loading-context";
 import Loader from "../../utils/loader";
-import Logout from "../logout";
-import Login from "../login";
 import needsVerify from "../../utils/needs-verify";
 import loadTranslation from "../../utils/load-translation";
-
-const Registration = React.lazy(() => import("../registration"));
-const PasswordChange = React.lazy(() => import("../password-change"));
-const MobilePhoneChange = React.lazy(() => import("../mobile-phone-change"));
-const PasswordReset = React.lazy(() => import("../password-reset"));
-const PasswordConfirm = React.lazy(() => import("../password-confirm"));
-const Status = React.lazy(() => import("../status"));
-const MobilePhoneVerification = React.lazy(() =>
-  import("../mobile-phone-verification"),
-);
-const PaymentStatus = React.lazy(() => import("../payment-status"));
-const ConnectedDoesNotExist = React.lazy(() => import("../404"));
-const DoesNotExist = React.lazy(() => import("../404/404"));
+import {
+  Login,
+  Registration,
+  Status,
+  PasswordChange,
+  MobilePhoneChange,
+  PasswordReset,
+  PasswordConfirm,
+  Logout,
+  MobilePhoneVerification,
+  PaymentStatus,
+  ConnectedDoesNotExist,
+  DoesNotExist,
+} from "./lazy-import";
 
 export default class OrganizationWrapper extends React.Component {
   constructor(props) {
@@ -196,7 +195,11 @@ export default class OrganizationWrapper extends React.Component {
                   render={(props) => {
                     if (isAuthenticated && is_active)
                       return <Redirect to={`/${orgSlug}/status`} />;
-                    return <Login {...props} />;
+                    return (
+                      <Suspense fallback={<Loader full={false} />}>
+                        <Login {...props} />
+                      </Suspense>
+                    );
                   }}
                 />
                 <Route
@@ -225,7 +228,12 @@ export default class OrganizationWrapper extends React.Component {
                   render={(props) => {
                     if (isAuthenticated)
                       return <Redirect to={`/${orgSlug}/status`} />;
-                    if (userAutoLogin) return <Logout {...props} />;
+                    if (userAutoLogin)
+                      return (
+                        <Suspense fallback={<Loader full={false} />}>
+                          <Logout {...props} />
+                        </Suspense>
+                      );
                     return <Redirect to={`/${orgSlug}/login`} />;
                   }}
                 />

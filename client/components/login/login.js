@@ -24,6 +24,7 @@ import renderAdditionalInfo from "../../utils/render-additional-info";
 import handleChange from "../../utils/handle-change";
 import Contact from "../contact-box";
 import Modal from "../modal";
+import {Status} from "../organization-wrapper/lazy-import";
 
 const PhoneInput = React.lazy(() => import("react-phone-input-2"));
 
@@ -46,7 +47,6 @@ export default class Login extends React.Component {
     const token = getParameterByName("token");
     const {loginForm, setTitle, orgName, orgSlug} = this.props;
     setTitle(t`LOGIN`, orgName);
-
     let remember_me;
 
     if (localStorage.getItem("rememberMe") !== null) {
@@ -55,6 +55,7 @@ export default class Login extends React.Component {
       remember_me = loginForm.input_fields.remember_me.value;
     }
     this.setState({remember_me});
+    Status.preload();
 
     // social login / SAML login
     if (username && token) {
