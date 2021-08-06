@@ -178,10 +178,8 @@ const createConfiguration = async () => {
     }
   });
   if (fs.existsSync(defaultConfigFile)) {
-    const defaultConfig = yaml.safeLoad(
-      fs.readFileSync(defaultConfigFile, "utf8"),
-    );
-    const generatedConfig = yaml.safeLoad(
+    const defaultConfig = yaml.load(fs.readFileSync(defaultConfigFile, "utf8"));
+    const generatedConfig = yaml.load(
       fs.readFileSync(
         path.join(orgConfigurationDir, `${response.slug}.yml`),
         "utf-8",
