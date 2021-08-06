@@ -73,22 +73,20 @@ export default class Header extends React.Component {
                 </div>
               </div>
               <div className="header-right">
-                {languages.map((lang) => {
-                  return (
-                    <button
-                      type="button"
-                      className={`${
-                        language === lang.slug ? "active " : ""
-                      }header-language-btn header-desktop-language-btn header-language-btn-${
-                        lang.slug
-                      }`}
-                      key={lang.slug}
-                      onClick={() => setLanguage(lang.slug)}
-                    >
-                      {lang.text}
-                    </button>
-                  );
-                })}
+                {languages.map((lang) => (
+                  <button
+                    type="button"
+                    className={`${
+                      language === lang.slug ? "active " : ""
+                    }header-language-btn header-desktop-language-btn header-language-btn-${
+                      lang.slug
+                    }`}
+                    key={lang.slug}
+                    onClick={() => setLanguage(lang.slug)}
+                  >
+                    {lang.text}
+                  </button>
+                ))}
               </div>
             </div>
           </div>
@@ -203,22 +201,20 @@ export default class Header extends React.Component {
               return null;
             })}
             <div className="mobile-languages-row">
-              {languages.map((lang) => {
-                return (
-                  <button
-                    type="button"
-                    className={`${
-                      language === lang.slug ? "active " : ""
-                    }header-language-btn header-mobile-language-btn header-language-btn-${
-                      lang.slug
-                    }`}
-                    key={lang.slug}
-                    onClick={() => setLanguage(lang.slug)}
-                  >
-                    {lang.text}
-                  </button>
-                );
-              })}
+              {languages.map((lang) => (
+                <button
+                  type="button"
+                  className={`${
+                    language === lang.slug ? "active " : ""
+                  }header-language-btn header-mobile-language-btn header-language-btn-${
+                    lang.slug
+                  }`}
+                  key={lang.slug}
+                  onClick={() => setLanguage(lang.slug)}
+                >
+                  {lang.text}
+                </button>
+              ))}
             </div>
           </div>
         </div>

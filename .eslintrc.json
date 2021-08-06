@@ -2,7 +2,7 @@
   "extends": [
     "airbnb",
     "prettier",
-    "prettier/react",
+    "prettier",
     "jest-enzyme",
     "plugin:jest/recommended"
   ],

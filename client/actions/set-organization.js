@@ -11,52 +11,50 @@ import getConfig from "../utils/get-config";
 import logout from "./logout";
 import {initialState} from "../reducers/organization";
 
-const setOrganization = (slug, cookies) => {
-  return async (dispatch) => {
-    const orgConfig = await getConfig(slug);
-    if (orgConfig) {
-      const config = orgConfig;
-      config.userData = initialState.userData;
-      dispatch({
-        type: SET_LANGUAGE,
-        payload: config.default_language,
-      });
-      dispatch({
-        type: SET_PAGE_TITLE,
-        payload: config.name,
-      });
-      dispatch({
-        type: SET_ORGANIZATION_STATUS,
-        payload: true,
-      });
-      dispatch({
-        type: SET_ORGANIZATION_CONFIG,
-        payload: config,
-      });
-      dispatch({
-        type: SET_USER_DATA,
-        payload: initialState.userData,
-      });
-      const autoLogin = config.auto_login;
-      const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
-      if (autoLogin) {
-        if (authenticate(cookies, slug)) {
-          dispatch({
-            type: SET_AUTHENTICATION_STATUS,
-            payload: true,
-          });
-        } else {
-          logout(cookies, slug, userAutoLogin);
-        }
+const setOrganization = (slug, cookies) => async (dispatch) => {
+  const orgConfig = await getConfig(slug);
+  if (orgConfig) {
+    const config = orgConfig;
+    config.userData = initialState.userData;
+    dispatch({
+      type: SET_LANGUAGE,
+      payload: config.default_language,
+    });
+    dispatch({
+      type: SET_PAGE_TITLE,
+      payload: config.name,
+    });
+    dispatch({
+      type: SET_ORGANIZATION_STATUS,
+      payload: true,
+    });
+    dispatch({
+      type: SET_ORGANIZATION_CONFIG,
+      payload: config,
+    });
+    dispatch({
+      type: SET_USER_DATA,
+      payload: initialState.userData,
+    });
+    const autoLogin = config.auto_login;
+    const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
+    if (autoLogin) {
+      if (authenticate(cookies, slug)) {
+        dispatch({
+          type: SET_AUTHENTICATION_STATUS,
+          payload: true,
+        });
       } else {
         logout(cookies, slug, userAutoLogin);
       }
     } else {
-      dispatch({
-        type: SET_ORGANIZATION_STATUS,
-        payload: false,
-      });
+      logout(cookies, slug, userAutoLogin);
     }
-  };
+  } else {
+    dispatch({
+      type: SET_ORGANIZATION_STATUS,
+      payload: false,
+    });
+  }
 };
 export default setOrganization;

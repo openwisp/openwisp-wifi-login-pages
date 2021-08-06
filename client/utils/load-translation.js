@@ -34,9 +34,7 @@ const loadTranslationUtil = async (
 ) => {
   let lang = language;
   if (useBrowserLang) {
-    const availLangs = availableLanguages.map((langObj) => {
-      return langObj.slug;
-    });
+    const availLangs = availableLanguages.map((langObj) => langObj.slug);
     navigator.languages.some((browserLang) => {
       if (availLangs.includes(browserLang)) lang = browserLang;
       else if (availLangs.includes(browserLang.substr(0, 2)))

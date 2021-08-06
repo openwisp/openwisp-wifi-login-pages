@@ -559,36 +559,32 @@ export default class Status extends React.Component {
       <table className="large-table bg">
         <thead>
           <tr>
-            {Object.keys(session_info.header).map((key) => {
-              return <th key={key}>{session_info.header[key]}</th>;
-            })}
+            {Object.keys(session_info.header).map((key) => (
+              <th key={key}>{session_info.header[key]}</th>
+            ))}
           </tr>
         </thead>
         <tbody>
-          {activeSessions.map((session) => {
-            return (
-              <tr
-                key={session.session_id}
-                className={session.stop_time === null ? "active-session" : ""}
-              >
-                {this.getLargeTableRow(
-                  session,
-                  session_info.settings,
-                  showLogoutButton,
-                )}
-              </tr>
-            );
-          })}
-          {pastSessions.map((session) => {
-            return (
-              <tr
-                key={session.session_id}
-                className={session.stop_time === null ? "active-session" : ""}
-              >
-                {this.getLargeTableRow(session, session_info.settings)}
-              </tr>
-            );
-          })}
+          {activeSessions.map((session) => (
+            <tr
+              key={session.session_id}
+              className={session.stop_time === null ? "active-session" : ""}
+            >
+              {this.getLargeTableRow(
+                session,
+                session_info.settings,
+                showLogoutButton,
+              )}
+            </tr>
+          ))}
+          {pastSessions.map((session) => (
+            <tr
+              key={session.session_id}
+              className={session.stop_time === null ? "active-session" : ""}
+            >
+              {this.getLargeTableRow(session, session_info.settings)}
+            </tr>
+          ))}
         </tbody>
       </table>
     );
@@ -598,12 +594,12 @@ export default class Status extends React.Component {
     const {activeSessions, pastSessions} = this.state;
     return (
       <table className="small-table bg">
-        {activeSessions.map((session) => {
-          return this.getSmallTableRow(session, session_info);
-        })}
-        {pastSessions.map((session) => {
-          return this.getSmallTableRow(session, session_info);
-        })}
+        {activeSessions.map((session) =>
+          this.getSmallTableRow(session, session_info),
+        )}
+        {pastSessions.map((session) =>
+          this.getSmallTableRow(session, session_info),
+        )}
       </table>
     );
   };
@@ -616,47 +612,41 @@ export default class Status extends React.Component {
     return this.getSmallTable(session_info);
   };
 
-  getSpinner = () => {
-    return (
-      <div className="loadingContainer">
-        <p className="loading" />
-      </div>
-    );
-  };
+  getSpinner = () => (
+    <div className="loadingContainer">
+      <p className="loading" />
+    </div>
+  );
 
-  getSessionInfo = () => {
-    return {
-      header: {
-        start_time: t`ACCT_START_TIME`,
-        stop_time: t`ACCT_STOP_TIME`,
-        duration: t`ACCT_DURATION`,
-        download: t`ACCT_DOWNLOAD`,
-        upload: t`ACCT_UPLOAD`,
-        device_address: t`ACCT_DEVICE_ADDRESS`,
-      },
-      settings: {
-        active_session: t`ACCT_ACTIVE`,
-      },
-    };
-  };
+  getSessionInfo = () => ({
+    header: {
+      start_time: t`ACCT_START_TIME`,
+      stop_time: t`ACCT_STOP_TIME`,
+      duration: t`ACCT_DURATION`,
+      download: t`ACCT_DOWNLOAD`,
+      upload: t`ACCT_UPLOAD`,
+      device_address: t`ACCT_DEVICE_ADDRESS`,
+    },
+    settings: {
+      active_session: t`ACCT_ACTIVE`,
+    },
+  });
 
-  getUserInfo = () => {
-    return {
-      status: {
-        text: t`STATUS`,
-        value: t`LOGGED_IN`,
-      },
-      email: {
-        text: t`EMAIL`,
-      },
-      username: {
-        text: t`USERNAME`,
-      },
-      phone_number: {
-        text: t`PHONE_NUMBER`,
-      },
-    };
-  };
+  getUserInfo = () => ({
+    status: {
+      text: t`STATUS`,
+      value: t`LOGGED_IN`,
+    },
+    email: {
+      text: t`EMAIL`,
+    },
+    username: {
+      text: t`USERNAME`,
+    },
+    phone_number: {
+      text: t`PHONE_NUMBER`,
+    },
+  });
 
   render() {
     const {
@@ -722,14 +712,12 @@ export default class Status extends React.Component {
                 if (text !== "") return <p key={text}>{text}</p>;
                 return null;
               })}
-              {Object.keys(userInfo).map((key) => {
-                return (
-                  <p key={key}>
-                    <label>{user_info[key].text}:</label>
-                    <span>{userInfo[key]}</span>
-                  </p>
-                );
-              })}
+              {Object.keys(userInfo).map((key) => (
+                <p key={key}>
+                  <label>{user_info[key].text}:</label>
+                  <span>{userInfo[key]}</span>
+                </p>
+              ))}
 
               <div className="row logout">
                 <input

@@ -52,27 +52,24 @@ const getLinkText = (wrapper, selector) => {
   return texts;
 };
 
-const createTestProps = (props) => {
-  return {
-    language: "en",
-    orgSlug: "default",
-    orgName: "default name",
-    statusPage: defaultConfig.components.status_page,
-    cookies: new Cookies(),
-    settings: defaultConfig.settings,
-    captivePortalLoginForm: defaultConfig.components.captive_portal_login_form,
-    captivePortalLogoutForm:
-      defaultConfig.components.captive_portal_logout_form,
-    location: {
-      search: "?macaddr=4e:ed:11:2b:17:ae",
-    },
-    logout: jest.fn(),
-    setUserData: jest.fn(),
-    userData: {},
-    setTitle: jest.fn(),
-    ...props,
-  };
-};
+const createTestProps = (props) => ({
+  language: "en",
+  orgSlug: "default",
+  orgName: "default name",
+  statusPage: defaultConfig.components.status_page,
+  cookies: new Cookies(),
+  settings: defaultConfig.settings,
+  captivePortalLoginForm: defaultConfig.components.captive_portal_login_form,
+  captivePortalLogoutForm: defaultConfig.components.captive_portal_logout_form,
+  location: {
+    search: "?macaddr=4e:ed:11:2b:17:ae",
+  },
+  logout: jest.fn(),
+  setUserData: jest.fn(),
+  userData: {},
+  setTitle: jest.fn(),
+  ...props,
+});
 
 // mocks response coming from validate token endpoint
 const responseData = {
@@ -161,18 +158,18 @@ describe("<Status /> interactions", () => {
 
   it("should call logout function when logout button is clicked", async () => {
     axios
-      .mockImplementationOnce(() => {
-        return Promise.resolve({
+      .mockImplementationOnce(() =>
+        Promise.resolve({
           response: {
             status: 200,
             statusText: "OK",
           },
           data: [],
           headers: {},
-        });
-      })
-      .mockImplementationOnce(() => {
-        return Promise.resolve({
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
           status: 200,
           statusText: "OK",
           data: [
@@ -183,8 +180,8 @@ describe("<Status /> interactions", () => {
             },
           ],
           headers: {},
-        });
-      });
+        }),
+      );
     props = createTestProps();
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
@@ -207,8 +204,8 @@ describe("<Status /> interactions", () => {
 
   it("test componentDidMount lifecycle method", async () => {
     axios
-      .mockImplementationOnce(() => {
-        return Promise.resolve({
+      .mockImplementationOnce(() =>
+        Promise.resolve({
           status: 200,
           statusText: "OK",
           data: [
@@ -219,16 +216,16 @@ describe("<Status /> interactions", () => {
             },
           ],
           headers: {},
-        });
-      })
-      .mockImplementationOnce(() => {
-        return Promise.resolve({
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
           status: 200,
           statusText: "OK",
           data: [],
           headers: {},
-        });
-      });
+        }),
+      );
     jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
 
     props = createTestProps({
@@ -280,16 +277,16 @@ describe("<Status /> interactions", () => {
 
   it("test getUserActiveRadiusSessions method", async () => {
     axios
-      .mockImplementationOnce(() => {
-        return Promise.resolve({
+      .mockImplementationOnce(() =>
+        Promise.resolve({
           status: 200,
           statusText: "OK",
           data: [],
           headers: {},
-        });
-      })
-      .mockImplementationOnce(() => {
-        return Promise.resolve({
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
           status: 200,
           statusText: "OK",
           data: [
@@ -300,16 +297,16 @@ describe("<Status /> interactions", () => {
             },
           ],
           headers: {},
-        });
-      })
-      .mockImplementationOnce(() => {
-        return Promise.reject({
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.reject({
           response: {
             status: 401,
             headers: {},
           },
-        });
-      });
+        }),
+      );
     props = createTestProps();
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
@@ -476,8 +473,8 @@ describe("<Status /> interactions", () => {
   });
 
   it("test active session table", async () => {
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
         status: 200,
         statusText: "OK",
         data: [
@@ -488,8 +485,8 @@ describe("<Status /> interactions", () => {
           },
         ],
         headers: {},
-      });
-    });
+      }),
+    );
     props = createTestProps({userData: responseData});
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
@@ -502,8 +499,8 @@ describe("<Status /> interactions", () => {
   });
 
   it("test passed session table", async () => {
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
         status: 200,
         statusText: "OK",
         data: [
@@ -514,8 +511,8 @@ describe("<Status /> interactions", () => {
           },
         ],
         headers: {},
-      });
-    });
+      }),
+    );
     props = createTestProps({userData: responseData});
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
@@ -529,22 +526,22 @@ describe("<Status /> interactions", () => {
 
   it("test empty session table", async () => {
     axios
-      .mockImplementationOnce(() => {
-        return Promise.resolve({
+      .mockImplementationOnce(() =>
+        Promise.resolve({
           status: 200,
           statusText: "OK",
           data: [],
           headers: {},
-        });
-      })
-      .mockImplementationOnce(() => {
-        return Promise.resolve({
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
           status: 200,
           statusText: "OK",
           data: [],
           headers: {},
-        });
-      });
+        }),
+      );
     props = createTestProps();
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
@@ -560,14 +557,14 @@ describe("<Status /> interactions", () => {
 
   it("test interval cleared on componentUnmount", async () => {
     axios
-      .mockImplementationOnce(() => {
-        return Promise.resolve({
+      .mockImplementationOnce(() =>
+        Promise.resolve({
           status: 200,
           data: responseData,
-        });
-      })
-      .mockImplementationOnce(() => {
-        return Promise.resolve({
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
           status: 200,
           statusText: "OK",
           data: [
@@ -578,10 +575,10 @@ describe("<Status /> interactions", () => {
             },
           ],
           headers: {},
-        });
-      })
-      .mockImplementationOnce(() => {
-        return Promise.resolve({
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
           status: 200,
           statusText: "OK",
           data: [
@@ -592,8 +589,8 @@ describe("<Status /> interactions", () => {
             },
           ],
           headers: {},
-        });
-      });
+        }),
+      );
     props = createTestProps();
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
@@ -675,8 +672,8 @@ describe("<Status /> interactions", () => {
   });
 
   it("should set hasMoreSessions to false if link is not in response headers", async () => {
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
         status: 200,
         statusText: "OK",
         data: [
@@ -687,8 +684,8 @@ describe("<Status /> interactions", () => {
           },
         ],
         headers: {},
-      });
-    });
+      }),
+    );
     const prop = createTestProps();
     wrapper = shallow(<Status {...prop} />, {
       context: {setLoading: jest.fn()},
@@ -759,8 +756,8 @@ describe("<Status /> interactions", () => {
   it("should logout if mustLogout is true", async () => {
     validateToken.mockReturnValue(true);
     jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
         status: 200,
         statusText: "OK",
         data: [
@@ -771,8 +768,8 @@ describe("<Status /> interactions", () => {
           },
         ],
         headers: {},
-      });
-    });
+      }),
+    );
     const spyToast = jest.spyOn(toast, "success");
     props = createTestProps({userData: {...responseData, mustLogout: true}});
     const setLoading = jest.fn();
@@ -805,8 +802,8 @@ describe("<Status /> interactions", () => {
   it("should repeat login if mustLogout and repeatLogin are true", async () => {
     validateToken.mockReturnValue(true);
     jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
         status: 200,
         statusText: "OK",
         data: [
@@ -817,8 +814,8 @@ describe("<Status /> interactions", () => {
           },
         ],
         headers: {},
-      });
-    });
+      }),
+    );
     const spyToast = jest.spyOn(toast, "success");
     props = createTestProps({
       userData: {...responseData, mustLogout: true, repeatLogin: true},
@@ -875,8 +872,8 @@ describe("<Status /> interactions", () => {
   });
 
   it("should perform call saml_logout_url if logged in via SAML", async () => {
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
         status: 200,
         statusText: "OK",
         data: [
@@ -887,8 +884,8 @@ describe("<Status /> interactions", () => {
           },
         ],
         headers: {},
-      });
-    });
+      }),
+    );
 
     // mock window.location.assign
     const location = new URL("https://wifi.openwisp.io");
@@ -1036,16 +1033,16 @@ describe("<Status /> interactions", () => {
     expect(getSessionInfo).not.toHaveBeenCalled();
   });
   it("should call logout if getUserRadiusSessions is rejected", async () => {
-    axios.mockImplementationOnce(() => {
-      return Promise.reject({
+    axios.mockImplementationOnce(() =>
+      Promise.reject({
         response: {
           status: 401,
           data: {
             error: "Unauthorized",
           },
         },
-      });
-    });
+      }),
+    );
     validateToken.mockReturnValue(true);
     const prop = createTestProps();
     jest.spyOn(toast, "error");

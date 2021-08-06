@@ -18,23 +18,21 @@ jest.mock("axios");
 jest.mock("../../utils/get-config");
 jest.mock("../../utils/load-translation");
 const defaultConfig = getConfig("default", true);
-const createTestProps = (props) => {
-  return {
-    language: "en",
-    orgSlug: "default",
-    orgName: "default name",
-    configuration: defaultConfig,
-    passwordConfirm: defaultConfig.components.password_reset_confirm_form,
-    setTitle: jest.fn(),
-    match: {
-      params: {
-        uid: "testUid",
-        token: "testToken",
-      },
+const createTestProps = (props) => ({
+  language: "en",
+  orgSlug: "default",
+  orgName: "default name",
+  configuration: defaultConfig,
+  passwordConfirm: defaultConfig.components.password_reset_confirm_form,
+  setTitle: jest.fn(),
+  match: {
+    params: {
+      uid: "testUid",
+      token: "testToken",
     },
-    ...props,
-  };
-};
+  },
+  ...props,
+});
 
 const getTranslationString = (msgid) => {
   try {
@@ -70,14 +68,12 @@ describe("<PasswordConfirm /> rendering", () => {
       subscribe: () => {},
       dispatch: () => {},
       // needed to render <Contact/>
-      getState: () => {
-        return {
-          organization: {
-            configuration: props.configuration,
-          },
-          language: props.language,
-        };
-      },
+      getState: () => ({
+        organization: {
+          configuration: props.configuration,
+        },
+        language: props.language,
+      }),
     };
     const component = renderer
       .create(
@@ -163,22 +159,20 @@ describe("<PasswordConfirm /> interactions", () => {
 
   it("should execute handleSubmit correctly when form is submitted", () => {
     axios
-      .mockImplementationOnce(() => {
-        return Promise.reject({response: {data: {detail: "errors"}}});
-      })
-      .mockImplementationOnce(() => {
-        return Promise.reject({
+      .mockImplementationOnce(() =>
+        Promise.reject({response: {data: {detail: "errors"}}}),
+      )
+      .mockImplementationOnce(() =>
+        Promise.reject({
           response: {data: {non_field_errors: ["non field errors"]}},
-        });
-      })
-      .mockImplementationOnce(() => {
-        return Promise.reject({
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.reject({
           response: {data: {token: ["Invalid token"]}},
-        });
-      })
-      .mockImplementationOnce(() => {
-        return Promise.resolve({data: {detail: true}});
-      });
+        }),
+      )
+      .mockImplementationOnce(() => Promise.resolve({data: {detail: true}}));
     wrapper.setState({
       newPassword1: "wrong password",
       newPassword2: "wrong password1",
@@ -204,8 +198,8 @@ describe("<PasswordConfirm /> interactions", () => {
         expect(spyToastSuccess.mock.calls.length).toBe(0);
         lastConsoleOutuput = null;
       })
-      .then(() => {
-        return wrapper
+      .then(() =>
+        wrapper
           .instance()
           .handleSubmit({preventDefault: () => {}})
           .then(() => {
@@ -216,10 +210,10 @@ describe("<PasswordConfirm /> interactions", () => {
             expect(spyToastError.mock.calls.length).toBe(2);
             expect(spyToastSuccess.mock.calls.length).toBe(0);
             lastConsoleOutuput = null;
-          });
-      })
-      .then(() => {
-        return wrapper
+          }),
+      )
+      .then(() =>
+        wrapper
           .instance()
           .handleSubmit({preventDefault: () => {}})
           .then(() => {
@@ -230,10 +224,10 @@ describe("<PasswordConfirm /> interactions", () => {
             expect(spyToastError.mock.calls.length).toBe(3);
             expect(spyToastSuccess.mock.calls.length).toBe(0);
             lastConsoleOutuput = null;
-          });
-      })
-      .then(() => {
-        return wrapper
+          }),
+      )
+      .then(() =>
+        wrapper
           .instance()
           .handleSubmit({preventDefault: () => {}})
           .then(() => {
@@ -245,8 +239,8 @@ describe("<PasswordConfirm /> interactions", () => {
             expect(spyToastError.mock.calls.length).toBe(3);
             expect(spyToastSuccess.mock.calls.length).toBe(1);
             lastConsoleOutuput = null;
-          });
-      });
+          }),
+      );
   });
   it("should set title", () => {
     const setTitleMock = wrapper.instance().props.setTitle.mock;

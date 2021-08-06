@@ -66,13 +66,11 @@ const mountComponent = function (props) {
     subscribe: () => {},
     dispatch: () => {},
     // needed to render <Contact/>
-    getState: () => {
-      return {
-        organization: {
-          configuration: props.configuration,
-        },
-      };
-    },
+    getState: () => ({
+      organization: {
+        configuration: props.configuration,
+      },
+    }),
   };
 
   return mount(
@@ -150,13 +148,13 @@ describe("Change Phone Number: standard flow", () => {
     validateToken.mockReturnValue(true);
     jest.spyOn(toast, "info");
     jest.spyOn(historyMock, "push");
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
         status: 200,
         statusText: "OK",
         data: null,
-      });
-    });
+      }),
+    );
 
     wrapper = await mountComponent(props);
     const component = wrapper.find(MobilePhoneChange);
@@ -211,8 +209,8 @@ describe("Change Phone Number: standard flow", () => {
     jest.spyOn(MobilePhoneChange.prototype, "handleSubmit");
     jest.spyOn(toast, "info");
     jest.spyOn(historyMock, "push");
-    axios.mockImplementationOnce(() => {
-      return Promise.reject({
+    axios.mockImplementationOnce(() =>
+      Promise.reject({
         response: {
           status: 400,
           statusText: "OK",
@@ -222,8 +220,8 @@ describe("Change Phone Number: standard flow", () => {
             ],
           },
         },
-      });
-    });
+      }),
+    );
 
     wrapper = await mountComponent(props);
     const component = wrapper.find(MobilePhoneChange);
@@ -241,8 +239,8 @@ describe("Change Phone Number: standard flow", () => {
     jest.spyOn(MobilePhoneChange.prototype, "handleSubmit");
     jest.spyOn(toast, "info");
     jest.spyOn(historyMock, "push");
-    axios.mockImplementationOnce(() => {
-      return Promise.reject({
+    axios.mockImplementationOnce(() =>
+      Promise.reject({
         response: {
           status: 400,
           statusText: "OK",
@@ -250,8 +248,8 @@ describe("Change Phone Number: standard flow", () => {
             non_field_errors: ["Maximum daily limit reached."],
           },
         },
-      });
-    });
+      }),
+    );
 
     wrapper = await mountComponent(props);
     const component = wrapper.find(MobilePhoneChange);
@@ -270,13 +268,13 @@ describe("Change Phone Number: standard flow", () => {
     jest.spyOn(MobilePhoneChange.prototype, "handleSubmit");
     jest.spyOn(toast, "info");
     jest.spyOn(historyMock, "push");
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
         status: 200,
         statusText: "OK",
         data: null,
-      });
-    });
+      }),
+    );
 
     wrapper = await mountComponent(props);
     const component = wrapper.find(MobilePhoneChange);
@@ -304,8 +302,8 @@ describe("Change Phone Number: corner cases", () => {
   let props;
   let wrapper;
   const mockAxios = (responseData = {}) => {
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
         status: 200,
         statusText: "OK",
         data: {
@@ -316,8 +314,8 @@ describe("Change Phone Number: corner cases", () => {
           phone_number: "+393660011222",
           ...responseData,
         },
-      });
-    });
+      }),
+    );
   };
 
   beforeEach(() => {

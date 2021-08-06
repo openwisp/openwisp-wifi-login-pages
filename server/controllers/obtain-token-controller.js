@@ -45,9 +45,7 @@ const obtainToken = (req, res) => {
         timeout,
         data: qs.stringify({username, password}),
       })
-        .then((response) => {
-          return sendCookies(username, response, conf, res);
-        })
+        .then((response) => sendCookies(username, response, conf, res))
         .catch((error) => {
           Logger.error(error);
           try {

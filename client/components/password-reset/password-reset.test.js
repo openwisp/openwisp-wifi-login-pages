@@ -15,15 +15,13 @@ jest.mock("../../utils/get-config");
 jest.mock("../../utils/load-translation");
 
 const defaultConfig = getConfig("default", true);
-const createTestProps = (props) => {
-  return {
-    orgSlug: "default",
-    orgName: "default name",
-    setTitle: jest.fn(),
-    passwordReset: defaultConfig.components.password_reset_form,
-    ...props,
-  };
-};
+const createTestProps = (props) => ({
+  orgSlug: "default",
+  orgName: "default name",
+  setTitle: jest.fn(),
+  passwordReset: defaultConfig.components.password_reset_form,
+  ...props,
+});
 
 const getTranslationString = (msgid) => {
   try {
@@ -113,17 +111,15 @@ describe("<PasswordReset /> interactions", () => {
 
   it("should execute handleSubmit correctly when form is submitted", () => {
     axios
-      .mockImplementationOnce(() => {
-        return Promise.reject({response: {data: {detail: "errors"}}});
-      })
-      .mockImplementationOnce(() => {
-        return Promise.reject({
+      .mockImplementationOnce(() =>
+        Promise.reject({response: {data: {detail: "errors"}}}),
+      )
+      .mockImplementationOnce(() =>
+        Promise.reject({
           response: {data: {non_field_errors: ["non field errors"]}},
-        });
-      })
-      .mockImplementationOnce(() => {
-        return Promise.resolve({data: {detail: true}});
-      });
+        }),
+      )
+      .mockImplementationOnce(() => Promise.resolve({data: {detail: true}}));
     const spyToastError = jest.spyOn(toast, "error");
     const spyToastSuccess = jest.spyOn(toast, "success");
     return wrapper
@@ -138,8 +134,8 @@ describe("<PasswordReset /> interactions", () => {
         expect(spyToastSuccess.mock.calls.length).toBe(0);
         lastConsoleOutuput = null;
       })
-      .then(() => {
-        return wrapper
+      .then(() =>
+        wrapper
           .instance()
           .handleSubmit({preventDefault: () => {}})
           .then(() => {
@@ -150,10 +146,10 @@ describe("<PasswordReset /> interactions", () => {
             expect(spyToastError.mock.calls.length).toBe(2);
             expect(spyToastSuccess.mock.calls.length).toBe(0);
             lastConsoleOutuput = null;
-          });
-      })
-      .then(() => {
-        return wrapper
+          }),
+      )
+      .then(() =>
+        wrapper
           .instance()
           .handleSubmit({preventDefault: () => {}})
           .then(() => {
@@ -165,8 +161,8 @@ describe("<PasswordReset /> interactions", () => {
             expect(spyToastError.mock.calls.length).toBe(2);
             expect(spyToastSuccess.mock.calls.length).toBe(1);
             lastConsoleOutuput = null;
-          });
-      });
+          }),
+      );
   });
   it("should set title", () => {
     const setTitleMock = wrapper.instance().props.setTitle.mock;

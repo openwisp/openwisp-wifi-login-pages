@@ -100,9 +100,11 @@ describe("getParameterByName tests", () => {
   });
 });
 describe("shouldLinkBeShown tests", () => {
-  const createArgs = (link, isAuthenticated, userData) => {
-    return {link, isAuthenticated, userData};
-  };
+  const createArgs = (link, isAuthenticated, userData) => ({
+    link,
+    isAuthenticated,
+    userData,
+  });
 
   it("test link.authenticated is undefined", () => {
     const {link, isAuthenticated, userData} = createArgs({}, false, {});
@@ -163,15 +165,13 @@ describe("Validate Token tests", () => {
     jest.restoreAllMocks();
   });
 
-  const getArgs = () => {
-    return {
-      orgSlug: "default",
-      cookies: new Cookies(),
-      setUserData: jest.fn(),
-      userData: {is_active: true, is_verified: true},
-      logout: jest.fn(),
-    };
-  };
+  const getArgs = () => ({
+    orgSlug: "default",
+    cookies: new Cookies(),
+    setUserData: jest.fn(),
+    userData: {is_active: true, is_verified: true},
+    logout: jest.fn(),
+  });
   it("should return false if token is not in the cookie", async () => {
     const {orgSlug, cookies, setUserData, userData, logout} = getArgs();
     const result = await validateToken(cookies, orgSlug, setUserData, userData);
@@ -181,8 +181,8 @@ describe("Validate Token tests", () => {
     expect(logout.mock.calls.length).toBe(0);
   });
   it("should return true for success validation", async () => {
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
         status: 200,
         statusText: "OK",
         data: {
@@ -193,8 +193,8 @@ describe("Validate Token tests", () => {
           is_verified: true,
           phone_number: "+393660011222",
         },
-      });
-    });
+      }),
+    );
     const {orgSlug, cookies, setUserData, userData, logout} = getArgs();
     cookies.set(`${orgSlug}_auth_token`, "token");
     const result = await validateToken(cookies, orgSlug, setUserData, userData);
@@ -221,9 +221,7 @@ describe("Validate Token tests", () => {
       },
     };
     jest.spyOn(global.console, "log").mockImplementation();
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve(response);
-    });
+    axios.mockImplementationOnce(() => Promise.resolve(response));
     const errorMethod = jest.spyOn(dependency.toast, "error");
     const {orgSlug, cookies, setUserData, userData, logout} = getArgs();
     const result = await validateToken(
@@ -255,9 +253,7 @@ describe("Validate Token tests", () => {
         response_code: "BLANK_OR_INVALID_TOKEN",
       },
     };
-    axios.mockImplementationOnce(() => {
-      return Promise.reject(response);
-    });
+    axios.mockImplementationOnce(() => Promise.reject(response));
     jest.spyOn(global.console, "log").mockImplementation();
     const errorMethod = jest.spyOn(dependency.toast, "error");
     const {orgSlug, cookies, setUserData, userData, logout} = getArgs();
@@ -292,9 +288,7 @@ describe("password-toggle tests", () => {
       <PasswordToggleIcon inputRef={ref} />
     </>
   ));
-  const mountComponent = (ref) => {
-    return mount(<Component ref={ref} />);
-  };
+  const mountComponent = (ref) => mount(<Component ref={ref} />);
   it("should show and hide password", () => {
     const passwordRef = React.createRef();
     const component = mountComponent(passwordRef);

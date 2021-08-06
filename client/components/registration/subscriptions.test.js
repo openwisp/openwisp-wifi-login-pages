@@ -66,11 +66,10 @@ describe("test subscriptions", () => {
   let originalError;
   let lastConsoleOutuput;
   const event = {preventDefault: jest.fn()};
-  const initShallow = (passedProps) => {
-    return shallow(<Registration {...passedProps} />, {
+  const initShallow = (passedProps) =>
+    shallow(<Registration {...passedProps} />, {
       context: loadingContextValue,
     });
-  };
 
   beforeEach(() => {
     originalError = console.error;
@@ -89,25 +88,25 @@ describe("test subscriptions", () => {
   });
 
   it("should not show choice form when plans is absent", () => {
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
         status: 201,
         statusText: "ok",
         data: [],
-      });
-    });
+      }),
+    );
     wrapper = initShallow(props);
     expect(wrapper.find("input[name='plan_selection']").length).toBe(0);
   });
 
   it("should show choice form when plans is present", () => {
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
         status: 201,
         statusText: "ok",
         data: plans,
-      });
-    });
+      }),
+    );
     wrapper = initShallow(props);
     wrapper.instance().setState({plans, plansFetched: true});
     expect(wrapper.find("input[name='plan_selection']").length).toBe(2);
@@ -115,13 +114,13 @@ describe("test subscriptions", () => {
   });
 
   it("show billing info only when verifies_identity is true", () => {
-    axios.mockImplementationOnce(() => {
-      return Promise.resolve({
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
         status: 201,
         statusText: "ok",
         data: plans,
-      });
-    });
+      }),
+    );
     wrapper = initShallow(props);
     wrapper.instance().setState({plans, selected_plan: 0, plansFetched: true});
     expect(wrapper.find(".billing-info").length).toBe(0);
@@ -134,20 +133,20 @@ describe("test subscriptions", () => {
   it("authenticate normally after registration with payment flow", async () => {
     const data = {payment_url: "https://account.openwisp.io/payment/123"};
     axios
-      .mockImplementationOnce(() => {
-        return Promise.resolve({
+      .mockImplementationOnce(() =>
+        Promise.resolve({
           status: 201,
           statusText: "ok",
           data: plans,
-        });
-      })
-      .mockImplementationOnce(() => {
-        return Promise.resolve({
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
           status: 201,
           statusText: "CREATED",
           data,
-        });
-      });
+        }),
+      );
     wrapper = initShallow(props);
     const registration = wrapper.instance();
     const handleSubmit = jest.spyOn(registration, "handleSubmit");
@@ -163,8 +162,8 @@ describe("test subscriptions", () => {
   });
 
   it("should show error if fetching plans fail", async () => {
-    axios.mockImplementationOnce(() => {
-      return Promise.reject({
+    axios.mockImplementationOnce(() =>
+      Promise.reject({
         status: 500,
         statusText: "Internal server error",
         response: {
@@ -172,8 +171,8 @@ describe("test subscriptions", () => {
             detail: "Internal server error",
           },
         },
-      });
-    });
+      }),
+    );
     const spyToast = jest.spyOn(toast, "error");
     wrapper = initShallow(props);
     await tick();

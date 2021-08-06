@@ -32,15 +32,13 @@ const links = [
     css: "google",
   },
 ];
-const createTestProps = (props) => {
-  return {
-    language: "en",
-    orgSlug: "default",
-    contactPage: defaultConfig.components.contact_page,
-    userData: {is_verified: true},
-    ...props,
-  };
-};
+const createTestProps = (props) => ({
+  language: "en",
+  orgSlug: "default",
+  contactPage: defaultConfig.components.contact_page,
+  userData: {is_verified: true},
+  ...props,
+});
 
 describe("<Contact /> rendering with placeholder translation tags", () => {
   const props = createTestProps();

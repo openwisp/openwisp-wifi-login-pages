@@ -9,15 +9,13 @@ jest.mock("../../utils/get-config");
 jest.mock("../../utils/load-translation");
 
 const defaultConfig = getConfig("default", true);
-const createTestProps = (props) => {
-  return {
-    orgSlug: "default",
-    orgName: "default name",
-    page: defaultConfig.components["404_page"],
-    setTitle: jest.fn(),
-    ...props,
-  };
-};
+const createTestProps = (props) => ({
+  orgSlug: "default",
+  orgName: "default name",
+  page: defaultConfig.components["404_page"],
+  setTitle: jest.fn(),
+  ...props,
+});
 
 describe("<DoesNotExist /> rendering with placeholder translation tags", () => {
   const props = createTestProps();

@@ -18,18 +18,16 @@ jest.mock("../../utils/validate-token");
 jest.mock("../../utils/load-translation");
 
 const defaultConfig = getConfig("default", true);
-const createTestProps = (props) => {
-  return {
-    orgSlug: "default",
-    userData: {},
-    setUserData: jest.fn(),
-    page: defaultConfig.components.payment_status_page,
-    cookies: new Cookies(),
-    settings: {subscriptions: true},
-    logout: jest.fn(),
-    ...props,
-  };
-};
+const createTestProps = (props) => ({
+  orgSlug: "default",
+  userData: {},
+  setUserData: jest.fn(),
+  page: defaultConfig.components.payment_status_page,
+  cookies: new Cookies(),
+  settings: {subscriptions: true},
+  logout: jest.fn(),
+  ...props,
+});
 const responseData = {
   response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
   is_active: true,

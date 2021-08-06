@@ -43,33 +43,31 @@ const userData = {
   location: "",
 };
 
-const createTestProps = (props) => {
-  return {
-    match: {params: {organization: "default"}, path: "/default"},
-    organization: {
-      configuration: {
-        pageTitle: undefined,
-        css_path: null,
-        slug: "default",
-        name: "default name",
-        favicon: null,
-        isAuthenticated: true,
-        settings: {
-          mobile_phone_verification: true,
-          subscriptions: true,
-        },
-        default_language: "en",
-        userData,
+const createTestProps = (props) => ({
+  match: {params: {organization: "default"}, path: "/default"},
+  organization: {
+    configuration: {
+      pageTitle: undefined,
+      css_path: null,
+      slug: "default",
+      name: "default name",
+      favicon: null,
+      isAuthenticated: true,
+      settings: {
+        mobile_phone_verification: true,
+        subscriptions: true,
       },
-      exists: true,
+      default_language: "en",
+      userData,
     },
-    setOrganization: jest.fn(),
-    setLanguage: jest.fn(),
-    cookies: new Cookies(),
-    language: "en",
-    ...props,
-  };
-};
+    exists: true,
+  },
+  setOrganization: jest.fn(),
+  setLanguage: jest.fn(),
+  cookies: new Cookies(),
+  language: "en",
+  ...props,
+});
 
 describe("<OrganizationWrapper /> rendering", () => {
   let props;
@@ -472,13 +470,11 @@ describe("Test <OrganizationWrapper /> routes", () => {
   const mockedStore = {
     subscribe: () => {},
     dispatch: () => {},
-    getState: () => {
-      return {
-        organization: props.organization,
-        language: "en",
-        languages: defaultConfig.languages,
-      };
-    },
+    getState: () => ({
+      organization: props.organization,
+      language: "en",
+      languages: defaultConfig.languages,
+    }),
   };
 
   const mountComponent = async (passedProps, initialEntries) => {

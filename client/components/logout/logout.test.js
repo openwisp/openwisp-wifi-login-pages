@@ -23,17 +23,15 @@ const userData = {
   justAuthenticated: false,
 };
 
-const createTestProps = (props) => {
-  return {
-    orgSlug: "default",
-    orgName: "default name",
-    authenticate: jest.fn(),
-    setTitle: jest.fn(),
-    setUserData: jest.fn(),
-    userData,
-    ...props,
-  };
-};
+const createTestProps = (props) => ({
+  orgSlug: "default",
+  orgName: "default name",
+  authenticate: jest.fn(),
+  setTitle: jest.fn(),
+  setUserData: jest.fn(),
+  userData,
+  ...props,
+});
 
 describe("<Logout /> rendering with placeholder translation tags", () => {
   const props = createTestProps();

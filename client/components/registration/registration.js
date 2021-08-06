@@ -836,9 +836,7 @@ export default class Registration extends React.Component {
         </div>
         <Route
           path={`${match.path}/:name`}
-          render={(props) => {
-            return <Modal {...props} prevPath={match.url} />;
-          }}
+          render={(props) => <Modal {...props} prevPath={match.url} />}
         />
       </>
     );

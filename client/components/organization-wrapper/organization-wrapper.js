@@ -124,9 +124,7 @@ export default class OrganizationWrapper extends React.Component {
                 <Route
                   path={`${match.path}`}
                   exact
-                  render={() => {
-                    return <Redirect to={`/${orgSlug}/login`} />;
-                  }}
+                  render={() => <Redirect to={`/${orgSlug}/login`} />}
                 />
                 <Route
                   path={`${match.path}/registration`}
@@ -267,13 +265,11 @@ export default class OrganizationWrapper extends React.Component {
                   }}
                 />
                 <Route
-                  render={() => {
-                    return (
-                      <Suspense fallback={<Loader full={false} />}>
-                        <ConnectedDoesNotExist />
-                      </Suspense>
-                    );
-                  }}
+                  render={() => (
+                    <Suspense fallback={<Loader full={false} />}>
+                      <ConnectedDoesNotExist />
+                    </Suspense>
+                  )}
                 />
               </Switch>
               <Route path={match.path} render={() => <Footer />} />
