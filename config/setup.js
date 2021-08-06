@@ -81,9 +81,9 @@ const getConfig = (file) => {
   let defaultConfig = {};
   if (fs.existsSync(defaultConfigFile))
     defaultConfig = removeNullKeys(
-      yaml.safeLoad(fs.readFileSync(defaultConfigFile, "utf-8")),
+      yaml.load(fs.readFileSync(defaultConfigFile, "utf-8")),
     );
-  const config = yaml.safeLoad(
+  const config = yaml.load(
     fs.readFileSync(path.join(configDir, file), "utf-8"),
   );
   return removeNullKeys(_.merge(defaultConfig, config));
