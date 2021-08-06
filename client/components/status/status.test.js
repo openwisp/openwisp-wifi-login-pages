@@ -835,7 +835,7 @@ describe("<Status /> interactions", () => {
     status.logoutFormRef = {current: mockRef};
     status.logoutIframeRef = {current: {}};
     status.componentDidMount();
-    jest.useFakeTimers();
+    jest.useFakeTimers("legacy");
     const componentDidMount = jest.spyOn(status, "componentDidMount");
     await tick();
     expect(status.repeatLogin).toBe(true);
