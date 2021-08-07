@@ -13,6 +13,7 @@ import getConfig from "../../utils/get-config";
 import loadTranslation from "../../utils/load-translation";
 import PasswordConfirm from "./password-confirm";
 import translation from "../../test-translation.json";
+import PasswordToggleIcon from "../../utils/password-toggle";
 
 jest.mock("axios");
 jest.mock("../../utils/get-config");
@@ -245,5 +246,30 @@ describe("<PasswordConfirm /> interactions", () => {
   it("should set title", () => {
     const setTitleMock = wrapper.instance().props.setTitle.mock;
     expect(setTitleMock.calls.pop()).toEqual(["Reset Password", props.orgName]);
+  });
+  it("should toggle password icon for both password fields in PasswordToggleIcon", async () => {
+    const nodes = wrapper.find(PasswordToggleIcon);
+    expect(nodes.length).toEqual(2);
+    expect(nodes.at(0).props()).toEqual({
+      hidePassword: true,
+      inputRef: {current: null},
+      isVisible: false,
+      parentClassName: "",
+      secondInputRef: {current: null},
+      toggler: expect.any(Function),
+    });
+    expect(wrapper.instance().state.hidePassword).toEqual(true);
+    nodes.at(0).props().toggler();
+    expect(wrapper.instance().state.hidePassword).toEqual(false);
+    expect(nodes.at(1).props()).toEqual({
+      hidePassword: true,
+      inputRef: {current: null},
+      isVisible: false,
+      parentClassName: "",
+      secondInputRef: {current: null},
+      toggler: expect.any(Function),
+    });
+    nodes.at(1).props().toggler();
+    expect(wrapper.instance().state.hidePassword).toEqual(false);
   });
 });

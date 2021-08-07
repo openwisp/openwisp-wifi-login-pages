@@ -11,13 +11,12 @@ import logError from "../../utils/log-error";
 import tick from "../../utils/tick";
 import loadTranslation from "../../utils/load-translation";
 import PasswordChange from "./password-change";
-// import handleChange from "../../utils/handle-change";
+import PasswordToggleIcon from "../../utils/password-toggle";
 
 jest.mock("axios");
 jest.mock("../../utils/get-config");
 jest.mock("../../utils/log-error");
 jest.mock("../../utils/load-translation");
-// jest.mock("../../utils/handle-change");
 logError.mockImplementation(jest.fn());
 
 const defaultConfig = getConfig("default", true);
@@ -170,5 +169,30 @@ describe("<PasswordChange /> interactions", () => {
     wrapper.instance().handleChange = jest.fn();
     wrapper.find("input[name='newPassword2']").props().onChange(e);
     expect(wrapper.instance().handleChange).toHaveBeenCalledWith(e);
+  });
+  it("should toggle password icon for both password fields in PasswordToggleIcon", async () => {
+    const nodes = wrapper.find(PasswordToggleIcon);
+    expect(nodes.length).toEqual(2);
+    expect(nodes.at(0).props()).toEqual({
+      hidePassword: true,
+      inputRef: {current: null},
+      isVisible: false,
+      parentClassName: "",
+      secondInputRef: {current: null},
+      toggler: expect.any(Function),
+    });
+    expect(wrapper.instance().state.hidePassword).toEqual(true);
+    nodes.at(0).props().toggler();
+    expect(wrapper.instance().state.hidePassword).toEqual(false);
+    expect(nodes.at(1).props()).toEqual({
+      hidePassword: true,
+      inputRef: {current: null},
+      isVisible: false,
+      parentClassName: "",
+      secondInputRef: {current: null},
+      toggler: expect.any(Function),
+    });
+    nodes.at(1).props().toggler();
+    expect(wrapper.instance().state.hidePassword).toEqual(false);
   });
 });

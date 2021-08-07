@@ -24,6 +24,7 @@ export default class PasswordChange extends React.Component {
       newPassword1: "",
       newPassword2: "",
       errors: {},
+      hidePassword: true,
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -91,7 +92,7 @@ export default class PasswordChange extends React.Component {
 
   render() {
     const {passwordChange} = this.props;
-    const {errors, newPassword1, newPassword2} = this.state;
+    const {errors, newPassword1, newPassword2, hidePassword} = this.state;
     return (
       <div className="container content" id="password-change">
         <div className="inner">
@@ -132,6 +133,8 @@ export default class PasswordChange extends React.Component {
               <PasswordToggleIcon
                 inputRef={this.passwordToggleRef}
                 secondInputRef={this.confirmPasswordToggleRef}
+                hidePassword={hidePassword}
+                toggler={() => this.setState({hidePassword: !hidePassword})}
               />
             </div>
 
@@ -162,6 +165,8 @@ export default class PasswordChange extends React.Component {
               <PasswordToggleIcon
                 inputRef={this.confirmPasswordToggleRef}
                 secondInputRef={this.passwordToggleRef}
+                hidePassword={hidePassword}
+                toggler={() => this.setState({hidePassword: !hidePassword})}
               />
             </div>
 

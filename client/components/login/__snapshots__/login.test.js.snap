@@ -956,6 +956,7 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
               value=""
             />
             <PasswordToggleIcon
+              hidePassword={true}
               inputRef={
                 Object {
                   "current": null,
@@ -964,6 +965,7 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
               isVisible={false}
               parentClassName=""
               secondInputRef={Object {}}
+              toggler={[Function]}
             />
           </div>
           <div
@@ -1175,6 +1177,7 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
               value=""
             />
             <PasswordToggleIcon
+              hidePassword={true}
               inputRef={
                 Object {
                   "current": null,
@@ -1183,6 +1186,7 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
               isVisible={false}
               parentClassName=""
               secondInputRef={Object {}}
+              toggler={[Function]}
             />
           </div>
           <div
@@ -1394,6 +1398,7 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
               value=""
             />
             <PasswordToggleIcon
+              hidePassword={true}
               inputRef={
                 Object {
                   "current": null,
@@ -1402,6 +1407,7 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
               isVisible={false}
               parentClassName=""
               secondInputRef={Object {}}
+              toggler={[Function]}
             />
           </div>
           <div

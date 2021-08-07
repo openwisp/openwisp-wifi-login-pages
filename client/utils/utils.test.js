@@ -340,10 +340,13 @@ describe("password-toggle tests", () => {
         focus: jest.fn(),
       },
     };
+    const toggler = jest.fn();
     const wrapper = shallow(
       <PasswordToggleIcon
         inputRef={inputRef}
         secondInputRef={secondInputRef}
+        toggler={toggler}
+        hidePassword
       />,
     );
     wrapper.instance().handleClick(inputRef, secondInputRef);
@@ -368,6 +371,51 @@ describe("password-toggle tests", () => {
     );
     expect(focusMock).toHaveBeenCalled();
     expect(secondInputRef.current.focus).not.toHaveBeenCalled();
+    expect(toggler).toHaveBeenCalled();
+  });
+  it("should show icon", () => {
+    const setAttributeMock = jest.fn();
+    const getAttributeMock = jest.fn();
+    const focusMock = jest.fn();
+    const inputRef = {
+      current: {
+        getAttribute: getAttributeMock,
+        setAttribute: setAttributeMock,
+        focus: focusMock,
+      },
+    };
+    const secondInputRef = {
+      current: {
+        getAttribute: jest.fn(),
+        setAttribute: jest.fn(),
+        focus: jest.fn(),
+      },
+    };
+    const toggler = jest.fn();
+    let wrapper = shallow(
+      <PasswordToggleIcon
+        inputRef={inputRef}
+        secondInputRef={secondInputRef}
+        toggler={toggler}
+        hidePassword
+      />,
+    );
+    expect(
+      wrapper.contains(<i className="eye" title="reveal password" />),
+    ).toEqual(true);
+    wrapper = shallow(
+      <PasswordToggleIcon
+        inputRef={inputRef}
+        secondInputRef={secondInputRef}
+        toggler={toggler}
+        hidePassword={false}
+      />,
+    );
+    expect(
+      wrapper.contains(<i className="eye-slash" title="hide password" />),
+    ).toEqual(true);
+    wrapper.instance().handleClick(inputRef, secondInputRef);
+    expect(toggler).toHaveBeenCalled();
   });
 });
 describe("submit-on-enter tests", () => {
