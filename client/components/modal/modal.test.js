@@ -1,16 +1,20 @@
-import {shallow} from "enzyme";
+/* eslint-disable prefer-promise-reject-errors */
 /* eslint-disable camelcase */
+import {shallow} from "enzyme";
 import React from "react";
-import ShallowRenderer from "react-test-renderer/shallow";
-
+import axios from "axios";
 import getConfig from "../../utils/get-config";
 import Modal from "./modal";
 import {mapStateToProps} from "./index";
+import logError from "../../utils/log-error";
 
 jest.mock("../../utils/get-config");
+jest.mock("../../utils/log-error");
+jest.mock("axios");
 
 const defaultConfig = getConfig("default", true);
 const createTestProps = (props) => ({
+  orgSlug: "default",
   language: "en",
   privacyPolicy: defaultConfig.privacy_policy,
   termsAndConditions: defaultConfig.terms_and_conditions,
@@ -28,13 +32,28 @@ const createTestProps = (props) => ({
 
 describe("<Modal /> rendering", () => {
   let props;
-  it("should render terms-and-conditions correctly", () => {
+  it("should render terms-and-conditions correctly", async () => {
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        data: {
+          __html: "t&c modal content",
+        },
+      }),
+    );
     props = createTestProps();
-    const renderer = new ShallowRenderer();
-    const component = renderer.render(<Modal {...props} />);
+    const component = await shallow(<Modal {...props} />);
     expect(component).toMatchSnapshot();
   });
-  it("should render privacy-policy correctly", () => {
+  it("should render privacy-policy correctly", async () => {
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        data: {
+          __html: "privacy policy modal content",
+        },
+      }),
+    );
     props = createTestProps({
       match: {
         params: {
@@ -42,11 +61,18 @@ describe("<Modal /> rendering", () => {
         },
       },
     });
-    const renderer = new ShallowRenderer();
-    const component = renderer.render(<Modal {...props} />);
+    const component = await shallow(<Modal {...props} />);
     expect(component).toMatchSnapshot();
   });
-  it("should render nothing on incorrect param name", () => {
+  it("should render nothing on incorrect param name", async () => {
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        data: {
+          __html: "",
+        },
+      }),
+    );
     props = createTestProps({
       match: {
         params: {
@@ -54,32 +80,62 @@ describe("<Modal /> rendering", () => {
         },
       },
     });
-    const renderer = new ShallowRenderer();
-    const component = renderer.render(<Modal {...props} />);
+    const component = await shallow(<Modal {...props} />);
     expect(component).toMatchSnapshot();
+  });
+  it("should render nothing when request is bad", async () => {
+    axios.mockImplementationOnce(() =>
+      Promise.reject({
+        status: 500,
+        data: {},
+      }),
+    );
+    props = createTestProps();
+    const component = await shallow(<Modal {...props} />);
+    expect(component).toMatchSnapshot();
+    expect(logError).toHaveBeenCalledWith({
+      status: 500,
+      data: {},
+    });
   });
 });
 
 describe("<Modal /> interactions", () => {
   let props;
   let wrapper;
-  beforeEach(() => {
+  beforeEach(async () => {
     global.document.addEventListener = jest.fn();
     global.document.removeEventListener = jest.fn();
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        data: {
+          __html: "Modal Content",
+        },
+      }),
+    );
     props = createTestProps();
-    wrapper = shallow(<Modal {...props} />);
+    wrapper = await shallow(<Modal {...props} />);
   });
-  it("should call handleKeyDown function on Esc key press", () => {
+  it("should call handleKeyDown function on Esc key press", async () => {
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        data: {
+          __html: "Modal Content",
+        },
+      }),
+    );
     wrapper.instance().handleKeyDown({keyCode: 1});
     expect(props.history.push).toHaveBeenCalledTimes(0);
     wrapper.instance().handleKeyDown({keyCode: 27});
     expect(props.history.push).toHaveBeenCalledTimes(1);
-    wrapper.instance().componentDidMount();
-    wrapper.instance().componentWillUnmount();
+    await wrapper.instance().componentDidMount();
+    await wrapper.instance().componentWillUnmount();
     expect(global.document.addEventListener).toHaveBeenCalled();
     expect(global.document.removeEventListener).toHaveBeenCalled();
   });
-  it("should map state to props", () => {
+  it("should map state to props", async () => {
     const result = mapStateToProps(
       {
         organization: {

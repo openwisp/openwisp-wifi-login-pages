@@ -18,6 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use("/api/v1/:organization/account", routes.account);
 app.use("/api/v1/:organization/plans", routes.plans);
+app.use("/api/v1/:organization/modal", routes.modal);
 app.get("*", (req, res) => {
   res.sendFile(path.join(process.cwd(), "dist", "index.html"));
 });

@@ -4,10 +4,23 @@ import PropTypes from "prop-types";
 import React from "react";
 import {Link} from "react-router-dom";
 
+import axios from "axios";
 import getText from "../../utils/get-text";
+import {modalContentUrl} from "../../constants";
+import logError from "../../utils/log-error";
 
 export default class Modal extends React.Component {
-  componentDidMount() {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: true,
+      content: "",
+    };
+    this.renderContent = this.renderContent.bind(this);
+  }
+
+  async componentDidMount() {
+    await this.renderContent();
     document.addEventListener("keyup", this.handleKeyDown, false);
   }
 
@@ -15,15 +28,32 @@ export default class Modal extends React.Component {
     document.removeEventListener("keyup", this.handleKeyDown, false);
   }
 
-  renderContent = () => {
-    const {privacyPolicy, termsAndConditions, language, match} = this.props;
+  renderContent = async () => {
+    const {privacyPolicy, termsAndConditions, language, match, orgSlug} =
+      this.props;
     const {name} = match.params;
-    let content;
+    let file;
+    let response = {};
     if (name === "terms-and-conditions" && termsAndConditions)
-      content = getText(termsAndConditions, language);
+      file = getText(termsAndConditions, language);
     else if (name === "privacy-policy" && privacyPolicy)
-      content = getText(privacyPolicy, language);
-    return {__html: content};
+      file = getText(privacyPolicy, language);
+    try {
+      response = await axios({
+        method: "get",
+        headers: {
+          "content-type": "application/x-www-form-urlencoded",
+        },
+        url: modalContentUrl(orgSlug),
+        params: {
+          file,
+        },
+      });
+    } catch (err) {
+      logError(err);
+      response.data = {__html: ""};
+    }
+    this.setState({content: response.data, loading: false});
   };
 
   handleKeyDown = (event) => {
@@ -39,6 +69,7 @@ export default class Modal extends React.Component {
 
   render() {
     const {prevPath} = this.props;
+    const {loading, content} = this.state;
     return (
       <>
         <div className="modal is-visible pt-4">
@@ -46,18 +77,24 @@ export default class Modal extends React.Component {
             <Link to={prevPath} className="modal-close-btn">
               &#10006;
             </Link>
-            <div
-              className="message"
-              // eslint-disable-next-line react/no-danger
-              dangerouslySetInnerHTML={this.renderContent()}
-            />
+            {loading ? (
+              "Loading..."
+            ) : (
+              <div
+                className="message"
+                // eslint-disable-next-line react/no-danger
+                dangerouslySetInnerHTML={content}
+              />
+            )}
           </div>
         </div>
       </>
     );
   }
 }
+
 Modal.propTypes = {
+  orgSlug: PropTypes.string.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       name: PropTypes.string,
