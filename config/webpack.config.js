@@ -29,7 +29,7 @@ module.exports = (env, argv) => {
     }),
     new HardSourceWebpackPlugin(),
     new CompressionPlugin({
-      filename: "[name].[contenthash].gz[query]",
+      filename: "[name].gz[query]",
       algorithm: "gzip",
       test: /\.js$|\.css$|\.html$/,
       threshold: 10240,
@@ -88,7 +88,7 @@ module.exports = (env, argv) => {
     output: {
       filename:
         argv.mode === "development" ? "[name].js" : "[name].[contenthash].js",
-      chunkFilename: "[name].chunk.js",
+      chunkFilename: "[name].[contenthash].chunk.js",
       path: path.resolve(CURRENT_WORKING_DIR, "dist"),
       publicPath: "/",
       pathinfo: false,
