@@ -151,7 +151,7 @@ describe("test subscriptions", () => {
     expect(wrapper.find(".plan.inactive").length).toBe(1);
   });
 
-  it("don't show billing info only when requires_payment is false", () => {
+  it("should not show billing info only when requires_payment is false", () => {
     axios.mockImplementationOnce(() =>
       Promise.resolve({
         status: 201,
@@ -165,7 +165,7 @@ describe("test subscriptions", () => {
     expect(wrapper.find("input[name='username']").length).toBe(0);
   });
 
-  it("don't show billing info when requires_payment is true but requires_invoice is false", () => {
+  it("should not show billing info when requires_payment is true but requires_invoice is false", () => {
     axios.mockImplementationOnce(() =>
       Promise.resolve({
         status: 201,
@@ -179,7 +179,7 @@ describe("test subscriptions", () => {
     expect(wrapper.find("input[name='username']").length).toBe(0);
   });
 
-  it("show billing info when both requires_payment and requires_invoice is true", () => {
+  it("should show billing info when both requires_payment and requires_invoice is true", () => {
     axios.mockImplementationOnce(() =>
       Promise.resolve({
         status: 201,
