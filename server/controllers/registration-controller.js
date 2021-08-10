@@ -25,7 +25,7 @@ const registration = (req, res) => {
         delete postData.phone_number;
         postData.method = "";
       }
-      if (settings && settings.subscriptions && postData.billing_info) {
+      if (settings && settings.subscriptions) {
         postData.method = "bank_card";
       }
 

@@ -155,11 +155,12 @@ export default class Registration extends React.Component {
     if (selected_plan !== null) {
       plan_pricing = plans[selected_plan];
       postData.plan_pricing = plan_pricing.id;
+      postData.requires_payment = plan_pricing.requires_payment;
     }
     if (
       selected_plan !== null &&
       plan_pricing &&
-      plan_pricing.verifies_identity === true
+      plan_pricing.requires_invoice === true
     ) {
       postData.billing_info = JSON.parse(
         JSON.stringify({
@@ -311,9 +312,17 @@ export default class Registration extends React.Component {
   };
 
   isPlanIdentityVerifier = () => {
+    // If a payment is required, the plan is valid for identity verification
     const {selected_plan, plans} = this.state;
     return (
-      selected_plan !== null && plans[selected_plan].verifies_identity === true
+      selected_plan !== null && plans[selected_plan].requires_payment === true
+    );
+  };
+
+  doesPlanRequireInvoice = () => {
+    const {selected_plan, plans} = this.state;
+    return (
+      selected_plan !== null && plans[selected_plan].requires_invoice === true
     );
   };
 
@@ -455,7 +464,7 @@ export default class Registration extends React.Component {
                         />
                       </div>
 
-                      {this.isPlanIdentityVerifier() && (
+                      {this.doesPlanRequireInvoice() && (
                         <div className="row username">
                           <label htmlFor="username">
                             {input_fields.username.label
@@ -496,7 +505,7 @@ export default class Registration extends React.Component {
                       )}
 
                       {(input_fields.first_name.setting !== "disabled" ||
-                        (this.isPlanIdentityVerifier() &&
+                        (this.doesPlanRequireInvoice() &&
                           settings.subscriptions)) && (
                         <div className="row first_name">
                           <label htmlFor="first_name">
@@ -532,7 +541,7 @@ export default class Registration extends React.Component {
                       )}
 
                       {(input_fields.last_name.setting !== "disabled" ||
-                        (this.isPlanIdentityVerifier() &&
+                        (this.doesPlanRequireInvoice() &&
                           settings.subscriptions)) && (
                         <div className="row last_name">
                           <label htmlFor="last_name">
@@ -702,7 +711,7 @@ export default class Registration extends React.Component {
                         />
                       </div>
 
-                      {this.isPlanIdentityVerifier() && (
+                      {this.doesPlanRequireInvoice() && (
                         <>
                           <div className="billing-info">
                             <div className="row country">
