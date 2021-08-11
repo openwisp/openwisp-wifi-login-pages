@@ -151,7 +151,7 @@ describe("test subscriptions", () => {
     expect(wrapper.find(".plan.inactive").length).toBe(1);
   });
 
-  it("should not show billing info only when requires_payment is false", () => {
+  it("should not show billing info when requires_payment is false", () => {
     axios.mockImplementationOnce(() =>
       Promise.resolve({
         status: 201,
@@ -159,10 +159,13 @@ describe("test subscriptions", () => {
         data: plans,
       }),
     );
+    props.settings.mobile_phone_verification = true;
     wrapper = initShallow(props);
     wrapper.instance().setState({plans, selected_plan: 0, plansFetched: true});
     expect(wrapper.find(".billing-info").length).toBe(0);
     expect(wrapper.find("input[name='username']").length).toBe(0);
+    // phone_number field should be rendered since this plan does not verifies identity
+    expect(wrapper.find("input[name='phone_number']").length).toBe(1);
   });
 
   it("should not show billing info when requires_payment is true but requires_invoice is false", () => {
@@ -177,6 +180,8 @@ describe("test subscriptions", () => {
     wrapper.instance().setState({plans, selected_plan: 2, plansFetched: true});
     expect(wrapper.find(".billing-info").length).toBe(0);
     expect(wrapper.find("input[name='username']").length).toBe(0);
+    // phone_number field should not be rendered on plans that verifies identity
+    expect(wrapper.find("input[name='phone_number']").length).toBe(0);
   });
 
   it("should show billing info when both requires_payment and requires_invoice is true", () => {
@@ -191,6 +196,8 @@ describe("test subscriptions", () => {
     wrapper.instance().setState({plans, selected_plan: 1, plansFetched: true});
     expect(wrapper.find(".billing-info").length).toBe(1);
     expect(wrapper.find("input[name='username']").length).toBe(1);
+    // phone_number field should not be rendered on plans that verifies identity
+    expect(wrapper.find("input[name='phone_number']").length).toBe(0);
   });
 
   it("authenticate normally after registration with payment flow", async () => {
