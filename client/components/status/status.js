@@ -356,7 +356,7 @@ export default class Status extends React.Component {
         localStorage.removeItem(logoutMethodKey);
         return;
       }
-
+      setUserData(initialState.userData);
       setLoading(false);
     }
 
