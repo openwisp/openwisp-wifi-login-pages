@@ -12,6 +12,7 @@ import logError from "../../utils/log-error";
 import tick from "../../utils/tick";
 import Status from "./status";
 import validateToken from "../../utils/validate-token";
+import {initialState} from "../../reducers/organization";
 
 jest.mock("axios");
 jest.mock("../../utils/get-config");
@@ -793,7 +794,7 @@ describe("<Status /> interactions", () => {
     expect(status.props.logout).toHaveBeenCalled();
     expect(spyToast.mock.calls.length).toBe(1);
     expect(setLoading.mock.calls).toEqual([[true], [true], [false]]);
-    expect(setUserData).not.toHaveBeenCalled();
+    expect(setUserData).toHaveBeenCalledWith(initialState.userData);
     expect(Status.prototype.getUserActiveRadiusSessions.mock.calls.length).toBe(
       1,
     );
