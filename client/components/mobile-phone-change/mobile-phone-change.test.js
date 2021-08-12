@@ -402,4 +402,15 @@ describe("Change Phone Number: corner cases", () => {
     wrapper = await mountComponent(props);
     expect(wrapper.find(Redirect)).toHaveLength(0);
   });
+
+  it("should validate token", async () => {
+    wrapper = await mountComponent(props);
+    expect(validateToken).toHaveBeenCalledWith(
+      props.cookies,
+      props.orgSlug,
+      props.setUserData,
+      props.userData,
+      props.logout,
+    );
+  });
 });

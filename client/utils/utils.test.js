@@ -169,16 +169,22 @@ describe("Validate Token tests", () => {
     orgSlug: "default",
     cookies: new Cookies(),
     setUserData: jest.fn(),
-    userData: {is_active: true, is_verified: true},
+    userData: {is_active: true, is_verified: null, justAuthenticated: true},
     logout: jest.fn(),
   });
   it("should return false if token is not in the cookie", async () => {
     const {orgSlug, cookies, setUserData, userData, logout} = getArgs();
-    const result = await validateToken(cookies, orgSlug, setUserData, userData);
+    const result = await validateToken(
+      cookies,
+      orgSlug,
+      setUserData,
+      userData,
+      logout,
+    );
     expect(axios.mock.calls.length).toBe(0);
     expect(result).toBe(false);
-    expect(setUserData.mock.calls.length).toBe(0);
-    expect(logout.mock.calls.length).toBe(0);
+    expect(setUserData.mock.calls.length).toBe(1);
+    expect(logout.mock.calls.length).toBe(1);
   });
   it("should return true for success validation", async () => {
     axios.mockImplementationOnce(() =>
@@ -197,7 +203,13 @@ describe("Validate Token tests", () => {
     );
     const {orgSlug, cookies, setUserData, userData, logout} = getArgs();
     cookies.set(`${orgSlug}_auth_token`, "token");
-    const result = await validateToken(cookies, orgSlug, setUserData, userData);
+    const result = await validateToken(
+      cookies,
+      orgSlug,
+      setUserData,
+      userData,
+      logout,
+    );
     expect(axios).toHaveBeenCalled();
     expect(setUserData.mock.calls.length).toBe(1);
     expect(result).toBe(true);
@@ -206,7 +218,13 @@ describe("Validate Token tests", () => {
   it("should return true without calling api if radius token is present", async () => {
     const {orgSlug, cookies, setUserData, userData, logout} = getArgs();
     userData.radius_user_token = "token";
-    const result = await validateToken(cookies, orgSlug, setUserData, userData);
+    const result = await validateToken(
+      cookies,
+      orgSlug,
+      setUserData,
+      userData,
+      logout,
+    );
     expect(axios.mock.calls.length).toBe(0);
     expect(result).toBe(true);
     expect(setUserData.mock.calls.length).toBe(0);

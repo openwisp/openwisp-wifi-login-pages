@@ -64,6 +64,7 @@ describe("Test <PaymentStatus /> cases", () => {
       setLoading: PropTypes.func,
     };
     console.log = jest.fn();
+    console.error = jest.fn();
     loadTranslation("en", "default");
     validateToken.mockClear();
   });

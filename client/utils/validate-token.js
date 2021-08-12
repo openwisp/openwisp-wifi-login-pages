@@ -1,18 +1,10 @@
 import qs from "qs";
 import axios from "axios";
-import {toast} from "react-toastify";
 import {t} from "ttag";
 import {validateApiUrl} from "../constants";
 import handleSession from "./session";
 import logError from "./log-error";
-import {initialState} from "../reducers/organization";
-
-const handleLogout = (logout, cookies, orgSlug, setUserData) => {
-  logout(cookies, orgSlug);
-  toast.error(t`ERR_OCCUR`);
-  const {userData} = initialState;
-  setUserData(userData);
-};
+import handleLogout from "./handle-logout";
 
 const validateToken = async (
   cookies,
@@ -39,7 +31,7 @@ const validateToken = async (
         }),
       });
       if (response.data.response_code !== "AUTH_TOKEN_VALIDATION_SUCCESSFUL") {
-        handleLogout(logout, cookies, orgSlug, setUserData);
+        handleLogout(logout, cookies, orgSlug, setUserData, userData);
         logError(
           response,
           '"response_code" !== "AUTH_TOKEN_VALIDATION_SUCCESSFUL"',
@@ -49,7 +41,7 @@ const validateToken = async (
       setUserData(response.data);
       return true;
     } catch (error) {
-      handleLogout(logout, cookies, orgSlug, setUserData);
+      handleLogout(logout, cookies, orgSlug, setUserData, userData);
       logError(error, t`ERR_OCCUR`);
       return false;
     }
@@ -60,6 +52,7 @@ const validateToken = async (
   }
   // returns false if token is invalid or user data is empty
   else {
+    handleLogout(logout, cookies, orgSlug, setUserData, userData);
     return false;
   }
 };

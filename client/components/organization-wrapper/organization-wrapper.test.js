@@ -528,6 +528,8 @@ describe("Test <OrganizationWrapper /> routes", () => {
       privacy_policy,
       terms_and_conditions,
     };
+    console.error = jest.fn();
+    console.log = jest.fn();
   });
 
   afterEach(() => {

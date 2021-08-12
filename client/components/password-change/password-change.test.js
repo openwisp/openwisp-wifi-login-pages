@@ -12,11 +12,14 @@ import tick from "../../utils/tick";
 import loadTranslation from "../../utils/load-translation";
 import PasswordChange from "./password-change";
 import PasswordToggleIcon from "../../utils/password-toggle";
+import validateToken from "../../utils/validate-token";
 
 jest.mock("axios");
 jest.mock("../../utils/get-config");
 jest.mock("../../utils/log-error");
 jest.mock("../../utils/load-translation");
+jest.mock("../../utils/validate-token");
+jest.mock("../../utils/handle-logout");
 logError.mockImplementation(jest.fn());
 
 const defaultConfig = getConfig("default", true);
@@ -27,6 +30,9 @@ const createTestProps = (props) => ({
   passwordChange: defaultConfig.components.password_change_form,
   cookies: new Cookies(),
   setTitle: jest.fn(),
+  logout: jest.fn(),
+  userData: {},
+  setUserData: jest.fn(),
   ...props,
 });
 
@@ -194,5 +200,22 @@ describe("<PasswordChange /> interactions", () => {
     });
     nodes.at(1).props().toggler();
     expect(wrapper.instance().state.hidePassword).toEqual(false);
+  });
+  it("should validate token", async () => {
+    props = createTestProps();
+    PasswordChange.contextTypes = {
+      setLoading: PropTypes.func,
+      getLoading: PropTypes.func,
+    };
+    wrapper = await shallow(<PasswordChange {...props} />, {
+      context: {setLoading: jest.fn(), getLoading: jest.fn()},
+    });
+    expect(validateToken).toHaveBeenCalledWith(
+      props.cookies,
+      props.orgSlug,
+      props.setUserData,
+      props.userData,
+      props.logout,
+    );
   });
 });

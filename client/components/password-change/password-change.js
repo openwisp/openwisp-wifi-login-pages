@@ -16,6 +16,7 @@ import LoadingContext from "../../utils/loading-context";
 import logError from "../../utils/log-error";
 import handleChange from "../../utils/handle-change";
 import handleSession from "../../utils/session";
+import validateToken from "../../utils/validate-token";
 
 export default class PasswordChange extends React.Component {
   constructor(props) {
@@ -32,9 +33,11 @@ export default class PasswordChange extends React.Component {
     this.confirmPasswordToggleRef = React.createRef();
   }
 
-  componentDidMount() {
-    const {setTitle, orgName} = this.props;
+  async componentDidMount() {
+    const {setTitle, orgName, cookies, userData, setUserData, logout, orgSlug} =
+      this.props;
     setTitle(t`PWD_CHANGE_TITL`, orgName);
+    await validateToken(cookies, orgSlug, setUserData, userData, logout);
   }
 
   handleSubmit(e) {
@@ -203,4 +206,7 @@ PasswordChange.propTypes = {
     }),
   }).isRequired,
   setTitle: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
+  userData: PropTypes.object.isRequired,
+  setUserData: PropTypes.func.isRequired,
 };
