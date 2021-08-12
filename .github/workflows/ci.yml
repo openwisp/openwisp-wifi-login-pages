@@ -79,7 +79,7 @@ jobs:
       - name: Installing OpenWISP Radius
         run: |
           git clone https://github.com/openwisp/openwisp-radius/
-          cd openwisp-radius && pip install -e .
+          cd openwisp-radius && pip install -e .[saml]
           ./tests/manage.py migrate
 
       - name: Running OpenWISP Radius
