@@ -21,7 +21,7 @@ import handleChange from "../../utils/handle-change";
 import Contact from "../contact-box";
 import handleSession from "../../utils/session";
 import validateToken from "../../utils/validate-token";
-import {initialState} from "../../reducers/organization";
+import handleLogout from "../../utils/handle-logout";
 
 export default class MobilePhoneVerification extends React.Component {
   phoneTokenSentKey = "owPhoneTokenSent";
@@ -37,7 +37,6 @@ export default class MobilePhoneVerification extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.resendPhoneToken = this.resendPhoneToken.bind(this);
-    this.handleLogout = this.handleLogout.bind(this);
   }
 
   async componentDidMount() {
@@ -161,13 +160,6 @@ export default class MobilePhoneVerification extends React.Component {
       });
   }
 
-  async handleLogout() {
-    const {orgSlug, logout, cookies, setUserData} = this.props;
-    logout(cookies, orgSlug);
-    setUserData(initialState.userData);
-    toast.success(t`LOGOUT_SUCCESS`);
-  }
-
   async resendPhoneToken() {
     const {setLoading} = this.context;
     setLoading(true);
@@ -177,7 +169,14 @@ export default class MobilePhoneVerification extends React.Component {
 
   render() {
     const {code, errors, success, phone_number} = this.state;
-    const {orgSlug, mobile_phone_verification} = this.props;
+    const {
+      orgSlug,
+      mobile_phone_verification,
+      logout,
+      cookies,
+      setUserData,
+      userData,
+    } = this.props;
     const {input_fields} = mobile_phone_verification;
     return (
       <div className="container content" id="mobile-phone-verification">
@@ -254,7 +253,15 @@ export default class MobilePhoneVerification extends React.Component {
                 <button
                   type="button"
                   className="button full"
-                  onClick={this.handleLogout}
+                  onClick={() =>
+                    handleLogout(
+                      logout,
+                      cookies,
+                      orgSlug,
+                      setUserData,
+                      userData,
+                    )
+                  }
                 >
                   {t`LOGOUT`}
                 </button>

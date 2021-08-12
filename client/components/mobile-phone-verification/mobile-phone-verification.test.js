@@ -14,11 +14,13 @@ import MobilePhoneVerification from "./mobile-phone-verification";
 import validateToken from "../../utils/validate-token";
 import loadTranslation from "../../utils/load-translation";
 import logError from "../../utils/log-error";
+import handleLogout from "../../utils/handle-logout";
 
 jest.mock("../../utils/get-config");
 jest.mock("../../utils/validate-token");
 jest.mock("../../utils/load-translation");
 jest.mock("../../utils/log-error");
+jest.mock("../../utils/handle-logout");
 jest.mock("axios");
 
 const createTestProps = function (props, configName = "test-org-2") {
@@ -229,7 +231,6 @@ describe("Mobile Phone Token verification: standard flow", () => {
   });
 
   it("should log out successfully", async () => {
-    jest.spyOn(MobilePhoneVerification.prototype, "handleLogout");
     validateToken.mockReturnValue(true);
     jest.spyOn(toast, "success");
 
@@ -238,11 +239,14 @@ describe("Mobile Phone Token verification: standard flow", () => {
 
     wrapper.find(".logout .button").simulate("click");
     await tick();
-    expect(
-      MobilePhoneVerification.prototype.handleLogout.mock.calls.length,
-    ).toBe(1);
-    expect(wrapper.instance().props.logout.mock.calls.length).toBe(1);
-    expect(toast.success.mock.calls.length).toBe(1);
+    expect(handleLogout.mock.calls.length).toBe(1);
+    expect(handleLogout).toHaveBeenCalledWith(
+      props.logout,
+      props.cookies,
+      props.orgSlug,
+      props.setUserData,
+      props.userData,
+    );
   });
 
   it("should set title", async () => {

@@ -1207,4 +1207,26 @@ describe("<Status /> interactions", () => {
       value: "4e:ed:11:2b:17:ae",
     });
   });
+  it("should clear userData on logout", async () => {
+    validateToken.mockReturnValue(true);
+    const session = {start_time: "2021-07-08T00:22:28-04:00", stop_time: null};
+    const prop = createTestProps();
+    prop.userData.username = "sankalp";
+    const mockRef = {submit: jest.fn()};
+    wrapper = await shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    wrapper.instance().logoutFormRef = {current: mockRef};
+    wrapper.instance().logoutIframeRef = wrapper.instance().logoutFormRef;
+    wrapper
+      .instance()
+      .setState({sessionsToLogout: [session], activeSession: [session]});
+    await wrapper.instance().handleLogout(false);
+    expect(wrapper.instance().state.loggedOut).toEqual(true);
+    expect(mockRef.submit).toHaveBeenCalled(); // calls handleLogoutIframe
+    await tick();
+    wrapper.instance().handleLogoutIframe();
+    expect(prop.setUserData).toHaveBeenCalledWith(initialState.userData);
+  });
 });
