@@ -157,22 +157,20 @@ export default class Registration extends React.Component {
       postData.plan_pricing = plan_pricing.id;
       postData.requires_payment = plan_pricing.requires_payment;
     }
-    if (
-      selected_plan !== null &&
-      plan_pricing &&
-      plan_pricing.requires_invoice === true
-    ) {
-      postData.billing_info = JSON.parse(
-        JSON.stringify({
-          tax_number,
-          street,
-          city,
-          zipcode,
-          country,
-          name: `${first_name} ${last_name}`,
-        }),
-      );
+    if (selected_plan !== null && plan_pricing) {
       postData.username = username;
+      if (plan_pricing.requires_invoice === true) {
+        postData.billing_info = JSON.parse(
+          JSON.stringify({
+            tax_number,
+            street,
+            city,
+            zipcode,
+            country,
+            name: `${first_name} ${last_name}`,
+          }),
+        );
+      }
     }
     const body = JSON.parse(JSON.stringify(postData));
     setLoading(true);
@@ -464,7 +462,7 @@ export default class Registration extends React.Component {
                         />
                       </div>
 
-                      {this.doesPlanRequireInvoice() && (
+                      {this.isPlanIdentityVerifier() && (
                         <div className="row username">
                           <label htmlFor="username">
                             {input_fields.username.label
