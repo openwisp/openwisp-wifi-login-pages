@@ -47,6 +47,7 @@ export default class Registration extends React.Component {
       zipcode: "",
       country: "",
       countrySelected: {},
+      hidePassword: true,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -335,6 +336,7 @@ export default class Registration extends React.Component {
       city,
       zipcode,
       countrySelected,
+      hidePassword,
     } = this.state;
     const countries = countryList().getData();
     return (
@@ -633,7 +635,14 @@ export default class Registration extends React.Component {
                         ref={this.passwordToggleRef}
                         autoComplete="new-password"
                       />
-                      <PasswordToggleIcon inputRef={this.passwordToggleRef} />
+                      <PasswordToggleIcon
+                        inputRef={this.passwordToggleRef}
+                        secondInputRef={this.confirmPasswordToggleRef}
+                        hidePassword={hidePassword}
+                        toggler={() =>
+                          this.setState({hidePassword: !hidePassword})
+                        }
+                      />
                     </div>
 
                     <div className="row password-confirm">
@@ -664,6 +673,11 @@ export default class Registration extends React.Component {
                       />
                       <PasswordToggleIcon
                         inputRef={this.confirmPasswordToggleRef}
+                        secondInputRef={this.passwordToggleRef}
+                        hidePassword={hidePassword}
+                        toggler={() =>
+                          this.setState({hidePassword: !hidePassword})
+                        }
                       />
                     </div>
 

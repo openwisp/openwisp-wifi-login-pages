@@ -24,6 +24,7 @@ export default class PasswordChange extends React.Component {
       newPassword1: "",
       newPassword2: "",
       errors: {},
+      hidePassword: true,
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -91,7 +92,7 @@ export default class PasswordChange extends React.Component {
 
   render() {
     const {passwordChange} = this.props;
-    const {errors, newPassword1, newPassword2} = this.state;
+    const {errors, newPassword1, newPassword2, hidePassword} = this.state;
     return (
       <div className="container content" id="password-change">
         <div className="inner">
@@ -129,7 +130,12 @@ export default class PasswordChange extends React.Component {
                 ref={this.passwordToggleRef}
                 autoComplete="new-password"
               />
-              <PasswordToggleIcon inputRef={this.passwordToggleRef} />
+              <PasswordToggleIcon
+                inputRef={this.passwordToggleRef}
+                secondInputRef={this.confirmPasswordToggleRef}
+                hidePassword={hidePassword}
+                toggler={() => this.setState({hidePassword: !hidePassword})}
+              />
             </div>
 
             <div className="row password-confirm">
@@ -156,7 +162,12 @@ export default class PasswordChange extends React.Component {
                 ref={this.confirmPasswordToggleRef}
                 autoComplete="new-password"
               />
-              <PasswordToggleIcon inputRef={this.confirmPasswordToggleRef} />
+              <PasswordToggleIcon
+                inputRef={this.confirmPasswordToggleRef}
+                secondInputRef={this.passwordToggleRef}
+                hidePassword={hidePassword}
+                toggler={() => this.setState({hidePassword: !hidePassword})}
+              />
             </div>
 
             <div className="row submit">

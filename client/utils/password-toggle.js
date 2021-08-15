@@ -18,8 +18,12 @@ class PasswordToggleIcon extends React.PureComponent {
     });
   }
 
-  handleClick(inputRef) {
+  handleClick(inputRef, secondInputRef) {
     const {isVisible} = this.state;
+    const {toggler} = this.props;
+    if (Object.keys(secondInputRef).length !== 0) {
+      toggler();
+    }
     this.setState(
       {
         isVisible: !isVisible,
@@ -31,12 +35,21 @@ class PasswordToggleIcon extends React.PureComponent {
             ? "text"
             : "password",
         );
+        inputRef.current.focus();
+        if (Object.keys(secondInputRef).length !== 0)
+          secondInputRef.current.setAttribute(
+            "type",
+            secondInputRef.current.getAttribute("type") === "password"
+              ? "text"
+              : "password",
+          );
       },
     );
   }
 
   render() {
-    const {inputRef, parentClassName} = this.props;
+    const {inputRef, secondInputRef, parentClassName, hidePassword} =
+      this.props;
     const showPasswordIcon = () => <i className="eye" title={t`PWD_REVEAL`} />;
     const hidePasswordIcon = () => (
       <i className="eye-slash" title={t`PWD_HIDE`} />
@@ -44,15 +57,19 @@ class PasswordToggleIcon extends React.PureComponent {
     const {isVisible} = this.state;
     const hideVal = showPasswordIcon();
     const showVal = hidePasswordIcon();
+    let icon;
+    if (Object.keys(secondInputRef).length !== 0)
+      icon = hidePassword ? hideVal : showVal;
+    else icon = !isVisible ? hideVal : showVal;
     return (
       <div
         className={parentClassName}
-        onClick={() => this.handleClick(inputRef)}
+        onClick={() => this.handleClick(inputRef, secondInputRef)}
         role="button"
         tabIndex={0}
         onKeyDown={() => {}}
       >
-        {!isVisible ? hideVal : showVal}
+        {icon}
       </div>
     );
   }
@@ -62,11 +79,17 @@ export default PasswordToggleIcon;
 
 PasswordToggleIcon.defaultProps = {
   parentClassName: "",
+  secondInputRef: {},
   isVisible: false,
+  hidePassword: true,
+  toggler: () => {},
 };
 
 PasswordToggleIcon.propTypes = {
   inputRef: propTypes.object.isRequired,
+  secondInputRef: propTypes.object,
   parentClassName: propTypes.string,
   isVisible: propTypes.bool,
+  hidePassword: propTypes.bool,
+  toggler: propTypes.func,
 };

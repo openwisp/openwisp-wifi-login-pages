@@ -17,6 +17,7 @@ import getConfig from "../../utils/get-config";
 import loadTranslation from "../../utils/load-translation";
 import Registration from "./registration";
 import submitOnEnter from "../../utils/submit-on-enter";
+import PasswordToggleIcon from "../../utils/password-toggle";
 
 jest.mock("../../utils/get-config");
 jest.mock("../../utils/load-translation");
@@ -491,6 +492,35 @@ describe("Registration and Mobile Phone Verification interactions", () => {
       method: "post",
       url: "/api/v1/default/account/",
     });
+  });
+  it("should toggle password icon for both password fields in PasswordToggleIcon", async () => {
+    wrapper = shallow(<Registration {...props} />, {
+      context: loadingContextValue,
+      disableLifecycleMethods: true,
+    });
+    const nodes = wrapper.find(PasswordToggleIcon);
+    expect(nodes.length).toEqual(2);
+    expect(nodes.at(0).props()).toEqual({
+      hidePassword: true,
+      inputRef: {current: null},
+      isVisible: false,
+      parentClassName: "",
+      secondInputRef: {current: null},
+      toggler: expect.any(Function),
+    });
+    expect(wrapper.instance().state.hidePassword).toEqual(true);
+    nodes.at(0).props().toggler();
+    expect(wrapper.instance().state.hidePassword).toEqual(false);
+    expect(nodes.at(1).props()).toEqual({
+      hidePassword: true,
+      inputRef: {current: null},
+      isVisible: false,
+      parentClassName: "",
+      secondInputRef: {current: null},
+      toggler: expect.any(Function),
+    });
+    nodes.at(1).props().toggler();
+    expect(wrapper.instance().state.hidePassword).toEqual(false);
   });
 });
 

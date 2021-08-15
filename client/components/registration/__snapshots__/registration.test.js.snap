@@ -61,6 +61,7 @@ exports[`<Registration /> rendering should render correctly 1`] = `
               value=""
             />
             <PasswordToggleIcon
+              hidePassword={true}
               inputRef={
                 Object {
                   "current": null,
@@ -68,6 +69,12 @@ exports[`<Registration /> rendering should render correctly 1`] = `
               }
               isVisible={false}
               parentClassName=""
+              secondInputRef={
+                Object {
+                  "current": null,
+                }
+              }
+              toggler={[Function]}
             />
           </div>
           <div
@@ -92,6 +99,7 @@ exports[`<Registration /> rendering should render correctly 1`] = `
               value=""
             />
             <PasswordToggleIcon
+              hidePassword={true}
               inputRef={
                 Object {
                   "current": null,
@@ -99,6 +107,12 @@ exports[`<Registration /> rendering should render correctly 1`] = `
               }
               isVisible={false}
               parentClassName=""
+              secondInputRef={
+                Object {
+                  "current": null,
+                }
+              }
+              toggler={[Function]}
             />
           </div>
         </div>
@@ -216,6 +230,7 @@ exports[`<Registration /> rendering with placeholder translation tags should ren
               value=""
             />
             <PasswordToggleIcon
+              hidePassword={true}
               inputRef={
                 Object {
                   "current": null,
@@ -223,6 +238,12 @@ exports[`<Registration /> rendering with placeholder translation tags should ren
               }
               isVisible={false}
               parentClassName=""
+              secondInputRef={
+                Object {
+                  "current": null,
+                }
+              }
+              toggler={[Function]}
             />
           </div>
           <div
@@ -247,6 +268,7 @@ exports[`<Registration /> rendering with placeholder translation tags should ren
               value=""
             />
             <PasswordToggleIcon
+              hidePassword={true}
               inputRef={
                 Object {
                   "current": null,
@@ -254,6 +276,12 @@ exports[`<Registration /> rendering with placeholder translation tags should ren
               }
               isVisible={false}
               parentClassName=""
+              secondInputRef={
+                Object {
+                  "current": null,
+                }
+              }
+              toggler={[Function]}
             />
           </div>
         </div>

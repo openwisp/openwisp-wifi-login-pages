@@ -23,6 +23,7 @@ export default class PasswordConfirm extends React.Component {
       newPassword2: "",
       errors: {},
       success: false,
+      hidePassword: true,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -99,7 +100,8 @@ export default class PasswordConfirm extends React.Component {
   }
 
   render() {
-    const {newPassword1, newPassword2, errors, success} = this.state;
+    const {newPassword1, newPassword2, errors, success, hidePassword} =
+      this.state;
     const {passwordConfirm, orgSlug} = this.props;
     const inputFields = passwordConfirm.input_fields;
     const loginPageLink = passwordConfirm.login_page_link;
@@ -162,7 +164,12 @@ export default class PasswordConfirm extends React.Component {
                     ref={this.passwordToggleRef}
                     autoComplete="new-password"
                   />
-                  <PasswordToggleIcon inputRef={this.passwordToggleRef} />
+                  <PasswordToggleIcon
+                    inputRef={this.passwordToggleRef}
+                    secondInputRef={this.confirmPasswordToggleRef}
+                    hidePassword={hidePassword}
+                    toggler={() => this.setState({hidePassword: !hidePassword})}
+                  />
                 </div>
 
                 <div className="row password-confirm">
@@ -191,6 +198,9 @@ export default class PasswordConfirm extends React.Component {
                   />
                   <PasswordToggleIcon
                     inputRef={this.confirmPasswordToggleRef}
+                    secondInputRef={this.passwordToggleRef}
+                    hidePassword={hidePassword}
+                    toggler={() => this.setState({hidePassword: !hidePassword})}
                   />
                 </div>
               </div>
