@@ -28,13 +28,6 @@ module.exports = (env, argv) => {
       template: path.resolve(CURRENT_WORKING_DIR, "public/index.html"),
     }),
     new HardSourceWebpackPlugin(),
-    new CompressionPlugin({
-      filename: "[name].gz[query]",
-      algorithm: "gzip",
-      test: /\.js$|\.css$|\.html$/,
-      threshold: 10240,
-      minRatio: 0.7,
-    }),
     new CopyPlugin({
       patterns: [
         {
@@ -42,6 +35,11 @@ module.exports = (env, argv) => {
           to: path.resolve(CURRENT_WORKING_DIR, "dist/assets"),
         },
       ],
+    }),
+    new CompressionPlugin({
+      filename: "[path][base].gz",
+      test: /\.(js|css|html|svg|json)$/,
+      minRatio: 0.7,
     }),
   ];
 
@@ -62,8 +60,7 @@ module.exports = (env, argv) => {
     plugins.push(
       new BrotliPlugin({
         asset: "[path].br[query]",
-        test: /\.js$|\.css$|\.html$/,
-        threshold: 10240,
+        test: /\.(js|css|html|svg|json)$/,
         minRatio: 0.7,
       }),
     );
@@ -156,22 +153,6 @@ module.exports = (env, argv) => {
         automaticNameDelimiter: "~",
         name: true,
         cacheGroups: {
-          styles: {
-            name(module) {
-              const match = module.context.match(/[\\/](.*).css/);
-
-              if (!match) {
-                return false;
-              }
-
-              const moduleName = match[1];
-
-              return moduleName;
-            },
-            test: /\.css$/,
-            chunks: "all",
-            enforce: true,
-          },
           vendors: {
             test: /[\\/]node_modules[\\/]/,
             priority: -10,
