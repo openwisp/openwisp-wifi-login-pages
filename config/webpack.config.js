@@ -10,6 +10,8 @@ const path = require("path");
 const TerserPlugin = require("terser-webpack-plugin");
 const setup = require("./setup");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
 const CURRENT_WORKING_DIR = process.cwd();
 const DEFAULT_PORT = 8080;
@@ -43,6 +45,8 @@ module.exports = (env, argv) => {
     }),
   ];
 
+  let cssLoaders = ["style-loader", "css-loader"];
+
   if (process.env.STATS)
     plugins.push(
       new BundleAnalyzerPlugin({
@@ -52,11 +56,26 @@ module.exports = (env, argv) => {
     );
 
   if (argv.mode === "production") {
+    cssLoaders = [MiniCssExtractPlugin.loader, "css-loader"];
     minimizers = [
+      new OptimizeCssAssetsPlugin(),
       new TerserPlugin(),
       new UglifyJsPlugin({parallel: true, extractComments: true}),
     ];
     setup.removeDefaultConfig();
+    plugins.push(
+      new HardSourceWebpackPlugin.ExcludeModulePlugin([
+        {
+          test: /mini-css-extract-plugin[\\/]dist[\\/]loader/,
+        },
+      ]),
+    );
+    plugins.push(
+      new MiniCssExtractPlugin({
+        filename: "[name].[contentHash].css",
+        ignoreOrder: true,
+      }),
+    );
     plugins.push(
       new BrotliPlugin({
         asset: "[path].br[query]",
@@ -104,7 +123,7 @@ module.exports = (env, argv) => {
         },
         {
           test: /\.css$/,
-          use: ["style-loader", "css-loader"],
+          use: cssLoaders,
         },
         {
           test: /\.(eot|svg|ttf|woff|woff2)$/,
