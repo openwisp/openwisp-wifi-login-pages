@@ -1,0 +1,51 @@
+.plans input {
+  float: right;
+  opacity: 0;
+}
+
+.plans .plan {
+  margin: 0 0 10px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 5px;
+}
+.plan:hover,
+.plan.active {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.plans .plan label {
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.plans .plan:last-child {
+  margin: 0;
+}
+
+.plans span.title {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.plans span,
+.plans label {
+  display: block;
+  font-weight: normal;
+}
+
+.plans span.price {
+  text-align: right;
+  font-weight: bold;
+}
+
+.plans .inactive label {
+  opacity: 0.4;
+}
+
+.plans .inactive label:hover {
+  opacity: 1;
+}
+
+.plans .active label {
+  cursor: default;
+}

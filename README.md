@@ -377,7 +377,81 @@ login_form:
 
 #### Configuring Social Login
 
-In order to enable users to log via third-party services like Google and Facebook, the ["Social Login" feature of OpenWISP Radius](https://openwisp-radius.readthedocs.io/en/latest/user/social_login.html) must be configured and enabled.
+In order to enable users to log via third-party services like Google and Facebook,
+the ["Social Login" feature of OpenWISP Radius](https://openwisp-radius.readthedocs.io/en/latest/user/social_login.html)
+must be configured and enabled.
+
+#### Custom HTML
+
+It is possible to inject custom HTML in different languages in several parts
+of the application if needed.
+
+##### Second logo
+
+```yaml
+header:
+  logo:
+    url: "logo1.png"
+    alternate_text: "logo1"
+  second_logo:
+    url: "logo2.png"
+    alternate_text: "logo2"
+```
+
+##### Login page
+
+```yaml
+login_form:
+  intro_html:
+    en: >
+      <div class="pre">
+        Shown before the main content in the login page.
+      </div>
+  pre_html:
+    en: >
+      <div class="intro">
+        Shown at the beginning of the login content box.
+      </div>
+  help_html:
+    en: >
+      <div class="intro">
+        Shown above the login form, after social login buttons.
+        Can be used to write custom help labels.
+      </div>
+  after_html:
+    en: >
+      <div class="intro">
+        Shown at the end of the login content box.
+      </div>
+```
+
+##### Contact box
+
+```yaml
+contact_page:
+  pre_html:
+    en: >
+      <div class="contact">
+        Shown at the beginning of the contact box.
+      </div>
+  after_html:
+    en: >
+      <div class="contact">
+        Shown at the end of the contact box.
+      </div>
+```
+
+##### Footer
+
+```yaml
+footer:
+  after_html:
+    en: >
+      <div class="contact">
+        Shown at the bottom of the footer.
+        Can be used to display copyright information, links to cookie policy, etc.
+      </div>
+```
 
 #### Configuring SAML Login & Logout
 

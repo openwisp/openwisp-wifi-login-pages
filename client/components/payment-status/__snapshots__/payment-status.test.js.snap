@@ -11,41 +11,45 @@ exports[`<PaymentStatus /> rendering with placeholder translation tags should re
     <div
       className="main-column"
     >
-      <h2
-        className="row payment-status-row-1"
-      >
-        PAY_H
-        : 
-        failed
-      </h2>
       <div
-        className="row payment-status-row-2"
+        className="inner"
       >
-        PAY_SUB_H
-      </div>
-      <div
-        className="row payment-status-row-3"
-      >
-        <Link
-          className="button full"
-          to="/default/status"
+        <h2
+          className="row payment-status-row-1"
         >
-          PAY_TRY_AGAIN_BTN
-        </Link>
-      </div>
-      <div
-        className="row payment-status-row-4"
-      >
-        <p>
-          PAY_GIVE_UP_TXT
-        </p>
-        <Link
-          className="button full"
-          onClick={[Function]}
-          to="/default/status"
+          PAY_H
+          : 
+          failed
+        </h2>
+        <div
+          className="row payment-status-row-2"
         >
-          PAY_GIVE_UP_BTN
-        </Link>
+          PAY_SUB_H
+        </div>
+        <div
+          className="row payment-status-row-3"
+        >
+          <Link
+            className="button full"
+            to="/default/status"
+          >
+            PAY_TRY_AGAIN_BTN
+          </Link>
+        </div>
+        <div
+          className="row payment-status-row-4"
+        >
+          <p>
+            PAY_GIVE_UP_TXT
+          </p>
+          <Link
+            className="button full"
+            onClick={[Function]}
+            to="/default/status"
+          >
+            PAY_GIVE_UP_BTN
+          </Link>
+        </div>
       </div>
     </div>
     <Memo(Connect(Contact)) />
@@ -64,41 +68,45 @@ exports[`Test <PaymentStatus /> cases should render failed state 1`] = `
     <div
       className="main-column"
     >
-      <h2
-        className="row payment-status-row-1"
-      >
-        Payment
-        : 
-        failed
-      </h2>
       <div
-        className="row payment-status-row-2"
+        className="inner"
       >
-        Something went wrong with the payment.
-      </div>
-      <div
-        className="row payment-status-row-3"
-      >
-        <Link
-          className="button full"
-          to="/default/status"
+        <h2
+          className="row payment-status-row-1"
         >
-          Try again
-        </Link>
-      </div>
-      <div
-        className="row payment-status-row-4"
-      >
-        <p>
-          If you cannot complete the transaction you can either try to get in touch with your bank or cancel the operation.
-        </p>
-        <Link
-          className="button full"
-          onClick={[Function]}
-          to="/default/status"
+          Payment
+          : 
+          failed
+        </h2>
+        <div
+          className="row payment-status-row-2"
         >
-          Cancel operation and log out
-        </Link>
+          Something went wrong with the payment.
+        </div>
+        <div
+          className="row payment-status-row-3"
+        >
+          <Link
+            className="button full"
+            to="/default/status"
+          >
+            Try again
+          </Link>
+        </div>
+        <div
+          className="row payment-status-row-4"
+        >
+          <p>
+            If you cannot complete the transaction you can either try to get in touch with your bank or cancel the operation.
+          </p>
+          <Link
+            className="button full"
+            onClick={[Function]}
+            to="/default/status"
+          >
+            Cancel operation and log out
+          </Link>
+        </div>
       </div>
     </div>
     <Connect(Contact) />

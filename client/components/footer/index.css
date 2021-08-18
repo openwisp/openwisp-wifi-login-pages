@@ -41,13 +41,11 @@
   flex-grow: 1;
   max-width: 1000px;
   margin-top: 4px;
+  margin-top: 10px;
+  color: #ffffff;
 }
 .footer-row-2-inner {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  color: #cccccc;
+  display: block;
+  text-align: center;
   font-size: smaller;
 }

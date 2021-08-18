@@ -12,19 +12,23 @@ exports[`<Logout /> rendering should render correctly 1`] = `
       <div
         className="main-column w-100"
       >
-        <h2>
-          Logout successful
-        </h2>
         <div
-          className="links row"
+          className="inner"
         >
-          <Link
-            className="button partial"
-            onClick={[Function]}
-            to="/default/status"
+          <h2>
+            Logout successful
+          </h2>
+          <div
+            className="links row"
           >
-            Log in again
-          </Link>
+            <Link
+              className="button partial"
+              onClick={[Function]}
+              to="/default/status"
+            >
+              Log in again
+            </Link>
+          </div>
         </div>
       </div>
     </div>
@@ -44,19 +48,23 @@ exports[`<Logout /> rendering with placeholder translation tags should render tr
       <div
         className="main-column w-100"
       >
-        <h2>
-          LOGOUT_CONTENT
-        </h2>
         <div
-          className="links row"
+          className="inner"
         >
-          <Link
-            className="button partial"
-            onClick={[Function]}
-            to="/default/status"
+          <h2>
+            LOGOUT_CONTENT
+          </h2>
+          <div
+            className="links row"
           >
-            LOGIN AGAIN
-          </Link>
+            <Link
+              className="button partial"
+              onClick={[Function]}
+              to="/default/status"
+            >
+              LOGIN AGAIN
+            </Link>
+          </div>
         </div>
       </div>
     </div>

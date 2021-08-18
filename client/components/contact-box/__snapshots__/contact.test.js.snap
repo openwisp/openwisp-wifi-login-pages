@@ -7,6 +7,7 @@ exports[`<Contact /> rendering with placeholder translation tags should render t
   <div
     className="inner"
   >
+    
     <div
       className="row"
     >
@@ -67,6 +68,7 @@ exports[`<Contact /> rendering with placeholder translation tags should render t
         />
       </a>
     </div>
+    
   </div>
 </div>
 `;
@@ -78,6 +80,7 @@ exports[`<Status /> rendering should render correctly 1`] = `
   <div
     className="inner"
   >
+    
     <div
       className="row"
     >
@@ -138,6 +141,7 @@ exports[`<Status /> rendering should render correctly 1`] = `
         />
       </a>
     </div>
+    
   </div>
 </div>
 `;

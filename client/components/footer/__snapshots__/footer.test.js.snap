@@ -11,10 +11,9 @@ exports[`<Footer /> rendering should render correctly 1`] = `
       className="footer-row-1-inner"
     >
       <a
-        className="footer-link
-                  footer-link-1"
+        className="footer-link "
         href="https://link-1.com"
-        rel="noreferrer noopener"
+        rel="noopener noreferrer"
         target="_blank"
       >
         link-1
@@ -26,9 +25,12 @@ exports[`<Footer /> rendering should render correctly 1`] = `
   >
     <div
       className="footer-row-2-inner"
-    >
-       
-    </div>
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "after html",
+        }
+      }
+    />
   </div>
 </div>
 `;
@@ -44,11 +46,10 @@ exports[`<Footer /> rendering with placeholder translation tags should render tr
       className="footer-row-1-inner"
     >
       <a
-        className="footer-link
-                  footer-link-1"
+        className="footer-link "
         href="https://link-1.com"
         key="https://link-1.com"
-        rel="noreferrer noopener"
+        rel="noopener noreferrer"
         target="_blank"
       >
         link-1
@@ -60,9 +61,12 @@ exports[`<Footer /> rendering with placeholder translation tags should render tr
   >
     <div
       className="footer-row-2-inner"
-    >
-      FOOTER_SECONDARY_TXT
-    </div>
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "after html",
+        }
+      }
+    />
   </div>
 </div>
 `;

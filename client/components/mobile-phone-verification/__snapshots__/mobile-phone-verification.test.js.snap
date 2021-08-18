@@ -11,88 +11,92 @@ exports[`<MobilePhoneVerification /> rendering with placeholder translation tags
     <div
       className="main-column"
     >
-      <form
-        className=""
-        onSubmit={[Function]}
+      <div
+        className="inner"
       >
+        <form
+          className=""
+          onSubmit={[Function]}
+        >
+          <div
+            className="row fieldset code"
+          >
+            <p
+              className="label"
+            >
+              PHONE_VERIFY ()
+            </p>
+            <div
+              className="row"
+            >
+              <input
+                className="input "
+                id="code"
+                name="code"
+                onChange={[Function]}
+                pattern="[0-9]{6,}"
+                placeholder="MOBILE_CODE_PHOLD"
+                required={true}
+                title="MOBILE_CODE_TITL"
+                type="text"
+                value=""
+              />
+            </div>
+            <button
+              className="button full"
+              type="submit"
+            >
+              MOBILE_PHONE_VERIFY
+            </button>
+          </div>
+        </form>
         <div
-          className="row fieldset code"
+          className="row fieldset resend"
         >
           <p
             className="label"
           >
-            PHONE_VERIFY ()
+            RESEND_TOKEN_LBL
           </p>
-          <div
-            className="row"
-          >
-            <input
-              className="input "
-              id="code"
-              name="code"
-              onChange={[Function]}
-              pattern="[0-9]{6,}"
-              placeholder="MOBILE_CODE_PHOLD"
-              required={true}
-              title="MOBILE_CODE_TITL"
-              type="text"
-              value=""
-            />
-          </div>
           <button
             className="button full"
-            type="submit"
+            onClick={[Function]}
+            type="button"
           >
-            MOBILE_PHONE_VERIFY
+            RESEND_TOKEN
           </button>
         </div>
-      </form>
-      <div
-        className="row fieldset resend"
-      >
-        <p
-          className="label"
+        <div
+          className="row fieldset change"
         >
-          RESEND_TOKEN_LBL
-        </p>
-        <button
-          className="button full"
-          onClick={[Function]}
-          type="button"
+          <p
+            className="label"
+          >
+            PHONE_CHANGE_LBL
+          </p>
+          <a
+            className="button full"
+            href="/test-org-2/change-phone-number"
+          >
+            PHONE_CHANGE_BTN
+          </a>
+        </div>
+        <div
+          className="row fieldset logout"
         >
-          RESEND_TOKEN
-        </button>
-      </div>
-      <div
-        className="row fieldset change"
-      >
-        <p
-          className="label"
-        >
-          PHONE_CHANGE_LBL
-        </p>
-        <a
-          className="button full"
-          href="/test-org-2/change-phone-number"
-        >
-          PHONE_CHANGE_BTN
-        </a>
-      </div>
-      <div
-        className="row fieldset logout"
-      >
-        <p
-          className="label"
-        >
-          LOGOUT_LBL
-        </p>
-        <button
-          className="button full"
-          onClick={[Function]}
-          type="button"
-        >
-          LOGOUT
-        </button>
+          <p
+            className="label"
+          >
+            LOGOUT_LBL
+          </p>
+          <button
+            className="button full"
+            onClick={[Function]}
+            type="button"
+          >
+            LOGOUT
+          </button>
+        </div>
       </div>
     </div>
     <Memo(Connect(Contact)) />
@@ -111,88 +115,92 @@ exports[`Mobile Phone Token verification: standard flow should render successful
     <div
       className="main-column"
     >
-      <form
-        className=""
-        onSubmit={[Function]}
+      <div
+        className="inner"
       >
+        <form
+          className=""
+          onSubmit={[Function]}
+        >
+          <div
+            className="row fieldset code"
+          >
+            <p
+              className="label"
+            >
+              Verify your mobile phone number (+393660011222) by inserting the code you received via SMS below.
+            </p>
+            <div
+              className="row"
+            >
+              <input
+                className="input "
+                id="code"
+                name="code"
+                onChange={[Function]}
+                pattern="[0-9]{6,}"
+                placeholder="enter SMS verification code"
+                required={true}
+                title="this field must be a 6 digit numeric code"
+                type="text"
+                value=""
+              />
+            </div>
+            <button
+              className="button full"
+              type="submit"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
         <div
-          className="row fieldset code"
+          className="row fieldset resend"
         >
           <p
             className="label"
           >
-            Verify your mobile phone number (+393660011222) by inserting the code you received via SMS below.
+            If you did not receive the verification SMS code, you can try sending it again by clicking below.
           </p>
-          <div
-            className="row"
-          >
-            <input
-              className="input "
-              id="code"
-              name="code"
-              onChange={[Function]}
-              pattern="[0-9]{6,}"
-              placeholder="enter SMS verification code"
-              required={true}
-              title="this field must be a 6 digit numeric code"
-              type="text"
-              value=""
-            />
-          </div>
           <button
             className="button full"
-            type="submit"
+            onClick={[Function]}
+            type="button"
           >
-            Submit
+            Send a new verification code
           </button>
         </div>
-      </form>
-      <div
-        className="row fieldset resend"
-      >
-        <p
-          className="label"
+        <div
+          className="row fieldset change"
         >
-          If you did not receive the verification SMS code, you can try sending it again by clicking below.
-        </p>
-        <button
-          className="button full"
-          onClick={[Function]}
-          type="button"
+          <p
+            className="label"
+          >
+            Wrong phone number?
+          </p>
+          <a
+            className="button full"
+            href="/test-org-2/change-phone-number"
+          >
+            Change your phone number
+          </a>
+        </div>
+        <div
+          className="row fieldset logout"
         >
-          Send a new verification code
-        </button>
-      </div>
-      <div
-        className="row fieldset change"
-      >
-        <p
-          className="label"
-        >
-          Wrong phone number?
-        </p>
-        <a
-          className="button full"
-          href="/test-org-2/change-phone-number"
-        >
-          Change your phone number
-        </a>
-      </div>
-      <div
-        className="row fieldset logout"
-      >
-        <p
-          className="label"
-        >
-          If you need to cancel the process you can log out below.
-        </p>
-        <button
-          className="button full"
-          onClick={[Function]}
-          type="button"
-        >
-          Logout
-        </button>
+          <p
+            className="label"
+          >
+            If you need to cancel the process you can log out below.
+          </p>
+          <button
+            className="button full"
+            onClick={[Function]}
+            type="button"
+          >
+            Logout
+          </button>
+        </div>
       </div>
     </div>
     <Connect(Contact) />

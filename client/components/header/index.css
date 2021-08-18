@@ -144,11 +144,10 @@
   }
   .header-mobile-menu {
     transition: 0.25s all ease-in-out;
-
     flex-direction: column;
     background: #555;
     align-items: center;
-    padding: 20px 0;
+    padding: 20px 0 0;
   }
   .header-mobile-menu > .header-link {
     margin: 6px 0;
