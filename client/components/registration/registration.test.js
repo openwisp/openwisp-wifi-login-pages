@@ -648,7 +648,7 @@ describe("Registration without identity verification (Email registration)", () =
   it("should change selected_plan on changePlan execution", async () => {
     wrapper = await mountComponent(props);
     const component = wrapper.find(Registration);
-    component.instance().setState({plans: [{verifies_identity: true}]});
+    component.instance().setState({plans: [{requires_payment: true}]});
     const changeEvent = {
       target: {
         value: 0,
