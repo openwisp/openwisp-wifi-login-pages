@@ -125,7 +125,7 @@ describe("test subscriptions", () => {
     wrapper.instance().setState({plans, plansFetched: true});
     expect(wrapper.find("input[name='plan_selection']").length).toBe(3);
     expect(lastConsoleOutuput).toBe(null);
-    expect(wrapper.find(".plan").length).toBe(2);
+    expect(wrapper.find(".plan").length).toBe(3);
     expect(wrapper.find("#radio0").exists()).toBe(true);
     expect(wrapper.find("#radio1").exists()).toBe(true);
 
@@ -140,7 +140,7 @@ describe("test subscriptions", () => {
     expect(wrapper.find(".row.email").exists()).toBe(true);
     expect(wrapper.find(".row.username").exists()).toBe(false);
     expect(wrapper.find(".plan.active").length).toBe(1);
-    expect(wrapper.find(".plan.inactive").length).toBe(1);
+    expect(wrapper.find(".plan.inactive").length).toBe(2);
 
     // show second plan
     wrapper.find("#radio1").simulate("focus", {target: {value: "1"}});
@@ -148,7 +148,7 @@ describe("test subscriptions", () => {
     expect(wrapper.find(".row.email").exists()).toBe(true);
     expect(wrapper.find(".row.username").exists()).toBe(true);
     expect(wrapper.find(".plan.active").length).toBe(1);
-    expect(wrapper.find(".plan.inactive").length).toBe(1);
+    expect(wrapper.find(".plan.inactive").length).toBe(2);
   });
 
   it("should not show billing info when requires_payment is false", () => {
