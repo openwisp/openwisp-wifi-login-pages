@@ -40,7 +40,8 @@ const plans = [
     pricing: "no expiration (free) (0 days)",
     plan_description: "3 hours per day\n300 MB per day",
     currency: "EUR",
-    verifies_identity: false,
+    requires_payment: false,
+    requires_invoice: false,
     price: "0.00",
     has_automatic_renewal: false,
   },
@@ -50,8 +51,20 @@ const plans = [
     pricing: "per year (365 days)",
     plan_description: "Unlimited time and traffic",
     currency: "EUR",
-    verifies_identity: true,
+    requires_payment: true,
+    requires_invoice: true,
     price: "9.99",
+    has_automatic_renewal: false,
+  },
+  {
+    id: "363c9ba3-3354-48a5-a3e3-86062b070036",
+    plan: "Free (used for identity verification)",
+    pricing: "no expiration (free) (0 days)",
+    plan_description: "3 hours per day\n300 MB per day",
+    currency: "EUR",
+    requires_payment: true,
+    requires_invoice: false,
+    price: "0.00",
     has_automatic_renewal: false,
   },
 ];
@@ -110,9 +123,9 @@ describe("test subscriptions", () => {
     );
     wrapper = initShallow(props);
     wrapper.instance().setState({plans, plansFetched: true});
-    expect(wrapper.find("input[name='plan_selection']").length).toBe(2);
+    expect(wrapper.find("input[name='plan_selection']").length).toBe(3);
     expect(lastConsoleOutuput).toBe(null);
-    expect(wrapper.find(".plan").length).toBe(2);
+    expect(wrapper.find(".plan").length).toBe(3);
     expect(wrapper.find("#radio0").exists()).toBe(true);
     expect(wrapper.find("#radio1").exists()).toBe(true);
 
@@ -127,7 +140,7 @@ describe("test subscriptions", () => {
     expect(wrapper.find(".row.email").exists()).toBe(true);
     expect(wrapper.find(".row.username").exists()).toBe(false);
     expect(wrapper.find(".plan.active").length).toBe(1);
-    expect(wrapper.find(".plan.inactive").length).toBe(1);
+    expect(wrapper.find(".plan.inactive").length).toBe(2);
 
     // show second plan
     wrapper.find("#radio1").simulate("focus", {target: {value: "1"}});
@@ -135,10 +148,27 @@ describe("test subscriptions", () => {
     expect(wrapper.find(".row.email").exists()).toBe(true);
     expect(wrapper.find(".row.username").exists()).toBe(true);
     expect(wrapper.find(".plan.active").length).toBe(1);
-    expect(wrapper.find(".plan.inactive").length).toBe(1);
+    expect(wrapper.find(".plan.inactive").length).toBe(2);
   });
 
-  it("show billing info only when verifies_identity is true", () => {
+  it("should not show billing info when requires_payment is false", () => {
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 201,
+        statusText: "ok",
+        data: plans,
+      }),
+    );
+    props.settings.mobile_phone_verification = true;
+    wrapper = initShallow(props);
+    wrapper.instance().setState({plans, selected_plan: 0, plansFetched: true});
+    expect(wrapper.find(".billing-info").length).toBe(0);
+    expect(wrapper.find("input[name='username']").length).toBe(0);
+    // phone_number field should be rendered since this plan does not verifies identity
+    expect(wrapper.find("t[name='phone_number']").length).toBe(1);
+  });
+
+  it("should not show billing info when requires_payment is true but requires_invoice is false", () => {
     axios.mockImplementationOnce(() =>
       Promise.resolve({
         status: 201,
@@ -147,12 +177,27 @@ describe("test subscriptions", () => {
       }),
     );
     wrapper = initShallow(props);
-    wrapper.instance().setState({plans, selected_plan: 0, plansFetched: true});
+    wrapper.instance().setState({plans, selected_plan: 2, plansFetched: true});
     expect(wrapper.find(".billing-info").length).toBe(0);
-    expect(wrapper.find("input[name='username']").length).toBe(0);
-    wrapper.instance().setState({selected_plan: 1});
+    expect(wrapper.find("input[name='username']").length).toBe(1);
+    // phone_number field should not be rendered on plans that verifies identity
+    expect(wrapper.find("t[name='phone_number']").length).toBe(0);
+  });
+
+  it("should show billing info when both requires_payment and requires_invoice is true", () => {
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 201,
+        statusText: "ok",
+        data: plans,
+      }),
+    );
+    wrapper = initShallow(props);
+    wrapper.instance().setState({plans, selected_plan: 1, plansFetched: true});
     expect(wrapper.find(".billing-info").length).toBe(1);
     expect(wrapper.find("input[name='username']").length).toBe(1);
+    // phone_number field should not be rendered on plans that verifies identity
+    expect(wrapper.find("t[name='phone_number']").length).toBe(0);
   });
 
   it("authenticate normally after registration with payment flow", async () => {
