@@ -40,6 +40,7 @@
       {
         "devDependencies": [
           "**/*.test.js",
+          "**/*test-utils.js",
           "**/jest.config.js",
           "browser-test/utils.js"
         ]
