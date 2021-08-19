@@ -41,7 +41,7 @@ module.exports = (env, argv) => {
     new CompressionPlugin({
       filename: "[path][base].gz",
       test: /\.(js|css|html|svg|json)$/,
-      minRatio: 0.7,
+      minRatio: 0.9,
     }),
   ];
 
