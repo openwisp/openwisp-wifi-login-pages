@@ -41,7 +41,7 @@ export default class Registration extends React.Component {
       success: false,
       plans: [],
       plansFetched: false,
-      selected_plan: null,
+      selectedPlan: null,
       tax_number: "",
       street: "",
       city: "",
@@ -104,7 +104,7 @@ export default class Registration extends React.Component {
       password1,
       password2,
       errors,
-      selected_plan,
+      selectedPlan,
       plans,
       tax_number,
       street,
@@ -152,12 +152,12 @@ export default class Registration extends React.Component {
       postData.username = phone_number;
     }
     let plan_pricing;
-    if (selected_plan !== null) {
-      plan_pricing = plans[selected_plan];
+    if (selectedPlan !== null) {
+      plan_pricing = plans[selectedPlan];
       postData.plan_pricing = plan_pricing.id;
       postData.requires_payment = plan_pricing.requires_payment;
     }
-    if (selected_plan !== null && plan_pricing) {
+    if (selectedPlan !== null && plan_pricing) {
       postData.username = username;
       if (plan_pricing.requires_invoice === true) {
         postData.billing_info = JSON.parse(
@@ -256,7 +256,7 @@ export default class Registration extends React.Component {
   };
 
   changePlan = (event) => {
-    this.setState({selected_plan: event.target.value});
+    this.setState({selectedPlan: event.target.value});
   };
 
   getPlan = (plan, index) => {
@@ -276,7 +276,7 @@ export default class Registration extends React.Component {
   };
 
   getPlanSelection = () => {
-    const {plans, selected_plan: selectedPlan} = this.state;
+    const {plans, selectedPlan} = this.state;
     let index = 0;
     return (
       <div className="plans">
@@ -311,30 +311,23 @@ export default class Registration extends React.Component {
 
   isPlanIdentityVerifier = () => {
     // If a payment is required, the plan is valid for identity verification
-    const {selected_plan, plans} = this.state;
+    const {selectedPlan, plans} = this.state;
     return (
-      selected_plan !== null && plans[selected_plan].requires_payment === true
+      selectedPlan !== null && plans[selectedPlan].requires_payment === true
     );
   };
 
   doesPlanRequireInvoice = () => {
-    const {selected_plan, plans} = this.state;
+    const {settings} = this.props;
+    const {selectedPlan, plans} = this.state;
     return (
-      selected_plan !== null && plans[selected_plan].requires_invoice === true
+      settings.subscriptions &&
+      selectedPlan !== null &&
+      plans[selectedPlan].requires_invoice === true
     );
   };
 
   getForm = () => {
-    const {settings} = this.props;
-    const {plansFetched} = this.state;
-
-    if (settings.subscriptions && !plansFetched) {
-      return null;
-    }
-    return this.getRegistrationForm();
-  };
-
-  getRegistrationForm = () => {
     const {registration, settings, orgSlug, match, language} = this.props;
     const {additional_info_text, input_fields, links} = registration;
     const {
@@ -349,7 +342,7 @@ export default class Registration extends React.Component {
       password1,
       password2,
       errors,
-      selected_plan,
+      selectedPlan,
       plans,
       tax_number,
       street,
@@ -378,7 +371,7 @@ export default class Registration extends React.Component {
                   )}
                   {plans.length > 0 && this.getPlanSelection()}
                   {(plans.length === 0 ||
-                    (plans.length > 0 && selected_plan !== null)) && (
+                    (plans.length > 0 && selectedPlan !== null)) && (
                     <>
                       {!this.isPlanIdentityVerifier() &&
                         settings.mobile_phone_verification &&
@@ -503,8 +496,7 @@ export default class Registration extends React.Component {
                       )}
 
                       {(input_fields.first_name.setting !== "disabled" ||
-                        (this.doesPlanRequireInvoice() &&
-                          settings.subscriptions)) && (
+                        this.doesPlanRequireInvoice()) && (
                         <div className="row first_name">
                           <label htmlFor="first_name">
                             {input_fields.first_name.setting === "mandatory"
@@ -539,8 +531,7 @@ export default class Registration extends React.Component {
                       )}
 
                       {(input_fields.last_name.setting !== "disabled" ||
-                        (this.doesPlanRequireInvoice() &&
-                          settings.subscriptions)) && (
+                        this.doesPlanRequireInvoice()) && (
                         <div className="row last_name">
                           <label htmlFor="last_name">
                             {input_fields.last_name.setting === "mandatory"
@@ -833,7 +824,7 @@ export default class Registration extends React.Component {
                 </div>
 
                 {(plans.length === 0 ||
-                  (plans.length > 0 && selected_plan !== null)) &&
+                  (plans.length > 0 && selectedPlan !== null)) &&
                   additional_info_text && (
                     <div className="row add-info">
                       {renderAdditionalInfo(
@@ -846,7 +837,7 @@ export default class Registration extends React.Component {
 
                 <div className="row register">
                   {(plans.length === 0 ||
-                    (plans.length > 0 && selected_plan !== null)) && (
+                    (plans.length > 0 && selectedPlan !== null)) && (
                     <input
                       type="submit"
                       className="button full"
@@ -891,7 +882,13 @@ export default class Registration extends React.Component {
   };
 
   render() {
-    return <>{this.getForm()}</>;
+    const {settings} = this.props;
+    const {plansFetched} = this.state;
+
+    if (settings.subscriptions && !plansFetched) {
+      return null;
+    }
+    return this.getForm();
   }
 }
 Registration.contextType = LoadingContext;

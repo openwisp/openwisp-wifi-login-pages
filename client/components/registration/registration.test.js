@@ -1,13 +1,11 @@
 /* eslint-disable prefer-promise-reject-errors */
 /* eslint-disable camelcase */
 import axios from "axios";
-import {shallow, mount} from "enzyme";
+import {shallow} from "enzyme";
 import React from "react";
 import {toast} from "react-toastify";
 import PropTypes from "prop-types";
-import {Provider} from "react-redux";
-import {Router, Route} from "react-router-dom";
-import {createMemoryHistory} from "history";
+import {Route} from "react-router-dom";
 import PhoneInput from "react-phone-input-2";
 import Modal from "../modal";
 import {loadingContextValue} from "../../utils/loading-context";
@@ -18,6 +16,7 @@ import loadTranslation from "../../utils/load-translation";
 import Registration from "./registration";
 import submitOnEnter from "../../utils/submit-on-enter";
 import PasswordToggleIcon from "../../utils/password-toggle";
+import mountComponent from "./test-utils";
 
 jest.mock("../../utils/get-config");
 jest.mock("../../utils/load-translation");
@@ -41,42 +40,6 @@ const createTestProps = (props, configName = "default") => {
     },
     ...props,
   };
-};
-
-const mountComponent = function (passedProps) {
-  const historyMock = createMemoryHistory();
-
-  Registration.contextTypes = undefined;
-  const mockedStore = {
-    subscribe: () => {},
-    dispatch: () => {},
-    // needed to render <Contact/>
-    getState: () => ({
-      organization: {
-        configuration: passedProps.configuration,
-      },
-      language: passedProps.language,
-    }),
-  };
-
-  return mount(
-    <Provider store={mockedStore}>
-      <Router history={historyMock}>
-        <Registration {...passedProps} />
-      </Router>
-    </Provider>,
-    {
-      context: {
-        store: mockedStore,
-        ...loadingContextValue,
-      },
-      childContextTypes: {
-        store: PropTypes.object.isRequired,
-        setLoading: PropTypes.func,
-        getLoading: PropTypes.func,
-      },
-    },
-  );
 };
 
 describe("<Registration /> rendering with placeholder translation tags", () => {
@@ -544,12 +507,15 @@ describe("Registration without identity verification (Email registration)", () =
   it("should not show phone number field", async () => {
     wrapper = await mountComponent(props);
     expect(wrapper.exists(PhoneInput)).toBe(false);
+    expect(wrapper.find("form")).toHaveLength(1);
+    expect(wrapper.find("input[name='phone_number']").length).toBe(0);
   });
 
   it("should process successfully", async () => {
     wrapper = await mountComponent(props);
     expect(wrapper.exists(PhoneInput)).toBe(false);
     expect(wrapper.find("form")).toHaveLength(1);
+    expect(wrapper.find("input[name='phone_number']").length).toBe(0);
     const component = wrapper.find(Registration).instance();
     const handleChange = jest.spyOn(component, "handleChange");
     const handleSubmit = jest.spyOn(component, "handleSubmit");
@@ -583,12 +549,14 @@ describe("Registration without identity verification (Email registration)", () =
   });
   it("should set title", async () => {
     wrapper = await mountComponent(props);
+    expect(wrapper.find("form")).toHaveLength(1);
     const component = wrapper.find(Registration);
     const setTitleMock = component.props().setTitle.mock;
     expect(setTitleMock.calls.pop()).toEqual(["Sign up", props.orgName]);
   });
   it("should set country when selectedCountry is executed", async () => {
     wrapper = await mountComponent(props);
+    expect(wrapper.find("form")).toHaveLength(1);
     const component = wrapper.find(Registration);
     const data = {
       value: "India",
@@ -596,17 +564,5 @@ describe("Registration without identity verification (Email registration)", () =
     component.instance().selectedCountry(data);
     expect(component.instance().state.countrySelected).toEqual(data);
     expect(component.instance().state.country).toEqual(data.value);
-  });
-  it("should change selected_plan on changePlan execution", async () => {
-    wrapper = await mountComponent(props);
-    const component = wrapper.find(Registration);
-    component.instance().setState({plans: [{requires_payment: true}]});
-    const changeEvent = {
-      target: {
-        value: 0,
-      },
-    };
-    component.instance().changePlan(changeEvent);
-    expect(component.instance().state.selected_plan).toEqual(0);
   });
 });
