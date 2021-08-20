@@ -1,6 +1,7 @@
 const BundleAnalyzerPlugin =
   require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const CompressionPlugin = require("compression-webpack-plugin");
+const BrotliPlugin = require("brotli-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
@@ -8,6 +9,9 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 const TerserPlugin = require("terser-webpack-plugin");
 const setup = require("./setup");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
 const CURRENT_WORKING_DIR = process.cwd();
 const DEFAULT_PORT = 8080;
@@ -18,10 +22,6 @@ module.exports = (env, argv) => {
   // Use user-specified port; if none was given, fall back to the default
   // If the default port is already in use, webpack will automatically use
   // the next available port
-  if (argv.mode === "production") {
-    minimizers = [new TerserPlugin()];
-    setup.removeDefaultConfig();
-  }
   let clientP = process.env.CLIENT;
   let plugins = [
     new CleanWebpackPlugin(),
@@ -30,13 +30,6 @@ module.exports = (env, argv) => {
       template: path.resolve(CURRENT_WORKING_DIR, "public/index.html"),
     }),
     new HardSourceWebpackPlugin(),
-    new CompressionPlugin({
-      filename: "[path].gz[query]",
-      algorithm: "gzip",
-      test: /\.js$|\.css$|\.html$/,
-      threshold: 10240,
-      minRatio: 0.8,
-    }),
     new CopyPlugin({
       patterns: [
         {
@@ -45,7 +38,14 @@ module.exports = (env, argv) => {
         },
       ],
     }),
+    new CompressionPlugin({
+      filename: "[path][base].gz",
+      test: /\.(js|css|html|svg|json)$/,
+      minRatio: 0.9,
+    }),
   ];
+
+  let cssLoaders = ["style-loader", "css-loader"];
 
   if (process.env.STATS)
     plugins.push(
@@ -54,6 +54,36 @@ module.exports = (env, argv) => {
         generateStatsFile: true,
       }),
     );
+
+  if (argv.mode === "production") {
+    cssLoaders = [MiniCssExtractPlugin.loader, "css-loader"];
+    minimizers = [
+      new OptimizeCssAssetsPlugin(),
+      new TerserPlugin(),
+      new UglifyJsPlugin({parallel: true, extractComments: true}),
+    ];
+    setup.removeDefaultConfig();
+    plugins.push(
+      new HardSourceWebpackPlugin.ExcludeModulePlugin([
+        {
+          test: /mini-css-extract-plugin[\\/]dist[\\/]loader/,
+        },
+      ]),
+    );
+    plugins.push(
+      new MiniCssExtractPlugin({
+        filename: "[name].[contentHash].css",
+        ignoreOrder: true,
+      }),
+    );
+    plugins.push(
+      new BrotliPlugin({
+        asset: "[path].br[query]",
+        test: /\.(js|css|html|svg|json)$/,
+        minRatio: 0.7,
+      }),
+    );
+  }
 
   // The url the server is running on; if none was given, fall back to the default
   let serverUrl;
@@ -74,7 +104,7 @@ module.exports = (env, argv) => {
     output: {
       filename:
         argv.mode === "development" ? "[name].js" : "[name].[contenthash].js",
-      chunkFilename: "[name].chunk.js",
+      chunkFilename: "[name].[contenthash].chunk.js",
       path: path.resolve(CURRENT_WORKING_DIR, "dist"),
       publicPath: "/",
       pathinfo: false,
@@ -93,7 +123,7 @@ module.exports = (env, argv) => {
         },
         {
           test: /\.css$/,
-          use: ["style-loader", "css-loader"],
+          use: cssLoaders,
         },
         {
           test: /\.(eot|svg|ttf|woff|woff2)$/,

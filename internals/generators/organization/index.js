@@ -17,6 +17,13 @@ module.exports = {
         templateFiles: "../../client/assets/default/**/*",
         abortOnFail: true,
       });
+      actions.push({
+        type: "addMany",
+        destination: "../../server/assets/{{slug}}/",
+        base: "../../server/assets/default/",
+        templateFiles: "../../server/assets/default/**/*",
+        abortOnFail: true,
+      });
     }
     return actions;
   },

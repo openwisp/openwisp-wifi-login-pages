@@ -15,3 +15,4 @@ export const verifyMobilePhoneTokenUrl = (orgSlug) =>
 export const mobilePhoneChangeUrl = (orgSlug) =>
   `/api/v1/${orgSlug}/account/phone/change`;
 export const mainToastId = "main_toast_id";
+export const modalContentUrl = (orgSlug) => `/api/v1/${orgSlug}/modal`;

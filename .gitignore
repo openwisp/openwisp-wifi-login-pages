@@ -36,9 +36,11 @@ client/configs/
 client/organizations.json
 !client/assets/
 client/assets/*
+server/assets/*
 !client/assets/eye.svg
 !client/assets/eye-slash.svg
 !client/assets/default/
+!server/assets/default/
 !client/assets/fonts/
 client/translations/
 i18n/*

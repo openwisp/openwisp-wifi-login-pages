@@ -4,12 +4,11 @@ import "./index.css";
 import axios from "axios";
 import PropTypes from "prop-types";
 import qs from "qs";
-import React from "react";
+import React, {Suspense} from "react";
 import {Cookies} from "react-cookie";
 import {Redirect, withRouter} from "react-router-dom";
 import {toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import PhoneInput from "react-phone-input-2";
 import {t} from "ttag";
 import "react-phone-input-2/lib/style.css";
 import LoadingContext from "../../utils/loading-context";
@@ -21,6 +20,8 @@ import submitOnEnter from "../../utils/submit-on-enter";
 import Contact from "../contact-box";
 import handleSession from "../../utils/session";
 import validateToken from "../../utils/validate-token";
+
+const PhoneInput = React.lazy(() => import("react-phone-input-2"));
 
 class MobilePhoneChange extends React.Component {
   constructor(props) {
@@ -141,39 +142,62 @@ class MobilePhoneChange extends React.Component {
                       <span className="text">{errors.phone_number}</span>
                     </div>
                   )}
-                  <PhoneInput
-                    name="phone_number"
-                    onlyCountries={
-                      input_fields.phone_number.only_countries || []
+                  <Suspense
+                    fallback={
+                      <input
+                        name="phone_number"
+                        value={phone_number}
+                        onChange={(value) =>
+                          this.handleChange({
+                            target: {name: "phone_number", value: `+${value}`},
+                          })
+                        }
+                        onKeyDown={(event) => {
+                          submitOnEnter(
+                            event,
+                            this,
+                            "mobile-phone-change-form",
+                          );
+                        }}
+                        placeholder={t`PHONE_PHOLD`}
+                        id="phone-number"
+                      />
                     }
-                    preferredCountries={
-                      input_fields.phone_number.preferred_countries || []
-                    }
-                    excludeCountries={
-                      input_fields.phone_number.exclude_countries || []
-                    }
-                    value={phone_number}
-                    onChange={(value) =>
-                      this.handleChange({
-                        target: {name: "phone_number", value: `+${value}`},
-                      })
-                    }
-                    onKeyDown={(event) => {
-                      submitOnEnter(event, this, "mobile-phone-change-form");
-                    }}
-                    placeholder={t`PHONE_PHOLD`}
-                    enableSearch={Boolean(
-                      input_fields.phone_number.enable_search,
-                    )}
-                    inputProps={{
-                      name: "phone_number",
-                      id: "phone-number",
-                      className: `form-control input ${
-                        errors.phone_number ? "error" : ""
-                      }`,
-                      required: true,
-                    }}
-                  />
+                  >
+                    <PhoneInput
+                      name="phone_number"
+                      onlyCountries={
+                        input_fields.phone_number.only_countries || []
+                      }
+                      preferredCountries={
+                        input_fields.phone_number.preferred_countries || []
+                      }
+                      excludeCountries={
+                        input_fields.phone_number.exclude_countries || []
+                      }
+                      value={phone_number}
+                      onChange={(value) =>
+                        this.handleChange({
+                          target: {name: "phone_number", value: `+${value}`},
+                        })
+                      }
+                      onKeyDown={(event) => {
+                        submitOnEnter(event, this, "mobile-phone-change-form");
+                      }}
+                      placeholder={t`PHONE_PHOLD`}
+                      enableSearch={Boolean(
+                        input_fields.phone_number.enable_search,
+                      )}
+                      inputProps={{
+                        name: "phone_number",
+                        id: "phone-number",
+                        className: `form-control input ${
+                          errors.phone_number ? "error" : ""
+                        }`,
+                        required: true,
+                      }}
+                    />
+                  </Suspense>
                 </div>
 
                 <input

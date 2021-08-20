@@ -22,6 +22,7 @@ import handleSession from "../../utils/session";
 import validateToken from "../../utils/validate-token";
 import needsVerify from "../../utils/needs-verify";
 import {initialState} from "../../reducers/organization";
+import {Logout} from "../organization-wrapper/lazy-import";
 
 export default class Status extends React.Component {
   constructor(props) {
@@ -63,6 +64,7 @@ export default class Status extends React.Component {
     this.setState({
       rememberMe: localStorage.getItem("rememberMe") === "true",
     });
+    Logout.preload();
 
     // to prevent recursive call in case redirect url is status page
     if (window.top === window.self) {

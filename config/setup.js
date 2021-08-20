@@ -1,14 +1,8 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-console */
 const fs = require("fs");
-const marked = require("marked");
 const path = require("path");
 const yaml = require("js-yaml");
-const createDOMPurify = require("dompurify");
-const {JSDOM} = require("jsdom");
-
-const {window} = new JSDOM("");
-const DOMPurify = createDOMPurify(window);
 const _ = require("lodash");
 
 const rootDir = process.cwd();
@@ -93,29 +87,21 @@ const writeConfigurations = () => {
       try {
         const config = getConfig(file);
         // convert markdown to html
+        const {slug} = config;
         if (config.client && config.client.privacy_policy) {
-          const {slug} = config;
           const content = config.client.privacy_policy;
           if (content) {
             for (const key of Object.keys(content)) {
               if (
-                path.extname(`${clientDir}/assets/${slug}/${content[key]}`) ===
+                path.extname(`${serverDir}/assets/${slug}/${content[key]}`) ===
                 ".md"
               ) {
-                try {
-                  const data = DOMPurify.sanitize(
-                    marked(
-                      fs.readFileSync(
-                        `${clientDir}/assets/${slug}/${content[key]}`,
-                        "utf8",
-                      ),
-                    ),
-                  );
-                  content[key] = data;
-                } catch (error) {
+                if (
+                  !fs.existsSync(`${serverDir}/assets/${slug}/${content[key]}`)
+                ) {
                   content[key] = "";
                   console.warn(
-                    `no such file or directory '${error.path}'. Privacy policy's content key '${key}' is set null.`,
+                    `no such file or directory '${serverDir}/assets/${slug}/${content[key]}'. Privacy policy's content key '${key}' is set null.`,
                   );
                 }
               } else {
@@ -128,28 +114,19 @@ const writeConfigurations = () => {
           }
         }
         if (config.client && config.client.terms_and_conditions) {
-          const {slug} = config;
           const content = config.client.terms_and_conditions;
           if (content) {
             for (const key of Object.keys(content)) {
               if (
-                path.extname(`${clientDir}/assets/${slug}/${content[key]}`) ===
+                path.extname(`${serverDir}/assets/${slug}/${content[key]}`) ===
                 ".md"
               ) {
-                try {
-                  const data = DOMPurify.sanitize(
-                    marked(
-                      fs.readFileSync(
-                        `${clientDir}/assets/${slug}/${content[key]}`,
-                        "utf8",
-                      ),
-                    ),
-                  );
-                  content[key] = data;
-                } catch (error) {
+                if (
+                  !fs.existsSync(`${serverDir}/assets/${slug}/${content[key]}`)
+                ) {
                   content[key] = "";
                   console.warn(
-                    `no such file or directory '${error.path}'. Terms and conditions' content key '${key}' is set null.`,
+                    `no such file or directory '${serverDir}/assets/${slug}/${content[key]}'. Terms and conditions' content key '${key}' is set null.`,
                   );
                 }
               } else {

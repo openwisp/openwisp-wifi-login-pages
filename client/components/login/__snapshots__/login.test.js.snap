@@ -860,6 +860,41 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
 </div>
 `;
 
+exports[`<Login /> rendering should render PhoneInput lazily and handlers should work correctly 1`] = `
+<Suspense
+  fallback={
+    <input
+      id="username"
+      name="username"
+      onChange={[Function]}
+      placeholder="enter mobile phone number"
+      type="tel"
+      value=""
+    />
+  }
+>
+  <lazy
+    enableSearch={false}
+    excludeCountries={Array []}
+    inputProps={
+      Object {
+        "autoComplete": "tel",
+        "className": "form-control input ",
+        "id": "username",
+        "name": "username",
+        "required": true,
+      }
+    }
+    name="username"
+    onChange={[Function]}
+    onlyCountries={Array []}
+    placeholder="enter mobile phone number"
+    preferredCountries={Array []}
+    value=""
+  />
+</Suspense>
+`;
+
 exports[`<Login /> rendering should render correctly with social links 1`] = `
 <React.Fragment>
   <div

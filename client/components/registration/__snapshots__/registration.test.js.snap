@@ -329,3 +329,40 @@ exports[`<Registration /> rendering with placeholder translation tags should ren
   />
 </Fragment>
 `;
+
+exports[`Registration and Mobile Phone Verification interactions should render PhoneInput lazily and handlers should work correctly 1`] = `
+<Suspense
+  fallback={
+    <input
+      name="phone_number"
+      onChange={[Function]}
+      onKeyDown={[Function]}
+      placeholder="enter mobile phone number"
+      type="tel"
+      value=""
+    />
+  }
+>
+  <lazy
+    country="it"
+    enableSearch={false}
+    excludeCountries={Array []}
+    inputProps={
+      Object {
+        "autoComplete": "tel",
+        "className": "form-control input ",
+        "id": "phone-number",
+        "name": "phone_number",
+        "required": true,
+      }
+    }
+    name="phone_number"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    onlyCountries={Array []}
+    placeholder="enter mobile phone number"
+    preferredCountries={Array []}
+    value=""
+  />
+</Suspense>
+`;
