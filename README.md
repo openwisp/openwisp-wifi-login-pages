@@ -441,6 +441,25 @@ contact_page:
       </div>
 ```
 
+#### Header
+
+```yaml
+footer:
+  sticky_msg:
+    html:
+      en: >
+        <p class="announcement">
+          This site will go in schedule maintenance
+          <b>tonight (10pm - 11pm)</b>
+        </p>
+    css:
+      container: {backgroundColor: "rgba(0, 0, 0, 0.5)"}
+      msg: {fontWeight: "normal"}
+      close: null
+```
+
+**Note**: Custom CSS must be based on [react-inline-styles](https://reactjs.org/docs/dom-elements.html#style).
+
 ##### Footer
 
 ```yaml

@@ -173,3 +173,27 @@
     cursor: auto;
   }
 }
+.sticky-container {
+  display: inline-flex;
+  border-bottom: 1px solid #000;
+  color: #000;
+  position: relative;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+.sticky-msg {
+  margin-left: 1.7rem;
+  width: 100%;
+  text-align: center;
+  word-wrap: break-word;
+  color: #fff;
+  line-height: 24px;
+  font-weight: bold;
+  margin-left: 20px;
+}
+.close-sticky-btn {
+  margin-left: auto;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
