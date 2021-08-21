@@ -195,6 +195,21 @@ describe("<OrganizationWrapper /> interactions", () => {
     await wrapper.instance().componentDidUpdate(props);
     expect(localStorage).toEqual({"default-userLangChoice": "it"});
     expect(loadLanguage).toHaveBeenCalledWith("it", "default", false);
+    localStorage.removeItem(
+      `${props.organization.configuration.slug}-userLangChoice`,
+    );
+  });
+  it("should load browser language choice if userLangChoice is null", async () => {
+    wrapper = shallow(<OrganizationWrapper {...props} />);
+    wrapper.instance().setState({translationLoaded: true, configLoaded: true});
+    const loadLanguageMock = jest.spyOn(wrapper.instance(), "loadLanguage");
+    props.language = ""; // initial render
+    await wrapper.instance().componentDidUpdate(props);
+    expect(loadLanguageMock).toHaveBeenCalledWith(
+      "en",
+      props.organization.configuration.slug,
+      true,
+    );
   });
   it("should show route for authenticated users", async () => {
     let pathMap = {};
