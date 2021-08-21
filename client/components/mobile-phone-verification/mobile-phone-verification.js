@@ -100,6 +100,7 @@ export default class MobilePhoneVerification extends React.Component {
           is_active: true,
           is_verified: true,
           justAuthenticated: true,
+          username: userData.phone_number,
         });
         setLoading(false);
       })
