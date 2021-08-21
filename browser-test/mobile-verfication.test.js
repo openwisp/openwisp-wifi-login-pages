@@ -1,4 +1,4 @@
-import {until} from "selenium-webdriver";
+import {until, By} from "selenium-webdriver";
 import {
   getDriver,
   getElementByCss,
@@ -8,6 +8,23 @@ import {
   clearData,
   getPhoneToken,
 } from "./utils";
+
+const fillPhoneField = async (driver, data) => {
+  async function fillField() {
+    const username = await driver.wait(
+      until.elementLocated(By.css("input#username")),
+    );
+    await driver.wait(until.elementIsVisible(username));
+    await username.sendKeys(data.phoneNumber);
+  }
+  try {
+    await fillField();
+  } catch (err) {
+    // Stale Reference Error due to DOM reload by PhoneInput Field
+    await new Promise((r) => setTimeout(r, 1000));
+    await fillField();
+  }
+};
 
 describe("Selenium tests for <MobileVerification />", () => {
   let driver;
@@ -26,10 +43,9 @@ describe("Selenium tests for <MobileVerification />", () => {
   it("should test mobile verification flow (with one failed attempt and successful attempt)", async () => {
     const data = initialData().mobileVerificationTestUser;
     await driver.get(urls.verificationLogin(data.organization));
-    const username = await getElementByCss(driver, "input#username");
-    username.sendKeys(data.phoneNumber);
     const password = await getElementByCss(driver, "input#password");
     password.sendKeys(data.password);
+    await fillPhoneField(driver, data);
     let submitBtn = await getElementByCss(driver, "input[type=submit]");
     submitBtn.click();
     const successToastDiv = await getElementByCss(driver, "div[role=alert]");
