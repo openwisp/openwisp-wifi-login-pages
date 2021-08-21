@@ -51,12 +51,12 @@ export default class OrganizationWrapper extends React.Component {
 
   async componentDidUpdate(prevProps) {
     const {setOrganization, match, cookies, language} = this.props;
-    const {translationLoaded} = this.state;
+    const {translationLoaded, configLoaded} = this.state;
     if (prevProps.match.params.organization !== match.params.organization) {
       if (match.params.organization)
         setOrganization(match.params.organization, cookies);
     }
-    if (translationLoaded !== true) {
+    if (translationLoaded !== true && configLoaded === true) {
       const userLangChoice = localStorage.getItem(
         `${match.params.organization}-userLangChoice`,
       );
@@ -67,7 +67,7 @@ export default class OrganizationWrapper extends React.Component {
           false,
         );
       } else await this.loadLanguage(language, match.params.organization, true);
-    } else if (prevProps.language !== language) {
+    } else if (prevProps.language !== language && prevProps.language !== "") {
       localStorage.setItem(
         `${match.params.organization}-userLangChoice`,
         language,
@@ -89,11 +89,14 @@ export default class OrganizationWrapper extends React.Component {
       setLanguage,
       useBrowserLang,
       languages,
-      defaultLanguage,
     );
-    this.setState({
-      translationLoaded: true,
-    });
+    this.setState(
+      {
+        translationLoaded: true,
+        configLoaded: false,
+      },
+      () => this.setState({configLoaded: true}), // to force re-render in child components
+    );
   };
 
   render() {
