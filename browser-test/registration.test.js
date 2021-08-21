@@ -12,12 +12,12 @@ describe("Selenium tests for <Register />", () => {
   let driver;
 
   beforeAll(async () => {
-    initializeData("register");
+    await initializeData("register");
     driver = await getDriver();
   }, 30000);
 
   afterAll(async () => {
-    clearData();
+    await clearData();
     await driver.manage().deleteAllCookies();
     driver.close();
   });

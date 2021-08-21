@@ -12,12 +12,12 @@ describe("Selenium tests for <PasswordReset />", () => {
   let driver;
 
   beforeAll(async () => {
-    initializeData();
+    await initializeData();
     driver = await getDriver();
   }, 30000);
 
   afterAll(async () => {
-    clearData();
+    await clearData();
     await driver.manage().deleteAllCookies();
     driver.close();
   });

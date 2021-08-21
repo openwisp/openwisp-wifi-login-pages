@@ -13,12 +13,12 @@ describe("Selenium tests for <MobilePhoneChange />", () => {
   let driver;
 
   beforeAll(async () => {
-    initializeData("mobileVerification");
+    await initializeData("mobileVerification");
     driver = await getDriver();
   }, 30000);
 
   afterAll(async () => {
-    clearData();
+    await clearData();
     await driver.manage().deleteAllCookies();
     driver.close();
   });
@@ -27,6 +27,7 @@ describe("Selenium tests for <MobilePhoneChange />", () => {
     const data = initialData().mobileVerificationTestUser;
     await driver.get(urls.verificationLogin(data.organization));
     const username = await getElementByCss(driver, "input#username");
+    username.click();
     username.sendKeys(data.phoneNumber);
     const password = await getElementByCss(driver, "input#password");
     password.sendKeys(data.password);
@@ -59,7 +60,7 @@ describe("Selenium tests for <MobilePhoneChange />", () => {
     await driver.wait(until.elementIsVisible(phoneField));
     phoneField.click();
     await phoneField.clear();
-    await phoneField.sendKeys("9876543210");
+    await phoneField.sendKeys(data.changePhoneNumber);
     submitBtn = await getElementByCss(driver, "input[type='submit']");
     await driver.wait(until.elementIsVisible(submitBtn));
     submitBtn.click();
@@ -74,6 +75,8 @@ describe("Selenium tests for <MobilePhoneChange />", () => {
     codeInput.sendKeys(newToken);
     submitBtn = await getElementByCss(driver, "button[type='submit']");
     submitBtn.click();
+    await driver.wait(until.urlContains("status"), 5000);
+    await driver.navigate().to(driver.getCurrentUrl());
     await getElementByCss(driver, "div#status");
     const emailElement = await getElementByCss(
       driver,
@@ -82,10 +85,11 @@ describe("Selenium tests for <MobilePhoneChange />", () => {
     expect(await emailElement.getText()).toEqual(data.email);
     const phoneElement = await getElementByCss(
       driver,
-      "div > p:nth-child(7) > span",
+      "div > p:nth-child(6) > span",
     );
-    expect(await phoneElement.getText()).toEqual("+919876543210");
-    await driver.wait(until.urlContains("status"), 5000);
+    expect(await phoneElement.getText()).toEqual(
+      `+91${data.changePhoneNumber}`,
+    );
     activeSessionTr = await getElementByCss(driver, "table tr.active-session");
     await driver.wait(until.elementIsVisible(activeSessionTr));
   });

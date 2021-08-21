@@ -11,6 +11,7 @@
     "email": "testuser2@openwisp.org",
     "uuid": "organization_uuid",
     "secretKey": "organization_secret_key",
-    "method": "mobile_phone"
+    "method": "mobile_phone",
+    "changePhoneNumber": "9876543210"
   }
 }

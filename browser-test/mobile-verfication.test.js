@@ -13,12 +13,12 @@ describe("Selenium tests for <MobileVerification />", () => {
   let driver;
 
   beforeAll(async () => {
-    initializeData("mobileVerification");
+    await initializeData("mobileVerification");
     driver = await getDriver();
   }, 30000);
 
   afterAll(async () => {
-    clearData();
+    await clearData();
     await driver.manage().deleteAllCookies();
     driver.close();
   });
