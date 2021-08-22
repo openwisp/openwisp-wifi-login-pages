@@ -174,6 +174,7 @@ describe("Mobile Phone Token verification: standard flow", () => {
         is_active: true,
         is_verified: true,
         justAuthenticated: true,
+        username: userData.phone_number,
       },
     ]);
     expect(
