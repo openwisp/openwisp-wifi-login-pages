@@ -43,7 +43,6 @@
   flex-wrap: nowrap;
   flex-grow: 1;
 }
-
 .header-language-btn {
   padding: 5px 2px;
   margin: 0 5px;
@@ -69,7 +68,8 @@
   background: #555;
   min-height: 54px;
 }
-.header-row-2-inner {
+.header-row-2-inner,
+.sticky-container .inner {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -78,6 +78,7 @@
   max-width: 1000px;
   flex-grow: 1;
   padding: 10px 0;
+  margin: 0 auto;
 }
 .header-link {
   padding: 8px 15px;
@@ -100,6 +101,29 @@
 .opacity-hidden {
   opacity: 0;
 }
+.sticky-container {
+  display: inline-flex;
+  border-bottom: 1px solid #000;
+  position: relative;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
+}
+.sticky-msg {
+  margin-left: 1.7rem;
+  width: 100%;
+  text-align: center;
+  word-wrap: break-word;
+  line-height: 24px;
+}
+.close-sticky-btn {
+  margin-left: auto;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+}
+
 @media screen and (min-width: 0px) and (max-width: 767px) {
   .header-hamburger {
     width: 30px;
@@ -172,28 +196,4 @@
   .header-language-btn.active {
     cursor: auto;
   }
-}
-.sticky-container {
-  display: inline-flex;
-  border-bottom: 1px solid #000;
-  color: #000;
-  position: relative;
-  width: 100%;
-  background: rgba(0, 0, 0, 0.5);
-}
-.sticky-msg {
-  margin-left: 1.7rem;
-  width: 100%;
-  text-align: center;
-  word-wrap: break-word;
-  color: #fff;
-  line-height: 24px;
-  font-weight: bold;
-  margin-left: 20px;
-}
-.close-sticky-btn {
-  margin-left: auto;
-  background: none;
-  border: none;
-  cursor: pointer;
 }

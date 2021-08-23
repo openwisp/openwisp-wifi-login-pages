@@ -402,13 +402,12 @@ header:
 
 ```yaml
 header:
-  sticky_msg:
-    html:
-      en: >
-        <p class="announcement">
-          This site will go in schedule maintenance
-          <b>tonight (10pm - 11pm)</b>
-        </p>
+  sticky_html:
+    en: >
+      <p class="announcement">
+        This site will go in schedule maintenance
+        <b>tonight (10pm - 11pm)</b>
+      </p>
 ```
 
 ##### Login page

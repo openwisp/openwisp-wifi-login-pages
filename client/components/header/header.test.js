@@ -190,15 +190,8 @@ describe("<Header /> rendering", () => {
     props = createTestProps({
       header: {
         ...props.header,
-        sticky_msg: {
-          html: {
-            en: <p>announcement</p>,
-          },
-          css: {
-            container: {},
-            msg: {},
-            close: {},
-          },
+        sticky_html: {
+          en: <p>announcement</p>,
         },
       },
     });

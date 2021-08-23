@@ -178,22 +178,26 @@ exports[`<Header /> rendering should render sticky msg and close it on clicking 
     role="banner"
   >
     <div
-      className="sticky-msg"
-      dangerouslySetInnerHTML={
-        Object {
-          "__html": <p>
-            announcement
-          </p>,
-        }
-      }
-    />
-    <button
-      className="close-sticky-btn"
-      onClick={[Function]}
-      type="button"
+      className="inner"
     >
-      ✖
-    </button>
+      <div
+        className="sticky-msg"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": <p>
+              announcement
+            </p>,
+          }
+        }
+      />
+      <button
+        className="close-sticky-btn"
+        onClick={[Function]}
+        type="button"
+      >
+        ✖
+      </button>
+    </div>
   </div>
 </Fragment>
 `;

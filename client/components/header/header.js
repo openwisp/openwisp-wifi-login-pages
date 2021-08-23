@@ -44,17 +44,19 @@ export default class Header extends React.Component {
   getStickyMsg = () => {
     const {stickyMsg} = this.state;
     const {header, language} = this.props;
-    const {html} = header.sticky_msg;
-    return stickyMsg ? (
+    const {sticky_html: stickyHtml} = header;
+    return stickyMsg && stickyHtml ? (
       <div className="sticky-container" role="banner">
-        {getHtml(html, language, "sticky-msg")}
-        <button
-          type="button"
-          className="close-sticky-btn"
-          onClick={() => this.setState({stickyMsg: false})}
-        >
-          ✖
-        </button>
+        <div className="inner">
+          {getHtml(stickyHtml, language, "sticky-msg")}
+          <button
+            type="button"
+            className="close-sticky-btn"
+            onClick={() => this.setState({stickyMsg: false})}
+          >
+            ✖
+          </button>
+        </div>
       </div>
     ) : null;
   };
@@ -258,7 +260,7 @@ export default class Header extends React.Component {
             </div>
           </div>
         </div>
-        {header.sticky_msg && this.getStickyMsg()}
+        {this.getStickyMsg()}
       </>
     );
   }
@@ -277,9 +279,7 @@ Header.propTypes = {
       url: PropTypes.string,
     }),
     links: PropTypes.array,
-    sticky_msg: PropTypes.shape({
-      html: PropTypes.object,
-    }),
+    sticky_html: PropTypes.object,
   }).isRequired,
   language: PropTypes.string.isRequired,
   languages: PropTypes.arrayOf(
