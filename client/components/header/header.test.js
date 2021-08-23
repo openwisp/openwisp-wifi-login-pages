@@ -204,12 +204,11 @@ describe("<Header /> rendering", () => {
     });
     wrapper = shallow(<Header {...props} />);
     expect(wrapper.find(".sticky-container").length).toEqual(1);
-    expect(wrapper.find(".sticky-container").props().style).toEqual({});
     expect(wrapper.find(".sticky-msg").length).toEqual(1);
     expect(wrapper.find(".sticky-msg").props().dangerouslySetInnerHTML).toEqual(
       {__html: <p>announcement</p>},
     );
-    expect(wrapper.find(".sticky-msg").props().style).toEqual({});
+    expect(wrapper).toMatchSnapshot();
     expect(wrapper.find(".close-sticky-btn").length).toEqual(1);
     expect(wrapper.instance().state.stickyMsg).toEqual(true);
     wrapper.find(".close-sticky-btn").simulate("click");

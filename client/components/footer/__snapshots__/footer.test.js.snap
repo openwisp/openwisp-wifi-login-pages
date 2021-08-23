@@ -30,7 +30,6 @@ exports[`<Footer /> rendering should render correctly 1`] = `
           "__html": "after html",
         }
       }
-      style={Object {}}
     />
   </div>
 </div>
@@ -67,7 +66,6 @@ exports[`<Footer /> rendering with placeholder translation tags should render tr
           "__html": "after html",
         }
       }
-      style={Object {}}
     />
   </div>
 </div>
