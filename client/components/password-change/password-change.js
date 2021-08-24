@@ -17,7 +17,7 @@ import logError from "../../utils/log-error";
 import handleChange from "../../utils/handle-change";
 import handleSession from "../../utils/session";
 import validateToken from "../../utils/validate-token";
-import getErrorField from "../../utils/get-error-field";
+import getError from "../../utils/get-error";
 
 export default class PasswordChange extends React.Component {
   constructor(props) {
@@ -103,11 +103,11 @@ export default class PasswordChange extends React.Component {
           <form className="main-column" onSubmit={this.handleSubmit}>
             <div className="inner">
               <h1>{t`PWD_CHANGE_TITL`}</h1>
-              {getErrorField(errors, null)}
+              {getError(errors)}
 
               <div className="row password">
                 <label htmlFor="password">{t`PWD1_LBL`}</label>
-                {getErrorField(errors, "newPassword1")}
+                {getError(errors, "newPassword1")}
 
                 <input
                   className="input"
@@ -133,7 +133,7 @@ export default class PasswordChange extends React.Component {
 
               <div className="row password-confirm">
                 <label htmlFor="password-confirm">{t`CONFIRM_PWD_LBL`}</label>
-                {getErrorField(errors, "newPassword2")}
+                {getError(errors, "newPassword2")}
 
                 <input
                   className="input"

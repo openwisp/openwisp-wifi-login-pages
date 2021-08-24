@@ -25,7 +25,7 @@ import handleChange from "../../utils/handle-change";
 import Contact from "../contact-box";
 import Modal from "../modal";
 import {Status} from "../organization-wrapper/lazy-import";
-import getErrorField from "../../utils/get-error-field";
+import getError from "../../utils/get-error";
 
 const PhoneInput = React.lazy(() => import("react-phone-input-2"));
 
@@ -112,7 +112,7 @@ export default class Login extends React.Component {
     return (
       <div className="row username">
         <label htmlFor="username">{label}</label>
-        {getErrorField(errors, "username")}
+        {getError(errors, "username")}
         <input
           className={`input ${errors.username ? "error" : ""}`}
           type={input_fields.username.type}
@@ -135,7 +135,7 @@ export default class Login extends React.Component {
     return (
       <div className="row phone-number">
         <label htmlFor="phone-number">{t`PHONE_LBL`}</label>
-        {getErrorField(errors, "username")}
+        {getError(errors, "username")}
         <Suspense
           fallback={
             <input
@@ -331,13 +331,13 @@ export default class Login extends React.Component {
                 {getHtml(help_html, language, "help-container")}
 
                 <div className="fieldset">
-                  {getErrorField(errors, null)}
+                  {getError(errors)}
 
                   {this.getUsernameField(input_fields)}
 
                   <div className="row password">
                     <label htmlFor="password">{t`PWD_LBL`}</label>
-                    {getErrorField(errors, "password")}
+                    {getError(errors, "password")}
                     <input
                       className={`input ${errors.password ? "error" : ""}`}
                       type="password"

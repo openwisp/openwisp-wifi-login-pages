@@ -22,7 +22,7 @@ import submitOnEnter from "../../utils/submit-on-enter";
 import renderAdditionalInfo from "../../utils/render-additional-info";
 import Contact from "../contact-box";
 import Modal from "../modal";
-import getErrorField from "../../utils/get-error-field";
+import getError from "../../utils/get-error";
 
 const PhoneInput = React.lazy(() => import("react-phone-input-2"));
 
@@ -365,7 +365,7 @@ export default class Registration extends React.Component {
             >
               <div className="inner">
                 <div className="fieldset">
-                  {getErrorField(errors, null)}
+                  {getError(errors)}
                   {plans.length > 0 && this.getPlanSelection()}
                   {(plans.length === 0 ||
                     (plans.length > 0 && selectedPlan !== null)) && (
@@ -375,7 +375,7 @@ export default class Registration extends React.Component {
                         input_fields.phone_number && (
                           <div className="row phone-number">
                             <label htmlFor="phone-number">{t`PHONE_LBL`}</label>
-                            {getErrorField(errors, "phone_number")}
+                            {getError(errors, "phone_number")}
                             <Suspense
                               fallback={
                                 <input
@@ -451,7 +451,7 @@ export default class Registration extends React.Component {
 
                       <div className="row email">
                         <label htmlFor="email">{t`EMAIL`}</label>
-                        {getErrorField(errors, "email")}
+                        {getError(errors, "email")}
                         <input
                           className={`input ${errors.email ? "error" : ""}`}
                           type="email"
@@ -474,7 +474,7 @@ export default class Registration extends React.Component {
                               ? getText(input_fields.username.label, language)
                               : t`USERNAME_LBL`}
                           </label>
-                          {getErrorField(errors, "email")}
+                          {getError(errors, "email")}
                           <input
                             className={`input ${
                               errors.username ? "error" : ""
@@ -508,7 +508,7 @@ export default class Registration extends React.Component {
                               ? t`FIRST_NAME_LBL`
                               : `${t`FIRST_NAME_LBL`} (${t`OPTIONAL`})`}
                           </label>
-                          {getErrorField(errors, "first_name")}
+                          {getError(errors, "first_name")}
                           <input
                             className={`input ${
                               errors.first_name ? "error" : ""
@@ -536,7 +536,7 @@ export default class Registration extends React.Component {
                               ? t`LAST_NAME_LBL`
                               : `${t`LAST_NAME_LBL`} (${t`OPTIONAL`})`}
                           </label>
-                          {getErrorField(errors, "last_name")}
+                          {getError(errors, "last_name")}
                           <input
                             className={`input ${
                               errors.last_name ? "error" : ""
@@ -563,7 +563,7 @@ export default class Registration extends React.Component {
                               ? t`BIRTH_DATE_LBL`
                               : `${t`BIRTH_DATE_LBL`} (${t`OPTIONAL`})`}
                           </label>
-                          {getErrorField(errors, "birth_date")}
+                          {getError(errors, "birth_date")}
                           <input
                             className={`input ${
                               errors.birth_date ? "error" : ""
@@ -588,7 +588,7 @@ export default class Registration extends React.Component {
                               ? t`LOCATION_LBL`
                               : `${t`LOCATION_LBL`} (${t`OPTIONAL`})`}
                           </label>
-                          {getErrorField(errors, "location")}
+                          {getError(errors, "location")}
                           <input
                             className={`input ${
                               errors.location ? "error" : ""
@@ -611,7 +611,7 @@ export default class Registration extends React.Component {
 
                       <div className="row password">
                         <label htmlFor="password">{t`PWD_LBL`}</label>
-                        {getErrorField(errors, "password1")}
+                        {getError(errors, "password1")}
                         <input
                           className={`input ${errors.password1 ? "error" : ""}`}
                           type="password"
@@ -640,7 +640,7 @@ export default class Registration extends React.Component {
                         <label htmlFor="password-confirm">
                           {t`CONFIRM_PWD_LBL`}
                         </label>
-                        {getErrorField(errors, "password2")}
+                        {getError(errors, "password2")}
                         <input
                           className={`input ${errors.password2 ? "error" : ""}`}
                           type="password"
@@ -670,7 +670,7 @@ export default class Registration extends React.Component {
                           <div className="billing-info">
                             <div className="row country">
                               <label htmlFor="country">{t`COUNTRY_LBL`}</label>
-                              {getErrorField(errors, "country")}
+                              {getError(errors, "country")}
                               <Select
                                 options={countries}
                                 value={countrySelected}
@@ -679,7 +679,7 @@ export default class Registration extends React.Component {
                             </div>
                             <div className="row city">
                               <label htmlFor="city">{t`CITY_LBL`}</label>
-                              {getErrorField(errors, "city")}
+                              {getError(errors, "city")}
                               <input
                                 className={`input ${
                                   errors.city ? "error" : ""
@@ -696,7 +696,7 @@ export default class Registration extends React.Component {
                             </div>
                             <div className="row street">
                               <label htmlFor="street">{t`STREET_LBL`}</label>
-                              {getErrorField(errors, "street")}
+                              {getError(errors, "street")}
                               <input
                                 className={`input ${
                                   errors.street ? "error" : ""
@@ -713,7 +713,7 @@ export default class Registration extends React.Component {
                             </div>
                             <div className="row zipcode">
                               <label htmlFor="zipcode">{t`ZIP_CODE_LBL`}</label>
-                              {getErrorField(errors, "zipcode")}
+                              {getError(errors, "zipcode")}
                               <input
                                 className={`input ${
                                   errors.zipcode ? "error" : ""
@@ -731,7 +731,7 @@ export default class Registration extends React.Component {
                               <label htmlFor="tax_number">
                                 {t`TAX_NUMBER_LBL`}
                               </label>
-                              {getErrorField(errors, "tax_number")}
+                              {getError(errors, "tax_number")}
                               <input
                                 className={`input ${
                                   errors.tax_number ? "error" : ""

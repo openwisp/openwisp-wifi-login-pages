@@ -1,6 +1,6 @@
 import React from "react";
 
-const getErrorField = (errors, key) => {
+const getError = (errors, key = null) => {
   const errorKey = key === null ? "nonField" : key;
   return errors[errorKey] ? (
     <div className={key !== null ? `error ${key}` : "error non-field"}>
@@ -10,4 +10,4 @@ const getErrorField = (errors, key) => {
   ) : null;
 };
 
-export default getErrorField;
+export default getError;

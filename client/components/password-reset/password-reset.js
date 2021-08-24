@@ -12,7 +12,7 @@ import getErrorText from "../../utils/get-error-text";
 import logError from "../../utils/log-error";
 import handleChange from "../../utils/handle-change";
 import Contact from "../contact-box";
-import getErrorField from "../../utils/get-error-field";
+import getError from "../../utils/get-error";
 
 export default class PasswordReset extends React.Component {
   constructor(props) {
@@ -102,7 +102,7 @@ export default class PasswordReset extends React.Component {
                 <div className="fieldset">
                   <div className="row email">
                     <label htmlFor="email">{t`EMAIL`}</label>
-                    {getErrorField(errors, "email")}
+                    {getError(errors, "email")}
                     <input
                       className={`input ${errors.email ? "error" : ""}`}
                       type="email"
