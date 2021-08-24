@@ -128,7 +128,7 @@ class MobilePhoneChange extends React.Component {
           >
             <div className="inner">
               <div className="fieldset row">
-                {getErrorField(errors, "nonField", true)}
+                {getErrorField(errors, null)}
                 <div className="row phone-number">
                   <label htmlFor="phone-number">{t`PHONE_LBL`}</label>
                   {getErrorField(errors, "phone_number")}

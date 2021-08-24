@@ -190,7 +190,7 @@ export default class MobilePhoneVerification extends React.Component {
               >
                 <div className="row fieldset code">
                   <p className="label">{t`PHONE_VERIFY (${phone_number})`}</p>
-                  {getErrorField(errors, "nonField", true)}
+                  {getErrorField(errors, null)}
 
                   <div className="row">
                     {getErrorField(errors, "code")}

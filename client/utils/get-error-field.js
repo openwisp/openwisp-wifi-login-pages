@@ -1,11 +1,13 @@
 import React from "react";
 
-const getErrorField = (errors, key, nonField = false, className = "") =>
-  errors[key] ? (
-    <div className={!nonField ? `error ${className}` : "error non-field"}>
+const getErrorField = (errors, key) => {
+  const errorKey = key === null ? "nonField" : key;
+  return errors[errorKey] ? (
+    <div className={key !== null ? `error ${key}` : "error non-field"}>
       <span className="icon">!</span>
-      <span className="text">{errors[key]}</span>
+      <span className="text">{errors[errorKey]}</span>
     </div>
   ) : null;
+};
 
 export default getErrorField;

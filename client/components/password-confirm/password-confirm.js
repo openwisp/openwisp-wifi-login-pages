@@ -137,7 +137,7 @@ export default class PasswordConfirm extends React.Component {
                 )}
 
                 <div className="fieldset">
-                  {getErrorField(errors, "nonField", true)}
+                  {getErrorField(errors, null)}
 
                   <div className="row password">
                     <label htmlFor="password">{t`PWD_LBL`}</label>

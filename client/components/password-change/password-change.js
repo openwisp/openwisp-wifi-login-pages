@@ -103,7 +103,7 @@ export default class PasswordChange extends React.Component {
           <form className="main-column" onSubmit={this.handleSubmit}>
             <div className="inner">
               <h1>{t`PWD_CHANGE_TITL`}</h1>
-              {getErrorField(errors, "nonField", true)}
+              {getErrorField(errors, null)}
 
               <div className="row password">
                 <label htmlFor="password">{t`PWD1_LBL`}</label>

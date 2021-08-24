@@ -331,7 +331,7 @@ export default class Login extends React.Component {
                 {getHtml(help_html, language, "help-container")}
 
                 <div className="fieldset">
-                  {getErrorField(errors, "nonField", true)}
+                  {getErrorField(errors, null)}
 
                   {this.getUsernameField(input_fields)}
 
