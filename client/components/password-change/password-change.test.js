@@ -33,6 +33,7 @@ const createTestProps = (props) => ({
   logout: jest.fn(),
   userData: {},
   setUserData: jest.fn(),
+  language: "en",
   ...props,
 });
 

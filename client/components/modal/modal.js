@@ -8,6 +8,7 @@ import axios from "axios";
 import getText from "../../utils/get-text";
 import {modalContentUrl} from "../../constants";
 import logError from "../../utils/log-error";
+import getLanguageHeaders from "../../utils/get-language-headers";
 
 export default class Modal extends React.Component {
   constructor(props) {
@@ -43,6 +44,7 @@ export default class Modal extends React.Component {
         method: "get",
         headers: {
           "content-type": "application/x-www-form-urlencoded",
+          "accept-language": getLanguageHeaders(language),
         },
         url: modalContentUrl(orgSlug),
         params: {

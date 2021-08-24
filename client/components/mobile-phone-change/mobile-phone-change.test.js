@@ -41,6 +41,7 @@ const createTestProps = function (props, configName = "test-org-2") {
     setUserData: jest.fn(),
     userData: {},
     setTitle: jest.fn(),
+    language: "en",
     // needed for subcomponents
     configuration: conf,
     ...props,

@@ -499,6 +499,7 @@ describe("Registration and Mobile Phone Verification interactions", () => {
       },
       headers: {
         "content-type": "application/json",
+        "accept-language": expect.any(String),
       },
       method: "post",
       url: "/api/v1/default/account/",

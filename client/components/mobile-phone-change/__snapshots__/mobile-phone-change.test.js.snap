@@ -316,6 +316,7 @@ Openwisp-wifi-login-pages and using its services in the future.</p>
           "cookies": Object {},
         }
       }
+      language="en"
       logout={[MockFunction]}
       orgName="test org 2 (sms)"
       orgSlug="test-org-2"
@@ -551,6 +552,7 @@ Openwisp-wifi-login-pages and using its services in the future.</p>
             "replace": [Function],
           }
         }
+        language="en"
         location={
           Object {
             "hash": "",

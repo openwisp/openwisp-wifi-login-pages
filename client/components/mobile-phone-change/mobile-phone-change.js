@@ -21,6 +21,7 @@ import Contact from "../contact-box";
 import handleSession from "../../utils/session";
 import validateToken from "../../utils/validate-token";
 import getError from "../../utils/get-error";
+import getLanguageHeaders from "../../utils/get-language-headers";
 
 const PhoneInput = React.lazy(() => import("react-phone-input-2"));
 
@@ -57,7 +58,7 @@ class MobilePhoneChange extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     const {setLoading} = this.context;
-    const {cookies, orgSlug, setUserData, userData} = this.props;
+    const {cookies, orgSlug, setUserData, userData, language} = this.props;
     const {phone_number, errors} = this.state;
     const url = mobilePhoneChangeUrl(orgSlug);
     const auth_token = cookies.get(`${orgSlug}_auth_token`);
@@ -69,6 +70,7 @@ class MobilePhoneChange extends React.Component {
       method: "post",
       headers: {
         "content-type": "application/x-www-form-urlencoded",
+        "accept-language": getLanguageHeaders(language),
       },
       url,
       data: qs.stringify({
@@ -241,4 +243,5 @@ MobilePhoneChange.propTypes = {
   userData: PropTypes.object.isRequired,
   setUserData: PropTypes.func.isRequired,
   setTitle: PropTypes.func.isRequired,
+  language: PropTypes.string.isRequired,
 };

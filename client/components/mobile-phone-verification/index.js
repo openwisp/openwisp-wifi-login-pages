@@ -11,6 +11,7 @@ const mapStateToProps = (state) => {
     orgSlug: conf.slug,
     orgName: conf.name,
     userData: conf.userData,
+    language: state.language,
   };
 };
 const mapDispatchToProps = (dispatch) => ({

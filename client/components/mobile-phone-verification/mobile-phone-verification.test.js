@@ -28,6 +28,7 @@ const createTestProps = function (props, configName = "test-org-2") {
   return {
     mobile_phone_verification: config.components.mobile_phone_verification_form,
     settings: config.settings,
+    language: "en",
     orgSlug: config.slug,
     orgName: config.name,
     cookies: new Cookies(),

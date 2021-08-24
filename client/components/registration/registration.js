@@ -23,6 +23,7 @@ import renderAdditionalInfo from "../../utils/render-additional-info";
 import Contact from "../contact-box";
 import Modal from "../modal";
 import getError from "../../utils/get-error";
+import getLanguageHeaders from "../../utils/get-language-headers";
 
 const PhoneInput = React.lazy(() => import("react-phone-input-2"));
 
@@ -61,7 +62,7 @@ export default class Registration extends React.Component {
   }
 
   componentDidMount() {
-    const {orgSlug, settings, setTitle, orgName} = this.props;
+    const {orgSlug, settings, setTitle, orgName, language} = this.props;
     const {setLoading} = this.context;
     const plansUrl = plansApiUrl.replace("{orgSlug}", orgSlug);
 
@@ -73,6 +74,7 @@ export default class Registration extends React.Component {
         method: "get",
         headers: {
           "content-type": "application/x-www-form-urlencoded",
+          "accept-language": getLanguageHeaders(language),
         },
         url: plansUrl,
       })
@@ -94,7 +96,7 @@ export default class Registration extends React.Component {
   handleSubmit(event) {
     const {setLoading} = this.context;
     event.preventDefault();
-    const {orgSlug, authenticate, settings} = this.props;
+    const {orgSlug, authenticate, settings, language} = this.props;
     const {
       phone_number,
       email,
@@ -180,6 +182,7 @@ export default class Registration extends React.Component {
       method: "post",
       headers: {
         "content-type": "application/json",
+        "accept-language": getLanguageHeaders(language),
       },
       url,
       data: body,

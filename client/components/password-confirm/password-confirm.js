@@ -15,6 +15,7 @@ import getErrorText from "../../utils/get-error-text";
 import logError from "../../utils/log-error";
 import handleChange from "../../utils/handle-change";
 import getError from "../../utils/get-error";
+import getLanguageHeaders from "../../utils/get-language-headers";
 
 export default class PasswordConfirm extends React.Component {
   constructor(props) {
@@ -44,7 +45,7 @@ export default class PasswordConfirm extends React.Component {
   handleSubmit(event) {
     const {setLoading} = this.context;
     event.preventDefault();
-    const {passwordConfirm, orgSlug, match} = this.props;
+    const {passwordConfirm, orgSlug, match, language} = this.props;
     const inputFields = passwordConfirm.input_fields;
     const {newPassword1, newPassword2, errors} = this.state;
     if (inputFields.password_confirm) {
@@ -65,6 +66,7 @@ export default class PasswordConfirm extends React.Component {
       method: "post",
       headers: {
         "content-type": "application/x-www-form-urlencoded",
+        "accept-language": getLanguageHeaders(language),
       },
       url,
       data: qs.stringify({
@@ -247,4 +249,5 @@ PasswordConfirm.propTypes = {
     }),
   }).isRequired,
   setTitle: PropTypes.func.isRequired,
+  language: PropTypes.string.isRequired,
 };

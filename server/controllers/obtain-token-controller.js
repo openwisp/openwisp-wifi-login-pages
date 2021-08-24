@@ -27,6 +27,7 @@ const sendCookies = (username, response, conf, res) => {
 
 const obtainToken = (req, res) => {
   const reqOrg = req.params.organization;
+  console.log(req.headers);
   const validSlug = config.some((org) => {
     if (org.slug === reqOrg) {
       // merge default config and custom config
