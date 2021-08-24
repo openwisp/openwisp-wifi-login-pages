@@ -14,6 +14,7 @@ import {confirmApiUrl} from "../../constants";
 import getErrorText from "../../utils/get-error-text";
 import logError from "../../utils/log-error";
 import handleChange from "../../utils/handle-change";
+import getErrorField from "../../utils/get-error-field";
 
 export default class PasswordConfirm extends React.Component {
   constructor(props) {
@@ -136,22 +137,11 @@ export default class PasswordConfirm extends React.Component {
                 )}
 
                 <div className="fieldset">
-                  {errors.nonField && (
-                    <div className="error non-field">
-                      <span className="icon">!</span>
-                      <span className="text">{errors.nonField}</span>
-                    </div>
-                  )}
+                  {getErrorField(errors, "nonField", true)}
 
                   <div className="row password">
                     <label htmlFor="password">{t`PWD_LBL`}</label>
-
-                    {errors.newPassword1 && (
-                      <div className="error">
-                        <span className="icon">!</span>
-                        <span className="text ">{errors.newPassword1}</span>
-                      </div>
-                    )}
+                    {getErrorField(errors, "newPassword1")}
 
                     <input
                       className={`input ${errors.newPassword1 ? "error" : ""}`}
@@ -179,13 +169,7 @@ export default class PasswordConfirm extends React.Component {
 
                   <div className="row password-confirm">
                     <label htmlFor="password-confirm">{t`CONFIRM_PWD_LBL`}</label>
-
-                    {errors.newPassword2 && (
-                      <div className="error">
-                        <span className="icon">!</span>
-                        <span className="text ">{errors.newPassword2}</span>
-                      </div>
-                    )}
+                    {getErrorField(errors, "newPassword2")}
 
                     <input
                       className={`input ${errors.newPassword2 ? "error" : ""}`}

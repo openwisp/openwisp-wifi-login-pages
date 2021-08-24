@@ -20,6 +20,7 @@ import submitOnEnter from "../../utils/submit-on-enter";
 import Contact from "../contact-box";
 import handleSession from "../../utils/session";
 import validateToken from "../../utils/validate-token";
+import getErrorField from "../../utils/get-error-field";
 
 const PhoneInput = React.lazy(() => import("react-phone-input-2"));
 
@@ -127,21 +128,10 @@ class MobilePhoneChange extends React.Component {
           >
             <div className="inner">
               <div className="fieldset row">
-                {errors.nonField && (
-                  <div className="error non-field">
-                    <span className="icon">!</span>
-                    <span className="text">{errors.nonField}</span>
-                  </div>
-                )}
-
+                {getErrorField(errors, "nonField", true)}
                 <div className="row phone-number">
                   <label htmlFor="phone-number">{t`PHONE_LBL`}</label>
-                  {errors.phone_number && (
-                    <div className="error">
-                      <span className="icon">!</span>
-                      <span className="text">{errors.phone_number}</span>
-                    </div>
-                  )}
+                  {getErrorField(errors, "phone_number")}
                   <Suspense
                     fallback={
                       <input
