@@ -78,10 +78,10 @@ body {
 }
 div.error {
   margin: 0 0 3px;
-  line-height: 31px;
+  padding: 8px;
+  line-height: 23px;
   font-size: 14px;
   border-radius: 5px;
-  padding: 1px 4px;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
