@@ -11,6 +11,7 @@ const mapStateToProps = (state, ownProps) => {
     orgName: conf.name,
     cookies: ownProps.cookies,
     userData: conf.userData,
+    language: state.language,
   };
 };
 

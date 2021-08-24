@@ -19,6 +19,7 @@ const plans = (req, res) => {
         method: "get",
         headers: {
           "content-type": "application/x-www-form-urlencoded",
+          "accept-language": req.headers["accept-language"],
         },
         url: `${host}${plansUrl}/`,
         timeout,
@@ -30,7 +31,6 @@ const plans = (req, res) => {
             .send(response.data);
         })
         .catch((error) => {
-          console.log(error);
           if (error.response && error.response.status === 500)
             Logger.error(error);
           // forward error

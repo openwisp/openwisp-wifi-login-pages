@@ -26,6 +26,7 @@ import Contact from "../contact-box";
 import Modal from "../modal";
 import {Status} from "../organization-wrapper/lazy-import";
 import getError from "../../utils/get-error";
+import getLanguageHeaders from "../../utils/get-language-headers";
 
 const PhoneInput = React.lazy(() => import("react-phone-input-2"));
 
@@ -188,7 +189,7 @@ export default class Login extends React.Component {
   handleSubmit(event) {
     const {setLoading} = this.context;
     if (event) event.preventDefault();
-    const {orgSlug, setUserData} = this.props;
+    const {orgSlug, setUserData, language} = this.props;
     const {username, password, errors} = this.state;
     const url = loginApiUrl(orgSlug);
     this.setState({
@@ -200,6 +201,7 @@ export default class Login extends React.Component {
       method: "post",
       headers: {
         "content-type": "application/x-www-form-urlencoded",
+        "accept-language": getLanguageHeaders(language),
       },
       url,
       data: qs.stringify({

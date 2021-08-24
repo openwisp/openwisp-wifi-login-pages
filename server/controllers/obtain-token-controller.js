@@ -40,6 +40,7 @@ const obtainToken = (req, res) => {
         method: "post",
         headers: {
           "content-type": "application/x-www-form-urlencoded",
+          "accept-language": req.headers["accept-language"],
         },
         url: `${host}${obtainTokenUrl}/`,
         timeout,

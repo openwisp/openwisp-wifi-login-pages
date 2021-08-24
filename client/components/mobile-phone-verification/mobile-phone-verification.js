@@ -23,6 +23,7 @@ import handleSession from "../../utils/session";
 import validateToken from "../../utils/validate-token";
 import handleLogout from "../../utils/handle-logout";
 import getError from "../../utils/get-error";
+import getLanguageHeaders from "../../utils/get-language-headers";
 
 export default class MobilePhoneVerification extends React.Component {
   phoneTokenSentKey = "owPhoneTokenSent";
@@ -73,7 +74,7 @@ export default class MobilePhoneVerification extends React.Component {
   handleSubmit(event) {
     const {setLoading} = this.context;
     event.preventDefault();
-    const {orgSlug, cookies, setUserData, userData} = this.props;
+    const {orgSlug, cookies, setUserData, userData, language} = this.props;
     const {code, errors} = this.state;
     this.setState({errors: {...errors, code: ""}});
     const url = verifyMobilePhoneTokenUrl(orgSlug);
@@ -83,6 +84,7 @@ export default class MobilePhoneVerification extends React.Component {
       method: "post",
       headers: {
         "content-type": "application/x-www-form-urlencoded",
+        "accept-language": getLanguageHeaders(language),
       },
       url,
       data: qs.stringify({
@@ -129,7 +131,7 @@ export default class MobilePhoneVerification extends React.Component {
     if (!resend && this.hasPhoneTokenBeenSent()) {
       return false;
     }
-    const {orgSlug} = this.props;
+    const {orgSlug, language} = this.props;
     const {errors, phone_number} = this.state;
     const self = this;
     const url = createMobilePhoneTokenUrl(orgSlug);
@@ -137,6 +139,7 @@ export default class MobilePhoneVerification extends React.Component {
       method: "post",
       headers: {
         "content-type": "application/x-www-form-urlencoded",
+        "accept-language": getLanguageHeaders(language),
       },
       url,
       data: qs.stringify({
@@ -283,4 +286,5 @@ MobilePhoneVerification.propTypes = {
   userData: PropTypes.object.isRequired,
   setUserData: PropTypes.func.isRequired,
   setTitle: PropTypes.func.isRequired,
+  language: PropTypes.string.isRequired,
 };

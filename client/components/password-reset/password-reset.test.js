@@ -20,6 +20,7 @@ const createTestProps = (props) => ({
   orgName: "default name",
   setTitle: jest.fn(),
   passwordReset: defaultConfig.components.password_reset_form,
+  language: "en",
   ...props,
 });
 

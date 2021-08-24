@@ -18,6 +18,7 @@ import handleChange from "../../utils/handle-change";
 import handleSession from "../../utils/session";
 import validateToken from "../../utils/validate-token";
 import getError from "../../utils/get-error";
+import getLanguageHeaders from "../../utils/get-language-headers";
 
 export default class PasswordChange extends React.Component {
   constructor(props) {
@@ -45,7 +46,7 @@ export default class PasswordChange extends React.Component {
     const {setLoading} = this.context;
 
     if (e) e.preventDefault();
-    const {orgSlug, cookies} = this.props;
+    const {orgSlug, cookies, language} = this.props;
     const authToken = cookies.get(`${orgSlug}_auth_token`);
     const {token, session} = handleSession(orgSlug, authToken, cookies);
     const url = passwordChangeApiUrl.replace("{orgSlug}", orgSlug);
@@ -63,6 +64,7 @@ export default class PasswordChange extends React.Component {
       method: "post",
       headers: {
         "content-type": "application/x-www-form-urlencoded",
+        "accept-language": getLanguageHeaders(language),
       },
       url,
       data: qs.stringify({
@@ -192,4 +194,5 @@ PasswordChange.propTypes = {
   logout: PropTypes.func.isRequired,
   userData: PropTypes.object.isRequired,
   setUserData: PropTypes.func.isRequired,
+  language: PropTypes.string.isRequired,
 };

@@ -26,6 +26,7 @@ const validateToken = (req, res) => {
         method: "post",
         headers: {
           "content-type": "application/x-www-form-urlencoded",
+          "accept-language": req.headers["accept-language"],
         },
         url: `${host}${validateTokenUrl}/`,
         timeout,

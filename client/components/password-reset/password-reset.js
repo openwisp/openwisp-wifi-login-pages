@@ -13,6 +13,7 @@ import logError from "../../utils/log-error";
 import handleChange from "../../utils/handle-change";
 import Contact from "../contact-box";
 import getError from "../../utils/get-error";
+import getLanguageHeaders from "../../utils/get-language-headers";
 
 export default class PasswordReset extends React.Component {
   constructor(props) {
@@ -38,7 +39,7 @@ export default class PasswordReset extends React.Component {
   handleSubmit(event) {
     const {setLoading} = this.context;
     event.preventDefault();
-    const {orgSlug} = this.props;
+    const {orgSlug, language} = this.props;
     const {email, errors} = this.state;
     const url = resetApiUrl.replace("{orgSlug}", orgSlug);
     setLoading(true);
@@ -46,6 +47,7 @@ export default class PasswordReset extends React.Component {
       method: "post",
       headers: {
         "content-type": "application/x-www-form-urlencoded",
+        "accept-language": getLanguageHeaders(language),
       },
       url,
       data: qs.stringify({
@@ -163,4 +165,5 @@ PasswordReset.propTypes = {
   orgSlug: PropTypes.string.isRequired,
   orgName: PropTypes.string.isRequired,
   setTitle: PropTypes.func.isRequired,
+  language: PropTypes.string.isRequired,
 };

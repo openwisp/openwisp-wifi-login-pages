@@ -27,6 +27,7 @@ const passwordChange = (req, res) => {
           headers: {
             "content-type": "application/x-www-form-urlencoded",
             Authorization: `Bearer ${token}`,
+            "accept-language": req.headers["accept-language"],
           },
           url: `${host}${url}/`,
           timeout,
