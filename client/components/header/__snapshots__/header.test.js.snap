@@ -1,5 +1,207 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<Header /> rendering should render sticky msg and close it on clicking close-btn 1`] = `
+<Fragment>
+  <div
+    className="header-container header-desktop"
+  >
+    <div
+      className="header-row-1"
+    >
+      <div
+        className="header-row-1-inner"
+      >
+        <div
+          className="header-left"
+        >
+          <div
+            className="header-logo-div"
+          >
+            <Link
+              to="/default"
+            >
+              <img
+                alt="openwisp"
+                className="header-logo-image header-desktop-logo-image"
+                src="/assets/default/openwisp-logo-black.svg"
+              />
+            </Link>
+          </div>
+        </div>
+        <div
+          className="header-right"
+        >
+          <button
+            className="active header-language-btn header-desktop-language-btn header-language-btn-en"
+            key="en"
+            onClick={[Function]}
+            type="button"
+          >
+            english
+          </button>
+          <button
+            className="header-language-btn header-desktop-language-btn header-language-btn-it"
+            key="it"
+            onClick={[Function]}
+            type="button"
+          >
+            italian
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      className="header-row-2"
+    >
+      <div
+        className="header-row-2-inner"
+      >
+        <a
+          className="header-link header-desktop-link
+                    header-link-1 button"
+          href="link-1/"
+          key="link-1/"
+          rel="noreferrer noopener"
+          target="_blank"
+        >
+          link-1
+        </a>
+        <a
+          className="header-link header-desktop-link
+                    header-link-2 button"
+          href="link-2/"
+          key="link-2/"
+          rel="noreferrer noopener"
+          target="_blank"
+        >
+          link-2
+        </a>
+      </div>
+    </div>
+  </div>
+  <div
+    className="header-mobile "
+  >
+    <div
+      className="header-row-1"
+    >
+      <div
+        className="header-row-1-inner"
+      >
+        <div
+          className="header-left"
+        >
+          <div
+            className="header-logo-div"
+          >
+            <Link
+              to="/default"
+            >
+              <img
+                alt="openwisp"
+                className="header-logo-image header-mobile-logo-image"
+                src="/assets/default/openwisp-logo-black.svg"
+              />
+            </Link>
+          </div>
+        </div>
+        <div
+          className="header-right"
+        >
+          <div
+            className="header-hamburger"
+            onClick={[Function]}
+            onKeyUp={[Function]}
+            role="button"
+            tabIndex={0}
+          >
+            <div
+              className=""
+            />
+            <div
+              className=""
+            />
+            <div
+              className=""
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="display-none header-mobile-menu"
+    >
+      <a
+        className="header-link mobile-link
+                      header-link-1 button"
+        href="link-1/"
+        key="link-1/"
+        rel="noreferrer noopener"
+        target="_blank"
+      >
+        link-1
+      </a>
+      <a
+        className="header-link mobile-link
+                      header-link-2 button"
+        href="link-2/"
+        key="link-2/"
+        rel="noreferrer noopener"
+        target="_blank"
+      >
+        link-2
+      </a>
+      <div
+        className="mobile-languages-row"
+      >
+        <button
+          className="active header-language-btn header-mobile-language-btn header-language-btn-en"
+          key="en"
+          onClick={[Function]}
+          type="button"
+        >
+          english
+        </button>
+        <button
+          className="header-language-btn header-mobile-language-btn header-language-btn-it"
+          key="it"
+          onClick={[Function]}
+          type="button"
+        >
+          italian
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    className="sticky-container"
+    role="banner"
+  >
+    <div
+      className="inner"
+    >
+      <div
+        className="sticky-msg"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": <p>
+              announcement
+            </p>,
+          }
+        }
+      />
+      <button
+        className="close-sticky-btn"
+        onClick={[Function]}
+        type="button"
+      >
+        ✖
+      </button>
+    </div>
+  </div>
+</Fragment>
+`;
+
 exports[`<Header /> rendering should render with links 1`] = `
 Array [
   <div

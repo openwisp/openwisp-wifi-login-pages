@@ -8,12 +8,14 @@ import isInternalLink from "../../utils/check-internal-links";
 import getAssetPath from "../../utils/get-asset-path";
 import getText from "../../utils/get-text";
 import shouldLinkBeShown from "../../utils/should-link-be-shown";
+import getHtml from "../../utils/get-html";
 
 export default class Header extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       menu: false,
+      stickyMsg: true,
     };
     this.handleHamburger = this.handleHamburger.bind(this);
     this.handleKeyUp = this.handleKeyUp.bind(this);
@@ -38,6 +40,26 @@ export default class Header extends React.Component {
         break;
     }
   }
+
+  getStickyMsg = () => {
+    const {stickyMsg} = this.state;
+    const {header, language} = this.props;
+    const {sticky_html: stickyHtml} = header;
+    return stickyMsg && stickyHtml ? (
+      <div className="sticky-container" role="banner">
+        <div className="inner">
+          {getHtml(stickyHtml, language, "sticky-msg")}
+          <button
+            type="button"
+            className="close-sticky-btn"
+            onClick={() => this.setState({stickyMsg: false})}
+          >
+            ✖
+          </button>
+        </div>
+      </div>
+    ) : null;
+  };
 
   render() {
     const {menu} = this.state;
@@ -238,6 +260,7 @@ export default class Header extends React.Component {
             </div>
           </div>
         </div>
+        {this.getStickyMsg()}
       </>
     );
   }
@@ -256,6 +279,7 @@ Header.propTypes = {
       url: PropTypes.string,
     }),
     links: PropTypes.array,
+    sticky_html: PropTypes.object,
   }).isRequired,
   language: PropTypes.string.isRequired,
   languages: PropTypes.arrayOf(

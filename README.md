@@ -398,6 +398,18 @@ header:
     alternate_text: "logo2"
 ```
 
+#### Sticky message
+
+```yaml
+header:
+  sticky_html:
+    en: >
+      <p class="announcement">
+        This site will go in schedule maintenance
+        <b>tonight (10pm - 11pm)</b>
+      </p>
+```
+
 ##### Login page
 
 ```yaml

@@ -186,6 +186,31 @@ describe("<Header /> rendering", () => {
       wrapper.find(".header-logo-image.header-desktop-logo-image"),
     ).toHaveLength(0);
   });
+  it("should render sticky msg and close it on clicking close-btn", () => {
+    props = createTestProps({
+      header: {
+        ...props.header,
+        sticky_html: {
+          en: <p>announcement</p>,
+        },
+      },
+    });
+    wrapper = shallow(<Header {...props} />);
+    expect(wrapper.find(".sticky-container").length).toEqual(1);
+    expect(wrapper.find(".sticky-msg").length).toEqual(1);
+    expect(wrapper.find(".sticky-msg").props().dangerouslySetInnerHTML).toEqual(
+      {__html: <p>announcement</p>},
+    );
+    expect(wrapper).toMatchSnapshot();
+    expect(wrapper.find(".close-sticky-btn").length).toEqual(1);
+    expect(wrapper.instance().state.stickyMsg).toEqual(true);
+    wrapper.find(".close-sticky-btn").simulate("click");
+    // sticky-msg closed
+    expect(wrapper.instance().state.stickyMsg).toEqual(false);
+    expect(wrapper.find(".sticky-container").length).toEqual(0);
+    expect(wrapper.find(".sticky-msg").length).toEqual(0);
+    expect(wrapper.find(".close-sticky-btn").length).toEqual(0);
+  });
 });
 
 describe("<Header /> interactions", () => {
