@@ -27,7 +27,6 @@ const sendCookies = (username, response, conf, res) => {
 
 const obtainToken = (req, res) => {
   const reqOrg = req.params.organization;
-  console.log(req.headers);
   const validSlug = config.some((org) => {
     if (org.slug === reqOrg) {
       // merge default config and custom config
@@ -41,6 +40,7 @@ const obtainToken = (req, res) => {
         method: "post",
         headers: {
           "content-type": "application/x-www-form-urlencoded",
+          "accept-language": req.headers["accept-language"],
         },
         url: `${host}${obtainTokenUrl}/`,
         timeout,

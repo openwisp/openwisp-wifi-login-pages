@@ -48,6 +48,7 @@ const registration = (req, res) => {
         method: "post",
         headers: {
           "content-type": "application/json",
+          "accept-language": req.headers["accept-language"],
         },
         url: `${host}${registerUrl}/`,
         timeout,

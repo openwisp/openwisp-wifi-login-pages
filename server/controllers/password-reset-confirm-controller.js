@@ -17,12 +17,12 @@ const passwordResetConfirm = (req, res) => {
       const resetConfirmUrl = reverse("password_reset_confirm", org.slug);
       const timeout = conf.timeout * 1000;
       const {newPassword1, newPassword2, uid, token} = req.body;
-      console.log({newPassword1, newPassword2, uid, token});
       // make AJAX request
       axios({
         method: "post",
         headers: {
           "content-type": "application/x-www-form-urlencoded",
+          "accept-language": req.headers["accept-language"],
         },
         url: `${host}${resetConfirmUrl}/`,
         timeout,
