@@ -25,6 +25,7 @@ import handleChange from "../../utils/handle-change";
 import Contact from "../contact-box";
 import Modal from "../modal";
 import {Status} from "../organization-wrapper/lazy-import";
+import getError from "../../utils/get-error";
 
 const PhoneInput = React.lazy(() => import("react-phone-input-2"));
 
@@ -111,12 +112,7 @@ export default class Login extends React.Component {
     return (
       <div className="row username">
         <label htmlFor="username">{label}</label>
-        {errors.username && (
-          <div className="error">
-            <span className="icon">!</span>
-            <span className="text">{errors.username}</span>
-          </div>
-        )}
+        {getError(errors, "username")}
         <input
           className={`input ${errors.username ? "error" : ""}`}
           type={input_fields.username.type}
@@ -139,12 +135,7 @@ export default class Login extends React.Component {
     return (
       <div className="row phone-number">
         <label htmlFor="phone-number">{t`PHONE_LBL`}</label>
-        {errors.username && (
-          <div className="error">
-            <span className="icon">!</span>
-            <span className="text">{errors.username}</span>
-          </div>
-        )}
+        {getError(errors, "username")}
         <Suspense
           fallback={
             <input
@@ -340,23 +331,13 @@ export default class Login extends React.Component {
                 {getHtml(help_html, language, "help-container")}
 
                 <div className="fieldset">
-                  {errors.nonField && (
-                    <div className="error non-field">
-                      <span className="icon">!</span>
-                      <span className="text">{errors.nonField}</span>
-                    </div>
-                  )}
+                  {getError(errors)}
 
                   {this.getUsernameField(input_fields)}
 
                   <div className="row password">
                     <label htmlFor="password">{t`PWD_LBL`}</label>
-                    {errors.password && (
-                      <div className="error">
-                        <span className="icon">!</span>
-                        <span className="text">{errors.password}</span>
-                      </div>
-                    )}
+                    {getError(errors, "password")}
                     <input
                       className={`input ${errors.password ? "error" : ""}`}
                       type="password"

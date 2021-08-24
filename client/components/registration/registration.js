@@ -22,6 +22,7 @@ import submitOnEnter from "../../utils/submit-on-enter";
 import renderAdditionalInfo from "../../utils/render-additional-info";
 import Contact from "../contact-box";
 import Modal from "../modal";
+import getError from "../../utils/get-error";
 
 const PhoneInput = React.lazy(() => import("react-phone-input-2"));
 
@@ -364,12 +365,7 @@ export default class Registration extends React.Component {
             >
               <div className="inner">
                 <div className="fieldset">
-                  {errors.nonField && (
-                    <div className="error non-field">
-                      <span className="icon">!</span>
-                      <span className="text">{errors.nonField}</span>
-                    </div>
-                  )}
+                  {getError(errors)}
                   {plans.length > 0 && this.getPlanSelection()}
                   {(plans.length === 0 ||
                     (plans.length > 0 && selectedPlan !== null)) && (
@@ -379,15 +375,7 @@ export default class Registration extends React.Component {
                         input_fields.phone_number && (
                           <div className="row phone-number">
                             <label htmlFor="phone-number">{t`PHONE_LBL`}</label>
-
-                            {errors.phone_number && (
-                              <div className="error">
-                                <span className="icon">!</span>
-                                <span className="text">
-                                  {errors.phone_number}
-                                </span>
-                              </div>
-                            )}
+                            {getError(errors, "phone_number")}
                             <Suspense
                               fallback={
                                 <input
@@ -463,14 +451,7 @@ export default class Registration extends React.Component {
 
                       <div className="row email">
                         <label htmlFor="email">{t`EMAIL`}</label>
-                        {errors.email && (
-                          <div className="error email">
-                            <span className="icon">!</span>
-                            <span className="text text-email">
-                              {errors.email}
-                            </span>
-                          </div>
-                        )}
+                        {getError(errors, "email")}
                         <input
                           className={`input ${errors.email ? "error" : ""}`}
                           type="email"
@@ -493,14 +474,7 @@ export default class Registration extends React.Component {
                               ? getText(input_fields.username.label, language)
                               : t`USERNAME_LBL`}
                           </label>
-                          {errors.email && (
-                            <div className="error username">
-                              <span className="icon">!</span>
-                              <span className="text text-username">
-                                {errors.username}
-                              </span>
-                            </div>
-                          )}
+                          {getError(errors, "email")}
                           <input
                             className={`input ${
                               errors.username ? "error" : ""
@@ -534,14 +508,7 @@ export default class Registration extends React.Component {
                               ? t`FIRST_NAME_LBL`
                               : `${t`FIRST_NAME_LBL`} (${t`OPTIONAL`})`}
                           </label>
-                          {errors.first_name && (
-                            <div className="error first_name">
-                              <span className="icon">!</span>
-                              <span className="text text-first_name">
-                                {errors.first_name}
-                              </span>
-                            </div>
-                          )}
+                          {getError(errors, "first_name")}
                           <input
                             className={`input ${
                               errors.first_name ? "error" : ""
@@ -569,14 +536,7 @@ export default class Registration extends React.Component {
                               ? t`LAST_NAME_LBL`
                               : `${t`LAST_NAME_LBL`} (${t`OPTIONAL`})`}
                           </label>
-                          {errors.last_name && (
-                            <div className="error last_name">
-                              <span className="icon">!</span>
-                              <span className="text text-last_name">
-                                {errors.last_name}
-                              </span>
-                            </div>
-                          )}
+                          {getError(errors, "last_name")}
                           <input
                             className={`input ${
                               errors.last_name ? "error" : ""
@@ -603,14 +563,7 @@ export default class Registration extends React.Component {
                               ? t`BIRTH_DATE_LBL`
                               : `${t`BIRTH_DATE_LBL`} (${t`OPTIONAL`})`}
                           </label>
-                          {errors.birth_date && (
-                            <div className="error birth_date">
-                              <span className="icon">!</span>
-                              <span className="text text-birth_date">
-                                {errors.birth_date}
-                              </span>
-                            </div>
-                          )}
+                          {getError(errors, "birth_date")}
                           <input
                             className={`input ${
                               errors.birth_date ? "error" : ""
@@ -635,14 +588,7 @@ export default class Registration extends React.Component {
                               ? t`LOCATION_LBL`
                               : `${t`LOCATION_LBL`} (${t`OPTIONAL`})`}
                           </label>
-                          {errors.location && (
-                            <div className="error location">
-                              <span className="icon">!</span>
-                              <span className="text text-location">
-                                {errors.location}
-                              </span>
-                            </div>
-                          )}
+                          {getError(errors, "location")}
                           <input
                             className={`input ${
                               errors.location ? "error" : ""
@@ -665,12 +611,7 @@ export default class Registration extends React.Component {
 
                       <div className="row password">
                         <label htmlFor="password">{t`PWD_LBL`}</label>
-                        {errors.password1 && (
-                          <div className="error">
-                            <span className="icon">!</span>
-                            <span className="text">{errors.password1}</span>
-                          </div>
-                        )}
+                        {getError(errors, "password1")}
                         <input
                           className={`input ${errors.password1 ? "error" : ""}`}
                           type="password"
@@ -699,14 +640,7 @@ export default class Registration extends React.Component {
                         <label htmlFor="password-confirm">
                           {t`CONFIRM_PWD_LBL`}
                         </label>
-                        {errors.password2 && (
-                          <div className="error confirm">
-                            <span className="icon">!</span>
-                            <span className="text text-confirm">
-                              {errors.password2}
-                            </span>
-                          </div>
-                        )}
+                        {getError(errors, "password2")}
                         <input
                           className={`input ${errors.password2 ? "error" : ""}`}
                           type="password"
@@ -736,14 +670,7 @@ export default class Registration extends React.Component {
                           <div className="billing-info">
                             <div className="row country">
                               <label htmlFor="country">{t`COUNTRY_LBL`}</label>
-                              {errors.country && (
-                                <div className="error country">
-                                  <span className="icon">!</span>
-                                  <span className="text text-country">
-                                    {errors.country}
-                                  </span>
-                                </div>
-                              )}
+                              {getError(errors, "country")}
                               <Select
                                 options={countries}
                                 value={countrySelected}
@@ -752,14 +679,7 @@ export default class Registration extends React.Component {
                             </div>
                             <div className="row city">
                               <label htmlFor="city">{t`CITY_LBL`}</label>
-                              {errors.city && (
-                                <div className="error city">
-                                  <span className="icon">!</span>
-                                  <span className="text text-city">
-                                    {errors.city}
-                                  </span>
-                                </div>
-                              )}
+                              {getError(errors, "city")}
                               <input
                                 className={`input ${
                                   errors.city ? "error" : ""
@@ -776,14 +696,7 @@ export default class Registration extends React.Component {
                             </div>
                             <div className="row street">
                               <label htmlFor="street">{t`STREET_LBL`}</label>
-                              {errors.street && (
-                                <div className="error street">
-                                  <span className="icon">!</span>
-                                  <span className="text text-street">
-                                    {errors.street}
-                                  </span>
-                                </div>
-                              )}
+                              {getError(errors, "street")}
                               <input
                                 className={`input ${
                                   errors.street ? "error" : ""
@@ -800,14 +713,7 @@ export default class Registration extends React.Component {
                             </div>
                             <div className="row zipcode">
                               <label htmlFor="zipcode">{t`ZIP_CODE_LBL`}</label>
-                              {errors.zipcode && (
-                                <div className="error zipcode">
-                                  <span className="icon">!</span>
-                                  <span className="text text-zipcode">
-                                    {errors.zipcode}
-                                  </span>
-                                </div>
-                              )}
+                              {getError(errors, "zipcode")}
                               <input
                                 className={`input ${
                                   errors.zipcode ? "error" : ""
@@ -825,14 +731,7 @@ export default class Registration extends React.Component {
                               <label htmlFor="tax_number">
                                 {t`TAX_NUMBER_LBL`}
                               </label>
-                              {errors.tax_number && (
-                                <div className="error tax_number">
-                                  <span className="icon">!</span>
-                                  <span className="text text-tax_number">
-                                    {errors.tax_number}
-                                  </span>
-                                </div>
-                              )}
+                              {getError(errors, "tax_number")}
                               <input
                                 className={`input ${
                                   errors.tax_number ? "error" : ""

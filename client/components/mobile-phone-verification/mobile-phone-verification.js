@@ -22,6 +22,7 @@ import Contact from "../contact-box";
 import handleSession from "../../utils/session";
 import validateToken from "../../utils/validate-token";
 import handleLogout from "../../utils/handle-logout";
+import getError from "../../utils/get-error";
 
 export default class MobilePhoneVerification extends React.Component {
   phoneTokenSentKey = "owPhoneTokenSent";
@@ -189,21 +190,10 @@ export default class MobilePhoneVerification extends React.Component {
               >
                 <div className="row fieldset code">
                   <p className="label">{t`PHONE_VERIFY (${phone_number})`}</p>
-
-                  {errors.nonField && (
-                    <div className="error non-field">
-                      <span className="icon">!</span>
-                      <span className="text">{errors.nonField}</span>
-                    </div>
-                  )}
+                  {getError(errors)}
 
                   <div className="row">
-                    {errors.code && (
-                      <div className="error">
-                        <span className="icon">!</span>
-                        <span className="text">{errors.code}</span>
-                      </div>
-                    )}
+                    {getError(errors, "code")}
                     <input
                       className={`input ${
                         errors.code || errors.nonField ? "error" : ""
