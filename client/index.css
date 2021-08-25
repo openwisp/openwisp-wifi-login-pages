@@ -328,7 +328,6 @@ h1 {
   text-align: center;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   background: #d3d3d3;
-  font-weight: bold;
   transition-property: transform;
   transition-duration: 0.3s;
 }

@@ -13,11 +13,21 @@
   color: inherit;
 }
 
-.modal-container div.message h1 {
+.modal-container .message h1 {
   text-align: center;
 }
 
 .message {
   max-height: 70vh;
   overflow: auto;
+}
+
+.modal-container .message h1 {
+  font-size: 21px;
+}
+.modal-container .message h2 {
+  font-size: 18px;
+}
+.modal-container .message {
+  line-height: 30px;
 }

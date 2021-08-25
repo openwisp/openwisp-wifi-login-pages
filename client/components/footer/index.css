@@ -23,13 +23,17 @@
   max-width: 1000px;
 }
 .footer-link {
-  color: #ffffff;
+  color: #fff;
   padding: 0 2px;
   margin-right: 10px;
   font-size: 14px;
   font-weight: 600;
 }
-.footer-link:hover {
+.footer-container a {
+  color: #fff;
+}
+.footer-link:hover,
+.footer-container a:hover {
   text-decoration: none;
 }
 .footer-row-2 {

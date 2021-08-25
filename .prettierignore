@@ -41,3 +41,4 @@ client/translations/
 i18n/*
 client/configs/
 client/organizations.json
+server/assets/*

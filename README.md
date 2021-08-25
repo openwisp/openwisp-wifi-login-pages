@@ -479,9 +479,18 @@ status_page:
   saml_logout_url: "https://openwisp.myservice.org/radius/saml2/logout/"
 ```
 
+#### TOS & Privacy Policy
+
+The terms of services and privacy policy pages are generated from markdown
+files which are specified in the YAML configuration.
+
+The markdown files specified in the YAML configuration should be placed in:
+`/server/assets/{orgSlug}/`.
+
 #### Configuring Logging
 
-There are certain environment variables used to configure server logging. The details of environment variables to configure logging are mentioned below:
+There are certain environment variables used to configure server logging.
+The details of environment variables to configure logging are mentioned below:
 
 | Environment Variable | Detail                                                                                                                                                                                                                                     |
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
