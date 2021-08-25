@@ -410,8 +410,8 @@ msgid "LOGOUT_CONTENT"
 msgstr "Logout successful"
 
 #: client/components/logout/logout.js:53
-msgid "AGAIN"
-msgstr "again"
+msgid "LOGIN_AGAIN"
+msgstr "Login again"
 
 #: client/components/login/login.js:112
 msgid "USERNAME_LOG_TITL"

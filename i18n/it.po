@@ -441,8 +441,8 @@ msgid "LOGIN"
 msgstr "Accedere"
 
 #: client/components/logout/logout.js:53
-msgid "AGAIN"
-msgstr "di nuovo"
+msgid "LOGIN_AGAIN"
+msgstr "Accedere nuovamente"
 
 #: client/components/login/login.js:112
 msgid "USERNAME_LOG_TITL"

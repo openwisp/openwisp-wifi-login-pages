@@ -50,7 +50,7 @@ export default class Logout extends React.Component {
                     className="button partial"
                     to={`/${orgSlug}/status`}
                   >
-                    {`${t`LOGIN`} ${t`AGAIN`}`}
+                    {`${t`LOGIN_AGAIN`}`}
                   </Link>
                 </div>
               </div>

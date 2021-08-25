@@ -26,7 +26,7 @@ exports[`<Logout /> rendering should render correctly 1`] = `
               onClick={[Function]}
               to="/default/status"
             >
-              Log in again
+              LOGIN_AGAIN
             </Link>
           </div>
         </div>
@@ -62,7 +62,7 @@ exports[`<Logout /> rendering with placeholder translation tags should render tr
               onClick={[Function]}
               to="/default/status"
             >
-              LOGIN AGAIN
+              LOGIN_AGAIN
             </Link>
           </div>
         </div>
