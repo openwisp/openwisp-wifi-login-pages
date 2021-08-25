@@ -121,12 +121,12 @@
         "msgid": "EMAIL_PTRN_DESC",
         "msgstr": ["enter valid email address"]
       },
-      "USERNAME_LBL": {
-        "msgid": "USERNAME_LBL",
+      "USERNAME_LOG_LBL": {
+        "msgid": "USERNAME_LOG_LBL",
         "msgstr": ["Email, phone number or username"]
       },
-      "USERNAME_PHOLD": {
-        "msgid": "USERNAME_PHOLD",
+      "USERNAME_LOG_PHOLD": {
+        "msgid": "USERNAME_LOG_PHOLD",
         "msgstr": ["enter email, phone number or username"]
       },
       "USERNAME_PTRN_DESC": {
@@ -377,8 +377,8 @@
         "msgid": "AGAIN",
         "msgstr": ["again"]
       },
-      "USERNAME_TITL": {
-        "msgid": "USERNAME_TITL",
+      "USERNAME_LOG_TITL": {
+        "msgid": "USERNAME_LOG_TITL",
         "msgstr": ["enter valid email address, an username or a phone number"]
       },
       "REMEMBER_ME": {

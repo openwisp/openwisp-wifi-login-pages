@@ -15,7 +15,6 @@ import LoadingContext from "../../utils/loading-context";
 import PasswordToggleIcon from "../../utils/password-toggle";
 import {mainToastId, registerApiUrl, plansApiUrl} from "../../constants";
 import getErrorText from "../../utils/get-error-text";
-import getText from "../../utils/get-text";
 import logError from "../../utils/log-error";
 import handleChange from "../../utils/handle-change";
 import submitOnEnter from "../../utils/submit-on-enter";
@@ -333,7 +332,7 @@ export default class Registration extends React.Component {
   };
 
   getForm = () => {
-    const {registration, settings, orgSlug, match, language} = this.props;
+    const {registration, settings, orgSlug, match} = this.props;
     const {additional_info_text, input_fields, links} = registration;
     const {
       success,
@@ -473,9 +472,7 @@ export default class Registration extends React.Component {
                       {this.isPlanIdentityVerifier() && (
                         <div className="row username">
                           <label htmlFor="username">
-                            {input_fields.username.label
-                              ? getText(input_fields.username.label, language)
-                              : t`USERNAME_LBL`}
+                            {t`USERNAME_REG_LBL`}
                           </label>
                           {getError(errors, "email")}
                           <input
@@ -488,14 +485,7 @@ export default class Registration extends React.Component {
                             name="username"
                             value={username}
                             onChange={this.handleChange}
-                            placeholder={
-                              input_fields.username.placeholder
-                                ? getText(
-                                    input_fields.username.placeholder,
-                                    language,
-                                  )
-                                : t`USERNAME_PHOLD`
-                            }
+                            placeholder={t`USERNAME_REG_PHOLD`}
                             pattern={input_fields.username.pattern}
                             autoComplete="username"
                             title={t`USERNAME_PTRN_DESC`}

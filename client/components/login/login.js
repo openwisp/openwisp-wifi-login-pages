@@ -103,13 +103,13 @@ export default class Login extends React.Component {
     const {language} = this.props;
     const label = input_fields.username.label
       ? getText(input_fields.username.label, language)
-      : t`USERNAME_LBL`;
+      : t`USERNAME_LOG_LBL`;
     const placeholder = input_fields.username.placeholder
       ? getText(input_fields.username.placeholder, language)
-      : t`USERNAME_PHOLD`;
+      : t`USERNAME_LOG_PHOLD`;
     const patternDesc = input_fields.username.pattern_description
       ? getText(input_fields.username.pattern_description, language)
-      : t`USERNAME_TITL`;
+      : t`USERNAME_LOG_TITL`;
     return (
       <div className="row username">
         <label htmlFor="username">{label}</label>

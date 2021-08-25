@@ -1426,7 +1426,7 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
               <label
                 htmlFor="username"
               >
-                USERNAME_LBL
+                USERNAME_LOG_LBL
               </label>
               <input
                 autoComplete="username"
@@ -1435,9 +1435,9 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
                 name="username"
                 onChange={[Function]}
                 pattern=".+@.+\\\\..+"
-                placeholder="USERNAME_PHOLD"
+                placeholder="USERNAME_LOG_PHOLD"
                 required={true}
-                title="USERNAME_TITL"
+                title="USERNAME_LOG_TITL"
                 type="email"
                 value=""
               />
