@@ -1,4 +1,4 @@
-const prefix = "/api/v1/{orgSlug}";
+const prefix = "/api/v1/radius/organization/{orgSlug}";
 const paths = {
   password_change: "/account/password/change",
   password_reset: "/account/password/reset",

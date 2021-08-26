@@ -548,7 +548,7 @@ describe("<Login /> interactions", () => {
         status: 504,
         statusText: "Gateway Timeout",
         response: {
-          data: "Error occured while trying to proxy to: 0.0.0.0:8080/api/v1/default/account/token",
+          data: "Error occured while trying to proxy to: 0.0.0.0:8080/api/v1/radius/organization/default/account/token",
         },
       }),
     );
