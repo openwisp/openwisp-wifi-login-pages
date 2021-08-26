@@ -211,6 +211,20 @@ describe("<Header /> rendering", () => {
     expect(wrapper.find(".sticky-msg").length).toEqual(0);
     expect(wrapper.find(".close-sticky-btn").length).toEqual(0);
   });
+  it("should not show change password if login method is SAML / Social Login", () => {
+    props = createTestProps();
+    props.header.links = [
+      {
+        text: {en: "Change Password"},
+        url: "/{orgSlug}/change-password",
+        authenticated: false,
+      },
+    ];
+    localStorage.setItem(`${props.orgSlug}_logout_method`, "saml");
+    wrapper = shallow(<Header {...props} />);
+    const linkText = getLinkText(wrapper, ".header-link");
+    expect(linkText).not.toContain("Change Password");
+  });
 });
 
 describe("<Header /> interactions", () => {

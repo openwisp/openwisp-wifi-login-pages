@@ -1,5 +1,7 @@
 /* eslint-disable camelcase */
-const shouldLinkBeShown = (link, isAuthenticated, userData) => {
+const shouldLinkBeShown = (link, isAuthenticated, userData, orgSlug = null) => {
+  const logoutMethod = localStorage.getItem(`${orgSlug}_logout_method`);
+  if (logoutMethod && link.url === "/{orgSlug}/change-password") return false;
   const {is_verified} = userData;
   if (
     link.authenticated === isAuthenticated &&
