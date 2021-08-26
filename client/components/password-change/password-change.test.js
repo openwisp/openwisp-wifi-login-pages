@@ -219,4 +219,18 @@ describe("<PasswordChange /> interactions", () => {
       props.logout,
     );
   });
+  it("should redirect to status if login method is SAML / Social Login", async () => {
+    props = createTestProps();
+    PasswordChange.contextTypes = {
+      setLoading: PropTypes.func,
+      getLoading: PropTypes.func,
+    };
+    localStorage.setItem(`${props.orgSlug}_logout_method`, "saml");
+    wrapper = await shallow(<PasswordChange {...props} />, {
+      context: {setLoading: jest.fn(), getLoading: jest.fn()},
+    });
+    expect(wrapper.find("Redirect").length).toEqual(1);
+    expect(wrapper.find("Redirect").props().to).toEqual("/default/status");
+    localStorage.removeItem(`${props.orgSlug}_logout_method`);
+  });
 });

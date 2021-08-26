@@ -7,6 +7,7 @@ import React from "react";
 import {toast} from "react-toastify";
 import {Cookies} from "react-cookie";
 import {t} from "ttag";
+import {Redirect} from "react-router-dom";
 import PasswordToggleIcon from "../../utils/password-toggle";
 import {passwordChangeApiUrl} from "../../constants";
 import getErrorText from "../../utils/get-error-text";
@@ -97,8 +98,10 @@ export default class PasswordChange extends React.Component {
   }
 
   render() {
-    const {passwordChange} = this.props;
+    const {passwordChange, orgSlug} = this.props;
     const {errors, newPassword1, newPassword2, hidePassword} = this.state;
+    const logoutMethod = localStorage.getItem(`${orgSlug}_logout_method`);
+    if (logoutMethod) return <Redirect to={`/${orgSlug}/status`} />;
     return (
       <div className="container content" id="password-change">
         <div className="inner">
