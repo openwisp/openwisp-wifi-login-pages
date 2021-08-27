@@ -225,12 +225,14 @@ describe("<PasswordChange /> interactions", () => {
       setLoading: PropTypes.func,
       getLoading: PropTypes.func,
     };
-    localStorage.setItem(`${props.orgSlug}_logout_method`, "saml");
+    props.userData.method = "saml";
     wrapper = await shallow(<PasswordChange {...props} />, {
       context: {setLoading: jest.fn(), getLoading: jest.fn()},
     });
     expect(wrapper.find("Redirect").length).toEqual(1);
     expect(wrapper.find("Redirect").props().to).toEqual("/default/status");
-    localStorage.removeItem(`${props.orgSlug}_logout_method`);
+    await wrapper.setProps({...props.userData, method: "social_login"});
+    expect(wrapper.find("Redirect").length).toEqual(1);
+    expect(wrapper.find("Redirect").props().to).toEqual("/default/status");
   });
 });
