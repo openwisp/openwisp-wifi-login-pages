@@ -134,17 +134,17 @@ describe("shouldLinkBeShown tests", () => {
     );
     expect(shouldLinkBeShown(link, isAuthenticated, userData)).toBe(false);
   });
-  it("should return false if user is authenticated and userData.method is not in link.methods", () => {
+  it("should return false if user is authenticated and userData.method is not in link.methods_only", () => {
     const {link, isAuthenticated, userData} = createArgs(
-      {authenticated: true, methods: ["payment"]},
+      {authenticated: true, methods_only: ["payment"]},
       true,
       {method: "mobile_phone"},
     );
     expect(shouldLinkBeShown(link, isAuthenticated, userData)).toBe(false);
   });
-  it("should return true if userData.method is in link.methods", () => {
+  it("should return true if userData.method is in link.methods_only", () => {
     const {link, isAuthenticated, userData} = createArgs(
-      {authenticated: true, methods: ["payment"]},
+      {authenticated: true, methods_only: ["payment"]},
       true,
       {method: "payment"},
     );
