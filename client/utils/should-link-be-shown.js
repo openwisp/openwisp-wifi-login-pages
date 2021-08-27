@@ -19,9 +19,9 @@ const shouldLinkBeShown = (link, isAuthenticated, userData) => {
   if (
     link.authenticated === isAuthenticated &&
     isAuthenticated === true &&
-    link.methods !== undefined
+    link.methods_only !== undefined
   ) {
-    return link.methods.includes(userData.method);
+    return link.methods_only.includes(userData.method);
   }
   return (
     link.authenticated === undefined || link.authenticated === isAuthenticated

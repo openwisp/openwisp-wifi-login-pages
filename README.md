@@ -276,17 +276,20 @@ yarn stats
 #### Menu items
 
 By default, menu items are visible to any user, but it's possible to
-configure some items to be visible only to authenticated users or
-to unauthenticated users by specifying the `authenticated`, `verified`, `methods`
-and `methods_excluded` property.
+configure some items to be visible only to authenticated users,
+unauthenticated users, verified users, unverified users or
+users registered with specific registration methods by
+specifying the `authenticated`, `verified`, `methods_only`
+and `methods_excluded` properties.
 
 - `authenticated: true` means visible only to authenticated users.
 - `authenticated: false` means visible only to unauthenticated users.
 - `verified: true` means visible to authenticated and verified users.
 - `verified: false` means visible to only authenticated and unverified users.
-- `methods: ["mobile_phone"]` means visible to mobile phone registration enabled organization users.
-- `methods_excluded: ["saml", "social_login"]` means not visible to user with
-  methods SAML and social login.
+- `methods_only: ["mobile_phone"]` means visible only to users registered
+  with mobile phone verification.
+- `methods_excluded: ["saml", "social_login"]` means not visible to users
+  which sign in using SAML and social login.
 - unspecified: link will be visible to any user (default behavior)
 
 Let us consider the following configuration for the header, footer and contact components:
@@ -316,7 +319,7 @@ components:
           en: "change phone number"
         url: "/mobile/change-phone-number"
         authenticated: true
-        methods:
+        methods_only:
           - mobile_phone
   footer:
     links:
@@ -345,6 +348,17 @@ With the configuration above:
 - `sign up` (from Header) link will be visible to only unauthenticated users.
 - the link to `twitter` (from Contact) and `change password` (from Header)
   links will be visible to only authenticated users
+- change password will not be visible to users which sign in with
+  social login or signle sign-on (SAML)
+- change mobile phone number will only be visible to users which have
+  signed up with mobile phone verification
+
+**Notes**:
+
+- `methods_only` and `methods_excluded` only make sense for links which
+  are visible to authenticated users
+- using both `methods_excluded` and `methods_only` on the same link does
+  not make sense
 
 #### User Fields in Registration Form
 
