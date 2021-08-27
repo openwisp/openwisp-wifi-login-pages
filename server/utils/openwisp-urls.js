@@ -1,4 +1,4 @@
-const prefix = "/api/v1/radius/organization/{orgSlug}";
+const owPrefix = "/api/v1/radius/organization/{orgSlug}";
 const paths = {
   password_change: "/account/password/change",
   password_reset: "/account/password/reset",
@@ -15,14 +15,14 @@ const paths = {
 
 const reverse = (name, orgSlug) => {
   const path = paths[name];
-  let _prefix = prefix;
+  let prefix = owPrefix;
   if (!path) {
     throw new Error(`Reverse for path "${name}" not found.`);
   }
   if (name === "plans") {
-    _prefix = _prefix.replace("/radius/", "/subscriptions/");
+    prefix = prefix.replace("/radius/", "/subscriptions/");
   }
-  return `${_prefix.replace("{orgSlug}", orgSlug)}${path}`;
+  return `${prefix.replace("{orgSlug}", orgSlug)}${path}`;
 };
 
 export default reverse;
