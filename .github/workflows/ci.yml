@@ -78,12 +78,12 @@ jobs:
 
       - name: Installing OpenWISP Radius
         run: |
-          git clone https://github.com/openwisp/openwisp-radius/
+          git clone https://github.com/openwisp/openwisp-radius.git
           cd openwisp-radius && pip install -e .[saml]
           ./tests/manage.py migrate
 
       - name: Running OpenWISP Radius
-        run: cd openwisp-radius && ./tests/manage.py runserver &      
+        run: cd openwisp-radius && ./tests/manage.py runserver &
 
       - name: Running OpenWISP WiFi Login Pages
         run: yarn start &
