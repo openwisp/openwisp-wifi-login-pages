@@ -1,12 +1,13 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-console */
 const fs = require("fs");
+const fse = require("fs-extra");
 const path = require("path");
 const yaml = require("js-yaml");
 const _ = require("lodash");
 
 const rootDir = process.cwd();
-const configDir = path.join(rootDir, "organizations");
+const organizationsDir = path.join(rootDir, "organizations");
 const internalConfigDir = path.join(path.join(rootDir, "internals"), "config");
 const clientDir = path.join(rootDir, "client");
 const serverDir = path.join(rootDir, "server");
@@ -67,76 +68,65 @@ const removeDefaultConfig = () => {
   }
 };
 
-const getConfig = (file) => {
+const getConfig = (filePath) => {
   let defaultConfig = {};
   if (fs.existsSync(defaultConfigFile))
     defaultConfig = removeNullKeys(
       yaml.load(fs.readFileSync(defaultConfigFile, "utf-8")),
     );
-  const config = yaml.load(
-    fs.readFileSync(path.join(configDir, file), "utf-8"),
-  );
+  const config = yaml.load(fs.readFileSync(filePath, "utf-8"));
   return removeNullKeys(_.merge(defaultConfig, config));
+};
+
+const getModalContent = (config, modalKey, modalName, configDirPath) => {
+  const content = config.client[modalKey];
+  if (content) {
+    for (const key of Object.keys(content)) {
+      if (
+        path.extname(`${configDirPath}/server_assets/${content[key]}`) === ".md"
+      ) {
+        if (!fs.existsSync(`${configDirPath}/server_assets/${content[key]}`)) {
+          content[key] = "";
+          console.warn(
+            `no such file or directory '${configDirPath}/server_assets/${content[key]}'. ${modalName} content key '${key}' is set null.`,
+          );
+        }
+      } else {
+        console.warn(
+          `'${content[key]}' is not a markdown file. ${modalName} content key '${key}' is set null.`,
+        );
+        content[key] = "";
+      }
+    }
+  }
+  return content;
 };
 
 const writeConfigurations = () => {
   // loop through all the config files
-  fs.readdirSync(configDir).forEach((file) => {
-    if (path.extname(file) === ".yml") {
+  fs.readdirSync(organizationsDir).forEach((file) => {
+    const configDirPath = path.join(organizationsDir, file);
+    const configPath = path.join(configDirPath, `${file}.yml`);
+    if (fs.existsSync(configPath)) {
       // read document, or log exception on error
       try {
-        const config = getConfig(file);
+        const config = getConfig(configPath);
         // convert markdown to html
-        const {slug} = config;
         if (config.client && config.client.privacy_policy) {
-          const content = config.client.privacy_policy;
-          if (content) {
-            for (const key of Object.keys(content)) {
-              if (
-                path.extname(`${serverDir}/assets/${slug}/${content[key]}`) ===
-                ".md"
-              ) {
-                if (
-                  !fs.existsSync(`${serverDir}/assets/${slug}/${content[key]}`)
-                ) {
-                  content[key] = "";
-                  console.warn(
-                    `no such file or directory '${serverDir}/assets/${slug}/${content[key]}'. Privacy policy's content key '${key}' is set null.`,
-                  );
-                }
-              } else {
-                console.warn(
-                  `'${content[key]}' is not a markdown file. Privacy policy's content key '${key}' is set null.`,
-                );
-                content[key] = "";
-              }
-            }
-          }
+          config.client.privacy_policy = getModalContent(
+            config,
+            "privacy_policy",
+            "Privacy policy's",
+            configDirPath,
+          );
         }
         if (config.client && config.client.terms_and_conditions) {
-          const content = config.client.terms_and_conditions;
-          if (content) {
-            for (const key of Object.keys(content)) {
-              if (
-                path.extname(`${serverDir}/assets/${slug}/${content[key]}`) ===
-                ".md"
-              ) {
-                if (
-                  !fs.existsSync(`${serverDir}/assets/${slug}/${content[key]}`)
-                ) {
-                  content[key] = "";
-                  console.warn(
-                    `no such file or directory '${serverDir}/assets/${slug}/${content[key]}'. Terms and conditions' content key '${key}' is set null.`,
-                  );
-                }
-              } else {
-                console.warn(
-                  `'${content[key]}' is not a markdown file. Terms and conditions' content key '${key}' is set null.`,
-                );
-                content[key] = "";
-              }
-            }
-          }
+          config.client.terms_and_conditions = getModalContent(
+            config,
+            "terms_and_conditions",
+            "Terms and conditions",
+            configDirPath,
+          );
         }
         // extract client config from object
         const clientConfig = {
@@ -154,13 +144,27 @@ const writeConfigurations = () => {
           ...config.server,
         };
 
-        // creates directory for assets
-        if (!fs.existsSync(`${clientDir}/assets/${config.slug}`))
-          fs.mkdirSync(`${clientDir}/assets/${config.slug}`);
-
         clientConfigs.push(clientConfig);
         serverConfigs.push(serverConfig);
         organizations.push({slug: config.slug});
+
+        // copy client assets
+        const clientAssetsPath = `${clientDir}/assets/${config.slug}/`;
+        fse.copySync(
+          path.join(configDirPath, "client_assets"),
+          clientAssetsPath,
+          {overwrite: true},
+          (err) => console.log(err),
+        );
+
+        // copy server assets
+        const serverAssetsPath = `${serverDir}/assets/${config.slug}/`;
+        fse.copySync(
+          path.join(configDirPath, "server_assets"),
+          serverAssetsPath,
+          {overwrite: true},
+          (err) => console.log(err),
+        );
       } catch (error) {
         console.log(error);
       }
