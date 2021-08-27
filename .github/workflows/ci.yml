@@ -78,7 +78,7 @@ jobs:
 
       - name: Installing OpenWISP Radius
         run: |
-          git clone https://github.com/openwisp/openwisp-radius --branch issues/281-rest-api-urls
+          git clone https://github.com/openwisp/openwisp-radius.git
           cd openwisp-radius && pip install -e .[saml]
           ./tests/manage.py migrate
 
