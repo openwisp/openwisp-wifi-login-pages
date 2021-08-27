@@ -98,10 +98,13 @@ export default class PasswordChange extends React.Component {
   }
 
   render() {
-    const {passwordChange, orgSlug} = this.props;
+    const {passwordChange, orgSlug, userData} = this.props;
     const {errors, newPassword1, newPassword2, hidePassword} = this.state;
-    const logoutMethod = localStorage.getItem(`${orgSlug}_logout_method`);
-    if (logoutMethod) return <Redirect to={`/${orgSlug}/status`} />;
+    if (
+      userData &&
+      (userData.method === "saml" || userData.method === "social_login")
+    )
+      return <Redirect to={`/${orgSlug}/status`} />;
     return (
       <div className="container content" id="password-change">
         <div className="inner">
