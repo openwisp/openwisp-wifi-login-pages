@@ -18,7 +18,7 @@ export default class Contact extends React.Component {
     return (
       <div className="side-column contact">
         <div className="inner">
-          {getHtml(pre_html)}
+          {getHtml(pre_html, language)}
 
           {email && (
             <div className="row">
@@ -67,7 +67,7 @@ export default class Contact extends React.Component {
             </div>
           )}
 
-          {getHtml(after_html)}
+          {getHtml(after_html, language)}
         </div>
       </div>
     );
