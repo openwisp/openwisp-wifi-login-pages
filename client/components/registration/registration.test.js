@@ -502,7 +502,7 @@ describe("Registration and Mobile Phone Verification interactions", () => {
         "accept-language": expect.any(String),
       },
       method: "post",
-      url: "/api/v1/radius/organization/default/account/",
+      url: "/api/v1/default/account/",
     });
   });
   it("should toggle password icon for both password fields in PasswordToggleIcon", async () => {

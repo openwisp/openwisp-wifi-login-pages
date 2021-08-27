@@ -5,7 +5,7 @@ import merge from "deepmerge";
 import config from "../config.json";
 import defaultConfig from "../utils/default-config";
 import Logger from "../utils/logger";
-import reverse from "../utils/proxy-urls";
+import reverse from "../utils/openwisp-urls";
 
 const registration = (req, res) => {
   const reqOrg = req.params.organization;
