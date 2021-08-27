@@ -46,6 +46,7 @@ describe("Selenium tests for <PasswordChange />", () => {
     // changing password
     await driver.get(urls.passwordChange);
     await driver.wait(until.urlContains("change-password"), 5000);
+    await getElementByCss(driver, "div#password-change");
     const newPassword = "newPassword@";
     const changePassword = await getElementByCss(driver, "input#password");
     changePassword.sendKeys(newPassword);

@@ -48,7 +48,7 @@ User.objects.filter(
     username=test_data['mobileVerificationTestUser']['phoneNumber']
 ).delete()
 User.objects.filter(
-    username='+91'+test_data['mobileVerificationTestUser']['changePhoneNumber']
+    username='+91' + test_data['mobileVerificationTestUser']['changePhoneNumber']
 ).delete()
 Organization.objects.filter(
     name=test_data['mobileVerificationTestUser']['organization']

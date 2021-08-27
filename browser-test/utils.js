@@ -44,7 +44,7 @@ export const clearData = async () => {
 };
 
 export const getPhoneToken = () => {
-  const result = spawnSync("./browser-test/get_token.py");
+  const result = spawnSync("./browser-test/get_phone_token.py");
   return result.stdout.toString();
 };
 
