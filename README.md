@@ -277,14 +277,16 @@ yarn stats
 
 By default, menu items are visible to any user, but it's possible to
 configure some items to be visible only to authenticated users or
-to unauthenticated users by specifying the `authenticated`, `verified`
-and `method` property.
+to unauthenticated users by specifying the `authenticated`, `verified`, `methods`
+and `methods_excluded` property.
 
 - `authenticated: true` means visible only to authenticated users.
 - `authenticated: false` means visible only to unauthenticated users.
 - `verified: true` means visible to authenticated and verified users.
 - `verified: false` means visible to only authenticated and unverified users.
-- `method: "mobile_phone"` means visible to mobile phone registration enabled organization users.
+- `methods: ["mobile_phone"]` means visible to mobile phone registration enabled organization users.
+- `methods_excluded: ["saml", "social_login"]` means not visible to user with
+  methods SAML and social login.
 - unspecified: link will be visible to any user (default behavior)
 
 Let us consider the following configuration for the header, footer and contact components:
@@ -306,12 +308,16 @@ components:
         authenticated: true
         # if organization supports any verification method
         verified: true
+        methods_excluded:
+          - saml
+          - social_login
       # if organization supports mobile verification
       - text:
           en: "change phone number"
         url: "/mobile/change-phone-number"
         authenticated: true
-        method: "mobile_phone"
+        methods:
+          - mobile_phone
   footer:
     links:
       - text:

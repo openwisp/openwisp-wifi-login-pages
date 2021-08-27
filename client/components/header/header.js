@@ -126,9 +126,7 @@ export default class Header extends React.Component {
           <div className="header-row-2">
             <div className="header-row-2-inner">
               {links.map((link, index) => {
-                if (
-                  !shouldLinkBeShown(link, isAuthenticated, userData, orgSlug)
-                ) {
+                if (!shouldLinkBeShown(link, isAuthenticated, userData)) {
                   return null;
                 }
                 if (
@@ -212,7 +210,7 @@ export default class Header extends React.Component {
             } header-mobile-menu`}
           >
             {links.map((link, index) => {
-              if (shouldLinkBeShown(link, isAuthenticated, userData, orgSlug)) {
+              if (shouldLinkBeShown(link, isAuthenticated, userData)) {
                 if (isInternalLink(link.url)) {
                   return (
                     <Link

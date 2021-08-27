@@ -217,13 +217,21 @@ describe("<Header /> rendering", () => {
       {
         text: {en: "Change Password"},
         url: "/{orgSlug}/change-password",
-        authenticated: false,
+        authenticated: true,
+        methods_excluded: ["saml", "social_login"],
       },
     ];
-    localStorage.setItem(`${props.orgSlug}_logout_method`, "saml");
+    props.isAuthenticated = true;
+    props.userData.method = "saml";
     wrapper = shallow(<Header {...props} />);
-    const linkText = getLinkText(wrapper, ".header-link");
+    let linkText = getLinkText(wrapper, ".header-link");
     expect(linkText).not.toContain("Change Password");
+    wrapper.setProps({userData: {...props.userData, method: "social_login"}});
+    linkText = getLinkText(wrapper, ".header-link");
+    expect(linkText).not.toContain("Change Password");
+    wrapper.setProps({userData: {...props.userData, method: "mobile_phone"}});
+    linkText = getLinkText(wrapper, ".header-link");
+    expect(linkText).toContain("Change Password");
   });
 });
 
