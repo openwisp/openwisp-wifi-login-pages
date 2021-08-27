@@ -49,6 +49,9 @@ client:
             en: "Change password"
           url: "/{orgSlug}/change-password"
           authenticated: true
+          methods_excluded:
+            - saml
+            - social_login
 
     footer:
       links:

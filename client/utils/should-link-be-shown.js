@@ -1,8 +1,13 @@
 /* eslint-disable camelcase */
-const shouldLinkBeShown = (link, isAuthenticated, userData, orgSlug = null) => {
-  const logoutMethod = localStorage.getItem(`${orgSlug}_logout_method`);
-  if (logoutMethod && link.url === "/{orgSlug}/change-password") return false;
-  const {is_verified} = userData;
+const shouldLinkBeShown = (link, isAuthenticated, userData) => {
+  const {is_verified, method} = userData;
+  if (
+    method &&
+    link.methods_excluded &&
+    link.methods_excluded.includes(method)
+  ) {
+    return false;
+  }
   if (
     link.authenticated === isAuthenticated &&
     isAuthenticated === true &&
@@ -14,9 +19,9 @@ const shouldLinkBeShown = (link, isAuthenticated, userData, orgSlug = null) => {
   if (
     link.authenticated === isAuthenticated &&
     isAuthenticated === true &&
-    link.method !== undefined
+    link.methods !== undefined
   ) {
-    return link.method === userData.method;
+    return link.methods.includes(userData.method);
   }
   return (
     link.authenticated === undefined || link.authenticated === isAuthenticated

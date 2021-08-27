@@ -68,12 +68,16 @@ client:
           {{#if mobile_phone_verification }}
           verified: true
           {{/if}}
+          methods_excluded:
+            - saml
+            - social_login
       {{#if mobile_phone_verification }}
         - text:
             en: "Change phone number"
           url: "/{orgSlug}/change-phone-number"
           authenticated: true
-          method: "mobile_phone"
+          methods:
+            - mobile_phone
       {{/if}}
 
     footer:
