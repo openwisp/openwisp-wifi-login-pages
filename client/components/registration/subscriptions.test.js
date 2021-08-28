@@ -261,4 +261,91 @@ describe("test subscriptions", () => {
     await tick();
     expect(spyToast.mock.calls.length).toBe(1);
   });
+
+  it("should keep sending phone number as username when plan does not require payment", async () => {
+    axios
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 201,
+          statusText: "ok",
+          data: plans,
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 201,
+          statusText: "CREATED",
+          data: {},
+        }),
+      );
+    props.settings.mobile_phone_verification = true;
+    wrapper = initShallow(props);
+    const registration = wrapper.instance();
+    const jsonStringify = jest.spyOn(JSON, "stringify");
+    const handleSubmit = jest.spyOn(registration, "handleSubmit");
+    registration.setState({
+      plans,
+      selectedPlan: 0,
+      plansFetched: true,
+      phone_number: "+393661223345",
+      email: "tester@tester.com",
+      password1: "tester123",
+      password2: "tester123",
+    });
+    const emailChangeEvent = {
+      target: {
+        name: "email",
+        value: registration.state.email,
+      },
+    };
+    wrapper.find("#email").simulate("change", emailChangeEvent);
+    wrapper.find("form").simulate("submit", event);
+    await tick();
+    expect(handleSubmit).toHaveBeenCalled();
+    expect(jsonStringify.mock.calls.length).toBe(1);
+    expect(jsonStringify.mock.calls[0][0].username).toBe("+393661223345");
+  });
+
+  it("should sending stripped email as username when plan requires payment", async () => {
+    axios
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 201,
+          statusText: "ok",
+          data: plans,
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 201,
+          statusText: "CREATED",
+          data: {},
+        }),
+      );
+    props.settings.mobile_phone_verification = true;
+    wrapper = initShallow(props);
+    const registration = wrapper.instance();
+    const jsonStringify = jest.spyOn(JSON, "stringify");
+    const handleSubmit = jest.spyOn(registration, "handleSubmit");
+    registration.setState({
+      plans,
+      selectedPlan: 1,
+      plansFetched: true,
+      email: "tester@tester.com",
+      password1: "tester123",
+      password2: "tester123",
+    });
+    const emailChangeEvent = {
+      target: {
+        name: "email",
+        value: registration.state.email,
+      },
+    };
+    wrapper.find("#email").simulate("change", emailChangeEvent);
+    wrapper.find("form").simulate("submit", event);
+    await tick();
+    expect(handleSubmit).toHaveBeenCalled();
+    expect(jsonStringify.mock.calls[1][0].username).toBe("tester");
+    expect(jsonStringify.mock.calls.length).toBe(2);
+  });
 });

@@ -149,11 +149,6 @@ export default class Registration extends React.Component {
         postData[key] = optional_fields[key];
       }
     });
-    // add phone_number if SMS verification is enabled
-    if (settings.mobile_phone_verification) {
-      postData.phone_number = phone_number;
-      postData.username = phone_number;
-    }
     let plan_pricing;
     if (selectedPlan !== null) {
       plan_pricing = plans[selectedPlan];
@@ -174,6 +169,15 @@ export default class Registration extends React.Component {
           }),
         );
       }
+    }
+    // add phone_number if SMS verification is enabled
+    // and no payment is required
+    if (
+      settings.mobile_phone_verification &&
+      postData.requires_payment !== true
+    ) {
+      postData.phone_number = phone_number;
+      postData.username = phone_number;
     }
     const body = JSON.parse(JSON.stringify(postData));
     setLoading(true);
