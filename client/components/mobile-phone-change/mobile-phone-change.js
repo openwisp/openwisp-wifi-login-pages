@@ -115,13 +115,11 @@ class MobilePhoneChange extends React.Component {
     const {orgSlug, phone_number_change, settings, userData} = this.props;
     const {input_fields} = phone_number_change;
 
-    // check equality to false, it may be undefined
     if (
-      !settings.mobile_phone_verification &&
-      userData.method !== undefined &&
-      userData.method !== "mobile_phone"
+      !settings.mobile_phone_verification ||
+      (userData.method !== undefined && userData.method !== "mobile_phone")
     ) {
-      return <Redirect to={`/${orgSlug}/status`} />;
+      return <Redirect push to={`/${orgSlug}/status`} />;
     }
 
     return (
