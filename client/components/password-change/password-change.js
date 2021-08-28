@@ -100,10 +100,7 @@ export default class PasswordChange extends React.Component {
   render() {
     const {passwordChange, orgSlug, userData} = this.props;
     const {errors, newPassword1, newPassword2, hidePassword} = this.state;
-    if (
-      userData &&
-      (userData.method === "saml" || userData.method === "social_login")
-    )
+    if (userData && ["saml", "social_login"].includes(userData.method))
       return <Redirect to={`/${orgSlug}/status`} />;
     return (
       <div className="container content" id="password-change">
