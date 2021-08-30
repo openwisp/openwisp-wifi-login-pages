@@ -195,6 +195,14 @@ login_form:
 **Note:** Do not delete or edit default configuration (`internals/config/default.yml`) as it
 is required to build and compile organization configurations. Edit it at your own will.
 
+#### Different configuration for same Radius organization
+
+It is possible to create a separate configuration with the same radius organization i.e.
+create a new YAML file (let say `variant.yml`) inside `organizations/{orgSlug}/`.
+Add the changes which is different from the original configuration.
+During setup of organization a new custom organization with name `{orgSlug}-variant` will
+be created which uses the same radius APIs of the original organization with slug `{orgSlug}`.
+
 ### Usage
 
 List of yarn commands:

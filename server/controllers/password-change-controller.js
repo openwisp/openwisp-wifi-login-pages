@@ -14,8 +14,8 @@ const passwordChange = (req, res) => {
     if (org.slug === reqOrg) {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
-      const {host} = conf;
-      const url = reverse("password_change", org.slug);
+      const {host, custom, radiusSlug} = conf;
+      const url = reverse("password_change", custom ? radiusSlug : org.slug);
       const timeout = conf.timeout * 1000;
       const {newPassword1, newPassword2, session} = req.body;
       let {token} = req.body;

@@ -13,8 +13,11 @@ const registration = (req, res) => {
     if (org.slug === reqOrg) {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
-      const {host, settings} = conf;
-      const registerUrl = reverse("registration", org.slug);
+      const {host, settings, custom, radiusSlug} = conf;
+      const registerUrl = reverse(
+        "registration",
+        custom ? radiusSlug : org.slug,
+      );
       const timeout = conf.timeout * 1000;
       const postData = req.body;
 

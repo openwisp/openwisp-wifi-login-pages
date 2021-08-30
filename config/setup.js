@@ -102,6 +102,73 @@ const getModalContent = (config, modalKey, modalName, configDirPath) => {
   return content;
 };
 
+const createConfig = (data, configDirPath, radiusSlug = null) => {
+  try {
+    const config = data;
+    // convert markdown to html
+    if (config.client && config.client.privacy_policy) {
+      config.client.privacy_policy = getModalContent(
+        config,
+        "privacy_policy",
+        "Privacy policy's",
+        configDirPath,
+      );
+    }
+    if (config.client && config.client.terms_and_conditions) {
+      config.client.terms_and_conditions = getModalContent(
+        config,
+        "terms_and_conditions",
+        "Terms and conditions",
+        configDirPath,
+      );
+    }
+    // extract client config from object
+    const clientConfig = {
+      name: config.name,
+      slug: config.slug,
+      settings: config.settings,
+      ...config.client,
+    };
+
+    // extract server config from object
+    const serverConfig = {
+      name: config.name,
+      slug: config.slug,
+      settings: config.settings,
+      ...config.server,
+    };
+
+    if (radiusSlug) {
+      serverConfig.custom = true;
+      serverConfig.radiusSlug = radiusSlug;
+    }
+
+    clientConfigs.push(clientConfig);
+    serverConfigs.push(serverConfig);
+    organizations.push({slug: config.slug});
+
+    // copy client assets
+    const clientAssetsPath = path.resolve(clientDir, "assets", config.slug);
+    fse.copySync(
+      path.join(configDirPath, "client_assets"),
+      clientAssetsPath,
+      {overwrite: true},
+      (err) => console.log(err),
+    );
+
+    // copy server assets
+    const serverAssetsPath = path.resolve(serverDir, "assets", config.slug);
+    fse.copySync(
+      path.join(configDirPath, "server_assets"),
+      serverAssetsPath,
+      {overwrite: true},
+      (err) => console.log(err),
+    );
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const writeConfigurations = () => {
   // loop through all the config files
   fs.readdirSync(organizationsDir).forEach((file) => {
@@ -111,60 +178,36 @@ const writeConfigurations = () => {
       // read document, or log exception on error
       try {
         const config = getConfig(configPath);
-        // convert markdown to html
-        if (config.client && config.client.privacy_policy) {
-          config.client.privacy_policy = getModalContent(
-            config,
-            "privacy_policy",
-            "Privacy policy's",
-            configDirPath,
-          );
-        }
-        if (config.client && config.client.terms_and_conditions) {
-          config.client.terms_and_conditions = getModalContent(
-            config,
-            "terms_and_conditions",
-            "Terms and conditions",
-            configDirPath,
-          );
-        }
-        // extract client config from object
-        const clientConfig = {
-          name: config.name,
-          slug: config.slug,
-          settings: config.settings,
-          ...config.client,
-        };
-
-        // extract server config from object
-        const serverConfig = {
-          name: config.name,
-          slug: config.slug,
-          settings: config.settings,
-          ...config.server,
-        };
-
-        clientConfigs.push(clientConfig);
-        serverConfigs.push(serverConfig);
-        organizations.push({slug: config.slug});
-
-        // copy client assets
-        const clientAssetsPath = `${clientDir}/assets/${config.slug}/`;
-        fse.copySync(
-          path.join(configDirPath, "client_assets"),
-          clientAssetsPath,
-          {overwrite: true},
-          (err) => console.log(err),
-        );
-
-        // copy server assets
-        const serverAssetsPath = `${serverDir}/assets/${config.slug}/`;
-        fse.copySync(
-          path.join(configDirPath, "server_assets"),
-          serverAssetsPath,
-          {overwrite: true},
-          (err) => console.log(err),
-        );
+        createConfig(config, configDirPath);
+        // different configurations for same radius organization
+        fs.readdirSync(configDirPath).forEach((customFile) => {
+          if (
+            path.extname(customFile) === ".yml" &&
+            customFile !== `${file}.yml`
+          ) {
+            try {
+              const customConfig = removeNullKeys(
+                _.merge(
+                  getConfig(configPath),
+                  yaml.load(
+                    fs.readFileSync(
+                      path.join(configDirPath, customFile),
+                      "utf-8",
+                    ),
+                  ),
+                ),
+              );
+              customConfig.slug = `${file}-${path.basename(
+                customFile,
+                path.extname(customFile),
+              )}`;
+              createConfig(customConfig, configDirPath, file);
+            } catch (error) {
+              console.log(error);
+            }
+          }
+        });
+        //
       } catch (error) {
         console.log(error);
       }

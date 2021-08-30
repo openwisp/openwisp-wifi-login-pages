@@ -12,8 +12,11 @@ const getUserRadiusSessions = (req, res) => {
     if (org.slug === reqOrg) {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
-      const {host} = conf;
-      const userRadiusSessionsUrl = reverse("user_radius_sessions", org.slug);
+      const {host, custom, radiusSlug} = conf;
+      const userRadiusSessionsUrl = reverse(
+        "user_radius_sessions",
+        custom ? radiusSlug : org.slug,
+      );
       const timeout = conf.timeout * 1000;
       let {token} = req.query;
       if (req.query.session === "false")

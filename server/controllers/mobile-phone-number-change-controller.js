@@ -14,8 +14,11 @@ const mobilePhoneNumberChange = (req, res) => {
     if (org.slug === reqOrg) {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
-      const {host} = conf;
-      const url = reverse("mobile_phone_number_change", org.slug);
+      const {host, custom, radiusSlug} = conf;
+      const url = reverse(
+        "mobile_phone_number_change",
+        custom ? radiusSlug : org.slug,
+      );
       const timeout = conf.timeout * 1000;
       let {token} = req.body;
       if (req.body.session === "false")

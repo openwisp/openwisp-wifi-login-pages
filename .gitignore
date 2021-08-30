@@ -33,6 +33,7 @@ yarn-error.log*
 organizations/*
 !organizations/default
 !organizations/default/*
+organizations/default/*.yml
 client/configs/
 client/organizations.json
 !client/assets/

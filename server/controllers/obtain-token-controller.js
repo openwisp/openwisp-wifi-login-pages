@@ -31,8 +31,11 @@ const obtainToken = (req, res) => {
     if (org.slug === reqOrg) {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
-      const {host} = conf;
-      const obtainTokenUrl = reverse("user_auth_token", org.slug);
+      const {host, custom, radiusSlug} = conf;
+      const obtainTokenUrl = reverse(
+        "user_auth_token",
+        custom ? radiusSlug : org.slug,
+      );
       const timeout = conf.timeout * 1000;
       const {username, password} = req.body;
       // make AJAX request

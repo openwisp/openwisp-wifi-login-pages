@@ -14,8 +14,11 @@ export const createMobilePhoneToken = (req, res) => {
     if (org.slug === reqOrg) {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
-      const {host} = conf;
-      const url = reverse("create_mobile_phone_token", org.slug);
+      const {host, custom, radiusSlug} = conf;
+      const url = reverse(
+        "create_mobile_phone_token",
+        custom ? radiusSlug : org.slug,
+      );
       const timeout = conf.timeout * 1000;
       let token = req.cookies[`${reqOrg}_auth_token`] || "";
       token = cookie.unsign(token, conf.secret_key);

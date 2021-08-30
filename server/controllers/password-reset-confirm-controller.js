@@ -13,8 +13,11 @@ const passwordResetConfirm = (req, res) => {
     if (org.slug === reqOrg) {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
-      const {host} = conf;
-      const resetConfirmUrl = reverse("password_reset_confirm", org.slug);
+      const {host, custom, radiusSlug} = conf;
+      const resetConfirmUrl = reverse(
+        "password_reset_confirm",
+        custom ? radiusSlug : org.slug,
+      );
       const timeout = conf.timeout * 1000;
       const {newPassword1, newPassword2, uid, token} = req.body;
       // make AJAX request

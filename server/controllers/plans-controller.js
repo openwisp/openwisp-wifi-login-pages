@@ -11,8 +11,8 @@ const plans = (req, res) => {
     if (org.slug === reqOrg) {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
-      const {host} = conf;
-      const plansUrl = reverse("plans", org.slug);
+      const {host, custom, radiusSlug} = conf;
+      const plansUrl = reverse("plans", custom ? radiusSlug : org.slug);
       const timeout = conf.timeout * 1000;
       // make AJAX request
       axios({
