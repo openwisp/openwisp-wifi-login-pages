@@ -85,6 +85,9 @@ jobs:
       - name: Running OpenWISP Radius
         run: cd openwisp-radius && ./tests/manage.py runserver &
 
+      - name: Creating configuration of organization (supports mobile verification)
+        run: node browser-test/create-mobile-configuration.js 
+
       - name: Running OpenWISP WiFi Login Pages
         run: yarn start &
 

@@ -5,7 +5,6 @@ import marked from "marked";
 import path from "path";
 import DOMPurify from "dompurify";
 import config from "../config.json";
-import Logger from "../utils/logger";
 
 const {window} = new JSDOM("");
 const dompurify = DOMPurify(window);
@@ -15,27 +14,16 @@ const modalContent = (req, res) => {
   const {file} = req.query;
   const validSlug = config.some((org) => {
     if (org.slug === reqOrg) {
-      try {
+      const assetsDir = path.resolve(__dirname, "..", "assets", reqOrg);
+      if (fs.readdirSync(assetsDir).includes(file)) {
         const data = dompurify.sanitize(
-          marked(
-            fs.readFileSync(
-              path.join(
-                path.join(
-                  path.join(path.resolve(__dirname, ".."), "assets"),
-                  reqOrg,
-                ),
-                file,
-              ),
-              "utf8",
-            ),
-          ),
+          marked(fs.readFileSync(path.join(assetsDir, file), "utf8")),
         );
         res.status(200).type("application/json").send({
           __html: data,
         });
-      } catch (err) {
-        Logger.error(`${file} not found`, err);
-        res.status(200).type("application/json").send({
+      } else {
+        res.status(404).type("application/json").send({
           __html: "",
         });
       }

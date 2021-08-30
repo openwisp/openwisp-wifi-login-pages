@@ -130,8 +130,13 @@ Prerequisites for running browser-based tests:
    ```
 4. If a virtual environment is used to run openwisp-radius then
    this needs to be activated before running browser tests.
-5. In the test environment of openwisp-radius, the `default` organization
-   must be present or alternatively
+5. Configuration file of `mobile` organization is needed before running `yarn start`.
+   `mobile` organization can be created by running:
+   ```
+   node browser-test/create-mobile-configuration.js
+   ```
+6. In the test environment of openwisp-radius, the `default` organization
+   must be present.
 
 After doing all the prerequisites, run browser based tests using the following command:
 

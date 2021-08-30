@@ -4,15 +4,15 @@ import {
   getElementByCss,
   urls,
   initialData,
-  clearData,
   initializeData,
+  clearData,
 } from "./utils";
 
-describe("Selenium tests for <Register />", () => {
+describe("Selenium tests for <PasswordReset />", () => {
   let driver;
 
   beforeAll(async () => {
-    await initializeData("register");
+    await initializeData();
     driver = await getDriver();
   }, 30000);
 
@@ -22,28 +22,20 @@ describe("Selenium tests for <Register />", () => {
     driver.close();
   });
 
-  it("should render registration page and submit registration form", async () => {
-    await driver.get(urls.registration);
+  it("should show not found on password confirm", async () => {
+    await driver.get(urls.passwordConfirm("uid", "token"));
     const data = initialData();
-    const username = await getElementByCss(driver, "input#email");
-    username.sendKeys(data.testuser.email);
-
     const password = await getElementByCss(driver, "input#password");
     password.sendKeys(data.testuser.password);
-
-    const confirmPassword = await getElementByCss(
+    const passwordConfirm = await getElementByCss(
       driver,
       "input#password-confirm",
     );
-    confirmPassword.sendKeys(data.testuser.password);
-
+    passwordConfirm.sendKeys(data.testuser.password);
     const submitBtn = await getElementByCss(driver, "input[type=submit]");
     submitBtn.click();
-
-    await getElementByCss(driver, "div#status");
     const successToastDiv = await getElementByCss(driver, "div[role=alert]");
     await driver.wait(until.elementIsVisible(successToastDiv));
-    await driver.wait(until.urlContains("status"), 5000);
-    expect(await successToastDiv.getText()).toEqual("Registration success");
+    expect(await successToastDiv.getText()).toEqual("Not found.");
   });
 });

@@ -12,12 +12,13 @@ describe("Selenium tests for <Login />", () => {
   let driver;
 
   beforeAll(async () => {
-    initializeData();
+    await initializeData();
     driver = await getDriver();
   }, 30000);
 
-  afterAll(() => {
-    clearData();
+  afterAll(async () => {
+    await clearData();
+    await driver.manage().deleteAllCookies();
     driver.close();
   });
 
