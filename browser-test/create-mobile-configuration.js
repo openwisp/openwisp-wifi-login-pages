@@ -25,11 +25,26 @@ if (fs.existsSync(configPath)) {
   fs.rmSync(configPath);
 }
 
+const options = {
+  name: org,
+  slug: org,
+  uuid: "organization_uuid",
+  secret_key: "organization_secret_key",
+  mobile_phone_verification: true,
+  subscriptions: false,
+  login_action_url: "http://localhost:8000/captive-portal-mock/login/",
+  logout_action_url: "http://localhost:8000/captive-portal-mock/logout/",
+  logout_by_session_ID: true,
+  remember_me: true,
+  openwisp_radius_url: "http://127.0.0.1:8000",
+  assets_confirm: true,
+};
+
 // Creating mobile configuration
 const result = child_process.spawnSync("yarn", [
   "add-org",
   "--noprompt",
-  `{"name":"${org}","slug":"${org}","uuid":"organization_uuid","secret_key":"organization_secret_key","mobile_phone_verification":true,"subscriptions":false,"login_action_url":"http://localhost:8000/captive-portal-mock/login/","logout_action_url":"http://localhost:8000/captive-portal-mock/logout/","logout_by_session_ID":true,"remember_me":true,"openwisp_radius_url":"http://127.0.0.1:8000","assets_confirm":true}`,
+  JSON.stringify(options),
 ]);
 writeOutput(result);
 
