@@ -334,6 +334,7 @@ exports[`Registration and Mobile Phone Verification interactions should render P
 <Suspense
   fallback={
     <input
+      className="input"
       name="phone_number"
       onChange={[Function]}
       onKeyDown={[Function]}

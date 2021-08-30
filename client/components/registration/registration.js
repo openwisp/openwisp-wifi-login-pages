@@ -386,6 +386,7 @@ export default class Registration extends React.Component {
                               fallback={
                                 <input
                                   type="tel"
+                                  className="input"
                                   name="phone_number"
                                   value={phone_number}
                                   onChange={(value) =>

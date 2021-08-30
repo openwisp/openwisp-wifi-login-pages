@@ -431,6 +431,7 @@ describe("Registration and Mobile Phone Verification interactions", () => {
     expect(fallback.type).toEqual("input");
     expect(fallback.props).toEqual({
       name: "phone_number",
+      className: "input",
       value: "",
       onChange: expect.any(Function),
       onKeyDown: expect.any(Function),
