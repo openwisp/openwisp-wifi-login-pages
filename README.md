@@ -157,9 +157,30 @@ you should have noted down the parameters performed during the
 yarn add-org
 ```
 
-The configuration of organizations is generated from the template present in `internals/generators/config.yml.hbs`.
-The default configuration is present in `internals/config/default.yml`. If the configuration file of a specific
-organization misses a piece of configuration then this default configuration is used to generate a
+This command will present a series of interactive questions which make it
+easier for users to configure the application for their use case.
+
+Once all the questions are answered, the script will create a new directory, eg:
+
+```
+/organizations/{orgSlug}/
+/organizations/{orgSlug}/client_assets/
+/organizations/{orgSlug}/server_assets/
+/organizations/{orgSlug}/{orgSlug}.yml
+```
+
+The directory `client_assets` shall contain static files like CSS, images,
+etc.
+
+The directory `server_assets` is used for loading the content of
+[Terms of Service and Privacy Policy](#tos--privacy-policy).
+
+The configuration of organizations is generated from the template present
+in `/internals/generators/config.yml.hbs`.
+
+The default configuration is stored at `/internals/config/default.yml`.
+If the configuration file of a specific organization misses a piece
+of configuration then the default configuration is used to generate a
 complete configuration.
 
 The above command will prompt you to fill in some properties.
@@ -188,8 +209,11 @@ you can use the default sample captive portal login and logout URLs.
 
 #### Removing sections of configuration
 
-To remove the specific section of the configuration, you can use the `null` keyword to delete
-that field or section during the building process. For example, to remove social login links, use
+To remove a specific section of the configuration, the `null` keyword
+can be used, this way the specific section flagged as `null` will be
+removed during the build process.
+
+For example, to remove social login links:
 
 ```yaml
 login_form:
@@ -197,16 +221,46 @@ login_form:
     links: null
 ```
 
-**Note:** Do not delete or edit default configuration (`internals/config/default.yml`) as it
-is required to build and compile organization configurations. Edit it at your own will.
+**Note:** Do not delete or edit default configuration
+(`/internals/config/default.yml`) as it is required to build and compile
+organization configurations.
 
-#### Different configuration for same Radius organization
+#### Variants of the same configuration
 
-It is possible to create a separate configuration with the same radius organization i.e.
-create a new YAML file (let say `variant.yml`) inside `organizations/{orgSlug}/`.
-Add the changes which is different from the original configuration.
-During setup of organization a new custom organization with name `{orgSlug}-variant` will
-be created which uses the same radius APIs of the original organization with slug `{orgSlug}`.
+In some cases it may be needed to have different variants of the same
+design but with different logos, or slightly different colors, wording and so on,
+but all these variants would be tied to the same service.
+
+In this case it's possible to create new YAML configuration files
+(eg: `variant1.yml`, `variant2.yml`) in the directory `/organizations/{orgSlug}/`,
+and specify only the configuration keys which differ from the parent configuration.
+
+Example variant of the default organization:
+
+```yaml
+---
+name: "Variant1"
+client:
+  components:
+    header:
+      logo:
+        url: "variant1-logo.svg"
+        alternate_text: "variant1"
+```
+
+The configuration above has very little differences with the parent
+configuration: the name and logo are different, the rest
+is inherited from the parent organization.
+
+Following example, the contents above should be placed in
+`/organizations/default/variant1.yml` and once the server is started again
+this new variant will be visible at `http://localhost:8080/default-variant1`.
+
+It's possible to create multiple variants of different organizations, by making
+sure `default` is replaced with the actual organization `slug` that is being used.
+
+And of course it's possible to customize more than just the name and logo,
+the example above has been kept short for brevity.
 
 ### Usage
 
@@ -518,7 +572,7 @@ The terms of services and privacy policy pages are generated from markdown
 files which are specified in the YAML configuration.
 
 The markdown files specified in the YAML configuration should be placed in:
-`/server/assets/{orgSlug}/`.
+`/configurations/{orgSlug}/server_assets/`.
 
 #### Configuring Logging
 
