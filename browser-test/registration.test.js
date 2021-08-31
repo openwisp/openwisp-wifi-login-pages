@@ -4,7 +4,7 @@ import {
   getElementByCss,
   urls,
   initialData,
-  clearData,
+  tearDown,
   initializeData,
 } from "./utils";
 
@@ -17,9 +17,7 @@ describe("Selenium tests for <Register />", () => {
   }, 30000);
 
   afterAll(async () => {
-    await clearData();
-    await driver.manage().deleteAllCookies();
-    driver.close();
+    await tearDown(driver);
   });
 
   it("should render registration page and submit registration form", async () => {

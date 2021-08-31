@@ -43,6 +43,14 @@ export const clearData = async () => {
   await executeCommand("./browser-test/clear_data.py", () => {});
 };
 
+export const tearDown = async (driver) => {
+  await clearData();
+  await driver.executeScript("window.sessionStorage.clear()");
+  await driver.executeScript("window.localStorage.clear()");
+  await driver.manage().deleteAllCookies();
+  driver.close();
+};
+
 export const getPhoneToken = () => {
   const result = spawnSync("./browser-test/get_phone_token.py");
   return result.stdout.toString();

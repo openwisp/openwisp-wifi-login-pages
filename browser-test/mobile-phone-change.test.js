@@ -5,7 +5,7 @@ import {
   urls,
   initialData,
   initializeData,
-  clearData,
+  tearDown,
   getPhoneToken,
 } from "./utils";
 
@@ -35,9 +35,7 @@ describe("Selenium tests for <MobilePhoneChange />", () => {
   }, 30000);
 
   afterAll(async () => {
-    await clearData();
-    await driver.manage().deleteAllCookies();
-    driver.close();
+    await tearDown(driver);
   });
 
   it("should test mobile phone change flow", async () => {

@@ -1,4 +1,4 @@
-import {getDriver, getElementByCss, urls, initialData} from "./utils";
+import {getDriver, getElementByCss, urls, initialData, tearDown} from "./utils";
 
 describe("Selenium tests for <Login />", () => {
   let driver;
@@ -8,7 +8,7 @@ describe("Selenium tests for <Login />", () => {
   }, 30000);
 
   afterAll(async () => {
-    driver.close();
+    await tearDown(driver);
   });
 
   it("should render login page and submit login form", async () => {

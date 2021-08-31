@@ -5,7 +5,7 @@ import {
   urls,
   initialData,
   initializeData,
-  clearData,
+  tearDown,
 } from "./utils";
 
 describe("Selenium tests for <Login />", () => {
@@ -17,9 +17,7 @@ describe("Selenium tests for <Login />", () => {
   }, 30000);
 
   afterAll(async () => {
-    await clearData();
-    await driver.manage().deleteAllCookies();
-    driver.close();
+    await tearDown(driver);
   });
 
   it("should render login page and submit login form", async () => {

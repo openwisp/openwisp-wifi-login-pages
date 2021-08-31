@@ -5,7 +5,7 @@ import {
   urls,
   initialData,
   initializeData,
-  clearData,
+  tearDown,
 } from "./utils";
 
 describe("Selenium tests for <PasswordReset />", () => {
@@ -17,9 +17,7 @@ describe("Selenium tests for <PasswordReset />", () => {
   }, 30000);
 
   afterAll(async () => {
-    await clearData();
-    await driver.manage().deleteAllCookies();
-    driver.close();
+    await tearDown(driver);
   });
 
   it("should show not found on password confirm", async () => {
