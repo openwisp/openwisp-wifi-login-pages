@@ -153,6 +153,7 @@ describe("<Login /> rendering", () => {
     expect(fallback.type).toEqual("input");
     expect(fallback.props).toEqual({
       name: "username",
+      className: "form-control input",
       value: "",
       onChange: expect.any(Function),
       placeholder: "enter mobile phone number",

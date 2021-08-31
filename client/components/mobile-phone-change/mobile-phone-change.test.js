@@ -234,6 +234,7 @@ describe("Change Phone Number: standard flow", () => {
     expect(fallback.type).toEqual("input");
     expect(fallback.props).toEqual({
       name: "phone_number",
+      className: "form-control input",
       value: "",
       onChange: expect.any(Function),
       onKeyDown: expect.any(Function),

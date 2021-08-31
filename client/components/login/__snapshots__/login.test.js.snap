@@ -864,6 +864,7 @@ exports[`<Login /> rendering should render PhoneInput lazily and handlers should
 <Suspense
   fallback={
     <input
+      className="form-control input"
       id="username"
       name="username"
       onChange={[Function]}

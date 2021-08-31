@@ -142,6 +142,7 @@ class MobilePhoneChange extends React.Component {
                   fallback={
                     <input
                       name="phone_number"
+                      className="form-control input"
                       value={phone_number}
                       onChange={(value) =>
                         this.handleChange({
