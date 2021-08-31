@@ -30,7 +30,7 @@ const prompts = [
     message: "What is the slug of the organization?",
     validate: (value) => {
       if (/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value)) {
-        return organizationExists(`${value}.yml`)
+        return organizationExists(value)
           ? "An organization with this slug already exists"
           : true;
       }
