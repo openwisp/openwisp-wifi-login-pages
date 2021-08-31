@@ -6,6 +6,7 @@ import config from "../config.json";
 import defaultConfig from "../utils/default-config";
 import Logger from "../utils/logger";
 import reverse from "../utils/openwisp-urls";
+import getSlug from "../utils/get-slug";
 
 const passwordResetConfirm = (req, res) => {
   const reqOrg = req.params.organization;
@@ -13,11 +14,8 @@ const passwordResetConfirm = (req, res) => {
     if (org.slug === reqOrg) {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
-      const {host, custom, radiusSlug} = conf;
-      const resetConfirmUrl = reverse(
-        "password_reset_confirm",
-        custom ? radiusSlug : org.slug,
-      );
+      const {host} = conf;
+      const resetConfirmUrl = reverse("password_reset_confirm", getSlug(conf));
       const timeout = conf.timeout * 1000;
       const {newPassword1, newPassword2, uid, token} = req.body;
       // make AJAX request

@@ -6,6 +6,7 @@ import config from "../config.json";
 import defaultConfig from "../utils/default-config";
 import Logger from "../utils/logger";
 import reverse from "../utils/openwisp-urls";
+import getSlug from "../utils/get-slug";
 
 const registration = (req, res) => {
   const reqOrg = req.params.organization;
@@ -13,11 +14,8 @@ const registration = (req, res) => {
     if (org.slug === reqOrg) {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
-      const {host, settings, custom, radiusSlug} = conf;
-      const registerUrl = reverse(
-        "registration",
-        custom ? radiusSlug : org.slug,
-      );
+      const {host, settings} = conf;
+      const registerUrl = reverse("registration", getSlug(conf));
       const timeout = conf.timeout * 1000;
       const postData = req.body;
 

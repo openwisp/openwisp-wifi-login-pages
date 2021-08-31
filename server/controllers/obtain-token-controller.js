@@ -7,6 +7,7 @@ import config from "../config.json";
 import defaultConfig from "../utils/default-config";
 import Logger from "../utils/logger";
 import reverse from "../utils/openwisp-urls";
+import getSlug from "../utils/get-slug";
 
 const sendCookies = (username, response, conf, res) => {
   // save token in signed cookie
@@ -31,11 +32,8 @@ const obtainToken = (req, res) => {
     if (org.slug === reqOrg) {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
-      const {host, custom, radiusSlug} = conf;
-      const obtainTokenUrl = reverse(
-        "user_auth_token",
-        custom ? radiusSlug : org.slug,
-      );
+      const {host} = conf;
+      const obtainTokenUrl = reverse("user_auth_token", getSlug(conf));
       const timeout = conf.timeout * 1000;
       const {username, password} = req.body;
       // make AJAX request

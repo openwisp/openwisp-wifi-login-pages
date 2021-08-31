@@ -5,6 +5,7 @@ import config from "../config.json";
 import defaultConfig from "../utils/default-config";
 import Logger from "../utils/logger";
 import reverse from "../utils/openwisp-urls";
+import getSlug from "../utils/get-slug";
 
 const getUserRadiusSessions = (req, res) => {
   const reqOrg = req.params.organization;
@@ -12,10 +13,10 @@ const getUserRadiusSessions = (req, res) => {
     if (org.slug === reqOrg) {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
-      const {host, custom, radiusSlug} = conf;
+      const {host} = conf;
       const userRadiusSessionsUrl = reverse(
         "user_radius_sessions",
-        custom ? radiusSlug : org.slug,
+        getSlug(conf),
       );
       const timeout = conf.timeout * 1000;
       let {token} = req.query;

@@ -7,6 +7,7 @@ import config from "../config.json";
 import defaultConfig from "../utils/default-config";
 import Logger from "../utils/logger";
 import reverse from "../utils/openwisp-urls";
+import getSlug from "../utils/get-slug";
 
 const validateToken = (req, res) => {
   const reqOrg = req.params.organization;
@@ -14,11 +15,8 @@ const validateToken = (req, res) => {
     if (org.slug === reqOrg) {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
-      const {host, custom, radiusSlug} = conf;
-      const validateTokenUrl = reverse(
-        "validate_auth_token",
-        custom ? radiusSlug : org.slug,
-      );
+      const {host} = conf;
+      const validateTokenUrl = reverse("validate_auth_token", getSlug(conf));
       const timeout = conf.timeout * 1000;
       let {token} = req.body;
       if (req.body.session === "false") {
