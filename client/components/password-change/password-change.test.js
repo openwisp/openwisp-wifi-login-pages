@@ -3,7 +3,6 @@ import axios from "axios";
 import {shallow} from "enzyme";
 import PropTypes from "prop-types";
 import React from "react";
-import ShallowRenderer from "react-test-renderer/shallow";
 import {Cookies} from "react-cookie";
 import {t} from "ttag";
 import getConfig from "../../utils/get-config";
@@ -37,10 +36,20 @@ const createTestProps = (props) => ({
   ...props,
 });
 
+PasswordChange.contextTypes = {
+  setLoading: PropTypes.func,
+  getLoading: PropTypes.func,
+};
+
+const createShallow = (props) =>
+  shallow(<PasswordChange {...props} />, {
+    context: {setLoading: jest.fn(), getLoading: jest.fn()},
+  });
+
 describe("<PasswordChange /> rendering with placeholder translation tags", () => {
   const props = createTestProps();
   it("should render translation placeholder correctly", () => {
-    const wrapper = shallow(<PasswordChange {...props} />);
+    const wrapper = createShallow(props);
     expect(wrapper).toMatchSnapshot();
   });
 });
@@ -50,10 +59,9 @@ describe("<PasswordChange /> rendering", () => {
 
   it("should render correctly", () => {
     props = createTestProps();
-    const renderer = new ShallowRenderer();
     loadTranslation("en", "default");
-    const component = renderer.render(<PasswordChange {...props} />);
-    expect(component).toMatchSnapshot();
+    const wrapper = createShallow(props);
+    expect(wrapper).toMatchSnapshot();
   });
 });
 
@@ -64,13 +72,7 @@ describe("<PasswordChange /> interactions", () => {
 
   beforeEach(() => {
     props = createTestProps();
-    PasswordChange.contextTypes = {
-      setLoading: PropTypes.func,
-      getLoading: PropTypes.func,
-    };
-    wrapper = shallow(<PasswordChange {...props} />, {
-      context: {setLoading: jest.fn(), getLoading: jest.fn()},
-    });
+    wrapper = createShallow(props);
   });
 
   it("test handleChange method", () => {

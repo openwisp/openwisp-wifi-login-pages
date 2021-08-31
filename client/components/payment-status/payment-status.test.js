@@ -92,9 +92,7 @@ describe("Test <PaymentStatus /> cases", () => {
     expect(
       wrapper.find(".payment-status-row-3 .button").at(0).props().to,
     ).toEqual("/default/status");
-    expect(
-      wrapper.find(".payment-status-row-4 .button").length,
-    ).toEqual(1);
+    expect(wrapper.find(".payment-status-row-4 .button").length).toEqual(1);
     expect(wrapper.find("Redirect").length).toEqual(0);
   });
 
@@ -106,9 +104,7 @@ describe("Test <PaymentStatus /> cases", () => {
       context: loadingContextValue,
     });
     await tick();
-    expect(
-      wrapper.find(".payment-status-row-4 .button").length,
-    ).toEqual(1);
+    expect(wrapper.find(".payment-status-row-4 .button").length).toEqual(1);
     wrapper.find(".payment-status-row-4 .button").simulate("click", {});
     expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith({
       ...responseData,

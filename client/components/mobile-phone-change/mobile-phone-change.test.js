@@ -9,7 +9,6 @@ import {toast} from "react-toastify";
 import {Provider} from "react-redux";
 import {Redirect, Router} from "react-router-dom";
 import {createMemoryHistory} from "history";
-import ShallowRenderer from "react-test-renderer/shallow";
 import {loadingContextValue} from "../../utils/loading-context";
 import loadTranslation from "../../utils/load-translation";
 import getConfig from "../../utils/get-config";
@@ -24,6 +23,16 @@ jest.mock("../../utils/validate-token");
 jest.mock("../../utils/load-translation");
 jest.mock("../../utils/submit-on-enter");
 jest.mock("axios");
+
+MobilePhoneChange.contextTypes = {
+  setLoading: PropTypes.func,
+  getLoading: PropTypes.func,
+};
+
+const createShallow = (props) =>
+  shallow(<MobilePhoneChange {...props} />, {
+    context: {setLoading: jest.fn(), getLoading: jest.fn()},
+  });
 
 const createTestProps = function (props, configName = "test-org-2") {
   const conf = getConfig(configName);
@@ -51,8 +60,7 @@ const createTestProps = function (props, configName = "test-org-2") {
 describe("<MobilePhoneChange /> rendering with placeholder translation tags", () => {
   const props = createTestProps();
   it("should render translation placeholder correctly", () => {
-    const renderer = new ShallowRenderer();
-    const wrapper = renderer.render(<MobilePhoneChange {...props} />);
+    const wrapper = createShallow(props);
     expect(wrapper).toMatchSnapshot();
   });
 });
@@ -179,7 +187,7 @@ describe("Change Phone Number: standard flow", () => {
     ]);
   });
   it("should render PhoneInput lazily and handlers should work correctly", async () => {
-    wrapper = shallow(<MobilePhoneChange {...props} />);
+    wrapper = createShallow(props);
     const handleChange = jest.spyOn(wrapper.instance(), "handleChange");
     const component = wrapper.find("Suspense");
     expect(component).toMatchSnapshot();
@@ -219,7 +227,7 @@ describe("Change Phone Number: standard flow", () => {
   });
 
   it("should load fallback before PhoneInput and handlers should work correctly", async () => {
-    wrapper = shallow(<MobilePhoneChange {...props} />);
+    wrapper = createShallow(props);
     const handleChange = jest.spyOn(wrapper.instance(), "handleChange");
     const component = wrapper.find("Suspense");
     const {fallback} = component.props();
@@ -321,13 +329,11 @@ describe("Change Phone Number: standard flow", () => {
 
     wrapper = await mountComponent(props);
     const component = wrapper.find(MobilePhoneChange);
-    const cancelButton = component.find(".cancel .button");
+    const cancelButton = component.find(".cancel Link.button");
     cancelButton.simulate("click");
     expect(toast.info).not.toHaveBeenCalled();
     expect(historyMock.push).not.toHaveBeenCalled();
     expect(lastConsoleOutuput).toBe(null);
-    const {href} = cancelButton.at(0).props();
-    expect(href).toEqual("/test-org-2/mobile-phone-verification");
   });
 
   it("should set title", async () => {
