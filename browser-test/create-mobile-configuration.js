@@ -19,10 +19,11 @@ const writeOutput = (result) => {
   }
 };
 
-const configPath = path.resolve(__dirname, `../organizations/${org}.yml`);
+const configDirPath = path.resolve(__dirname, `../organizations/${org}`);
+const configPath = path.join(configDirPath, `${org}.yml`);
 
-if (fs.existsSync(configPath)) {
-  fs.rmSync(configPath);
+if (fs.existsSync(configDirPath)) {
+  fs.rmSync(configDirPath, {recursive: true});
 }
 
 const options = {

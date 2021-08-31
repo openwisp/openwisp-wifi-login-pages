@@ -6,6 +6,7 @@ import config from "../config.json";
 import defaultConfig from "../utils/default-config";
 import Logger from "../utils/logger";
 import reverse from "../utils/openwisp-urls";
+import getSlug from "../utils/get-slug";
 
 const passwordReset = (req, res) => {
   const reqOrg = req.params.organization;
@@ -14,7 +15,7 @@ const passwordReset = (req, res) => {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
       const {host} = conf;
-      const resetUrl = reverse("password_reset", org.slug);
+      const resetUrl = reverse("password_reset", getSlug(conf));
       const timeout = conf.timeout * 1000;
       const {email} = req.body;
 

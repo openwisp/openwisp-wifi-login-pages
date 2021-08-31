@@ -7,6 +7,7 @@ import config from "../config.json";
 import defaultConfig from "../utils/default-config";
 import Logger from "../utils/logger";
 import reverse from "../utils/openwisp-urls";
+import getSlug from "../utils/get-slug";
 
 const mobilePhoneNumberChange = (req, res) => {
   const reqOrg = req.params.organization;
@@ -15,7 +16,7 @@ const mobilePhoneNumberChange = (req, res) => {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
       const {host} = conf;
-      const url = reverse("mobile_phone_number_change", org.slug);
+      const url = reverse("mobile_phone_number_change", getSlug(conf));
       const timeout = conf.timeout * 1000;
       let {token} = req.body;
       if (req.body.session === "false")

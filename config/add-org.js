@@ -30,7 +30,7 @@ const prompts = [
     message: "What is the slug of the organization?",
     validate: (value) => {
       if (/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value)) {
-        return organizationExists(`${value}.yml`)
+        return organizationExists(value)
           ? "An organization with this slug already exists"
           : true;
       }
@@ -124,10 +124,10 @@ const prompts = [
   },
 ];
 
-const writeConfigFile = (fileName, object) => {
+const writeConfigFile = (filePath, object) => {
   try {
     fs.writeFileSync(
-      path.join(orgConfigurationDir, fileName),
+      path.join(orgConfigurationDir, filePath),
       yaml.dump(object),
     );
   } catch (err) {
@@ -180,7 +180,11 @@ const createConfiguration = async (response) => {
     const defaultConfig = yaml.load(fs.readFileSync(defaultConfigFile, "utf8"));
     const generatedConfig = yaml.load(
       fs.readFileSync(
-        path.join(orgConfigurationDir, `${response.slug}.yml`),
+        path.resolve(
+          orgConfigurationDir,
+          response.slug,
+          `${response.slug}.yml`,
+        ),
         "utf-8",
       ),
     );
@@ -202,7 +206,7 @@ const createConfiguration = async (response) => {
         return _.isEqual(v, {}) ? undefined : value;
       }),
     );
-    writeConfigFile(`${response.slug}.yml`, config);
+    writeConfigFile(path.join(response.slug, `${response.slug}.yml`), config);
   }
 };
 

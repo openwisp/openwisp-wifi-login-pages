@@ -37,11 +37,6 @@ describe("Selenium tests for <PasswordChange />", () => {
     await driver.wait(until.elementIsVisible(successToastDiv));
     await driver.wait(until.urlContains("status"), 5000);
     expect(await successToastDiv.getText()).toEqual("Login successful");
-    let activeSessionTr = await getElementByCss(
-      driver,
-      "table tr.active-session",
-    );
-    await driver.wait(until.elementIsVisible(activeSessionTr));
 
     // changing password
     await driver.get(urls.passwordChange);
@@ -64,8 +59,6 @@ describe("Selenium tests for <PasswordChange />", () => {
     expect(await successToastDiv.getText()).toEqual(
       "New password has been saved.",
     );
-    activeSessionTr = await getElementByCss(driver, "table tr.active-session");
-    await driver.wait(until.elementIsVisible(activeSessionTr));
 
     // login with new password
     await driver.manage().deleteAllCookies();
@@ -82,8 +75,5 @@ describe("Selenium tests for <PasswordChange />", () => {
     await driver.wait(until.elementIsVisible(successToastDiv));
     await driver.wait(until.urlContains("status"), 5000);
     expect(await successToastDiv.getText()).toEqual("Login successful");
-
-    activeSessionTr = await getElementByCss(driver, "table tr.active-session");
-    await driver.wait(until.elementIsVisible(activeSessionTr));
   });
 });
