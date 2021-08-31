@@ -22,8 +22,8 @@ msgstr "politika zasebnosti"
 msgid "TOS_TITL"
 msgstr "pogoji in določila"
 
-#: client/components/status/status.js:438
-#: client/components/status/status.js:633
+#: client/components/status/status.js:442
+#: client/components/status/status.js:637
 msgid "ACCT_ACTIVE"
 msgstr "seja je aktivna"
 
@@ -31,78 +31,78 @@ msgstr "seja je aktivna"
 msgid "STATUS_TITL"
 msgstr "Stanje"
 
-#: client/components/status/status.js:625
+#: client/components/status/status.js:629
 msgid "ACCT_START_TIME"
 msgstr "Začetni čas"
 
-#: client/components/status/status.js:626
+#: client/components/status/status.js:630
 msgid "ACCT_STOP_TIME"
 msgstr "Čas ustavitve"
 
-#: client/components/status/status.js:627
+#: client/components/status/status.js:631
 msgid "ACCT_DURATION"
 msgstr "Trajanje"
 
-#: client/components/status/status.js:628
+#: client/components/status/status.js:632
 msgid "ACCT_DOWNLOAD"
 msgstr "Prenos"
 
-#: client/components/status/status.js:629
+#: client/components/status/status.js:633
 msgid "ACCT_UPLOAD"
 msgstr "Naloži"
 
-#: client/components/status/status.js:630
+#: client/components/status/status.js:634
 msgid "ACCT_DEVICE_ADDRESS"
 msgstr "Naslov naprave"
 
-#: client/components/status/status.js:640
+#: client/components/status/status.js:644
 msgid "LOGGED_IN"
 msgstr "Prijavljeni"
 
-#: client/components/status/status.js:646
+#: client/components/status/status.js:650
 msgid "USERNAME"
 msgstr "Uporabniško ime"
 
-#: client/components/status/status.js:649
+#: client/components/status/status.js:653
 msgid "PHONE_NUMBER"
 msgstr "Telefonska številka"
 
-#: client/components/status/status.js:677
+#: client/components/status/status.js:681
 msgid "STATUS_CONTENT"
 msgstr ""
 "Prijava v WiFi je uspela!  NZdaj lahko uporabljate internet.  NTo stran "
 "lahko pustite odprto, če se želite odjaviti."
 
-#: client/components/status/status.js:690
+#: client/components/status/status.js:694
 msgid "LOGOUT_MODAL_CONTENT"
 msgstr "Ali se želite naslednjič samodejno prijaviti?"
 
-#: client/components/registration/registration.js:288
+#: client/components/registration/registration.js:291
 msgid "PLAN_SETTING_TXT"
 msgstr "Izberite želeni načrt naročnine"
 
 #: client/components/login/login.js:138
-#: client/components/mobile-phone-change/mobile-phone-change.js:135
-#: client/components/registration/registration.js:380
+#: client/components/mobile-phone-change/mobile-phone-change.js:137
+#: client/components/registration/registration.js:383
 msgid "PHONE_LBL"
 msgstr "Številka mobilnega telefona"
 
 #: client/components/login/login.js:152
 #: client/components/login/login.js:170
-#: client/components/mobile-phone-change/mobile-phone-change.js:154
-#: client/components/mobile-phone-change/mobile-phone-change.js:179
-#: client/components/registration/registration.js:403
-#: client/components/registration/registration.js:437
+#: client/components/mobile-phone-change/mobile-phone-change.js:156
+#: client/components/mobile-phone-change/mobile-phone-change.js:181
+#: client/components/registration/registration.js:406
+#: client/components/registration/registration.js:440
 msgid "PHONE_PHOLD"
 msgstr "vnesite številko mobilnega telefona"
 
 #: client/components/password-reset/password-reset.js:116
-#: client/components/registration/registration.js:466
+#: client/components/registration/registration.js:469
 msgid "EMAIL_PHOLD"
 msgstr "e -poštni naslov"
 
 #: client/components/password-reset/password-reset.js:118
-#: client/components/registration/registration.js:469
+#: client/components/registration/registration.js:472
 msgid "EMAIL_PTRN_DESC"
 msgstr "vnesite veljaven e -poštni naslov"
 
@@ -114,120 +114,120 @@ msgstr "E -pošta, telefonska številka ali uporabniško ime"
 msgid "USERNAME_LOG_PHOLD"
 msgstr "vnesite e -poštni naslov, telefonsko številko ali uporabniško ime"
 
-#: client/components/registration/registration.js:492
+#: client/components/registration/registration.js:495
 msgid "USERNAME_PTRN_DESC"
 msgstr "samo črke, številke in @/./+/-/_ znaki"
 
-#: client/components/registration/registration.js:502
-#: client/components/registration/registration.js:503
+#: client/components/registration/registration.js:505
+#: client/components/registration/registration.js:506
 msgid "FIRST_NAME_LBL"
 msgstr "Ime"
 
-#: client/components/registration/registration.js:520
+#: client/components/registration/registration.js:523
 msgid "FIRST_NAME_PHOLD"
 msgstr "ime"
 
-#: client/components/registration/registration.js:530
-#: client/components/registration/registration.js:531
+#: client/components/registration/registration.js:533
+#: client/components/registration/registration.js:534
 msgid "LAST_NAME_LBL"
 msgstr "Priimek"
 
-#: client/components/registration/registration.js:548
+#: client/components/registration/registration.js:551
 msgid "LAST_NAME_PHOLD"
 msgstr "priimek"
 
-#: client/components/registration/registration.js:557
-#: client/components/registration/registration.js:558
+#: client/components/registration/registration.js:560
+#: client/components/registration/registration.js:561
 msgid "BIRTH_DATE_LBL"
 msgstr "Datum rojstva"
 
-#: client/components/registration/registration.js:582
-#: client/components/registration/registration.js:583
+#: client/components/registration/registration.js:585
+#: client/components/registration/registration.js:586
 msgid "LOCATION_LBL"
 msgstr "Lokacija"
 
-#: client/components/registration/registration.js:598
+#: client/components/registration/registration.js:601
 msgid "LOCATION_PHOLD"
 msgstr "lokacija"
 
-#: client/components/registration/registration.js:601
+#: client/components/registration/registration.js:604
 msgid "LOCATION_PTRN_DESC"
 msgstr "samo črke, številke, presledki, ločila"
 
 #: client/components/login/login.js:341
 #: client/components/password-confirm/password-confirm.js:145
-#: client/components/registration/registration.js:607
+#: client/components/registration/registration.js:610
 msgid "PWD_LBL"
 msgstr "Geslo"
 
 #: client/components/login/login.js:351
 #: client/components/password-confirm/password-confirm.js:156
-#: client/components/registration/registration.js:617
+#: client/components/registration/registration.js:620
 msgid "PWD_PHOLD"
 msgstr "geslo"
 
 #: client/components/login/login.js:353
-#: client/components/password-change/password-change.js:123
-#: client/components/password-change/password-change.js:149
+#: client/components/password-change/password-change.js:126
+#: client/components/password-change/password-change.js:152
 #: client/components/password-confirm/password-confirm.js:158
 #: client/components/password-confirm/password-confirm.js:186
-#: client/components/registration/registration.js:619
-#: client/components/registration/registration.js:648
+#: client/components/registration/registration.js:622
+#: client/components/registration/registration.js:651
 msgid "PWD_PTRN_DESC"
 msgstr "geslo mora imeti najmanj 6 znakov"
 
-#: client/components/registration/registration.js:666
+#: client/components/registration/registration.js:669
 msgid "COUNTRY_LBL"
 msgstr "Država"
 
-#: client/components/registration/registration.js:675
+#: client/components/registration/registration.js:678
 msgid "CITY_LBL"
 msgstr "Mesto"
 
-#: client/components/registration/registration.js:688
+#: client/components/registration/registration.js:691
 msgid "CITY_PHOLD"
 msgstr "vnesite mesto"
 
-#: client/components/registration/registration.js:692
+#: client/components/registration/registration.js:695
 msgid "STREET_LBL"
 msgstr "Ulica"
 
-#: client/components/registration/registration.js:705
+#: client/components/registration/registration.js:708
 msgid "STREET_PHOLD"
 msgstr "vnesite ulico"
 
-#: client/components/registration/registration.js:709
+#: client/components/registration/registration.js:712
 msgid "ZIP_CODE_LBL"
 msgstr "Poštna številka"
 
-#: client/components/registration/registration.js:726
+#: client/components/registration/registration.js:729
 msgid "TAX_NUMBER_LBL"
 msgstr "Davčna številka"
 
-#: client/components/registration/registration.js:738
+#: client/components/registration/registration.js:741
 msgid "TAX_NUMBER_PHOLD"
 msgstr "vnesite svojo davčno identifikacijsko številko (neobvezno)"
 
-#: client/components/registration/registration.js:740
+#: client/components/registration/registration.js:743
 msgid "TAX_NUMBER_PTRN_DESC"
 msgstr "samo številke in črke"
 
-#: client/components/registration/registration.js:755
+#: client/components/registration/registration.js:758
 msgid "REGISTER_ADD_INFO_TXT"
 msgstr ""
 "S prijavo sprejemate {terms_and_conditions} in{privacy_policy} te storitve "
 "WiFi."
 
 #: client/components/login/login.js:405
-#: client/components/registration/registration.js:781
+#: client/components/registration/registration.js:784
 msgid "FORGOT_PASSWORD"
 msgstr "Ste pozabili geslo?"
 
-#: client/components/registration/registration.js:788
+#: client/components/registration/registration.js:791
 msgid "LINKS_LOGIN_TXT"
 msgstr "Že imate račun? Prijavite se"
 
-#: client/components/registration/registration.js:69
+#: client/components/registration/registration.js:68
 msgid "REGISTRATION_TITL"
 msgstr "Prijavite se"
 
@@ -300,15 +300,15 @@ msgstr "Ponastavi geslo"
 msgid "PWD_CONFIRM_ADD_TXT"
 msgstr "Spodaj vnesite novo geslo."
 
-#: client/components/password-change/password-change.js:137
+#: client/components/password-change/password-change.js:140
 #: client/components/password-confirm/password-confirm.js:173
-#: client/components/registration/registration.js:635
+#: client/components/registration/registration.js:638
 msgid "CONFIRM_PWD_LBL"
 msgstr "Potrdi geslo"
 
-#: client/components/password-change/password-change.js:147
+#: client/components/password-change/password-change.js:150
 #: client/components/password-confirm/password-confirm.js:184
-#: client/components/registration/registration.js:646
+#: client/components/registration/registration.js:649
 msgid "CONFIRM_PWD_PHOLD"
 msgstr "potrdite geslo"
 
@@ -316,20 +316,20 @@ msgstr "potrdite geslo"
 msgid "PWD_CONFIRM"
 msgstr "Spremeni geslo"
 
-#: client/components/password-change/password-change.js:41
-#: client/components/password-change/password-change.js:107
+#: client/components/password-change/password-change.js:42
+#: client/components/password-change/password-change.js:110
 msgid "PWD_CHANGE_TITL"
 msgstr "Spremenite geslo"
 
-#: client/components/password-change/password-change.js:111
+#: client/components/password-change/password-change.js:114
 msgid "PWD1_LBL"
 msgstr "Novo geslo"
 
-#: client/components/password-change/password-change.js:121
+#: client/components/password-change/password-change.js:124
 msgid "PWD1_PHOLD"
 msgstr "Vaše novo geslo"
 
-#: client/components/password-change/password-change.js:166
+#: client/components/password-change/password-change.js:169
 msgid "PASSWORD_CHANGE"
 msgstr "Spremeni geslo"
 
@@ -395,7 +395,7 @@ msgid "REGISTER_BTN_LBL"
 msgstr "Še niste registrirani?"
 
 #: client/components/login/login.js:397
-#: client/components/registration/registration.js:768
+#: client/components/registration/registration.js:771
 msgid "REGISTER_BTN_TXT"
 msgstr "Prijavite se"
 
@@ -415,7 +415,7 @@ msgstr "Ni najdeno"
 msgid "404_MESSAGE"
 msgstr "Žal nismo našli strani, ki ste jo iskali."
 
-#: client/components/mobile-phone-change/mobile-phone-change.js:198
+#: client/components/mobile-phone-change/mobile-phone-change.js:200
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:240
 msgid "PHONE_CHANGE_BTN"
 msgstr "Spremenite svojo telefonsko številko"
@@ -429,9 +429,9 @@ msgid "HOME_PG_LINK_TXT"
 msgstr "Nazaj na domačo stran"
 
 #: client/components/login/login.js:218
-#: client/components/registration/registration.js:86
-#: client/components/status/status.js:238
-#: client/components/status/status.js:241
+#: client/components/registration/registration.js:85
+#: client/components/status/status.js:242
+#: client/components/status/status.js:245
 #: client/utils/handle-logout.js:25
 #: client/utils/validate-token.js:45
 msgid "ERR_OCCUR"
@@ -446,30 +446,30 @@ msgstr "Prišlo je do napake pri prijavi."
 msgid "LOGIN_SUCCESS"
 msgstr "Prijava uspešna"
 
-#: client/components/status/status.js:290
-#: client/components/status/status.js:352
+#: client/components/status/status.js:294
+#: client/components/status/status.js:356
 msgid "LOGOUT_SUCCESS"
 msgstr "Odjava uspešna"
 
-#: client/components/password-change/password-change.js:83
-#: client/components/password-change/password-change.js:89
+#: client/components/password-change/password-change.js:84
+#: client/components/password-change/password-change.js:90
 #: client/components/password-change/password-change.test.js:127
 msgid "PWD_CHNG_ERR"
 msgstr "Prišlo je do napake, geslo ni bilo spremenjeno."
 
-#: client/components/password-change/password-change.js:57
+#: client/components/password-change/password-change.js:58
 #: client/components/password-change/password-change.test.js:113
 #: client/components/password-change/password-change.test.js:118
 #: client/components/password-confirm/password-confirm.js:55
-#: client/components/registration/registration.js:123
+#: client/components/registration/registration.js:122
 msgid "PWD_CNF_ERR"
 msgstr "Polji za geslo se ne ujemata."
 
-#: client/components/registration/registration.js:213
+#: client/components/registration/registration.js:216
 msgid "REGISTER_ERR"
 msgstr "Napaka pri registraciji."
 
-#: client/components/registration/registration.js:199
+#: client/components/registration/registration.js:202
 msgid "REGISTER_SUCCESS"
 msgstr "Uspeh registracije"
 
@@ -481,35 +481,35 @@ msgstr ""
 
 #: client/components/logout/logout.js:23
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:259
-#: client/components/status/status.js:462
-#: client/components/status/status.js:543
-#: client/components/status/status.js:729
+#: client/components/status/status.js:466
+#: client/components/status/status.js:547
+#: client/components/status/status.js:733
 msgid "LOGOUT"
 msgstr "Odjava"
 
-#: client/components/status/status.js:639
+#: client/components/status/status.js:643
 msgid "STATUS"
 msgstr "Stanje"
 
 #: client/components/contact-box/contact.js:25
 #: client/components/password-reset/password-reset.js:106
-#: client/components/registration/registration.js:456
-#: client/components/status/status.js:643
+#: client/components/registration/registration.js:459
+#: client/components/status/status.js:647
 msgid "EMAIL"
 msgstr "E-naslov"
 
-#: client/components/status/status.js:698
+#: client/components/status/status.js:702
 msgid "YES"
 msgstr "Da"
 
-#: client/components/status/status.js:705
+#: client/components/status/status.js:709
 msgid "NO"
 msgstr "Ne"
 
-#: client/components/registration/registration.js:503
-#: client/components/registration/registration.js:531
-#: client/components/registration/registration.js:558
-#: client/components/registration/registration.js:583
+#: client/components/registration/registration.js:506
+#: client/components/registration/registration.js:534
+#: client/components/registration/registration.js:561
+#: client/components/registration/registration.js:586
 msgid "OPTIONAL"
 msgstr "neobvezno"
 
@@ -525,13 +525,12 @@ msgstr ""
 "Preverite svojo številko mobilnega telefona ($ {phone_number}) tako, da "
 "vnesete kodoste prejeli spodaj prek SMS -a."
 
-#: client/components/mobile-phone-change/mobile-phone-change.js:206
+#: client/components/mobile-phone-change/mobile-phone-change.js:208
 msgid "CANCEL"
 msgstr "Prekliči"
 
 #: client/components/login/login.js:51
 #: client/components/login/login.js:386
-#: client/components/logout/logout.js:53
 msgid "LOGIN"
 msgstr "Vpiši se"
 
@@ -543,10 +542,14 @@ msgstr "Znova se prijavite"
 msgid "HELPDESK"
 msgstr "Pomoč"
 
-#: client/components/registration/registration.js:476
+#: client/components/registration/registration.js:479
 msgid "USERNAME_REG_LBL"
 msgstr "Nutzername"
 
-#: client/components/registration/registration.js:489
+#: client/components/registration/registration.js:492
 msgid "USERNAME_REG_PHOLD"
 msgstr "nutzername"
+
+#: client/components/status/status.js:872
+msgid "CP_LOGIN"
+msgstr "Začenjamo vašo sejo v storitvi WiFi, lahko traja nekaj sekund, počakajte ..."

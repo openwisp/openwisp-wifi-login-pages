@@ -144,14 +144,17 @@ export default class Status extends React.Component {
           no active session from macaddr stored in the cookie */
         const {activeSessions} = this.state;
         if (activeSessions && activeSessions.length === 0) {
-          if (this.loginFormRef && this.loginFormRef.current)
+          if (this.loginFormRef && this.loginFormRef.current) {
+            this.notifyCpLogin(userData);
             this.loginFormRef.current.submit();
+          }
         }
       } else if (
         this.loginFormRef &&
         this.loginFormRef.current &&
         justAuthenticated
       ) {
+        this.notifyCpLogin(userData);
         this.loginFormRef.current.submit();
         userData.justAuthenticated = false;
         setUserData(userData);
@@ -184,6 +187,7 @@ export default class Status extends React.Component {
       userData.is_verified ||
       !needsVerify("mobile_phone", userData, settings)
     ) {
+      this.dismissCpLogin();
       setLoading(false);
       // if verification is needed, stop here
     } else {
@@ -352,8 +356,8 @@ export default class Status extends React.Component {
       toast.success(t`LOGOUT_SUCCESS`);
 
       if (saml_logout_url && logoutMethod === "saml") {
-        window.location.assign(saml_logout_url);
         localStorage.removeItem(logoutMethodKey);
+        window.location.assign(saml_logout_url);
         return;
       }
       setUserData(initialState.userData);
@@ -859,6 +863,19 @@ export default class Status extends React.Component {
       </>
     );
   }
+
+  notifyCpLogin = (userData) => {
+    // do not send notification if user is not verified yet
+    if (userData.is_verified === false) {
+      return;
+    }
+    this.cpLoginToastId = toast.info(t`CP_LOGIN`, {autoClose: 10000});
+  };
+
+  dismissCpLogin = () => {
+    const {cpLoginToastId} = this;
+    if (cpLoginToastId) toast.dismiss(this.cpLoginToastId);
+  };
 }
 Status.contextType = LoadingContext;
 Status.defaultProps = {
