@@ -7,7 +7,7 @@ import React from "react";
 import {toast} from "react-toastify";
 import {Cookies} from "react-cookie";
 import {t} from "ttag";
-import {Redirect} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import PasswordToggleIcon from "../../utils/password-toggle";
 import {passwordChangeApiUrl} from "../../constants";
 import getErrorText from "../../utils/get-error-text";
@@ -37,10 +37,13 @@ export default class PasswordChange extends React.Component {
   }
 
   async componentDidMount() {
+    const {setLoading} = this.context;
     const {setTitle, orgName, cookies, userData, setUserData, logout, orgSlug} =
       this.props;
+    setLoading(true);
     setTitle(t`PWD_CHANGE_TITL`, orgName);
     await validateToken(cookies, orgSlug, setUserData, userData, logout);
+    setLoading(false);
   }
 
   handleSubmit(e) {
@@ -168,6 +171,12 @@ export default class PasswordChange extends React.Component {
                   className="button full"
                   value={t`PASSWORD_CHANGE`}
                 />
+              </div>
+
+              <div className="row cancel">
+                <Link className="button full" to={`/${orgSlug}/status`}>
+                  {t`CANCEL`}
+                </Link>
               </div>
             </div>
           </form>

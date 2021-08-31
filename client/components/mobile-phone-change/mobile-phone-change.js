@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import qs from "qs";
 import React, {Suspense} from "react";
 import {Cookies} from "react-cookie";
-import {Redirect, withRouter} from "react-router-dom";
+import {Link, Redirect, withRouter} from "react-router-dom";
 import {toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {t} from "ttag";
@@ -37,8 +37,10 @@ class MobilePhoneChange extends React.Component {
   }
 
   async componentDidMount() {
+    const {setLoading} = this.context;
     const {cookies, orgSlug, setUserData, logout, setTitle, orgName} =
       this.props;
+    setLoading(true);
     setTitle(t`PHONE_CHANGE_TITL`, orgName);
     let {userData} = this.props;
     const isValid = await validateToken(
@@ -53,6 +55,7 @@ class MobilePhoneChange extends React.Component {
       const {phone_number} = userData;
       this.setState({phone_number});
     }
+    setLoading(false);
   }
 
   handleSubmit(event) {
@@ -131,44 +134,14 @@ class MobilePhoneChange extends React.Component {
             onSubmit={this.handleSubmit}
           >
             <div className="inner">
-              <div className="fieldset row">
-                {getError(errors)}
-                <div className="row phone-number">
-                  <label htmlFor="phone-number">{t`PHONE_LBL`}</label>
-                  {getError(errors, "phone_number")}
-                  <Suspense
-                    fallback={
-                      <input
-                        name="phone_number"
-                        value={phone_number}
-                        onChange={(value) =>
-                          this.handleChange({
-                            target: {name: "phone_number", value: `+${value}`},
-                          })
-                        }
-                        onKeyDown={(event) => {
-                          submitOnEnter(
-                            event,
-                            this,
-                            "mobile-phone-change-form",
-                          );
-                        }}
-                        placeholder={t`PHONE_PHOLD`}
-                        id="phone-number"
-                      />
-                    }
-                  >
-                    <PhoneInput
+              {getError(errors)}
+              <div className="row phone-number">
+                <label htmlFor="phone-number">{t`PHONE_LBL`}</label>
+                {getError(errors, "phone_number")}
+                <Suspense
+                  fallback={
+                    <input
                       name="phone_number"
-                      onlyCountries={
-                        input_fields.phone_number.only_countries || []
-                      }
-                      preferredCountries={
-                        input_fields.phone_number.preferred_countries || []
-                      }
-                      excludeCountries={
-                        input_fields.phone_number.exclude_countries || []
-                      }
                       value={phone_number}
                       onChange={(value) =>
                         this.handleChange({
@@ -179,35 +152,58 @@ class MobilePhoneChange extends React.Component {
                         submitOnEnter(event, this, "mobile-phone-change-form");
                       }}
                       placeholder={t`PHONE_PHOLD`}
-                      enableSearch={Boolean(
-                        input_fields.phone_number.enable_search,
-                      )}
-                      inputProps={{
-                        name: "phone_number",
-                        id: "phone-number",
-                        className: `form-control input ${
-                          errors.phone_number ? "error" : ""
-                        }`,
-                        required: true,
-                      }}
+                      id="phone-number"
                     />
-                  </Suspense>
-                </div>
+                  }
+                >
+                  <PhoneInput
+                    name="phone_number"
+                    onlyCountries={
+                      input_fields.phone_number.only_countries || []
+                    }
+                    preferredCountries={
+                      input_fields.phone_number.preferred_countries || []
+                    }
+                    excludeCountries={
+                      input_fields.phone_number.exclude_countries || []
+                    }
+                    value={phone_number}
+                    onChange={(value) =>
+                      this.handleChange({
+                        target: {name: "phone_number", value: `+${value}`},
+                      })
+                    }
+                    onKeyDown={(event) => {
+                      submitOnEnter(event, this, "mobile-phone-change-form");
+                    }}
+                    placeholder={t`PHONE_PHOLD`}
+                    enableSearch={Boolean(
+                      input_fields.phone_number.enable_search,
+                    )}
+                    inputProps={{
+                      name: "phone_number",
+                      id: "phone-number",
+                      className: `form-control input ${
+                        errors.phone_number ? "error" : ""
+                      }`,
+                      required: true,
+                    }}
+                  />
+                </Suspense>
+              </div>
 
+              <div className="row submit">
                 <input
                   type="submit"
                   className="button full"
                   value={t`PHONE_CHANGE_BTN`}
                 />
+              </div>
 
-                <div className="row cancel">
-                  <a
-                    className="button full"
-                    href={`/${orgSlug}/mobile-phone-verification`}
-                  >
-                    {t`CANCEL`}
-                  </a>
-                </div>
+              <div className="row cancel">
+                <Link className="button full" to={`/${orgSlug}/status`}>
+                  {t`CANCEL`}
+                </Link>
               </div>
             </div>
           </form>
