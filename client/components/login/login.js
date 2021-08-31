@@ -142,6 +142,7 @@ export default class Login extends React.Component {
             <input
               type="tel"
               name="username"
+              className="form-control input"
               value={username}
               id="username"
               onChange={(value) =>

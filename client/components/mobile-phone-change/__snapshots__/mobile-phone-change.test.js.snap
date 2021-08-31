@@ -27,6 +27,7 @@ exports[`<MobilePhoneChange /> rendering with placeholder translation tags shoul
           <Suspense
             fallback={
               <input
+                className="form-control input"
                 id="phone-number"
                 name="phone_number"
                 onChange={[Function]}
@@ -87,6 +88,7 @@ exports[`Change Phone Number: standard flow should render PhoneInput lazily and 
 <Suspense
   fallback={
     <input
+      className="form-control input"
       id="phone-number"
       name="phone_number"
       onChange={[Function]}
@@ -645,6 +647,7 @@ Openwisp-wifi-login-pages and using its services in the future.</p>
                   <Suspense
                     fallback={
                       <input
+                        className="form-control input"
                         id="phone-number"
                         name="phone_number"
                         onChange={[Function]}
@@ -655,6 +658,7 @@ Openwisp-wifi-login-pages and using its services in the future.</p>
                     }
                   >
                     <input
+                      className="form-control input"
                       id="phone-number"
                       name="phone_number"
                       onChange={[Function]}
