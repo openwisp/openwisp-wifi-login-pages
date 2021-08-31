@@ -83,7 +83,9 @@ export default class PaymentStatus extends React.Component {
 
               <div className="row payment-status-row-4">
                 <p>{t`PAY_GIVE_UP_TXT`}</p>
-                <Link
+                <button
+                  type="button"
+                  className="button full"
                   onClick={() =>
                     handleLogout(
                       logout,
@@ -93,11 +95,9 @@ export default class PaymentStatus extends React.Component {
                       userData,
                     )
                   }
-                  to={`/${orgSlug}/status`}
-                  className="button full"
                 >
                   {t`PAY_GIVE_UP_BTN`}
-                </Link>
+                </button>
               </div>
             </div>
           </div>

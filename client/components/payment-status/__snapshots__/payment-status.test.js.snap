@@ -42,13 +42,13 @@ exports[`<PaymentStatus /> rendering with placeholder translation tags should re
           <p>
             PAY_GIVE_UP_TXT
           </p>
-          <Link
+          <button
             className="button full"
             onClick={[Function]}
-            to="/default/status"
+            type="button"
           >
             PAY_GIVE_UP_BTN
-          </Link>
+          </button>
         </div>
       </div>
     </div>
@@ -99,13 +99,13 @@ exports[`Test <PaymentStatus /> cases should render failed state 1`] = `
           <p>
             If you cannot complete the transaction you can either try to get in touch with your bank or cancel the operation.
           </p>
-          <Link
+          <button
             className="button full"
             onClick={[Function]}
-            to="/default/status"
+            type="button"
           >
             Cancel operation and log out
-          </Link>
+          </button>
         </div>
       </div>
     </div>
