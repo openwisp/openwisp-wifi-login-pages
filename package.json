@@ -98,12 +98,12 @@
     "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack": "^4.43.0",
     "webpack-bundle-analyzer": "^4.4.0",
-    "webpack-cli": "^3.3.11",
+    "webpack-cli": "^4.8.0",
     "webpack-dev-server": "^3.11.0"
   },
   "scripts": {
     "build": "npm run setup && webpack --mode production --progress --config config/webpack.config.js",
-    "client": "npm run setup && webpack-dev-server --host 0.0.0.0 --mode development --config config/webpack.config.js",
+    "client": "npm run setup && webpack serve --host 0.0.0.0 --mode development --config config/webpack.config.js",
     "coverage": "jest --coverage  --testPathIgnorePatterns=/browser-test/",
     "coveralls": "test -f ./coverage/lcov.info && cat ./coverage/lcov.info | coveralls || echo 'no coverage file found'",
     "add-org": "node config/add-org.js",
