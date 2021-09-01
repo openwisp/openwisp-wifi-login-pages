@@ -247,6 +247,7 @@ describe("Mobile Phone Token verification: standard flow", () => {
       props.orgSlug,
       props.setUserData,
       props.userData,
+      true,
     );
   });
 

@@ -7,7 +7,14 @@ const redirectToStatus = (setUserData, userData, orgSlug) => {
   window.location.assign(`${window.location.origin}/${orgSlug}/status`);
 };
 
-const handleLogout = (logout, cookies, orgSlug, setUserData, userData) => {
+const handleLogout = (
+  logout,
+  cookies,
+  orgSlug,
+  setUserData,
+  userData,
+  showLogoutToast = false,
+) => {
   /*
    * Redirecting to the status page for captive-portal logout if the
    * method is unspecified or bank_card or the user is verified.
@@ -22,7 +29,8 @@ const handleLogout = (logout, cookies, orgSlug, setUserData, userData) => {
     return;
   }
   logout(cookies, orgSlug);
-  toast.error(t`ERR_OCCUR`);
+  if (showLogoutToast) toast.success(t`LOGOUT_SUCCESS`);
+  else toast.error(t`ERR_OCCUR`);
   setUserData(initialState.userData);
 };
 
