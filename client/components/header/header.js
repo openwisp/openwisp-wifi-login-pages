@@ -125,42 +125,43 @@ export default class Header extends React.Component {
           </div>
           <div className="header-row-2">
             <div className="header-row-2-inner">
-              {links.map((link, index) => {
-                if (!shouldLinkBeShown(link, isAuthenticated, userData)) {
-                  return null;
-                }
-                if (
-                  isInternalLink(link.url) &&
-                  (internalLinks.indexOf(link.url) < 0 || !isAuthenticated)
-                ) {
-                  return (
-                    <Link
-                      className={`header-link header-desktop-link
+              {links &&
+                links.map((link, index) => {
+                  if (!shouldLinkBeShown(link, isAuthenticated, userData)) {
+                    return null;
+                  }
+                  if (
+                    isInternalLink(link.url) &&
+                    (internalLinks.indexOf(link.url) < 0 || !isAuthenticated)
+                  ) {
+                    return (
+                      <Link
+                        className={`header-link header-desktop-link
                   header-link-${index + 1} ${
-                        pathname === link.url.replace("{orgSlug}", orgSlug)
-                          ? "active"
-                          : ""
-                      } button `}
-                      to={link.url.replace("{orgSlug}", orgSlug)}
-                      key={index}
+                          pathname === link.url.replace("{orgSlug}", orgSlug)
+                            ? "active"
+                            : ""
+                        } button `}
+                        to={link.url.replace("{orgSlug}", orgSlug)}
+                        key={index}
+                      >
+                        {getText(link.text, language)}
+                      </Link>
+                    );
+                  }
+                  return (
+                    <a
+                      href={link.url}
+                      className={`header-link header-desktop-link
+                    header-link-${index + 1} button`}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      key={link.url}
                     >
                       {getText(link.text, language)}
-                    </Link>
+                    </a>
                   );
-                }
-                return (
-                  <a
-                    href={link.url}
-                    className={`header-link header-desktop-link
-                    header-link-${index + 1} button`}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    key={link.url}
-                  >
-                    {getText(link.text, language)}
-                  </a>
-                );
-              })}
+                })}
             </div>
           </div>
         </div>
@@ -209,39 +210,40 @@ export default class Header extends React.Component {
               menu ? "display-flex" : "display-none"
             } header-mobile-menu`}
           >
-            {links.map((link, index) => {
-              if (shouldLinkBeShown(link, isAuthenticated, userData)) {
-                if (isInternalLink(link.url)) {
-                  return (
-                    <Link
-                      className={`header-link mobile-link
+            {links &&
+              links.map((link, index) => {
+                if (shouldLinkBeShown(link, isAuthenticated, userData)) {
+                  if (isInternalLink(link.url)) {
+                    return (
+                      <Link
+                        className={`header-link mobile-link
                     header-link-${index + 1} ${
-                        pathname === link.url.replace("{orgSlug}", orgSlug)
-                          ? "active"
-                          : ""
-                      } button`}
-                      to={link.url.replace("{orgSlug}", orgSlug)}
-                      key={index}
+                          pathname === link.url.replace("{orgSlug}", orgSlug)
+                            ? "active"
+                            : ""
+                        } button`}
+                        to={link.url.replace("{orgSlug}", orgSlug)}
+                        key={index}
+                      >
+                        {getText(link.text, language)}
+                      </Link>
+                    );
+                  }
+                  return (
+                    <a
+                      href={link.url}
+                      className={`header-link mobile-link
+                      header-link-${index + 1} button`}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      key={link.url}
                     >
                       {getText(link.text, language)}
-                    </Link>
+                    </a>
                   );
                 }
-                return (
-                  <a
-                    href={link.url}
-                    className={`header-link mobile-link
-                      header-link-${index + 1} button`}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    key={link.url}
-                  >
-                    {getText(link.text, language)}
-                  </a>
-                );
-              }
-              return null;
-            })}
+                return null;
+              })}
             <div className="mobile-languages-row">
               {languages.map((lang) => (
                 <button

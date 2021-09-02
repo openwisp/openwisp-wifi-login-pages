@@ -17,30 +17,31 @@ export default class Footer extends React.Component {
       <div className="footer-container">
         <div className="footer-row-1">
           <div className="footer-row-1-inner">
-            {links.map((link) => {
-              if (shouldLinkBeShown(link, isAuthenticated, userData)) {
-                const css = link.css || "";
-                return (
-                  <a
-                    href={link.url}
-                    className={`footer-link ${css}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    key={link.url}
-                  >
-                    {link.icon && (
-                      <img
-                        src={getAssetPath(orgSlug, link.icon)}
-                        alt={link.alt ? getText(link.alt, language) : ""}
-                        className="footer-image"
-                      />
-                    )}
-                    {link.text ? getText(link.text, language) : ""}
-                  </a>
-                );
-              }
-              return null;
-            })}
+            {links &&
+              links.map((link) => {
+                if (shouldLinkBeShown(link, isAuthenticated, userData)) {
+                  const css = link.css || "";
+                  return (
+                    <a
+                      href={link.url}
+                      className={`footer-link ${css}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      key={link.url}
+                    >
+                      {link.icon && (
+                        <img
+                          src={getAssetPath(orgSlug, link.icon)}
+                          alt={link.alt ? getText(link.alt, language) : ""}
+                          className="footer-image"
+                        />
+                      )}
+                      {link.text ? getText(link.text, language) : ""}
+                    </a>
+                  );
+                }
+                return null;
+              })}
           </div>
         </div>
         {after_html && (
