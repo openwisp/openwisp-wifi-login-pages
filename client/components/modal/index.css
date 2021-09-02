@@ -31,3 +31,8 @@
 .modal-container .message {
   line-height: 30px;
 }
+.load-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
