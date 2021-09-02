@@ -323,9 +323,6 @@ export default class OrganizationWrapper extends React.Component {
               <DoesNotExist />
             </Suspense>
           </div>
-          <Helmet>
-            <title>Page not found</title>
-          </Helmet>
         </>
       );
     }
