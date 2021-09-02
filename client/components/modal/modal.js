@@ -80,7 +80,9 @@ export default class Modal extends React.Component {
               &#10006;
             </Link>
             {loading ? (
-              "Loading..."
+              <div className="load-container">
+                <div className="loader" />
+              </div>
             ) : (
               <div
                 className="message"
