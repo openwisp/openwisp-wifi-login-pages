@@ -73,6 +73,7 @@ export default class MobilePhoneVerification extends React.Component {
 
   handleSubmit(event) {
     const {setLoading} = this.context;
+    setLoading(true);
     event.preventDefault();
     const {orgSlug, cookies, setUserData, userData, language} = this.props;
     const {code, errors} = this.state;
@@ -104,7 +105,6 @@ export default class MobilePhoneVerification extends React.Component {
           justAuthenticated: true,
           username: userData.phone_number,
         });
-        setLoading(false);
       })
       .catch((error) => {
         const {data} = error.response;

@@ -58,10 +58,12 @@ describe("<MobilePhoneVerification /> rendering with placeholder translation tag
   });
 });
 
+const setLoading = jest.fn();
+
 const createShallowComponent = function (props) {
   loadTranslation("en", "default");
   return shallow(<MobilePhoneVerification {...props} />, {
-    context: {...loadingContextValue},
+    context: {...loadingContextValue, setLoading},
   });
 };
 
@@ -88,6 +90,7 @@ describe("Mobile Phone Token verification: standard flow", () => {
     validateToken.mockClear();
     originalError = console.error;
     lastConsoleOutuput = null;
+    setLoading.mockReset();
     console.error = (data) => {
       lastConsoleOutuput = data;
     };
@@ -184,6 +187,11 @@ describe("Mobile Phone Token verification: standard flow", () => {
       MobilePhoneVerification.prototype.handleSubmit.mock.calls.length,
     ).toBe(1);
     expect(event.preventDefault).toHaveBeenCalled();
+    expect(setLoading.mock.calls.length).toBe(3);
+    // 1: loading overlay is shown during token validation
+    // 2: loading overlay is hidden during token validation
+    // 3: loading overlay is shown again during redirection to status
+    expect(setLoading.mock.calls).toEqual([[true], [false], [true]]);
   });
 
   it("should show errors", async () => {
