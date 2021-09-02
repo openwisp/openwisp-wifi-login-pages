@@ -1,7 +1,6 @@
 .w-900 {
   max-width: 900px;
 }
-
 .text-left {
   text-align: left;
 }
@@ -12,16 +11,13 @@
   text-decoration: none;
   color: inherit;
 }
-
 .modal-container .message h1 {
   text-align: center;
 }
-
 .message {
   max-height: 70vh;
   overflow: auto;
 }
-
 .modal-container .message h1 {
   font-size: 21px;
 }
@@ -30,9 +26,4 @@
 }
 .modal-container .message {
   line-height: 30px;
-}
-.load-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
 }

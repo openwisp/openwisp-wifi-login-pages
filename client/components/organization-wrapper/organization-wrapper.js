@@ -142,7 +142,7 @@ export default class OrganizationWrapper extends React.Component {
                       );
                     }
                     return (
-                      <Suspense fallback={<Loader full={false} />}>
+                      <Suspense fallback={<Loader />}>
                         <Registration {...props} />
                       </Suspense>
                     );
@@ -162,7 +162,7 @@ export default class OrganizationWrapper extends React.Component {
                       return <Redirect to={`/${orgSlug}/login`} />;
                     }
                     return (
-                      <Suspense fallback={<Loader full={false} />}>
+                      <Suspense fallback={<Loader />}>
                         <MobilePhoneVerification {...props} cookies={cookies} />
                       </Suspense>
                     );
@@ -174,7 +174,7 @@ export default class OrganizationWrapper extends React.Component {
                     if (isAuthenticated)
                       return <Redirect to={`/${orgSlug}/status`} />;
                     return (
-                      <Suspense fallback={<Loader full={false} />}>
+                      <Suspense fallback={<Loader />}>
                         <PasswordConfirm {...props} />
                       </Suspense>
                     );
@@ -187,7 +187,7 @@ export default class OrganizationWrapper extends React.Component {
                     if (isAuthenticated)
                       return <Redirect to={`/${orgSlug}/status`} />;
                     return (
-                      <Suspense fallback={<Loader full={false} />}>
+                      <Suspense fallback={<Loader />}>
                         <PasswordReset />
                       </Suspense>
                     );
@@ -199,7 +199,7 @@ export default class OrganizationWrapper extends React.Component {
                     if (isAuthenticated && is_active)
                       return <Redirect to={`/${orgSlug}/status`} />;
                     return (
-                      <Suspense fallback={<Loader full={false} />}>
+                      <Suspense fallback={<Loader />}>
                         <Login {...props} />
                       </Suspense>
                     );
@@ -216,7 +216,7 @@ export default class OrganizationWrapper extends React.Component {
                       );
                     if (isAuthenticated) {
                       return (
-                        <Suspense fallback={<Loader full={false} />}>
+                        <Suspense fallback={<Loader />}>
                           <Status {...props} cookies={cookies} />
                         </Suspense>
                       );
@@ -233,7 +233,7 @@ export default class OrganizationWrapper extends React.Component {
                       return <Redirect to={`/${orgSlug}/status`} />;
                     if (userAutoLogin)
                       return (
-                        <Suspense fallback={<Loader full={false} />}>
+                        <Suspense fallback={<Loader />}>
                           <Logout {...props} />
                         </Suspense>
                       );
@@ -245,7 +245,7 @@ export default class OrganizationWrapper extends React.Component {
                   render={() => {
                     if (isAuthenticated)
                       return (
-                        <Suspense fallback={<Loader full={false} />}>
+                        <Suspense fallback={<Loader />}>
                           <PasswordChange cookies={cookies} />
                         </Suspense>
                       );
@@ -257,7 +257,7 @@ export default class OrganizationWrapper extends React.Component {
                   render={() => {
                     if (isAuthenticated)
                       return (
-                        <Suspense fallback={<Loader full={false} />}>
+                        <Suspense fallback={<Loader />}>
                           <MobilePhoneChange cookies={cookies} />
                         </Suspense>
                       );
@@ -269,7 +269,7 @@ export default class OrganizationWrapper extends React.Component {
                   render={(props) => {
                     const {result} = props.match.params;
                     return (
-                      <Suspense fallback={<Loader full={false} />}>
+                      <Suspense fallback={<Loader />}>
                         <PaymentStatus cookies={cookies} result={result} />
                       </Suspense>
                     );
@@ -277,7 +277,7 @@ export default class OrganizationWrapper extends React.Component {
                 />
                 <Route
                   render={() => (
-                    <Suspense fallback={<Loader full={false} />}>
+                    <Suspense fallback={<Loader />}>
                       <ConnectedDoesNotExist />
                     </Suspense>
                   )}
@@ -306,11 +306,7 @@ export default class OrganizationWrapper extends React.Component {
                 />
               </Helmet>
             ) : null}
-            {loading && (
-              <div className="loader-container">
-                <div className="loader" />
-              </div>
-            )}
+            {loading && <Loader />}
           </LoadingContext.Provider>
         </>
       ) : null;
@@ -319,18 +315,14 @@ export default class OrganizationWrapper extends React.Component {
       return (
         <>
           <div className="org-wrapper-not-found">
-            <Suspense fallback={<Loader full={false} />}>
+            <Suspense fallback={<Loader />}>
               <DoesNotExist />
             </Suspense>
           </div>
         </>
       );
     }
-    return (
-      <div className="loader-container">
-        <div className="loader" />
-      </div>
-    );
+    return <Loader />;
   }
 }
 OrganizationWrapper.defaultProps = {

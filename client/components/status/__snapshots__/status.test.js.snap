@@ -97,10 +97,12 @@ exports[`<Status /> rendering should render correctly 1`] = `
     </div>
   </div>
   <div
-    className="loadingContainer"
+    className="flex-column"
+    id="sessions"
   >
-    <p
-      className="loading"
+    <loader
+      full={false}
+      small={true}
     />
   </div>
   <React.Fragment>
@@ -260,10 +262,12 @@ exports[`<Status /> rendering with placeholder translation tags should render tr
     </div>
   </div>
   <div
-    className="loadingContainer"
+    className="flex-column"
+    id="sessions"
   >
-    <p
-      className="loading"
+    <loader
+      full={false}
+      small={true}
     />
   </div>
   <React.Fragment>

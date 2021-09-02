@@ -58,28 +58,18 @@
   width: 75%;
   margin: 0 auto;
 }
-.loadingContainer {
-  padding-left: 50%;
-  position: relative;
-  top: -7px;
+#status.content {
+  flex-grow: 0;
 }
-.loading {
-  border: 8px solid #f3f3f3;
-  border-top: 8px solid #2b3a42;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  animation: spin 0.8s linear infinite;
+#sessions {
+  flex-grow: 1;
+  justify-content: center;
+  max-width: 1000px;
+  margin: 0 auto;
 }
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+#sessions > div {
+  width: 100%;
 }
-
 .logout-modal {
   position: fixed;
   left: 0;
@@ -91,13 +81,11 @@
   visibility: hidden;
   transition: opacity 0.3s 0s, visibility 0s 0.3s;
 }
-
 .logout-modal.is-visible {
   opacity: 1;
   visibility: visible;
   transition: opacity 0.3s 0s, visibility 0s 0s;
 }
-
 .logout-modal-container {
   position: absolute;
   top: 50%;
@@ -114,21 +102,17 @@
   transition-property: transform;
   transition-duration: 0.3s;
 }
-
 .logout-modal-container p {
   margin-top: 0;
 }
-
 .modal-container .modal-buttons {
   margin: 2.5em 0 0;
 }
-
 .modal-container .modal-buttons button {
   margin: 0 20px;
   padding-left: 25px;
   padding-right: 25px;
 }
-
 @media screen and (min-width: 0px) and (max-width: 500px) {
   .logout-modal-container p.message {
     margin: 0 6%;

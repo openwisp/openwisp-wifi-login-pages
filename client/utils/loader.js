@@ -1,12 +1,14 @@
 import React from "react";
 
-const loader = (props) => (
-  <div
-    className={
-      props.full === true ? "full-page-loader-container" : "loader-container"
-    }
-  >
-    <div className="loader" />
-  </div>
-);
+const loader = (props) => {
+  const {full = true, small = false} = props;
+  let css = "loader-container";
+  if (full) css = `${css} full`;
+  if (small) css += " small";
+  return (
+    <div className={css}>
+      <div className="loader" />
+    </div>
+  );
+};
 export default loader;

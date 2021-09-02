@@ -171,7 +171,8 @@ body .input,
   max-width: 1000px;
 }
 .main-column,
-.main-column > .inner {
+.main-column > .inner,
+.flex-column {
   display: flex;
   flex-direction: column;
   justify-content: start;

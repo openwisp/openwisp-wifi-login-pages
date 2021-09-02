@@ -14,29 +14,6 @@
 .middle {
   flex-grow: 1;
 }
-.loader-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-.full-page-loader-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  background: rgba(255, 255, 255, 1);
-}
 .org-wrapper-not-found {
   display: flex;
   flex-direction: column;

@@ -85,7 +85,7 @@ describe("<OrganizationWrapper /> rendering", () => {
     });
     expect(wrapper.find(".app-container")).toHaveLength(0);
     expect(wrapper.find(".org-wrapper-not-found")).toHaveLength(0);
-    expect(wrapper.find(".loader-container")).toHaveLength(1);
+    expect(wrapper.find(Loader)).toHaveLength(1);
   });
 
   it("should render correctly when organization doesn't exist", () => {
@@ -241,7 +241,7 @@ describe("<OrganizationWrapper /> interactions", () => {
     const cookies = new Cookies();
     expect(JSON.stringify(render())).toEqual(
       JSON.stringify(
-        <Suspense fallback={<Loader full={false} />}>
+        <Suspense fallback={<Loader />}>
           <Status cookies={cookies} />
         </Suspense>,
       ),
@@ -251,7 +251,7 @@ describe("<OrganizationWrapper /> interactions", () => {
     render = pathMap["/default/change-password"];
     expect(JSON.stringify(render())).toEqual(
       JSON.stringify(
-        <Suspense fallback={<Loader full={false} />}>
+        <Suspense fallback={<Loader />}>
           <PasswordChange cookies={cookies} />
         </Suspense>,
       ),
@@ -259,7 +259,7 @@ describe("<OrganizationWrapper /> interactions", () => {
     render = pathMap["/default/change-phone-number"];
     expect(JSON.stringify(render())).toEqual(
       JSON.stringify(
-        <Suspense fallback={<Loader full={false} />}>
+        <Suspense fallback={<Loader />}>
           <MobilePhoneChange cookies={cookies} />
         </Suspense>,
       ),
@@ -267,7 +267,7 @@ describe("<OrganizationWrapper /> interactions", () => {
     render = pathMap["/default/payment/:result"];
     expect(JSON.stringify(render(createTestProps()))).toEqual(
       JSON.stringify(
-        <Suspense fallback={<Loader full={false} />}>
+        <Suspense fallback={<Loader />}>
           <PaymentStatus cookies={cookies} />
         </Suspense>,
       ),
@@ -275,7 +275,7 @@ describe("<OrganizationWrapper /> interactions", () => {
     render = pathMap.notFound;
     expect(JSON.stringify(render())).toEqual(
       JSON.stringify(
-        <Suspense fallback={<Loader full={false} />}>
+        <Suspense fallback={<Loader />}>
           <ConnectedDoesNotExist />
         </Suspense>,
       ),
@@ -322,7 +322,7 @@ describe("Test Organization Wrapper for unauthenticated users", () => {
     render = pathMap["/default/registration"];
     expect(JSON.stringify(render())).toEqual(
       JSON.stringify(
-        <Suspense fallback={<Loader full={false} />}>
+        <Suspense fallback={<Loader />}>
           <Registration />
         </Suspense>,
       ),
@@ -332,7 +332,7 @@ describe("Test Organization Wrapper for unauthenticated users", () => {
     render = pathMap["/default/password/reset/confirm/:uid/:token"];
     expect(JSON.stringify(render())).toEqual(
       JSON.stringify(
-        <Suspense fallback={<Loader full={false} />}>
+        <Suspense fallback={<Loader />}>
           <PasswordConfirm />
         </Suspense>,
       ),
@@ -340,7 +340,7 @@ describe("Test Organization Wrapper for unauthenticated users", () => {
     render = pathMap["/default/password/reset"];
     expect(JSON.stringify(render())).toEqual(
       JSON.stringify(
-        <Suspense fallback={<Loader full={false} />}>
+        <Suspense fallback={<Loader />}>
           <PasswordReset />
         </Suspense>,
       ),
@@ -348,7 +348,7 @@ describe("Test Organization Wrapper for unauthenticated users", () => {
     render = pathMap["/default/login"];
     expect(JSON.stringify(render())).toEqual(
       JSON.stringify(
-        <Suspense fallback={<Loader full={false} />}>
+        <Suspense fallback={<Loader />}>
           <Login />
         </Suspense>,
       ),
@@ -359,7 +359,7 @@ describe("Test Organization Wrapper for unauthenticated users", () => {
     render = pathMap["/default/logout"];
     expect(JSON.stringify(render())).toEqual(
       JSON.stringify(
-        <Suspense fallback={<Loader full={false} />}>
+        <Suspense fallback={<Loader />}>
           <Logout />
         </Suspense>,
       ),
@@ -371,7 +371,7 @@ describe("Test Organization Wrapper for unauthenticated users", () => {
     render = pathMap["/default/payment/:result"];
     expect(JSON.stringify(render(createTestProps()))).toEqual(
       JSON.stringify(
-        <Suspense fallback={<Loader full={false} />}>
+        <Suspense fallback={<Loader />}>
           <PaymentStatus cookies={cookies} />
         </Suspense>,
       ),
@@ -379,7 +379,7 @@ describe("Test Organization Wrapper for unauthenticated users", () => {
     render = pathMap.notFound;
     expect(JSON.stringify(render())).toEqual(
       JSON.stringify(
-        <Suspense fallback={<Loader full={false} />}>
+        <Suspense fallback={<Loader />}>
           <ConnectedDoesNotExist />
         </Suspense>,
       ),
@@ -429,7 +429,7 @@ describe("Test Organization Wrapper for authenticated and unverified users", () 
     const cookies = new Cookies();
     expect(JSON.stringify(render())).toEqual(
       JSON.stringify(
-        <Suspense fallback={<Loader full={false} />}>
+        <Suspense fallback={<Loader />}>
           <MobilePhoneVerification cookies={cookies} />
         </Suspense>,
       ),
@@ -449,7 +449,7 @@ describe("Test Organization Wrapper for authenticated and unverified users", () 
     render = pathMap["/default/change-password"];
     expect(JSON.stringify(render())).toEqual(
       JSON.stringify(
-        <Suspense fallback={<Loader full={false} />}>
+        <Suspense fallback={<Loader />}>
           <PasswordChange cookies={cookies} />
         </Suspense>,
       ),
@@ -457,7 +457,7 @@ describe("Test Organization Wrapper for authenticated and unverified users", () 
     render = pathMap["/default/change-phone-number"];
     expect(JSON.stringify(render())).toEqual(
       JSON.stringify(
-        <Suspense fallback={<Loader full={false} />}>
+        <Suspense fallback={<Loader />}>
           <MobilePhoneChange cookies={cookies} />
         </Suspense>,
       ),
@@ -465,7 +465,7 @@ describe("Test Organization Wrapper for authenticated and unverified users", () 
     render = pathMap["/default/payment/:result"];
     expect(JSON.stringify(render(createTestProps()))).toEqual(
       JSON.stringify(
-        <Suspense fallback={<Loader full={false} />}>
+        <Suspense fallback={<Loader />}>
           <PaymentStatus cookies={cookies} />
         </Suspense>,
       ),
@@ -473,7 +473,7 @@ describe("Test Organization Wrapper for authenticated and unverified users", () 
     render = pathMap.notFound;
     expect(JSON.stringify(render())).toEqual(
       JSON.stringify(
-        <Suspense fallback={<Loader full={false} />}>
+        <Suspense fallback={<Loader />}>
           <ConnectedDoesNotExist />
         </Suspense>,
       ),

@@ -9,11 +9,21 @@
     <title>WiFi Login Page</title>
   </head>
   <style>
+    /*
+      The loading indicator needs to be loaded
+      right away, please do not remove this code
+    */
     html,
     body {
       overflow: hidden;
     }
-    #preload, .loader-container {
+    .loader-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+    }
+    .loader-container.full {
       width: 100%;
       height: 100%;
       position: fixed;
@@ -21,9 +31,6 @@
       left: 0;
       background: rgba(255, 255, 255, 1);
       z-index: 9998;
-      display: flex;
-      justify-content: center;
-      align-items: center;
     }
     .loader {
       border: 8px solid #f3f3f3;
@@ -33,7 +40,10 @@
       height: 50px;
       animation: spin 0.8s linear infinite;
     }
-    /* Loading Animation */
+    .small .loader {
+      width: 30px;
+      height: 30px;
+    }
     @keyframes spin {
       0% {
         transform: rotate(0deg);
@@ -44,7 +54,7 @@
     }
   </style>
   <body>
-    <div id="preload">
+    <div id="preload" class="loader-container full">
       <div class="loader"></div>
     </div>
     <div id="root"></div>

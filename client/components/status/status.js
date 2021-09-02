@@ -21,6 +21,7 @@ import shouldLinkBeShown from "../../utils/should-link-be-shown";
 import handleSession from "../../utils/session";
 import validateToken from "../../utils/validate-token";
 import needsVerify from "../../utils/needs-verify";
+import Loader from "../../utils/loader";
 import {initialState} from "../../reducers/organization";
 import {Logout} from "../organization-wrapper/lazy-import";
 
@@ -618,11 +619,7 @@ export default class Status extends React.Component {
     return this.getSmallTable(session_info);
   };
 
-  getSpinner = () => (
-    <div className="loadingContainer">
-      <p className="loading" />
-    </div>
-  );
+  getSpinner = () => <Loader full={false} small />;
 
   getSessionInfo = () => ({
     header: {
@@ -761,17 +758,21 @@ export default class Status extends React.Component {
             <Contact />
           </div>
         </div>
-        {((activeSessions.length > 0 || pastSessions.length > 0) && (
-          <InfinteScroll
-            dataLength={pastSessions.length}
-            next={this.fetchMoreSessions}
-            hasMore={hasMoreSessions}
-            loader={this.getSpinner()}
-          >
-            <>{this.getTable(this.getSessionInfo())}</>
-          </InfinteScroll>
-        )) ||
-          (loadSpinner ? this.getSpinner() : null)}
+
+        <div id="sessions" className="flex-column">
+          {((activeSessions.length > 0 || pastSessions.length > 0) && (
+            <InfinteScroll
+              dataLength={pastSessions.length}
+              next={this.fetchMoreSessions}
+              hasMore={hasMoreSessions}
+              loader={this.getSpinner()}
+              style={{overflow: false}}
+            >
+              <>{this.getTable(this.getSessionInfo())}</>
+            </InfinteScroll>
+          )) ||
+            (loadSpinner ? this.getSpinner() : null)}
+        </div>
 
         {/* check to ensure this block of code is executed in root document and not in Iframe */}
         {captivePortalLoginForm && window.top === window.self && (

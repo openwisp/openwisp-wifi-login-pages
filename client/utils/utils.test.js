@@ -555,17 +555,27 @@ describe("needs-verify tests", () => {
   });
 });
 describe("loader tests", () => {
-  it("should show loader with class full-page-loader-container", () => {
-    const wrapper = shallow(loader({full: true}));
+  it("should default to .loader-container.full", () => {
+    const wrapper = shallow(loader({}));
     expect(
       wrapper.contains(
-        <div className="full-page-loader-container">
+        <div className="loader-container full">
           <div className="loader" />
         </div>,
       ),
     ).toBe(true);
   });
-  it("should show loader with class loader-container", () => {
+  it("should show .loader-container.full", () => {
+    const wrapper = shallow(loader({full: true}));
+    expect(
+      wrapper.contains(
+        <div className="loader-container full">
+          <div className="loader" />
+        </div>,
+      ),
+    ).toBe(true);
+  });
+  it("should show .loader-container", () => {
     const wrapper = shallow(loader({full: false}));
     expect(
       wrapper.contains(
