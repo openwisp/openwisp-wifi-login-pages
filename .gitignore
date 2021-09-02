@@ -41,6 +41,7 @@ client/assets/*
 server/assets/*
 !client/assets/eye.svg
 !client/assets/eye-slash.svg
+!client/assets/warning.svg
 !client/assets/fonts/
 client/translations/
 i18n/*

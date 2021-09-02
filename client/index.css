@@ -93,11 +93,13 @@ div.error {
   box-sizing: border-box;
 }
 .error .icon {
+  content: url(assets/warning.svg);
   display: inline-block;
   min-width: 16px;
   text-align: center;
-  margin-right: 4px;
+  margin-right: 5px;
   font-weight: 600;
+  width: 25px;
 }
 .error.non-field {
   box-sizing: border-box;
