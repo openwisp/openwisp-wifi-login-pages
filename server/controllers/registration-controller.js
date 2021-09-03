@@ -1,5 +1,4 @@
 import axios from "axios";
-import cookie from "cookie-signature";
 import merge from "deepmerge";
 
 import config from "../config.json";
@@ -7,6 +6,7 @@ import defaultConfig from "../utils/default-config";
 import Logger from "../utils/logger";
 import reverse from "../utils/openwisp-urls";
 import getSlug from "../utils/get-slug";
+import sendCookies from "../utils/send-cookies";
 
 const registration = (req, res) => {
   const reqOrg = req.params.organization;
@@ -18,6 +18,7 @@ const registration = (req, res) => {
       const registerUrl = reverse("registration", getSlug(conf));
       const timeout = conf.timeout * 1000;
       const postData = req.body;
+      const {username} = postData;
 
       if (settings && settings.mobile_phone_verification) {
         postData.phone_number = req.body.phone_number;
@@ -55,27 +56,7 @@ const registration = (req, res) => {
         timeout,
         data: postData,
       })
-        .then((response) => {
-          const authTokenCookie = cookie.sign(
-            response.data.key,
-            conf.secret_key,
-          );
-          const usernameCookie = cookie.sign(
-            postData.username,
-            conf.secret_key,
-          );
-          // forward response
-          res
-            .status(response.status)
-            .type("application/json")
-            .cookie(`${conf.slug}_auth_token`, authTokenCookie, {
-              maxAge: 1000 * 60 * 60 * 24,
-            })
-            .cookie(`${conf.slug}_username`, usernameCookie, {
-              maxAge: 1000 * 60 * 60 * 24,
-            })
-            .send(response.data);
-        })
+        .then((response) => sendCookies(username, response, conf, res))
         .catch((error) => {
           Logger.error(error);
           // forward error

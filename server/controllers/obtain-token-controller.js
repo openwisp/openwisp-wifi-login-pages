@@ -1,5 +1,4 @@
 import axios from "axios";
-import cookie from "cookie-signature";
 import merge from "deepmerge";
 import qs from "qs";
 
@@ -8,23 +7,7 @@ import defaultConfig from "../utils/default-config";
 import Logger from "../utils/logger";
 import reverse from "../utils/openwisp-urls";
 import getSlug from "../utils/get-slug";
-
-const sendCookies = (username, response, conf, res) => {
-  // save token in signed cookie
-  const authTokenCookie = cookie.sign(response.data.key, conf.secret_key);
-  const usernameCookie = cookie.sign(username, conf.secret_key);
-  // forward response
-  return res
-    .status(response.status)
-    .type("application/json")
-    .cookie(`${conf.slug}_auth_token`, authTokenCookie, {
-      maxAge: 1000 * 60 * 60 * 24,
-    })
-    .cookie(`${conf.slug}_username`, usernameCookie, {
-      maxAge: 1000 * 60 * 60 * 24,
-    })
-    .send(response.data);
-};
+import sendCookies from "../utils/send-cookies";
 
 const obtainToken = (req, res) => {
   const reqOrg = req.params.organization;
