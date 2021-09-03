@@ -78,9 +78,8 @@ body {
 }
 div.error {
   margin: 0 0 3px;
-  padding: 8px 12px 8px 12px;
-  line-height: 23px;
-  font-size: 14px;
+  padding: 10px 12px 10px 12px;
+  line-height: 20px;
   border-radius: 5px;
   display: flex;
   flex-direction: row;
@@ -91,15 +90,19 @@ div.error {
   color: #fff;
   background: #d93025;
   box-sizing: border-box;
+  letter-spacing: -0.2px;
+  word-spacing: -0.3px;
 }
 .error .icon {
   content: url(assets/warning.svg);
   display: inline-block;
   min-width: 16px;
   text-align: center;
-  margin-right: 7px;
   font-weight: 600;
   width: 20px;
+  margin: 0 6px 0 1px;
+  top: -1px;
+  position: relative;
 }
 .error.non-field {
   box-sizing: border-box;
