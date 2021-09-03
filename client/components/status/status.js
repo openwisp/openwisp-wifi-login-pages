@@ -75,6 +75,21 @@ export default class Status extends React.Component {
         const macaddr = searchParams.get(
           captivePortalLoginForm.macaddr_param_name,
         );
+
+        window.addEventListener("message", (event) => {
+          // For security reasons, read https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage#security_concern
+          if (
+            event.origin === new URL(captivePortalLoginForm.action).origin ||
+            event.origin === window.location.origin
+          ) {
+            toast.error(event.data, {
+              onOpen: () => toast.dismiss(event.data),
+            });
+            logout(cookies, orgSlug);
+            setLoading(false);
+          }
+        });
+
         if (macaddr) {
           cookies.set(`${orgSlug}_macaddr`, macaddr, {path: "/"});
         } else {
@@ -330,7 +345,7 @@ export default class Status extends React.Component {
       //
     }
 
-    this.finalOperations();
+    setTimeout(this.finalOperations2000);
   };
 
   /*
