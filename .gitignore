@@ -50,4 +50,4 @@ server/config.json
 compilation-stats.json
 
 #logs
-logs/
+log/
