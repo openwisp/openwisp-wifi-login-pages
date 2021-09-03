@@ -24,8 +24,8 @@ client:
   # path of favicon
   favicon: "favicon.png"
 
-  # path of the custom css file relative to organization's folder in
-  # assets directory.
+  # path of the custom css file or files relative to organization's 
+  # folder in assets directory.
   css_path: "index.css"
   languages:
     - text: "english"

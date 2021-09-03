@@ -303,7 +303,17 @@ export default class OrganizationWrapper extends React.Component {
           ) : null}
           {cssPath && orgSlug ? (
             <Helmet>
-              <link rel="stylesheet" href={getAssetPath(orgSlug, cssPath)} />
+              {Array.isArray(cssPath) ? (
+                cssPath.map((path) => (
+                  <link
+                    rel="stylesheet"
+                    href={getAssetPath(orgSlug, path)}
+                    key={path}
+                  />
+                ))
+              ) : (
+                <link rel="stylesheet" href={getAssetPath(orgSlug, cssPath)} />
+              )}
             </Helmet>
           ) : null}
           {favicon && orgSlug ? (
@@ -349,7 +359,7 @@ OrganizationWrapper.propTypes = {
     configuration: PropTypes.shape({
       title: PropTypes.string,
       pageTitle: PropTypes.string,
-      css_path: PropTypes.string,
+      css_path: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
       slug: PropTypes.string,
       name: PropTypes.string,
       favicon: PropTypes.string,
