@@ -10,9 +10,11 @@ import tick from "../../utils/tick";
 import getConfig from "../../utils/get-config";
 import Registration from "./registration";
 import mountComponent from "./test-utils";
+import redirectToPayment from "../../utils/redirect-to-payment";
 
 jest.mock("../../utils/get-config");
 jest.mock("axios");
+jest.mock("../../utils/redirect-to-payment");
 
 const createTestProps = function (props, configName = "default") {
   const config = getConfig(configName);
@@ -213,7 +215,7 @@ describe("test subscriptions", () => {
     expect(wrapper.find("input[name='phone_number']").length).toBe(0);
   });
 
-  it("authenticate normally after registration with payment flow", async () => {
+  it("redirect to payment after registration with payment flow", async () => {
     const data = {payment_url: "https://account.openwisp.io/payment/123"};
     axios
       .mockImplementationOnce(() =>
@@ -240,8 +242,8 @@ describe("test subscriptions", () => {
     const mockVerify = registration.props.verifyMobileNumber;
     expect(mockVerify.mock.calls.length).toBe(0);
     const authenticateMock = registration.props.authenticate.mock;
-    expect(authenticateMock.calls.length).toBe(1);
-    expect(authenticateMock.calls.pop()).toEqual([true]);
+    expect(authenticateMock.calls.length).toBe(0);
+    expect(redirectToPayment).toHaveBeenCalledWith("default");
   });
 
   it("should show error if fetching plans fail", async () => {

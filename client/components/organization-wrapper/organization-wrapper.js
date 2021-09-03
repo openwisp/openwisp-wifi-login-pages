@@ -280,12 +280,12 @@ export default class OrganizationWrapper extends React.Component {
                     }}
                   />
                   <Route
-                    path={`${match.path}/payment/:result`}
+                    path={`${match.path}/payment/:status`}
                     render={(props) => {
-                      const {result} = props.match.params;
+                      const {status} = props.match.params;
                       return (
                         <Suspense fallback={<Loader />}>
-                          <PaymentStatus cookies={cookies} result={result} />
+                          <PaymentStatus cookies={cookies} status={status} />
                         </Suspense>
                       );
                     }}

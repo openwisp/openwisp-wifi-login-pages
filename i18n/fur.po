@@ -286,8 +286,8 @@ msgstr "Registrazione"
 
 #: client/components/payment-status/payment-status.js:75
 #. failed payment case
-msgid "PAY_H"
-msgstr "Pagamento"
+msgid "PAY_FAIL"
+msgstr "Pagamento fallito"
 
 #: client/components/payment-status/payment-status.js:77
 #. failed payment case
@@ -557,3 +557,28 @@ msgid "CP_LOGIN"
 msgstr ""
 "Stiamo inizializzando la sua sessione sul servizio WiFi, potrebbero essere "
 "necessari alcuni secondi, attendere prego..."
+
+#: client/components/payment-status/payment-status.js:94
+msgid "PAY_REQ"
+msgstr "Pagamento richiesto per procedere"
+
+#: client/components/payment-status/payment-status.js:106
+msgid "PAY_PROC_BTN"
+msgstr "Procedi con il pagamento"
+
+#: client/components/payment-status/payment-status.js:97
+#, javascript-format
+msgid "PAY_WARN${ timeout }${ maxAttempts }"
+msgstr ""
+"<p>Cliccando sul pulsante sottostante raggiungerai il "
+"servizio di pagamento dove potrai inserire i dati della tua carta di credito/debito "
+"in totale sicurezza. Dopodichè raggiungerai "
+"il sito web della tua banca per confermare la transazione."
+"</p><p>Avrai a disposizione ${ timeout } minuti per completare il processo.<br />"
+"<strong>Per questo motivo ti consigliamo di preparare la tua carta debito/credito "
+"prima di avviare il processo di pagamento.</strong></p>"
+"<p>Se per qualsiasi motivo il processo non viene completato entro il "
+"tempo disponibile, la connessione internet che ti permette di "
+"raggiungere il sito web della tua banca verrà chiusa, se ciò accade "
+"puoi accedere nuovamente con le credenziali appena registrate e "
+"ripetere il processo fino ad un massimo di ${ maxAttempts } volte.</p>"

@@ -3,7 +3,6 @@
 exports[`<PaymentStatus /> rendering with placeholder translation tags should render translation placeholder correctly 1`] = `
 <div
   className="container content"
-  id="not-foud-404"
 >
   <div
     className="inner"
@@ -17,9 +16,7 @@ exports[`<PaymentStatus /> rendering with placeholder translation tags should re
         <h2
           className="row payment-status-row-1"
         >
-          PAY_H
-          : 
-          failed
+          PAY_FAIL
         </h2>
         <div
           className="row payment-status-row-2"
@@ -60,7 +57,6 @@ exports[`<PaymentStatus /> rendering with placeholder translation tags should re
 exports[`Test <PaymentStatus /> cases should render failed state 1`] = `
 <div
   className="container content"
-  id="not-foud-404"
 >
   <div
     className="inner"
@@ -74,9 +70,7 @@ exports[`Test <PaymentStatus /> cases should render failed state 1`] = `
         <h2
           className="row payment-status-row-1"
         >
-          Payment
-          : 
-          failed
+          PAY_FAIL
         </h2>
         <div
           className="row payment-status-row-2"

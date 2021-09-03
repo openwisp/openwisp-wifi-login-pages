@@ -26,6 +26,7 @@ const createTestProps = (props) => ({
   cookies: new Cookies(),
   settings: {subscriptions: true},
   logout: jest.fn(),
+  authenticate: jest.fn(),
   ...props,
 });
 const responseData = {
@@ -45,7 +46,7 @@ const responseData = {
 };
 
 describe("<PaymentStatus /> rendering with placeholder translation tags", () => {
-  const props = createTestProps({userData: responseData, result: "failed"});
+  const props = createTestProps({userData: responseData, status: "failed"});
   it("should render translation placeholder correctly", () => {
     const renderer = new ShallowRenderer();
     const wrapper = renderer.render(<PaymentStatus {...props} />);
@@ -77,7 +78,7 @@ describe("Test <PaymentStatus /> cases", () => {
   });
 
   it("should render failed state", async () => {
-    props = createTestProps({userData: responseData, result: "failed"});
+    props = createTestProps({userData: responseData, status: "failed"});
     validateToken.mockReturnValue(true);
     wrapper = shallow(<PaymentStatus {...props} />, {
       context: loadingContextValue,
@@ -98,7 +99,7 @@ describe("Test <PaymentStatus /> cases", () => {
 
   it("should call logout correctly when clicking on logout button", async () => {
     const spyToast = jest.spyOn(toast, "success");
-    props = createTestProps({userData: responseData, result: "failed"});
+    props = createTestProps({userData: responseData, status: "failed"});
     validateToken.mockReturnValue(true);
     wrapper = shallow(<PaymentStatus {...props} />, {
       context: loadingContextValue,
@@ -118,7 +119,7 @@ describe("Test <PaymentStatus /> cases", () => {
     const spyToast = jest.spyOn(toast, "success");
     props = createTestProps({
       userData: {...responseData, is_verified: true},
-      result: "failed",
+      status: "failed",
     });
     validateToken.mockReturnValue(true);
     wrapper = shallow(<PaymentStatus {...props} />, {
@@ -134,7 +135,7 @@ describe("Test <PaymentStatus /> cases", () => {
     const spyToast = jest.spyOn(toast, "success");
     props = createTestProps({
       userData: {...responseData, is_verified: true},
-      result: "success",
+      status: "success",
     });
     validateToken.mockReturnValue(true);
     wrapper = shallow(<PaymentStatus {...props} />, {
@@ -157,7 +158,7 @@ describe("Test <PaymentStatus /> cases", () => {
     const spyToast = jest.spyOn(toast, "success");
     props = createTestProps({
       userData: {...responseData, is_verified: false},
-      result: "success",
+      status: "success",
     });
     validateToken.mockReturnValue(true);
     wrapper = shallow(<PaymentStatus {...props} />, {
@@ -172,7 +173,7 @@ describe("Test <PaymentStatus /> cases", () => {
   it("should redirect to status if success but not using bank_card method", async () => {
     const spyToast = jest.spyOn(toast, "success");
     props = createTestProps({
-      result: "success",
+      status: "success",
       settings: {
         subscriptions: true,
         mobile_phone_verification: true,
@@ -192,7 +193,7 @@ describe("Test <PaymentStatus /> cases", () => {
   it("should redirect to status if failed but not using bank_card method", async () => {
     const spyToast = jest.spyOn(toast, "success");
     props = createTestProps({
-      result: "failed",
+      status: "failed",
       settings: {
         subscriptions: true,
         mobile_phone_verification: true,
@@ -212,7 +213,7 @@ describe("Test <PaymentStatus /> cases", () => {
   it("should redirect to login if not authenticated", async () => {
     const spyToast = jest.spyOn(toast, "success");
     props = createTestProps({
-      result: "failed",
+      status: "failed",
       settings: {
         subscriptions: true,
         mobile_phone_verification: true,
@@ -232,7 +233,7 @@ describe("Test <PaymentStatus /> cases", () => {
   it("should redirect to status if result is not one of the expected values", async () => {
     const spyToast = jest.spyOn(toast, "success");
     props = createTestProps({
-      result: "unexpected",
+      status: "unexpected",
       settings: {
         subscriptions: true,
         mobile_phone_verification: true,
@@ -246,5 +247,54 @@ describe("Test <PaymentStatus /> cases", () => {
     expect(wrapper.find("Redirect").length).toEqual(1);
     expect(wrapper.find("Redirect").props().to).toEqual("/default/status");
     expect(spyToast.mock.calls.length).toBe(0);
+  });
+
+  it("should redirect to status page if draft and not bank_card", async () => {
+    const spyToast = jest.spyOn(toast, "success");
+    props = createTestProps({
+      userData: {...responseData, is_verified: false, method: "mobile_phone"},
+      status: "draft",
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    expect(wrapper.find("Redirect").length).toEqual(1);
+    expect(wrapper.find("Redirect").props().to).toEqual("/default/status");
+    expect(spyToast.mock.calls.length).toBe(0);
+  });
+
+  it("should redirect to status page if draft and verified", async () => {
+    const spyToast = jest.spyOn(toast, "success");
+    props = createTestProps({
+      userData: {...responseData, is_verified: true},
+      status: "draft",
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    expect(wrapper.find("Redirect").length).toEqual(1);
+    expect(wrapper.find("Redirect").props().to).toEqual("/default/status");
+    expect(spyToast.mock.calls.length).toBe(0);
+  });
+
+  it("should redirect to status page if token is not valid", async () => {
+    const spyToast = jest.spyOn(toast, "success");
+    props = createTestProps({
+      userData: {...responseData, is_verified: true},
+      status: "draft",
+    });
+    validateToken.mockReturnValue(false);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    expect(wrapper.find("Redirect").length).toEqual(1);
+    expect(wrapper.find("Redirect").props().to).toEqual("/default/status");
+    expect(spyToast.mock.calls.length).toBe(0);
+    expect(wrapper.instance().props.setUserData).not.toHaveBeenCalled();
   });
 });

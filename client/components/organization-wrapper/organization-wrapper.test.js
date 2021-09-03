@@ -289,7 +289,7 @@ describe("<OrganizationWrapper /> interactions", () => {
         </Suspense>,
       ),
     );
-    render = pathMap["/default/payment/:result"];
+    render = pathMap["/default/payment/:status"];
     expect(JSON.stringify(render(createTestProps()))).toEqual(
       JSON.stringify(
         <Suspense fallback={<Loader />}>
@@ -393,7 +393,7 @@ describe("Test Organization Wrapper for unauthenticated users", () => {
     expect(render()).toEqual(<Redirect to="/default/login" />);
     render = pathMap["/default/change-phone-number"];
     expect(render()).toEqual(<Redirect to="/default/login" />);
-    render = pathMap["/default/payment/:result"];
+    render = pathMap["/default/payment/:status"];
     expect(JSON.stringify(render(createTestProps()))).toEqual(
       JSON.stringify(
         <Suspense fallback={<Loader />}>
@@ -487,7 +487,7 @@ describe("Test Organization Wrapper for authenticated and unverified users", () 
         </Suspense>,
       ),
     );
-    render = pathMap["/default/payment/:result"];
+    render = pathMap["/default/payment/:status"];
     expect(JSON.stringify(render(createTestProps()))).toEqual(
       JSON.stringify(
         <Suspense fallback={<Loader />}>

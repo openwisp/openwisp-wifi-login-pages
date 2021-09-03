@@ -16,11 +16,13 @@ import tick from "../../utils/tick";
 import Modal from "../modal";
 import getParameterByName from "../../utils/get-parameter-by-name";
 import {mapStateToProps, mapDispatchToProps} from "./index";
+import redirectToPayment from "../../utils/redirect-to-payment";
 
 jest.mock("axios");
 jest.mock("../../utils/get-config");
 jest.mock("../../utils/get-parameter-by-name");
 jest.mock("../../utils/load-translation");
+jest.mock("../../utils/redirect-to-payment");
 
 const defaultConfig = getConfig("default", true);
 const loginForm = defaultConfig.components.login_form;
@@ -400,7 +402,7 @@ describe("<Login /> interactions", () => {
 
     const data = {...userData};
     data.username = "tester";
-    data.is_verified = false;
+    data.is_verified = true;
     data.method = "bank_card";
     data.payment_url = "https://account.openwisp.io/payment/123";
     axios.mockImplementationOnce(() =>
@@ -432,6 +434,41 @@ describe("<Login /> interactions", () => {
     const authenticateMock = login.props().authenticate.mock;
     expect(authenticateMock.calls.length).toBe(1);
     expect(authenticateMock.calls.pop()).toEqual([true]);
+  });
+  it("should redirect to payment status if bank_card and not verified", async () => {
+    props.settings = {subscriptions: true};
+    wrapper = mountComponent(props);
+    const login = wrapper.find(Login);
+    const handleSubmit = jest.spyOn(login.instance(), "handleSubmit");
+
+    const data = {...userData};
+    data.username = "tester";
+    data.is_verified = false;
+    data.method = "bank_card";
+    data.payment_url = "https://account.openwisp.io/payment/123";
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        data,
+      }),
+    );
+
+    wrapper.find("#username").simulate("change", {
+      target: {value: "tester", name: "username"},
+    });
+    expect(login.state("username")).toEqual("tester");
+    wrapper
+      .find("#password")
+      .simulate("change", {target: {value: "test password", name: "password"}});
+    expect(login.state("password")).toEqual("test password");
+
+    const event = {preventDefault: () => {}};
+    wrapper.find("form").simulate("submit", event);
+    await tick();
+    expect(handleSubmit).toHaveBeenCalled();
+    const authenticateMock = login.props().authenticate.mock;
+    expect(authenticateMock.calls.length).toBe(0);
+    expect(redirectToPayment).toHaveBeenCalledWith("default");
   });
   it("phone_number field should be present if mobile phone verification is on", async () => {
     props.settings = {mobile_phone_verification: true};

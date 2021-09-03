@@ -27,6 +27,7 @@ import Modal from "../modal";
 import {Status} from "../organization-wrapper/lazy-import";
 import getError from "../../utils/get-error";
 import getLanguageHeaders from "../../utils/get-language-headers";
+import redirectToPayment from "../../utils/redirect-to-payment";
 
 const PhoneInput = React.lazy(() => import("react-phone-input-2"));
 
@@ -270,6 +271,11 @@ export default class Login extends React.Component {
       toastId: mainToastId,
     });
     setUserData({...data, justAuthenticated: true});
+    // if requires payment redirect to payment status component
+    if (data.method === "bank_card" && data.is_verified === false) {
+      redirectToPayment(orgSlug);
+      return;
+    }
     authenticate(true);
   };
 
