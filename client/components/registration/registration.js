@@ -479,7 +479,7 @@ export default class Registration extends React.Component {
                           <label htmlFor="username">
                             {t`USERNAME_REG_LBL`}
                           </label>
-                          {getError(errors, "email")}
+                          {getError(errors, "username")}
                           <input
                             className={`input ${
                               errors.username ? "error" : ""
