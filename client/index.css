@@ -78,7 +78,7 @@ body {
 }
 div.error {
   margin: 0 0 3px;
-  padding: 8px;
+  padding: 8px 12px 8px 12px;
   line-height: 23px;
   font-size: 14px;
   border-radius: 5px;
@@ -93,11 +93,13 @@ div.error {
   box-sizing: border-box;
 }
 .error .icon {
+  content: url(assets/warning.svg);
   display: inline-block;
   min-width: 16px;
   text-align: center;
-  margin-right: 4px;
+  margin-right: 7px;
   font-weight: 600;
+  width: 20px;
 }
 .error.non-field {
   box-sizing: border-box;
