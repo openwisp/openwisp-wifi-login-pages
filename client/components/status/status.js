@@ -239,10 +239,16 @@ export default class Status extends React.Component {
         "link" in headers && headers.link.includes("next");
       this.setState(options);
     } catch (error) {
-      logout(cookies, orgSlug);
-      toast.error(t`ERR_OCCUR`, {
-        onOpen: () => toast.dismiss(mainToastId),
-      });
+      // logout only if unauthorized or forbidden
+      if (
+        error.response &&
+        (error.response.status === 401 || error.response.status === 403)
+      ) {
+        logout(cookies, orgSlug);
+        toast.error(t`ERR_OCCUR`, {
+          onOpen: () => toast.dismiss(mainToastId),
+        });
+      }
       logError(error, t`ERR_OCCUR`);
     }
   }
