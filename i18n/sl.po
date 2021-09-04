@@ -215,7 +215,7 @@ msgstr "samo številke in črke"
 #: client/components/registration/registration.js:758
 msgid "REGISTER_ADD_INFO_TXT"
 msgstr ""
-"S prijavo sprejemate {terms_and_conditions} in{privacy_policy} te storitve "
+"S prijavo sprejemate {terms_and_conditions} in {privacy_policy} te storitve "
 "WiFi."
 
 #: client/components/login/login.js:405
