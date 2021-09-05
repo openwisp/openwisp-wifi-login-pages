@@ -104,12 +104,21 @@ export default class OrganizationWrapper extends React.Component {
   render() {
     const {organization, match, cookies} = this.props;
     const {loading, translationLoaded, configLoaded} = this.state;
-    const {title, favicon, isAuthenticated, userData, settings, pageTitle} =
-      organization.configuration;
+    const {
+      title,
+      favicon,
+      isAuthenticated,
+      userData,
+      settings,
+      pageTitle,
+      slug: orgSlug,
+      name: orgName,
+      css_path: cssPath,
+    } = organization.configuration;
     const {is_active} = userData;
-    const orgSlug = organization.configuration.slug;
-    const orgName = organization.configuration.name;
-    const cssPath = organization.configuration.css_path;
+    let {css} = organization.configuration;
+    if (!css) css = [];
+    if (cssPath) css.push(cssPath);
     const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
     const needsVerifyPhone = needsVerify("mobile_phone", userData, settings);
     if (organization.exists === true) {
@@ -301,19 +310,15 @@ export default class OrganizationWrapper extends React.Component {
               {loading && <Loader />}
             </LoadingContext.Provider>
           ) : null}
-          {cssPath && orgSlug ? (
+          {css && css.length !== 0 && orgSlug ? (
             <Helmet>
-              {Array.isArray(cssPath) ? (
-                cssPath.map((path) => (
-                  <link
-                    rel="stylesheet"
-                    href={getAssetPath(orgSlug, path)}
-                    key={path}
-                  />
-                ))
-              ) : (
-                <link rel="stylesheet" href={getAssetPath(orgSlug, cssPath)} />
-              )}
+              {css.map((path) => (
+                <link
+                  rel="stylesheet"
+                  href={getAssetPath(orgSlug, path)}
+                  key={path}
+                />
+              ))}
             </Helmet>
           ) : null}
           {favicon && orgSlug ? (
@@ -359,7 +364,8 @@ OrganizationWrapper.propTypes = {
     configuration: PropTypes.shape({
       title: PropTypes.string,
       pageTitle: PropTypes.string,
-      css_path: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+      css_path: PropTypes.string,
+      css: PropTypes.array,
       slug: PropTypes.string,
       name: PropTypes.string,
       favicon: PropTypes.string,

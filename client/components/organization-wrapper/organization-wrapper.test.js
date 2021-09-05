@@ -113,7 +113,7 @@ describe("<OrganizationWrapper /> rendering", () => {
         ...props.organization.configuration,
         configuration: {
           ...props.organization.configuration,
-          css_path: ["index.css", "custom.css"],
+          css: ["index.css", "custom.css"],
         },
         exists: true,
       },

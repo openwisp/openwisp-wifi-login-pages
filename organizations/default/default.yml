@@ -26,7 +26,8 @@ client:
 
   # path of the custom css file or files relative to organization's 
   # folder in assets directory.
-  css_path: "index.css"
+  css:
+    - "index.css"
   languages:
     - text: "english"
       slug: "en"

@@ -427,6 +427,19 @@ With the configuration above:
 - using both `methods_excluded` and `methods_only` on the same link does
   not make sense
 
+#### Custom CSS files
+
+It's possible to specify multiple CSS files if needed.
+
+```yaml
+client:
+  css:
+    - "index.css"
+    - "custom.css"
+```
+
+Adding multiple CSS files can be useful when working with [variants](#variants-of-the-same-configuration).
+
 #### User Fields in Registration Form
 
 The `setting` attribute of the fields `first_name`, `last_name`,
