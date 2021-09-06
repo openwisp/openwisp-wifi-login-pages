@@ -76,19 +76,7 @@ export default class Status extends React.Component {
           captivePortalLoginForm.macaddr_param_name,
         );
 
-        window.addEventListener("message", (event) => {
-          // For security reasons, read https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage#security_concern
-          if (
-            event.origin === new URL(captivePortalLoginForm.action).origin ||
-            event.origin === window.location.origin
-          ) {
-            toast.error(event.data, {
-              onOpen: () => toast.dismiss(event.data),
-            });
-            logout(cookies, orgSlug);
-            setLoading(false);
-          }
-        });
+        window.addEventListener("message", this.handlePostMessage);
 
         if (macaddr) {
           cookies.set(`${orgSlug}_macaddr`, macaddr, {path: "/"});
@@ -345,7 +333,7 @@ export default class Status extends React.Component {
       //
     }
 
-    setTimeout(this.finalOperations2000);
+    this.finalOperations();
   };
 
   /*
@@ -391,6 +379,22 @@ export default class Status extends React.Component {
       // wait to trigger login to avoid getting stuck
       // in captive portal firewall rule reloading
       setTimeout(async () => this.componentDidMount(), 1000);
+    }
+  };
+
+  handlePostMessage = async (event) => {
+    const {captivePortalLoginForm, logout, cookies, orgSlug} = this.props;
+    const {setLoading} = this.context;
+    // For security reasons, read https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage#security_concern
+    if (
+      event.origin === new URL(captivePortalLoginForm.action).origin ||
+      event.origin === window.location.origin
+    ) {
+      toast.error(event.data, {
+        onOpen: () => toast.dismiss(event.data),
+      });
+      logout(cookies, orgSlug);
+      setLoading(false);
     }
   };
 
