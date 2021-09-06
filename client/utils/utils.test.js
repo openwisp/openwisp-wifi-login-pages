@@ -1,8 +1,10 @@
 import React from "react";
+import {Router} from "react-router-dom";
 import axios from "axios";
 import {Cookies} from "react-cookie";
 import {shallow, mount} from "enzyme";
 import * as dependency from "react-toastify";
+import {createMemoryHistory} from "history";
 import authenticate from "./authenticate";
 import isInternalLink from "./check-internal-links";
 import customMerge from "./custom-merge";
@@ -20,6 +22,7 @@ import logError from "./log-error";
 import needsVerify from "./needs-verify";
 import loader from "./loader";
 import handleChange from "./handle-change";
+import redirectToPayment from "./redirect-to-payment";
 
 jest.mock("axios");
 jest.mock("./load-translation");
@@ -611,5 +614,21 @@ describe("handle-change tests", () => {
     instance.state.errors.nonField = "Email existw";
     handleChange(event, instance);
     expect(instance.state.errors).toEqual([]);
+  });
+  it("should redirecToPayment", () => {
+    const historyMock = createMemoryHistory();
+    const pushSpy = jest.spyOn(historyMock, "push");
+    const wrapper = shallow(
+      <Router history={historyMock}>
+        <button
+          type="submit"
+          onClick={() => redirectToPayment("default", historyMock)}
+        >
+          Test
+        </button>
+      </Router>,
+    );
+    wrapper.find("button").simulate("click", {});
+    expect(pushSpy).toHaveBeenCalled();
   });
 });

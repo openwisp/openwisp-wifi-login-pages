@@ -192,6 +192,10 @@ body .input,
   padding: 3%;
   border-radius: 2px;
 }
+.main-column.single {
+  width: 75%;
+  margin: 0 auto;
+}
 .main-column > h2:first-child,
 .main-column > .inner > h2:first-child {
   margin-top: 0;
