@@ -722,6 +722,34 @@ JSON translation file used by that specific organization.
 **Note**: Do not remove the content headers from the `.po` files as it is needed
 during the build process.
 
+### Handling Captive Portal Errors
+
+This application is capable of handling RADIUS errors that are encountered while logging into
+the captive portal. To utilise this functionality, you will have to update the error page
+of your captive portal to use [postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) for forwarding RADIUS error to **OpenWISP WiFi Login Pages**.
+
+Here is an example of authentication error page for pfSense:
+
+```html
+<!DOCTYPE html>
+<html>
+  <body>
+    <script>
+      window.parent.postMessage(
+        "$PORTAL_MESSAGE$",
+        "https://wifi-login-pages.example.com/",
+      );
+    </script>
+  </body>
+</html>
+```
+
+**Note:** Replace `https://wifi-login-pages.example.com/` with `origin` of your **OpenWISP
+WiFi Login Pages** service.
+
+With proper configuration, the error messages from your captive portal will be visible to
+users on the **OpenWISP WiFi Login Pages**.
+
 ### License
 
 See [LICENSE](https://github.com/openwisp/openwisp-wifi-login-pages/blob/master/LICENSE).
