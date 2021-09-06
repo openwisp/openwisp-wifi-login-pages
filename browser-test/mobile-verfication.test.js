@@ -53,7 +53,7 @@ describe("Selenium tests for <MobileVerification />", () => {
     );
     expect(await successToastDiv.getText()).toEqual("Login successful");
     driver.navigate().refresh();
-    const codeInput = await getElementByCss(driver, "input#code");
+    let codeInput = await getElementByCss(driver, "input#code");
     await driver.wait(until.elementIsVisible(codeInput));
     codeInput.sendKeys("123456");
     submitBtn = await getElementByCss(driver, "button[type='submit']");
@@ -62,7 +62,9 @@ describe("Selenium tests for <MobileVerification />", () => {
     const failureToastDiv = await getElementByCss(driver, "div[role=alert]");
     await driver.wait(until.elementIsVisible(failureToastDiv));
     expect(await failureToastDiv.getText()).toEqual("Invalid code.");
+    driver.navigate().refresh();
     const token = getPhoneToken();
+    codeInput = await getElementByCss(driver, "input#code");
     codeInput.clear();
     codeInput.sendKeys(token);
     submitBtn = await getElementByCss(driver, "button[type='submit']");
@@ -79,11 +81,5 @@ describe("Selenium tests for <MobileVerification />", () => {
       "div > p:nth-child(6) > span",
     );
     expect(await phoneElement.getText()).toEqual(data.phoneNumber);
-    await driver.wait(until.urlContains("status"), 5000);
-    const activeSessionTr = await getElementByCss(
-      driver,
-      "table tr.active-session",
-    );
-    await driver.wait(until.elementIsVisible(activeSessionTr));
   });
 });
