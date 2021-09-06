@@ -4,6 +4,7 @@ import React, {Suspense} from "react";
 import {MemoryRouter, Redirect, Route} from "react-router-dom";
 import {Cookies} from "react-cookie";
 import {Provider} from "react-redux";
+import {Helmet} from "react-helmet";
 import getConfig from "../../utils/get-config";
 import loadTranslation from "../../utils/load-translation";
 import OrganizationWrapper from "./organization-wrapper";
@@ -104,6 +105,30 @@ describe("<OrganizationWrapper /> rendering", () => {
     expect(wrapper.find(".app-container")).toHaveLength(1);
     expect(wrapper.find(".org-wrapper-not-found")).toHaveLength(0);
     expect(wrapper.find(".loader-container")).toHaveLength(0);
+  });
+
+  it("should load multiple CSS files", () => {
+    wrapper.setProps({
+      organization: {
+        ...props.organization.configuration,
+        configuration: {
+          ...props.organization.configuration,
+          css: ["index.css", "custom.css"],
+        },
+        exists: true,
+      },
+    });
+    const helmetWrapper = wrapper.find(Helmet).at(1);
+    expect(
+      helmetWrapper.contains(
+        <link rel="stylesheet" href="/assets/default/index.css" />,
+      ),
+    ).toBe(true);
+    expect(
+      helmetWrapper.contains(
+        <link rel="stylesheet" href="/assets/default/custom.css" />,
+      ),
+    ).toBe(true);
   });
 });
 
