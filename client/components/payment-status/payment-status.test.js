@@ -297,4 +297,35 @@ describe("Test <PaymentStatus /> cases", () => {
     expect(spyToast.mock.calls.length).toBe(0);
     expect(wrapper.instance().props.setUserData).not.toHaveBeenCalled();
   });
+
+  it("should call logout correctly when clicking on logout button from draft", async () => {
+    props = createTestProps({
+      userData: {...responseData, is_verified: false},
+      status: "draft",
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    expect(wrapper.find(".button").length).toEqual(2);
+    wrapper.find(".button").at(1).simulate("click", {});
+    expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith({
+      ...responseData,
+      mustLogout: true,
+    });
+  });
+
+  it("should render draft correctly", async () => {
+    props = createTestProps({
+      userData: {...responseData, is_verified: false},
+      status: "draft",
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    expect(wrapper).toMatchSnapshot();
+  });
 });
