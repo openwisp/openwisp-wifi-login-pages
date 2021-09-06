@@ -1033,13 +1033,23 @@ describe("<Status /> interactions", () => {
     expect(result).toEqual();
     expect(getSessionInfo).not.toHaveBeenCalled();
   });
-  it("should call logout if getUserRadiusSessions is rejected", async () => {
+  it("should call logout if getUserRadiusSessions is rejected (unauthorized or forbidden)", async () => {
     axios.mockImplementationOnce(() =>
       Promise.reject({
         response: {
           status: 401,
           data: {
             error: "Unauthorized",
+          },
+        },
+      }),
+    );
+    axios.mockImplementationOnce(() =>
+      Promise.reject({
+        response: {
+          status: 403,
+          data: {
+            error: "Forbidden",
           },
         },
       }),
@@ -1061,6 +1071,13 @@ describe("<Status /> interactions", () => {
       },
       "default",
     );
+    expect(toast.error).toHaveBeenCalledWith("Error occurred!", {
+      onOpen: expect.any(Function),
+    });
+    toast.error.mock.calls.pop()[1].onOpen();
+    expect(toast.dismiss).toHaveBeenCalledWith("main_toast_id");
+    await wrapper.instance().getUserRadiusSessions();
+    expect(prop.logout).toHaveBeenCalledWith(expect.any(Object), "default");
     expect(toast.error).toHaveBeenCalledWith("Error occurred!", {
       onOpen: expect.any(Function),
     });
@@ -1228,5 +1245,28 @@ describe("<Status /> interactions", () => {
     await tick();
     wrapper.instance().handleLogoutIframe();
     expect(prop.setUserData).toHaveBeenCalledWith(initialState.userData);
+  });
+  it("should not logout user if network error happens while fetching radius sessions", async () => {
+    const response = {
+      response: {
+        status: 408,
+        data: {
+          error: "Timeout",
+        },
+      },
+    };
+    axios.mockImplementationOnce(() => Promise.reject(response));
+    validateToken.mockReturnValue(true);
+    const prop = createTestProps();
+    jest.spyOn(toast, "error");
+    jest.spyOn(toast, "dismiss");
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    await wrapper.instance().getUserRadiusSessions();
+    expect(prop.logout).not.toHaveBeenCalled();
+    expect(toast.error).not.toHaveBeenCalled();
+    expect(logError).toHaveBeenCalledWith(response, "Error occurred!");
   });
 });
