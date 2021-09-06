@@ -427,19 +427,6 @@ With the configuration above:
 - using both `methods_excluded` and `methods_only` on the same link does
   not make sense
 
-#### Custom CSS files
-
-It's possible to specify multiple CSS files if needed.
-
-```yaml
-client:
-  css:
-    - "index.css"
-    - "custom.css"
-```
-
-Adding multiple CSS files can be useful when working with [variants](#variants-of-the-same-configuration).
-
 #### User Fields in Registration Form
 
 The `setting` attribute of the fields `first_name`, `last_name`,
@@ -480,6 +467,19 @@ login_form:
 In order to enable users to log via third-party services like Google and Facebook,
 the ["Social Login" feature of OpenWISP Radius](https://openwisp-radius.readthedocs.io/en/latest/user/social_login.html)
 must be configured and enabled.
+
+#### Custom CSS files
+
+It's possible to specify multiple CSS files if needed.
+
+```yaml
+client:
+  css:
+    - "index.css"
+    - "custom.css"
+```
+
+Adding multiple CSS files can be useful when working with [variants](#variants-of-the-same-configuration).
 
 #### Custom HTML
 
