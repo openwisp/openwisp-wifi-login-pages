@@ -28,8 +28,12 @@ export const getDriver = async () =>
     .build();
 
 export const getElementByCss = async (driver, css) => {
-  const el = await driver.wait(until.elementLocated(By.css(css)), waitTime);
-  driver.wait(until.stalenessOf(el), waitTime);
+  let el;
+  try {
+    el = await driver.wait(until.elementLocated(By.css(css)), waitTime);
+  } catch (err) {
+    console.log(err, css);
+  }
   return el;
 };
 

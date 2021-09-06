@@ -53,7 +53,6 @@ describe("Selenium tests for <PasswordChange />", () => {
     await getElementByCss(driver, "div#status");
     successToastDiv = await getElementByCss(driver, "div[role=alert]");
     await driver.wait(until.elementIsVisible(successToastDiv));
-    await driver.wait(until.urlContains("status"), 5000);
     expect(await successToastDiv.getText()).toEqual(
       "New password has been saved.",
     );
@@ -71,7 +70,6 @@ describe("Selenium tests for <PasswordChange />", () => {
     await getElementByCss(driver, "div#status");
     successToastDiv = await getElementByCss(driver, "div[role=alert]");
     await driver.wait(until.elementIsVisible(successToastDiv));
-    await driver.wait(until.urlContains("status"), 5000);
     expect(await successToastDiv.getText()).toEqual("Login successful");
   });
 });
