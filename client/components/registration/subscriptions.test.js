@@ -242,8 +242,8 @@ describe("test subscriptions", () => {
     const mockVerify = registration.props.verifyMobileNumber;
     expect(mockVerify.mock.calls.length).toBe(0);
     const authenticateMock = registration.props.authenticate.mock;
-    expect(authenticateMock.calls.length).toBe(0);
     expect(redirectToPayment).toHaveBeenCalledWith("default");
+    expect(authenticateMock.calls.length).toBe(1);
   });
 
   it("should show error if fetching plans fail", async () => {

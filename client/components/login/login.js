@@ -274,7 +274,6 @@ export default class Login extends React.Component {
     // if requires payment redirect to payment status component
     if (data.method === "bank_card" && data.is_verified === false) {
       redirectToPayment(orgSlug);
-      return;
     }
     authenticate(true);
   };

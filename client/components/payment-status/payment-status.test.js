@@ -329,5 +329,9 @@ describe("Test <PaymentStatus /> cases", () => {
     });
     await tick();
     expect(wrapper).toMatchSnapshot();
+    expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith({
+      ...responseData,
+      justAuthenticated: true,
+    });
   });
 });

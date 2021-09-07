@@ -35,6 +35,12 @@ export default class PaymentStatus extends React.Component {
     // flag user to repeat login in order to restart session with new radius group
     if (status === "success" && method === "bank_card" && isVerified === true) {
       setUserData({...userData, mustLogout: true, repeatLogin: true});
+    } else if (
+      status === "draft" &&
+      method === "bank_card" &&
+      isVerified === false
+    ) {
+      setUserData({...userData, justAuthenticated: true});
     }
   }
 

@@ -203,14 +203,11 @@ export default class Registration extends React.Component {
         toast.success(t`REGISTER_SUCCESS`, {
           toastId: mainToastId,
         });
-
         // if requires_payment
         // redirect to payment status component
         if (postData.requires_payment === true) {
           redirectToPayment(orgSlug);
-          return;
         }
-
         // will redirect to status which will validate data again
         // and initiate any verification if needed
         authenticate(true);

@@ -467,8 +467,8 @@ describe("<Login /> interactions", () => {
     await tick();
     expect(handleSubmit).toHaveBeenCalled();
     const authenticateMock = login.props().authenticate.mock;
-    expect(authenticateMock.calls.length).toBe(0);
     expect(redirectToPayment).toHaveBeenCalledWith("default");
+    expect(authenticateMock.calls.length).toBe(1);
   });
   it("phone_number field should be present if mobile phone verification is on", async () => {
     props.settings = {mobile_phone_verification: true};
