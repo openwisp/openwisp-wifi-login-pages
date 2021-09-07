@@ -40,7 +40,7 @@ export default class PaymentStatus extends React.Component {
       method === "bank_card" &&
       isVerified === false
     ) {
-      setUserData({...userData, justAuthenticated: true});
+      setUserData({...userData, mustLogin: true});
     }
   }
 

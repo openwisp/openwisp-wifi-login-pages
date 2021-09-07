@@ -20,7 +20,7 @@ const userData = {
   email: "tester@tester.com",
   is_verified: true,
   is_active: true,
-  justAuthenticated: false,
+  mustLogin: false,
 };
 
 const createTestProps = (props) => ({
@@ -74,11 +74,11 @@ describe("<Logout /> interactions", () => {
     const loginUser = jest.spyOn(wrapper.instance(), "loginUser");
     wrapper.find(".button").simulate("click", {});
     expect(loginUser).toHaveBeenCalled();
-    // ensure justAuthenticated:true is passed
+    // ensure mustLogin:true is passed
     // otherwise captive portal login won't be done
     expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith({
       ...userData,
-      justAuthenticated: true,
+      mustLogin: true,
     });
   });
 
@@ -103,7 +103,7 @@ describe("<Logout /> interactions", () => {
     expect(spyToast).toBeCalledWith("Login successful", {
       toastId: "main_toast_id",
     });
-    expect(props.userData.justAuthenticated).toBe(false);
+    expect(props.userData.mustLogin).toBe(false);
   });
 
   it("should mapStatetoProps and dispatchtoProps correctly", () => {

@@ -32,7 +32,7 @@ describe("organization reducer", () => {
       userData: {
         is_active: true,
         is_verified: null,
-        justAuthenticated: true,
+        mustLogin: true,
       },
       settings: {
         mobile_phone_verification: undefined,

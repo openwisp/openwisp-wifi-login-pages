@@ -199,7 +199,7 @@ describe("<Status /> interactions", () => {
     expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith({
       is_active: true,
       is_verified: null,
-      justAuthenticated: true,
+      mustLogin: true,
     });
   });
 
@@ -230,7 +230,7 @@ describe("<Status /> interactions", () => {
     jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
 
     props = createTestProps({
-      userData: {...responseData, justAuthenticated: true},
+      userData: {...responseData, mustLogin: true},
     });
     validateToken.mockReturnValue(true);
     const setLoading = jest.fn();
@@ -368,7 +368,7 @@ describe("<Status /> interactions", () => {
     wrapper.setProps({
       userData: {
         ...responseData,
-        justAuthenticated: true,
+        mustLogin: true,
         is_verified: false,
         method: "",
       },
@@ -534,7 +534,7 @@ describe("<Status /> interactions", () => {
     validateToken.mockReturnValue(true);
     props = createTestProps();
     props.location.search = "";
-    props.userData = {...responseData, justAuthenticated: true};
+    props.userData = {...responseData, mustLogin: true};
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
     });
@@ -544,7 +544,7 @@ describe("<Status /> interactions", () => {
     await tick();
     expect(spyFn.mock.calls.length).toBe(1);
     expect(setUserDataMock.calls.pop()).toEqual([
-      {...props.userData, justAuthenticated: false},
+      {...props.userData, mustLogin: false},
     ]);
   });
 
@@ -789,7 +789,7 @@ describe("<Status /> interactions", () => {
       is_verified: false,
       method: "bank_card",
       payment_url: "https://account.openwisp.io/payment/123",
-      justAuthenticated: true,
+      mustLogin: true,
     };
     props.location.search = "";
     props.settings.mobile_phone_verification = true;
@@ -809,7 +809,7 @@ describe("<Status /> interactions", () => {
     expect(spyFn.mock.calls.length).toBe(1);
     // ensure setUserData is called as expected
     expect(setUserDataMock.calls.pop()).toEqual([
-      {...props.userData, justAuthenticated: false},
+      {...props.userData, mustLogin: false},
     ]);
     expect(location.assign.mock.calls.length).toBe(0);
     expect(setLoading.mock.calls.length).toBe(1);
@@ -927,7 +927,7 @@ describe("<Status /> interactions", () => {
     expect(setUserData.mock.calls.length).toBe(1);
     const userData = {
       ...responseData,
-      justAuthenticated: true,
+      mustLogin: true,
       mustLogout: false,
       repeatLogin: false,
       radius_user_token: undefined,

@@ -102,7 +102,7 @@ export default class Status extends React.Component {
         return;
       }
 
-      const {justAuthenticated, mustLogout, repeatLogin} = userData;
+      const {mustLogin, mustLogout, repeatLogin} = userData;
       ({userData} = this.props);
 
       const {
@@ -153,17 +153,13 @@ export default class Status extends React.Component {
             this.loginFormRef.current.submit();
           }
         }
-      } else if (
-        this.loginFormRef &&
-        this.loginFormRef.current &&
-        justAuthenticated
-      ) {
+      } else if (this.loginFormRef && this.loginFormRef.current && mustLogin) {
         this.notifyCpLogin(userData);
         this.loginFormRef.current.submit();
-        userData.justAuthenticated = false;
+        userData.mustLogin = false;
         setUserData(userData);
         // if user is already authenticated and coming from other pages
-      } else if (!justAuthenticated) {
+      } else if (!mustLogin) {
         this.finalOperations();
       }
     }
@@ -375,7 +371,7 @@ export default class Status extends React.Component {
     }
 
     if (repeatLogin) {
-      userData.justAuthenticated = true;
+      userData.mustLogin = true;
       userData.mustLogout = false;
       userData.repeatLogin = false;
       // will trigger the creation of a new radius token

@@ -270,7 +270,7 @@ export default class Login extends React.Component {
     toast.success(t`LOGIN_SUCCESS`, {
       toastId: mainToastId,
     });
-    setUserData({...data, justAuthenticated: true});
+    setUserData({...data, mustLogin: true});
     // if requires payment redirect to payment status component
     if (data.method === "bank_card" && data.is_verified === false) {
       redirectToPayment(orgSlug);

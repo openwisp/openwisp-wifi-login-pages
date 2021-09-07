@@ -180,7 +180,7 @@ describe("Validate Token tests", () => {
     orgSlug: "default",
     cookies: new Cookies(),
     setUserData: jest.fn(),
-    userData: {is_active: true, is_verified: null, justAuthenticated: true},
+    userData: {is_active: true, is_verified: null, mustLogin: true},
     logout: jest.fn(),
   });
   it("should return false if token is not in the cookie", async () => {
@@ -306,7 +306,7 @@ describe("Validate Token tests", () => {
     expect(setUserData.mock.calls.length).toBe(1);
     expect(console.log).toHaveBeenCalledWith(response);
     expect(setUserData.mock.calls.pop()).toEqual([
-      {is_active: true, is_verified: null, justAuthenticated: true},
+      {is_active: true, is_verified: null, mustLogin: true},
     ]);
   });
 });

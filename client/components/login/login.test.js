@@ -387,9 +387,7 @@ describe("<Login /> interactions", () => {
     expect(handleSubmit).toHaveBeenCalled();
     const setUserDataMock = login.props().setUserData.mock;
     expect(setUserDataMock.calls.length).toBe(1);
-    expect(setUserDataMock.calls.pop()).toEqual([
-      {...data, justAuthenticated: true},
-    ]);
+    expect(setUserDataMock.calls.pop()).toEqual([{...data, mustLogin: true}]);
     const authenticateMock = login.props().authenticate.mock;
     expect(authenticateMock.calls.length).toBe(1);
     expect(authenticateMock.calls.pop()).toEqual([true]);
@@ -428,9 +426,7 @@ describe("<Login /> interactions", () => {
     expect(handleSubmit).toHaveBeenCalled();
     const setUserDataMock = login.props().setUserData.mock;
     expect(setUserDataMock.calls.length).toBe(1);
-    expect(setUserDataMock.calls.pop()).toEqual([
-      {...data, justAuthenticated: true},
-    ]);
+    expect(setUserDataMock.calls.pop()).toEqual([{...data, mustLogin: true}]);
     const authenticateMock = login.props().authenticate.mock;
     expect(authenticateMock.calls.length).toBe(1);
     expect(authenticateMock.calls.pop()).toEqual([true]);
@@ -599,7 +595,7 @@ describe("<Login /> interactions", () => {
     expect(errorMethod).toHaveBeenCalled();
     expect(errorMethod).toBeCalledWith("Login error occurred.");
   });
-  it("should set justAuthenticated on login success", async () => {
+  it("should set mustLogin on login success", async () => {
     axios.mockImplementationOnce(() =>
       Promise.reject({
         response: {
@@ -626,7 +622,7 @@ describe("<Login /> interactions", () => {
     const setUserDataMock = login.props().setUserData.mock;
     expect(setUserDataMock.calls.length).toBe(1);
     expect(setUserDataMock.calls.pop()).toEqual([
-      {...userData, justAuthenticated: true},
+      {...userData, mustLogin: true},
     ]);
   });
   it("should call setTitle to set log in title", () => {
@@ -668,7 +664,7 @@ describe("<Login /> interactions", () => {
         key: userData.key,
         is_active: true,
         radius_user_token: undefined,
-        justAuthenticated: true,
+        mustLogin: true,
       },
     ]);
     const authenticateMock = login.props().authenticate.mock;

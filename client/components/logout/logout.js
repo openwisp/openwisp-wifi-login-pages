@@ -27,7 +27,7 @@ export default class Logout extends React.Component {
     const {authenticate, setUserData, userData} = this.props;
     if (!isAuthenticated) {
       authenticate(true);
-      setUserData({...userData, justAuthenticated: true});
+      setUserData({...userData, mustLogin: true});
     }
     toast.success(t`LOGIN_SUCCESS`, {
       toastId: mainToastId,

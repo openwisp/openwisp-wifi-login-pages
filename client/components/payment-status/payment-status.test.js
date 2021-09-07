@@ -331,7 +331,7 @@ describe("Test <PaymentStatus /> cases", () => {
     expect(wrapper).toMatchSnapshot();
     expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith({
       ...responseData,
-      justAuthenticated: true,
+      mustLogin: true,
     });
   });
 });
