@@ -584,6 +584,3 @@ msgstr ""
 "raggiungere il sito web della tua banca verrà chiusa, se ciò accade "
 "puoi accedere nuovamente con le credenziali appena registrate e "
 "ripetere il processo fino ad un massimo di ${ maxAttempts } volte.</p>"
-
-msgid "Your maximum daily usage time has been reached"
-msgstr "Hai raggiunto il limite di navigazione giornaliero a disposizione."
