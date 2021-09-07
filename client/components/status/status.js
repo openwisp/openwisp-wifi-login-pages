@@ -11,7 +11,7 @@ import {Cookies} from "react-cookie";
 import {Link} from "react-router-dom";
 import {toast} from "react-toastify";
 import InfinteScroll from "react-infinite-scroll-component";
-import {t} from "ttag";
+import {t, gettext} from "ttag";
 import {getUserRadiusSessionsUrl, mainToastId} from "../../constants";
 import LoadingContext from "../../utils/loading-context";
 import getText from "../../utils/get-text";
@@ -400,7 +400,10 @@ export default class Status extends React.Component {
       event.origin === new URL(captivePortalLoginForm.action).origin ||
       event.origin === window.location.origin
     ) {
-      toast.error(message, {autoClose: 10000});
+      toast.dismiss();
+      /* disable ttag */
+      toast.error(gettext(message), {autoClose: 10000});
+      /* enable ttag */
       logout(cookies, orgSlug);
       setLoading(false);
     }

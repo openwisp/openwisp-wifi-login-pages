@@ -459,6 +459,7 @@ describe("<Status /> interactions", () => {
       disableLifecycleMethods: true,
     });
     jest.spyOn(toast, "error");
+    jest.spyOn(toast, "dismiss");
     const status = wrapper.instance();
 
     // Test missing message
@@ -467,6 +468,7 @@ describe("<Status /> interactions", () => {
       origin: "http://localhost",
     });
     expect(toast.error).toHaveBeenCalledTimes(0);
+    expect(toast.dismiss).toHaveBeenCalledTimes(0);
     expect(props.logout).toHaveBeenCalledTimes(0);
     expect(setLoadingMock).toHaveBeenCalledTimes(0);
 
@@ -476,6 +478,7 @@ describe("<Status /> interactions", () => {
       origin: "http://localhost",
     });
     expect(toast.error).toHaveBeenCalledTimes(0);
+    expect(toast.dismiss).toHaveBeenCalledTimes(0);
     expect(props.logout).toHaveBeenCalledTimes(0);
     expect(setLoadingMock).toHaveBeenCalledTimes(0);
 
@@ -485,6 +488,7 @@ describe("<Status /> interactions", () => {
       origin: "https://example.com",
     });
     expect(toast.error).toHaveBeenCalledTimes(0);
+    expect(toast.dismiss).toHaveBeenCalledTimes(0);
     expect(props.logout).toHaveBeenCalledTimes(0);
     expect(setLoadingMock).toHaveBeenCalledTimes(0);
 
@@ -494,6 +498,7 @@ describe("<Status /> interactions", () => {
       data: {message: "RADIUS Error", type: "authError"},
       origin: "http://localhost",
     });
+    expect(toast.dismiss).toHaveBeenCalledTimes(1);
     expect(toast.error).toHaveBeenCalledTimes(1);
     expect(props.logout).toHaveBeenCalledTimes(1);
     expect(setLoadingMock).toHaveBeenCalledTimes(2);

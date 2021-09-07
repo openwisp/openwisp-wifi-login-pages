@@ -280,6 +280,7 @@ export default class Registration extends React.Component {
     /* disable ttag */
     const planTitle = gettext(plan.plan);
     const planDesc = gettext(plan.plan_description);
+    /* enable ttag */
     const pricingText = Number(plan.price)
       ? `${plan.price} ${plan.currency} ${plan.pricing}`
       : "";
