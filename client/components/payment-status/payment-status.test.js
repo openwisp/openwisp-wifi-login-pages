@@ -110,6 +110,7 @@ describe("Test <PaymentStatus /> cases", () => {
     expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith({
       ...responseData,
       mustLogout: true,
+      payment_url: null,
     });
     expect(wrapper.find("Redirect").length).toEqual(0);
     expect(spyToast.mock.calls.length).toBe(0);
@@ -313,6 +314,7 @@ describe("Test <PaymentStatus /> cases", () => {
     expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith({
       ...responseData,
       mustLogout: true,
+      payment_url: null,
     });
   });
 
