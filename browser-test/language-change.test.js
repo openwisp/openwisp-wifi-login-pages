@@ -31,7 +31,7 @@ describe("Selenium tests for <Login />", () => {
     await itLangBtn.click();
     username = await getElementByCss(driver, "input#password");
     placeholder = await username.getAttribute("placeholder");
-    expect(placeholder).toEqual("inserisca la password");
+    expect(placeholder).toEqual("Inserisci la password");
     helpdesk = await getElementByCss(
       driver,
       "#login > div > div > div > div:nth-child(2) > span",

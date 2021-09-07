@@ -78,9 +78,8 @@ body {
 }
 div.error {
   margin: 0 0 3px;
-  padding: 8px;
-  line-height: 23px;
-  font-size: 14px;
+  padding: 10px 12px 10px 12px;
+  line-height: 20px;
   border-radius: 5px;
   display: flex;
   flex-direction: row;
@@ -91,13 +90,19 @@ div.error {
   color: #fff;
   background: #d93025;
   box-sizing: border-box;
+  letter-spacing: -0.2px;
+  word-spacing: -0.3px;
 }
 .error .icon {
+  content: url(assets/warning.svg);
   display: inline-block;
   min-width: 16px;
   text-align: center;
-  margin-right: 4px;
   font-weight: 600;
+  width: 20px;
+  margin: 0 6px 0 1px;
+  top: -1px;
+  position: relative;
 }
 .error.non-field {
   box-sizing: border-box;
@@ -186,6 +191,10 @@ body .input,
   line-height: 30px;
   padding: 3%;
   border-radius: 2px;
+}
+.main-column.single {
+  width: 75%;
+  margin: 0 auto;
 }
 .main-column > h2:first-child,
 .main-column > .inner > h2:first-child {
@@ -276,6 +285,10 @@ h1 {
   }
   body .input {
     font-size: 16px;
+  }
+  .main-column.single {
+    width: 100%;
+    margin: 0 auto;
   }
 }
 .eye {

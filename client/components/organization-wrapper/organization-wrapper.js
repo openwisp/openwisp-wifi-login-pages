@@ -68,11 +68,13 @@ export default class OrganizationWrapper extends React.Component {
         );
       } else await this.loadLanguage(language, match.params.organization, true);
     } else if (prevProps.language !== language && prevProps.language !== "") {
+      this.setLoading(true);
       localStorage.setItem(
         `${match.params.organization}-userLangChoice`,
         language,
       );
       await this.loadLanguage(language, match.params.organization, false);
+      this.setLoading(false);
     }
   }
 
@@ -102,214 +104,234 @@ export default class OrganizationWrapper extends React.Component {
   render() {
     const {organization, match, cookies} = this.props;
     const {loading, translationLoaded, configLoaded} = this.state;
-    const {title, favicon, isAuthenticated, userData, settings, pageTitle} =
-      organization.configuration;
+    const {
+      title,
+      favicon,
+      isAuthenticated,
+      userData,
+      settings,
+      pageTitle,
+      slug: orgSlug,
+      name: orgName,
+      css_path: cssPath,
+    } = organization.configuration;
     const {is_active} = userData;
-    const orgSlug = organization.configuration.slug;
-    const orgName = organization.configuration.name;
-    const cssPath = organization.configuration.css_path;
+    let {css} = organization.configuration;
+    if (!css) css = [];
+    if (cssPath) css.push(cssPath);
     const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
     const needsVerifyPhone = needsVerify("mobile_phone", userData, settings);
     if (organization.exists === true) {
       const {setLoading} = this;
-      return translationLoaded && configLoaded ? (
+      return (
         <>
-          <LoadingContext.Provider
-            value={{setLoading, getLoading: () => loading}}
-          >
-            <div className={`app-container ${loading ? "no-scroll" : ""}`}>
-              <Route
-                path={match.path}
-                render={({location}) => <Header location={location} />}
-              />
-              <Switch>
+          {translationLoaded && configLoaded ? (
+            <LoadingContext.Provider
+              value={{setLoading, getLoading: () => loading}}
+            >
+              <div className={`app-container ${loading ? "no-scroll" : ""}`}>
                 <Route
-                  path={`${match.path}`}
-                  exact
-                  render={() => <Redirect to={`/${orgSlug}/login`} />}
+                  path={match.path}
+                  render={({location}) => <Header location={location} />}
                 />
-                <Route
-                  path={`${match.path}/registration`}
-                  render={(props) => {
-                    if (isAuthenticated && !needsVerifyPhone) {
-                      return <Redirect to={`/${orgSlug}/status`} />;
-                    }
-                    if (isAuthenticated && needsVerifyPhone) {
+                <Switch>
+                  <Route
+                    path={`${match.path}`}
+                    exact
+                    render={() => <Redirect to={`/${orgSlug}/login`} />}
+                  />
+                  <Route
+                    path={`${match.path}/registration`}
+                    render={(props) => {
+                      if (isAuthenticated && !needsVerifyPhone) {
+                        return <Redirect to={`/${orgSlug}/status`} />;
+                      }
+                      if (isAuthenticated && needsVerifyPhone) {
+                        return (
+                          <Redirect
+                            to={`/${orgSlug}/mobile-phone-verification`}
+                          />
+                        );
+                      }
                       return (
-                        <Redirect
-                          to={`/${orgSlug}/mobile-phone-verification`}
-                        />
+                        <Suspense fallback={<Loader />}>
+                          <Registration {...props} />
+                        </Suspense>
                       );
-                    }
-                    return (
-                      <Suspense fallback={<Loader />}>
-                        <Registration {...props} />
-                      </Suspense>
-                    );
-                  }}
-                />
-                <Route
-                  path={`${match.path}/mobile-phone-verification`}
-                  render={(props) => {
-                    if (
-                      isAuthenticated &&
-                      needsVerifyPhone === false &&
-                      is_active
-                    ) {
-                      return <Redirect to={`/${orgSlug}/status`} />;
-                    }
-                    if (!isAuthenticated) {
+                    }}
+                  />
+                  <Route
+                    path={`${match.path}/mobile-phone-verification`}
+                    render={(props) => {
+                      if (
+                        isAuthenticated &&
+                        needsVerifyPhone === false &&
+                        is_active
+                      ) {
+                        return <Redirect to={`/${orgSlug}/status`} />;
+                      }
+                      if (!isAuthenticated) {
+                        return <Redirect to={`/${orgSlug}/login`} />;
+                      }
+                      return (
+                        <Suspense fallback={<Loader />}>
+                          <MobilePhoneVerification
+                            {...props}
+                            cookies={cookies}
+                          />
+                        </Suspense>
+                      );
+                    }}
+                  />
+                  <Route
+                    path={`${match.path}/password/reset/confirm/:uid/:token`}
+                    render={(props) => {
+                      if (isAuthenticated)
+                        return <Redirect to={`/${orgSlug}/status`} />;
+                      return (
+                        <Suspense fallback={<Loader />}>
+                          <PasswordConfirm {...props} />
+                        </Suspense>
+                      );
+                    }}
+                  />
+                  <Route
+                    path={`${match.path}/password/reset`}
+                    exact
+                    render={() => {
+                      if (isAuthenticated)
+                        return <Redirect to={`/${orgSlug}/status`} />;
+                      return (
+                        <Suspense fallback={<Loader />}>
+                          <PasswordReset />
+                        </Suspense>
+                      );
+                    }}
+                  />
+                  <Route
+                    path={`${match.path}/login`}
+                    render={(props) => {
+                      if (isAuthenticated && is_active)
+                        return <Redirect to={`/${orgSlug}/status`} />;
+                      return (
+                        <Suspense fallback={<Loader />}>
+                          <Login {...props} />
+                        </Suspense>
+                      );
+                    }}
+                  />
+                  <Route
+                    path={`${match.path}/status`}
+                    render={(props) => {
+                      if (isAuthenticated && needsVerifyPhone)
+                        return (
+                          <Redirect
+                            to={`/${orgSlug}/mobile-phone-verification`}
+                          />
+                        );
+                      if (isAuthenticated) {
+                        return (
+                          <Suspense fallback={<Loader />}>
+                            <Status {...props} cookies={cookies} />
+                          </Suspense>
+                        );
+                      }
+                      if (userAutoLogin)
+                        return <Redirect to={`/${orgSlug}/logout`} />;
                       return <Redirect to={`/${orgSlug}/login`} />;
-                    }
-                    return (
-                      <Suspense fallback={<Loader />}>
-                        <MobilePhoneVerification {...props} cookies={cookies} />
-                      </Suspense>
-                    );
-                  }}
-                />
-                <Route
-                  path={`${match.path}/password/reset/confirm/:uid/:token`}
-                  render={(props) => {
-                    if (isAuthenticated)
-                      return <Redirect to={`/${orgSlug}/status`} />;
-                    return (
-                      <Suspense fallback={<Loader />}>
-                        <PasswordConfirm {...props} />
-                      </Suspense>
-                    );
-                  }}
-                />
-                <Route
-                  path={`${match.path}/password/reset`}
-                  exact
-                  render={() => {
-                    if (isAuthenticated)
-                      return <Redirect to={`/${orgSlug}/status`} />;
-                    return (
-                      <Suspense fallback={<Loader />}>
-                        <PasswordReset />
-                      </Suspense>
-                    );
-                  }}
-                />
-                <Route
-                  path={`${match.path}/login`}
-                  render={(props) => {
-                    if (isAuthenticated && is_active)
-                      return <Redirect to={`/${orgSlug}/status`} />;
-                    return (
-                      <Suspense fallback={<Loader />}>
-                        <Login {...props} />
-                      </Suspense>
-                    );
-                  }}
-                />
-                <Route
-                  path={`${match.path}/status`}
-                  render={(props) => {
-                    if (isAuthenticated && needsVerifyPhone)
-                      return (
-                        <Redirect
-                          to={`/${orgSlug}/mobile-phone-verification`}
-                        />
-                      );
-                    if (isAuthenticated) {
+                    }}
+                  />
+                  <Route
+                    path={`${match.path}/logout`}
+                    render={(props) => {
+                      if (isAuthenticated)
+                        return <Redirect to={`/${orgSlug}/status`} />;
+                      if (userAutoLogin)
+                        return (
+                          <Suspense fallback={<Loader />}>
+                            <Logout {...props} />
+                          </Suspense>
+                        );
+                      return <Redirect to={`/${orgSlug}/login`} />;
+                    }}
+                  />
+                  <Route
+                    path={`${match.path}/change-password`}
+                    render={() => {
+                      if (isAuthenticated)
+                        return (
+                          <Suspense fallback={<Loader />}>
+                            <PasswordChange cookies={cookies} />
+                          </Suspense>
+                        );
+                      return <Redirect to={`/${orgSlug}/login`} />;
+                    }}
+                  />
+                  <Route
+                    path={`${match.path}/change-phone-number`}
+                    render={() => {
+                      if (isAuthenticated)
+                        return (
+                          <Suspense fallback={<Loader />}>
+                            <MobilePhoneChange cookies={cookies} />
+                          </Suspense>
+                        );
+                      return <Redirect to={`/${orgSlug}/login`} />;
+                    }}
+                  />
+                  <Route
+                    path={`${match.path}/payment/:status`}
+                    render={(props) => {
+                      const {status} = props.match.params;
                       return (
                         <Suspense fallback={<Loader />}>
-                          <Status {...props} cookies={cookies} />
+                          <PaymentStatus cookies={cookies} status={status} />
                         </Suspense>
                       );
-                    }
-                    if (userAutoLogin)
-                      return <Redirect to={`/${orgSlug}/logout`} />;
-                    return <Redirect to={`/${orgSlug}/login`} />;
-                  }}
-                />
-                <Route
-                  path={`${match.path}/logout`}
-                  render={(props) => {
-                    if (isAuthenticated)
-                      return <Redirect to={`/${orgSlug}/status`} />;
-                    if (userAutoLogin)
-                      return (
-                        <Suspense fallback={<Loader />}>
-                          <Logout {...props} />
-                        </Suspense>
-                      );
-                    return <Redirect to={`/${orgSlug}/login`} />;
-                  }}
-                />
-                <Route
-                  path={`${match.path}/change-password`}
-                  render={() => {
-                    if (isAuthenticated)
-                      return (
-                        <Suspense fallback={<Loader />}>
-                          <PasswordChange cookies={cookies} />
-                        </Suspense>
-                      );
-                    return <Redirect to={`/${orgSlug}/login`} />;
-                  }}
-                />
-                <Route
-                  path={`${match.path}/change-phone-number`}
-                  render={() => {
-                    if (isAuthenticated)
-                      return (
-                        <Suspense fallback={<Loader />}>
-                          <MobilePhoneChange cookies={cookies} />
-                        </Suspense>
-                      );
-                    return <Redirect to={`/${orgSlug}/login`} />;
-                  }}
-                />
-                <Route
-                  path={`${match.path}/payment/:result`}
-                  render={(props) => {
-                    const {result} = props.match.params;
-                    return (
+                    }}
+                  />
+                  <Route
+                    render={() => (
                       <Suspense fallback={<Loader />}>
-                        <PaymentStatus cookies={cookies} result={result} />
+                        <ConnectedDoesNotExist />
                       </Suspense>
-                    );
-                  }}
-                />
-                <Route
-                  render={() => (
-                    <Suspense fallback={<Loader />}>
-                      <ConnectedDoesNotExist />
-                    </Suspense>
-                  )}
-                />
-              </Switch>
-              <Route path={match.path} render={() => <Footer />} />
-            </div>
+                    )}
+                  />
+                </Switch>
+                <Route path={match.path} render={() => <Footer />} />
+              </div>
+              <Helmet>
+                <title>
+                  {pageTitle === undefined
+                    ? t`DEFAULT_TITL${orgName}`
+                    : pageTitle}
+                </title>
+              </Helmet>
+              {loading && <Loader />}
+            </LoadingContext.Provider>
+          ) : null}
+          {css && css.length !== 0 && orgSlug ? (
             <Helmet>
-              <title>
-                {pageTitle === undefined
-                  ? t`DEFAULT_TITL - ${orgName}`
-                  : pageTitle}
-              </title>
-            </Helmet>
-            {cssPath && orgSlug ? (
-              <Helmet>
-                <link rel="stylesheet" href={getAssetPath(orgSlug, cssPath)} />
-              </Helmet>
-            ) : null}
-            {favicon && orgSlug ? (
-              <Helmet>
+              {css.map((path) => (
                 <link
-                  rel="shortcut icon"
-                  type="image/x-icon"
-                  href={getAssetPath(orgSlug, favicon)}
+                  rel="stylesheet"
+                  href={getAssetPath(orgSlug, path)}
+                  key={path}
                 />
-              </Helmet>
-            ) : null}
-            {loading && <Loader />}
-          </LoadingContext.Provider>
+              ))}
+            </Helmet>
+          ) : null}
+          {favicon && orgSlug ? (
+            <Helmet>
+              <link
+                rel="shortcut icon"
+                type="image/x-icon"
+                href={getAssetPath(orgSlug, favicon)}
+              />
+            </Helmet>
+          ) : null}
         </>
-      ) : null;
+      );
     }
     if (organization.exists === false) {
       return (
@@ -343,6 +365,7 @@ OrganizationWrapper.propTypes = {
       title: PropTypes.string,
       pageTitle: PropTypes.string,
       css_path: PropTypes.string,
+      css: PropTypes.array,
       slug: PropTypes.string,
       name: PropTypes.string,
       favicon: PropTypes.string,

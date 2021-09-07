@@ -27,12 +27,13 @@ client:
   favicon: null
 {{/if}}
 
-  # path of the custom css file relative to organization's folder in
-  # assets directory.
+  # path of the custom css file or files relative to organization's
+  # folder in assets directory.
 {{#if assets_confirm}}
-  css_path: "index.css"
+  css:
+    - "index.css"
 {{else}}
-  css_path: null
+  css: null
 {{/if}}
   languages:
     - text: "english"

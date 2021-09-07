@@ -168,6 +168,11 @@ export default class MobilePhoneVerification extends React.Component {
     const {setLoading} = this.context;
     setLoading(true);
     await this.createPhoneToken(true);
+    // reset error messages
+    this.setState({
+      errors: {},
+      code: "",
+    });
     setLoading(false);
   }
 

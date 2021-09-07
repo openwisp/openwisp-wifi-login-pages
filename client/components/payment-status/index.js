@@ -1,6 +1,6 @@
 import {connect} from "react-redux";
 import Component from "./payment-status";
-import {logout, setUserData} from "../../actions/dispatchers";
+import {authenticate, logout, setUserData} from "../../actions/dispatchers";
 
 const mapStateToProps = (state, ownProps) => {
   const conf = state.organization.configuration;
@@ -11,10 +11,11 @@ const mapStateToProps = (state, ownProps) => {
     settings: conf.settings,
     isAuthenticated: conf.isAuthenticated,
     cookies: ownProps.cookies,
-    result: ownProps.result,
+    status: ownProps.status,
   };
 };
 const mapDispatchToProps = (dispatch) => ({
+  authenticate: authenticate(dispatch),
   logout: logout(dispatch),
   setUserData: setUserData(dispatch),
 });

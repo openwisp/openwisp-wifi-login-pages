@@ -3,7 +3,6 @@
 exports[`<PaymentStatus /> rendering with placeholder translation tags should render translation placeholder correctly 1`] = `
 <div
   className="container content"
-  id="not-foud-404"
 >
   <div
     className="inner"
@@ -17,9 +16,7 @@ exports[`<PaymentStatus /> rendering with placeholder translation tags should re
         <h2
           className="row payment-status-row-1"
         >
-          PAY_H
-          : 
-          failed
+          PAY_FAIL
         </h2>
         <div
           className="row payment-status-row-2"
@@ -57,10 +54,63 @@ exports[`<PaymentStatus /> rendering with placeholder translation tags should re
 </div>
 `;
 
+exports[`Test <PaymentStatus /> cases should render draft correctly 1`] = `
+<div
+  className="container content"
+>
+  <div
+    className="inner"
+  >
+    <div
+      className="main-column single"
+    >
+      <div
+        className="inner"
+      >
+        <h2
+          className="row"
+        >
+          PAY_REQ
+        </h2>
+        <div
+          className="row"
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "PAY_WARN53",
+            }
+          }
+        />
+        <div
+          className="row"
+        >
+          <Link
+            className="button full"
+            onClick={[Function]}
+            to="/default/status"
+          >
+            PAY_PROC_BTN
+          </Link>
+        </div>
+        <div
+          className="row"
+        >
+          <button
+            className="button full"
+            onClick={[Function]}
+            type="button"
+          >
+            Cancel operation and log out
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`Test <PaymentStatus /> cases should render failed state 1`] = `
 <div
   className="container content"
-  id="not-foud-404"
 >
   <div
     className="inner"
@@ -74,9 +124,7 @@ exports[`Test <PaymentStatus /> cases should render failed state 1`] = `
         <h2
           className="row payment-status-row-1"
         >
-          Payment
-          : 
-          failed
+          PAY_FAIL
         </h2>
         <div
           className="row payment-status-row-2"

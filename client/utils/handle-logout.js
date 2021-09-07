@@ -4,7 +4,7 @@ import {initialState} from "../reducers/organization";
 import history from "./history";
 
 const redirectToStatus = (setUserData, userData, orgSlug) => {
-  setUserData({...userData, mustLogout: true});
+  setUserData({...userData, mustLogout: true, payment_url: null});
   history.push(`/${orgSlug}/status`);
 };
 

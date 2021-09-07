@@ -23,6 +23,7 @@ import Contact from "../contact-box";
 import Modal from "../modal";
 import getError from "../../utils/get-error";
 import getLanguageHeaders from "../../utils/get-language-headers";
+import redirectToPayment from "../../utils/redirect-to-payment";
 
 const PhoneInput = React.lazy(() => import("react-phone-input-2"));
 
@@ -202,6 +203,14 @@ export default class Registration extends React.Component {
         toast.success(t`REGISTER_SUCCESS`, {
           toastId: mainToastId,
         });
+
+        // if requires_payment
+        // redirect to payment status component
+        if (postData.requires_payment === true) {
+          redirectToPayment(orgSlug);
+          return;
+        }
+
         // will redirect to status which will validate data again
         // and initiate any verification if needed
         authenticate(true);
@@ -479,7 +488,7 @@ export default class Registration extends React.Component {
                           <label htmlFor="username">
                             {t`USERNAME_REG_LBL`}
                           </label>
-                          {getError(errors, "email")}
+                          {getError(errors, "username")}
                           <input
                             className={`input ${
                               errors.username ? "error" : ""
