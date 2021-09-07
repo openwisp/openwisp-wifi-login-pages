@@ -286,6 +286,10 @@ h1 {
   body .input {
     font-size: 16px;
   }
+  .main-column.single {
+    width: 100%;
+    margin: 0 auto;
+  }
 }
 .eye {
   content: url("assets/eye.svg");
