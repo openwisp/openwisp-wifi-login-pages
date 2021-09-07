@@ -430,6 +430,81 @@ describe("<Status /> interactions", () => {
     expect(toast.dismiss).toHaveBeenCalledWith("main_toast_id");
   });
 
+  it("test postMessage event listener firing", async () => {
+    props = createTestProps();
+    const events = {};
+    window.addEventListener = jest.fn((event, callback) => {
+      events[event] = callback;
+    });
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    const handlePostMessageMock = jest.fn();
+    wrapper.instance().handlePostMessage = handlePostMessageMock;
+    wrapper.instance().componentDidMount();
+
+    events.message({
+      origin: "http://localhost",
+      data: {message: "RADIUS Error", type: "authError"},
+    });
+    expect(handlePostMessageMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("test handlePostMessage authError", async () => {
+    props = createTestProps();
+    const setLoadingMock = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: setLoadingMock},
+      disableLifecycleMethods: true,
+    });
+    jest.spyOn(toast, "error");
+    jest.spyOn(toast, "dismiss");
+    const status = wrapper.instance();
+
+    // Test missing message
+    status.handlePostMessage({
+      data: {type: "authError"},
+      origin: "http://localhost",
+    });
+    expect(toast.error).toHaveBeenCalledTimes(0);
+    expect(toast.dismiss).toHaveBeenCalledTimes(0);
+    expect(props.logout).toHaveBeenCalledTimes(0);
+    expect(setLoadingMock).toHaveBeenCalledTimes(0);
+
+    // Test missing type
+    status.handlePostMessage({
+      data: {message: "test"},
+      origin: "http://localhost",
+    });
+    expect(toast.error).toHaveBeenCalledTimes(0);
+    expect(toast.dismiss).toHaveBeenCalledTimes(0);
+    expect(props.logout).toHaveBeenCalledTimes(0);
+    expect(setLoadingMock).toHaveBeenCalledTimes(0);
+
+    // Test event.origin is illegal
+    status.handlePostMessage({
+      data: {message: "RADIUS Error", type: "authError"},
+      origin: "https://example.com",
+    });
+    expect(toast.error).toHaveBeenCalledTimes(0);
+    expect(toast.dismiss).toHaveBeenCalledTimes(0);
+    expect(props.logout).toHaveBeenCalledTimes(0);
+    expect(setLoadingMock).toHaveBeenCalledTimes(0);
+
+    // Test valid message
+    wrapper.instance().componentDidMount();
+    status.handlePostMessage({
+      data: {message: "RADIUS Error", type: "authError"},
+      origin: "http://localhost",
+    });
+    expect(toast.dismiss).toHaveBeenCalledTimes(1);
+    expect(toast.error).toHaveBeenCalledTimes(1);
+    expect(props.logout).toHaveBeenCalledTimes(1);
+    expect(setLoadingMock).toHaveBeenCalledTimes(2);
+    expect(setLoadingMock).toHaveBeenLastCalledWith(false);
+  });
+
   it("should not perform captive portal login (submit loginFormRef), if user is already authenticated", async () => {
     validateToken.mockReturnValue(true);
     props = createTestProps();
