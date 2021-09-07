@@ -735,11 +735,16 @@ JSON translation file used by that specific organization.
 **Note**: Do not remove the content headers from the `.po` files as it is needed
 during the build process.
 
-### Handling Captive Portal Errors
+### Handling Captive Portal / RADIUS Errors
 
-This application is capable of handling RADIUS errors that are encountered while logging into
-the captive portal. To utilise this functionality, you will have to update the error page
-of your captive portal to use [postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) for forwarding RADIUS error to **OpenWISP WiFi Login Pages**.
+This app can handle errors that may encountered during the
+authentication process (eg: maximum available daily/monthly time or
+bandwidth have been consumed).
+
+To use this feature, you will have to update the error page
+of your captive portal to use
+[postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage)
+for forwarding any error message to **OpenWISP WiFi Login Pages**.
 
 Here is an example of authentication error page for pfSense:
 
@@ -749,7 +754,7 @@ Here is an example of authentication error page for pfSense:
   <body>
     <script>
       window.parent.postMessage(
-        "$PORTAL_MESSAGE$",
+        {type: "authError", message: "$PORTAL_MESSAGE$"},
         "https://wifi-login-pages.example.com/",
       );
     </script>
@@ -757,11 +762,11 @@ Here is an example of authentication error page for pfSense:
 </html>
 ```
 
-**Note:** Replace `https://wifi-login-pages.example.com/` with `origin` of your **OpenWISP
-WiFi Login Pages** service.
+**Note:** Replace `https://wifi-login-pages.example.com/` with `origin` of
+your **OpenWISP WiFi Login Pages** service.
 
-With proper configuration, the error messages from your captive portal will be visible to
-users on the **OpenWISP WiFi Login Pages**.
+With the right configuration, the error messages coming from freeradius or
+the captive portal will be visible to users on **OpenWISP WiFi Login Pages**.
 
 ### License
 

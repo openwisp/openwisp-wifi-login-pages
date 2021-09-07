@@ -430,7 +430,7 @@ describe("<Status /> interactions", () => {
     expect(toast.dismiss).toHaveBeenCalledWith("main_toast_id");
   });
 
-  it("test postMessage event listener", async () => {
+  it("test postMessage event listener firing", async () => {
     props = createTestProps();
     const events = {};
     window.addEventListener = jest.fn((event, callback) => {
@@ -444,11 +444,14 @@ describe("<Status /> interactions", () => {
     wrapper.instance().handlePostMessage = handlePostMessageMock;
     wrapper.instance().componentDidMount();
 
-    events.message({origin: "http://localhost", data: "RADIUS Error"});
+    events.message({
+      origin: "http://localhost",
+      data: {message: "RADIUS Error", type: "authError"},
+    });
     expect(handlePostMessageMock).toHaveBeenCalledTimes(1);
   });
 
-  it("test handlePostMessage function", async () => {
+  it("test handlePostMessage authError", async () => {
     props = createTestProps();
     const setLoadingMock = jest.fn();
     wrapper = shallow(<Status {...props} />, {
@@ -458,19 +461,37 @@ describe("<Status /> interactions", () => {
     jest.spyOn(toast, "error");
     const status = wrapper.instance();
 
+    // Test missing message
+    status.handlePostMessage({
+      data: {type: "authError"},
+      origin: "http://localhost",
+    });
+    expect(toast.error).toHaveBeenCalledTimes(0);
+    expect(props.logout).toHaveBeenCalledTimes(0);
+    expect(setLoadingMock).toHaveBeenCalledTimes(0);
+
+    // Test missing type
+    status.handlePostMessage({
+      data: {message: "test"},
+      origin: "http://localhost",
+    });
+    expect(toast.error).toHaveBeenCalledTimes(0);
+    expect(props.logout).toHaveBeenCalledTimes(0);
+    expect(setLoadingMock).toHaveBeenCalledTimes(0);
+
     // Test event.origin is illegal
     status.handlePostMessage({
-      data: "RADIUS Error",
+      data: {message: "RADIUS Error", type: "authError"},
       origin: "https://example.com",
     });
     expect(toast.error).toHaveBeenCalledTimes(0);
     expect(props.logout).toHaveBeenCalledTimes(0);
     expect(setLoadingMock).toHaveBeenCalledTimes(0);
 
-    // Test event.origin is legal
+    // Test valid message
     wrapper.instance().componentDidMount();
     status.handlePostMessage({
-      data: "RADIUS Error",
+      data: {message: "RADIUS Error", type: "authError"},
       origin: "http://localhost",
     });
     expect(toast.error).toHaveBeenCalledTimes(1);

@@ -391,14 +391,16 @@ export default class Status extends React.Component {
   handlePostMessage = async (event) => {
     const {captivePortalLoginForm, logout, cookies, orgSlug} = this.props;
     const {setLoading} = this.context;
+    const {message, type} = event.data;
+    if (!message || type !== "authError") {
+      return;
+    }
     // For security reasons, read https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage#security_concern
     if (
       event.origin === new URL(captivePortalLoginForm.action).origin ||
       event.origin === window.location.origin
     ) {
-      toast.error(event.data, {
-        onOpen: () => toast.dismiss(event.data),
-      });
+      toast.error(message, {autoClose: 10000});
       logout(cookies, orgSlug);
       setLoading(false);
     }
