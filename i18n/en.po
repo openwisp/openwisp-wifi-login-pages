@@ -356,8 +356,8 @@ msgstr "Change Password"
 
 #: client/components/organization-wrapper/organization-wrapper.js:297
 #, javascript-format
-msgid "DEFAULT_TITL - ${ orgName }"
-msgstr "WiFi Login - ${ orgName }"
+msgid "DEFAULT_TITL${ orgName }"
+msgstr "Login to ${ orgName }"
 
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:47
 msgid "PHONE_VERIF_TITL"

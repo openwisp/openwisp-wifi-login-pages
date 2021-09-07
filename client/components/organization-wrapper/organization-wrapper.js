@@ -303,7 +303,7 @@ export default class OrganizationWrapper extends React.Component {
               <Helmet>
                 <title>
                   {pageTitle === undefined
-                    ? t`DEFAULT_TITL - ${orgName}`
+                    ? t`DEFAULT_TITL${orgName}`
                     : pageTitle}
                 </title>
               </Helmet>

@@ -321,8 +321,8 @@
         "msgid": "PASSWORD_CHANGE",
         "msgstr": ["Change Password"]
       },
-      "DEFAULT_TITL - ${ orgName }": {
-        "msgid": "DEFAULT_TITL - ${ orgName }",
+      "DEFAULT_TITL${ orgName }": {
+        "msgid": "DEFAULT_TITL${ orgName }",
         "msgstr": ["WiFi Login - ${ orgName }"]
       },
       "PHONE_VERIF_TITL": {

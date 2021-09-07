@@ -551,6 +551,8 @@ msgstr "Nome utente"
 #: client/components/registration/registration.js:492
 msgid "USERNAME_REG_PHOLD"
 msgstr "nome utente"
+msgid "DEFAULT_TITL${ orgName }"
+msgstr "Accedi a ${ orgName }"
 
 #: client/components/status/status.js:872
 msgid "CP_LOGIN"

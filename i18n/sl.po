@@ -516,7 +516,7 @@ msgstr "neobvezno"
 
 #: client/components/organization-wrapper/organization-wrapper.js:297
 #, javascript-format
-msgid "DEFAULT_TITL - ${ orgName }"
+msgid "DEFAULT_TITL${ orgName }"
 msgstr "Prijava v WiFi"
 
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:200
