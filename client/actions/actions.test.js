@@ -13,6 +13,7 @@ import logout from "./logout";
 import parseOrganizations from "./parse-organizations";
 import setLanguage from "./set-language";
 import setOrganization from "./set-organization";
+import {initialState} from "../reducers/organization";
 
 jest.mock("../utils/get-config");
 jest.mock("../utils/authenticate");
@@ -59,11 +60,7 @@ describe("actions testing", () => {
   it("should create actions to set current organization", async () => {
     const orgConfig = testOrgConfig[2];
     const orgConfig2 = testOrgConfig[1];
-    const userData = {
-      is_active: true,
-      is_verified: null,
-      mustLogin: true,
-    };
+    const {userData} = initialState;
     orgConfig.userData = userData;
     orgConfig2.userData = userData;
     testOrgConfig[0].userData = userData;

@@ -16,8 +16,8 @@ import LoadingContext from "../../utils/loading-context";
 import Loader from "../../utils/loader";
 import needsVerify from "../../utils/needs-verify";
 import loadTranslation from "../../utils/load-translation";
+import Login from "../login";
 import {
-  Login,
   Registration,
   Status,
   PasswordChange,
@@ -213,11 +213,7 @@ export default class OrganizationWrapper extends React.Component {
                     render={(props) => {
                       if (isAuthenticated && is_active)
                         return <Redirect to={`/${orgSlug}/status`} />;
-                      return (
-                        <Suspense fallback={<Loader />}>
-                          <Login {...props} />
-                        </Suspense>
-                      );
+                      return <Login {...props} />;
                     }}
                   />
                   <Route

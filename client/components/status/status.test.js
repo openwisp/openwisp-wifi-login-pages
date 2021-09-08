@@ -196,11 +196,9 @@ describe("<Status /> interactions", () => {
     await tick();
     expect(wrapper.instance().state.activeSessions.length).toBe(1);
     expect(wrapper.instance().props.logout).toHaveBeenCalled();
-    expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith({
-      is_active: true,
-      is_verified: null,
-      mustLogin: true,
-    });
+    expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith(
+      initialState.userData,
+    );
   });
 
   it("test componentDidMount lifecycle method", async () => {
@@ -913,27 +911,19 @@ describe("<Status /> interactions", () => {
     await tick();
     expect(status.repeatLogin).toBe(true);
     await status.handleLogoutIframe();
-    jest.advanceTimersByTime(1000);
+    jest.runAllTimers();
     expect(status.state.loggedOut).toBe(false);
     expect(status.repeatLogin).toBe(false);
     expect(mockRef.submit.mock.calls.length).toBe(1);
     expect(handleLogout).toHaveBeenCalledWith(false, true);
-    expect(status.props.logout).not.toHaveBeenCalled();
-    expect(setLoading.mock.calls).toEqual([[true], [true], [true]]);
+    expect(status.props.logout).toHaveBeenCalled();
+    expect(setLoading.mock.calls).toEqual([[true], [true], [false]]);
     expect(Status.prototype.getUserActiveRadiusSessions.mock.calls.length).toBe(
       1,
     );
-    expect(componentDidMount.mock.calls.length).toBe(1);
+    expect(componentDidMount.mock.calls.length).toBe(0);
     expect(setUserData.mock.calls.length).toBe(1);
-    const userData = {
-      ...responseData,
-      mustLogin: true,
-      mustLogout: false,
-      repeatLogin: false,
-      radius_user_token: undefined,
-    };
-    expect(setUserData).toHaveBeenCalledWith(userData);
-    expect(status.props.userData).toStrictEqual(userData);
+    expect(setUserData).toHaveBeenCalledWith(initialState.userData);
     expect(spyToast.mock.calls.length).toBe(0);
   });
 

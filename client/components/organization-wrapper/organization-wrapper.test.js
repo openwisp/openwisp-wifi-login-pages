@@ -11,8 +11,8 @@ import OrganizationWrapper from "./organization-wrapper";
 import Footer from "../footer";
 import Loader from "../../utils/loader";
 import needsVerify from "../../utils/needs-verify";
+import Login from "../login";
 import {
-  Login,
   Registration,
   Status,
   PasswordChange,
@@ -371,13 +371,7 @@ describe("Test Organization Wrapper for unauthenticated users", () => {
       ),
     );
     render = pathMap["/default/login"];
-    expect(JSON.stringify(render())).toEqual(
-      JSON.stringify(
-        <Suspense fallback={<Loader />}>
-          <Login />
-        </Suspense>,
-      ),
-    );
+    expect(JSON.stringify(render())).toEqual(JSON.stringify(<Login />));
     render = pathMap["/default/status"];
     // userAutoLogin is true
     expect(render()).toEqual(<Redirect to="/default/logout" />);

@@ -7,6 +7,7 @@ import {
   initializeData,
   tearDown,
   getPhoneToken,
+  successToastSelector,
 } from "./utils";
 
 const fillPhoneField = async (driver, data) => {
@@ -48,7 +49,7 @@ describe("Selenium tests for <MobilePhoneChange />", () => {
     await fillPhoneField(driver, data);
     let submitBtn = await getElementByCss(driver, "input[type=submit]");
     submitBtn.click();
-    let successToastDiv = await getElementByCss(driver, "div[role=alert]");
+    let successToastDiv = await getElementByCss(driver, successToastSelector);
     await driver.wait(until.elementIsVisible(successToastDiv));
     expect(await driver.getCurrentUrl()).toEqual(
       urls.mobileVerification(data.organization),

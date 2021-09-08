@@ -347,17 +347,16 @@ export default class Status extends React.Component {
     if (!this.logoutIframeRef || !this.logoutIframeRef.current) {
       return;
     }
-    const {userData, setUserData, statusPage, orgSlug} = this.props;
+    const {setUserData, statusPage, orgSlug, logout, cookies} = this.props;
     const {saml_logout_url} = statusPage;
     const {loggedOut} = this.state;
     const {repeatLogin} = this;
     const {setLoading} = this.context;
     const logoutMethodKey = `${orgSlug}_logout_method`;
     const logoutMethod = localStorage.getItem(logoutMethodKey);
+    const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
 
     if (loggedOut) {
-      const {logout, cookies} = this.props;
-      const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
       logout(cookies, orgSlug, userAutoLogin);
       toast.success(t`LOGOUT_SUCCESS`);
 
@@ -371,16 +370,16 @@ export default class Status extends React.Component {
     }
 
     if (repeatLogin) {
-      userData.mustLogin = true;
-      userData.mustLogout = false;
-      userData.repeatLogin = false;
-      // will trigger the creation of a new radius token
-      userData.radius_user_token = undefined;
       this.repeatLogin = false;
-      setUserData(userData);
       // wait to trigger login to avoid getting stuck
       // in captive portal firewall rule reloading
-      setTimeout(async () => this.componentDidMount(), 1000);
+      toast.info(t`PLEASE_WAIT`, {autoClose: 6000});
+      setTimeout(async () => {
+        toast.info(t`PLEASE_LOGIN`, {autoClose: 10000});
+        setUserData(initialState.userData);
+        setLoading(false);
+        logout(cookies, orgSlug, userAutoLogin);
+      }, 6000);
     }
   };
 

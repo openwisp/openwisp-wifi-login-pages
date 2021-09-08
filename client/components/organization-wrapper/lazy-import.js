@@ -11,9 +11,6 @@ export const Registration = React.lazy(() => import("../registration"));
 export const Status = lazyWithPreload(() =>
   import(/* webpackChunkName: 'Status' */ "../status"),
 );
-export const Login = React.lazy(() =>
-  import(/* webpackChunkName: 'Login' */ "../login"),
-);
 export const PasswordChange = React.lazy(() => import("../password-change"));
 export const MobilePhoneChange = React.lazy(() =>
   import("../mobile-phone-change"),

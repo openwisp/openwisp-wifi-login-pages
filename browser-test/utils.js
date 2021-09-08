@@ -75,6 +75,8 @@ export const urls = {
     `http://0.0.0.0:8080/${slug}/change-phone-number`,
 };
 
+export const successToastSelector = ".Toastify__toast--success div[role=alert]";
+
 // increase the jest global test time out
 // because browser tests can take a bit longer to complete
 jest.setTimeout(10000);

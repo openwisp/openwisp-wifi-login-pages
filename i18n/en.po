@@ -22,16 +22,16 @@ msgstr "privacy policy"
 msgid "TOS_TITL"
 msgstr "terms and conditions"
 
-#: client/components/status/status.js:443
-#: client/components/status/status.js:634
+#: client/components/status/status.js:467
+#: client/components/status/status.js:658
 msgid "ACCT_ACTIVE"
 msgstr "session is active"
 
 #: client/components/logout/logout.js:23
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:265
-#: client/components/status/status.js:467
-#: client/components/status/status.js:548
-#: client/components/status/status.js:730
+#: client/components/status/status.js:491
+#: client/components/status/status.js:572
+#: client/components/status/status.js:754
 msgid "LOGOUT"
 msgstr "Logout"
 
@@ -39,72 +39,72 @@ msgstr "Logout"
 msgid "STATUS_TITL"
 msgstr "Status"
 
-#: client/components/status/status.js:626
+#: client/components/status/status.js:650
 msgid "ACCT_START_TIME"
 msgstr "Start time"
 
-#: client/components/status/status.js:627
+#: client/components/status/status.js:651
 msgid "ACCT_STOP_TIME"
 msgstr "Stop time"
 
-#: client/components/status/status.js:628
+#: client/components/status/status.js:652
 msgid "ACCT_DURATION"
 msgstr "Duration"
 
-#: client/components/status/status.js:629
+#: client/components/status/status.js:653
 msgid "ACCT_DOWNLOAD"
 msgstr "Download"
 
-#: client/components/status/status.js:630
+#: client/components/status/status.js:654
 msgid "ACCT_UPLOAD"
 msgstr "Upload"
 
-#: client/components/status/status.js:631
+#: client/components/status/status.js:655
 msgid "ACCT_DEVICE_ADDRESS"
 msgstr "Device address"
 
-#: client/components/status/status.js:640
+#: client/components/status/status.js:664
 msgid "STATUS"
 msgstr "Status"
 
-#: client/components/status/status.js:641
+#: client/components/status/status.js:665
 msgid "LOGGED_IN"
 msgstr "Logged in"
 
-#: client/components/status/status.js:647
+#: client/components/status/status.js:671
 msgid "USERNAME"
 msgstr "Username"
 
-#: client/components/status/status.js:650
+#: client/components/status/status.js:674
 msgid "PHONE_NUMBER"
 msgstr "Phone number"
 
-#: client/components/status/status.js:678
+#: client/components/status/status.js:702
 msgid "STATUS_CONTENT"
 msgstr ""
 "WiFi Login Successful!\n"
 "        You can now use the internet.\n"
 "        You may leave this page open in case you want to log out."
 
-#: client/components/status/status.js:691
+#: client/components/status/status.js:715
 msgid "LOGOUT_MODAL_CONTENT"
 msgstr "Do you want to automatically log in the next time?"
 
-#: client/components/status/status.js:699
+#: client/components/status/status.js:723
 msgid "YES"
 msgstr "Yes"
 
-#: client/components/status/status.js:706
+#: client/components/status/status.js:730
 msgid "NO"
 msgstr "No"
 
-#: client/components/registration/registration.js:300
+#: client/components/registration/registration.js:298
 msgid "PLAN_SETTING_TXT"
 msgstr "Please select the preferred subscription plan"
 
 #: client/components/login/login.js:139
 #: client/components/mobile-phone-change/mobile-phone-change.js:139
-#: client/components/registration/registration.js:392
+#: client/components/registration/registration.js:390
 msgid "PHONE_LBL"
 msgstr "Mobile phone number"
 
@@ -112,18 +112,18 @@ msgstr "Mobile phone number"
 #: client/components/login/login.js:172
 #: client/components/mobile-phone-change/mobile-phone-change.js:155
 #: client/components/mobile-phone-change/mobile-phone-change.js:180
-#: client/components/registration/registration.js:416
-#: client/components/registration/registration.js:450
+#: client/components/registration/registration.js:414
+#: client/components/registration/registration.js:448
 msgid "PHONE_PHOLD"
 msgstr "enter mobile phone number"
 
 #: client/components/password-reset/password-reset.js:116
-#: client/components/registration/registration.js:479
+#: client/components/registration/registration.js:477
 msgid "EMAIL_PHOLD"
 msgstr "email address"
 
 #: client/components/password-reset/password-reset.js:118
-#: client/components/registration/registration.js:482
+#: client/components/registration/registration.js:480
 msgid "EMAIL_PTRN_DESC"
 msgstr "enter valid email address"
 
@@ -135,116 +135,116 @@ msgstr "Email, phone number or username"
 msgid "USERNAME_LOG_PHOLD"
 msgstr "enter email, phone number or username"
 
-#: client/components/registration/registration.js:505
+#: client/components/registration/registration.js:503
 msgid "USERNAME_PTRN_DESC"
 msgstr "only letters, numbers and @/./+/-/_ characters"
 
-#: client/components/registration/registration.js:515
-#: client/components/registration/registration.js:516
+#: client/components/registration/registration.js:513
+#: client/components/registration/registration.js:514
 msgid "FIRST_NAME_LBL"
 msgstr "First name"
 
-#: client/components/registration/registration.js:533
+#: client/components/registration/registration.js:531
 msgid "FIRST_NAME_PHOLD"
 msgstr "first name"
 
-#: client/components/registration/registration.js:543
-#: client/components/registration/registration.js:544
+#: client/components/registration/registration.js:541
+#: client/components/registration/registration.js:542
 msgid "LAST_NAME_LBL"
 msgstr "Last name"
 
-#: client/components/registration/registration.js:561
+#: client/components/registration/registration.js:559
 msgid "LAST_NAME_PHOLD"
 msgstr "last name"
 
-#: client/components/registration/registration.js:570
-#: client/components/registration/registration.js:571
+#: client/components/registration/registration.js:568
+#: client/components/registration/registration.js:569
 msgid "BIRTH_DATE_LBL"
 msgstr "Birth date"
 
-#: client/components/registration/registration.js:595
-#: client/components/registration/registration.js:596
+#: client/components/registration/registration.js:593
+#: client/components/registration/registration.js:594
 msgid "LOCATION_LBL"
 msgstr "Location"
 
-#: client/components/registration/registration.js:611
+#: client/components/registration/registration.js:609
 msgid "LOCATION_PHOLD"
 msgstr "location"
 
-#: client/components/registration/registration.js:614
+#: client/components/registration/registration.js:612
 msgid "LOCATION_PTRN_DESC"
 msgstr "only letters, numbers, spaces, punctuation"
 
-#: client/components/login/login.js:348
+#: client/components/login/login.js:347
 #: client/components/password-confirm/password-confirm.js:145
-#: client/components/registration/registration.js:620
+#: client/components/registration/registration.js:618
 msgid "PWD_LBL"
 msgstr "Password"
 
-#: client/components/login/login.js:358
+#: client/components/login/login.js:357
 #: client/components/password-confirm/password-confirm.js:156
-#: client/components/registration/registration.js:630
+#: client/components/registration/registration.js:628
 msgid "PWD_PHOLD"
 msgstr "password"
 
-#: client/components/login/login.js:360
+#: client/components/login/login.js:359
 #: client/components/password-change/password-change.js:129
 #: client/components/password-change/password-change.js:155
 #: client/components/password-confirm/password-confirm.js:158
 #: client/components/password-confirm/password-confirm.js:186
-#: client/components/registration/registration.js:632
-#: client/components/registration/registration.js:661
+#: client/components/registration/registration.js:630
+#: client/components/registration/registration.js:659
 msgid "PWD_PTRN_DESC"
 msgstr "password must be a minimum of 6 characters"
 
-#: client/components/registration/registration.js:679
+#: client/components/registration/registration.js:677
 msgid "COUNTRY_LBL"
 msgstr "Country"
 
-#: client/components/registration/registration.js:688
+#: client/components/registration/registration.js:686
 msgid "CITY_LBL"
 msgstr "City"
 
-#: client/components/registration/registration.js:701
+#: client/components/registration/registration.js:699
 msgid "CITY_PHOLD"
 msgstr "enter city"
 
-#: client/components/registration/registration.js:705
+#: client/components/registration/registration.js:703
 msgid "STREET_LBL"
 msgstr "Street"
 
-#: client/components/registration/registration.js:718
+#: client/components/registration/registration.js:716
 msgid "STREET_PHOLD"
 msgstr "enter street"
 
-#: client/components/registration/registration.js:722
+#: client/components/registration/registration.js:720
 msgid "ZIP_CODE_LBL"
 msgstr "Postal code"
 
-#: client/components/registration/registration.js:739
+#: client/components/registration/registration.js:737
 msgid "TAX_NUMBER_LBL"
 msgstr "Tax number"
 
-#: client/components/registration/registration.js:751
+#: client/components/registration/registration.js:749
 msgid "TAX_NUMBER_PHOLD"
 msgstr "enter your tax identification number (optional)"
 
-#: client/components/registration/registration.js:753
+#: client/components/registration/registration.js:751
 msgid "TAX_NUMBER_PTRN_DESC"
 msgstr "only numbers and letters"
 
-#: client/components/registration/registration.js:768
+#: client/components/registration/registration.js:766
 msgid "REGISTER_ADD_INFO_TXT"
 msgstr ""
 "By signing up, you accept the {terms_and_conditions} and the "
 "{privacy_policy} of this WiFi service."
 
-#: client/components/login/login.js:412
-#: client/components/registration/registration.js:794
+#: client/components/login/login.js:411
+#: client/components/registration/registration.js:792
 msgid "FORGOT_PASSWORD"
 msgstr "Forgot your password?"
 
-#: client/components/registration/registration.js:801
+#: client/components/registration/registration.js:799
 msgid "LINKS_LOGIN_TXT"
 msgstr "Already have an account? Log in"
 
@@ -252,34 +252,34 @@ msgstr "Already have an account? Log in"
 msgid "REGISTRATION_TITL"
 msgstr "Sign up"
 
-#: client/components/payment-status/payment-status.js:78
+#: client/components/payment-status/payment-status.js:84
 msgid "PAY_SUCCESS"
 msgstr "Payment received successfully."
 
-#: client/components/payment-status/payment-status.js:136
+#: client/components/payment-status/payment-status.js:143
 #. failed payment case
 msgid "PAY_FAIL"
 msgstr "Payment Failed"
 
-#: client/components/payment-status/payment-status.js:138
+#: client/components/payment-status/payment-status.js:144
 #. failed payment case
 msgid "PAY_SUB_H"
 msgstr "Something went wrong with the payment."
 
-#: client/components/payment-status/payment-status.js:141
+#: client/components/payment-status/payment-status.js:147
 #. failed payment case
 msgid "PAY_TRY_AGAIN_BTN"
 msgstr "Try again"
 
-#: client/components/payment-status/payment-status.js:146
+#: client/components/payment-status/payment-status.js:152
 #. failed payment case
 msgid "PAY_GIVE_UP_TXT"
 msgstr ""
 "If you cannot complete the transaction you can either try to get in touch "
 "with your bank or cancel the operation."
 
-#: client/components/payment-status/payment-status.js:116
-#: client/components/payment-status/payment-status.js:152
+#: client/components/payment-status/payment-status.js:125
+#: client/components/payment-status/payment-status.js:158
 msgid "PAY_GIVE_UP_BTN"
 msgstr "Cancel operation and log out"
 
@@ -323,13 +323,13 @@ msgstr "Please enter your new password below."
 
 #: client/components/password-change/password-change.js:143
 #: client/components/password-confirm/password-confirm.js:173
-#: client/components/registration/registration.js:648
+#: client/components/registration/registration.js:646
 msgid "CONFIRM_PWD_LBL"
 msgstr "Confirm password"
 
 #: client/components/password-change/password-change.js:153
 #: client/components/password-confirm/password-confirm.js:184
-#: client/components/registration/registration.js:659
+#: client/components/registration/registration.js:657
 msgid "CONFIRM_PWD_PHOLD"
 msgstr "confirm password"
 
@@ -354,7 +354,7 @@ msgstr "Your new Password"
 msgid "PASSWORD_CHANGE"
 msgstr "Change Password"
 
-#: client/components/organization-wrapper/organization-wrapper.js:297
+#: client/components/organization-wrapper/organization-wrapper.js:306
 #, javascript-format
 msgid "DEFAULT_TITL${ orgName }"
 msgstr "Login to ${ orgName }"
@@ -417,34 +417,34 @@ msgstr "Login again"
 msgid "USERNAME_LOG_TITL"
 msgstr "enter valid email address, an username or a phone number"
 
-#: client/components/login/login.js:375
+#: client/components/login/login.js:374
 msgid "REMEMBER_ME"
 msgstr "remember me on this device"
 
-#: client/components/login/login.js:382
+#: client/components/login/login.js:381
 msgid "LOGIN_ADD_INFO_TXT"
 msgstr ""
 "By logging in, you accept the {terms_and_conditions} and the "
 "{privacy_policy} of this WiFi service. "
 
 #: client/components/login/login.js:52
-#: client/components/login/login.js:393
+#: client/components/login/login.js:392
 msgid "LOGIN"
 msgstr "Log in"
 
-#: client/components/login/login.js:399
+#: client/components/login/login.js:398
 msgid "REGISTER_BTN_LBL"
 msgstr "Not registered yet?"
 
-#: client/components/login/login.js:404
-#: client/components/registration/registration.js:781
+#: client/components/login/login.js:403
+#: client/components/registration/registration.js:779
 msgid "REGISTER_BTN_TXT"
 msgstr "Sign up"
 
 #: client/components/contact-box/contact.js:25
 #: client/components/password-reset/password-reset.js:106
-#: client/components/registration/registration.js:469
-#: client/components/status/status.js:644
+#: client/components/registration/registration.js:467
+#: client/components/status/status.js:668
 msgid "EMAIL"
 msgstr "Email"
 
@@ -478,10 +478,10 @@ msgstr "Change your phone number"
 msgid "CANCEL"
 msgstr "Cancel"
 
-#: client/components/registration/registration.js:516
-#: client/components/registration/registration.js:544
-#: client/components/registration/registration.js:571
-#: client/components/registration/registration.js:596
+#: client/components/registration/registration.js:514
+#: client/components/registration/registration.js:542
+#: client/components/registration/registration.js:569
+#: client/components/registration/registration.js:594
 msgid "OPTIONAL"
 msgstr "optional"
 
@@ -495,8 +495,8 @@ msgstr "Go back to homepage"
 
 #: client/components/login/login.js:220
 #: client/components/registration/registration.js:86
-#: client/components/status/status.js:243
-#: client/components/status/status.js:246
+#: client/components/status/status.js:247
+#: client/components/status/status.js:251
 #: client/utils/handle-logout.js:34
 #: client/utils/validate-token.js:45
 msgid "ERR_OCCUR"
@@ -511,8 +511,8 @@ msgstr "Login error occurred."
 msgid "LOGIN_SUCCESS"
 msgstr "Login successful"
 
-#: client/components/status/status.js:295
-#: client/components/status/status.js:357
+#: client/components/status/status.js:300
+#: client/components/status/status.js:361
 #: client/utils/handle-logout.js:33
 msgid "LOGOUT_SUCCESS"
 msgstr "Logout successful"
@@ -531,7 +531,7 @@ msgstr "An error occurred, the password has not been changed."
 msgid "PWD_CNF_ERR"
 msgstr "The two password fields didn't match."
 
-#: client/components/registration/registration.js:225
+#: client/components/registration/registration.js:222
 msgid "REGISTER_ERR"
 msgstr "Registration error."
 
@@ -545,41 +545,50 @@ msgstr ""
 "Your account has been deactivated. Please contact customer support for more "
 "information."
 
-#: client/components/registration/registration.js:489
+#: client/components/registration/registration.js:487
 msgid "USERNAME_REG_LBL"
 msgstr "Username"
 
-#: client/components/registration/registration.js:502
+#: client/components/registration/registration.js:500
 msgid "USERNAME_REG_PHOLD"
 msgstr "Username"
 
-#: client/components/status/status.js:873
+#: client/components/status/status.js:897
 msgid "CP_LOGIN"
 msgstr ""
 "We are initializing your session in the WiFi service, it may take a few "
 "seconds, please wait ..."
 
-#: client/components/payment-status/payment-status.js:94
+#: client/components/payment-status/payment-status.js:100
 msgid "PAY_REQ"
 msgstr "Payment required to proceed"
 
-#: client/components/payment-status/payment-status.js:106
+#: client/components/payment-status/payment-status.js:115
 msgid "PAY_PROC_BTN"
 msgstr "Proceed with the payment"
 
-#: client/components/payment-status/payment-status.js:97
+#: client/components/payment-status/payment-status.js:105
 #, javascript-format
 msgid "PAY_WARN${ timeout }${ maxAttempts }"
 msgstr ""
-"<p>By clicking on the button below you will be redirected to our "
-"payment gateway service where you can safely use your credit/debit card. "
-"From there you will be redirected to the website of your bank to "
-"confirm the transaction."
-"</p><p>You will have ${ timeout } minutes to complete the process.<br />"
-"<strong>For this reason we recommend preparing your debit/credit "
-"card before initiating the payment process.</strong></p>"
-"<p>If for any reason the process is not completed within the "
-"available time, the internet connection which allows you to "
-"reach the website of your bank will be closed, if this happens "
-"you can just log in again with the credentials you just registered and "
-"repeat the process up a maximum of ${ maxAttempts } times.</p>"
+"<p>By clicking on the button below you will be redirected to our payment "
+"gateway service where you can safely use your credit/debit card. From there "
+"you will be redirected to the website of your bank to confirm the "
+"transaction.</p><p>You will have ${ timeout } minutes to complete the "
+"process.<br /><strong>For this reason we recommend preparing your "
+"debit/credit card before initiating the payment process.</strong></p><p>If "
+"for any reason the process is not completed within the available time, the "
+"internet connection which allows you to reach the website of your bank will "
+"be closed, if this happens you can just log in again with the credentials "
+"you just registered and repeat the process up a maximum of ${ maxAttempts } "
+"times.</p>"
+
+#: client/components/status/status.js:375
+#. wait to trigger login to avoid getting stuck
+#. in captive portal firewall rule reloading
+msgid "PLEASE_WAIT"
+msgstr "Please wait..."
+
+#: client/components/status/status.js:377
+msgid "PLEASE_LOGIN"
+msgstr ""

@@ -23,6 +23,7 @@ import needsVerify from "./needs-verify";
 import loader from "./loader";
 import handleChange from "./handle-change";
 import redirectToPayment from "./redirect-to-payment";
+import {initialState} from "../reducers/organization";
 
 jest.mock("axios");
 jest.mock("./load-translation");
@@ -305,9 +306,7 @@ describe("Validate Token tests", () => {
     );
     expect(setUserData.mock.calls.length).toBe(1);
     expect(console.log).toHaveBeenCalledWith(response);
-    expect(setUserData.mock.calls.pop()).toEqual([
-      {is_active: true, is_verified: null, mustLogin: true},
-    ]);
+    expect(setUserData.mock.calls.pop()).toEqual([initialState.userData]);
   });
 });
 describe("password-toggle tests", () => {

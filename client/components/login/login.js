@@ -198,6 +198,7 @@ export default class Login extends React.Component {
       errors: {},
     });
     setLoading(true);
+    this.waitToast = toast.info(t`PLEASE_WAIT`, {autoClose: 20000});
 
     return axios({
       method: "post",
@@ -252,9 +253,15 @@ export default class Login extends React.Component {
           },
         });
 
+        this.dismissWait();
         setLoading(false);
       });
   }
+
+  dismissWait = () => {
+    const {waitToast} = this;
+    if (waitToast) toast.dismiss(this.waitToast);
+  };
 
   handleAuthentication = (data = {}, useSessionStorage = false) => {
     const {orgSlug, authenticate, setUserData} = this.props;
@@ -267,6 +274,7 @@ export default class Login extends React.Component {
     if (!remember_me || useSessionStorage) {
       sessionStorage.setItem(`${orgSlug}_auth_token`, data.key);
     }
+    this.dismissWait();
     toast.success(t`LOGIN_SUCCESS`, {
       toastId: mainToastId,
     });
