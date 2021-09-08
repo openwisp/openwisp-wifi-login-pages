@@ -768,6 +768,40 @@ your **OpenWISP WiFi Login Pages** service.
 With the right configuration, the error messages coming from freeradius or
 the captive portal will be visible to users on **OpenWISP WiFi Login Pages**.
 
+### Allowing users to manage account from the Internet
+
+With following configuration **OpenWISP WiFi Login Pages** can allow users to
+login and manage there account even when they are not connected to the
+WiFi service.
+
+Create a small web application which can serve the endpoints entered in
+`captive_portal_login_form.action` and `captive_portal_logout_form.action`
+of organization configuration.
+
+The web application should serve the following HTML on those endpoints:
+
+```html
+<!DOCTYPE html>
+<html>
+  <body>
+    <script>
+      window.parent.postMessage(
+        {type: "internet-mode"},
+        "https://wifi-login-pages.example.com/",
+      );
+    </script>
+  </body>
+</html>
+```
+
+**Note:** Replace `https://wifi-login-pages.example.com/` with `origin` of
+your **OpenWISP WiFi Login Pages** service.
+
+Assign a subdomain to both captive portal and system running the web application
+you just created. Configure your DNS such that accessing the subdomain from the
+WiFi resolves it to captive portal while accessing it from the internet resolves
+it to the web application.
+
 ### License
 
 See [LICENSE](https://github.com/openwisp/openwisp-wifi-login-pages/blob/master/LICENSE).

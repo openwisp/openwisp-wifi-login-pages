@@ -53,13 +53,19 @@ exports[`<Status /> rendering should render correctly 1`] = `
         <div
           className="inner"
         >
-          <p>
+          <p
+            className="status-content"
+          >
             WiFi Login Successful!
           </p>
-          <p>
+          <p
+            className="status-content"
+          >
             You can now use the internet.
           </p>
-          <p>
+          <p
+            className="status-content"
+          >
             You may leave this page open in case you want to log out.
           </p>
           <p>
@@ -224,7 +230,9 @@ exports[`<Status /> rendering with placeholder translation tags should render tr
         <div
           className="inner"
         >
-          <p>
+          <p
+            className="status-content"
+          >
             STATUS_CONTENT
           </p>
           <p>
