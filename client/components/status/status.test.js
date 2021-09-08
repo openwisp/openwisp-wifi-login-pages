@@ -517,7 +517,7 @@ describe("<Status /> interactions", () => {
       data: {type: "internet-mode"},
       origin: "http://localhost",
     });
-    expect(status.state.publicMode).toEqual(true);
+    expect(status.state.internetMode).toEqual(true);
   });
 
   it("should not perform captive portal login (submit loginFormRef), if user is already authenticated", async () => {
@@ -1188,7 +1188,7 @@ describe("<Status /> interactions", () => {
     expect(toast.success).not.toHaveBeenCalled();
     expect(result).toBe();
   });
-  it("test handleLogout publicMode", async () => {
+  it("test handleLogout internetMode", async () => {
     validateToken.mockReturnValue(true);
     const prop = createTestProps();
     const session = {start_time: "2021-07-08T00:22:28-04:00", stop_time: null};
@@ -1202,26 +1202,26 @@ describe("<Status /> interactions", () => {
       .instance()
       .setState({sessionsToLogout: [session], activeSession: [session]});
 
-    // Test user logged in from internet(publicMode)
-    wrapper.instance().setState({publicMode: true});
+    // Test user logged in from internet(internetMode)
+    wrapper.instance().setState({internetMode: true});
     wrapper.instance().handleLogout(true, true);
     await tick();
     expect(mockRef.submit).toHaveBeenCalledTimes(0);
 
     // Test user logged in from WiFi
-    wrapper.instance().setState({publicMode: false});
+    wrapper.instance().setState({internetMode: false});
     wrapper.instance().handleLogout(true, true);
     await tick();
     expect(mockRef.submit).toHaveBeenCalledTimes(1);
   });
-  it("should not display STATUS_CONTENT when logged in publicMode", () => {
+  it("should not display STATUS_CONTENT when logged in internetMode", () => {
     const prop = createTestProps();
     prop.isAuthenticated = true;
     wrapper = shallow(<Status {...prop} />, {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: true,
     });
-    wrapper.instance().setState({publicMode: true});
+    wrapper.instance().setState({internetMode: true});
     expect(wrapper.find("status-content").length).toEqual(0);
   });
   it("should return if loginIframe is not loaded", async () => {

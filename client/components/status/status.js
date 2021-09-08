@@ -47,7 +47,7 @@ export default class Status extends React.Component {
       loadSpinner: true,
       modalActive: false,
       rememberMe: false,
-      publicMode: false,
+      internetMode: false,
     };
     this.repeatLogin = false;
     this.getUserRadiusSessions = this.getUserRadiusSessions.bind(this);
@@ -278,7 +278,7 @@ export default class Status extends React.Component {
     localStorage.setItem("userAutoLogin", userAutoLogin);
     setLoading(true);
     await this.getUserActiveRadiusSessions(params);
-    const {sessionsToLogout, publicMode} = this.state;
+    const {sessionsToLogout, internetMode} = this.state;
 
     if (sessionsToLogout.length > 0) {
       if (this.logoutFormRef && this.logoutFormRef.current) {
@@ -287,7 +287,7 @@ export default class Status extends React.Component {
         } else {
           this.repeatLogin = true;
         }
-        if (!publicMode) {
+        if (!internetMode) {
           this.logoutFormRef.current.submit();
         }
         return;
@@ -413,7 +413,7 @@ export default class Status extends React.Component {
 
         case "internet-mode":
           this.setState({
-            publicMode: true,
+            internetMode: true,
           });
           break;
 
@@ -717,7 +717,7 @@ export default class Status extends React.Component {
       loadSpinner,
       modalActive,
       rememberMe,
-      publicMode,
+      internetMode,
     } = this.state;
     const user_info = this.getUserInfo();
     const contentArr = t`STATUS_CONTENT`.split("\n");
@@ -757,7 +757,7 @@ export default class Status extends React.Component {
           <div className="inner">
             <div className="main-column">
               <div className="inner">
-                {!publicMode &&
+                {!internetMode &&
                   contentArr.map((text) => {
                     if (text !== "")
                       return (
