@@ -398,9 +398,7 @@ export default class Status extends React.Component {
     ) {
       switch (type) {
         case "authError":
-          if (!message) {
-            break;
-          }
+          if (!message) break;
           toast.dismiss();
           /* disable ttag */
           toast.error(gettext(message), {
