@@ -11,8 +11,8 @@
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: local("Montserrat SemiBold"), local("Montserrat-SemiBold"),
-    url(assets/fonts/montserrat-semi-bold.woff2) format("woff2");
+  src: local("Montserrat Bold"), local("Montserrat-Bold"),
+    url(assets/fonts/montserrat-bold.woff2) format("woff2");
 }
 
 html,
