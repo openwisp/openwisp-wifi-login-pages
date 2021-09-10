@@ -34,7 +34,7 @@ body {
   border: 0;
 }
 .button {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: #333333;
   font-size: 16px;
   font-weight: bold;
   color: #ffffff;
@@ -60,6 +60,24 @@ body {
   justify-content: center;
   width: 100%;
   line-height: 24px;
+}
+.logout .button {
+  background: #ba2121 !important;
+}
+.submit .button {
+  background: #498b26 !important;
+}
+.cancel .button {
+  background: #ba2121 !important;
+}
+.submit .button:hover {
+  background: rgba(73, 139, 38, 0.9) !important;
+}
+.logout .button:hover {
+  background: rgba(186, 33, 33, 0.9) !important;
+}
+.cancel .button:hover {
+  background: rgba(186, 33, 33, 0.9) !important;
 }
 .button:hover,
 .button:focus {
@@ -208,11 +226,11 @@ body .input,
 }
 .main-column,
 .bg {
-  background: #d3d3d3;
+  background: #f8f8f8;
 }
 .side-column {
   width: 44%;
-  background: #eee;
+  background: #f8f8f8;
   padding: 30px;
   color: #000;
   border-radius: 2px;
@@ -337,7 +355,7 @@ h1 {
   border-radius: 0.25em 0.25em 0.4em 0.4em;
   text-align: center;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-  background: #d3d3d3;
+  background: #f6f6f6;
   transition-property: transform;
   transition-duration: 0.3s;
 }

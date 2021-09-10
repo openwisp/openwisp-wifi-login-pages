@@ -9,6 +9,7 @@
   border-spacing: 0;
   margin-top: 0;
   padding-top: 3%;
+  border-color: #ccc;
 }
 .large-table th {
   padding: 2% 0 2%;
@@ -16,6 +17,7 @@
 .large-table td {
   text-align: center;
   padding: 2% 0 2%;
+  color: #333333;
   border-top: 1px dotted rgba(0, 0, 0, 0.2);
   border-bottom: 1px dotted rgba(0, 0, 0, 0.2);
 }
@@ -25,9 +27,15 @@
   width: 100%;
   margin-bottom: 27px;
 }
+.large-table thead {
+  background: #f6f6f6;
+}
 .large-table tbody tr:nth-child(odd),
 .small-table tbody:nth-child(even) {
-  background: rgba(255, 255, 255, 0.3);
+  background: #ffffff;
+}
+.large-table tbody tr:nth-child(even) {
+  background: #f9f9f9;
 }
 .small-table tbody td {
   padding: 1.5% 0;
