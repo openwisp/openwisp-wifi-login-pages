@@ -1,12 +1,12 @@
 import axios from "axios";
 import cookie from "cookie-signature";
 import merge from "deepmerge";
-import qs from "qs";
 
 import config from "../config.json";
 import defaultConfig from "../utils/default-config";
 import Logger from "../utils/logger";
 import reverse from "../utils/openwisp-urls";
+import getSlug from "../utils/get-slug";
 
 const passwordChange = (req, res) => {
   const reqOrg = req.params.organization;
@@ -14,10 +14,10 @@ const passwordChange = (req, res) => {
     if (org.slug === reqOrg) {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
-      const {host, custom, radiusSlug} = conf;
-      const url = reverse("password_change", custom ? radiusSlug : org.slug);
+      const {host} = conf;
+      const url = reverse("password_change", getSlug(conf));
       const timeout = conf.timeout * 1000;
-      const {newPassword1, newPassword2, session} = req.body;
+      const {currentPassword, newPassword1, newPassword2, session} = req.body;
       let {token} = req.body;
       if (session === "false") token = cookie.unsign(token, conf.secret_key);
       if (token) {
@@ -25,16 +25,17 @@ const passwordChange = (req, res) => {
         axios({
           method: "post",
           headers: {
-            "content-type": "application/x-www-form-urlencoded",
+            "content-type": "application/json",
             Authorization: `Bearer ${token}`,
             "accept-language": req.headers["accept-language"],
           },
           url: `${host}${url}/`,
           timeout,
-          data: qs.stringify({
-            new_password1: newPassword1,
-            new_password2: newPassword2,
-          }),
+          data: {
+            current_password: currentPassword,
+            new_password: newPassword1,
+            confirm_password: newPassword2,
+          },
         })
           .then((response) => {
             // forward response
@@ -47,6 +48,7 @@ const passwordChange = (req, res) => {
             Logger.error(error);
             // forward error
             try {
+              console.log(error.response.data);
               res
                 .status(error.response.status)
                 .type("application/json")
