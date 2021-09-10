@@ -120,6 +120,17 @@ describe("<PasswordChange /> interactions", () => {
       newPassword2: t`PWD_CNF_ERR`,
     });
     wrapper.setState({
+      currentPassword: "123456",
+      newPassword1: "123456",
+      newPassword2: "123456",
+    });
+    wrapper.instance().handleSubmit(e);
+    expect(wrapper.instance().state.errors).toStrictEqual({
+      newPassword1: t`PWD_CURR_ERR`,
+      newPassword2: t`PWD_CURR_ERR`,
+    });
+    wrapper.setState({
+      currentPassword: "1234567",
       newPassword1: "123456",
       newPassword2: "123456",
     });
@@ -140,13 +151,13 @@ describe("<PasswordChange /> interactions", () => {
   it("should execute handleChange if field value is changes", () => {
     expect(wrapper.find("input[name='newPassword1']").length).toEqual(1);
     expect(wrapper.find("input[name='newPassword1']").props()).toEqual({
-      autoComplete: "new-password",
+      autoComplete: "password",
       className: "input",
-      id: "password",
+      id: "new-password",
       name: "newPassword1",
       onChange: expect.any(Function),
       pattern: ".{6,}",
-      placeholder: "Your new Password",
+      placeholder: "Your new password",
       required: true,
       title: "password must be a minimum of 6 characters",
       type: "password",
@@ -163,7 +174,7 @@ describe("<PasswordChange /> interactions", () => {
     expect(wrapper.instance().handleChange).toHaveBeenCalledWith(e);
     expect(wrapper.find("input[name='newPassword2']").length).toEqual(1);
     expect(wrapper.find("input[name='newPassword2']").props()).toEqual({
-      autoComplete: "new-password",
+      autoComplete: "password",
       className: "input",
       id: "password-confirm",
       name: "newPassword2",
@@ -181,18 +192,7 @@ describe("<PasswordChange /> interactions", () => {
   });
   it("should toggle password icon for both password fields in PasswordToggleIcon", async () => {
     const nodes = wrapper.find(PasswordToggleIcon);
-    expect(nodes.length).toEqual(2);
-    expect(nodes.at(0).props()).toEqual({
-      hidePassword: true,
-      inputRef: {current: null},
-      isVisible: false,
-      parentClassName: "",
-      secondInputRef: {current: null},
-      toggler: expect.any(Function),
-    });
-    expect(wrapper.instance().state.hidePassword).toEqual(true);
-    nodes.at(0).props().toggler();
-    expect(wrapper.instance().state.hidePassword).toEqual(false);
+    expect(nodes.length).toEqual(3);
     expect(nodes.at(1).props()).toEqual({
       hidePassword: true,
       inputRef: {current: null},
@@ -201,7 +201,18 @@ describe("<PasswordChange /> interactions", () => {
       secondInputRef: {current: null},
       toggler: expect.any(Function),
     });
+    expect(wrapper.instance().state.hidePassword).toEqual(true);
     nodes.at(1).props().toggler();
+    expect(wrapper.instance().state.hidePassword).toEqual(false);
+    expect(nodes.at(2).props()).toEqual({
+      hidePassword: true,
+      inputRef: {current: null},
+      isVisible: false,
+      parentClassName: "",
+      secondInputRef: {current: null},
+      toggler: expect.any(Function),
+    });
+    nodes.at(2).props().toggler();
     expect(wrapper.instance().state.hidePassword).toEqual(false);
   });
   it("should validate token", async () => {

@@ -22,16 +22,16 @@ msgstr "privacy policy"
 msgid "TOS_TITL"
 msgstr "terms and conditions"
 
-#: client/components/status/status.js:483
-#: client/components/status/status.js:674
+#: client/components/status/status.js:468
+#: client/components/status/status.js:659
 msgid "ACCT_ACTIVE"
 msgstr "session is active"
 
 #: client/components/logout/logout.js:23
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:265
-#: client/components/status/status.js:507
-#: client/components/status/status.js:588
-#: client/components/status/status.js:754
+#: client/components/status/status.js:492
+#: client/components/status/status.js:573
+#: client/components/status/status.js:755
 msgid "LOGOUT"
 msgstr "Logout"
 
@@ -39,62 +39,62 @@ msgstr "Logout"
 msgid "STATUS_TITL"
 msgstr "Status"
 
-#: client/components/status/status.js:666
+#: client/components/status/status.js:651
 msgid "ACCT_START_TIME"
 msgstr "Start time"
 
-#: client/components/status/status.js:667
+#: client/components/status/status.js:652
 msgid "ACCT_STOP_TIME"
 msgstr "Stop time"
 
-#: client/components/status/status.js:668
+#: client/components/status/status.js:653
 msgid "ACCT_DURATION"
 msgstr "Duration"
 
-#: client/components/status/status.js:669
+#: client/components/status/status.js:654
 msgid "ACCT_DOWNLOAD"
 msgstr "Download"
 
-#: client/components/status/status.js:670
+#: client/components/status/status.js:655
 msgid "ACCT_UPLOAD"
 msgstr "Upload"
 
-#: client/components/status/status.js:671
+#: client/components/status/status.js:656
 msgid "ACCT_DEVICE_ADDRESS"
 msgstr "Device address"
 
-#: client/components/status/status.js:680
+#: client/components/status/status.js:665
 msgid "STATUS"
 msgstr "Status"
 
-#: client/components/status/status.js:681
+#: client/components/status/status.js:666
 msgid "LOGGED_IN"
 msgstr "Logged in"
 
-#: client/components/status/status.js:687
+#: client/components/status/status.js:672
 msgid "USERNAME"
 msgstr "Username"
 
-#: client/components/status/status.js:690
+#: client/components/status/status.js:675
 msgid "PHONE_NUMBER"
 msgstr "Phone number"
 
-#: client/components/status/status.js:719
+#: client/components/status/status.js:703
 msgid "STATUS_CONTENT"
 msgstr ""
 "WiFi Login Successful!\n"
 "        You can now use the internet.\n"
 "        You may leave this page open in case you want to log out."
 
-#: client/components/status/status.js:727
+#: client/components/status/status.js:716
 msgid "LOGOUT_MODAL_CONTENT"
 msgstr "Do you want to automatically log in the next time?"
 
-#: client/utils/modal.js:26
+#: client/components/status/status.js:724
 msgid "YES"
 msgstr "Yes"
 
-#: client/utils/modal.js:33
+#: client/components/status/status.js:731
 msgid "NO"
 msgstr "No"
 
@@ -188,8 +188,7 @@ msgid "PWD_PHOLD"
 msgstr "password"
 
 #: client/components/login/login.js:367
-#: client/components/password-change/password-change.js:129
-#: client/components/password-change/password-change.js:155
+#: client/components/password-change/password-change.js:146
 #: client/components/password-confirm/password-confirm.js:158
 #: client/components/password-confirm/password-confirm.js:186
 #: client/components/registration/registration.js:664
@@ -240,7 +239,7 @@ msgstr ""
 "{privacy_policy} of this WiFi service."
 
 #: client/components/login/login.js:419
-#: client/components/registration/registration.js:826
+#: client/components/registration/registration.js:792
 msgid "FORGOT_PASSWORD"
 msgstr "Forgot your password?"
 
@@ -321,13 +320,13 @@ msgstr "Reset your password"
 msgid "PWD_CONFIRM_ADD_TXT"
 msgstr "Please enter your new password below."
 
-#: client/components/password-change/password-change.js:143
+#: client/components/password-change/password-change.js:198
 #: client/components/password-confirm/password-confirm.js:173
 #: client/components/registration/registration.js:680
 msgid "CONFIRM_PWD_LBL"
 msgstr "Confirm password"
 
-#: client/components/password-change/password-change.js:153
+#: client/components/password-change/password-change.js:201
 #: client/components/password-confirm/password-confirm.js:184
 #: client/components/registration/registration.js:691
 msgid "CONFIRM_PWD_PHOLD"
@@ -337,20 +336,16 @@ msgstr "confirm password"
 msgid "PWD_CONFIRM"
 msgstr "Change password"
 
-#: client/components/password-change/password-change.js:44
-#: client/components/password-change/password-change.js:113
+#: client/components/password-change/password-change.js:47
+#: client/components/password-change/password-change.js:170
 msgid "PWD_CHANGE_TITL"
 msgstr "Change your password"
 
-#: client/components/password-change/password-change.js:117
+#: client/components/password-change/password-change.js:185
 msgid "PWD1_LBL"
 msgstr "New Password"
 
-#: client/components/password-change/password-change.js:127
-msgid "PWD1_PHOLD"
-msgstr "Your new Password"
-
-#: client/components/password-change/password-change.js:172
+#: client/components/password-change/password-change.js:213
 msgid "PASSWORD_CHANGE"
 msgstr "Change Password"
 
@@ -437,14 +432,14 @@ msgid "REGISTER_BTN_LBL"
 msgstr "Not registered yet?"
 
 #: client/components/login/login.js:411
-#: client/components/registration/registration.js:813
+#: client/components/registration/registration.js:779
 msgid "REGISTER_BTN_TXT"
 msgstr "Sign up"
 
 #: client/components/contact-box/contact.js:25
 #: client/components/password-reset/password-reset.js:106
-#: client/components/registration/registration.js:501
-#: client/components/status/status.js:684
+#: client/components/registration/registration.js:467
+#: client/components/status/status.js:669
 msgid "EMAIL"
 msgstr "Email"
 
@@ -474,7 +469,7 @@ msgid "PHONE_CHANGE_BTN"
 msgstr "Change your phone number"
 
 #: client/components/mobile-phone-change/mobile-phone-change.js:206
-#: client/components/password-change/password-change.js:178
+#: client/components/password-change/password-change.js:219
 msgid "CANCEL"
 msgstr "Cancel"
 
@@ -494,7 +489,7 @@ msgid "HOME_PG_LINK_TXT"
 msgstr "Go back to homepage"
 
 #: client/components/login/login.js:221
-#: client/components/registration/registration.js:89
+#: client/components/registration/registration.js:86
 #: client/components/status/status.js:247
 #: client/components/status/status.js:251
 #: client/utils/handle-logout.js:34
@@ -517,13 +512,13 @@ msgstr "Login successful"
 msgid "LOGOUT_SUCCESS"
 msgstr "Logout successful"
 
-#: client/components/password-change/password-change.js:87
-#: client/components/password-change/password-change.js:93
+#: client/components/password-change/password-change.js:101
+#: client/components/password-change/password-change.js:109
 #: client/components/password-change/password-change.test.js:129
 msgid "PWD_CHNG_ERR"
 msgstr "An error occurred, the password has not been changed."
 
-#: client/components/password-change/password-change.js:61
+#: client/components/password-change/password-change.js:64
 #: client/components/password-change/password-change.test.js:115
 #: client/components/password-change/password-change.test.js:120
 #: client/components/password-confirm/password-confirm.js:55
@@ -553,7 +548,7 @@ msgstr "Username"
 msgid "USERNAME_REG_PHOLD"
 msgstr "Username"
 
-#: client/components/status/status.js:897
+#: client/components/status/status.js:898
 msgid "CP_LOGIN"
 msgstr ""
 "We are initializing your session in the WiFi service, it may take a few "
@@ -584,7 +579,7 @@ msgstr ""
 "times.</p>"
 
 #: client/components/login/login.js:201
-#: client/components/status/status.js:378
+#: client/components/status/status.js:376
 #. wait to trigger login to avoid getting stuck
 #. in captive portal firewall rule reloading
 msgid "PLEASE_WAIT"
@@ -605,3 +600,20 @@ msgstr "A user with similar credentials already exists."
 #: client/components/registration/registration.js:878
 msgid "CONFLICT_SIGNIN"
 msgstr "Do you own the account mentioned above and want to sign in and associate your existing account to this WiFi service?"
+
+#: client/components/password-change/password-change.js:72
+#: client/components/password-change/password-change.js:73
+msgid "PWD_CURR_ERR"
+msgstr "The password is the same as the current password."
+
+#: client/components/password-change/password-change.js:175
+msgid "CURR_PWD_LBL"
+msgstr "Current password"
+
+#: client/components/password-change/password-change.js:178
+msgid "CURR_PWD_PHOLD"
+msgstr "Your current password"
+
+#: client/components/password-change/password-change.js:188
+msgid "PWD1_PHOLD"
+msgstr "Your new password"
