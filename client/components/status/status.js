@@ -42,7 +42,6 @@ export default class Status extends React.Component {
       userInfo: {},
       currentPage: 1,
       hasMoreSessions: false,
-      intervalId: null,
       screenWidth: window.innerWidth,
       loadSpinner: true,
       modalActive: false,
@@ -166,8 +165,7 @@ export default class Status extends React.Component {
   }
 
   componentWillUnmount = () => {
-    const {intervalId} = this.state;
-    clearInterval(intervalId);
+    clearInterval(this.intervalId);
     window.removeEventListener("resize", this.updateScreenWidth);
   };
 
@@ -197,10 +195,9 @@ export default class Status extends React.Component {
     // if everything went fine, load the user sessions
     await this.getUserActiveRadiusSessions();
     await this.getUserPassedRadiusSessions();
-    const intervalId = setInterval(() => {
+    this.intervalId = setInterval(() => {
       this.getUserActiveRadiusSessions();
     }, 60000);
-    this.setState({intervalId});
     window.addEventListener("resize", this.updateScreenWidth);
     this.updateSpinner();
   }
