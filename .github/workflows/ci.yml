@@ -63,11 +63,6 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-
 
-      - name: Set up Python 3.7
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.7
-
       - name: Installing dependencies
         run: |
           yarn install
@@ -76,20 +71,36 @@ jobs:
       - name: Tests
         run: yarn coverage
 
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+
+      - name: Get openwisp-radius
+        run: |
+          curl -L https://github.com/openwisp/openwisp-radius/tarball/master -o openwisp-radius.tar.gz
+          tar -xvzf openwisp-radius.tar.gz && mkdir openwisp-radius
+          mv openwisp-*/* openwisp-radius
+
+      - name: Cache python environment
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.pythonLocation }}
+          key: ${{ env.pythonLocation }}-${{ hashFiles('openwisp-radius/setup.py') }}
+
       - name: Installing OpenWISP Radius
         run: |
-          git clone https://github.com/openwisp/openwisp-radius.git
           cd openwisp-radius && pip install -e .[saml]
           ./tests/manage.py migrate
 
-      - name: Running OpenWISP Radius
-        run: cd openwisp-radius && ./tests/manage.py runserver &
-
       - name: Creating configuration of organization (supports mobile verification)
-        run: node browser-test/create-mobile-configuration.js 
+        run: node browser-test/create-mobile-configuration.js
 
       - name: Running OpenWISP WiFi Login Pages
         run: yarn start &
+
+      - name: Running OpenWISP Radius
+        run: cd openwisp-radius && ./tests/manage.py runserver &
 
       - name: geckodriver/firefox
         run: |
