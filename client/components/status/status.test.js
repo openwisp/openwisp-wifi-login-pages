@@ -672,7 +672,7 @@ describe("<Status /> interactions", () => {
     });
     jest.spyOn(window, "clearInterval");
     wrapper.instance().componentDidMount();
-    const {intervalId} = wrapper.instance().state;
+    const {intervalId} = wrapper.instance();
     wrapper.instance().componentWillUnmount();
     expect(clearInterval).toHaveBeenCalledWith(intervalId);
   });
