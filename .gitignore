@@ -49,3 +49,4 @@ i18n/*
 i18n/*.custom.po
 server/config.json
 compilation-stats.json
+client/config.json
