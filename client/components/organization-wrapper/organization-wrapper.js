@@ -155,7 +155,7 @@ export default class OrganizationWrapper extends React.Component {
                       }
                       return (
                         <Suspense fallback={<Loader />}>
-                          <Registration {...props} />
+                          <Registration {...props} loading={loading} />
                         </Suspense>
                       );
                     }}

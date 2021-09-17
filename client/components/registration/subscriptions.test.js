@@ -28,6 +28,7 @@ const createTestProps = function (props, configName = "default") {
     authenticate: jest.fn(),
     verifyMobileNumber: jest.fn(),
     setTitle: jest.fn(),
+    loading: false,
     match: {
       path: "default/registration",
     },
@@ -77,13 +78,13 @@ describe("test subscriptions", () => {
   let originalError;
   let lastConsoleOutuput;
   const event = {preventDefault: jest.fn()};
-  const initShallow = (passedProps) => {
+  const initShallow = (passedProps, context = loadingContextValue) => {
     Registration.contextTypes = {
       setLoading: PropTypes.func,
       getLoading: PropTypes.func,
     };
     return shallow(<Registration {...passedProps} />, {
-      context: loadingContextValue,
+      context,
     });
   };
 
@@ -349,5 +350,27 @@ describe("test subscriptions", () => {
     expect(handleSubmit).toHaveBeenCalled();
     expect(jsonStringify.mock.calls[1][0].username).toBe("tester");
     expect(jsonStringify.mock.calls.length).toBe(2);
+  });
+
+  it("should show loader while fetching plans even if loading state changes", () => {
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 201,
+        statusText: "ok",
+        data: plans,
+      }),
+    );
+    const setLoading = jest.fn();
+    wrapper = initShallow(
+      {...props, loading: true},
+      {
+        setLoading,
+        getLoading: jest.fn(),
+      },
+    );
+    const instance = wrapper.instance();
+    expect(instance.props.loading).toEqual(true);
+    wrapper.setProps({loading: false});
+    expect(setLoading).toHaveBeenCalledWith(true);
   });
 });
