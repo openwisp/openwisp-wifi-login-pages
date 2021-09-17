@@ -46,6 +46,7 @@ export default class Status extends React.Component {
       loadSpinner: true,
       modalActive: false,
       rememberMe: false,
+      internetMode: false,
     };
     this.repeatLogin = false;
     this.getUserRadiusSessions = this.getUserRadiusSessions.bind(this);
@@ -274,7 +275,7 @@ export default class Status extends React.Component {
     localStorage.setItem("userAutoLogin", userAutoLogin);
     setLoading(true);
     await this.getUserActiveRadiusSessions(params);
-    const {sessionsToLogout} = this.state;
+    const {sessionsToLogout, internetMode} = this.state;
 
     if (sessionsToLogout.length > 0) {
       if (this.logoutFormRef && this.logoutFormRef.current) {
@@ -283,7 +284,9 @@ export default class Status extends React.Component {
         } else {
           this.repeatLogin = true;
         }
-        this.logoutFormRef.current.submit();
+        if (!internetMode) {
+          this.logoutFormRef.current.submit();
+        }
         return;
       }
     }
@@ -384,20 +387,33 @@ export default class Status extends React.Component {
     const {captivePortalLoginForm, logout, cookies, orgSlug} = this.props;
     const {setLoading} = this.context;
     const {message, type} = event.data;
-    if (!message || type !== "authError") {
-      return;
-    }
     // For security reasons, read https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage#security_concern
     if (
       event.origin === new URL(captivePortalLoginForm.action).origin ||
       event.origin === window.location.origin
     ) {
-      toast.dismiss();
-      /* disable ttag */
-      toast.error(gettext(message), {autoClose: 10000});
-      /* enable ttag */
-      logout(cookies, orgSlug);
-      setLoading(false);
+      switch (type) {
+        case "authError":
+          if (!message) break;
+          toast.dismiss();
+          /* disable ttag */
+          toast.error(gettext(message), {
+            autoClose: 10000,
+          });
+          /* enable ttag */
+          logout(cookies, orgSlug);
+          setLoading(false);
+          break;
+
+        case "internet-mode":
+          this.setState({
+            internetMode: true,
+          });
+          break;
+
+        default:
+        // do nothing
+      }
     }
   };
 
@@ -695,6 +711,7 @@ export default class Status extends React.Component {
       loadSpinner,
       modalActive,
       rememberMe,
+      internetMode,
     } = this.state;
     const user_info = this.getUserInfo();
     const contentArr = t`STATUS_CONTENT`.split("\n");
@@ -734,10 +751,16 @@ export default class Status extends React.Component {
           <div className="inner">
             <div className="main-column">
               <div className="inner">
-                {contentArr.map((text) => {
-                  if (text !== "") return <p key={text}>{text}</p>;
-                  return null;
-                })}
+                {!internetMode &&
+                  contentArr.map((text) => {
+                    if (text !== "")
+                      return (
+                        <p key={text} className="status-content">
+                          {text}
+                        </p>
+                      );
+                    return null;
+                  })}
                 {Object.keys(userInfo).map((key) => (
                   <p key={key}>
                     <label>{user_info[key].text}:</label>

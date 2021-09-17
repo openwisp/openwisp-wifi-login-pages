@@ -503,6 +503,21 @@ describe("<Status /> interactions", () => {
     expect(setLoadingMock).toHaveBeenLastCalledWith(false);
   });
 
+  it("test handlePostMessage internet-mode", async () => {
+    props = createTestProps();
+    const setLoadingMock = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: setLoadingMock},
+      disableLifecycleMethods: true,
+    });
+    const status = wrapper.instance();
+    status.handlePostMessage({
+      data: {type: "internet-mode"},
+      origin: "http://localhost",
+    });
+    expect(status.state.internetMode).toEqual(true);
+  });
+
   it("should not perform captive portal login (submit loginFormRef), if user is already authenticated", async () => {
     validateToken.mockReturnValue(true);
     props = createTestProps();
@@ -1162,6 +1177,42 @@ describe("<Status /> interactions", () => {
     expect(prop.setUserData).not.toHaveBeenCalled();
     expect(toast.success).not.toHaveBeenCalled();
     expect(result).toBe();
+  });
+  it("test handleLogout internetMode", async () => {
+    validateToken.mockReturnValue(true);
+    const prop = createTestProps();
+    const session = {start_time: "2021-07-08T00:22:28-04:00", stop_time: null};
+    const mockRef = {submit: jest.fn()};
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    wrapper.instance().logoutFormRef = {current: mockRef};
+    wrapper
+      .instance()
+      .setState({sessionsToLogout: [session], activeSession: [session]});
+
+    // Test user logged in from internet(internetMode)
+    wrapper.instance().setState({internetMode: true});
+    wrapper.instance().handleLogout(true, true);
+    await tick();
+    expect(mockRef.submit).toHaveBeenCalledTimes(0);
+
+    // Test user logged in from WiFi
+    wrapper.instance().setState({internetMode: false});
+    wrapper.instance().handleLogout(true, true);
+    await tick();
+    expect(mockRef.submit).toHaveBeenCalledTimes(1);
+  });
+  it("should not display STATUS_CONTENT when logged in internetMode", () => {
+    const prop = createTestProps();
+    prop.isAuthenticated = true;
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    wrapper.instance().setState({internetMode: true});
+    expect(wrapper.find("status-content").length).toEqual(0);
   });
   it("should return if loginIframe is not loaded", async () => {
     validateToken.mockReturnValue(true);
