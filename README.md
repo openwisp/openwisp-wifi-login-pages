@@ -771,7 +771,7 @@ the captive portal will be visible to users on **OpenWISP WiFi Login Pages**.
 ### Allowing users to manage account from the Internet
 
 The authentication flow might hang if a user tries to access their
-account from the public internet(without connecting to the WiFi service).
+account from the public internet (without connecting to the WiFi service).
 It occurs because the **OpenWISP WiFi Login Page** waits for a response
 from the captive portal, which is usually inaccessible from the public
 internet. If your infrastructure has such a configuration then,
