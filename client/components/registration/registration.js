@@ -89,6 +89,20 @@ export default class Registration extends React.Component {
     }
   }
 
+  async componentDidUpdate(prevProps) {
+    const {plans} = this.state;
+    const {settings, loading} = this.props;
+    const {setLoading} = this.context;
+    if (
+      settings.subscriptions &&
+      plans.length === 0 &&
+      loading === false &&
+      prevProps.loading === true
+    ) {
+      setLoading(true);
+    }
+  }
+
   handleChange(event) {
     handleChange(event, this);
   }
@@ -892,4 +906,5 @@ Registration.propTypes = {
   termsAndConditions: PropTypes.object.isRequired,
   authenticate: PropTypes.func.isRequired,
   setTitle: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
 };

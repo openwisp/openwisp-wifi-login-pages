@@ -35,6 +35,7 @@ const createTestProps = (props, configName = "default") => {
     termsAndConditions: config.terms_and_conditions,
     authenticate: jest.fn(),
     setTitle: jest.fn(),
+    loading: false,
     match: {
       path: "default/registration",
     },

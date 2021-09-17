@@ -348,7 +348,7 @@ describe("Test Organization Wrapper for unauthenticated users", () => {
     expect(JSON.stringify(render())).toEqual(
       JSON.stringify(
         <Suspense fallback={<Loader />}>
-          <Registration />
+          <Registration loading={false} />
         </Suspense>,
       ),
     );
