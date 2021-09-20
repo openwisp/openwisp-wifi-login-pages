@@ -1385,4 +1385,39 @@ describe("<Status /> interactions", () => {
     expect(toast.error).not.toHaveBeenCalled();
     expect(logError).toHaveBeenCalledWith(response, "Error occurred!");
   });
+  it("should not concat same past session again", async () => {
+    const data = [
+      {
+        session_id: 1,
+        start_time: "2020-09-08T00:22:28-04:00",
+        stop_time: "2020-09-08T00:22:29-04:00",
+      },
+    ];
+    axios
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data,
+          headers: {},
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data,
+          headers: {},
+        }),
+      );
+    const prop = createTestProps();
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    await wrapper.instance().getUserPassedRadiusSessions();
+    expect(wrapper.instance().state.pastSessions).toEqual(data);
+    await wrapper.instance().getUserPassedRadiusSessions();
+    expect(wrapper.instance().state.pastSessions).toEqual(data);
+  });
 });
