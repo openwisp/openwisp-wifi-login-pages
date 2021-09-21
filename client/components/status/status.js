@@ -229,7 +229,8 @@ export default class Status extends React.Component {
         options.sessionsToLogout = response.data;
       } else {
         const {pastSessions} = this.state;
-        options.pastSessions = pastSessions.concat(response.data);
+        options.pastSessions =
+          para.page === 1 ? response.data : pastSessions.concat(response.data);
         options.currentPage = params.page;
       }
       options.hasMoreSessions =
