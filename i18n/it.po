@@ -91,8 +91,7 @@ msgid "STATUS_CONTENT"
 msgstr ""
 "Login al servizio WiFi effettuato con successo!\n"
 "        Ora è possibile accedere ad internet.\n"
-"        Lascia questa pagina aperta in caso per poter chiudere la sessione "
-"attiva."
+"        Puoi lasciare questa pagina aperta per poter chiudere la sessione attiva."
 
 #: client/components/status/status.js:715
 msgid "LOGOUT_MODAL_CONTENT"
