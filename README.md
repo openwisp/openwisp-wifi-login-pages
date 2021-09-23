@@ -262,6 +262,10 @@ sure `default` is replaced with the actual organization `slug` that is being use
 And of course it's possible to customize more than just the name and logo,
 the example above has been kept short for brevity.
 
+**Note**: if a variant defines a configuration option which contains an array/list
+of objects (eg: menu links), the array/list defined in the variant always
+overwrites fully what is defined in the parent configuration file.
+
 ### Usage
 
 List of yarn commands:
