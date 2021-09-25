@@ -70,13 +70,13 @@ exports[`Test <PaymentStatus /> cases should render draft correctly 1`] = `
         <h2
           className="row"
         >
-          PAY_REQ
+          Payment required to proceed
         </h2>
         <div
           className="row"
           dangerouslySetInnerHTML={
             Object {
-              "__html": "PAY_WARN53",
+              "__html": "<p>By clicking on the button below you will be redirected to our payment gateway service where you can safely use your credit/debit card. From there you will be redirected to the website of your bank to confirm the transaction.</p><p>You will have 5 minutes to complete the process.<br /><strong>For this reason we recommend preparing your debit/credit card before initiating the payment process.</strong></p><p>If for any reason the process is not completed within the available time, the internet connection which allows you to reach the website of your bank will be closed, if this happens you can just log in again with the credentials you just registered and repeat the process up a maximum of 3 times.</p>",
             }
           }
         />
@@ -88,7 +88,7 @@ exports[`Test <PaymentStatus /> cases should render draft correctly 1`] = `
             onClick={[Function]}
             to="/default/status"
           >
-            PAY_PROC_BTN
+            Proceed with the payment
           </Link>
         </div>
         <div
@@ -124,7 +124,7 @@ exports[`Test <PaymentStatus /> cases should render failed state 1`] = `
         <h2
           className="row payment-status-row-1"
         >
-          PAY_FAIL
+          Payment Failed
         </h2>
         <div
           className="row payment-status-row-2"

@@ -13,6 +13,7 @@ import tick from "../../utils/tick";
 import Status from "./status";
 import validateToken from "../../utils/validate-token";
 import {initialState} from "../../reducers/organization";
+import Modal from "../../utils/modal";
 
 jest.mock("axios");
 jest.mock("../../utils/get-config");
@@ -743,7 +744,10 @@ describe("<Status /> interactions", () => {
     wrapper.setState({rememberMe: true});
     const handleLogout = jest.spyOn(wrapper.instance(), "handleLogout");
     wrapper.find(".logout input.button").simulate("click", {});
-    wrapper.find(".modal-buttons button:first-child").simulate("click", {});
+    const modalWrapper = wrapper.find(Modal).shallow();
+    modalWrapper
+      .find(".modal-buttons button:first-child")
+      .simulate("click", {});
     expect(handleLogout).toHaveBeenCalledWith(true);
   });
 
@@ -756,7 +760,8 @@ describe("<Status /> interactions", () => {
     wrapper.setState({rememberMe: true});
     const handleLogout = jest.spyOn(wrapper.instance(), "handleLogout");
     wrapper.find(".logout input.button").simulate("click", {});
-    wrapper.find(".modal-buttons button:last-child").simulate("click", {});
+    const modalWrapper = wrapper.find(Modal).shallow();
+    modalWrapper.find(".modal-buttons button:last-child").simulate("click", {});
     expect(handleLogout).toHaveBeenCalledWith(false);
   });
 
@@ -991,7 +996,8 @@ describe("<Status /> interactions", () => {
     status.componentDidMount();
 
     wrapper.find(".logout input.button").simulate("click", {});
-    wrapper.find(".modal-buttons button:last-child").simulate("click", {});
+    const modalWrapper = wrapper.find(Modal).shallow();
+    modalWrapper.find(".modal-buttons button:last-child").simulate("click", {});
     expect(handleLogout).toHaveBeenCalledWith(false);
     expect(location.assign.mock.calls.length).toBe(0);
     await tick();

@@ -26,7 +26,7 @@ exports[`<Logout /> rendering should render correctly 1`] = `
               onClick={[Function]}
               to="/default/status"
             >
-              LOGIN_AGAIN
+              Login again
             </Link>
           </div>
         </div>

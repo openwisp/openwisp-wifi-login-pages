@@ -216,7 +216,7 @@
       "REGISTER_ADD_INFO_TXT": {
         "msgid": "REGISTER_ADD_INFO_TXT",
         "msgstr": [
-          "By signing up, you accept the {terms_and_conditions} and the {privacy_policy} of this WiFi service. "
+          "By signing up, you accept the {terms_and_conditions} and the {privacy_policy} of this WiFi service."
         ]
       },
       "FORGOT_PASSWORD": {
@@ -233,11 +233,11 @@
       },
       "PAY_SUCCESS": {
         "msgid": "PAY_SUCCESS",
-        "msgstr": ["Payment received successfully!"]
+        "msgstr": ["Payment received successfully."]
       },
-      "PAY_H": {
-        "msgid": "PAY_H",
-        "msgstr": ["Payment"]
+      "PAY_FAIL": {
+        "msgid": "PAY_FAIL",
+        "msgstr": ["Payment Failed"]
       },
       "PAY_SUB_H": {
         "msgid": "PAY_SUB_H",
@@ -323,7 +323,7 @@
       },
       "DEFAULT_TITL${ orgName }": {
         "msgid": "DEFAULT_TITL${ orgName }",
-        "msgstr": ["WiFi Login - ${ orgName }"]
+        "msgstr": ["Login to ${ orgName }"]
       },
       "PHONE_VERIF_TITL": {
         "msgid": "PHONE_VERIF_TITL",
@@ -373,9 +373,9 @@
         "msgid": "LOGOUT_CONTENT",
         "msgstr": ["Logout successful"]
       },
-      "AGAIN": {
-        "msgid": "AGAIN",
-        "msgstr": ["again"]
+      "LOGIN_AGAIN": {
+        "msgid": "LOGIN_AGAIN",
+        "msgstr": ["Login again"]
       },
       "USERNAME_LOG_TITL": {
         "msgid": "USERNAME_LOG_TITL",
@@ -402,10 +402,6 @@
       "REGISTER_BTN_TXT": {
         "msgid": "REGISTER_BTN_TXT",
         "msgstr": ["Sign up"]
-      },
-      "FOOTER_SECONDARY_TXT": {
-        "msgid": "FOOTER_SECONDARY_TXT",
-        "msgstr": [" "]
       },
       "EMAIL": {
         "msgid": "EMAIL",
@@ -469,7 +465,7 @@
       },
       "PWD_CHNG_ERR": {
         "msgid": "PWD_CHNG_ERR",
-        "msgstr": ["Some error occured. Couldn't change password!"]
+        "msgstr": ["An error occurred, the password has not been changed."]
       },
       "PWD_CNF_ERR": {
         "msgid": "PWD_CNF_ERR",
@@ -488,6 +484,50 @@
         "msgstr": [
           "Your account has been deactivated. Please contact customer support for more information."
         ]
+      },
+      "USERNAME_REG_LBL": {
+        "msgid": "USERNAME_REG_LBL",
+        "msgstr": ["Username"]
+      },
+      "USERNAME_REG_PHOLD": {
+        "msgid": "USERNAME_REG_PHOLD",
+        "msgstr": ["Username"]
+      },
+      "CP_LOGIN": {
+        "msgid": "CP_LOGIN",
+        "msgstr": [
+          "We are initializing your session in the WiFi service, it may take a few seconds, please wait ..."
+        ]
+      },
+      "PAY_REQ": {
+        "msgid": "PAY_REQ",
+        "msgstr": ["Payment required to proceed"]
+      },
+      "PAY_PROC_BTN": {
+        "msgid": "PAY_PROC_BTN",
+        "msgstr": ["Proceed with the payment"]
+      },
+      "PAY_WARN${ timeout }${ maxAttempts }": {
+        "msgid": "PAY_WARN${ timeout }${ maxAttempts }",
+        "msgstr": [
+          "<p>By clicking on the button below you will be redirected to our payment gateway service where you can safely use your credit/debit card. From there you will be redirected to the website of your bank to confirm the transaction.</p><p>You will have ${ timeout } minutes to complete the process.<br /><strong>For this reason we recommend preparing your debit/credit card before initiating the payment process.</strong></p><p>If for any reason the process is not completed within the available time, the internet connection which allows you to reach the website of your bank will be closed, if this happens you can just log in again with the credentials you just registered and repeat the process up a maximum of ${ maxAttempts } times.</p>"
+        ]
+      },
+      "PLEASE_WAIT": {
+        "msgid": "PLEASE_WAIT",
+        "msgstr": ["Please wait..."]
+      },
+      "PLEASE_LOGIN": {
+        "msgid": "PLEASE_LOGIN",
+        "msgstr": [""]
+      },
+      "CONFLICT_ORGS": {
+        "msgid": "CONFLICT_ORGS",
+        "msgstr": ["This user is registered with other organizations:"]
+      },
+      "CONFLICT_SIGNIN": {
+        "msgid": "CONFLICT_SIGNIN",
+        "msgstr": ["Do you want sign in to this organization?"]
       }
     }
   }

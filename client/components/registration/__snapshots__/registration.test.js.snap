@@ -1,5 +1,77 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<Registration /> interactions should show modal if user is already registered with other organizations 1`] = `
+<div
+  className="modal is-visible"
+>
+  <div
+    className="modal-container bg"
+  >
+    <button
+      className="modal-close-btn"
+      onClick={
+        [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": undefined,
+            },
+          ],
+        }
+      }
+      type="button"
+    >
+      ✖
+    </button>
+    <div>
+      <div
+        className="message"
+      >
+        <p>
+          This user is registered with other organizations:
+        </p>
+        <ul>
+          <li
+            className="org-list"
+            key="default"
+          >
+            <a
+              href="/default"
+            >
+              default
+            </a>
+          </li>
+        </ul>
+        <p>
+          Do you want sign in to this organization?
+        </p>
+      </div>
+    </div>
+    <p
+      className="modal-buttons"
+    >
+      <button
+        className="button partial"
+        onClick={[Function]}
+        type="button"
+      >
+        Yes
+      </button>
+      <button
+        className="button partial"
+        onClick={[Function]}
+        type="button"
+      >
+        No
+      </button>
+    </p>
+  </div>
+</div>
+`;
+
 exports[`<Registration /> rendering should render correctly 1`] = `
 <Fragment>
   <div
@@ -138,7 +210,7 @@ exports[`<Registration /> rendering should render correctly 1`] = `
             >
               privacy policy
             </Link>
-             of this WiFi service. 
+             of this WiFi service.
           </div>
           <div
             className="row register"
