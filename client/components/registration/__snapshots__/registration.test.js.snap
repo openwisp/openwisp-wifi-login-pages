@@ -31,22 +31,67 @@ exports[`<Registration /> interactions should show modal if user is already regi
         className="message"
       >
         <p>
-          This user is registered with other organizations:
+          A user with credentials like the one being entered already exists in other organizations:
         </p>
         <ul>
           <li
             className="org-list"
             key="default"
           >
-            <a
-              href="/default"
-            >
-              default
-            </a>
+            default
           </li>
         </ul>
         <p>
-          Do you want sign in to this organization?
+          Do you own the account mentioned above and want to sign in with this organization?
+        </p>
+      </div>
+    </div>
+    <p
+      className="modal-buttons"
+    >
+      <button
+        className="button partial"
+        onClick={[Function]}
+        type="button"
+      >
+        Yes
+      </button>
+      <button
+        className="button partial"
+        onClick={[Function]}
+        type="button"
+      >
+        No
+      </button>
+    </p>
+  </div>
+</div>
+`;
+
+exports[`<Registration /> interactions should show modal if user is registered but not associated with any org 1`] = `
+<div
+  className="modal is-visible"
+>
+  <div
+    className="modal-container bg"
+  >
+    <button
+      className="modal-close-btn"
+      onClick={[Function]}
+      type="button"
+    >
+      ✖
+    </button>
+    <div>
+      <div
+        className="message"
+      >
+        <p>
+          A user with these credentials already exists.
+        </p>
+        <ul />
+        <p>
+          Do you own the account mentioned above and want to sign in with this organization?
         </p>
       </div>
     </div>

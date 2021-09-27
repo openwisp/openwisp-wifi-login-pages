@@ -865,19 +865,21 @@ export default class Registration extends React.Component {
             toggleModal={this.toggleModal}
             handleResponse={this.handleResponse}
             content={
-              errors.organizations.length > 0 && (
-                <div className="message">
-                  <p>{t`CONFLICT_ORGS`}</p>
-                  <ul>
-                    {errors.organizations.map((org) => (
-                      <li key={org.slug} className="org-list">
-                        <a href={`/${org.slug}`}>{org.name}</a>
-                      </li>
-                    ))}
-                  </ul>
-                  <p>{t`CONFLICT_SIGNIN`}</p>
-                </div>
-              )
+              <div className="message">
+                <p>
+                  {errors.organizations.length === 0
+                    ? t`NO_ORGS`
+                    : t`CONFLICT_ORGS`}
+                </p>
+                <ul>
+                  {errors.organizations.map((org) => (
+                    <li key={org.slug} className="org-list">
+                      {org.name}
+                    </li>
+                  ))}
+                </ul>
+                <p>{t`CONFLICT_SIGNIN`}</p>
+              </div>
             }
           />
         )}

@@ -3,7 +3,7 @@ import propTypes from "prop-types";
 import {t} from "ttag";
 import "./modal.css";
 
-class Modal extends Component {
+class InfoModal extends Component {
   render() {
     const {active, toggleModal, handleResponse, content} = this.props;
     return (
@@ -39,9 +39,9 @@ class Modal extends Component {
   }
 }
 
-export default Modal;
+export default InfoModal;
 
-Modal.propTypes = {
+InfoModal.propTypes = {
   active: propTypes.bool.isRequired,
   toggleModal: propTypes.func.isRequired,
   handleResponse: propTypes.func.isRequired,

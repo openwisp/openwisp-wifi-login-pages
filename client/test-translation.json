@@ -523,11 +523,19 @@
       },
       "CONFLICT_ORGS": {
         "msgid": "CONFLICT_ORGS",
-        "msgstr": ["This user is registered with other organizations:"]
+        "msgstr": [
+          "A user with credentials like the one being entered already exists in other organizations:"
+        ]
+      },
+      "NO_ORGS": {
+        "msgid": "NO_ORGS",
+        "msgstr": ["A user with these credentials already exists."]
       },
       "CONFLICT_SIGNIN": {
         "msgid": "CONFLICT_SIGNIN",
-        "msgstr": ["Do you want sign in to this organization?"]
+        "msgstr": [
+          "Do you own the account mentioned above and want to sign in with this organization?"
+        ]
       }
     }
   }

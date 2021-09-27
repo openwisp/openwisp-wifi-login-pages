@@ -7,6 +7,7 @@ import {toast} from "react-toastify";
 import PropTypes from "prop-types";
 import {Route} from "react-router-dom";
 import PhoneInput from "react-phone-input-2";
+import {t} from "ttag";
 import Modal from "../modal";
 import {loadingContextValue} from "../../utils/loading-context";
 import tick from "../../utils/tick";
@@ -388,6 +389,32 @@ describe("<Registration /> interactions", () => {
     expect(history.push).toHaveBeenCalledWith("/default/login");
     wrapper.instance().handleResponse(false);
     expect(wrapper.instance().toggleModal).toHaveBeenCalled();
+  });
+  it("should show modal if user is registered but not associated with any org", async () => {
+    const data = {
+      detail: "user already registered",
+      organizations: [],
+    };
+    axios.mockImplementationOnce(() =>
+      Promise.reject({
+        response: {
+          status: 409,
+          statusText: "CONFLICT",
+          data,
+        },
+      }),
+    );
+    wrapper = shallow(<Registration {...props} />, {
+      context: loadingContextValue,
+      disableLifecycleMethods: true,
+    });
+    const event = {preventDefault: () => {}};
+    wrapper.instance().handleSubmit(event);
+    await tick();
+    expect(wrapper.instance().state.errors).toEqual(data);
+    const modalWrapper = wrapper.find(InfoModal).shallow();
+    expect(modalWrapper.contains(<p>{t`NO_ORGS`}</p>)).toBe(true);
+    expect(modalWrapper).toMatchSnapshot();
   });
 });
 

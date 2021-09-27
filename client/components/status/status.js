@@ -24,7 +24,7 @@ import needsVerify from "../../utils/needs-verify";
 import Loader from "../../utils/loader";
 import {initialState} from "../../reducers/organization";
 import {Logout} from "../organization-wrapper/lazy-import";
-import Modal from "../../utils/modal";
+import InfoModal from "../../utils/modal";
 
 export default class Status extends React.Component {
   constructor(props) {
@@ -720,7 +720,7 @@ export default class Status extends React.Component {
     userInfo.status = user_info.status.value;
     return (
       <>
-        <Modal
+        <InfoModal
           active={modalActive}
           toggleModal={this.toggleModal}
           handleResponse={this.handleLogout}

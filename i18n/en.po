@@ -594,10 +594,14 @@ msgstr "Please wait..."
 msgid "PLEASE_LOGIN"
 msgstr ""
 
-#: client/components/registration/registration.js:870
+#: client/components/registration/registration.js:872
 msgid "CONFLICT_ORGS"
-msgstr "This user is registered with other organizations:"
+msgstr "A user with credentials like the one being entered already exists in other organizations:"
+
+#: client/components/registration/registration.js:871
+msgid "NO_ORGS"
+msgstr "A user with these credentials already exists."
 
 #: client/components/registration/registration.js:878
 msgid "CONFLICT_SIGNIN"
-msgstr "Do you want sign in to this organization?"
+msgstr "Do you own the account mentioned above and want to sign in with this organization?"
