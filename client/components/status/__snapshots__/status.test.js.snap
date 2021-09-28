@@ -2,44 +2,18 @@
 
 exports[`<Status /> rendering should render correctly 1`] = `
 <React.Fragment>
-  <div
-    className="modal"
-  >
-    <div
-      className="modal-container bg"
-    >
-      <button
-        className="modal-close-btn"
-        onClick={[Function]}
-        type="button"
-      >
-        ✖
-      </button>
+  <InfoModal
+    active={false}
+    content={
       <p
         className="message"
       >
         Do you want to automatically log in the next time?
       </p>
-      <p
-        className="modal-buttons"
-      >
-        <button
-          className="button partial"
-          onClick={[Function]}
-          type="button"
-        >
-          Yes
-        </button>
-        <button
-          className="button partial"
-          onClick={[Function]}
-          type="button"
-        >
-          No
-        </button>
-      </p>
-    </div>
-  </div>
+    }
+    handleResponse={[Function]}
+    toggleModal={[Function]}
+  />
   <div
     className="container content"
     id="status"
@@ -179,44 +153,18 @@ exports[`<Status /> rendering should render correctly 1`] = `
 
 exports[`<Status /> rendering with placeholder translation tags should render translation placeholder correctly 1`] = `
 <React.Fragment>
-  <div
-    className="modal"
-  >
-    <div
-      className="modal-container bg"
-    >
-      <button
-        className="modal-close-btn"
-        onClick={[Function]}
-        type="button"
-      >
-        ✖
-      </button>
+  <InfoModal
+    active={false}
+    content={
       <p
         className="message"
       >
         LOGOUT_MODAL_CONTENT
       </p>
-      <p
-        className="modal-buttons"
-      >
-        <button
-          className="button partial"
-          onClick={[Function]}
-          type="button"
-        >
-          YES
-        </button>
-        <button
-          className="button partial"
-          onClick={[Function]}
-          type="button"
-        >
-          NO
-        </button>
-      </p>
-    </div>
-  </div>
+    }
+    handleResponse={[Function]}
+    toggleModal={[Function]}
+  />
   <div
     className="container content"
     id="status"

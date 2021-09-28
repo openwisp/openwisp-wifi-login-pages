@@ -7,6 +7,7 @@ import {toast} from "react-toastify";
 import PropTypes from "prop-types";
 import {Route} from "react-router-dom";
 import PhoneInput from "react-phone-input-2";
+import {t} from "ttag";
 import Modal from "../modal";
 import {loadingContextValue} from "../../utils/loading-context";
 import tick from "../../utils/tick";
@@ -17,10 +18,13 @@ import Registration from "./registration";
 import submitOnEnter from "../../utils/submit-on-enter";
 import PasswordToggleIcon from "../../utils/password-toggle";
 import mountComponent from "./test-utils";
+import InfoModal from "../../utils/modal";
+import history from "../../utils/history";
 
 jest.mock("../../utils/get-config");
 jest.mock("../../utils/load-translation");
 jest.mock("../../utils/submit-on-enter");
+jest.mock("../../utils/history");
 jest.mock("axios");
 
 const createTestProps = (props, configName = "default") => {
@@ -325,6 +329,92 @@ describe("<Registration /> interactions", () => {
     expect(wrapper.find(".success")).toHaveLength(1);
     expect(wrapper.instance().props.authenticate.mock.calls.length).toBe(1);
     expect(errorSpyToast.mock.calls.length).toBe(4);
+  });
+  it("should toggle modal", async () => {
+    wrapper = shallow(<Registration {...props} />, {
+      context: loadingContextValue,
+      disableLifecycleMethods: true,
+    });
+    expect(wrapper.instance().state.modalActive).toEqual(false);
+    wrapper.instance().toggleModal();
+    expect(wrapper.instance().state.modalActive).toEqual(true);
+  });
+  it("should show modal if user is already registered with other organizations", async () => {
+    const data = {
+      detail: "user already registered",
+      organizations: [{name: "default", slug: "default"}],
+    };
+    axios.mockImplementationOnce(() =>
+      Promise.reject({
+        response: {
+          status: 409,
+          statusText: "CONFLICT",
+          data,
+        },
+      }),
+    );
+    wrapper = shallow(<Registration {...props} />, {
+      context: loadingContextValue,
+      disableLifecycleMethods: true,
+    });
+    jest.spyOn(wrapper.instance(), "toggleModal");
+    jest.spyOn(wrapper.instance(), "handleResponse");
+    wrapper.instance().setState({
+      password1: "testpassword",
+      password2: "testpassword",
+      email: "tester@openwisp.org",
+    });
+    const event = {preventDefault: () => {}};
+    expect(wrapper.instance().state.errors).toEqual({});
+    wrapper.instance().handleSubmit(event);
+    await tick();
+    expect(wrapper.instance().state.errors).toEqual(data);
+    expect(wrapper.instance().toggleModal).toHaveBeenCalled();
+    const modalWrapper = wrapper.find(InfoModal).shallow();
+    expect(modalWrapper).toMatchSnapshot();
+    modalWrapper
+      .find(".modal-buttons button:first-child")
+      .simulate("click", {});
+    expect(wrapper.instance().handleResponse).toHaveBeenCalledWith(true);
+    modalWrapper.find(".modal-buttons button:last-child").simulate("click", {});
+    expect(wrapper.instance().handleResponse).toHaveBeenCalledWith(false);
+  });
+  it("should execute handleResponse correctly", async () => {
+    wrapper = shallow(<Registration {...props} />, {
+      context: loadingContextValue,
+      disableLifecycleMethods: true,
+    });
+    jest.spyOn(wrapper.instance(), "toggleModal");
+    wrapper.instance().handleResponse(true);
+    expect(history.push).toHaveBeenCalledWith("/default/login");
+    wrapper.instance().handleResponse(false);
+    expect(wrapper.instance().toggleModal).toHaveBeenCalled();
+  });
+  it("should show modal if user is registered but not associated with any org", async () => {
+    const data = {
+      detail: "user already registered",
+      organizations: [],
+    };
+    axios.mockImplementationOnce(() =>
+      Promise.reject({
+        response: {
+          status: 409,
+          statusText: "CONFLICT",
+          data,
+        },
+      }),
+    );
+    wrapper = shallow(<Registration {...props} />, {
+      context: loadingContextValue,
+      disableLifecycleMethods: true,
+    });
+    const event = {preventDefault: () => {}};
+    wrapper.instance().handleSubmit(event);
+    await tick();
+    expect(wrapper.instance().state.errors).toEqual(data);
+    const modalWrapper = wrapper.find(InfoModal).shallow();
+    expect(modalWrapper.contains(<p>{t`NO_ORGS`}</p>)).toBe(true);
+    expect(modalWrapper).toMatchSnapshot();
   });
 });
 

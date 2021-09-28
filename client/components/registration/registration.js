@@ -24,6 +24,8 @@ import Modal from "../modal";
 import getError from "../../utils/get-error";
 import getLanguageHeaders from "../../utils/get-language-headers";
 import redirectToPayment from "../../utils/redirect-to-payment";
+import InfoModal from "../../utils/modal";
+import history from "../../utils/history";
 
 const PhoneInput = React.lazy(() => import("react-phone-input-2"));
 
@@ -52,6 +54,7 @@ export default class Registration extends React.Component {
       country: "",
       countrySelected: {},
       hidePassword: true,
+      modalActive: false,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -106,6 +109,11 @@ export default class Registration extends React.Component {
   handleChange(event) {
     handleChange(event, this);
   }
+
+  toggleModal = () => {
+    const {modalActive} = this.state;
+    this.setState({modalActive: !modalActive});
+  };
 
   handleSubmit(event) {
     const {setLoading} = this.context;
@@ -227,7 +235,13 @@ export default class Registration extends React.Component {
         authenticate(true);
       })
       .catch((error) => {
-        const {data} = error.response;
+        const {data, status} = error.response;
+        if (status === 409) {
+          setLoading(false);
+          this.toggleModal();
+          this.setState({errors: {...errors, ...data}});
+          return;
+        }
         if ("billing_info" in data) {
           Object.keys(data.billing_info).forEach((key) => {
             data[key] = data.billing_info[key];
@@ -354,6 +368,12 @@ export default class Registration extends React.Component {
       selectedPlan !== null &&
       plans[selectedPlan].requires_invoice === true
     );
+  };
+
+  handleResponse = (response) => {
+    const {orgSlug} = this.props;
+    if (response) return history.push(`/${orgSlug}/login`);
+    return this.toggleModal();
   };
 
   getForm = () => {
@@ -832,12 +852,40 @@ export default class Registration extends React.Component {
 
   render() {
     const {settings} = this.props;
-    const {plansFetched} = this.state;
+    const {plansFetched, modalActive, errors} = this.state;
 
     if (settings.subscriptions && !plansFetched) {
       return null;
     }
-    return this.getForm();
+    return (
+      <>
+        {errors.organizations && (
+          <InfoModal
+            active={modalActive}
+            toggleModal={this.toggleModal}
+            handleResponse={this.handleResponse}
+            content={
+              <div className="message">
+                <p>
+                  {errors.organizations.length === 0
+                    ? t`NO_ORGS`
+                    : t`CONFLICT_ORGS`}
+                </p>
+                <ul>
+                  {errors.organizations.map((org) => (
+                    <li key={org.slug} className="org-list">
+                      {org.name}
+                    </li>
+                  ))}
+                </ul>
+                <p>{t`CONFLICT_SIGNIN`}</p>
+              </div>
+            }
+          />
+        )}
+        {this.getForm()}
+      </>
+    );
   }
 }
 Registration.contextType = LoadingContext;

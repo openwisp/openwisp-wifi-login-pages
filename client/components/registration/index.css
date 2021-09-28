@@ -49,3 +49,9 @@
 .plans .active label {
   cursor: default;
 }
+
+.org-list {
+  text-align: left;
+  font-weight: bold;
+  list-style: inside;
+}

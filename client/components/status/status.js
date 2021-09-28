@@ -24,6 +24,7 @@ import needsVerify from "../../utils/needs-verify";
 import Loader from "../../utils/loader";
 import {initialState} from "../../reducers/organization";
 import {Logout} from "../organization-wrapper/lazy-import";
+import InfoModal from "../../utils/modal";
 
 export default class Status extends React.Component {
   constructor(props) {
@@ -719,35 +720,12 @@ export default class Status extends React.Component {
     userInfo.status = user_info.status.value;
     return (
       <>
-        <div className={modalActive ? "modal is-visible" : "modal"}>
-          <div className="modal-container bg">
-            <button
-              type="button"
-              className="modal-close-btn"
-              onClick={this.toggleModal}
-            >
-              &#10006;
-            </button>
-            <p className="message">{t`LOGOUT_MODAL_CONTENT`}</p>
-
-            <p className="modal-buttons">
-              <button
-                type="button"
-                className="button partial"
-                onClick={() => this.handleLogout(true)}
-              >
-                {t`YES`}
-              </button>
-              <button
-                type="button"
-                className="button partial"
-                onClick={() => this.handleLogout(false)}
-              >
-                {t`NO`}
-              </button>
-            </p>
-          </div>
-        </div>
+        <InfoModal
+          active={modalActive}
+          toggleModal={this.toggleModal}
+          handleResponse={this.handleLogout}
+          content={<p className="message">{t`LOGOUT_MODAL_CONTENT`}</p>}
+        />
         <div className="container content" id="status">
           <div className="inner">
             <div className="main-column">
