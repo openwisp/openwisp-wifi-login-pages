@@ -597,3 +597,15 @@ msgstr "Bitte warten..."
 #: client/components/status/status.js:377
 msgid "PLEASE_LOGIN"
 msgstr "Bitte loggen Sie sich ein"
+
+#: client/components/registration/registration.js:872
+msgid "CONFLICT_ORGS"
+msgstr "Ein Benutzer mit Anmeldeinformationen wie dem, der eingegeben wird, existiert bereits in anderen Organisationen:"
+
+#: client/components/registration/registration.js:871
+msgid "NO_ORGS"
+msgstr "Ein Benutzer mit ähnlichen Anmeldeinformationen existiert bereits."
+
+#: client/components/registration/registration.js:878
+msgid "CONFLICT_SIGNIN"
+msgstr "Besitzen Sie das oben genannte Konto und möchten sich anmelden und Ihr bestehendes Konto mit diesem WLAN-Dienst verknüpfen?"

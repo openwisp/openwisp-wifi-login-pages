@@ -590,3 +590,15 @@ msgstr "Подождите пожалуйста..."
 #: client/components/status/status.js:377
 msgid "PLEASE_LOGIN"
 msgstr "Пожалуйста, войдите"
+
+#: client/components/registration/registration.js:872
+msgid "CONFLICT_ORGS"
+msgstr "Пользователь с такими учетными данными, как введенный, уже существует в других организациях:"
+
+#: client/components/registration/registration.js:871
+msgid "NO_ORGS"
+msgstr "Пользователь с подобными учетными данными уже существует."
+
+#: client/components/registration/registration.js:878
+msgid "CONFLICT_SIGNIN"
+msgstr "У вас есть учетная запись, упомянутая выше, и вы хотите войти в систему и связать существующую учетную запись с этой службой Wi-Fi?"

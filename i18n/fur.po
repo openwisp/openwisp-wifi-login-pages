@@ -593,3 +593,15 @@ msgstr "Attendere prego..."
 #: client/components/status/status.js:377
 msgid "PLEASE_LOGIN"
 msgstr "Ti preghiamo di accedere"
+
+#: client/components/registration/registration.js:872
+msgid "CONFLICT_ORGS"
+msgstr "Un utente con credenziali simili a quelle inserite esiste già in altre organizzazioni:"
+
+#: client/components/registration/registration.js:871
+msgid "NO_ORGS"
+msgstr "Esiste già un utente con credenziali simili."
+
+#: client/components/registration/registration.js:878
+msgid "CONFLICT_SIGNIN"
+msgstr "Sei il proprietario dell'account appena menzionato e vuoi associare il tuo account esistente a questo servizio WiFI?"

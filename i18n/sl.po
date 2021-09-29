@@ -578,3 +578,15 @@ msgstr "Prosim počakaj..."
 #: client/components/status/status.js:377
 msgid "PLEASE_LOGIN"
 msgstr "Prosim prijavite se"
+
+#: client/components/registration/registration.js:872
+msgid "CONFLICT_ORGS"
+msgstr "Uporabnik s poverilnicami, kakršen je vnesen, že obstaja v drugih organizacijah:"
+
+#: client/components/registration/registration.js:871
+msgid "NO_ORGS"
+msgstr "Uporabnik s podobnimi poverilnicami že obstaja."
+
+#: client/components/registration/registration.js:878
+msgid "CONFLICT_SIGNIN"
+msgstr "Ali ste lastnik zgoraj omenjenega računa in se želite prijaviti in svoj obstoječi račun povezati s to storitvijo WiFi?"
