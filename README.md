@@ -266,6 +266,29 @@ the example above has been kept short for brevity.
 of objects (eg: menu links), the array/list defined in the variant always
 overwrites fully what is defined in the parent configuration file.
 
+#### Variants for creating organization
+
+In some cases, we may need to extend the variants feature to create an organization.
+Let's say organizations with mostly the same configuration and assets. In that case,
+variants can be used in this case to create an organization to avoid duplication and
+making config management easy.
+
+This can be accomplished by adding the unique property such as `slug`, `secret_key`
+and `uuid` in the variant file. If the slug is different from the parent configuration
+then an organization configuration with variant slug will be created.
+
+Example variant for creating organization:
+
+```yaml
+---
+name: "New Organization"
+slug: "< organization_slug_different_from_parent_slug >"
+server:
+  host: "< radius_host >"
+  uuid: "< organization_uuid >"
+  secret_key: "< organization_secret_key >"
+```
+
 ### Usage
 
 List of yarn commands:

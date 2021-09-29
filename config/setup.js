@@ -186,7 +186,7 @@ const writeConfigurations = () => {
       try {
         const config = getConfig(configPath);
         createConfig(config, configDirPath);
-        // different configurations for same radius organization
+        // variants configurations
         fs.readdirSync(configDirPath).forEach((customFile) => {
           if (
             path.extname(customFile) === ".yml" &&
@@ -204,11 +204,17 @@ const writeConfigurations = () => {
                   ),
                 ),
               );
-              customConfig.slug = `${file}-${path.basename(
-                customFile,
-                path.extname(customFile),
-              )}`;
-              createConfig(customConfig, configDirPath, file);
+              if (config.slug === customConfig.slug) {
+                // for same radius organization
+                customConfig.slug = `${file}-${path.basename(
+                  customFile,
+                  path.extname(customFile),
+                )}`;
+                createConfig(customConfig, configDirPath, file);
+              } else {
+                // for new organization
+                createConfig(customConfig, configDirPath);
+              }
             } catch (error) {
               console.log(error);
             }
