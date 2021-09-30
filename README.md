@@ -266,27 +266,33 @@ the example above has been kept short for brevity.
 of objects (eg: menu links), the array/list defined in the variant always
 overwrites fully what is defined in the parent configuration file.
 
-#### Variants for creating organization
+##### Variant with different organization slug / UUID / secret
 
-In some cases, we may need to extend the variants feature to create an organization.
-Let's say organizations with mostly the same configuration and assets. In that case,
-variants can be used in this case to create an organization to avoid duplication and
-making config management easy.
+In some cases, different organizations may share an identical configuration,
+with very minor differences. Variants can be used also in these cases to
+minimize maintenance efforts.
 
-This can be accomplished by adding the unique property such as `slug`, `secret_key`
-and `uuid` in the variant file. If the slug is different from the parent configuration
-then an organization configuration with variant slug will be created.
+The important thing to keep in mind is that the organization `slug`, `uuid`,
+`secret_key` need to be reset in the configuration file:
 
-Example variant for creating organization:
+Example:
 
 ```yaml
 ---
-name: "New Organization"
-slug: "< organization_slug_different_from_parent_slug >"
+name: "<organization_name>"
+slug: "<organization_slug>"
 server:
-  host: "< radius_host >"
-  uuid: "< organization_uuid >"
-  secret_key: "< organization_secret_key >"
+  uuid: "<organization_uuid>"
+  secret_key: "<organization_secret_key>"
+client:
+  css:
+    - "index.css"
+    - "<org-css-if-needed>"
+  components:
+    header:
+      logo:
+        url: "org-logo.svg"
+        alternate_text: "..."
 ```
 
 ### Usage
