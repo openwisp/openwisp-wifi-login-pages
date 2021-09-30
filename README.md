@@ -266,6 +266,35 @@ the example above has been kept short for brevity.
 of objects (eg: menu links), the array/list defined in the variant always
 overwrites fully what is defined in the parent configuration file.
 
+##### Variant with different organization slug / UUID / secret
+
+In some cases, different organizations may share an identical configuration,
+with very minor differences. Variants can be used also in these cases to
+minimize maintenance efforts.
+
+The important thing to keep in mind is that the organization `slug`, `uuid`,
+`secret_key` need to be reset in the configuration file:
+
+Example:
+
+```yaml
+---
+name: "<organization_name>"
+slug: "<organization_slug>"
+server:
+  uuid: "<organization_uuid>"
+  secret_key: "<organization_secret_key>"
+client:
+  css:
+    - "index.css"
+    - "<org-css-if-needed>"
+  components:
+    header:
+      logo:
+        url: "org-logo.svg"
+        alternate_text: "..."
+```
+
 ### Usage
 
 List of yarn commands:
