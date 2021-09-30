@@ -301,7 +301,8 @@ msgstr "Riprova"
 #: client/components/payment-status/payment-status.js:152
 #. failed payment case
 msgid "PAY_GIVE_UP_TXT"
-msgstr "Se la transazione non va a buon fine si prega di contattare il supporto "
+"Se non riesci a completare la transazione puoi provare a metterti in contatto"
+"con la tua banca o annullare l'operazione."
 
 #: client/components/payment-status/payment-status.js:125
 #: client/components/payment-status/payment-status.js:158
