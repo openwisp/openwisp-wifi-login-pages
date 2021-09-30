@@ -104,12 +104,6 @@ installed on your system, install the dependencies with:
 yarn
 ```
 
-##### Update dependencies
-
-```
-yarn upgrade
-```
-
 To verify all the dependencies were successfully installed,
 try to run the tests with the following command:
 
