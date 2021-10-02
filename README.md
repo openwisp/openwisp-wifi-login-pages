@@ -55,12 +55,17 @@ the [OpenWISP Radius API](https://openwisp-radius.readthedocs.io/) to provide th
 
 ### Table of contents
 
+- [Deploy it in production](#deploy-it-in-production)
 - [Prerequisites](#prerequisites)
 - [Install](#install)
 - [Usage](#usage)
 - [Settings](#settings)
 - [Translations](#translations)
 - [License](#license)
+
+### Deploy it in production
+
+An automated installer is available at [See](https://github.com/openwisp/ansible-openwisp-wifi-login-pages/).
 
 ### Prerequisites
 
