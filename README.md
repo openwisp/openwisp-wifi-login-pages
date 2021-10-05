@@ -65,7 +65,7 @@ the [OpenWISP Radius API](https://openwisp-radius.readthedocs.io/) to provide th
 
 ### Deploy it in production
 
-An automated installer is available at [See](https://github.com/openwisp/ansible-openwisp-wifi-login-pages/).
+An ansible role which can be used to deploy and maintain this app is available, see [ansible-openwisp-wifi-login-pages](https://github.com/openwisp/ansible-openwisp-wifi-login-pages/).
 
 ### Prerequisites
 
