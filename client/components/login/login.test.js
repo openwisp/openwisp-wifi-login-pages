@@ -35,11 +35,20 @@ const createTestProps = (props) => ({
   loginForm,
   privacyPolicy: defaultConfig.privacy_policy,
   termsAndConditions: defaultConfig.terms_and_conditions,
-  settings: {mobile_phone_verification: false},
+  settings: {mobile_phone_verification: false, support_radius_realms: false},
   authenticate: jest.fn(),
   setUserData: jest.fn(),
   userData: {},
   setTitle: jest.fn(),
+  captivePortalLoginForm: {
+    method: "POST",
+    action: "https://radius-proxy/login/",
+    fields: {
+      username: "username",
+      password: "password",
+    },
+    additional_fields: [],
+  },
   match: {
     path: "default/login",
   },
@@ -169,6 +178,16 @@ describe("<Login /> rendering", () => {
         value: "++911234567890",
       },
     });
+  });
+
+  it("should render radius realms form if support_radius_realms is true", () => {
+    props = createTestProps();
+    props.settings.support_radius_realms = true;
+    loadTranslation("en", "default");
+    const component = shallow(<Login {...props} />).find(
+      "[id='cp-login-form']",
+    );
+    expect(component).toMatchSnapshot();
   });
 });
 
@@ -751,5 +770,41 @@ describe("<Login /> interactions", () => {
       setUserData: expect.any(Function),
       setTitle: expect.any(Function),
     });
+  });
+  it("should submit form if support_radius_realms is true", async () => {
+    wrapper = shallow(<Login {...props} />, {context: loadingContextValue});
+    expect(wrapper.find("[id='cp-login-form']").length).toEqual(0);
+    props.settings.support_radius_realms = true;
+    props.captivePortalLoginForm.additional_fields = [
+      {name: "zone", value: "zone_value"},
+    ];
+    wrapper = shallow(<Login {...props} />, {context: loadingContextValue});
+    const form = wrapper.find("[id='cp-login-form']");
+    wrapper.instance().setState({username: "realms@", password: "testing"});
+    expect(form.length).toEqual(1);
+    expect(form.props()).toEqual({
+      action: "https://radius-proxy/login/",
+      children: expect.any(Array),
+      className: "hidden",
+      id: "cp-login-form",
+      method: "POST",
+    });
+    expect(form.props().children).toEqual([
+      <input name="username" readOnly type="text" value="" />,
+      <input name="password" readOnly type="password" value="" />,
+      [
+        <input
+          name="zone"
+          readOnly
+          key="zone"
+          type="text"
+          value="zone_value"
+        />,
+      ],
+    ]);
+    const mockRef = {submit: jest.fn()};
+    wrapper.instance().realmsRadiusLoginForm.current = mockRef;
+    wrapper.instance().handleSubmit({preventDefault: () => {}});
+    expect(mockRef.submit).toHaveBeenCalled();
   });
 });

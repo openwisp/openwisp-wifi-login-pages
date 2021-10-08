@@ -1330,6 +1330,29 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
 </React.Fragment>
 `;
 
+exports[`<Login /> rendering should render radius realms form if support_radius_realms is true 1`] = `
+<form
+  action="https://radius-proxy/login/"
+  className="hidden"
+  id="cp-login-form"
+  method="POST"
+>
+  <input
+    name="username"
+    readOnly={true}
+    type="text"
+    value=""
+  />
+  <input
+    name="password"
+    readOnly={true}
+    type="password"
+    value=""
+  />
+  0
+</form>
+`;
+
 exports[`<Login /> rendering with placeholder translation tags should render translation placeholder correctly 1`] = `
 <React.Fragment>
   <div

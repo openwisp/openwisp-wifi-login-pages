@@ -3,6 +3,7 @@ name: "default name"
 slug: "default"
 
 settings:
+  support_radius_realms: false
   mobile_phone_verification: false
   subscriptions: false
 
