@@ -35,7 +35,7 @@ const createTestProps = (props) => ({
   loginForm,
   privacyPolicy: defaultConfig.privacy_policy,
   termsAndConditions: defaultConfig.terms_and_conditions,
-  settings: {mobile_phone_verification: false, support_radius_realms: false},
+  settings: {mobile_phone_verification: false, radius_realms: false},
   authenticate: jest.fn(),
   setUserData: jest.fn(),
   userData: {},
@@ -180,9 +180,9 @@ describe("<Login /> rendering", () => {
     });
   });
 
-  it("should render radius realms form if support_radius_realms is true", () => {
+  it("should render radius realms form if radius_realms is true", () => {
     props = createTestProps();
-    props.settings.support_radius_realms = true;
+    props.settings.radius_realms = true;
     loadTranslation("en", "default");
     const component = shallow(<Login {...props} />).find(
       "[id='cp-login-form']",
@@ -771,10 +771,10 @@ describe("<Login /> interactions", () => {
       setTitle: expect.any(Function),
     });
   });
-  it("should submit form if support_radius_realms is true", async () => {
+  it("should submit form if radius_realms is true", async () => {
     wrapper = shallow(<Login {...props} />, {context: loadingContextValue});
     expect(wrapper.find("[id='cp-login-form']").length).toEqual(0);
-    props.settings.support_radius_realms = true;
+    props.settings.radius_realms = true;
     props.captivePortalLoginForm.additional_fields = [
       {name: "zone", value: "zone_value"},
     ];
@@ -790,17 +790,9 @@ describe("<Login /> interactions", () => {
       method: "POST",
     });
     expect(form.props().children).toEqual([
-      <input name="username" readOnly type="text" value="" />,
-      <input name="password" readOnly type="password" value="" />,
-      [
-        <input
-          name="zone"
-          readOnly
-          key="zone"
-          type="text"
-          value="zone_value"
-        />,
-      ],
+      <input name="username" type="hidden" value="" />,
+      <input name="password" type="hidden" value="" />,
+      [<input name="zone" key="zone" type="hidden" value="zone_value" />],
     ]);
     const mockRef = {submit: jest.fn()};
     wrapper.instance().realmsRadiusLoginForm.current = mockRef;

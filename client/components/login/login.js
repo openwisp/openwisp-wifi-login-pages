@@ -193,18 +193,17 @@ export default class Login extends React.Component {
     const {setLoading} = this.context;
     if (event) event.preventDefault();
     const {orgSlug, setUserData, language, settings} = this.props;
-    const {support_radius_realms} = settings;
+    const {radius_realms} = settings;
     const {username, password, errors} = this.state;
     const url = loginApiUrl(orgSlug);
     this.setState({
       errors: {},
     });
-    if (support_radius_realms && username.includes("@")) {
-      return this.realmsRadiusLoginForm.current.submit();
-    }
     setLoading(true);
     this.waitToast = toast.info(t`PLEASE_WAIT`, {autoClose: 20000});
-
+    if (radius_realms && username.includes("@")) {
+      return this.realmsRadiusLoginForm.current.submit();
+    }
     return axios({
       method: "post",
       headers: {
@@ -300,8 +299,8 @@ export default class Login extends React.Component {
   getRealmRadiusForm = () => {
     const {username, password} = this.state;
     const {settings, captivePortalLoginForm} = this.props;
-    const {support_radius_realms} = settings;
-    if (support_radius_realms && captivePortalLoginForm)
+    const {radius_realms} = settings;
+    if (radius_realms && captivePortalLoginForm)
       return (
         <form
           ref={this.realmsRadiusLoginForm}
@@ -311,22 +310,19 @@ export default class Login extends React.Component {
           className="hidden"
         >
           <input
-            readOnly
-            type="text"
+            type="hidden"
             name={captivePortalLoginForm.fields.username || ""}
             value={username}
           />
           <input
-            readOnly
-            type="password"
+            type="hidden"
             name={captivePortalLoginForm.fields.password || ""}
             value={password}
           />
           {captivePortalLoginForm.additional_fields.length &&
             captivePortalLoginForm.additional_fields.map((field) => (
               <input
-                readOnly
-                type="text"
+                type="hidden"
                 name={field.name}
                 value={field.value}
                 key={field.name}
@@ -545,7 +541,7 @@ Login.propTypes = {
   setUserData: PropTypes.func.isRequired,
   userData: PropTypes.object.isRequired,
   settings: PropTypes.shape({
-    support_radius_realms: PropTypes.bool,
+    radius_realms: PropTypes.bool,
     mobile_phone_verification: PropTypes.bool,
     subscriptions: PropTypes.bool,
   }).isRequired,

@@ -800,6 +800,28 @@ your **OpenWISP WiFi Login Pages** service.
 With the right configuration, the error messages coming from freeradius or
 the captive portal will be visible to users on **OpenWISP WiFi Login Pages**.
 
+### Support for RADIUS REALMs / RADIUS proxy
+
+To enable support for radius REALMs change `radius_realms` to `true` in the
+organization configuration:
+
+```yaml
+---
+name: "default name"
+slug: "default"
+
+settings:
+  radius_realms: true
+```
+
+When support for `radius_realms` is `true` and username includes `@` then
+the login page will submit the `captive_portal_login_form` to the
+captive portal login URL.
+
+**NOTE**: When proxying requests using RADIUS realms, our app loses sense
+because other data sources have to be queried and therefore we fallback to
+the classic HTTP form submit.
+
 ### Allowing users to manage account from the Internet
 
 The authentication flow might hang if a user tries to access their

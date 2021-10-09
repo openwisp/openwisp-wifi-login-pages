@@ -1330,7 +1330,7 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
 </React.Fragment>
 `;
 
-exports[`<Login /> rendering should render radius realms form if support_radius_realms is true 1`] = `
+exports[`<Login /> rendering should render radius realms form if radius_realms is true 1`] = `
 <form
   action="https://radius-proxy/login/"
   className="hidden"
@@ -1339,14 +1339,12 @@ exports[`<Login /> rendering should render radius realms form if support_radius_
 >
   <input
     name="username"
-    readOnly={true}
-    type="text"
+    type="hidden"
     value=""
   />
   <input
     name="password"
-    readOnly={true}
-    type="password"
+    type="hidden"
     value=""
   />
   0

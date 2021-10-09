@@ -63,7 +63,7 @@ const prompts = [
   },
   {
     type: "confirm",
-    name: "support_radius_realms",
+    name: "radius_realms",
     message: "Does this organization support REALMs or Radius proxy?",
     default: false,
   },
