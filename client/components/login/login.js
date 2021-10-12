@@ -40,6 +40,7 @@ export default class Login extends React.Component {
       remember_me: true,
       errors: {},
     };
+    this.realmsRadiusLoginForm = React.createRef();
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.passwordToggleRef = React.createRef();
@@ -191,7 +192,8 @@ export default class Login extends React.Component {
   handleSubmit(event) {
     const {setLoading} = this.context;
     if (event) event.preventDefault();
-    const {orgSlug, setUserData, language} = this.props;
+    const {orgSlug, setUserData, language, settings} = this.props;
+    const {radius_realms} = settings;
     const {username, password, errors} = this.state;
     const url = loginApiUrl(orgSlug);
     this.setState({
@@ -199,7 +201,9 @@ export default class Login extends React.Component {
     });
     setLoading(true);
     this.waitToast = toast.info(t`PLEASE_WAIT`, {autoClose: 20000});
-
+    if (radius_realms && username.includes("@")) {
+      return this.realmsRadiusLoginForm.current.submit();
+    }
     return axios({
       method: "post",
       headers: {
@@ -290,6 +294,43 @@ export default class Login extends React.Component {
     this.setState({
       remember_me: event.target.checked,
     });
+  };
+
+  getRealmRadiusForm = () => {
+    const {username, password} = this.state;
+    const {settings, captivePortalLoginForm} = this.props;
+    const {radius_realms} = settings;
+    if (radius_realms && captivePortalLoginForm)
+      return (
+        <form
+          ref={this.realmsRadiusLoginForm}
+          method={captivePortalLoginForm.method || "post"}
+          id="cp-login-form"
+          action={captivePortalLoginForm.action || ""}
+          className="hidden"
+        >
+          <input
+            type="hidden"
+            name={captivePortalLoginForm.fields.username || ""}
+            value={username}
+          />
+          <input
+            type="hidden"
+            name={captivePortalLoginForm.fields.password || ""}
+            value={password}
+          />
+          {captivePortalLoginForm.additional_fields.length &&
+            captivePortalLoginForm.additional_fields.map((field) => (
+              <input
+                type="hidden"
+                name={field.name}
+                value={field.value}
+                key={field.name}
+              />
+            ))}
+        </form>
+      );
+    return null;
   };
 
   render() {
@@ -425,6 +466,8 @@ export default class Login extends React.Component {
               </div>
             </form>
 
+            {this.getRealmRadiusForm()}
+
             <Contact />
           </div>
         </div>
@@ -498,8 +541,18 @@ Login.propTypes = {
   setUserData: PropTypes.func.isRequired,
   userData: PropTypes.object.isRequired,
   settings: PropTypes.shape({
+    radius_realms: PropTypes.bool,
     mobile_phone_verification: PropTypes.bool,
     subscriptions: PropTypes.bool,
   }).isRequired,
   setTitle: PropTypes.func.isRequired,
+  captivePortalLoginForm: PropTypes.shape({
+    method: PropTypes.string,
+    action: PropTypes.string,
+    fields: PropTypes.shape({
+      username: PropTypes.string,
+      password: PropTypes.string,
+    }),
+    additional_fields: PropTypes.array,
+  }).isRequired,
 };

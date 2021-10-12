@@ -63,6 +63,12 @@ const prompts = [
   },
   {
     type: "confirm",
+    name: "radius_realms",
+    message: "Does this organization support REALMs or Radius proxy?",
+    default: false,
+  },
+  {
+    type: "confirm",
     name: "mobile_phone_verification",
     message: "Does this organization require SMS verification for its users?",
     default: false,
