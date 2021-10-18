@@ -385,7 +385,9 @@ describe("<Registration /> interactions", () => {
       disableLifecycleMethods: true,
     });
     jest.spyOn(wrapper.instance(), "toggleModal");
+    const spyToast = jest.spyOn(toast, "info");
     wrapper.instance().handleResponse(true);
+    expect(spyToast).toHaveBeenCalledWith(t`PLEASE_LOGIN`);
     expect(history.push).toHaveBeenCalledWith("/default/login");
     wrapper.instance().handleResponse(false);
     expect(wrapper.instance().toggleModal).toHaveBeenCalled();
