@@ -7,7 +7,6 @@
 }
 .header-row-1 {
   width: 100%;
-  background: #fcfcfc;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -48,15 +47,10 @@
   margin: 0 5px;
   text-transform: uppercase;
   border: none;
-  color: #df5d43;
   font-weight: bold;
   background: none;
   outline: none;
   cursor: pointer;
-  border-bottom: 3px rgba(0, 0, 0, 0) solid;
-}
-.header-language-btn.active {
-  border-bottom-color: #df5d43;
 }
 .header-row-2 {
   display: flex;
@@ -65,7 +59,6 @@
   align-items: center;
   flex-wrap: nowrap;
   width: 100%;
-  background: #fee5e5;
   min-height: 54px;
 }
 .header-row-2-inner,
@@ -87,7 +80,6 @@
 }
 .header-link.active {
   cursor: default;
-  background: #df5d43 !important;
 }
 .header-mobile {
   display: none;
@@ -103,11 +95,8 @@
 }
 .sticky-container {
   display: inline-flex;
-  border-bottom: 1px solid #000;
   position: relative;
   width: 100%;
-  background: rgba(0, 0, 0, 0.65);
-  color: #fff;
 }
 .sticky-msg {
   margin-left: 1.7rem;
@@ -129,16 +118,11 @@
     width: 30px;
     height: 26px;
     cursor: pointer;
-    background-color: #efefef;
     padding: 10px 15px;
     border-radius: 5px;
   }
-  .header-hamburger:focus {
-    outline: dotted 1px #fff;
-  }
   .header-hamburger > div {
     height: 5px;
-    background: #333;
     content: "";
     position: relative;
     transition: 0.25s all ease-in-out;
@@ -169,7 +153,6 @@
   .header-mobile-menu {
     transition: 0.25s all ease-in-out;
     flex-direction: column;
-    background: #fee5e5;
     align-items: center;
     padding: 20px 0 0;
   }
@@ -189,12 +172,7 @@
     margin: 5px 0 0 0;
     line-height: 40px;
   }
-  .header-language-btn {
-    color: #df5d43;
-    border-bottom-color: #fff !important;
-  }
   .header-language-btn.active {
     cursor: auto;
-    border-bottom-color: #df5d43 !important;
   }
 }

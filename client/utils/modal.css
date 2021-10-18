@@ -4,7 +4,6 @@
   top: 0;
   height: 100%;
   width: 100%;
-  background-color: rgba(94, 110, 141, 0.9);
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s 0s, visibility 0s 0.3s;
@@ -25,8 +24,6 @@
   max-width: 500px;
   border-radius: 0.25em 0.25em 0.4em 0.4em;
   text-align: center;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-  background: #d3d3d3;
   transition-property: transform;
   transition-duration: 0.3s;
 }
