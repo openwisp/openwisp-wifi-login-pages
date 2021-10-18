@@ -372,7 +372,10 @@ export default class Registration extends React.Component {
 
   handleResponse = (response) => {
     const {orgSlug} = this.props;
-    if (response) return history.push(`/${orgSlug}/login`);
+    if (response) {
+      toast.info(t`PLEASE_LOGIN`);
+      return history.push(`/${orgSlug}/login`);
+    }
     return this.toggleModal();
   };
 
