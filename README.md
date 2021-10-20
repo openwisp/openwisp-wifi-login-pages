@@ -864,6 +864,30 @@ should point to the mock app just created. This way captive portal login
 and logout requests will not hang, allowing users to view/modify their
 account data also from the public internet.
 
+### Load extra JS files
+
+To load extra JS files for monitoring (Sentry), analytics (Piwik, Google analytics)
+or any other aesthetic purposes, this feature can be used to inject JS files in the
+generated HTML file using webpack.
+
+#### Load extra JS files for whole application (all organization)
+
+Place the JS files in `client/extra-js-files` directory and it will be injected in HTML
+during build process for all the organizations.
+
+#### Load extra JS files for each organization
+
+Add the names of the extra JS file in organization configuration. Example:
+
+```yaml
+extra-js-files:
+  - "piwik-script.js"
+  - "google-analytics.js"
+```
+
+Make sure that all these extra JS files must be present in the `client/extra-js-files`
+directory, otherwise, it will not get injected while loading the organization page.
+
 ### License
 
 See [LICENSE](https://github.com/openwisp/openwisp-wifi-login-pages/blob/master/LICENSE).

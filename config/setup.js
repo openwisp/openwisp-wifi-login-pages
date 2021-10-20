@@ -12,6 +12,7 @@ const internalConfigDir = path.join(path.join(rootDir, "internals"), "config");
 const clientDir = path.join(rootDir, "client");
 const serverDir = path.join(rootDir, "server");
 const clientConfigsDir = path.join(clientDir, "configs");
+const extraJSFilesDir = path.join(clientDir, "extra-js-files");
 
 // array to store configurations of the organizations
 const clientConfigs = [];
@@ -262,9 +263,50 @@ const writeConfigurations = () => {
   );
 };
 
+const getExtraJSScripts = () => {
+  const extraScriptsByOrgSlug = {};
+  fs.readdirSync(organizationsDir).forEach((file) => {
+    const configPath = path.resolve(organizationsDir, file, `${file}.yml`);
+    if (fs.existsSync(configPath)) {
+      const config = getConfig(configPath);
+      if (Object.prototype.hasOwnProperty.call(config, "extra-js-files")) {
+        if (typeof config["extra-js-files"] === "object")
+          extraScriptsByOrgSlug[config.slug] = config["extra-js-files"];
+        else
+          console.log(
+            `extra-js-files must be a list in ${config.slug} configuration.`,
+          );
+      }
+    }
+  });
+  const allOrgScripts = [];
+  Object.keys(extraScriptsByOrgSlug).map((slug) =>
+    allOrgScripts.push(...extraScriptsByOrgSlug[slug]),
+  );
+  let customScript = "";
+  fs.readdirSync(extraJSFilesDir).forEach((file) => {
+    if (path.extname(file) === ".js" && !allOrgScripts.includes(file))
+      customScript += `<script src="/${file}"></script>`;
+  });
+  customScript += `<script>
+  const extraScriptsByOrgSlug = ${JSON.stringify(extraScriptsByOrgSlug)};
+  Object.keys(extraScriptsByOrgSlug).map((slug) => {
+    if (window.location.href.indexOf(slug) > 0) {
+      extraScriptsByOrgSlug[slug].map((src) => {
+        const script = document.createElement("script");
+        script.src = "/" + src;
+        document.body.appendChild(script);
+      });
+    }
+  });
+  </script>`;
+  return customScript;
+};
+
 writeConfigurations();
 
 module.exports = {
   removeDefaultConfig,
   writeConfigurations,
+  getExtraJSScripts,
 };

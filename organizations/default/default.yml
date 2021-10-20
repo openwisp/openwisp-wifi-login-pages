@@ -6,6 +6,8 @@ settings:
   mobile_phone_verification: false
   subscriptions: false
 
+extra-js-files: []
+
 # configuration variables for the server app
 server:
   # put the URL of openwisp-radius here
