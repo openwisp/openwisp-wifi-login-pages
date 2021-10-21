@@ -31,6 +31,7 @@ yarn-error.log*
 
 #other
 organizations/*
+!organizations/JS
 !organizations/default
 !organizations/default/*
 organizations/default/*.yml

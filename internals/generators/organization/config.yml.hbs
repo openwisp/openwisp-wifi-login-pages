@@ -6,8 +6,6 @@ settings:
   mobile_phone_verification: {{mobile_phone_verification}}
   subscriptions: {{subscriptions}}
 
-extra-js-files: []
-
 # configuration variables for the server app
 server:
   # URL to openwisp-radius
@@ -37,6 +35,12 @@ client:
     - "index.css"
 {{else}}
   css: null
+{{/if}}
+{{#if assets_confirm}}
+  js:
+    - "index.js"
+{{else}}
+  js: []
 {{/if}}
   languages:
     - text: "english"

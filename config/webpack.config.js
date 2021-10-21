@@ -37,7 +37,7 @@ module.exports = (env, argv) => {
           to: path.resolve(CURRENT_WORKING_DIR, "dist/assets"),
         },
         {
-          from: path.resolve(CURRENT_WORKING_DIR, "client/extra-js-files/*.js"),
+          from: path.resolve(CURRENT_WORKING_DIR, "organizations/JS/*.js"),
           to: path.resolve(CURRENT_WORKING_DIR, "dist/[name].[ext]"),
           noErrorOnMissing: true,
         },

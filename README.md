@@ -872,7 +872,7 @@ generated HTML file using webpack.
 
 #### Load extra JS files for whole application (all organization)
 
-Place the JS files in `client/extra-js-files` directory and it will be injected in HTML
+Place the JS files in `organizations/JS` directory and it will be injected in HTML
 during build process for all the organizations.
 
 #### Load extra JS files for each organization
@@ -880,12 +880,13 @@ during build process for all the organizations.
 Add the names of the extra JS file in organization configuration. Example:
 
 ```yaml
-extra-js-files:
-  - "piwik-script.js"
-  - "google-analytics.js"
+client:
+  js:
+    - "piwik-script.js"
+    - "google-analytics.js"
 ```
 
-Make sure that all these extra JS files must be present in the `client/extra-js-files`
+Make sure that all these extra JS files must be present in the `organizations/<org-slug>/client_assets`
 directory, otherwise, it will not get injected while loading the organization page.
 
 ### License
