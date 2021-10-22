@@ -864,20 +864,20 @@ should point to the mock app just created. This way captive portal login
 and logout requests will not hang, allowing users to view/modify their
 account data also from the public internet.
 
-### Load extra JS files
+### Loading extra Js files
 
-To load extra JS files for monitoring (Sentry), analytics (Piwik, Google analytics)
-or any other aesthetic purposes, this feature can be used to inject JS files in the
+To load extra Js files for monitoring (Sentry), analytics (Piwik, Google analytics)
+or any other aesthetic purposes, this feature can be used to inject Js files in the
 generated HTML file using webpack.
 
-#### Load extra JS files for whole application (all organization)
+#### Loading extra Js files for whole application (all organizations)
 
-Place the JS files in `organizations/JS` directory and it will be injected in HTML
+Place the Js files in `organizations/js` directory and it will be injected in HTML
 during build process for all the organizations.
 
-#### Load extra JS files for each organization
+#### Loading extra Js files for a specific organization
 
-Add the names of the extra JS file in organization configuration. Example:
+Add the names of the extra Js file in organization configuration. Example:
 
 ```yaml
 client:
@@ -886,7 +886,7 @@ client:
     - "google-analytics.js"
 ```
 
-Make sure that all these extra JS files must be present in the `organizations/<org-slug>/client_assets`
+Make sure that all these extra Js files must be present in the `organizations/<org-slug>/client_assets`
 directory, otherwise, it will not get injected while loading the organization page.
 
 ### License

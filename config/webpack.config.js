@@ -26,7 +26,7 @@ module.exports = (env, argv) => {
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       filename: "index.html",
-      custom: setup.getExtraJSScripts(),
+      custom: setup.getExtraJsScripts(),
       template: path.resolve(CURRENT_WORKING_DIR, "public/index.html"),
     }),
     new HardSourceWebpackPlugin(),
@@ -37,7 +37,7 @@ module.exports = (env, argv) => {
           to: path.resolve(CURRENT_WORKING_DIR, "dist/assets"),
         },
         {
-          from: path.resolve(CURRENT_WORKING_DIR, "organizations/JS/*.js"),
+          from: path.resolve(CURRENT_WORKING_DIR, "organizations/js/*.js"),
           to: path.resolve(CURRENT_WORKING_DIR, "dist/[name].[ext]"),
           noErrorOnMissing: true,
         },

@@ -12,7 +12,7 @@ const internalConfigDir = path.join(path.join(rootDir, "internals"), "config");
 const clientDir = path.join(rootDir, "client");
 const serverDir = path.join(rootDir, "server");
 const clientConfigsDir = path.join(clientDir, "configs");
-const extraJSFilesDir = path.join(organizationsDir, "JS");
+const extraJSFilesDir = path.join(organizationsDir, "js");
 
 // array to store configurations of the organizations
 const clientConfigs = [];
@@ -263,7 +263,7 @@ const writeConfigurations = () => {
   );
 };
 
-const getExtraJSScripts = () => {
+const getExtraJsScripts = () => {
   const extraScriptsByOrgSlug = {};
   fs.readdirSync(organizationsDir).forEach((file) => {
     const configPath = path.resolve(organizationsDir, file, `${file}.yml`);
@@ -289,16 +289,20 @@ const getExtraJSScripts = () => {
       customScript += `<script src="/${file}"></script>`;
   });
   customScript += `<script>
-  const extraScriptsByOrgSlug = ${JSON.stringify(extraScriptsByOrgSlug)};
-  Object.keys(extraScriptsByOrgSlug).map((slug) => {
-    if (window.location.href.indexOf(slug) > 0) {
-      extraScriptsByOrgSlug[slug].map((src) => {
-        const script = document.createElement("script");
-        script.src = \`/assets/\${slug}/\${src}\`;
-        document.body.appendChild(script);
+  document.onreadystatechange = () => {
+    if (document.readyState === 'complete'){
+      const extraScriptsByOrgSlug = ${JSON.stringify(extraScriptsByOrgSlug)};
+      Object.keys(extraScriptsByOrgSlug).map((slug) => {
+        if (window.location.href.indexOf(slug) > 0) {
+          extraScriptsByOrgSlug[slug].map((src) => {
+            const script = document.createElement("script");
+            script.src = \`/assets/\${slug}/\${src}\`;
+            document.body.appendChild(script);
+          });
+        }
       });
     }
-  });
+  };
   </script>`;
   return customScript;
 };
@@ -308,5 +312,5 @@ writeConfigurations();
 module.exports = {
   removeDefaultConfig,
   writeConfigurations,
-  getExtraJSScripts,
+  getExtraJsScripts,
 };
