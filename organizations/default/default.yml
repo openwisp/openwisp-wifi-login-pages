@@ -205,6 +205,7 @@ client:
         id: logout_id
       additional_fields: []
       logout_by_session: true
+      wait_after: 3000
 
   privacy_policy:
     en: "privacy-en.md"

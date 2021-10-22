@@ -349,11 +349,19 @@ export default class Status extends React.Component {
     if (!this.logoutIframeRef || !this.logoutIframeRef.current) {
       return;
     }
-    const {setUserData, statusPage, orgSlug, logout, cookies} = this.props;
+    const {
+      setUserData,
+      statusPage,
+      orgSlug,
+      logout,
+      cookies,
+      captivePortalLogoutForm,
+    } = this.props;
     const {saml_logout_url} = statusPage;
     const {loggedOut} = this.state;
     const {repeatLogin} = this;
     const {setLoading} = this.context;
+    const {wait_after} = captivePortalLogoutForm;
     const logoutMethodKey = `${orgSlug}_logout_method`;
     const logoutMethod = localStorage.getItem(logoutMethodKey);
     const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
@@ -363,8 +371,11 @@ export default class Status extends React.Component {
       toast.success(t`LOGOUT_SUCCESS`);
 
       if (saml_logout_url && logoutMethod === "saml") {
-        localStorage.removeItem(logoutMethodKey);
-        window.location.assign(saml_logout_url);
+        toast.info(t`PLEASE_WAIT`, {autoClose: wait_after});
+        setTimeout(async () => {
+          localStorage.removeItem(logoutMethodKey);
+          window.location.assign(saml_logout_url);
+        }, wait_after);
         return;
       }
       setUserData(initialState.userData);
@@ -375,13 +386,13 @@ export default class Status extends React.Component {
       this.repeatLogin = false;
       // wait to trigger login to avoid getting stuck
       // in captive portal firewall rule reloading
-      toast.info(t`PLEASE_WAIT`, {autoClose: 6000});
+      toast.info(t`PLEASE_WAIT`, {autoClose: wait_after});
       setTimeout(async () => {
         toast.info(t`PLEASE_LOGIN`, {autoClose: 10000});
         setUserData(initialState.userData);
         setLoading(false);
         logout(cookies, orgSlug, userAutoLogin);
-      }, 6000);
+      }, wait_after);
     }
   };
 
@@ -940,6 +951,7 @@ Status.propTypes = {
     }),
     additional_fields: PropTypes.array,
     logout_by_session: PropTypes.bool.isRequired,
+    wait_after: PropTypes.number.isRequired,
   }).isRequired,
   location: PropTypes.shape({
     search: PropTypes.string,
