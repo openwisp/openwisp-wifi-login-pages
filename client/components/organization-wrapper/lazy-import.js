@@ -24,5 +24,6 @@ export const MobilePhoneVerification = React.lazy(() =>
   import("../mobile-phone-verification"),
 );
 export const PaymentStatus = React.lazy(() => import("../payment-status"));
+export const PaymentBuffer = React.lazy(() => import("../payment-buffer"));
 export const ConnectedDoesNotExist = React.lazy(() => import("../404"));
 export const DoesNotExist = React.lazy(() => import("../404/404"));

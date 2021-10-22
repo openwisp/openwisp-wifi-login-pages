@@ -20,6 +20,7 @@ const prefix = "/api/v1/:organization";
 app.use(`${prefix}/account`, routes.account);
 app.use(`${prefix}/modal`, routes.modal);
 app.use(`${prefix}/plan`, routes.plans);
+app.use(`${prefix}/payment`, routes.payment);
 app.get("*", (req, res) => {
   res.sendFile(path.join(process.cwd(), "dist", "index.html"));
 });
