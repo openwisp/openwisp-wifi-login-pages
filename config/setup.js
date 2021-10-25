@@ -289,14 +289,15 @@ const getExtraJsScripts = () => {
       customScript += `<script src="/${file}"></script>`;
   });
   customScript += `<script>
-  document.onreadystatechange = () => {
-    if (document.readyState === 'complete'){
-      const extraScriptsByOrgSlug = ${JSON.stringify(extraScriptsByOrgSlug)};
-      Object.keys(extraScriptsByOrgSlug).map((slug) => {
+  "use strict";
+  document.onreadystatechange = function () {
+    if (document.readyState === 'complete') {
+      var extraScriptsByOrgSlug = ${JSON.stringify(extraScriptsByOrgSlug)};
+      Object.keys(extraScriptsByOrgSlug).map(function (slug) {
         if (window.location.href.indexOf(slug) > 0) {
-          extraScriptsByOrgSlug[slug].map((src) => {
-            const script = document.createElement("script");
-            script.src = \`/assets/\${slug}/\${src}\`;
+          extraScriptsByOrgSlug[slug].map(function (src) {
+            var script = document.createElement("script");
+            script.src = "/assets/".concat(slug, "/").concat(src);
             document.body.appendChild(script);
           });
         }
