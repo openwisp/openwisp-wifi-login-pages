@@ -1,3 +1,5 @@
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 import "./index.css";
 
 import {Provider, connect} from "react-redux";
