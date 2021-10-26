@@ -17,7 +17,8 @@ describe("Selenium tests to check JS file injection in organization page", () =>
     await tearDown(driver);
   });
 
-  it("should render login page and submit login form", async () => {
+  it("should load js file for entire application", async () => {
+    const jsFile = initialData().allOrgScript;
     await driver.get(urls.login);
     let scriptSources = [];
     let scripts = await getElementsByCss(driver, "script");
@@ -26,9 +27,9 @@ describe("Selenium tests to check JS file injection in organization page", () =>
         scriptSources.push(await script.getAttribute("src"));
       }),
     );
-    expect(
-      scriptSources.includes("http://0.0.0.0:8080/assets/default/index.js"),
-    ).toEqual(true);
+    expect(scriptSources.includes(`http://0.0.0.0:8080/${jsFile}`)).toEqual(
+      true,
+    );
     const data = initialData().mobileVerificationTestUser;
     await driver.get(urls.verificationLogin(data.organization));
     scriptSources = [];
@@ -38,11 +39,8 @@ describe("Selenium tests to check JS file injection in organization page", () =>
         scriptSources.push(await script.getAttribute("src"));
       }),
     );
-    expect(
-      scriptSources.includes("http://0.0.0.0:8080/assets/default/index.js"),
-    ).toEqual(false);
-    expect(
-      scriptSources.includes("http://0.0.0.0:8080/assets/mobile/index.js"),
-    ).toEqual(true);
+    expect(scriptSources.includes(`http://0.0.0.0:8080/${jsFile}`)).toEqual(
+      true,
+    );
   });
 });

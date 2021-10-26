@@ -264,47 +264,11 @@ const writeConfigurations = () => {
 };
 
 const getExtraJsScripts = () => {
-  const extraScriptsByOrgSlug = {};
-  fs.readdirSync(organizationsDir).forEach((file) => {
-    const configPath = path.resolve(organizationsDir, file, `${file}.yml`);
-    if (fs.existsSync(configPath)) {
-      const config = getConfig(configPath);
-      if (Object.prototype.hasOwnProperty.call(config.client, "js")) {
-        if (typeof config.client.js === "object")
-          extraScriptsByOrgSlug[config.slug] = config.client.js;
-        else
-          console.log(
-            `js must be a list in ${config.slug} client configuration.`,
-          );
-      }
-    }
-  });
-  const allOrgScripts = [];
-  Object.keys(extraScriptsByOrgSlug).map((slug) =>
-    allOrgScripts.push(...extraScriptsByOrgSlug[slug]),
-  );
   let customScript = "";
   fs.readdirSync(extraJSFilesDir).forEach((file) => {
     if (path.extname(file) === ".js")
       customScript += `<script src="/${file}"></script>`;
   });
-  customScript += `<script>
-  "use strict";
-  document.onreadystatechange = function () {
-    if (document.readyState === 'complete') {
-      var extraScriptsByOrgSlug = ${JSON.stringify(extraScriptsByOrgSlug)};
-      Object.keys(extraScriptsByOrgSlug).map(function (slug) {
-        if (window.location.href.indexOf(slug) > 0) {
-          extraScriptsByOrgSlug[slug].map(function (src) {
-            var script = document.createElement("script");
-            script.src = "/assets/".concat(slug, "/").concat(src);
-            document.body.appendChild(script);
-          });
-        }
-      });
-    }
-  };
-  </script>`;
   return customScript;
 };
 
