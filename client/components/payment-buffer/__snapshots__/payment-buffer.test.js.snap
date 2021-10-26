@@ -1,0 +1,133 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test <PaymentBuffer /> query_param present should show payment status to unauthenticated user 1`] = `
+<div
+  className="container content"
+>
+  <div
+    className="inner payment-buffer"
+  >
+    <div
+      className="main-column single"
+    >
+      <div
+        className="inner"
+      >
+        <h2
+          className="row"
+        >
+           
+          Your transaction was successful.
+           
+        </h2>
+        <div
+          className="row"
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "Kindly login to start using wifi service.",
+            }
+          }
+        />
+        <div
+          className="row"
+        >
+          <Link
+            className="button full"
+            to="/default/login/"
+          >
+            Sign In
+          </Link>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Test <PaymentBuffer /> query_param present should show payment status to unauthenticated user 2`] = `
+<div
+  className="container content"
+>
+  <div
+    className="inner payment-buffer"
+  >
+    <div
+      className="main-column single"
+    >
+      <div
+        className="inner"
+      >
+        <h2
+          className="row"
+        >
+           
+          Your transaction failed.
+           
+        </h2>
+        <div
+          className="row"
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "You can start a new transaction after signing in.",
+            }
+          }
+        />
+        <div
+          className="row"
+        >
+          <Link
+            className="button full"
+            to="/default/login/"
+          >
+            Sign In
+          </Link>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Test <PaymentBuffer /> query_param present should show payment status to unauthenticated user 3`] = `
+<div
+  className="container content"
+>
+  <div
+    className="inner payment-buffer"
+  >
+    <div
+      className="main-column single"
+    >
+      <div
+        className="inner"
+      >
+        <h2
+          className="row"
+        >
+           
+          You transaction is pending.
+           
+        </h2>
+        <div
+          className="row"
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "Sign-in to complete the transaction.",
+            }
+          }
+        />
+        <div
+          className="row"
+        >
+          <Link
+            className="button full"
+            to="/default/login/"
+          >
+            Sign In
+          </Link>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

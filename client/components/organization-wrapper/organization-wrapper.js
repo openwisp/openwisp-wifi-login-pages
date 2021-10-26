@@ -284,13 +284,11 @@ export default class OrganizationWrapper extends React.Component {
                   />
                   <Route
                     path={`${match.path}/payment/check/`}
-                    render={() => {
-                      return (
-                        <Suspense fallback={<Loader />}>
-                          <PaymentBuffer />
-                        </Suspense>
-                      );
-                    }}
+                    render={() => (
+                      <Suspense fallback={<Loader />}>
+                        <PaymentBuffer />
+                      </Suspense>
+                    )}
                   />
                   <Route
                     path={`${match.path}/payment/:status`}

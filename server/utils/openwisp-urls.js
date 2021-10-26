@@ -11,7 +11,7 @@ const paths = {
   verify_mobile_phone_token: "/account/phone/verify",
   mobile_phone_number_change: "/account/phone/change",
   plans: "/plan",
-  payment_status: "/payment/{paymentId}/status"
+  payment_status: "/payment/{paymentId}/status",
 };
 
 const reverse = (name, orgSlug) => {

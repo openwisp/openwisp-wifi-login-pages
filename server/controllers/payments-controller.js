@@ -13,15 +13,19 @@ const payments = (req, res) => {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
       const {host, custom, radiusSlug} = conf;
-      const paymentUrl = reverse("payment_status", custom ? radiusSlug : org.slug).replace("{paymentId}", reqPaymentId);
+      const paymentUrl = reverse(
+        "payment_status",
+        custom ? radiusSlug : org.slug,
+      ).replace("{paymentId}", reqPaymentId);
       const timeout = conf.timeout * 1000;
+      const {oneTimeToken} = req.body;
       // make AJAX request
       axios({
         method: "get",
         headers: {
           "content-type": "application/x-www-form-urlencoded",
           "accept-language": req.headers["accept-language"],
-          Authorization: req.headers["authorization"],
+          Authorization: `${conf.settings.oneTimeTokenName} ${oneTimeToken}`,
         },
         url: `${host}${paymentUrl}/`,
         timeout,

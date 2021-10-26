@@ -1,7 +1,7 @@
 import {connect} from "react-redux";
 import Component from "./payment-buffer";
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
   const conf = state.organization.configuration;
   return {
     isAuthenticated: conf.isAuthenticated,
