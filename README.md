@@ -866,16 +866,23 @@ account data also from the public internet.
 
 ### Loading extra javascript files
 
-To load extra javascript files for monitoring (Sentry), analytics (Piwik, Google analytics)
-or any other aesthetic purposes, this feature can be used to inject javascript files in the
-generated HTML file using webpack.
+It is possible to load extra javascript files, which may be needed for different
+reasons like error monitoring (Sentry), analytics (Piwik, Google analytics), etc.
 
-#### Loading extra javascript files for whole application (all organizations)
+It's possible to accomplish this in two ways which are explained below.
+
+#### 1. Loading extra javascript files for whole application (all organizations)
 
 Place the javascript files in `organizations/js` directory and it will be injected in HTML
-during build process for all the organizations.
+during the webpack build process for all the organizations.
 
-#### Loading extra javascript files for a specific organization
+These scripts are loaded before all the other Javascript code is loaded.
+This is done on purpose to ensure that any error monitoring code is loaded
+before everything else.
+
+This feature should be used only for critical custom Javascript code.
+
+#### 2. Loading extra javascript files for a specific organization
 
 Add the names of the extra javascript files in organization configuration. Example:
 
@@ -886,8 +893,12 @@ client:
     - "google-analytics.js"
 ```
 
-Make sure that all these extra javascript files must be present in the `organizations/<org-slug>/client_assets`
-directory, otherwise, it will not get injected while loading the organization page.
+Make sure that all these extra javascript files are be present in the
+`organizations/<org-slug>/client_assets` directory.
+
+These scripts are loaded only after the rest of the page has finished loading.
+
+This feature can be used to load non-critical custom Javascript code.
 
 ### License
 
