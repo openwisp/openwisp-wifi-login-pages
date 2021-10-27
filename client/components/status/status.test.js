@@ -991,6 +991,7 @@ describe("<Status /> interactions", () => {
     const status = wrapper.instance();
     const handleLogout = jest.spyOn(status, "handleLogout");
     const mockRef = {submit: jest.fn()};
+    jest.useFakeTimers("legacy");
     status.logoutFormRef = {current: mockRef};
     status.logoutIframeRef = {current: {}};
     status.componentDidMount();
@@ -1002,6 +1003,7 @@ describe("<Status /> interactions", () => {
     expect(location.assign.mock.calls.length).toBe(0);
     await tick();
     status.handleLogoutIframe();
+    jest.runAllTimers();
     expect(location.assign.mock.calls.length).toBe(1);
     expect(location.assign).toHaveBeenCalledWith(
       props.statusPage.saml_logout_url,

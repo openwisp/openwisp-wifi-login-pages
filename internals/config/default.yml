@@ -154,6 +154,7 @@ client:
         id: logout_id
       additional_fields: []
       logout_by_session: true
+      wait_after: 3000
 
     mobile_phone_verification_form:
       input_fields:
