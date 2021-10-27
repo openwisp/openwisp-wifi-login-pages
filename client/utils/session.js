@@ -1,3 +1,5 @@
+import {sessionStorage} from "./storage";
+
 const handleSession = (orgSlug, token, cookies) => {
   /**
    * This function is used to check whether sessionStorage or cookies

@@ -24,6 +24,7 @@ import validateToken from "../../utils/validate-token";
 import handleLogout from "../../utils/handle-logout";
 import getError from "../../utils/get-error";
 import getLanguageHeaders from "../../utils/get-language-headers";
+import {sessionStorage} from "../../utils/storage";
 
 export default class MobilePhoneVerification extends React.Component {
   phoneTokenSentKey = "owPhoneTokenSent";

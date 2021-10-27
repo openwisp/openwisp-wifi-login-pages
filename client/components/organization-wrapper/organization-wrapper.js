@@ -30,7 +30,7 @@ import {
   ConnectedDoesNotExist,
   DoesNotExist,
 } from "./lazy-import";
-import localStorage from "../../utils/get-local-storage";
+import {localStorage} from "../../utils/storage";
 
 export default class OrganizationWrapper extends React.Component {
   constructor(props) {

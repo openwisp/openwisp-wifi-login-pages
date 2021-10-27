@@ -25,7 +25,7 @@ import Loader from "../../utils/loader";
 import {initialState} from "../../reducers/organization";
 import {Logout} from "../organization-wrapper/lazy-import";
 import InfoModal from "../../utils/modal";
-import localStorage from "../../utils/get-local-storage";
+import {localStorage} from "../../utils/storage";
 
 export default class Status extends React.Component {
   constructor(props) {

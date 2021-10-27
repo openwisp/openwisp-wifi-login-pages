@@ -11,7 +11,7 @@ import {toast} from "react-toastify";
 import {t} from "ttag";
 import {mainToastId} from "../../constants";
 import LoadingContext from "../../utils/loading-context";
-import localStorage from "../../utils/get-local-storage";
+import {localStorage} from "../../utils/storage";
 
 export default class Logout extends React.Component {
   constructor(props) {

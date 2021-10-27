@@ -28,7 +28,7 @@ import {Status} from "../organization-wrapper/lazy-import";
 import getError from "../../utils/get-error";
 import getLanguageHeaders from "../../utils/get-language-headers";
 import redirectToPayment from "../../utils/redirect-to-payment";
-import localStorage from "../../utils/get-local-storage";
+import {localStorage, sessionStorage} from "../../utils/storage";
 
 const PhoneInput = React.lazy(() => import("react-phone-input-2"));
 
