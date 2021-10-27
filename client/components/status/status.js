@@ -25,6 +25,7 @@ import Loader from "../../utils/loader";
 import {initialState} from "../../reducers/organization";
 import {Logout} from "../organization-wrapper/lazy-import";
 import InfoModal from "../../utils/modal";
+import localStorage from "../../utils/get-local-storage";
 
 export default class Status extends React.Component {
   constructor(props) {
@@ -274,7 +275,7 @@ export default class Status extends React.Component {
     const {orgSlug, logout, cookies, setUserData} = this.props;
     const macaddr = cookies.get(`${orgSlug}_macaddr`);
     const params = {macaddr};
-    localStorage.setItem("userAutoLogin", userAutoLogin);
+    localStorage.setItem("userAutoLogin", String(userAutoLogin));
     setLoading(true);
     await this.getUserActiveRadiusSessions(params);
     const {sessionsToLogout, internetMode} = this.state;

@@ -16,25 +16,6 @@ import history from "./utils/history";
 import parseOrganizations from "./actions/parse-organizations";
 import store from "./store";
 
-const localStorageExists = () => {
-  const obj = "local";
-  try {
-    localStorage.setItem(obj, obj);
-    localStorage.removeItem(obj);
-    return true;
-  } catch (e) {
-    return false;
-  }
-};
-
-if (!localStorageExists()) {
-  import("./localstorage").then((localStorage) => {
-    Object.defineProperty(window, "localStorage", {
-      value: localStorage.default,
-    });
-  });
-}
-
 class BaseApp extends React.Component {
   constructor(props) {
     super(props);
