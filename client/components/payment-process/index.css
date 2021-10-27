@@ -1,0 +1,10 @@
+.payment-buffer .main-column {
+  padding: 10px;
+  border-radius: 5px;
+}
+
+iframe {
+  width: 100%;
+  height: 500px;
+  border-radius: 5px;
+}

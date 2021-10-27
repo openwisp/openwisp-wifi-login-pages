@@ -26,6 +26,7 @@ import {initialState} from "../../reducers/organization";
 import {Logout} from "../organization-wrapper/lazy-import";
 import InfoModal from "../../utils/modal";
 import {localStorage} from "../../utils/storage";
+import redirectToPayment from "../../utils/redirect-to-payment";
 
 export default class Status extends React.Component {
   constructor(props) {
@@ -173,12 +174,12 @@ export default class Status extends React.Component {
   };
 
   async finalOperations() {
-    const {userData, settings} = this.props;
+    const {userData, orgSlug, settings} = this.props;
     const {setLoading} = this.context;
     // if the user needs bank card verification,
     // redirect to payment page and stop here
     if (needsVerify("bank_card", userData, settings)) {
-      window.location.assign(userData.payment_url);
+      redirectToPayment(orgSlug);
       return;
     }
 

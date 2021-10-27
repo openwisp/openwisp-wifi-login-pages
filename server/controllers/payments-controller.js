@@ -1,5 +1,6 @@
 import axios from "axios";
 import merge from "deepmerge";
+import cookie from "cookie-signature";
 import config from "../config.json";
 import defaultConfig from "../utils/default-config";
 import Logger from "../utils/logger";
@@ -18,14 +19,17 @@ const payments = (req, res) => {
         custom ? radiusSlug : org.slug,
       ).replace("{paymentId}", reqPaymentId);
       const timeout = conf.timeout * 1000;
-      const {oneTimeToken} = req.body;
+      const {tokenType, session} = req.body;
+      let {tokenValue} = req.body;
+      if (session === "false")
+        tokenValue = cookie.unsign(tokenValue, conf.secret_key);
       // make AJAX request
       axios({
         method: "get",
         headers: {
           "content-type": "application/x-www-form-urlencoded",
           "accept-language": req.headers["accept-language"],
-          Authorization: `${conf.settings.oneTimeTokenName} ${oneTimeToken}`,
+          Authorization: `${tokenType} ${tokenValue}`,
         },
         url: `${host}${paymentUrl}/`,
         timeout,

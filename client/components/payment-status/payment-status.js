@@ -109,7 +109,7 @@ export default class PaymentStatus extends React.Component {
               <div className="row">
                 <Link
                   className="button full"
-                  to={`/${orgSlug}/status`}
+                  to={`/${orgSlug}/payment/process`}
                   onClick={() => authenticate(true)}
                 >
                   {t`PAY_PROC_BTN`}
