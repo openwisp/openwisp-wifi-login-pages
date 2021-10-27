@@ -29,6 +29,7 @@ client:
   # folder in assets directory.
   css:
     - "index.css"
+  js: []
   languages:
     - text: "english"
       slug: "en"

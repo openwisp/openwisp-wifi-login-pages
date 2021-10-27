@@ -130,6 +130,26 @@ describe("<OrganizationWrapper /> rendering", () => {
       ),
     ).toBe(true);
   });
+
+  it("should load organization specific js files", () => {
+    wrapper.setProps({
+      organization: {
+        ...props.organization.configuration,
+        configuration: {
+          ...props.organization.configuration,
+          js: ["index.js", "custom.js"],
+        },
+        exists: true,
+      },
+    });
+    const helmetWrapper = wrapper.find(Helmet).at(1);
+    expect(
+      helmetWrapper.contains(<script src="/assets/default/index.js" />),
+    ).toBe(true);
+    expect(
+      helmetWrapper.contains(<script src="/assets/default/custom.js" />),
+    ).toBe(true);
+  });
 });
 
 describe("<OrganizationWrapper /> interactions", () => {

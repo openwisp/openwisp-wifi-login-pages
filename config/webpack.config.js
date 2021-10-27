@@ -12,7 +12,6 @@ const setup = require("./setup");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
-
 const CURRENT_WORKING_DIR = process.cwd();
 const DEFAULT_PORT = 8080;
 const DEFAULT_SERVER_URL = "http://localhost:3030";
@@ -27,6 +26,7 @@ module.exports = (env, argv) => {
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       filename: "index.html",
+      custom: setup.getExtraJsScripts(),
       template: path.resolve(CURRENT_WORKING_DIR, "public/index.html"),
     }),
     new HardSourceWebpackPlugin(),
@@ -35,6 +35,11 @@ module.exports = (env, argv) => {
         {
           from: path.resolve(CURRENT_WORKING_DIR, "client/assets"),
           to: path.resolve(CURRENT_WORKING_DIR, "dist/assets"),
+        },
+        {
+          from: path.resolve(CURRENT_WORKING_DIR, "organizations/js/*.js"),
+          to: path.resolve(CURRENT_WORKING_DIR, "dist/[name].[ext]"),
+          noErrorOnMissing: true,
         },
       ],
     }),

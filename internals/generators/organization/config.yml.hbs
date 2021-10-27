@@ -36,6 +36,12 @@ client:
 {{else}}
   css: null
 {{/if}}
+{{#if assets_confirm}}
+  js:
+    - "index.js"
+{{else}}
+  js: []
+{{/if}}
   languages:
     - text: "english"
       slug: "en"

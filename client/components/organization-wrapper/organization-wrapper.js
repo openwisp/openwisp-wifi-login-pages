@@ -114,6 +114,7 @@ export default class OrganizationWrapper extends React.Component {
       slug: orgSlug,
       name: orgName,
       css_path: cssPath,
+      js,
     } = organization.configuration;
     const {is_active} = userData;
     let {css} = organization.configuration;
@@ -326,6 +327,13 @@ export default class OrganizationWrapper extends React.Component {
               />
             </Helmet>
           ) : null}
+          {js && js.length !== 0 && orgSlug ? (
+            <Helmet>
+              {js.map((path) => (
+                <script src={getAssetPath(orgSlug, path)} key={path} />
+              ))}
+            </Helmet>
+          ) : null}
         </>
       );
     }
@@ -371,6 +379,7 @@ OrganizationWrapper.propTypes = {
       settings: PropTypes.shape({
         mobile_phone_verification: PropTypes.bool,
       }),
+      js: PropTypes.array,
     }),
     exists: PropTypes.bool,
   }).isRequired,

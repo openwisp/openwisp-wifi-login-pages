@@ -13,5 +13,6 @@
     "secretKey": "organization_secret_key",
     "method": "mobile_phone",
     "changePhoneNumber": "9876543210"
-  }
+  },
+  "allOrgScript": "analytics.js"
 }

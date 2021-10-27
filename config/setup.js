@@ -12,6 +12,7 @@ const internalConfigDir = path.join(path.join(rootDir, "internals"), "config");
 const clientDir = path.join(rootDir, "client");
 const serverDir = path.join(rootDir, "server");
 const clientConfigsDir = path.join(clientDir, "configs");
+const extraJSFilesDir = path.join(organizationsDir, "js");
 
 // array to store configurations of the organizations
 const clientConfigs = [];
@@ -262,9 +263,19 @@ const writeConfigurations = () => {
   );
 };
 
+const getExtraJsScripts = () => {
+  let customScript = "";
+  fs.readdirSync(extraJSFilesDir).forEach((file) => {
+    if (path.extname(file) === ".js")
+      customScript += `<script src="/${file}"></script>`;
+  });
+  return customScript;
+};
+
 writeConfigurations();
 
 module.exports = {
   removeDefaultConfig,
   writeConfigurations,
+  getExtraJsScripts,
 };
