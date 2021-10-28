@@ -1,4 +1,4 @@
-const storageFallback = (storage) => {
+export const storageFallback = (storage) => {
   let data = {};
 
   return {
