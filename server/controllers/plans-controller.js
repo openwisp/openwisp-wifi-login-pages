@@ -4,6 +4,7 @@ import config from "../config.json";
 import defaultConfig from "../utils/default-config";
 import Logger from "../utils/logger";
 import reverse from "../utils/openwisp-urls";
+import getSlug from "../utils/get-slug";
 
 const plans = (req, res) => {
   const reqOrg = req.params.organization;
@@ -11,8 +12,8 @@ const plans = (req, res) => {
     if (org.slug === reqOrg) {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
-      const {host, custom, radiusSlug} = conf;
-      const plansUrl = reverse("plans", custom ? radiusSlug : org.slug);
+      const {host} = conf;
+      const plansUrl = reverse("plans", getSlug(conf));
       const timeout = conf.timeout * 1000;
       // make AJAX request
       axios({
