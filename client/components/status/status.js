@@ -485,6 +485,15 @@ export default class Status extends React.Component {
     return `${mb}MB`;
   };
 
+  getDateTimeFormat = (language, time_option, date) => {
+    if (typeof Intl !== "undefined") {
+      return new Intl.DateTimeFormat(language, time_option).format(
+        new Date(date),
+      )
+    }
+    return String(new Date(date));
+  }
+
   getLargeTableRow = (session, sessionSettings, showLogoutButton = false) => {
     const {language} = this.props;
     const time_option = {
@@ -496,16 +505,12 @@ export default class Status extends React.Component {
     return (
       <>
         <td>
-          {new Intl.DateTimeFormat(language, time_option).format(
-            new Date(session.start_time),
-          )}
+          {this.getDateTimeFormat(language, time_option, session.start_time)}
         </td>
         <td>
           {session.stop_time === null
             ? activeSessionText
-            : new Intl.DateTimeFormat(language, time_option).format(
-                new Date(session.stop_time),
-              )}
+            : this.getDateTimeFormat(language, time_option, session.stop_time)}
         </td>
         <td>{this.getDuration(session.session_time)}</td>
         <td>{this.getMB(session.output_octets)}</td>
@@ -544,9 +549,7 @@ export default class Status extends React.Component {
         >
           <th>{session_info.header.start_time}:</th>
           <td>
-            {new Intl.DateTimeFormat(language, time_option).format(
-              new Date(session.start_time),
-            )}
+            {this.getDateTimeFormat(language, time_option, session.start_time)}
           </td>
         </tr>
         <tr
@@ -557,9 +560,7 @@ export default class Status extends React.Component {
           <td>
             {session.stop_time === null
               ? activeSessionText
-              : new Intl.DateTimeFormat(language, time_option).format(
-                  new Date(session.stop_time),
-                )}
+              : this.getDateTimeFormat(language, time_option, session.stop_time)}
           </td>
         </tr>
         <tr
