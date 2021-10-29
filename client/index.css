@@ -251,44 +251,6 @@ h1 {
   width: 100%;
 }
 
-@media screen and (min-width: 0px) and (max-width: 1000px) {
-  body .header-row-1-inner {
-    padding: 10px 3%;
-  }
-  body .header-row-2-inner {
-    padding: 0 3%;
-  }
-
-  .main-column {
-    width: 54%;
-  }
-  .side-column {
-    width: 44.5%;
-  }
-}
-
-@media screen and (min-width: 0px) and (max-width: 767px) {
-  .container .inner {
-    flex-direction: column;
-  }
-  .container {
-    padding: 20px 0;
-  }
-  .main-column,
-  .side-column {
-    width: 100%;
-  }
-  .side-column {
-    margin-top: 20px;
-  }
-  body .input {
-    font-size: 16px;
-  }
-  .main-column.single {
-    width: 100%;
-    margin: 0 auto;
-  }
-}
 .eye {
   content: url("assets/eye.svg");
   width: 20px;
@@ -370,5 +332,43 @@ h1 {
   .modal-container p.message {
     margin: 0 6%;
     line-height: 30px;
+  }
+}
+@media screen and (min-width: 0px) and (max-width: 1000px) {
+  body .header-row-1-inner {
+    padding: 10px 3%;
+  }
+  body .header-row-2-inner {
+    padding: 0 3%;
+  }
+
+  .main-column {
+    width: 54%;
+  }
+  .side-column {
+    width: 44.5%;
+  }
+}
+
+@media screen and (min-width: 0px) and (max-width: 767px) {
+  .container .inner {
+    flex-direction: column;
+  }
+  .container {
+    padding: 20px 0;
+  }
+  .main-column,
+  .side-column {
+    width: 100%;
+  }
+  .side-column {
+    margin-top: 20px;
+  }
+  body .input {
+    font-size: 16px;
+  }
+  .main-column.single {
+    width: 100%;
+    margin: 0 auto;
   }
 }
