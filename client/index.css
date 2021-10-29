@@ -52,12 +52,10 @@ body {
   font-size: 14px;
 }
 .button.full {
-  display: flex;
-  flex-direction: row;
+  display: block;
   text-decoration: none;
-  align-items: center;
+  text-align: center;
   padding: 8px 0;
-  justify-content: center;
   width: 100%;
   line-height: 24px;
 }
