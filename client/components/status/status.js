@@ -489,10 +489,10 @@ export default class Status extends React.Component {
     if (typeof Intl !== "undefined") {
       return new Intl.DateTimeFormat(language, time_option).format(
         new Date(date),
-      )
+      );
     }
     return String(new Date(date));
-  }
+  };
 
   getLargeTableRow = (session, sessionSettings, showLogoutButton = false) => {
     const {language} = this.props;
@@ -560,7 +560,11 @@ export default class Status extends React.Component {
           <td>
             {session.stop_time === null
               ? activeSessionText
-              : this.getDateTimeFormat(language, time_option, session.stop_time)}
+              : this.getDateTimeFormat(
+                  language,
+                  time_option,
+                  session.stop_time,
+                )}
           </td>
         </tr>
         <tr

@@ -28,7 +28,6 @@ yarn-error.log*
 .*.swo
 
 #other
-/org-configurations
 client/config.json
 !client/assets/
 client/assets/*
@@ -42,3 +41,4 @@ i18n/*
 client/configs/
 client/organizations.json
 server/assets/*
+organizations/
