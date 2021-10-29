@@ -14,12 +14,14 @@ import Status from "./status";
 import validateToken from "../../utils/validate-token";
 import {initialState} from "../../reducers/organization";
 import Modal from "../../utils/modal";
+import history from "../../utils/history";
 
 jest.mock("axios");
 jest.mock("../../utils/get-config");
 jest.mock("../../utils/load-translation");
 jest.mock("../../utils/log-error");
 jest.mock("../../utils/validate-token");
+jest.mock("../../utils/history");
 logError.mockImplementation(jest.fn());
 
 const defaultConfig = getConfig("default");
@@ -838,8 +840,9 @@ describe("<Status /> interactions", () => {
     wrapper.instance().handleLoginIframe();
 
     // ensure user is redirected to payment URL
-    expect(location.assign.mock.calls.length).toBe(1);
-    expect(location.assign.mock.calls[0][0]).toBe(props.userData.payment_url);
+    expect(history.push).toHaveBeenCalledWith(
+      `/${props.orgSlug}/payment/draft`,
+    );
     // ensure sessions are not fetched
     expect(Status.prototype.getUserActiveRadiusSessions).not.toHaveBeenCalled();
     expect(Status.prototype.getUserPassedRadiusSessions).not.toHaveBeenCalled();

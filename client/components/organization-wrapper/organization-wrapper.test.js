@@ -21,6 +21,7 @@ import {
   PasswordConfirm,
   MobilePhoneVerification,
   PaymentStatus,
+  PaymentProcess,
   ConnectedDoesNotExist,
   Logout,
 } from "./lazy-import";
@@ -317,6 +318,14 @@ describe("<OrganizationWrapper /> interactions", () => {
         </Suspense>,
       ),
     );
+    render = pathMap["/default/payment/process/"];
+    expect(JSON.stringify(render(createTestProps()))).toEqual(
+      JSON.stringify(
+        <Suspense fallback={<Loader />}>
+          <PaymentProcess cookies={cookies} />
+        </Suspense>,
+      ),
+    );
     render = pathMap.notFound;
     expect(JSON.stringify(render())).toEqual(
       JSON.stringify(
@@ -415,6 +424,14 @@ describe("Test Organization Wrapper for unauthenticated users", () => {
         </Suspense>,
       ),
     );
+    render = pathMap["/default/payment/process/"];
+    expect(JSON.stringify(render(createTestProps()))).toEqual(
+      JSON.stringify(
+        <Suspense fallback={<Loader />}>
+          <PaymentProcess cookies={cookies} />
+        </Suspense>,
+      ),
+    );
     render = pathMap.notFound;
     expect(JSON.stringify(render())).toEqual(
       JSON.stringify(
@@ -506,6 +523,14 @@ describe("Test Organization Wrapper for authenticated and unverified users", () 
       JSON.stringify(
         <Suspense fallback={<Loader />}>
           <PaymentStatus cookies={cookies} />
+        </Suspense>,
+      ),
+    );
+    render = pathMap["/default/payment/process/"];
+    expect(JSON.stringify(render(createTestProps()))).toEqual(
+      JSON.stringify(
+        <Suspense fallback={<Loader />}>
+          <PaymentProcess cookies={cookies} />
         </Suspense>,
       ),
     );

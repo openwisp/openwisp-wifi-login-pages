@@ -86,7 +86,7 @@ exports[`Test <PaymentStatus /> cases should render draft correctly 1`] = `
           <Link
             className="button full"
             onClick={[Function]}
-            to="/default/status"
+            to="/default/payment/process"
           >
             Proceed with the payment
           </Link>

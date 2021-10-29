@@ -61,6 +61,10 @@ exports[`<OrganizationWrapper /> interactions should render main title if pageTi
           render={[Function]}
         />
         <Route
+          path="/default/payment/process/"
+          render={[Function]}
+        />
+        <Route
           path="/default/payment/:status"
           render={[Function]}
         />
@@ -143,6 +147,10 @@ exports[`<OrganizationWrapper /> interactions should render pageTitle if it is n
         />
         <Route
           path="/default/change-phone-number"
+          render={[Function]}
+        />
+        <Route
+          path="/default/payment/process/"
           render={[Function]}
         />
         <Route
@@ -231,6 +239,10 @@ exports[`<OrganizationWrapper /> interactions should show route for authenticate
           render={[Function]}
         />
         <Route
+          path="/default/payment/process/"
+          render={[Function]}
+        />
+        <Route
           path="/default/payment/:status"
           render={[Function]}
         />
@@ -316,6 +328,10 @@ exports[`Test Organization Wrapper for authenticated and unverified users should
           render={[Function]}
         />
         <Route
+          path="/default/payment/process/"
+          render={[Function]}
+        />
+        <Route
           path="/default/payment/:status"
           render={[Function]}
         />
@@ -398,6 +414,10 @@ exports[`Test Organization Wrapper for unauthenticated users should show route f
         />
         <Route
           path="/default/change-phone-number"
+          render={[Function]}
+        />
+        <Route
+          path="/default/payment/process/"
           render={[Function]}
         />
         <Route

@@ -5,7 +5,6 @@ import React from "react";
 import {Redirect} from "react-router-dom";
 import LoadingContext from "../../utils/loading-context";
 import validateToken from "../../utils/validate-token";
-import handleLogout from "../../utils/handle-logout";
 import getPaymentStatusRedirectUrl from "../../utils/get-payment-status";
 import history from "../../utils/history";
 
@@ -13,9 +12,6 @@ export default class PaymentProcess extends React.Component {
   constructor(props) {
     super(props);
     this.iframeRef = React.createRef();
-    this.state = {
-      redirectUrl: "",
-    };
   }
 
   async componentDidMount() {
@@ -31,7 +27,6 @@ export default class PaymentProcess extends React.Component {
       userData,
       logout,
     );
-    setLoading(false);
 
     if (this.isTokenValid === false) {
       return;
@@ -40,16 +35,12 @@ export default class PaymentProcess extends React.Component {
     ({userData} = this.props);
     setUserData({...userData});
     window.addEventListener("message", this.handlePostMessage);
+    setLoading(false);
   }
 
   componentWillUnmount() {
     window.removeEventListener("message", this.handlePostMessage);
   }
-
-  logout = () => {
-    const {logout, cookies, orgSlug, setUserData, userData} = this.props;
-    handleLogout(logout, cookies, orgSlug, setUserData, userData);
-  };
 
   handlePostMessage = async (event) => {
     const {userData, cookies, orgSlug, setUserData} = this.props;
@@ -79,11 +70,6 @@ export default class PaymentProcess extends React.Component {
   };
 
   render() {
-    const {redirectUrl} = this.state;
-    if (redirectUrl) {
-      const redirect = () => <Redirect to={redirectUrl} />;
-      return redirect();
-    }
     const {orgSlug, isAuthenticated, userData} = this.props;
     const {method, is_verified: isVerified} = userData;
     const redirectToStatus = () => <Redirect to={`/${orgSlug}/status`} />;
