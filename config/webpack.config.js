@@ -12,6 +12,7 @@ const setup = require("./setup");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const RemoveStrictPlugin = require("remove-strict-webpack-plugin");
 const CURRENT_WORKING_DIR = process.cwd();
 const DEFAULT_PORT = 8080;
 const DEFAULT_SERVER_URL = "http://localhost:3030";
@@ -89,6 +90,8 @@ module.exports = (env, argv) => {
       }),
     );
   }
+
+  plugins.push(new RemoveStrictPlugin());
 
   // The url the server is running on; if none was given, fall back to the default
   let serverUrl;
