@@ -75,7 +75,7 @@ export default class Modal extends React.Component {
     const {loading, content} = this.state;
     return (
       <>
-        <div className="modal is-visible pt-4">
+        <div className="modal is-visible content">
           <div className="modal-container w-900 text-left">
             <Link to={prevPath} className="modal-close-btn">
               &#10006;
