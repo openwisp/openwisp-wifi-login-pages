@@ -1,3 +1,5 @@
+import "core-js/es/promise";
+
 if (window.fetch) {
   import("./app").then((module) => module.default());
 } else {
