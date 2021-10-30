@@ -52,4 +52,7 @@ div.remember-me {
     height: 25px;
     bottom: -6px;
   }
+  .Toastify__toast-container {
+    height: 5vw;
+  }
 }
