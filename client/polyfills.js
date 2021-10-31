@@ -6,3 +6,19 @@ import "core-js/es/weak-map";
 import "core-js/es/string";
 import "regenerator-runtime/runtime";
 import "raf/polyfill";
+
+const removeToastsInOldBrowsers = () => {
+  setInterval(() => {
+    const toastContainer = document.querySelector(".Toastify").children;
+    if (toastContainer.length) {
+      const toasts = Array.from(toastContainer[0].children);
+      toasts.map((toast) => setTimeout(() => toast.remove(), 1000));
+    }
+  }, 1000);
+};
+
+try {
+  removeToastsInOldBrowsers(); // to auto remove toasts
+} catch {
+  //
+}
