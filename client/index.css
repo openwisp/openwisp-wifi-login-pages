@@ -372,3 +372,20 @@ h1 {
     margin: 0 auto;
   }
 }
+
+/* adjustments for old browsers */
+
+.Toastify .oldbrowser {
+  height: 1rem;
+  z-index: 9999;
+}
+
+.Toastify .oldbrowser .Toastify__toast-theme--light {
+  background: #fff;
+  color: #424242;
+  margin-bottom: 0.5rem;
+}
+
+.oldbrowser .modal-container .modal-buttons {
+  margin-bottom: 1.5em;
+}

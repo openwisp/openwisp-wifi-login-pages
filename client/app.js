@@ -25,7 +25,7 @@ class BaseApp extends React.Component {
   render() {
     return (
       <Router history={history}>
-        <ToastContainer style={isOldBrowser ? {height: "1rem"} : null} />
+        <ToastContainer className={isOldBrowser() ? "oldbrowser" : null} />
         <Route path="/" component={Routes} />
       </Router>
     );
