@@ -13,6 +13,7 @@ import organizations from "./organizations.json";
 import history from "./utils/history";
 import parseOrganizations from "./actions/parse-organizations";
 import store from "./store";
+import isOldBrowser from "./utils/is-old-browser";
 
 class BaseApp extends React.Component {
   constructor(props) {
@@ -24,7 +25,7 @@ class BaseApp extends React.Component {
   render() {
     return (
       <Router history={history}>
-        <ToastContainer />
+        <ToastContainer style={isOldBrowser ? {height: "1rem"} : null} />
         <Route path="/" component={Routes} />
       </Router>
     );
