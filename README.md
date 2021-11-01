@@ -902,9 +902,10 @@ This feature can be used to load non-critical custom Javascript code.
 
 ### Support for old browsers
 
-Polyfills is used to maintain the support for old browsers on different platforms.
-It is recommended to add **polyfill.io** to the allowed hostnames (walled garden)
-of the captive portal (otherwise it won't load in old browsers).
+Polyfills are used to support old browsers on different platforms.
+It is recommended to add **polyfill.io** to the allowed hostnames
+(walled garden) of the captive portal, otherwise the application will not
+be able to load in old browsers.
 
 ### License
 
