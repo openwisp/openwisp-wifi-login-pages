@@ -16,7 +16,7 @@
 }
 .message {
   max-height: 70vh;
-  overflow: auto;
+  overflow: hidden;
 }
 .modal-container .message h1 {
   font-size: 21px;
