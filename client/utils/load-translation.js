@@ -35,15 +35,17 @@ const loadTranslationUtil = async (
   let lang = language;
   if (useBrowserLang) {
     const availLangs = availableLanguages.map((langObj) => langObj.slug);
-    navigator.languages.some((browserLang) => {
-      if (availLangs.includes(browserLang)) lang = browserLang;
-      else if (availLangs.includes(browserLang.substr(0, 2)))
-        lang = browserLang.substr(0, 2);
-      return (
-        availLangs.includes(browserLang) ||
-        availLangs.includes(browserLang.substr(0, 2))
-      );
-    });
+    (navigator.languages ? navigator.languages : [navigator.language]).some(
+      (browserLang) => {
+        if (availLangs.includes(browserLang)) lang = browserLang;
+        else if (availLangs.includes(browserLang.substr(0, 2)))
+          lang = browserLang.substr(0, 2);
+        return (
+          availLangs.includes(browserLang) ||
+          availLangs.includes(browserLang.substr(0, 2))
+        );
+      },
+    );
   }
   if (lang !== "") {
     try {

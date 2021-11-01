@@ -8,9 +8,9 @@ import Select from "react-select";
 import {Link, Route} from "react-router-dom";
 import {toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import countryList from "react-select-country-list";
 import {t, gettext} from "ttag";
 import "react-phone-input-2/lib/style.css";
+import countries from "./countries.json";
 import LoadingContext from "../../utils/loading-context";
 import PasswordToggleIcon from "../../utils/password-toggle";
 import {mainToastId, registerApiUrl, plansApiUrl} from "../../constants";
@@ -403,7 +403,6 @@ export default class Registration extends React.Component {
       countrySelected,
       hidePassword,
     } = this.state;
-    const countries = countryList().getData();
     return (
       <>
         <div className="container content" id="registration">

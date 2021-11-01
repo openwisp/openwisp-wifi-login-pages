@@ -28,6 +28,7 @@ import {Status} from "../organization-wrapper/lazy-import";
 import getError from "../../utils/get-error";
 import getLanguageHeaders from "../../utils/get-language-headers";
 import redirectToPayment from "../../utils/redirect-to-payment";
+import {localStorage, sessionStorage} from "../../utils/storage";
 
 const PhoneInput = React.lazy(() => import("react-phone-input-2"));
 
@@ -272,7 +273,10 @@ export default class Login extends React.Component {
     const {remember_me} = this.state;
     // useSessionStorage=true is passed from social login or SAML
     // user needs to repeat the login process each time
-    localStorage.setItem("rememberMe", remember_me && !useSessionStorage);
+    localStorage.setItem(
+      "rememberMe",
+      String(remember_me && !useSessionStorage),
+    );
     // if remember me checkbox is unchecked
     // store auth token in sessionStorage instead of cookie
     if (!remember_me || useSessionStorage) {

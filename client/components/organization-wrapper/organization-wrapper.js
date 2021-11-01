@@ -30,6 +30,8 @@ import {
   ConnectedDoesNotExist,
   DoesNotExist,
 } from "./lazy-import";
+import {localStorage} from "../../utils/storage";
+import isOldBrowser from "../../utils/is-old-browser";
 
 export default class OrganizationWrapper extends React.Component {
   constructor(props) {
@@ -124,13 +126,16 @@ export default class OrganizationWrapper extends React.Component {
     const needsVerifyPhone = needsVerify("mobile_phone", userData, settings);
     if (organization.exists === true) {
       const {setLoading} = this;
+      let extraClasses = "";
+      if (loading) extraClasses += " no-scroll";
+      if (isOldBrowser()) extraClasses += " oldbrowser";
       return (
         <>
           {translationLoaded && configLoaded ? (
             <LoadingContext.Provider
               value={{setLoading, getLoading: () => loading}}
             >
-              <div className={`app-container ${loading ? "no-scroll" : ""}`}>
+              <div className={`app-container ${extraClasses}`}>
                 <Route
                   path={match.path}
                   render={({location}) => <Header location={location} />}

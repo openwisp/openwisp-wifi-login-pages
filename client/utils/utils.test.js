@@ -24,6 +24,7 @@ import loader from "./loader";
 import handleChange from "./handle-change";
 import redirectToPayment from "./redirect-to-payment";
 import {initialState} from "../reducers/organization";
+import {localStorage, sessionStorage, storageFallback} from "./storage";
 
 jest.mock("axios");
 jest.mock("./load-translation");
@@ -629,5 +630,26 @@ describe("handle-change tests", () => {
     );
     wrapper.find("button").simulate("click", {});
     expect(pushSpy).toHaveBeenCalled();
+  });
+});
+describe("storage tests", () => {
+  it("should store, get and clear data in window.localStorage", () => {
+    localStorage.setItem("organization", "openwisp");
+    expect(localStorage.getItem("organization")).toEqual("openwisp");
+    localStorage.removeItem("organization");
+    expect(localStorage.getItem("organization")).toEqual(null);
+    localStorage.setItem("organization", "openwisp");
+    localStorage.clear();
+    expect(localStorage.getItem("organization")).toEqual(null);
+  });
+  it("should store, get and clear data in Storage mock", () => {
+    const storageMock = storageFallback(null);
+    storageMock.setItem("organization", "openwisp");
+    expect(storageMock.getItem("organization")).toEqual("openwisp");
+    storageMock.removeItem("organization");
+    expect(storageMock.getItem("organization")).toEqual(undefined);
+    storageMock.setItem("organization", "openwisp");
+    storageMock.clear();
+    expect(storageMock.getItem("organization")).toEqual(undefined);
   });
 });

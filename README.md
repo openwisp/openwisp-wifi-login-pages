@@ -900,6 +900,13 @@ These scripts are loaded only after the rest of the page has finished loading.
 
 This feature can be used to load non-critical custom Javascript code.
 
+### Support for old browsers
+
+Polyfills are used to support old browsers on different platforms.
+It is recommended to add **polyfill.io** to the allowed hostnames
+(walled garden) of the captive portal, otherwise the application will not
+be able to load in old browsers.
+
 ### License
 
 See [LICENSE](https://github.com/openwisp/openwisp-wifi-login-pages/blob/master/LICENSE).

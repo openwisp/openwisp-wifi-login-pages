@@ -4,7 +4,7 @@
 .text-left {
   text-align: left;
 }
-.pt-4 {
+.modal.content {
   padding-top: 1rem;
 }
 .modal-close-btn {
@@ -26,4 +26,27 @@
 }
 .modal-container .message {
   line-height: 30px;
+}
+
+@media screen and (min-width: 0px) and (max-width: 767px) {
+  .modal-container {
+    top: 30%;
+    left: 0;
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
+    padding: 40px 5px 20px;
+    transform: none !important;
+  }
+
+  .modal.content .modal-container {
+    top: 0;
+    height: 100%;
+    transform: none;
+  }
+
+  .modal-container .message {
+    max-height: 93vh;
+    padding-right: 15px;
+  }
 }
