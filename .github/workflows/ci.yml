@@ -86,7 +86,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ env.pythonLocation }}
-          key: ${{ env.pythonLocation }}-${{ hashFiles('openwisp-radius/setup.py') }}
+          key: ${{ env.pythonLocation }}-${{secrets.CACHE_VERSION}}-${{ hashFiles('openwisp-radius/setup.py') }}
 
       - name: Installing OpenWISP Radius
         run: |
