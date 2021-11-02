@@ -1494,4 +1494,22 @@ describe("<Status /> interactions", () => {
     await wrapper.instance().getUserPassedRadiusSessions();
     expect(wrapper.instance().state.pastSessions).toEqual(data);
   });
+  it("should redirect to old_browsers_redirect_url for captive portal login in old browsers", async () => {
+    const prop = createTestProps();
+    prop.captivePortalLoginForm.old_browsers_redirect_url =
+      "http://captive-portal-login/";
+    window.oldBrowser = true;
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    const spyFn = jest.fn();
+    window.location.assign = jest.fn();
+    wrapper.instance().loginFormRef.current = {submit: spyFn};
+    wrapper.instance().handleLoginIframe();
+    expect(window.location.assign).toHaveBeenCalledWith(
+      "http://captive-portal-login/?statusUrl=https://wifi.openwisp.io/",
+    );
+    expect(spyFn.mock.calls.length).toBe(0);
+  });
 });

@@ -27,6 +27,7 @@ import InfoModal from "../../utils/modal";
 import {localStorage} from "../../utils/storage";
 import history from "../../utils/history";
 import handleSession from "../../utils/session";
+import isOldBrowser from "../../utils/is-old-browser";
 
 export default class Status extends React.Component {
   constructor(props) {
@@ -325,9 +326,6 @@ export default class Status extends React.Component {
    * to be redirected to a different URL and then come back again.
    */
   handleLoginIframe = () => {
-    if (!this.loginIframeRef || !this.loginIframeRef.current) {
-      return;
-    }
     const {
       cookies,
       orgSlug,
@@ -336,6 +334,17 @@ export default class Status extends React.Component {
       userData,
       setUserData,
     } = this.props;
+
+    if (isOldBrowser() && captivePortalLoginForm.old_browsers_redirect_url) {
+      const redirectUrl = `${
+        captivePortalLoginForm.old_browsers_redirect_url
+      }?statusUrl=${encodeURI(window.location.href)}`;
+      window.location.assign(redirectUrl);
+    }
+
+    if (!this.loginIframeRef || !this.loginIframeRef.current) {
+      return;
+    }
 
     userData.mustLogin = false;
     setUserData(userData);
@@ -974,6 +983,7 @@ Status.propTypes = {
       password: PropTypes.string,
     }),
     additional_fields: PropTypes.array,
+    old_browsers_redirect_url: PropTypes.string,
   }).isRequired,
   captivePortalLogoutForm: PropTypes.shape({
     method: PropTypes.string,
