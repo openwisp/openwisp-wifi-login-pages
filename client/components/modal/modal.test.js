@@ -155,4 +155,9 @@ describe("<Modal /> interactions", () => {
       prevPath: "/default/login",
     });
   });
+  it("should hide scrollbar when modal opens", async () => {
+    expect(document.body.style.overflow).toEqual("hidden");
+    wrapper.instance().componentWillUnmount();
+    expect(document.body.style.overflow).toEqual("auto");
+  });
 });
