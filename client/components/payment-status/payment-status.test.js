@@ -46,7 +46,11 @@ const responseData = {
 };
 
 describe("<PaymentStatus /> rendering with placeholder translation tags", () => {
-  const props = createTestProps({userData: responseData, status: "failed"});
+  const props = createTestProps({
+    userData: responseData,
+    status: "failed",
+    isAuthenticated: true,
+  });
   it("should render translation placeholder correctly", () => {
     const renderer = new ShallowRenderer();
     const wrapper = renderer.render(<PaymentStatus {...props} />);
@@ -285,7 +289,7 @@ describe("Test <PaymentStatus /> cases", () => {
   it("should redirect to status page if token is not valid", async () => {
     const spyToast = jest.spyOn(toast, "success");
     props = createTestProps({
-      userData: {...responseData, is_verified: true},
+      userData: {...responseData, is_verified: false},
       status: "draft",
     });
     validateToken.mockReturnValue(false);

@@ -5,6 +5,7 @@ import {validateApiUrl} from "../constants";
 import handleSession from "./session";
 import logError from "./log-error";
 import handleLogout from "./handle-logout";
+import {toast} from "react-toastify";
 
 const validateToken = async (
   cookies,
@@ -17,7 +18,14 @@ const validateToken = async (
   const authToken = cookies.get(`${orgSlug}_auth_token`);
   const {token, session} = handleSession(orgSlug, authToken, cookies);
   // calling validate token API only if userData.radius_user_token is undefined
-  if (token && userData && userData.radius_user_token === undefined) {
+  // or payment_url of user is undefined
+  if (
+    userData &&
+    ((token && userData.radius_user_token === undefined) ||
+      (userData.method === "bank_card" &&
+        userData.is_verified !== true &&
+        userData.payment_url === undefined))
+  ) {
     try {
       const response = await axios({
         method: "post",
@@ -42,7 +50,11 @@ const validateToken = async (
       return true;
     } catch (error) {
       handleLogout(logout, cookies, orgSlug, setUserData, userData);
-      logError(error, t`ERR_OCCUR`);
+      if (error.response && error.response.status === 403) {
+        toast.error(error.response.data.detail);
+      } else {
+        logError(error, t`ERR_OCCUR`);
+      }
       return false;
     }
   }

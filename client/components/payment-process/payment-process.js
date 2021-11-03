@@ -12,6 +12,9 @@ export default class PaymentProcess extends React.Component {
   constructor(props) {
     super(props);
     this.iframeRef = React.createRef();
+    this.state = {
+      isTokenValid: false,
+    };
   }
 
   async componentDidMount() {
@@ -20,22 +23,22 @@ export default class PaymentProcess extends React.Component {
     const {setLoading} = this.context;
 
     setLoading(true);
-    this.isTokenValid = await validateToken(
+    const isTokenValid = await validateToken(
       cookies,
       orgSlug,
       setUserData,
       userData,
       logout,
     );
-
-    if (this.isTokenValid === false) {
+    setLoading(false);
+    this.setState({isTokenValid: isTokenValid});
+    if (isTokenValid === false) {
       return;
     }
 
     ({userData} = this.props);
     setUserData({...userData});
     window.addEventListener("message", this.handlePostMessage);
-    setLoading(false);
   }
 
   componentWillUnmount() {
@@ -84,7 +87,7 @@ export default class PaymentProcess extends React.Component {
     }
 
     // likely somebody opening this page by mistake
-    if (isAuthenticated === false || this.isTokenValid === false) {
+    if (isAuthenticated === false || this.state.isTokenValid === false) {
       return redirectToStatus();
     }
 

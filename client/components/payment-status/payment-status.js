@@ -11,13 +11,20 @@ import validateToken from "../../utils/validate-token";
 import handleLogout from "../../utils/handle-logout";
 
 export default class PaymentStatus extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isTokenValid: false,
+    };
+  }
+
   async componentDidMount() {
     const {cookies, orgSlug, setUserData, logout, status} = this.props;
     let {userData} = this.props;
     const {setLoading} = this.context;
 
     setLoading(true);
-    this.isTokenValid = await validateToken(
+    const isTokenValid = await validateToken(
       cookies,
       orgSlug,
       setUserData,
@@ -25,8 +32,8 @@ export default class PaymentStatus extends React.Component {
       logout,
     );
     setLoading(false);
-
-    if (this.isTokenValid === false) {
+    this.setState({isTokenValid: isTokenValid});
+    if (isTokenValid === false) {
       return;
     }
 
@@ -68,7 +75,7 @@ export default class PaymentStatus extends React.Component {
       (isAuthenticated === false && status !== "draft") ||
       (["failed", "draft"].includes(status) && isVerified === true) ||
       (status === "success" && isVerified === false) ||
-      this.isTokenValid === false
+      this.state.isTokenValid === false
     ) {
       return redirectToStatus();
     }

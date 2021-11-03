@@ -115,7 +115,7 @@ describe("Test <PaymentProcess /> cases", () => {
   it("should redirect unauthenticated users", async () => {
     props = createTestProps({
       isAuthenticated: false,
-      userData: responseData
+      userData: responseData,
     });
     validateToken.mockReturnValue(true);
     wrapper = shallow(<PaymentProcess {...props} />, {
@@ -166,7 +166,7 @@ describe("Test <PaymentProcess /> cases", () => {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: true,
     });
-    const paymentProcess = wrapper.instance()
+    const paymentProcess = wrapper.instance();
     const handlePostMessageMock = jest.fn();
     paymentProcess.handlePostMessage = handlePostMessageMock;
     paymentProcess.componentDidMount();

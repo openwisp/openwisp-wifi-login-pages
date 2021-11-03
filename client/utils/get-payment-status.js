@@ -59,6 +59,7 @@ const getPaymentStatusRedirectUrl = async (
   userData,
 ) => {
   const paymentStatus = await getPaymentStatus(orgSlug, paymentId, tokenInfo);
+  delete userData.payment_url;
   switch (paymentStatus) {
     case "waiting":
       return `/${orgSlug}/payment/draft`;
@@ -71,6 +72,7 @@ const getPaymentStatusRedirectUrl = async (
       }
       return `/${orgSlug}/payment/${paymentStatus}`;
     case "failed":
+      setUserData(userData);
       return `/${orgSlug}/payment/${paymentStatus}`;
     default:
       return null;
