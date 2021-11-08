@@ -14,7 +14,7 @@ export default class PaymentStatus extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isTokenValid: false,
+      isTokenValid: null,
     };
   }
 
@@ -32,7 +32,7 @@ export default class PaymentStatus extends React.Component {
       logout,
     );
     setLoading(false);
-    this.setState({isTokenValid: isTokenValid});
+    this.setState({isTokenValid});
     if (isTokenValid === false) {
       return;
     }
@@ -61,6 +61,7 @@ export default class PaymentStatus extends React.Component {
     const {method, is_verified: isVerified} = userData;
     const redirectToStatus = () => <Redirect to={`/${orgSlug}/status`} />;
     const acceptedValues = ["success", "failed", "draft"];
+    const {isTokenValid} = this.state;
 
     // not registered with bank card flow
     if (
@@ -75,7 +76,7 @@ export default class PaymentStatus extends React.Component {
       (isAuthenticated === false && status !== "draft") ||
       (["failed", "draft"].includes(status) && isVerified === true) ||
       (status === "success" && isVerified === false) ||
-      this.state.isTokenValid === false
+      isTokenValid === false
     ) {
       return redirectToStatus();
     }
@@ -87,7 +88,7 @@ export default class PaymentStatus extends React.Component {
     }
 
     // success case
-    if (status === "success" && isVerified === true) {
+    if (isTokenValid === true && status === "success" && isVerified === true) {
       toast.success(t`PAY_SUCCESS`);
       return redirectToStatus();
     }

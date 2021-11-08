@@ -26,7 +26,7 @@ const createTestProps = (props) => ({
   setUserData: jest.fn(),
   page: defaultConfig.components.payment_status_page,
   cookies: new Cookies(),
-  settings: {subscriptions: true},
+  settings: {subscriptions: true, payment_iframe: true},
   logout: jest.fn(),
   authenticate: jest.fn(),
   isAuthenticated: true,
@@ -172,13 +172,13 @@ describe("Test <PaymentProcess /> cases", () => {
     paymentProcess.componentDidMount();
     await tick();
     events.message({
-      type: "paymentSuccess",
+      type: "paymentClose",
       message: {paymentId: "paymentId"},
     });
     expect(handlePostMessageMock).toHaveBeenCalledTimes(1);
     paymentProcess.componentWillUnmount();
     events.message({
-      type: "paymentSuccess",
+      type: "paymentClose",
       message: {paymentId: "paymentId"},
     });
     expect(handlePostMessageMock).toHaveBeenCalledTimes(1);
@@ -196,7 +196,7 @@ describe("Test <PaymentProcess /> cases", () => {
     const {handlePostMessage} = wrapper.instance();
     await handlePostMessage({
       data: {
-        type: "paymentSuccess",
+        type: "paymentClose",
         message: {paymentId: "paymentId"},
       },
       origin: "http://localhost",
@@ -204,5 +204,24 @@ describe("Test <PaymentProcess /> cases", () => {
     expect(history.push).toHaveBeenCalledWith(
       `/${props.orgSlug}/payment/success/`,
     );
+  });
+
+  it("should redirect to payment_url if payment_iframe set to false", async () => {
+    props = createTestProps({
+      userData: responseData,
+      settings: {...props.settings, payment_iframe: false},
+    });
+    // mock window.location.assign
+    const location = new URL("https://wifi.openwisp.io");
+    location.assign = jest.fn();
+    delete window.location;
+    window.location = location;
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentProcess {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    expect(location.assign.mock.calls.length).toBe(1);
+    expect(location.assign).toHaveBeenCalledWith(responseData.payment_url);
   });
 });

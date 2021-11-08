@@ -309,6 +309,37 @@ describe("Validate Token tests", () => {
     expect(console.log).toHaveBeenCalledWith(response);
     expect(setUserData.mock.calls.pop()).toEqual([initialState.userData]);
   });
+  it("should show error if user is locked out", async () => {
+    const response = {
+      status: 403,
+      data: {
+        detail: "Your account has been locked.",
+      },
+    };
+    axios.mockImplementationOnce(() => Promise.reject({response}));
+    const errorMethod = jest.spyOn(dependency.toast, "error");
+    const {orgSlug, cookies, setUserData, userData, logout} = getArgs();
+    cookies.set(`${orgSlug}_auth_token`, "token");
+    const result = await validateToken(
+      cookies,
+      orgSlug,
+      setUserData,
+      userData,
+      logout,
+    );
+    expect(result).toEqual(false);
+    expect(errorMethod).toBeCalledWith(response.data.detail);
+    expect(logout).toHaveBeenCalledWith(
+      {
+        HAS_DOCUMENT_COOKIE: true,
+        changeListeners: [],
+        cookies: {default_auth_token: "token"},
+      },
+      "default",
+    );
+    expect(setUserData.mock.calls.length).toBe(1);
+    expect(setUserData.mock.calls.pop()).toEqual([initialState.userData]);
+  });
 });
 describe("password-toggle tests", () => {
   const Component = React.forwardRef((props, ref) => (

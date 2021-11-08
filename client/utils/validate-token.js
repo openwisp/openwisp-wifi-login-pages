@@ -1,11 +1,11 @@
 import qs from "qs";
 import axios from "axios";
 import {t} from "ttag";
+import {toast} from "react-toastify";
 import {validateApiUrl} from "../constants";
 import handleSession from "./session";
 import logError from "./log-error";
 import handleLogout from "./handle-logout";
-import {toast} from "react-toastify";
 
 const validateToken = async (
   cookies,

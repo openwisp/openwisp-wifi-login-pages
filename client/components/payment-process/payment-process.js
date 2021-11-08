@@ -13,7 +13,7 @@ export default class PaymentProcess extends React.Component {
     super(props);
     this.iframeRef = React.createRef();
     this.state = {
-      isTokenValid: false,
+      isTokenValid: null,
     };
   }
 
@@ -30,8 +30,7 @@ export default class PaymentProcess extends React.Component {
       userData,
       logout,
     );
-    setLoading(false);
-    this.setState({isTokenValid: isTokenValid});
+    this.setState({isTokenValid});
     if (isTokenValid === false) {
       return;
     }
@@ -53,7 +52,7 @@ export default class PaymentProcess extends React.Component {
       event.origin === new URL(userData.payment_url).origin ||
       event.origin === window.location.origin
     ) {
-      if (type === "paymentSuccess") {
+      if (type === "paymentClose") {
         // Get payment status from the backend
         const redirectUrl = await getPaymentStatusRedirectUrl(
           orgSlug,
@@ -72,10 +71,16 @@ export default class PaymentProcess extends React.Component {
     }
   };
 
+  handleIframe = async () => {
+    const {setLoading} = this.context;
+    setLoading(false);
+  };
+
   render() {
-    const {orgSlug, isAuthenticated, userData} = this.props;
+    const {orgSlug, isAuthenticated, userData, settings} = this.props;
     const {method, is_verified: isVerified} = userData;
     const redirectToStatus = () => <Redirect to={`/${orgSlug}/status`} />;
+    const {isTokenValid} = this.state;
 
     // not registered with bank card flow
     if (
@@ -87,8 +92,12 @@ export default class PaymentProcess extends React.Component {
     }
 
     // likely somebody opening this page by mistake
-    if (isAuthenticated === false || this.state.isTokenValid === false) {
+    if (isAuthenticated === false || isTokenValid === false) {
       return redirectToStatus();
+    }
+
+    if (isTokenValid === true && !settings.payment_iframe) {
+      window.location.assign(userData.payment_url);
     }
 
     return (
@@ -100,6 +109,7 @@ export default class PaymentProcess extends React.Component {
               src={userData.payment_url}
               name="owisp-payment-iframe"
               title="owisp-payment-iframe"
+              onLoad={this.handleIframe}
             />
           </div>
         </div>
@@ -115,4 +125,7 @@ PaymentProcess.propTypes = {
   isAuthenticated: PropTypes.bool,
   logout: PropTypes.func.isRequired,
   cookies: PropTypes.instanceOf(Cookies).isRequired,
+  settings: PropTypes.shape({
+    payment_iframe: PropTypes.bool,
+  }).isRequired,
 };
