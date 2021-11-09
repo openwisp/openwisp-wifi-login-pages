@@ -281,7 +281,7 @@ msgstr ""
 
 #: client/components/password-reset/password-reset.js:127
 msgid "PWD_RESET_BTN"
-msgstr "Ponastavi moje geslo"
+msgstr "Ponastavitev gesla"
 
 #: client/components/password-confirm/password-confirm.js:210
 #: client/components/password-reset/password-reset.js:133
