@@ -49,7 +49,7 @@ export default class PaymentProcess extends React.Component {
     const {message, type} = event.data;
     // For security reasons, read https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage#security_concern
     if (
-      event.origin === new URL(userData.payment_url).origin ||
+      (userData.payment_url && event.origin === new URL(userData.payment_url).origin) ||
       event.origin === window.location.origin
     ) {
       if (type === "paymentClose") {

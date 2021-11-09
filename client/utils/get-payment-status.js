@@ -4,6 +4,7 @@ import {t} from "ttag";
 import {paymentStatusUrl} from "../constants";
 import logError from "./log-error";
 import handleSession from "./session";
+import { toast } from "react-toastify";
 
 export const getPaymentStatus = async (orgSlug, paymentId, userData) => {
   const url = paymentStatusUrl(orgSlug, paymentId);
@@ -41,6 +42,9 @@ export const getPaymentStatus = async (orgSlug, paymentId, userData) => {
       }),
     });
     if (response.status === 200) {
+      if (response.data.message){
+        toast.error(response.data.message);
+      }
       return response.data.status;
     }
     logError(response, "Cannot get payment status");
