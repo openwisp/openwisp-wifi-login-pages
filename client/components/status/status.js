@@ -186,11 +186,11 @@ export default class Status extends React.Component {
   async finalOperations() {
     const {userData, orgSlug, settings} = this.props;
     const {setLoading} = this.context;
+    const redirectToPaymentProcess = () => <Redirect to={`/${orgSlug}/payment/process`} />;
     // if the user needs bank card verification,
     // redirect to payment page and stop here
     if (needsVerify("bank_card", userData, settings)) {
-      history.push(`/${orgSlug}/payment/process`);
-      return;
+      return redirectToPaymentProcess();
     }
 
     // if the user is not verified, do not remove the

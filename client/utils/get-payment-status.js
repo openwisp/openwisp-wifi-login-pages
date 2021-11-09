@@ -72,6 +72,7 @@ const getPaymentStatusRedirectUrl = async (
           ...userData,
           is_verified: true,
           payment_url: null,
+          mustLogin: true,
         });
       }
       return `/${orgSlug}/payment/${paymentStatus}`;
