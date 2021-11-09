@@ -46,10 +46,12 @@ export default class PaymentProcess extends React.Component {
 
   handlePostMessage = async (event) => {
     const {userData, cookies, orgSlug, setUserData} = this.props;
+    const {setLoading} = this.context;
     const {message, type} = event.data;
     // For security reasons, read https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage#security_concern
     if (
-      (userData.payment_url && event.origin === new URL(userData.payment_url).origin) ||
+      (userData.payment_url &&
+        event.origin === new URL(userData.payment_url).origin) ||
       event.origin === window.location.origin
     ) {
       if (type === "paymentClose") {
@@ -67,11 +69,13 @@ export default class PaymentProcess extends React.Component {
         if (redirectUrl) {
           history.push(redirectUrl);
         }
+      } else if (type === "showLoader") {
+        setLoading(true);
       }
     }
   };
 
-  handleIframe = async () => {
+  onIframeLoad = async () => {
     const {setLoading} = this.context;
     setLoading(false);
   };
@@ -86,7 +90,7 @@ export default class PaymentProcess extends React.Component {
     if (
       (method && method !== "bank_card") ||
       isVerified === true ||
-      !userData.payment_url
+      (isTokenValid && !userData.payment_url)
     ) {
       return redirectToStatus();
     }
@@ -109,7 +113,7 @@ export default class PaymentProcess extends React.Component {
               src={userData.payment_url}
               name="owisp-payment-iframe"
               title="owisp-payment-iframe"
-              onLoad={this.handleIframe}
+              onLoad={this.onIframeLoad}
             />
           </div>
         </div>

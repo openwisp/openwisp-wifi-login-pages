@@ -1,10 +1,10 @@
 import qs from "qs";
 import axios from "axios";
 import {t} from "ttag";
+import {toast} from "react-toastify";
 import {paymentStatusUrl} from "../constants";
 import logError from "./log-error";
 import handleSession from "./session";
-import { toast } from "react-toastify";
 
 export const getPaymentStatus = async (orgSlug, paymentId, userData) => {
   const url = paymentStatusUrl(orgSlug, paymentId);
@@ -42,7 +42,7 @@ export const getPaymentStatus = async (orgSlug, paymentId, userData) => {
       }),
     });
     if (response.status === 200) {
-      if (response.data.message){
+      if (response.data.message) {
         toast.error(response.data.message);
       }
       return response.data.status;
@@ -63,7 +63,6 @@ const getPaymentStatusRedirectUrl = async (
   userData,
 ) => {
   const paymentStatus = await getPaymentStatus(orgSlug, paymentId, tokenInfo);
-  delete userData.payment_url;
   switch (paymentStatus) {
     case "waiting":
       return `/${orgSlug}/payment/draft`;
@@ -72,11 +71,12 @@ const getPaymentStatusRedirectUrl = async (
         setUserData({
           ...userData,
           is_verified: true,
+          payment_url: null,
         });
       }
       return `/${orgSlug}/payment/${paymentStatus}`;
     case "failed":
-      setUserData(userData);
+      setUserData({...userData, payment_url: null});
       return `/${orgSlug}/payment/${paymentStatus}`;
     default:
       return null;

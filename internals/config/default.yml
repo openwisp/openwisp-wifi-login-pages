@@ -7,6 +7,7 @@ settings:
   mobile_phone_verification: false
   subscriptions: false
   payment_iframe: false
+  requires_temporary_internet: false
 
 
 # configuration variables for the server app

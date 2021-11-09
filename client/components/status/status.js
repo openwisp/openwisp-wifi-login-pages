@@ -26,7 +26,7 @@ import {initialState} from "../../reducers/organization";
 import {Logout} from "../organization-wrapper/lazy-import";
 import InfoModal from "../../utils/modal";
 import {localStorage} from "../../utils/storage";
-import redirectToPayment from "../../utils/redirect-to-payment";
+import history from "../../utils/history";
 
 export default class Status extends React.Component {
   constructor(props) {
@@ -114,6 +114,8 @@ export default class Status extends React.Component {
         email,
         phone_number,
         is_active,
+        method,
+        is_verified: isVerified,
       } = userData;
       const userInfo = {};
       userInfo.status = "";
@@ -157,6 +159,14 @@ export default class Status extends React.Component {
           }
         }
       } else if (this.loginFormRef && this.loginFormRef.current && mustLogin) {
+        if (
+          method === "bank_card" &&
+          isVerified === false &&
+          !settings.requires_temporary_internet
+        ) {
+          this.finalOperations();
+          return;
+        }
         this.notifyCpLogin(userData);
         this.loginFormRef.current.submit();
         userData.mustLogin = false;
@@ -179,7 +189,7 @@ export default class Status extends React.Component {
     // if the user needs bank card verification,
     // redirect to payment page and stop here
     if (needsVerify("bank_card", userData, settings)) {
-      redirectToPayment(orgSlug);
+      history.push(`/${orgSlug}/payment/process`);
       return;
     }
 
@@ -273,7 +283,9 @@ export default class Status extends React.Component {
 
   handleLogout = async (userAutoLogin, repeatLogin = false) => {
     const {setLoading} = this.context;
-    const {orgSlug, logout, cookies, setUserData} = this.props;
+    const {orgSlug, logout, cookies, setUserData, settings, userData} =
+      this.props;
+    const {method, is_verified: isVerified} = userData;
     const macaddr = cookies.get(`${orgSlug}_macaddr`);
     const params = {macaddr};
     localStorage.setItem("userAutoLogin", String(userAutoLogin));
@@ -288,7 +300,14 @@ export default class Status extends React.Component {
         } else {
           this.repeatLogin = true;
         }
-        if (!internetMode) {
+        if (
+          !internetMode ||
+          !(
+            method === "bank_card" &&
+            isVerified === false &&
+            settings.requires_temporary_internet
+          )
+        ) {
           this.logoutFormRef.current.submit();
         }
         return;
@@ -967,6 +986,7 @@ Status.propTypes = {
   settings: PropTypes.shape({
     mobile_phone_verification: PropTypes.bool,
     subscriptions: PropTypes.bool,
+    requires_temporary_internet: PropTypes.bool,
   }).isRequired,
   setUserData: PropTypes.func.isRequired,
   setTitle: PropTypes.func.isRequired,

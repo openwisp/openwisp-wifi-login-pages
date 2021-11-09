@@ -19,7 +19,8 @@ export default class PaymentStatus extends React.Component {
   }
 
   async componentDidMount() {
-    const {cookies, orgSlug, setUserData, logout, status} = this.props;
+    const {cookies, orgSlug, setUserData, logout, status, settings} =
+      this.props;
     let {userData} = this.props;
     const {setLoading} = this.context;
 
@@ -47,7 +48,10 @@ export default class PaymentStatus extends React.Component {
       method === "bank_card" &&
       isVerified === false
     ) {
-      setUserData({...userData, mustLogin: true});
+      setUserData({
+        ...userData,
+        mustLogin: settings.requires_temporary_internet,
+      });
     }
   }
 
@@ -97,8 +101,11 @@ export default class PaymentStatus extends React.Component {
   }
 
   renderDraft() {
-    const {orgSlug, authenticate, page = {}} = this.props;
+    const {orgSlug, authenticate, page = {}, settings} = this.props;
     const {timeout = 5, max_attempts: maxAttempts = 3} = page;
+    const payProceedUrl = settings.requires_temporary_internet
+      ? `/${orgSlug}/status`
+      : `/${orgSlug}/payment/process`;
 
     return (
       <div className="container content">
@@ -117,7 +124,7 @@ export default class PaymentStatus extends React.Component {
               <div className="row">
                 <Link
                   className="button full"
-                  to={`/${orgSlug}/payment/process`}
+                  to={payProceedUrl}
                   onClick={() => authenticate(true)}
                 >
                   {t`PAY_PROC_BTN`}
@@ -151,7 +158,7 @@ export default class PaymentStatus extends React.Component {
               <h2 className="row payment-status-row-1">{t`PAY_FAIL`}</h2>
               <div className="row payment-status-row-2">{t`PAY_SUB_H`}</div>
               <div className="row payment-status-row-3">
-                <Link className="button full" to={`/${orgSlug}/status`}>
+                <Link className="button full" to={`/${orgSlug}/payment/draft`}>
                   {t`PAY_TRY_AGAIN_BTN`}
                 </Link>
               </div>
@@ -186,4 +193,7 @@ PaymentStatus.propTypes = {
   page: PropTypes.object,
   logout: PropTypes.func.isRequired,
   cookies: PropTypes.instanceOf(Cookies).isRequired,
+  settings: PropTypes.shape({
+    requires_temporary_internet: PropTypes.bool,
+  }).isRequired,
 };

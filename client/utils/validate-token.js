@@ -24,7 +24,7 @@ const validateToken = async (
     ((token && userData.radius_user_token === undefined) ||
       (userData.method === "bank_card" &&
         userData.is_verified !== true &&
-        userData.payment_url === undefined))
+        !userData.payment_url))
   ) {
     try {
       const response = await axios({
