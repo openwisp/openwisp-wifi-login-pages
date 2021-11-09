@@ -62,7 +62,7 @@ const createTestProps = (props) => ({
   orgName: "default name",
   statusPage: defaultConfig.components.status_page,
   cookies: new Cookies(),
-  settings: defaultConfig.settings,
+  settings: {...defaultConfig.settings, requires_temporary_internet: true},
   captivePortalLoginForm: defaultConfig.components.captive_portal_login_form,
   captivePortalLogoutForm: defaultConfig.components.captive_portal_logout_form,
   location: {
@@ -841,7 +841,7 @@ describe("<Status /> interactions", () => {
 
     // ensure user is redirected to payment URL
     expect(history.push).toHaveBeenCalledWith(
-      `/${props.orgSlug}/payment/draft`,
+      `/${props.orgSlug}/payment/process`,
     );
     // ensure sessions are not fetched
     expect(Status.prototype.getUserActiveRadiusSessions).not.toHaveBeenCalled();

@@ -24,7 +24,7 @@ const createTestProps = (props) => ({
   setUserData: jest.fn(),
   page: defaultConfig.components.payment_status_page,
   cookies: new Cookies(),
-  settings: {subscriptions: true},
+  settings: {subscriptions: true, requires_temporary_internet: true},
   logout: jest.fn(),
   authenticate: jest.fn(),
   ...props,
@@ -96,7 +96,7 @@ describe("Test <PaymentStatus /> cases", () => {
     expect(wrapper.find(".main-column .button.full").length).toEqual(2);
     expect(
       wrapper.find(".payment-status-row-3 .button").at(0).props().to,
-    ).toEqual("/default/status");
+    ).toEqual("/default/payment/draft");
     expect(wrapper.find(".payment-status-row-4 .button").length).toEqual(1);
     expect(wrapper.find("Redirect").length).toEqual(0);
   });

@@ -12,6 +12,7 @@ exports[`Test <PaymentProcess /> cases should render payment_url in iframe 1`] =
     >
       <iframe
         name="owisp-payment-iframe"
+        onLoad={[Function]}
         src="https://account.openwisp.io/payment/123"
         title="owisp-payment-iframe"
       />

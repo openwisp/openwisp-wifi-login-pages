@@ -186,11 +186,11 @@ export default class Status extends React.Component {
   async finalOperations() {
     const {userData, orgSlug, settings} = this.props;
     const {setLoading} = this.context;
-    const redirectToPaymentProcess = () => <Redirect to={`/${orgSlug}/payment/process`} />;
     // if the user needs bank card verification,
     // redirect to payment page and stop here
     if (needsVerify("bank_card", userData, settings)) {
-      return redirectToPaymentProcess();
+      history.push(`/${orgSlug}/payment/process`);
+      return;
     }
 
     // if the user is not verified, do not remove the
@@ -283,9 +283,7 @@ export default class Status extends React.Component {
 
   handleLogout = async (userAutoLogin, repeatLogin = false) => {
     const {setLoading} = this.context;
-    const {orgSlug, logout, cookies, setUserData, settings, userData} =
-      this.props;
-    const {method, is_verified: isVerified} = userData;
+    const {orgSlug, logout, cookies, setUserData} = this.props;
     const macaddr = cookies.get(`${orgSlug}_macaddr`);
     const params = {macaddr};
     localStorage.setItem("userAutoLogin", String(userAutoLogin));
@@ -300,14 +298,7 @@ export default class Status extends React.Component {
         } else {
           this.repeatLogin = true;
         }
-        if (
-          !internetMode ||
-          !(
-            method === "bank_card" &&
-            isVerified === false &&
-            settings.requires_temporary_internet
-          )
-        ) {
+        if (!internetMode) {
           this.logoutFormRef.current.submit();
         }
         return;
