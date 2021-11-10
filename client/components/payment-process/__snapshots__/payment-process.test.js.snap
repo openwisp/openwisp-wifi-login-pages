@@ -5,7 +5,7 @@ exports[`Test <PaymentProcess /> cases should render payment_url in iframe 1`] =
   className="container content"
 >
   <div
-    className="inner payment-buffer"
+    className="inner payment-process"
   >
     <div
       className="main-column single"

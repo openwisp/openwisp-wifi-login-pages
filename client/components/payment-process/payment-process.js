@@ -117,7 +117,7 @@ export default class PaymentProcess extends React.Component {
 
     return (
       <div className="container content">
-        <div className="inner payment-buffer">
+        <div className="inner payment-process">
           <div className="main-column single">
             <iframe
               ref={this.iframeRef}
