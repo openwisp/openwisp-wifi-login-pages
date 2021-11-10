@@ -1,8 +1,8 @@
 import qs from "qs";
 import axios from "axios";
-import {t} from "ttag";
+import {c, t} from "ttag";
 import {toast} from "react-toastify";
-import {validateApiUrl} from "../constants";
+import {validateApiUrl,mainToastId} from "../constants";
 import handleSession from "./session";
 import logError from "./log-error";
 import handleLogout from "./handle-logout";
@@ -49,11 +49,22 @@ const validateToken = async (
       setUserData(response.data);
       return true;
     } catch (error) {
-      handleLogout(logout, cookies, orgSlug, setUserData, userData);
       if (error.response && error.response.status === 403) {
-        toast.error(error.response.data.detail);
+        toast.error(error.response.data.detail, {
+          toastId: mainToastId,
+        });
+        // Instead of redirecting to status page, it will logout the user.
+        handleLogout(
+          logout,
+          cookies,
+          orgSlug,
+          setUserData,
+          {...userData, is_active: false},
+          true,
+        );
       } else {
         logError(error, t`ERR_OCCUR`);
+        handleLogout(logout, cookies, orgSlug, setUserData, userData);
       }
       return false;
     }

@@ -328,7 +328,9 @@ describe("Validate Token tests", () => {
       logout,
     );
     expect(result).toEqual(false);
-    expect(errorMethod).toBeCalledWith(response.data.detail);
+    expect(errorMethod).toBeCalledWith(response.data.detail, {
+      toastId: "main_toast_id",
+    });
     expect(logout).toHaveBeenCalledWith(
       {
         HAS_DOCUMENT_COOKIE: true,
