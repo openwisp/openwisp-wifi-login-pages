@@ -2,10 +2,21 @@
   background-color: #fff;
   border: 1px solid rgba(0, 0, 0, 0.6);
   border-radius: 5px;
-  padding-bottom: 1%;
+  padding-bottom: 2%;
+  padding-top: 2%;
 }
 
 iframe {
   width: 100%;
   border: 0 none;
+}
+
+
+@media screen and (min-width: 0px) and (max-width: 767px) {
+  .payment-buffer .main-column {
+    border-left: 0 none;
+    border-right: 0 none;
+    border-radius: 0;
+    padding-bottom: 0;
+  }
 }
