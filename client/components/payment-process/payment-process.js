@@ -34,10 +34,12 @@ export default class PaymentProcess extends React.Component {
       userData,
       logout,
     );
-    this.setState({isTokenValid});
+
     if (isTokenValid === false) {
+      setLoading(false);
       return;
     }
+    this.setState({isTokenValid});
 
     ({userData} = this.props);
     setUserData({...userData});
@@ -58,27 +60,33 @@ export default class PaymentProcess extends React.Component {
         event.origin === new URL(userData.payment_url).origin) ||
       event.origin === window.location.origin
     ) {
-      if (type === "paymentClose") {
-        // Get payment status from the backend
-        const redirectUrl = await getPaymentStatusRedirectUrl(
-          orgSlug,
-          message.paymentId,
-          {
-            type: "Bearer",
-            cookies,
-          },
-          setUserData,
-          userData,
-        );
-        if (redirectUrl) {
-          history.push(redirectUrl);
-        }
-      } else if (type === "showLoader") {
-        setLoading(true);
-      } else if (type === "setHeight") {
-        this.setState({iframeHeight: message});
-        setLoading(false);
-        toast.dismiss();
+      switch (type) {
+        case "paymentClose":
+          // Get payment status from the backend
+          const redirectUrl = await getPaymentStatusRedirectUrl(
+            orgSlug,
+            message.paymentId,
+            {
+              type: "Bearer",
+              cookies,
+            },
+            setUserData,
+            userData,
+          );
+          if (redirectUrl) {
+            history.push(redirectUrl);
+          }
+          break;
+        case "showLoader":
+          setLoading(true);
+          break;
+        case "setHeight":
+          this.setState({iframeHeight: message});
+          setLoading(false);
+          toast.dismiss();
+          break;
+        default:
+        // no op
       }
     }
   };

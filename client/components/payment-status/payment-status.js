@@ -44,8 +44,8 @@ export default class PaymentStatus extends React.Component {
     if (status === "success" && method === "bank_card" && isVerified === true) {
       setUserData({
         ...userData,
-        mustLogout: settings.requires_temporary_internet,
-        repeatLogin: settings.requires_temporary_internet,
+        mustLogout: settings.payment_requires_internet,
+        repeatLogin: settings.payment_requires_internet,
       });
     } else if (
       status === "draft" &&
@@ -54,7 +54,7 @@ export default class PaymentStatus extends React.Component {
     ) {
       setUserData({
         ...userData,
-        mustLogin: settings.requires_temporary_internet,
+        mustLogin: settings.payment_requires_internet,
       });
     }
   }
@@ -107,7 +107,7 @@ export default class PaymentStatus extends React.Component {
   renderDraft() {
     const {orgSlug, authenticate, page = {}, settings} = this.props;
     const {timeout = 5, max_attempts: maxAttempts = 3} = page;
-    const payProceedUrl = settings.requires_temporary_internet
+    const payProceedUrl = settings.payment_requires_internet
       ? `/${orgSlug}/status`
       : `/${orgSlug}/payment/process`;
 
@@ -198,6 +198,6 @@ PaymentStatus.propTypes = {
   logout: PropTypes.func.isRequired,
   cookies: PropTypes.instanceOf(Cookies).isRequired,
   settings: PropTypes.shape({
-    requires_temporary_internet: PropTypes.bool,
+    payment_requires_internet: PropTypes.bool,
   }).isRequired,
 };
