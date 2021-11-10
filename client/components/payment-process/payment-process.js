@@ -3,6 +3,8 @@ import {Cookies} from "react-cookie";
 import PropTypes from "prop-types";
 import React from "react";
 import {Redirect} from "react-router-dom";
+import {toast} from "react-toastify";
+import {t} from "ttag";
 import LoadingContext from "../../utils/loading-context";
 import validateToken from "../../utils/validate-token";
 import getPaymentStatusRedirectUrl from "../../utils/get-payment-status";
@@ -14,6 +16,7 @@ export default class PaymentProcess extends React.Component {
     this.iframeRef = React.createRef();
     this.state = {
       isTokenValid: null,
+      iframeHeight: 450,
     };
   }
 
@@ -23,6 +26,7 @@ export default class PaymentProcess extends React.Component {
     const {setLoading} = this.context;
 
     setLoading(true);
+    toast.info(t`PLEASE_WAIT`, {autoClose: 10000});
     const isTokenValid = await validateToken(
       cookies,
       orgSlug,
@@ -71,20 +75,19 @@ export default class PaymentProcess extends React.Component {
         }
       } else if (type === "showLoader") {
         setLoading(true);
+      } else if (type === "setHeight") {
+        this.setState({iframeHeight: message});
+        setLoading(false);
+        toast.dismiss();
       }
     }
-  };
-
-  onIframeLoad = async () => {
-    const {setLoading} = this.context;
-    setLoading(false);
   };
 
   render() {
     const {orgSlug, isAuthenticated, userData, settings} = this.props;
     const {method, is_verified: isVerified} = userData;
     const redirectToStatus = () => <Redirect to={`/${orgSlug}/status`} />;
-    const {isTokenValid} = this.state;
+    const {isTokenValid, iframeHeight} = this.state;
 
     // not registered with bank card flow
     if (
@@ -113,7 +116,7 @@ export default class PaymentProcess extends React.Component {
               src={userData.payment_url}
               name="owisp-payment-iframe"
               title="owisp-payment-iframe"
-              onLoad={this.onIframeLoad}
+              height={iframeHeight}
             />
           </div>
         </div>
