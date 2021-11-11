@@ -35,11 +35,11 @@ export default class PaymentProcess extends React.Component {
       logout,
     );
 
-    this.setState({isTokenValid});
     if (isTokenValid === false) {
       setLoading(false);
       return;
     }
+    this.setState({isTokenValid});
 
     ({userData} = this.props);
     setUserData({...userData});
@@ -108,7 +108,7 @@ export default class PaymentProcess extends React.Component {
     }
 
     // likely somebody opening this page by mistake
-    if (isAuthenticated === false || isTokenValid === false) {
+    if (isAuthenticated === false) {
       return redirectToStatus();
     }
 

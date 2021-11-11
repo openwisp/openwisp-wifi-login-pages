@@ -127,16 +127,16 @@ describe("Test <PaymentProcess /> cases", () => {
   });
 
   it("should redirect if token is invalid", async () => {
+    const setLoading = jest.fn();
     props = createTestProps({
       userData: responseData,
     });
     validateToken.mockReturnValue(false);
     wrapper = shallow(<PaymentProcess {...props} />, {
-      context: loadingContextValue,
+      context: {setLoading},
     });
     await tick();
-    expect(wrapper.find("Redirect").length).toEqual(1);
-    expect(wrapper.find("Redirect").props().to).toEqual("/default/status");
+    expect(setLoading).toHaveBeenCalledWith(false);
   });
 
   it("should render payment_url in iframe", async () => {
