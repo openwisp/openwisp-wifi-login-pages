@@ -6,30 +6,22 @@ import {paymentStatusUrl} from "../constants";
 import logError from "./log-error";
 import handleSession from "./session";
 
-export const getPaymentStatus = async (orgSlug, paymentId, userData) => {
+export const getPaymentStatus = async (orgSlug, paymentId, tokenInfo) => {
   const url = paymentStatusUrl(orgSlug, paymentId);
-  const {tokenType} = userData;
-  let data;
-  if (userData.type === "Bearer") {
-    const {cookies} = userData;
-    const authToken = cookies.get(`${orgSlug}_auth_token`);
-    const {token: tokenValue, session} = handleSession(
-      orgSlug,
-      authToken,
-      cookies,
-    );
-    data = {
-      tokenType: userData.type,
-      tokenValue,
-      session,
-    };
-  } else {
-    const {tokenValue} = userData;
-    data = {
-      tokenType,
-      tokenValue,
-    };
-  }
+  const {tokenType} = tokenInfo;
+  const {cookies} = tokenInfo;
+  const authToken = cookies.get(`${orgSlug}_auth_token`);
+  const {token: tokenValue, session} = handleSession(
+    orgSlug,
+    authToken,
+    cookies,
+  );
+  const data = {
+    tokenType,
+    tokenValue,
+    session,
+  };
+
   try {
     const response = await axios({
       method: "post",

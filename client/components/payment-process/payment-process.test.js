@@ -194,6 +194,7 @@ describe("Test <PaymentProcess /> cases", () => {
       disableLifecycleMethods: true,
     });
     const {handlePostMessage} = wrapper.instance();
+    const {setLoading} = wrapper.instance().context;
     await handlePostMessage({
       data: {
         type: "paymentClose",
@@ -204,6 +205,23 @@ describe("Test <PaymentProcess /> cases", () => {
     expect(history.push).toHaveBeenCalledWith(
       `/${props.orgSlug}/payment/success/`,
     );
+
+    await handlePostMessage({
+      data: {
+        type: "showLoader",
+      },
+      origin: "http://localhost",
+    });
+    expect(setLoading).toHaveBeenCalledTimes(1);
+
+    await handlePostMessage({
+      data: {
+        type: "setHeight",
+        message: 800,
+      },
+      origin: "http://localhost",
+    });
+    expect(wrapper.instance().state.iframeHeight).toBe(800);
   });
 
   it("should redirect to payment_url if payment_iframe set to false", async () => {

@@ -62,7 +62,7 @@ const createTestProps = (props) => ({
   orgName: "default name",
   statusPage: defaultConfig.components.status_page,
   cookies: new Cookies(),
-  settings: {...defaultConfig.settings, requires_temporary_internet: true},
+  settings: {...defaultConfig.settings, payment_requires_internet: true},
   captivePortalLoginForm: defaultConfig.components.captive_portal_login_form,
   captivePortalLogoutForm: defaultConfig.components.captive_portal_logout_form,
   location: {
@@ -831,6 +831,60 @@ describe("<Status /> interactions", () => {
     expect(setUserDataMock.calls.pop()).toEqual([
       {...props.userData, mustLogin: false},
     ]);
+    expect(location.assign.mock.calls.length).toBe(0);
+    expect(setLoading.mock.calls.length).toBe(1);
+
+    const mockRef = {submit: jest.fn()};
+    wrapper.instance().loginIframeRef.current = {};
+    wrapper.instance().loginFormRef.current = mockRef;
+    wrapper.instance().handleLoginIframe();
+
+    // ensure user is redirected to payment URL
+    expect(history.push).toHaveBeenCalledWith(
+      `/${props.orgSlug}/payment/process`,
+    );
+    // ensure sessions are not fetched
+    expect(Status.prototype.getUserActiveRadiusSessions).not.toHaveBeenCalled();
+    expect(Status.prototype.getUserPassedRadiusSessions).not.toHaveBeenCalled();
+    // ensure loading overlay not removed
+    expect(setLoading.mock.calls.length).toBe(1);
+  });
+
+  it("should not perform captive page login if payment_requires_internet is false", async () => {
+    validateToken.mockReturnValue(true);
+    // mock window.location.assign
+    const location = new URL("https://wifi.openwisp.io");
+    location.assign = jest.fn();
+    delete window.location;
+    window.location = location;
+    // mock session fetching
+    jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
+    jest.spyOn(Status.prototype, "getUserPassedRadiusSessions");
+
+    props = createTestProps();
+    props.userData = {
+      ...responseData,
+      is_verified: false,
+      method: "bank_card",
+      payment_url: "https://account.openwisp.io/payment/123",
+      mustLogin: true,
+    };
+    props.location.search = "";
+    props.settings.mobile_phone_verification = true;
+    props.settings.subscriptions = true;
+    props.settings.payment_requires_internet = false;
+    const setLoading = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading},
+    });
+
+    // mock loginFormRef
+    const spyFn = jest.fn();
+    wrapper.instance().loginFormRef.current = {submit: spyFn};
+    await tick();
+
+    // ensure captive portal login is not performed
+    expect(spyFn.mock.calls.length).toBe(0);
     expect(location.assign.mock.calls.length).toBe(0);
     expect(setLoading.mock.calls.length).toBe(1);
 

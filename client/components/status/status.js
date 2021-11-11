@@ -162,7 +162,7 @@ export default class Status extends React.Component {
         if (
           method === "bank_card" &&
           isVerified === false &&
-          !settings.requires_temporary_internet
+          !settings.payment_requires_internet
         ) {
           this.finalOperations();
           return;
@@ -977,7 +977,7 @@ Status.propTypes = {
   settings: PropTypes.shape({
     mobile_phone_verification: PropTypes.bool,
     subscriptions: PropTypes.bool,
-    requires_temporary_internet: PropTypes.bool,
+    payment_requires_internet: PropTypes.bool,
   }).isRequired,
   setUserData: PropTypes.func.isRequired,
   setTitle: PropTypes.func.isRequired,

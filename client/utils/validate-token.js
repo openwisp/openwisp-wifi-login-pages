@@ -1,8 +1,8 @@
 import qs from "qs";
 import axios from "axios";
-import {c, t} from "ttag";
+import {t} from "ttag";
 import {toast} from "react-toastify";
-import {validateApiUrl,mainToastId} from "../constants";
+import {validateApiUrl, mainToastId} from "../constants";
 import handleSession from "./session";
 import logError from "./log-error";
 import handleLogout from "./handle-logout";

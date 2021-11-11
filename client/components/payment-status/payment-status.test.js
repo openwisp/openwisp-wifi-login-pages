@@ -24,7 +24,7 @@ const createTestProps = (props) => ({
   setUserData: jest.fn(),
   page: defaultConfig.components.payment_status_page,
   cookies: new Cookies(),
-  settings: {subscriptions: true, requires_temporary_internet: true},
+  settings: {subscriptions: true, payment_requires_internet: true},
   logout: jest.fn(),
   authenticate: jest.fn(),
   ...props,

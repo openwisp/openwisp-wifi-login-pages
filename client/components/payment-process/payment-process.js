@@ -35,11 +35,11 @@ export default class PaymentProcess extends React.Component {
       logout,
     );
 
+    this.setState({isTokenValid});
     if (isTokenValid === false) {
       setLoading(false);
       return;
     }
-    this.setState({isTokenValid});
 
     ({userData} = this.props);
     setUserData({...userData});
@@ -61,13 +61,13 @@ export default class PaymentProcess extends React.Component {
       event.origin === window.location.origin
     ) {
       switch (type) {
-        case "paymentClose":
+        case "paymentClose": {
           // Get payment status from the backend
           const redirectUrl = await getPaymentStatusRedirectUrl(
             orgSlug,
             message.paymentId,
             {
-              type: "Bearer",
+              tokenType: "Bearer",
               cookies,
             },
             setUserData,
@@ -77,6 +77,7 @@ export default class PaymentProcess extends React.Component {
             history.push(redirectUrl);
           }
           break;
+        }
         case "showLoader":
           setLoading(true);
           break;
