@@ -1,9 +1,7 @@
 .payment-process .main-column {
   background-color: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.6);
   border-radius: 5px;
-  padding-bottom: 2%;
-  padding-top: 2%;
+  padding: 2% 4% 1% 4% !important;
 }
 
 iframe {
