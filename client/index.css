@@ -290,11 +290,11 @@ h1 {
   transition: opacity 0.3s 0s, visibility 0s 0s;
 }
 
-.modal-container {
+#root .modal-container {
   position: relative;
   top: 50%;
   left: 0;
-  transform: translate(0, -50%) !important;
+  transform: translate(0, -50%);
   /* needed for old browsers */
   -ms-transform: translateY(-50%);
   -webkit-transform: translateY(-50%);
