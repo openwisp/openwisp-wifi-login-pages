@@ -30,13 +30,10 @@
 
 @media screen and (min-width: 0px) and (max-width: 767px) {
   .modal-container {
-    top: 30%;
-    left: 0;
     width: 100%;
     max-width: none;
     box-sizing: border-box;
     padding: 40px 5px 20px;
-    transform: none !important;
   }
 
   .modal.content .modal-container {

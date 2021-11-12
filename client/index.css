@@ -291,10 +291,15 @@ h1 {
 }
 
 .modal-container {
-  position: absolute;
+  position: relative;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -55%) !important;
+  left: 0;
+  transform: translate(0, -50%) !important;
+  /* needed for old browsers */
+  -ms-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
   margin: 0 auto !important;
   padding: 3.1em 1em 3em;
   width: 90%;
