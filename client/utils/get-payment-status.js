@@ -39,10 +39,10 @@ export const getPaymentStatus = async (orgSlug, paymentId, tokenInfo) => {
       }
       return response.data.status;
     }
-    logError(response, "Cannot get payment status");
+    logError(response, "get-payment-status returned a non 200 response status");
     return false;
   } catch (error) {
-    logError(error, t`ERR_OCCUR`);
+    logError(error, "get-payment-status returned a non 200 response status");
     return false;
   }
 };
@@ -72,7 +72,10 @@ const getPaymentStatusRedirectUrl = async (
       setUserData({...userData, payment_url: null});
       return `/${orgSlug}/payment/${paymentStatus}`;
     default:
-      return null;
+      // Request failed
+      toast.error(t`ERR_OCCUR`);
+      setUserData({...userData, payment_url: null});
+      return `/${orgSlug}/payment/failed`;
   }
 };
 

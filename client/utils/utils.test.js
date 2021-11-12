@@ -784,6 +784,7 @@ describe("getPaymentStatusRedirectUrl tests", () => {
   it("should log error if request fails", async () => {
     const {orgSlug, paymentId, tokenInfo, setUserData, userData} = getArgs();
     const consoleLog = jest.spyOn(global.console, "log").mockImplementation();
+    const errorMethod = jest.spyOn(dependency.toast, "error");
     const response = {
       status: 500,
     };
@@ -795,13 +796,16 @@ describe("getPaymentStatusRedirectUrl tests", () => {
       setUserData,
       userData,
     );
-    expect(result).toBe(null);
+    expect(result).toBe("/default/payment/failed");
+    expect(errorMethod).toHaveBeenCalledTimes(1);
+    expect(errorMethod).toHaveBeenCalledWith("Error occurred!");
     expect(consoleLog).toHaveBeenCalledTimes(1);
     expect(consoleLog).toHaveBeenCalledWith(response);
   });
   it("should log error if payment object not found", async () => {
     const {orgSlug, paymentId, tokenInfo, setUserData, userData} = getArgs();
     const consoleLog = jest.spyOn(global.console, "log").mockImplementation();
+    const errorMethod = jest.spyOn(dependency.toast, "error");
     const response = {
       status: 404,
     };
@@ -813,7 +817,9 @@ describe("getPaymentStatusRedirectUrl tests", () => {
       setUserData,
       userData,
     );
-    expect(result).toBe(null);
+    expect(result).toBe("/default/payment/failed");
+    expect(errorMethod).toHaveBeenCalledTimes(1);
+    expect(errorMethod).toHaveBeenCalledWith("Error occurred!");
     expect(consoleLog).toHaveBeenCalledTimes(1);
     expect(consoleLog).toHaveBeenCalledWith(response);
   });

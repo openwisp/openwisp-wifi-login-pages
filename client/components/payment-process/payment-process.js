@@ -73,9 +73,7 @@ export default class PaymentProcess extends React.Component {
             setUserData,
             userData,
           );
-          if (redirectUrl) {
-            history.push(redirectUrl);
-          }
+          history.push(redirectUrl);
           break;
         }
         case "showLoader":

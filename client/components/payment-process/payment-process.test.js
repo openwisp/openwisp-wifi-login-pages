@@ -126,7 +126,7 @@ describe("Test <PaymentProcess /> cases", () => {
     expect(wrapper.find("Redirect").props().to).toEqual("/default/status");
   });
 
-  it("should redirect if token is invalid", async () => {
+  it("should show loader if token is invalid", async () => {
     const setLoading = jest.fn();
     props = createTestProps({
       userData: responseData,
@@ -194,7 +194,6 @@ describe("Test <PaymentProcess /> cases", () => {
       disableLifecycleMethods: true,
     });
     const {handlePostMessage} = wrapper.instance();
-    const {setLoading} = wrapper.instance().context;
     await handlePostMessage({
       data: {
         type: "paymentClose",
@@ -205,6 +204,16 @@ describe("Test <PaymentProcess /> cases", () => {
     expect(history.push).toHaveBeenCalledWith(
       `/${props.orgSlug}/payment/success/`,
     );
+  });
+
+  it("should handle postMessage", async () => {
+    props = createTestProps();
+    wrapper = shallow(<PaymentProcess {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    const {handlePostMessage} = wrapper.instance();
+    const {setLoading} = wrapper.instance().context;
 
     await handlePostMessage({
       data: {
