@@ -28,7 +28,7 @@ exports[`<PaymentStatus /> rendering with placeholder translation tags should re
         >
           <Link
             className="button full"
-            to="/default/status"
+            to="/default/payment/draft"
           >
             PAY_TRY_AGAIN_BTN
           </Link>
@@ -136,7 +136,7 @@ exports[`Test <PaymentStatus /> cases should render failed state 1`] = `
         >
           <Link
             className="button full"
-            to="/default/status"
+            to="/default/payment/draft"
           >
             Try again
           </Link>

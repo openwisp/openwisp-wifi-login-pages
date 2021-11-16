@@ -1,7 +1,8 @@
 import qs from "qs";
 import axios from "axios";
 import {t} from "ttag";
-import {validateApiUrl} from "../constants";
+import {toast} from "react-toastify";
+import {validateApiUrl, mainToastId} from "../constants";
 import handleSession from "./session";
 import logError from "./log-error";
 import handleLogout from "./handle-logout";
@@ -17,7 +18,14 @@ const validateToken = async (
   const authToken = cookies.get(`${orgSlug}_auth_token`);
   const {token, session} = handleSession(orgSlug, authToken, cookies);
   // calling validate token API only if userData.radius_user_token is undefined
-  if (token && userData && userData.radius_user_token === undefined) {
+  // or payment_url of user is undefined
+  if (
+    userData &&
+    ((token && userData.radius_user_token === undefined) ||
+      (userData.method === "bank_card" &&
+        userData.is_verified !== true &&
+        !userData.payment_url))
+  ) {
     try {
       const response = await axios({
         method: "post",
@@ -41,8 +49,23 @@ const validateToken = async (
       setUserData(response.data);
       return true;
     } catch (error) {
-      handleLogout(logout, cookies, orgSlug, setUserData, userData);
-      logError(error, t`ERR_OCCUR`);
+      if (error.response && error.response.status === 403) {
+        toast.error(error.response.data.detail, {
+          toastId: mainToastId,
+        });
+        // Instead of redirecting to status page, it will logout the user.
+        handleLogout(
+          logout,
+          cookies,
+          orgSlug,
+          setUserData,
+          {...userData, is_active: false},
+          true,
+        );
+      } else {
+        logError(error, t`ERR_OCCUR`);
+        handleLogout(logout, cookies, orgSlug, setUserData, userData);
+      }
       return false;
     }
   }

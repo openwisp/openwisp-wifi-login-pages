@@ -26,6 +26,7 @@ import {initialState} from "../../reducers/organization";
 import {Logout} from "../organization-wrapper/lazy-import";
 import InfoModal from "../../utils/modal";
 import {localStorage} from "../../utils/storage";
+import history from "../../utils/history";
 
 export default class Status extends React.Component {
   constructor(props) {
@@ -113,6 +114,8 @@ export default class Status extends React.Component {
         email,
         phone_number,
         is_active,
+        method,
+        is_verified: isVerified,
       } = userData;
       const userInfo = {};
       userInfo.status = "";
@@ -156,6 +159,14 @@ export default class Status extends React.Component {
           }
         }
       } else if (this.loginFormRef && this.loginFormRef.current && mustLogin) {
+        if (
+          method === "bank_card" &&
+          isVerified === false &&
+          !settings.payment_requires_internet
+        ) {
+          this.finalOperations();
+          return;
+        }
         this.notifyCpLogin(userData);
         this.loginFormRef.current.submit();
         userData.mustLogin = false;
@@ -173,12 +184,12 @@ export default class Status extends React.Component {
   };
 
   async finalOperations() {
-    const {userData, settings} = this.props;
+    const {userData, orgSlug, settings} = this.props;
     const {setLoading} = this.context;
     // if the user needs bank card verification,
     // redirect to payment page and stop here
     if (needsVerify("bank_card", userData, settings)) {
-      window.location.assign(userData.payment_url);
+      history.push(`/${orgSlug}/payment/process`);
       return;
     }
 
@@ -966,6 +977,7 @@ Status.propTypes = {
   settings: PropTypes.shape({
     mobile_phone_verification: PropTypes.bool,
     subscriptions: PropTypes.bool,
+    payment_requires_internet: PropTypes.bool,
   }).isRequired,
   setUserData: PropTypes.func.isRequired,
   setTitle: PropTypes.func.isRequired,

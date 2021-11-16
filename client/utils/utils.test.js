@@ -25,6 +25,7 @@ import handleChange from "./handle-change";
 import redirectToPayment from "./redirect-to-payment";
 import {initialState} from "../reducers/organization";
 import {localStorage, sessionStorage, storageFallback} from "./storage";
+import getPaymentStatusRedirectUrl from "./get-payment-status";
 
 jest.mock("axios");
 jest.mock("./load-translation");
@@ -307,6 +308,41 @@ describe("Validate Token tests", () => {
     );
     expect(setUserData.mock.calls.length).toBe(1);
     expect(console.log).toHaveBeenCalledWith(response);
+    expect(setUserData.mock.calls.pop()).toEqual([initialState.userData]);
+  });
+  it("should show error if user is locked out", async () => {
+    const responseError = {
+      response: {
+        status: 403,
+        data: {
+          detail: "Your account has been locked.",
+        },
+      },
+    };
+    axios.mockImplementationOnce(() => Promise.reject(responseError));
+    const errorMethod = jest.spyOn(dependency.toast, "error");
+    const {orgSlug, cookies, setUserData, userData, logout} = getArgs();
+    cookies.set(`${orgSlug}_auth_token`, "token");
+    const result = await validateToken(
+      cookies,
+      orgSlug,
+      setUserData,
+      userData,
+      logout,
+    );
+    expect(result).toEqual(false);
+    expect(errorMethod).toBeCalledWith(responseError.response.data.detail, {
+      toastId: "main_toast_id",
+    });
+    expect(logout).toHaveBeenCalledWith(
+      {
+        HAS_DOCUMENT_COOKIE: true,
+        changeListeners: [],
+        cookies: {default_auth_token: "token"},
+      },
+      "default",
+    );
+    expect(setUserData.mock.calls.length).toBe(1);
     expect(setUserData.mock.calls.pop()).toEqual([initialState.userData]);
   });
 });
@@ -651,5 +687,140 @@ describe("storage tests", () => {
     storageMock.setItem("organization", "openwisp");
     storageMock.clear();
     expect(storageMock.getItem("organization")).toEqual(undefined);
+  });
+});
+describe("getPaymentStatusRedirectUrl tests", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+    jest.resetAllMocks();
+    jest.restoreAllMocks();
+  });
+
+  const getArgs = () => ({
+    orgSlug: "default",
+    paymentId: "payment-id",
+    tokenInfo: {
+      type: "Bearer",
+      cookies: {
+        get: jest.fn(),
+        remove: jest.fn(),
+      },
+    },
+    setUserData: jest.fn(),
+    userData: {payment_url: "http://localhost:1234"},
+  });
+  it("should return draft URL if payment status is waiting", async () => {
+    const {orgSlug, paymentId, tokenInfo, setUserData, userData} = getArgs();
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: {
+          status: "waiting",
+        },
+      }),
+    );
+    const result = await getPaymentStatusRedirectUrl(
+      orgSlug,
+      paymentId,
+      tokenInfo,
+      setUserData,
+      userData,
+    );
+    expect(result).toBe(`/${orgSlug}/payment/draft`);
+  });
+  it("should return success URL if payment status is success", async () => {
+    const {orgSlug, paymentId, tokenInfo, setUserData, userData} = getArgs();
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: {
+          status: "success",
+        },
+      }),
+    );
+    const result = await getPaymentStatusRedirectUrl(
+      orgSlug,
+      paymentId,
+      tokenInfo,
+      setUserData,
+      userData,
+    );
+    expect(result).toBe(`/${orgSlug}/payment/success`);
+    expect(setUserData).toHaveBeenCalledTimes(1);
+    expect(setUserData).toHaveBeenCalledWith({
+      is_verified: true,
+      mustLogin: true,
+      payment_url: null,
+    });
+  });
+  it("should return failure URL if payment status is failed", async () => {
+    const {orgSlug, paymentId, tokenInfo, setUserData, userData} = getArgs();
+    const errorToast = jest.spyOn(dependency.toast, "error");
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: {
+          status: "failed",
+          message: "Payment failed",
+        },
+      }),
+    );
+    const result = await getPaymentStatusRedirectUrl(
+      orgSlug,
+      paymentId,
+      tokenInfo,
+      setUserData,
+      userData,
+    );
+    expect(result).toBe(`/${orgSlug}/payment/failed`);
+    expect(setUserData).toHaveBeenCalledTimes(1);
+    expect(setUserData).toHaveBeenCalledWith({payment_url: null});
+    expect(errorToast).toHaveBeenCalledTimes(1);
+    expect(errorToast).toHaveBeenCalledWith("Payment failed");
+  });
+  it("should log error if request fails", async () => {
+    const {orgSlug, paymentId, tokenInfo, setUserData, userData} = getArgs();
+    const consoleLog = jest.spyOn(global.console, "log").mockImplementation();
+    const errorMethod = jest.spyOn(dependency.toast, "error");
+    const response = {
+      status: 500,
+    };
+    axios.mockImplementationOnce(() => Promise.reject(response));
+    const result = await getPaymentStatusRedirectUrl(
+      orgSlug,
+      paymentId,
+      tokenInfo,
+      setUserData,
+      userData,
+    );
+    expect(result).toBe("/default/payment/failed");
+    expect(errorMethod).toHaveBeenCalledTimes(1);
+    expect(errorMethod).toHaveBeenCalledWith("Error occurred!");
+    expect(consoleLog).toHaveBeenCalledTimes(1);
+    expect(consoleLog).toHaveBeenCalledWith(response);
+  });
+  it("should log error if payment object not found", async () => {
+    const {orgSlug, paymentId, tokenInfo, setUserData, userData} = getArgs();
+    const consoleLog = jest.spyOn(global.console, "log").mockImplementation();
+    const errorMethod = jest.spyOn(dependency.toast, "error");
+    const response = {
+      status: 404,
+    };
+    axios.mockImplementationOnce(() => Promise.resolve(response));
+    const result = await getPaymentStatusRedirectUrl(
+      orgSlug,
+      paymentId,
+      tokenInfo,
+      setUserData,
+      userData,
+    );
+    expect(result).toBe("/default/payment/failed");
+    expect(errorMethod).toHaveBeenCalledTimes(1);
+    expect(errorMethod).toHaveBeenCalledWith("Error occurred!");
+    expect(consoleLog).toHaveBeenCalledTimes(1);
+    expect(consoleLog).toHaveBeenCalledWith(response);
   });
 });

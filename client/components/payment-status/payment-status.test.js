@@ -24,7 +24,7 @@ const createTestProps = (props) => ({
   setUserData: jest.fn(),
   page: defaultConfig.components.payment_status_page,
   cookies: new Cookies(),
-  settings: {subscriptions: true},
+  settings: {subscriptions: true, payment_requires_internet: true},
   logout: jest.fn(),
   authenticate: jest.fn(),
   ...props,
@@ -46,7 +46,11 @@ const responseData = {
 };
 
 describe("<PaymentStatus /> rendering with placeholder translation tags", () => {
-  const props = createTestProps({userData: responseData, status: "failed"});
+  const props = createTestProps({
+    userData: responseData,
+    status: "failed",
+    isAuthenticated: true,
+  });
   it("should render translation placeholder correctly", () => {
     const renderer = new ShallowRenderer();
     const wrapper = renderer.render(<PaymentStatus {...props} />);
@@ -92,7 +96,7 @@ describe("Test <PaymentStatus /> cases", () => {
     expect(wrapper.find(".main-column .button.full").length).toEqual(2);
     expect(
       wrapper.find(".payment-status-row-3 .button").at(0).props().to,
-    ).toEqual("/default/status");
+    ).toEqual("/default/payment/draft");
     expect(wrapper.find(".payment-status-row-4 .button").length).toEqual(1);
     expect(wrapper.find("Redirect").length).toEqual(0);
   });
@@ -285,7 +289,7 @@ describe("Test <PaymentStatus /> cases", () => {
   it("should redirect to status page if token is not valid", async () => {
     const spyToast = jest.spyOn(toast, "success");
     props = createTestProps({
-      userData: {...responseData, is_verified: true},
+      userData: {...responseData, is_verified: false},
       status: "draft",
     });
     validateToken.mockReturnValue(false);
