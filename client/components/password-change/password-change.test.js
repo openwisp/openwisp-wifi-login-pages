@@ -230,6 +230,7 @@ describe("<PasswordChange /> interactions", () => {
       props.setUserData,
       props.userData,
       props.logout,
+      props.language,
     );
   });
   it("should redirect to status if login method is SAML / Social Login", async () => {

@@ -41,11 +41,26 @@ export default class PasswordChange extends React.Component {
 
   async componentDidMount() {
     const {setLoading} = this.context;
-    const {setTitle, orgName, cookies, userData, setUserData, logout, orgSlug} =
-      this.props;
+    const {
+      setTitle,
+      orgName,
+      cookies,
+      userData,
+      setUserData,
+      logout,
+      orgSlug,
+      language,
+    } = this.props;
     setLoading(true);
     setTitle(t`PWD_CHANGE_TITL`, orgName);
-    await validateToken(cookies, orgSlug, setUserData, userData, logout);
+    await validateToken(
+      cookies,
+      orgSlug,
+      setUserData,
+      userData,
+      logout,
+      language,
+    );
     setLoading(false);
   }
 

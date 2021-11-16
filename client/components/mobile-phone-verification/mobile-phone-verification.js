@@ -43,8 +43,16 @@ export default class MobilePhoneVerification extends React.Component {
   }
 
   async componentDidMount() {
-    const {cookies, orgSlug, settings, setUserData, logout, orgName, setTitle} =
-      this.props;
+    const {
+      cookies,
+      orgSlug,
+      settings,
+      setUserData,
+      logout,
+      orgName,
+      setTitle,
+      language,
+    } = this.props;
     setTitle(t`PHONE_VERIF_TITL`, orgName);
     let {userData} = this.props;
     const {setLoading} = this.context;
@@ -55,6 +63,7 @@ export default class MobilePhoneVerification extends React.Component {
       setUserData,
       userData,
       logout,
+      language,
     );
     if (isValid) {
       ({userData} = this.props);
