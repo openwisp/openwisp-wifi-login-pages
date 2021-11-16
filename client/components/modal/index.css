@@ -1,7 +1,7 @@
-.w-900 {
+#root .w-900 {
   max-width: 900px;
 }
-.text-left {
+#root .text-left {
   text-align: left;
 }
 .modal.content {
