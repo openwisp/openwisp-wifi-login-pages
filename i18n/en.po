@@ -604,7 +604,7 @@ msgstr "Do you own the account mentioned above and want to sign in and associate
 #: client/components/password-change/password-change.js:72
 #: client/components/password-change/password-change.js:73
 msgid "PWD_CURR_ERR"
-msgstr "The password is the same as the current password."
+msgstr "The new password cannot be the same as the current password."
 
 #: client/components/password-change/password-change.js:175
 msgid "CURR_PWD_LBL"

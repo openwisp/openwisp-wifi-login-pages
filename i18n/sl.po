@@ -590,3 +590,16 @@ msgstr "Uporabnik s podobnimi poverilnicami že obstaja."
 #: client/components/registration/registration.js:878
 msgid "CONFLICT_SIGNIN"
 msgstr "Ali ste lastnik zgoraj omenjenega računa in se želite prijaviti in svoj obstoječi račun povezati s to storitvijo WiFi?"
+
+#: client/components/password-change/password-change.js:72
+#: client/components/password-change/password-change.js:73
+msgid "PWD_CURR_ERR"
+msgstr "Novo geslo ne more biti enako trenutnemu geslu."
+
+#: client/components/password-change/password-change.js:175
+msgid "CURR_PWD_LBL"
+msgstr "Trenutno geslo"
+
+#: client/components/password-change/password-change.js:178
+msgid "CURR_PWD_PHOLD"
+msgstr "Vaše trenutno geslo"

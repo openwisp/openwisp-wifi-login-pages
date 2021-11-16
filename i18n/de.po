@@ -609,3 +609,16 @@ msgstr "Ein Benutzer mit ähnlichen Anmeldeinformationen existiert bereits."
 #: client/components/registration/registration.js:878
 msgid "CONFLICT_SIGNIN"
 msgstr "Besitzen Sie das oben genannte Konto und möchten sich anmelden und Ihr bestehendes Konto mit diesem WLAN-Dienst verknüpfen?"
+
+#: client/components/password-change/password-change.js:72
+#: client/components/password-change/password-change.js:73
+msgid "PWD_CURR_ERR"
+msgstr "Das neue Passwort darf nicht mit dem aktuellen Passwort identisch sein."
+
+#: client/components/password-change/password-change.js:175
+msgid "CURR_PWD_LBL"
+msgstr "Aktuelles Passwort"
+
+#: client/components/password-change/password-change.js:178
+msgid "CURR_PWD_PHOLD"
+msgstr "dein aktuelles Passwort"

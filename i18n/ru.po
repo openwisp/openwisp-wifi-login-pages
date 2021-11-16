@@ -602,3 +602,16 @@ msgstr "Пользователь с подобными учетными данн
 #: client/components/registration/registration.js:878
 msgid "CONFLICT_SIGNIN"
 msgstr "У вас есть учетная запись, упомянутая выше, и вы хотите войти в систему и связать существующую учетную запись с этой службой Wi-Fi?"
+
+#: client/components/password-change/password-change.js:72
+#: client/components/password-change/password-change.js:73
+msgid "PWD_CURR_ERR"
+msgstr "Новый пароль не может совпадать с текущим паролем."
+
+#: client/components/password-change/password-change.js:175
+msgid "CURR_PWD_LBL"
+msgstr "Текущий пароль"
+
+#: client/components/password-change/password-change.js:178
+msgid "CURR_PWD_PHOLD"
+msgstr "ваш текущий пароль"
