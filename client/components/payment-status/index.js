@@ -5,6 +5,7 @@ import {authenticate, logout, setUserData} from "../../actions/dispatchers";
 const mapStateToProps = (state, ownProps) => {
   const conf = state.organization.configuration;
   return {
+    language: state.language,
     page: state.organization.configuration.components.payment_status_page,
     orgSlug: state.organization.configuration.slug,
     userData: conf.userData,

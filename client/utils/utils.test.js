@@ -185,15 +185,18 @@ describe("Validate Token tests", () => {
     setUserData: jest.fn(),
     userData: {is_active: true, is_verified: null, mustLogin: true},
     logout: jest.fn(),
+    language: "en",
   });
   it("should return false if token is not in the cookie", async () => {
-    const {orgSlug, cookies, setUserData, userData, logout} = getArgs();
+    const {orgSlug, cookies, setUserData, userData, logout, language} =
+      getArgs();
     const result = await validateToken(
       cookies,
       orgSlug,
       setUserData,
       userData,
       logout,
+      language,
     );
     expect(axios.mock.calls.length).toBe(0);
     expect(result).toBe(false);
@@ -215,7 +218,8 @@ describe("Validate Token tests", () => {
         },
       }),
     );
-    const {orgSlug, cookies, setUserData, userData, logout} = getArgs();
+    const {orgSlug, cookies, setUserData, userData, logout, language} =
+      getArgs();
     cookies.set(`${orgSlug}_auth_token`, "token");
     const result = await validateToken(
       cookies,
@@ -223,6 +227,7 @@ describe("Validate Token tests", () => {
       setUserData,
       userData,
       logout,
+      language,
     );
     expect(axios).toHaveBeenCalled();
     expect(setUserData.mock.calls.length).toBe(1);
@@ -230,7 +235,8 @@ describe("Validate Token tests", () => {
     expect(logout.mock.calls.length).toBe(0);
   });
   it("should return true without calling api if radius token is present", async () => {
-    const {orgSlug, cookies, setUserData, userData, logout} = getArgs();
+    const {orgSlug, cookies, setUserData, userData, logout, language} =
+      getArgs();
     userData.radius_user_token = "token";
     const result = await validateToken(
       cookies,
@@ -238,6 +244,7 @@ describe("Validate Token tests", () => {
       setUserData,
       userData,
       logout,
+      language,
     );
     expect(axios.mock.calls.length).toBe(0);
     expect(result).toBe(true);
@@ -255,13 +262,15 @@ describe("Validate Token tests", () => {
     jest.spyOn(global.console, "log").mockImplementation();
     axios.mockImplementationOnce(() => Promise.resolve(response));
     const errorMethod = jest.spyOn(dependency.toast, "error");
-    const {orgSlug, cookies, setUserData, userData, logout} = getArgs();
+    const {orgSlug, cookies, setUserData, userData, logout, language} =
+      getArgs();
     const result = await validateToken(
       cookies,
       orgSlug,
       setUserData,
       userData,
       logout,
+      language,
     );
     expect(axios.mock.calls.length).toBe(1);
     expect(result).toBe(false);
@@ -288,13 +297,15 @@ describe("Validate Token tests", () => {
     axios.mockImplementationOnce(() => Promise.reject(response));
     jest.spyOn(global.console, "log").mockImplementation();
     const errorMethod = jest.spyOn(dependency.toast, "error");
-    const {orgSlug, cookies, setUserData, userData, logout} = getArgs();
+    const {orgSlug, cookies, setUserData, userData, logout, language} =
+      getArgs();
     const result = await validateToken(
       cookies,
       orgSlug,
       setUserData,
       userData,
       logout,
+      language,
     );
     expect(result).toEqual(false);
     expect(errorMethod).toBeCalledWith("Error occurred!");

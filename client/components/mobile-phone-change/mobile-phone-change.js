@@ -38,7 +38,7 @@ class MobilePhoneChange extends React.Component {
 
   async componentDidMount() {
     const {setLoading} = this.context;
-    const {cookies, orgSlug, setUserData, logout, setTitle, orgName} =
+    const {cookies, orgSlug, setUserData, logout, setTitle, orgName, language} =
       this.props;
     setLoading(true);
     setTitle(t`PHONE_CHANGE_TITL`, orgName);
@@ -49,6 +49,7 @@ class MobilePhoneChange extends React.Component {
       setUserData,
       userData,
       logout,
+      language,
     );
     if (isValid) {
       ({userData} = this.props);

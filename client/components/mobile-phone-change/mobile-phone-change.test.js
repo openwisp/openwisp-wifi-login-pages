@@ -439,6 +439,7 @@ describe("Change Phone Number: corner cases", () => {
       props.setUserData,
       props.userData,
       props.logout,
+      props.language,
     );
   });
 });

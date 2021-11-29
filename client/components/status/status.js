@@ -60,8 +60,16 @@ export default class Status extends React.Component {
   }
 
   async componentDidMount() {
-    const {cookies, orgSlug, settings, setUserData, logout, setTitle, orgName} =
-      this.props;
+    const {
+      cookies,
+      orgSlug,
+      settings,
+      setUserData,
+      logout,
+      setTitle,
+      orgName,
+      language,
+    } = this.props;
     setTitle(t`STATUS_TITL`, orgName);
     const {setLoading} = this.context;
     let {userData} = this.props;
@@ -97,6 +105,7 @@ export default class Status extends React.Component {
         setUserData,
         userData,
         logout,
+        language,
       );
 
       // stop here if token is invalid

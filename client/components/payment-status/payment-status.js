@@ -19,7 +19,7 @@ export default class PaymentStatus extends React.Component {
   }
 
   async componentDidMount() {
-    const {cookies, orgSlug, setUserData, logout, status, settings} =
+    const {cookies, orgSlug, setUserData, logout, status, settings, language} =
       this.props;
     let {userData} = this.props;
     const {setLoading} = this.context;
@@ -31,6 +31,7 @@ export default class PaymentStatus extends React.Component {
       setUserData,
       userData,
       logout,
+      language,
     );
     setLoading(false);
     this.setState({isTokenValid});
@@ -188,6 +189,7 @@ export default class PaymentStatus extends React.Component {
 }
 PaymentStatus.contextType = LoadingContext;
 PaymentStatus.propTypes = {
+  language: PropTypes.string,
   orgSlug: PropTypes.string,
   userData: PropTypes.object.isRequired,
   setUserData: PropTypes.func.isRequired,

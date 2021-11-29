@@ -6,6 +6,7 @@ import {validateApiUrl, mainToastId} from "../constants";
 import handleSession from "./session";
 import logError from "./log-error";
 import handleLogout from "./handle-logout";
+import getLanguageHeaders from "./get-language-headers";
 
 const validateToken = async (
   cookies,
@@ -13,6 +14,7 @@ const validateToken = async (
   setUserData,
   userData,
   logout,
+  language,
 ) => {
   const url = validateApiUrl(orgSlug);
   const authToken = cookies.get(`${orgSlug}_auth_token`);
@@ -31,6 +33,7 @@ const validateToken = async (
         method: "post",
         headers: {
           "content-type": "application/x-www-form-urlencoded",
+          "accept-language": getLanguageHeaders(language),
         },
         url,
         data: qs.stringify({
