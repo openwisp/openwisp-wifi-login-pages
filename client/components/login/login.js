@@ -50,6 +50,7 @@ export default class Login extends React.Component {
   componentDidMount() {
     const username = getParameterByName("username");
     const token = getParameterByName("token");
+    const sesame_token = getParameterByName("sesame");
     const {loginForm, setTitle, orgName, orgSlug} = this.props;
     setTitle(t`LOGIN`, orgName);
     let remember_me;
@@ -81,6 +82,11 @@ export default class Login extends React.Component {
         },
         true,
       );
+    }
+
+    // password-less authentication
+    if (sesame_token) {
+      this.handleSubmit(null, sesame_token);
     }
   }
 
@@ -190,7 +196,7 @@ export default class Login extends React.Component {
     handleChange(event, this);
   }
 
-  handleSubmit(event) {
+  handleSubmit(event, sesame_token = null) {
     const {setLoading} = this.context;
     if (event) event.preventDefault();
     const {orgSlug, setUserData, language, settings} = this.props;
@@ -205,12 +211,14 @@ export default class Login extends React.Component {
     if (radius_realms && username.includes("@")) {
       return this.realmsRadiusLoginForm.current.submit();
     }
+    const headers = {
+      "content-type": "application/x-www-form-urlencoded",
+      "accept-language": getLanguageHeaders(language),
+    };
+    if (sesame_token) headers.Authorization = `sesame ${sesame_token}`;
     return axios({
       method: "post",
-      headers: {
-        "content-type": "application/x-www-form-urlencoded",
-        "accept-language": getLanguageHeaders(language),
-      },
+      headers,
       url,
       data: qs.stringify({
         username,
