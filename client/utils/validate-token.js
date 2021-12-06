@@ -17,13 +17,18 @@ const validateToken = async (
   language,
 ) => {
   const url = validateApiUrl(orgSlug);
-  const authToken = cookies.get(`${orgSlug}_auth_token`);
+  const authToken = userData.auth_token
+    ? userData.auth_token
+    : cookies.get(`${orgSlug}_auth_token`);
   const {token, session} = handleSession(orgSlug, authToken, cookies);
   // calling validate token API only if userData.radius_user_token is undefined
   // or payment_url of user is undefined
+  const validate = userData.is_verified
+    ? userData.radius_user_token === undefined
+    : !userData.is_verified && userData.radius_user_token === undefined;
   if (
     userData &&
-    ((token && userData.radius_user_token === undefined) ||
+    ((token && validate) ||
       (userData.method === "bank_card" &&
         userData.is_verified !== true &&
         !userData.payment_url))

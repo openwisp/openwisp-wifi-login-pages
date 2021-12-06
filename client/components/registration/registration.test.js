@@ -39,12 +39,19 @@ const createTestProps = (props, configName = "default") => {
     termsAndConditions: config.terms_and_conditions,
     authenticate: jest.fn(),
     setTitle: jest.fn(),
+    userData: {},
+    setUserData: jest.fn(),
     loading: false,
     match: {
       path: "default/registration",
     },
     ...props,
   };
+};
+
+const successData = {
+  key: "8a2b2b2dd963de23c17db30a227505f879866630",
+  radius_user_token: "Lbdh3GKD7hvXUS5NUu5yoE4x5fCPPqlsXo7Ug8ld",
 };
 
 describe("<Registration /> rendering with placeholder translation tags", () => {
@@ -116,6 +123,7 @@ describe("<Registration /> interactions", () => {
     axios
       .mockImplementationOnce(() =>
         Promise.reject({
+          status: 400,
           response: {
             data: {
               email: "email error",
@@ -145,7 +153,7 @@ describe("<Registration /> interactions", () => {
           },
         }),
       )
-      .mockImplementationOnce(() => Promise.resolve())
+      .mockImplementationOnce(() => Promise.resolve({data: successData}))
       .mockImplementationOnce(() =>
         Promise.reject({
           status: 400,
@@ -310,7 +318,11 @@ describe("<Registration /> interactions", () => {
     );
   });
   it("should execute authenticate in mobile phone verification flow", async () => {
-    axios.mockImplementationOnce(() => Promise.resolve());
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        data: successData,
+      }),
+    );
     props.settings = {mobile_phone_verification: true};
     wrapper = shallow(<Registration {...props} />, {
       context: loadingContextValue,
@@ -329,6 +341,12 @@ describe("<Registration /> interactions", () => {
     expect(wrapper.find(".success")).toHaveLength(1);
     expect(wrapper.instance().props.authenticate.mock.calls.length).toBe(1);
     expect(errorSpyToast.mock.calls.length).toBe(4);
+    expect(props.setUserData).toHaveBeenCalledWith({
+      is_verified: false,
+      payment_url: undefined,
+      auth_token: successData.key,
+      radius_user_token: successData.radius_user_token,
+    });
   });
   it("should toggle modal", async () => {
     wrapper = shallow(<Registration {...props} />, {
@@ -494,7 +512,7 @@ describe("Registration and Mobile Phone Verification interactions", () => {
       Promise.resolve({
         status: 201,
         statusText: "CREATED",
-        data: null,
+        data: successData,
       }),
     );
 
@@ -566,7 +584,7 @@ describe("Registration and Mobile Phone Verification interactions", () => {
       Promise.resolve({
         status: 201,
         statusText: "CREATED",
-        data: null,
+        data: successData,
       }),
     );
     props = createTestProps();
@@ -667,10 +685,7 @@ describe("Registration without identity verification (Email registration)", () =
       Promise.resolve({
         status: 201,
         statusText: "CREATED",
-        data: {
-          key: "8a2b2b2dd963de23c17db30a227505f879866630",
-          radius_user_token: "Lbdh3GKD7hvXUS5NUu5yoE4x5fCPPqlsXo7Ug8ld",
-        },
+        data: successData,
       }),
     );
 

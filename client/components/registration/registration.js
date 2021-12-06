@@ -118,7 +118,7 @@ export default class Registration extends React.Component {
   handleSubmit(event) {
     const {setLoading} = this.context;
     event.preventDefault();
-    const {orgSlug, authenticate, settings, language} = this.props;
+    const {orgSlug, authenticate, settings, language, setUserData} = this.props;
     const {
       phone_number,
       email,
@@ -213,7 +213,16 @@ export default class Registration extends React.Component {
       url,
       data: body,
     })
-      .then(() => {
+      .then((res = {}) => {
+        if (!res && !res.data) throw new Error();
+        const {key: auth_token, radius_user_token, payment_url} = res.data;
+        setUserData({
+          is_verified: false,
+          auth_token,
+          radius_user_token,
+          payment_url,
+        });
+
         this.setState({
           errors: {},
           phone_number: "",
@@ -957,4 +966,5 @@ Registration.propTypes = {
   authenticate: PropTypes.func.isRequired,
   setTitle: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
+  setUserData: PropTypes.func.isRequired,
 };

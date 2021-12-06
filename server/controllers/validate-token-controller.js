@@ -19,7 +19,7 @@ const validateToken = (req, res) => {
       const validateTokenUrl = reverse("validate_auth_token", getSlug(conf));
       const timeout = conf.timeout * 1000;
       let {token} = req.body;
-      if (req.body.session === "false") {
+      if (req.body.session === "false" && token.includes(".")) {
         token = cookie.unsign(token, conf.secret_key);
       }
       // make AJAX request

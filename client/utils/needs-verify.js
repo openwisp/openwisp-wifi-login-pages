@@ -9,7 +9,7 @@ const needsVerify = (method, user, settings) => {
 
   if (method === "mobile_phone") {
     return (
-      user.method === "mobile_phone" &&
+      (user.method === "mobile_phone" || user.radius_user_token !== "") &&
       user.is_verified === false &&
       settings.mobile_phone_verification
     );
@@ -17,7 +17,7 @@ const needsVerify = (method, user, settings) => {
 
   if (method === "bank_card") {
     return Boolean(
-      user.method === "bank_card" &&
+      (user.method === "bank_card" || user.radius_user_token !== "") &&
         user.is_verified === false &&
         user.payment_url &&
         settings.subscriptions,
