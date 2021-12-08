@@ -555,9 +555,16 @@ describe("<Status /> interactions", () => {
       context: {setLoading: jest.fn()},
     });
     const spyFn = jest.fn();
-    wrapper.instance().loginFormRef.current = {submit: spyFn};
-    const setUserDataMock = wrapper.instance().props.setUserData.mock;
+    const status = wrapper.instance();
+    status.loginFormRef.current = {submit: spyFn};
+    status.loginIframeRef.current = {submit: jest.fn()};
+    const setUserDataMock = status.props.setUserData.mock;
     await tick();
+
+    // userData not set yet
+    expect(setUserDataMock.calls.pop()).toEqual(undefined);
+
+    status.handleLoginIframe();
     expect(spyFn.mock.calls.length).toBe(1);
     expect(setUserDataMock.calls.pop()).toEqual([
       {...props.userData, mustLogin: false},
@@ -821,9 +828,16 @@ describe("<Status /> interactions", () => {
 
     // mock loginFormRef
     const spyFn = jest.fn();
-    wrapper.instance().loginFormRef.current = {submit: spyFn};
-    const setUserDataMock = wrapper.instance().props.setUserData.mock;
+    const status = wrapper.instance();
+    status.loginFormRef.current = {submit: spyFn};
+    status.loginIframeRef.current = {submit: jest.fn()};
+    const setUserDataMock = status.props.setUserData.mock;
     await tick();
+
+    // userData not set yet
+    expect(setUserDataMock.calls.pop()).toEqual(undefined);
+
+    status.handleLoginIframe();
 
     // ensure captive portal login is performed
     expect(spyFn.mock.calls.length).toBe(1);
@@ -833,11 +847,6 @@ describe("<Status /> interactions", () => {
     ]);
     expect(location.assign.mock.calls.length).toBe(0);
     expect(setLoading.mock.calls.length).toBe(1);
-
-    const mockRef = {submit: jest.fn()};
-    wrapper.instance().loginIframeRef.current = {};
-    wrapper.instance().loginFormRef.current = mockRef;
-    wrapper.instance().handleLoginIframe();
 
     // ensure user is redirected to payment URL
     expect(history.push).toHaveBeenCalledWith(

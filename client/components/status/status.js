@@ -178,8 +178,6 @@ export default class Status extends React.Component {
         }
         this.notifyCpLogin(userData);
         this.loginFormRef.current.submit();
-        userData.mustLogin = false;
-        setUserData(userData);
         // if user is already authenticated and coming from other pages
       } else if (!mustLogin) {
         this.finalOperations();
@@ -332,7 +330,17 @@ export default class Status extends React.Component {
     if (!this.loginIframeRef || !this.loginIframeRef.current) {
       return;
     }
-    const {cookies, orgSlug, logout, captivePortalLoginForm} = this.props;
+    const {
+      cookies,
+      orgSlug,
+      logout,
+      captivePortalLoginForm,
+      userData,
+      setUserData,
+    } = this.props;
+
+    userData.mustLogin = false;
+    setUserData(userData);
 
     try {
       const searchParams = new URLSearchParams(

@@ -56,7 +56,7 @@ export default class PaymentStatus extends React.Component {
     ) {
       setUserData({
         ...userData,
-        mustLogin: settings.payment_requires_internet,
+        mustLogin: settings.payment_requires_internet ? true : undefined,
       });
     }
   }
