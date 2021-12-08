@@ -136,7 +136,7 @@ describe("Test <PaymentStatus /> cases", () => {
     expect(spyToast.mock.calls.length).toBe(0);
   });
 
-  it("should redirect to status if success + toast notification", async () => {
+  it("redirect to status + cp logout on success when payment requires internet", async () => {
     const spyToast = jest.spyOn(toast, "success");
     props = createTestProps({
       userData: {...responseData, is_verified: true},
@@ -155,7 +155,41 @@ describe("Test <PaymentStatus /> cases", () => {
     expect(spyToast.mock.calls.length).toBe(1);
     expect(comp.props.logout).not.toHaveBeenCalled();
     expect(comp.props.setUserData.mock.calls.pop()).toEqual([
-      {...props.userData, mustLogout: true, repeatLogin: true},
+      {
+        ...props.userData,
+        mustLogin: false,
+        mustLogout: true,
+        repeatLogin: true,
+      },
+    ]);
+  });
+
+  it("redirect to status + cp login on success when payment does not require internet", async () => {
+    const spyToast = jest.spyOn(toast, "success");
+    props = createTestProps({
+      userData: {...responseData, is_verified: true},
+      status: "success",
+    });
+    props.settings.payment_requires_internet = false;
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+      disableLifecycleMethods: true,
+    });
+    const comp = wrapper.instance();
+    comp.componentDidMount();
+    await tick();
+    expect(wrapper.find("Redirect").length).toEqual(1);
+    expect(wrapper.find("Redirect").props().to).toEqual("/default/status");
+    expect(spyToast.mock.calls.length).toBe(1);
+    expect(comp.props.logout).not.toHaveBeenCalled();
+    expect(comp.props.setUserData.mock.calls.pop()).toEqual([
+      {
+        ...props.userData,
+        mustLogin: true,
+        mustLogout: false,
+        repeatLogin: false,
+      },
     ]);
   });
 

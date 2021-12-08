@@ -45,6 +45,7 @@ export default class PaymentStatus extends React.Component {
     if (status === "success" && method === "bank_card" && isVerified === true) {
       setUserData({
         ...userData,
+        mustLogin: !settings.payment_requires_internet,
         mustLogout: settings.payment_requires_internet,
         repeatLogin: settings.payment_requires_internet,
       });
