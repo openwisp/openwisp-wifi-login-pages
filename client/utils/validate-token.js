@@ -17,7 +17,8 @@ const validateToken = async (
   language,
 ) => {
   const url = validateApiUrl(orgSlug);
-  const authToken = cookies.get(`${orgSlug}_auth_token`);
+  // get auth token from redux state, otherwise try getting it from cookies
+  const authToken = userData.auth_token || cookies.get(`${orgSlug}_auth_token`);
   const {token, session} = handleSession(orgSlug, authToken, cookies);
   // calling validate token API only if userData.radius_user_token is undefined
   // or payment_url of user is undefined

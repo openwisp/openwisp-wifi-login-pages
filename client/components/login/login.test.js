@@ -61,13 +61,15 @@ const userData = {
   email: "tester@test.com",
   phone_number: "+393660011333",
   username: "+393660011333",
-  key: "b72dad1cca4807dc21c00b0b2f171d29415ac541",
+  auth_token: "b72dad1cca4807dc21c00b0b2f171d29415ac541",
   radius_user_token: "jwyVSZYOze16ej6cc1AW5cxhRjahesLzh1Tm2y0d",
   first_name: "",
   last_name: "",
   birth_date: null,
   location: "",
 };
+const responseData = {...userData, key: userData.auth_token};
+delete responseData.auth_token;
 
 describe("<Login /> rendering with placeholder translation tags", () => {
   const props = createTestProps();
@@ -376,14 +378,15 @@ describe("<Login /> interactions", () => {
     const login = wrapper.find(Login);
     const handleSubmit = jest.spyOn(login.instance(), "handleSubmit");
 
-    const data = {...userData};
-    data.is_verified = false;
+    const testResponseData = {...responseData, is_verified: false};
+    const testUserData = {...userData, is_verified: false};
+
     axios.mockImplementationOnce(() =>
       Promise.reject({
         response: {
           status: 401,
           statusText: "unauthorized",
-          data,
+          data: testResponseData,
         },
       }),
     );
@@ -406,7 +409,9 @@ describe("<Login /> interactions", () => {
     expect(handleSubmit).toHaveBeenCalled();
     const setUserDataMock = login.props().setUserData.mock;
     expect(setUserDataMock.calls.length).toBe(1);
-    expect(setUserDataMock.calls.pop()).toEqual([{...data, mustLogin: true}]);
+    expect(setUserDataMock.calls.pop()).toEqual([
+      {...testUserData, mustLogin: true},
+    ]);
     const authenticateMock = login.props().authenticate.mock;
     expect(authenticateMock.calls.length).toBe(1);
     expect(authenticateMock.calls.pop()).toEqual([true]);
@@ -417,15 +422,19 @@ describe("<Login /> interactions", () => {
     const login = wrapper.find(Login);
     const handleSubmit = jest.spyOn(login.instance(), "handleSubmit");
 
-    const data = {...userData};
-    data.username = "tester";
-    data.is_verified = true;
-    data.method = "bank_card";
-    data.payment_url = "https://account.openwisp.io/payment/123";
+    const data = {
+      ...userData,
+      username: "tester",
+      is_verified: true,
+      method: "bank_card",
+      payment_url: "https://account.openwisp.io/payment/123",
+    };
+    const testResponseData = {...data, key: data.auth_token};
+    delete testResponseData.auth_token;
     axios.mockImplementationOnce(() =>
       Promise.resolve({
         status: 200,
-        data,
+        data: testResponseData,
       }),
     );
 
@@ -620,7 +629,7 @@ describe("<Login /> interactions", () => {
         response: {
           status: 401,
           statusText: "unauthorized",
-          data: userData,
+          data: responseData,
         },
       }),
     );
@@ -667,12 +676,14 @@ describe("<Login /> interactions", () => {
     );
     getParameterByName
       .mockImplementationOnce(() => userData.username)
-      .mockImplementationOnce(() => userData.key)
+      .mockImplementationOnce(() => userData.auth_token)
       .mockImplementationOnce(() => "saml");
     const spyToast = jest.spyOn(dependency.toast, "success");
     wrapper = mountComponent(props);
     expect(localStorage.getItem("rememberMe")).toEqual("false");
-    expect(sessionStorage.getItem("default_auth_token")).toEqual(userData.key);
+    expect(sessionStorage.getItem("default_auth_token")).toEqual(
+      userData.auth_token,
+    );
     expect(spyToast.mock.calls.length).toBe(1);
     const login = wrapper.find(Login);
     const setUserDataMock = login.props().setUserData.mock;
@@ -680,7 +691,7 @@ describe("<Login /> interactions", () => {
     expect(setUserDataMock.calls.pop()).toEqual([
       {
         username: userData.username,
-        key: userData.key,
+        auth_token: userData.auth_token,
         is_active: true,
         radius_user_token: undefined,
         mustLogin: true,

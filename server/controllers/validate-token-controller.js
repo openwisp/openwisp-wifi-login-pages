@@ -19,7 +19,10 @@ const validateToken = (req, res) => {
       const validateTokenUrl = reverse("validate_auth_token", getSlug(conf));
       const timeout = conf.timeout * 1000;
       let {token} = req.body;
-      if (req.body.session === "false") {
+      // decrypt authToken in cookie unless:
+      //   - authToken is being stored in sessionStorage
+      //   - or authToken is not signed (passed via redux)
+      if (req.body.session === "false" && token.includes(".")) {
         token = cookie.unsign(token, conf.secret_key);
       }
       // make AJAX request
@@ -34,7 +37,6 @@ const validateToken = (req, res) => {
         data: qs.stringify({token}),
       })
         .then((response) => {
-          delete response.data.auth_token;
           res
             .status(response.status)
             .type("application/json")
