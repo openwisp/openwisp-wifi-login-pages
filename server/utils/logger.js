@@ -1,5 +1,8 @@
 import winston from "winston";
+import SentryTransport from "winston-transport-sentry-node";
 import logFilePath from "../loggerConfig";
+
+import config from "../../env.json";
 
 const levels = {
   error: 0,
@@ -83,5 +86,17 @@ const Logger = winston.createLogger({
     new winston.transports.File({filename: logFilePath.error}),
   ],
 });
+
+Logger.add(
+  new SentryTransport({
+    sentry: config.sentryTransportLogger.sentry,
+    level: config.sentryTransportLogger.level,
+    levelsMap: config.sentryTransportLogger.levelsMap,
+    format: winston.format.combine(
+      format,
+      winston.format.uncolorize({raw: false}),
+    ),
+  }),
+);
 
 export default Logger;

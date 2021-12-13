@@ -46,7 +46,8 @@
     "tsutils": "^3.17.1",
     "ttag": "^1.7.24",
     "universal-cookie-express": "^4.0.3",
-    "winston": "^3.3.3"
+    "winston": "^3.3.3",
+    "winston-transport-sentry-node": "^2.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.1",

@@ -906,6 +906,37 @@ It is recommended to add **polyfill.io** to the allowed hostnames
 (walled garden) of the captive portal, otherwise the application will not
 be able to load in old browsers.
 
+### Configuring Sentry for proxy server
+
+You can enable sentry logging for the proxy server by configuring
+`sentryTransportLogger` key in
+[env.json](https://github.com/openwisp/openwisp-wifi-login-pages/blob/master/env.json).
+
+```js
+{
+  ...
+  "sentryTransportLogger": {
+    // These options are passed to sentry SDK. Read more about available
+    // options at https://github.com/aandrewww/winston-transport-sentry-node#sentry-common-options
+    "sentry": {
+      "dsn": "https://examplePublicKey@o0.ingest.sentry.io/0"
+    },
+    // Following options are related to Winston's SentryTransport. You can read
+    // more at https://github.com/aandrewww/winston-transport-sentry-node#transport-related-options
+    "level": "warn",
+    "levelsMap": {
+      "silly": "debug",
+      "verbose": "debug",
+      "info": "info",
+      "debug": "debug",
+      "warn": "warning",
+      "error": "error"
+    }
+  }
+  ...
+}
+```
+
 ### License
 
 See [LICENSE](https://github.com/openwisp/openwisp-wifi-login-pages/blob/master/LICENSE).
