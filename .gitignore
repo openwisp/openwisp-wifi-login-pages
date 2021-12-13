@@ -51,4 +51,4 @@ i18n/*.custom.po
 server/config.json
 compilation-stats.json
 client/config.json
-env.json
+sentry-env.json

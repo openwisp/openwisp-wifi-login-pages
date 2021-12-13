@@ -908,9 +908,8 @@ be able to load in old browsers.
 
 ### Configuring Sentry for proxy server
 
-You can enable sentry logging for the proxy server by configuring
-`sentryTransportLogger` key in
-[env.json](https://github.com/openwisp/openwisp-wifi-login-pages/blob/master/env.json).
+You can enable sentry logging for the proxy server by adding `sentry-env.json` in the
+root folder. The `sentry-env.json` file should contain configuration as following:
 
 ```js
 {
@@ -936,6 +935,9 @@ You can enable sentry logging for the proxy server by configuring
   ...
 }
 ```
+
+**Note:** You can take reference from
+[sentry-env.sample.json](https://github.com/openwisp/openwisp-wifi-login-pages/blob/master/sentry-env.sample.json)
 
 ### License
 
