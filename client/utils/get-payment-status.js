@@ -1,37 +1,20 @@
-import qs from "qs";
 import axios from "axios";
 import {t} from "ttag";
 import {toast} from "react-toastify";
 import {paymentStatusUrl} from "../constants";
 import logError from "./log-error";
-import handleSession from "./session";
 
 export const getPaymentStatus = async (orgSlug, paymentId, tokenInfo) => {
   const url = paymentStatusUrl(orgSlug, paymentId);
-  const {tokenType} = tokenInfo;
-  const {cookies} = tokenInfo;
-  const authToken = cookies.get(`${orgSlug}_auth_token`);
-  const {token: tokenValue, session} = handleSession(
-    orgSlug,
-    authToken,
-    cookies,
-  );
-  const data = {
-    tokenType,
-    tokenValue,
-    session,
-  };
-
+  const {tokenType, tokenValue} = tokenInfo;
   try {
     const response = await axios({
       method: "post",
       headers: {
         "content-type": "application/x-www-form-urlencoded",
+        Authorization: `${tokenType} ${tokenValue}`,
       },
       url,
-      data: qs.stringify({
-        ...data,
-      }),
     });
     if (response.status === 200) {
       if (response.data.message) {

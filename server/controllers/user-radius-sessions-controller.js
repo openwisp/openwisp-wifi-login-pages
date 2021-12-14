@@ -1,5 +1,4 @@
 import axios from "axios";
-import cookie from "cookie-signature";
 import merge from "deepmerge";
 import config from "../config.json";
 import defaultConfig from "../utils/default-config";
@@ -19,15 +18,12 @@ const getUserRadiusSessions = (req, res) => {
         getSlug(conf),
       );
       const timeout = conf.timeout * 1000;
-      let {token} = req.query;
-      if (req.query.session === "false")
-        token = cookie.unsign(token, conf.secret_key);
       // make AJAX request
       axios({
         method: "get",
         headers: {
           "content-type": "application/x-www-form-urlencoded",
-          Authorization: `Bearer ${token}`,
+          Authorization: req.headers.authorization,
           "accept-language": req.headers["accept-language"],
         },
         url: `${host}${userRadiusSessionsUrl}/`,

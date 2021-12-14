@@ -51,7 +51,7 @@ export default class PaymentProcess extends React.Component {
   }
 
   handlePostMessage = async (event) => {
-    const {userData, cookies, orgSlug, setUserData} = this.props;
+    const {userData, orgSlug, setUserData} = this.props;
     const {setLoading} = this.context;
     const {message, type} = event.data;
     // For security reasons, read https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage#security_concern
@@ -68,7 +68,7 @@ export default class PaymentProcess extends React.Component {
             message.paymentId,
             {
               tokenType: "Bearer",
-              cookies,
+              tokenValue: userData.auth_token,
             },
             setUserData,
             userData,

@@ -1,5 +1,4 @@
 import axios from "axios";
-import cookie from "cookie-signature";
 import merge from "deepmerge";
 
 import config from "../config.json";
@@ -17,16 +16,15 @@ const passwordChange = (req, res) => {
       const {host} = conf;
       const url = reverse("password_change", getSlug(conf));
       const timeout = conf.timeout * 1000;
-      const {currentPassword, newPassword1, newPassword2, session} = req.body;
-      let {token} = req.body;
-      if (session === "false") token = cookie.unsign(token, conf.secret_key);
+      const {currentPassword, newPassword1, newPassword2} = req.body;
+      const {authorization: token} = req.headers;
       if (token) {
         // make AJAX request
         axios({
           method: "post",
           headers: {
             "content-type": "application/json",
-            Authorization: `Bearer ${token}`,
+            Authorization: req.headers.authorization,
             "accept-language": req.headers["accept-language"],
           },
           url: `${host}${url}/`,

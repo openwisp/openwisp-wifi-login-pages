@@ -18,7 +18,6 @@ import getText from "../../utils/get-text";
 import logError from "../../utils/log-error";
 import Contact from "../contact-box";
 import shouldLinkBeShown from "../../utils/should-link-be-shown";
-import handleSession from "../../utils/session";
 import validateToken from "../../utils/validate-token";
 import needsVerify from "../../utils/needs-verify";
 import Loader from "../../utils/loader";
@@ -27,6 +26,7 @@ import {Logout} from "../organization-wrapper/lazy-import";
 import InfoModal from "../../utils/modal";
 import {localStorage} from "../../utils/storage";
 import history from "../../utils/history";
+import handleSession from "../../utils/session";
 
 export default class Status extends React.Component {
   constructor(props) {
@@ -223,22 +223,18 @@ export default class Status extends React.Component {
     this.updateSpinner();
   }
 
-  async getUserRadiusSessions(para) {
-    const {cookies, orgSlug, logout} = this.props;
+  async getUserRadiusSessions(params) {
+    const {cookies, orgSlug, logout, userData} = this.props;
     const url = getUserRadiusSessionsUrl(orgSlug);
     const auth_token = cookies.get(`${orgSlug}_auth_token`);
-    const {token, session} = handleSession(orgSlug, auth_token, cookies);
+    handleSession(orgSlug, auth_token, cookies);
     const options = {};
-    const params = {
-      token,
-      session,
-      ...para,
-    };
     try {
       const response = await axios({
         method: "get",
         headers: {
           "content-type": "application/x-www-form-urlencoded",
+          Authorization: `Bearer ${userData.auth_token}`,
         },
         url,
         params,
@@ -250,7 +246,9 @@ export default class Status extends React.Component {
       } else {
         const {pastSessions} = this.state;
         options.pastSessions =
-          para.page === 1 ? response.data : pastSessions.concat(response.data);
+          params.page === 1
+            ? response.data
+            : pastSessions.concat(response.data);
         options.currentPage = params.page;
       }
       options.hasMoreSessions =
