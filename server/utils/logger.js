@@ -1,4 +1,5 @@
 import winston from "winston";
+import SentryTransport from "winston-transport-sentry-node";
 import logFilePath from "../loggerConfig";
 
 const levels = {
@@ -83,5 +84,26 @@ const Logger = winston.createLogger({
     new winston.transports.File({filename: logFilePath.error}),
   ],
 });
+
+/* eslint-disable global-require */
+/* eslint-disable import/no-unresolved */
+try {
+  const sentryConfig = require("../../sentry-env.json");
+  Logger.add(
+    new SentryTransport({
+      sentry: sentryConfig.sentryTransportLogger.sentry,
+      level: sentryConfig.sentryTransportLogger.level,
+      levelsMap: sentryConfig.sentryTransportLogger.levelsMap,
+      format: winston.format.combine(
+        format,
+        winston.format.uncolorize({raw: false}),
+      ),
+    }),
+  );
+} catch (error) {
+  // no op
+}
+/* eslint-enable global-require */
+/* eslint-enable import/no-unresolved */
 
 export default Logger;
