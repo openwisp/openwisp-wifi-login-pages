@@ -50,8 +50,10 @@ export default class Login extends React.Component {
   componentDidMount() {
     const username = getParameterByName("username");
     const token = getParameterByName("token");
-    const sesame_token = getParameterByName("sesame");
-    const {loginForm, setTitle, orgName, orgSlug} = this.props;
+    const {loginForm, setTitle, orgName, orgSlug, settings} = this.props;
+    const sesame_token = getParameterByName(
+      settings.passwordless_auth_token_name,
+    );
     setTitle(t`LOGIN`, orgName);
     let remember_me;
 
@@ -215,7 +217,9 @@ export default class Login extends React.Component {
       "content-type": "application/x-www-form-urlencoded",
       "accept-language": getLanguageHeaders(language),
     };
-    if (sesame_token) headers.Authorization = `sesame ${sesame_token}`;
+    if (sesame_token) {
+      headers.Authorization = `${settings.passwordless_auth_token_name} ${sesame_token}`;
+    }
     return axios({
       method: "post",
       headers,
@@ -558,6 +562,7 @@ Login.propTypes = {
     radius_realms: PropTypes.bool,
     mobile_phone_verification: PropTypes.bool,
     subscriptions: PropTypes.bool,
+    passwordless_auth_token_name: PropTypes.bool,
   }).isRequired,
   setTitle: PropTypes.func.isRequired,
   captivePortalLoginForm: PropTypes.shape({
