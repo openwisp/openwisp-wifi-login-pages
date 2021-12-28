@@ -52,6 +52,9 @@
   outline: none;
   cursor: pointer;
 }
+.header-language-btn.active {
+  cursor: auto;
+}
 .header-row-2 {
   display: flex;
   flex-direction: row;

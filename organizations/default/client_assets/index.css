@@ -4,35 +4,31 @@ body .input:focus {
 body .input.error {
   border-color: #d93025;
 }
-body.input {
+body .input {
   border: 1px solid #ccc;
 }
 
 /* buttons */
 .button {
-  background-color: #333333;
-  color: #ffffff;
+  background-color: #333;
+  color: #fff;
 }
-.button:focus {
-  background-color: rgba(0, 0, 0, 0.7);
+.button:focus,
+.button:active,
+.button:hover {
+  background-color: #333333b3;
 }
 .logout .button {
-  background: #ba2121 !important;
-}
-.submit .button {
-  background: #498b26 !important;
+  background: #ba2121;
 }
 .cancel .button {
-  background: #ba2121 !important;
-}
-.submit .button:hover {
-  background: rgba(73, 139, 38, 0.9) !important;
+  background: #ba2121;
 }
 .logout .button:hover {
-  background: rgba(186, 33, 33, 0.9) !important;
+  background: rgba(186, 33, 33, 0.9);
 }
 .cancel .button:hover {
-  background: rgba(186, 33, 33, 0.9) !important;
+  background: rgba(186, 33, 33, 0.9);
 }
 
 /* links */
@@ -78,35 +74,35 @@ div.error {
 
 /* footer */
 .footer-container {
-  background: #fee5e5;
+  background: #fcfcfc;
 }
 .footer-link {
-  color: #df5d43;
+  color: #1b1b1b;
 }
 .footer-container a {
-  color: #df5d43;
+  color: #1b1b1b;
 }
 .footer-row-2 {
-  color: #df5d43;
+  color: rgba(0, 0, 0, 0.45);
 }
 
 /* header */
-
 .header-row-1 {
   background: #fcfcfc;
 }
 .header-language-btn {
-  color: #df5d43;
-  border-bottom: 3px rgba(0, 0, 0, 0) solid;
+  color: rgba(0, 0, 0, 0.45);
+  border-bottom: 3px rgba(0, 0, 0, 0.45) solid;
 }
 .header-language-btn.active {
-  border-bottom-color: #df5d43;
+  color: #1b1b1b;
+  border-bottom-color: #1b1b1b;
 }
 .header-row-2 {
-  background: #fee5e5;
+  background: #fcfcfc;
 }
 .header-link.active {
-  background: #df5d43 !important;
+  background: rgba(51, 51, 51, 0.702);
 }
 .sticky-container {
   border-bottom: 1px solid #000;
@@ -115,24 +111,16 @@ div.error {
 }
 @media screen and (min-width: 0px) and (max-width: 767px) {
   .header-hamburger {
-    background-color: #efefef;
+    background-color: #f0f0f0;
   }
   .header-hamburger:focus {
     outline: dotted 1px #fff;
   }
   .header-hamburger > div {
-    background: #333;
+    background: #777777;
   }
   .header-mobile-menu {
-    background: #fee5e5;
-  }
-  .header-language-btn {
-    color: #df5d43;
-    border-bottom-color: #fff !important;
-  }
-  .header-language-btn.active {
-    cursor: auto;
-    border-bottom-color: #df5d43 !important;
+    background: #f0f0f0;
   }
 }
 
@@ -158,9 +146,10 @@ div.error {
 
 /* registration */
 .plans .plan {
-  background: rgba(255, 255, 255, 0.4);
+  background: #fff;
+  border: 1px solid #fff;
 }
 .plan:hover,
 .plan.active {
-  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid #000;
 }
