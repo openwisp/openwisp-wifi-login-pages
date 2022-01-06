@@ -259,7 +259,7 @@ msgstr "Nur Buchstaben und Zahlen"
 msgid "REGISTER_ADD_INFO_TXT"
 msgstr ""
 "Wenn Sie dieses Anmeldeformular ausfüllen und zusenden, stimmen Sie den "
-"{Nutzungsbedingungen} und {Datenschutzbestimmungen} des WLAN-Dienstes."
+"{terms_and_conditions} und {privacy_policy} des WLAN-Dienstes."
 
 #: client/components/login/login.js:403
 #: client/components/registration/registration.js:779
@@ -328,7 +328,7 @@ msgstr "Abbrechen und beenden"
 
 #: client/components/password-reset/password-reset.js:32
 msgid "PWD_RESET_TITL"
-msgstr "Passwort zurücksetzen""
+msgstr "Passwort zurücksetzen"
 
 #: client/components/password-confirm/password-confirm.js:125
 #: client/components/password-confirm/password-confirm.js:215

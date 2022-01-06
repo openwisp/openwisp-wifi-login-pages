@@ -23,11 +23,11 @@ msgstr "Скрыть пароль"
 
 #: client/utils/render-additional-info.js:7
 msgid "PRIV_POL_TITL"
-msgstr "Политика конфиденциальности"
+msgstr "политика конфиденциальности"
 
 #: client/utils/render-additional-info.js:8
 msgid "TOS_TITL"
-msgstr "Условия использования"
+msgstr "условия использования"
 
 #: client/components/status/status.js:467
 #: client/components/status/status.js:658

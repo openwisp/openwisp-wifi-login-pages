@@ -16,11 +16,11 @@ msgstr "Plate la password"
 
 #: client/utils/render-additional-info.js:7
 msgid "PRIV_POL_TITL"
-msgstr "Regolament de privacy"
+msgstr "regolament de privacy"
 
 #: client/utils/render-additional-info.js:8
 msgid "TOS_TITL"
-msgstr "Tiermins e cundizions di ûs"
+msgstr "tiermins e cundizions di ûs"
 
 #: client/components/status/status.js:467
 #: client/components/status/status.js:658
@@ -261,6 +261,7 @@ msgstr "Dome letaris e numars"
 
 #: client/components/registration/registration.js:766
 msgid "REGISTER_ADD_INFO_TXT"
+msgstr ""
 "Se si jemple e si invie chest modul di regjistrazion, si acetin i tiermins di ûs "
 "{terms_and_conditions} e il regolament pe privacy {privacy_policy} dal servizi WiFi."
 
@@ -450,7 +451,7 @@ msgstr "Ricuarde l’acès su chest dispositîf"
 #: client/components/login/login.js:381
 msgid "LOGIN_ADD_INFO_TXT"
 msgstr ""
-"Fasint il login, tu declaris di acetâ i tiermins di ûs {terms_and_conditions}e il "
+"Fasint il login, tu declaris di acetâ i tiermins di ûs {terms_and_conditions} e il "
 "regolament de privacy {privacy_policy} dal servizi WiFi."
 
 #: client/components/login/login.js:398
