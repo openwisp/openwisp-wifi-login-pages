@@ -58,6 +58,7 @@ const createTestProps = (props) => ({
       settings: {
         mobile_phone_verification: true,
         subscriptions: true,
+        passwordless_auth_token_name: "sesame",
       },
       default_language: "en",
       userData,

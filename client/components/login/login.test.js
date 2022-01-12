@@ -35,7 +35,11 @@ const createTestProps = (props) => ({
   loginForm,
   privacyPolicy: defaultConfig.privacy_policy,
   termsAndConditions: defaultConfig.terms_and_conditions,
-  settings: {mobile_phone_verification: false, radius_realms: false},
+  settings: {
+    mobile_phone_verification: false,
+    radius_realms: false,
+    passwordless_auth_token_name: "sesame",
+  },
   authenticate: jest.fn(),
   setUserData: jest.fn(),
   userData: {},
@@ -721,7 +725,9 @@ describe("<Login /> interactions", () => {
       context: loadingContextValue,
       disableLifecycleMethods: true,
     });
-    expect(getParameterByName).toHaveBeenCalledWith("sesame");
+    expect(getParameterByName).toHaveBeenCalledWith(
+      defaultConfig.settings.passwordless_auth_token_name,
+    );
     wrapper.instance().handleSubmit = jest.fn();
     wrapper.instance().componentDidMount();
     expect(wrapper.instance().handleSubmit).toHaveBeenCalledWith(

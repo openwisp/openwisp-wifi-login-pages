@@ -562,7 +562,7 @@ Login.propTypes = {
     radius_realms: PropTypes.bool,
     mobile_phone_verification: PropTypes.bool,
     subscriptions: PropTypes.bool,
-    passwordless_auth_token_name: PropTypes.bool,
+    passwordless_auth_token_name: PropTypes.string,
   }).isRequired,
   setTitle: PropTypes.func.isRequired,
   captivePortalLoginForm: PropTypes.shape({
