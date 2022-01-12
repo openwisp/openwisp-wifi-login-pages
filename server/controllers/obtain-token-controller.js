@@ -19,18 +19,21 @@ const obtainToken = (req, res) => {
       const obtainTokenUrl = reverse("user_auth_token", getSlug(conf));
       const timeout = conf.timeout * 1000;
       const {username, password} = req.body;
+      const headers = {
+        "content-type": "application/x-www-form-urlencoded",
+        "accept-language": req.headers["accept-language"],
+      };
+      if (req.headers.authorization)
+        headers.Authorization = req.headers.authorization;
       // make AJAX request
       axios({
         method: "post",
-        headers: {
-          "content-type": "application/x-www-form-urlencoded",
-          "accept-language": req.headers["accept-language"],
-        },
+        headers,
         url: `${host}${obtainTokenUrl}/`,
         timeout,
         data: qs.stringify({username, password}),
       })
-        .then((response) => sendCookies(username, response, conf, res))
+        .then((response) => sendCookies(response, conf, res))
         .catch((error) => {
           Logger.error(error);
           try {
@@ -40,7 +43,7 @@ const obtainToken = (req, res) => {
               error.response.status === 401 &&
               error.response.data.is_active
             ) {
-              return sendCookies(username, error.response, conf, res);
+              return sendCookies(error.response, conf, res);
             }
             // forward error
             return res

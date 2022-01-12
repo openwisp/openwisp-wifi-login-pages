@@ -56,7 +56,7 @@ const registration = (req, res) => {
         timeout,
         data: postData,
       })
-        .then((response) => sendCookies(username, response, conf, res))
+        .then((response) => sendCookies(response, conf, res, username))
         .catch((error) => {
           Logger.error(error);
           // forward error

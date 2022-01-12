@@ -35,7 +35,11 @@ const createTestProps = (props) => ({
   loginForm,
   privacyPolicy: defaultConfig.privacy_policy,
   termsAndConditions: defaultConfig.terms_and_conditions,
-  settings: {mobile_phone_verification: false, radius_realms: false},
+  settings: {
+    mobile_phone_verification: false,
+    radius_realms: false,
+    passwordless_auth_token_name: "sesame",
+  },
   authenticate: jest.fn(),
   setUserData: jest.fn(),
   userData: {},
@@ -677,6 +681,7 @@ describe("<Login /> interactions", () => {
     getParameterByName
       .mockImplementationOnce(() => userData.username)
       .mockImplementationOnce(() => userData.auth_token)
+      .mockImplementationOnce(() => "")
       .mockImplementationOnce(() => "saml");
     const spyToast = jest.spyOn(dependency.toast, "success");
     wrapper = mountComponent(props);
@@ -701,6 +706,34 @@ describe("<Login /> interactions", () => {
     expect(authenticateMock.calls.length).toBe(1);
     expect(authenticateMock.calls.pop()).toEqual([true]);
     expect(localStorage.getItem("default_logout_method")).toEqual("saml");
+  });
+
+  it("should authenticate if sesame link is in url", async () => {
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        response: {
+          data: userData,
+        },
+      }),
+    );
+    getParameterByName
+      .mockImplementationOnce(() => null)
+      .mockImplementationOnce(() => null)
+      .mockImplementationOnce(() => "sesame-token");
+    props = createTestProps();
+    wrapper = shallow(<Login {...props} />, {
+      context: loadingContextValue,
+      disableLifecycleMethods: true,
+    });
+    expect(getParameterByName).toHaveBeenCalledWith(
+      defaultConfig.settings.passwordless_auth_token_name,
+    );
+    wrapper.instance().handleSubmit = jest.fn();
+    wrapper.instance().componentDidMount();
+    expect(wrapper.instance().handleSubmit).toHaveBeenCalledWith(
+      null,
+      "sesame-token",
+    );
   });
   it("should render modal", () => {
     props = createTestProps();

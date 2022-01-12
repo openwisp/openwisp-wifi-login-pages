@@ -8,6 +8,7 @@ settings:
   subscriptions: false
   payment_iframe: false
   payment_requires_internet: false
+  passwordless_auth_token_name: "sesame"
 
 # configuration variables for the server app
 server:
