@@ -209,7 +209,9 @@ export default class Login extends React.Component {
       errors: {},
     });
     setLoading(true);
-    this.waitToast = toast.info(t`PLEASE_WAIT`, {autoClose: 20000});
+    if (!sesame_token) {
+      this.waitToast = toast.info(t`PLEASE_WAIT`, {autoClose: 20000});
+    }
     if (radius_realms && username.includes("@")) {
       return this.realmsRadiusLoginForm.current.submit();
     }
