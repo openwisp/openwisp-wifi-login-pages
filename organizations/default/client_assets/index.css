@@ -74,16 +74,16 @@ div.error {
 
 /* footer */
 .footer-container {
-  background: #fcfcfc;
+  background: #fdf2f2;
 }
 .footer-link {
-  color: #1b1b1b;
+  color: #df5d43;
 }
 .footer-container a {
-  color: #1b1b1b;
+  color: #df5d43;
 }
 .footer-row-2 {
-  color: rgba(0, 0, 0, 0.45);
+  color: #df5d43;
 }
 
 /* header */
@@ -99,10 +99,10 @@ div.error {
   border-bottom-color: #1b1b1b;
 }
 .header-row-2 {
-  background: #fcfcfc;
+  background: #fdf2f2;
 }
 .header-link.active {
-  background: rgba(51, 51, 51, 0.702);
+  background: #df5d43ab;
 }
 .sticky-container {
   border-bottom: 1px solid #000;
@@ -120,7 +120,7 @@ div.error {
     background: #777777;
   }
   .header-mobile-menu {
-    background: #f0f0f0;
+    background: #fdf2f2;
   }
 }
 
@@ -151,5 +151,5 @@ div.error {
 }
 .plan:hover,
 .plan.active {
-  border: 1px solid #000;
+  border: 1px solid #888;
 }
