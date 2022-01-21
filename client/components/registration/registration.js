@@ -8,9 +8,9 @@ import Select from "react-select";
 import {Link, Route} from "react-router-dom";
 import {toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import countryList from "react-select-country-list";
 import {t, gettext} from "ttag";
 import "react-phone-input-2/lib/style.css";
+import countries from "./countries.json";
 import LoadingContext from "../../utils/loading-context";
 import PasswordToggleIcon from "../../utils/password-toggle";
 import {mainToastId, registerApiUrl, plansApiUrl} from "../../constants";
@@ -118,7 +118,7 @@ export default class Registration extends React.Component {
   handleSubmit(event) {
     const {setLoading} = this.context;
     event.preventDefault();
-    const {orgSlug, authenticate, settings, language} = this.props;
+    const {orgSlug, authenticate, settings, language, setUserData} = this.props;
     const {
       phone_number,
       email,
@@ -213,7 +213,13 @@ export default class Registration extends React.Component {
       url,
       data: body,
     })
-      .then(() => {
+      .then((res = {}) => {
+        if (!res && !res.data) throw new Error();
+        const {key: auth_token} = res.data;
+        setUserData({
+          is_verified: false,
+          auth_token,
+        });
         this.setState({
           errors: {},
           phone_number: "",
@@ -372,7 +378,10 @@ export default class Registration extends React.Component {
 
   handleResponse = (response) => {
     const {orgSlug} = this.props;
-    if (response) return history.push(`/${orgSlug}/login`);
+    if (response) {
+      toast.info(t`PLEASE_LOGIN`);
+      return history.push(`/${orgSlug}/login`);
+    }
     return this.toggleModal();
   };
 
@@ -400,7 +409,6 @@ export default class Registration extends React.Component {
       countrySelected,
       hidePassword,
     } = this.state;
-    const countries = countryList().getData();
     return (
       <>
         <div className="container content" id="registration">
@@ -954,5 +962,6 @@ Registration.propTypes = {
   termsAndConditions: PropTypes.object.isRequired,
   authenticate: PropTypes.func.isRequired,
   setTitle: PropTypes.func.isRequired,
+  setUserData: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
 };

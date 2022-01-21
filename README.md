@@ -4,8 +4,7 @@
 
 [![Build Status](https://github.com/openwisp/openwisp-wifi-login-pages/workflows/OpenWisp%20WiFi%20Login%20Pages%20CI%20BUILD/badge.svg?branch=master)](https://github.com/openwisp/openwisp-wifi-login-pages/actions)
 [![Coverage Status](https://coveralls.io/repos/github/openwisp/openwisp-wifi-login-pages/badge.svg)](https://coveralls.io/github/openwisp/openwisp-wifi-login-pages)
-[![Dependencies Status](https://david-dm.org/openwisp/openwisp-wifi-login-pages/status.svg)](https://david-dm.org/openwisp/openwisp-wifi-login-pages)
-[![devDependencies Status](https://david-dm.org/openwisp/openwisp-wifi-login-pages/dev-status.svg)](https://david-dm.org/openwisp/openwisp-wifi-login-pages?type=dev)
+[![Dependency Monitoring](https://img.shields.io/librariesio/release/github/openwisp/openwisp-wifi-login-pages)](https://libraries.io/github/openwisp/openwisp-wifi-login-pages#repository_dependencies)
 
 <p align="center">
   <img src="https://github.com/openwisp/openwisp-wifi-login-pages/raw/master/docs/login-desktop.png" alt="login">
@@ -863,6 +862,82 @@ portal to resolve this DNS name to its IP, while the public DNS resolution
 should point to the mock app just created. This way captive portal login
 and logout requests will not hang, allowing users to view/modify their
 account data also from the public internet.
+
+### Loading extra javascript files
+
+It is possible to load extra javascript files, which may be needed for different
+reasons like error monitoring (Sentry), analytics (Piwik, Google analytics), etc.
+
+It's possible to accomplish this in two ways which are explained below.
+
+#### 1. Loading extra javascript files for whole application (all organizations)
+
+Place the javascript files in `organizations/js` directory and it will be injected in HTML
+during the webpack build process for all the organizations.
+
+These scripts are loaded before all the other Javascript code is loaded.
+This is done on purpose to ensure that any error monitoring code is loaded
+before everything else.
+
+This feature should be used only for critical custom Javascript code.
+
+#### 2. Loading extra javascript files for a specific organization
+
+Add the names of the extra javascript files in organization configuration. Example:
+
+```yaml
+client:
+  js:
+    - "piwik-script.js"
+    - "google-analytics.js"
+```
+
+Make sure that all these extra javascript files are be present in the
+`organizations/<org-slug>/client_assets` directory.
+
+These scripts are loaded only after the rest of the page has finished loading.
+
+This feature can be used to load non-critical custom Javascript code.
+
+### Support for old browsers
+
+Polyfills are used to support old browsers on different platforms.
+It is recommended to add **polyfill.io** to the allowed hostnames
+(walled garden) of the captive portal, otherwise the application will not
+be able to load in old browsers.
+
+### Configuring Sentry for proxy server
+
+You can enable sentry logging for the proxy server by adding `sentry-env.json` in the
+root folder. The `sentry-env.json` file should contain configuration as following:
+
+```js
+{
+  ...
+  "sentryTransportLogger": {
+    // These options are passed to sentry SDK. Read more about available
+    // options at https://github.com/aandrewww/winston-transport-sentry-node#sentry-common-options
+    "sentry": {
+      "dsn": "https://examplePublicKey@o0.ingest.sentry.io/0"
+    },
+    // Following options are related to Winston's SentryTransport. You can read
+    // more at https://github.com/aandrewww/winston-transport-sentry-node#transport-related-options
+    "level": "warn",
+    "levelsMap": {
+      "silly": "debug",
+      "verbose": "debug",
+      "info": "info",
+      "debug": "debug",
+      "warn": "warning",
+      "error": "error"
+    }
+  }
+  ...
+}
+```
+
+**Note:** You can take reference from
+[sentry-env.sample.json](https://github.com/openwisp/openwisp-wifi-login-pages/blob/master/sentry-env.sample.json)
 
 ### License
 

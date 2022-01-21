@@ -16,9 +16,15 @@ jest.mock("../../utils/get-config");
 jest.mock("axios");
 jest.mock("../../utils/redirect-to-payment");
 
+const responseData = {
+  key: "8a2b2b2dd963de23c17db30a227505f879866630",
+  radius_user_token: "Lbdh3GKD7hvXUS5NUu5yoE4x5fCPPqlsXo7Ug8ld",
+};
+
 const createTestProps = function (props, configName = "default") {
   const config = getConfig(configName);
   return {
+    language: "en",
     orgSlug: configName,
     orgName: "test",
     settings: config.settings,
@@ -28,6 +34,7 @@ const createTestProps = function (props, configName = "default") {
     authenticate: jest.fn(),
     verifyMobileNumber: jest.fn(),
     setTitle: jest.fn(),
+    setUserData: jest.fn(),
     loading: false,
     match: {
       path: "default/registration",
@@ -217,7 +224,10 @@ describe("test subscriptions", () => {
   });
 
   it("redirect to payment after registration with payment flow", async () => {
-    const data = {payment_url: "https://account.openwisp.io/payment/123"};
+    const data = {
+      ...responseData,
+      payment_url: "https://account.openwisp.io/payment/123",
+    };
     axios
       .mockImplementationOnce(() =>
         Promise.resolve({
@@ -278,7 +288,7 @@ describe("test subscriptions", () => {
         Promise.resolve({
           status: 201,
           statusText: "CREATED",
-          data: {},
+          data: responseData,
         }),
       );
     props.settings.mobile_phone_verification = true;
@@ -322,7 +332,7 @@ describe("test subscriptions", () => {
         Promise.resolve({
           status: 201,
           statusText: "CREATED",
-          data: {},
+          data: responseData,
         }),
       );
     props.settings.mobile_phone_verification = true;

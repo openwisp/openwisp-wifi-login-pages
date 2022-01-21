@@ -11,22 +11,31 @@ import validateToken from "../../utils/validate-token";
 import handleLogout from "../../utils/handle-logout";
 
 export default class PaymentStatus extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isTokenValid: null,
+    };
+  }
+
   async componentDidMount() {
-    const {cookies, orgSlug, setUserData, logout, status} = this.props;
+    const {cookies, orgSlug, setUserData, logout, status, settings, language} =
+      this.props;
     let {userData} = this.props;
     const {setLoading} = this.context;
 
     setLoading(true);
-    this.isTokenValid = await validateToken(
+    const isTokenValid = await validateToken(
       cookies,
       orgSlug,
       setUserData,
       userData,
       logout,
+      language,
     );
     setLoading(false);
-
-    if (this.isTokenValid === false) {
+    this.setState({isTokenValid});
+    if (isTokenValid === false) {
       return;
     }
 
@@ -34,13 +43,21 @@ export default class PaymentStatus extends React.Component {
     const {method, is_verified: isVerified} = userData;
     // flag user to repeat login in order to restart session with new radius group
     if (status === "success" && method === "bank_card" && isVerified === true) {
-      setUserData({...userData, mustLogout: true, repeatLogin: true});
+      setUserData({
+        ...userData,
+        mustLogin: !settings.payment_requires_internet,
+        mustLogout: settings.payment_requires_internet,
+        repeatLogin: settings.payment_requires_internet,
+      });
     } else if (
       status === "draft" &&
       method === "bank_card" &&
       isVerified === false
     ) {
-      setUserData({...userData, mustLogin: true});
+      setUserData({
+        ...userData,
+        mustLogin: settings.payment_requires_internet ? true : undefined,
+      });
     }
   }
 
@@ -54,6 +71,7 @@ export default class PaymentStatus extends React.Component {
     const {method, is_verified: isVerified} = userData;
     const redirectToStatus = () => <Redirect to={`/${orgSlug}/status`} />;
     const acceptedValues = ["success", "failed", "draft"];
+    const {isTokenValid} = this.state;
 
     // not registered with bank card flow
     if (
@@ -68,7 +86,7 @@ export default class PaymentStatus extends React.Component {
       (isAuthenticated === false && status !== "draft") ||
       (["failed", "draft"].includes(status) && isVerified === true) ||
       (status === "success" && isVerified === false) ||
-      this.isTokenValid === false
+      isTokenValid === false
     ) {
       return redirectToStatus();
     }
@@ -80,7 +98,7 @@ export default class PaymentStatus extends React.Component {
     }
 
     // success case
-    if (status === "success" && isVerified === true) {
+    if (isTokenValid === true && status === "success" && isVerified === true) {
       toast.success(t`PAY_SUCCESS`);
       return redirectToStatus();
     }
@@ -89,8 +107,11 @@ export default class PaymentStatus extends React.Component {
   }
 
   renderDraft() {
-    const {orgSlug, authenticate, page = {}} = this.props;
+    const {orgSlug, authenticate, page = {}, settings} = this.props;
     const {timeout = 5, max_attempts: maxAttempts = 3} = page;
+    const payProceedUrl = settings.payment_requires_internet
+      ? `/${orgSlug}/status`
+      : `/${orgSlug}/payment/process`;
 
     return (
       <div className="container content">
@@ -109,7 +130,7 @@ export default class PaymentStatus extends React.Component {
               <div className="row">
                 <Link
                   className="button full"
-                  to={`/${orgSlug}/status`}
+                  to={payProceedUrl}
                   onClick={() => authenticate(true)}
                 >
                   {t`PAY_PROC_BTN`}
@@ -143,7 +164,7 @@ export default class PaymentStatus extends React.Component {
               <h2 className="row payment-status-row-1">{t`PAY_FAIL`}</h2>
               <div className="row payment-status-row-2">{t`PAY_SUB_H`}</div>
               <div className="row payment-status-row-3">
-                <Link className="button full" to={`/${orgSlug}/status`}>
+                <Link className="button full" to={`/${orgSlug}/payment/draft`}>
                   {t`PAY_TRY_AGAIN_BTN`}
                 </Link>
               </div>
@@ -169,6 +190,7 @@ export default class PaymentStatus extends React.Component {
 }
 PaymentStatus.contextType = LoadingContext;
 PaymentStatus.propTypes = {
+  language: PropTypes.string,
   orgSlug: PropTypes.string,
   userData: PropTypes.object.isRequired,
   setUserData: PropTypes.func.isRequired,
@@ -178,4 +200,7 @@ PaymentStatus.propTypes = {
   page: PropTypes.object,
   logout: PropTypes.func.isRequired,
   cookies: PropTypes.instanceOf(Cookies).isRequired,
+  settings: PropTypes.shape({
+    payment_requires_internet: PropTypes.bool,
+  }).isRequired,
 };

@@ -23,11 +23,11 @@ msgstr "Скрыть пароль"
 
 #: client/utils/render-additional-info.js:7
 msgid "PRIV_POL_TITL"
-msgstr "Политика конфиденциальности"
+msgstr "политика конфиденциальности"
 
 #: client/utils/render-additional-info.js:8
 msgid "TOS_TITL"
-msgstr "Условия использования"
+msgstr "условия использования"
 
 #: client/components/status/status.js:467
 #: client/components/status/status.js:658
@@ -549,37 +549,37 @@ msgstr "Имя пользователя"
 #: client/components/status/status.js:897
 msgid "CP_LOGIN"
 msgstr ""
-"We are initializing your session in the WiFi service, it may take a few "
-"seconds, please wait ..."
+"Мы инициализируем ваш сеанс в службе Wi-Fi, это может занять несколько "
+"секунд, подождите..."
 
 #: client/components/payment-status/payment-status.js:100
 msgid "PAY_REQ"
-msgstr "Payment required to proceed"
+msgstr "Требуется платёж"
 
 #: client/components/payment-status/payment-status.js:105
 #, javascript-format
 msgid "PAY_WARN${ timeout }${ maxAttempts }"
 msgstr ""
-"<p>By clicking on the button below you will be redirected to our payment "
-"gateway service where you can safely use your credit/debit card. From there "
-"you will be redirected to the website of your bank to confirm the "
-"transaction.</p><p>You will have ${ timeout } minutes to complete the "
-"process.<br /><strong>For this reason we recommend preparing your "
-"debit/credit card before initiating the payment process.</strong></p><p>If "
-"for any reason the process is not completed within the available time, the "
-"internet connection which allows you to reach the website of your bank will "
-"be closed, if this happens you can just log in again with the credentials "
-"you just registered and repeat the process up a maximum of ${ maxAttempts } "
-"times.</p>"
+"<p>Нажав на кнопку ниже, вы будете перенаправлены на наш платежный шлюз, "
+"где сможете безопасно использовать свою кредитную карту. Оттуда вы будете "
+"перенаправлены на сайт вашего банка для подтверждения транзакции.</p><p>У "
+"вас еще ${ timeout } минут на выполнение<br /><strong>Пожалуйста, держите "
+"под рукой свою кредитную карту перед тем, как начать платёж.</strong></"
+"p><p>Если по какой-либо причине процедура не будет завершена в течение "
+"доступного времени, подключение к Интернету, которое позволяет вам получить "
+"доступ к веб-сайту вашего банка, будет закрыто, и в этом случае вы можете "
+"просто снова войти в систему с учетными данными, которые вы только "
+"зарегистрировали, и повторить процедуру. Максимум ${ maxAttempts } попытки."
+"</p>"
 
 #: client/components/payment-status/payment-status.js:115
 msgid "PAY_PROC_BTN"
-msgstr "Proceed with the payment"
+msgstr "Подтвердите платёж"
 
 #: client/components/payment-status/payment-status.js:143
 #. failed payment case
 msgid "PAY_FAIL"
-msgstr "Payment Failed"
+msgstr "Платёж не прошёл"
 
 #: client/components/status/status.js:375
 #. wait to trigger login to avoid getting stuck
@@ -602,3 +602,16 @@ msgstr "Пользователь с подобными учетными данн
 #: client/components/registration/registration.js:878
 msgid "CONFLICT_SIGNIN"
 msgstr "У вас есть учетная запись, упомянутая выше, и вы хотите войти в систему и связать существующую учетную запись с этой службой Wi-Fi?"
+
+#: client/components/password-change/password-change.js:72
+#: client/components/password-change/password-change.js:73
+msgid "PWD_CURR_ERR"
+msgstr "Новый пароль не может совпадать с текущим паролем."
+
+#: client/components/password-change/password-change.js:175
+msgid "CURR_PWD_LBL"
+msgstr "Текущий пароль"
+
+#: client/components/password-change/password-change.js:178
+msgid "CURR_PWD_PHOLD"
+msgstr "ваш текущий пароль"

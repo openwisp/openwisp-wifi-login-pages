@@ -37,6 +37,16 @@ export const getElementByCss = async (driver, css) => {
   return el;
 };
 
+export const getElementsByCss = async (driver, css) => {
+  let el;
+  try {
+    el = await driver.wait(until.elementsLocated(By.css(css)), waitTime);
+  } catch (err) {
+    console.log(err, css);
+  }
+  return el;
+};
+
 export const initialData = () => testData;
 
 export const initializeData = async (argv = null) => {

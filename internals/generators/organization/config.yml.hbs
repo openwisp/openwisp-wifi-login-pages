@@ -36,6 +36,12 @@ client:
 {{else}}
   css: null
 {{/if}}
+{{#if assets_confirm}}
+  js:
+    - "index.js"
+{{else}}
+  js: []
+{{/if}}
   languages:
     - text: "english"
       slug: "en"
@@ -268,6 +274,7 @@ client:
         id: logout_id
       additional_fields: []
       logout_by_session: {{logout_by_session_ID}}
+      wait_after: 3000
 
 {{#if assets_confirm}}
   privacy_policy:

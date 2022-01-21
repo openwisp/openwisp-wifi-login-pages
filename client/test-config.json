@@ -48,7 +48,8 @@
           "id": "logout_id"
         },
         "additional_fields": [],
-        "logout_by_session": true
+        "logout_by_session": true,
+        "wait_after": 3000
       },
       "registration_form": {
         "input_fields": {

@@ -27,9 +27,12 @@ import {
   Logout,
   MobilePhoneVerification,
   PaymentStatus,
+  PaymentProcess,
   ConnectedDoesNotExist,
   DoesNotExist,
 } from "./lazy-import";
+import {localStorage} from "../../utils/storage";
+import isOldBrowser from "../../utils/is-old-browser";
 
 export default class OrganizationWrapper extends React.Component {
   constructor(props) {
@@ -114,6 +117,7 @@ export default class OrganizationWrapper extends React.Component {
       slug: orgSlug,
       name: orgName,
       css_path: cssPath,
+      js,
     } = organization.configuration;
     const {is_active} = userData;
     let {css} = organization.configuration;
@@ -123,13 +127,16 @@ export default class OrganizationWrapper extends React.Component {
     const needsVerifyPhone = needsVerify("mobile_phone", userData, settings);
     if (organization.exists === true) {
       const {setLoading} = this;
+      let extraClasses = "";
+      if (loading) extraClasses += " no-scroll";
+      if (isOldBrowser()) extraClasses += " oldbrowser";
       return (
         <>
           {translationLoaded && configLoaded ? (
             <LoadingContext.Provider
               value={{setLoading, getLoading: () => loading}}
             >
-              <div className={`app-container ${loading ? "no-scroll" : ""}`}>
+              <div className={`app-container ${extraClasses}`}>
                 <Route
                   path={match.path}
                   render={({location}) => <Header location={location} />}
@@ -276,6 +283,14 @@ export default class OrganizationWrapper extends React.Component {
                     }}
                   />
                   <Route
+                    path={`${match.path}/payment/process/`}
+                    render={() => (
+                      <Suspense fallback={<Loader />}>
+                        <PaymentProcess cookies={cookies} />
+                      </Suspense>
+                    )}
+                  />
+                  <Route
                     path={`${match.path}/payment/:status`}
                     render={(props) => {
                       const {status} = props.match.params;
@@ -326,6 +341,13 @@ export default class OrganizationWrapper extends React.Component {
               />
             </Helmet>
           ) : null}
+          {js && js.length !== 0 && orgSlug ? (
+            <Helmet>
+              {js.map((path) => (
+                <script src={getAssetPath(orgSlug, path)} key={path} />
+              ))}
+            </Helmet>
+          ) : null}
         </>
       );
     }
@@ -371,6 +393,7 @@ OrganizationWrapper.propTypes = {
       settings: PropTypes.shape({
         mobile_phone_verification: PropTypes.bool,
       }),
+      js: PropTypes.array,
     }),
     exists: PropTypes.bool,
   }).isRequired,

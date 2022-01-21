@@ -20,6 +20,7 @@ a.social-link .inner {
   flex-direction: row;
   flex-wrap: nowrap;
   min-width: 200px;
+  justify-content: center;
 }
 a.social-link .icon {
   width: auto;

@@ -6,6 +6,9 @@ settings:
   radius_realms: false
   mobile_phone_verification: false
   subscriptions: false
+  payment_iframe: false
+  payment_requires_internet: false
+  passwordless_auth_token_name: "sesame"
 
 # configuration variables for the server app
 server:
@@ -25,10 +28,11 @@ client:
   # path of favicon
   favicon: "favicon.png"
 
-  # path of the custom css file or files relative to organization's 
+  # path of the custom css file or files relative to organization's
   # folder in assets directory.
   css:
     - "index.css"
+  js: []
   languages:
     - text: "english"
       slug: "en"
@@ -153,6 +157,7 @@ client:
         id: logout_id
       additional_fields: []
       logout_by_session: true
+      wait_after: 3000
 
     mobile_phone_verification_form:
       input_fields:

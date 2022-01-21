@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test <PaymentProcess /> cases should render payment_url in iframe 1`] = `
+<div
+  className="container content"
+>
+  <div
+    className="inner payment-process"
+  >
+    <div
+      className="main-column single"
+    >
+      <iframe
+        height={450}
+        name="owisp-payment-iframe"
+        src="https://account.openwisp.io/payment/123"
+        title="owisp-payment-iframe"
+      />
+    </div>
+  </div>
+</div>
+`;

@@ -313,10 +313,6 @@
         "msgid": "PWD1_LBL",
         "msgstr": ["New Password"]
       },
-      "PWD1_PHOLD": {
-        "msgid": "PWD1_PHOLD",
-        "msgstr": ["Your new Password"]
-      },
       "PASSWORD_CHANGE": {
         "msgid": "PASSWORD_CHANGE",
         "msgstr": ["Change Password"]
@@ -536,6 +532,22 @@
         "msgstr": [
           "Do you own the account mentioned above and want to sign in with this organization?"
         ]
+      },
+      "PWD_CURR_ERR": {
+        "msgid": "PWD_CURR_ERR",
+        "msgstr": ["The password is the same as the current password."]
+      },
+      "CURR_PWD_LBL": {
+        "msgid": "CURR_PWD_LBL",
+        "msgstr": ["Current password"]
+      },
+      "CURR_PWD_PHOLD": {
+        "msgid": "CURR_PWD_PHOLD",
+        "msgstr": ["Your current password"]
+      },
+      "PWD1_PHOLD": {
+        "msgid": "PWD1_PHOLD",
+        "msgstr": ["Your new password"]
       }
     }
   }

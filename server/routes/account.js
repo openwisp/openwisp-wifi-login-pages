@@ -11,20 +11,9 @@ import {
   verifyMobilePhoneToken,
 } from "../controllers/mobile-phone-token-controller";
 import mobilePhoneNumberChange from "../controllers/mobile-phone-number-change-controller";
-import Logger from "../utils/logger";
+import errorHandler from "../utils/error-handler";
 
 const router = Router({mergeParams: true});
-
-const errorHandler = (fn) => (req, res, next) => {
-  try {
-    fn(req, res, next);
-  } catch (err) {
-    Logger.error(err);
-    res.status(500).type("application/json").send({
-      response_code: "INTERNAL_SERVER_ERROR",
-    });
-  }
-};
 
 router.post("/token", errorHandler(obtainToken));
 router.post("/token/validate", errorHandler(validateToken));

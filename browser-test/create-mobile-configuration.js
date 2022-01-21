@@ -19,6 +19,7 @@ const writeOutput = (result) => {
   }
 };
 
+const jsDir = path.resolve(__dirname, "../organizations/js");
 const configDirPath = path.resolve(__dirname, `../organizations/${org}`);
 const configPath = path.join(configDirPath, `${org}.yml`);
 
@@ -57,6 +58,7 @@ content.client.languages = [
 ];
 try {
   fs.writeFileSync(configPath, yaml.dump(content));
+  fs.writeFileSync(path.join(jsDir, data.allOrgScript), "");
 } catch (err) {
   console.log(err);
 }

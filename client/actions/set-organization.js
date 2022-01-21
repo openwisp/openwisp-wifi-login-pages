@@ -10,6 +10,7 @@ import authenticate from "../utils/authenticate";
 import getConfig from "../utils/get-config";
 import logout from "./logout";
 import {initialState} from "../reducers/organization";
+import {localStorage} from "../utils/storage";
 
 const setOrganization = (slug, cookies) => async (dispatch) => {
   const orgConfig = await getConfig(slug);

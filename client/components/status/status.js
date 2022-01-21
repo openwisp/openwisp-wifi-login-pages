@@ -18,13 +18,15 @@ import getText from "../../utils/get-text";
 import logError from "../../utils/log-error";
 import Contact from "../contact-box";
 import shouldLinkBeShown from "../../utils/should-link-be-shown";
-import handleSession from "../../utils/session";
 import validateToken from "../../utils/validate-token";
 import needsVerify from "../../utils/needs-verify";
 import Loader from "../../utils/loader";
 import {initialState} from "../../reducers/organization";
 import {Logout} from "../organization-wrapper/lazy-import";
 import InfoModal from "../../utils/modal";
+import {localStorage} from "../../utils/storage";
+import history from "../../utils/history";
+import handleSession from "../../utils/session";
 
 export default class Status extends React.Component {
   constructor(props) {
@@ -58,8 +60,16 @@ export default class Status extends React.Component {
   }
 
   async componentDidMount() {
-    const {cookies, orgSlug, settings, setUserData, logout, setTitle, orgName} =
-      this.props;
+    const {
+      cookies,
+      orgSlug,
+      settings,
+      setUserData,
+      logout,
+      setTitle,
+      orgName,
+      language,
+    } = this.props;
     setTitle(t`STATUS_TITL`, orgName);
     const {setLoading} = this.context;
     let {userData} = this.props;
@@ -95,6 +105,7 @@ export default class Status extends React.Component {
         setUserData,
         userData,
         logout,
+        language,
       );
 
       // stop here if token is invalid
@@ -112,6 +123,8 @@ export default class Status extends React.Component {
         email,
         phone_number,
         is_active,
+        method,
+        is_verified: isVerified,
       } = userData;
       const userInfo = {};
       userInfo.status = "";
@@ -155,10 +168,16 @@ export default class Status extends React.Component {
           }
         }
       } else if (this.loginFormRef && this.loginFormRef.current && mustLogin) {
+        if (
+          method === "bank_card" &&
+          isVerified === false &&
+          !settings.payment_requires_internet
+        ) {
+          this.finalOperations();
+          return;
+        }
         this.notifyCpLogin(userData);
         this.loginFormRef.current.submit();
-        userData.mustLogin = false;
-        setUserData(userData);
         // if user is already authenticated and coming from other pages
       } else if (!mustLogin) {
         this.finalOperations();
@@ -172,12 +191,12 @@ export default class Status extends React.Component {
   };
 
   async finalOperations() {
-    const {userData, settings} = this.props;
+    const {userData, orgSlug, settings} = this.props;
     const {setLoading} = this.context;
     // if the user needs bank card verification,
     // redirect to payment page and stop here
     if (needsVerify("bank_card", userData, settings)) {
-      window.location.assign(userData.payment_url);
+      history.push(`/${orgSlug}/payment/process`);
       return;
     }
 
@@ -204,22 +223,18 @@ export default class Status extends React.Component {
     this.updateSpinner();
   }
 
-  async getUserRadiusSessions(para) {
-    const {cookies, orgSlug, logout} = this.props;
+  async getUserRadiusSessions(params) {
+    const {cookies, orgSlug, logout, userData} = this.props;
     const url = getUserRadiusSessionsUrl(orgSlug);
     const auth_token = cookies.get(`${orgSlug}_auth_token`);
-    const {token, session} = handleSession(orgSlug, auth_token, cookies);
+    handleSession(orgSlug, auth_token, cookies);
     const options = {};
-    const params = {
-      token,
-      session,
-      ...para,
-    };
     try {
       const response = await axios({
         method: "get",
         headers: {
           "content-type": "application/x-www-form-urlencoded",
+          Authorization: `Bearer ${userData.auth_token}`,
         },
         url,
         params,
@@ -231,7 +246,9 @@ export default class Status extends React.Component {
       } else {
         const {pastSessions} = this.state;
         options.pastSessions =
-          para.page === 1 ? response.data : pastSessions.concat(response.data);
+          params.page === 1
+            ? response.data
+            : pastSessions.concat(response.data);
         options.currentPage = params.page;
       }
       options.hasMoreSessions =
@@ -274,7 +291,7 @@ export default class Status extends React.Component {
     const {orgSlug, logout, cookies, setUserData} = this.props;
     const macaddr = cookies.get(`${orgSlug}_macaddr`);
     const params = {macaddr};
-    localStorage.setItem("userAutoLogin", userAutoLogin);
+    localStorage.setItem("userAutoLogin", String(userAutoLogin));
     setLoading(true);
     await this.getUserActiveRadiusSessions(params);
     const {sessionsToLogout, internetMode} = this.state;
@@ -311,7 +328,17 @@ export default class Status extends React.Component {
     if (!this.loginIframeRef || !this.loginIframeRef.current) {
       return;
     }
-    const {cookies, orgSlug, logout, captivePortalLoginForm} = this.props;
+    const {
+      cookies,
+      orgSlug,
+      logout,
+      captivePortalLoginForm,
+      userData,
+      setUserData,
+    } = this.props;
+
+    userData.mustLogin = false;
+    setUserData(userData);
 
     try {
       const searchParams = new URLSearchParams(
@@ -349,11 +376,19 @@ export default class Status extends React.Component {
     if (!this.logoutIframeRef || !this.logoutIframeRef.current) {
       return;
     }
-    const {setUserData, statusPage, orgSlug, logout, cookies} = this.props;
+    const {
+      setUserData,
+      statusPage,
+      orgSlug,
+      logout,
+      cookies,
+      captivePortalLogoutForm,
+    } = this.props;
     const {saml_logout_url} = statusPage;
     const {loggedOut} = this.state;
     const {repeatLogin} = this;
     const {setLoading} = this.context;
+    const {wait_after} = captivePortalLogoutForm;
     const logoutMethodKey = `${orgSlug}_logout_method`;
     const logoutMethod = localStorage.getItem(logoutMethodKey);
     const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
@@ -363,8 +398,11 @@ export default class Status extends React.Component {
       toast.success(t`LOGOUT_SUCCESS`);
 
       if (saml_logout_url && logoutMethod === "saml") {
-        localStorage.removeItem(logoutMethodKey);
-        window.location.assign(saml_logout_url);
+        toast.info(t`PLEASE_WAIT`, {autoClose: wait_after});
+        setTimeout(async () => {
+          localStorage.removeItem(logoutMethodKey);
+          window.location.assign(saml_logout_url);
+        }, wait_after);
         return;
       }
       setUserData(initialState.userData);
@@ -375,13 +413,13 @@ export default class Status extends React.Component {
       this.repeatLogin = false;
       // wait to trigger login to avoid getting stuck
       // in captive portal firewall rule reloading
-      toast.info(t`PLEASE_WAIT`, {autoClose: 6000});
+      toast.info(t`PLEASE_WAIT`, {autoClose: wait_after});
       setTimeout(async () => {
         toast.info(t`PLEASE_LOGIN`, {autoClose: 10000});
         setUserData(initialState.userData);
         setLoading(false);
         logout(cookies, orgSlug, userAutoLogin);
-      }, 6000);
+      }, wait_after);
     }
   };
 
@@ -473,6 +511,15 @@ export default class Status extends React.Component {
     return `${mb}MB`;
   };
 
+  getDateTimeFormat = (language, time_option, date) => {
+    if (typeof Intl !== "undefined") {
+      return new Intl.DateTimeFormat(language, time_option).format(
+        new Date(date),
+      );
+    }
+    return String(new Date(date));
+  };
+
   getLargeTableRow = (session, sessionSettings, showLogoutButton = false) => {
     const {language} = this.props;
     const time_option = {
@@ -484,16 +531,12 @@ export default class Status extends React.Component {
     return (
       <>
         <td>
-          {new Intl.DateTimeFormat(language, time_option).format(
-            new Date(session.start_time),
-          )}
+          {this.getDateTimeFormat(language, time_option, session.start_time)}
         </td>
         <td>
           {session.stop_time === null
             ? activeSessionText
-            : new Intl.DateTimeFormat(language, time_option).format(
-                new Date(session.stop_time),
-              )}
+            : this.getDateTimeFormat(language, time_option, session.stop_time)}
         </td>
         <td>{this.getDuration(session.session_time)}</td>
         <td>{this.getMB(session.output_octets)}</td>
@@ -532,9 +575,7 @@ export default class Status extends React.Component {
         >
           <th>{session_info.header.start_time}:</th>
           <td>
-            {new Intl.DateTimeFormat(language, time_option).format(
-              new Date(session.start_time),
-            )}
+            {this.getDateTimeFormat(language, time_option, session.start_time)}
           </td>
         </tr>
         <tr
@@ -545,8 +586,10 @@ export default class Status extends React.Component {
           <td>
             {session.stop_time === null
               ? activeSessionText
-              : new Intl.DateTimeFormat(language, time_option).format(
-                  new Date(session.stop_time),
+              : this.getDateTimeFormat(
+                  language,
+                  time_option,
+                  session.stop_time,
                 )}
           </td>
         </tr>
@@ -940,6 +983,7 @@ Status.propTypes = {
     }),
     additional_fields: PropTypes.array,
     logout_by_session: PropTypes.bool.isRequired,
+    wait_after: PropTypes.number.isRequired,
   }).isRequired,
   location: PropTypes.shape({
     search: PropTypes.string,
@@ -948,6 +992,7 @@ Status.propTypes = {
   settings: PropTypes.shape({
     mobile_phone_verification: PropTypes.bool,
     subscriptions: PropTypes.bool,
+    payment_requires_internet: PropTypes.bool,
   }).isRequired,
   setUserData: PropTypes.func.isRequired,
   setTitle: PropTypes.func.isRequired,

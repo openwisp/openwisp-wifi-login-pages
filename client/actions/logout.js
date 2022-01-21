@@ -1,4 +1,5 @@
 import {SET_AUTHENTICATION_STATUS} from "../constants/action-types";
+import {sessionStorage} from "../utils/storage";
 
 const logout = (cookies, orgSlug, userAutoLogin = false) => {
   if (!userAutoLogin) {

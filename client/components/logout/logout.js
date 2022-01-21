@@ -11,6 +11,7 @@ import {toast} from "react-toastify";
 import {t} from "ttag";
 import {mainToastId} from "../../constants";
 import LoadingContext from "../../utils/loading-context";
+import {localStorage} from "../../utils/storage";
 
 export default class Logout extends React.Component {
   constructor(props) {
@@ -32,7 +33,7 @@ export default class Logout extends React.Component {
     toast.success(t`LOGIN_SUCCESS`, {
       toastId: mainToastId,
     });
-    localStorage.setItem("userAutoLogin", false);
+    localStorage.setItem("userAutoLogin", "false");
   };
 
   render() {

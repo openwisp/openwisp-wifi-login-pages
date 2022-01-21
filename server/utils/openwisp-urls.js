@@ -11,6 +11,7 @@ const paths = {
   verify_mobile_phone_token: "/account/phone/verify",
   mobile_phone_number_change: "/account/phone/change",
   plans: "/plan",
+  payment_status: "/payment/{paymentId}/status",
 };
 
 const reverse = (name, orgSlug) => {
@@ -19,7 +20,7 @@ const reverse = (name, orgSlug) => {
   if (!path) {
     throw new Error(`Reverse for path "${name}" not found.`);
   }
-  if (name === "plans") {
+  if (name === "plans" || name === "payment_status") {
     prefix = prefix.replace("/radius/", "/subscriptions/");
   }
   return `${prefix.replace("{orgSlug}", orgSlug)}${path}`;

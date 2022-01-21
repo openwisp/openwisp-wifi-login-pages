@@ -6,6 +6,8 @@ export const registerApiUrl = `${prefix}/{orgSlug}/account/`;
 export const resetApiUrl = `${prefix}/{orgSlug}/account/password/reset/`;
 export const validateApiUrl = (orgSlug) =>
   `${prefix}/${orgSlug}/account/token/validate`;
+export const paymentStatusUrl = (orgSlug, paymentId) =>
+  `${prefix}/${orgSlug}/payment/status/${paymentId}`;
 export const getUserRadiusSessionsUrl = (orgSlug) =>
   `${prefix}/${orgSlug}/account/session`;
 export const createMobilePhoneTokenUrl = (orgSlug) =>

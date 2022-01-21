@@ -24,6 +24,8 @@ import loader from "./loader";
 import handleChange from "./handle-change";
 import redirectToPayment from "./redirect-to-payment";
 import {initialState} from "../reducers/organization";
+import {localStorage, sessionStorage, storageFallback} from "./storage";
+import getPaymentStatusRedirectUrl from "./get-payment-status";
 
 jest.mock("axios");
 jest.mock("./load-translation");
@@ -183,15 +185,18 @@ describe("Validate Token tests", () => {
     setUserData: jest.fn(),
     userData: {is_active: true, is_verified: null, mustLogin: true},
     logout: jest.fn(),
+    language: "en",
   });
   it("should return false if token is not in the cookie", async () => {
-    const {orgSlug, cookies, setUserData, userData, logout} = getArgs();
+    const {orgSlug, cookies, setUserData, userData, logout, language} =
+      getArgs();
     const result = await validateToken(
       cookies,
       orgSlug,
       setUserData,
       userData,
       logout,
+      language,
     );
     expect(axios.mock.calls.length).toBe(0);
     expect(result).toBe(false);
@@ -213,7 +218,8 @@ describe("Validate Token tests", () => {
         },
       }),
     );
-    const {orgSlug, cookies, setUserData, userData, logout} = getArgs();
+    const {orgSlug, cookies, setUserData, userData, logout, language} =
+      getArgs();
     cookies.set(`${orgSlug}_auth_token`, "token");
     const result = await validateToken(
       cookies,
@@ -221,6 +227,7 @@ describe("Validate Token tests", () => {
       setUserData,
       userData,
       logout,
+      language,
     );
     expect(axios).toHaveBeenCalled();
     expect(setUserData.mock.calls.length).toBe(1);
@@ -228,7 +235,8 @@ describe("Validate Token tests", () => {
     expect(logout.mock.calls.length).toBe(0);
   });
   it("should return true without calling api if radius token is present", async () => {
-    const {orgSlug, cookies, setUserData, userData, logout} = getArgs();
+    const {orgSlug, cookies, setUserData, userData, logout, language} =
+      getArgs();
     userData.radius_user_token = "token";
     const result = await validateToken(
       cookies,
@@ -236,6 +244,7 @@ describe("Validate Token tests", () => {
       setUserData,
       userData,
       logout,
+      language,
     );
     expect(axios.mock.calls.length).toBe(0);
     expect(result).toBe(true);
@@ -253,13 +262,15 @@ describe("Validate Token tests", () => {
     jest.spyOn(global.console, "log").mockImplementation();
     axios.mockImplementationOnce(() => Promise.resolve(response));
     const errorMethod = jest.spyOn(dependency.toast, "error");
-    const {orgSlug, cookies, setUserData, userData, logout} = getArgs();
+    const {orgSlug, cookies, setUserData, userData, logout, language} =
+      getArgs();
     const result = await validateToken(
       cookies,
       orgSlug,
       setUserData,
       userData,
       logout,
+      language,
     );
     expect(axios.mock.calls.length).toBe(1);
     expect(result).toBe(false);
@@ -286,13 +297,15 @@ describe("Validate Token tests", () => {
     axios.mockImplementationOnce(() => Promise.reject(response));
     jest.spyOn(global.console, "log").mockImplementation();
     const errorMethod = jest.spyOn(dependency.toast, "error");
-    const {orgSlug, cookies, setUserData, userData, logout} = getArgs();
+    const {orgSlug, cookies, setUserData, userData, logout, language} =
+      getArgs();
     const result = await validateToken(
       cookies,
       orgSlug,
       setUserData,
       userData,
       logout,
+      language,
     );
     expect(result).toEqual(false);
     expect(errorMethod).toBeCalledWith("Error occurred!");
@@ -306,6 +319,41 @@ describe("Validate Token tests", () => {
     );
     expect(setUserData.mock.calls.length).toBe(1);
     expect(console.log).toHaveBeenCalledWith(response);
+    expect(setUserData.mock.calls.pop()).toEqual([initialState.userData]);
+  });
+  it("should show error if user is locked out", async () => {
+    const responseError = {
+      response: {
+        status: 403,
+        data: {
+          detail: "Your account has been locked.",
+        },
+      },
+    };
+    axios.mockImplementationOnce(() => Promise.reject(responseError));
+    const errorMethod = jest.spyOn(dependency.toast, "error");
+    const {orgSlug, cookies, setUserData, userData, logout} = getArgs();
+    cookies.set(`${orgSlug}_auth_token`, "token");
+    const result = await validateToken(
+      cookies,
+      orgSlug,
+      setUserData,
+      userData,
+      logout,
+    );
+    expect(result).toEqual(false);
+    expect(errorMethod).toBeCalledWith(responseError.response.data.detail, {
+      toastId: "main_toast_id",
+    });
+    expect(logout).toHaveBeenCalledWith(
+      {
+        HAS_DOCUMENT_COOKIE: true,
+        changeListeners: [],
+        cookies: {default_auth_token: "token"},
+      },
+      "default",
+    );
+    expect(setUserData.mock.calls.length).toBe(1);
     expect(setUserData.mock.calls.pop()).toEqual([initialState.userData]);
   });
 });
@@ -629,5 +677,161 @@ describe("handle-change tests", () => {
     );
     wrapper.find("button").simulate("click", {});
     expect(pushSpy).toHaveBeenCalled();
+  });
+});
+describe("storage tests", () => {
+  it("should store, get and clear data in window.localStorage", () => {
+    localStorage.setItem("organization", "openwisp");
+    expect(localStorage.getItem("organization")).toEqual("openwisp");
+    localStorage.removeItem("organization");
+    expect(localStorage.getItem("organization")).toEqual(null);
+    localStorage.setItem("organization", "openwisp");
+    localStorage.clear();
+    expect(localStorage.getItem("organization")).toEqual(null);
+  });
+  it("should store, get and clear data in Storage mock", () => {
+    const storageMock = storageFallback(null);
+    storageMock.setItem("organization", "openwisp");
+    expect(storageMock.getItem("organization")).toEqual("openwisp");
+    storageMock.removeItem("organization");
+    expect(storageMock.getItem("organization")).toEqual(undefined);
+    storageMock.setItem("organization", "openwisp");
+    storageMock.clear();
+    expect(storageMock.getItem("organization")).toEqual(undefined);
+  });
+});
+describe("getPaymentStatusRedirectUrl tests", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+    jest.resetAllMocks();
+    jest.restoreAllMocks();
+  });
+
+  const getArgs = () => ({
+    orgSlug: "default",
+    paymentId: "payment-id",
+    tokenInfo: {
+      type: "Bearer",
+      cookies: {
+        get: jest.fn(),
+        remove: jest.fn(),
+      },
+    },
+    setUserData: jest.fn(),
+    userData: {payment_url: "http://localhost:1234"},
+  });
+  it("should return draft URL if payment status is waiting", async () => {
+    const {orgSlug, paymentId, tokenInfo, setUserData, userData} = getArgs();
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: {
+          status: "waiting",
+        },
+      }),
+    );
+    const result = await getPaymentStatusRedirectUrl(
+      orgSlug,
+      paymentId,
+      tokenInfo,
+      setUserData,
+      userData,
+    );
+    expect(result).toBe(`/${orgSlug}/payment/draft`);
+  });
+  it("should return success URL if payment status is success", async () => {
+    const {orgSlug, paymentId, tokenInfo, setUserData, userData} = getArgs();
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: {
+          status: "success",
+        },
+      }),
+    );
+    const result = await getPaymentStatusRedirectUrl(
+      orgSlug,
+      paymentId,
+      tokenInfo,
+      setUserData,
+      userData,
+    );
+    expect(result).toBe(`/${orgSlug}/payment/success`);
+    expect(setUserData).toHaveBeenCalledTimes(1);
+    expect(setUserData).toHaveBeenCalledWith({
+      is_verified: true,
+      mustLogin: true,
+      payment_url: null,
+    });
+  });
+  it("should return failure URL if payment status is failed", async () => {
+    const {orgSlug, paymentId, tokenInfo, setUserData, userData} = getArgs();
+    const errorToast = jest.spyOn(dependency.toast, "error");
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: {
+          status: "failed",
+          message: "Payment failed",
+        },
+      }),
+    );
+    const result = await getPaymentStatusRedirectUrl(
+      orgSlug,
+      paymentId,
+      tokenInfo,
+      setUserData,
+      userData,
+    );
+    expect(result).toBe(`/${orgSlug}/payment/failed`);
+    expect(setUserData).toHaveBeenCalledTimes(1);
+    expect(setUserData).toHaveBeenCalledWith({payment_url: null});
+    expect(errorToast).toHaveBeenCalledTimes(1);
+    expect(errorToast).toHaveBeenCalledWith("Payment failed");
+  });
+  it("should log error if request fails", async () => {
+    const {orgSlug, paymentId, tokenInfo, setUserData, userData} = getArgs();
+    const consoleLog = jest.spyOn(global.console, "log").mockImplementation();
+    const errorMethod = jest.spyOn(dependency.toast, "error");
+    const response = {
+      status: 500,
+    };
+    axios.mockImplementationOnce(() => Promise.reject(response));
+    const result = await getPaymentStatusRedirectUrl(
+      orgSlug,
+      paymentId,
+      tokenInfo,
+      setUserData,
+      userData,
+    );
+    expect(result).toBe("/default/payment/failed");
+    expect(errorMethod).toHaveBeenCalledTimes(1);
+    expect(errorMethod).toHaveBeenCalledWith("Error occurred!");
+    expect(consoleLog).toHaveBeenCalledTimes(1);
+    expect(consoleLog).toHaveBeenCalledWith(response);
+  });
+  it("should log error if payment object not found", async () => {
+    const {orgSlug, paymentId, tokenInfo, setUserData, userData} = getArgs();
+    const consoleLog = jest.spyOn(global.console, "log").mockImplementation();
+    const errorMethod = jest.spyOn(dependency.toast, "error");
+    const response = {
+      status: 404,
+    };
+    axios.mockImplementationOnce(() => Promise.resolve(response));
+    const result = await getPaymentStatusRedirectUrl(
+      orgSlug,
+      paymentId,
+      tokenInfo,
+      setUserData,
+      userData,
+    );
+    expect(result).toBe("/default/payment/failed");
+    expect(errorMethod).toHaveBeenCalledTimes(1);
+    expect(errorMethod).toHaveBeenCalledWith("Error occurred!");
+    expect(consoleLog).toHaveBeenCalledTimes(1);
+    expect(consoleLog).toHaveBeenCalledWith(response);
   });
 });

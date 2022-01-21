@@ -3,7 +3,7 @@
 exports[`<Modal /> rendering should render nothing on incorrect param name 1`] = `
 <Fragment>
   <div
-    className="modal is-visible pt-4"
+    className="modal is-visible content"
   >
     <div
       className="modal-container w-900 text-left"
@@ -30,7 +30,7 @@ exports[`<Modal /> rendering should render nothing on incorrect param name 1`] =
 exports[`<Modal /> rendering should render nothing when request is bad 1`] = `
 <Fragment>
   <div
-    className="modal is-visible pt-4"
+    className="modal is-visible content"
   >
     <div
       className="modal-container w-900 text-left"
@@ -57,7 +57,7 @@ exports[`<Modal /> rendering should render nothing when request is bad 1`] = `
 exports[`<Modal /> rendering should render privacy-policy correctly 1`] = `
 <Fragment>
   <div
-    className="modal is-visible pt-4"
+    className="modal is-visible content"
   >
     <div
       className="modal-container w-900 text-left"
@@ -84,7 +84,7 @@ exports[`<Modal /> rendering should render privacy-policy correctly 1`] = `
 exports[`<Modal /> rendering should render terms-and-conditions correctly 1`] = `
 <Fragment>
   <div
-    className="modal is-visible pt-4"
+    className="modal is-visible content"
   >
     <div
       className="modal-container w-900 text-left"

@@ -39,12 +39,18 @@ const createTestProps = (props, configName = "default") => {
     termsAndConditions: config.terms_and_conditions,
     authenticate: jest.fn(),
     setTitle: jest.fn(),
+    setUserData: jest.fn(),
     loading: false,
     match: {
       path: "default/registration",
     },
     ...props,
   };
+};
+
+const responseData = {
+  key: "8a2b2b2dd963de23c17db30a227505f879866630",
+  radius_user_token: "Lbdh3GKD7hvXUS5NUu5yoE4x5fCPPqlsXo7Ug8ld",
 };
 
 describe("<Registration /> rendering with placeholder translation tags", () => {
@@ -145,7 +151,13 @@ describe("<Registration /> interactions", () => {
           },
         }),
       )
-      .mockImplementationOnce(() => Promise.resolve())
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 201,
+          statusText: "CREATED",
+          data: responseData,
+        }),
+      )
       .mockImplementationOnce(() =>
         Promise.reject({
           status: 400,
@@ -310,7 +322,13 @@ describe("<Registration /> interactions", () => {
     );
   });
   it("should execute authenticate in mobile phone verification flow", async () => {
-    axios.mockImplementationOnce(() => Promise.resolve());
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 201,
+        statusText: "CREATED",
+        data: responseData,
+      }),
+    );
     props.settings = {mobile_phone_verification: true};
     wrapper = shallow(<Registration {...props} />, {
       context: loadingContextValue,
@@ -329,6 +347,11 @@ describe("<Registration /> interactions", () => {
     expect(wrapper.find(".success")).toHaveLength(1);
     expect(wrapper.instance().props.authenticate.mock.calls.length).toBe(1);
     expect(errorSpyToast.mock.calls.length).toBe(4);
+    const setUserDataMock = wrapper.instance().props.setUserData.mock;
+    expect(setUserDataMock.calls.length).toBe(1);
+    expect(setUserDataMock.calls.pop()).toEqual([
+      {is_verified: false, auth_token: responseData.key},
+    ]);
   });
   it("should toggle modal", async () => {
     wrapper = shallow(<Registration {...props} />, {
@@ -385,7 +408,9 @@ describe("<Registration /> interactions", () => {
       disableLifecycleMethods: true,
     });
     jest.spyOn(wrapper.instance(), "toggleModal");
+    const spyToast = jest.spyOn(toast, "info");
     wrapper.instance().handleResponse(true);
+    expect(spyToast).toHaveBeenCalledWith(t`PLEASE_LOGIN`);
     expect(history.push).toHaveBeenCalledWith("/default/login");
     wrapper.instance().handleResponse(false);
     expect(wrapper.instance().toggleModal).toHaveBeenCalled();
@@ -492,7 +517,7 @@ describe("Registration and Mobile Phone Verification interactions", () => {
       Promise.resolve({
         status: 201,
         statusText: "CREATED",
-        data: null,
+        data: responseData,
       }),
     );
 
@@ -510,9 +535,15 @@ describe("Registration and Mobile Phone Verification interactions", () => {
       .simulate("change", {target: {value: "tester123", name: "password2"}});
     wrapper.find("form").simulate("submit", event);
     await tick();
-    expect(wrapper.find(Registration).instance().state.errors).toEqual({});
+    const registration = wrapper.find(Registration).instance();
+    expect(registration.state.errors).toEqual({});
     expect(handleSubmit).toHaveBeenCalled();
     expect(event.preventDefault).toHaveBeenCalled();
+    const setUserDataMock = registration.props.setUserData.mock;
+    expect(setUserDataMock.calls.length).toBe(1);
+    expect(setUserDataMock.calls.pop()).toEqual([
+      {is_verified: false, auth_token: responseData.key},
+    ]);
   });
   it("should load fallback before PhoneInput and handlers should work correctly", async () => {
     wrapper = shallow(<Registration {...props} />);
@@ -564,7 +595,7 @@ describe("Registration and Mobile Phone Verification interactions", () => {
       Promise.resolve({
         status: 201,
         statusText: "CREATED",
-        data: null,
+        data: responseData,
       }),
     );
     props = createTestProps();
@@ -665,10 +696,7 @@ describe("Registration without identity verification (Email registration)", () =
       Promise.resolve({
         status: 201,
         statusText: "CREATED",
-        data: {
-          key: "8a2b2b2dd963de23c17db30a227505f879866630",
-          radius_user_token: "Lbdh3GKD7hvXUS5NUu5yoE4x5fCPPqlsXo7Ug8ld",
-        },
+        data: responseData,
       }),
     );
 

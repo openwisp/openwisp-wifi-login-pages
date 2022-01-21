@@ -25,6 +25,7 @@ export const initialState = {
     repeatLogin: false,
     auth_token: undefined,
     radius_user_token: undefined,
+    payment_url: undefined,
   },
   settings: {
     mobile_phone_verification: undefined,
