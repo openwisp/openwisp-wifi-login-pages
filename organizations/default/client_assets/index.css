@@ -19,10 +19,10 @@ body .input {
   background-color: #333333b3;
 }
 .logout .button {
-  background: #ba2121;
+  background: #df5d43;
 }
 .cancel .button {
-  background: #ba2121;
+  background: #df5d43;
 }
 .logout .button:hover {
   background: rgba(186, 33, 33, 0.9);
@@ -74,7 +74,9 @@ div.error {
 
 /* footer */
 .footer-container {
-  background: #fdf2f2;
+  background: #fcfcfc;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 .footer-link {
   color: #df5d43;
@@ -95,14 +97,38 @@ div.error {
   border-bottom: 3px rgba(0, 0, 0, 0.45) solid;
 }
 .header-language-btn.active {
-  color: #1b1b1b;
-  border-bottom-color: #1b1b1b;
+  color: rgba(223, 93, 67, 1);
+  border-bottom-color: rgba(223, 93, 67, 1);
 }
 .header-row-2 {
-  background: #fdf2f2;
+  background: #fcfcfc;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
-.header-link.active {
-  background: #df5d43ab;
+#root .header-link {
+  text-transform: uppercase;
+  color: #777;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  font-weight: normal;
+  background: transparent;
+}
+#root .social-link {
+  color: #777;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  background: #fff;
+}
+#root .social-link:hover {
+  color: #000;
+}
+
+#root .header-link.active,
+#root .header-link:hover {
+  background: #ffe5e5;
+  color: #df5d43;
+  border: 1px solid rgba(0, 0, 0, 0);
+}
+#root .header-link.active {
+  font-weight: bold;
 }
 .sticky-container {
   border-bottom: 1px solid #000;
@@ -152,4 +178,10 @@ div.error {
 .plan:hover,
 .plan.active {
   border: 1px solid #888;
+}
+
+.content > .inner{
+  background: #fcfcfc;
+  box-shadow: 0px 0px 6px #f4f7f6;
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
