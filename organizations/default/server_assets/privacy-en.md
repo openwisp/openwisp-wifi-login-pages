@@ -1,4 +1,4 @@
-# openwisp-wifi-login-pages Privacy Policy
+# Privacy Policy
 
 - Your privacy is important to us. It is Openwisp's policy to respect your privacy regarding any information we may collect from you across openwisp-wifi-login-pages.
 

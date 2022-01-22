@@ -44,4 +44,18 @@ describe("Selenium tests for <Register />", () => {
     await driver.wait(until.urlContains("status"), 5000);
     expect(await successToastDiv.getText()).toEqual("Registration success");
   });
+
+  it("should render modal tos", async () => {
+    await driver.get(urls.registrationTos);
+    const h1 = await getElementByCss(driver, "div.message h1");
+    await driver.wait(until.elementIsVisible(h1));
+    expect(await h1.getText()).toEqual("Terms and Conditions");
+  });
+
+  it("should render modal privacy", async () => {
+    await driver.get(urls.registrationPrivacy);
+    const h1 = await getElementByCss(driver, "div.message h1");
+    await driver.wait(until.elementIsVisible(h1));
+    expect(await h1.getText()).toEqual("Privacy Policy");
+  });
 });

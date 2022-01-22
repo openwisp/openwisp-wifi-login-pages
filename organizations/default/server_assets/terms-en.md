@@ -1,4 +1,4 @@
-# Openwisp-wifi-login-pages Terms and Conditions
+# Terms and Conditions
 
 - By using or visiting the Openwisp-wifi-login-pages, you signify your agreement
   to these terms and conditions (the "Terms of Service") and the Privacy policy.
