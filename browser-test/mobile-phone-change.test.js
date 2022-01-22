@@ -32,7 +32,7 @@ describe("Selenium tests for <MobilePhoneChange />", () => {
 
   beforeAll(async () => {
     // long test in CI
-    jest.setTimeout(15000);
+    jest.setTimeout(20000);
     await initializeData("mobileVerification");
     driver = await getDriver();
   }, 30000);
