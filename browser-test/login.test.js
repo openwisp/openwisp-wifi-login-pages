@@ -16,6 +16,10 @@ describe("Selenium tests for <Login />", () => {
     driver = await getDriver();
   }, 30000);
 
+  afterEach(async () => {
+    await driver.manage().deleteAllCookies();
+  });
+
   afterAll(async () => {
     await tearDown(driver);
   });
