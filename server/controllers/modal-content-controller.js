@@ -1,7 +1,7 @@
 import fs from "fs";
 
 import {JSDOM} from "jsdom";
-import marked from "marked";
+import {marked} from "marked";
 import path from "path";
 import DOMPurify from "dompurify";
 import config from "../config.json";
@@ -17,7 +17,7 @@ const modalContent = (req, res) => {
       const assetsDir = path.resolve(__dirname, "..", "assets", reqOrg);
       if (fs.readdirSync(assetsDir).includes(file)) {
         const data = dompurify.sanitize(
-          marked(fs.readFileSync(path.join(assetsDir, file), "utf8")),
+          marked.parse(fs.readFileSync(path.join(assetsDir, file), "utf8")),
         );
         res.status(200).type("application/json").send({
           __html: data,

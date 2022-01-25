@@ -16,6 +16,10 @@ describe("Selenium tests for <Login />", () => {
     driver = await getDriver();
   }, 30000);
 
+  afterEach(async () => {
+    await driver.manage().deleteAllCookies();
+  });
+
   afterAll(async () => {
     await tearDown(driver);
   });
@@ -49,5 +53,19 @@ describe("Selenium tests for <Login />", () => {
       "table tr.active-session",
     );
     await driver.wait(until.elementIsVisible(activeSessionTr));
+  });
+
+  it("should render modal tos", async () => {
+    await driver.get(urls.loginTos);
+    const h1 = await getElementByCss(driver, "div.message h1");
+    await driver.wait(until.elementIsVisible(h1));
+    expect(await h1.getText()).toEqual("Terms and Conditions");
+  });
+
+  it("should render modal privacy", async () => {
+    await driver.get(urls.loginPrivacy);
+    const h1 = await getElementByCss(driver, "div.message h1");
+    await driver.wait(until.elementIsVisible(h1));
+    expect(await h1.getText()).toEqual("Privacy Policy");
   });
 });
