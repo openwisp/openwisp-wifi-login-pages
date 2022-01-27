@@ -4,7 +4,6 @@
   justify-content: flex-start;
   align-items: center;
   flex-wrap: nowrap;
-  background: #555;
   padding: 20px 0;
 }
 .footer-row-1 {
@@ -23,14 +22,10 @@
   max-width: 1000px;
 }
 .footer-link {
-  color: #fff;
   padding: 0 2px;
   margin-right: 10px;
   font-size: 14px;
   font-weight: 600;
-}
-.footer-container a {
-  color: #fff;
 }
 .footer-link:hover,
 .footer-container a:hover {
@@ -46,7 +41,6 @@
   max-width: 1000px;
   margin-top: 4px;
   margin-top: 10px;
-  color: #ffffff;
 }
 .footer-row-2-inner {
   display: block;

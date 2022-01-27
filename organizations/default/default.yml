@@ -24,7 +24,7 @@ client:
   # path of favicon
   favicon: "favicon.png"
 
-  # path of the custom css file or files relative to organization's 
+  # path of the custom css file or files relative to organization's
   # folder in assets directory.
   css:
     - "index.css"
@@ -33,6 +33,8 @@ client:
   languages:
     - text: "english"
       slug: "en"
+    - text: "italian"
+      slug: "it"
   default_language: "en"
   components:
     header:

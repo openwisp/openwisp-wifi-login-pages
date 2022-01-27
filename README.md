@@ -7,13 +7,19 @@
 [![Dependency Monitoring](https://img.shields.io/librariesio/release/github/openwisp/openwisp-wifi-login-pages)](https://libraries.io/github/openwisp/openwisp-wifi-login-pages#repository_dependencies)
 
 <p align="center">
-  <img src="https://github.com/openwisp/openwisp-wifi-login-pages/raw/master/docs/login-desktop.png" alt="login">
+  <img src="https://github.com/openwisp/openwisp-wifi-login-pages/raw/media/docs/login-desktop.png" alt="">
 </p>
 <p align="center">
-  <img src="https://github.com/openwisp/openwisp-wifi-login-pages/raw/master/docs/sign-up-mobile.png" alt="sign-up">
+  <img src="https://github.com/openwisp/openwisp-wifi-login-pages/raw/media/docs/sign-up-desktop.png" alt="">
 </p>
 <p align="center">
-  <img src="https://github.com/openwisp/openwisp-wifi-login-pages/raw/master/docs/verify-mobile-phone-mobile.png" alt="verify mobile phone number">
+  <img src="https://github.com/openwisp/openwisp-wifi-login-pages/raw/media/docs/verify-mobile-phone-desktop.png" alt="">
+</p>
+<p align="center">
+  <img src="https://github.com/openwisp/openwisp-wifi-login-pages/raw/media/docs/login-mobile.png" alt="">
+</p>
+<p align="center">
+  <img src="https://github.com/openwisp/openwisp-wifi-login-pages/raw/media/docs/signup-mobile.png" alt="">
 </p>
 
 **No more ugly and fragmented User Experience for public/private WiFi services!**

@@ -34,10 +34,8 @@ body {
   border: 0;
 }
 .button {
-  background-color: rgba(0, 0, 0, 0.5);
   font-size: 16px;
   font-weight: bold;
-  color: #ffffff;
   border-radius: 5px;
   border: 0;
   cursor: pointer;
@@ -61,19 +59,12 @@ body {
   line-height: 24px;
 }
 .button:hover,
-.button:focus {
-  background-color: rgba(0, 0, 0, 0.7);
-}
 .link {
-  color: #000;
   font-weight: bold;
 }
 .link:hover,
 .link:focus {
   text-decoration: none;
-}
-.link:focus {
-  outline: 1px dotted #000;
 }
 div.error {
   margin: 0 0 3px;
@@ -86,8 +77,6 @@ div.error {
   flex-wrap: nowrap;
   align-items: center;
   width: 100%;
-  color: #fff;
-  background: #d93025;
   box-sizing: border-box;
   letter-spacing: -0.2px;
   word-spacing: -0.3px;
@@ -132,15 +121,8 @@ body .input {
   padding: 0 12px;
   border-radius: 4px;
   font-size: 14px;
-  border: 1px solid #ccc;
   box-sizing: border-box;
   font-weight: bold;
-}
-body .input:focus {
-  border-color: #8b8b8b;
-}
-body .input.error {
-  border-color: #d93025;
 }
 /* adjustments for phone-input2 */
 body .input,
@@ -205,15 +187,9 @@ body .input,
 .main-column p {
   margin-top: 1px;
 }
-.main-column,
-.bg {
-  background: #d3d3d3;
-}
 .side-column {
   width: 44%;
-  background: #eee;
   padding: 30px;
-  color: #000;
   border-radius: 2px;
   box-sizing: border-box;
   font-weight: bold;
@@ -277,7 +253,6 @@ h1 {
   top: 0;
   height: 100%;
   width: 100%;
-  background-color: rgba(94, 110, 141, 0.9);
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s 0s, visibility 0s 0.3s;
@@ -306,8 +281,6 @@ h1 {
   max-width: 450px;
   border-radius: 0.25em 0.25em 0.4em 0.4em;
   text-align: center;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-  background: #d3d3d3;
   transition-property: transform;
   transition-duration: 0.3s;
 }
