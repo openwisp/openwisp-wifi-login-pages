@@ -4,6 +4,7 @@ import config from "../config.json";
 import defaultConfig from "../utils/default-config";
 import Logger from "../utils/logger";
 import reverse from "../utils/openwisp-urls";
+import getSlug from "../utils/get-slug";
 
 const payments = (req, res) => {
   const reqOrg = req.params.organization;
@@ -12,11 +13,11 @@ const payments = (req, res) => {
     if (org.slug === reqOrg) {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
-      const {host, custom, radiusSlug} = conf;
-      const paymentUrl = reverse(
-        "payment_status",
-        custom ? radiusSlug : org.slug,
-      ).replace("{paymentId}", reqPaymentId);
+      const {host} = conf;
+      const paymentUrl = reverse("payment_status", getSlug(conf)).replace(
+        "{paymentId}",
+        reqPaymentId,
+      );
       const timeout = conf.timeout * 1000;
       // make AJAX request
       axios({

@@ -69,7 +69,7 @@ export const verifyMobilePhoneToken = (req, res) => {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
       const {host} = conf;
-      const url = reverse("verify_mobile_phone_token", org.slug);
+      const url = reverse("verify_mobile_phone_token", getSlug(conf));
       const timeout = conf.timeout * 1000;
       // make AJAX request
       axios({
