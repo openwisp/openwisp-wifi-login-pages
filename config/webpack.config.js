@@ -142,24 +142,20 @@ module.exports = (env, argv) => {
     plugins: plugins,
     devServer: {
       port: clientP,
-      stats: {
-        colors: true,
+      static: {
+        publicPath: "/",
+        directory: path.join(CURRENT_WORKING_DIR, "public"),
+        watch: true,
       },
-      publicPath: "/",
       compress: true,
-      overlay: {
-        warnings: true,
-        errors: true,
+      client: {
+        overlay: {
+          errors: true,
+          warnings: false,
+        },
+        progress: true,
       },
-      disableHostCheck: true,
-      progress: true,
-      stats: "errors-only",
       open: false,
-      contentBase: path.join(CURRENT_WORKING_DIR, "public"),
-      watchContentBase: true,
-      watchOptions: {
-        ignored: /node_modules/,
-      },
       historyApiFallback: true,
       proxy: {
         "/api": serverUrl,
