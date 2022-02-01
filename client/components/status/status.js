@@ -196,7 +196,7 @@ export default class Status extends React.Component {
     // if the user needs bank card verification,
     // redirect to payment page and stop here
     if (needsVerify("bank_card", userData, settings)) {
-      history.push(`/${orgSlug}/payment/process`);
+      history.push(`/${orgSlug}/payment/draft`);
       return;
     }
 

@@ -850,7 +850,7 @@ describe("<Status /> interactions", () => {
 
     // ensure user is redirected to payment URL
     expect(history.push).toHaveBeenCalledWith(
-      `/${props.orgSlug}/payment/process`,
+      `/${props.orgSlug}/payment/draft`,
     );
     // ensure sessions are not fetched
     expect(Status.prototype.getUserActiveRadiusSessions).not.toHaveBeenCalled();
@@ -904,7 +904,7 @@ describe("<Status /> interactions", () => {
 
     // ensure user is redirected to payment URL
     expect(history.push).toHaveBeenCalledWith(
-      `/${props.orgSlug}/payment/process`,
+      `/${props.orgSlug}/payment/draft`,
     );
     // ensure sessions are not fetched
     expect(Status.prototype.getUserActiveRadiusSessions).not.toHaveBeenCalled();
