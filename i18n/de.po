@@ -340,8 +340,8 @@ msgstr "Zurück zur Login-Seite"
 #: client/components/password-reset/password-reset.js:101
 msgid "PWD_RESET_ADD_TXT"
 msgstr ""
-"Haben Sie Ihr Passwort vergessen? Bitte geben Sie Ihre E-Mail-Adresse ein, um die "
-"Anleitung zur Passwortzurücksetzung zu erhalten"
+"Haben Sie Ihr Passwort vergessen? Geben Sie Ihre E-Mail-Adresse, Telefonnummer ein "
+"oder Benutzername unten und wir senden Ihnen die Anweisungen zum Zurücksetzen."
 
 #: client/components/password-reset/password-reset.js:127
 msgid "PWD_RESET_BTN"
