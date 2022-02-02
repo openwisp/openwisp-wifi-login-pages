@@ -18,7 +18,7 @@
     "dompurify": "^2.2.2",
     "express": "^4.17.1",
     "fs-extra": "^10.0.0",
-    "history": "^4.10.1",
+    "history": "^5.2.0",
     "inquirer": "^8.1.1",
     "js-yaml": "^4.1.0",
     "jsdom": "^17.0.0",
