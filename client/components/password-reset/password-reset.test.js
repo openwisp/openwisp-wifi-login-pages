@@ -64,7 +64,7 @@ describe("<PasswordReset /> rendering", () => {
 
   it("should render input field correctly", () => {
     const emailInput = wrapper.find("input[type='text']");
-    expect(wrapper.find(".row.input label").text()).toBe(
+    expect(wrapper.find(".row label").text()).toBe(
       getTranslationString("USERNAME_LOG_LBL"),
     );
     expect(emailInput.prop("placeholder")).toBe(

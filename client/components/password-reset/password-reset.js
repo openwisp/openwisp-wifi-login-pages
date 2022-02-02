@@ -101,7 +101,7 @@ export default class PasswordReset extends React.Component {
                 )}
 
                 <div className="fieldset">
-                  <div className="row input">
+                  <div className="row">
                     <label htmlFor="input">{t`USERNAME_LOG_LBL`}</label>
                     {getError(errors, "input")}
                     <input
