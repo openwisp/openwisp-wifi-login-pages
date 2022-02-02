@@ -121,115 +121,122 @@ exports[`Change Phone Number: standard flow should render PhoneInput lazily and 
 `;
 
 exports[`Change Phone Number: standard flow should render successfully 1`] = `
-<withRouter(MobilePhoneChange)
-  configuration={
-    Object {
-      "auto_login": true,
-      "components": Object {
-        "contact_page": Object {
-          "email": "support@openwisp.co",
-          "helpdesk": "+789 948 564",
-          "social_links": Array [
-            Object {
-              "alt": "twitter",
-              "icon": "twitter.svg",
-              "url": "https://twitter.com/openwisp",
+<Routes>
+  <Route
+    element={<StatusMock />}
+    path="/test-org-2/status"
+  />
+  <Route
+    element={
+      <MobilePhoneChange
+        configuration={
+          Object {
+            "auto_login": true,
+            "components": Object {
+              "contact_page": Object {
+                "email": "support@openwisp.co",
+                "helpdesk": "+789 948 564",
+                "social_links": Array [
+                  Object {
+                    "alt": "twitter",
+                    "icon": "twitter.svg",
+                    "url": "https://twitter.com/openwisp",
+                  },
+                  Object {
+                    "alt": "facebook",
+                    "icon": "facebook.svg",
+                    "url": "https://facebook.com/openwisp",
+                  },
+                ],
+              },
+              "mobile_phone_verification_form": Object {
+                "input_fields": Object {
+                  "code": Object {
+                    "pattern": "[0-9]{6,}",
+                    "type": "text",
+                  },
+                },
+              },
+              "phone_number_change_form": Object {
+                "buttons": Object {
+                  "cancel": true,
+                  "change_phone_number": true,
+                },
+                "input_fields": Object {
+                  "phone_number": Object {
+                    "country": "it",
+                    "type": "tel",
+                  },
+                },
+              },
+              "registration_form": Object {
+                "additional_info_text": true,
+                "input_fields": Object {
+                  "birth_date": Object {
+                    "setting": "disabled",
+                    "type": "date",
+                  },
+                  "city": Object {
+                    "type": "text",
+                  },
+                  "country": Object {
+                    "type": "text",
+                  },
+                  "email": Object {
+                    "pattern": ".+@.+\\\\..+",
+                    "type": "email",
+                  },
+                  "first_name": Object {
+                    "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
+                    "setting": "disabled",
+                    "type": "text",
+                  },
+                  "last_name": Object {
+                    "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
+                    "setting": "disabled",
+                    "type": "text",
+                  },
+                  "location": Object {
+                    "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
+                    "setting": "disabled",
+                    "type": "text",
+                  },
+                  "password": Object {
+                    "pattern": ".{6,}",
+                    "type": "password",
+                  },
+                  "password_confirm": Object {
+                    "pattern": null,
+                    "type": "password",
+                  },
+                  "phone_number": Object {
+                    "country": "it",
+                    "type": "tel",
+                  },
+                  "street": Object {
+                    "type": "text",
+                  },
+                  "tax_number": Object {
+                    "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
+                    "type": "text",
+                  },
+                  "username": Object {
+                    "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
+                    "type": "text",
+                  },
+                  "zipcode": Object {
+                    "type": "number",
+                  },
+                },
+                "links": Object {
+                  "login": true,
+                },
+              },
             },
-            Object {
-              "alt": "facebook",
-              "icon": "facebook.svg",
-              "url": "https://facebook.com/openwisp",
-            },
-          ],
-        },
-        "mobile_phone_verification_form": Object {
-          "input_fields": Object {
-            "code": Object {
-              "pattern": "[0-9]{6,}",
-              "type": "text",
-            },
-          },
-        },
-        "phone_number_change_form": Object {
-          "buttons": Object {
-            "cancel": true,
-            "change_phone_number": true,
-          },
-          "input_fields": Object {
-            "phone_number": Object {
-              "country": "it",
-              "type": "tel",
-            },
-          },
-        },
-        "registration_form": Object {
-          "additional_info_text": true,
-          "input_fields": Object {
-            "birth_date": Object {
-              "setting": "disabled",
-              "type": "date",
-            },
-            "city": Object {
-              "type": "text",
-            },
-            "country": Object {
-              "type": "text",
-            },
-            "email": Object {
-              "pattern": ".+@.+\\\\..+",
-              "type": "email",
-            },
-            "first_name": Object {
-              "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
-              "setting": "disabled",
-              "type": "text",
-            },
-            "last_name": Object {
-              "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
-              "setting": "disabled",
-              "type": "text",
-            },
-            "location": Object {
-              "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
-              "setting": "disabled",
-              "type": "text",
-            },
-            "password": Object {
-              "pattern": ".{6,}",
-              "type": "password",
-            },
-            "password_confirm": Object {
-              "pattern": null,
-              "type": "password",
-            },
-            "phone_number": Object {
-              "country": "it",
-              "type": "tel",
-            },
-            "street": Object {
-              "type": "text",
-            },
-            "tax_number": Object {
-              "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
-              "type": "text",
-            },
-            "username": Object {
-              "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
-              "type": "text",
-            },
-            "zipcode": Object {
-              "type": "number",
-            },
-          },
-          "links": Object {
-            "login": true,
-          },
-        },
-      },
-      "default_language": "en",
-      "name": "test org 2 (sms)",
-      "privacy_policy": Object {
-        "en": "<h1 id=\\"openwisp-wifi-login-pages-privacy-policy\\">openwisp-wifi-login-pages Privacy Policy</h1>
+            "default_language": "en",
+            "name": "test org 2 (sms)",
+            "privacy_policy": Object {
+              "en": "<h1 id=\\"openwisp-wifi-login-pages-privacy-policy\\">openwisp-wifi-login-pages Privacy Policy</h1>
 <ul>
 <li><p>Your privacy is important to us. It is Openwisp's policy to respect your privacy regarding any information we may collect from you across openwisp-wifi-login-pages.</p>
 </li>
@@ -247,13 +254,13 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
 </li>
 </ul>
 ",
-      },
-      "settings": Object {
-        "mobile_phone_verification": true,
-      },
-      "slug": "test-org-2",
-      "terms_and_conditions": Object {
-        "en": "<h1 id=\\"openwisp-wifi-login-pages-terms-and-conditions\\">Openwisp-wifi-login-pages Terms and Conditions</h1>
+            },
+            "settings": Object {
+              "mobile_phone_verification": true,
+            },
+            "slug": "test-org-2",
+            "terms_and_conditions": Object {
+              "en": "<h1 id=\\"openwisp-wifi-login-pages-terms-and-conditions\\">Openwisp-wifi-login-pages Terms and Conditions</h1>
 <ul>
 <li><p>By using or visiting the Openwisp-wifi-login-pages, you signify your agreement
 to these terms and conditions (the \\"Terms of Service\\") and the Privacy policy.</p>
@@ -273,64 +280,69 @@ Openwisp-wifi-login-pages and using its services in the future.</p>
 </li>
 </ul>
 ",
-      },
+            },
+          }
+        }
+        cookies={
+          Cookies {
+            "HAS_DOCUMENT_COOKIE": true,
+            "changeListeners": Array [],
+            "cookies": Object {},
+          }
+        }
+        language="en"
+        logout={[MockFunction]}
+        navigate={[MockFunction]}
+        orgName="test org 2 (sms)"
+        orgSlug="test-org-2"
+        phone_number_change={
+          Object {
+            "buttons": Object {
+              "cancel": true,
+              "change_phone_number": true,
+            },
+            "input_fields": Object {
+              "phone_number": Object {
+                "country": "it",
+                "type": "tel",
+              },
+            },
+          }
+        }
+        setTitle={
+          [MockFunction] {
+            "calls": Array [
+              Array [
+                "Change mobile number",
+                "test org 2 (sms)",
+              ],
+            ],
+            "results": Array [
+              Object {
+                "type": "return",
+                "value": undefined,
+              },
+            ],
+          }
+        }
+        setUserData={[MockFunction]}
+        settings={
+          Object {
+            "mobile_phone_verification": true,
+          }
+        }
+        userData={
+          Object {
+            "is_active": false,
+            "phone_number": "+393660011222",
+            "radius_user_token": "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
+            "response_code": "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+            "username": "tester@tester.com",
+          }
+        }
+      />
     }
-  }
-  cookies={
-    Cookies {
-      "HAS_DOCUMENT_COOKIE": true,
-      "changeListeners": Array [],
-      "cookies": Object {},
-    }
-  }
-  language="en"
-  logout={[MockFunction]}
-  orgName="test org 2 (sms)"
-  orgSlug="test-org-2"
-  phone_number_change={
-    Object {
-      "buttons": Object {
-        "cancel": true,
-        "change_phone_number": true,
-      },
-      "input_fields": Object {
-        "phone_number": Object {
-          "country": "it",
-          "type": "tel",
-        },
-      },
-    }
-  }
-  setTitle={
-    [MockFunction] {
-      "calls": Array [
-        Array [
-          "Change mobile number",
-          "test org 2 (sms)",
-        ],
-      ],
-      "results": Array [
-        Object {
-          "type": "return",
-          "value": undefined,
-        },
-      ],
-    }
-  }
-  setUserData={[MockFunction]}
-  settings={
-    Object {
-      "mobile_phone_verification": true,
-    }
-  }
-  userData={
-    Object {
-      "is_active": false,
-      "phone_number": "+393660011222",
-      "radius_user_token": "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
-      "response_code": "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
-      "username": "tester@tester.com",
-    }
-  }
-/>
+    path=""
+  />
+</Routes>
 `;

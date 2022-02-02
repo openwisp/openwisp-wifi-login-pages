@@ -97,7 +97,7 @@ export default class OrganizationWrapper extends React.Component {
   };
 
   render() {
-    const {organization, params, cookies, location} = this.props;
+    const {organization, params, cookies, location, navigate} = this.props;
     const {loading, translationLoaded, configLoaded} = this.state;
     const {
       title,
@@ -276,7 +276,10 @@ export default class OrganizationWrapper extends React.Component {
                     element={
                       isAuthenticated ? (
                         <Suspense fallback={<Loader />}>
-                          <MobilePhoneChange cookies={cookies} />
+                          <MobilePhoneChange
+                            cookies={cookies}
+                            navigate={navigate}
+                          />
                         </Suspense>
                       ) : (
                         <Navigate to={`/${orgSlug}/login`} />
@@ -367,6 +370,7 @@ OrganizationWrapper.propTypes = {
     organization: PropTypes.string.isRequired,
   }).isRequired,
   location: PropTypes.object.isRequired,
+  navigate: PropTypes.func.isRequired,
   setOrganization: PropTypes.func.isRequired,
   setLanguage: PropTypes.func.isRequired,
   organization: PropTypes.shape({

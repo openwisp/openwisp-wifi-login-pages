@@ -61,10 +61,9 @@ class MobilePhoneChange extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     const {setLoading} = this.context;
-    const {orgSlug, setUserData, userData, language} = this.props;
+    const {orgSlug, setUserData, userData, language, navigate} = this.props;
     const {phone_number, errors} = this.state;
     const url = mobilePhoneChangeUrl(orgSlug);
-    const self = this;
     this.setState({errors: {...errors, phone_number: ""}});
     setLoading(true);
     return axios({
@@ -86,7 +85,7 @@ class MobilePhoneChange extends React.Component {
         setUserData({...userData, is_verified: false, phone_number});
         setLoading(false);
         toast.info(t`TOKEN_SENT`);
-        self.props.history.push(`/${orgSlug}/mobile-phone-verification`);
+        navigate(`/${orgSlug}/mobile-phone-verification`);
       })
       .catch((error) => {
         const {data} = error.response;
@@ -240,4 +239,5 @@ MobilePhoneChange.propTypes = {
   setUserData: PropTypes.func.isRequired,
   setTitle: PropTypes.func.isRequired,
   language: PropTypes.string.isRequired,
+  navigate: PropTypes.func.isRequired,
 };

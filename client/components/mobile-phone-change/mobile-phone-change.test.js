@@ -7,22 +7,23 @@ import PropTypes from "prop-types";
 import {Cookies} from "react-cookie";
 import {toast} from "react-toastify";
 import {Provider} from "react-redux";
-import {Navigate, Router} from "react-router-dom";
+import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import {createMemoryHistory} from "history";
 import {loadingContextValue} from "../../utils/loading-context";
 import loadTranslation from "../../utils/load-translation";
 import getConfig from "../../utils/get-config";
 import tick from "../../utils/tick";
-import MobilePhoneChangeWrapped from "./mobile-phone-change";
+import MobilePhoneChange from "./mobile-phone-change";
 import validateToken from "../../utils/validate-token";
 import submitOnEnter from "../../utils/submit-on-enter";
 
-const MobilePhoneChange = MobilePhoneChangeWrapped.WrappedComponent;
 jest.mock("../../utils/get-config");
 jest.mock("../../utils/validate-token");
 jest.mock("../../utils/load-translation");
 jest.mock("../../utils/submit-on-enter");
 jest.mock("axios");
+
+const StatusMock = () => <div />;
 
 MobilePhoneChange.contextTypes = {
   setLoading: PropTypes.func,
@@ -51,6 +52,7 @@ const createTestProps = function (props, configName = "test-org-2") {
     userData: {},
     setTitle: jest.fn(),
     language: "en",
+    navigate: jest.fn(),
     // needed for subcomponents
     configuration: conf,
     ...props,
@@ -83,7 +85,10 @@ const mountComponent = function (props) {
   return mount(
     <Provider store={mockedStore}>
       <Router history={historyMock}>
-        <MobilePhoneChangeWrapped {...props} />
+        <Routes>
+          <Route path="/test-org-2/status" element={<StatusMock />} />
+          <Route path="" element={<MobilePhoneChange {...props} />} />
+        </Routes>
       </Router>
     </Provider>,
     {
@@ -169,13 +174,12 @@ describe("Change Phone Number: standard flow", () => {
       target: {value: "+393660011333", name: "phone_number"},
     });
     expect(component.instance().state.phone_number).toBe("+393660011333");
-
-    wrapper.find("form").simulate("submit", event);
+    await wrapper.find("form").simulate("submit", event);
     await tick();
     expect(event.preventDefault).toHaveBeenCalled();
     expect(MobilePhoneChange.prototype.handleSubmit).toHaveBeenCalled();
     expect(toast.info.mock.calls.length).toBe(1);
-    expect(historyMock.push).toHaveBeenCalledWith(
+    expect(props.navigate).toHaveBeenCalledWith(
       "/test-org-2/mobile-phone-verification",
     );
     expect(lastConsoleOutuput).toBe(null);
@@ -392,22 +396,16 @@ describe("Change Phone Number: corner cases", () => {
     mockAxios();
     props.settings.mobile_phone_verification = true;
     wrapper = await mountComponent(props);
-    expect(wrapper.find(Navigate)).toHaveLength(0);
-  });
-
-  it("should redirect if mobile_phone_verification disabled", async () => {
-    props.settings.mobile_phone_verification = false;
-    wrapper = await mountComponent(props);
-    expect(wrapper.find(Navigate)).toHaveLength(1);
+    expect(wrapper.find(StatusMock)).toHaveLength(0);
   });
 
   it("shouldn't redirect if user is active and mobile verificaton is true", async () => {
     validateToken.mockReturnValue(true);
-    userData.is_active = true;
     props.userData = userData;
+    props.userData.is_active = true;
     props.settings.mobile_phone_verification = true;
     wrapper = await mountComponent(props);
-    expect(wrapper.find(Navigate)).toHaveLength(0);
+    expect(wrapper.find(StatusMock)).toHaveLength(0);
   });
 
   it("should not redirect if user registration method is mobile_phone", async () => {
@@ -417,17 +415,7 @@ describe("Change Phone Number: corner cases", () => {
     props.userData.method = "mobile_phone";
     props.settings.mobile_phone_verification = true;
     wrapper = await mountComponent(props);
-    expect(wrapper.find(Navigate)).toHaveLength(0);
-  });
-
-  it("should redirect if user registration method is not mobile_phone", async () => {
-    validateToken.mockReturnValue(true);
-    props.userData = userData;
-    props.userData.is_active = true;
-    props.userData.method = "saml";
-    props.settings.mobile_phone_verification = true;
-    wrapper = await mountComponent(props);
-    expect(wrapper.find(Navigate)).toHaveLength(1);
+    expect(wrapper.find(StatusMock)).toHaveLength(0);
   });
 
   it("should validate token", async () => {
@@ -440,5 +428,20 @@ describe("Change Phone Number: corner cases", () => {
       props.logout,
       props.language,
     );
+  });
+  it("should redirect if mobile_phone_verification disabled", async () => {
+    props.settings.mobile_phone_verification = false;
+    wrapper = await mountComponent(props);
+    expect(wrapper.find(StatusMock)).toHaveLength(1);
+  });
+
+  it("should redirect if user registration method is not mobile_phone", async () => {
+    validateToken.mockReturnValue(true);
+    props.userData = userData;
+    props.userData.is_active = true;
+    props.userData.method = "saml";
+    props.settings.mobile_phone_verification = true;
+    wrapper = await mountComponent(props);
+    expect(wrapper.find(StatusMock)).toHaveLength(1);
   });
 });
