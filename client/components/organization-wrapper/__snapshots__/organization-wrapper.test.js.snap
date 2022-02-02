@@ -155,6 +155,7 @@ exports[`<OrganizationWrapper /> interactions should render main title if pageTi
                     "cookies": Object {},
                   }
                 }
+                navigate={[MockFunction]}
               />
             </React.Suspense>
           }
@@ -371,6 +372,7 @@ exports[`<OrganizationWrapper /> interactions should render pageTitle if it is n
                     "cookies": Object {},
                   }
                 }
+                navigate={[MockFunction]}
               />
             </React.Suspense>
           }
@@ -587,6 +589,7 @@ exports[`<OrganizationWrapper /> interactions should show route for authenticate
                     "cookies": Object {},
                   }
                 }
+                navigate={[MockFunction]}
               />
             </React.Suspense>
           }
@@ -798,6 +801,7 @@ exports[`Test Organization Wrapper for authenticated and unverified users should
                     "cookies": Object {},
                   }
                 }
+                navigate={[MockFunction]}
               />
             </React.Suspense>
           }

@@ -28,16 +28,13 @@ OrganizationRoutes.defaultProps = {
 };
 
 OrganizationRoutes.propTypes = {
-  match: PropTypes.shape({
-    isExact: PropTypes.bool,
-  }).isRequired,
+  params: PropTypes.object.isRequired,
   organizations: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string,
       slug: PropTypes.string,
     }),
   ),
-  params: PropTypes.object.isRequired,
 };
 
 export default connect(

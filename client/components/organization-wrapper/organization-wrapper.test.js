@@ -49,6 +49,7 @@ const userData = {
 const createTestProps = (props) => ({
   params: {organization: "default"},
   location: {pathname: ""},
+  navigate: jest.fn(),
   organization: {
     configuration: {
       pageTitle: undefined,
