@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 import {Cookies} from "react-cookie";
 import {toast} from "react-toastify";
 import {Provider} from "react-redux";
-import {Redirect, Router} from "react-router-dom";
+import {Navigate, Router} from "react-router-dom";
 import {createMemoryHistory} from "history";
 import {loadingContextValue} from "../../utils/loading-context";
 import loadTranslation from "../../utils/load-translation";
@@ -392,13 +392,13 @@ describe("Change Phone Number: corner cases", () => {
     mockAxios();
     props.settings.mobile_phone_verification = true;
     wrapper = await mountComponent(props);
-    expect(wrapper.find(Redirect)).toHaveLength(0);
+    expect(wrapper.find(Navigate)).toHaveLength(0);
   });
 
   it("should redirect if mobile_phone_verification disabled", async () => {
     props.settings.mobile_phone_verification = false;
     wrapper = await mountComponent(props);
-    expect(wrapper.find(Redirect)).toHaveLength(1);
+    expect(wrapper.find(Navigate)).toHaveLength(1);
   });
 
   it("shouldn't redirect if user is active and mobile verificaton is true", async () => {
@@ -407,7 +407,7 @@ describe("Change Phone Number: corner cases", () => {
     props.userData = userData;
     props.settings.mobile_phone_verification = true;
     wrapper = await mountComponent(props);
-    expect(wrapper.find(Redirect)).toHaveLength(0);
+    expect(wrapper.find(Navigate)).toHaveLength(0);
   });
 
   it("should not redirect if user registration method is mobile_phone", async () => {
@@ -417,7 +417,7 @@ describe("Change Phone Number: corner cases", () => {
     props.userData.method = "mobile_phone";
     props.settings.mobile_phone_verification = true;
     wrapper = await mountComponent(props);
-    expect(wrapper.find(Redirect)).toHaveLength(0);
+    expect(wrapper.find(Navigate)).toHaveLength(0);
   });
 
   it("should redirect if user registration method is not mobile_phone", async () => {
@@ -427,7 +427,7 @@ describe("Change Phone Number: corner cases", () => {
     props.userData.method = "saml";
     props.settings.mobile_phone_verification = true;
     wrapper = await mountComponent(props);
-    expect(wrapper.find(Redirect)).toHaveLength(1);
+    expect(wrapper.find(Navigate)).toHaveLength(1);
   });
 
   it("should validate token", async () => {

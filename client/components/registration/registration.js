@@ -5,7 +5,7 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import React, {Suspense} from "react";
 import Select from "react-select";
-import {Link, Route} from "react-router-dom";
+import {Link, Route, Routes} from "react-router-dom";
 import {toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {t, gettext} from "ttag";
@@ -391,7 +391,7 @@ export default class Registration extends React.Component {
   };
 
   getForm = () => {
-    const {registration, settings, orgSlug, match} = this.props;
+    const {registration, settings, orgSlug} = this.props;
     const {additional_info_text, input_fields, links} = registration;
     const {
       success,
@@ -855,10 +855,12 @@ export default class Registration extends React.Component {
             <Contact />
           </div>
         </div>
-        <Route
-          path={`${match.path}/:name`}
-          render={(props) => <Modal {...props} prevPath={match.url} />}
-        />
+        <Routes>
+          <Route
+            path=":name"
+            element={<Modal prevPath={`/${orgSlug}/registration`} />}
+          />
+        </Routes>
       </>
     );
   };
@@ -957,14 +959,8 @@ Registration.propTypes = {
     links: PropTypes.object,
   }).isRequired,
   language: PropTypes.string.isRequired,
-  match: PropTypes.shape({
-    path: PropTypes.string,
-    url: PropTypes.string,
-  }).isRequired,
   orgSlug: PropTypes.string.isRequired,
   orgName: PropTypes.string.isRequired,
-  privacyPolicy: PropTypes.object.isRequired,
-  termsAndConditions: PropTypes.object.isRequired,
   authenticate: PropTypes.func.isRequired,
   setTitle: PropTypes.func.isRequired,
   setUserData: PropTypes.func.isRequired,

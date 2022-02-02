@@ -98,7 +98,7 @@ describe("Test <PaymentStatus /> cases", () => {
       wrapper.find(".payment-status-row-3 .button").at(0).props().to,
     ).toEqual("/default/payment/draft");
     expect(wrapper.find(".payment-status-row-4 .button").length).toEqual(1);
-    expect(wrapper.find("Redirect").length).toEqual(0);
+    expect(wrapper.find("Navigate").length).toEqual(0);
   });
 
   it("should call logout correctly when clicking on logout button", async () => {
@@ -116,7 +116,7 @@ describe("Test <PaymentStatus /> cases", () => {
       mustLogout: true,
       payment_url: null,
     });
-    expect(wrapper.find("Redirect").length).toEqual(0);
+    expect(wrapper.find("Navigate").length).toEqual(0);
     expect(spyToast.mock.calls.length).toBe(0);
   });
 
@@ -131,8 +131,8 @@ describe("Test <PaymentStatus /> cases", () => {
       context: loadingContextValue,
     });
     await tick();
-    expect(wrapper.find("Redirect").length).toEqual(1);
-    expect(wrapper.find("Redirect").props().to).toEqual("/default/status");
+    expect(wrapper.find("Navigate").length).toEqual(1);
+    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
     expect(spyToast.mock.calls.length).toBe(0);
   });
 
@@ -150,8 +150,8 @@ describe("Test <PaymentStatus /> cases", () => {
     const comp = wrapper.instance();
     comp.componentDidMount();
     await tick();
-    expect(wrapper.find("Redirect").length).toEqual(1);
-    expect(wrapper.find("Redirect").props().to).toEqual("/default/status");
+    expect(wrapper.find("Navigate").length).toEqual(1);
+    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
     expect(spyToast.mock.calls.length).toBe(1);
     expect(comp.props.logout).not.toHaveBeenCalled();
     expect(comp.props.setUserData.mock.calls.pop()).toEqual([
@@ -179,8 +179,8 @@ describe("Test <PaymentStatus /> cases", () => {
     const comp = wrapper.instance();
     comp.componentDidMount();
     await tick();
-    expect(wrapper.find("Redirect").length).toEqual(1);
-    expect(wrapper.find("Redirect").props().to).toEqual("/default/status");
+    expect(wrapper.find("Navigate").length).toEqual(1);
+    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
     expect(spyToast.mock.calls.length).toBe(1);
     expect(comp.props.logout).not.toHaveBeenCalled();
     expect(comp.props.setUserData.mock.calls.pop()).toEqual([
@@ -204,8 +204,8 @@ describe("Test <PaymentStatus /> cases", () => {
       context: loadingContextValue,
     });
     await tick();
-    expect(wrapper.find("Redirect").length).toEqual(1);
-    expect(wrapper.find("Redirect").props().to).toEqual("/default/status");
+    expect(wrapper.find("Navigate").length).toEqual(1);
+    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
     expect(spyToast.mock.calls.length).toBe(0);
   });
 
@@ -224,8 +224,8 @@ describe("Test <PaymentStatus /> cases", () => {
       context: loadingContextValue,
     });
     await tick();
-    expect(wrapper.find("Redirect").length).toEqual(1);
-    expect(wrapper.find("Redirect").props().to).toEqual("/default/status");
+    expect(wrapper.find("Navigate").length).toEqual(1);
+    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
     expect(spyToast.mock.calls.length).toBe(0);
   });
 
@@ -244,8 +244,8 @@ describe("Test <PaymentStatus /> cases", () => {
       context: loadingContextValue,
     });
     await tick();
-    expect(wrapper.find("Redirect").length).toEqual(1);
-    expect(wrapper.find("Redirect").props().to).toEqual("/default/status");
+    expect(wrapper.find("Navigate").length).toEqual(1);
+    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
     expect(spyToast.mock.calls.length).toBe(0);
   });
 
@@ -264,8 +264,8 @@ describe("Test <PaymentStatus /> cases", () => {
       context: loadingContextValue,
     });
     await tick();
-    expect(wrapper.find("Redirect").length).toEqual(1);
-    expect(wrapper.find("Redirect").props().to).toEqual("/default/status");
+    expect(wrapper.find("Navigate").length).toEqual(1);
+    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
     expect(spyToast.mock.calls.length).toBe(0);
   });
 
@@ -283,8 +283,8 @@ describe("Test <PaymentStatus /> cases", () => {
       context: loadingContextValue,
     });
     await tick();
-    expect(wrapper.find("Redirect").length).toEqual(1);
-    expect(wrapper.find("Redirect").props().to).toEqual("/default/status");
+    expect(wrapper.find("Navigate").length).toEqual(1);
+    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
     expect(spyToast.mock.calls.length).toBe(0);
   });
 
@@ -299,8 +299,8 @@ describe("Test <PaymentStatus /> cases", () => {
       context: loadingContextValue,
     });
     await tick();
-    expect(wrapper.find("Redirect").length).toEqual(1);
-    expect(wrapper.find("Redirect").props().to).toEqual("/default/status");
+    expect(wrapper.find("Navigate").length).toEqual(1);
+    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
     expect(spyToast.mock.calls.length).toBe(0);
   });
 
@@ -315,8 +315,8 @@ describe("Test <PaymentStatus /> cases", () => {
       context: loadingContextValue,
     });
     await tick();
-    expect(wrapper.find("Redirect").length).toEqual(1);
-    expect(wrapper.find("Redirect").props().to).toEqual("/default/status");
+    expect(wrapper.find("Navigate").length).toEqual(1);
+    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
     expect(spyToast.mock.calls.length).toBe(0);
   });
 
@@ -331,8 +331,8 @@ describe("Test <PaymentStatus /> cases", () => {
       context: loadingContextValue,
     });
     await tick();
-    expect(wrapper.find("Redirect").length).toEqual(1);
-    expect(wrapper.find("Redirect").props().to).toEqual("/default/status");
+    expect(wrapper.find("Navigate").length).toEqual(1);
+    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
     expect(spyToast.mock.calls.length).toBe(0);
     expect(wrapper.instance().props.setUserData).not.toHaveBeenCalled();
   });

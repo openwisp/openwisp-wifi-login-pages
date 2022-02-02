@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import qs from "qs";
 import React, {Suspense} from "react";
 import {Cookies} from "react-cookie";
-import {Link, Redirect, withRouter} from "react-router-dom";
+import {Link, Navigate} from "react-router-dom";
 import {toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {t} from "ttag";
@@ -119,7 +119,7 @@ class MobilePhoneChange extends React.Component {
       !settings.mobile_phone_verification ||
       (userData.method !== undefined && userData.method !== "mobile_phone")
     ) {
-      return <Redirect push to={`/${orgSlug}/status`} />;
+      return <Navigate push to={`/${orgSlug}/status`} />;
     }
 
     return (
@@ -212,7 +212,7 @@ class MobilePhoneChange extends React.Component {
     );
   }
 }
-export default withRouter(MobilePhoneChange);
+export default MobilePhoneChange;
 MobilePhoneChange.contextType = LoadingContext;
 MobilePhoneChange.propTypes = {
   phone_number_change: PropTypes.shape({

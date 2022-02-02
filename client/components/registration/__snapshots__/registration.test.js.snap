@@ -283,10 +283,16 @@ exports[`<Registration /> rendering should render correctly 1`] = `
       <Connect(Contact) />
     </div>
   </div>
-  <Route
-    path="default/registration/:name"
-    render={[Function]}
-  />
+  <Routes>
+    <Route
+      element={
+        <Memo(Connect(Component))
+          prevPath="/default/registration"
+        />
+      }
+      path=":name"
+    />
+  </Routes>
 </Fragment>
 `;
 
@@ -440,10 +446,16 @@ exports[`<Registration /> rendering with placeholder translation tags should ren
       <Connect(Contact) />
     </div>
   </div>
-  <Route
-    path="default/registration/:name"
-    render={[Function]}
-  />
+  <Routes>
+    <Route
+      element={
+        <Memo(Connect(Component))
+          prevPath="/default/registration"
+        />
+      }
+      path=":name"
+    />
+  </Routes>
 </Fragment>
 `;
 

@@ -13,69 +13,196 @@ exports[`<OrganizationWrapper /> interactions should render main title if pageTi
     <div
       className="app-container "
     >
-      <Route
-        path="/default"
-        render={[Function]}
-      />
-      <Switch>
+      <Routes>
         <Route
+          element={
+            <Memo(Connect(Header))
+              location={
+                Object {
+                  "pathname": "",
+                }
+              }
+              params={
+                Object {
+                  "organization": "default",
+                }
+              }
+            />
+          }
+          path="*"
+        />
+      </Routes>
+      <Routes>
+        <Route
+          element={
+            <Navigate
+              to="/default/login"
+            />
+          }
           exact={true}
-          path="/default"
-          render={[Function]}
+          path=""
         />
         <Route
-          path="/default/registration"
-          render={[Function]}
+          element={
+            <React.Suspense
+              fallback={<loader />}
+            >
+              <UNDEFINED />
+            </React.Suspense>
+          }
+          path="*"
         />
         <Route
-          path="/default/mobile-phone-verification"
-          render={[Function]}
+          element={
+            <Navigate
+              to="/default/status"
+            />
+          }
+          path="registration/*"
         />
         <Route
-          path="/default/password/reset/confirm/:uid/:token"
-          render={[Function]}
+          element={
+            <Navigate
+              to="/default/status"
+            />
+          }
+          path="mobile-phone-verification"
         />
         <Route
+          element={
+            <Navigate
+              to="/default/status"
+            />
+          }
+          path="password/reset/confirm/:uid/:token"
+        />
+        <Route
+          element={
+            <Navigate
+              to="/default/status"
+            />
+          }
           exact={true}
-          path="/default/password/reset"
-          render={[Function]}
+          path="password/reset"
         />
         <Route
-          path="/default/login"
-          render={[Function]}
+          element={
+            <Navigate
+              to="/default/status"
+            />
+          }
+          path="login/*"
         />
         <Route
-          path="/default/status"
-          render={[Function]}
+          element={
+            <React.Suspense
+              fallback={<loader />}
+            >
+              <UNDEFINED
+                cookies={
+                  Cookies {
+                    "HAS_DOCUMENT_COOKIE": true,
+                    "changeListeners": Array [],
+                    "cookies": Object {},
+                  }
+                }
+                location={
+                  Object {
+                    "pathname": "",
+                  }
+                }
+              />
+            </React.Suspense>
+          }
+          path="status"
         />
         <Route
-          path="/default/logout"
-          render={[Function]}
+          element={
+            <Navigate
+              to="/default/status"
+            />
+          }
+          path="logout"
         />
         <Route
-          path="/default/change-password"
-          render={[Function]}
+          element={
+            <React.Suspense
+              fallback={<loader />}
+            >
+              <UNDEFINED
+                cookies={
+                  Cookies {
+                    "HAS_DOCUMENT_COOKIE": true,
+                    "changeListeners": Array [],
+                    "cookies": Object {},
+                  }
+                }
+              />
+            </React.Suspense>
+          }
+          path="change-password"
         />
         <Route
-          path="/default/change-phone-number"
-          render={[Function]}
+          element={
+            <React.Suspense
+              fallback={<loader />}
+            >
+              <UNDEFINED
+                cookies={
+                  Cookies {
+                    "HAS_DOCUMENT_COOKIE": true,
+                    "changeListeners": Array [],
+                    "cookies": Object {},
+                  }
+                }
+              />
+            </React.Suspense>
+          }
+          path="change-phone-number"
         />
         <Route
-          path="/default/payment/process/"
-          render={[Function]}
+          element={
+            <React.Suspense
+              fallback={<loader />}
+            >
+              <UNDEFINED
+                cookies={
+                  Cookies {
+                    "HAS_DOCUMENT_COOKIE": true,
+                    "changeListeners": Array [],
+                    "cookies": Object {},
+                  }
+                }
+              />
+            </React.Suspense>
+          }
+          path="payment/process/"
         />
         <Route
-          path="/default/payment/:status"
-          render={[Function]}
+          element={
+            <React.Suspense
+              fallback={<loader />}
+            >
+              <UNDEFINED
+                cookies={
+                  Cookies {
+                    "HAS_DOCUMENT_COOKIE": true,
+                    "changeListeners": Array [],
+                    "cookies": Object {},
+                  }
+                }
+              />
+            </React.Suspense>
+          }
+          path="payment/:status"
         />
+      </Routes>
+      <Routes>
         <Route
-          render={[Function]}
+          element={<Memo(Connect(Footer)) />}
+          path="*"
         />
-      </Switch>
-      <Route
-        path="/default"
-        render={[Function]}
-      />
+      </Routes>
     </div>
     <HelmetWrapper
       defer={true}
@@ -102,69 +229,196 @@ exports[`<OrganizationWrapper /> interactions should render pageTitle if it is n
     <div
       className="app-container "
     >
-      <Route
-        path="/default"
-        render={[Function]}
-      />
-      <Switch>
+      <Routes>
         <Route
+          element={
+            <Memo(Connect(Header))
+              location={
+                Object {
+                  "pathname": "",
+                }
+              }
+              params={
+                Object {
+                  "organization": "default",
+                }
+              }
+            />
+          }
+          path="*"
+        />
+      </Routes>
+      <Routes>
+        <Route
+          element={
+            <Navigate
+              to="/default/login"
+            />
+          }
           exact={true}
-          path="/default"
-          render={[Function]}
+          path=""
         />
         <Route
-          path="/default/registration"
-          render={[Function]}
+          element={
+            <React.Suspense
+              fallback={<loader />}
+            >
+              <UNDEFINED />
+            </React.Suspense>
+          }
+          path="*"
         />
         <Route
-          path="/default/mobile-phone-verification"
-          render={[Function]}
+          element={
+            <Navigate
+              to="/default/status"
+            />
+          }
+          path="registration/*"
         />
         <Route
-          path="/default/password/reset/confirm/:uid/:token"
-          render={[Function]}
+          element={
+            <Navigate
+              to="/default/status"
+            />
+          }
+          path="mobile-phone-verification"
         />
         <Route
+          element={
+            <Navigate
+              to="/default/status"
+            />
+          }
+          path="password/reset/confirm/:uid/:token"
+        />
+        <Route
+          element={
+            <Navigate
+              to="/default/status"
+            />
+          }
           exact={true}
-          path="/default/password/reset"
-          render={[Function]}
+          path="password/reset"
         />
         <Route
-          path="/default/login"
-          render={[Function]}
+          element={
+            <Navigate
+              to="/default/status"
+            />
+          }
+          path="login/*"
         />
         <Route
-          path="/default/status"
-          render={[Function]}
+          element={
+            <React.Suspense
+              fallback={<loader />}
+            >
+              <UNDEFINED
+                cookies={
+                  Cookies {
+                    "HAS_DOCUMENT_COOKIE": true,
+                    "changeListeners": Array [],
+                    "cookies": Object {},
+                  }
+                }
+                location={
+                  Object {
+                    "pathname": "",
+                  }
+                }
+              />
+            </React.Suspense>
+          }
+          path="status"
         />
         <Route
-          path="/default/logout"
-          render={[Function]}
+          element={
+            <Navigate
+              to="/default/status"
+            />
+          }
+          path="logout"
         />
         <Route
-          path="/default/change-password"
-          render={[Function]}
+          element={
+            <React.Suspense
+              fallback={<loader />}
+            >
+              <UNDEFINED
+                cookies={
+                  Cookies {
+                    "HAS_DOCUMENT_COOKIE": true,
+                    "changeListeners": Array [],
+                    "cookies": Object {},
+                  }
+                }
+              />
+            </React.Suspense>
+          }
+          path="change-password"
         />
         <Route
-          path="/default/change-phone-number"
-          render={[Function]}
+          element={
+            <React.Suspense
+              fallback={<loader />}
+            >
+              <UNDEFINED
+                cookies={
+                  Cookies {
+                    "HAS_DOCUMENT_COOKIE": true,
+                    "changeListeners": Array [],
+                    "cookies": Object {},
+                  }
+                }
+              />
+            </React.Suspense>
+          }
+          path="change-phone-number"
         />
         <Route
-          path="/default/payment/process/"
-          render={[Function]}
+          element={
+            <React.Suspense
+              fallback={<loader />}
+            >
+              <UNDEFINED
+                cookies={
+                  Cookies {
+                    "HAS_DOCUMENT_COOKIE": true,
+                    "changeListeners": Array [],
+                    "cookies": Object {},
+                  }
+                }
+              />
+            </React.Suspense>
+          }
+          path="payment/process/"
         />
         <Route
-          path="/default/payment/:status"
-          render={[Function]}
+          element={
+            <React.Suspense
+              fallback={<loader />}
+            >
+              <UNDEFINED
+                cookies={
+                  Cookies {
+                    "HAS_DOCUMENT_COOKIE": true,
+                    "changeListeners": Array [],
+                    "cookies": Object {},
+                  }
+                }
+              />
+            </React.Suspense>
+          }
+          path="payment/:status"
         />
+      </Routes>
+      <Routes>
         <Route
-          render={[Function]}
+          element={<Memo(Connect(Footer)) />}
+          path="*"
         />
-      </Switch>
-      <Route
-        path="/default"
-        render={[Function]}
-      />
+      </Routes>
     </div>
     <HelmetWrapper
       defer={true}
@@ -191,69 +445,196 @@ exports[`<OrganizationWrapper /> interactions should show route for authenticate
     <div
       className="app-container "
     >
-      <Route
-        path="/default"
-        render={[Function]}
-      />
-      <Switch>
+      <Routes>
         <Route
+          element={
+            <Memo(Connect(Header))
+              location={
+                Object {
+                  "pathname": "",
+                }
+              }
+              params={
+                Object {
+                  "organization": "default",
+                }
+              }
+            />
+          }
+          path="*"
+        />
+      </Routes>
+      <Routes>
+        <Route
+          element={
+            <Navigate
+              to="/default/login"
+            />
+          }
           exact={true}
-          path="/default"
-          render={[Function]}
+          path=""
         />
         <Route
-          path="/default/registration"
-          render={[Function]}
+          element={
+            <React.Suspense
+              fallback={<loader />}
+            >
+              <UNDEFINED />
+            </React.Suspense>
+          }
+          path="*"
         />
         <Route
-          path="/default/mobile-phone-verification"
-          render={[Function]}
+          element={
+            <Navigate
+              to="/default/status"
+            />
+          }
+          path="registration/*"
         />
         <Route
-          path="/default/password/reset/confirm/:uid/:token"
-          render={[Function]}
+          element={
+            <Navigate
+              to="/default/status"
+            />
+          }
+          path="mobile-phone-verification"
         />
         <Route
+          element={
+            <Navigate
+              to="/default/status"
+            />
+          }
+          path="password/reset/confirm/:uid/:token"
+        />
+        <Route
+          element={
+            <Navigate
+              to="/default/status"
+            />
+          }
           exact={true}
-          path="/default/password/reset"
-          render={[Function]}
+          path="password/reset"
         />
         <Route
-          path="/default/login"
-          render={[Function]}
+          element={
+            <Navigate
+              to="/default/status"
+            />
+          }
+          path="login/*"
         />
         <Route
-          path="/default/status"
-          render={[Function]}
+          element={
+            <React.Suspense
+              fallback={<loader />}
+            >
+              <UNDEFINED
+                cookies={
+                  Cookies {
+                    "HAS_DOCUMENT_COOKIE": true,
+                    "changeListeners": Array [],
+                    "cookies": Object {},
+                  }
+                }
+                location={
+                  Object {
+                    "pathname": "",
+                  }
+                }
+              />
+            </React.Suspense>
+          }
+          path="status"
         />
         <Route
-          path="/default/logout"
-          render={[Function]}
+          element={
+            <Navigate
+              to="/default/status"
+            />
+          }
+          path="logout"
         />
         <Route
-          path="/default/change-password"
-          render={[Function]}
+          element={
+            <React.Suspense
+              fallback={<loader />}
+            >
+              <UNDEFINED
+                cookies={
+                  Cookies {
+                    "HAS_DOCUMENT_COOKIE": true,
+                    "changeListeners": Array [],
+                    "cookies": Object {},
+                  }
+                }
+              />
+            </React.Suspense>
+          }
+          path="change-password"
         />
         <Route
-          path="/default/change-phone-number"
-          render={[Function]}
+          element={
+            <React.Suspense
+              fallback={<loader />}
+            >
+              <UNDEFINED
+                cookies={
+                  Cookies {
+                    "HAS_DOCUMENT_COOKIE": true,
+                    "changeListeners": Array [],
+                    "cookies": Object {},
+                  }
+                }
+              />
+            </React.Suspense>
+          }
+          path="change-phone-number"
         />
         <Route
-          path="/default/payment/process/"
-          render={[Function]}
+          element={
+            <React.Suspense
+              fallback={<loader />}
+            >
+              <UNDEFINED
+                cookies={
+                  Cookies {
+                    "HAS_DOCUMENT_COOKIE": true,
+                    "changeListeners": Array [],
+                    "cookies": Object {},
+                  }
+                }
+              />
+            </React.Suspense>
+          }
+          path="payment/process/"
         />
         <Route
-          path="/default/payment/:status"
-          render={[Function]}
+          element={
+            <React.Suspense
+              fallback={<loader />}
+            >
+              <UNDEFINED
+                cookies={
+                  Cookies {
+                    "HAS_DOCUMENT_COOKIE": true,
+                    "changeListeners": Array [],
+                    "cookies": Object {},
+                  }
+                }
+              />
+            </React.Suspense>
+          }
+          path="payment/:status"
         />
+      </Routes>
+      <Routes>
         <Route
-          render={[Function]}
+          element={<Memo(Connect(Footer)) />}
+          path="*"
         />
-      </Switch>
-      <Route
-        path="/default"
-        render={[Function]}
-      />
+      </Routes>
     </div>
     <HelmetWrapper
       defer={true}
@@ -280,69 +661,191 @@ exports[`Test Organization Wrapper for authenticated and unverified users should
     <div
       className="app-container "
     >
-      <Route
-        path="/default"
-        render={[Function]}
-      />
-      <Switch>
+      <Routes>
         <Route
+          element={
+            <Memo(Connect(Header))
+              location={
+                Object {
+                  "pathname": "",
+                }
+              }
+              params={
+                Object {
+                  "organization": "default",
+                }
+              }
+            />
+          }
+          path="*"
+        />
+      </Routes>
+      <Routes>
+        <Route
+          element={
+            <Navigate
+              to="/default/login"
+            />
+          }
           exact={true}
-          path="/default"
-          render={[Function]}
+          path=""
         />
         <Route
-          path="/default/registration"
-          render={[Function]}
+          element={
+            <React.Suspense
+              fallback={<loader />}
+            >
+              <UNDEFINED />
+            </React.Suspense>
+          }
+          path="*"
         />
         <Route
-          path="/default/mobile-phone-verification"
-          render={[Function]}
+          element={
+            <Navigate
+              to="/default/mobile-phone-verification"
+            />
+          }
+          path="registration/*"
         />
         <Route
-          path="/default/password/reset/confirm/:uid/:token"
-          render={[Function]}
+          element={
+            <React.Suspense
+              fallback={<loader />}
+            >
+              <UNDEFINED
+                cookies={
+                  Cookies {
+                    "HAS_DOCUMENT_COOKIE": true,
+                    "changeListeners": Array [],
+                    "cookies": Object {},
+                  }
+                }
+              />
+            </React.Suspense>
+          }
+          path="mobile-phone-verification"
         />
         <Route
+          element={
+            <Navigate
+              to="/default/status"
+            />
+          }
+          path="password/reset/confirm/:uid/:token"
+        />
+        <Route
+          element={
+            <Navigate
+              to="/default/status"
+            />
+          }
           exact={true}
-          path="/default/password/reset"
-          render={[Function]}
+          path="password/reset"
         />
         <Route
-          path="/default/login"
-          render={[Function]}
+          element={
+            <Navigate
+              to="/default/status"
+            />
+          }
+          path="login/*"
         />
         <Route
-          path="/default/status"
-          render={[Function]}
+          element={
+            <Navigate
+              to="/default/mobile-phone-verification"
+            />
+          }
+          path="status"
         />
         <Route
-          path="/default/logout"
-          render={[Function]}
+          element={
+            <Navigate
+              to="/default/status"
+            />
+          }
+          path="logout"
         />
         <Route
-          path="/default/change-password"
-          render={[Function]}
+          element={
+            <React.Suspense
+              fallback={<loader />}
+            >
+              <UNDEFINED
+                cookies={
+                  Cookies {
+                    "HAS_DOCUMENT_COOKIE": true,
+                    "changeListeners": Array [],
+                    "cookies": Object {},
+                  }
+                }
+              />
+            </React.Suspense>
+          }
+          path="change-password"
         />
         <Route
-          path="/default/change-phone-number"
-          render={[Function]}
+          element={
+            <React.Suspense
+              fallback={<loader />}
+            >
+              <UNDEFINED
+                cookies={
+                  Cookies {
+                    "HAS_DOCUMENT_COOKIE": true,
+                    "changeListeners": Array [],
+                    "cookies": Object {},
+                  }
+                }
+              />
+            </React.Suspense>
+          }
+          path="change-phone-number"
         />
         <Route
-          path="/default/payment/process/"
-          render={[Function]}
+          element={
+            <React.Suspense
+              fallback={<loader />}
+            >
+              <UNDEFINED
+                cookies={
+                  Cookies {
+                    "HAS_DOCUMENT_COOKIE": true,
+                    "changeListeners": Array [],
+                    "cookies": Object {},
+                  }
+                }
+              />
+            </React.Suspense>
+          }
+          path="payment/process/"
         />
         <Route
-          path="/default/payment/:status"
-          render={[Function]}
+          element={
+            <React.Suspense
+              fallback={<loader />}
+            >
+              <UNDEFINED
+                cookies={
+                  Cookies {
+                    "HAS_DOCUMENT_COOKIE": true,
+                    "changeListeners": Array [],
+                    "cookies": Object {},
+                  }
+                }
+              />
+            </React.Suspense>
+          }
+          path="payment/:status"
         />
+      </Routes>
+      <Routes>
         <Route
-          render={[Function]}
+          element={<Memo(Connect(Footer)) />}
+          path="*"
         />
-      </Switch>
-      <Route
-        path="/default"
-        render={[Function]}
-      />
+      </Routes>
     </div>
     <HelmetWrapper
       defer={true}
@@ -369,69 +872,167 @@ exports[`Test Organization Wrapper for unauthenticated users should show route f
     <div
       className="app-container "
     >
-      <Route
-        path="/default"
-        render={[Function]}
-      />
-      <Switch>
+      <Routes>
         <Route
+          element={
+            <Memo(Connect(Header))
+              location={
+                Object {
+                  "pathname": "",
+                }
+              }
+              params={
+                Object {
+                  "organization": "default",
+                }
+              }
+            />
+          }
+          path="*"
+        />
+      </Routes>
+      <Routes>
+        <Route
+          element={
+            <Navigate
+              to="/default/login"
+            />
+          }
           exact={true}
-          path="/default"
-          render={[Function]}
+          path=""
         />
         <Route
-          path="/default/registration"
-          render={[Function]}
+          element={
+            <React.Suspense
+              fallback={<loader />}
+            >
+              <UNDEFINED />
+            </React.Suspense>
+          }
+          path="*"
         />
         <Route
-          path="/default/mobile-phone-verification"
-          render={[Function]}
+          element={
+            <React.Suspense
+              fallback={<loader />}
+            >
+              <UNDEFINED
+                loading={false}
+              />
+            </React.Suspense>
+          }
+          path="registration/*"
         />
         <Route
-          path="/default/password/reset/confirm/:uid/:token"
-          render={[Function]}
+          element={
+            <Navigate
+              to="/default/login"
+            />
+          }
+          path="mobile-phone-verification"
         />
         <Route
+          element={
+            <React.Suspense
+              fallback={<loader />}
+            >
+              <UNDEFINED />
+            </React.Suspense>
+          }
+          path="password/reset/confirm/:uid/:token"
+        />
+        <Route
+          element={
+            <React.Suspense
+              fallback={<loader />}
+            >
+              <UNDEFINED />
+            </React.Suspense>
+          }
           exact={true}
-          path="/default/password/reset"
-          render={[Function]}
+          path="password/reset"
         />
         <Route
-          path="/default/login"
-          render={[Function]}
+          element={<Memo(Connect(Login)) />}
+          path="login/*"
         />
         <Route
-          path="/default/status"
-          render={[Function]}
+          element={
+            <Navigate
+              to="/default/logout"
+            />
+          }
+          path="status"
         />
         <Route
-          path="/default/logout"
-          render={[Function]}
+          element={
+            <React.Suspense
+              fallback={<loader />}
+            >
+              <UNDEFINED />
+            </React.Suspense>
+          }
+          path="logout"
         />
         <Route
-          path="/default/change-password"
-          render={[Function]}
+          element={
+            <Navigate
+              to="/default/login"
+            />
+          }
+          path="change-password"
         />
         <Route
-          path="/default/change-phone-number"
-          render={[Function]}
+          element={
+            <Navigate
+              to="/default/login"
+            />
+          }
+          path="change-phone-number"
         />
         <Route
-          path="/default/payment/process/"
-          render={[Function]}
+          element={
+            <React.Suspense
+              fallback={<loader />}
+            >
+              <UNDEFINED
+                cookies={
+                  Cookies {
+                    "HAS_DOCUMENT_COOKIE": true,
+                    "changeListeners": Array [],
+                    "cookies": Object {},
+                  }
+                }
+              />
+            </React.Suspense>
+          }
+          path="payment/process/"
         />
         <Route
-          path="/default/payment/:status"
-          render={[Function]}
+          element={
+            <React.Suspense
+              fallback={<loader />}
+            >
+              <UNDEFINED
+                cookies={
+                  Cookies {
+                    "HAS_DOCUMENT_COOKIE": true,
+                    "changeListeners": Array [],
+                    "cookies": Object {},
+                  }
+                }
+              />
+            </React.Suspense>
+          }
+          path="payment/:status"
         />
+      </Routes>
+      <Routes>
         <Route
-          render={[Function]}
+          element={<Memo(Connect(Footer)) />}
+          path="*"
         />
-      </Switch>
-      <Route
-        path="/default"
-        render={[Function]}
-      />
+      </Routes>
     </div>
     <HelmetWrapper
       defer={true}

@@ -18,15 +18,11 @@ const createTestProps = (props) => ({
   language: "en",
   privacyPolicy: defaultConfig.privacy_policy,
   termsAndConditions: defaultConfig.terms_and_conditions,
-  match: {
-    params: {
-      name: "terms-and-conditions",
-    },
+  params: {
+    name: "terms-and-conditions",
   },
   prevPath: "/default/login",
-  history: {
-    push: jest.fn(),
-  },
+  navigate: jest.fn(),
   ...props,
 });
 
@@ -127,9 +123,9 @@ describe("<Modal /> interactions", () => {
       }),
     );
     wrapper.instance().handleKeyDown({keyCode: 1});
-    expect(props.history.push).toHaveBeenCalledTimes(0);
+    expect(props.navigate).toHaveBeenCalledTimes(0);
     wrapper.instance().handleKeyDown({keyCode: 27});
-    expect(props.history.push).toHaveBeenCalledTimes(1);
+    expect(props.navigate).toHaveBeenCalledTimes(1);
     await wrapper.instance().componentDidMount();
     await wrapper.instance().componentWillUnmount();
     expect(global.document.addEventListener).toHaveBeenCalled();

@@ -5,7 +5,7 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import qs from "qs";
 import React, {Suspense} from "react";
-import {Link, Route} from "react-router-dom";
+import {Link, Route, Routes} from "react-router-dom";
 import {toast} from "react-toastify";
 import {t} from "ttag";
 import getText from "../../utils/get-text";
@@ -355,7 +355,7 @@ export default class Login extends React.Component {
 
   render() {
     const {errors, password, remember_me} = this.state;
-    const {loginForm, orgSlug, match, language} = this.props;
+    const {loginForm, orgSlug, language} = this.props;
     const {
       links,
       buttons,
@@ -491,10 +491,12 @@ export default class Login extends React.Component {
             <Contact />
           </div>
         </div>
-        <Route
-          path={`${match.path}/:name`}
-          render={(props) => <Modal {...props} prevPath={match.url} />}
-        />
+        <Routes>
+          <Route
+            path=":name"
+            element={<Modal prevPath={`/${orgSlug}/login`} />}
+          />
+        </Routes>
       </>
     );
   }
@@ -549,17 +551,10 @@ Login.propTypes = {
     after_html: PropTypes.object,
   }).isRequired,
   language: PropTypes.string.isRequired,
-  match: PropTypes.shape({
-    path: PropTypes.string,
-    url: PropTypes.string,
-  }).isRequired,
   orgSlug: PropTypes.string.isRequired,
   orgName: PropTypes.string.isRequired,
-  privacyPolicy: PropTypes.object.isRequired,
-  termsAndConditions: PropTypes.object.isRequired,
   authenticate: PropTypes.func.isRequired,
   setUserData: PropTypes.func.isRequired,
-  userData: PropTypes.object.isRequired,
   settings: PropTypes.shape({
     radius_realms: PropTypes.bool,
     mobile_phone_verification: PropTypes.bool,

@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import React, {Suspense} from "react";
 import {Cookies} from "react-cookie";
 import {Helmet} from "react-helmet";
-import {Redirect, Route, Switch} from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 import {t} from "ttag";
 
 import getAssetPath from "../../utils/get-asset-path";
@@ -46,37 +46,29 @@ export default class OrganizationWrapper extends React.Component {
   }
 
   async componentDidMount() {
-    const {match, setOrganization, cookies} = this.props;
-    const organizationSlug = match.params.organization;
+    const {params, setOrganization, cookies} = this.props;
+    const organizationSlug = params.organization;
     if (organizationSlug) await setOrganization(organizationSlug, cookies);
     this.setState({translationLoaded: false, configLoaded: true});
   }
 
   async componentDidUpdate(prevProps) {
-    const {setOrganization, match, cookies, language} = this.props;
+    const {setOrganization, params, cookies, language} = this.props;
     const {translationLoaded, configLoaded} = this.state;
-    if (prevProps.match.params.organization !== match.params.organization) {
-      if (match.params.organization)
-        setOrganization(match.params.organization, cookies);
+    if (prevProps.params.organization !== params.organization) {
+      if (params.organization) setOrganization(params.organization, cookies);
     }
     if (translationLoaded !== true && configLoaded === true) {
       const userLangChoice = localStorage.getItem(
-        `${match.params.organization}-userLangChoice`,
+        `${params.organization}-userLangChoice`,
       );
       if (userLangChoice) {
-        await this.loadLanguage(
-          userLangChoice,
-          match.params.organization,
-          false,
-        );
-      } else await this.loadLanguage(language, match.params.organization, true);
+        await this.loadLanguage(userLangChoice, params.organization, false);
+      } else await this.loadLanguage(language, params.organization, true);
     } else if (prevProps.language !== language && prevProps.language !== "") {
       this.setLoading(true);
-      localStorage.setItem(
-        `${match.params.organization}-userLangChoice`,
-        language,
-      );
-      await this.loadLanguage(language, match.params.organization, false);
+      localStorage.setItem(`${params.organization}-userLangChoice`, language);
+      await this.loadLanguage(language, params.organization, false);
       this.setLoading(false);
     }
   }
@@ -105,7 +97,7 @@ export default class OrganizationWrapper extends React.Component {
   };
 
   render() {
-    const {organization, match, cookies} = this.props;
+    const {organization, params, cookies, location} = this.props;
     const {loading, translationLoaded, configLoaded} = this.state;
     const {
       title,
@@ -137,179 +129,180 @@ export default class OrganizationWrapper extends React.Component {
               value={{setLoading, getLoading: () => loading}}
             >
               <div className={`app-container ${extraClasses}`}>
-                <Route
-                  path={match.path}
-                  render={({location}) => <Header location={location} />}
-                />
-                <Switch>
+                <Routes>
                   <Route
-                    path={`${match.path}`}
+                    path="*"
+                    element={<Header location={location} params={params} />}
+                  />
+                </Routes>
+                <Routes>
+                  <Route
+                    path=""
                     exact
-                    render={() => <Redirect to={`/${orgSlug}/login`} />}
+                    element={<Navigate to={`/${orgSlug}/login`} />}
                   />
                   <Route
-                    path={`${match.path}/registration`}
-                    render={(props) => {
+                    path="*"
+                    element={
+                      <Suspense fallback={<Loader />}>
+                        <ConnectedDoesNotExist />
+                      </Suspense>
+                    }
+                  />
+                  <Route
+                    path="registration/*"
+                    element={(() => {
                       if (isAuthenticated && !needsVerifyPhone) {
-                        return <Redirect to={`/${orgSlug}/status`} />;
+                        return <Navigate to={`/${orgSlug}/status`} />;
                       }
                       if (isAuthenticated && needsVerifyPhone) {
                         return (
-                          <Redirect
+                          <Navigate
                             to={`/${orgSlug}/mobile-phone-verification`}
                           />
                         );
                       }
                       return (
                         <Suspense fallback={<Loader />}>
-                          <Registration {...props} loading={loading} />
+                          <Registration loading={loading} />
                         </Suspense>
                       );
-                    }}
+                    })()}
                   />
                   <Route
-                    path={`${match.path}/mobile-phone-verification`}
-                    render={(props) => {
+                    path="mobile-phone-verification"
+                    element={(() => {
                       if (
                         isAuthenticated &&
                         needsVerifyPhone === false &&
                         is_active
                       ) {
-                        return <Redirect to={`/${orgSlug}/status`} />;
+                        return <Navigate to={`/${orgSlug}/status`} />;
                       }
                       if (!isAuthenticated) {
-                        return <Redirect to={`/${orgSlug}/login`} />;
+                        return <Navigate to={`/${orgSlug}/login`} />;
                       }
                       return (
                         <Suspense fallback={<Loader />}>
-                          <MobilePhoneVerification
-                            {...props}
-                            cookies={cookies}
-                          />
+                          <MobilePhoneVerification cookies={cookies} />
                         </Suspense>
                       );
-                    }}
+                    })()}
                   />
                   <Route
-                    path={`${match.path}/password/reset/confirm/:uid/:token`}
-                    render={(props) => {
-                      if (isAuthenticated)
-                        return <Redirect to={`/${orgSlug}/status`} />;
-                      return (
+                    path="password/reset/confirm/:uid/:token"
+                    element={
+                      isAuthenticated ? (
+                        <Navigate to={`/${orgSlug}/status`} />
+                      ) : (
                         <Suspense fallback={<Loader />}>
-                          <PasswordConfirm {...props} />
+                          <PasswordConfirm />
                         </Suspense>
-                      );
-                    }}
+                      )
+                    }
                   />
                   <Route
-                    path={`${match.path}/password/reset`}
+                    path="password/reset"
                     exact
-                    render={() => {
-                      if (isAuthenticated)
-                        return <Redirect to={`/${orgSlug}/status`} />;
-                      return (
+                    element={
+                      isAuthenticated ? (
+                        <Navigate to={`/${orgSlug}/status`} />
+                      ) : (
                         <Suspense fallback={<Loader />}>
                           <PasswordReset />
                         </Suspense>
-                      );
-                    }}
+                      )
+                    }
                   />
                   <Route
-                    path={`${match.path}/login`}
-                    render={(props) => {
-                      if (isAuthenticated && is_active)
-                        return <Redirect to={`/${orgSlug}/status`} />;
-                      return <Login {...props} />;
-                    }}
+                    path="login/*"
+                    element={
+                      isAuthenticated && is_active ? (
+                        <Navigate to={`/${orgSlug}/status`} />
+                      ) : (
+                        <Login />
+                      )
+                    }
                   />
                   <Route
-                    path={`${match.path}/status`}
-                    render={(props) => {
+                    path="status"
+                    element={(() => {
                       if (isAuthenticated && needsVerifyPhone)
                         return (
-                          <Redirect
+                          <Navigate
                             to={`/${orgSlug}/mobile-phone-verification`}
                           />
                         );
                       if (isAuthenticated) {
                         return (
                           <Suspense fallback={<Loader />}>
-                            <Status {...props} cookies={cookies} />
+                            <Status cookies={cookies} location={location} />
                           </Suspense>
                         );
                       }
                       if (userAutoLogin)
-                        return <Redirect to={`/${orgSlug}/logout`} />;
-                      return <Redirect to={`/${orgSlug}/login`} />;
-                    }}
+                        return <Navigate to={`/${orgSlug}/logout`} />;
+                      return <Navigate to={`/${orgSlug}/login`} />;
+                    })()}
                   />
                   <Route
-                    path={`${match.path}/logout`}
-                    render={(props) => {
+                    path="logout"
+                    element={(() => {
                       if (isAuthenticated)
-                        return <Redirect to={`/${orgSlug}/status`} />;
+                        return <Navigate to={`/${orgSlug}/status`} />;
                       if (userAutoLogin)
                         return (
                           <Suspense fallback={<Loader />}>
-                            <Logout {...props} />
+                            <Logout />
                           </Suspense>
                         );
-                      return <Redirect to={`/${orgSlug}/login`} />;
-                    }}
+                      return <Navigate to={`/${orgSlug}/login`} />;
+                    })()}
                   />
                   <Route
-                    path={`${match.path}/change-password`}
-                    render={() => {
-                      if (isAuthenticated)
-                        return (
-                          <Suspense fallback={<Loader />}>
-                            <PasswordChange cookies={cookies} />
-                          </Suspense>
-                        );
-                      return <Redirect to={`/${orgSlug}/login`} />;
-                    }}
+                    path="change-password"
+                    element={
+                      isAuthenticated ? (
+                        <Suspense fallback={<Loader />}>
+                          <PasswordChange cookies={cookies} />
+                        </Suspense>
+                      ) : (
+                        <Navigate to={`/${orgSlug}/login`} />
+                      )
+                    }
                   />
                   <Route
-                    path={`${match.path}/change-phone-number`}
-                    render={() => {
-                      if (isAuthenticated)
-                        return (
-                          <Suspense fallback={<Loader />}>
-                            <MobilePhoneChange cookies={cookies} />
-                          </Suspense>
-                        );
-                      return <Redirect to={`/${orgSlug}/login`} />;
-                    }}
+                    path="change-phone-number"
+                    element={
+                      isAuthenticated ? (
+                        <Suspense fallback={<Loader />}>
+                          <MobilePhoneChange cookies={cookies} />
+                        </Suspense>
+                      ) : (
+                        <Navigate to={`/${orgSlug}/login`} />
+                      )
+                    }
                   />
                   <Route
-                    path={`${match.path}/payment/process/`}
-                    render={() => (
+                    path="payment/process/"
+                    element={
                       <Suspense fallback={<Loader />}>
                         <PaymentProcess cookies={cookies} />
                       </Suspense>
-                    )}
+                    }
                   />
                   <Route
-                    path={`${match.path}/payment/:status`}
-                    render={(props) => {
-                      const {status} = props.match.params;
-                      return (
-                        <Suspense fallback={<Loader />}>
-                          <PaymentStatus cookies={cookies} status={status} />
-                        </Suspense>
-                      );
-                    }}
-                  />
-                  <Route
-                    render={() => (
+                    path="payment/:status"
+                    element={
                       <Suspense fallback={<Loader />}>
-                        <ConnectedDoesNotExist />
+                        <PaymentStatus cookies={cookies} />
                       </Suspense>
-                    )}
+                    }
                   />
-                </Switch>
-                <Route path={match.path} render={() => <Footer />} />
+                </Routes>
+                <Routes>
+                  <Route path="*" element={<Footer />} />
+                </Routes>
               </div>
               <Helmet>
                 <title>
@@ -323,11 +316,11 @@ export default class OrganizationWrapper extends React.Component {
           ) : null}
           {css && css.length !== 0 && orgSlug ? (
             <Helmet>
-              {css.map((path) => (
+              {css.map((cssLocation) => (
                 <link
                   rel="stylesheet"
-                  href={getAssetPath(orgSlug, path)}
-                  key={path}
+                  href={getAssetPath(orgSlug, cssLocation)}
+                  key={cssLocation}
                 />
               ))}
             </Helmet>
@@ -343,8 +336,8 @@ export default class OrganizationWrapper extends React.Component {
           ) : null}
           {js && js.length !== 0 && orgSlug ? (
             <Helmet>
-              {js.map((path) => (
-                <script src={getAssetPath(orgSlug, path)} key={path} />
+              {js.map((jsPath) => (
+                <script src={getAssetPath(orgSlug, jsPath)} key={jsPath} />
               ))}
             </Helmet>
           ) : null}
@@ -370,12 +363,10 @@ OrganizationWrapper.defaultProps = {
   languages: [],
 };
 OrganizationWrapper.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      organization: PropTypes.string.isRequired,
-    }),
-    path: PropTypes.string,
+  params: PropTypes.shape({
+    organization: PropTypes.string.isRequired,
   }).isRequired,
+  location: PropTypes.object.isRequired,
   setOrganization: PropTypes.func.isRequired,
   setLanguage: PropTypes.func.isRequired,
   organization: PropTypes.shape({

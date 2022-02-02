@@ -2,7 +2,7 @@
 import {Cookies} from "react-cookie";
 import PropTypes from "prop-types";
 import React from "react";
-import {Link, Redirect} from "react-router-dom";
+import {Link, Navigate} from "react-router-dom";
 import {toast} from "react-toastify";
 import {t} from "ttag";
 import LoadingContext from "../../utils/loading-context";
@@ -69,7 +69,7 @@ export default class PaymentStatus extends React.Component {
   render() {
     const {orgSlug, status, isAuthenticated, userData} = this.props;
     const {method, is_verified: isVerified} = userData;
-    const redirectToStatus = () => <Redirect to={`/${orgSlug}/status`} />;
+    const redirectToStatus = () => <Navigate to={`/${orgSlug}/status`} />;
     const acceptedValues = ["success", "failed", "draft"];
     const {isTokenValid} = this.state;
 
