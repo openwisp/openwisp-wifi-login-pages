@@ -67,7 +67,6 @@ describe("<MobilePhoneChange /> rendering with placeholder translation tags", ()
 
 const historyMock = createMemoryHistory();
 historyMock.entries = [];
-historyMock.location.key = "";
 
 const mountComponent = function (props) {
   const mockedStore = {
@@ -139,7 +138,7 @@ describe("Change Phone Number: standard flow", () => {
     props.userData = userData;
     loadTranslation("en", "default");
     wrapper = await mountComponent(props);
-    expect(wrapper).toMatchSnapshot();
+    expect(wrapper.find("Router").props().children).toMatchSnapshot();
     expect(wrapper.exists(MobilePhoneChange)).toBe(true);
     expect(wrapper.find("input[name='phone_number']").length).toBe(1);
 
