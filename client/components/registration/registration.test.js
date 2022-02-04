@@ -441,6 +441,28 @@ describe("<Registration /> interactions", () => {
     expect(modalWrapper.contains(<p>{t`NO_ORGS`}</p>)).toBe(true);
     expect(modalWrapper).toMatchSnapshot();
   });
+  it("should show 404 toast if organization does not exists", async () => {
+    axios.mockImplementationOnce(() =>
+      Promise.reject({
+        response: {
+          status: 404,
+          statusText: "404_NOT_FOUND",
+          data: "404",
+        },
+      }),
+    );
+    const spyToast = jest.spyOn(toast, "error");
+    const contextVal = {setLoading: jest.fn(), getLoading: jest.fn()};
+    wrapper = shallow(<Registration {...props} />, {
+      context: contextVal,
+      disableLifecycleMethods: true,
+    });
+    const event = {preventDefault: () => {}};
+    wrapper.instance().handleSubmit(event);
+    await tick();
+    expect(spyToast.mock.calls.pop()).toEqual([t`404_PG_TITL`]);
+    expect(contextVal.setLoading).toHaveBeenCalledWith(false);
+  });
 });
 
 describe("Registration and Mobile Phone Verification interactions", () => {
