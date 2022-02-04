@@ -242,6 +242,11 @@ export default class Registration extends React.Component {
       })
       .catch((error) => {
         const {data, status} = error.response;
+        if (status === 404) {
+          setLoading(false);
+          toast.error(t`404_PG_TITL`);
+          return;
+        }
         if (status === 409) {
           setLoading(false);
           this.toggleModal();
