@@ -297,7 +297,7 @@ msgstr "Go back to sign in"
 msgid "PWD_RESET_ADD_TXT"
 msgstr ""
 "Have you forgot your password? Enter your email address, phone number "
-"or username below and we'll  send you the instructions to reset it."
+"or username below and we'll send you the instructions to reset it."
 
 #: client/components/password-reset/password-reset.js:127
 msgid "PWD_RESET_BTN"
