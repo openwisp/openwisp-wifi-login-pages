@@ -323,8 +323,8 @@ msgstr "Вернутся на страницу входa"
 #: client/components/password-reset/password-reset.js:101
 msgid "PWD_RESET_ADD_TXT"
 msgstr ""
-"Забыл пароль? Введите свой емайл адрес, и мы отправим вам инструкции по его "
-"сбросу"
+"Вы забыли пароль? Введите адрес электронной почты, номер телефона"
+"или имя пользователя ниже, и мы вышлем вам инструкции по его сбросу."
 
 #: client/components/password-reset/password-reset.js:127
 msgid "PWD_RESET_BTN"

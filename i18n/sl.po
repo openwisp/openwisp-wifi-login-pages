@@ -274,7 +274,9 @@ msgstr "Vrnite se na vstopno stran"
 
 #: client/components/password-reset/password-reset.js:101
 msgid "PWD_RESET_ADD_TXT"
-msgstr "Ste pozabili geslo? Vpišite naslov e-pošte, na katero boste prejeli navodila za ponastavitev."
+msgstr ""
+"Ste pozabili geslo? Vnesite svoj elektronski naslov, telefonsko številko "
+"ali uporabniško ime spodaj in poslali vam bomo navodila za ponastavitev."
 
 #: client/components/password-reset/password-reset.js:127
 msgid "PWD_RESET_BTN"

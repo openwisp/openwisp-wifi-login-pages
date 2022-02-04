@@ -324,8 +324,8 @@ msgstr "Torne ae pagjine di acès"
 #: client/components/password-reset/password-reset.js:101
 msgid "PWD_RESET_ADD_TXT"
 msgstr ""
-"Âstu dismenteade la password? Inserìs la direzion email e tu ricevarâs lis "
-"istruzion par tornâ a impuestâle."
+"Âstu dismenteade la password? Inserìs la direzion email, numar di telefon celulâr "
+"o non utent e tu ricevarâs lis istruzion par tornâ a impuestâle."
 
 #: client/components/password-reset/password-reset.js:127
 msgid "PWD_RESET_BTN"

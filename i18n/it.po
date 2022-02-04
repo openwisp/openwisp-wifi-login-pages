@@ -324,8 +324,8 @@ msgstr "Torna alla pagina di accesso"
 #: client/components/password-reset/password-reset.js:101
 msgid "PWD_RESET_ADD_TXT"
 msgstr ""
-"Hai dimenticato la password? Inserisci l'indirizzo email e saranno inviate "
-"le istruzioni per reimpostarla."
+"Hai dimenticato la password? Inserisci il tuo indirizzo email, numero di telefono"
+"o nome utente di seguito e ti invieremo le istruzioni per reimpostarlo."
 
 #: client/components/password-reset/password-reset.js:127
 msgid "PWD_RESET_BTN"

@@ -23,7 +23,7 @@ describe("Selenium tests for <PasswordReset />", () => {
   it("should send password reset email", async () => {
     await driver.get(urls.passwordReset);
     const data = initialData();
-    const email = await getElementByCss(driver, "input#email");
+    const email = await getElementByCss(driver, "input#input");
     email.sendKeys(data.testuser.email);
     const submitBtn = await getElementByCss(driver, "input[type=submit]");
     submitBtn.click();

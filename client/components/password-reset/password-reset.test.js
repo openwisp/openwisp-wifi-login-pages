@@ -58,22 +58,22 @@ describe("<PasswordReset /> rendering", () => {
 
   it("should render 2 inputs", () => {
     expect(wrapper.find("input")).toHaveLength(2);
-    expect(wrapper.find("input[type='email']")).toHaveLength(1);
+    expect(wrapper.find("input[type='text']")).toHaveLength(1);
     expect(wrapper.find("input[type='submit']")).toHaveLength(1);
   });
 
-  it("should render email field correctly", () => {
-    const emailInput = wrapper.find("input[type='email']");
-    expect(wrapper.find(".row.email label").text()).toBe(
-      getTranslationString("EMAIL"),
+  it("should render input field correctly", () => {
+    const emailInput = wrapper.find("input[type='text']");
+    expect(wrapper.find(".row label").text()).toBe(
+      getTranslationString("USERNAME_LOG_LBL"),
     );
     expect(emailInput.prop("placeholder")).toBe(
-      getTranslationString("EMAIL_PHOLD"),
+      getTranslationString("USERNAME_LOG_PHOLD"),
     );
     expect(emailInput.prop("title")).toBe(
-      getTranslationString("EMAIL_PTRN_DESC"),
+      getTranslationString("USERNAME_LOG_TITL"),
     );
-    expect(emailInput.prop("type")).toBe("email");
+    expect(emailInput.prop("type")).toBe("text");
   });
 });
 
@@ -105,9 +105,9 @@ describe("<PasswordReset /> interactions", () => {
 
   it("should change state values when handleChange function is invoked", () => {
     wrapper
-      .find("input[type='email']")
-      .simulate("change", {target: {value: "test@test.com", name: "email"}});
-    expect(wrapper.state("email")).toEqual("test@test.com");
+      .find("input[type='text']")
+      .simulate("change", {target: {value: "test@test.com", name: "input"}});
+    expect(wrapper.state("input")).toEqual("test@test.com");
   });
 
   it("should execute handleSubmit correctly when form is submitted", () => {
@@ -127,7 +127,7 @@ describe("<PasswordReset /> interactions", () => {
       .instance()
       .handleSubmit({preventDefault: () => {}})
       .then(() => {
-        expect(wrapper.instance().state.errors.email).toEqual("errors");
+        expect(wrapper.instance().state.errors.input).toEqual("errors");
         expect(wrapper.find("div.error")).toHaveLength(1);
         expect(wrapper.find("input.error")).toHaveLength(1);
         expect(lastConsoleOutuput).not.toBe(null);
@@ -140,7 +140,7 @@ describe("<PasswordReset /> interactions", () => {
           .instance()
           .handleSubmit({preventDefault: () => {}})
           .then(() => {
-            expect(wrapper.instance().state.errors.email).toEqual(
+            expect(wrapper.instance().state.errors.input).toEqual(
               "non field errors",
             );
             expect(lastConsoleOutuput).not.toBe(null);

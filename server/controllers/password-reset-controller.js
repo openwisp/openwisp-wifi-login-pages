@@ -17,7 +17,7 @@ const passwordReset = (req, res) => {
       const {host} = conf;
       const resetUrl = reverse("password_reset", getSlug(conf));
       const timeout = conf.timeout * 1000;
-      const {email} = req.body;
+      const {input} = req.body;
 
       // make AJAX request
       axios({
@@ -28,7 +28,7 @@ const passwordReset = (req, res) => {
         },
         url: `${host}${resetUrl}/`,
         timeout,
-        data: qs.stringify({email}),
+        data: qs.stringify({input}),
       })
         .then((response) => {
           // forward response

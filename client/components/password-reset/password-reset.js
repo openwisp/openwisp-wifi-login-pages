@@ -19,7 +19,7 @@ export default class PasswordReset extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "",
+      input: "",
       errors: {},
       success: false,
     };
@@ -40,7 +40,7 @@ export default class PasswordReset extends React.Component {
     const {setLoading} = this.context;
     event.preventDefault();
     const {orgSlug, language} = this.props;
-    const {email, errors} = this.state;
+    const {input, errors} = this.state;
     const url = resetApiUrl.replace("{orgSlug}", orgSlug);
     setLoading(true);
     return axios({
@@ -51,13 +51,13 @@ export default class PasswordReset extends React.Component {
       },
       url,
       data: qs.stringify({
-        email,
+        input,
       }),
     })
       .then((response) => {
         this.setState({
           errors: {},
-          email: "",
+          input: "",
           success: response.data.detail,
         });
         setLoading(false);
@@ -71,16 +71,15 @@ export default class PasswordReset extends React.Component {
         this.setState({
           errors: {
             ...errors,
-            ...(errorText ? {email: errorText} : {email: ""}),
+            ...(errorText ? {input: errorText} : {input: ""}),
           },
         });
       });
   }
 
   render() {
-    const {email, errors, success} = this.state;
+    const {input, errors, success} = this.state;
     const {passwordReset, orgSlug} = this.props;
-    const inputFields = passwordReset.input_fields;
     const loginPageLink = passwordReset.login_page_link;
     return (
       <div className="container content" id="reset-password">
@@ -102,21 +101,20 @@ export default class PasswordReset extends React.Component {
                 )}
 
                 <div className="fieldset">
-                  <div className="row email">
-                    <label htmlFor="email">{t`EMAIL`}</label>
-                    {getError(errors, "email")}
+                  <div className="row">
+                    <label htmlFor="input">{t`USERNAME_LOG_LBL`}</label>
+                    {getError(errors, "input")}
                     <input
-                      className={`input ${errors.email ? "error" : ""}`}
-                      type="email"
-                      id="email"
+                      className={`input ${errors.input ? "error" : ""}`}
+                      type="text"
+                      id="input"
                       required
-                      name="email"
-                      value={email}
+                      name="input"
+                      value={input}
                       onChange={this.handleChange}
-                      placeholder={t`EMAIL_PHOLD`}
-                      pattern={inputFields.email.pattern}
-                      title={t`EMAIL_PTRN_DESC`}
-                      autoComplete="email"
+                      placeholder={t`USERNAME_LOG_PHOLD`}
+                      title={t`USERNAME_LOG_TITL`}
+                      autoComplete="input"
                     />
                   </div>
 
@@ -154,11 +152,6 @@ PasswordReset.contextType = LoadingContext;
 PasswordReset.propTypes = {
   passwordReset: PropTypes.shape({
     additional_text: PropTypes.bool,
-    input_fields: PropTypes.shape({
-      email: PropTypes.shape({
-        pattern: PropTypes.string.isRequired,
-      }).isRequired,
-    }).isRequired,
     login_page_link: PropTypes.bool,
     contact_text: PropTypes.bool,
   }).isRequired,
