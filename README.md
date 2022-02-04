@@ -74,7 +74,7 @@ An ansible role which can be used to deploy and maintain this app is available, 
 
 ### Prerequisites
 
-- [NodeJs](https://nodejs.org/en/) >= 12.0.0
+- [NodeJs](https://nodejs.org/en/) >= 16.0.0
 - [NPM](https://npmjs.org/) - Node package manager >= 6.9.0
 - [yarn](https://yarnpkg.com/) - Yarn package manager >= 1.19.0
 
