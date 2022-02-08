@@ -4,7 +4,7 @@ import qs from "qs";
 
 import config from "../config.json";
 import defaultConfig from "../utils/default-config";
-import Logger from "../utils/logger";
+import Logger, {logResponseError} from "../utils/logger";
 import reverse from "../utils/openwisp-urls";
 import getSlug from "../utils/get-slug";
 import sendCookies from "../utils/send-cookies";
@@ -35,9 +35,8 @@ const obtainToken = (req, res) => {
       })
         .then((response) => sendCookies(response, conf, res))
         .catch((error) => {
-          Logger.error(error);
+          logResponseError(error);
           try {
-            Logger.warn(`status code: ${error.response.status}`);
             // unverified user recognized
             if (
               error.response.status === 401 &&

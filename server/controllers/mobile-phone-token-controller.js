@@ -4,7 +4,7 @@ import qs from "qs";
 
 import config from "../config.json";
 import defaultConfig from "../utils/default-config";
-import Logger from "../utils/logger";
+import Logger, {logResponseError} from "../utils/logger";
 import reverse from "../utils/openwisp-urls";
 import getSlug from "../utils/get-slug";
 
@@ -37,7 +37,7 @@ export const createMobilePhoneToken = (req, res) => {
             .send(response.data);
         })
         .catch((error) => {
-          Logger.error(error);
+          logResponseError(error);
           // forward error
           try {
             res

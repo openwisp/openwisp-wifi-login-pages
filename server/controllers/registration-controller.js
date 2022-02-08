@@ -3,7 +3,7 @@ import merge from "deepmerge";
 
 import config from "../config.json";
 import defaultConfig from "../utils/default-config";
-import Logger from "../utils/logger";
+import Logger, {logResponseError} from "../utils/logger";
 import reverse from "../utils/openwisp-urls";
 import getSlug from "../utils/get-slug";
 import sendCookies from "../utils/send-cookies";
@@ -58,7 +58,7 @@ const registration = (req, res) => {
       })
         .then((response) => sendCookies(response, conf, res, username))
         .catch((error) => {
-          Logger.error(error);
+          logResponseError(error);
           // forward error
           try {
             res
