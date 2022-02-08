@@ -106,9 +106,14 @@ try {
 
 export const logResponseError = (error) => {
   if (error.response) {
-    const {status, data} = error.response;
+    const {status, data, config} = error.response;
     if (status >= 500) Logger.error(error.response);
-    else Logger.info(`Request failed with ${status}: ${JSON.stringify(data)}`);
+    else
+      Logger.info(
+        `Request to ${config.url} failed with ${status}:\n${JSON.stringify(
+          data,
+        )}`,
+      );
   } else Logger.error(error);
 };
 
