@@ -107,7 +107,7 @@ try {
 export const logResponseError = (error) => {
   if (error.response) {
     const {status, data} = error.response;
-    if (status === 500) Logger.error(error.response);
+    if (status >= 500) Logger.error(error.response);
     else Logger.info(`Request failed with ${status}: ${JSON.stringify(data)}`);
   } else Logger.error(error);
 };
