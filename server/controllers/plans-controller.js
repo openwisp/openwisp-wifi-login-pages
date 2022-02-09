@@ -2,7 +2,7 @@ import axios from "axios";
 import merge from "deepmerge";
 import config from "../config.json";
 import defaultConfig from "../utils/default-config";
-import Logger from "../utils/logger";
+import Logger, {logResponseError} from "../utils/logger";
 import reverse from "../utils/openwisp-urls";
 import getSlug from "../utils/get-slug";
 
@@ -32,8 +32,7 @@ const plans = (req, res) => {
             .send(response.data);
         })
         .catch((error) => {
-          if (error.response && error.response.status === 500)
-            Logger.error(error);
+          logResponseError(error);
           // forward error
           try {
             res
