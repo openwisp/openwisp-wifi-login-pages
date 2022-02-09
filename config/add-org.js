@@ -1,7 +1,6 @@
 const fs = require("fs");
 const path = require("path");
 const yaml = require("js-yaml");
-const nodePlop = require("node-plop");
 const {prompt} = require("inquirer");
 const _ = require("lodash");
 const {detailedDiff} = require("deep-object-diff");
@@ -164,8 +163,10 @@ const isArray = (arr) => {
   return nums.every((num) => checkArr.includes(num));
 };
 
+const loadNodePlop = () => import("node-plop");
 const createConfiguration = async (response) => {
-  const plop = nodePlop(`./internals/generators/index.js`);
+  const {default: nodePlop} = await loadNodePlop();
+  const plop = await nodePlop(`./internals/generators/index.js`);
   const organizationGenerator = plop.getGenerator("organization");
   await organizationGenerator.runActions(response).then((results) => {
     if (results.changes && results.changes.length > 0) {
