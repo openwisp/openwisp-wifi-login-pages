@@ -22,7 +22,9 @@ import validateToken from "../../utils/validate-token";
 import getError from "../../utils/get-error";
 import getLanguageHeaders from "../../utils/get-language-headers";
 
-const PhoneInput = React.lazy(() => import("react-phone-input-2"));
+const PhoneInput = React.lazy(() =>
+  import(/* webpackChunkName: 'PhoneInput' */ "react-phone-input-2"),
+);
 
 class MobilePhoneChange extends React.Component {
   constructor(props) {
