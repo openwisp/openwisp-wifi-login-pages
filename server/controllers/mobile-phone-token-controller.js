@@ -90,7 +90,7 @@ export const verifyMobilePhoneToken = (req, res) => {
             .send(response.data);
         })
         .catch((error) => {
-          Logger.error(error);
+          logResponseError(error);
           // forward error
           try {
             res
