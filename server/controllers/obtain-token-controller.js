@@ -4,7 +4,7 @@ import qs from "qs";
 
 import config from "../config.json";
 import defaultConfig from "../utils/default-config";
-import Logger, {logResponseError} from "../utils/logger";
+import {logResponseError} from "../utils/logger";
 import reverse from "../utils/openwisp-urls";
 import getSlug from "../utils/get-slug";
 import sendCookies from "../utils/send-cookies";
@@ -50,7 +50,6 @@ const obtainToken = (req, res) => {
               .type("application/json")
               .send(error.response.data);
           } catch (err) {
-            Logger.error(err);
             return res.status(500).type("application/json").send({
               detail: "Internal server error",
             });
