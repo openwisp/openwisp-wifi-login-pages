@@ -105,16 +105,23 @@ try {
 }
 
 export const logResponseError = (error) => {
-  if (error.response) {
-    const {status, data, config} = error.response;
-    if (status >= 500) Logger.error(error.response);
-    else
-      Logger.info(
-        `Request to ${config.url} failed with ${status}:\n${JSON.stringify(
-          data,
-        )}`,
-      );
-  } else Logger.error(error);
+  try {
+    if (error.response) {
+      const {status, data, config} = error.response;
+      if (status >= 500) Logger.error(error.response);
+      else
+        Logger.info(
+          `Request to ${config.url} failed with ${status}:\n${JSON.stringify(
+            data,
+          )}`,
+        );
+    } else if (error.request) {
+      // The request was made but no response was received
+      Logger.error({error, request: error.request});
+    } else Logger.error(error.message);
+  } catch (err) {
+    Logger.error(err);
+  }
 };
 
 export default Logger;
