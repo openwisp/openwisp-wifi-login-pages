@@ -1,4 +1,5 @@
-const loadConfig = (slug) => import(`../configs/${slug}.json`);
+const loadConfig = (slug) =>
+  import(/* webpackChunkName: 'orgConfig' */ `../configs/${slug}.json`);
 const getConfig = async (slug) => {
   let config;
   try {

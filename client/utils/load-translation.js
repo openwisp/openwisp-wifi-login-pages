@@ -7,9 +7,13 @@ const setLocale = (language, translationObj, setLanguage) => {
 };
 
 const loadCustomTranslation = (orgSlug, language) =>
-  import(`../translations/${orgSlug}_${language}.custom.json`);
+  import(
+    /* webpackChunkName: 'customTranslation' */ `../translations/${orgSlug}_${language}.custom.json`
+  );
 const loadDefaultTranslation = (language) =>
-  import(`../translations/${language}.json`);
+  import(
+    /* webpackChunkName: 'defaultTranslation' */ `../translations/${language}.json`
+  );
 
 const importTranslation = async (orgSlug, lang, setLanguage) => {
   try {
