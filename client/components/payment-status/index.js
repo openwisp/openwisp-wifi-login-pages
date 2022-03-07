@@ -1,6 +1,7 @@
 import {connect} from "react-redux";
 import Component from "./payment-status";
 import {authenticate, logout, setUserData} from "../../actions/dispatchers";
+import withRouteProps from "../../utils/withRouteProps";
 
 const mapStateToProps = (state, ownProps) => {
   const conf = state.organization.configuration;
@@ -21,4 +22,4 @@ const mapDispatchToProps = (dispatch) => ({
   setUserData: setUserData(dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Component);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouteProps(Component));

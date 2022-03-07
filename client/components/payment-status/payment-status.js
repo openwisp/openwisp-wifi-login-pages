@@ -19,8 +19,9 @@ export default class PaymentStatus extends React.Component {
   }
 
   async componentDidMount() {
-    const {cookies, orgSlug, setUserData, logout, status, settings, language} =
+    const {cookies, orgSlug, setUserData, logout, params, settings, language} =
       this.props;
+    const {status} = params;
     let {userData} = this.props;
     const {setLoading} = this.context;
 
@@ -67,7 +68,8 @@ export default class PaymentStatus extends React.Component {
   };
 
   render() {
-    const {orgSlug, status, isAuthenticated, userData} = this.props;
+    const {orgSlug, params, isAuthenticated, userData} = this.props;
+    const {status} = params;
     const {method, is_verified: isVerified} = userData;
     const redirectToStatus = () => <Navigate to={`/${orgSlug}/status`} />;
     const acceptedValues = ["success", "failed", "draft"];
@@ -196,7 +198,6 @@ PaymentStatus.propTypes = {
   setUserData: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
   authenticate: PropTypes.func.isRequired,
-  status: PropTypes.string.isRequired,
   page: PropTypes.object,
   logout: PropTypes.func.isRequired,
   cookies: PropTypes.instanceOf(Cookies).isRequired,
