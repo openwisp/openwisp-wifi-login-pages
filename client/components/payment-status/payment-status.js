@@ -204,4 +204,7 @@ PaymentStatus.propTypes = {
   settings: PropTypes.shape({
     payment_requires_internet: PropTypes.bool,
   }).isRequired,
+  params: PropTypes.shape({
+    status: PropTypes.string,
+  }).isRequired,
 };
