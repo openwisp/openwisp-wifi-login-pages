@@ -22,4 +22,7 @@ const mapDispatchToProps = (dispatch) => ({
   setUserData: setUserData(dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouteProps(Component));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withRouteProps(Component));
