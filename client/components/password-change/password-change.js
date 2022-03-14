@@ -7,7 +7,7 @@ import React from "react";
 import {toast} from "react-toastify";
 import {Cookies} from "react-cookie";
 import {t} from "ttag";
-import {Link, Redirect} from "react-router-dom";
+import {Link, Navigate} from "react-router-dom";
 import PasswordToggleIcon from "../../utils/password-toggle";
 import {passwordChangeApiUrl} from "../../constants";
 import getErrorText from "../../utils/get-error-text";
@@ -172,7 +172,7 @@ export default class PasswordChange extends React.Component {
       this.state;
     const toggler = () => this.setState({hidePassword: !hidePassword});
     if (userData && ["saml", "social_login"].includes(userData.method))
-      return <Redirect to={`/${orgSlug}/status`} />;
+      return <Navigate to={`/${orgSlug}/status`} />;
     return (
       <div className="container content" id="password-change">
         <div className="inner">

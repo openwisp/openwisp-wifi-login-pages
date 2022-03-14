@@ -2,7 +2,7 @@
 import {Cookies} from "react-cookie";
 import PropTypes from "prop-types";
 import React from "react";
-import {Link, Redirect} from "react-router-dom";
+import {Link, Navigate} from "react-router-dom";
 import {toast} from "react-toastify";
 import {t} from "ttag";
 import LoadingContext from "../../utils/loading-context";
@@ -19,8 +19,9 @@ export default class PaymentStatus extends React.Component {
   }
 
   async componentDidMount() {
-    const {cookies, orgSlug, setUserData, logout, status, settings, language} =
+    const {cookies, orgSlug, setUserData, logout, params, settings, language} =
       this.props;
+    const {status} = params;
     let {userData} = this.props;
     const {setLoading} = this.context;
 
@@ -67,9 +68,10 @@ export default class PaymentStatus extends React.Component {
   };
 
   render() {
-    const {orgSlug, status, isAuthenticated, userData} = this.props;
+    const {orgSlug, params, isAuthenticated, userData} = this.props;
+    const {status} = params;
     const {method, is_verified: isVerified} = userData;
-    const redirectToStatus = () => <Redirect to={`/${orgSlug}/status`} />;
+    const redirectToStatus = () => <Navigate to={`/${orgSlug}/status`} />;
     const acceptedValues = ["success", "failed", "draft"];
     const {isTokenValid} = this.state;
 
@@ -196,11 +198,13 @@ PaymentStatus.propTypes = {
   setUserData: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
   authenticate: PropTypes.func.isRequired,
-  status: PropTypes.string.isRequired,
   page: PropTypes.object,
   logout: PropTypes.func.isRequired,
   cookies: PropTypes.instanceOf(Cookies).isRequired,
   settings: PropTypes.shape({
     payment_requires_internet: PropTypes.bool,
+  }).isRequired,
+  params: PropTypes.shape({
+    status: PropTypes.string,
   }).isRequired,
 };

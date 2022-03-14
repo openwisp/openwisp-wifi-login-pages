@@ -1,5 +1,5 @@
 import React from "react";
-import {Router} from "react-router-dom";
+import {BrowserRouter as Router} from "react-router-dom";
 import axios from "axios";
 import {Cookies} from "react-cookie";
 import {shallow, mount} from "enzyme";
@@ -26,9 +26,17 @@ import redirectToPayment from "./redirect-to-payment";
 import {initialState} from "../reducers/organization";
 import {localStorage, sessionStorage, storageFallback} from "./storage";
 import getPaymentStatusRedirectUrl from "./get-payment-status";
+import withRouteProps from "./withRouteProps";
 
 jest.mock("axios");
 jest.mock("./load-translation");
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useLocation: () => ({
+    pathname: "/path",
+  }),
+  useNavigate: () => jest.fn(),
+}));
 
 describe("renderAdditionalInfo tests", () => {
   let text = "sample test";
@@ -833,5 +841,20 @@ describe("getPaymentStatusRedirectUrl tests", () => {
     expect(errorMethod).toHaveBeenCalledWith("Error occurred!");
     expect(consoleLog).toHaveBeenCalledTimes(1);
     expect(consoleLog).toHaveBeenCalledWith(response);
+  });
+});
+describe("withRouteProps test", () => {
+  it("should add route props to component", () => {
+    const Component = () => React.Component;
+    const origWrapper = shallow(<Component />);
+    expect(origWrapper.props()).toEqual({});
+    const ComponentWithRouteProps = withRouteProps(Component);
+    const wrapper = shallow(<ComponentWithRouteProps props={{extra: true}} />);
+    expect(wrapper.props()).toEqual({
+      location: {pathname: "/path"},
+      navigate: expect.any(Function),
+      params: {},
+      props: {extra: true},
+    });
   });
 });

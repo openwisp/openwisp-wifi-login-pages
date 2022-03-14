@@ -604,13 +604,14 @@ describe("Registration and Mobile Phone Verification interactions", () => {
     pathMap = wrapper.find(Route).reduce((mapRoute, route) => {
       const map = mapRoute;
       const routeProps = route.props();
-      map[routeProps.path] = routeProps.render;
+      map[routeProps.path] = routeProps.element;
       return map;
     }, {});
-    expect(pathMap["default/registration/:name"]).toEqual(expect.any(Function));
-    const render = pathMap["default/registration/:name"];
+    const element = pathMap[":name"];
     const Comp = React.createElement(Modal).type;
-    expect(JSON.stringify(render({}))).toStrictEqual(JSON.stringify(<Comp />));
+    expect(JSON.stringify(element)).toStrictEqual(
+      JSON.stringify(<Comp prevPath={`/${props.orgSlug}/registration`} />),
+    );
   });
   it("should send post data with optional fields", async () => {
     axios.mockImplementationOnce(() =>

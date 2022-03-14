@@ -1,5 +1,6 @@
 import {connect} from "react-redux";
 import {setTitle} from "../../actions/dispatchers";
+import withRouteProps from "../../utils/withRouteProps";
 
 import Component from "./password-confirm";
 
@@ -17,4 +18,7 @@ const mapDispatchToProps = (dispatch) => ({
   setTitle: setTitle(dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Component);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withRouteProps(Component));

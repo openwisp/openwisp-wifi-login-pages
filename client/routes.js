@@ -1,23 +1,21 @@
 import React from "react";
-import {Redirect, Route, Switch} from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 
 import OrganizationWrapper from "./components/organization-wrapper";
+import withRouteProps from "./utils/withRouteProps";
 
-class Routes extends React.Component {
+class OrganizationRoutes extends React.Component {
   render() {
-    const {match, organizations} = this.props;
-    if (match.isExact && organizations.length > 0) {
-      return <Redirect to={`/${organizations[0].slug}/`} />;
+    const {organizations, params} = this.props;
+    if (params["*"] === "" && organizations.length > 0) {
+      return <Navigate to={`/${organizations[0].slug}/`} />;
     }
     return (
-      <Switch>
-        <Route
-          path="/:organization"
-          render={(props) => <OrganizationWrapper {...props} />}
-        />
-      </Switch>
+      <Routes>
+        <Route path="/:organization/*" element={<OrganizationWrapper />} />
+      </Routes>
     );
   }
 }
@@ -25,14 +23,12 @@ class Routes extends React.Component {
 const mapStateToProps = (state) => ({
   organizations: state.organizations,
 });
-Routes.defaultProps = {
+OrganizationRoutes.defaultProps = {
   organizations: [],
 };
 
-Routes.propTypes = {
-  match: PropTypes.shape({
-    isExact: PropTypes.bool,
-  }).isRequired,
+OrganizationRoutes.propTypes = {
+  params: PropTypes.object.isRequired,
   organizations: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string,
@@ -41,4 +37,7 @@ Routes.propTypes = {
   ),
 };
 
-export default connect(mapStateToProps, null)(Routes);
+export default connect(
+  mapStateToProps,
+  null,
+)(withRouteProps(OrganizationRoutes));

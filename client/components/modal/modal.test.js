@@ -4,12 +4,14 @@ import {shallow} from "enzyme";
 import React from "react";
 import axios from "axios";
 import getConfig from "../../utils/get-config";
+import getText from "../../utils/get-text";
 import Modal from "./modal";
 import {mapStateToProps} from "./index";
 import logError from "../../utils/log-error";
 
 jest.mock("../../utils/get-config");
 jest.mock("../../utils/log-error");
+jest.mock("../../utils/get-text", () => jest.fn());
 jest.mock("axios");
 
 const defaultConfig = getConfig("default", true);
@@ -18,15 +20,11 @@ const createTestProps = (props) => ({
   language: "en",
   privacyPolicy: defaultConfig.privacy_policy,
   termsAndConditions: defaultConfig.terms_and_conditions,
-  match: {
-    params: {
-      name: "terms-and-conditions",
-    },
+  params: {
+    name: "terms-and-conditions",
   },
   prevPath: "/default/login",
-  history: {
-    push: jest.fn(),
-  },
+  navigate: jest.fn(),
   ...props,
 });
 
@@ -44,6 +42,10 @@ describe("<Modal /> rendering", () => {
     props = createTestProps();
     const component = await shallow(<Modal {...props} />);
     expect(component).toMatchSnapshot();
+    expect(getText.mock.calls.pop()).toEqual([
+      props.termsAndConditions,
+      props.language,
+    ]);
   });
   it("should render privacy-policy correctly", async () => {
     axios.mockImplementationOnce(() =>
@@ -55,14 +57,16 @@ describe("<Modal /> rendering", () => {
       }),
     );
     props = createTestProps({
-      match: {
-        params: {
-          name: "privacy-policy",
-        },
+      params: {
+        name: "privacy-policy",
       },
     });
     const component = await shallow(<Modal {...props} />);
     expect(component).toMatchSnapshot();
+    expect(getText.mock.calls.pop()).toEqual([
+      props.privacyPolicy,
+      props.language,
+    ]);
   });
   it("should render nothing on incorrect param name", async () => {
     axios.mockImplementationOnce(() =>
@@ -74,10 +78,8 @@ describe("<Modal /> rendering", () => {
       }),
     );
     props = createTestProps({
-      match: {
-        params: {
-          name: "test-name",
-        },
+      params: {
+        name: "test-name",
       },
     });
     const component = await shallow(<Modal {...props} />);
@@ -127,9 +129,9 @@ describe("<Modal /> interactions", () => {
       }),
     );
     wrapper.instance().handleKeyDown({keyCode: 1});
-    expect(props.history.push).toHaveBeenCalledTimes(0);
+    expect(props.navigate).toHaveBeenCalledTimes(0);
     wrapper.instance().handleKeyDown({keyCode: 27});
-    expect(props.history.push).toHaveBeenCalledTimes(1);
+    expect(props.navigate).toHaveBeenCalledTimes(1);
     await wrapper.instance().componentDidMount();
     await wrapper.instance().componentWillUnmount();
     expect(global.document.addEventListener).toHaveBeenCalled();

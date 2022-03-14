@@ -4,6 +4,7 @@ import {setUserData} from "../../actions/dispatchers";
 import setOrganization from "../../actions/set-organization";
 import setLanguage from "../../actions/set-language";
 import Component from "./organization-wrapper";
+import withRouteProps from "../../utils/withRouteProps";
 
 const mapStateToProps = (state, ownProps) => ({
   organization: state.organization,
@@ -23,5 +24,5 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 export default withCookies(
-  connect(mapStateToProps, mapDispatchToProps)(Component),
+  connect(mapStateToProps, mapDispatchToProps)(withRouteProps(Component)),
 );
