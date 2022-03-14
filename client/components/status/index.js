@@ -2,7 +2,7 @@ import {connect} from "react-redux";
 import {logout, setTitle, setUserData} from "../../actions/dispatchers";
 import Component from "./status";
 
-const mapStateToProps = (state, ownProps) => {
+export const mapStateToProps = (state, ownProps) => {
   const conf = state.organization.configuration;
   return {
     statusPage: conf.components.status_page,
@@ -18,7 +18,7 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => ({
+export const mapDispatchToProps = (dispatch) => ({
   logout: logout(dispatch),
   setUserData: setUserData(dispatch),
   setTitle: setTitle(dispatch),
