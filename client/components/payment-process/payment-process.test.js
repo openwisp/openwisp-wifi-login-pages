@@ -82,8 +82,8 @@ describe("Test <PaymentProcess /> cases", () => {
       context: loadingContextValue,
     });
     await tick();
-    expect(wrapper.find("Redirect").length).toEqual(1);
-    expect(wrapper.find("Redirect").props().to).toEqual("/default/status");
+    expect(wrapper.find("Navigate").length).toEqual(1);
+    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
   });
 
   it("should redirect verified users", async () => {
@@ -95,8 +95,8 @@ describe("Test <PaymentProcess /> cases", () => {
       context: loadingContextValue,
     });
     await tick();
-    expect(wrapper.find("Redirect").length).toEqual(1);
-    expect(wrapper.find("Redirect").props().to).toEqual("/default/status");
+    expect(wrapper.find("Navigate").length).toEqual(1);
+    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
   });
 
   it("should redirect if payment_url is not present", async () => {
@@ -108,8 +108,8 @@ describe("Test <PaymentProcess /> cases", () => {
       context: loadingContextValue,
     });
     await tick();
-    expect(wrapper.find("Redirect").length).toEqual(1);
-    expect(wrapper.find("Redirect").props().to).toEqual("/default/status");
+    expect(wrapper.find("Navigate").length).toEqual(1);
+    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
   });
 
   it("should redirect unauthenticated users", async () => {
@@ -122,8 +122,8 @@ describe("Test <PaymentProcess /> cases", () => {
       context: loadingContextValue,
     });
     await tick();
-    expect(wrapper.find("Redirect").length).toEqual(1);
-    expect(wrapper.find("Redirect").props().to).toEqual("/default/status");
+    expect(wrapper.find("Navigate").length).toEqual(1);
+    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
   });
 
   it("should show loader if token is invalid", async () => {

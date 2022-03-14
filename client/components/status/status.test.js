@@ -15,6 +15,7 @@ import validateToken from "../../utils/validate-token";
 import {initialState} from "../../reducers/organization";
 import Modal from "../../utils/modal";
 import history from "../../utils/history";
+import {mapStateToProps, mapDispatchToProps} from "./index";
 
 jest.mock("axios");
 jest.mock("../../utils/get-config");
@@ -136,6 +137,39 @@ describe("<Status /> rendering", () => {
     expect(linkText).toContain("link-1");
     expect(linkText).not.toContain("link-2");
     expect(linkText).toContain("link-3");
+  });
+
+  it("should mapStateToProps and mapDispatchToProps on rendering", () => {
+    const state = {
+      organization: {
+        configuration: defaultConfig,
+      },
+    };
+    const ownProps = {
+      cookies: new Cookies(),
+    };
+    let result = mapStateToProps(state, ownProps);
+    expect(result).toEqual({
+      statusPage: defaultConfig.components.status_page,
+      orgSlug: defaultConfig.slug,
+      orgName: defaultConfig.name,
+      settings: defaultConfig.settings,
+      userData: defaultConfig.userData,
+      captivePortalLoginForm:
+        defaultConfig.components.captive_portal_login_form,
+      captivePortalLogoutForm:
+        defaultConfig.components.captive_portal_logout_form,
+      isAuthenticated: defaultConfig.isAuthenticated,
+      cookies: ownProps.cookies,
+      language: defaultConfig.language,
+    });
+    const dispatch = jest.fn();
+    result = mapDispatchToProps(dispatch);
+    expect(result).toEqual({
+      logout: expect.any(Function),
+      setUserData: expect.any(Function),
+      setTitle: expect.any(Function),
+    });
   });
 });
 
@@ -1493,5 +1527,16 @@ describe("<Status /> interactions", () => {
     expect(wrapper.instance().state.pastSessions).toEqual(data);
     await wrapper.instance().getUserPassedRadiusSessions();
     expect(wrapper.instance().state.pastSessions).toEqual(data);
+  });
+  it("should set loading to false if user is not validated", async () => {
+    validateToken.mockReturnValue(false);
+    const setLoading = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading},
+      disableLifecycleMethods: true,
+    });
+    await wrapper.instance().componentDidMount();
+    await tick();
+    expect(setLoading.mock.calls).toEqual([[true], [false]]);
   });
 });
