@@ -5,10 +5,10 @@ import {Provider, connect} from "react-redux";
 import {CookiesProvider} from "react-cookie";
 import PropTypes from "prop-types";
 import React from "react";
-import {Route, Router} from "react-router-dom";
+import {Route, BrowserRouter as Router, Routes} from "react-router-dom";
 import {render} from "react-dom";
 import {ToastContainer} from "react-toastify";
-import Routes from "./routes";
+import OrganizationRoutes from "./routes";
 import organizations from "./organizations.json";
 import history from "./utils/history";
 import parseOrganizations from "./actions/parse-organizations";
@@ -26,7 +26,9 @@ class BaseApp extends React.Component {
     return (
       <Router history={history}>
         <ToastContainer className={isOldBrowser() ? "oldbrowser" : null} />
-        <Route path="/" component={Routes} />
+        <Routes>
+          <Route path="*" element={<OrganizationRoutes />} />
+        </Routes>
       </Router>
     );
   }

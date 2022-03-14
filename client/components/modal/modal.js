@@ -33,9 +33,9 @@ export default class Modal extends React.Component {
   }
 
   renderContent = async () => {
-    const {privacyPolicy, termsAndConditions, language, match, orgSlug} =
+    const {privacyPolicy, termsAndConditions, language, params, orgSlug} =
       this.props;
-    const {name} = match.params;
+    const {name} = params;
     let file;
     let response = {};
     if (name === "terms-and-conditions" && termsAndConditions)
@@ -62,10 +62,10 @@ export default class Modal extends React.Component {
   };
 
   handleKeyDown = (event) => {
-    const {prevPath, history} = this.props;
+    const {prevPath, navigate} = this.props;
     switch (event.keyCode) {
       case 27:
-        history.push(prevPath);
+        navigate(prevPath);
         break;
       default:
         break;
@@ -100,14 +100,10 @@ export default class Modal extends React.Component {
 
 Modal.propTypes = {
   orgSlug: PropTypes.string.isRequired,
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      name: PropTypes.string,
-    }),
+  params: PropTypes.shape({
+    name: PropTypes.string,
   }).isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func,
-  }).isRequired,
+  navigate: PropTypes.func.isRequired,
   prevPath: PropTypes.string.isRequired,
   language: PropTypes.string.isRequired,
   privacyPolicy: PropTypes.object.isRequired,

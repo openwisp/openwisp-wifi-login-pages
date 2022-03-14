@@ -1,4 +1,5 @@
 import {connect} from "react-redux";
+import withRouteProps from "../../utils/withRouteProps";
 
 import Component from "./modal";
 
@@ -9,4 +10,4 @@ export const mapStateToProps = (state, ownProps) => ({
   language: state.language,
   prevPath: ownProps.prevPath,
 });
-export default connect(mapStateToProps, null)(Component);
+export default connect(mapStateToProps, null)(withRouteProps(Component));

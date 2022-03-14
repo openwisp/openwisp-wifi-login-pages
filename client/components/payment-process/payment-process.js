@@ -2,7 +2,7 @@
 import {Cookies} from "react-cookie";
 import PropTypes from "prop-types";
 import React from "react";
-import {Redirect} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 import {toast} from "react-toastify";
 import {t} from "ttag";
 import LoadingContext from "../../utils/loading-context";
@@ -93,7 +93,7 @@ export default class PaymentProcess extends React.Component {
   render() {
     const {orgSlug, isAuthenticated, userData, settings} = this.props;
     const {method, is_verified: isVerified} = userData;
-    const redirectToStatus = () => <Redirect to={`/${orgSlug}/status`} />;
+    const redirectToStatus = () => <Navigate to={`/${orgSlug}/status`} />;
     const {isTokenValid, iframeHeight} = this.state;
 
     // not registered with bank card flow

@@ -26,11 +26,9 @@ const createTestProps = (props) => ({
   configuration: defaultConfig,
   passwordConfirm: defaultConfig.components.password_reset_confirm_form,
   setTitle: jest.fn(),
-  match: {
-    params: {
-      uid: "testUid",
-      token: "testToken",
-    },
+  params: {
+    uid: "testUid",
+    token: "testToken",
   },
   ...props,
 });

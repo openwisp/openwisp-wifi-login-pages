@@ -45,7 +45,7 @@ export default class PasswordConfirm extends React.Component {
   handleSubmit(event) {
     const {setLoading} = this.context;
     event.preventDefault();
-    const {passwordConfirm, orgSlug, match, language} = this.props;
+    const {passwordConfirm, orgSlug, params, language} = this.props;
     const inputFields = passwordConfirm.input_fields;
     const {newPassword1, newPassword2, errors} = this.state;
     if (inputFields.password_confirm) {
@@ -60,7 +60,7 @@ export default class PasswordConfirm extends React.Component {
     }
     this.setState({errors: {...errors, newPassword2: ""}});
     const url = confirmApiUrl.replace("{orgSlug}", orgSlug);
-    const {uid, token} = match.params;
+    const {uid, token} = params;
     setLoading(true);
     return axios({
       method: "post",
@@ -242,11 +242,9 @@ PasswordConfirm.propTypes = {
   }).isRequired,
   orgSlug: PropTypes.string.isRequired,
   orgName: PropTypes.string.isRequired,
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      uid: PropTypes.string,
-      token: PropTypes.string,
-    }),
+  params: PropTypes.shape({
+    uid: PropTypes.string,
+    token: PropTypes.string,
   }).isRequired,
   setTitle: PropTypes.func.isRequired,
   language: PropTypes.string.isRequired,
