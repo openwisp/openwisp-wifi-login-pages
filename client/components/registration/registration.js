@@ -27,7 +27,9 @@ import redirectToPayment from "../../utils/redirect-to-payment";
 import InfoModal from "../../utils/modal";
 import history from "../../utils/history";
 
-const PhoneInput = React.lazy(() => import("react-phone-input-2"));
+const PhoneInput = React.lazy(() =>
+  import(/* webpackChunkName: 'PhoneInput' */ "react-phone-input-2"),
+);
 
 export default class Registration extends React.Component {
   constructor(props) {

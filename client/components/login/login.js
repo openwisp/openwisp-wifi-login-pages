@@ -30,8 +30,9 @@ import getLanguageHeaders from "../../utils/get-language-headers";
 import redirectToPayment from "../../utils/redirect-to-payment";
 import {localStorage, sessionStorage} from "../../utils/storage";
 
-const PhoneInput = React.lazy(() => import("react-phone-input-2"));
-
+const PhoneInput = React.lazy(() =>
+  import(/* webpackChunkName: 'PhoneInput' */ "react-phone-input-2"),
+);
 export default class Login extends React.Component {
   constructor(props) {
     super(props);
