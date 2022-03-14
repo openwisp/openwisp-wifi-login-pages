@@ -20,7 +20,7 @@ msgstr "varstvo osebnih podatkov"
 
 #: client/utils/render-additional-info.js:8
 msgid "TOS_TITL"
-msgstr "pogoji uporabe storitve"
+msgstr "pogoje uporabe storitve"
 
 #: client/components/status/status.js:467
 #: client/components/status/status.js:658

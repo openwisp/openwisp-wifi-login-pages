@@ -1095,10 +1095,16 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
       <Memo(Connect(Contact)) />
     </div>
   </div>
-  <Route
-    path="default/login/:name"
-    render={[Function]}
-  />
+  <Routes>
+    <Route
+      element={
+        <Memo(Connect(Component))
+          prevPath="/default/login"
+        />
+      }
+      path=":name"
+    />
+  </Routes>
 </React.Fragment>
 `;
 
@@ -1323,10 +1329,16 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
       <Memo(Connect(Contact)) />
     </div>
   </div>
-  <Route
-    path="default/login/:name"
-    render={[Function]}
-  />
+  <Routes>
+    <Route
+      element={
+        <Memo(Connect(Component))
+          prevPath="/default/login"
+        />
+      }
+      path=":name"
+    />
+  </Routes>
 </React.Fragment>
 `;
 
@@ -1558,9 +1570,15 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
       <Memo(Connect(Contact)) />
     </div>
   </div>
-  <Route
-    path="default/login/:name"
-    render={[Function]}
-  />
+  <Routes>
+    <Route
+      element={
+        <Memo(Connect(Component))
+          prevPath="/default/login"
+        />
+      }
+      path=":name"
+    />
+  </Routes>
 </React.Fragment>
 `;

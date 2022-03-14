@@ -1,7 +1,7 @@
 import {mount} from "enzyme";
 import React from "react";
 import {Provider} from "react-redux";
-import {Router} from "react-router-dom";
+import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import PropTypes from "prop-types";
 import {createMemoryHistory} from "history";
 import Registration from "./registration";
@@ -27,7 +27,9 @@ const mountComponent = async (passedProps) => {
   return mount(
     <Provider store={mockedStore}>
       <Router history={historyMock}>
-        <Registration {...props} />
+        <Routes>
+          <Route path="/*" element={<Registration {...props} />} />
+        </Routes>
       </Router>
     </Provider>,
     {

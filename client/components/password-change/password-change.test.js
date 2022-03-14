@@ -243,10 +243,10 @@ describe("<PasswordChange /> interactions", () => {
     wrapper = await shallow(<PasswordChange {...props} />, {
       context: {setLoading: jest.fn(), getLoading: jest.fn()},
     });
-    expect(wrapper.find("Redirect").length).toEqual(1);
-    expect(wrapper.find("Redirect").props().to).toEqual("/default/status");
+    expect(wrapper.find("Navigate").length).toEqual(1);
+    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
     await wrapper.setProps({...props.userData, method: "social_login"});
-    expect(wrapper.find("Redirect").length).toEqual(1);
-    expect(wrapper.find("Redirect").props().to).toEqual("/default/status");
+    expect(wrapper.find("Navigate").length).toEqual(1);
+    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
   });
 });
