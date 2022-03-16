@@ -340,8 +340,8 @@ msgstr "Zurück zur Login-Seite"
 #: client/components/password-reset/password-reset.js:101
 msgid "PWD_RESET_ADD_TXT"
 msgstr ""
-"Haben Sie Ihr Passwort vergessen? Geben Sie Ihre E-Mail-Adresse, Telefonnummer ein "
-"oder Benutzername unten und wir senden Ihnen die Anweisungen zum Zurücksetzen."
+"Haben Sie Ihr Passwort vergessen? Geben Sie Ihre E-Mail-Adresse, Telefonnummer "
+"oder Benutzername ein und wir senden Ihnen die Anweisungen zum Zurücksetzen."
 
 #: client/components/password-reset/password-reset.js:127
 msgid "PWD_RESET_BTN"
@@ -439,7 +439,7 @@ msgstr "Falsche Telefonnummer?"
 #: client/components/mobile-phone-change/mobile-phone-change.js:200
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:245
 msgid "PHONE_CHANGE_BTN"
-msgstr "Die Telefonnumer ändern"
+msgstr "Telefonnummer ändern"
 
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:250
 msgid "LOGOUT_LBL"
@@ -447,7 +447,7 @@ msgstr "Um den Vorgang abzubrechen, loggen Sie sich unten aus."
 
 #: client/components/mobile-phone-change/mobile-phone-change.js:44
 msgid "PHONE_CHANGE_TITL"
-msgstr "Die Telefonnummer ändern"
+msgstr "Telefonnummer ändern"
 
 #: client/components/mobile-phone-change/mobile-phone-change.js:206
 #: client/components/password-change/password-change.js:178
@@ -488,7 +488,7 @@ msgstr "Fehler bei der Authentifizierung."
 
 #: client/components/login/login.js:374
 msgid "REMEMBER_ME"
-msgstr "Erinnere mich auf diesem Gerät"
+msgstr "Auf diesem Gerät merken"
 
 #: client/components/login/login.js:381
 msgid "LOGIN_ADD_INFO_TXT"
