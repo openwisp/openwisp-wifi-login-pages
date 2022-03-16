@@ -503,7 +503,7 @@ msgstr "Al è capitât un erôr!"
 #: client/components/status/status.js:361
 #: client/utils/handle-logout.js:33
 msgid "LOGOUT_SUCCESS"
-msgstr "Log out effettuato con successo"
+msgstr "Logout fat cun sucès"
 
 #: client/components/password-change/password-change.js:61
 #: client/components/password-change/password-change.test.js:115
@@ -556,8 +556,8 @@ msgstr "Jentre - ${ orgName }"
 #: client/components/status/status.js:897
 msgid "CP_LOGIN"
 msgstr ""
-"Stiamo inizializzando la tua sessione sul servizio WiFi, potrebbero essere "
-"necessari alcuni secondi, attendere prego..."
+"O sin daûr a inviâ la tô session sul servizi Wifi, al podarès passâ "
+"cualchi secont. Ti domandìn di spietâ."
 
 #: client/components/payment-status/payment-status.js:100
 msgid "PAY_REQ"
@@ -587,7 +587,7 @@ msgstr ""
 #. wait to trigger login to avoid getting stuck
 #. in captive portal firewall rule reloading
 msgid "PLEASE_WAIT"
-msgstr "Attendere prego..."
+msgstr "Spietâ, par plasê..."
 
 #: client/components/status/status.js:377
 msgid "PLEASE_LOGIN"
@@ -612,8 +612,8 @@ msgstr "La nuova password non puó essere uguale alla password attuale."
 
 #: client/components/password-change/password-change.js:175
 msgid "CURR_PWD_LBL"
-msgstr "Password attuale"
+msgstr "Password atuâl"
 
 #: client/components/password-change/password-change.js:178
 msgid "CURR_PWD_PHOLD"
-msgstr "La tua password attuale"
+msgstr "La tô password atuâl"
