@@ -4091,11 +4091,6 @@ core-js-pure@^3.0.0:
   resolved "https://registry.yarnpkg.com/core-js-pure/-/core-js-pure-3.13.1.tgz#5d139d346780f015f67225f45ee2362a6bed6ba1"
   integrity sha512-wVlh0IAi2t1iOEh16y4u1TRk6ubd4KvLE8dlMi+3QUI6SfKphQUh7tAwihGGSQ8affxEXpVIPpOdf9kjR4v4Pw==
 
-core-js@^0.8.3:
-  version "0.8.4"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-0.8.4.tgz#c22665f1e0d1b9c3c5e1b08dabd1f108695e4fcf"
-  integrity sha1-wiZl8eDRucPF4bCNq9HxCGleT88=
-
 core-js@^2.6.5:
   version "2.6.12"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.12.tgz#d9333dfa7b065e347cc5682219d6f690859cc2ec"
@@ -8557,11 +8552,11 @@ mkdirp@^1.0.3, mkdirp@^1.0.4:
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
 
 mock-local-storage@^1.1.17:
-  version "1.1.17"
-  resolved "https://registry.yarnpkg.com/mock-local-storage/-/mock-local-storage-1.1.17.tgz#13325dad4e3b696374c2984fa8af33941f54239e"
-  integrity sha512-vF5571cY3N/XFw8Oxr+0HmY6PedvO6i2IZrpnDV35sh7alhrh1RYYFZzItuh5OhJrQoulNSruiw1KHk5QB/EQg==
+  version "1.1.21"
+  resolved "https://registry.yarnpkg.com/mock-local-storage/-/mock-local-storage-1.1.21.tgz#f50081e4faf4fd161237ade3d40641e5d460bd37"
+  integrity sha512-/sVmP9ywoafxV2HsSw+H7mj+R8uxEld0wXbIZINRkXE4MtVMORN2eIDso9gnY9S/Yb14dRNRu2bB2RRKNYX5bA==
   dependencies:
-    core-js "^0.8.3"
+    core-js "^3.19.0"
     global "^4.3.2"
 
 moo@^0.5.0:
