@@ -945,6 +945,10 @@ root folder. The `sentry-env.json` file should contain configuration as followin
 **Note:** You can take reference from
 [sentry-env.sample.json](https://github.com/openwisp/openwisp-wifi-login-pages/blob/master/sentry-env.sample.json)
 
+### Change log
+
+See [Change log](https://github.com/openwisp/openwisp-wifi-login-pages/blob/master/CHANGES.md).
+
 ### License
 
 See [LICENSE](https://github.com/openwisp/openwisp-wifi-login-pages/blob/master/LICENSE).
