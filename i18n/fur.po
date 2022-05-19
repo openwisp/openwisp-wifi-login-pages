@@ -561,27 +561,28 @@ msgstr ""
 
 #: client/components/payment-status/payment-status.js:100
 msgid "PAY_REQ"
-msgstr "Pagamento richiesto per procedere"
+msgstr "Si domande il paiament par lâ indevant"
 
 #: client/components/payment-status/payment-status.js:115
 msgid "PAY_PROC_BTN"
-msgstr "Procedi con il pagamento"
+msgstr "Va indevant cul paiament"
 
 #: client/components/payment-status/payment-status.js:105
 #, javascript-format
 msgid "PAY_WARN${ timeout }${ maxAttempts }"
 msgstr ""
-"<p>Cliccando sul pulsante sottostante raggiungerai il servizio di pagamento "
-"dove potrai inserire i dati della tua carta di credito/debito in totale "
-"sicurezza. Dopodichè raggiungerai il sito web della tua banca per "
-"confermare la transazione.</p><p>Avrai a disposizione ${ timeout } minuti "
-"per completare il processo.<br /><strong>Per questo motivo ti consigliamo "
-"di preparare la tua carta debito/credito prima di avviare il processo di "
-"pagamento.</strong></p><p>Se per qualsiasi motivo il processo non viene "
-"completato entro il tempo disponibile, la connessione internet che ti "
-"permette di raggiungere il sito web della tua banca verrà chiusa, se ciò "
-"accade puoi accedere nuovamente con le credenziali appena registrate e "
-"ripetere il processo fino ad un massimo di ${ maxAttempts } volte.</p>"
+"<p>Clicant sul boton chi sot tu rivarâs al servizi di "
+"paiament, dulà che tu podarâs inserî i dâts de tô "
+"cjarte di credit/debit in sigurece. Po dopo tu "
+"rivarâs al sît web de tô bancje par confermâ la transazion.</p>"
+"<p>Tu varâs a disposizion ${ timeout } minûts "
+"par completâ il procès.<br /><strong>Par chest ti conseìn "
+"di preparâ la tô cjarte di debit/credit prime di inviâ il procès di "
+"paiament.</strong></p><p>Se par cualsisedi motîf il procès nol ven "
+"completât dentri dal timp a disposizion, la conession internet che ti "
+"permet di rivâ al sît web de tô bancje e sarà sierade; se chest "
+"al ves di capitâ, tu puedis jentrâ di gnûf cu lis credenziâls a pene "
+"regjistradis e ripeti il procès fin a un massim di ${ maxAttempts } voltis.</p>"
 
 #: client/components/status/status.js:375
 #. wait to trigger login to avoid getting stuck
@@ -591,24 +592,24 @@ msgstr "Spietâ, par plasê..."
 
 #: client/components/status/status.js:377
 msgid "PLEASE_LOGIN"
-msgstr "Ti preghiamo di accedere"
+msgstr "Ti domandìn di jentrâ"
 
 #: client/components/registration/registration.js:872
 msgid "CONFLICT_ORGS"
-msgstr "Un utente con credenziali simili a quelle inserite esiste già in altre organizzazioni:"
+msgstr "Un utent cun credenziâls similis a chês inseridis al esist za in altris organizazions:"
 
 #: client/components/registration/registration.js:871
 msgid "NO_ORGS"
-msgstr "Esiste già un utente con credenziali simili."
+msgstr "Al esist za un utent cun credenziâls similis."
 
 #: client/components/registration/registration.js:878
 msgid "CONFLICT_SIGNIN"
-msgstr "Sei il proprietario dell'account appena menzionato e vuoi associare il tuo account esistente a questo servizio WiFI?"
+msgstr "Sêstu il proprietari dal account a pene nomenât e vuelistu associâ il to account esistent a chest servizi WiFi?"
 
 #: client/components/password-change/password-change.js:72
 #: client/components/password-change/password-change.js:73
 msgid "PWD_CURR_ERR"
-msgstr "La nuova password non puó essere uguale alla password attuale."
+msgstr "La gnove password no pues jessi compagne de password di cumò."
 
 #: client/components/password-change/password-change.js:175
 msgid "CURR_PWD_LBL"
