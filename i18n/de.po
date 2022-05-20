@@ -84,7 +84,7 @@ msgstr "Eingeloggt"
 
 #: client/components/status/status.js:671
 msgid "USERNAME"
-msgstr "Benutzername"
+msgstr "Nutzername"
 
 #: client/components/contact-box/contact.js:25
 #: client/components/password-reset/password-reset.js:106
@@ -132,11 +132,11 @@ msgstr "Gültige E-Mail-Adresse"
 
 #: client/components/login/login.js:107
 msgid "USERNAME_LOG_LBL"
-msgstr "E-Mail, Telefonnummer oder Benutzername"
+msgstr "E-Mail, Telefonnummer oder Nutzername"
 
 #: client/components/login/login.js:110
 msgid "USERNAME_LOG_PHOLD"
-msgstr "E-Mail, Telefonnummer oder Benutzername"
+msgstr "E-Mail, Telefonnummer oder Nutzername"
 
 #: client/components/registration/registration.js:503
 msgid "USERNAME_PTRN_DESC"
@@ -264,7 +264,7 @@ msgstr ""
 #: client/components/login/login.js:403
 #: client/components/registration/registration.js:779
 msgid "REGISTER_BTN_TXT"
-msgstr "Anmeldung"
+msgstr "Anmelden"
 
 #: client/components/login/login.js:411
 #: client/components/registration/registration.js:792
@@ -273,11 +273,11 @@ msgstr "Passwort vergessen?"
 
 #: client/components/registration/registration.js:799
 msgid "LINKS_LOGIN_TXT"
-msgstr "Haben Sie bereits einen Account? Loggen Sie ein"
+msgstr "Haben Sie bereits einen Account? Loggen Sie sich ein"
 
 #: client/components/registration/registration.js:69
 msgid "REGISTRATION_TITL"
-msgstr "Anmeldung"
+msgstr "Anmelden"
 
 #: client/components/password-change/password-change.js:61
 #: client/components/password-change/password-change.test.js:115
@@ -341,7 +341,7 @@ msgstr "Zurück zur Login-Seite"
 msgid "PWD_RESET_ADD_TXT"
 msgstr ""
 "Haben Sie Ihr Passwort vergessen? Geben Sie Ihre E-Mail-Adresse, Telefonnummer "
-"oder Benutzername ein und wir senden Ihnen die Anweisungen zum Zurücksetzen."
+"oder Nutzername ein und wir senden Ihnen die Anweisungen zum Zurücksetzen."
 
 #: client/components/password-reset/password-reset.js:127
 msgid "PWD_RESET_BTN"
@@ -475,7 +475,7 @@ msgstr "Erneut einloggen"
 #: client/components/login/login.js:113
 msgid "USERNAME_LOG_TITL"
 msgstr ""
-"Bitten eine gültige E-Mail-Adresse, Benutzername oder Mobiltelefonnummer eingeben"
+"Bitten eine gültige E-Mail-Adresse, Nutzername oder Mobiltelefonnummer eingeben"
 
 #: client/components/login/login.js:236
 msgid "USER_INACTIVE"
@@ -549,11 +549,11 @@ msgstr "Einreichen"
 
 #: client/components/registration/registration.js:487
 msgid "USERNAME_REG_LBL"
-msgstr "Benutzername"
+msgstr "Nutzername"
 
 #: client/components/registration/registration.js:500
 msgid "USERNAME_REG_PHOLD"
-msgstr "Benutzername"
+msgstr "Nutzername"
 
 #: client/components/status/status.js:897
 msgid "CP_LOGIN"
