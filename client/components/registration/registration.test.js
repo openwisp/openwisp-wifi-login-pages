@@ -19,7 +19,6 @@ import submitOnEnter from "../../utils/submit-on-enter";
 import PasswordToggleIcon from "../../utils/password-toggle";
 import mountComponent from "./test-utils";
 import InfoModal from "../../utils/modal";
-import history from "../../utils/history";
 
 jest.mock("../../utils/get-config");
 jest.mock("../../utils/load-translation");
@@ -45,6 +44,7 @@ const createTestProps = (props, configName = "default") => {
       path: "default/registration",
     },
     ...props,
+    navigate: jest.fn(),
   };
 };
 
@@ -411,7 +411,7 @@ describe("<Registration /> interactions", () => {
     const spyToast = jest.spyOn(toast, "info");
     wrapper.instance().handleResponse(true);
     expect(spyToast).toHaveBeenCalledWith(t`PLEASE_LOGIN`);
-    expect(history.push).toHaveBeenCalledWith("/default/login");
+    expect(props.navigate).toHaveBeenCalledWith("/default/login");
     wrapper.instance().handleResponse(false);
     expect(wrapper.instance().toggleModal).toHaveBeenCalled();
   });

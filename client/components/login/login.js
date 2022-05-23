@@ -284,7 +284,7 @@ export default class Login extends React.Component {
   };
 
   handleAuthentication = (data = {}, useSessionStorage = false) => {
-    const {orgSlug, authenticate, setUserData} = this.props;
+    const {orgSlug, authenticate, setUserData, navigate} = this.props;
     const {remember_me} = this.state;
     // useSessionStorage=true is passed from social login or SAML
     // user needs to repeat the login process each time
@@ -306,7 +306,7 @@ export default class Login extends React.Component {
     setUserData({...data, auth_token, mustLogin: true});
     // if requires payment redirect to payment status component
     if (data.method === "bank_card" && data.is_verified === false) {
-      redirectToPayment(orgSlug);
+      redirectToPayment(orgSlug, navigate);
     }
     authenticate(true);
   };
@@ -572,4 +572,5 @@ Login.propTypes = {
     }),
     additional_fields: PropTypes.array,
   }).isRequired,
+  navigate: PropTypes.func.isRequired,
 };

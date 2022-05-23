@@ -164,7 +164,7 @@ export default class OrganizationWrapper extends React.Component {
                       }
                       return (
                         <Suspense fallback={<Loader />}>
-                          <Registration loading={loading} />
+                          <Registration loading={loading} navigate={navigate} />
                         </Suspense>
                       );
                     })()}
@@ -220,7 +220,7 @@ export default class OrganizationWrapper extends React.Component {
                       isAuthenticated && is_active ? (
                         <Navigate to={`/${orgSlug}/status`} />
                       ) : (
-                        <Login />
+                        <Login navigate={navigate} />
                       )
                     }
                   />
@@ -236,7 +236,11 @@ export default class OrganizationWrapper extends React.Component {
                       if (isAuthenticated) {
                         return (
                           <Suspense fallback={<Loader />}>
-                            <Status cookies={cookies} location={location} />
+                            <Status
+                              cookies={cookies}
+                              location={location}
+                              navigate={navigate}
+                            />
                           </Suspense>
                         );
                       }
@@ -264,7 +268,10 @@ export default class OrganizationWrapper extends React.Component {
                     element={
                       isAuthenticated ? (
                         <Suspense fallback={<Loader />}>
-                          <PasswordChange cookies={cookies} />
+                          <PasswordChange
+                            cookies={cookies}
+                            navigate={navigate}
+                          />
                         </Suspense>
                       ) : (
                         <Navigate to={`/${orgSlug}/login`} />
@@ -290,7 +297,7 @@ export default class OrganizationWrapper extends React.Component {
                     path="payment/process/"
                     element={
                       <Suspense fallback={<Loader />}>
-                        <PaymentProcess cookies={cookies} />
+                        <PaymentProcess cookies={cookies} navigate={navigate} />
                       </Suspense>
                     }
                   />

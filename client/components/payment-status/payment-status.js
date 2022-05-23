@@ -63,8 +63,19 @@ export default class PaymentStatus extends React.Component {
   }
 
   logout = () => {
-    const {logout, cookies, orgSlug, setUserData, userData} = this.props;
-    handleLogout(logout, cookies, orgSlug, setUserData, userData);
+    const {logout, cookies, orgSlug, setUserData, userData, navigate} =
+      this.props;
+    const redirectToStatus = (statusUrl = `/${orgSlug}/status`) =>
+      navigate(statusUrl);
+    handleLogout(
+      logout,
+      cookies,
+      orgSlug,
+      setUserData,
+      userData,
+      false,
+      redirectToStatus,
+    );
   };
 
   render() {
@@ -207,4 +218,5 @@ PaymentStatus.propTypes = {
   params: PropTypes.shape({
     status: PropTypes.string,
   }).isRequired,
+  navigate: PropTypes.func.isRequired,
 };

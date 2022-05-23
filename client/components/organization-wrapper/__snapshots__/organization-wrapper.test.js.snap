@@ -111,6 +111,7 @@ exports[`<OrganizationWrapper /> interactions should render main title if pageTi
                     "pathname": "",
                   }
                 }
+                navigate={[MockFunction]}
               />
             </React.Suspense>
           }
@@ -137,6 +138,7 @@ exports[`<OrganizationWrapper /> interactions should render main title if pageTi
                     "cookies": Object {},
                   }
                 }
+                navigate={[MockFunction]}
               />
             </React.Suspense>
           }
@@ -174,6 +176,7 @@ exports[`<OrganizationWrapper /> interactions should render main title if pageTi
                     "cookies": Object {},
                   }
                 }
+                navigate={[MockFunction]}
               />
             </React.Suspense>
           }
@@ -328,6 +331,7 @@ exports[`<OrganizationWrapper /> interactions should render pageTitle if it is n
                     "pathname": "",
                   }
                 }
+                navigate={[MockFunction]}
               />
             </React.Suspense>
           }
@@ -354,6 +358,7 @@ exports[`<OrganizationWrapper /> interactions should render pageTitle if it is n
                     "cookies": Object {},
                   }
                 }
+                navigate={[MockFunction]}
               />
             </React.Suspense>
           }
@@ -391,6 +396,7 @@ exports[`<OrganizationWrapper /> interactions should render pageTitle if it is n
                     "cookies": Object {},
                   }
                 }
+                navigate={[MockFunction]}
               />
             </React.Suspense>
           }
@@ -545,6 +551,7 @@ exports[`<OrganizationWrapper /> interactions should show route for authenticate
                     "pathname": "",
                   }
                 }
+                navigate={[MockFunction]}
               />
             </React.Suspense>
           }
@@ -571,6 +578,7 @@ exports[`<OrganizationWrapper /> interactions should show route for authenticate
                     "cookies": Object {},
                   }
                 }
+                navigate={[MockFunction]}
               />
             </React.Suspense>
           }
@@ -608,6 +616,7 @@ exports[`<OrganizationWrapper /> interactions should show route for authenticate
                     "cookies": Object {},
                   }
                 }
+                navigate={[MockFunction]}
               />
             </React.Suspense>
           }
@@ -783,6 +792,7 @@ exports[`Test Organization Wrapper for authenticated and unverified users should
                     "cookies": Object {},
                   }
                 }
+                navigate={[MockFunction]}
               />
             </React.Suspense>
           }
@@ -820,6 +830,7 @@ exports[`Test Organization Wrapper for authenticated and unverified users should
                     "cookies": Object {},
                   }
                 }
+                navigate={[MockFunction]}
               />
             </React.Suspense>
           }
@@ -922,6 +933,7 @@ exports[`Test Organization Wrapper for unauthenticated users should show route f
             >
               <UNDEFINED
                 loading={false}
+                navigate={[MockFunction]}
               />
             </React.Suspense>
           }
@@ -957,7 +969,11 @@ exports[`Test Organization Wrapper for unauthenticated users should show route f
           path="password/reset"
         />
         <Route
-          element={<Memo(Connect(Login)) />}
+          element={
+            <Memo(Connect(Login))
+              navigate={[MockFunction]}
+            />
+          }
           path="login/*"
         />
         <Route
@@ -1007,6 +1023,7 @@ exports[`Test Organization Wrapper for unauthenticated users should show route f
                     "cookies": Object {},
                   }
                 }
+                navigate={[MockFunction]}
               />
             </React.Suspense>
           }

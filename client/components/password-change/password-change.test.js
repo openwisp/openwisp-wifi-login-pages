@@ -33,6 +33,7 @@ const createTestProps = (props) => ({
   userData: {},
   setUserData: jest.fn(),
   language: "en",
+  navigate: jest.fn(),
   ...props,
 });
 
@@ -140,6 +141,8 @@ describe("<PasswordChange /> interactions", () => {
       nonField: t`PWD_CHNG_ERR`,
     });
     wrapper.instance().handleSubmit(e);
+    await tick();
+    expect(props.navigate).toHaveBeenCalledWith(`/${props.orgSlug}/status`);
   });
   it("should set title", () => {
     const setTitleMock = wrapper.instance().props.setTitle.mock;

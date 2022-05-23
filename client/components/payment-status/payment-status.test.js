@@ -27,6 +27,7 @@ const createTestProps = (props) => ({
   settings: {subscriptions: true, payment_requires_internet: true},
   logout: jest.fn(),
   authenticate: jest.fn(),
+  navigate: jest.fn(),
   ...props,
 });
 const responseData = {
@@ -124,6 +125,7 @@ describe("Test <PaymentStatus /> cases", () => {
     });
     expect(wrapper.find("Navigate").length).toEqual(0);
     expect(spyToast.mock.calls.length).toBe(0);
+    expect(props.navigate).toHaveBeenCalledWith(`/${props.orgSlug}/status`);
   });
 
   it("should redirect to status page if user is already verified", async () => {
@@ -360,6 +362,7 @@ describe("Test <PaymentStatus /> cases", () => {
       mustLogout: true,
       payment_url: null,
     });
+    expect(props.navigate).toHaveBeenCalledWith(`/${props.orgSlug}/status`);
   });
 
   it("should render draft correctly", async () => {

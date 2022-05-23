@@ -56,6 +56,7 @@ const createTestProps = (props) => ({
   match: {
     path: "default/login",
   },
+  navigate: jest.fn(),
   ...props,
 });
 const userData = {
@@ -497,7 +498,7 @@ describe("<Login /> interactions", () => {
     await tick();
     expect(handleSubmit).toHaveBeenCalled();
     const authenticateMock = login.props().authenticate.mock;
-    expect(redirectToPayment).toHaveBeenCalledWith("default");
+    expect(redirectToPayment).toHaveBeenCalledWith("default", props.navigate);
     expect(authenticateMock.calls.length).toBe(1);
   });
   it("phone_number field should be present if mobile phone verification is on", async () => {

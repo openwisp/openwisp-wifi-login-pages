@@ -10,7 +10,6 @@ import tick from "../../utils/tick";
 import validateToken from "../../utils/validate-token";
 import loadTranslation from "../../utils/load-translation";
 import getPaymentStatusRedirectUrl from "../../utils/get-payment-status";
-import history from "../../utils/history";
 
 jest.mock("axios");
 jest.mock("../../utils/get-config");
@@ -30,6 +29,7 @@ const createTestProps = (props) => ({
   logout: jest.fn(),
   authenticate: jest.fn(),
   isAuthenticated: true,
+  navigate: jest.fn(),
   ...props,
 });
 const responseData = {
@@ -201,7 +201,7 @@ describe("Test <PaymentProcess /> cases", () => {
       },
       origin: "http://localhost",
     });
-    expect(history.push).toHaveBeenCalledWith(
+    expect(props.navigate).toHaveBeenCalledWith(
       `/${props.orgSlug}/payment/success/`,
     );
   });

@@ -11,7 +11,6 @@ import {Link, Navigate} from "react-router-dom";
 import PasswordToggleIcon from "../../utils/password-toggle";
 import {passwordChangeApiUrl} from "../../constants";
 import getErrorText from "../../utils/get-error-text";
-import history from "../../utils/history";
 import Contact from "../contact-box";
 import LoadingContext from "../../utils/loading-context";
 import logError from "../../utils/log-error";
@@ -67,7 +66,7 @@ export default class PasswordChange extends React.Component {
     const {setLoading} = this.context;
 
     if (e) e.preventDefault();
-    const {orgSlug, language, userData} = this.props;
+    const {orgSlug, language, userData, navigate} = this.props;
     const url = passwordChangeApiUrl.replace("{orgSlug}", orgSlug);
     const {currentPassword, newPassword1, newPassword2} = this.state;
     if (newPassword1 !== newPassword2) {
@@ -105,7 +104,7 @@ export default class PasswordChange extends React.Component {
       .then((response) => {
         toast.success(response.data.message);
         setLoading(false);
-        history.replace(`/${orgSlug}/status`);
+        navigate(`/${orgSlug}/status`);
       })
       .catch((error) => {
         const {data} = error.response;
@@ -259,4 +258,5 @@ PasswordChange.propTypes = {
   userData: PropTypes.object.isRequired,
   setUserData: PropTypes.func.isRequired,
   language: PropTypes.string.isRequired,
+  navigate: PropTypes.func.isRequired,
 };

@@ -39,6 +39,7 @@ const createTestProps = function (props, configName = "default") {
     match: {
       path: "default/registration",
     },
+    navigate: jest.fn(),
     ...props,
   };
 };
@@ -253,7 +254,7 @@ describe("test subscriptions", () => {
     const mockVerify = registration.props.verifyMobileNumber;
     expect(mockVerify.mock.calls.length).toBe(0);
     const authenticateMock = registration.props.authenticate.mock;
-    expect(redirectToPayment).toHaveBeenCalledWith("default");
+    expect(redirectToPayment).toHaveBeenCalledWith("default", props.navigate);
     expect(authenticateMock.calls.length).toBe(1);
   });
 

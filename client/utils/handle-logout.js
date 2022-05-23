@@ -1,12 +1,6 @@
 import {toast} from "react-toastify";
 import {t} from "ttag";
 import {initialState} from "../reducers/organization";
-import history from "./history";
-
-const redirectToStatus = (setUserData, userData, orgSlug) => {
-  setUserData({...userData, mustLogout: true, payment_url: null});
-  history.push(`/${orgSlug}/status`);
-};
 
 const handleLogout = (
   logout,
@@ -15,6 +9,7 @@ const handleLogout = (
   setUserData,
   userData,
   showLogoutToast = false,
+  redirectToStatus = () => {},
 ) => {
   /*
    * Redirecting to the status page for captive-portal logout if the
@@ -26,7 +21,8 @@ const handleLogout = (
       userData.method === "bank_card" ||
       userData.is_verified === true)
   ) {
-    redirectToStatus(setUserData, userData, orgSlug);
+    setUserData({...userData, mustLogout: true, payment_url: null});
+    redirectToStatus();
     return;
   }
   logout(cookies, orgSlug);

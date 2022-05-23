@@ -14,7 +14,6 @@ import Status from "./status";
 import validateToken from "../../utils/validate-token";
 import {initialState} from "../../reducers/organization";
 import Modal from "../../utils/modal";
-import history from "../../utils/history";
 import {mapStateToProps, mapDispatchToProps} from "./index";
 
 jest.mock("axios");
@@ -73,6 +72,7 @@ const createTestProps = (props) => ({
   setUserData: jest.fn(),
   userData: {},
   setTitle: jest.fn(),
+  navigate: jest.fn(),
   ...props,
 });
 
@@ -883,7 +883,7 @@ describe("<Status /> interactions", () => {
     expect(setLoading.mock.calls.length).toBe(1);
 
     // ensure user is redirected to payment URL
-    expect(history.push).toHaveBeenCalledWith(
+    expect(props.navigate).toHaveBeenCalledWith(
       `/${props.orgSlug}/payment/draft`,
     );
     // ensure sessions are not fetched
@@ -937,7 +937,7 @@ describe("<Status /> interactions", () => {
     wrapper.instance().handleLoginIframe();
 
     // ensure user is redirected to payment URL
-    expect(history.push).toHaveBeenCalledWith(
+    expect(props.navigate).toHaveBeenCalledWith(
       `/${props.orgSlug}/payment/draft`,
     );
     // ensure sessions are not fetched

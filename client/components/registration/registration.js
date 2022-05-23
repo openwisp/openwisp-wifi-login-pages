@@ -25,7 +25,6 @@ import getError from "../../utils/get-error";
 import getLanguageHeaders from "../../utils/get-language-headers";
 import redirectToPayment from "../../utils/redirect-to-payment";
 import InfoModal from "../../utils/modal";
-import history from "../../utils/history";
 
 const PhoneInput = React.lazy(() =>
   import(/* webpackChunkName: 'PhoneInput' */ "react-phone-input-2"),
@@ -120,7 +119,8 @@ export default class Registration extends React.Component {
   handleSubmit(event) {
     const {setLoading} = this.context;
     event.preventDefault();
-    const {orgSlug, authenticate, settings, language, setUserData} = this.props;
+    const {orgSlug, authenticate, settings, language, setUserData, navigate} =
+      this.props;
     const {
       phone_number,
       email,
@@ -236,7 +236,7 @@ export default class Registration extends React.Component {
         // if requires_payment
         // redirect to payment status component
         if (postData.requires_payment === true) {
-          redirectToPayment(orgSlug);
+          redirectToPayment(orgSlug, navigate);
         }
         // will redirect to status which will validate data again
         // and initiate any verification if needed
@@ -384,10 +384,10 @@ export default class Registration extends React.Component {
   };
 
   handleResponse = (response) => {
-    const {orgSlug} = this.props;
+    const {orgSlug, navigate} = this.props;
     if (response) {
       toast.info(t`PLEASE_LOGIN`);
-      return history.push(`/${orgSlug}/login`);
+      return navigate(`/${orgSlug}/login`);
     }
     return this.toggleModal();
   };
@@ -967,4 +967,5 @@ Registration.propTypes = {
   setTitle: PropTypes.func.isRequired,
   setUserData: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
+  navigate: PropTypes.func.isRequired,
 };

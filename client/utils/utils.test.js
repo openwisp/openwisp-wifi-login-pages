@@ -672,19 +672,19 @@ describe("handle-change tests", () => {
   });
   it("should redirecToPayment", () => {
     const historyMock = createMemoryHistory();
-    const pushSpy = jest.spyOn(historyMock, "push");
+    const navigate = jest.fn();
     const wrapper = shallow(
       <Router history={historyMock}>
         <button
           type="submit"
-          onClick={() => redirectToPayment("default", historyMock)}
+          onClick={() => redirectToPayment("default", navigate)}
         >
           Test
         </button>
       </Router>,
     );
     wrapper.find("button").simulate("click", {});
-    expect(pushSpy).toHaveBeenCalled();
+    expect(navigate).toHaveBeenCalled();
   });
 });
 describe("storage tests", () => {

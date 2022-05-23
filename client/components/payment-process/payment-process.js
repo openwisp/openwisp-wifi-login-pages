@@ -8,7 +8,6 @@ import {t} from "ttag";
 import LoadingContext from "../../utils/loading-context";
 import validateToken from "../../utils/validate-token";
 import getPaymentStatusRedirectUrl from "../../utils/get-payment-status";
-import history from "../../utils/history";
 
 export default class PaymentProcess extends React.Component {
   constructor(props) {
@@ -51,7 +50,7 @@ export default class PaymentProcess extends React.Component {
   }
 
   handlePostMessage = async (event) => {
-    const {userData, orgSlug, setUserData} = this.props;
+    const {userData, orgSlug, setUserData, navigate} = this.props;
     const {setLoading} = this.context;
     const {message, type} = event.data;
     // For security reasons, read https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage#security_concern
@@ -73,7 +72,7 @@ export default class PaymentProcess extends React.Component {
             setUserData,
             userData,
           );
-          history.push(redirectUrl);
+          navigate(redirectUrl);
           break;
         }
         case "showLoader":
@@ -142,4 +141,5 @@ PaymentProcess.propTypes = {
   settings: PropTypes.shape({
     payment_iframe: PropTypes.bool,
   }).isRequired,
+  navigate: PropTypes.func.isRequired,
 };
