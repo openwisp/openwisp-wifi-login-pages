@@ -1,4 +1,4 @@
-import {until, By} from "selenium-webdriver";
+import {until, By, Key} from "selenium-webdriver";
 import {
   getDriver,
   getElementByCss,
@@ -80,7 +80,9 @@ describe("Selenium tests for <MobilePhoneChange />", () => {
     );
     await driver.wait(until.elementIsVisible(phoneField));
     phoneField.click();
-    await phoneField.clear();
+    await driver.executeScript((el) => el.select(), phoneField);
+    await phoneField.sendKeys(Key.BACK_SPACE);
+    await driver.sleep(250);
     await phoneField.sendKeys(data.changePhoneNumber);
     submitBtn = await getElementByCss(driver, "input[type='submit']");
     await driver.wait(until.elementIsVisible(submitBtn));
@@ -107,9 +109,7 @@ describe("Selenium tests for <MobilePhoneChange />", () => {
       driver,
       "div > p:nth-child(6) > span",
     );
-    expect(await phoneElement.getText()).toEqual(
-      `+91${data.changePhoneNumber}`,
-    );
+    expect(await phoneElement.getText()).toEqual(data.changePhoneNumber);
     activeSessionTr = await getElementByCss(driver, "table tr.active-session");
     await driver.wait(until.elementIsVisible(activeSessionTr));
   });
