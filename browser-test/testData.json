@@ -12,7 +12,7 @@
     "uuid": "organization_uuid",
     "secretKey": "organization_secret_key",
     "method": "mobile_phone",
-    "changePhoneNumber": "9876543210"
+    "changePhoneNumber": "+393660011333"
   },
   "allOrgScript": "analytics.js"
 }
