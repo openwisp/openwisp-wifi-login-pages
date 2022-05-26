@@ -258,13 +258,13 @@ msgstr "Nur Buchstaben und Zahlen"
 #: client/components/registration/registration.js:766
 msgid "REGISTER_ADD_INFO_TXT"
 msgstr ""
-"Wenn Sie dieses Anmeldeformular ausfüllen und zusenden, stimmen Sie den "
+"Wenn Sie dieses Registrierungsformular ausfüllen und zusenden, stimmen Sie den "
 "{terms_and_conditions} und {privacy_policy} des WLAN-Dienstes."
 
 #: client/components/login/login.js:403
 #: client/components/registration/registration.js:779
 msgid "REGISTER_BTN_TXT"
-msgstr "Anmelden"
+msgstr "Registrieren"
 
 #: client/components/login/login.js:411
 #: client/components/registration/registration.js:792
@@ -289,11 +289,11 @@ msgstr "Die Passwörter stimmen nicht überein"
 
 #: client/components/registration/registration.js:203
 msgid "REGISTER_SUCCESS"
-msgstr "Anmeldung war erfolgreich"
+msgstr "Registrierung war erfolgreich"
 
 #: client/components/registration/registration.js:222
 msgid "REGISTER_ERR"
-msgstr "Fehler bei der Anmeldung."
+msgstr "Fehler bei der Registrierung."
 
 #: client/components/payment-status/payment-status.js:84
 msgid "PAY_SUCCESS"
