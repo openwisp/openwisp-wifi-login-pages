@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import {connect} from "react-redux";
 
 import OrganizationWrapper from "./components/organization-wrapper";
-import withRouteProps from "./utils/withRouteProps";
+import withRouteProps from "./utils/with-route-props";
 
 class OrganizationRoutes extends React.Component {
   render() {

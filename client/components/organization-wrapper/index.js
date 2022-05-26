@@ -4,7 +4,7 @@ import {setUserData} from "../../actions/dispatchers";
 import setOrganization from "../../actions/set-organization";
 import setLanguage from "../../actions/set-language";
 import Component from "./organization-wrapper";
-import withRouteProps from "../../utils/withRouteProps";
+import withRouteProps from "../../utils/with-route-props";
 
 const mapStateToProps = (state, ownProps) => ({
   organization: state.organization,

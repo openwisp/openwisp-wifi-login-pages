@@ -1,7 +1,7 @@
 import {connect} from "react-redux";
 import Component from "./payment-status";
 import {authenticate, logout, setUserData} from "../../actions/dispatchers";
-import withRouteProps from "../../utils/withRouteProps";
+import withRouteProps from "../../utils/with-route-props";
 
 const mapStateToProps = (state, ownProps) => {
   const conf = state.organization.configuration;

@@ -26,7 +26,7 @@ import redirectToPayment from "./redirect-to-payment";
 import {initialState} from "../reducers/organization";
 import {localStorage, sessionStorage, storageFallback} from "./storage";
 import getPaymentStatusRedirectUrl from "./get-payment-status";
-import withRouteProps from "./withRouteProps";
+import withRouteProps from "./with-route-props";
 
 jest.mock("axios");
 jest.mock("./load-translation");

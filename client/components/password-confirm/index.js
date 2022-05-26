@@ -1,6 +1,6 @@
 import {connect} from "react-redux";
 import {setTitle} from "../../actions/dispatchers";
-import withRouteProps from "../../utils/withRouteProps";
+import withRouteProps from "../../utils/with-route-props";
 
 import Component from "./password-confirm";
 
