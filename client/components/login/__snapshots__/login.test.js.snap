@@ -96,7 +96,7 @@ exports[`<Login /> interactions phone_number field should be present if mobile p
               Mobile phone number
             </label>
             <div
-              class=" react-tel-input"
+              class=" react-tel-input "
             >
               <div
                 class="special-label"
@@ -114,7 +114,7 @@ exports[`<Login /> interactions phone_number field should be present if mobile p
                 value=""
               />
               <div
-                class=" flag-dropdown"
+                class="flag-dropdown "
               >
                 <div
                   aria-haspopup="listbox"
