@@ -88,9 +88,12 @@ div.error {
   text-align: center;
   font-weight: 600;
   width: 20px;
-  margin: 0 6px 0 1px;
+  margin: 0 10px 0 1px;
   top: -1px;
   position: relative;
+}
+.error .text {
+  line-height: 1.5em;
 }
 .error.non-field {
   box-sizing: border-box;
