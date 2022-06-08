@@ -113,9 +113,11 @@ export default class Login extends React.Component {
   getTextField = (input_fields) => {
     const {username, errors} = this.state;
     const {language} = this.props;
+    const usernameLabel =
+      input_fields.username.type === "email" ? t`EMAIL` : t`USERNAME_LOG_LBL`;
     const label = input_fields.username.label
       ? getText(input_fields.username.label, language)
-      : t`USERNAME_LOG_LBL`;
+      : usernameLabel;
     const placeholder = input_fields.username.placeholder
       ? getText(input_fields.username.placeholder, language)
       : t`USERNAME_LOG_PHOLD`;
