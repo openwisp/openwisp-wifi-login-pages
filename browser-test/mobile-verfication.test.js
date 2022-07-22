@@ -82,5 +82,10 @@ describe("Selenium tests for <MobileVerification />", () => {
       "div > p:nth-child(6) > span",
     );
     expect(await phoneElement.getText()).toEqual(data.phoneNumber);
+    const activeSessionTr = await getElementByCss(
+      driver,
+      "table tr.active-session",
+    );
+    await driver.wait(until.elementIsVisible(activeSessionTr));
   });
 });

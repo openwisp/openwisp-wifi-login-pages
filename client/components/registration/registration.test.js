@@ -350,7 +350,11 @@ describe("<Registration /> interactions", () => {
     const setUserDataMock = wrapper.instance().props.setUserData.mock;
     expect(setUserDataMock.calls.length).toBe(1);
     expect(setUserDataMock.calls.pop()).toEqual([
-      {is_verified: false, auth_token: responseData.key},
+      {
+        is_verified: false,
+        auth_token: responseData.key,
+        mustLogin: !responseData.requires_payment,
+      },
     ]);
   });
   it("should toggle modal", async () => {
@@ -564,7 +568,11 @@ describe("Registration and Mobile Phone Verification interactions", () => {
     const setUserDataMock = registration.props.setUserData.mock;
     expect(setUserDataMock.calls.length).toBe(1);
     expect(setUserDataMock.calls.pop()).toEqual([
-      {is_verified: false, auth_token: responseData.key},
+      {
+        is_verified: false,
+        auth_token: responseData.key,
+        mustLogin: !responseData.requires_payment,
+      },
     ]);
   });
   it("should load fallback before PhoneInput and handlers should work correctly", async () => {

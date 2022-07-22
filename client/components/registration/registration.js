@@ -221,6 +221,7 @@ export default class Registration extends React.Component {
         setUserData({
           is_verified: false,
           auth_token,
+          mustLogin: !postData.requires_payment,
         });
         this.setState({
           errors: {},
