@@ -8823,9 +8823,9 @@ mkdirp@^1.0.3, mkdirp@^1.0.4:
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
 
 mock-local-storage@^1.1.17:
-  version "1.1.21"
-  resolved "https://registry.yarnpkg.com/mock-local-storage/-/mock-local-storage-1.1.21.tgz#f50081e4faf4fd161237ade3d40641e5d460bd37"
-  integrity sha512-/sVmP9ywoafxV2HsSw+H7mj+R8uxEld0wXbIZINRkXE4MtVMORN2eIDso9gnY9S/Yb14dRNRu2bB2RRKNYX5bA==
+  version "1.1.23"
+  resolved "https://registry.yarnpkg.com/mock-local-storage/-/mock-local-storage-1.1.23.tgz#a4d431536b0d56f77f2d60fa63f75a614795f5f6"
+  integrity sha512-G1qWl7Ik017sqB3omvWzazrWC69najuLL8Q4ROnr2clOmwCP/d7HTEHH8v29S+YYouh1mq7wmybrrTbzAf7P6A==
   dependencies:
     core-js "^3.19.0"
     global "^4.3.2"
