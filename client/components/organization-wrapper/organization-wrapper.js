@@ -100,7 +100,6 @@ export default class OrganizationWrapper extends React.Component {
     const {organization, params, cookies, location, navigate} = this.props;
     const {loading, translationLoaded, configLoaded} = this.state;
     const {
-      title,
       favicon,
       isAuthenticated,
       userData,
