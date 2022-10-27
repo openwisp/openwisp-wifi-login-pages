@@ -60,13 +60,59 @@ the [OpenWISP Radius API](https://openwisp-radius.readthedocs.io/) to provide th
 
 ### Table of contents
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
 - [Deploy it in production](#deploy-it-in-production)
 - [Prerequisites](#prerequisites)
 - [Install](#install)
+  - [Install openwisp-radius](#install-openwisp-radius)
+  - [Clone this repo](#clone-this-repo)
+    - [Install dependencies](#install-dependencies)
+    - [Browser based tests](#browser-based-tests)
+  - [Setup](#setup)
+    - [Add Organization configuration](#add-organization-configuration)
+  - [Removing sections of configuration](#removing-sections-of-configuration)
+  - [Variants of the same configuration](#variants-of-the-same-configuration)
+    - [Variant with different organization slug / UUID / secret](#variant-with-different-organization-slug--uuid--secret)
 - [Usage](#usage)
+  - [Using custom ports](#using-custom-ports)
+- [Running webpack-bundle-analyzer](#running-webpack-bundle-analyzer)
 - [Settings](#settings)
+  - [Menu items](#menu-items)
+  - [User Fields in Registration Form](#user-fields-in-registration-form)
+  - [Username field in login form](#username-field-in-login-form)
+  - [Configuring Social Login](#configuring-social-login)
+  - [Custom CSS files](#custom-css-files)
+  - [Custom HTML](#custom-html)
+    - [Second logo](#second-logo)
+  - [Sticky message](#sticky-message)
+    - [Login page](#login-page)
+    - [Contact box](#contact-box)
+    - [Footer](#footer)
+  - [Configuring SAML Login & Logout](#configuring-saml-login--logout)
+  - [TOS & Privacy Policy](#tos--privacy-policy)
+  - [Configuring Logging](#configuring-logging)
+  - [Mocking captive portal login and logout](#mocking-captive-portal-login-and-logout)
+  - [Signup with payment flow](#signup-with-payment-flow)
 - [Translations](#translations)
+  - [Defining available languages](#defining-available-languages)
+  - [Add translations](#add-translations)
+  - [Update translations](#update-translations)
+  - [Customizing translations for a specific language](#customizing-translations-for-a-specific-language)
+  - [Customizing translations for a specific organization and language](#customizing-translations-for-a-specific-organization-and-language)
+- [Handling Captive Portal / RADIUS Errors](#handling-captive-portal--radius-errors)
+- [Supporting realms (RADIUS proxy)](#supporting-realms-radius-proxy)
+- [Allowing users to manage account from the Internet](#allowing-users-to-manage-account-from-the-internet)
+- [Loading extra javascript files](#loading-extra-javascript-files)
+  - [1. Loading extra javascript files for whole application (all organizations)](#1-loading-extra-javascript-files-for-whole-application-all-organizations)
+  - [2. Loading extra javascript files for a specific organization](#2-loading-extra-javascript-files-for-a-specific-organization)
+- [Support for old browsers](#support-for-old-browsers)
+- [Configuring Sentry for proxy server](#configuring-sentry-for-proxy-server)
+- [Change log](#change-log)
 - [License](#license)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ### Deploy it in production
 
