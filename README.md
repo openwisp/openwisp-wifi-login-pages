@@ -167,6 +167,13 @@ try to run the tests with the following command:
 yarn test # headless tests
 ```
 
+To automatically run formatters and linters on staged files,
+install precommit hook with the following command:
+
+```bash
+yarn husky install
+```
+
 ##### Browser based tests
 
 Prerequisites for running browser-based tests:
