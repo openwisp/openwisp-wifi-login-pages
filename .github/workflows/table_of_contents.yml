@@ -1,0 +1,17 @@
+name: TOC
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: TOC
+      run: python3 create_toc.py
