@@ -783,7 +783,7 @@ export default class Status extends React.Component {
                     return null;
                   })}
                 {Object.keys(userInfo).map((key) => (
-                  <p key={key}>
+                  <p key={key} className="status-content">
                     <label>{user_info[key].text}:</label>
                     <span>{userInfo[key]}</span>
                   </p>

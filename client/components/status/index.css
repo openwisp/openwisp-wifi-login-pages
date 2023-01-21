@@ -57,17 +57,27 @@
 }
 #sessions {
   flex-grow: 1;
-  justify-content: center;
   max-width: 1000px;
   margin: 0 auto;
 }
 #sessions > div {
   width: 100%;
 }
+#status .status-content {
+  line-height: 22px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
 
 @media screen and (min-width: 0px) and (max-width: 500px) {
   .logout-modal-container p.message {
     margin: 0 6%;
     line-height: 30px;
+  }
+  .status-content p {
+    min-width: 373px;
+  }
+  .status-content label {
+    margin-right: 0.4em;
   }
 }

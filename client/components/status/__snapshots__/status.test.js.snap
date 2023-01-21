@@ -42,7 +42,9 @@ exports[`<Status /> rendering should render correctly 1`] = `
           >
             You may leave this page open in case you want to log out.
           </p>
-          <p>
+          <p
+            className="status-content"
+          >
             <label>
               Status
               :
@@ -183,7 +185,9 @@ exports[`<Status /> rendering with placeholder translation tags should render tr
           >
             STATUS_CONTENT
           </p>
-          <p>
+          <p
+            className="status-content"
+          >
             <label>
               STATUS
               :
