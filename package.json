@@ -71,6 +71,7 @@
     "copy-webpack-plugin": "^6.4.1",
     "coveralls": "^3.1.0",
     "css-loader": "^5.2.6",
+    "doctoc": "^2.2.1",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.5",
     "enzyme-to-json": "^3.5.0",
@@ -89,7 +90,9 @@
     "file-loader": "^6.1.0",
     "hard-source-webpack-plugin": "^0.13.1",
     "html-webpack-plugin": "^4.5.2",
+    "husky": "^8.0.1",
     "jest": "^27.0.6",
+    "lint-staged": "^13.0.3",
     "mini-css-extract-plugin": "1.6.2",
     "mock-local-storage": "^1.1.17",
     "optimize-css-assets-webpack-plugin": "^6.0.1",
@@ -126,7 +129,10 @@
     "test-inspect": "node inspect ./node_modules/.bin/jest --runInBand",
     "stats": "STATS=true webpack-cli --profile --json --mode production --config config/webpack.config.js > compilation-stats.json && webpack-bundle-analyzer dist/stats.json",
     "translations-add": "ttag init",
-    "translations-update": "sh -c 'ttag update $0 client/'"
+    "translations-update": "sh -c 'ttag update $0 client/'",
+    "doctoc": "npx doctoc README.md && git add README.md",
+    "prepare": "husky install",
+    "pre-commit": "lint-staged"
   },
   "repository": {
     "type": "git",
@@ -156,5 +162,10 @@
     "ignore": [
       "client/*"
     ]
+  },
+  "lint-staged": {
+    "**/*.+(js|jsx|json|css|md)": "npm run format",
+    "**/*.+(js|jsx)": "npm run lint",
+    "README.md": "npm run doctoc"
   }
 }
