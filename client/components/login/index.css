@@ -39,6 +39,9 @@ div.remember-me {
 #login .pre-content {
   width: 100%;
 }
+.container.intro {
+  flex-grow: 0;
+}
 .remember-me input {
   height: 16px;
   width: 16px;
