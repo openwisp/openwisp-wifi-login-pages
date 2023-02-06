@@ -622,7 +622,7 @@ The terms of services and privacy policy pages are generated from markdown
 files which are specified in the YAML configuration.
 
 The markdown files specified in the YAML configuration should be placed in:
-`/configurations/{orgSlug}/server_assets/`.
+`/organizations/{orgSlug}/server_assets/`.
 
 #### Configuring Logging
 
