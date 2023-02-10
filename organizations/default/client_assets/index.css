@@ -180,8 +180,11 @@ div.error {
   border: 1px solid #888;
 }
 
-.content > .inner{
+.content > .inner {
   background: #fcfcfc;
   box-shadow: 0px 0px 6px #f4f7f6;
+}
+
+.main-column, .side-column {
   border: 1px solid rgba(0, 0, 0, 0.05);
 }
