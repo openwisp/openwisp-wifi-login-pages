@@ -64,8 +64,16 @@ the [OpenWISP Radius API](https://openwisp-radius.readthedocs.io/) to provide th
 - [Prerequisites](#prerequisites)
 - [Install](#install)
 - [Usage](#usage)
+- [Running webpack-bundle-analyzer](#running-webpack-bundle-analyzer)
 - [Settings](#settings)
 - [Translations](#translations)
+- [Handling Captive Portal / RADIUS Errors](#handling-captive-portal--radius-errors)
+- [Supporting realms (RADIUS proxy)](#supporting-realms-radius-proxy)
+- [Allowing users to manage account from the Internet](#allowing-users-to-manage-account-from-the-internet)
+- [Loading extra javascript files](#loading-extra-javascript-files)
+- [Support for old browsers](#support-for-old-browsers)
+- [Configuring Sentry for proxy server](#configuring-sentry-for-proxy-server)
+- [Change log](#change-log)
 - [License](#license)
 
 ### Deploy it in production
