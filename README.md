@@ -60,6 +60,8 @@ the [OpenWISP Radius API](https://openwisp-radius.readthedocs.io/) to provide th
 
 ### Table of contents
 
+- [Demo](#demo)
+- [Support](#community-andor-commercial-support)
 - [Deploy it in production](#deploy-it-in-production)
 - [Prerequisites](#prerequisites)
 - [Install](#install)
@@ -68,9 +70,25 @@ the [OpenWISP Radius API](https://openwisp-radius.readthedocs.io/) to provide th
 - [Translations](#translations)
 - [License](#license)
 
+### Demo
+
+A demo of this application is available at
+[wifi.openwisp.io/demo/](https://wifi.openwisp.io/demo/).
+
+The content of the demo organization is reset every day.
+
+Keep in mind that some features of the application will not be fully
+available due to the limited nature of the publicly accessible demo site,
+but it will serve well to give a good idea of how this web app works.
+
+### Community and/or commercial support
+
+See the available [support options](https://openwisp.org/support.html).
+
 ### Deploy it in production
 
-An ansible role which can be used to deploy and maintain this app is available, see [ansible-openwisp-wifi-login-pages](https://github.com/openwisp/ansible-openwisp-wifi-login-pages/).
+An ansible role which can be used to deploy and maintain this
+app is available, see [ansible-openwisp-wifi-login-pages](https://github.com/openwisp/ansible-openwisp-wifi-login-pages/).
 
 ### Prerequisites
 
