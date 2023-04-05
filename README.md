@@ -52,8 +52,9 @@ the [OpenWISP Radius API](https://openwisp-radius.readthedocs.io/) to provide th
 - Support for multiple languages
 - Possibility to change any text used in the pages
 - Configurable Terms of Services and Privacy Policy for each organization
-- Possibility of recognizing users thanks to signed cookies, which saves them
-  from having to re-authenticate
+- [Auto-login](https://openwisp.io/docs/tutorials/hotspot.html#automatic-captive-portal-login):
+  possibility of recognizing users thanks to signed cookies,
+  which saves them from having to re-authenticate
 - Support for [credit/debit card verification and paid subscription plans](#signup-with-payment-flow)
 
 ---
