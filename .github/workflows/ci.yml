@@ -96,6 +96,11 @@ jobs:
       - name: Creating configuration of organization (supports mobile verification)
         run: node browser-test/create-mobile-configuration.js
 
+      - name: Build OpenWISP WiFi Login Pages
+        run: |
+          yarn setup
+          webpack --mode development --progress --config config/webpack.config.js
+
       - name: Running OpenWISP WiFi Login Pages
         run: yarn start &
 
