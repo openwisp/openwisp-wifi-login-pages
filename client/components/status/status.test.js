@@ -68,11 +68,13 @@ const createTestProps = (props) => ({
   location: {
     search: "?macaddr=4e:ed:11:2b:17:ae",
   },
+  internetMode: false,
   logout: jest.fn(),
   setUserData: jest.fn(),
   userData: {},
   setTitle: jest.fn(),
   navigate: jest.fn(),
+  setInternetMode: jest.fn(),
   ...props,
 });
 
@@ -168,6 +170,7 @@ describe("<Status /> rendering", () => {
     expect(result).toEqual({
       logout: expect.any(Function),
       setUserData: expect.any(Function),
+      setInternetMode: expect.any(Function),
       setTitle: expect.any(Function),
     });
   });
@@ -552,7 +555,7 @@ describe("<Status /> interactions", () => {
       data: {type: "internet-mode"},
       origin: "http://localhost",
     });
-    expect(status.state.internetMode).toEqual(true);
+    expect(props.setInternetMode).toHaveBeenCalledTimes(1);
   });
 
   it("should not perform captive portal login (submit loginFormRef), if user is already authenticated", async () => {
@@ -1288,9 +1291,10 @@ describe("<Status /> interactions", () => {
   });
   it("test handleLogout internetMode", async () => {
     validateToken.mockReturnValue(true);
-    const prop = createTestProps();
     const session = {start_time: "2021-07-08T00:22:28-04:00", stop_time: null};
     const mockRef = {submit: jest.fn()};
+    // Test user logged in from internet(internetMode)
+    const prop = createTestProps({internetMode: true});
     wrapper = shallow(<Status {...prop} />, {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: true,
@@ -1300,14 +1304,20 @@ describe("<Status /> interactions", () => {
       .instance()
       .setState({sessionsToLogout: [session], activeSession: [session]});
 
-    // Test user logged in from internet(internetMode)
-    wrapper.instance().setState({internetMode: true});
     wrapper.instance().handleLogout(true, true);
     await tick();
     expect(mockRef.submit).toHaveBeenCalledTimes(0);
 
     // Test user logged in from WiFi
-    wrapper.instance().setState({internetMode: false});
+    prop.internetMode = false;
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    wrapper.instance().logoutFormRef = {current: mockRef};
+    wrapper
+      .instance()
+      .setState({sessionsToLogout: [session], activeSession: [session]});
     wrapper.instance().handleLogout(true, true);
     await tick();
     expect(mockRef.submit).toHaveBeenCalledTimes(1);

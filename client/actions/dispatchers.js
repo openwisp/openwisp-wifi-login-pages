@@ -3,6 +3,7 @@ import {
   SET_AUTHENTICATION_STATUS,
   SET_USER_DATA,
   SET_PAGE_TITLE,
+  SET_INTERNET_MODE,
 } from "../constants/action-types";
 
 export const authenticate = (dispatch) => (status) => {
@@ -20,4 +21,7 @@ export const setTitleAction = (title) => ({
 });
 export const setTitle = (dispatch) => (componentTitle, orgName) => {
   dispatch(setTitleAction(`${componentTitle} - ${orgName}`));
+};
+export const setInternetMode = (dispatch) => (isEnabled) => {
+  dispatch({type: SET_INTERNET_MODE, payload: isEnabled});
 };

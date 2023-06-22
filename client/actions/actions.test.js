@@ -8,6 +8,7 @@ import {
   authenticate,
   logout as logoutAction,
   setUserData,
+  setInternetMode,
 } from "./dispatchers";
 import logout from "./logout";
 import parseOrganizations from "./parse-organizations";
@@ -201,6 +202,14 @@ describe("actions testing", () => {
     expect(dispatch).toHaveBeenCalledWith({
       payload: {username: "openwisp"},
       type: types.SET_USER_DATA,
+    });
+  });
+  it("should dispatch setInteretMode action", () => {
+    const action = setInternetMode(dispatch);
+    action(true);
+    expect(dispatch).toHaveBeenCalledWith({
+      payload: true,
+      type: types.SET_INTERNET_MODE,
     });
   });
 });

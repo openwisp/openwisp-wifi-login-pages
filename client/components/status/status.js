@@ -48,7 +48,6 @@ export default class Status extends React.Component {
       loadSpinner: true,
       modalActive: false,
       rememberMe: false,
-      internetMode: false,
     };
     this.repeatLogin = false;
     this.getUserRadiusSessions = this.getUserRadiusSessions.bind(this);
@@ -287,13 +286,13 @@ export default class Status extends React.Component {
 
   handleLogout = async (userAutoLogin, repeatLogin = false) => {
     const {setLoading} = this.context;
-    const {orgSlug, logout, cookies, setUserData} = this.props;
+    const {orgSlug, logout, cookies, setUserData, internetMode} = this.props;
     const macaddr = cookies.get(`${orgSlug}_macaddr`);
     const params = {macaddr};
     localStorage.setItem("userAutoLogin", String(userAutoLogin));
     setLoading(true);
     await this.getUserActiveRadiusSessions(params);
-    const {sessionsToLogout, internetMode} = this.state;
+    const {sessionsToLogout} = this.state;
 
     if (sessionsToLogout.length > 0) {
       if (this.logoutFormRef && this.logoutFormRef.current) {
@@ -423,7 +422,8 @@ export default class Status extends React.Component {
   };
 
   handlePostMessage = async (event) => {
-    const {captivePortalLoginForm, logout, cookies, orgSlug} = this.props;
+    const {captivePortalLoginForm, logout, cookies, orgSlug, setInternetMode} =
+      this.props;
     const {setLoading} = this.context;
     const {message, type} = event.data;
     // For security reasons, read https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage#security_concern
@@ -445,9 +445,7 @@ export default class Status extends React.Component {
           break;
 
         case "internet-mode":
-          this.setState({
-            internetMode: true,
-          });
+          setInternetMode(true);
           break;
 
         default:
@@ -742,6 +740,7 @@ export default class Status extends React.Component {
       captivePortalLogoutForm,
       isAuthenticated,
       userData,
+      internetMode,
     } = this.props;
     const {links} = statusPage;
     const {
@@ -755,7 +754,6 @@ export default class Status extends React.Component {
       loadSpinner,
       modalActive,
       rememberMe,
-      internetMode,
     } = this.state;
     const user_info = this.getUserInfo();
     const contentArr = t`STATUS_CONTENT`.split("\n");
@@ -947,6 +945,7 @@ export default class Status extends React.Component {
 Status.contextType = LoadingContext;
 Status.defaultProps = {
   isAuthenticated: false,
+  internetMode: false,
 };
 Status.propTypes = {
   statusPage: PropTypes.shape({
@@ -962,6 +961,7 @@ Status.propTypes = {
   orgSlug: PropTypes.string.isRequired,
   orgName: PropTypes.string.isRequired,
   userData: PropTypes.object.isRequired,
+  internetMode: PropTypes.bool,
   cookies: PropTypes.instanceOf(Cookies).isRequired,
   logout: PropTypes.func.isRequired,
   captivePortalLoginForm: PropTypes.shape({
@@ -994,6 +994,7 @@ Status.propTypes = {
     payment_requires_internet: PropTypes.bool,
   }).isRequired,
   setUserData: PropTypes.func.isRequired,
+  setInternetMode: PropTypes.func.isRequired,
   setTitle: PropTypes.func.isRequired,
   navigate: PropTypes.func.isRequired,
 };

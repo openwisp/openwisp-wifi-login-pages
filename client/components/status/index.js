@@ -1,5 +1,10 @@
 import {connect} from "react-redux";
-import {logout, setTitle, setUserData} from "../../actions/dispatchers";
+import {
+  logout,
+  setTitle,
+  setUserData,
+  setInternetMode,
+} from "../../actions/dispatchers";
 import Component from "./status";
 
 export const mapStateToProps = (state, ownProps) => {
@@ -15,6 +20,7 @@ export const mapStateToProps = (state, ownProps) => {
     isAuthenticated: conf.isAuthenticated,
     cookies: ownProps.cookies,
     language: state.language,
+    internetMode: state.internetMode,
   };
 };
 
@@ -22,5 +28,6 @@ export const mapDispatchToProps = (dispatch) => ({
   logout: logout(dispatch),
   setUserData: setUserData(dispatch),
   setTitle: setTitle(dispatch),
+  setInternetMode: setInternetMode(dispatch),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Component);
