@@ -98,6 +98,7 @@ jobs:
 
       - name: Build OpenWISP WiFi Login Pages
         run: |
+          export NODE_OPTIONS=--openssl-legacy-provider
           yarn setup
           webpack --mode development --progress --config config/webpack.config.js
 
