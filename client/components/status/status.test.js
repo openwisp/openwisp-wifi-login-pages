@@ -947,6 +947,40 @@ describe("<Status /> interactions", () => {
     expect(setLoading.mock.calls.length).toBe(1);
   });
 
+  it("should redirect to /payment/process if proceedToPayment is true", async () => {
+    validateToken.mockReturnValue(true);
+    props = createTestProps();
+    props.userData = {
+      ...responseData,
+      is_verified: false,
+      method: "bank_card",
+      payment_url: "https://account.openwisp.io/payment/123",
+      mustLogin: true,
+      proceedToPayment: true,
+    };
+    props.settings.subscriptions = true;
+    props.settings.payment_requires_internet = true;
+    const setLoading = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading},
+    });
+
+    const mockRef = {submit: jest.fn()};
+    wrapper.instance().loginIframeRef.current = {};
+    wrapper.instance().loginFormRef.current = mockRef;
+    wrapper.instance().handleLoginIframe();
+
+    // ensure user is redirected to payment URL
+    expect(props.navigate).toHaveBeenCalledWith(
+      `/${props.orgSlug}/payment/process`,
+    );
+    // ensure proceedToPayment is set to false
+    expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith({
+      ...props.userData,
+      proceedToPayment: false,
+    });
+  });
+
   it("should logout if mustLogout is true", async () => {
     validateToken.mockReturnValue(true);
     jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
