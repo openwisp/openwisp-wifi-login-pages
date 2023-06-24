@@ -14,6 +14,7 @@ import LoadingContext from "../../utils/loading-context";
 import {
   createMobilePhoneTokenUrl,
   verifyMobilePhoneTokenUrl,
+  mobilePhoneTokenStatusUrl,
 } from "../../constants";
 import getErrorText from "../../utils/get-error-text";
 import logError from "../../utils/log-error";
@@ -70,7 +71,9 @@ export default class MobilePhoneVerification extends React.Component {
       this.setState({phone_number});
       // send token via SMS only if user needs to verify
       if (!is_verified && settings.mobile_phone_verification) {
-        await this.createPhoneToken();
+        if (!(await this.activePhoneToken())) {
+          await this.createPhoneToken();
+        }
       }
     }
     setLoading(false);
@@ -158,6 +161,33 @@ export default class MobilePhoneVerification extends React.Component {
         sessionStorage.setItem(self.phoneTokenSentKey, true);
         toast.info(t`TOKEN_SENT`);
       })
+      .catch((error) => {
+        const errorText = getErrorText(error);
+        logError(error, errorText);
+        toast.error(errorText);
+        this.setState({
+          errors: {
+            ...errors,
+            ...(errorText ? {nonField: errorText} : {nonField: ""}),
+          },
+        });
+      });
+  }
+
+  async activePhoneToken() {
+    const {orgSlug, language, userData} = this.props;
+    const {errors} = this.state;
+    const url = mobilePhoneTokenStatusUrl(orgSlug);
+    return axios({
+      method: "get",
+      headers: {
+        "content-type": "application/x-www-form-urlencoded",
+        "accept-language": getLanguageHeaders(language),
+        Authorization: `Bearer ${userData.auth_token}`,
+      },
+      url,
+    })
+      .then((data) => data.active)
       .catch((error) => {
         const errorText = getErrorText(error);
         logError(error, errorText);

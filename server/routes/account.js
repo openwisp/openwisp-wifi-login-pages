@@ -9,6 +9,7 @@ import validateToken from "../controllers/validate-token-controller";
 import {
   createMobilePhoneToken,
   verifyMobilePhoneToken,
+  mobilePhoneTokenStatus,
 } from "../controllers/mobile-phone-token-controller";
 import mobilePhoneNumberChange from "../controllers/mobile-phone-number-change-controller";
 import errorHandler from "../utils/error-handler";
@@ -23,6 +24,7 @@ router.post("/password/reset", errorHandler(passwordReset));
 router.post("/", errorHandler(registration));
 router.get("/session/", errorHandler(getUserRadiusSessions));
 router.post("/phone/token", errorHandler(createMobilePhoneToken));
+router.get("/phone/token/status", errorHandler(mobilePhoneTokenStatus));
 router.post("/phone/verify", errorHandler(verifyMobilePhoneToken));
 router.post("/phone/change", errorHandler(mobilePhoneNumberChange));
 
