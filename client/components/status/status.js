@@ -870,7 +870,7 @@ export default class Status extends React.Component {
                     type="text"
                     name={field.name}
                     value={field.value}
-                    key={field.name}
+                    key={`input-${field.name}`}
                   />
                 ))}
             </form>
