@@ -176,7 +176,6 @@ export default class MobilePhoneVerification extends React.Component {
 
   async activePhoneToken() {
     const {orgSlug, language, userData} = this.props;
-    const {errors} = this.state;
     const url = mobilePhoneTokenStatusUrl(orgSlug);
     return axios({
       method: "get",
@@ -189,15 +188,20 @@ export default class MobilePhoneVerification extends React.Component {
     })
       .then((data) => data.active)
       .catch((error) => {
+        if (
+          error.response &&
+          error.response.status === 404 &&
+          error.response.data &&
+          error.response.data.response_code !== "INVALID_ORGANIZATION"
+        ) {
+          // This is kept for backward compatibility with older versions of OpenWISP RADIUS
+          // that does not have API endpoint for checking phone token status.
+          return false;
+        }
         const errorText = getErrorText(error);
         logError(error, errorText);
         toast.error(errorText);
-        this.setState({
-          errors: {
-            ...errors,
-            ...(errorText ? {nonField: errorText} : {nonField: ""}),
-          },
-        });
+        return errorText;
       });
   }
 

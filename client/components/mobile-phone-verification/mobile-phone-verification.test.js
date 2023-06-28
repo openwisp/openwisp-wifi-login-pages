@@ -167,6 +167,66 @@ describe("Mobile Phone Token verification: standard flow", () => {
     ).toBe(0);
   });
 
+  it("should not show error if active phone token returns 404", async () => {
+    // This is kept for backward compatibility with older versions of OpenWISP RADIUS
+    // that does not have API endpoint for checking phone token status.
+    MobilePhoneVerification.prototype.activePhoneToken.mockRestore();
+    jest
+      .spyOn(MobilePhoneVerification.prototype, "createPhoneToken")
+      .mockReturnValue(true);
+    axios.mockRestore();
+    axios.mockImplementationOnce(() =>
+      Promise.reject({
+        response: {
+          status: 404,
+          statusText: "NOT FOUND",
+          data: {
+            non_field_errors: ["Not Found"],
+          },
+        },
+      }),
+    );
+    validateToken.mockReturnValue(true);
+    jest.spyOn(toast, "error");
+    wrapper = createShallowComponent(props);
+    await tick();
+    expect(logError.mock.calls.length).toBe(0);
+    expect(toast.error.mock.calls.length).toBe(0);
+    expect(
+      MobilePhoneVerification.prototype.createPhoneToken.mock.calls.length,
+    ).toBe(1);
+  });
+
+  it("should not execute createPhoneToken if invalid organization", async () => {
+    MobilePhoneVerification.prototype.activePhoneToken.mockRestore();
+    jest
+      .spyOn(MobilePhoneVerification.prototype, "createPhoneToken")
+      .mockReturnValue(true);
+    axios.mockRestore();
+    axios.mockImplementationOnce(() =>
+      Promise.reject({
+        response: {
+          status: 404,
+          statusText: "NOT FOUND",
+          data: {
+            non_field_errors: ["Not Found"],
+            response_code: "INVALID_ORGANIZATION",
+          },
+        },
+      }),
+    );
+    validateToken.mockReturnValue(true);
+    jest.spyOn(toast, "error");
+    wrapper = createShallowComponent(props);
+    await tick();
+    expect(
+      MobilePhoneVerification.prototype.createPhoneToken.mock.calls.length,
+    ).toBe(0);
+    expect(logError.mock.calls.length).toBe(1);
+    expect(toast.error.mock.calls.length).toBe(1);
+    expect(toast.error).toHaveBeenCalledWith("Not Found");
+  });
+
   it("should show error on if active phone token check fails", async () => {
     MobilePhoneVerification.prototype.activePhoneToken.mockRestore();
     axios.mockImplementationOnce(() =>
