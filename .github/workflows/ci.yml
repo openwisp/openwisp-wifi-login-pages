@@ -90,7 +90,7 @@ jobs:
 
       - name: Installing OpenWISP Radius
         run: |
-          cd openwisp-radius && pip install -e .[saml]
+          cd openwisp-radius && pip install -U -e ".[saml]" "Django~=4.2.0"
           ./tests/manage.py migrate
 
       - name: Creating configuration of organization (supports mobile verification)
