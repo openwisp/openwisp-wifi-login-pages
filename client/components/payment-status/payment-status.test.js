@@ -206,7 +206,7 @@ describe("Test <PaymentStatus /> cases", () => {
     // If the payment requires internet, proceedToPayment should
     // be set to true in userData
     validateToken.mockReturnValue(true);
-    
+
     // Test payment_requires_internet is set to false
     props = createTestProps({
       userData: {...responseData, is_verified: false},
