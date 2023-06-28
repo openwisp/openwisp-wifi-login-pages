@@ -1,6 +1,7 @@
 import * as types from "../constants/action-types";
 import testConfig from "../test-config.json";
 import language from "./language";
+import internetMode from "./internet-mode";
 import {organization, organizations} from "./organization";
 
 describe("language reducer", () => {
@@ -11,6 +12,17 @@ describe("language reducer", () => {
   it("should handle SET_LANGUAGE", () => {
     const action = {type: types.SET_LANGUAGE, payload: "en"};
     expect(language("", action)).toEqual("en");
+  });
+});
+
+describe("internetMode reducer", () => {
+  it("should return initial state", () => {
+    expect(internetMode(undefined, {})).toEqual(false);
+  });
+
+  it("should handle SET_INTERNET_MODE", () => {
+    const action = {type: types.SET_INTERNET_MODE, payload: true};
+    expect(internetMode(false, action)).toEqual(true);
   });
 });
 
