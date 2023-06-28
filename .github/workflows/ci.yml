@@ -31,10 +31,10 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-
 
-      - name: Set up Python 3.7
+      - name: Set up Python 3.10
         uses: actions/setup-python@v2
         with:
-          python-version: 3.7
+          python-version: "3.10"
 
       - name: Installing dependencies
         run: |
@@ -71,10 +71,10 @@ jobs:
       - name: Tests
         run: yarn coverage
 
-      - name: Set up Python 3.7
+      - name: Set up Python 3.10
         uses: actions/setup-python@v2
         with:
-          python-version: 3.7
+          python-version: "3.10"
 
       - name: Get openwisp-radius
         run: |
@@ -90,14 +90,22 @@ jobs:
 
       - name: Installing OpenWISP Radius
         run: |
-          cd openwisp-radius && pip install -e .[saml]
+          cd openwisp-radius && pip install -U -e ".[saml]" "Django~=4.2.0"
           ./tests/manage.py migrate
 
       - name: Creating configuration of organization (supports mobile verification)
         run: node browser-test/create-mobile-configuration.js
 
+      - name: Build OpenWISP WiFi Login Pages
+        run: |
+          export NODE_OPTIONS=--openssl-legacy-provider
+          yarn setup
+          webpack --mode development --progress --config config/webpack.config.js
+
       - name: Running OpenWISP WiFi Login Pages
-        run: yarn start &
+        run: |
+          export NODE_OPTIONS=--openssl-legacy-provider
+          yarn start &
 
       - name: Running OpenWISP Radius
         run: cd openwisp-radius && ./tests/manage.py runserver &
