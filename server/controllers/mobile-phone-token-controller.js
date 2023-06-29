@@ -104,15 +104,15 @@ export const mobilePhoneTokenStatus = (req, res) => {
     }
     return org.slug === reqOrg;
   });
-  // Return 401 for invalid organization slug or org not listed in config.
-  // This is different from other implementation because the frontend
-  // expects 404 only when the phone token status API endpoint is
-  // not implemented in OpenWISP RADIUS.
   if (!validSlug) {
     res
       .status(404)
       .type("application/json")
       .send({
+        // The response code is different from other implementations because
+        // the frontend expects 404 also when the phone token status API
+        // is not implemented in OpenWISP RADIUS. Thus, the response
+        // code is used to distinguish between the two scenarios.
         response_code: "INVALID_ORGANIZATION",
         non_field_errors: ["Not found."],
       });
