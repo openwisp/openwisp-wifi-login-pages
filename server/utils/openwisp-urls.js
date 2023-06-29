@@ -8,6 +8,7 @@ const paths = {
   validate_auth_token: "/account/token/validate",
   user_radius_sessions: "/account/session",
   create_mobile_phone_token: "/account/phone/token",
+  mobile_phone_token_status: "/account/phone/token/active",
   verify_mobile_phone_token: "/account/phone/verify",
   mobile_phone_number_change: "/account/phone/change",
   plans: "/plan",

@@ -12,6 +12,8 @@ export const getUserRadiusSessionsUrl = (orgSlug) =>
   `${prefix}/${orgSlug}/account/session`;
 export const createMobilePhoneTokenUrl = (orgSlug) =>
   `${prefix}/${orgSlug}/account/phone/token`;
+export const mobilePhoneTokenStatusUrl = (orgSlug) =>
+  `${prefix}/${orgSlug}/account/phone/token/status`;
 export const verifyMobilePhoneTokenUrl = (orgSlug) =>
   `${prefix}/${orgSlug}/account/phone/verify`;
 export const mobilePhoneChangeUrl = (orgSlug) =>

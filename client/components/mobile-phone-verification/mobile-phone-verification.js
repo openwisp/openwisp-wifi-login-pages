@@ -14,6 +14,7 @@ import LoadingContext from "../../utils/loading-context";
 import {
   createMobilePhoneTokenUrl,
   verifyMobilePhoneTokenUrl,
+  mobilePhoneTokenStatusUrl,
 } from "../../constants";
 import getErrorText from "../../utils/get-error-text";
 import logError from "../../utils/log-error";
@@ -70,7 +71,9 @@ export default class MobilePhoneVerification extends React.Component {
       this.setState({phone_number});
       // send token via SMS only if user needs to verify
       if (!is_verified && settings.mobile_phone_verification) {
-        await this.createPhoneToken();
+        if (!(await this.activePhoneToken())) {
+          await this.createPhoneToken();
+        }
       }
     }
     setLoading(false);
@@ -168,6 +171,37 @@ export default class MobilePhoneVerification extends React.Component {
             ...(errorText ? {nonField: errorText} : {nonField: ""}),
           },
         });
+      });
+  }
+
+  async activePhoneToken() {
+    const {orgSlug, language, userData} = this.props;
+    const url = mobilePhoneTokenStatusUrl(orgSlug);
+    return axios({
+      method: "get",
+      headers: {
+        "content-type": "application/x-www-form-urlencoded",
+        "accept-language": getLanguageHeaders(language),
+        Authorization: `Bearer ${userData.auth_token}`,
+      },
+      url,
+    })
+      .then((data) => data.active)
+      .catch((error) => {
+        if (
+          error.response &&
+          error.response.status === 404 &&
+          error.response.data &&
+          error.response.data.response_code !== "INVALID_ORGANIZATION"
+        ) {
+          // This is kept for backward compatibility with older versions of OpenWISP RADIUS
+          // that does not have API endpoint for checking phone token status.
+          return false;
+        }
+        const errorText = getErrorText(error);
+        logError(error, errorText);
+        toast.error(errorText);
+        return errorText;
       });
   }
 
