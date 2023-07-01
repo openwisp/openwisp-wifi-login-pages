@@ -24,13 +24,13 @@ import {
   MobilePhoneChange,
   PasswordReset,
   PasswordConfirm,
-  Logout,
   MobilePhoneVerification,
   PaymentStatus,
   PaymentProcess,
   ConnectedDoesNotExist,
   DoesNotExist,
 } from "./lazy-import";
+import Logout from "./lazy-logout";
 import {localStorage} from "../../utils/storage";
 import isOldBrowser from "../../utils/is-old-browser";
 

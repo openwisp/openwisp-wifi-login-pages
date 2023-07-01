@@ -1,11 +1,5 @@
-/* eslint-disable import/no-cycle */
 import React from "react";
-
-export const lazyWithPreload = (factory) => {
-  const Component = React.lazy(factory);
-  Component.preload = factory;
-  return Component;
-};
+import lazyWithPreload from "./lazy-base";
 
 export const Registration = React.lazy(() =>
   import(/* webpackChunkName: 'Registration' */ "../registration"),
@@ -24,9 +18,6 @@ export const PasswordReset = React.lazy(() =>
 );
 export const PasswordConfirm = React.lazy(() =>
   import(/* webpackChunkName: 'PasswordConfirm' */ "../password-confirm"),
-);
-export const Logout = lazyWithPreload(() =>
-  import(/* webpackChunkName: 'Logout' */ "../logout"),
 );
 export const MobilePhoneVerification = React.lazy(() =>
   import(

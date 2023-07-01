@@ -24,8 +24,8 @@ import {
   PaymentStatus,
   PaymentProcess,
   ConnectedDoesNotExist,
-  Logout,
 } from "./lazy-import";
+import Logout from "./lazy-logout";
 
 jest.mock("../../utils/get-config");
 jest.mock("../../utils/load-translation");

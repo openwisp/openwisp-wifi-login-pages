@@ -22,7 +22,7 @@ import validateToken from "../../utils/validate-token";
 import needsVerify from "../../utils/needs-verify";
 import Loader from "../../utils/loader";
 import {initialState} from "../../reducers/organization";
-import {Logout} from "../organization-wrapper/lazy-import";
+import Logout from "../organization-wrapper/lazy-logout";
 import InfoModal from "../../utils/modal";
 import {localStorage} from "../../utils/storage";
 import handleSession from "../../utils/session";
