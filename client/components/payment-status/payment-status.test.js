@@ -5,6 +5,7 @@ import {toast} from "react-toastify";
 import PropTypes from "prop-types";
 import {Cookies} from "react-cookie";
 import ShallowRenderer from "react-test-renderer/shallow";
+import {t} from "ttag";
 import {loadingContextValue} from "../../utils/loading-context";
 import getConfig from "../../utils/get-config";
 import PaymentStatus from "./payment-status";
@@ -199,6 +200,48 @@ describe("Test <PaymentStatus /> cases", () => {
         repeatLogin: false,
       },
     ]);
+  });
+
+  it("should set proceedToPayment in userData when navigating to /status", async () => {
+    // If the payment requires internet, proceedToPayment should
+    // be set to true in userData
+    validateToken.mockReturnValue(true);
+
+    // Test payment_requires_internet is set to false
+    props = createTestProps({
+      userData: {...responseData, is_verified: false},
+      params: {status: "draft"},
+    });
+    props.settings.payment_requires_internet = false;
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    let payProcButton = wrapper
+      .find("Link.button.full")
+      .findWhere((node) => node.text() === t`PAY_PROC_BTN`)
+      .first();
+    payProcButton.simulate("click");
+    expect(wrapper.instance().props.setUserData).not.toHaveBeenCalled();
+
+    // Test payment_requires_internet is set to true
+    props = createTestProps({
+      userData: {...responseData, is_verified: false},
+      params: {status: "draft"},
+    });
+    props.settings.payment_requires_internet = true;
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    payProcButton = wrapper
+      .find("Link.button.full")
+      .findWhere((node) => node.text() === t`PAY_PROC_BTN`)
+      .first();
+    payProcButton.simulate("click");
+    expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith({
+      ...responseData,
+      is_verified: false,
+      proceedToPayment: true,
+    });
   });
 
   it("should redirect to status if success but unverified", async () => {

@@ -189,11 +189,21 @@ export default class Status extends React.Component {
   };
 
   async finalOperations() {
-    const {userData, orgSlug, settings, navigate} = this.props;
+    const {userData, orgSlug, settings, navigate, setUserData} = this.props;
     const {setLoading} = this.context;
     // if the user needs bank card verification,
     // redirect to payment page and stop here
     if (needsVerify("bank_card", userData, settings)) {
+      // avoid redirect loop from proceed to payment
+      if (settings.payment_requires_internet && userData.proceedToPayment) {
+        // reset proceedToPayment
+        setUserData({
+          ...userData,
+          proceedToPayment: false,
+        });
+        navigate(`/${orgSlug}/payment/process`);
+        return;
+      }
       navigate(`/${orgSlug}/payment/draft`);
       return;
     }

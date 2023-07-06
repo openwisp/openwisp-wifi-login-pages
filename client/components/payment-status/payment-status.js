@@ -16,6 +16,7 @@ export default class PaymentStatus extends React.Component {
     this.state = {
       isTokenValid: null,
     };
+    this.paymentProceedHandler = this.paymentProceedHandler.bind(this);
   }
 
   async componentDidMount() {
@@ -119,8 +120,23 @@ export default class PaymentStatus extends React.Component {
     return this.renderFailed();
   }
 
+  paymentProceedHandler() {
+    const {authenticate, setUserData, userData, settings} = this.props;
+    // Payment gateway may require internet access.
+    // Since, captive portal login is handled by the Status component,
+    // the user is navigated to the "/status" for captive portal login
+    // which then redirects the user to the payment gateway.
+    if (settings.payment_requires_internet) {
+      setUserData({
+        ...userData,
+        proceedToPayment: true,
+      });
+    }
+    authenticate(true);
+  }
+
   renderDraft() {
-    const {orgSlug, authenticate, page = {}, settings} = this.props;
+    const {orgSlug, page = {}, settings} = this.props;
     const {timeout = 5, max_attempts: maxAttempts = 3} = page;
     const payProceedUrl = settings.payment_requires_internet
       ? `/${orgSlug}/status`
@@ -144,7 +160,7 @@ export default class PaymentStatus extends React.Component {
                 <Link
                   className="button full"
                   to={payProceedUrl}
-                  onClick={() => authenticate(true)}
+                  onClick={this.paymentProceedHandler}
                 >
                   {t`PAY_PROC_BTN`}
                 </Link>
