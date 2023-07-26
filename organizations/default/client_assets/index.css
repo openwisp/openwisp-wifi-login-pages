@@ -13,6 +13,7 @@ body .input {
   background-color: #333;
   color: #fff;
 }
+.button:disabled,
 .button:focus,
 .button:active,
 .button:hover {

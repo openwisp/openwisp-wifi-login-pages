@@ -78,7 +78,7 @@ jobs:
 
       - name: Get openwisp-radius
         run: |
-          curl -L https://github.com/openwisp/openwisp-radius/tarball/master -o openwisp-radius.tar.gz
+          curl -L https://github.com/openwisp/openwisp-radius/tarball/issues/481-limit-sms-tokens -o openwisp-radius.tar.gz
           tar -xvzf openwisp-radius.tar.gz && mkdir openwisp-radius
           mv openwisp-*/* openwisp-radius
 
@@ -91,6 +91,7 @@ jobs:
       - name: Installing OpenWISP Radius
         run: |
           cd openwisp-radius && pip install -U -e ".[saml]" "Django~=4.2.0"
+          pip install --force-reinstall --no-deps "https://github.com/openwisp/openwisp-utils/tarball/fallback-positiveintegerfield"
           ./tests/manage.py migrate
 
       - name: Creating configuration of organization (supports mobile verification)

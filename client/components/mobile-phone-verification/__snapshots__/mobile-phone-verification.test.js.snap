@@ -60,6 +60,7 @@ exports[`<MobilePhoneVerification /> rendering with placeholder translation tags
           </p>
           <button
             className="button full"
+            disabled={false}
             onClick={[Function]}
             type="button"
           >
@@ -100,6 +101,248 @@ exports[`<MobilePhoneVerification /> rendering with placeholder translation tags
       </div>
     </div>
     <Memo(Connect(Contact)) />
+  </div>
+</div>
+`;
+
+exports[`Mobile Phone Token verification: standard flow should disable resend button if timeout is present in CreatePhoneToken failure 1`] = `
+<div
+  className="container content"
+  id="mobile-phone-verification"
+>
+  <div
+    className="inner"
+  >
+    <div
+      className="main-column"
+    >
+      <div
+        className="inner"
+      >
+        <form
+          className=""
+          onSubmit={[Function]}
+        >
+          <div
+            className="row fieldset code"
+          >
+            <p
+              className="label"
+            >
+              Verify your mobile phone number (+393660011222) by inserting the code you received via SMS below.
+            </p>
+            <div
+              className="error non-field"
+            >
+              <span
+                className="icon"
+              />
+              <span
+                className="text"
+              >
+                Wait before requesting another SMS token.
+              </span>
+            </div>
+            <div
+              className="row"
+            >
+              <input
+                className="input error"
+                id="code"
+                name="code"
+                onChange={[Function]}
+                pattern="[0-9]{6,}"
+                placeholder="enter SMS verification code"
+                required={true}
+                title="this field must be a 6 digit numeric code"
+                type="text"
+                value=""
+              />
+            </div>
+            <button
+              className="button full"
+              type="submit"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+        <div
+          className="row fieldset resend"
+        >
+          <p
+            className="label"
+          >
+            <Countdown$1
+              autoStart={true}
+              controlled={false}
+              date={1690369275287}
+              daysInHours={false}
+              intervalDelay={1000}
+              onComplete={[Function]}
+              precision={0}
+              renderer={[Function]}
+              zeroPadTime={2}
+            />
+          </p>
+          <button
+            className="button full"
+            disabled={true}
+            onClick={[Function]}
+            type="button"
+          >
+            Send a new verification code
+          </button>
+        </div>
+        <div
+          className="row fieldset change"
+        >
+          <p
+            className="label"
+          >
+            Wrong phone number?
+          </p>
+          <a
+            className="button full"
+            href="/test-org-2/change-phone-number"
+          >
+            Change your phone number
+          </a>
+        </div>
+        <div
+          className="row fieldset logout"
+        >
+          <p
+            className="label"
+          >
+            If you need to cancel the process you can log out below.
+          </p>
+          <button
+            className="button full"
+            onClick={[Function]}
+            type="button"
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+    <Connect(Contact) />
+  </div>
+</div>
+`;
+
+exports[`Mobile Phone Token verification: standard flow should disable resend button if timeout is present in CreatePhoneToken success 1`] = `
+<div
+  className="container content"
+  id="mobile-phone-verification"
+>
+  <div
+    className="inner"
+  >
+    <div
+      className="main-column"
+    >
+      <div
+        className="inner"
+      >
+        <form
+          className=""
+          onSubmit={[Function]}
+        >
+          <div
+            className="row fieldset code"
+          >
+            <p
+              className="label"
+            >
+              Verify your mobile phone number (+393660011222) by inserting the code you received via SMS below.
+            </p>
+            <div
+              className="row"
+            >
+              <input
+                className="input "
+                id="code"
+                name="code"
+                onChange={[Function]}
+                pattern="[0-9]{6,}"
+                placeholder="enter SMS verification code"
+                required={true}
+                title="this field must be a 6 digit numeric code"
+                type="text"
+                value=""
+              />
+            </div>
+            <button
+              className="button full"
+              type="submit"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+        <div
+          className="row fieldset resend"
+        >
+          <p
+            className="label"
+          >
+            <Countdown$1
+              autoStart={true}
+              controlled={false}
+              date={1690369285287}
+              daysInHours={false}
+              intervalDelay={1000}
+              onComplete={[Function]}
+              precision={0}
+              renderer={[Function]}
+              zeroPadTime={2}
+            />
+          </p>
+          <button
+            className="button full"
+            disabled={true}
+            onClick={[Function]}
+            type="button"
+          >
+            Send a new verification code
+          </button>
+        </div>
+        <div
+          className="row fieldset change"
+        >
+          <p
+            className="label"
+          >
+            Wrong phone number?
+          </p>
+          <a
+            className="button full"
+            href="/test-org-2/change-phone-number"
+          >
+            Change your phone number
+          </a>
+        </div>
+        <div
+          className="row fieldset logout"
+        >
+          <p
+            className="label"
+          >
+            If you need to cancel the process you can log out below.
+          </p>
+          <button
+            className="button full"
+            onClick={[Function]}
+            type="button"
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+    <Connect(Contact) />
   </div>
 </div>
 `;
@@ -164,6 +407,7 @@ exports[`Mobile Phone Token verification: standard flow should render successful
           </p>
           <button
             className="button full"
+            disabled={false}
             onClick={[Function]}
             type="button"
           >

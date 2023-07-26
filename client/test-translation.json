@@ -349,6 +349,10 @@
           "If you did not receive the verification SMS code, you can try sending it again by clicking below."
         ]
       },
+      "RESEND_TOKEN_WAIT_LBL": {
+        "msgid": "RESEND_TOKEN_WAIT_LBL${ timeout }",
+        "msgstr": ["A new SMS can be requested in ${ timeout } seconds."]
+      },
       "RESEND_TOKEN": {
         "msgid": "RESEND_TOKEN",
         "msgstr": ["Send a new verification code"]

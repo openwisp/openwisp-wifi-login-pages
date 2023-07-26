@@ -62,6 +62,9 @@ body {
 .link {
   font-weight: bold;
 }
+.button:disabled {
+  cursor: not-allowed;
+}
 .link:hover,
 .link:focus {
   text-decoration: none;

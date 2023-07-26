@@ -384,6 +384,11 @@ msgstr ""
 "If you did not receive the verification SMS code, you can try sending it "
 "again by clicking below."
 
+#: client/components/mobile-phone-verification/mobile-phone-verification.js:228
+msgid "RESEND_TOKEN_WAIT_LBL${ timeout }"
+msgstr ""
+"A new SMS can be requested in ${ timeout } seconds."
+
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:235
 msgid "RESEND_TOKEN"
 msgstr "Send a new verification code"
