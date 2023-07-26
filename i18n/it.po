@@ -401,6 +401,11 @@ msgstr ""
 "Se non hai ricevuto un SMS con il codice di verifica, richiedine uno nuovo "
 "cliccando sul pulsante seguente."
 
+#: client/components/mobile-phone-verification/mobile-phone-verification.js:228
+msgid "RESEND_TOKEN_WAIT_LBL${ timeout }"
+msgstr ""
+"Un nuovo SMS può essere richiesto in ${ timeout } secondi."
+
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:235
 msgid "RESEND_TOKEN"
 msgstr "Invia un nuovo codice di verifica"

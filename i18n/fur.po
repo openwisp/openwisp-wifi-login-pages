@@ -400,6 +400,11 @@ msgstr ""
 "Se no tu âs ricevût un SMS cul codiç di verifiche, domande un altri fasint un "
 "clic su chest boton."
 
+#: client/components/mobile-phone-verification/mobile-phone-verification.js:228
+msgid "RESEND_TOKEN_WAIT_LBL${ timeout }"
+msgstr ""
+"Un nuovo SMS può essere richiesto in ${ timeout } secondi."
+
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:235
 msgid "RESEND_TOKEN"
 msgstr "Invie un gnûf codiç di verifiche"

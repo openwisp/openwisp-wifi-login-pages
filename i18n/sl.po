@@ -355,6 +355,11 @@ msgstr ""
 msgstr "Če niste prejeli SMS sporočila s potrditveno kodo, jo ponovno "
 "zahtevajte s klikom na gumb."
 
+#: client/components/mobile-phone-verification/mobile-phone-verification.js:228
+msgid "RESEND_TOKEN_WAIT_LBL${ timeout }"
+msgstr ""
+"Nov SMS lahko zahtevate v ${ timeout } sekundah."
+
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:235
 msgid "RESEND_TOKEN"
 msgstr "Pošljite novo potrditveno kodo"
