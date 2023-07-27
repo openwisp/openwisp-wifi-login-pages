@@ -134,14 +134,14 @@ describe("Mobile Phone Token verification: standard flow", () => {
     expect(wrapper.instance().hasPhoneTokenBeenSent()).toBe(true);
   });
 
-  it("should disable resend button if timeout is present in CreatePhoneToken success", async () => {
+  it("should disable resend button if cooldown is present in CreatePhoneToken success", async () => {
     validateToken.mockReturnValue(true);
     axios.mockReset();
     axios.mockImplementation(() =>
       Promise.resolve({
         status: 201,
         statusText: "CREATED",
-        data: {timeout: 30},
+        data: {cooldown: 30},
       }),
     );
     jest.spyOn(Date, "now").mockReturnValue(1690369255287);
@@ -154,7 +154,7 @@ describe("Mobile Phone Token verification: standard flow", () => {
     expect(wrapper).toMatchSnapshot();
   });
 
-  it("should disable resend button if timeout is present in CreatePhoneToken failure", async () => {
+  it("should disable resend button if cooldown is present in CreatePhoneToken failure", async () => {
     validateToken.mockReturnValue(true);
     jest.spyOn(toast, "error");
     axios.mockReset();
@@ -165,7 +165,7 @@ describe("Mobile Phone Token verification: standard flow", () => {
           statusText: "BAD_REQUEST",
           data: {
             non_field_errors: ["Wait before requesting another SMS token."],
-            timeout: 20,
+            cooldown: 20,
           },
         },
       }),

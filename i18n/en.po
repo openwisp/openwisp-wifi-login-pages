@@ -385,9 +385,9 @@ msgstr ""
 "again by clicking below."
 
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:228
-msgid "RESEND_TOKEN_WAIT_LBL${ timeout }"
+msgid "RESEND_TOKEN_WAIT_LBL${ cooldown }"
 msgstr ""
-"A new SMS can be requested in ${ timeout } seconds."
+"A new SMS can be requested in ${ cooldown } seconds."
 
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:235
 msgid "RESEND_TOKEN"

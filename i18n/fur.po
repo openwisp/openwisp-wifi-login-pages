@@ -401,9 +401,9 @@ msgstr ""
 "clic su chest boton."
 
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:228
-msgid "RESEND_TOKEN_WAIT_LBL${ timeout }"
+msgid "RESEND_TOKEN_WAIT_LBL${ cooldown }"
 msgstr ""
-"Un nuovo SMS può essere richiesto in ${ timeout } secondi."
+"Un nuovo SMS può essere richiesto in ${ cooldown } secondi."
 
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:235
 msgid "RESEND_TOKEN"

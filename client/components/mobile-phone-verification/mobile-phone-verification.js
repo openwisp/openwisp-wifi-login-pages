@@ -162,15 +162,15 @@ export default class MobilePhoneVerification extends React.Component {
         // flag SMS as sent to avoid resending it
         sessionStorage.setItem(self.phoneTokenSentKey, true);
         toast.info(t`TOKEN_SENT`);
-        if (response && response.data && response.data.timeout) {
-          this.setState({resendButtonDisabledTimeout: response.data.timeout});
+        if (response && response.data && response.data.cooldown) {
+          this.setState({resendButtonDisabledTimeout: response.data.cooldown});
         }
       })
       .catch((error) => {
         const errorText = getErrorText(error);
         const {data} = error.response;
-        if (data && data.timeout) {
-          this.setState({resendButtonDisabledTimeout: data.timeout});
+        if (data && data.cooldown) {
+          this.setState({resendButtonDisabledTimeout: data.cooldown});
         }
         logError(error, errorText);
         toast.error(errorText);

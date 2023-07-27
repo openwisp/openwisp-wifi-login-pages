@@ -105,7 +105,7 @@ exports[`<MobilePhoneVerification /> rendering with placeholder translation tags
 </div>
 `;
 
-exports[`Mobile Phone Token verification: standard flow should disable resend button if timeout is present in CreatePhoneToken failure 1`] = `
+exports[`Mobile Phone Token verification: standard flow should disable resend button if cooldown is present in CreatePhoneToken failure 1`] = `
 <div
   className="container content"
   id="mobile-phone-verification"
@@ -232,7 +232,7 @@ exports[`Mobile Phone Token verification: standard flow should disable resend bu
 </div>
 `;
 
-exports[`Mobile Phone Token verification: standard flow should disable resend button if timeout is present in CreatePhoneToken success 1`] = `
+exports[`Mobile Phone Token verification: standard flow should disable resend button if cooldown is present in CreatePhoneToken success 1`] = `
 <div
   className="container content"
   id="mobile-phone-verification"
