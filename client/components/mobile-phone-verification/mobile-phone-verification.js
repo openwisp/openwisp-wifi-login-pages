@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import "./index.css";
+import Countdown from "react-countdown";
 
 import axios from "axios";
 import PropTypes from "prop-types";
@@ -36,6 +37,7 @@ export default class MobilePhoneVerification extends React.Component {
       phone_number: "",
       errors: {},
       success: false,
+      resendButtonDisabledCooldown: 0,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -156,13 +158,20 @@ export default class MobilePhoneVerification extends React.Component {
         phone_number,
       }),
     })
-      .then(() => {
+      .then((response) => {
         // flag SMS as sent to avoid resending it
         sessionStorage.setItem(self.phoneTokenSentKey, true);
         toast.info(t`TOKEN_SENT`);
+        if (response && response.data && response.data.cooldown) {
+          this.setState({resendButtonDisabledCooldown: response.data.cooldown});
+        }
       })
       .catch((error) => {
         const errorText = getErrorText(error);
+        const {data} = error.response;
+        if (data && data.cooldown) {
+          this.setState({resendButtonDisabledCooldown: data.cooldown});
+        }
         logError(error, errorText);
         toast.error(errorText);
         this.setState({
@@ -218,7 +227,8 @@ export default class MobilePhoneVerification extends React.Component {
   }
 
   render() {
-    const {code, errors, success, phone_number} = this.state;
+    const {code, errors, success, phone_number, resendButtonDisabledCooldown} =
+      this.state;
     const {
       orgSlug,
       mobile_phone_verification,
@@ -266,12 +276,27 @@ export default class MobilePhoneVerification extends React.Component {
               </form>
 
               <div className="row fieldset resend">
-                <p className="label">{t`RESEND_TOKEN_LBL`}</p>
+                <p className="label">
+                  {resendButtonDisabledCooldown === 0 ? (
+                    t`RESEND_TOKEN_LBL`
+                  ) : (
+                    <Countdown
+                      date={Date.now() + resendButtonDisabledCooldown * 1000}
+                      renderer={({seconds}) =>
+                        t`RESEND_TOKEN_WAIT_LBL${seconds}`
+                      }
+                      onComplete={() =>
+                        this.setState({resendButtonDisabledCooldown: 0})
+                      }
+                    />
+                  )}
+                </p>
 
                 <button
                   type="button"
                   className="button full"
                   onClick={this.resendPhoneToken}
+                  disabled={Boolean(resendButtonDisabledCooldown)}
                 >
                   {t`RESEND_TOKEN`}
                 </button>

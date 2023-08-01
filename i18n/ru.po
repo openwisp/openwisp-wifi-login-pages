@@ -399,6 +399,11 @@ msgstr "Только 6-значный цифровой код"
 msgid "RESEND_TOKEN_LBL"
 msgstr "Если вы не получили SMS-код, попробуйте запросить новый, нажав кнопк"
 
+#: client/components/mobile-phone-verification/mobile-phone-verification.js:228
+msgid "RESEND_TOKEN_WAIT_LBL${ cooldown }"
+msgstr ""
+"Новое SMS может быть запрошено за ${ cooldown } секунд."
+
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:235
 msgid "RESEND_TOKEN"
 msgstr "Запросить новый проверочный SMS-код"

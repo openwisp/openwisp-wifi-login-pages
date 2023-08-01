@@ -134,6 +134,53 @@ describe("Mobile Phone Token verification: standard flow", () => {
     expect(wrapper.instance().hasPhoneTokenBeenSent()).toBe(true);
   });
 
+  it("should disable resend button if cooldown is present in CreatePhoneToken success", async () => {
+    validateToken.mockReturnValue(true);
+    axios.mockReset();
+    axios.mockImplementation(() =>
+      Promise.resolve({
+        status: 201,
+        statusText: "CREATED",
+        data: {cooldown: 30},
+      }),
+    );
+    jest.spyOn(Date, "now").mockReturnValue(1690369255287);
+    wrapper = createShallowComponent(props);
+    wrapper.setProps({userData});
+
+    await tick();
+
+    expect(axios).toHaveBeenCalled();
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  it("should disable resend button if cooldown is present in CreatePhoneToken failure", async () => {
+    validateToken.mockReturnValue(true);
+    jest.spyOn(toast, "error");
+    axios.mockReset();
+    axios.mockImplementation(() =>
+      Promise.reject({
+        response: {
+          status: 400,
+          statusText: "BAD_REQUEST",
+          data: {
+            non_field_errors: ["Wait before requesting another SMS token."],
+            cooldown: 20,
+          },
+        },
+      }),
+    );
+    jest.spyOn(Date, "now").mockReturnValue(1690369255287);
+    wrapper = createShallowComponent(props);
+    wrapper.setProps({userData});
+
+    await tick();
+
+    expect(axios).toHaveBeenCalled();
+    expect(toast.error.mock.calls.length).toBe(1);
+    expect(wrapper).toMatchSnapshot();
+  });
+
   it("should check if active token is present", async () => {
     validateToken.mockReturnValue(true);
     axios.mockImplementation(() =>
