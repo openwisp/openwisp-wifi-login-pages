@@ -66,6 +66,9 @@ body {
   cursor: not-allowed;
   opacity: 0.4;
 }
+.button:disabled:hover {
+  background-color: #333 !important;
+}
 .link:hover,
 .link:focus {
   text-decoration: none;
