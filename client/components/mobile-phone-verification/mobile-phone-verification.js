@@ -37,7 +37,7 @@ export default class MobilePhoneVerification extends React.Component {
       phone_number: "",
       errors: {},
       success: false,
-      resendButtonDisabledTimeout: 0,
+      resendButtonDisabledCooldown: 0,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -163,14 +163,14 @@ export default class MobilePhoneVerification extends React.Component {
         sessionStorage.setItem(self.phoneTokenSentKey, true);
         toast.info(t`TOKEN_SENT`);
         if (response && response.data && response.data.cooldown) {
-          this.setState({resendButtonDisabledTimeout: response.data.cooldown});
+          this.setState({resendButtonDisabledCooldown: response.data.cooldown});
         }
       })
       .catch((error) => {
         const errorText = getErrorText(error);
         const {data} = error.response;
         if (data && data.cooldown) {
-          this.setState({resendButtonDisabledTimeout: data.cooldown});
+          this.setState({resendButtonDisabledCooldown: data.cooldown});
         }
         logError(error, errorText);
         toast.error(errorText);
@@ -227,7 +227,7 @@ export default class MobilePhoneVerification extends React.Component {
   }
 
   render() {
-    const {code, errors, success, phone_number, resendButtonDisabledTimeout} =
+    const {code, errors, success, phone_number, resendButtonDisabledCooldown} =
       this.state;
     const {
       orgSlug,
@@ -277,16 +277,16 @@ export default class MobilePhoneVerification extends React.Component {
 
               <div className="row fieldset resend">
                 <p className="label">
-                  {resendButtonDisabledTimeout === 0 ? (
+                  {resendButtonDisabledCooldown === 0 ? (
                     t`RESEND_TOKEN_LBL`
                   ) : (
                     <Countdown
-                      date={Date.now() + resendButtonDisabledTimeout * 1000}
+                      date={Date.now() + resendButtonDisabledCooldown * 1000}
                       renderer={({seconds}) =>
                         t`RESEND_TOKEN_WAIT_LBL${seconds}`
                       }
                       onComplete={() =>
-                        this.setState({resendButtonDisabledTimeout: 0})
+                        this.setState({resendButtonDisabledCooldown: 0})
                       }
                     />
                   )}
@@ -296,7 +296,7 @@ export default class MobilePhoneVerification extends React.Component {
                   type="button"
                   className="button full"
                   onClick={this.resendPhoneToken}
-                  disabled={Boolean(resendButtonDisabledTimeout)}
+                  disabled={Boolean(resendButtonDisabledCooldown)}
                 >
                   {t`RESEND_TOKEN`}
                 </button>

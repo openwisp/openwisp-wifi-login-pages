@@ -64,6 +64,7 @@ body {
 }
 .button:disabled {
   cursor: not-allowed;
+  opacity: 0.4;
 }
 .link:hover,
 .link:focus {
