@@ -18,8 +18,7 @@ export const createMobilePhoneToken = (req, res) => {
       const url = reverse("create_mobile_phone_token", getSlug(conf));
       const timeout = conf.timeout * 1000;
       // make AJAX request
-      axios({
-        method: "post",
+      axios.post({
         headers: {
           "content-type": "application/x-www-form-urlencoded",
           Authorization: req.headers.authorization,
