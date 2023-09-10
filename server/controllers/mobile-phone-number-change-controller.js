@@ -19,8 +19,7 @@ const mobilePhoneNumberChange = (req, res) => {
       const timeout = conf.timeout * 1000;
       const token = req.headers.authorization.split(" ");
       // make AJAX request
-      axios({
-        method: "post",
+      axios.post({
         headers: {
           "content-type": "application/x-www-form-urlencoded",
           Authorization: req.headers.authorization,
