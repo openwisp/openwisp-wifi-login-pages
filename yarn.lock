@@ -12087,9 +12087,9 @@ ttag-cli@^1.9.2:
     yargs "^15.4.1"
 
 ttag@^1.7.24:
-  version "1.7.24"
-  resolved "https://registry.yarnpkg.com/ttag/-/ttag-1.7.24.tgz#3da0eb52ed3a3cef0cf94328d07b2ba570906788"
-  integrity sha512-8H/0dS6VYqBXzVBCo8f4s48TMIkC9UrALfMkXsaNWqKo3P3UQzfE1KZXlBkrhZho2A1iJuxUgGzHSgQvkZwGmg==
+  version "1.7.25"
+  resolved "https://registry.yarnpkg.com/ttag/-/ttag-1.7.25.tgz#bed96b71152e96046c939d65808de50adb2346ff"
+  integrity sha512-g9o7mpe220735BTbMp08Z780snI5u87BaOVWxK/BrM86ceuTOCTrFnOX5ptR1PSELW5xLWHX/iThXdvjlsnMlA==
   dependencies:
     dedent "^0.7.0"
     plural-forms "^0.5.3"
