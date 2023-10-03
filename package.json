@@ -46,7 +46,7 @@
     "regenerator-runtime": "^0.13.9",
     "tsutils": "^3.17.1",
     "ttag": "^1.7.24",
-    "universal-cookie-express": "^4.0.3",
+    "universal-cookie-express": "^6.1.1",
     "winston": "^3.3.3",
     "winston-transport-sentry-node": "^2.0.0"
   },
