@@ -67,6 +67,7 @@ export default class Status extends React.Component {
       setTitle,
       orgName,
       language,
+      navigate,
     } = this.props;
     setTitle(t`STATUS_TITL`, orgName);
     const {setLoading} = this.context;
@@ -114,7 +115,16 @@ export default class Status extends React.Component {
 
       const {mustLogin, mustLogout, repeatLogin} = userData;
       ({userData} = this.props);
-
+      if (userData.password_expired === true) {
+        toast.warning(t`PASSWORD_EXPIRED`);
+        setUserData({
+          ...userData,
+          mustLogin,
+          mustLogout,
+          repeatLogin,
+        });
+        navigate(`/${orgSlug}/change-password`);
+      }
       const {
         radius_user_token: password,
         username,

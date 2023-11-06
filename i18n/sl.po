@@ -454,6 +454,10 @@ msgstr "Prijava je bila uspešna"
 msgid "LOGOUT_SUCCESS"
 msgstr "Odjava je bila uspešna"
 
+#: client/components/status/status.js:119
+msgid "PASSWORD_EXPIRED"
+msgstr "Vaše geslo je poteklo, spremenite geslo."
+
 #: client/components/password-change/password-change.js:87
 #: client/components/password-change/password-change.js:93
 #: client/components/password-change/password-change.test.js:129

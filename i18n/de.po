@@ -37,6 +37,10 @@ msgstr "Es ist ein Fehler aufgetreten!"
 msgid "LOGOUT_SUCCESS"
 msgstr "Logout war erfolgreich"
 
+#: client/components/status/status.js:119
+msgid "PASSWORD_EXPIRED"
+msgstr "Ihr Passwort ist abgelaufen, bitte ändern Sie Ihr Passwort."
+
 #: client/components/status/status.js:467
 #: client/components/status/status.js:658
 msgid "ACCT_ACTIVE"

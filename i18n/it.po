@@ -512,6 +512,10 @@ msgstr "Si è verificato un errore!"
 msgid "LOGOUT_SUCCESS"
 msgstr "Log out effettuato con successo"
 
+#: client/components/status/status.js:119
+msgid "PASSWORD_EXPIRED"
+msgstr "La tua password è scaduta, modifica la password."
+
 #: client/components/password-change/password-change.js:61
 #: client/components/password-change/password-change.test.js:115
 #: client/components/password-change/password-change.test.js:120
