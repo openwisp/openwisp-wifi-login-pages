@@ -93,6 +93,7 @@ user = User.objects.create_user(
     email=test_user_email
 )
 OrganizationUser.objects.create(organization=org, user=user)
+User.objects.update(password_updated=now().date())
 
 if expired_password_tests:
     data = test_data['expiredPasswordUser']
@@ -101,4 +102,8 @@ if expired_password_tests:
         password=data['password'],
         email=data['email'],
         password_updated=now().date()-timedelta(days=180)
+    )
+    OrganizationUser.objects.create(
+        organization=org,
+        user=expired_password_user
     )
