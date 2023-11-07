@@ -124,6 +124,7 @@ export default class Status extends React.Component {
           repeatLogin,
         });
         navigate(`/${orgSlug}/change-password`);
+        return;
       }
       const {
         radius_user_token: password,

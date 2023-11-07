@@ -23,6 +23,7 @@ if OPENWISP_RADIUS_PATH == '':
 # do not initialize data for registration tests
 registration_tests = 'register' in sys.argv
 create_mobile_verification_org = 'mobileVerification' in sys.argv
+expired_password_tests = 'expiredPassword' in sys.argv
 
 sys.path.insert(0, os.path.join(OPENWISP_RADIUS_PATH, 'tests'))
 sys.argv.insert(1, 'browser-test')
@@ -37,6 +38,7 @@ except ImportError:
     sys.exit(1)
 
 from django.contrib.auth import get_user_model
+from django.utils.timezone import now, timedelta
 from swapper import load_model
 
 User = get_user_model()
@@ -86,6 +88,17 @@ except Organization.DoesNotExist:
     sys.exit(2)
 
 user = User.objects.create_user(
-    username=test_user_email, password=test_user_password, email=test_user_email
+    username=test_user_email,
+    password=test_user_password,
+    email=test_user_email
 )
 OrganizationUser.objects.create(organization=org, user=user)
+
+if expired_password_tests:
+    data = test_data['expiredPasswordUser']
+    expired_password_user = User.objects.create_user(
+        username=data['email'],
+        password=data['password'],
+        email=data['email'],
+        password_updated=now().date()-timedelta(days=180)
+    )

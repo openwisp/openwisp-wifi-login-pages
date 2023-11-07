@@ -836,6 +836,48 @@ describe("<Status /> interactions", () => {
     expect(wrapper.instance().state.hasMoreSessions).toEqual(false);
   });
 
+  it("should not perform captive portal login if user password has expired", async () => {
+    validateToken.mockReturnValue(true);
+    // mock session fetching
+    jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
+    jest.spyOn(Status.prototype, "getUserPassedRadiusSessions");
+
+    props = createTestProps();
+    props.userData = {
+      ...responseData,
+      is_verified: false,
+      password_expired: true,
+      mustLogin: true,
+    };
+    const setLoading = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading},
+    });
+
+    // mock loginFormRef
+    const spyFn = jest.fn();
+    wrapper.instance().loginFormRef.current = {submit: spyFn};
+    await tick();
+
+    // ensure captive portal login is not performed
+    expect(spyFn.mock.calls.length).toBe(0);
+    expect(setLoading.mock.calls.length).toBe(1);
+
+    const mockRef = {submit: jest.fn()};
+    wrapper.instance().loginIframeRef.current = {};
+    wrapper.instance().loginFormRef.current = mockRef;
+
+    // ensure user is redirected to payment URL
+    expect(props.navigate).toHaveBeenCalledWith(
+      `/${props.orgSlug}/change-password`,
+    );
+    // ensure sessions are not fetched
+    expect(Status.prototype.getUserActiveRadiusSessions).not.toHaveBeenCalled();
+    expect(Status.prototype.getUserPassedRadiusSessions).not.toHaveBeenCalled();
+    // ensure loading overlay not removed
+    expect(setLoading.mock.calls.length).toBe(1);
+  });
+
   it("should initiate bank_card verification", async () => {
     validateToken.mockReturnValue(true);
     // mock window.location.assign
