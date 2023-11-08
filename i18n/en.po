@@ -519,7 +519,7 @@ msgstr "Logout successful"
 
 #: client/components/status/status.js:119
 msgid "PASSWORD_EXPIRED"
-msgstr "Your password has expired, please change your password."
+msgstr "Your password has expired, please update it."
 
 #: client/components/password-change/password-change.js:101
 #: client/components/password-change/password-change.js:109
