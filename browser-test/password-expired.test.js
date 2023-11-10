@@ -41,7 +41,7 @@ describe("Selenium tests for expired password flow />", () => {
     );
     await driver.wait(until.elementIsVisible(warningToastMessage));
     expect(await warningToastMessage.getText()).toEqual(
-      "Your password has expired, please change your password.",
+      "Your password has expired, please update it.",
     );
 
     // Try visiting the status page, but the user should redirected
