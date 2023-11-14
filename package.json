@@ -110,9 +110,10 @@
     "webpack-dev-server": "^4.7.3"
   },
   "scripts": {
-    "build": "npm run setup && webpack --mode production --progress --config config/webpack.config.js",
-    "client": "npm run setup && webpack serve --host 0.0.0.0 --mode development --config config/webpack.config.js",
-    "coverage": "jest --coverage  --testPathIgnorePatterns=/browser-test/",
+    "build": "export NODE_OPTIONS=--openssl-legacy-provider npm run setup && webpack --mode production --progress --config config/webpack.config.js",
+    "build-dev": "export NODE_OPTIONS=--openssl-legacy-provider npm run setup && webpack --mode development --progress --config config/webpack.config.js",
+    "client": "export NODE_OPTIONS=--openssl-legacy-provider npm run setup && webpack serve --host 0.0.0.0 --mode development --config config/webpack.config.js",
+    "coverage": "jest --coverage --testPathIgnorePatterns=/browser-test/",
     "coveralls": "test -f ./coverage/lcov.info && cat ./coverage/lcov.info | coveralls || echo 'no coverage file found'",
     "add-org": "node config/add-org.js",
     "server": "npm run setup && nodemon server/start.js",
