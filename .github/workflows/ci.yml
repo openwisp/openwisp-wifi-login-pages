@@ -78,7 +78,7 @@ jobs:
 
       - name: Get openwisp-radius
         run: |
-          curl -L https://github.com/openwisp/openwisp-radius/tarball/issues/491-password-expiration -o openwisp-radius.tar.gz
+          curl -L https://github.com/openwisp/openwisp-radius/tarball/master -o openwisp-radius.tar.gz
           tar -xvzf openwisp-radius.tar.gz && mkdir openwisp-radius
           mv openwisp-*/* openwisp-radius
 
