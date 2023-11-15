@@ -508,6 +508,10 @@ msgstr "Была ошибка!"
 msgid "LOGOUT_SUCCESS"
 msgstr "Успешный выход"
 
+#: client/components/status/status.js:119
+msgid "PASSWORD_EXPIRED"
+msgstr "Срок действия вашего пароля истек, обновите его."
+
 #: client/components/password-change/password-change.js:61
 #: client/components/password-change/password-change.test.js:115
 #: client/components/password-change/password-change.test.js:120

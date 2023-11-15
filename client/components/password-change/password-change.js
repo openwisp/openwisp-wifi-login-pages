@@ -39,18 +39,12 @@ export default class PasswordChange extends React.Component {
 
   async componentDidMount() {
     const {setLoading} = this.context;
-    const {
-      setTitle,
-      orgName,
-      cookies,
-      userData,
-      setUserData,
-      logout,
-      orgSlug,
-      language,
-    } = this.props;
+    const {setTitle, orgName, cookies, setUserData, logout, orgSlug, language} =
+      this.props;
+    let {userData} = this.props;
     setLoading(true);
     setTitle(t`PWD_CHANGE_TITL`, orgName);
+    const {mustLogin, mustLogout, repeatLogin} = userData;
     await validateToken(
       cookies,
       orgSlug,
@@ -59,6 +53,8 @@ export default class PasswordChange extends React.Component {
       logout,
       language,
     );
+    ({userData} = this.props);
+    setUserData({...userData, mustLogin, mustLogout, repeatLogin});
     setLoading(false);
   }
 
@@ -224,11 +220,13 @@ export default class PasswordChange extends React.Component {
                 />
               </div>
 
-              <div className="row cancel">
-                <Link className="button full" to={`/${orgSlug}/status`}>
-                  {t`CANCEL`}
-                </Link>
-              </div>
+              {userData.password_expired !== true && (
+                <div className="row cancel">
+                  <Link className="button full" to={`/${orgSlug}/status`}>
+                    {t`CANCEL`}
+                  </Link>
+                </div>
+              )}
             </div>
           </form>
 

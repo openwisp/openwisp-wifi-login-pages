@@ -510,6 +510,10 @@ msgstr "Al è capitât un erôr!"
 msgid "LOGOUT_SUCCESS"
 msgstr "Logout fat cun sucès"
 
+#: client/components/status/status.js:119
+msgid "PASSWORD_EXPIRED"
+msgstr "La tô password al è scjadude, ti prei di aggiornâle."
+
 #: client/components/password-change/password-change.js:61
 #: client/components/password-change/password-change.test.js:115
 #: client/components/password-change/password-change.test.js:120

@@ -259,6 +259,39 @@ describe("Validate Token tests", () => {
     expect(setUserData.mock.calls.length).toBe(0);
     expect(logout.mock.calls.length).toBe(0);
   });
+  it("should make api call if radius token is present but password_expired is true", async () => {
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: {
+          response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+          radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
+          username: "tester@tester.com",
+          is_active: true,
+          is_verified: true,
+          phone_number: "+393660011222",
+        },
+      }),
+    );
+    const {orgSlug, cookies, setUserData, userData, logout, language} =
+      getArgs();
+    cookies.set(`${orgSlug}_auth_token`, "token");
+    userData.password_expired = true;
+    userData.radius_user_token = "token";
+    const result = await validateToken(
+      cookies,
+      orgSlug,
+      setUserData,
+      userData,
+      logout,
+      language,
+    );
+    expect(axios).toHaveBeenCalled();
+    expect(setUserData.mock.calls.length).toBe(1);
+    expect(result).toBe(true);
+    expect(logout.mock.calls.length).toBe(0);
+  });
   it("should return false when internal server error", async () => {
     const response = {
       status: 500,
