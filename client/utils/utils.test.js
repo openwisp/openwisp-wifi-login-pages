@@ -783,12 +783,14 @@ describe("getPaymentStatusRedirectUrl tests", () => {
   });
   it("should return success URL if payment status is success", async () => {
     const {orgSlug, paymentId, tokenInfo, setUserData, userData} = getArgs();
+    const infoToast = jest.spyOn(dependency.toast, "info");
     axios.mockImplementationOnce(() =>
       Promise.resolve({
         status: 200,
         statusText: "OK",
         data: {
           status: "success",
+          message: "Payment succeeded",
         },
       }),
     );
@@ -806,6 +808,8 @@ describe("getPaymentStatusRedirectUrl tests", () => {
       mustLogin: true,
       payment_url: null,
     });
+    expect(infoToast).toHaveBeenCalledTimes(1);
+    expect(infoToast).toHaveBeenCalledWith("Payment succeeded");
   });
   it("should return failure URL if payment status is failed", async () => {
     const {orgSlug, paymentId, tokenInfo, setUserData, userData} = getArgs();

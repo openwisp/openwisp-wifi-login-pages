@@ -18,7 +18,11 @@ export const getPaymentStatus = async (orgSlug, paymentId, tokenInfo) => {
     });
     if (response.status === 200) {
       if (response.data.message) {
-        toast.error(response.data.message);
+        if (response.data.status === "failed") {
+          toast.error(response.data.message);
+        } else {
+          toast.info(response.data.message);
+        }
       }
       return response.data.status;
     }
