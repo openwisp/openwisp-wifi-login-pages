@@ -93,9 +93,9 @@ app is available, see [ansible-openwisp-wifi-login-pages](https://github.com/ope
 
 ### Prerequisites
 
-- [NodeJs](https://nodejs.org/en/) >= 16.0.0
-- [NPM](https://npmjs.org/) - Node package manager >= 6.9.0
-- [yarn](https://yarnpkg.com/) - Yarn package manager >= 1.19.0
+- [NodeJs](https://nodejs.org/en/) >= 20.9.0
+- [NPM](https://npmjs.org/) - Node package manager >= 10.1.0
+- [yarn](https://yarnpkg.com/) - Yarn package manager >= 1.19.1
 
 ### Install
 
