@@ -320,6 +320,10 @@ msgstr "Potrdite spremembo gesla"
 msgid "PWD_CHANGE_TITL"
 msgstr "Sprememba gesla"
 
+#: client/components/password-change/password-change.js:177
+msgid "PWD_CHANGE_HELP_TXT"
+msgstr "Utilize il formulari par cambiâ la tô password."
+
 #: client/components/password-change/password-change.js:117
 msgid "PWD1_LBL"
 msgstr "Novo geslo"
