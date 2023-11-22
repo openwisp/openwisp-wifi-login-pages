@@ -359,6 +359,10 @@ msgstr "Conferma cambio password"
 msgid "PWD_CHANGE_TITL"
 msgstr "Cambia password"
 
+#: client/components/password-change/password-change.js:177
+msgid "PWD_CHANGE_HELP_TXT"
+msgstr "Utilizza il modulo sottostante per modificare la tua password."
+
 #: client/components/password-change/password-change.js:117
 msgid "PWD1_LBL"
 msgstr "Nuova password"

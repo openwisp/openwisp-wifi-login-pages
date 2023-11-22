@@ -358,6 +358,10 @@ msgstr "Conferme il cambi de password"
 msgid "PWD_CHANGE_TITL"
 msgstr "Cambi de password"
 
+#: client/components/password-change/password-change.js:177
+msgid "PWD_CHANGE_HELP_TXT"
+msgstr "Use the form below to change your password."
+
 #: client/components/password-change/password-change.js:117
 msgid "PWD1_LBL"
 msgstr "Gnove password"

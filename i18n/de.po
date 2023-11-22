@@ -379,6 +379,10 @@ msgstr "Bestätigen Sie die Passwortänderung"
 msgid "PWD_CHANGE_TITL"
 msgstr "Passwort ändern"
 
+#: client/components/password-change/password-change.js:177
+msgid "PWD_CHANGE_HELP_TXT"
+msgstr "Verwenden Sie das untenstehende Formular, um Ihr Passwort zu ändern."
+
 #: client/components/password-change/password-change.js:87
 #: client/components/password-change/password-change.js:93
 #: client/components/password-change/password-change.test.js:129
