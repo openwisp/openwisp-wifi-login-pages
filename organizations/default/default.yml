@@ -78,6 +78,7 @@ client:
         en: "Copyright"
 
     registration_form:
+      auto_select_first_plan: false
       input_fields:
         phone_number: {}
         username:
