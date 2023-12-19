@@ -12,7 +12,13 @@ import {Link} from "react-router-dom";
 import {toast} from "react-toastify";
 import InfinteScroll from "react-infinite-scroll-component";
 import {t, gettext} from "ttag";
-import {getUserRadiusSessionsUrl, mainToastId} from "../../constants";
+import prettyBytes from "pretty-bytes";
+import {timeFromSeconds} from "duration-formatter";
+import {
+  getUserRadiusSessionsUrl,
+  getUserRadiusUsageUrl,
+  mainToastId,
+} from "../../constants";
 import LoadingContext from "../../utils/loading-context";
 import getText from "../../utils/get-text";
 import logError from "../../utils/log-error";
@@ -46,8 +52,11 @@ export default class Status extends React.Component {
       hasMoreSessions: false,
       screenWidth: window.innerWidth,
       loadSpinner: true,
+      radiusUsageSpinner: true,
       modalActive: false,
       rememberMe: false,
+      userChecks: [],
+      userPlan: {},
     };
     this.repeatLogin = false;
     this.getUserRadiusSessions = this.getUserRadiusSessions.bind(this);
@@ -196,6 +205,7 @@ export default class Status extends React.Component {
 
   componentWillUnmount = () => {
     clearInterval(this.intervalId);
+    clearInterval(this.getUserRadiusUsageIntervalId);
     window.removeEventListener("resize", this.updateScreenWidth);
   };
 
@@ -238,8 +248,13 @@ export default class Status extends React.Component {
     this.intervalId = setInterval(() => {
       this.getUserActiveRadiusSessions();
     }, 60000);
+    await this.getUserRadiusUsage();
+    this.getUserRadiusUsageIntervalId = setInterval(() => {
+      this.getUserRadiusUsage();
+    }, 60000);
     window.addEventListener("resize", this.updateScreenWidth);
     this.updateSpinner();
+    this.setState({radiusUsageSpinner: false});
   }
 
   async getUserRadiusSessions(params) {
@@ -272,6 +287,41 @@ export default class Status extends React.Component {
       }
       options.hasMoreSessions =
         "link" in headers && headers.link.includes("next");
+      this.setState(options);
+    } catch (error) {
+      // logout only if unauthorized or forbidden
+      if (
+        error.response &&
+        (error.response.status === 401 || error.response.status === 403)
+      ) {
+        logout(cookies, orgSlug);
+        toast.error(t`ERR_OCCUR`, {
+          onOpen: () => toast.dismiss(mainToastId),
+        });
+      }
+      logError(error, t`ERR_OCCUR`);
+    }
+  }
+
+  async getUserRadiusUsage() {
+    const {cookies, orgSlug, logout, userData} = this.props;
+    const url = getUserRadiusUsageUrl(orgSlug);
+    const auth_token = cookies.get(`${orgSlug}_auth_token`);
+    handleSession(orgSlug, auth_token, cookies);
+    const options = {};
+    try {
+      const response = await axios({
+        method: "get",
+        headers: {
+          "content-type": "application/x-www-form-urlencoded",
+          Authorization: `Bearer ${userData.auth_token}`,
+        },
+        url,
+      });
+      options.userChecks = response.data.checks;
+      if (response.data.plan) {
+        options.userPlan = response.data.plan;
+      }
       this.setState(options);
     } catch (error) {
       // logout only if unauthorized or forbidden
@@ -752,6 +802,17 @@ export default class Status extends React.Component {
     },
   });
 
+  getUserCheckFormattedValue = (value, type) => {
+    switch (type) {
+      case "bytes":
+        return prettyBytes(parseInt(value, 10));
+      case "seconds":
+        return timeFromSeconds(parseInt(value, 10));
+      default:
+        return value;
+    }
+  };
+
   render() {
     const {
       statusPage,
@@ -762,6 +823,7 @@ export default class Status extends React.Component {
       isAuthenticated,
       userData,
       internetMode,
+      settings,
     } = this.props;
     const {links} = statusPage;
     const {
@@ -769,10 +831,13 @@ export default class Status extends React.Component {
       password,
       userInfo,
       activeSessions,
+      userChecks,
+      userPlan,
       pastSessions,
       sessionsToLogout,
       hasMoreSessions,
       loadSpinner,
+      radiusUsageSpinner,
       modalActive,
       rememberMe,
     } = this.state;
@@ -787,7 +852,43 @@ export default class Status extends React.Component {
           handleResponse={this.handleLogout}
           content={<p className="message">{t`LOGOUT_MODAL_CONTENT`}</p>}
         />
-        <div className="container content" id="status">
+        <div className="container content flex-wrapper" id="status">
+          <div className="inner flex-row limit-info">
+            <div className="bg row">
+              {radiusUsageSpinner ? this.getSpinner() : null}
+              {settings.subscriptions && userPlan.name && (
+                <h3>Current subscriptions: {userPlan.name}</h3>
+              )}
+              {userChecks &&
+                userChecks.map((check) => (
+                  <div>
+                    <progress
+                      id={check.attribute}
+                      max={check.value}
+                      value={check.result}
+                    />
+                    <p className="progress">
+                      <strong>
+                        {this.getUserCheckFormattedValue(
+                          check.result,
+                          check.type,
+                        )}
+                      </strong>{" "}
+                      of{" "}
+                      {this.getUserCheckFormattedValue(check.value, check.type)}{" "}
+                      used
+                    </p>
+                  </div>
+                ))}
+              {settings.subscriptions && userPlan.is_free && (
+                <p>
+                  <button type="button" className="button partial">
+                    Upgrade
+                  </button>
+                </p>
+              )}
+            </div>
+          </div>
           <div className="inner">
             <div className="main-column">
               <div className="inner">

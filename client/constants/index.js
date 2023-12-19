@@ -10,6 +10,8 @@ export const paymentStatusUrl = (orgSlug, paymentId) =>
   `${prefix}/${orgSlug}/payment/status/${paymentId}`;
 export const getUserRadiusSessionsUrl = (orgSlug) =>
   `${prefix}/${orgSlug}/account/session`;
+export const getUserRadiusUsageUrl = (orgSlug) =>
+  `${prefix}/${orgSlug}/account/usage`;
 export const createMobilePhoneTokenUrl = (orgSlug) =>
   `${prefix}/${orgSlug}/account/phone/token`;
 export const mobilePhoneTokenStatusUrl = (orgSlug) =>

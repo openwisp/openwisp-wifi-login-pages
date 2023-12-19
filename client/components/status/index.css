@@ -68,6 +68,50 @@
   overflow-wrap: break-word;
   word-wrap: break-word;
 }
+.flex-wrapper {
+  flex-wrap: wrap;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.flex-row {
+  flex-grow: 1;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.flex-row > .row {
+  padding: 3%;
+  margin: 0 0 10px;
+  box-sizing: border-box;
+}
+progress + p.progress {
+  margin-top: -5px;
+}
+.limit-info {
+  text-align: center;
+  margin-bottom: 15px;
+}
+.limit-info h3 {
+  margin: 0 0 10px;
+}
+.limit-info progress {
+  width: 80%;
+  height: 40px;
+}
+.limit-info p.progress {
+  font-size: 20px;
+}
+.limit-info p:last-child {
+  margin-bottom: 0;
+}
+.limit-info .button {
+  margin-top: 5px;
+}
+.limit-info .exahusted {
+  color: #ba2121f7;
+  margin-top: 15px;
+  line-height: 1.5em;
+}
 
 @media screen and (min-width: 0px) and (max-width: 500px) {
   .logout-modal-container p.message {
