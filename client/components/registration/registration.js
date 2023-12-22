@@ -91,6 +91,7 @@ export default class Registration extends React.Component {
           logError(error, "Error while fetching plans");
         });
     }
+    this.autoSelectFirstPlan();
   }
 
   async componentDidUpdate(prevProps) {
@@ -333,10 +334,12 @@ export default class Registration extends React.Component {
   };
 
   getPlanSelection = () => {
+    const {registration} = this.props;
     const {plans, selectedPlan} = this.state;
+    const {auto_select_first_plan} = registration;
     let index = 0;
     return (
-      <div className="plans">
+      <div className={`plans ${auto_select_first_plan ? "hidden" : ""}`}>
         <p className="intro">{t`PLAN_SETTING_TXT`}.</p>
         {plans.map((plan) => {
           const currentIndex = String(index);
@@ -364,6 +367,13 @@ export default class Registration extends React.Component {
         })}
       </div>
     );
+  };
+
+  autoSelectFirstPlan = () => {
+    const {registration} = this.props;
+    if (registration.auto_select_first_plan) {
+      this.changePlan({target: {value: 0}});
+    }
   };
 
   isPlanIdentityVerifier = () => {
@@ -960,6 +970,7 @@ Registration.propTypes = {
     }),
     additional_info_text: PropTypes.bool,
     links: PropTypes.object,
+    auto_select_first_plan: PropTypes.bool,
   }).isRequired,
   language: PropTypes.string.isRequired,
   orgSlug: PropTypes.string.isRequired,
