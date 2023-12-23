@@ -12,11 +12,14 @@ import {Link} from "react-router-dom";
 import {toast} from "react-toastify";
 import InfinteScroll from "react-infinite-scroll-component";
 import {t, gettext} from "ttag";
-import prettyBytes from "pretty-bytes";
+import bytes from "bytes";
 import {timeFromSeconds} from "duration-formatter";
+import getLanguageHeaders from "../../utils/get-language-headers";
+
 import {
   getUserRadiusSessionsUrl,
   getUserRadiusUsageUrl,
+  upgradePlanApiUrl,
   mainToastId,
 } from "../../constants";
 import LoadingContext from "../../utils/loading-context";
@@ -32,6 +35,8 @@ import Logout from "../organization-wrapper/lazy-logout";
 import InfoModal from "../../utils/modal";
 import {localStorage} from "../../utils/storage";
 import handleSession from "../../utils/session";
+import getPlanSelection from "../../utils/get-plan-selection";
+import getPlans from "../../utils/get-plans";
 
 export default class Status extends React.Component {
   constructor(props) {
@@ -57,9 +62,14 @@ export default class Status extends React.Component {
       rememberMe: false,
       userChecks: [],
       userPlan: {},
+      upgradePlanModalActive: false,
+      upgradePlans: [],
     };
     this.repeatLogin = false;
     this.getUserRadiusSessions = this.getUserRadiusSessions.bind(this);
+    this.getUserRadiusUsage = this.getUserRadiusUsage.bind(this);
+    this.getPlansSuccessCallback = this.getPlansSuccessCallback.bind(this);
+    this.upgradeUserPlan = this.upgradeUserPlan.bind(this);
     this.handleSessionLogout = this.handleSessionLogout.bind(this);
     this.fetchMoreSessions = this.fetchMoreSessions.bind(this);
     this.updateScreenWidth = this.updateScreenWidth.bind(this);
@@ -338,6 +348,47 @@ export default class Status extends React.Component {
     }
   }
 
+  getPlansSuccessCallback(plans) {
+    this.setState({
+      upgradePlans: plans.filter((plan) => plan.price !== "0.00"),
+    });
+  }
+
+  async upgradeUserPlan(event) {
+    const {language, orgSlug, cookies, userData, navigate, setUserData} =
+      this.props;
+    const upgradePlanUrl = upgradePlanApiUrl.replace("{orgSlug}", orgSlug);
+    const auth_token = cookies.get(`${orgSlug}_auth_token`);
+    const {upgradePlans} = this.state;
+    handleSession(orgSlug, auth_token, cookies);
+    axios({
+      method: "post",
+      headers: {
+        "content-type": "application/json",
+        "accept-language": getLanguageHeaders(language),
+        Authorization: `Bearer ${userData.auth_token}`,
+      },
+      url: upgradePlanUrl,
+      data: {
+        plan_pricing: upgradePlans[event.target.value].id,
+      },
+    })
+      .then((response) => {
+        toast.success(t`SUCCESS_UPGRADE_PLAN`, {
+          onOpen: () => toast.dismiss(mainToastId),
+        });
+        setUserData({
+          ...userData,
+          payment_url: response.data.payment_url,
+        });
+        navigate(`/${orgSlug}/payment/process`);
+      })
+      .catch((error) => {
+        toast.error(t`ERR_OCCUR`);
+        logError(error, "Error while upgrading plan");
+      });
+  }
+
   async getUserActiveRadiusSessions(params = {}) {
     const para = {
       is_open: true,
@@ -539,6 +590,15 @@ export default class Status extends React.Component {
     this.setState({modalActive: !modalActive});
   };
 
+  toggleUpgradePlanModal = async () => {
+    const {orgSlug, language} = this.props;
+    const {upgradePlanModalActive, upgradePlans} = this.state;
+    this.setState({upgradePlanModalActive: !upgradePlanModalActive});
+    if (!upgradePlans.length) {
+      await getPlans(orgSlug, language, this.getPlansSuccessCallback);
+    }
+  };
+
   async handleSessionLogout(session) {
     this.setState({
       sessionsToLogout: [session],
@@ -573,12 +633,6 @@ export default class Status extends React.Component {
     return hDisplay + mDisplay + sDisplay;
   };
 
-  getMB = (bytes) => {
-    const number = Number(bytes);
-    const mb = Math.round(number / (1024 * 1024));
-    return `${mb}MB`;
-  };
-
   getDateTimeFormat = (language, time_option, date) => {
     if (typeof Intl !== "undefined") {
       return new Intl.DateTimeFormat(language, time_option).format(
@@ -607,8 +661,8 @@ export default class Status extends React.Component {
             : this.getDateTimeFormat(language, time_option, session.stop_time)}
         </td>
         <td>{this.getDuration(session.session_time)}</td>
-        <td>{this.getMB(session.output_octets)}</td>
-        <td>{this.getMB(session.input_octets)}</td>
+        <td>{bytes(session.output_octets, {decimalPlaces: 0, unitSeparator: " ", unit: "MB"})}</td>
+        <td>{bytes(session.input_octets, {decimalPlaces: 0, unitSeparator: " ", unit: "MB"})}</td>
         <td>
           {session.calling_station_id}
           {session.stop_time == null && showLogoutButton && (
@@ -803,11 +857,14 @@ export default class Status extends React.Component {
   });
 
   getUserCheckFormattedValue = (value, type) => {
+    const intValue = parseInt(value, 10);
     switch (type) {
       case "bytes":
-        return prettyBytes(parseInt(value, 10));
+        return intValue === 0
+          ? 0
+          : bytes(intValue, {unitSeparator: " "});
       case "seconds":
-        return timeFromSeconds(parseInt(value, 10));
+        return timeFromSeconds(intValue);
       default:
         return value;
     }
@@ -838,6 +895,8 @@ export default class Status extends React.Component {
       hasMoreSessions,
       loadSpinner,
       radiusUsageSpinner,
+      upgradePlanModalActive,
+      upgradePlans,
       modalActive,
       rememberMe,
     } = this.state;
@@ -853,15 +912,30 @@ export default class Status extends React.Component {
           content={<p className="message">{t`LOGOUT_MODAL_CONTENT`}</p>}
         />
         <div className="container content flex-wrapper" id="status">
+          <InfoModal
+            id="upgrade-plan-modal"
+            active={upgradePlanModalActive}
+            toggleModal={this.toggleUpgradePlanModal}
+            handleResponse={() => {}}
+            isConfirmationDialog={false}
+            content={
+              (upgradePlans.length &&
+                getPlanSelection(upgradePlans, null, this.upgradeUserPlan)) || (
+                <>{this.getSpinner()}</>
+              )
+            }
+          />
           <div className="inner flex-row limit-info">
             <div className="bg row">
               {radiusUsageSpinner ? this.getSpinner() : null}
               {settings.subscriptions && userPlan.name && (
-                <h3>Current subscriptions: {userPlan.name}</h3>
+                <h3>
+                  {t`CURRENT_SUBSCRIPTION_TXT`} {userPlan.name}
+                </h3>
               )}
               {userChecks &&
                 userChecks.map((check) => (
-                  <div>
+                  <div key={check.attribute}>
                     <progress
                       id={check.attribute}
                       max={check.value}
@@ -882,8 +956,12 @@ export default class Status extends React.Component {
                 ))}
               {settings.subscriptions && userPlan.is_free && (
                 <p>
-                  <button type="button" className="button partial">
-                    Upgrade
+                  <button
+                    type="button"
+                    className="button partial"
+                    onClick={this.toggleUpgradePlanModal}
+                  >
+                    {t`PLAN_UPGRADE_BTN_TXT`}
                   </button>
                 </p>
               )}

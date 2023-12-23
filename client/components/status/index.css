@@ -112,6 +112,13 @@ progress + p.progress {
   margin-top: 15px;
   line-height: 1.5em;
 }
+#status .plans {
+  margin: 0 30px;
+}
+#status .plans .intro {
+  margin-top: 0px;
+  margin-bottom: 15px;
+}
 
 @media screen and (min-width: 0px) and (max-width: 500px) {
   .logout-modal-container p.message {

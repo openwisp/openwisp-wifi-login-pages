@@ -518,6 +518,14 @@ msgstr "Logout fat cun sucès"
 msgid "PASSWORD_EXPIRED"
 msgstr "La tô password al è scjadude, ti prei di aggiornâle."
 
+#: client/components/status/status.js:934
+msgid "CURRENT_SUBSCRIPTION_TXT"
+msgstr "Sotons abonament:"
+
+#: client/components/status/status.js:964
+msgid "PLAN_UPGRADE_BTN_TXT"
+msgstr "Potenziament"
+
 #: client/components/password-change/password-change.js:61
 #: client/components/password-change/password-change.test.js:115
 #: client/components/password-change/password-change.test.js:120

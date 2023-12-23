@@ -12,12 +12,40 @@ exports[`<Status /> rendering should render correctly 1`] = `
       </p>
     }
     handleResponse={[Function]}
+    isConfirmationDialog={true}
     toggleModal={[Function]}
   />
   <div
-    className="container content"
+    className="container content flex-wrapper"
     id="status"
   >
+    <InfoModal
+      active={false}
+      content={
+        <React.Fragment>
+          <loader
+            full={false}
+            small={true}
+          />
+        </React.Fragment>
+      }
+      handleResponse={[Function]}
+      id="upgrade-plan-modal"
+      isConfirmationDialog={false}
+      toggleModal={[Function]}
+    />
+    <div
+      className="inner flex-row limit-info"
+    >
+      <div
+        className="bg row"
+      >
+        <loader
+          full={false}
+          small={true}
+        />
+      </div>
+    </div>
     <div
       className="inner"
     >
@@ -165,12 +193,40 @@ exports[`<Status /> rendering with placeholder translation tags should render tr
       </p>
     }
     handleResponse={[Function]}
+    isConfirmationDialog={true}
     toggleModal={[Function]}
   />
   <div
-    className="container content"
+    className="container content flex-wrapper"
     id="status"
   >
+    <InfoModal
+      active={false}
+      content={
+        <React.Fragment>
+          <loader
+            full={false}
+            small={true}
+          />
+        </React.Fragment>
+      }
+      handleResponse={[Function]}
+      id="upgrade-plan-modal"
+      isConfirmationDialog={false}
+      toggleModal={[Function]}
+    />
+    <div
+      className="inner flex-row limit-info"
+    >
+      <div
+        className="bg row"
+      >
+        <loader
+          full={false}
+          small={true}
+        />
+      </div>
+    </div>
     <div
       className="inner"
     >

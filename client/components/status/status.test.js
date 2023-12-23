@@ -790,7 +790,7 @@ describe("<Status /> interactions", () => {
     wrapper.setState({rememberMe: true});
     const handleLogout = jest.spyOn(wrapper.instance(), "handleLogout");
     wrapper.find(".logout input.button").simulate("click", {});
-    const modalWrapper = wrapper.find(Modal).shallow();
+    const modalWrapper = wrapper.find(Modal).first().shallow();
     modalWrapper
       .find(".modal-buttons button:first-child")
       .simulate("click", {});
@@ -806,7 +806,7 @@ describe("<Status /> interactions", () => {
     wrapper.setState({rememberMe: true});
     const handleLogout = jest.spyOn(wrapper.instance(), "handleLogout");
     wrapper.find(".logout input.button").simulate("click", {});
-    const modalWrapper = wrapper.find(Modal).shallow();
+    const modalWrapper = wrapper.find(Modal).first().shallow();
     modalWrapper.find(".modal-buttons button:last-child").simulate("click", {});
     expect(handleLogout).toHaveBeenCalledWith(false);
   });
@@ -1176,7 +1176,7 @@ describe("<Status /> interactions", () => {
     status.componentDidMount();
 
     wrapper.find(".logout input.button").simulate("click", {});
-    const modalWrapper = wrapper.find(Modal).shallow();
+    const modalWrapper = wrapper.find(Modal).first().shallow();
     modalWrapper.find(".modal-buttons button:last-child").simulate("click", {});
     expect(handleLogout).toHaveBeenCalledWith(false);
     expect(location.assign.mock.calls.length).toBe(0);

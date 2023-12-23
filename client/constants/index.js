@@ -21,5 +21,6 @@ export const verifyMobilePhoneTokenUrl = (orgSlug) =>
 export const mobilePhoneChangeUrl = (orgSlug) =>
   `${prefix}/${orgSlug}/account/phone/change`;
 export const plansApiUrl = `${prefix}/{orgSlug}/plan/`;
+export const upgradePlanApiUrl = `${prefix}/{orgSlug}/plan/upgrade`;
 export const modalContentUrl = (orgSlug) => `${prefix}/${orgSlug}/modal`;
 export const mainToastId = "main_toast_id";
