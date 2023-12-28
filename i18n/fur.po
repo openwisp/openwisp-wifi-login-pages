@@ -518,6 +518,10 @@ msgstr "Logout fat cun sucès"
 msgid "PASSWORD_EXPIRED"
 msgstr "La tô password al è scjadude, ti prei di aggiornâle."
 
+#: client/components/status/status.js:384
+msgid "SUCCESS_UPGRADE_PLAN"
+msgstr "Aggiornament dal paniere in corse"
+
 #: client/components/status/status.js:934
 msgid "CURRENT_SUBSCRIPTION_TXT"
 msgstr "Sotons abonament:"

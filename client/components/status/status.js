@@ -57,6 +57,7 @@ export default class Status extends React.Component {
       hasMoreSessions: false,
       screenWidth: window.innerWidth,
       loadSpinner: true,
+      showRadiusUsage: true,
       radiusUsageSpinner: true,
       modalActive: false,
       rememberMe: false,
@@ -186,6 +187,7 @@ export default class Status extends React.Component {
       if (macaddr) {
         const params = {macaddr};
         await this.getUserActiveRadiusSessions(params);
+        await this.getUserRadiusUsage();
         /* request to captive portal is made only if there is
           no active session from macaddr stored in the cookie */
         const {activeSessions} = this.state;
@@ -315,6 +317,7 @@ export default class Status extends React.Component {
 
   async getUserRadiusUsage() {
     const {cookies, orgSlug, logout, userData} = this.props;
+    const {showRadiusUsage} = this.state;
     const url = getUserRadiusUsageUrl(orgSlug);
     const auth_token = cookies.get(`${orgSlug}_auth_token`);
     handleSession(orgSlug, auth_token, cookies);
@@ -332,6 +335,9 @@ export default class Status extends React.Component {
       if (response.data.plan) {
         options.userPlan = response.data.plan;
       }
+      if (!showRadiusUsage) {
+        options.showRadiusUsage = true;
+      }
       this.setState(options);
     } catch (error) {
       // logout only if unauthorized or forbidden
@@ -345,6 +351,7 @@ export default class Status extends React.Component {
         });
       }
       logError(error, t`ERR_OCCUR`);
+      this.setState({showRadiusUsage: false});
     }
   }
 
@@ -661,8 +668,20 @@ export default class Status extends React.Component {
             : this.getDateTimeFormat(language, time_option, session.stop_time)}
         </td>
         <td>{this.getDuration(session.session_time)}</td>
-        <td>{bytes(session.output_octets, {decimalPlaces: 0, unitSeparator: " ", unit: "MB"})}</td>
-        <td>{bytes(session.input_octets, {decimalPlaces: 0, unitSeparator: " ", unit: "MB"})}</td>
+        <td>
+          {bytes(session.output_octets, {
+            decimalPlaces: 0,
+            unitSeparator: " ",
+            unit: "MB",
+          })}
+        </td>
+        <td>
+          {bytes(session.input_octets, {
+            decimalPlaces: 0,
+            unitSeparator: " ",
+            unit: "MB",
+          })}
+        </td>
         <td>
           {session.calling_station_id}
           {session.stop_time == null && showLogoutButton && (
@@ -727,14 +746,31 @@ export default class Status extends React.Component {
           className={session.stop_time === null ? "active-session" : ""}
         >
           <th>{session_info.header.download}:</th>
-          <td>{this.getMB(session.output_octets)}</td>
+          <td>
+            {bytes(session.output_octets, {
+              decimalPlaces: 0,
+              unitSeparator: " ",
+              unit: "MB",
+            })}
+          </td>
         </tr>
         <tr
           key={`${session.session_id}upload`}
           className={session.stop_time === null ? "active-session" : ""}
         >
           <th>{session_info.header.upload}:</th>
-          <td>{this.getMB(session.input_octets)}</td>
+          <td>
+            {bytes(session.input_octets, {
+              decimalPlaces: 0,
+              unitSeparator: " ",
+              unit: "MB",
+            })}
+            {bytes(session.output_octets, {
+              decimalPlaces: 0,
+              unitSeparator: " ",
+              unit: "MB",
+            })}
+          </td>
         </tr>
         <tr
           key={`${session.session_id}device_address`}
@@ -860,9 +896,7 @@ export default class Status extends React.Component {
     const intValue = parseInt(value, 10);
     switch (type) {
       case "bytes":
-        return intValue === 0
-          ? 0
-          : bytes(intValue, {unitSeparator: " "});
+        return intValue === 0 ? 0 : bytes(intValue, {unitSeparator: " "});
       case "seconds":
         return timeFromSeconds(intValue);
       default:
@@ -894,6 +928,7 @@ export default class Status extends React.Component {
       sessionsToLogout,
       hasMoreSessions,
       loadSpinner,
+      showRadiusUsage,
       radiusUsageSpinner,
       upgradePlanModalActive,
       upgradePlans,
@@ -912,61 +947,71 @@ export default class Status extends React.Component {
           content={<p className="message">{t`LOGOUT_MODAL_CONTENT`}</p>}
         />
         <div className="container content flex-wrapper" id="status">
-          <InfoModal
-            id="upgrade-plan-modal"
-            active={upgradePlanModalActive}
-            toggleModal={this.toggleUpgradePlanModal}
-            handleResponse={() => {}}
-            isConfirmationDialog={false}
-            content={
-              (upgradePlans.length &&
-                getPlanSelection(upgradePlans, null, this.upgradeUserPlan)) || (
-                <>{this.getSpinner()}</>
-              )
-            }
-          />
-          <div className="inner flex-row limit-info">
-            <div className="bg row">
-              {radiusUsageSpinner ? this.getSpinner() : null}
-              {settings.subscriptions && userPlan.name && (
-                <h3>
-                  {t`CURRENT_SUBSCRIPTION_TXT`} {userPlan.name}
-                </h3>
-              )}
-              {userChecks &&
-                userChecks.map((check) => (
-                  <div key={check.attribute}>
-                    <progress
-                      id={check.attribute}
-                      max={check.value}
-                      value={check.result}
-                    />
-                    <p className="progress">
-                      <strong>
+          {settings.subscriptions && upgradePlans.length > 0 && (
+            <InfoModal
+              id="upgrade-plan-modal"
+              active={upgradePlanModalActive}
+              toggleModal={this.toggleUpgradePlanModal}
+              handleResponse={() => {}}
+              isConfirmationDialog={false}
+              content={
+                (upgradePlans.length &&
+                  getPlanSelection(
+                    upgradePlans,
+                    null,
+                    this.upgradeUserPlan,
+                  )) || <>{this.getSpinner()}</>
+              }
+            />
+          )}
+          {showRadiusUsage && (
+            <div className="inner flex-row limit-info">
+              <div className="bg row">
+                {radiusUsageSpinner ? this.getSpinner() : null}
+                {settings.subscriptions && userPlan.name && (
+                  <h3>
+                    {t`CURRENT_SUBSCRIPTION_TXT`} {userPlan.name}
+                  </h3>
+                )}
+                {userChecks &&
+                  userChecks.map((check) => (
+                    <div key={check.attribute}>
+                      <progress
+                        id={check.attribute}
+                        max={check.value}
+                        value={check.result}
+                      />
+                      <p className="progress">
+                        <strong>
+                          {this.getUserCheckFormattedValue(
+                            check.result,
+                            check.type,
+                          )}
+                        </strong>{" "}
+                        of{" "}
                         {this.getUserCheckFormattedValue(
-                          check.result,
+                          check.value,
                           check.type,
-                        )}
-                      </strong>{" "}
-                      of{" "}
-                      {this.getUserCheckFormattedValue(check.value, check.type)}{" "}
-                      used
-                    </p>
-                  </div>
-                ))}
-              {settings.subscriptions && userPlan.is_free && (
-                <p>
-                  <button
-                    type="button"
-                    className="button partial"
-                    onClick={this.toggleUpgradePlanModal}
-                  >
-                    {t`PLAN_UPGRADE_BTN_TXT`}
-                  </button>
-                </p>
-              )}
+                        )}{" "}
+                        used
+                      </p>
+                    </div>
+                  ))}
+                {settings.subscriptions && userPlan.is_free && (
+                  <p>
+                    <button
+                      id="plan-upgrade-btn"
+                      type="button"
+                      className="button partial"
+                      onClick={this.toggleUpgradePlanModal}
+                    >
+                      {t`PLAN_UPGRADE_BTN_TXT`}
+                    </button>
+                  </p>
+                )}
+              </div>
             </div>
-          </div>
+          )}
           <div className="inner">
             <div className="main-column">
               <div className="inner">

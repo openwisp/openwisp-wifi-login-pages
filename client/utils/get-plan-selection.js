@@ -20,7 +20,13 @@ const getPlan = (plan, index) => {
   );
 };
 
-const getPlanSelection = (plans, selectedPlan, onChange, onFocus, hideSelection) => {
+const getPlanSelection = (
+  plans,
+  selectedPlan,
+  onChange,
+  onFocus,
+  hideSelection,
+) => {
   let index = 0;
   return (
     <div className={`plans ${hideSelection ? "hidden" : ""}`}>

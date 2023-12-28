@@ -516,6 +516,10 @@ msgstr "Успешный выход"
 msgid "PASSWORD_EXPIRED"
 msgstr "Срок действия вашего пароля истек, обновите его."
 
+#: client/components/status/status.js:384
+msgid "SUCCESS_UPGRADE_PLAN"
+msgstr "Обновление плана выполняется"
+
 #: client/components/status/status.js:934
 msgid "CURRENT_SUBSCRIPTION_TXT"
 msgstr "Текущая подписка:"

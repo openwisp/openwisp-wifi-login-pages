@@ -525,6 +525,10 @@ msgstr "Logout successful"
 msgid "PASSWORD_EXPIRED"
 msgstr "Your password has expired, please update it."
 
+#: client/components/status/status.js:384
+msgid "SUCCESS_UPGRADE_PLAN"
+msgstr "Plan upgrade in progress"
+
 #: client/components/status/status.js:934
 msgid "CURRENT_SUBSCRIPTION_TXT"
 msgstr "Current subscription:"

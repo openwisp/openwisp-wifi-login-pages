@@ -264,8 +264,17 @@ describe("<Status /> interactions", () => {
           data: [],
           headers: {},
         }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: [],
+          headers: {},
+        }),
       );
     jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
+    jest.spyOn(Status.prototype, "getUserRadiusUsage");
 
     props = createTestProps({
       userData: {...responseData, mustLogin: true},
@@ -282,6 +291,7 @@ describe("<Status /> interactions", () => {
     expect(Status.prototype.getUserActiveRadiusSessions).toHaveBeenCalled();
     expect(wrapper.instance().state.activeSessions.length).toBe(1);
     expect(setLoading.mock.calls.length).toBe(1);
+    expect(Status.prototype.getUserRadiusUsage).toHaveBeenCalled();
     wrapper.setProps({
       location: {
         search: "",
@@ -309,6 +319,7 @@ describe("<Status /> interactions", () => {
     wrapper.instance().loginIframeRef.current = {};
     wrapper.instance().loginFormRef.current = mockRef;
     wrapper.instance().componentDidMount();
+    await tick();
     await tick();
     expect(mockRef.submit.mock.calls.length).toBe(1);
     Status.prototype.getUserActiveRadiusSessions.mockRestore();
@@ -1624,5 +1635,279 @@ describe("<Status /> interactions", () => {
     await wrapper.instance().componentDidMount();
     await tick();
     expect(setLoading.mock.calls).toEqual([[true], [false]]);
+  });
+  it("test getUserRadiusUsage method", async () => {
+    jest.spyOn(toast, "error");
+    jest.spyOn(toast, "dismiss");
+    axios
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: {
+            checks: [
+              {
+                attribute: "Max-Daily-Session",
+                op: ":=",
+                value: "10800",
+                result: 0,
+                type: "seconds",
+              },
+            ],
+          },
+          headers: {},
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: {
+            plan: {
+              id: "d5bc4d5a-0a8c-4e94-8d52-4c54836bd013",
+              name: "Free",
+              currency: "EUR",
+              is_free: true,
+              expire: null,
+              active: true,
+            },
+          },
+          headers: {},
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.reject({
+          response: {
+            status: 401,
+            headers: {},
+          },
+        }),
+      );
+    props = createTestProps();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    jest.spyOn(wrapper.instance(), "getUserRadiusUsage");
+    wrapper.instance().getUserRadiusUsage();
+    await tick();
+    expect(wrapper.instance().state.userChecks.length).toBe(1);
+    wrapper.instance().getUserRadiusUsage();
+    await tick();
+    expect(wrapper.instance().state.userPlan.is_free).toBe(true);
+    wrapper.instance().getUserRadiusUsage();
+    await tick();
+    expect(toast.error.mock.calls.length).toBe(1);
+    toast.error.mock.calls.pop()[1].onOpen();
+    expect(toast.dismiss).toHaveBeenCalledWith("main_toast_id");
+    expect(wrapper.instance().props.logout.mock.calls.length).toBe(1);
+  });
+  it("test upgradeUserPlan method handle error", async () => {
+    jest.spyOn(toast, "error");
+    jest.spyOn(toast, "dismiss");
+    axios.mockImplementation(() =>
+      Promise.reject({
+        response: {
+          status: 400,
+          statusText: "BAD_REQUEST",
+          data: {
+            plan_pricing: ["This plan requires billing info."],
+          },
+        },
+      }),
+    );
+    props = createTestProps();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    jest.spyOn(wrapper.instance(), "upgradeUserPlan");
+    wrapper.setState({upgradePlans: [{id: "1"}]});
+    wrapper.instance().upgradeUserPlan({target: {value: 0}});
+    await tick();
+    expect(toast.error.mock.calls.length).toBe(1);
+  });
+  it("should hide limit-info element if getUserRadiusUsage fails", async () => {
+    validateToken.mockReturnValue(true);
+    axios.mockImplementation(() =>
+      Promise.reject({
+        response: {
+          status: 404,
+          statusText: "404_NOT_FOUND",
+          data: "404",
+        },
+      }),
+    );
+    const prop = createTestProps();
+    prop.statusPage.links = links;
+    prop.isAuthenticated = true;
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+    });
+    await tick();
+    expect(wrapper.find(".limit-info").exists()).toBe(false);
+  });
+  it("should show user's radius usage", async () => {
+    validateToken.mockReturnValue(true);
+    axios
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          response: {
+            status: 200,
+            statusText: "OK",
+          },
+          data: [],
+          headers: {},
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: {
+            checks: [
+              {
+                attribute: "Max-Daily-Session",
+                op: ":=",
+                value: "10800",
+                result: 0,
+                type: "seconds",
+              },
+              {
+                attribute: "Max-Daily-Session-Traffic",
+                op: ":=",
+                value: "3000000000",
+                result: 0,
+                type: "bytes",
+              },
+            ],
+          },
+          headers: {},
+        }),
+      );
+    const prop = createTestProps();
+    prop.statusPage.links = links;
+    prop.isAuthenticated = true;
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+    });
+    await tick();
+    expect(wrapper).toMatchSnapshot();
+  });
+  it("should show user's plan when subscription module is enabled", async () => {
+    validateToken.mockReturnValue(true);
+    jest.spyOn(toast, "success");
+    jest.spyOn(toast, "dismiss");
+    axios
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          response: {
+            status: 200,
+            statusText: "OK",
+          },
+          data: [],
+          headers: {},
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: {
+            checks: [
+              {
+                attribute: "Max-Daily-Session",
+                op: ":=",
+                value: "10800",
+                result: 0,
+                type: "seconds",
+              },
+              {
+                attribute: "Max-Daily-Session-Traffic",
+                op: ":=",
+                value: "3000000000",
+                result: 0,
+                type: "bytes",
+              },
+            ],
+            plan: {
+              name: "Free",
+              currency: "EUR",
+              is_free: true,
+              expire: null,
+              active: true,
+            },
+          },
+          headers: {},
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: [
+            {
+              plan: "Free",
+              pricing: "no expiration (free) (0 days)",
+              plan_description: "3 hours per day\r\n300 MB per day",
+              currency: "EUR",
+              price: "0.00",
+            },
+            {
+              plan: "Premium",
+              pricing: "per month (0 days)",
+              plan_description: "Unlimited time and traffic",
+              currency: "EUR",
+              price: "1.99",
+            },
+            {
+              plan: "Premium",
+              pricing: "per year (0 days)",
+              plan_description: "Unlimited time and traffic",
+              currency: "EUR",
+              price: "9.99",
+            },
+          ],
+          headers: {},
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          response: {
+            status: 200,
+            statusText: "OK",
+          },
+          data: {
+            payment_url: "https://account.openwisp.io/payment/123",
+          },
+          headers: {},
+        }),
+      );
+    const prop = createTestProps();
+    prop.statusPage.links = links;
+    prop.isAuthenticated = true;
+    prop.settings.subscriptions = true;
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+    });
+    wrapper.setState({showRadiusUsage: false});
+    await tick();
+    expect(wrapper).toMatchSnapshot();
+    wrapper.find("#plan-upgrade-btn").simulate("click");
+    await tick();
+    expect(wrapper).toMatchSnapshot();
+    const modalWrapper = wrapper.find(Modal).last().shallow();
+    window.console.log(modalWrapper.debug());
+    modalWrapper.find("#radio0").simulate("change", {target: {value: "0"}});
+    await tick();
+    toast.success.mock.calls.pop()[1].onOpen();
+    expect(toast.dismiss).toHaveBeenCalledWith("main_toast_id");
+    expect(prop.navigate).toHaveBeenCalledWith(
+      `/${prop.orgSlug}/payment/process`,
+    );
+    expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith({
+      ...prop.userData,
+      payment_url: "https://account.openwisp.io/payment/123",
+    });
   });
 });

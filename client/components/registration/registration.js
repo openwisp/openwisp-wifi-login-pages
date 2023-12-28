@@ -345,7 +345,8 @@ export default class Registration extends React.Component {
 
   getForm = () => {
     const {registration, settings, orgSlug} = this.props;
-    const {additional_info_text, input_fields, links, auto_select_first_plan} = registration;
+    const {additional_info_text, input_fields, links, auto_select_first_plan} =
+      registration;
     const {
       success,
       phone_number,
@@ -385,7 +386,7 @@ export default class Registration extends React.Component {
                       selectedPlan,
                       this.changePlan,
                       this.changePlan,
-                      auto_select_first_plan
+                      auto_select_first_plan,
                     )}
                   {(plans.length === 0 ||
                     (plans.length > 0 && selectedPlan !== null)) && (

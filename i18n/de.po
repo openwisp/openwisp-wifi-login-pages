@@ -41,6 +41,10 @@ msgstr "Logout war erfolgreich"
 msgid "PASSWORD_EXPIRED"
 msgstr "Ihr Passwort ist abgelaufen. Bitte aktualisieren Sie es."
 
+#: client/components/status/status.js:384
+msgid "SUCCESS_UPGRADE_PLAN"
+msgstr "Plan-Upgrade läuft"
+
 #: client/components/status/status.js:934
 msgid "CURRENT_SUBSCRIPTION_TXT"
 msgstr "Aktuelles Abonnement:"
