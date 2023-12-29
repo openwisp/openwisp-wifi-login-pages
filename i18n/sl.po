@@ -470,6 +470,10 @@ msgstr "Prebieha aktualizácia plánu"
 msgid "CURRENT_SUBSCRIPTION_TXT"
 msgstr "Aktuálne predplatné:"
 
+#: client/components/status/status.js:1000
+msgid "USAGE_LIMIT_EXHAUSTED_TXT"
+msgstr "Vyčerpali ste dostupnú premávku. Ak chcete službu naďalej používať, inovujte ju."
+
 #: client/components/status/status.js:964
 msgid "PLAN_UPGRADE_BTN_TXT"
 msgstr "Inovovať"

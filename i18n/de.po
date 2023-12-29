@@ -49,6 +49,10 @@ msgstr "Plan-Upgrade läuft"
 msgid "CURRENT_SUBSCRIPTION_TXT"
 msgstr "Aktuelles Abonnement:"
 
+#: client/components/status/status.js:1000
+msgid "USAGE_LIMIT_EXHAUSTED_TXT"
+msgstr "Sie haben den verfügbaren Datenverkehr ausgeschöpft. Führen Sie ein Upgrade durch, um den Dienst weiterhin nutzen zu können."
+
 #: client/components/status/status.js:964
 msgid "PLAN_UPGRADE_BTN_TXT"
 msgstr "Aktualisierung"

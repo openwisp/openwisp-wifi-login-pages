@@ -40,13 +40,13 @@ exports[`<Status /> interactions should show user's plan when subscription modul
           <progress
             id="Max-Daily-Session"
             max="10800"
-            value={0}
+            value={10700}
           />
           <p
             className="progress"
           >
             <strong>
-              00:00:00
+              02:58:20
             </strong>
              
             of
@@ -62,13 +62,13 @@ exports[`<Status /> interactions should show user's plan when subscription modul
           <progress
             id="Max-Daily-Session-Traffic"
             max="3000000000"
-            value={0}
+            value={3000000000}
           />
           <p
             className="progress"
           >
             <strong>
-              0
+              2.79 GB
             </strong>
              
             of
@@ -76,6 +76,13 @@ exports[`<Status /> interactions should show user's plan when subscription modul
             2.79 GB
              
             used
+          </p>
+          <p
+            className="exhausted"
+          >
+            <strong>
+              USAGE_LIMIT_EXHAUSTED_TXT
+            </strong>
           </p>
         </div>
         <p>
@@ -374,13 +381,13 @@ exports[`<Status /> interactions should show user's plan when subscription modul
           <progress
             id="Max-Daily-Session"
             max="10800"
-            value={0}
+            value={10700}
           />
           <p
             className="progress"
           >
             <strong>
-              00:00:00
+              02:58:20
             </strong>
              
             of
@@ -396,13 +403,13 @@ exports[`<Status /> interactions should show user's plan when subscription modul
           <progress
             id="Max-Daily-Session-Traffic"
             max="3000000000"
-            value={0}
+            value={3000000000}
           />
           <p
             className="progress"
           >
             <strong>
-              0
+              2.79 GB
             </strong>
              
             of
@@ -410,6 +417,13 @@ exports[`<Status /> interactions should show user's plan when subscription modul
             2.79 GB
              
             used
+          </p>
+          <p
+            className="exhausted"
+          >
+            <strong>
+              USAGE_LIMIT_EXHAUSTED_TXT
+            </strong>
           </p>
         </div>
         <p>

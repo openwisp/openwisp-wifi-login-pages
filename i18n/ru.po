@@ -524,6 +524,10 @@ msgstr "Обновление плана выполняется"
 msgid "CURRENT_SUBSCRIPTION_TXT"
 msgstr "Текущая подписка:"
 
+#: client/components/status/status.js:1000
+msgid "USAGE_LIMIT_EXHAUSTED_TXT"
+msgstr "Вы исчерпали доступный трафик. Обновите версию, чтобы продолжить пользоваться услугой."
+
 #: client/components/status/status.js:964
 msgid "PLAN_UPGRADE_BTN_TXT"
 msgstr "Обновление"

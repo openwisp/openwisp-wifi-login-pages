@@ -995,6 +995,12 @@ export default class Status extends React.Component {
                         )}{" "}
                         used
                       </p>
+                      {userPlan.is_free &&
+                        check.value === String(check.result) && (
+                          <p className="exhausted">
+                            <strong>{t`USAGE_LIMIT_EXHAUSTED_TXT`}</strong>
+                          </p>
+                        )}
                     </div>
                   ))}
                 {settings.subscriptions && userPlan.is_free && (

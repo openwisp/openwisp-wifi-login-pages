@@ -533,6 +533,10 @@ msgstr "Plan upgrade in progress"
 msgid "CURRENT_SUBSCRIPTION_TXT"
 msgstr "Current subscription:"
 
+#: client/components/status/status.js:1000
+msgid "USAGE_LIMIT_EXHAUSTED_TXT"
+msgstr "You have exhausted the traffic available. Upgrade to continue using the service."
+
 #: client/components/status/status.js:964
 msgid "PLAN_UPGRADE_BTN_TXT"
 msgstr "Upgrade"
