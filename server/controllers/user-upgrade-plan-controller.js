@@ -13,11 +13,14 @@ const userUpgradePlan = (req, res) => {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
       const {host} = conf;
-      const userUpgradePlanUrl = reverse("upgrade_plan", getSlug(conf));
+      const userUpgradePlanUrl = reverse(
+        "user_plan_radius_usage",
+        getSlug(conf),
+      );
       const timeout = conf.timeout * 1000;
       // make AJAX request
       axios({
-        method: "post",
+        method: "put",
         headers: {
           "content-type": "application/json",
           Authorization: req.headers.authorization,
