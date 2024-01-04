@@ -119,6 +119,19 @@ progress + p.progress {
   margin-top: 0px;
   margin-bottom: 15px;
 }
+#status .plans .plan {
+  padding: 20px;
+  margin-bottom: 20px;
+  text-align: left;
+  line-height: 1.8em;
+  border: 1px solid #b4b4b4 !important;
+}
+#status .plans .plan:last-child {
+  margin-bottom: 0;
+}
+#status .plan:hover {
+  border: 1px solid #464646 !important;
+}
 
 @media screen and (min-width: 0px) and (max-width: 500px) {
   .logout-modal-container p.message {
