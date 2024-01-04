@@ -93,6 +93,7 @@ const responseData = {
 
 describe("<Status /> rendering with placeholder translation tags", () => {
   const props = createTestProps();
+  props.statusPage.radius_usage_enabled = true;
   it("should render translation placeholder correctly", () => {
     const renderer = new ShallowRenderer();
     const wrapper = renderer.render(<Status {...props} />);
@@ -105,6 +106,7 @@ describe("<Status /> rendering", () => {
 
   it("should render correctly", () => {
     props = createTestProps();
+    props.statusPage.radius_usage_enabled = true;
     const renderer = new ShallowRenderer();
     loadTranslation("en", "default");
     const component = renderer.render(<Status {...props} />);
@@ -279,6 +281,7 @@ describe("<Status /> interactions", () => {
     props = createTestProps({
       userData: {...responseData, mustLogin: true},
     });
+    props.statusPage.radius_usage_enabled = true;
     validateToken.mockReturnValue(true);
     const setLoading = jest.fn();
     wrapper = shallow(<Status {...props} />, {
@@ -1787,6 +1790,7 @@ describe("<Status /> interactions", () => {
       );
     const prop = createTestProps();
     prop.statusPage.links = links;
+    prop.statusPage.radius_usage_enabled = true;
     prop.isAuthenticated = true;
     wrapper = shallow(<Status {...prop} />, {
       context: {setLoading: jest.fn()},
@@ -1885,6 +1889,7 @@ describe("<Status /> interactions", () => {
       );
     const prop = createTestProps();
     prop.statusPage.links = links;
+    prop.statusPage.radius_usage_enabled = true;
     prop.isAuthenticated = true;
     prop.settings.subscriptions = true;
     wrapper = shallow(<Status {...prop} />, {

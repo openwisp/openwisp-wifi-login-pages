@@ -88,6 +88,7 @@ export default class Status extends React.Component {
       orgName,
       language,
       navigate,
+      statusPage,
     } = this.props;
     setTitle(t`STATUS_TITL`, orgName);
     const {setLoading} = this.context;
@@ -187,7 +188,9 @@ export default class Status extends React.Component {
       if (macaddr) {
         const params = {macaddr};
         await this.getUserActiveRadiusSessions(params);
-        await this.getUserRadiusUsage();
+        if (statusPage.radius_usage_enabled) {
+          await this.getUserRadiusUsage();
+        }
         /* request to captive portal is made only if there is
           no active session from macaddr stored in the cookie */
         const {activeSessions} = this.state;
@@ -216,13 +219,17 @@ export default class Status extends React.Component {
   }
 
   componentWillUnmount = () => {
+    const {statusPage} = this.props;
     clearInterval(this.intervalId);
-    clearInterval(this.getUserRadiusUsageIntervalId);
+    if (statusPage.radius_usage_enabled) {
+      clearInterval(this.getUserRadiusUsageIntervalId);
+    }
     window.removeEventListener("resize", this.updateScreenWidth);
   };
 
   async finalOperations() {
-    const {userData, orgSlug, settings, navigate, setUserData} = this.props;
+    const {userData, orgSlug, settings, navigate, setUserData, statusPage} =
+      this.props;
     const {setLoading} = this.context;
     // if the user needs bank card verification,
     // redirect to payment page and stop here
@@ -260,10 +267,13 @@ export default class Status extends React.Component {
     this.intervalId = setInterval(() => {
       this.getUserActiveRadiusSessions();
     }, 60000);
-    await this.getUserRadiusUsage();
-    this.getUserRadiusUsageIntervalId = setInterval(() => {
-      this.getUserRadiusUsage();
-    }, 60000);
+    if (statusPage.radius_usage_enabled) {
+      await this.getUserRadiusUsage();
+      this.getUserRadiusUsageIntervalId = setInterval(() => {
+        this.getUserRadiusUsage();
+      }, 60000);
+    }
+
     window.addEventListener("resize", this.updateScreenWidth);
     this.updateSpinner();
     this.setState({radiusUsageSpinner: false});
@@ -964,7 +974,7 @@ export default class Status extends React.Component {
               }
             />
           )}
-          {showRadiusUsage && (
+          {statusPage.radius_usage_enabled && showRadiusUsage && (
             <div className="inner flex-row limit-info">
               <div className="bg row">
                 {radiusUsageSpinner ? this.getSpinner() : null}
@@ -1206,6 +1216,7 @@ Status.propTypes = {
         url: PropTypes.string.isRequired,
       }),
     ),
+    radius_usage_enabled: PropTypes.bool,
     saml_logout_url: PropTypes.string,
   }).isRequired,
   language: PropTypes.string.isRequired,
