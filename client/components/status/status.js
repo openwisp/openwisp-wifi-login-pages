@@ -571,15 +571,24 @@ export default class Status extends React.Component {
       event.origin === window.location.origin
     ) {
       switch (type) {
+        case "authMessage":
         case "authError":
           if (!message) break;
           toast.dismiss();
-          /* disable ttag */
-          toast.error(gettext(message), {
-            autoClose: 10000,
-          });
-          /* enable ttag */
-          logout(cookies, orgSlug);
+          if (type === "authMessage") {
+            /* disable ttag */
+            toast.info(gettext(message), {
+              autoClose: 10000,
+            });
+            /* enable ttag */
+          } else {
+            /* disable ttag */
+            toast.error(gettext(message), {
+              autoClose: 10000,
+            });
+            /* enable ttag */
+            logout(cookies, orgSlug);
+          }
           setLoading(false);
           break;
 

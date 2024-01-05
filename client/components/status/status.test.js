@@ -503,7 +503,7 @@ describe("<Status /> interactions", () => {
     expect(handlePostMessageMock).toHaveBeenCalledTimes(1);
   });
 
-  it("test handlePostMessage authError", async () => {
+  it("test handlePostMessage", async () => {
     props = createTestProps();
     const setLoadingMock = jest.fn();
     wrapper = shallow(<Status {...props} />, {
@@ -512,6 +512,7 @@ describe("<Status /> interactions", () => {
     });
     jest.spyOn(toast, "error");
     jest.spyOn(toast, "dismiss");
+    jest.spyOn(toast, "info");
     const status = wrapper.instance();
 
     // Test missing message
@@ -544,7 +545,7 @@ describe("<Status /> interactions", () => {
     expect(props.logout).toHaveBeenCalledTimes(0);
     expect(setLoadingMock).toHaveBeenCalledTimes(0);
 
-    // Test valid message
+    // Test valid authError message
     wrapper.instance().componentDidMount();
     status.handlePostMessage({
       data: {message: "RADIUS Error", type: "authError"},
@@ -554,6 +555,22 @@ describe("<Status /> interactions", () => {
     expect(toast.error).toHaveBeenCalledTimes(1);
     expect(props.logout).toHaveBeenCalledTimes(1);
     expect(setLoadingMock).toHaveBeenCalledTimes(2);
+    expect(setLoadingMock).toHaveBeenLastCalledWith(false);
+
+    toast.dismiss.mockReset();
+    props.logout.mockReset();
+    setLoadingMock.mockReset();
+    expect(props.logout).toHaveBeenCalledTimes(0);
+
+    // Test valid authMessage message
+    status.handlePostMessage({
+      data: {message: "RADIUS Info", type: "authMessage"},
+      origin: "http://localhost",
+    });
+    expect(toast.dismiss).toHaveBeenCalledTimes(1);
+    expect(toast.info).toHaveBeenCalledTimes(1);
+    expect(props.logout).toHaveBeenCalledTimes(0);
+    expect(setLoadingMock).toHaveBeenCalledTimes(1);
     expect(setLoadingMock).toHaveBeenLastCalledWith(false);
   });
 
