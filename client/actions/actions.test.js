@@ -9,6 +9,7 @@ import {
   logout as logoutAction,
   setUserData,
   setInternetMode,
+  setPlanExhausted,
 } from "./dispatchers";
 import logout from "./logout";
 import parseOrganizations from "./parse-organizations";
@@ -210,6 +211,14 @@ describe("actions testing", () => {
     expect(dispatch).toHaveBeenCalledWith({
       payload: true,
       type: types.SET_INTERNET_MODE,
+    });
+  });
+  it("should dispatch setPlanExhausted action", () => {
+    const action = setPlanExhausted(dispatch);
+    action(true);
+    expect(dispatch).toHaveBeenCalledWith({
+      payload: true,
+      type: types.SET_PLAN_EXHAUSTED,
     });
   });
 });

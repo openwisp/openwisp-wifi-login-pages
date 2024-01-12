@@ -69,12 +69,14 @@ const createTestProps = (props) => ({
     search: "?macaddr=4e:ed:11:2b:17:ae",
   },
   internetMode: false,
+  planExhausted: false,
   logout: jest.fn(),
   setUserData: jest.fn(),
   userData: {},
   setTitle: jest.fn(),
   navigate: jest.fn(),
   setInternetMode: jest.fn(),
+  setPlanExhausted: jest.fn(),
   ...props,
 });
 
@@ -173,6 +175,7 @@ describe("<Status /> rendering", () => {
       logout: expect.any(Function),
       setUserData: expect.any(Function),
       setInternetMode: expect.any(Function),
+      setPlanExhausted: expect.any(Function),
       setTitle: expect.any(Function),
     });
   });
@@ -569,6 +572,7 @@ describe("<Status /> interactions", () => {
     });
     expect(toast.dismiss).toHaveBeenCalledTimes(1);
     expect(toast.info).toHaveBeenCalledTimes(1);
+    expect(props.setPlanExhausted).toHaveBeenCalledTimes(1);
     expect(props.logout).toHaveBeenCalledTimes(0);
     expect(setLoadingMock).toHaveBeenCalledTimes(1);
     expect(setLoadingMock).toHaveBeenLastCalledWith(false);
@@ -1439,6 +1443,16 @@ describe("<Status /> interactions", () => {
     wrapper.instance().setState({internetMode: true});
     expect(wrapper.find("status-content").length).toEqual(0);
   });
+  it("should not display STATUS_EXHAUSTED_CONTENT when planExhausted is true", () => {
+    const prop = createTestProps();
+    prop.isAuthenticated = true;
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    wrapper.instance().setState({planExhausted: true});
+    expect(wrapper.find("status-content").length).toEqual(0);
+  });
   it("should return if loginIframe is not loaded", async () => {
     validateToken.mockReturnValue(true);
     const prop = createTestProps();
@@ -1919,7 +1933,6 @@ describe("<Status /> interactions", () => {
     await tick();
     expect(wrapper).toMatchSnapshot();
     const modalWrapper = wrapper.find(Modal).last().shallow();
-    window.console.log(modalWrapper.debug());
     modalWrapper.find("#radio0").simulate("change", {target: {value: "0"}});
     await tick();
     toast.success.mock.calls.pop()[1].onOpen();

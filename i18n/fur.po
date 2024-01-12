@@ -93,6 +93,12 @@ msgstr ""
 "Cumò si pues acedi a internet\n"
 "Ten vierte cheste pagjine par podê sierâ la session ative."
 
+#: client/components/status/status.js:592
+msgid "STATUS_EXHAUSTED_CONTENT"
+msgstr ""
+"Tu âs consumût il trafeg disponibil sul to piaç.\n"
+"Aggjorna il to piaç par continuâ a doprâ internet."
+
 #: client/components/status/status.js:715
 msgid "LOGOUT_MODAL_CONTENT"
 msgstr "Autenticâsi in maniere automatiche la prossime volte?"

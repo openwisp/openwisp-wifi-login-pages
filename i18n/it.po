@@ -93,6 +93,12 @@ msgstr ""
 "        Ora è possibile accedere ad internet.\n"
 "        Puoi lasciare questa pagina aperta per poter chiudere la sessione attiva."
 
+#: client/components/status/status.js:592
+msgid "STATUS_EXHAUSTED_CONTENT"
+msgstr ""
+"Hai esaurito il traffico disponibile sul tuo piano.\n"
+"Aggiorna il tuo piano per continuare a utilizzare Internet."
+
 #: client/components/status/status.js:715
 msgid "LOGOUT_MODAL_CONTENT"
 msgstr "Autenticarsi automaticamente la prossima volta?"

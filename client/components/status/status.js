@@ -561,8 +561,14 @@ export default class Status extends React.Component {
   };
 
   handlePostMessage = async (event) => {
-    const {captivePortalLoginForm, logout, cookies, orgSlug, setInternetMode} =
-      this.props;
+    const {
+      captivePortalLoginForm,
+      logout,
+      cookies,
+      orgSlug,
+      setInternetMode,
+      setPlanExhausted,
+    } = this.props;
     const {setLoading} = this.context;
     const {message, type} = event.data;
     // For security reasons, read https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage#security_concern
@@ -581,6 +587,8 @@ export default class Status extends React.Component {
               autoClose: 10000,
             });
             /* enable ttag */
+            // Change the message on the status page to reflect plan exhaustion
+            setPlanExhausted(true);
           } else {
             /* disable ttag */
             toast.error(gettext(message), {
@@ -933,6 +941,7 @@ export default class Status extends React.Component {
       isAuthenticated,
       userData,
       internetMode,
+      planExhausted,
       settings,
     } = this.props;
     const {links} = statusPage;
@@ -955,7 +964,10 @@ export default class Status extends React.Component {
       rememberMe,
     } = this.state;
     const user_info = this.getUserInfo();
-    const contentArr = t`STATUS_CONTENT`.split("\n");
+    let contentArr = t`STATUS_CONTENT`.split("\n");
+    if (planExhausted) {
+      contentArr = t`STATUS_EXHAUSTED_CONTENT`.split("\n");
+    }
     userInfo.status = user_info.status.value;
     return (
       <>
@@ -1044,7 +1056,12 @@ export default class Status extends React.Component {
                   contentArr.map((text) => {
                     if (text !== "")
                       return (
-                        <p key={text} className="status-content">
+                        <p
+                          key={text}
+                          className={`status-content${
+                            planExhausted ? "plan-exhausted-message" : ""
+                          }`}
+                        >
                           {text}
                         </p>
                       );
@@ -1216,6 +1233,7 @@ Status.contextType = LoadingContext;
 Status.defaultProps = {
   isAuthenticated: false,
   internetMode: false,
+  planExhausted: false,
 };
 Status.propTypes = {
   statusPage: PropTypes.shape({
@@ -1233,6 +1251,7 @@ Status.propTypes = {
   orgName: PropTypes.string.isRequired,
   userData: PropTypes.object.isRequired,
   internetMode: PropTypes.bool,
+  planExhausted: PropTypes.bool,
   cookies: PropTypes.instanceOf(Cookies).isRequired,
   logout: PropTypes.func.isRequired,
   captivePortalLoginForm: PropTypes.shape({
@@ -1266,6 +1285,7 @@ Status.propTypes = {
   }).isRequired,
   setUserData: PropTypes.func.isRequired,
   setInternetMode: PropTypes.func.isRequired,
+  setPlanExhausted: PropTypes.func.isRequired,
   setTitle: PropTypes.func.isRequired,
   navigate: PropTypes.func.isRequired,
 };

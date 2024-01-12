@@ -68,6 +68,9 @@
   overflow-wrap: break-word;
   word-wrap: break-word;
 }
+#status .plan-exhausted-message {
+  color: #ba2121f7;
+}
 .flex-wrapper {
   flex-wrap: wrap;
   max-width: 1000px;

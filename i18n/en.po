@@ -86,6 +86,12 @@ msgstr ""
 "        You can now use the internet.\n"
 "        You may leave this page open in case you want to log out."
 
+#: client/components/status/status.js:592
+msgid "STATUS_EXHAUSTED_CONTENT"
+msgstr ""
+"You have exhausted the traffic available on your plan.\n"
+"Upgrade your plan to continue using the internet."
+
 #: client/components/status/status.js:716
 msgid "LOGOUT_MODAL_CONTENT"
 msgstr "Do you want to automatically log in the next time?"

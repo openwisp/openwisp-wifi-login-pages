@@ -564,6 +564,12 @@ msgstr ""
 "Zugang zum Internet. Lassen Sie diese Seite offen, um die bestehende Session zu "
 "schließen."
 
+#: client/components/status/status.js:592
+msgid "STATUS_EXHAUSTED_CONTENT"
+msgstr ""
+"Sie haben den in Ihrem Plan verfügbaren Datenverkehr ausgeschöpft.\n"
+"Aktualisieren Sie Ihren Plan, um weiterhin das Internet nutzen zu können."
+
 #: client/components/status/status.js:723
 msgid "YES"
 msgstr "Ja"

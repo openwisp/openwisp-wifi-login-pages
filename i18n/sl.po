@@ -73,6 +73,12 @@ msgstr ""
 "Prijava v WiFi je uspela!  NZdaj lahko uporabljate internet.  NTo stran "
 "lahko pustite odprto, če se želite odjaviti."
 
+#: client/components/status/status.js:592
+msgid "STATUS_EXHAUSTED_CONTENT"
+msgstr ""
+"Vyčerpali ste premávku dostupnú vo vašom pláne.\n"
+"Ak chcete naďalej používať internet, inovujte svoj plán."
+
 #: client/components/status/status.js:715
 msgid "LOGOUT_MODAL_CONTENT"
 msgstr "Se želite naslednjič samodejno prijaviti?"

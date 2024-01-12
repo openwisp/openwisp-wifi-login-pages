@@ -4,6 +4,7 @@ import {
   setTitle,
   setUserData,
   setInternetMode,
+  setPlanExhausted,
 } from "../../actions/dispatchers";
 import Component from "./status";
 
@@ -21,6 +22,7 @@ export const mapStateToProps = (state, ownProps) => {
     cookies: ownProps.cookies,
     language: state.language,
     internetMode: state.internetMode,
+    planExhausted: state.planExhausted,
   };
 };
 
@@ -29,5 +31,6 @@ export const mapDispatchToProps = (dispatch) => ({
   setUserData: setUserData(dispatch),
   setTitle: setTitle(dispatch),
   setInternetMode: setInternetMode(dispatch),
+  setPlanExhausted: setPlanExhausted(dispatch),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Component);

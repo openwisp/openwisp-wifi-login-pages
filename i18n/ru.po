@@ -99,6 +99,12 @@ msgstr ""
 "Вход выполнен успешно\n"
 "        Теперь вы можете путешествовать по Интернету"
 
+#: client/components/status/status.js:592
+msgid "STATUS_EXHAUSTED_CONTENT"
+msgstr ""
+"Вы исчерпали трафик, доступный на вашем тарифном плане.\n"
+"Обновите свой план, чтобы продолжать пользоваться Интернетом."
+
 #: client/components/status/status.js:715
 msgid "LOGOUT_MODAL_CONTENT"
 msgstr "Вы хотите в следующий раз пройти автоматическую аутентификацию?"
