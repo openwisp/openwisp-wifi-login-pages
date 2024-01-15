@@ -792,11 +792,6 @@ export default class Status extends React.Component {
               unitSeparator: " ",
               unit: "MB",
             })}
-            {bytes(session.output_octets, {
-              decimalPlaces: 0,
-              unitSeparator: " ",
-              unit: "MB",
-            })}
           </td>
         </tr>
         <tr
