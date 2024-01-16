@@ -1922,6 +1922,7 @@ describe("<Status /> interactions", () => {
     prop.statusPage.links = links;
     prop.statusPage.radius_usage_enabled = true;
     prop.isAuthenticated = true;
+    prop.planExhausted = true;
     prop.settings.subscriptions = true;
     wrapper = shallow(<Status {...prop} />, {
       context: {setLoading: jest.fn()},
@@ -1929,6 +1930,7 @@ describe("<Status /> interactions", () => {
     wrapper.setState({showRadiusUsage: false});
     await tick();
     expect(wrapper).toMatchSnapshot();
+    expect(prop.setPlanExhausted).toHaveBeenCalledTimes(1);
     wrapper.find("#plan-upgrade-btn").simulate("click");
     await tick();
     expect(wrapper).toMatchSnapshot();

@@ -271,7 +271,7 @@ export default class Status extends React.Component {
       await this.getUserRadiusUsage();
       this.getUserRadiusUsageIntervalId = setInterval(() => {
         this.getUserRadiusUsage();
-      }, 60000);
+      }, 12000);
     }
 
     window.addEventListener("resize", this.updateScreenWidth);
@@ -326,7 +326,7 @@ export default class Status extends React.Component {
   }
 
   async getUserRadiusUsage() {
-    const {cookies, orgSlug, logout, userData} = this.props;
+    const {cookies, orgSlug, logout, userData, setPlanExhausted} = this.props;
     const {showRadiusUsage} = this.state;
     const url = getUserRadiusUsageUrl(orgSlug);
     const auth_token = cookies.get(`${orgSlug}_auth_token`);
@@ -342,6 +342,13 @@ export default class Status extends React.Component {
         url,
       });
       options.userChecks = response.data.checks;
+      if (options.userChecks) {
+        options.userChecks.forEach((check) => {
+          if (check.value === String(check.result)) {
+            setPlanExhausted(true);
+          }
+        });
+      }
       if (response.data.plan) {
         options.userPlan = response.data.plan;
       }
@@ -1021,8 +1028,9 @@ export default class Status extends React.Component {
                         )}{" "}
                         used
                       </p>
-                      {userPlan.is_free &&
-                        check.value === String(check.result) && (
+                      {settings.subscriptions &&
+                        userPlan.is_free &&
+                        planExhausted && (
                           <p className="exhausted">
                             <strong>{t`USAGE_LIMIT_EXHAUSTED_TXT`}</strong>
                           </p>

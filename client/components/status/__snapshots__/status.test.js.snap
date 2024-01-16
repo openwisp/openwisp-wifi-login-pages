@@ -55,6 +55,13 @@ exports[`<Status /> interactions should show user's plan when subscription modul
              
             used
           </p>
+          <p
+            className="exhausted"
+          >
+            <strong>
+              USAGE_LIMIT_EXHAUSTED_TXT
+            </strong>
+          </p>
         </div>
         <div
           key="Max-Daily-Session-Traffic"
@@ -107,22 +114,10 @@ exports[`<Status /> interactions should show user's plan when subscription modul
           className="inner"
         >
           <p
-            className="status-content"
-            key="WiFi Login Successful!"
+            className="status-contentplan-exhausted-message"
+            key="STATUS_EXHAUSTED_CONTENT"
           >
-            WiFi Login Successful!
-          </p>
-          <p
-            className="status-content"
-            key="You can now use the internet."
-          >
-            You can now use the internet.
-          </p>
-          <p
-            className="status-content"
-            key="You may leave this page open in case you want to log out."
-          >
-            You may leave this page open in case you want to log out.
+            STATUS_EXHAUSTED_CONTENT
           </p>
           <p
             className="status-content"
@@ -396,6 +391,13 @@ exports[`<Status /> interactions should show user's plan when subscription modul
              
             used
           </p>
+          <p
+            className="exhausted"
+          >
+            <strong>
+              USAGE_LIMIT_EXHAUSTED_TXT
+            </strong>
+          </p>
         </div>
         <div
           key="Max-Daily-Session-Traffic"
@@ -448,22 +450,10 @@ exports[`<Status /> interactions should show user's plan when subscription modul
           className="inner"
         >
           <p
-            className="status-content"
-            key="WiFi Login Successful!"
+            className="status-contentplan-exhausted-message"
+            key="STATUS_EXHAUSTED_CONTENT"
           >
-            WiFi Login Successful!
-          </p>
-          <p
-            className="status-content"
-            key="You can now use the internet."
-          >
-            You can now use the internet.
-          </p>
-          <p
-            className="status-content"
-            key="You may leave this page open in case you want to log out."
-          >
-            You may leave this page open in case you want to log out.
+            STATUS_EXHAUSTED_CONTENT
           </p>
           <p
             className="status-content"
