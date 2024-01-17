@@ -1443,7 +1443,7 @@ describe("<Status /> interactions", () => {
     wrapper.instance().setState({internetMode: true});
     expect(wrapper.find("status-content").length).toEqual(0);
   });
-  it("should not display STATUS_EXHAUSTED_CONTENT when planExhausted is true", () => {
+  it("should not display status-content when planExhausted is true", () => {
     const prop = createTestProps();
     prop.isAuthenticated = true;
     wrapper = shallow(<Status {...prop} />, {

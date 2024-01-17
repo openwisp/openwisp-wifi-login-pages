@@ -67,6 +67,10 @@ msgstr "Stât"
 msgid "LOGGED_IN"
 msgstr "Autenticât"
 
+#: client/components/status/status.js:665
+msgid "TRAFFIC_EXHAUSTED"
+msgstr "Trafeg consumât"
+
 #: client/components/contact-box/contact.js:25
 #: client/components/password-reset/password-reset.js:106
 #: client/components/registration/registration.js:467
@@ -92,12 +96,6 @@ msgstr ""
 "Login al servizi FVG WiFi eseguît cun sucès!\n"
 "Cumò si pues acedi a internet\n"
 "Ten vierte cheste pagjine par podê sierâ la session ative."
-
-#: client/components/status/status.js:592
-msgid "STATUS_EXHAUSTED_CONTENT"
-msgstr ""
-"Tu âs consumût il trafeg disponibil sul to piaç.\n"
-"Aggjorna il to piaç par continuâ a doprâ internet."
 
 #: client/components/status/status.js:715
 msgid "LOGOUT_MODAL_CONTENT"

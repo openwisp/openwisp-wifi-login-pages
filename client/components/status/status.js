@@ -590,9 +590,7 @@ export default class Status extends React.Component {
           toast.dismiss();
           if (type === "authMessage") {
             /* disable ttag */
-            toast.info(gettext(message), {
-              autoClose: 10000,
-            });
+            toast.info(gettext(message));
             /* enable ttag */
             // Change the message on the status page to reflect plan exhaustion
             setPlanExhausted(true);
@@ -966,9 +964,9 @@ export default class Status extends React.Component {
       rememberMe,
     } = this.state;
     const user_info = this.getUserInfo();
-    let contentArr = t`STATUS_CONTENT`.split("\n");
+    const contentArr = t`STATUS_CONTENT`.split("\n");
     if (planExhausted) {
-      contentArr = t`STATUS_EXHAUSTED_CONTENT`.split("\n");
+      user_info.status.value = t`TRAFFIC_EXHAUSTED`;
     }
     userInfo.status = user_info.status.value;
     return (
@@ -1056,15 +1054,11 @@ export default class Status extends React.Component {
             <div className="main-column">
               <div className="inner">
                 {!internetMode &&
+                  !planExhausted &&
                   contentArr.map((text) => {
                     if (text !== "")
                       return (
-                        <p
-                          key={text}
-                          className={`status-content${
-                            planExhausted ? "plan-exhausted-message" : ""
-                          }`}
-                        >
+                        <p key={text} className="status-content">
                           {text}
                         </p>
                       );

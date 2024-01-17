@@ -114,12 +114,6 @@ exports[`<Status /> interactions should show user's plan when subscription modul
           className="inner"
         >
           <p
-            className="status-contentplan-exhausted-message"
-            key="STATUS_EXHAUSTED_CONTENT"
-          >
-            STATUS_EXHAUSTED_CONTENT
-          </p>
-          <p
             className="status-content"
             key="status"
           >
@@ -128,7 +122,7 @@ exports[`<Status /> interactions should show user's plan when subscription modul
               :
             </label>
             <span>
-              Logged in
+              TRAFFIC_EXHAUSTED
             </span>
           </p>
           <p
@@ -450,12 +444,6 @@ exports[`<Status /> interactions should show user's plan when subscription modul
           className="inner"
         >
           <p
-            className="status-contentplan-exhausted-message"
-            key="STATUS_EXHAUSTED_CONTENT"
-          >
-            STATUS_EXHAUSTED_CONTENT
-          </p>
-          <p
             className="status-content"
             key="status"
           >
@@ -464,7 +452,7 @@ exports[`<Status /> interactions should show user's plan when subscription modul
               :
             </label>
             <span>
-              Logged in
+              TRAFFIC_EXHAUSTED
             </span>
           </p>
           <p

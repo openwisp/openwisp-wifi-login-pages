@@ -74,6 +74,10 @@ msgstr "Режим"
 msgid "LOGGED_IN"
 msgstr "Аутентифицирован"
 
+#: client/components/status/status.js:665
+msgid "TRAFFIC_EXHAUSTED"
+msgstr "Трафик исчерпан"
+
 #: client/components/contact-box/contact.js:25
 #: client/components/password-reset/password-reset.js:106
 #: client/components/registration/registration.js:467
@@ -98,12 +102,6 @@ msgid "STATUS_CONTENT"
 msgstr ""
 "Вход выполнен успешно\n"
 "        Теперь вы можете путешествовать по Интернету"
-
-#: client/components/status/status.js:592
-msgid "STATUS_EXHAUSTED_CONTENT"
-msgstr ""
-"Вы исчерпали трафик, доступный на вашем тарифном плане.\n"
-"Обновите свой план, чтобы продолжать пользоваться Интернетом."
 
 #: client/components/status/status.js:715
 msgid "LOGOUT_MODAL_CONTENT"
