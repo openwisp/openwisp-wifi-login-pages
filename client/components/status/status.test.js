@@ -1675,6 +1675,14 @@ describe("<Status /> interactions", () => {
     jest.spyOn(toast, "dismiss");
     axios
       .mockImplementationOnce(() =>
+        Promise.reject({
+          response: {
+            status: 500,
+            headers: {},
+          },
+        }),
+      )
+      .mockImplementationOnce(() =>
         Promise.resolve({
           status: 200,
           statusText: "OK",
@@ -1723,6 +1731,9 @@ describe("<Status /> interactions", () => {
       disableLifecycleMethods: true,
     });
     jest.spyOn(wrapper.instance(), "getUserRadiusUsage");
+    wrapper.instance().getUserRadiusUsage();
+    await tick();
+    expect(wrapper.instance().state.radiusUsageSpinner).toBe(true);
     wrapper.instance().getUserRadiusUsage();
     await tick();
     expect(wrapper.instance().state.userChecks.length).toBe(1);

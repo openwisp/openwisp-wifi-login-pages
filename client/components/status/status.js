@@ -271,12 +271,11 @@ export default class Status extends React.Component {
       await this.getUserRadiusUsage();
       this.getUserRadiusUsageIntervalId = setInterval(() => {
         this.getUserRadiusUsage();
-      }, 12000);
+      }, 120000);
     }
 
     window.addEventListener("resize", this.updateScreenWidth);
     this.updateSpinner();
-    this.setState({radiusUsageSpinner: false});
   }
 
   async getUserRadiusSessions(params) {
@@ -331,7 +330,7 @@ export default class Status extends React.Component {
     const url = getUserRadiusUsageUrl(orgSlug);
     const auth_token = cookies.get(`${orgSlug}_auth_token`);
     handleSession(orgSlug, auth_token, cookies);
-    const options = {};
+    const options = {radiusUsageSpinner: false};
     try {
       const response = await axios({
         method: "get",
@@ -368,6 +367,11 @@ export default class Status extends React.Component {
         });
       }
       logError(error, t`ERR_OCCUR`);
+      if (error.response && error.response.status >= 500) {
+        setTimeout(async () => {
+          this.getUserRadiusUsage();
+        }, 10000);
+      }
       this.setState({showRadiusUsage: false});
     }
   }

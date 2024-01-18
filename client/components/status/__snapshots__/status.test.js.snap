@@ -25,10 +25,6 @@ exports[`<Status /> interactions should show user's plan when subscription modul
       <div
         className="bg row"
       >
-        <loader
-          full={false}
-          small={true}
-        />
         <h3>
           CURRENT_SUBSCRIPTION_TXT
            
@@ -355,10 +351,6 @@ exports[`<Status /> interactions should show user's plan when subscription modul
       <div
         className="bg row"
       >
-        <loader
-          full={false}
-          small={true}
-        />
         <h3>
           CURRENT_SUBSCRIPTION_TXT
            
@@ -604,10 +596,6 @@ exports[`<Status /> interactions should show user's radius usage 1`] = `
       <div
         className="bg row"
       >
-        <loader
-          full={false}
-          small={true}
-        />
         <div
           key="Max-Daily-Session"
         >
