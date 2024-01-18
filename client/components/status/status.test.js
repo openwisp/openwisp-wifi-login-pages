@@ -1941,7 +1941,7 @@ describe("<Status /> interactions", () => {
     wrapper.setState({showRadiusUsage: false});
     await tick();
     expect(wrapper).toMatchSnapshot();
-    expect(prop.setPlanExhausted).toHaveBeenCalledTimes(1);
+    expect(prop.setPlanExhausted).toHaveBeenCalledTimes(2);
     wrapper.find("#plan-upgrade-btn").simulate("click");
     await tick();
     expect(wrapper).toMatchSnapshot();

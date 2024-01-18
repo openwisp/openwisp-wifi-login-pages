@@ -331,6 +331,7 @@ export default class Status extends React.Component {
     const auth_token = cookies.get(`${orgSlug}_auth_token`);
     handleSession(orgSlug, auth_token, cookies);
     const options = {radiusUsageSpinner: false};
+    setPlanExhausted(false);
     try {
       const response = await axios({
         method: "get",
