@@ -358,22 +358,26 @@ export default class Status extends React.Component {
       this.setState(options);
     } catch (error) {
       // logout only if unauthorized or forbidden
-      if (
-        error.response &&
-        (error.response.status === 401 || error.response.status === 403)
-      ) {
-        logout(cookies, orgSlug);
-        toast.error(t`ERR_OCCUR`, {
-          onOpen: () => toast.dismiss(mainToastId),
-        });
+      if (error.response) {
+        if (error.response.status === 401 || error.response.status === 403) {
+          logout(cookies, orgSlug);
+          toast.error(t`ERR_OCCUR`, {
+            onOpen: () => toast.dismiss(mainToastId),
+          });
+        } else if (
+          error.response.status >= 400 &&
+          error.response.status < 500
+        ) {
+          // Do not retry for client side errors
+          logError(error, t`ERR_OCCUR`);
+          this.setState({showRadiusUsage: false});
+          return;
+        }
       }
       logError(error, t`ERR_OCCUR`);
-      if (error.response && error.response.status >= 500) {
-        setTimeout(async () => {
-          this.getUserRadiusUsage();
-        }, 10000);
-      }
-      this.setState({showRadiusUsage: false});
+      setTimeout(async () => {
+        this.getUserRadiusUsage();
+      }, 10000);
     }
   }
 
