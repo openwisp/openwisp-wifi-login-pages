@@ -1718,6 +1718,32 @@ describe("<Status /> interactions", () => {
         }),
       )
       .mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: {
+            checks: [
+              {
+                attribute: "Max-Daily-Session",
+                op: ":=",
+                value: "10800",
+                result: 10800,
+                type: "seconds",
+              },
+            ],
+            plan: {
+              id: "d5bc4d5a-0a8c-4e94-8d52-4c54836bd013",
+              name: "Free",
+              currency: "EUR",
+              is_free: true,
+              expire: null,
+              active: true,
+            },
+          },
+          headers: {},
+        }),
+      )
+      .mockImplementationOnce(() =>
         Promise.reject({
           response: {
             status: 401,
@@ -1740,6 +1766,10 @@ describe("<Status /> interactions", () => {
     wrapper.instance().getUserRadiusUsage();
     await tick();
     expect(wrapper.instance().state.userPlan.is_free).toBe(true);
+    wrapper.instance().getUserRadiusUsage();
+    await tick();
+    expect(props.setPlanExhausted).toHaveBeenCalledTimes(1);
+    expect(props.setPlanExhausted).toHaveBeenCalledWith(true);
     wrapper.instance().getUserRadiusUsage();
     await tick();
     expect(toast.error.mock.calls.length).toBe(1);
@@ -1941,7 +1971,7 @@ describe("<Status /> interactions", () => {
     wrapper.setState({showRadiusUsage: false});
     await tick();
     expect(wrapper).toMatchSnapshot();
-    expect(prop.setPlanExhausted).toHaveBeenCalledTimes(2);
+    expect(prop.setPlanExhausted).toHaveBeenCalledTimes(0);
     wrapper.find("#plan-upgrade-btn").simulate("click");
     await tick();
     expect(wrapper).toMatchSnapshot();

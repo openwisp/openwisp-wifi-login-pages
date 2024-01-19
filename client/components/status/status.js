@@ -325,13 +325,20 @@ export default class Status extends React.Component {
   }
 
   async getUserRadiusUsage() {
-    const {cookies, orgSlug, logout, userData, setPlanExhausted} = this.props;
+    const {
+      cookies,
+      orgSlug,
+      logout,
+      userData,
+      planExhausted,
+      setPlanExhausted,
+    } = this.props;
     const {showRadiusUsage} = this.state;
     const url = getUserRadiusUsageUrl(orgSlug);
     const auth_token = cookies.get(`${orgSlug}_auth_token`);
     handleSession(orgSlug, auth_token, cookies);
     const options = {radiusUsageSpinner: false};
-    setPlanExhausted(false);
+    let isPlanExhausted = false;
     try {
       const response = await axios({
         method: "get",
@@ -345,9 +352,15 @@ export default class Status extends React.Component {
       if (options.userChecks) {
         options.userChecks.forEach((check) => {
           if (check.value === String(check.result)) {
-            setPlanExhausted(true);
+            isPlanExhausted = true;
           }
         });
+      }
+      if (planExhausted !== isPlanExhausted) {
+        setPlanExhausted(isPlanExhausted);
+        if (isPlanExhausted) {
+          toast.info(t`PLAN_EXHAUSTED_TOAST`);
+        }
       }
       if (response.data.plan) {
         options.userPlan = response.data.plan;

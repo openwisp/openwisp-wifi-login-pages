@@ -540,6 +540,10 @@ msgstr "Hai esaurito il traffico disponibile. Esegui l'upgrade per continuare a 
 msgid "PLAN_UPGRADE_BTN_TXT"
 msgstr "Aggiornamento"
 
+#: client/components/status/status.js:964
+msgid "PLAN_EXHAUSTED_TOAST"
+msgstr "Hai esaurito il traffico disponibile sul tuo pacchetto."
+
 #: client/components/password-change/password-change.js:61
 #: client/components/password-change/password-change.test.js:115
 #: client/components/password-change/password-change.test.js:120

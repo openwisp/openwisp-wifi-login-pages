@@ -545,6 +545,10 @@ msgstr "You have exhausted the available traffic. Upgrade to continue using the 
 msgid "PLAN_UPGRADE_BTN_TXT"
 msgstr "Upgrade"
 
+#: client/components/status/status.js:964
+msgid "PLAN_EXHAUSTED_TOAST"
+msgstr "You have exhausted the traffic available on your bundle."
+
 #: client/components/password-change/password-change.js:101
 #: client/components/password-change/password-change.js:109
 #: client/components/password-change/password-change.test.js:129

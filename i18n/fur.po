@@ -538,6 +538,10 @@ msgstr "Tu âs consumât il trafic disponibil. Fâ l'aggiornament par continuâ 
 msgid "PLAN_UPGRADE_BTN_TXT"
 msgstr "Potenziament"
 
+#: client/components/status/status.js:964
+msgid "PLAN_EXHAUSTED_TOAST"
+msgstr "Tu âs esaurît il trafegn dispunibil sul to bundle."
+
 #: client/components/password-change/password-change.js:61
 #: client/components/password-change/password-change.test.js:115
 #: client/components/password-change/password-change.test.js:120

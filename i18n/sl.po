@@ -482,6 +482,10 @@ msgstr "Vyčerpali ste dostupnú premávku. Ak chcete službu naďalej používa
 msgid "PLAN_UPGRADE_BTN_TXT"
 msgstr "Inovovať"
 
+#: client/components/status/status.js:964
+msgid "PLAN_EXHAUSTED_TOAST"
+msgstr "Vyčerpali ste návštevnosť dostupnú pre váš balík."
+
 #: client/components/password-change/password-change.js:87
 #: client/components/password-change/password-change.js:93
 #: client/components/password-change/password-change.test.js:129
