@@ -344,7 +344,7 @@ export default class Registration extends React.Component {
   };
 
   getForm = () => {
-    const {registration, settings, orgSlug} = this.props;
+    const {registration, settings, orgSlug, defaultLanguage} = this.props;
     const {additional_info_text, input_fields, links, auto_select_first_plan} =
       registration;
     const {
@@ -382,6 +382,7 @@ export default class Registration extends React.Component {
                   {getError(errors)}
                   {plans.length > 0 &&
                     getPlanSelection(
+                      defaultLanguage,
                       plans,
                       selectedPlan,
                       this.changePlan,
@@ -921,6 +922,7 @@ Registration.propTypes = {
     auto_select_first_plan: PropTypes.bool,
   }).isRequired,
   language: PropTypes.string.isRequired,
+  defaultLanguage: PropTypes.string.isRequired,
   orgSlug: PropTypes.string.isRequired,
   orgName: PropTypes.string.isRequired,
   authenticate: PropTypes.func.isRequired,

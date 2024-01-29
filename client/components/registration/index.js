@@ -7,6 +7,7 @@ const mapStateToProps = (state) => {
   const conf = state.organization.configuration;
   return {
     language: state.language,
+    defaultLanguage: conf.default_language,
     registration: conf.components.registration_form,
     settings: conf.settings,
     privacyPolicy: conf.privacy_policy,

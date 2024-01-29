@@ -16,6 +16,7 @@ export const mapStateToProps = (state, ownProps) => {
     orgName: conf.name,
     settings: conf.settings,
     userData: conf.userData,
+    defaultLanguage: conf.default_language,
     captivePortalLoginForm: conf.components.captive_portal_login_form,
     captivePortalLogoutForm: conf.components.captive_portal_logout_form,
     isAuthenticated: conf.isAuthenticated,

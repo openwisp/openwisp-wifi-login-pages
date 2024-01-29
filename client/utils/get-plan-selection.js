@@ -3,11 +3,11 @@ import {t, gettext} from "ttag";
 
 import "./plan.css";
 
-const getPlan = (plan, index) => {
+const getPlan = (plan, index, language) => {
   /* disable ttag */
   const planTitle = gettext(plan.plan);
   const planDesc = gettext(plan.plan_description);
-  const userLocale = navigator.language || navigator.userLanguage;
+  const userLocale = language || navigator.language || navigator.userLanguage;
   const currencyFormatter = new Intl.NumberFormat(userLocale, {
     style: "currency",
     currency: plan.currency,
@@ -29,6 +29,7 @@ const getPlan = (plan, index) => {
 };
 
 const getPlanSelection = (
+  language,
   plans,
   selectedPlan,
   onChange,
@@ -59,7 +60,7 @@ const getPlanSelection = (
               onFocus={onFocus}
               tabIndex={currentIndex}
             />
-            {getPlan(plan, currentIndex)}
+            {getPlan(plan, currentIndex, language)}
           </div>
         );
       })}

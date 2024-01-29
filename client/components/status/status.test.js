@@ -168,6 +168,7 @@ describe("<Status /> rendering", () => {
       isAuthenticated: defaultConfig.isAuthenticated,
       cookies: ownProps.cookies,
       language: defaultConfig.language,
+      defaultLanguage: defaultConfig.default_language
     });
     const dispatch = jest.fn();
     result = mapDispatchToProps(dispatch);

@@ -965,6 +965,7 @@ export default class Status extends React.Component {
       internetMode,
       planExhausted,
       settings,
+      defaultLanguage,
     } = this.props;
     const {links} = statusPage;
     const {
@@ -1010,6 +1011,7 @@ export default class Status extends React.Component {
               content={
                 (upgradePlans.length &&
                   getPlanSelection(
+                    defaultLanguage,
                     upgradePlans,
                     null,
                     this.upgradeUserPlan,
@@ -1266,6 +1268,7 @@ Status.propTypes = {
     saml_logout_url: PropTypes.string,
   }).isRequired,
   language: PropTypes.string.isRequired,
+  defaultLanguage: PropTypes.string.isRequired,
   orgSlug: PropTypes.string.isRequired,
   orgName: PropTypes.string.isRequired,
   userData: PropTypes.object.isRequired,
