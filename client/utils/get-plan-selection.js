@@ -7,9 +7,17 @@ const getPlan = (plan, index) => {
   /* disable ttag */
   const planTitle = gettext(plan.plan);
   const planDesc = gettext(plan.plan_description);
+  const userLocale = navigator.language || navigator.userLanguage;
+  const currencyFormatter = new Intl.NumberFormat(userLocale, {
+    style: "currency",
+    currency: plan.currency,
+  });
   /* enable ttag */
   const pricingText = Number(plan.price)
-    ? `${plan.price} ${plan.currency} ${plan.pricing.replace("(0 days)", "")}`
+    ? `${currencyFormatter.format(plan.price)} ${plan.pricing.replace(
+        "(0 days)",
+        "",
+      )}`
     : "";
   return (
     <label htmlFor={`radio${index}`}>

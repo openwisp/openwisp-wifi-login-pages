@@ -303,7 +303,7 @@ exports[`<Status /> interactions should show user's plan when subscription modul
               <span
                 className="price"
               >
-                1.99 EUR per month 
+                €1.99 per month 
               </span>
             </label>
           </div>
@@ -334,7 +334,7 @@ exports[`<Status /> interactions should show user's plan when subscription modul
               <span
                 className="price"
               >
-                9.99 EUR per year 
+                €9.99 per year 
               </span>
             </label>
           </div>
