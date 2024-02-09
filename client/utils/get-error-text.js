@@ -4,7 +4,7 @@ const getErrorText = (error, fallbackVal = "") => {
   return data.detail
     ? data.detail
     : data.non_field_errors
-    ? data.non_field_errors[0]
-    : fallbackVal;
+      ? data.non_field_errors[0]
+      : fallbackVal;
 };
 export default getErrorText;

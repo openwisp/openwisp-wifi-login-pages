@@ -805,7 +805,7 @@ for forwarding any error message to **OpenWISP WiFi Login Pages**.
 Here is an example of authentication error page for pfSense:
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <body>
     <script>
@@ -865,7 +865,7 @@ of organization configuration.
 The web application should serve the following HTML on those endpoints:
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <body>
     <script>
