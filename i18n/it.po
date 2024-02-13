@@ -526,7 +526,7 @@ msgstr "La tua password è scaduta, aggiornala."
 
 #: client/components/status/status.js:384
 msgid "SUCCESS_UPGRADE_PLAN"
-msgstr "Piano di aggiornamento in corso"
+msgstr "Ricarica in corso"
 
 #: client/components/status/status.js:934
 msgid "CURRENT_SUBSCRIPTION_TXT"
@@ -534,15 +534,15 @@ msgstr "Abbonamento attuale:"
 
 #: client/components/status/status.js:1000
 msgid "USAGE_LIMIT_EXHAUSTED_TXT"
-msgstr "Hai esaurito il traffico disponibile. Esegui l'upgrade per continuare a utilizzare il servizio."
+msgstr "Hai esaurito il traffico disponibile. Effettua una ricarica per continuare a utilizzare il servizio."
 
 #: client/components/status/status.js:964
 msgid "PLAN_UPGRADE_BTN_TXT"
-msgstr "Aggiornamento"
+msgstr "Ricarica"
 
 #: client/components/status/status.js:964
 msgid "PLAN_EXHAUSTED_TOAST"
-msgstr "Hai esaurito il traffico disponibile sul tuo pacchetto."
+msgstr "Hai esaurito il traffico disponibile nel tuo abbonamento."
 
 #: client/components/password-change/password-change.js:61
 #: client/components/password-change/password-change.test.js:115
