@@ -37,6 +37,10 @@ msgstr "Es ist ein Fehler aufgetreten!"
 msgid "LOGOUT_SUCCESS"
 msgstr "Logout war erfolgreich"
 
+#: client/components/status/status.js:119
+msgid "PASSWORD_EXPIRED"
+msgstr "Ihr Passwort ist abgelaufen. Bitte aktualisieren Sie es."
+
 #: client/components/status/status.js:467
 #: client/components/status/status.js:658
 msgid "ACCT_ACTIVE"
@@ -374,6 +378,10 @@ msgstr "Bestätigen Sie die Passwortänderung"
 #: client/components/password-change/password-change.js:113
 msgid "PWD_CHANGE_TITL"
 msgstr "Passwort ändern"
+
+#: client/components/password-change/password-change.js:177
+msgid "PWD_CHANGE_HELP_TXT"
+msgstr "Verwenden Sie das untenstehende Formular, um Ihr Passwort zu ändern."
 
 #: client/components/password-change/password-change.js:87
 #: client/components/password-change/password-change.js:93

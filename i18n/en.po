@@ -341,6 +341,10 @@ msgstr "Change password"
 msgid "PWD_CHANGE_TITL"
 msgstr "Change your password"
 
+#: client/components/password-change/password-change.js:177
+msgid "PWD_CHANGE_HELP_TXT"
+msgstr "Use the form below to change your password."
+
 #: client/components/password-change/password-change.js:185
 msgid "PWD1_LBL"
 msgstr "New Password"
@@ -516,6 +520,10 @@ msgstr "Login successful"
 #: client/utils/handle-logout.js:33
 msgid "LOGOUT_SUCCESS"
 msgstr "Logout successful"
+
+#: client/components/status/status.js:119
+msgid "PASSWORD_EXPIRED"
+msgstr "Your password has expired, please update it."
 
 #: client/components/password-change/password-change.js:101
 #: client/components/password-change/password-change.js:109

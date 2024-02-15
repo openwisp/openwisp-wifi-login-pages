@@ -356,6 +356,10 @@ msgstr "Подтвердите смену пароля"
 msgid "PWD_CHANGE_TITL"
 msgstr "Изменить пароль"
 
+#: client/components/password-change/password-change.js:177
+msgid "PWD_CHANGE_HELP_TXT"
+msgstr "Используйте форму ниже, чтобы изменить свой пароль."
+
 #: client/components/password-change/password-change.js:117
 msgid "PWD1_LBL"
 msgstr "Новый пароль"
@@ -507,6 +511,10 @@ msgstr "Была ошибка!"
 #: client/utils/handle-logout.js:33
 msgid "LOGOUT_SUCCESS"
 msgstr "Успешный выход"
+
+#: client/components/status/status.js:119
+msgid "PASSWORD_EXPIRED"
+msgstr "Срок действия вашего пароля истек, обновите его."
 
 #: client/components/password-change/password-change.js:61
 #: client/components/password-change/password-change.test.js:115

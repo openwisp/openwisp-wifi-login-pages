@@ -358,6 +358,10 @@ msgstr "Conferme il cambi de password"
 msgid "PWD_CHANGE_TITL"
 msgstr "Cambi de password"
 
+#: client/components/password-change/password-change.js:177
+msgid "PWD_CHANGE_HELP_TXT"
+msgstr "Use the form below to change your password."
+
 #: client/components/password-change/password-change.js:117
 msgid "PWD1_LBL"
 msgstr "Gnove password"
@@ -509,6 +513,10 @@ msgstr "Al è capitât un erôr!"
 #: client/utils/handle-logout.js:33
 msgid "LOGOUT_SUCCESS"
 msgstr "Logout fat cun sucès"
+
+#: client/components/status/status.js:119
+msgid "PASSWORD_EXPIRED"
+msgstr "La tô password al è scjadude, ti prei di aggiornâle."
 
 #: client/components/password-change/password-change.js:61
 #: client/components/password-change/password-change.test.js:115

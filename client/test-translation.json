@@ -309,6 +309,10 @@
         "msgid": "PWD_CHANGE_TITL",
         "msgstr": ["Change your password"]
       },
+      "PWD_CHANGE_HELP_TXT": {
+        "msgid": "PWD_CHANGE_HELP_TXT",
+        "msgstr": ["Use the form below to change your password."]
+      },
       "PWD1_LBL": {
         "msgid": "PWD1_LBL",
         "msgstr": ["New Password"]

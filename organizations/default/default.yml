@@ -78,6 +78,7 @@ client:
         en: "Copyright"
 
     registration_form:
+      auto_select_first_plan: false
       input_fields:
         phone_number: {}
         username:
@@ -157,7 +158,7 @@ client:
             icon: "google.svg"
             url: "#google"
           - text:
-              en: "Login with Twitter"
+              en: "Login with X"
             icon: "twitter.svg"
             url: "#twitter"
       input_fields:

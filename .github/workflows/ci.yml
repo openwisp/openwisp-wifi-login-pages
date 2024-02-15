@@ -97,18 +97,15 @@ jobs:
         run: node browser-test/create-mobile-configuration.js
 
       - name: Build OpenWISP WiFi Login Pages
-        run: |
-          export NODE_OPTIONS=--openssl-legacy-provider
-          yarn setup
-          webpack --mode development --progress --config config/webpack.config.js
+        run: yarn build-dev
 
       - name: Running OpenWISP WiFi Login Pages
-        run: |
-          export NODE_OPTIONS=--openssl-legacy-provider
-          yarn start &
+        run: yarn start &
 
       - name: Running OpenWISP Radius
-        run: cd openwisp-radius && ./tests/manage.py runserver &
+        run: |
+          cp browser-test/local_settings.py openwisp-radius/tests/openwisp2/local_settings.py \
+          && cd openwisp-radius && ./tests/manage.py runserver &
 
       - name: geckodriver/firefox
         run: |
