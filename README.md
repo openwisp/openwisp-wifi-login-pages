@@ -161,9 +161,28 @@ Prerequisites for running browser-based tests:
 6. In the test environment of openwisp-radius, the `default` organization
    must be present.
 
-After doing all the prerequisites, run browser based tests using the following command:
+After doing all the prerequisites, you need to make sure OpenWISP RADIUS is running:
 
 ```
+cd $OPENWISP_RADIUS_PATH
+# enable python virtual environment if needed
+./manage.py runserver
+```
+
+Then, in another terminal, from the root directory of this repository,
+you need to build this app and serve it:
+
+```
+yarn build-dev
+yarn start
+```
+
+Then, in another terminal, from the root directory of this repository,
+you can finally run the browser based tests:
+
+```
+export OPENWISP_RADIUS_PATH=<PATH_TO_OPENWISP_RADIUS_DIRECTORY>
+# enable python virtual environment if needed
 yarn browser-test
 ```
 
