@@ -5,7 +5,8 @@ import "./modal.css";
 
 class InfoModal extends Component {
   render() {
-    const {active, toggleModal, handleResponse, content} = this.props;
+    const {active, toggleModal, handleResponse, content, isConfirmationDialog} =
+      this.props;
     return (
       <div className={active ? "modal is-visible" : "modal"}>
         <div className="modal-container bg">
@@ -17,22 +18,24 @@ class InfoModal extends Component {
             &#10006;
           </button>
           <div>{content}</div>
-          <p className="modal-buttons">
-            <button
-              type="button"
-              className="button partial"
-              onClick={() => handleResponse(true)}
-            >
-              {t`YES`}
-            </button>
-            <button
-              type="button"
-              className="button partial"
-              onClick={() => handleResponse(false)}
-            >
-              {t`NO`}
-            </button>
-          </p>
+          {isConfirmationDialog && (
+            <p className="modal-buttons">
+              <button
+                type="button"
+                className="button partial"
+                onClick={() => handleResponse(true)}
+              >
+                {t`YES`}
+              </button>
+              <button
+                type="button"
+                className="button partial"
+                onClick={() => handleResponse(false)}
+              >
+                {t`NO`}
+              </button>
+            </p>
+          )}
         </div>
       </div>
     );
@@ -46,4 +49,8 @@ InfoModal.propTypes = {
   toggleModal: propTypes.func.isRequired,
   handleResponse: propTypes.func.isRequired,
   content: propTypes.object.isRequired,
+  isConfirmationDialog: propTypes.bool,
+};
+InfoModal.defaultProps = {
+  isConfirmationDialog: true,
 };

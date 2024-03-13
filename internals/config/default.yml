@@ -49,6 +49,7 @@ client:
       secondary_text: false
 
     registration_form:
+      auto_select_first_plan: false
       input_fields:
         phone_number: {}
         username:
@@ -100,6 +101,7 @@ client:
       social_links: []
 
     status_page:
+      radius_usage_enabled: false
       links: []
 
     login_form:

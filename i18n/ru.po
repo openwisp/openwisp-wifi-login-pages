@@ -74,6 +74,10 @@ msgstr "Режим"
 msgid "LOGGED_IN"
 msgstr "Аутентифицирован"
 
+#: client/components/status/status.js:665
+msgid "TRAFFIC_EXHAUSTED"
+msgstr "Трафик исчерпан"
+
 #: client/components/contact-box/contact.js:25
 #: client/components/password-reset/password-reset.js:106
 #: client/components/registration/registration.js:467
@@ -515,6 +519,27 @@ msgstr "Успешный выход"
 #: client/components/status/status.js:119
 msgid "PASSWORD_EXPIRED"
 msgstr "Срок действия вашего пароля истек, обновите его."
+
+#: client/components/status/status.js:384
+msgid "SUCCESS_UPGRADE_PLAN"
+msgstr "Обновление плана выполняется"
+
+#: client/components/status/status.js:934
+msgid "CURRENT_SUBSCRIPTION_TXT"
+msgstr "Текущая подписка:"
+
+#: client/components/status/status.js:1000
+msgid "USAGE_LIMIT_EXHAUSTED_TXT"
+msgstr "Вы исчерпали доступный трафик. Обновите версию, чтобы продолжить пользоваться услугой."
+
+#: client/components/status/status.js:964
+msgid "PLAN_UPGRADE_BTN_TXT"
+msgstr "Обновление"
+
+
+#: client/components/status/status.js:964
+msgid "PLAN_EXHAUSTED_TOAST"
+msgstr "Вы исчерпали трафик, доступный в вашем пакете."
 
 #: client/components/password-change/password-change.js:61
 #: client/components/password-change/password-change.test.js:115
