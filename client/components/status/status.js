@@ -222,7 +222,7 @@ export default class Status extends React.Component {
     const {statusPage} = this.props;
     clearInterval(this.intervalId);
     if (statusPage.radius_usage_enabled) {
-      clearInterval(this.getUserRadiusUsageIntervalId);
+      clearInterval(this.usageIntervalId);
     }
     window.removeEventListener("resize", this.updateScreenWidth);
   };
@@ -269,9 +269,9 @@ export default class Status extends React.Component {
     }, 60000);
     if (statusPage.radius_usage_enabled) {
       await this.getUserRadiusUsage();
-      this.getUserRadiusUsageIntervalId = setInterval(() => {
+      this.usageIntervalId = setInterval(() => {
         this.getUserRadiusUsage();
-      }, 120000);
+      }, 60000);
     }
 
     window.addEventListener("resize", this.updateScreenWidth);
