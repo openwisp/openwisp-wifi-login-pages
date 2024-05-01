@@ -82,7 +82,7 @@
     "eslint-config-react": "^1.1.7",
     "eslint-loader": "^4.0.2",
     "eslint-plugin-import": "^2.20.2",
-    "eslint-plugin-jest": "^26.0.0",
+    "eslint-plugin-jest": "^28.3.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.20.0",
