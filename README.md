@@ -415,6 +415,82 @@ yarn stats
 
 ### Settings
 
+#### `captive_portal_login_form` :
+
+This section defines the configuration for the captive portal login 
+form. The application uses an HTTP `POST` request to the `action` 
+URL. The request body is structured as defined by the `fields` 
+property.
+
+```yaml
+captive_portal_login_form:
+  method: post
+  action: http://localhost:8000/captive-portal-mock/login/
+  fields:
+    username: auth_user
+    password: auth_pass
+  macaddr_param_name: macaddr
+  additional_fields:
+    - name: zone
+      value: zone_name
+    - name: redirurl
+      value: http://localhost:8080/default/status
+    - name: accept
+      value: accept
+```
+
+##### Explanation:
+
+- The method is set to post for HTTP POST request.
+- The action is set to `http://localhost:8000/captive-portal-mock/
+  login/` which should be replaced with the actual captive portal 
+  login URL.
+- The fields dictionary maps form fields username and password to 
+  the parameters `auth_user` and `auth_pass` expected by the 
+  captive portal.
+- `macaddr_param_name` is set to macaddr which means the MAC address 
+  is passed in a parameter with the name macaddr.
+- The `additional_fields` array defines extra parameters for the 
+  login request.
+
+**Note**: The values within the additional_fields array should be 
+modified based on your captive portal's specific requirements. The 
+values in the example above are just a starting point.
+
+#### `captive_portal_logout_form` :
+
+This section defines the configuration for the captive portal logout 
+form. The application uses an HTTP `POST` request to the `action` 
+URL. The request body is structured as defined by the `fields` 
+property.
+
+```yaml
+captive_portal_logout_form:
+  method: post
+  action: http://localhost:8000/captive-portal-mock/logout/
+  fields:
+    id: logout_id
+  additional_fields: []
+  logout_by_session: true
+  wait_after: 3000
+```
+
+##### Explanation:
+
+- The method is set to post for HTTP POST request.
+- The action is set to `http://localhost:8000/captive-portal-mock/
+  logout/` which should be replaced with the actual captive portal 
+  logout URL.
+- The fields dictionary maps form fields id to the parameters 
+  `logout_id` expected by the captive portal.
+- The `additional_fields` array defines extra parameters for the 
+  logout request, but in this example, it's an empty list.
+- The `logout_by_session` flag is set to true which means the 
+  application will perform logout by using the session ID.
+- The `wait_after` is set to 3000 milliseconds (3 seconds) which 
+  means the user will be redirected after 3 seconds following a 
+  successful logout.
+
 #### Menu items
 
 By default, menu items are visible to any user, but it's possible to
