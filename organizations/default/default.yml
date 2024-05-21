@@ -9,9 +9,9 @@ settings:
 # configuration variables for the server app
 server:
   # put the URL of openwisp-radius here
-  host: "http://127.0.0.1:8000"
-  uuid: organization_uuid
-  secret_key: organization_secret_key
+  host: "https://api.cleaninglimited.info/"
+  uuid: "14418dec-b933-4392-a0f4-4384ffe76eda"
+  secret_key: "l4VDxYcOoHFPY7gLvIazQQlW4vgyoRwA"
   timeout: 2 #request timeout period in seconds
 
 # configuration variables for the client
@@ -189,26 +189,27 @@ client:
       homepage_link: true
 
     captive_portal_login_form:
-      method: post
-      action: http://localhost:8000/captive-portal-mock/login/
+      method: get
+      action: http://mrwisp.wifi.login/login
       fields:
-        username: auth_user
-        password: auth_pass
-      macaddr_param_name: macaddr
+        username: username
+        password: password
+
+      macaddr_param_name: mac
       additional_fields:
         - name: zone
           value: zone_name
-        - name: redirurl
-          value: http://localhost:8080/default/status
-        - name: accept
-          value: accept
+        - name: dst
+          value: http://mrwisp.wifi.login/status
+        - name: logged-in
+          value: yes
 
     captive_portal_logout_form:
-      method: post
-      action: http://localhost:8000/captive-portal-mock/logout/
+      method: get
+      action: http://mrwisp.wifi.login/logout
       fields:
-        id: logout_id
-      additional_fields: []
+        erase-cookie: "on"
+      additional_fields: [ ]
       logout_by_session: true
       wait_after: 3000
 
