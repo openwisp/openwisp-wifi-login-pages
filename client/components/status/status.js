@@ -882,7 +882,7 @@ export default class Status extends React.Component {
                 name={captivePortalLoginForm.fields.password || ""}
                 value={password}
               />
-              {captivePortalLoginForm.additional_fields.length &&
+              {captivePortalLoginForm.additional_fields &&
                 captivePortalLoginForm.additional_fields.map((field) => (
                   <input
                     readOnly
