@@ -217,12 +217,12 @@ etc.
 The directory `server_assets` is used for loading the content of
 [Terms of Service and Privacy Policy](#tos--privacy-policy).
 
-The configuration of organizations is generated from the template present
-in `/internals/generators/config.yml.hbs`.
+The configuration of new organizations is generated from the template
+present in `/internals/generators/config.yml.hbs`.
 
 The default configuration is stored at `/internals/config/default.yml`.
 If the configuration file of a specific organization misses a piece
-of configuration then the default configuration is used to generate a
+of configuration, then the default configuration is used to generate a
 complete configuration.
 
 The above command will prompt you to fill in some properties.
@@ -248,6 +248,10 @@ yarn start
 
 **Note**: in a development environment where a captive portal may not be available,
 you can use the default sample captive portal login and logout URLs.
+
+If you need to change these values or any other settings later, you can
+edit the YAML file generated in the `/organizations` directory and
+rebuild the project.
 
 #### Removing sections of configuration
 
@@ -415,81 +419,111 @@ yarn stats
 
 ### Settings
 
-#### `captive_portal_login_form` :
+The main settings available in the organization YAML file
+are explained below.
 
-This section defines the configuration for the captive portal login 
-form. The application uses an HTTP `POST` request to the `action` 
-URL. The request body is structured as defined by the `fields` 
-property.
+#### Captive Portal Settings
+
+##### `captive_portal_login_form`
+
+This is the URL of the captive portal that will authenticate the user
+to the network.
+
+This configuration section allows you to configure the hidden HTML
+form that submits the username, password, and any other required
+parameters to the captive portal to authenticate the user, after the
+credentials have been first verified via the OpenWISP REST API.
+
+Let's take the following configuration sample for reference:
 
 ```yaml
 captive_portal_login_form:
   method: post
-  action: http://localhost:8000/captive-portal-mock/login/
+  action: https://captiveportal.wifiservice.com:8080/login/
   fields:
-    username: auth_user
-    password: auth_pass
-  macaddr_param_name: macaddr
+    username: username_field
+    password: password_field
   additional_fields:
-    - name: zone
-      value: zone_name
-    - name: redirurl
-      value: http://localhost:8080/default/status
-    - name: accept
-      value: accept
+    - name: field1
+      value: value1
+    - name: field2
+      value: value2
 ```
 
-##### Explanation:
+The example above will result in a HTML form like the following:
 
-- The method is set to post for HTTP POST request.
-- The action is set to `http://localhost:8000/captive-portal-mock/
-  login/` which should be replaced with the actual captive portal 
-  login URL.
-- The fields dictionary maps form fields username and password to 
-  the parameters `auth_user` and `auth_pass` expected by the 
-  captive portal.
-- `macaddr_param_name` is set to macaddr which means the MAC address 
-  is passed in a parameter with the name macaddr.
-- The `additional_fields` array defines extra parameters for the 
-  login request.
+```html
+<form method="post" action="https://captiveportal.wifiservice.com:8080/login/">
+  <input type="text" name="username_field" />
+  <input type="password" name="password_field" />
+  <input type="hidden" name="field1" value="value1" />
+  <input type="hidden" name="field2" value="value2" />
+</form>
+```
 
-**Note**: The values within the additional_fields array should be 
-modified based on your captive portal's specific requirements. The 
-values in the example above are just a starting point.
+You can adjust any parameter based on the expectations of the captive
+portal: most captive portal programs expect `POST` requests, although
+some may also accept `GET`.
+The input names for `username` and
+`password` may vary and will likely require customization.
 
-#### `captive_portal_logout_form` :
+For instance, PfSense expects `auth_user` and `auth_pass`, while
+Coova-Chilli expects `username` and `password`.
 
-This section defines the configuration for the captive portal logout 
-form. The application uses an HTTP `POST` request to the `action` 
-URL. The request body is structured as defined by the `fields` 
-property.
+The `additional_fields` section allows you to specify any additional
+fields required by the captive portal. For instance, with PfSense, you
+need to include an extra field called `zone`, because PfSense allows
+defining multiple "Captive Portal Zones" with different configurations.
+
+If you don't require any additional fields, simply set this section
+to an empty array `[]`, e.g.:
+
+```yaml
+additional_fields: []
+```
+
+##### `captive_portal_logout_form`
+
+This is the URL of the captive portal that will logout users
+from the network and close their session.
+
+Let's take the following configuration sample for reference:
 
 ```yaml
 captive_portal_logout_form:
   method: post
-  action: http://localhost:8000/captive-portal-mock/logout/
+  action: https://captiveportal.wifiservice.com:8080/logout/
   fields:
     id: logout_id
-  additional_fields: []
-  logout_by_session: true
-  wait_after: 3000
+  additional_fields:
+    - name: field1
+      value: value1
+    - name: field2
+      value: value2
 ```
 
-##### Explanation:
+The example above will result in a HTML form like the following:
 
-- The method is set to post for HTTP POST request.
-- The action is set to `http://localhost:8000/captive-portal-mock/
-  logout/` which should be replaced with the actual captive portal 
-  logout URL.
-- The fields dictionary maps form fields id to the parameters 
-  `logout_id` expected by the captive portal.
-- The `additional_fields` array defines extra parameters for the 
-  logout request, but in this example, it's an empty list.
-- The `logout_by_session` flag is set to true which means the 
-  application will perform logout by using the session ID.
-- The `wait_after` is set to 3000 milliseconds (3 seconds) which 
-  means the user will be redirected after 3 seconds following a 
-  successful logout.
+```html
+<form method="post" action="https://captiveportal.wifiservice.com:8080/logout/">
+  <input type="text" name="logout_id" value="{{ session_id }}" />
+  <input type="hidden" name="field1" value="value1" />
+  <input type="hidden" name="field2" value="value2" />
+</form>
+```
+
+In the example above, `{{ session_id }}` represents the ID of the RADIUS
+session. This value is provided by WiFi Login Pages and retrieved via the
+OpenWISP RADIUS REST API. Some captive portals, like PfSense, require this
+information to complete the logout process successfully.
+
+You can adjust any other parameter based on the expectations of the captive
+portal: most captive portal programs expect `POST` requests, although
+some may also accept `GET`.
+
+```yaml
+additional_fields: []
+```
 
 #### Menu items
 
@@ -757,8 +791,9 @@ All the **HTTP requests** get logged by default in the console during developmen
 
 #### Mocking captive portal login and logout
 
-The captive portal login and logout operations can be mocked by using the endpoints
-mentioned in [openwisp-radius captive portal mock docs](https://openwisp-radius.readthedocs.io/en/latest/developer/captive_portal_mock.html).
+During the development stage, the captive portal login and logout
+operations can be mocked by using the endpoints mentioned in
+[openwisp-radius captive portal mock docs](https://openwisp-radius.readthedocs.io/en/latest/developer/captive_portal_mock.html).
 
 These URLs from OpenWISP RADIUS will be used by default in the development environment.
 The captive portal login and logout URLs and their parameters can be changed by
