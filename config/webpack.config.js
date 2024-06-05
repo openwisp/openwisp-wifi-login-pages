@@ -142,6 +142,7 @@ module.exports = (env, argv) => {
     plugins: plugins,
     devServer: {
       port: clientP,
+      host: "0.0.0.0",
       static: {
         publicPath: "/",
         directory: path.join(CURRENT_WORKING_DIR, "public"),
