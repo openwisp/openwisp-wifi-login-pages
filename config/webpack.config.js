@@ -148,6 +148,7 @@ module.exports = (env, argv) => {
         watch: true,
       },
       compress: true,
+      disableHostCheck: true,
       client: {
         overlay: {
           errors: true,
