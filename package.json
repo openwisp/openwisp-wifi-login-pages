@@ -118,7 +118,7 @@
     "add-org": "node config/add-org.js",
     "server": "npm run setup && nodemon server/start.js",
     "setup": "node config/setup.js && node config/build-translations.js",
-    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "start": "DANGEROUSLY_DISABLE_HOST_CHECK=true concurrently \"npm run server\" \"npm run client\"",
     "lint": "eslint '**/*.{js,jsx}' --quiet",
     "lint:fix": "eslint '**/*.{js,jsx}' --fix",
     "format": "prettier --write \"**/*.+(js|jsx|json|css|md)\"",
