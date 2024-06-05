@@ -148,7 +148,10 @@ module.exports = (env, argv) => {
         watch: true,
       },
       compress: true,
-      disableHostCheck: true,
+      allowedHosts: [
+        "cleaninglimited.info",
+        "login.cleaninglimited.info",
+      ],
       client: {
         overlay: {
           errors: true,
