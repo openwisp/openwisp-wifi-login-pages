@@ -16,8 +16,8 @@ Pre-requisites
 OpenWISP RADIUS
 ~~~~~~~~~~~~~~~
 
-OpenWISP WiFi Login Pages is a frontend for :doc:`OpenWISP RADIUS
-<https://github.com/openwisp/openwisp-radius>`. In order to use it, this
+OpenWISP WiFi Login Pages is a frontend for `OpenWISP RADIUS
+<https://github.com/openwisp/openwisp-radius>`_. In order to use it, this
 app needs a running instance of OpenWISP RADIUS and an organization
 correctly configured, you can obtain this by following these steps:
 

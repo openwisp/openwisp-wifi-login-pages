@@ -42,7 +42,7 @@ for public/private WiFi services. This app replaces the classic
 captive/login page of a WiFi service by integrating the `OpenWISP Radius
 API <https://openwisp-radius.readthedocs.io/>`_.
 
-Refer to `Features: WiFi Login Pages <https://openwisp.io/docs/__new__/dev/wifi-login-pages/user/intro.html>`
+Refer to `WiFi Login Pages: Features <https://openwisp.io/docs/__new__/dev/wifi-login-pages/user/intro.html>`
 of OpenWISP documentation  for a complete overview of features.
 
 Documentation
