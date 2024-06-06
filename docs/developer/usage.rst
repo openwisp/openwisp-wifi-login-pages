@@ -20,7 +20,7 @@ List of yarn commands:
     $ yarn browser-test  # Run browser based selenium tests
     $ yarn -- -u         # Update Jest Snapshots
 
-Using custom ports
+Using Custom Ports
 ------------------
 
 To start the client and/or server on a port of your liking, you must set

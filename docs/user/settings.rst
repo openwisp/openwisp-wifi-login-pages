@@ -4,14 +4,17 @@ Settings
 The main settings available in the organization YAML file are explained
 below.
 
+.. contents::
+    :depth: 1
+    :local:
+
 Captive Portal Settings
 -----------------------
 
+.. _wlp_captive_portal_login_form:
+
 ``captive_portal_login_form``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-This is the URL of the captive portal that will authenticate the user to
-the network.
 
 This configuration section allows you to configure the hidden HTML form
 that submits the username, password, and any other required parameters to
@@ -65,11 +68,13 @@ empty array ``[]``, e.g.:
 
     additional_fields: []
 
+.. _wlp_captive_portal_logout_form:
+
 ``captive_portal_logout_form``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This is the URL of the captive portal that will logout users from the
-network and close their session.
+This configuration section allows you to configure captive portal logout
+mechanism that allows users to close their browsing session.
 
 Let's take the following configuration sample for reference:
 
@@ -109,7 +114,9 @@ although some may also accept ``GET``.
 
     additional_fields: []
 
-Menu items
+.. _wlp_menu_items:
+
+Menu Items
 ----------
 
 By default, menu items are visible to any user, but it's possible to
@@ -219,7 +226,7 @@ Keep in mind that this configuration must mirror the `configuration of
 openwisp-radius (OPENWISP_RADIUS_OPTIONAL_REGISTRATION_FIELDS)
 <https://openwisp-radius.readthedocs.io/en/latest/user/settings.html#openwisp-radius-optional-registration-fields>`__.
 
-Username field in login form
+Username Field in Login Form
 ----------------------------
 
 The username field in the login form is automatically set to either a
@@ -252,7 +259,9 @@ Facebook, the `“Social Login” feature of OpenWISP Radius
 <https://openwisp-radius.readthedocs.io/en/latest/user/social_login.html>`__
 must be configured and enabled.
 
-Custom CSS files
+.. _wlp_custom_css:
+
+Custom CSS Files
 ----------------
 
 It's possible to specify multiple CSS files if needed.
@@ -267,13 +276,15 @@ It's possible to specify multiple CSS files if needed.
 Adding multiple CSS files can be useful when working with `variants
 <#variants-of-the-same-configuration>`__.
 
+.. _wlp_custom_html:
+
 Custom HTML
 -----------
 
 It is possible to inject custom HTML in different languages in several
 parts of the application if needed.
 
-Second logo
+Second Logo
 ~~~~~~~~~~~
 
 .. code-block:: yaml
@@ -286,7 +297,7 @@ Second logo
         url: "logo2.png"
         alternate_text: "logo2"
 
-Sticky message
+Sticky Message
 --------------
 
 .. code-block:: yaml
@@ -299,7 +310,7 @@ Sticky message
             <b>tonight (10pm - 11pm)</b>
           </p>
 
-Login page
+Login Page
 ~~~~~~~~~~
 
 .. code-block:: yaml
@@ -327,7 +338,9 @@ Login page
             Shown at the end of the login content box.
           </div>
 
-Contact box
+.. _wlp_contact_box:
+
+Contact Box
 ~~~~~~~~~~~
 
 .. code-block:: yaml
@@ -375,7 +388,7 @@ needed to perform SAML logout.
       # other conf
       saml_logout_url: "https://openwisp.myservice.org/radius/saml2/logout/"
 
-.. _tos_privacy_policy:
+.. _wlp_tos_privacy_policy:
 
 TOS & Privacy Policy
 --------------------
@@ -415,7 +428,7 @@ Environment Variable Detail
                      http logs. The default path is ``logs/debug.log``
 ==================== ====================================================
 
-Mocking captive portal login and logout
+Mocking Captive Portal Login and Logout
 ---------------------------------------
 
 During the development stage, the captive portal login and logout
@@ -430,7 +443,7 @@ organization.
 
 .. _wlp_signup_with_payment:
 
-Signup with payment flow
+Signup with Payment Flow
 ------------------------
 
 This application supports sign up with payment flows, either a one time

@@ -9,7 +9,6 @@
     If you aren't a developer and you are looking for information on how
     to use OpenWISP, please refer to:
 
-    - :doc:`General OpenWISP Quickstart </user/quickstart>`
     - :doc:`OpenWISP WiFi Login Pages User Docs </wifi-login-pages/index>`
     - `Deploy OpenWISP WiFi Login Pages for production
       <https://github.com/openwisp/ansible-openwisp-wifi-login-pages/>`_

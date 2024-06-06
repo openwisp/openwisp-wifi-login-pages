@@ -1,4 +1,4 @@
-Allowing users to manage account from the Internet
+Allowing Users to Manage Account from the Internet
 ==================================================
 
 The authentication flow might hang if a user tries to access their account

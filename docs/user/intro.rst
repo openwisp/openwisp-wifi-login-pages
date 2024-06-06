@@ -7,52 +7,55 @@ OpenWISP WiFi login pages offers the following features:
 - Sign up
 - Optional support for mobile phone verification: verify phone number by
   inserting token sent via SMS, resend the SMS token
-- Login to the WiFi service (by getting a radius user token from OpenWISP
-  Radius and sending a POST to the captive portal login URL behind the
-  scenes)
+- :ref:`Login to the WiFi service <wlp_captive_portal_login_form>` (by
+  getting a radius user token from OpenWISP Radius and sending a POST to
+  the captive portal login URL behind the scenes)
 - Session status information
-- Logout from the WiFi service (by sending a POST to the captive portal
-  logout URL behind the scenes)
+- :ref:`Logout from the WiFi service <wlp_captive_portal_logout_form>` (by
+  sending a POST to the captive portal logout URL behind the scenes)
 - Change password
 - Reset password (password forgot)
 - Support for :ref:`Social Login <wlp_social_login>` and :ref:`SAML
   <wlp_saml>`
 - Optional social login buttons (Facebook, Google, X/Twitter)
-- Contact box showing the support email and/or phone number, as well as
-  additional links specified via configuration
-- Navigation menu (header and footer) with the possibility of specifying
-  if links should be shown to every user or only authenticated or
-  unauthenticated users
-- Support for multiple organizations with the possibility of customizing
-  the theme via CSS for each organization
-- Support for multiple languages
-- Possibility to change any text used in the pages
-- Configurable Terms of Services and Privacy Policy for each organization
-- Possibility of automatically logging in users who signed in previously
-  (if the captive portal browser of their operating system supports
-  cookies)
+- :ref:`Contact box <wlp_contact_box>` showing the support email and/or
+  phone number, as well as additional links specified via configuration
+- :ref:`Navigation menu <wlp_menu_items>` (header and footer) with the
+  possibility of specifying if links should be shown to every user or only
+  authenticated or unauthenticated users
+- :doc:`Support for multiple organizations <./setup>` with the possibility
+  of :ref:`customizing the theme via CSS for each organization
+  <wlp_custom_css>`
+- :doc:`Support for multiple languages <./translations>`
+- Possibility to :ref:`change any text used in the pages
+  <wlp_custom_html>`
+- Configurable :ref:`Terms of Services and Privacy Policy for each
+  organization <wlp_tos_privacy_policy>`
+- Possibility of :ref:`automatically logging in users who signed in
+  previously <automatic_captive_portal_login>` (if the captive portal
+  browser of their operating system supports cookies)
 - Support for :ref:`credit/debit card verification and paid subscription
   plans <wlp_signup_with_payment>`
 
 Screenshots
 -----------
 
-.. figure:: https://github.com/openwisp/openwisp-wifi-login-pages/raw/media/docs/login-desktop.png
-    :target: https://github.com/openwisp/openwisp-wifi-login-pages/raw/media/docs/login-desktop.png
+.. figure:: https://raw.githubusercontent.com/openwisp/openwisp-wifi-login-pages/media/docs/login-desktop.png
+    :target: https://raw.githubusercontent.com/openwisp/openwisp-wifi-login-pages/media/docs/login-desktop.png
     :align: center
 
-.. figure:: https://github.com/openwisp/openwisp-wifi-login-pages/raw/media/docs/sign-up-desktop.png
-    :target: https://github.com/openwisp/openwisp-wifi-login-pages/raw/media/docs/sign-up-desktop.png
+.. figure:: https://raw.githubusercontent.com/openwisp/openwisp-wifi-login-pages/media/docs/sign-up-desktop.png
+    :target: https://raw.githubusercontent.com/openwisp/openwisp-wifi-login-pages/media/docs/sign-up-desktop.png
     :align: center
 
-.. figure:: https://github.com/openwisp/openwisp-wifi-login-pages/raw/media/docs/verify-mobile-phone-desktop.png
-    :target: https://github.com/openwisp/openwisp-wifi-login-pages/raw/media/docs/verify-mobile-phone-desktop.png
+.. figure:: https://raw.githubusercontent.com/openwisp/openwisp-wifi-login-pages/media/docs/verify-mobile-phone-desktop.png
+    :target: https://raw.githubusercontent.com/openwisp/openwisp-wifi-login-pages/media/docs/verify-mobile-phone-desktop.png
     :align: center
 
-.. figure:: https://github.com/openwisp/openwisp-wifi-login-pages/raw/media/docs/login-mobile.png
-    :target: https://github.com/openwisp/openwisp-wifi-login-pages/raw/media/docs/login-mobile.png
+.. figure:: https://raw.githubusercontent.com/openwisp/openwisp-wifi-login-pages/media/docs/login-mobile.png
+    :target: https://raw.githubusercontent.com/openwisp/openwisp-wifi-login-pages/media/docs/login-mobile.png
     :align: center
 
-.. figure:: https://github.com/openwisp/openwisp-wifi-login-pages/raw/media/docs/signup-mobile.png
-    :target: https://github.com/openwisp/openwisp-wifi-login-pages/raw/media/docs/signup-mobile.png
+.. figure:: https://raw.githubusercontent.com/openwisp/openwisp-wifi-login-pages/media/docs/signup-mobile.png
+    :target: https://raw.githubusercontent.com/openwisp/openwisp-wifi-login-pages/media/docs/signup-mobile.png
     :align: center

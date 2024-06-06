@@ -7,6 +7,10 @@ Setup
     <https://github.com/openwisp/ansible-openwisp-wifi-login-pages>`_ for
     deploying OpenWISP WiFi Login Pages for production usage.
 
+.. contents::
+    :depth: 1
+    :local:
+
 Add Organization configuration
 ------------------------------
 
@@ -50,7 +54,7 @@ directory, eg:
 The ``client_assets`` directory shall contain static files like CSS,
 images, etc.. The ``server_assets`` directory is used for loading the
 content of :ref:`Terms of Service and Privacy Policy
-<tos_privacy_policy>`. You can copy the desired files to these
+<wlp_tos_privacy_policy>`. You can copy the desired files to these
 directories.
 
 .. note::
@@ -74,7 +78,7 @@ If you need to change these values or any other settings later, you can
 edit the YAML file generated in the ``/organizations`` directory and
 rebuild the project.
 
-Removing sections of configuration
+Removing Sections of Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To remove a specific section of the configuration, the ``null`` keyword
@@ -95,7 +99,7 @@ For example, to remove social login links:
     (``/internals/config/default.yml``) as it is required to build and
     compile organization configurations.
 
-Variants of the same configuration
+Variants of the Same Configuration
 ----------------------------------
 
 In some cases it may be needed to have different variants of the same
@@ -143,7 +147,7 @@ the example above has been kept short for brevity.
     variant always overwrites fully what is defined in the parent
     configuration file.
 
-Variant with different organization slug / UUID / secret
+Variant with Different Organization Slug / UUID / Secret
 --------------------------------------------------------
 
 In some cases, different organizations may share an identical
@@ -173,7 +177,7 @@ Example:
             url: "org-logo.svg"
             alternate_text: "..."
 
-Support for old browsers
+Support for Old Browsers
 ------------------------
 
 Polyfills are used to support old browsers on different platforms. It is
@@ -181,7 +185,7 @@ recommended to add **polyfill.io** to the allowed hostnames (walled
 garden) of the captive portal, otherwise the application will not be able
 to load in old browsers.
 
-Configuring Sentry for proxy server
+Configuring Sentry for Proxy Server
 -----------------------------------
 
 You can enable sentry logging for the proxy server by adding
@@ -215,3 +219,31 @@ should contain configuration as following:
 
 You can take reference from `sentry-env.sample.json
 <https://github.com/openwisp/openwisp-wifi-login-pages/blob/master/sentry-env.sample.json>`__
+
+Supporting Realms (RADIUS Proxy)
+--------------------------------
+
+To enable support for realms, set ``radius_realms`` to ``true`` as in the
+example below:
+
+.. code-block:: yaml
+
+    ---
+    name: "default name"
+    slug: "default"
+
+    settings:
+      radius_realms: true
+
+When support for ``radius_realms`` is ``true`` and the username inserted
+in the username field by the user includes an ``@`` sign, the login page
+will submit the credentials directly to the URL specified in
+``captive_portal_login_form``, hence bypassing this app altogether.
+
+Keep in mind that in this use case, since users are basically
+authenticating against databases stored in other sources foreign to
+OpenWISP but trusted by the RADIUS configuration, the wifi-login-pages app
+stops making any sense, because users are registered elsewhere, do not
+have a local account on OpenWISP, therefore won't be able to authenticate
+nor change their personal details via the OpenWISP RADIUS API and this
+app.

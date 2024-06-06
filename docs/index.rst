@@ -1,6 +1,10 @@
 WiFi Login Pages
 ================
 
+.. figure:: https://raw.githubusercontent.com/openwisp/openwisp-wifi-login-pages/media/docs/login-desktop.png
+    :target: https://raw.githubusercontent.com/openwisp/openwisp-wifi-login-pages/media/docs/login-desktop.png
+    :align: center
+
 OpenWISP WiFi login pages provides unified and consistent user experience
 for public/private WiFi services. This app replaces the classic
 captive/login page of a WiFi service by integrating the `OpenWISP Radius

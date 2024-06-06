@@ -38,50 +38,18 @@ openwisp-wifi-login-pages
 services!**
 
 OpenWISP WiFi login pages provides unified and consistent user experience
-for public/private WiFi services.
+for public/private WiFi services. This app replaces the classic
+captive/login page of a WiFi service by integrating the `OpenWISP Radius
+API <https://openwisp-radius.readthedocs.io/>`_.
 
-In short, this app replaces the classic captive/login page of a WiFi
-service by integrating the `OpenWISP Radius API
-<https://openwisp-radius.readthedocs.io/>`__ to provide the following
-features:
-
-- Mobile first design (responsive UI)
-- Sign up
-- Optional support for mobile phone verification: verify phone number by
-  inserting token sent via SMS, resend the SMS token
-- Login to the wifi service (by getting a radius user token from OpenWISP
-  Radius and sending a POST to the captive portal login URL behind the
-  scenes)
-- Session status information
-- Logout from the wifi service (by sending a POST to the captive portal
-  logout URL behind the scenes)
-- Change password
-- Reset password (password forgot)
-- Support for `Social Login <#configuring-social-login>`__ and `SAML
-  <#configuring-saml-login--logout>`__
-- Optional social login buttons (facebook, google, twitter)
-- Contact box allowing to show the support email and/or phone number, as
-  well as additional links specified via configuration
-- Navigation menu (header and footer) with possibility of specifying if
-  links should be shown to every user or only authenticated or
-  unauthenticated users
-- Support for multiple organizations with possibility of customizing the
-  theme via CSS for each organization
-- Support for multiple languages
-- Possibility to change any text used in the pages
-- Configurable Terms of Services and Privacy Policy for each organization
-- `Auto-login
-  <https://openwisp.io/docs/tutorials/hotspot.html#automatic-captive-portal-login>`__:
-  possibility of recognizing users thanks to signed cookies, which saves
-  them from having to re-authenticate
-- Support for `credit/debit card verification and paid subscription plans
-  <#signup-with-payment-flow>`__
+Refer to `Features: WiFi Login Pages <https://openwisp.io/docs/__new__/dev/wifi-login-pages/user/intro.html>`
+of OpenWISP documentation  for a complete overview of features.
 
 Documentation
 -------------
 
-- Developer documentation (TODO: add link)
-- User documentation (TODO: add link)
+- `Developer documentation <https://openwisp.io/docs/__new__/dev/wifi-login-pages/developer/index.html>`_
+- `User documentation <https://openwisp.io/docs/__new__/dev/wifi-login-pages/index.html>`_
 
 Contributing
 ------------

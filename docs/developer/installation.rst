@@ -1,5 +1,5 @@
-Installation instructions
-=========================
+Developer Installation Instructions
+===================================
 
 .. include:: ../partials/developer-docs.rst
 
@@ -31,7 +31,7 @@ correctly configured, you can obtain this by following these steps:
   and note down the following parameters: ``name``, ``slug``, ``uuid`` and
   ``token`` (from the Organization RADIUS Settings).
 
-Installing for development
+Installing for Development
 --------------------------
 
 Fork and clone the forked repository:
@@ -66,7 +66,7 @@ Run tests with:
 
     yarn test # headless tests
 
-Browser based tests
+Browser Based Tests
 ~~~~~~~~~~~~~~~~~~~
 
 Prerequisites for running browser-based tests:

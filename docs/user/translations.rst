@@ -5,7 +5,7 @@ Translations are loaded at runtime from the JSON files that were compiled
 during the build process according to the available languages defined and
 taking into account any customization of the translations.
 
-Defining available languages
+Defining Available Languages
 ----------------------------
 
 If there is more than one language in ``i18n/`` directory then update the
@@ -21,7 +21,7 @@ like this:
       - text: "Italian"
         slug: "it"
 
-Add translations
+Add Translations
 ----------------
 
 Translation file with content headers can be created by running:
@@ -44,7 +44,7 @@ message identifiers, see :ref:`update-translations
 
 .. _wlp_update_translations:
 
-Update translations
+Update Translations
 -------------------
 
 To extract or update translations in the ``.po`` file, use the following
@@ -57,7 +57,9 @@ command:
 This will extract all the translations tags from the code and update
 ``.po`` file passed as argument.
 
-Customizing translations for a specific language
+.. _wlp_customizing_translations_specific_language:
+
+Customizing Translations for a Specific Language
 ------------------------------------------------
 
 Create a translation file with name ``{language_code}.custom.po`` by
@@ -89,7 +91,7 @@ msgid defined in the default language files.
     translations can be defined for custom strings (i.e. msgid and
     msgstr).
 
-Customizing translations for a specific organization and language
+Customizing Translations for a Specific Organization and Language
 -----------------------------------------------------------------
 
 Create a translation file with name
