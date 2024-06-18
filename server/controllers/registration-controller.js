@@ -1,12 +1,28 @@
 import axios from "axios";
 import merge from "deepmerge";
+import crypto from "crypto";
 
 import config from "../config.json";
 import defaultConfig from "../utils/default-config";
-import {logResponseError} from "../utils/logger";
+import { logResponseError } from "../utils/logger";
 import reverse from "../utils/openwisp-urls";
 import getSlug from "../utils/get-slug";
 import sendCookies from "../utils/send-cookies";
+
+
+
+
+// using hash to convert the domain into numbers and joining it with the username to make the username unique
+const hash = (input) => 
+   crypto.createHash('sha256').update(input).digest('hex').substring(0, 8);
+
+// generating the username
+const generateUsername = (email) => {
+  const [localPart, domain] = email.split('@');
+  const hashedDomain = hash(domain); // Using the hashing function for domain
+  return `${localPart}_${hashedDomain}`;
+};
+
 
 const registration = (req, res) => {
   const reqOrg = req.params.organization;
@@ -14,11 +30,14 @@ const registration = (req, res) => {
     if (org.slug === reqOrg) {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
-      const {host, settings} = conf;
+      const { host, settings } = conf;
       const registerUrl = reverse("registration", getSlug(conf));
       const timeout = conf.timeout * 1000;
       const postData = req.body;
-      const {username} = postData;
+      const { email } = postData; // Assuming email is part of req.body
+
+      // Generate unique username based on email
+      const username = generateUsername(email);
 
       if (settings && settings.mobile_phone_verification) {
         postData.phone_number = req.body.phone_number;
