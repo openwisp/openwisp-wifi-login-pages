@@ -117,8 +117,9 @@ module.exports = (env, argv) => {
       publicPath: "/",
       pathinfo: false,
     },
-    devtool:
-      argv.mode === "development" ? "cheap-module-source-map" : "source-map",
+    devtool: "source-map",
+    // devtool:
+    //   argv.mode === "development" ? "cheap-module-source-map" : "source-map",
     resolve: {
       extensions: ["*", ".js", ".jsx"],
     },
