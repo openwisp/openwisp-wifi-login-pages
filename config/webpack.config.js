@@ -66,7 +66,7 @@ module.exports = (env, argv) => {
     minimizers = [
       new OptimizeCssAssetsPlugin(),
       new TerserPlugin(),
-      new UglifyJsPlugin({parallel: true, extractComments: true}),
+      new UglifyJsPlugin({parallel: true, extractComments: true, sourceMap: true}),
     ];
     setup.removeDefaultConfig();
     plugins.push(
@@ -119,7 +119,7 @@ module.exports = (env, argv) => {
       pathinfo: false,
     },
     devtool:
-      argv.mode === "development" ? "cheap-module-source-map" : "cheap-module-source-map",
+      argv.mode === "development" ? "cheap-module-source-map" : "source-map",
     resolve: {
       extensions: ["*", ".js", ".jsx"],
     },
