@@ -13,6 +13,7 @@ const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const RemoveStrictPlugin = require("remove-strict-webpack-plugin");
+const {SourceMapDevToolPlugin} = require("webpack");
 const CURRENT_WORKING_DIR = process.cwd();
 const DEFAULT_PORT = 8080;
 const DEFAULT_SERVER_URL = "http://localhost:3030";
@@ -24,6 +25,9 @@ module.exports = (env, argv) => {
   // the next available port
   let clientP = process.env.CLIENT;
   let plugins = [
+    new SourceMapDevToolPlugin({
+      test: new RegExp("\.[js|css|mjs].*"),
+    }),
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       filename: "index.html",
