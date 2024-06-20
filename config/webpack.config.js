@@ -66,7 +66,7 @@ module.exports = (env, argv) => {
     minimizers = [
       new OptimizeCssAssetsPlugin(),
       new TerserPlugin(),
-      new UglifyJsPlugin({parallel: true, extractComments: true, sourceMap: true}),
+      new UglifyJsPlugin({parallel: true, sourceMap: true}),
     ];
     setup.removeDefaultConfig();
     plugins.push(
