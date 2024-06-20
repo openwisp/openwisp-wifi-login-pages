@@ -114,6 +114,7 @@ module.exports = (env, argv) => {
         argv.mode === "development" ? "[name].js" : "[name].[contenthash].js",
       chunkFilename: "[name].[contenthash].chunk.js",
       path: path.resolve(CURRENT_WORKING_DIR, "dist"),
+      sourceMapFilename: "[file].map",
       publicPath: "/",
       pathinfo: false,
     },
