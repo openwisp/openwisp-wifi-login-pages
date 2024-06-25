@@ -1,18 +1,14 @@
 const BundleAnalyzerPlugin =
   require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const CompressionPlugin = require("compression-webpack-plugin");
-const BrotliPlugin = require("brotli-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const {CleanWebpackPlugin} = require("clean-webpack-plugin");
-const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 const TerserPlugin = require("terser-webpack-plugin");
 const setup = require("./setup");
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
-const RemoveStrictPlugin = require("remove-strict-webpack-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const CURRENT_WORKING_DIR = process.cwd();
 const DEFAULT_PORT = 8080;
 const DEFAULT_SERVER_URL = "http://localhost:3030";
@@ -30,7 +26,6 @@ module.exports = (env, argv) => {
       custom: setup.getExtraJsScripts(),
       template: path.resolve(CURRENT_WORKING_DIR, "public/index.html"),
     }),
-    new HardSourceWebpackPlugin(),
     new CopyPlugin({
       patterns: [
         {
@@ -64,18 +59,11 @@ module.exports = (env, argv) => {
   if (argv.mode === "production") {
     cssLoaders = [MiniCssExtractPlugin.loader, "css-loader"];
     minimizers = [
-      new OptimizeCssAssetsPlugin(),
+      new CssMinimizerPlugin(),
       new TerserPlugin(),
-      new UglifyJsPlugin({parallel: true, sourceMap: true}),
     ];
     setup.removeDefaultConfig();
-    plugins.push(
-      new HardSourceWebpackPlugin.ExcludeModulePlugin([
-        {
-          test: /mini-css-extract-plugin[\\/]dist[\\/]loader/,
-        },
-      ]),
-    );
+
     plugins.push(
       new MiniCssExtractPlugin({
         filename: "[name].[contentHash].css",
@@ -83,7 +71,7 @@ module.exports = (env, argv) => {
       }),
     );
     plugins.push(
-      new BrotliPlugin({
+      new CompressionPlugin({
         asset: "[path].br[query]",
         test: /\.(js|css|html|svg|json)$/,
         minRatio: 0.7,
@@ -91,11 +79,9 @@ module.exports = (env, argv) => {
     );
   }
 
-  plugins.push(new RemoveStrictPlugin());
-
   // The url the server is running on; if none was given, fall back to the default
   let serverUrl;
-  if (process.env.SERVER != undefined) {
+  if (process.env.SERVER !== undefined) {
     serverUrl = `http://localhost:${process.env.SERVER}`;
   } else {
     console.warn(
@@ -179,7 +165,7 @@ module.exports = (env, argv) => {
         maxAsyncRequests: 5,
         maxInitialRequests: 3,
         automaticNameDelimiter: "~",
-        name: true,
+        name: false,
         cacheGroups: {
           vendors: {
             test: /[\\/]node_modules[\\/]/,
@@ -193,8 +179,8 @@ module.exports = (env, argv) => {
         },
       },
     },
-    node: {
-      fs: "empty",
-    },
+    // node: {
+    //   fs: "empty",
+    // },
   };
 };

@@ -1,11 +1,11 @@
 import "./index.css";
 
-import {Provider, connect} from "react-redux";
+import {connect, Provider} from "react-redux";
 
 import {CookiesProvider} from "react-cookie";
 import PropTypes from "prop-types";
 import React from "react";
-import {Route, BrowserRouter as Router, Routes} from "react-router-dom";
+import {HashRouter as Router, Route, Routes} from "react-router-dom";
 import {render} from "react-dom";
 import {ToastContainer} from "react-toastify";
 import OrganizationRoutes from "./routes";

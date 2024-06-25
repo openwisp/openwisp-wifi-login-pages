@@ -12,3 +12,4 @@ openwisp-qa-check --skip-checkmigrations \
                   --skip-flake8 \
                   --skip-isort \
                   --skip-checkendline
+#nvm use v20.10.0
