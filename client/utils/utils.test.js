@@ -1,8 +1,8 @@
 import React from "react";
-import {BrowserRouter as Router} from "react-router-dom";
+import {HashRouter as Router} from "react-router-dom";
 import axios from "axios";
 import {Cookies} from "react-cookie";
-import {shallow, mount} from "enzyme";
+import {mount, shallow} from "enzyme";
 import * as dependency from "react-toastify";
 import {createMemoryHistory} from "history";
 import authenticate from "./authenticate";

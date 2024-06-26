@@ -275,7 +275,7 @@ const getExtraJsScripts = () => {
 writeConfigurations();
 
 module.exports = {
-  removeDefaultConfig,
+  // removeDefaultConfig,
   writeConfigurations,
   getExtraJsScripts,
 };

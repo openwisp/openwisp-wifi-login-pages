@@ -37,6 +37,7 @@ module.exports = (env, argv) => {
           to: path.resolve(CURRENT_WORKING_DIR, "dist/[name].[ext]"),
           noErrorOnMissing: true,
         },
+
       ],
     }),
     new CompressionPlugin({
@@ -57,12 +58,12 @@ module.exports = (env, argv) => {
     );
 
   if (argv.mode === "production") {
-    cssLoaders = [MiniCssExtractPlugin.loader, "css-loader"];
+    cssLoaders = [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"];
     minimizers = [
       new CssMinimizerPlugin(),
       new TerserPlugin(),
     ];
-    setup.removeDefaultConfig();
+    // setup.removeDefaultConfig();
 
     plugins.push(
       new MiniCssExtractPlugin({
@@ -72,7 +73,7 @@ module.exports = (env, argv) => {
     );
     plugins.push(
       new CompressionPlugin({
-        asset: "[path].br[query]",
+        filename: "[path].br[query]",
         test: /\.(js|css|html|svg|json)$/,
         minRatio: 0.7,
       }),
@@ -124,6 +125,11 @@ module.exports = (env, argv) => {
           test: /\.(eot|svg|ttf|woff|woff2)$/,
           use: ["file-loader"],
         },
+        {
+          test: /\.json$/,
+          type: "json",
+        },
+
       ],
     },
     plugins: plugins,
@@ -160,7 +166,7 @@ module.exports = (env, argv) => {
       splitChunks: {
         chunks: "all",
         minSize: 30000,
-        maxSize: 0,
+        maxSize: 40000,
         minChunks: 1,
         maxAsyncRequests: 5,
         maxInitialRequests: 3,
