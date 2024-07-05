@@ -68,6 +68,73 @@
   overflow-wrap: break-word;
   word-wrap: break-word;
 }
+#status .plan-exhausted-message {
+  color: #ba2121f7;
+}
+.flex-wrapper {
+  flex-wrap: wrap;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.flex-row {
+  flex-grow: 1;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.flex-row > .row {
+  padding: 3%;
+  margin: 0 0 10px;
+  box-sizing: border-box;
+}
+progress + p.progress {
+  margin-top: -5px;
+}
+.limit-info {
+  text-align: center;
+  margin-bottom: 15px;
+}
+.limit-info h3 {
+  margin: 0 0 10px;
+}
+.limit-info progress {
+  width: 80%;
+  height: 40px;
+}
+.limit-info p.progress {
+  font-size: 20px;
+}
+.limit-info p:last-child {
+  margin-bottom: 0;
+}
+.limit-info .button {
+  margin-top: 5px;
+}
+.limit-info .exhausted {
+  color: #ba2121f7;
+  margin-top: 15px;
+  line-height: 1.5em;
+}
+#status .plans {
+  margin: 0 30px;
+}
+#status .plans .intro {
+  margin-top: 0px;
+  margin-bottom: 15px;
+}
+#status .plans .plan {
+  padding: 20px;
+  margin-bottom: 20px;
+  text-align: left;
+  line-height: 1.8em;
+  border: 1px solid #b4b4b4 !important;
+}
+#status .plans .plan:last-child {
+  margin-bottom: 0;
+}
+#status .plan:hover {
+  border: 1px solid #464646 !important;
+}
 
 @media screen and (min-width: 0px) and (max-width: 500px) {
   .logout-modal-container p.message {

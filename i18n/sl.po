@@ -59,6 +59,10 @@ msgstr "Naslov naprave"
 msgid "LOGGED_IN"
 msgstr "Prijavljeni"
 
+#: client/components/status/status.js:665
+msgid "TRAFFIC_EXHAUSTED"
+msgstr "Doprava vyčerpaná"
+
 #: client/components/status/status.js:671
 msgid "USERNAME"
 msgstr "Uporabniško ime"
@@ -461,6 +465,26 @@ msgstr "Odjava je bila uspešna"
 #: client/components/status/status.js:119
 msgid "PASSWORD_EXPIRED"
 msgstr "Vaše geslo je poteklo, posodobite ga."
+
+#: client/components/status/status.js:384
+msgid "SUCCESS_UPGRADE_PLAN"
+msgstr "Prebieha aktualizácia plánu"
+
+#: client/components/status/status.js:934
+msgid "CURRENT_SUBSCRIPTION_TXT"
+msgstr "Aktuálne predplatné:"
+
+#: client/components/status/status.js:1000
+msgid "USAGE_LIMIT_EXHAUSTED_TXT"
+msgstr "Vyčerpali ste dostupnú premávku. Ak chcete službu naďalej používať, inovujte ju."
+
+#: client/components/status/status.js:964
+msgid "PLAN_UPGRADE_BTN_TXT"
+msgstr "Inovovať"
+
+#: client/components/status/status.js:964
+msgid "PLAN_EXHAUSTED_TOAST"
+msgstr "Vyčerpali ste návštevnosť dostupnú pre váš balík."
 
 #: client/components/password-change/password-change.js:87
 #: client/components/password-change/password-change.js:93

@@ -91,16 +91,11 @@ export default class PaymentProcess extends React.Component {
 
   render() {
     const {orgSlug, isAuthenticated, userData, settings} = this.props;
-    const {method, is_verified: isVerified} = userData;
     const redirectToStatus = () => <Navigate to={`/${orgSlug}/status`} />;
     const {isTokenValid, iframeHeight} = this.state;
 
     // not registered with bank card flow
-    if (
-      (method && method !== "bank_card") ||
-      isVerified === true ||
-      (isTokenValid && !userData.payment_url)
-    ) {
+    if (isTokenValid && !userData.payment_url) {
       return redirectToStatus();
     }
 

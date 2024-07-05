@@ -52,6 +52,10 @@ const getPaymentStatusRedirectUrl = async (
           is_verified: true,
           payment_url: null,
           mustLogin: true,
+          // For refreshing of radius_user_token which is required
+          // when the user is upgrading from the status modal after
+          // exhausting limits on their current plan.
+          radius_user_token: undefined,
         });
       }
       return `/${orgSlug}/payment/${paymentStatus}`;

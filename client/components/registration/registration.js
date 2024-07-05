@@ -8,12 +8,12 @@ import Select from "react-select";
 import {Link, Route, Routes} from "react-router-dom";
 import {toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {t, gettext} from "ttag";
+import {t} from "ttag";
 import "react-phone-input-2/lib/style.css";
 import countries from "./countries.json";
 import LoadingContext from "../../utils/loading-context";
 import PasswordToggleIcon from "../../utils/password-toggle";
-import {mainToastId, registerApiUrl, plansApiUrl} from "../../constants";
+import {mainToastId, registerApiUrl} from "../../constants";
 import getErrorText from "../../utils/get-error-text";
 import logError from "../../utils/log-error";
 import handleChange from "../../utils/handle-change";
@@ -25,6 +25,8 @@ import getError from "../../utils/get-error";
 import getLanguageHeaders from "../../utils/get-language-headers";
 import redirectToPayment from "../../utils/redirect-to-payment";
 import InfoModal from "../../utils/modal";
+import getPlanSelection from "../../utils/get-plan-selection";
+import getPlans from "../../utils/get-plans";
 
 const PhoneInput = React.lazy(() =>
   import(/* webpackChunkName: 'PhoneInput' */ "react-phone-input-2"),
@@ -63,33 +65,18 @@ export default class Registration extends React.Component {
     this.confirmPasswordToggleRef = React.createRef();
     this.changePlan = this.changePlan.bind(this);
     this.selectedCountry = this.selectedCountry.bind(this);
+    this.getPlansSuccessCallback = this.getPlansSuccessCallback.bind(this);
   }
 
   componentDidMount() {
     const {orgSlug, settings, setTitle, orgName, language} = this.props;
     const {setLoading} = this.context;
-    const plansUrl = plansApiUrl.replace("{orgSlug}", orgSlug);
 
     setTitle(t`REGISTRATION_TITL`, orgName);
 
     if (settings.subscriptions) {
       setLoading(true);
-      axios({
-        method: "get",
-        headers: {
-          "content-type": "application/x-www-form-urlencoded",
-          "accept-language": getLanguageHeaders(language),
-        },
-        url: plansUrl,
-      })
-        .then((response) => {
-          this.setState({plans: response.data, plansFetched: true});
-          setLoading(false);
-        })
-        .catch((error) => {
-          toast.error(t`ERR_OCCUR`);
-          logError(error, "Error while fetching plans");
-        });
+      getPlans(orgSlug, language, this.getPlansSuccessCallback);
     }
     this.autoSelectFirstPlan();
   }
@@ -106,6 +93,12 @@ export default class Registration extends React.Component {
     ) {
       setLoading(true);
     }
+  }
+
+  getPlansSuccessCallback(plans) {
+    const {setLoading} = this.context;
+    this.setState({plans, plansFetched: true});
+    setLoading(false);
   }
 
   handleChange(event) {
@@ -316,59 +309,6 @@ export default class Registration extends React.Component {
     this.setState({selectedPlan: event.target.value});
   };
 
-  getPlan = (plan, index) => {
-    /* disable ttag */
-    const planTitle = gettext(plan.plan);
-    const planDesc = gettext(plan.plan_description);
-    /* enable ttag */
-    const pricingText = Number(plan.price)
-      ? `${plan.price} ${plan.currency} ${plan.pricing}`
-      : "";
-    return (
-      <label htmlFor={`radio${index}`}>
-        <span className="title">{planTitle}</span>
-        <span className="desc">{planDesc}</span>
-        {pricingText && <span className="price">{pricingText}</span>}
-      </label>
-    );
-  };
-
-  getPlanSelection = () => {
-    const {registration} = this.props;
-    const {plans, selectedPlan} = this.state;
-    const {auto_select_first_plan} = registration;
-    let index = 0;
-    return (
-      <div className={`plans ${auto_select_first_plan ? "hidden" : ""}`}>
-        <p className="intro">{t`PLAN_SETTING_TXT`}.</p>
-        {plans.map((plan) => {
-          const currentIndex = String(index);
-          let planClass = "plan";
-          if (selectedPlan === currentIndex) {
-            planClass += " active";
-          } else if (selectedPlan !== null && selectedPlan !== currentIndex) {
-            planClass += " inactive";
-          }
-          index += 1;
-          return (
-            <div key={currentIndex} className={planClass}>
-              <input
-                id={`radio${currentIndex}`}
-                type="radio"
-                value={currentIndex}
-                name="plan_selection"
-                onChange={this.changePlan}
-                onFocus={this.changePlan}
-                tabIndex={currentIndex}
-              />
-              {this.getPlan(plan, currentIndex)}
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
-
   autoSelectFirstPlan = () => {
     const {registration} = this.props;
     if (registration.auto_select_first_plan) {
@@ -404,8 +344,9 @@ export default class Registration extends React.Component {
   };
 
   getForm = () => {
-    const {registration, settings, orgSlug} = this.props;
-    const {additional_info_text, input_fields, links} = registration;
+    const {registration, settings, orgSlug, defaultLanguage} = this.props;
+    const {additional_info_text, input_fields, links, auto_select_first_plan} =
+      registration;
     const {
       success,
       phone_number,
@@ -439,7 +380,15 @@ export default class Registration extends React.Component {
               <div className="inner">
                 <div className="fieldset">
                   {getError(errors)}
-                  {plans.length > 0 && this.getPlanSelection()}
+                  {plans.length > 0 &&
+                    getPlanSelection(
+                      defaultLanguage,
+                      plans,
+                      selectedPlan,
+                      this.changePlan,
+                      this.changePlan,
+                      auto_select_first_plan,
+                    )}
                   {(plans.length === 0 ||
                     (plans.length > 0 && selectedPlan !== null)) && (
                     <>
@@ -973,6 +922,7 @@ Registration.propTypes = {
     auto_select_first_plan: PropTypes.bool,
   }).isRequired,
   language: PropTypes.string.isRequired,
+  defaultLanguage: PropTypes.string.isRequired,
   orgSlug: PropTypes.string.isRequired,
   orgName: PropTypes.string.isRequired,
   authenticate: PropTypes.func.isRequired,

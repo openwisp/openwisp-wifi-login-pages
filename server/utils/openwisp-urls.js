@@ -7,6 +7,8 @@ const paths = {
   user_auth_token: "/account/token",
   validate_auth_token: "/account/token/validate",
   user_radius_sessions: "/account/session",
+  user_radius_usage: "/account/usage",
+  user_plan_radius_usage: "/account/plan",
   create_mobile_phone_token: "/account/phone/token",
   mobile_phone_token_status: "/account/phone/token/active",
   verify_mobile_phone_token: "/account/phone/verify",
@@ -21,7 +23,11 @@ const reverse = (name, orgSlug) => {
   if (!path) {
     throw new Error(`Reverse for path "${name}" not found.`);
   }
-  if (name === "plans" || name === "payment_status") {
+  if (
+    name === "plans" ||
+    name === "payment_status" ||
+    name === "user_plan_radius_usage"
+  ) {
     prefix = prefix.replace("/radius/", "/subscriptions/");
   }
   return `${prefix.replace("{orgSlug}", orgSlug)}${path}`;

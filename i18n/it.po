@@ -67,6 +67,10 @@ msgstr "Stato"
 msgid "LOGGED_IN"
 msgstr "Autenticato"
 
+#: client/components/status/status.js:665
+msgid "TRAFFIC_EXHAUSTED"
+msgstr "Traffico esaurito"
+
 #: client/components/contact-box/contact.js:25
 #: client/components/password-reset/password-reset.js:106
 #: client/components/registration/registration.js:467
@@ -519,6 +523,26 @@ msgstr "Log out effettuato con successo"
 #: client/components/status/status.js:119
 msgid "PASSWORD_EXPIRED"
 msgstr "La tua password è scaduta, aggiornala."
+
+#: client/components/status/status.js:384
+msgid "SUCCESS_UPGRADE_PLAN"
+msgstr "Ricarica in corso"
+
+#: client/components/status/status.js:934
+msgid "CURRENT_SUBSCRIPTION_TXT"
+msgstr "Abbonamento attuale:"
+
+#: client/components/status/status.js:1000
+msgid "USAGE_LIMIT_EXHAUSTED_TXT"
+msgstr "Hai esaurito il traffico disponibile. Effettua una ricarica per continuare a utilizzare il servizio."
+
+#: client/components/status/status.js:964
+msgid "PLAN_UPGRADE_BTN_TXT"
+msgstr "Ricarica"
+
+#: client/components/status/status.js:964
+msgid "PLAN_EXHAUSTED_TOAST"
+msgstr "Hai esaurito il traffico disponibile nel tuo abbonamento."
 
 #: client/components/password-change/password-change.js:61
 #: client/components/password-change/password-change.test.js:115

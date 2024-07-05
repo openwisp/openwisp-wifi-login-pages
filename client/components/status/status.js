@@ -12,7 +12,16 @@ import {Link} from "react-router-dom";
 import {toast} from "react-toastify";
 import InfinteScroll from "react-infinite-scroll-component";
 import {t, gettext} from "ttag";
-import {getUserRadiusSessionsUrl, mainToastId} from "../../constants";
+import bytes from "bytes";
+import {timeFromSeconds} from "duration-formatter";
+import getLanguageHeaders from "../../utils/get-language-headers";
+
+import {
+  getUserRadiusSessionsUrl,
+  getUserRadiusUsageUrl,
+  upgradePlanApiUrl,
+  mainToastId,
+} from "../../constants";
 import LoadingContext from "../../utils/loading-context";
 import getText from "../../utils/get-text";
 import logError from "../../utils/log-error";
@@ -26,6 +35,8 @@ import Logout from "../organization-wrapper/lazy-logout";
 import InfoModal from "../../utils/modal";
 import {localStorage} from "../../utils/storage";
 import handleSession from "../../utils/session";
+import getPlanSelection from "../../utils/get-plan-selection";
+import getPlans from "../../utils/get-plans";
 
 export default class Status extends React.Component {
   constructor(props) {
@@ -46,11 +57,20 @@ export default class Status extends React.Component {
       hasMoreSessions: false,
       screenWidth: window.innerWidth,
       loadSpinner: true,
+      showRadiusUsage: true,
+      radiusUsageSpinner: true,
       modalActive: false,
       rememberMe: false,
+      userChecks: [],
+      userPlan: {},
+      upgradePlanModalActive: false,
+      upgradePlans: [],
     };
     this.repeatLogin = false;
     this.getUserRadiusSessions = this.getUserRadiusSessions.bind(this);
+    this.getUserRadiusUsage = this.getUserRadiusUsage.bind(this);
+    this.getPlansSuccessCallback = this.getPlansSuccessCallback.bind(this);
+    this.upgradeUserPlan = this.upgradeUserPlan.bind(this);
     this.handleSessionLogout = this.handleSessionLogout.bind(this);
     this.fetchMoreSessions = this.fetchMoreSessions.bind(this);
     this.updateScreenWidth = this.updateScreenWidth.bind(this);
@@ -68,6 +88,7 @@ export default class Status extends React.Component {
       orgName,
       language,
       navigate,
+      statusPage,
     } = this.props;
     setTitle(t`STATUS_TITL`, orgName);
     const {setLoading} = this.context;
@@ -167,6 +188,9 @@ export default class Status extends React.Component {
       if (macaddr) {
         const params = {macaddr};
         await this.getUserActiveRadiusSessions(params);
+        if (statusPage.radius_usage_enabled) {
+          await this.getUserRadiusUsage();
+        }
         /* request to captive portal is made only if there is
           no active session from macaddr stored in the cookie */
         const {activeSessions} = this.state;
@@ -195,12 +219,17 @@ export default class Status extends React.Component {
   }
 
   componentWillUnmount = () => {
+    const {statusPage} = this.props;
     clearInterval(this.intervalId);
+    if (statusPage.radius_usage_enabled) {
+      clearInterval(this.usageIntervalId);
+    }
     window.removeEventListener("resize", this.updateScreenWidth);
   };
 
   async finalOperations() {
-    const {userData, orgSlug, settings, navigate, setUserData} = this.props;
+    const {userData, orgSlug, settings, navigate, setUserData, statusPage} =
+      this.props;
     const {setLoading} = this.context;
     // if the user needs bank card verification,
     // redirect to payment page and stop here
@@ -238,6 +267,13 @@ export default class Status extends React.Component {
     this.intervalId = setInterval(() => {
       this.getUserActiveRadiusSessions();
     }, 60000);
+    if (statusPage.radius_usage_enabled) {
+      await this.getUserRadiusUsage();
+      this.usageIntervalId = setInterval(() => {
+        this.getUserRadiusUsage();
+      }, 60000);
+    }
+
     window.addEventListener("resize", this.updateScreenWidth);
     this.updateSpinner();
   }
@@ -286,6 +322,117 @@ export default class Status extends React.Component {
       }
       logError(error, t`ERR_OCCUR`);
     }
+  }
+
+  async getUserRadiusUsage() {
+    const {
+      cookies,
+      orgSlug,
+      logout,
+      userData,
+      planExhausted,
+      setPlanExhausted,
+    } = this.props;
+    const {showRadiusUsage} = this.state;
+    const url = getUserRadiusUsageUrl(orgSlug);
+    const auth_token = cookies.get(`${orgSlug}_auth_token`);
+    handleSession(orgSlug, auth_token, cookies);
+    const options = {radiusUsageSpinner: false};
+    let isPlanExhausted = false;
+    try {
+      const response = await axios({
+        method: "get",
+        headers: {
+          "content-type": "application/x-www-form-urlencoded",
+          Authorization: `Bearer ${userData.auth_token}`,
+        },
+        url,
+      });
+      options.userChecks = response.data.checks;
+      if (options.userChecks) {
+        options.userChecks.forEach((check) => {
+          if (check.value === String(check.result)) {
+            isPlanExhausted = true;
+          }
+        });
+      }
+      if (planExhausted !== isPlanExhausted) {
+        setPlanExhausted(isPlanExhausted);
+        if (isPlanExhausted) {
+          toast.info(t`PLAN_EXHAUSTED_TOAST`);
+        }
+      }
+      if (response.data.plan) {
+        options.userPlan = response.data.plan;
+      }
+      if (!showRadiusUsage) {
+        options.showRadiusUsage = true;
+      }
+      this.setState(options);
+    } catch (error) {
+      // logout only if unauthorized or forbidden
+      if (error.response) {
+        if (error.response.status === 401 || error.response.status === 403) {
+          logout(cookies, orgSlug);
+          toast.error(t`ERR_OCCUR`, {
+            onOpen: () => toast.dismiss(mainToastId),
+          });
+        } else if (
+          error.response.status >= 400 &&
+          error.response.status < 500
+        ) {
+          // Do not retry for client side errors
+          logError(error, t`ERR_OCCUR`);
+          this.setState({showRadiusUsage: false});
+          return;
+        }
+      }
+      logError(error, t`ERR_OCCUR`);
+      setTimeout(async () => {
+        this.getUserRadiusUsage();
+      }, 10000);
+    }
+  }
+
+  getPlansSuccessCallback(plans) {
+    this.setState({
+      upgradePlans: plans.filter((plan) => plan.price !== "0.00"),
+    });
+  }
+
+  async upgradeUserPlan(event) {
+    const {language, orgSlug, cookies, userData, navigate, setUserData} =
+      this.props;
+    const upgradePlanUrl = upgradePlanApiUrl.replace("{orgSlug}", orgSlug);
+    const auth_token = cookies.get(`${orgSlug}_auth_token`);
+    const {upgradePlans} = this.state;
+    handleSession(orgSlug, auth_token, cookies);
+    axios({
+      method: "post",
+      headers: {
+        "content-type": "application/json",
+        "accept-language": getLanguageHeaders(language),
+        Authorization: `Bearer ${userData.auth_token}`,
+      },
+      url: upgradePlanUrl,
+      data: {
+        plan_pricing: upgradePlans[event.target.value].id,
+      },
+    })
+      .then((response) => {
+        toast.success(t`SUCCESS_UPGRADE_PLAN`, {
+          onOpen: () => toast.dismiss(mainToastId),
+        });
+        setUserData({
+          ...userData,
+          payment_url: response.data.payment_url,
+        });
+        navigate(`/${orgSlug}/payment/process`);
+      })
+      .catch((error) => {
+        toast.error(t`ERR_OCCUR`);
+        logError(error, "Error while upgrading plan");
+      });
   }
 
   async getUserActiveRadiusSessions(params = {}) {
@@ -443,8 +590,14 @@ export default class Status extends React.Component {
   };
 
   handlePostMessage = async (event) => {
-    const {captivePortalLoginForm, logout, cookies, orgSlug, setInternetMode} =
-      this.props;
+    const {
+      captivePortalLoginForm,
+      logout,
+      cookies,
+      orgSlug,
+      setInternetMode,
+      setPlanExhausted,
+    } = this.props;
     const {setLoading} = this.context;
     const {message, type} = event.data;
     // For security reasons, read https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage#security_concern
@@ -453,15 +606,24 @@ export default class Status extends React.Component {
       event.origin === window.location.origin
     ) {
       switch (type) {
+        case "authMessage":
         case "authError":
           if (!message) break;
           toast.dismiss();
-          /* disable ttag */
-          toast.error(gettext(message), {
-            autoClose: 10000,
-          });
-          /* enable ttag */
-          logout(cookies, orgSlug);
+          if (type === "authMessage") {
+            /* disable ttag */
+            toast.info(gettext(message));
+            /* enable ttag */
+            // Change the message on the status page to reflect plan exhaustion
+            setPlanExhausted(true);
+          } else {
+            /* disable ttag */
+            toast.error(gettext(message), {
+              autoClose: 10000,
+            });
+            /* enable ttag */
+            logout(cookies, orgSlug);
+          }
           setLoading(false);
           break;
 
@@ -487,6 +649,15 @@ export default class Status extends React.Component {
   toggleModal = () => {
     const {modalActive} = this.state;
     this.setState({modalActive: !modalActive});
+  };
+
+  toggleUpgradePlanModal = async () => {
+    const {orgSlug, language} = this.props;
+    const {upgradePlanModalActive, upgradePlans} = this.state;
+    this.setState({upgradePlanModalActive: !upgradePlanModalActive});
+    if (!upgradePlans.length) {
+      await getPlans(orgSlug, language, this.getPlansSuccessCallback);
+    }
   };
 
   async handleSessionLogout(session) {
@@ -523,12 +694,6 @@ export default class Status extends React.Component {
     return hDisplay + mDisplay + sDisplay;
   };
 
-  getMB = (bytes) => {
-    const number = Number(bytes);
-    const mb = Math.round(number / (1024 * 1024));
-    return `${mb}MB`;
-  };
-
   getDateTimeFormat = (language, time_option, date) => {
     if (typeof Intl !== "undefined") {
       return new Intl.DateTimeFormat(language, time_option).format(
@@ -557,8 +722,20 @@ export default class Status extends React.Component {
             : this.getDateTimeFormat(language, time_option, session.stop_time)}
         </td>
         <td>{this.getDuration(session.session_time)}</td>
-        <td>{this.getMB(session.output_octets)}</td>
-        <td>{this.getMB(session.input_octets)}</td>
+        <td>
+          {bytes(session.output_octets, {
+            decimalPlaces: 0,
+            unitSeparator: " ",
+            unit: "MB",
+          })}
+        </td>
+        <td>
+          {bytes(session.input_octets, {
+            decimalPlaces: 0,
+            unitSeparator: " ",
+            unit: "MB",
+          })}
+        </td>
         <td>
           {session.calling_station_id}
           {session.stop_time == null && showLogoutButton && (
@@ -623,14 +800,26 @@ export default class Status extends React.Component {
           className={session.stop_time === null ? "active-session" : ""}
         >
           <th>{session_info.header.download}:</th>
-          <td>{this.getMB(session.output_octets)}</td>
+          <td>
+            {bytes(session.output_octets, {
+              decimalPlaces: 0,
+              unitSeparator: " ",
+              unit: "MB",
+            })}
+          </td>
         </tr>
         <tr
           key={`${session.session_id}upload`}
           className={session.stop_time === null ? "active-session" : ""}
         >
           <th>{session_info.header.upload}:</th>
-          <td>{this.getMB(session.input_octets)}</td>
+          <td>
+            {bytes(session.input_octets, {
+              decimalPlaces: 0,
+              unitSeparator: " ",
+              unit: "MB",
+            })}
+          </td>
         </tr>
         <tr
           key={`${session.session_id}device_address`}
@@ -752,6 +941,18 @@ export default class Status extends React.Component {
     },
   });
 
+  getUserCheckFormattedValue = (value, type) => {
+    const intValue = parseInt(value, 10);
+    switch (type) {
+      case "bytes":
+        return intValue === 0 ? 0 : bytes(intValue, {unitSeparator: " "});
+      case "seconds":
+        return timeFromSeconds(intValue);
+      default:
+        return value;
+    }
+  };
+
   render() {
     const {
       statusPage,
@@ -762,6 +963,9 @@ export default class Status extends React.Component {
       isAuthenticated,
       userData,
       internetMode,
+      planExhausted,
+      settings,
+      defaultLanguage,
     } = this.props;
     const {links} = statusPage;
     const {
@@ -769,15 +973,24 @@ export default class Status extends React.Component {
       password,
       userInfo,
       activeSessions,
+      userChecks,
+      userPlan,
       pastSessions,
       sessionsToLogout,
       hasMoreSessions,
       loadSpinner,
+      showRadiusUsage,
+      radiusUsageSpinner,
+      upgradePlanModalActive,
+      upgradePlans,
       modalActive,
       rememberMe,
     } = this.state;
     const user_info = this.getUserInfo();
     const contentArr = t`STATUS_CONTENT`.split("\n");
+    if (planExhausted) {
+      user_info.status.value = t`TRAFFIC_EXHAUSTED`;
+    }
     userInfo.status = user_info.status.value;
     return (
       <>
@@ -787,11 +1000,85 @@ export default class Status extends React.Component {
           handleResponse={this.handleLogout}
           content={<p className="message">{t`LOGOUT_MODAL_CONTENT`}</p>}
         />
-        <div className="container content" id="status">
+        <div className="container content flex-wrapper" id="status">
+          {settings.subscriptions && upgradePlans.length > 0 && (
+            <InfoModal
+              id="upgrade-plan-modal"
+              active={upgradePlanModalActive}
+              toggleModal={this.toggleUpgradePlanModal}
+              handleResponse={() => {}}
+              isConfirmationDialog={false}
+              content={
+                (upgradePlans.length &&
+                  getPlanSelection(
+                    defaultLanguage,
+                    upgradePlans,
+                    null,
+                    this.upgradeUserPlan,
+                  )) || <>{this.getSpinner()}</>
+              }
+            />
+          )}
+          {statusPage.radius_usage_enabled && showRadiusUsage && (
+            <div className="inner flex-row limit-info">
+              <div className="bg row">
+                {radiusUsageSpinner ? this.getSpinner() : null}
+                {settings.subscriptions && userPlan.name && (
+                  <h3>
+                    {t`CURRENT_SUBSCRIPTION_TXT`} {userPlan.name}
+                  </h3>
+                )}
+                {userChecks &&
+                  userChecks.map((check) => (
+                    <div key={check.attribute}>
+                      <progress
+                        id={check.attribute}
+                        max={check.value}
+                        value={check.result}
+                      />
+                      <p className="progress">
+                        <strong>
+                          {this.getUserCheckFormattedValue(
+                            check.result,
+                            check.type,
+                          )}
+                        </strong>{" "}
+                        of{" "}
+                        {this.getUserCheckFormattedValue(
+                          check.value,
+                          check.type,
+                        )}{" "}
+                        used
+                      </p>
+                      {settings.subscriptions &&
+                        userPlan.is_free &&
+                        planExhausted && (
+                          <p className="exhausted">
+                            <strong>{t`USAGE_LIMIT_EXHAUSTED_TXT`}</strong>
+                          </p>
+                        )}
+                    </div>
+                  ))}
+                {settings.subscriptions && userPlan.is_free && (
+                  <p>
+                    <button
+                      id="plan-upgrade-btn"
+                      type="button"
+                      className="button partial"
+                      onClick={this.toggleUpgradePlanModal}
+                    >
+                      {t`PLAN_UPGRADE_BTN_TXT`}
+                    </button>
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
           <div className="inner">
             <div className="main-column">
               <div className="inner">
                 {!internetMode &&
+                  !planExhausted &&
                   contentArr.map((text) => {
                     if (text !== "")
                       return (
@@ -967,6 +1254,7 @@ Status.contextType = LoadingContext;
 Status.defaultProps = {
   isAuthenticated: false,
   internetMode: false,
+  planExhausted: false,
 };
 Status.propTypes = {
   statusPage: PropTypes.shape({
@@ -976,13 +1264,16 @@ Status.propTypes = {
         url: PropTypes.string.isRequired,
       }),
     ),
+    radius_usage_enabled: PropTypes.bool,
     saml_logout_url: PropTypes.string,
   }).isRequired,
   language: PropTypes.string.isRequired,
+  defaultLanguage: PropTypes.string.isRequired,
   orgSlug: PropTypes.string.isRequired,
   orgName: PropTypes.string.isRequired,
   userData: PropTypes.object.isRequired,
   internetMode: PropTypes.bool,
+  planExhausted: PropTypes.bool,
   cookies: PropTypes.instanceOf(Cookies).isRequired,
   logout: PropTypes.func.isRequired,
   captivePortalLoginForm: PropTypes.shape({
@@ -1016,6 +1307,7 @@ Status.propTypes = {
   }).isRequired,
   setUserData: PropTypes.func.isRequired,
   setInternetMode: PropTypes.func.isRequired,
+  setPlanExhausted: PropTypes.func.isRequired,
   setTitle: PropTypes.func.isRequired,
   navigate: PropTypes.func.isRequired,
 };
