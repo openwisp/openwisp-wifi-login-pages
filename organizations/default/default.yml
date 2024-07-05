@@ -159,7 +159,7 @@ client:
             icon: "google.svg"
             url: "#google"
           - text:
-              en: "Login with Twitter"
+              en: "Login with X"
             icon: "twitter.svg"
             url: "#twitter"
       input_fields:
