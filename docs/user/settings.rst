@@ -273,8 +273,8 @@ It's possible to specify multiple CSS files if needed.
         - "index.css"
         - "custom.css"
 
-Adding multiple CSS files can be useful when working with `variants
-<#variants-of-the-same-configuration>`__.
+Adding multiple CSS files can be useful when working with :ref:`variants
+<wlp_org_variants>`.
 
 .. _wlp_custom_html:
 

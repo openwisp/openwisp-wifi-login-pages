@@ -99,6 +99,8 @@ For example, to remove social login links:
     (``/internals/config/default.yml``) as it is required to build and
     compile organization configurations.
 
+.. _wlp_org_variants:
+
 Variants of the Same Configuration
 ----------------------------------
 
