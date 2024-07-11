@@ -1,6 +1,9 @@
 WiFi Login Pages
 ================
 
+**Source code**: `github.com/openwisp/openwisp-wifi-login-pages
+<https://github.com/openwisp/openwisp-wifi-login-pages>`_.
+
 .. figure:: https://raw.githubusercontent.com/openwisp/openwisp-wifi-login-pages/media/docs/login-desktop.png
     :target: https://raw.githubusercontent.com/openwisp/openwisp-wifi-login-pages/media/docs/login-desktop.png
     :align: center
