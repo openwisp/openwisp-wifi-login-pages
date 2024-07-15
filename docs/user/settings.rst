@@ -235,10 +235,9 @@ phone number input or an email text input depending on whether
 
 However, it is possible to force the use of a standard text field if
 needed, for example, we may need to configure the username field to accept
-any value so that the `OpenWISP Users Authentication Backend
-<https://github.com/openwisp/openwisp-users/#authentication-backend>`__
-can then figure out if the value passed is a phone number, an email or a
-username:
+any value so that the :ref:`OpenWISP Users Authentication Backend
+<usersauthenticationbackend>` can then figure out if the value passed is a
+phone number, an email or a username:
 
 .. code-block:: yaml
 
