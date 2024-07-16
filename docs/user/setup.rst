@@ -7,8 +7,8 @@ Setup
     <https://github.com/openwisp/ansible-openwisp-wifi-login-pages>`_ for
     deploying OpenWISP WiFi Login Pages for production usage.
 
-.. contents::
-    :depth: 1
+.. contents:: **Table of contents**:
+    :depth: 2
     :local:
 
 Add Organization configuration

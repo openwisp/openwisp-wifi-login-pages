@@ -5,6 +5,10 @@ Translations are loaded at runtime from the JSON files that were compiled
 during the build process according to the available languages defined and
 taking into account any customization of the translations.
 
+.. contents:: **Table of contents**:
+    :depth: 2
+    :local:
+
 Defining Available Languages
 ----------------------------
 

@@ -3,6 +3,10 @@ Developer Installation Instructions
 
 .. include:: ../partials/developer-docs.rst
 
+.. contents:: **Table of contents**:
+    :depth: 1
+    :local:
+
 Dependencies
 ------------
 
@@ -66,10 +70,10 @@ Run tests with:
 
     yarn test # headless tests
 
-Browser Based Tests
-~~~~~~~~~~~~~~~~~~~
+Running Automated Browser Tests
+-------------------------------
 
-Prerequisites for running browser-based tests:
+Prerequisites for running browser tests:
 
 1. `Gecko driver <https://github.com/mozilla/geckodriver/releases/>`__
    needs to be installed.

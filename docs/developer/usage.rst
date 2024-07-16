@@ -1,6 +1,13 @@
 Usage
 =====
 
+.. contents:: **Table of contents**:
+    :depth: 2
+    :local:
+
+Yarn Commands
+-------------
+
 List of yarn commands:
 
 .. code-block:: shell
