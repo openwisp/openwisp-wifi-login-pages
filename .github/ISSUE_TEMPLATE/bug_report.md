@@ -26,4 +26,5 @@ If applicable, add screenshots to help explain your problem.
 **System Informatioon:**
 
 - OS: [e.g. Ubuntu 24.04 LTS]
-- Python Version: [e.g. Python 3.11.2]
+- Node.js Version: [e.g. Node.js 18.16.1]
+- Browser and Browser Version (if applicable): [e.g. Chromium v126.0.6478.126]
