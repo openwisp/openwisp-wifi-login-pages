@@ -1,5 +1,6 @@
 const BundleAnalyzerPlugin =
   require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const webpack = require("webpack");
 const CompressionPlugin = require("compression-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const {CleanWebpackPlugin} = require("clean-webpack-plugin");
@@ -9,18 +10,32 @@ const TerserPlugin = require("terser-webpack-plugin");
 const setup = require("./setup");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const dotenv = require("dotenv");
 const CURRENT_WORKING_DIR = process.cwd();
 const DEFAULT_PORT = 8080;
 const DEFAULT_SERVER_URL = "http://localhost:3030";
 let minimizers = [];
+
+const env = dotenv.config({
+  path: path.resolve(CURRENT_WORKING_DIR, ".env"),
+}).parsed;
+
+const envKeys = Object.keys(env).reduce((prev, next) => {
+  prev[`process.env.${next}`] = JSON.stringify(env[next]);
+  return prev;
+}, {});
 
 module.exports = (env, argv) => {
   // Use user-specified port; if none was given, fall back to the default
   // If the default port is already in use, webpack will automatically use
   // the next available port
   let clientP = process.env.CLIENT;
+
+  let allowedHosts = process.env.REACT_APP_ALLOWED_HOSTS.split(" ");
+
   let plugins = [
     new CleanWebpackPlugin(),
+    new webpack.DefinePlugin(envKeys),
     new HtmlWebpackPlugin({
       filename: "index.html",
       custom: setup.getExtraJsScripts(),
@@ -139,13 +154,9 @@ module.exports = (env, argv) => {
         publicPath: "/",
         directory: path.join(CURRENT_WORKING_DIR, "public"),
         watch: true,
-        disableHostCheck: true,
       },
       compress: true,
-      allowedHosts: [
-        "cleaninglimited.info",
-        "login.cleaninglimited.info",
-      ],
+      allowedHosts: allowedHosts,
       client: {
         overlay: {
           errors: true,

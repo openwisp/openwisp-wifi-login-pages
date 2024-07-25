@@ -52,3 +52,4 @@ server/config.json
 compilation-stats.json
 client/config.json
 sentry-env.json
+/.env
