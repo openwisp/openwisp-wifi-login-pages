@@ -9,9 +9,9 @@ settings:
 # configuration variables for the server app
 server:
   # put the URL of openwisp-radius here
-  host: "https://api.cleaninglimited.info/"
-  uuid: "14418dec-b933-4392-a0f4-4384ffe76eda"
-  secret_key: "l4VDxYcOoHFPY7gLvIazQQlW4vgyoRwA"
+  host: "http://localhost:8000/"
+  uuid: "887db5c6-1ee9-46c9-abcb-0513a1e0b988"
+  secret_key: "61VlNjns2Wwe6qrdXRKe53KLyQD1hseM"
   timeout: 2 #request timeout period in seconds
 
 # configuration variables for the client

@@ -139,6 +139,7 @@ module.exports = (env, argv) => {
         publicPath: "/",
         directory: path.join(CURRENT_WORKING_DIR, "public"),
         watch: true,
+        disableHostCheck: true,
       },
       compress: true,
       allowedHosts: [
