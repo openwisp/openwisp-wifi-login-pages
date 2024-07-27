@@ -30,9 +30,10 @@ openwisp-wifi-login-pages
     :target: https://github.com/openwisp/openwisp-wifi-login-pages/raw/media/docs/signup-mobile.png
     :align: center
 
------------
+----
 
-**Need a quick overview?** `Try the OpenWISP Demo <https://openwisp.org/demo.html>`_.
+**Need a quick overview?** `Try the OpenWISP Demo
+<https://openwisp.org/demo.html>`_.
 
 **No more ugly and fragmented User Experience for public/private WiFi
 services!**
@@ -42,19 +43,23 @@ for public/private WiFi services. This app replaces the classic
 captive/login page of a WiFi service by integrating the `OpenWISP Radius
 API <https://openwisp-radius.readthedocs.io/>`_.
 
-Refer to `WiFi Login Pages: Features <https://openwisp.io/docs/dev/wifi-login-pages/user/intro.html>`
-of OpenWISP documentation  for a complete overview of features.
+Refer to `WiFi Login Pages: Features
+<https://openwisp.io/docs/dev/wifi-login-pages/user/intro.html>` of
+OpenWISP documentation for a complete overview of features.
 
 Documentation
 -------------
 
-- `Developer documentation <https://openwisp.io/docs/dev/wifi-login-pages/developer/index.html>`_
-- `User documentation <https://openwisp.io/docs/dev/wifi-login-pages/index.html>`_
+- `Developer documentation
+  <https://openwisp.io/docs/dev/wifi-login-pages/developer/index.html>`_
+- `User documentation
+  <https://openwisp.io/docs/dev/wifi-login-pages/index.html>`_
 
 Contributing
 ------------
 
-Please refer to the `OpenWISP contributing guidelines <http://openwisp.io/docs/developer/contributing.html>`_.
+Please refer to the `OpenWISP contributing guidelines
+<http://openwisp.io/docs/developer/contributing.html>`_.
 
 Changelog
 ---------

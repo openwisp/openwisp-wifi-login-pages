@@ -10,15 +10,15 @@ WiFi Login Pages
     :target: https://raw.githubusercontent.com/openwisp/openwisp-wifi-login-pages/media/docs/login-desktop.png
     :align: center
 
-OpenWISP WiFi login pages provides unified and consistent user experience for
-public/private WiFi services. This app replaces the classic captive/login page of a WiFi
-service by integrating the `OpenWISP Radius API
-<https://openwisp-radius.readthedocs.io/>`_.
+OpenWISP WiFi login pages provides unified and consistent user experience
+for public/private WiFi services. This app replaces the classic
+captive/login page of a WiFi service by integrating the `OpenWISP Radius
+API <https://openwisp-radius.readthedocs.io/>`_.
 
 Refer to :doc:`user/intro` for a complete overview of features.
 
-The following diagram illustrates the role of the WiFi Login Pages module within the
-OpenWISP architecture.
+The following diagram illustrates the role of the WiFi Login Pages module
+within the OpenWISP architecture.
 
 .. figure:: images/architecture-v2-wifi-login-pages.png
     :target: ../_images/architecture-v2-wifi-login-pages.png
@@ -29,7 +29,8 @@ OpenWISP architecture.
 
 .. important::
 
-    For an enhanced viewing experience, open the image above in a new browser tab.
+    For an enhanced viewing experience, open the image above in a new
+    browser tab.
 
     Refer to :doc:`/general/architecture` for more information.
 
@@ -53,6 +54,6 @@ OpenWISP architecture.
 
 .. note::
 
-    For a demonstration of how this module is used, please refer to the following demo
-    tutorial: :doc:`WiFi Hotspot, Captive Portal (Public WiFi), Social Login
-    <../tutorials/hotspot>`.
+    For a demonstration of how this module is used, please refer to the
+    following demo tutorial: :doc:`WiFi Hotspot, Captive Portal (Public
+    WiFi), Social Login <../tutorials/hotspot>`.
