@@ -4,6 +4,7 @@ import {
   SET_USER_DATA,
   SET_PAGE_TITLE,
   SET_INTERNET_MODE,
+  SET_PLAN_EXHAUSTED,
 } from "../constants/action-types";
 
 export const authenticate = (dispatch) => (status) => {
@@ -24,4 +25,7 @@ export const setTitle = (dispatch) => (componentTitle, orgName) => {
 };
 export const setInternetMode = (dispatch) => (isEnabled) => {
   dispatch({type: SET_INTERNET_MODE, payload: isEnabled});
+};
+export const setPlanExhausted = (dispatch) => (isEnabled) => {
+  dispatch({type: SET_PLAN_EXHAUSTED, payload: isEnabled});
 };

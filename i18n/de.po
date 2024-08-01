@@ -41,6 +41,26 @@ msgstr "Logout war erfolgreich"
 msgid "PASSWORD_EXPIRED"
 msgstr "Ihr Passwort ist abgelaufen. Bitte aktualisieren Sie es."
 
+#: client/components/status/status.js:384
+msgid "SUCCESS_UPGRADE_PLAN"
+msgstr "Plan-Upgrade läuft"
+
+#: client/components/status/status.js:934
+msgid "CURRENT_SUBSCRIPTION_TXT"
+msgstr "Aktuelles Abonnement:"
+
+#: client/components/status/status.js:1000
+msgid "USAGE_LIMIT_EXHAUSTED_TXT"
+msgstr "Sie haben den verfügbaren Datenverkehr ausgeschöpft. Führen Sie ein Upgrade durch, um den Dienst weiterhin nutzen zu können."
+
+#: client/components/status/status.js:964
+msgid "PLAN_UPGRADE_BTN_TXT"
+msgstr "Aktualisierung"
+
+#: client/components/status/status.js:964
+msgid "PLAN_EXHAUSTED_TOAST"
+msgstr "Sie haben den für Ihr Paket verfügbaren Datenverkehr ausgeschöpft."
+
 #: client/components/status/status.js:467
 #: client/components/status/status.js:658
 msgid "ACCT_ACTIVE"
@@ -85,6 +105,10 @@ msgstr "Status"
 #: client/components/status/status.js:665
 msgid "LOGGED_IN"
 msgstr "Eingeloggt"
+
+#: client/components/status/status.js:665
+msgid "TRAFFIC_EXHAUSTED"
+msgstr "Der Verkehr ist erschöpft"
 
 #: client/components/status/status.js:671
 msgid "USERNAME"
@@ -547,6 +571,7 @@ msgstr ""
 "Sie haben sich erfolgreich in den WiFi Dienst eingeloggt! Jetzt haben sie "
 "Zugang zum Internet. Lassen Sie diese Seite offen, um die bestehende Session zu "
 "schließen."
+
 
 #: client/components/status/status.js:723
 msgid "YES"

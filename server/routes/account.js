@@ -5,6 +5,7 @@ import passwordResetConfirm from "../controllers/password-reset-confirm-controll
 import passwordReset from "../controllers/password-reset-controller";
 import registration from "../controllers/registration-controller";
 import getUserRadiusSessions from "../controllers/user-radius-sessions-controller";
+import getUserRadiusUsage from "../controllers/user-radius-usage-controller";
 import validateToken from "../controllers/validate-token-controller";
 import {
   createMobilePhoneToken,
@@ -23,6 +24,7 @@ router.post("/password/reset/confirm/", errorHandler(passwordResetConfirm));
 router.post("/password/reset", errorHandler(passwordReset));
 router.post("/", errorHandler(registration));
 router.get("/session/", errorHandler(getUserRadiusSessions));
+router.get("/usage/", errorHandler(getUserRadiusUsage));
 router.post("/phone/token", errorHandler(createMobilePhoneToken));
 router.get("/phone/token/status", errorHandler(mobilePhoneTokenStatus));
 router.post("/phone/verify", errorHandler(verifyMobilePhoneToken));

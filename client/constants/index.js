@@ -10,6 +10,8 @@ export const paymentStatusUrl = (orgSlug, paymentId) =>
   `${prefix}/${orgSlug}/payment/status/${paymentId}`;
 export const getUserRadiusSessionsUrl = (orgSlug) =>
   `${prefix}/${orgSlug}/account/session`;
+export const getUserRadiusUsageUrl = (orgSlug) =>
+  `${prefix}/${orgSlug}/account/usage`;
 export const createMobilePhoneTokenUrl = (orgSlug) =>
   `${prefix}/${orgSlug}/account/phone/token`;
 export const mobilePhoneTokenStatusUrl = (orgSlug) =>
@@ -19,5 +21,6 @@ export const verifyMobilePhoneTokenUrl = (orgSlug) =>
 export const mobilePhoneChangeUrl = (orgSlug) =>
   `${prefix}/${orgSlug}/account/phone/change`;
 export const plansApiUrl = `${prefix}/{orgSlug}/plan/`;
+export const upgradePlanApiUrl = `${prefix}/{orgSlug}/plan/upgrade`;
 export const modalContentUrl = (orgSlug) => `${prefix}/${orgSlug}/modal`;
 export const mainToastId = "main_toast_id";
