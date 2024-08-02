@@ -141,9 +141,14 @@ module.exports = (env, argv) => {
           use: ["file-loader"],
         },
         {
+          test: /\.(svg|png|jpg|jpeg|gif)$/,
+          type: "asset/resource",
+        },
+        {
           test: /\.json$/,
           type: "json",
         },
+
 
       ],
     },

@@ -21,3 +21,7 @@ export const mobilePhoneChangeUrl = (orgSlug) =>
 export const plansApiUrl = `${prefix}/{orgSlug}/plan/`;
 export const modalContentUrl = (orgSlug) => `${prefix}/${orgSlug}/modal`;
 export const mainToastId = "main_toast_id";
+export const initiatePaymentUrl = (orgSlug) =>
+  `${prefix}/${orgSlug}/payment/initiate`;
+export const buyPlanUrl = (orgSlug) =>
+  `${prefix}/${orgSlug}/plan/buy`;

@@ -18,17 +18,18 @@ import needsVerify from "../../utils/needs-verify";
 import loadTranslation from "../../utils/load-translation";
 import Login from "../login";
 import {
-  Registration,
-  Status,
-  PasswordChange,
-  MobilePhoneChange,
-  PasswordReset,
-  PasswordConfirm,
-  MobilePhoneVerification,
-  PaymentStatus,
-  PaymentProcess,
   ConnectedDoesNotExist,
   DoesNotExist,
+  MobileMoneyPaymentProcess,
+  MobilePhoneChange,
+  MobilePhoneVerification,
+  PasswordChange,
+  PasswordConfirm,
+  PasswordReset,
+  PaymentProcess,
+  PaymentStatus,
+  Registration,
+  Status,
 } from "./lazy-import";
 import Logout from "./lazy-logout";
 import {localStorage} from "../../utils/storage";
@@ -305,6 +306,14 @@ export default class OrganizationWrapper extends React.Component {
                     element={
                       <Suspense fallback={<Loader />}>
                         <PaymentStatus cookies={cookies} />
+                      </Suspense>
+                    }
+                  />
+                  <Route
+                    path="payment/mobile-money/process"
+                    element={
+                      <Suspense fallback={<Loader />}>
+                        <MobileMoneyPaymentProcess cookies={cookies} navigate={navigate} />
                       </Suspense>
                     }
                   />

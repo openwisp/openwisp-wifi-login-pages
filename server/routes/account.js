@@ -8,8 +8,8 @@ import getUserRadiusSessions from "../controllers/user-radius-sessions-controlle
 import validateToken from "../controllers/validate-token-controller";
 import {
   createMobilePhoneToken,
-  verifyMobilePhoneToken,
   mobilePhoneTokenStatus,
+  verifyMobilePhoneToken,
 } from "../controllers/mobile-phone-token-controller";
 import mobilePhoneNumberChange from "../controllers/mobile-phone-number-change-controller";
 import errorHandler from "../utils/error-handler";

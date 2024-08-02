@@ -23,6 +23,7 @@ export default class PaymentStatus extends React.Component {
     const {cookies, orgSlug, setUserData, logout, params, settings, language} =
       this.props;
     const {status} = params;
+
     let {userData} = this.props;
     const {setLoading} = this.context;
 
@@ -43,8 +44,9 @@ export default class PaymentStatus extends React.Component {
 
     ({userData} = this.props);
     const {method, is_verified: isVerified} = userData;
+
     // flag user to repeat login in order to restart session with new radius group
-    if (status === "success" && method === "bank_card" && isVerified === true) {
+    if (status === "success" && settings.payment_methods.includes(method) && isVerified === true) {
       setUserData({
         ...userData,
         mustLogin: !settings.payment_requires_internet,
@@ -53,7 +55,7 @@ export default class PaymentStatus extends React.Component {
       });
     } else if (
       status === "draft" &&
-      method === "bank_card" &&
+      settings.payment_methods.includes(method) &&
       isVerified === false
     ) {
       setUserData({
@@ -80,16 +82,17 @@ export default class PaymentStatus extends React.Component {
   };
 
   render() {
-    const {orgSlug, params, isAuthenticated, userData} = this.props;
+    const {orgSlug, params, isAuthenticated, userData, settings} = this.props;
     const {status} = params;
     const {method, is_verified: isVerified} = userData;
     const redirectToStatus = () => <Navigate to={`/${orgSlug}/status`} />;
     const acceptedValues = ["success", "failed", "draft"];
+    // const acceptedValues = ["success", "failed", "draft"];
     const {isTokenValid} = this.state;
 
     // not registered with bank card flow
     if (
-      (method && method !== "bank_card") ||
+      (method && !settings.payment_methods.includes(method)) ||
       !acceptedValues.includes(status)
     ) {
       return redirectToStatus();
@@ -105,11 +108,13 @@ export default class PaymentStatus extends React.Component {
       return redirectToStatus();
     }
 
+
     // draft case
     // if (isAuthenticated === false && status === "draft") {
     if (status === "draft") {
       return this.renderDraft();
     }
+
 
     // success case
     if (isTokenValid === true && status === "success" && isVerified === true) {
@@ -120,12 +125,16 @@ export default class PaymentStatus extends React.Component {
     return this.renderFailed();
   }
 
-  paymentProceedHandler() {
-    const {authenticate, setUserData, userData, settings} = this.props;
+  async paymentProceedHandler() {
+    const {authenticate, setUserData, orgSlug, userData, settings} = this.props;
+    const {method, is_verified: isVerified, payment_id} = userData;
+
     // Payment gateway may require internet access.
     // Since, captive portal login is handled by the Status component,
     // the user is navigated to the "/status" for captive portal login
     // which then redirects the user to the payment gateway.
+
+
     if (settings.payment_requires_internet) {
       setUserData({
         ...userData,
@@ -135,12 +144,20 @@ export default class PaymentStatus extends React.Component {
     authenticate(true);
   }
 
+
   renderDraft() {
-    const {orgSlug, page = {}, settings} = this.props;
+    const {orgSlug, page = {}, settings, userData} = this.props;
+    const {method, is_verified: isVerified} = userData;
     const {timeout = 5, max_attempts: maxAttempts = 3} = page;
-    const payProceedUrl = settings.payment_requires_internet
-      ? `/${orgSlug}/status`
-      : `/${orgSlug}/payment/process`;
+    let payProceedUrl = `/${orgSlug}/payment/process`;
+    if (method && method === "mpesa" && !isVerified) {
+      payProceedUrl = `/${orgSlug}/payment/mobile-money/process`;
+    } else {
+      payProceedUrl = settings.payment_requires_internet
+        ? `/${orgSlug}/status`
+        : `/${orgSlug}/payment/process`;
+
+    }
 
     return (
       <div className="container content">
@@ -230,6 +247,7 @@ PaymentStatus.propTypes = {
   cookies: PropTypes.instanceOf(Cookies).isRequired,
   settings: PropTypes.shape({
     payment_requires_internet: PropTypes.bool,
+    payment_methods: PropTypes.array,
   }).isRequired,
   params: PropTypes.shape({
     status: PropTypes.string,

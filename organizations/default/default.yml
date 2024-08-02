@@ -12,7 +12,7 @@ server:
   host: "http://localhost:8000/"
   uuid: "887db5c6-1ee9-46c9-abcb-0513a1e0b988"
   secret_key: "61VlNjns2Wwe6qrdXRKe53KLyQD1hseM"
-  timeout: 2 #request timeout period in seconds
+  timeout: 10 #request timeout period in seconds
 
 # configuration variables for the client
 # Path of all the assets should be defined relative to the organization's folder

@@ -13,6 +13,8 @@ const paths = {
   mobile_phone_number_change: "/account/phone/change",
   plans: "/plan",
   payment_status: "/payment/{paymentId}/status",
+  initiate_payment: "/payment/initiate",
+  buy_plan: "/plan/buy",
 };
 
 const reverse = (name, orgSlug) => {
@@ -23,6 +25,9 @@ const reverse = (name, orgSlug) => {
   }
   if (name === "plans" || name === "payment_status") {
     prefix = prefix.replace("/radius/", "/subscriptions/");
+  }
+  if (name === "initiate_payment" || name === "buy_plan") {
+    prefix = prefix.replace("/radius/", "/payments/");
   }
   return `${prefix.replace("{orgSlug}", orgSlug)}${path}`;
 };

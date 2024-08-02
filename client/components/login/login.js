@@ -307,7 +307,11 @@ export default class Login extends React.Component {
     delete data.key; // eslint-disable-line no-param-reassign
     setUserData({...data, auth_token, mustLogin: true});
     // if requires payment redirect to payment status component
+    console.log(data);
     if (data.method === "bank_card" && data.is_verified === false) {
+      redirectToPayment(orgSlug, navigate);
+    }
+    if (data.method === "mpesa" && data.is_verified === false) {
       redirectToPayment(orgSlug, navigate);
     }
     authenticate(true);

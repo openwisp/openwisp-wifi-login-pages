@@ -355,9 +355,7 @@ msgstr "V polje vpišite 6-mestno številčno kodo"
 
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:228
 msgid "RESEND_TOKEN_LBL"
-msgstr ""
-msgstr "Če niste prejeli SMS sporočila s potrditveno kodo, jo ponovno "
-"zahtevajte s klikom na gumb."
+msgstr "Če niste prejeli SMS sporočila s potrditveno kodo, jo ponovno zahtevajte s klikom na gumb."
 
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:228
 msgid "RESEND_TOKEN_WAIT_LBL${ cooldown }"

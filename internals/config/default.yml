@@ -9,6 +9,8 @@ settings:
   payment_iframe: false
   payment_requires_internet: false
   passwordless_auth_token_name: "sesame"
+  payment_methods:
+    - bank_card
 
 # configuration variables for the server app
 server:

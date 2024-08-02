@@ -11,7 +11,7 @@ import {Cookies} from "react-cookie";
 import {Link} from "react-router-dom";
 import {toast} from "react-toastify";
 import InfinteScroll from "react-infinite-scroll-component";
-import {t, gettext} from "ttag";
+import {gettext, t} from "ttag";
 import {getUserRadiusSessionsUrl, mainToastId} from "../../constants";
 import LoadingContext from "../../utils/loading-context";
 import getText from "../../utils/get-text";
@@ -34,6 +34,7 @@ export default class Status extends React.Component {
     this.loginFormRef = React.createRef();
     this.logoutIframeRef = React.createRef();
     this.logoutFormRef = React.createRef();
+    this.intiniatePaymentFormRef = React.createRef();
     this.state = {
       username: "",
       password: "",
@@ -135,6 +136,9 @@ export default class Status extends React.Component {
         method,
         is_verified: isVerified,
       } = userData;
+      console.log(method);
+      console.log(is_active);
+      console.log(isVerified);
       const userInfo = {};
       userInfo.status = "";
       userInfo.email = email;
@@ -164,6 +168,7 @@ export default class Status extends React.Component {
       }
 
       const macaddr = cookies.get(`${orgSlug}_macaddr`);
+
       if (macaddr) {
         const params = {macaddr};
         await this.getUserActiveRadiusSessions(params);
@@ -184,6 +189,10 @@ export default class Status extends React.Component {
         ) {
           this.finalOperations();
           return;
+        } else if (method === "mpesa" &&
+          isVerified === false) {
+          this.mpesaFinalOperations();
+          return;
         }
         this.notifyCpLogin(userData);
         this.loginFormRef.current.submit();
@@ -198,6 +207,51 @@ export default class Status extends React.Component {
     clearInterval(this.intervalId);
     window.removeEventListener("resize", this.updateScreenWidth);
   };
+
+  async mpesaFinalOperations() {
+    const {userData, orgSlug, settings, navigate, setUserData} = this.props;
+    const {setLoading} = this.context;
+    console.log("this is running");
+    // if the user needs bank card verification,
+    // redirect to payment page and stop here
+    if (needsVerify("mpesa", userData, settings)) {
+      // avoid redirect loop from proceed to payment
+      if (settings.payment_requires_internet && userData.proceedToPayment) {
+        // reset proceedToPayment
+        setUserData({
+          ...userData,
+          proceedToPayment: false,
+        });
+        navigate(`/${orgSlug}/payment/mobile-money/process`);
+        return;
+      }
+      navigate(`/${orgSlug}/payment/mobile-money/process`);
+      return;
+    }
+
+    // if the user is not verified, do not remove the
+    // loading overlay unless verification is not needed
+    if (
+      userData.is_verified ||
+      !needsVerify("mobile_phone", userData, settings)
+    ) {
+      this.dismissCpLogin();
+      setLoading(false);
+      // if verification is needed, stop here
+    } else {
+      return;
+    }
+
+    // if everything went fine, load the user sessions
+    await this.getUserActiveRadiusSessions();
+    await this.getUserPassedRadiusSessions();
+    this.intervalId = setInterval(() => {
+      this.getUserActiveRadiusSessions();
+    }, 60000);
+    window.addEventListener("resize", this.updateScreenWidth);
+    this.updateSpinner();
+  }
+
 
   async finalOperations() {
     const {userData, orgSlug, settings, navigate, setUserData} = this.props;

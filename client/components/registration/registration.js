@@ -8,12 +8,12 @@ import Select from "react-select";
 import {Link, Route, Routes} from "react-router-dom";
 import {toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {t, gettext} from "ttag";
+import {gettext, t} from "ttag";
 import "react-phone-input-2/lib/style.css";
 import countries from "./countries.json";
 import LoadingContext from "../../utils/loading-context";
 import PasswordToggleIcon from "../../utils/password-toggle";
-import {mainToastId, registerApiUrl, plansApiUrl} from "../../constants";
+import {mainToastId, plansApiUrl, registerApiUrl} from "../../constants";
 import getErrorText from "../../utils/get-error-text";
 import logError from "../../utils/log-error";
 import handleChange from "../../utils/handle-change";
@@ -200,7 +200,7 @@ export default class Registration extends React.Component {
     // and no payment is required
     if (
       settings.mobile_phone_verification &&
-      postData.requires_payment !== true
+      postData.requires_payment === true
     ) {
       postData.phone_number = phone_number;
       postData.username = phone_number;
@@ -427,6 +427,7 @@ export default class Registration extends React.Component {
       countrySelected,
       hidePassword,
     } = this.state;
+
     return (
       <>
         <div className="container content" id="registration">
@@ -443,7 +444,7 @@ export default class Registration extends React.Component {
                   {(plans.length === 0 ||
                     (plans.length > 0 && selectedPlan !== null)) && (
                     <>
-                      {!this.isPlanIdentityVerifier() &&
+                      {this.isPlanIdentityVerifier() &&
                         settings.mobile_phone_verification &&
                         input_fields.phone_number && (
                           <div className="row phone-number">
@@ -541,7 +542,7 @@ export default class Registration extends React.Component {
                         />
                       </div>
 
-                      {this.isPlanIdentityVerifier() && (
+                      {!this.isPlanIdentityVerifier() && (
                         <div className="row username">
                           <label htmlFor="username">
                             {t`USERNAME_REG_LBL`}

@@ -36,3 +36,6 @@ export const ConnectedDoesNotExist = React.lazy(() =>
 export const DoesNotExist = React.lazy(() =>
   import(/* webpackChunkName: 'DoesNotExist' */ "../404/404"),
 );
+export const MobileMoneyPaymentProcess = React.lazy(() =>
+  import(/* webpackChunkName: 'PaymentProcess' */ "../mobile-money-payment-process"),
+);

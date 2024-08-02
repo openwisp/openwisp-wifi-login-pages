@@ -24,6 +24,14 @@ const needsVerify = (method, user, settings) => {
     );
   }
 
+  if (method === "mpesa") {
+    return Boolean(
+      user.method === "mpesa" &&
+      user.is_verified === false &&
+      settings.subscriptions,
+    );
+  }
+
   return false;
 };
 export default needsVerify;
