@@ -32,7 +32,7 @@ jobs:
           restore-keys: ${{ runner.os }}-yarn-
 
       - name: Set up Python 3.10
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
 
@@ -72,7 +72,7 @@ jobs:
         run: yarn coverage
 
       - name: Set up Python 3.10
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
 
