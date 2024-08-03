@@ -50,10 +50,10 @@ OpenWISP documentation for a complete overview of features.
 Documentation
 -------------
 
+- `Usage documentation
+  <https://openwisp.io/docs/dev/wifi-login-pages/>`_
 - `Developer documentation
   <https://openwisp.io/docs/dev/wifi-login-pages/developer/index.html>`_
-- `User documentation
-  <https://openwisp.io/docs/dev/wifi-login-pages/index.html>`_
 
 Contributing
 ------------
