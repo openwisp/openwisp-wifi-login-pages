@@ -31,6 +31,7 @@ import Contact from "../contact-box";
 import validateToken from "../../utils/validate-token";
 import getError from "../../utils/get-error";
 import getLanguageHeaders from "../../utils/get-language-headers";
+import getPaymentStatusRedirectUrl from "../../utils/get-payment-status";
 
 const PhoneInput = React.lazy(() =>
   import(/* webpackChunkName: 'PhoneInput' */ "react-phone-input-2"),
@@ -41,7 +42,9 @@ class MobileMoneyPaymentProcess extends React.Component {
     super(props);
     this.state = {
       phone_number: "",
+      order: "",
       errors: {},
+      payment_id: "",
       activeTab: 1,
       passedSteps: [1],
       modifiedSteps: [1],
@@ -74,6 +77,7 @@ class MobileMoneyPaymentProcess extends React.Component {
       const {phone_number} = userData;
       this.setState({phone_number});
     }
+
     setLoading(false);
     const plansUrl = plansApiUrl.replace("{orgSlug}", orgSlug);
 
@@ -91,6 +95,7 @@ class MobileMoneyPaymentProcess extends React.Component {
       })
         .then((response) => {
           this.setState({plans: response.data, plansFetched: true});
+
           setLoading(false);
         })
         .catch((error) => {
@@ -99,6 +104,8 @@ class MobileMoneyPaymentProcess extends React.Component {
         });
     }
     this.autoSelectFirstPlan();
+    const wait_after = 10000;
+    setInterval(this.getPaymentStatus, wait_after);
   }
 
   async componentDidUpdate(prevProps) {
@@ -114,6 +121,41 @@ class MobileMoneyPaymentProcess extends React.Component {
       setLoading(true);
     }
   }
+
+  getPaymentStatus = async () => {
+    const {userData, orgSlug, setUserData, navigate} = this.props;
+    const {setLoading} = this.context;
+    const {userplan} = userData;
+    if (!userplan) {
+      return;
+    }
+    if (userplan.status && userplan.status === true) {
+      return;
+    }
+    const {active_order} = userplan;
+    if (!active_order) {
+      return;
+    }
+    if (active_order.status !== "waiting") {
+      return;
+    }
+    const paymentId = active_order.payment_id;
+    if (!paymentId) {
+      return;
+    }
+    const redirectUrl = await getPaymentStatusRedirectUrl(
+      orgSlug,
+      paymentId,
+      {
+        tokenType: "Bearer",
+        tokenValue: userData.auth_token,
+      },
+      setUserData,
+      userData,
+    );
+    console.log(redirectUrl);
+    // navigate(redirectUrl);
+  };
 
   getPlan = (plan, index) => {
     /* disable ttag */
@@ -137,16 +179,22 @@ class MobileMoneyPaymentProcess extends React.Component {
   };
 
   getPlanSelection = () => {
-    const {registration} = this.props;
+    const {userData} = this.props;
     const {plans, selectedPlan} = this.state;
+    const {userplan} = userData;
     const auto_select_first_plan = false;
+
     let index = 0;
     return (
       <div className={`plans ${auto_select_first_plan ? "hidden" : ""}`}>
         <p className="intro">{t`PLAN_SETTING_TXT`}.</p>
         {plans.map((plan) => {
           const currentIndex = String(index);
+
           let planClass = "plan";
+          if (userplan && userplan.active_order && selectedPlan === null && userplan.active_order && userplan.active_order.plan === plan.id) {
+            this.changePlan({target: {value: currentIndex}});
+          }
           if (selectedPlan === currentIndex) {
             planClass += " active";
           } else if (selectedPlan !== null && selectedPlan !== currentIndex) {
@@ -232,7 +280,7 @@ class MobileMoneyPaymentProcess extends React.Component {
       url,
       data: qs.stringify(data),
     })
-      .then((response) => {
+      .then(async (response) => {
         this.setState({
           errors: {},
         });
@@ -240,6 +288,7 @@ class MobileMoneyPaymentProcess extends React.Component {
         setLoading(false);
         toast.info("Payment has been initiated");
         toast.info("You will receive an stp push on your phone");
+
         // navigate(`/${orgSlug}/mobile-phone-verification`);
       })
       .catch((error) => {
@@ -278,28 +327,55 @@ class MobileMoneyPaymentProcess extends React.Component {
     }
   }
 
+  renderWaitingForPayment() {
+    const {userData} = this.props;
+    const {phone_number, order} = userData;
+    const {userplan} = userData;
+
+
+    return (
+      <div className="container">
+        <div className="row">
+          <div className="col-xl-8">
+            <div className="card">
+
+              <div className="card-body">
+                <div className="tab-pane fade show active" id="pills-finish"
+                     role="tabpanel" aria-labelledby="pills-finish-tab">
+                  <div className="text-center py-5">
+
+                    <div className="mb-4">
+                      <lord-icon src="https://cdn.lordicon.com/lupuorrc.json" trigger="loop"
+                                 colors="primary:#25a0e2,secondary:#00bd9d"
+                                 style={{width: "120px", height: "120px"}}></lord-icon>
+                    </div>
+                    <h5>You payment is being processed</h5>
+                    <p className="text-muted">You will receive an notification on {phone_number} to pay your internet
+                      plan. You will automatically have internet access once payment is successful.</p>
+
+                    <h3 className="fw-semibold">Order
+                      ID: {(userplan && userplan.active_order ? userplan.active_order.id : "N/A")}<a
+                        className="text-decoration-underline"></a></h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   renderPaymentForm() {
     const {activeTab, modifiedSteps, passedSteps, errors, phone_number, plans} = this.state;
     const {orgSlug, mobile_money_payment_form, isAuthenticated, userData, settings} = this.props;
-
+    const {userplan} = userData;
     const {input_fields} = mobile_money_payment_form;
-    const toggledeletemodal = () => {
-      setDeleteModal(!deletemodal);
-    };
 
-    const togglemodal = () => {
-      setModal(!modal);
-    };
 
-    function handleSelectCountry(selectedCountry) {
-      setselectedCountry(selectedCountry);
+    if (userplan && userplan.active_order && userplan.active_order.status === "waiting") {
+      return this.renderWaitingForPayment();
     }
-
-    function handleSelectState(selectedState) {
-      setselectedState(selectedState);
-    }
-
-
     return (
       <div className="container">
         <div className="row">

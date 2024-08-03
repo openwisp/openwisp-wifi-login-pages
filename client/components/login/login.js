@@ -303,15 +303,15 @@ export default class Login extends React.Component {
     toast.success(t`LOGIN_SUCCESS`, {
       toastId: mainToastId,
     });
-    const {key: auth_token} = data;
+    const {key: auth_token, userplan} = data;
     delete data.key; // eslint-disable-line no-param-reassign
     setUserData({...data, auth_token, mustLogin: true});
     // if requires payment redirect to payment status component
-    console.log(data);
-    if (data.method === "bank_card" && data.is_verified === false) {
+
+    if (data.method === "bank_card" && userplan.active === false) {
       redirectToPayment(orgSlug, navigate);
     }
-    if (data.method === "mpesa" && data.is_verified === false) {
+    if (data.method === "mpesa" && userplan.active === false) {
       redirectToPayment(orgSlug, navigate);
     }
     authenticate(true);

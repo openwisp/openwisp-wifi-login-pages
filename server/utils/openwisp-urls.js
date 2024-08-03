@@ -12,7 +12,7 @@ const paths = {
   verify_mobile_phone_token: "/account/phone/verify",
   mobile_phone_number_change: "/account/phone/change",
   plans: "/plan",
-  payment_status: "/payment/{paymentId}/status",
+  payment_status: "/payment/{paymentId}",
   initiate_payment: "/payment/initiate",
   buy_plan: "/plan/buy",
 };
@@ -23,10 +23,10 @@ const reverse = (name, orgSlug) => {
   if (!path) {
     throw new Error(`Reverse for path "${name}" not found.`);
   }
-  if (name === "plans" || name === "payment_status") {
+  if (name === "plans") {
     prefix = prefix.replace("/radius/", "/subscriptions/");
   }
-  if (name === "initiate_payment" || name === "buy_plan") {
+  if (name === "initiate_payment" || name === "buy_plan" || name === "payment_status") {
     prefix = prefix.replace("/radius/", "/payments/");
   }
   return `${prefix.replace("{orgSlug}", orgSlug)}${path}`;

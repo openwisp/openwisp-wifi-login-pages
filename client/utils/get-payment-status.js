@@ -4,15 +4,15 @@ import {toast} from "react-toastify";
 import {paymentStatusUrl} from "../constants";
 import logError from "./log-error";
 
-export const getPaymentStatus = async (orgSlug, paymentId, tokenInfo) => {
+export const getPaymentStatus = async (orgSlug, paymentId, auth_token) => {
   const url = paymentStatusUrl(orgSlug, paymentId);
-  const {tokenType, tokenValue} = tokenInfo;
+  console.log(auth_token);
   try {
     const response = await axios({
-      method: "post",
+      method: "get",
       headers: {
         "content-type": "application/x-www-form-urlencoded",
-        Authorization: `${tokenType} ${tokenValue}`,
+        Authorization: `Bearer ${auth_token}`,
       },
       url,
     });
@@ -41,7 +41,7 @@ const getPaymentStatusRedirectUrl = async (
   setUserData,
   userData,
 ) => {
-  const paymentStatus = await getPaymentStatus(orgSlug, paymentId, tokenInfo);
+  const paymentStatus = await getPaymentStatus(orgSlug, paymentId, userData.auth_token);
   switch (paymentStatus) {
     case "waiting":
       return `/${orgSlug}/payment/draft`;

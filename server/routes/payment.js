@@ -5,7 +5,7 @@ import initiatePayment from "../controllers/initiate-payment-controller";
 
 const router = Router({mergeParams: true});
 
-router.post("/status/:paymentId", errorHandler(payments));
+router.get("/status/:paymentId", errorHandler(payments));
 router.post("/initiate", errorHandler(initiatePayment));
 
 
