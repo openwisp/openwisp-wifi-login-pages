@@ -88,9 +88,7 @@ except Organization.DoesNotExist:
     sys.exit(2)
 
 user = User.objects.create_user(
-    username=test_user_email,
-    password=test_user_password,
-    email=test_user_email
+    username=test_user_email, password=test_user_password, email=test_user_email
 )
 OrganizationUser.objects.create(organization=org, user=user)
 User.objects.update(password_updated=now().date())
@@ -101,9 +99,6 @@ if expired_password_tests:
         username=data['email'],
         password=data['password'],
         email=data['email'],
-        password_updated=now().date()-timedelta(days=180)
+        password_updated=now().date() - timedelta(days=180),
     )
-    OrganizationUser.objects.create(
-        organization=org,
-        user=expired_password_user
-    )
+    OrganizationUser.objects.create(organization=org, user=expired_password_user)
