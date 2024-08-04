@@ -25,6 +25,10 @@ const needsVerify = (method, user, settings) => {
   }
 
   if (method === "mpesa") {
+    const {userplan} = user;
+    if (userplan && userplan.active) {
+      return userplan.active;
+    }
     return Boolean(
       user.method === "mpesa" &&
       user.is_verified === false &&

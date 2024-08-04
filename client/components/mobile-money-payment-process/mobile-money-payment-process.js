@@ -31,7 +31,7 @@ import Contact from "../contact-box";
 import validateToken from "../../utils/validate-token";
 import getError from "../../utils/get-error";
 import getLanguageHeaders from "../../utils/get-language-headers";
-import getPaymentStatusRedirectUrl from "../../utils/get-payment-status";
+import {getPaymentStatus} from "../../utils/get-payment-status";
 
 const PhoneInput = React.lazy(() =>
   import(/* webpackChunkName: 'PhoneInput' */ "react-phone-input-2"),
@@ -45,6 +45,7 @@ class MobileMoneyPaymentProcess extends React.Component {
       order: "",
       errors: {},
       payment_id: "",
+      payment_status: "",
       activeTab: 1,
       passedSteps: [1],
       modifiedSteps: [1],
@@ -104,8 +105,7 @@ class MobileMoneyPaymentProcess extends React.Component {
         });
     }
     this.autoSelectFirstPlan();
-    const wait_after = 10000;
-    setInterval(this.getPaymentStatus, wait_after);
+    // this.intervalId =setInterval(this.getPaymentStatus, 60000);
   }
 
   async componentDidUpdate(prevProps) {
@@ -122,38 +122,50 @@ class MobileMoneyPaymentProcess extends React.Component {
     }
   }
 
+  componentWillUnmount = () => {
+    clearInterval(this.intervalId);
+    window.removeEventListener("resize", this.updateScreenWidth);
+  };
+
   getPaymentStatus = async () => {
     const {userData, orgSlug, setUserData, navigate} = this.props;
     const {setLoading} = this.context;
+    const {payment_id, payment_status} = this.state;
     const {userplan} = userData;
-    if (!userplan) {
+
+    if (!payment_id) {
       return;
     }
-    if (userplan.status && userplan.status === true) {
+    if (payment_status && payment_status === "success") {
       return;
     }
-    const {active_order} = userplan;
-    if (!active_order) {
-      return;
+
+    const paymentStatus = await getPaymentStatus(orgSlug, payment_id, userData.auth_token);
+    console.log(paymentStatus);
+    this.setState({
+      "payment_status": paymentStatus,
+    });
+    switch (paymentStatus) {
+      case "waiting":
+        return;
+      case "success":
+        setUserData({
+          ...userData,
+          is_verified: true,
+          payment_url: null,
+          mustLogin: true,
+        });
+        toast.success("Payment was successfully");
+        return navigate(`/${orgSlug}/payment/${paymentStatus}`);
+      case "failed":
+        setUserData({...userData, payment_url: null});
+        toast.info("The payment failed");
+        return navigate(`/${orgSlug}/payment/${paymentStatus}`);
+      default:
+        // Request failed
+        toast.error(t`ERR_OCCUR`);
+        setUserData({...userData, payment_url: null});
     }
-    if (active_order.status !== "waiting") {
-      return;
-    }
-    const paymentId = active_order.payment_id;
-    if (!paymentId) {
-      return;
-    }
-    const redirectUrl = await getPaymentStatusRedirectUrl(
-      orgSlug,
-      paymentId,
-      {
-        tokenType: "Bearer",
-        tokenValue: userData.auth_token,
-      },
-      setUserData,
-      userData,
-    );
-    console.log(redirectUrl);
     // navigate(redirectUrl);
   };
 
@@ -284,9 +296,17 @@ class MobileMoneyPaymentProcess extends React.Component {
         this.setState({
           errors: {},
         });
-        setUserData({...userData, status: response.status, phone_number});
+        console.log(response);
+        // setUserData({...userData,phone_number,status: response.status,payment_id:response.data.payment.id,payment_status:response.data.payment.status});
+        setUserData({...userData, phone_number, status: response.status, payment_id: response.data.payment.id});
+        this.setState({
+          payment_id: response.data.payment.id,
+          payment_status: response.data.payment.status,
+        });
+        this.intervalId = setInterval(this.getPaymentStatus, 60000);
         setLoading(false);
-        toast.info("Payment has been initiated");
+        this.toggleTab(3);
+        toast.info(response.data.payment.message);
         toast.info("You will receive an stp push on your phone");
 
         // navigate(`/${orgSlug}/mobile-phone-verification`);
@@ -334,14 +354,7 @@ class MobileMoneyPaymentProcess extends React.Component {
 
 
     return (
-      <div className="container">
-        <div className="row">
-          <div className="col-xl-8">
-            <div className="card">
 
-              <div className="card-body">
-                <div className="tab-pane fade show active" id="pills-finish"
-                     role="tabpanel" aria-labelledby="pills-finish-tab">
                   <div className="text-center py-5">
 
                     <div className="mb-4">
@@ -357,12 +370,7 @@ class MobileMoneyPaymentProcess extends React.Component {
                       ID: {(userplan && userplan.active_order ? userplan.active_order.id : "N/A")}<a
                         className="text-decoration-underline"></a></h3>
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
     );
   }
 
@@ -372,10 +380,6 @@ class MobileMoneyPaymentProcess extends React.Component {
     const {userplan} = userData;
     const {input_fields} = mobile_money_payment_form;
 
-
-    if (userplan && userplan.active_order && userplan.active_order.status === "waiting") {
-      return this.renderWaitingForPayment();
-    }
     return (
       <div className="container">
         <div className="row">
@@ -416,7 +420,7 @@ class MobileMoneyPaymentProcess extends React.Component {
                           }}
                           id="pills-payment-tab" data-bs-toggle="pill" data-bs-target="#pills-payment" type="button"
                           role="tab" aria-controls="pills-payment" aria-selected="false" data-position="2"
-                          tabindex="-1"><i
+                          tabIndex="-1"><i
                           className="ri-bank-card-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i>
                           Payment Info
                         </button>
@@ -574,21 +578,7 @@ class MobileMoneyPaymentProcess extends React.Component {
 
                     <div className={"tab-pane fade " + (activeTab === 3 ? "show active" : "")} id="pills-finish"
                          role="tabpanel" aria-labelledby="pills-finish-tab">
-                      <div className="text-center py-5">
-
-                        <div className="mb-4">
-                          <lord-icon src="https://cdn.lordicon.com/lupuorrc.json" trigger="loop"
-                                     colors="primary:#25a0e2,secondary:#00bd9d"
-                                     style={{width: "120px", height: "120px"}}></lord-icon>
-                        </div>
-                        <h5>Thank you ! Your Order is Completed !</h5>
-                        <p className="text-muted">You will receive an order confirmation email
-                          with
-                          details of your order.</p>
-
-                        <h3 className="fw-semibold">Order ID: <a href="apps-ecommerce-order-details.html"
-                                                                 className="text-decoration-underline">VZ2451</a></h3>
-                      </div>
+                      {this.renderWaitingForPayment()}
                     </div>
 
                   </div>
@@ -624,21 +614,21 @@ class MobileMoneyPaymentProcess extends React.Component {
     // if (isVerified){
     //   return redirectToStatus();
     // }
-
-    //not registered with bank card flow
+    //
+    // //not registered with bank card flow
     // if (
     //   (method && method !== "mpesa") ||
     //   isVerified === true
     // ) {
     //   return redirectToStatus();
     // }
-
-    // likely somebody opening this page by mistake
+    //
+    // // likely somebody opening this page by mistake
     // if (isAuthenticated === false) {
     //   return redirectToStatus();
     // }
-
-    // not registered with bank card flow
+    //
+    // // not registered with bank card flow
     // if (
     //   (method && !settings.payment_methods.includes(method)) ||
     //   !acceptedValues.includes(status)

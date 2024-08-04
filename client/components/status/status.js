@@ -211,10 +211,18 @@ export default class Status extends React.Component {
   async mpesaFinalOperations() {
     const {userData, orgSlug, settings, navigate, setUserData} = this.props;
     const {setLoading} = this.context;
-    console.log("this is running");
+    const {userplan} = userData;
+
+    if (userplan) {
+      setUserData({
+        ...userData,
+        is_verified: Boolean(userplan.active),
+      });
+    }
+
     // if the user needs bank card verification,
     // redirect to payment page and stop here
-    if (needsVerify("mpesa", userData, settings)) {
+    if (!userplan.active) {
       // avoid redirect loop from proceed to payment
       if (settings.payment_requires_internet && userData.proceedToPayment) {
         // reset proceedToPayment
