@@ -141,7 +141,7 @@ class MobileMoneyPaymentProcess extends React.Component {
     }
 
     const paymentStatus = await getPaymentStatus(orgSlug, payment_id, userData.auth_token);
-    console.log(paymentStatus);
+
     this.setState({
       "payment_status": paymentStatus,
     });
@@ -296,7 +296,7 @@ class MobileMoneyPaymentProcess extends React.Component {
         this.setState({
           errors: {},
         });
-        console.log(response);
+
         // setUserData({...userData,phone_number,status: response.status,payment_id:response.data.payment.id,payment_status:response.data.payment.status});
         setUserData({...userData, phone_number, status: response.status, payment_id: response.data.payment.id});
         this.setState({
@@ -381,7 +381,6 @@ class MobileMoneyPaymentProcess extends React.Component {
     const {input_fields} = mobile_money_payment_form;
 
     return (
-      <div className="container">
         <div className="row">
           <div className="col-xl-8">
             <div className="card">
@@ -593,8 +592,6 @@ class MobileMoneyPaymentProcess extends React.Component {
 
         </div>
 
-
-      </div>
     );
   }
 
@@ -652,89 +649,7 @@ class MobileMoneyPaymentProcess extends React.Component {
     return (
       <div className="container content" id="mobile-phone-change">
         <div className="inner">
-          <form
-            className="main-column"
-            id="mobile-phone-change-form"
-            onSubmit={this.handleSubmit}
-          >
-            <div className="inner">
-              <h2 className="row">{t`PAY_REQ`}</h2>
-
-              {getError(errors)}
-              <div className="row phone-number">
-                <label htmlFor="phone-number">{t`PHONE_LBL`}</label>
-                {getError(errors, "phone_number")}
-                <Suspense
-                  fallback={
-                    <input
-                      name="phone_number"
-                      className="form-control input"
-                      value={phone_number}
-                      onChange={(value) =>
-                        this.handleChange({
-                          target: {name: "phone_number", value: `+${value}`},
-                        })
-                      }
-                      onKeyDown={(event) => {
-                        submitOnEnter(event, this, "mobile-phone-change-form");
-                      }}
-                      placeholder={t`PHONE_PHOLD`}
-                      id="phone-number"
-                    />
-                  }
-                >
-                  <PhoneInput
-                    name="phone_number"
-                    onlyCountries={
-                      input_fields.phone_number.only_countries || []
-                    }
-                    preferredCountries={
-                      input_fields.phone_number.preferred_countries || []
-                    }
-                    excludeCountries={
-                      input_fields.phone_number.exclude_countries || []
-                    }
-                    value={phone_number}
-                    onChange={(value) =>
-                      this.handleChange({
-                        target: {name: "phone_number", value: `+${value}`},
-                      })
-                    }
-                    onKeyDown={(event) => {
-                      submitOnEnter(event, this, "mobile-phone-change-form");
-                    }}
-                    placeholder={t`PHONE_PHOLD`}
-                    enableSearch={Boolean(
-                      input_fields.phone_number.enable_search,
-                    )}
-                    inputProps={{
-                      name: "phone_number",
-                      id: "phone-number",
-                      className: `form-control input ${
-                        errors.phone_number ? "error" : ""
-                      }`,
-                      required: true,
-                    }}
-                  />
-                </Suspense>
-              </div>
-
-              <div className="row submit">
-                <input
-                  type="submit"
-                  className="button full"
-                  value={t`PAY_PROC_BTN`}
-                />
-              </div>
-
-              <div className="row cancel">
-                <Link className="button full" to={`/${orgSlug}/status`}>
-                  {t`CANCEL`}
-                </Link>
-              </div>
-            </div>
-          </form>
-
+          {this.renderPaymentForm()}
           <Contact />
         </div>
       </div>

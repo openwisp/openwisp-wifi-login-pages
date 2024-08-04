@@ -205,6 +205,7 @@ export default class Registration extends React.Component {
       postData.phone_number = phone_number;
       postData.username = phone_number;
     }
+    postData.method = "mpesa";
     const body = JSON.parse(JSON.stringify(postData));
     setLoading(true);
     return axios({

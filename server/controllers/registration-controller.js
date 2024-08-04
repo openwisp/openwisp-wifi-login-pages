@@ -28,8 +28,9 @@ const registration = (req, res) => {
         postData.method = "";
       }
       if (settings && settings.subscriptions && postData.requires_payment) {
-        postData.method = "bank_card";
+        postData.method = "mpesa";
         delete postData.requires_payment;
+        postData.phone_number = req.body.phone_number;
       }
 
       const optionalFields = [
