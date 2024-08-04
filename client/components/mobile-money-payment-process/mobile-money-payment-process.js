@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import "./index.css";
-import "./assets/css/app.min.css";
+// import "./assets/css/app.min.css";
 import "./assets/css/bootstrap.min.css";
 import "./assets/css/icons.min.css";
 import "./assets/js/bootstrap.bundle.min";
@@ -22,7 +22,7 @@ import "react-toastify/dist/ReactToastify.css";
 import {gettext, t} from "ttag";
 import "react-phone-input-2/lib/style.css";
 import LoadingContext from "../../utils/loading-context";
-import {buyPlanUrl, plansApiUrl} from "../../constants";
+import {buyPlanUrl, currentPlanApiUrl, plansApiUrl} from "../../constants";
 import getErrorText from "../../utils/get-error-text";
 import logError from "../../utils/log-error";
 import handleChange from "../../utils/handle-change";
@@ -104,8 +104,54 @@ class MobileMoneyPaymentProcess extends React.Component {
           logError(error, "Error while fetching plans");
         });
     }
+    this.getCurrentUserPlan();
     this.autoSelectFirstPlan();
     // this.intervalId =setInterval(this.getPaymentStatus, 60000);
+  }
+
+  async getCurrentUserPlan() {
+    const {setLoading} = this.context;
+    const {cookies, orgSlug, setUserData, logout, setTitle, orgName, language, settings, userData} =
+      this.props;
+    const currentPlanUrl = currentPlanApiUrl(orgSlug);
+    setLoading(true);
+    axios({
+      method: "get",
+      headers: {
+        "content-type": "application/x-www-form-urlencoded",
+        "accept-language": getLanguageHeaders(language),
+        Authorization: `Bearer ${userData.auth_token}`,
+      },
+      url: currentPlanUrl,
+    })
+      .then((response) => {
+        // this.setState({plans: response.data, plansFetched: true});
+
+        setUserData({
+          ...userData,
+          active_order: response.data.active_order,
+          plan: response.data.plan,
+          active: response.data.active,
+        });
+        if (response.data.active_order) {
+          this.setState({
+            payment_id: response.data.active_order.payment_id,
+          });
+          if (response.data.active_order.payment_status === "waiting") {
+            this.intervalId = setInterval(this.getPaymentStatus, 60000);
+            this.toggleTab(3);
+            toast.info("Getting payment status. Please wait");
+          }
+
+
+        }
+
+        setLoading(false);
+      })
+      .catch((error) => {
+        toast.error(t`ERR_OCCUR`);
+        logError(error, "Error while getting current user plan");
+      });
   }
 
   async componentDidUpdate(prevProps) {
@@ -165,6 +211,7 @@ class MobileMoneyPaymentProcess extends React.Component {
         // Request failed
         toast.error(t`ERR_OCCUR`);
         setUserData({...userData, payment_url: null});
+        return navigate(`/${orgSlug}/payment/failed`);
     }
     // navigate(redirectUrl);
   };
@@ -267,10 +314,16 @@ class MobileMoneyPaymentProcess extends React.Component {
     const {phone_number, errors, plans, selectedPlan} = this.state;
     const url = buyPlanUrl(orgSlug);
 
+
     const data = {
       "phone_number": phone_number,
       "method": method,
     };
+    console.log(method);
+
+    if (method === "" || method === undefined || method === null) {
+      data.method = "mpesa";
+    }
 
     let plan_pricing;
     if (selectedPlan !== null) {
@@ -348,28 +401,33 @@ class MobileMoneyPaymentProcess extends React.Component {
   }
 
   renderWaitingForPayment() {
-    const {userData} = this.props;
+    const {userData, orgSlug} = this.props;
     const {phone_number, order} = userData;
     const {userplan} = userData;
 
 
     return (
 
-                  <div className="text-center py-5">
+      <div className="text-center py-5">
 
-                    <div className="mb-4">
-                      <lord-icon src="https://cdn.lordicon.com/lupuorrc.json" trigger="loop"
-                                 colors="primary:#25a0e2,secondary:#00bd9d"
-                                 style={{width: "120px", height: "120px"}}></lord-icon>
-                    </div>
-                    <h5>You payment is being processed</h5>
-                    <p className="text-muted">You will receive an notification on {phone_number} to pay your internet
-                      plan. You will automatically have internet access once payment is successful.</p>
+        <div className="mb-4">
+          <lord-icon src="https://cdn.lordicon.com/lupuorrc.json" trigger="loop"
+                     colors="primary:#25a0e2,secondary:#00bd9d"
+                     style={{width: "120px", height: "120px"}}></lord-icon>
+        </div>
+        <h5>You payment is being processed</h5>
+        <p className="text-muted">You will receive an notification on {phone_number} to pay your internet
+          plan. You will automatically have internet access once payment is successful.</p>
 
-                    <h3 className="fw-semibold">Order
-                      ID: {(userplan && userplan.active_order ? userplan.active_order.id : "N/A")}<a
-                        className="text-decoration-underline"></a></h3>
-                  </div>
+        <h3 className="fw-semibold">Order
+          ID: {(userplan && userplan.active_order ? userplan.active_order.id : "N/A")}<a
+            className="text-decoration-underline"></a></h3>
+        <div className="row cancel">
+          <Link className="button full" to={`/`}>
+            {t`CANCEL`}
+          </Link>
+        </div>
+      </div>
 
     );
   }
@@ -381,10 +439,11 @@ class MobileMoneyPaymentProcess extends React.Component {
     const {input_fields} = mobile_money_payment_form;
 
     return (
-        <div className="row">
-          <div className="col-xl-8">
-            <div className="card">
-              <div className="card-body checkout-tab">
+      <div className="container content">
+        <div className="inner">
+          <div className="main-column">
+            <div className="inner">
+              <div className="row checkout-tab">
 
                 <form
                   onSubmit={this.handleSubmit}
@@ -402,7 +461,8 @@ class MobileMoneyPaymentProcess extends React.Component {
                           onClick={() => {
                             this.toggleTab(1);
                           }}
-                          id="pills-bill-info-tab" data-bs-toggle="pill" data-bs-target="#pills-bill-info" type="button"
+                          id="pills-bill-info-tab" data-bs-toggle="pill" data-bs-target="#pills-bill-info"
+                          type="button"
                           role="tab" aria-controls="pills-bill-info" aria-selected="true" data-position="0"><i
                           className="ri-user-2-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i>
                           Plans
@@ -417,7 +477,8 @@ class MobileMoneyPaymentProcess extends React.Component {
                           onClick={() => {
                             this.toggleTab(2);
                           }}
-                          id="pills-payment-tab" data-bs-toggle="pill" data-bs-target="#pills-payment" type="button"
+                          id="pills-payment-tab" data-bs-toggle="pill" data-bs-target="#pills-payment"
+                          type="button"
                           role="tab" aria-controls="pills-payment" aria-selected="false" data-position="2"
                           tabIndex="-1"><i
                           className="ri-bank-card-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i>
@@ -434,7 +495,8 @@ class MobileMoneyPaymentProcess extends React.Component {
                             this.toggleTab(3);
                           }}
                           id="pills-finish-tab" data-bs-toggle="pill" data-bs-target="#pills-finish" type="button"
-                          role="tab" aria-controls="pills-finish" aria-selected="false" data-position="3" tabindex="-1">
+                          role="tab" aria-controls="pills-finish" aria-selected="false" data-position="3"
+                          tabIndex="-1">
                           <i
                             className="ri-checkbox-circle-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i>Finish
                         </button>
@@ -469,7 +531,8 @@ class MobileMoneyPaymentProcess extends React.Component {
                               <input id="paymentMethod01" name="method" type="radio" className="form-check-input"
                                      checked={true}></input>
                               <label className="form-check-label" htmlFor="paymentMethod01">
-                                <span className="fs-16 text-muted me-2"><i className="ri-paypal-fill align-bottom"></i></span>
+                                      <span className="fs-16 text-muted me-2"><i
+                                        className="ri-paypal-fill align-bottom"></i></span>
                                 <span className="fs-14 text-wrap">Mpesa</span>
                               </label>
                             </div>
@@ -545,7 +608,8 @@ class MobileMoneyPaymentProcess extends React.Component {
                           </div>
                         </div>
                         <div className="text-muted mt-2 fst-italic">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                               fill="none"
                                stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
                                className="feather feather-lock text-muted icon-xs">
                             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
@@ -569,7 +633,7 @@ class MobileMoneyPaymentProcess extends React.Component {
                       </div>
 
                       <div className="row cancel">
-                        <Link className="button full" to={`/${orgSlug}/status`}>
+                        <Link className="button full" to={`/`}>
                           {t`CANCEL`}
                         </Link>
                       </div>
@@ -585,12 +649,11 @@ class MobileMoneyPaymentProcess extends React.Component {
                 </form>
               </div>
 
+
             </div>
-
           </div>
-
-
         </div>
+      </div>
 
     );
   }

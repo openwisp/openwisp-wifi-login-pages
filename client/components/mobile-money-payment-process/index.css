@@ -70,3 +70,235 @@ iframe {
   font-weight: bold;
   list-style: inside;
 }
+
+.step-arrow-nav .nav .nav-link.active {
+  background-color: rgba(37, 160, 226, .1);
+  color: #25a0e2;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.step-arrow-nav .nav .nav-link.done {
+  background-color: rgba(37, 160, 226, .05);
+  color: #25a0e2;
+}
+
+.card-radio .form-check-input:checked + .form-check-label {
+  border-color: #25a0e2 !important;
+}
+
+.form-check label {
+  cursor: pointer;
+}
+
+.card-radio .form-check-label {
+  background-color: var(--vz-secondary-bg);
+  border: 1px solid var(--vz-border-color);
+  border-radius: .25rem;
+  padding: 1rem;
+  padding-right: 1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  position: relative;
+  padding-right: 32px;
+}
+
+.input-step.step-primary button {
+  background-color: #25a0e2;
+  color: #fff
+}
+
+.input-step.step-secondary button {
+  background-color: #878a99;
+  color: #fff
+}
+
+.input-step.step-success button {
+  background-color: #00bd9d;
+  color: #fff
+}
+
+.input-step.step-info button {
+  background-color: #32ccff;
+  color: #fff
+}
+
+.input-step.step-warning button {
+  background-color: #ffbc0a;
+  color: #fff
+}
+
+.input-step.step-danger button {
+  background-color: #f06548;
+  color: #fff
+}
+
+.input-step.step-light button {
+  background-color: #f3f6f9;
+  color: #fff
+}
+
+.input-step.step-dark button {
+  background-color: #343a40;
+  color: #fff
+}
+
+.step-title {
+  font-weight: 600
+}
+
+.vertical-navs-step .nav .nav-link .step-icon {
+  color: #f06548;
+  vertical-align: middle;
+  font-weight: 500;
+  float: left
+}
+
+.vertical-navs-step .nav .nav-link.active .step-icon, .vertical-navs-step .nav .nav-link.done .step-icon {
+  color: #00bd9d
+}
+
+.vertical-navs-step .nav .nav-link.active .step-icon:before, .vertical-navs-step .nav .nav-link.done .step-icon:before {
+  content: "\eb80"
+}
+
+.vertical-navs-step .nav .nav-link.active {
+  border-color: #25a0e2
+}
+
+.vertical-navs-step .nav .nav-link.done {
+  border-color: #00bd9d
+}
+
+.nav-custom-outline.nav .nav-link {
+  border: 1px solid transparent;
+  border-bottom: 2px solid transparent
+}
+
+.nav-custom-outline.nav .nav-link.active {
+  border-color: #25a0e2;
+  background-color: transparent;
+  color: #25a0e2
+}
+
+.nav-primary.nav-custom-outline .nav-link.active {
+  color: #25a0e2;
+  border-color: #25a0e2
+}
+
+.nav-secondary.nav-custom-outline .nav-link.active {
+  color: #878a99;
+  border-color: #878a99
+}
+
+.nav-success.nav-custom-outline .nav-link.active {
+  color: #00bd9d;
+  border-color: #00bd9d
+}
+
+.nav-info.nav-custom-outline .nav-link.active {
+  color: #32ccff;
+  border-color: #32ccff
+}
+
+.nav-warning.nav-custom-outline .nav-link.active {
+  color: #ffbc0a;
+  border-color: #ffbc0a
+}
+
+.nav-danger.nav-custom-outline .nav-link.active {
+  color: #f06548;
+  border-color: #f06548
+}
+
+.nav-light.nav-custom-outline .nav-link.active {
+  color: #f3f6f9;
+  border-color: #f3f6f9
+}
+
+.nav-dark.nav-custom-outline .nav-link.active {
+  color: #343a40;
+  border-color: #343a40
+}
+
+.nav-customs.nav {
+  padding-left: 34px;
+  overflow: hidden
+}
+
+.nav-customs.nav .nav-link {
+  position: relative;
+  display: block;
+  float: right;
+  background-color: var(--vz-tertiary-bg);
+  margin-right: 46px;
+  -webkit-transition: all .5s ease;
+  transition: all .5s ease
+}
+
+.card-radio {
+  padding: 0
+}
+
+.card-radio .form-check-label {
+  background-color: var(--vz-secondary-bg);
+  border: 1px solid var(--vz-border-color);
+  border-radius: .25rem;
+  padding: 1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  position: relative;
+  padding-right: 32px
+}
+
+.card-radio .form-check-label:hover {
+  cursor: pointer
+}
+
+.card-radio .form-check-input {
+  display: none
+}
+
+.card-radio .form-check-input:checked + .form-check-label {
+  border-color: #25a0e2 !important
+}
+
+.card-radio .form-check-input:checked + .form-check-label:before {
+  content: "\eb80";
+  font-family: remixicon;
+  position: absolute;
+  top: 2px;
+  right: 6px;
+  font-size: 16px;
+  color: #25a0e2
+}
+
+.card-radio.dark .form-check-input:checked + .form-check-label:before {
+  color: #fff
+}
+
+.form-icon {
+  position: relative
+}
+
+.form-icon .form-control-icon {
+  padding-left: calc(.9rem * 3);
+  position: relative
+}
+
+.form-icon i {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 18px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center
+}

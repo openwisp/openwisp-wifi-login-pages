@@ -15,6 +15,7 @@ const paths = {
   payment_status: "/payment/{paymentId}",
   initiate_payment: "/payment/initiate",
   buy_plan: "/plan/buy",
+  current_plan: "/plan/current",
 };
 
 const reverse = (name, orgSlug) => {
@@ -23,7 +24,7 @@ const reverse = (name, orgSlug) => {
   if (!path) {
     throw new Error(`Reverse for path "${name}" not found.`);
   }
-  if (name === "plans") {
+  if (name === "plans" || name === "current_plan") {
     prefix = prefix.replace("/radius/", "/subscriptions/");
   }
   if (name === "initiate_payment" || name === "buy_plan" || name === "payment_status") {

@@ -25,3 +25,4 @@ export const initiatePaymentUrl = (orgSlug) =>
   `${prefix}/${orgSlug}/payment/initiate`;
 export const buyPlanUrl = (orgSlug) =>
   `${prefix}/${orgSlug}/plan/buy`;
+export const currentPlanApiUrl = (orgSlug) => `${prefix}/${orgSlug}/plan/current`;
