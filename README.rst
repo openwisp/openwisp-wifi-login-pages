@@ -44,7 +44,7 @@ captive/login page of a WiFi service by integrating the `OpenWISP Radius
 API <https://openwisp-radius.readthedocs.io/>`_.
 
 Refer to `WiFi Login Pages: Features
-<https://openwisp.io/docs/dev/wifi-login-pages/user/intro.html>` of
+<https://openwisp.io/docs/dev/wifi-login-pages/user/intro.html>`_ of
 OpenWISP documentation for a complete overview of features.
 
 Documentation
