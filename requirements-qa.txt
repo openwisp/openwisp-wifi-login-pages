@@ -1,0 +1,1 @@
+openwisp-utils[qa] @ https://github.com/openwisp/openwisp-utils/tarball/master

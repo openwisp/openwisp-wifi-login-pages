@@ -35,11 +35,13 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.10"
+          cache: "pip"
+          cache-dependency-path: "**/requirements*.txt"
 
       - name: Installing dependencies
         run: |
           yarn install
-          pip install openwisp-utils[qa]
+          pip install -r requirements-qa.txt
 
       - name: QA checks
         run: ./run-qa-checks
@@ -67,6 +69,8 @@ jobs:
         run: |
           yarn install
           yarn setup
+          sudo apt update -qq
+          sudo apt install -qq -y libssl-dev libffi-dev
 
       - name: Tests
         run: yarn coverage
@@ -75,10 +79,13 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.10"
+          cache: "pip"
+          cache-dependency-path: "**/requirements*.txt"
 
       - name: Get openwisp-radius
         run: |
-          curl -L https://github.com/openwisp/openwisp-radius/tarball/master -o openwisp-radius.tar.gz
+          curl -L https://github.com/openwisp/openwisp-radius/tarball/master \
+               -o openwisp-radius.tar.gz
           tar -xvzf openwisp-radius.tar.gz && mkdir openwisp-radius
           mv openwisp-*/* openwisp-radius
 
@@ -90,7 +97,10 @@ jobs:
 
       - name: Installing OpenWISP Radius
         run: |
-          cd openwisp-radius && pip install -U -e ".[saml]" "Django~=4.2.0"
+          cd openwisp-radius
+          pip install -U pip setuptools wheel
+          pip install -U -e ".[saml]"
+          pip install -U -r requirements-test.txt
           ./tests/manage.py migrate
 
       - name: Creating configuration of organization (supports mobile verification)
@@ -104,8 +114,10 @@ jobs:
 
       - name: Running OpenWISP Radius
         run: |
-          cp browser-test/local_settings.py openwisp-radius/tests/openwisp2/local_settings.py \
-          && cd openwisp-radius && ./tests/manage.py runserver &
+          cp browser-test/local_settings.py \
+             openwisp-radius/tests/openwisp2/local_settings.py
+          cd openwisp-radius
+          ./tests/manage.py runserver &
 
       - name: geckodriver/firefox
         run: |
