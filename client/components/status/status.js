@@ -136,9 +136,7 @@ export default class Status extends React.Component {
         method,
         is_verified: isVerified,
       } = userData;
-      console.log(method);
-      console.log(is_active);
-      console.log(isVerified);
+
       const userInfo = {};
       userInfo.status = "";
       userInfo.email = email;

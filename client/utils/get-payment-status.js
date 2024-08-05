@@ -6,7 +6,7 @@ import logError from "./log-error";
 
 export const getPaymentStatus = async (orgSlug, paymentId, auth_token) => {
   const url = paymentStatusUrl(orgSlug, paymentId);
-  console.log(auth_token);
+
   try {
     const response = await axios({
       method: "get",
