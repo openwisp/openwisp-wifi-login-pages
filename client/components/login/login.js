@@ -1,7 +1,5 @@
 /* eslint-disable camelcase */
 import "./index.css";
-
-import axios from "axios";
 import PropTypes from "prop-types";
 import qs from "qs";
 import React, {Suspense} from "react";
@@ -29,6 +27,7 @@ import getError from "../../utils/get-error";
 import getLanguageHeaders from "../../utils/get-language-headers";
 import redirectToPayment from "../../utils/redirect-to-payment";
 import {localStorage, sessionStorage} from "../../utils/storage";
+import instance from "../../../config/axios-client";
 
 const PhoneInput = React.lazy(() =>
   import(/* webpackChunkName: 'PhoneInput' */ "react-phone-input-2"),
@@ -225,15 +224,15 @@ export default class Login extends React.Component {
     if (sesame_token) {
       headers.Authorization = `${settings.passwordless_auth_token_name} ${sesame_token}`;
     }
-    return axios({
-      method: "post",
-      headers,
-      url,
-      data: qs.stringify({
+    return instance.post(url,
+      qs.stringify({
         username,
         password,
-      }),
-    })
+      }), {
+
+      headers,
+
+      })
       .then((res = {}) => {
         if (!res.data) throw new Error();
         return this.handleAuthentication(res.data);

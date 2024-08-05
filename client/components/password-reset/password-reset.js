@@ -1,4 +1,3 @@
-import axios from "axios";
 import PropTypes from "prop-types";
 import qs from "qs";
 import React from "react";
@@ -14,6 +13,7 @@ import handleChange from "../../utils/handle-change";
 import Contact from "../contact-box";
 import getError from "../../utils/get-error";
 import getLanguageHeaders from "../../utils/get-language-headers";
+import instance from "../../../config/axios-client";
 
 export default class PasswordReset extends React.Component {
   constructor(props) {
@@ -43,13 +43,12 @@ export default class PasswordReset extends React.Component {
     const {input, errors} = this.state;
     const url = resetApiUrl.replace("{orgSlug}", orgSlug);
     setLoading(true);
-    return axios({
-      method: "post",
+    return instance.post(url, {
       headers: {
         "content-type": "application/x-www-form-urlencoded",
         "accept-language": getLanguageHeaders(language),
       },
-      url,
+
       data: qs.stringify({
         input,
       }),
