@@ -1,12 +1,12 @@
 import qs from "qs";
+import axios from "axios";
 import {t} from "ttag";
 import {toast} from "react-toastify";
-import {mainToastId, validateApiUrl} from "../constants";
+import {validateApiUrl, mainToastId} from "../constants";
 import handleSession from "./session";
 import logError from "./log-error";
 import handleLogout from "./handle-logout";
 import getLanguageHeaders from "./get-language-headers";
-import instance from "../../config/axios-client";
 
 const validateToken = async (
   cookies,
@@ -32,18 +32,18 @@ const validateToken = async (
         !userData.payment_url))
   ) {
     try {
-      const response = await instance.post(url,
-        qs.stringify({
-          token,
-          session,
-        }), {
-
+      const response = await axios({
+        method: "post",
         headers: {
           "content-type": "application/x-www-form-urlencoded",
           "accept-language": getLanguageHeaders(language),
         },
-
-        });
+        url,
+        data: qs.stringify({
+          token,
+          session,
+        }),
+      });
       if (response.data.response_code !== "AUTH_TOKEN_VALIDATION_SUCCESSFUL") {
         handleLogout(logout, cookies, orgSlug, setUserData, userData);
         logError(

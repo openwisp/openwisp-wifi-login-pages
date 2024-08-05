@@ -1,5 +1,7 @@
 /* eslint-disable camelcase */
 import "./index.css";
+
+import axios from "axios";
 import PropTypes from "prop-types";
 import React, {Suspense} from "react";
 import Select from "react-select";
@@ -23,7 +25,6 @@ import getError from "../../utils/get-error";
 import getLanguageHeaders from "../../utils/get-language-headers";
 import redirectToPayment from "../../utils/redirect-to-payment";
 import InfoModal from "../../utils/modal";
-import instance from "../../../config/axios-client";
 
 const PhoneInput = React.lazy(() =>
   import(/* webpackChunkName: 'PhoneInput' */ "react-phone-input-2"),
@@ -73,12 +74,13 @@ export default class Registration extends React.Component {
 
     if (settings.subscriptions) {
       setLoading(true);
-
-      instance.get(plansUrl, {
+      axios({
+        method: "get",
         headers: {
           "content-type": "application/x-www-form-urlencoded",
           "accept-language": getLanguageHeaders(language),
         },
+        url: plansUrl,
       })
         .then((response) => {
           this.setState({plans: response.data, plansFetched: true});
@@ -206,14 +208,15 @@ export default class Registration extends React.Component {
     postData.method = "mpesa";
     const body = JSON.parse(JSON.stringify(postData));
     setLoading(true);
-    return instance.post(url, body,
-      {
-        headers: {
-          "content-type": "application/json",
-          "accept-language": getLanguageHeaders(language),
-        },
+    return axios({
+      method: "post",
+      headers: {
+        "content-type": "application/json",
+        "accept-language": getLanguageHeaders(language),
       },
-    )
+      url,
+      data: body,
+    })
       .then((res = {}) => {
         if (!res && !res.data) throw new Error();
         const {key: auth_token} = res.data;

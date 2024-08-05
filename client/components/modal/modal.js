@@ -3,12 +3,13 @@ import "./index.css";
 import PropTypes from "prop-types";
 import React from "react";
 import {Link} from "react-router-dom";
+
+import axios from "axios";
 import getText from "../../utils/get-text";
 import {modalContentUrl} from "../../constants";
 import logError from "../../utils/log-error";
 import Loader from "../../utils/loader";
 import getLanguageHeaders from "../../utils/get-language-headers";
-import instance from "../../../config/axios-client";
 
 export default class Modal extends React.Component {
   constructor(props) {
@@ -42,12 +43,13 @@ export default class Modal extends React.Component {
     else if (name === "privacy-policy" && privacyPolicy)
       file = getText(privacyPolicy, language);
     try {
-      response = await instance.get(modalContentUrl(orgSlug), {
-
+      response = await axios({
+        method: "get",
         headers: {
           "content-type": "application/x-www-form-urlencoded",
           "accept-language": getLanguageHeaders(language),
         },
+        url: modalContentUrl(orgSlug),
         params: {
           file,
         },
