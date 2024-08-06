@@ -14,8 +14,8 @@ Dependencies
 - `NPM <https://npmjs.org/>`__ - Node package manager >= 10.1.0
 - `yarn <https://yarnpkg.com/>`__ - Yarn package manager >= 1.19.1
 
-Pre-requisites
---------------
+Prerequisites
+-------------
 
 OpenWISP RADIUS
 ~~~~~~~~~~~~~~~

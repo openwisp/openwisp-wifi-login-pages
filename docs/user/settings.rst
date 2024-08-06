@@ -196,7 +196,7 @@ With the configuration above:
 - the link to ``twitter`` (from Contact) and ``change password`` (from
   Header) links will be visible to only authenticated users
 - change password will not be visible to users which sign in with social
-  login or signle sign-on (SAML)
+  login or single sign-on (SAML)
 - change mobile phone number will only be visible to users which have
   signed up with mobile phone verification
 
@@ -442,8 +442,8 @@ organization.
 
 .. _wlp_signup_with_payment:
 
-Signup with Payment Flow
-------------------------
+Sign Up with Payment Flow
+-------------------------
 
 This application supports sign up with payment flows, either a one time
 payment, a free debit/credit card transaction for identity verification

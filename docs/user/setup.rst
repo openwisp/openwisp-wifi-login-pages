@@ -36,13 +36,13 @@ slug                      Required. Slug of the organization.
 uuid                      Required. UUID of the organization.
 secret_key                Required. Token from organization radius
                           settings.
-captive portal login URL  Required. Captive portal login action url
-captive portal logout URL Required. Captive portal logout action url
-openwisp radius url       Required. URL to openwisp-radius.
+captive portal login URL  Required. Captive portal login action URL
+captive portal logout URL Required. Captive portal logout action URL
+openwisp radius URL       Required. URL to openwisp-radius.
 ========================= ==========================================
 
 Once all the questions are answered, the script will create a new
-directory, eg:
+directory, e.g.:
 
 .. code-block:: text
 
@@ -108,7 +108,7 @@ In some cases it may be needed to have different variants of the same
 design but with different logos, or slightly different colors, wording and
 so on, but all these variants would be tied to the same service.
 
-In this case it's possible to create new YAML configuration files (eg:
+In this case it's possible to create new YAML configuration files (e.g.:
 ``variant1.yml``, ``variant2.yml``) in the directory
 ``/organizations/{orgSlug}/``, and specify only the configuration keys
 which differ from the parent configuration.
@@ -145,8 +145,8 @@ the example above has been kept short for brevity.
 .. note::
 
     If a variant defines a configuration option which contains an
-    array/list of objects (eg: menu links), the array/list defined in the
-    variant always overwrites fully what is defined in the parent
+    array/list of objects (e.g.: menu links), the array/list defined in
+    the variant always overwrites fully what is defined in the parent
     configuration file.
 
 Variant with Different Organization Slug / UUID / Secret

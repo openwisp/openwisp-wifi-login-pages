@@ -87,13 +87,13 @@ Now to override the translation placeholders (``msgid``) add the
     msgstr "Forgot password? Reset password"
 
 During the build process customized language files will override all the
-msgid defined in the default language files.
+*msgid* defined in the default language files.
 
 .. note::
 
     The custom files need not be duplicates of the default file i.e.
-    translations can be defined for custom strings (i.e. msgid and
-    msgstr).
+    translations can be defined for custom strings (i.e. *msgid* and
+    *msgstr*).
 
 Customizing Translations for a Specific Organization and Language
 -----------------------------------------------------------------

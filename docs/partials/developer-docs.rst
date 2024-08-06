@@ -1,13 +1,10 @@
 .. note::
 
-    This documentation page is aimed at developers who want to customize,
-    change or extend the code of OpenWISP WiFi Login Pages in order to
-    modify its behavior (eg: for personal or commercial purposes or to fix
-    a bug, implement a new feature or contribute to the project in
-    general).
+    This page is for developers who want to customize or extend OpenWISP
+    WiFi Login Pages, whether for bug fixes, new features, or
+    contributions.
 
-    If you aren't a developer and you are looking for information on how
-    to use OpenWISP, please refer to:
+    For user guides and general information, please see:
 
     - :doc:`OpenWISP WiFi Login Pages User Docs </wifi-login-pages/index>`
     - `Deploy OpenWISP WiFi Login Pages for production
