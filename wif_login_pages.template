@@ -8,15 +8,14 @@ http {
   limit_req_zone          $binary_remote_addr zone=mylimit:10m rate=10r/s;
 
     server {
-      listen $SERVER;
-      listen [::]:$SERVER;
+      listen 3030;
+      listen [::]:3030;
       server_name $VIRTUAL_HOST localhost login.default.net;
         limit_req zone=mylimit burst=70 nodelay;
-        root   /usr/share/nginx/html;
-        index  index.html index.htm;
+        root   /proxy;
       location / {
 
-            try_files $uri $uri/ /index.html;
+            try_files ${DOLLAR}uri ${DOLLAR}uri/ /index.html;
         }
 
         location ~* \.map$ {
@@ -26,37 +25,9 @@ http {
     location = /50x.html {
         root   /usr/share/nginx/html;
     }
-    location ~* \.(?:css|js|map)$ {
-      expires 1y;
-      access_log off;
-      add_header Cache-Control "public";
-    }
-    }
-    server {
-          listen $CLIENT;
-          listen [::]:$CLIENT;
-          server_name $VIRTUAL_HOST localhost login.default.net;
-            limit_req zone=mylimit burst=70 nodelay;
-            root   /usr/share/nginx/html;
-            index  index.html index.htm;
-          location / {
 
-                try_files $uri $uri/ /index.html;
-            }
+    }
 
-            location ~* \.map$ {
-            add_header 'Access-Control-Allow-Origin' '*';
-        }
-          error_page   500 502 503 504  /50x.html;
-        location = /50x.html {
-            root   /usr/share/nginx/html;
-        }
-        location ~* \.(?:css|js|map)$ {
-          expires 1y;
-          access_log off;
-          add_header Cache-Control "public";
-        }
-        }
  }
 
  events {}

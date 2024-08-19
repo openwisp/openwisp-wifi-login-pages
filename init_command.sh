@@ -12,10 +12,10 @@ download_organization_configuration
 
 yarn setup && yarn build
 
-echo "*/1 * * * * sh /wifi_login_pages.sh" | crontab -
+echo "*/1 * * * * sh wifi_login_pages.sh" | crontab -
 	(
 		crontab -l
-		echo "0 3 * * 7 sh /wifi_login_pages.sh"
+		echo "0 3 * * 7 sh wifi_login_pages.sh"
 	) | crontab -
 	crond
 # Supervisor is used to start the service because OpenVPN
@@ -23,6 +23,6 @@ echo "*/1 * * * * sh /wifi_login_pages.sh" | crontab -
 # are changed. If OpenVPN as the service keeping the
 # docker container running, restarting would mean killing
 # the container while supervisor helps only to restart the service!
-supervisord --nodaemon --configuration supervisord.conf
+pm2-runtime server/start.js
 
 exec "$@"
