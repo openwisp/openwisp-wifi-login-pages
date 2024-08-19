@@ -1,0 +1,55 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/dist
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+#vscode
+.vscode
+
+#vim
+.*.swp
+.*.swo
+
+#other
+organizations/*
+!organizations/js
+!organizations/default
+!organizations/default/*
+organizations/default/*.yml
+client/configs/
+client/organizations.json
+!client/assets/
+client/assets/*
+server/assets/*
+!client/assets/eye.svg
+!client/assets/eye-slash.svg
+!client/assets/warning.svg
+!client/assets/fonts/
+client/translations/
+i18n/*
+!i18n/*.po
+i18n/*.custom.po
+server/config.json
+compilation-stats.json
+client/config.json
+sentry-env.json
+/.env
