@@ -101,6 +101,7 @@ jobs:
           pip install -U pip setuptools wheel
           pip install -U -e ".[saml]"
           pip install -U -r requirements-test.txt
+          pip install -U "Django~=4.2.15"
           ./tests/manage.py migrate
 
       - name: Creating configuration of organization (supports mobile verification)
