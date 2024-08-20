@@ -183,9 +183,9 @@ Support for Old Browsers
 ------------------------
 
 Polyfills are used to support old browsers on different platforms. It is
-recommended to add **polyfill.io** to the allowed hostnames (walled
-garden) of the captive portal, otherwise the application will not be able
-to load in old browsers.
+recommended to add **cdnjs.cloudflare.com** to the allowed hostnames
+(walled garden) of the captive portal, otherwise the application will not
+be able to load in old browsers.
 
 Configuring Sentry for Proxy Server
 -----------------------------------
