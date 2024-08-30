@@ -21,9 +21,9 @@ OpenWISP RADIUS
 ~~~~~~~~~~~~~~~
 
 OpenWISP WiFi Login Pages is a frontend for :doc:`OpenWISP RADIUS
-</radius/index>`. In order to use it, this
-app needs a running instance of OpenWISP RADIUS and an organization
-correctly configured, you can obtain this by following these steps:
+</radius/index>`. In order to use it, this app needs a running instance of
+OpenWISP RADIUS and an organization correctly configured, you can obtain
+this by following these steps:
 
 - Follow the instructions :doc:`to install OpenWISP RADIUS for development
   </radius/developer/installation>`.

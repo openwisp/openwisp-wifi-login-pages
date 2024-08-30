@@ -222,9 +222,10 @@ The ``setting`` option can take any of the following values:
 - ``allowed``: fields with this setting are shown but not required.
 - ``mandatory``: fields with this setting are shown and required.
 
-Keep in mind that this configuration must mirror the :ref:`configuration of
-openwisp-radius (OPENWISP_RADIUS_OPTIONAL_REGISTRATION_FIELDS)
+Keep in mind that this configuration must mirror the :ref:`configuration
+of openwisp-radius (OPENWISP_RADIUS_OPTIONAL_REGISTRATION_FIELDS)
 <openwisp_radius_optional_registration_fields>`.
+
 Username Field in Login Form
 ----------------------------
 
@@ -253,9 +254,8 @@ Configuring Social Login
 ------------------------
 
 In order to enable users to log via third-party services like Google and
-Facebook, the
-:doc:`Social Login feature of OpenWISP Radius </radius/user/social_login>`
-must be configured and enabled.
+Facebook, the :doc:`Social Login feature of OpenWISP Radius
+</radius/user/social_login>` must be configured and enabled.
 
 .. _wlp_custom_css:
 
@@ -373,9 +373,8 @@ Footer
 Configuring SAML Login & Logout
 -------------------------------
 
-To enable SAML login, the
-:doc:`SAML feature of OpenWISP RADIUS </radius/user/saml>` must
-be enabled.
+To enable SAML login, the :doc:`SAML feature of OpenWISP RADIUS
+</radius/user/saml>` must be enabled.
 
 The only additional configuration needed is ``saml_logout_url``, which is
 needed to perform SAML logout.
@@ -430,8 +429,8 @@ Mocking Captive Portal Login and Logout
 ---------------------------------------
 
 During the development stage, the captive portal login and logout
-operations can be mocked by using the
-:ref:`OpenWISP RADIUS captive portal mock views <radius_captive_portal_mock_views>`.
+operations can be mocked by using the :ref:`OpenWISP RADIUS captive portal
+mock views <radius_captive_portal_mock_views>`.
 
 These URLs from OpenWISP RADIUS will be used by default in the development
 environment. The captive portal login and logout URLs and their parameters
