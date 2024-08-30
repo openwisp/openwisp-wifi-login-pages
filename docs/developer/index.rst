@@ -11,4 +11,4 @@ Developer Docs
 
 Other useful resources:
 
-    - :doc:`../user/settings`
+- :doc:`../user/settings`

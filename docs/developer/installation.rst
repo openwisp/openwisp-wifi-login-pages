@@ -20,13 +20,13 @@ Prerequisites
 OpenWISP RADIUS
 ~~~~~~~~~~~~~~~
 
-OpenWISP WiFi Login Pages is a frontend for `OpenWISP RADIUS
-<https://github.com/openwisp/openwisp-radius>`_. In order to use it, this
+OpenWISP WiFi Login Pages is a frontend for :doc:`OpenWISP RADIUS
+</radius/index>`. In order to use it, this
 app needs a running instance of OpenWISP RADIUS and an organization
 correctly configured, you can obtain this by following these steps:
 
-- Follow the instructions `to install OpenWISP RADIUS for development
-  <https://openwisp-radius.readthedocs.io/en/latest/developer/setup.html#installing-for-development>`__.
+- Follow the instructions :doc:`to install OpenWISP RADIUS for development
+  </radius/developer/installation>`.
 - After successfully starting the OpenWISP RADIUS server, open a browser
   and visit: ``http://localhost:8000/admin/``, then sign in with the
   credentials of the ``superuser`` we created during the installation of
