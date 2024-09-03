@@ -1,22 +1,12 @@
 /* eslint-disable camelcase */
 import "./index.css";
-// import "./assets/css/app.min.css";
-import "./assets/css/bootstrap.min.css";
-import "./assets/css/icons.min.css";
-import "./assets/js/bootstrap.bundle.min";
-import "./assets/js/feather.min";
-import "./assets/js/lord-icon-2.1.0";
-import "./assets/js/plugins";
-import "./assets/js/simplebar.min";
-import "./assets/js/waves.min";
 
-import classnames from "classnames";
 import axios from "axios";
 import PropTypes from "prop-types";
 import qs from "qs";
 import React, {Suspense} from "react";
 import {Cookies} from "react-cookie";
-import {Link, Navigate} from "react-router-dom";
+import {Link, Route, Routes} from "react-router-dom";
 import {toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {gettext, t} from "ttag";
@@ -32,6 +22,7 @@ import validateToken from "../../utils/validate-token";
 import getError from "../../utils/get-error";
 import getLanguageHeaders from "../../utils/get-language-headers";
 import {getPaymentStatus} from "../../utils/get-payment-status";
+import Modal from "../modal";
 
 const PhoneInput = React.lazy(() =>
   import(/* webpackChunkName: 'PhoneInput' */ "react-phone-input-2"),
@@ -51,7 +42,8 @@ class MobileMoneyPaymentProcess extends React.Component {
       modifiedSteps: [1],
       plans: [],
       plansFetched: false,
-      selectedPlan: null,
+      selectedPlan: {},
+      modalActive: false,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -73,16 +65,14 @@ class MobileMoneyPaymentProcess extends React.Component {
       logout,
       language,
     );
-    if (isValid) {
-      ({userData} = this.props);
-      const {phone_number} = userData;
-      this.setState({phone_number});
-    }
+
 
     setLoading(false);
     const plansUrl = plansApiUrl.replace("{orgSlug}", orgSlug);
 
-    setTitle(t`REGISTRATION_TITL`, orgName);
+    setTitle("Buy internet plans", orgName);
+
+    const {phone_number} = userData;
 
     if (settings.subscriptions) {
       setLoading(true);
@@ -95,7 +85,7 @@ class MobileMoneyPaymentProcess extends React.Component {
         url: plansUrl,
       })
         .then((response) => {
-          this.setState({plans: response.data, plansFetched: true});
+          this.setState({plans: response.data, plansFetched: true, phone_number});
 
           setLoading(false);
         })
@@ -166,7 +156,13 @@ class MobileMoneyPaymentProcess extends React.Component {
     ) {
       setLoading(true);
     }
+
   }
+
+  toggleModal = () => {
+    const {modalActive} = this.state;
+    this.setState({modalActive: !modalActive});
+  };
 
   componentWillUnmount = () => {
     clearInterval(this.intervalId);
@@ -290,6 +286,9 @@ class MobileMoneyPaymentProcess extends React.Component {
   isPlanIdentityVerifier = () => {
     // If a payment is required, the plan is valid for identity verification
     const {selectedPlan, plans} = this.state;
+    if (plans === []) {
+      return true;
+    }
     return (
       selectedPlan !== null && plans[selectedPlan].requires_payment === true
     );
@@ -306,6 +305,183 @@ class MobileMoneyPaymentProcess extends React.Component {
     );
   };
 
+  getForm = () => {
+    const {mobile_money_payment_form, settings, orgSlug} = this.props;
+    const {additional_info_text, input_fields, links} = mobile_money_payment_form;
+    const {
+      success,
+      errors,
+      selectedPlan,
+      plans,
+      tax_number,
+      street,
+      city,
+      zipcode,
+      countrySelected,
+      hidePassword,
+    } = this.state;
+
+    const {userData} = this.props;
+
+    const {phone_number} = userData;
+
+    return (
+      <>
+        <div className="container content" id="registration">
+          <div className="inner">
+            <form
+              className={`main-column ${success ? "success" : ""}`}
+              onSubmit={this.handleSubmit}
+              id="registration-form"
+            >
+              <div className="inner">
+                <div className="fieldset">
+                  {getError(errors)}
+                  {plans.length > 0 && this.getPlanSelection()}
+                  {(plans.length === 0 ||
+                    (plans.length > 0 && selectedPlan !== null)) && (
+                    <>
+                      {this.isPlanIdentityVerifier() &&
+                        settings.mobile_phone_verification &&
+                        input_fields.phone_number && (
+                          <div className="row phone-number">
+                            <label htmlFor="phone-number">{t`PHONE_LBL`}</label>
+                            {getError(errors, "phone_number")}
+                            <Suspense
+                              fallback={
+                                <input
+                                  type="tel"
+                                  className="input"
+                                  name="phone_number"
+                                  value={phone_number}
+                                  onChange={(value) =>
+                                    this.handleChange({
+                                      target: {
+                                        name: "phone_number",
+                                        value: `+${value}`,
+                                      },
+                                    })
+                                  }
+                                  onKeyDown={(event) => {
+                                    submitOnEnter(
+                                      event,
+                                      this,
+                                      "registration-form",
+                                    );
+                                  }}
+                                  placeholder={t`PHONE_PHOLD`}
+                                />
+                              }
+                            >
+                              <PhoneInput
+                                name="phone_number"
+                                country={input_fields.phone_number.country}
+                                onlyCountries={
+                                  input_fields.phone_number.only_countries || []
+                                }
+                                preferredCountries={
+                                  input_fields.phone_number
+                                    .preferred_countries || []
+                                }
+                                excludeCountries={
+                                  input_fields.phone_number.exclude_countries ||
+                                  []
+                                }
+                                value={phone_number}
+                                onChange={(value) =>
+                                  this.handleChange({
+                                    target: {
+                                      name: "phone_number",
+                                      value: `+${value}`,
+                                    },
+                                  })
+                                }
+                                onKeyDown={(event) => {
+                                  submitOnEnter(
+                                    event,
+                                    this,
+                                    "registration-form",
+                                  );
+                                }}
+                                placeholder={t`PHONE_PHOLD`}
+                                enableSearch={Boolean(
+                                  input_fields.phone_number.enable_search,
+                                )}
+                                inputProps={{
+                                  name: "phone_number",
+                                  id: "phone-number",
+                                  className: `form-control input ${
+                                    errors.phone_number ? "error" : ""
+                                  }`,
+                                  required: true,
+                                  autoComplete: "tel",
+                                }}
+                              />
+                            </Suspense>
+                          </div>
+                        )}
+
+                    </>
+                  )}
+                </div>
+
+                {(plans.length === 0 ||
+                    (plans.length > 0 && selectedPlan !== null)) &&
+                  additional_info_text && (
+                    <div className="row add-info">
+                      <h5>Buy internet plans</h5>
+                    </div>
+                  )}
+
+                <div className="row register">
+                  {(plans.length === 0 ||
+                    (plans.length > 0 && selectedPlan !== null)) && (
+                    <input
+                      type="submit"
+                      className="button full"
+                      value={"Buy Plan"}
+                    />
+                  )}
+                </div>
+
+                {links && (
+                  <div className="row links">
+                    {links.forget_password && (
+                      <p>
+                        <Link
+                          to={`/${orgSlug}/password/reset`}
+                          className="link"
+                        >
+                          {t`FORGOT_PASSWORD`}
+                        </Link>
+                      </p>
+                    )}
+                    {links.login && (
+                      <p>
+                        <Link to={`/${orgSlug}/login`} className="link">
+                          {t`LINKS_LOGIN_TXT`}
+                        </Link>
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
+            </form>
+
+            <Contact />
+          </div>
+        </div>
+        <Routes>
+          <Route
+            path=":name"
+            element={<Modal prevPath={`/${orgSlug}/registration`} />}
+          />
+        </Routes>
+      </>
+    );
+  };
+
+
   handleSubmit(event) {
     event.preventDefault();
     const {setLoading} = this.context;
@@ -319,7 +495,6 @@ class MobileMoneyPaymentProcess extends React.Component {
       "phone_number": phone_number,
       "method": method,
     };
-    console.log(method);
 
     if (method === "" || method === undefined || method === null) {
       data.method = "mpesa";
@@ -432,290 +607,20 @@ class MobileMoneyPaymentProcess extends React.Component {
     );
   }
 
-  renderPaymentForm() {
-    const {activeTab, modifiedSteps, passedSteps, errors, phone_number, plans} = this.state;
-    const {orgSlug, mobile_money_payment_form, isAuthenticated, userData, settings} = this.props;
-    const {userplan} = userData;
-    const {input_fields} = mobile_money_payment_form;
-
-    return (
-      <div className="container content">
-        <div className="inner">
-          <div className="main-column">
-            <div className="inner">
-              <div className="row checkout-tab">
-
-                <form
-                  onSubmit={this.handleSubmit}
-                  id="buy-plan-form"
-                >
-                  <div className="step-arrow-nav mt-n3 mx-n3 mb-3">
-
-                    <ul className="nav nav-pills nav-justified custom-nav" role="tablist">
-                      <li className="nav-item" role="presentation">
-                        <button
-                          className={classnames({
-                            active: activeTab === 1,
-                            done: (activeTab <= 4 && activeTab >= 0),
-                          }, "nav-link fs-15 p-3 ")}
-                          onClick={() => {
-                            this.toggleTab(1);
-                          }}
-                          id="pills-bill-info-tab" data-bs-toggle="pill" data-bs-target="#pills-bill-info"
-                          type="button"
-                          role="tab" aria-controls="pills-bill-info" aria-selected="true" data-position="0"><i
-                          className="ri-user-2-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i>
-                          Plans
-                        </button>
-                      </li>
-                      <li className="nav-item" role="presentation">
-                        <button
-                          className={classnames({
-                            active: activeTab === 2,
-                            done: activeTab <= 3 && activeTab > 1,
-                          }, "nav-link fs-15 p-3")}
-                          onClick={() => {
-                            this.toggleTab(2);
-                          }}
-                          id="pills-payment-tab" data-bs-toggle="pill" data-bs-target="#pills-payment"
-                          type="button"
-                          role="tab" aria-controls="pills-payment" aria-selected="false" data-position="2"
-                          tabIndex="-1"><i
-                          className="ri-bank-card-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i>
-                          Payment Info
-                        </button>
-                      </li>
-                      <li className="nav-item" role="presentation">
-                        <button
-                          className={classnames({
-                            active: activeTab === 3,
-                            done: activeTab <= 3 && activeTab > 2,
-                          }, "nav-link fs-15 p-3")}
-                          onClick={() => {
-                            this.toggleTab(3);
-                          }}
-                          id="pills-finish-tab" data-bs-toggle="pill" data-bs-target="#pills-finish" type="button"
-                          role="tab" aria-controls="pills-finish" aria-selected="false" data-position="3"
-                          tabIndex="-1">
-                          <i
-                            className="ri-checkbox-circle-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i>Finish
-                        </button>
-                      </li>
-                    </ul>
-                  </div>
-
-                  <div className="tab-content">
-                    <div className={"tab-pane fade " + (activeTab === 1 ? "show active" : "")}
-                         id="pills-bill-info" role="tabpanel" aria-labelledby="pills-bill-info-tab">
-                      <div>
-                        <h5 className="mb-1">Choose a plan</h5>
-                        <p className="text-muted mb-4">Please fill all information below</p>
-                      </div>
-
-                      {plans.length > 0 && this.getPlanSelection()}
-                    </div>
-
-                    <div className={"tab-pane fade " + (activeTab === 2 ? "show active" : "")} id="pills-payment"
-                         role="tabpanel" aria-labelledby="pills-payment-tab">
-                      <div>
-                        <h5 className="mb-1">Payment Selection</h5>
-                        <p className="text-muted mb-4">Please select and enter your billing
-                          information</p>
-                      </div>
-
-                      <div className="row g-4">
-                        <div className="col-lg-4 col-sm-6">
-                          <div data-bs-toggle="collapse" data-bs-target="#paymentmethodCollapse.show"
-                               aria-expanded="false" aria-controls="paymentmethodCollapse">
-                            <div className="form-check card-radio">
-                              <input id="paymentMethod01" name="method" type="radio" className="form-check-input"
-                                     checked={true}></input>
-                              <label className="form-check-label" htmlFor="paymentMethod01">
-                                      <span className="fs-16 text-muted me-2"><i
-                                        className="ri-paypal-fill align-bottom"></i></span>
-                                <span className="fs-14 text-wrap">Mpesa</span>
-                              </label>
-                            </div>
-                          </div>
-                        </div>
-
-                      </div>
-
-                      <div className="collapse show" id="paymentmethodCollapse">
-                        <div className="card p-4 border shadow-none mb-0 mt-4">
-                          <div className="row gy-3">
-
-
-                            <div className="phone-number">
-                              <label className="form-label" htmlFor="phone-number">{t`PHONE_LBL`}</label>
-                              {getError(errors, "phone_number")}
-                              <Suspense
-                                fallback={
-                                  <input
-                                    name="phone_number"
-                                    className="form-control input"
-                                    value={phone_number}
-                                    onChange={(value) =>
-                                      this.handleChange({
-                                        target: {name: "phone_number", value: `+${value}`},
-                                      })
-                                    }
-                                    onKeyDown={(event) => {
-                                      submitOnEnter(event, this, "mobile-phone-change-form");
-                                    }}
-                                    placeholder={t`PHONE_PHOLD`}
-                                    id="phone-number"
-                                  />
-                                }
-                              >
-                                <PhoneInput
-                                  name="phone_number"
-                                  onlyCountries={
-                                    input_fields.phone_number.only_countries || []
-                                  }
-                                  preferredCountries={
-                                    input_fields.phone_number.preferred_countries || []
-                                  }
-                                  excludeCountries={
-                                    input_fields.phone_number.exclude_countries || []
-                                  }
-                                  value={phone_number}
-                                  onChange={(value) =>
-                                    this.handleChange({
-                                      target: {name: "phone_number", value: `+${value}`},
-                                    })
-                                  }
-                                  onKeyDown={(event) => {
-                                    submitOnEnter(event, this, "mobile-phone-change-form");
-                                  }}
-                                  placeholder={t`PHONE_PHOLD`}
-                                  enableSearch={Boolean(
-                                    input_fields.phone_number.enable_search,
-                                  )}
-                                  inputProps={{
-                                    name: "phone_number",
-                                    id: "phone-number",
-                                    className: `form-control input ${
-                                      errors.phone_number ? "error" : ""
-                                    }`,
-                                    required: true,
-                                  }}
-                                />
-                              </Suspense>
-                            </div>
-
-
-                          </div>
-                        </div>
-                        <div className="text-muted mt-2 fst-italic">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                               fill="none"
-                               stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-                               className="feather feather-lock text-muted icon-xs">
-                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                          </svg>
-                          Your
-                          transaction is secured with SSL encryption
-                        </div>
-                      </div>
-
-                      <div className="d-flex align-items-start gap-3 mt-4">
-
-
-                      </div>
-                      <div className="row submit">
-                        <input
-                          type="submit"
-                          className="button full"
-                          value={t`PAY_PROC_BTN`}
-                        />
-                      </div>
-
-                      <div className="row cancel">
-                        <Link className="button full" to={`/`}>
-                          {t`CANCEL`}
-                        </Link>
-                      </div>
-                    </div>
-
-                    <div className={"tab-pane fade " + (activeTab === 3 ? "show active" : "")} id="pills-finish"
-                         role="tabpanel" aria-labelledby="pills-finish-tab">
-                      {this.renderWaitingForPayment()}
-                    </div>
-
-                  </div>
-
-                </form>
-              </div>
-
-
-            </div>
-          </div>
-        </div>
-      </div>
-
-    );
-  }
-
   render() {
-    const {phone_number, errors} = this.state;
-    const {orgSlug, mobile_money_payment_form, isAuthenticated, userData, settings} = this.props;
 
-    const {input_fields} = mobile_money_payment_form;
-    const {method, is_verified: isVerified, status} = userData;
+    const {mobile_money_payment_form, userData, settings} = this.props;
 
+    const {plansFetched, modalActive, errors} = this.state;
 
-    const redirectToStatus = () => <Navigate to={`/${orgSlug}/status`} />;
-    const acceptedValues = ["success", "failed", "draft", "waiting"];
-    // const acceptedValues = ["success", "failed", "draft"];
-    const {isTokenValid} = this.state;
-
-    // if (isVerified){
-    //   return redirectToStatus();
-    // }
-    //
-    // //not registered with bank card flow
-    // if (
-    //   (method && method !== "mpesa") ||
-    //   isVerified === true
-    // ) {
-    //   return redirectToStatus();
-    // }
-    //
-    // // likely somebody opening this page by mistake
-    // if (isAuthenticated === false) {
-    //   return redirectToStatus();
-    // }
-    //
-    // // not registered with bank card flow
-    // if (
-    //   (method && !settings.payment_methods.includes(method)) ||
-    //   !acceptedValues.includes(status)
-    // ) {
-    //   return redirectToStatus();
-    // }
-
-    // likely somebody opening this page by mistake
-    // if (
-    //   (isAuthenticated === false && status !== "draft") ||
-    //   (["failed", "draft"].includes(status) && isVerified === true) ||
-    //   (status === "success" && isVerified === false) ||
-    //   isTokenValid === false
-    // ) {
-    //   return redirectToStatus();
-    // }
-
-    return this.renderPaymentForm();
-
+    if (settings.subscriptions && !plansFetched) {
+      return null;
+    }
 
     return (
-      <div className="container content" id="mobile-phone-change">
-        <div className="inner">
-          {this.renderPaymentForm()}
-          <Contact />
-        </div>
-      </div>
+
+      <>
+        {this.getForm()}</>
     );
   }
 }
@@ -730,6 +635,7 @@ MobileMoneyPaymentProcess.propTypes = {
         preferred_countries: PropTypes.array,
         exclude_countries: PropTypes.array,
         enable_search: PropTypes.bool,
+        country: PropTypes.string,
       }).isRequired,
     }).isRequired,
     buttons: PropTypes.shape({

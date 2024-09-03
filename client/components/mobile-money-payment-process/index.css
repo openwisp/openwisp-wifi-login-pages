@@ -302,3 +302,55 @@ iframe {
   -ms-flex-align: center;
   align-items: center
 }
+
+.ri-star-fill {
+  color: var(--vz-secondary-color)
+}
+
+.favourite-btn.active {
+  border-color: transparent
+}
+
+.favourite-btn.active .ri-star-fill {
+  color: #ffbc0a
+}
+
+.favourite-btn.active .ri-star-fill:before {
+  content: "\f186"
+}
+
+.card-logo-light {
+  display: var(--vz-card-logo-light)
+}
+
+.card-logo-dark {
+  display: var(--vz-card-logo-dark)
+}
+
+#back-to-top {
+  position: fixed;
+  bottom: 100px;
+  right: 28px;
+  -webkit-transition: all .5s ease;
+  transition: all .5s ease;
+  display: none;
+  z-index: 1000
+}
+
+#back-to-top:hover {
+  -webkit-animation: fade-up 1.5s infinite linear;
+  animation: fade-up 1.5s infinite linear
+}
+
+@-webkit-keyframes fade-up {
+  0% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+    opacity: 1
+  }
+  75% {
+    -webkit-transform: translateY(-20px);
+    transform: translateY(-20px);
+    opacity: 0
+  }
+}

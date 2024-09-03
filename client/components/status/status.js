@@ -512,6 +512,7 @@ export default class Status extends React.Component {
       event.origin === new URL(captivePortalLoginForm.action).origin ||
       event.origin === window.location.origin
     ) {
+      console.log(type);
       switch (type) {
         case "authError":
           if (!message) break;
@@ -810,6 +811,15 @@ export default class Status extends React.Component {
     phone_number: {
       text: t`PHONE_NUMBER`,
     },
+    plan_name: {
+      text: "Plan Name",
+    },
+    plan_description: {
+      text: "Plan Description",
+    },
+    expire: {
+      text: "Expire",
+    },
   });
 
   render() {
@@ -837,8 +847,29 @@ export default class Status extends React.Component {
       rememberMe,
     } = this.state;
     const user_info = this.getUserInfo();
+    const {userplan} = userData;
+
     const contentArr = t`STATUS_CONTENT`.split("\n");
+    const time_option = {
+      dateStyle: "medium",
+      timeStyle: "short",
+      hour12: false,
+    };
     userInfo.status = user_info.status.value;
+    if (userplan) {
+      userInfo.expire = this.getDateTimeFormat(language, time_option, userplan.expire);
+    }
+    if (userplan && userplan.plan) {
+      userInfo.plan_name = <>{userplan.plan.name}{" "}<Link
+        className="button small"
+        to={`/${orgSlug}/payment/mobile-money/process`}
+      >
+        Upgrade
+      </Link></>;
+      userInfo.plan_description = userplan.plan.description;
+
+    }
+
     return (
       <>
         <InfoModal
