@@ -129,7 +129,6 @@ class MobileMoneyPaymentProcess extends React.Component {
           });
           if (response.data.active_order.payment_status === "waiting") {
             this.intervalId = setInterval(this.getPaymentStatus, 60000);
-            this.toggleTab(3);
             toast.info("Getting payment status. Please wait");
           }
 
@@ -182,6 +181,7 @@ class MobileMoneyPaymentProcess extends React.Component {
       return;
     }
 
+
     const paymentStatus = await getPaymentStatus(orgSlug, payment_id, userData.auth_token);
 
     this.setState({
@@ -198,15 +198,21 @@ class MobileMoneyPaymentProcess extends React.Component {
           mustLogin: true,
         });
         toast.success("Payment was successfully");
+        this.setState({payment_id: null});
+        clearInterval(this.intervalId);
         return navigate(`/${orgSlug}/payment/${paymentStatus}`);
       case "failed":
         setUserData({...userData, payment_url: null});
+        this.setState({payment_id: null});
         toast.info("The payment failed");
+        clearInterval(this.intervalId);
         return navigate(`/${orgSlug}/payment/${paymentStatus}`);
       default:
         // Request failed
         toast.error(t`ERR_OCCUR`);
         setUserData({...userData, payment_url: null});
+        this.setState({payment_id: null});
+        clearInterval(this.intervalId);
         return navigate(`/${orgSlug}/payment/failed`);
     }
     // navigate(redirectUrl);
