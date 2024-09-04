@@ -4,11 +4,7 @@ set -e
 
 source ./utils.sh
 
-#envsubst '$$VIRTUAL_HOST $$SERVER $$CLIENT' < ./wif_login_pages.template > /etc/nginx/nginx.conf
-
 wait_nginx_services
-#
-#wifi_login_pages.sh
 
 	(
     crontab -l 2>/dev/null
@@ -24,6 +20,6 @@ wait_nginx_services
 # Start the cron daemon
 crond
 
-pm2-runtime server/start.js
+pm2-runtime start ecosystem.config.js
 
 exec "$@"

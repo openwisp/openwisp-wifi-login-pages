@@ -16,5 +16,4 @@ if [ "${OFILE}" != "${NFILE}" ]; then
 
 	yarn setup && yarn build
 
-	pm2 reload all --hp /opt/openwisp/wifi-login-pages/
 fi

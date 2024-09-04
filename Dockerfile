@@ -20,17 +20,7 @@ RUN yarn install
 
 RUN npm install pm2 -g
 
-COPY ./init_command.sh \
-    ./wifi_login_pages.sh \
-    ./docker-entrypoint.sh \
-    ./supervisord.conf \
-    ./utils.sh ./
 
-RUN chmod +x ./utils.sh && \
-    chmod +x ./init_command.sh && \
-    chmod +x ./utils.sh && \
-    chmod +x ./wifi_login_pages.sh && \
-    chmod +x ./docker-entrypoint.sh
 
 COPY ./ .
 
@@ -48,11 +38,17 @@ VOLUME /opt/openwisp/wifi-login-pages/dist/
 
 RUN yarn build
 
-#ENTRYPOINT ["sh","docker-entrypoint.sh"]
+COPY ./init_command.sh \
+    ./wifi_login_pages.sh \
+    ./docker-entrypoint.sh \
+    ./supervisord.conf \
+    ./utils.sh ./
 
-
-#
-#EXPOSE $SERVER $CLIENT
+RUN chmod +x ./utils.sh && \
+    chmod +x ./init_command.sh && \
+    chmod +x ./utils.sh && \
+    chmod +x ./wifi_login_pages.sh && \
+    chmod +x ./docker-entrypoint.sh
 
 COPY wif_login_pages.template .
 
