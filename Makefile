@@ -40,10 +40,6 @@ stop-local:
 runtests:start
 
 
-publish:
-	if [[ "$(SKIP_BUILD)" == "false" ]]; then \
-		make compose-build nfs-build; \
-	fi
-	if [[ "$(SKIP_TESTS)" == "false" ]]; then \
-		make runtests; \
-	fi
+publish:build
+	docker tag enock295simiyu/wifi_login_pages:latest ghcr.io/enock295simiyu/wifi_login_pages:latest
+	docker push  ghcr.io/enock295simiyu/wifi_login_pages:latest
