@@ -29,6 +29,7 @@ COPY ./init_command.sh \
 RUN chmod +x ./utils.sh && \
     chmod +x ./init_command.sh && \
     chmod +x ./utils.sh && \
+    chmod +x ./wifi_login_pages.sh && \
     chmod +x ./docker-entrypoint.sh
 
 COPY ./ .
@@ -37,10 +38,15 @@ ENV MODULE_NAME=wifi_login_pages \
     PYTHONUNBUFFERED=1 \
     DOLLAR=$ \
     API_INTERNAL=api.internal \
-    REACT_APP_ALLOWED_HOSTS='cleaninglimited.info login.cleaninglimited.info localhost netmanager.local wifi.login.internal'
+    REACT_APP_ALLOWED_HOSTS='cleaninglimited.info login.cleaninglimited.info localhost netmanager.local wifi.login.internal' \
+    REACT_APP_SERVER_URL=http://localhost:8000 \
+    DASHBOARD_INTERNAL=dashboard.internal
 
+VOLUME /opt/openwisp/wifi-login-pages/organizations/
 
-#RUN yarn build
+VOLUME /opt/openwisp/wifi-login-pages/dist/
+
+RUN yarn build
 
 #ENTRYPOINT ["sh","docker-entrypoint.sh"]
 

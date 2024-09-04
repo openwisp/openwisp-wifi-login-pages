@@ -1,5 +1,4 @@
----
-name: OpenWisp WiFi Login Pages CI BUILD
+name: Build and Push Docker Image
 
 on:
   push:
@@ -10,117 +9,157 @@ on:
       - master
 
 jobs:
-  qa-checks:
-    name: QA-Checks
-    runs-on: ubuntu-20.04
+  build-and-push:
+    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-
-      - name: Cache yarn
-        uses: actions/cache@v4
-        id: yarn-cache
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: ${{ runner.os }}-yarn-
+          context: .
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:latest
+          platforms: linux/amd64,linux/arm64
 
-      - name: Set up Python 3.10
-        uses: actions/setup-python@v2
-        with:
-          python-version: "3.10"
 
-      - name: Installing dependencies
-        run: |
-          yarn install
-          pip install openwisp-utils[qa]
 
-      - name: QA checks
-        run: ./run-qa-checks
-
-  build:
-    name: Tests and Coverage
-    runs-on: ubuntu-20.04
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-
-      - name: Cache yarn
-        uses: actions/cache@v4
-        id: yarn-cache
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: ${{ runner.os }}-yarn-
-
-      - name: Installing dependencies
-        run: |
-          yarn install
-          yarn setup
-
-      - name: Tests
-        run: yarn coverage
-
-      - name: Set up Python 3.10
-        uses: actions/setup-python@v2
-        with:
-          python-version: "3.10"
-
-      - name: Get openwisp-radius
-        run: |
-          curl -L https://github.com/openwisp/openwisp-radius/tarball/master -o openwisp-radius.tar.gz
-          tar -xvzf openwisp-radius.tar.gz && mkdir openwisp-radius
-          mv openwisp-*/* openwisp-radius
-
-      - name: Cache python environment
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.pythonLocation }}
-          key: ${{ env.pythonLocation }}-${{secrets.CACHE_VERSION}}-${{ hashFiles('openwisp-radius/setup.py') }}
-
-      - name: Installing OpenWISP Radius
-        run: |
-          cd openwisp-radius && pip install -U -e ".[saml]" "Django~=4.2.0"
-          ./tests/manage.py migrate
-
-      - name: Creating configuration of organization (supports mobile verification)
-        run: node browser-test/create-mobile-configuration.js
-
-      - name: Build OpenWISP WiFi Login Pages
-        run: yarn build-dev
-
-      - name: Running OpenWISP WiFi Login Pages
-        run: yarn start &
-
-      - name: Running OpenWISP Radius
-        run: |
-          cp browser-test/local_settings.py openwisp-radius/tests/openwisp2/local_settings.py \
-          && cd openwisp-radius && ./tests/manage.py runserver &
-
-      - name: geckodriver/firefox
-        run: |
-          echo "geckodriver/firefox"
-          which geckodriver
-          geckodriver --version
-          which firefox
-          firefox --version
-
-      - name: Browser Tests
-        run: |
-          export OPENWISP_RADIUS_PATH=$(pwd)/openwisp-radius
-          yarn browser-test
-
-      - name: Coveralls
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+#---
+#name: OpenWisp WiFi Login Pages CI BUILD
+#
+#on:
+#  push:
+#    branches:
+#      - master
+#  pull_request:
+#    branches:
+#      - master
+#
+#jobs:
+#  qa-checks:
+#    name: QA-Checks
+#    runs-on: ubuntu-20.04
+#
+#    steps:
+#      - uses: actions/checkout@v4
+#        with:
+#          ref: ${{ github.event.pull_request.head.sha }}
+#
+#      - name: Get yarn cache directory path
+#        id: yarn-cache-dir-path
+#        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+#
+#      - name: Cache yarn
+#        uses: actions/cache@v4
+#        id: yarn-cache
+#        with:
+#          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+#          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+#          restore-keys: ${{ runner.os }}-yarn-
+#
+#      - name: Set up Python 3.10
+#        uses: actions/setup-python@v2
+#        with:
+#          python-version: "3.10"
+#
+#      - name: Installing dependencies
+#        run: |
+#          yarn install
+#          pip install openwisp-utils[qa]
+#
+#      - name: QA checks
+#        run: ./run-qa-checks
+#
+#  build:
+#    name: Tests and Coverage
+#    runs-on: ubuntu-20.04
+#
+#    steps:
+#      - uses: actions/checkout@v4
+#
+#      - name: Get yarn cache directory path
+#        id: yarn-cache-dir-path
+#        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+#
+#      - name: Cache yarn
+#        uses: actions/cache@v4
+#        id: yarn-cache
+#        with:
+#          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+#          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+#          restore-keys: ${{ runner.os }}-yarn-
+#
+#      - name: Installing dependencies
+#        run: |
+#          yarn install
+#          yarn setup
+#
+#      - name: Tests
+#        run: yarn coverage
+#
+#      - name: Set up Python 3.10
+#        uses: actions/setup-python@v2
+#        with:
+#          python-version: "3.10"
+#
+#      - name: Get openwisp-radius
+#        run: |
+#          curl -L https://github.com/openwisp/openwisp-radius/tarball/master -o openwisp-radius.tar.gz
+#          tar -xvzf openwisp-radius.tar.gz && mkdir openwisp-radius
+#          mv openwisp-*/* openwisp-radius
+#
+#      - name: Cache python environment
+#        uses: actions/cache@v4
+#        with:
+#          path: ${{ env.pythonLocation }}
+#          key: ${{ env.pythonLocation }}-${{secrets.CACHE_VERSION}}-${{ hashFiles('openwisp-radius/setup.py') }}
+#
+#      - name: Installing OpenWISP Radius
+#        run: |
+#          cd openwisp-radius && pip install -U -e ".[saml]" "Django~=4.2.0"
+#          ./tests/manage.py migrate
+#
+#      - name: Creating configuration of organization (supports mobile verification)
+#        run: node browser-test/create-mobile-configuration.js
+#
+#      - name: Build OpenWISP WiFi Login Pages
+#        run: yarn build-dev
+#
+#      - name: Running OpenWISP WiFi Login Pages
+#        run: yarn start &
+#
+#      - name: Running OpenWISP Radius
+#        run: |
+#          cp browser-test/local_settings.py openwisp-radius/tests/openwisp2/local_settings.py \
+#          && cd openwisp-radius && ./tests/manage.py runserver &
+#
+#      - name: geckodriver/firefox
+#        run: |
+#          echo "geckodriver/firefox"
+#          which geckodriver
+#          geckodriver --version
+#          which firefox
+#          firefox --version
+#
+#      - name: Browser Tests
+#        run: |
+#          export OPENWISP_RADIUS_PATH=$(pwd)/openwisp-radius
+#          yarn browser-test
+#
+#      - name: Coveralls
+#        uses: coverallsapp/github-action@master
+#        with:
+#          github-token: ${{ secrets.GITHUB_TOKEN }}

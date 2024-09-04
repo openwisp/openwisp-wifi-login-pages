@@ -5,12 +5,12 @@ function download_organization_configuration {
 	wget -qO organization.tar.gz --no-check-certificate \
 		${API_INTERNAL}/api/v1/organization/download/config/
 	wget -qO checksum --no-check-certificate \
-		${API_INTERNAL}/api/v1/organization/download/config/
+		${API_INTERNAL}/api/v1/organization/download/config/?checksum=true
 
 		mkdir /tmp/organizations
 	tar -xvf organization.tar.gz -C /tmp/organizations
 	# Define source and destination directories
-  SOURCE_DIR="./organizations/default"
+  SOURCE_DIR="/opt/openwisp/wifi-login-pages/organizations/default"
 
   DEST_DIR="/tmp/organizations"
   for SUBDIR in "$DEST_DIR"/*/; do
@@ -22,15 +22,15 @@ function download_organization_configuration {
 done
 
 echo "Done copying files to all subdirectories."
-	rsync -av /tmp/organizations/ ./organizations
-	chmod -R 600 ./organizations
+	rsync -av /tmp/organizations/ /opt/openwisp/wifi-login-pages/organizations
+	chmod -R 600 /opt/openwisp/wifi-login-pages/organizations
 	rm -rf /tmp/organizations
 }
 
 function organizations_config_checksum {
 	export OFILE=$(wget -qO - --no-check-certificate \
-		${API_INTERNAL}/api/v1/organization/download/config/)
-	export NFILE=$(cat checksum)
+		${API_INTERNAL}/api/v1/organization/download/config/?checksum=true)
+	export NFILE=$(cat /opt/openwisp/wifi-login-pages/checksum)
 }
 
 function wait_nginx_services {

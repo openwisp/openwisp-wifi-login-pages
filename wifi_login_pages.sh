@@ -2,11 +2,13 @@
 
 # This script will be called by cronjob to
 # update OpenVPN configurations periodically.
-source utils.sh
+source /opt/openwisp/wifi-login-pages/utils.sh
 
 organizations_config_checksum
 
 if [ "${OFILE}" != "${NFILE}" ]; then
+
+  cd /opt/openwisp/wifi-login-pages/
 
    echo "The file has not changed."
 
@@ -14,7 +16,5 @@ if [ "${OFILE}" != "${NFILE}" ]; then
 
 	yarn setup && yarn build
 
-	rsync -av /opt/openwisp/wifi-login-pages/dist /usr/share/nginx/html
-
-	pm2 reload all
+	pm2 reload all --hp /opt/openwisp/wifi-login-pages/
 fi

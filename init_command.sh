@@ -2,27 +2,28 @@
 # OpenWISP common module init script
 set -e
 
-source utils.sh
+source ./utils.sh
 
 #envsubst '$$VIRTUAL_HOST $$SERVER $$CLIENT' < ./wif_login_pages.template > /etc/nginx/nginx.conf
 
 wait_nginx_services
+#
+#wifi_login_pages.sh
 
-download_organization_configuration
-
-yarn setup && yarn build
-
-echo "*/1 * * * * sh wifi_login_pages.sh" | crontab -
 	(
-		crontab -l
-		echo "0 3 * * 7 sh wifi_login_pages.sh"
-	) | crontab -
-	crond
-# Supervisor is used to start the service because OpenVPN
-# needs to restart after crl list is updated or configurations
-# are changed. If OpenVPN as the service keeping the
-# docker container running, restarting would mean killing
-# the container while supervisor helps only to restart the service!
+    crontab -l 2>/dev/null
+    echo "*/1 * * * * sh /opt/openwisp/wifi-login-pages/wifi_login_pages.sh >> /proc/1/fd/1 2>> /proc/1/fd/2"
+) | crontab -
+
+# Add the second cron job (runs every Sunday at 3 AM)
+(
+    crontab -l 2>/dev/null
+    echo "0 3 * * 7 sh /opt/openwisp/wifi-login-pages/wifi_login_pages.sh >> /proc/1/fd/1 2>> /proc/1/fd/2"
+) | crontab -
+
+# Start the cron daemon
+crond
+
 pm2-runtime server/start.js
 
 exec "$@"
