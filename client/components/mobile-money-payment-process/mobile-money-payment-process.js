@@ -84,8 +84,6 @@ class MobileMoneyPaymentProcess extends React.Component {
 
     const {phone_number} = userData;
 
-    console.log(userData);
-
     if (settings.subscriptions) {
       setLoading(true);
       axios({
@@ -244,7 +242,7 @@ class MobileMoneyPaymentProcess extends React.Component {
   };
 
   changePlan = (event) => {
-    console.log(event.target.value);
+
     this.setState({selectedPlan: event.target.value});
   };
 
@@ -294,7 +292,7 @@ class MobileMoneyPaymentProcess extends React.Component {
   isPlanIdentityVerifier = () => {
     // If a payment is required, the plan is valid for identity verification
     const {selectedPlan, plans} = this.state;
-    console.log(plans);
+
     return (
       selectedPlan !== null && plans[selectedPlan].requires_payment === true
     );

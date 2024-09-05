@@ -195,7 +195,7 @@ export default class Status extends React.Component {
         }
         if (method === "mpesa" &&
           isVerified === false || userplan.is_expired === true) {
-          console.log("working");
+
           this.mpesaFinalOperations();
           return;
         }
@@ -218,7 +218,6 @@ export default class Status extends React.Component {
     const {setLoading} = this.context;
     const {userplan} = userData;
 
-    console.log(userData);
     await this.getUserPlan();
 
     if (userplan) {
@@ -554,7 +553,6 @@ export default class Status extends React.Component {
       event.origin === new URL(captivePortalLoginForm.action).origin ||
       event.origin === window.location.origin
     ) {
-      console.log(type);
       switch (type) {
         case "authError":
           if (!message) break;
