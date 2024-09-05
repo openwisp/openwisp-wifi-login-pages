@@ -9,5 +9,14 @@ module.exports = {
     // Specify delay between watch interval
     watch_delay: 30,
 
+  }, {
+    name: "check_organization_update.js",
+    script: "./check_organization_update.js", // the path of the script you want to execute,
+    // Options reference: https://pm2.keymetrics.io/docs/usage/application-declaration/
+    instances: 1,
+    autorestart: true,
+    watch: false,
+
+
   }],
 };
