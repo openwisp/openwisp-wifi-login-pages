@@ -163,6 +163,26 @@ client:
         code:
           pattern: '[0-9]{6,}'
 
+    mobile_money_payment_form:
+      auto_select_first_plan: true
+      buttons:
+        change_phone_number: true
+        cancel: true
+      input_fields:
+        phone_number:
+          country: "KE"
+          only_countries:
+            - "KE"
+        first_name:
+          setting: "disabled"
+        last_name:
+          setting: "disabled"
+        birth_date:
+          setting: "disabled"
+        location:
+          pattern: '[a-zA-Z@.+\-_\d]{1,150}'
+          setting: "disabled"
+
     phone_number_change_form:
       buttons:
         change_phone_number: true

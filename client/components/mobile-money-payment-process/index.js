@@ -11,13 +11,17 @@ const mapStateToProps = (state, ownProps) => {
     phone_number: conf.components.registration_form.input_fields.phone_number,
   };
   return {
-    mobile_money_payment_form: componentConf,
+    mobile_money_payment_form: conf.components.mobile_money_payment_form,
     settings: conf.settings,
     orgSlug: conf.slug,
     orgName: conf.name,
     cookies: ownProps.cookies,
     userData: conf.userData,
     language: state.language,
+    privacyPolicy: conf.privacy_policy,
+    termsAndConditions: conf.terms_and_conditions,
+    isAuthenticated: conf.isAuthenticated,
+
   };
 };
 const mapDispatchToProps = (dispatch) => ({

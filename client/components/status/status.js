@@ -12,7 +12,7 @@ import {Link} from "react-router-dom";
 import {toast} from "react-toastify";
 import InfinteScroll from "react-infinite-scroll-component";
 import {gettext, t} from "ttag";
-import {getUserRadiusSessionsUrl, mainToastId} from "../../constants";
+import {currentPlanApiUrl, getUserRadiusSessionsUrl, mainToastId} from "../../constants";
 import LoadingContext from "../../utils/loading-context";
 import getText from "../../utils/get-text";
 import logError from "../../utils/log-error";
@@ -26,6 +26,7 @@ import Logout from "../organization-wrapper/lazy-logout";
 import InfoModal from "../../utils/modal";
 import {localStorage} from "../../utils/storage";
 import handleSession from "../../utils/session";
+import getLanguageHeaders from "../../utils/get-language-headers";
 
 export default class Status extends React.Component {
   constructor(props) {
@@ -54,6 +55,7 @@ export default class Status extends React.Component {
     this.getUserRadiusSessions = this.getUserRadiusSessions.bind(this);
     this.handleSessionLogout = this.handleSessionLogout.bind(this);
     this.fetchMoreSessions = this.fetchMoreSessions.bind(this);
+    this.getUserPlan = this.fetchCurrentUserPlan.bind(this);
     this.updateScreenWidth = this.updateScreenWidth.bind(this);
     this.updateSpinner = this.updateSpinner.bind(this);
   }
@@ -114,6 +116,8 @@ export default class Status extends React.Component {
         return;
       }
 
+      await this.getUserPlan();
+
       const {mustLogin, mustLogout, repeatLogin} = userData;
       ({userData} = this.props);
       if (userData.password_expired === true) {
@@ -134,6 +138,7 @@ export default class Status extends React.Component {
         phone_number,
         is_active,
         method,
+        userplan,
         is_verified: isVerified,
       } = userData;
 
@@ -187,8 +192,10 @@ export default class Status extends React.Component {
         ) {
           this.finalOperations();
           return;
-        } else if (method === "mpesa" &&
-          isVerified === false) {
+        }
+        if (method === "mpesa" &&
+          isVerified === false || userplan.is_expired === true) {
+          console.log("working");
           this.mpesaFinalOperations();
           return;
         }
@@ -211,6 +218,9 @@ export default class Status extends React.Component {
     const {setLoading} = this.context;
     const {userplan} = userData;
 
+    console.log(userData);
+    await this.getUserPlan();
+
     if (userplan) {
       setUserData({
         ...userData,
@@ -220,7 +230,7 @@ export default class Status extends React.Component {
 
     // if the user needs bank card verification,
     // redirect to payment page and stop here
-    if (!userplan.active) {
+    if (!userplan.active || userplan.is_expired === true) {
       // avoid redirect loop from proceed to payment
       if (settings.payment_requires_internet && userData.proceedToPayment) {
         // reset proceedToPayment
@@ -232,6 +242,7 @@ export default class Status extends React.Component {
         return;
       }
       navigate(`/${orgSlug}/payment/mobile-money/process`);
+      toast.warning("You account has expired! You need to recharge your account to continue enjoying our services");
       return;
     }
 
@@ -257,6 +268,37 @@ export default class Status extends React.Component {
     window.addEventListener("resize", this.updateScreenWidth);
     this.updateSpinner();
   }
+
+  async fetchCurrentUserPlan() {
+    const {setLoading} = this.context;
+    const {orgSlug, setUserData, language, userData} =
+      this.props;
+    const currentPlanUrl = currentPlanApiUrl(orgSlug);
+    setLoading(true);
+    axios({
+      method: "get",
+      headers: {
+        "content-type": "application/x-www-form-urlencoded",
+        "accept-language": getLanguageHeaders(language),
+        Authorization: `Bearer ${userData.auth_token}`,
+      },
+      url: currentPlanUrl,
+    })
+      .then((response) => {
+
+        setUserData({
+          ...userData,
+          userplan: response.data,
+        });
+
+        setLoading(false);
+      })
+      .catch((error) => {
+        toast.error(t`ERR_OCCUR`);
+        logError(error, "Error while getting current user plan");
+      });
+  }
+
 
 
   async finalOperations() {

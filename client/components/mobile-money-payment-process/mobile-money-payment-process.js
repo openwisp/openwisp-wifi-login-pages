@@ -33,6 +33,10 @@ class MobileMoneyPaymentProcess extends React.Component {
     super(props);
     this.state = {
       phone_number: "",
+      email: "",
+      first_name: "",
+      last_name: "",
+      location: "",
       order: "",
       errors: {},
       payment_id: "",
@@ -44,6 +48,12 @@ class MobileMoneyPaymentProcess extends React.Component {
       plansFetched: false,
       selectedPlan: {},
       modalActive: false,
+      tax_number: "",
+      street: "",
+      city: "",
+      zipcode: "",
+      country: "",
+      countrySelected: {},
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -74,6 +84,8 @@ class MobileMoneyPaymentProcess extends React.Component {
 
     const {phone_number} = userData;
 
+    console.log(userData);
+
     if (settings.subscriptions) {
       setLoading(true);
       axios({
@@ -96,7 +108,6 @@ class MobileMoneyPaymentProcess extends React.Component {
     }
     this.getCurrentUserPlan();
     this.autoSelectFirstPlan();
-    // this.intervalId =setInterval(this.getPaymentStatus, 60000);
   }
 
   async getCurrentUserPlan() {
@@ -115,20 +126,16 @@ class MobileMoneyPaymentProcess extends React.Component {
       url: currentPlanUrl,
     })
       .then((response) => {
-        // this.setState({plans: response.data, plansFetched: true});
-
         setUserData({
           ...userData,
-          active_order: response.data.active_order,
-          plan: response.data.plan,
-          active: response.data.active,
+          userplan: response.data,
         });
         if (response.data.active_order) {
           this.setState({
             payment_id: response.data.active_order.payment_id,
           });
           if (response.data.active_order.payment_status === "waiting") {
-            this.intervalId = setInterval(this.getPaymentStatus, 60000);
+            this.intervalId = setInterval(this.getPaymentStatus, 10000);
             toast.info("Getting payment status. Please wait");
           }
 
@@ -191,6 +198,7 @@ class MobileMoneyPaymentProcess extends React.Component {
       case "waiting":
         return;
       case "success":
+        await this.getCurrentUserPlan();
         setUserData({
           ...userData,
           is_verified: true,
@@ -236,26 +244,21 @@ class MobileMoneyPaymentProcess extends React.Component {
   };
 
   changePlan = (event) => {
+    console.log(event.target.value);
     this.setState({selectedPlan: event.target.value});
   };
 
   getPlanSelection = () => {
-    const {userData} = this.props;
+    const {mobile_money_payment_form} = this.props;
     const {plans, selectedPlan} = this.state;
-    const {userplan} = userData;
-    const auto_select_first_plan = false;
-
+    const {auto_select_first_plan} = mobile_money_payment_form;
     let index = 0;
     return (
       <div className={`plans ${auto_select_first_plan ? "hidden" : ""}`}>
         <p className="intro">{t`PLAN_SETTING_TXT`}.</p>
         {plans.map((plan) => {
           const currentIndex = String(index);
-
           let planClass = "plan";
-          if (userplan && userplan.active_order && selectedPlan === null && userplan.active_order && userplan.active_order.plan === plan.id) {
-            this.changePlan({target: {value: currentIndex}});
-          }
           if (selectedPlan === currentIndex) {
             planClass += " active";
           } else if (selectedPlan !== null && selectedPlan !== currentIndex) {
@@ -282,24 +285,20 @@ class MobileMoneyPaymentProcess extends React.Component {
   };
 
   autoSelectFirstPlan = () => {
-    const {registration} = this.props;
-    if (true) {
+    const {mobile_money_payment_form} = this.props;
+    if (mobile_money_payment_form.auto_select_first_plan) {
       this.changePlan({target: {value: 0}});
     }
   };
 
-
   isPlanIdentityVerifier = () => {
     // If a payment is required, the plan is valid for identity verification
     const {selectedPlan, plans} = this.state;
-    if (plans === []) {
-      return true;
-    }
+    console.log(plans);
     return (
       selectedPlan !== null && plans[selectedPlan].requires_payment === true
     );
   };
-
 
   doesPlanRequireInvoice = () => {
     const {settings} = this.props;
@@ -347,7 +346,7 @@ class MobileMoneyPaymentProcess extends React.Component {
                   {(plans.length === 0 ||
                     (plans.length > 0 && selectedPlan !== null)) && (
                     <>
-                      {this.isPlanIdentityVerifier() &&
+                      {
                         settings.mobile_phone_verification &&
                         input_fields.phone_number && (
                           <div className="row phone-number">
@@ -537,7 +536,7 @@ class MobileMoneyPaymentProcess extends React.Component {
           payment_id: response.data.payment.id,
           payment_status: response.data.payment.status,
         });
-        this.intervalId = setInterval(this.getPaymentStatus, 60000);
+        this.intervalId = setInterval(this.getPaymentStatus, 10000);
         setLoading(false);
         this.toggleTab(3);
         toast.info(response.data.payment.message);
@@ -615,12 +614,22 @@ class MobileMoneyPaymentProcess extends React.Component {
 
   render() {
 
-    const {mobile_money_payment_form, userData, settings} = this.props;
+    const {orgSlug, isAuthenticated, userData, settings, navigate} = this.props;
 
     const {plansFetched, modalActive, errors} = this.state;
-
+    const redirectToStatus = () => navigate(`/${orgSlug}/status`);
+    const {auth_token} = userData;
     if (settings.subscriptions && !plansFetched) {
       return null;
+    }
+
+    // likely somebody opening this page by mistake
+    if (isAuthenticated === false) {
+      return redirectToStatus();
+    }
+
+    if (!auth_token) {
+      return redirectToStatus();
     }
 
     return (
@@ -637,17 +646,42 @@ MobileMoneyPaymentProcess.propTypes = {
   mobile_money_payment_form: PropTypes.shape({
     input_fields: PropTypes.shape({
       phone_number: PropTypes.shape({
+        country: PropTypes.string,
         only_countries: PropTypes.array,
         preferred_countries: PropTypes.array,
         exclude_countries: PropTypes.array,
         enable_search: PropTypes.bool,
-        country: PropTypes.string,
+      }),
+      first_name: PropTypes.shape({
+        setting: PropTypes.string.isRequired,
+      }),
+      last_name: PropTypes.shape({
+        setting: PropTypes.string.isRequired,
+      }),
+      location: PropTypes.shape({
+        setting: PropTypes.string.isRequired,
+        pattern: PropTypes.string.isRequired,
+      }),
+      birth_date: PropTypes.shape({
+        setting: PropTypes.string.isRequired,
+      }),
+      country: PropTypes.shape({
+        pattern: PropTypes.string,
+      }),
+      zipcode: PropTypes.shape({}),
+      city: PropTypes.shape({}),
+      street: PropTypes.shape({}),
+      tax_number: PropTypes.shape({
+        pattern: PropTypes.string.isRequired,
       }).isRequired,
     }).isRequired,
     buttons: PropTypes.shape({
       change_phone_number: PropTypes.bool,
       cancel: PropTypes.bool,
     }).isRequired,
+    additional_info_text: PropTypes.bool,
+    links: PropTypes.object,
+    auto_select_first_plan: PropTypes.bool,
   }).isRequired,
   settings: PropTypes.shape({
     mobile_phone_verification: PropTypes.bool,
@@ -655,6 +689,7 @@ MobileMoneyPaymentProcess.propTypes = {
   orgSlug: PropTypes.string.isRequired,
   orgName: PropTypes.string.isRequired,
   cookies: PropTypes.instanceOf(Cookies).isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
   logout: PropTypes.func.isRequired,
   userData: PropTypes.object.isRequired,
   setUserData: PropTypes.func.isRequired,
