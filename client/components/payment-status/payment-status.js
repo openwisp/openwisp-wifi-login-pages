@@ -84,7 +84,7 @@ export default class PaymentStatus extends React.Component {
   render() {
     const {orgSlug, params, isAuthenticated, userData, settings} = this.props;
     const {status} = params;
-    const {method, is_verified: isVerified} = userData;
+    const {method, is_verified: isVerified, payment_url} = userData;
     const redirectToStatus = () => <Navigate to={`/${orgSlug}/status`} />;
     const acceptedValues = ["success", "failed", "draft"];
     // const acceptedValues = ["success", "failed", "draft"];
@@ -101,7 +101,7 @@ export default class PaymentStatus extends React.Component {
     // likely somebody opening this page by mistake
     if (
       (isAuthenticated === false && status !== "draft") ||
-      (["failed", "draft"].includes(status) && isVerified === true) ||
+      (["failed", "draft"].includes(status) && !payment_url && isVerified === true) ||
       (status === "success" && isVerified === false) ||
       isTokenValid === false
     ) {
@@ -147,16 +147,20 @@ export default class PaymentStatus extends React.Component {
 
   renderDraft() {
     const {orgSlug, page = {}, settings, userData} = this.props;
-    const {method, is_verified: isVerified} = userData;
+    const {method, is_verified: isVerified, payment_url} = userData;
     const {timeout = 5, max_attempts: maxAttempts = 3} = page;
-    let payProceedUrl = `/${orgSlug}/payment/process`;
-    if (method && method === "mpesa" && !isVerified) {
-      payProceedUrl = `/${orgSlug}/payment/mobile-money/process`;
-    } else {
-      payProceedUrl = settings.payment_requires_internet
-        ? `/${orgSlug}/status`
-        : `/${orgSlug}/payment/process`;
+    let payProceedUrl = payment_url;
+    console.log(userData);
+    console.log(payment_url);
+    if (!payProceedUrl) {
+      if (method && method === "mpesa" && !isVerified) {
+        payProceedUrl = `/${orgSlug}/payment/mobile-money/process`;
+      } else {
+        payProceedUrl = settings.payment_requires_internet
+          ? `/${orgSlug}/status`
+          : `/${orgSlug}/payment/process`;
 
+      }
     }
 
     return (
@@ -165,13 +169,18 @@ export default class PaymentStatus extends React.Component {
           <div className="main-column single">
             <div className="inner">
               <h2 className="row">{t`PAY_REQ`}</h2>
-
-              <div
+              {method === "mpesa" ? <div
+                className="row"
+                dangerouslySetInnerHTML={{
+                  __html: t`MPESA_PAY_WARN${timeout}${maxAttempts}`,
+                }}
+              /> : <div
                 className="row"
                 dangerouslySetInnerHTML={{
                   __html: t`PAY_WARN${timeout}${maxAttempts}`,
                 }}
-              />
+              />}
+
 
               <div className="row">
                 <Link

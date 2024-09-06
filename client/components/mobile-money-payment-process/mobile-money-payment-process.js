@@ -18,7 +18,6 @@ import logError from "../../utils/log-error";
 import handleChange from "../../utils/handle-change";
 import submitOnEnter from "../../utils/submit-on-enter";
 import Contact from "../contact-box";
-import validateToken from "../../utils/validate-token";
 import getError from "../../utils/get-error";
 import getLanguageHeaders from "../../utils/get-language-headers";
 import {getPaymentStatus} from "../../utils/get-payment-status";
@@ -67,14 +66,6 @@ class MobileMoneyPaymentProcess extends React.Component {
     setLoading(true);
 
     let {userData} = this.props;
-    const isValid = await validateToken(
-      cookies,
-      orgSlug,
-      setUserData,
-      userData,
-      logout,
-      language,
-    );
 
 
     setLoading(false);
@@ -201,7 +192,9 @@ class MobileMoneyPaymentProcess extends React.Component {
           ...userData,
           is_verified: true,
           payment_url: null,
+          repeatLogin: true,
           mustLogin: true,
+          mustLogout: true,
         });
         toast.success("Payment was successfully");
         this.setState({payment_id: null});
@@ -529,7 +522,7 @@ class MobileMoneyPaymentProcess extends React.Component {
         });
 
         // setUserData({...userData,phone_number,status: response.status,payment_id:response.data.payment.id,payment_status:response.data.payment.status});
-        setUserData({...userData, phone_number, status: response.status, payment_id: response.data.payment.id});
+        setUserData({...userData, phone_number, payment_id: response.data.payment.id});
         this.setState({
           payment_id: response.data.payment.id,
           payment_status: response.data.payment.status,

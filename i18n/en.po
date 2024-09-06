@@ -591,6 +591,9 @@ msgstr ""
 "you just registered and repeat the process up a maximum of ${ maxAttempts } "
 "times.</p>"
 
+msgid "MPESA_PAY_WARN${ timeout }${ maxAttempts }"
+msgstr "<p>By clicking on the button below you will be redirected to our payment gateway service where you can select a plan and be asked to provide a phone number that will be used to pay for the plan. An stk push will be sent to the phone number for you to inset your mpesa pin.</p><p>You have to use a working Safaricom line with working mpesa for you to pay.<br /><strong>For this reason we recommend preparing your phone and sim card before initiating the payment process.</strong></p><p>If for any reason the process is not completed, the internet connection which allows you to reach the website of your bank will be closed, if this happens you can just log in again with the credentials you just registered and repeat the process up a maximum of ${ maxAttempts } times.</p><p><b>It you have already made the payment but still cant access the internet, you can logout and log in again.</b></p>"
+
 #: client/components/login/login.js:201
 #: client/components/status/status.js:376
 #. wait to trigger login to avoid getting stuck

@@ -862,6 +862,12 @@ export default class Status extends React.Component {
     },
   });
 
+  handleBuyPlanRedirect = () => {
+    const {orgSlug, setUserData, userData} = this.props;
+    const payment_url = `/${orgSlug}/payment/mobile-money/process`;
+    setUserData({...userData, payment_url, method: "mpesa", is_verified: false});
+  };
+
   render() {
     const {
       statusPage,
@@ -902,8 +908,10 @@ export default class Status extends React.Component {
     if (userplan && userplan.plan) {
       userInfo.plan_name = <>{userplan.plan.name}{" "}<Link
         className="button small"
-        to={`/${orgSlug}/payment/mobile-money/process`}
-      >
+        onClick={() => {
+          this.handleBuyPlanRedirect();
+        }}
+        to={`/${orgSlug}/payment/draft`}>
         Upgrade
       </Link></>;
       userInfo.plan_description = userplan.plan.description;
