@@ -30,7 +30,13 @@ ENV MODULE_NAME=wifi_login_pages \
     API_INTERNAL=api.internal \
     REACT_APP_ALLOWED_HOSTS='cleaninglimited.info login.cleaninglimited.info localhost netmanager.local wifi.login.internal' \
     REACT_APP_SERVER_URL=http://localhost:8000 \
-    DASHBOARD_INTERNAL=dashboard.internal
+    DASHBOARD_INTERNAL=dashboard.internal \
+    ALL_LOG_FILE=/dev/stdout \
+    WARN_LOG_FILE=/dev/stdout \
+    INFO_LOG_FILE=/dev/stdout \
+    HTTP_LOG_FILE=/dev/stdout \
+    DEBUG_LOG_FILE=/dev/stdout \
+    ERROR_LOG_FILE=/dev/stderr
 
 VOLUME /opt/openwisp/wifi-login-pages/organizations/
 

@@ -8,6 +8,9 @@ module.exports = {
     watch: ["dist", "organizations", "server"],
     // Specify delay between watch interval
     watch_delay: 30,
+    log_file: "/dev/null", // Disable log file creation
+    out_file: "/dev/stdout", // Log output to stdout
+    error_file: "/dev/stderr", // Log errors to stderr
 
   }, {
     name: "check_organization_update.js",

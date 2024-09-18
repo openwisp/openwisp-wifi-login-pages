@@ -33,8 +33,6 @@ jobs:
           push: true
           tags: |
             ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:latest
-          platforms: linux/amd64,linux/arm64
-
 
 
 #---
