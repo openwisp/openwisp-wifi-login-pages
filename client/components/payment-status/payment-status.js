@@ -150,8 +150,7 @@ export default class PaymentStatus extends React.Component {
     const {method, is_verified: isVerified, payment_url} = userData;
     const {timeout = 5, max_attempts: maxAttempts = 3} = page;
     let payProceedUrl = payment_url;
-    console.log(userData);
-    console.log(payment_url);
+
     if (!payProceedUrl) {
       if (method && method === "mpesa" && !isVerified) {
         payProceedUrl = `/${orgSlug}/payment/mobile-money/process`;

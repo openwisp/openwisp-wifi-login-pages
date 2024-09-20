@@ -354,3 +354,26 @@ iframe {
     opacity: 0
   }
 }
+
+.processing-payment-loader {
+  margin: 0 auto;
+  width: 100%;
+}
+
+
+.row {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 200px;
+  justify-content: center;
+}
+
+.payment-content .full {
+  display: block;
+  text-decoration: none;
+  text-align: center;
+  padding: 8px 0;
+  width: 100%;
+  line-height: 24px;
+}

@@ -11,6 +11,7 @@ import {toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {gettext, t} from "ttag";
 import "react-phone-input-2/lib/style.css";
+import ReactLoading from "react-loading";
 import LoadingContext from "../../utils/loading-context";
 import {buyPlanUrl, currentPlanApiUrl, plansApiUrl} from "../../constants";
 import getErrorText from "../../utils/get-error-text";
@@ -39,7 +40,7 @@ class MobileMoneyPaymentProcess extends React.Component {
       order: "",
       errors: {},
       payment_id: "",
-      payment_status: "",
+      payment_status: null,
       activeTab: 1,
       passedSteps: [1],
       modifiedSteps: [1],
@@ -65,7 +66,7 @@ class MobileMoneyPaymentProcess extends React.Component {
       this.props;
     setLoading(true);
 
-    let {userData} = this.props;
+    const {userData} = this.props;
 
 
     setLoading(false);
@@ -124,8 +125,7 @@ class MobileMoneyPaymentProcess extends React.Component {
             payment_id: response.data.active_order.payment_id,
           });
           if (response.data.active_order.payment_status === "waiting") {
-            this.intervalId = setInterval(this.getPaymentStatus, 10000);
-            toast.info("Getting payment status. Please wait");
+            this.intervalId = setInterval(this.getPaymentStatus, 9000);
           }
 
 
@@ -435,7 +435,7 @@ class MobileMoneyPaymentProcess extends React.Component {
                     <input
                       type="submit"
                       className="button full"
-                      value={"Buy Plan"}
+                      value="Buy Plan"
                     />
                   )}
                 </div>
@@ -527,11 +527,10 @@ class MobileMoneyPaymentProcess extends React.Component {
           payment_id: response.data.payment.id,
           payment_status: response.data.payment.status,
         });
-        this.intervalId = setInterval(this.getPaymentStatus, 10000);
+        this.intervalId = setInterval(this.getPaymentStatus, 9000);
         setLoading(false);
         this.toggleTab(3);
         toast.info(response.data.payment.message);
-        toast.info("You will receive an stp push on your phone");
 
         // navigate(`/${orgSlug}/mobile-phone-verification`);
       })
@@ -561,7 +560,7 @@ class MobileMoneyPaymentProcess extends React.Component {
     const {activeTab, passedSteps} = this.state;
 
     if (activeTab !== tab) {
-      var modifiedSteps = [...passedSteps, tab];
+      const modifiedSteps = [...passedSteps, tab];
 
       if (tab >= 1 && tab <= 4) {
         this.setState({activeTab: tab, passedSteps: modifiedSteps});
@@ -570,6 +569,79 @@ class MobileMoneyPaymentProcess extends React.Component {
       }
     }
   }
+
+  renderWaitingPayment() {
+    return (
+      <>
+        <div className="container content" id="registration">
+
+          <div className="inner payment-content">
+            <div className="row full">
+              <ReactLoading type="cylon" color="black" height="20%" width="20%"
+                            className="processing-payment-loader" />
+              <h4>Processing Payment .....</h4>
+              <p>Your mpesa payment is being processed. You should get an stk push on your phone number. Please enter
+                your mpesa pin and click confirm</p>
+
+
+              <div className="row cancel">
+                <Link className="button full" to="/">
+                  {t`CANCEL`}
+                </Link>
+              </div>
+            </div>
+
+            <Contact />
+          </div>
+        </div>
+
+      </>
+    );
+  }
+
+  handBuyPlanAgain() {
+
+    this.setState({payment_status: null});
+
+  }
+
+  renderCheckPaymentStatus() {
+    const {orgSlug} = this.props;
+    return (
+      <>
+        <div className="container content" id="registration">
+
+          <div className="inner payment-content">
+            <div className="row full">
+              <ReactLoading type="cylon" color="black" height="20%" width="20%"
+                            className="processing-payment-loader" />
+              <h4>Verifying Payment .....</h4>
+              <p>Your mpesa payment is being verified. Your payment is being confirmed. Please wait....</p>
+
+              <div className="row register">
+                <link
+                  onClick={this.handBuyPlanAgain}
+                  to={`/${orgSlug}/payment/mobile-money/process`}
+                  type="submit"
+                  className="button full"
+                >Payment Again
+                </link>
+              </div>
+              <div className="row cancel">
+                <Link className="button full" to="/">
+                  {t`CANCEL`}
+                </Link>
+              </div>
+            </div>
+
+            <Contact />
+          </div>
+        </div>
+
+      </>
+    );
+  }
+
 
   renderWaitingForPayment() {
     const {userData, orgSlug} = this.props;
@@ -584,7 +656,7 @@ class MobileMoneyPaymentProcess extends React.Component {
         <div className="mb-4">
           <lord-icon src="https://cdn.lordicon.com/lupuorrc.json" trigger="loop"
                      colors="primary:#25a0e2,secondary:#00bd9d"
-                     style={{width: "120px", height: "120px"}}></lord-icon>
+                     style={{width: "120px", height: "120px"}} />
         </div>
         <h5>You payment is being processed</h5>
         <p className="text-muted">You will receive an notification on {phone_number} to pay your internet
@@ -592,9 +664,9 @@ class MobileMoneyPaymentProcess extends React.Component {
 
         <h3 className="fw-semibold">Order
           ID: {(userplan && userplan.active_order ? userplan.active_order.id : "N/A")}<a
-            className="text-decoration-underline"></a></h3>
+            className="text-decoration-underline" /></h3>
         <div className="row cancel">
-          <Link className="button full" to={`/`}>
+          <Link className="button full" to="/">
             {t`CANCEL`}
           </Link>
         </div>
@@ -603,16 +675,27 @@ class MobileMoneyPaymentProcess extends React.Component {
     );
   }
 
+
   render() {
 
     const {orgSlug, isAuthenticated, userData, settings, navigate} = this.props;
 
-    const {plansFetched, modalActive, errors} = this.state;
+    const {plansFetched, modalActive, errors, payment_status} = this.state;
     const redirectToStatus = () => navigate(`/${orgSlug}/status`);
     const {auth_token} = userData;
     if (settings.subscriptions && !plansFetched) {
       return null;
     }
+
+    if (payment_status === "pending") {
+      return this.renderWaitingPayment();
+    }
+
+    if (payment_status === "waiting") {
+      return this.renderCheckPaymentStatus();
+    }
+
+
 
     // likely somebody opening this page by mistake
     if (isAuthenticated === false) {
