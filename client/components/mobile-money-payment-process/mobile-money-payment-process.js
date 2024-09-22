@@ -116,6 +116,7 @@ class MobileMoneyPaymentProcess extends React.Component {
       url: currentPlanUrl,
     })
       .then((response) => {
+
         setUserData({
           ...userData,
           userplan: response.data,
@@ -125,7 +126,7 @@ class MobileMoneyPaymentProcess extends React.Component {
             payment_id: response.data.active_order.payment_id,
           });
           if (response.data.active_order.payment_status === "waiting") {
-            this.intervalId = setInterval(this.getPaymentStatus, 9000);
+            this.intervalId = setInterval(this.getPaymentStatus, 6000);
           }
 
 
@@ -527,7 +528,7 @@ class MobileMoneyPaymentProcess extends React.Component {
           payment_id: response.data.payment.id,
           payment_status: response.data.payment.status,
         });
-        this.intervalId = setInterval(this.getPaymentStatus, 9000);
+        this.intervalId = setInterval(this.getPaymentStatus, 6000);
         setLoading(false);
         this.toggleTab(3);
         toast.info(response.data.payment.message);
@@ -600,8 +601,9 @@ class MobileMoneyPaymentProcess extends React.Component {
   }
 
   handBuyPlanAgain() {
-
+    const {navigate, orgSlug} = this.props;
     this.setState({payment_status: null});
+    navigate(`/${orgSlug}/payment/mobile-money/process`);
 
   }
 
@@ -619,13 +621,12 @@ class MobileMoneyPaymentProcess extends React.Component {
               <p>Your mpesa payment is being verified. Your payment is being confirmed. Please wait....</p>
 
               <div className="row register">
-                <link
+                <button
                   onClick={this.handBuyPlanAgain}
-                  to={`/${orgSlug}/payment/mobile-money/process`}
-                  type="submit"
+
                   className="button full"
                 >Payment Again
-                </link>
+                </button>
               </div>
               <div className="row cancel">
                 <Link className="button full" to="/">
@@ -683,9 +684,12 @@ class MobileMoneyPaymentProcess extends React.Component {
     const {plansFetched, modalActive, errors, payment_status} = this.state;
     const redirectToStatus = () => navigate(`/${orgSlug}/status`);
     const {auth_token} = userData;
+
+    console.log(userData);
     if (settings.subscriptions && !plansFetched) {
       return null;
     }
+
 
     if (payment_status === "pending") {
       return this.renderWaitingPayment();
@@ -699,11 +703,11 @@ class MobileMoneyPaymentProcess extends React.Component {
 
     // likely somebody opening this page by mistake
     if (isAuthenticated === false) {
-      return redirectToStatus();
+      redirectToStatus();
     }
 
     if (!auth_token) {
-      return redirectToStatus();
+      redirectToStatus();
     }
 
     return (
