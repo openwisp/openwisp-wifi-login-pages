@@ -685,7 +685,6 @@ class MobileMoneyPaymentProcess extends React.Component {
     const redirectToStatus = () => navigate(`/${orgSlug}/status`);
     const {auth_token} = userData;
 
-    console.log(userData);
     if (settings.subscriptions && !plansFetched) {
       return null;
     }
