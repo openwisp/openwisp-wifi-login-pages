@@ -303,6 +303,12 @@ export default class Status extends React.Component {
   async finalOperations() {
     const {userData, orgSlug, settings, navigate, setUserData} = this.props;
     const {setLoading} = this.context;
+
+    const {method} = userData;
+    if (method === "mpesa") {
+      this.mpesaFinalOperations();
+      return;
+    }
     // if the user needs bank card verification,
     // redirect to payment page and stop here
     if (needsVerify("bank_card", userData, settings)) {
