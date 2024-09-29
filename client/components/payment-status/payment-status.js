@@ -101,7 +101,7 @@ export default class PaymentStatus extends React.Component {
     // likely somebody opening this page by mistake
     if (
       (isAuthenticated === false && status !== "draft") ||
-      (["failed", "draft"].includes(status) && !payment_url && isVerified === true) ||
+      // (!["failed", "draft"].includes(status) && !payment_url && isVerified === true) ||
       (status === "success" && isVerified === false) ||
       isTokenValid === false
     ) {
@@ -152,7 +152,7 @@ export default class PaymentStatus extends React.Component {
     let payProceedUrl = payment_url;
 
     if (!payProceedUrl) {
-      if (method && method === "mpesa" && !isVerified) {
+      if (method && method === "mpesa") {
         payProceedUrl = `/${orgSlug}/payment/mobile-money/process`;
       } else {
         payProceedUrl = settings.payment_requires_internet

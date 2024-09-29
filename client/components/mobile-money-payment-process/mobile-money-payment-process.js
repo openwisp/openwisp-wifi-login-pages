@@ -131,11 +131,10 @@ class MobileMoneyPaymentProcess extends React.Component {
         this.webSocket = new ReconnectingWebSocket(url, []);
 
         this.webSocket.onopen = () => {
-          console.log("WebSocket connection opened");
+
           this.setState({readyState: this.webSocket.readyState});
         };
         this.webSocket.onmessage = (event) => {
-          console.log(event.data);
           let payment_data = JSON.parse(event.data);
           let payment_status = payment_data.status;
           this.handlePaymentStatusChange(payment_status);
@@ -143,11 +142,10 @@ class MobileMoneyPaymentProcess extends React.Component {
         };
 
         this.webSocket.onerror = (error) => {
-          console.error("WebSocket error:", error);
+          toast.error(error.toString());
         };
 
         this.webSocket.onclose = () => {
-          console.log("WebSocket connection closed");
           this.setState({readyState: this.webSocket.readyState});
         };
 
@@ -161,16 +159,6 @@ class MobileMoneyPaymentProcess extends React.Component {
 
 
   };
-
-  handleClickChangeSocketUrl = () => {
-    // Close existing WebSocket connection if it's open
-    if (this.webSocket) {
-      this.webSocket.close();
-    }
-
-  };
-
-
 
 
   async getCurrentUserPlan() {
@@ -199,7 +187,8 @@ class MobileMoneyPaymentProcess extends React.Component {
             payment_id: response.data.active_order.payment_id,
           });
           if (response.data.active_order.payment_status === "waiting") {
-            this.intervalId = setInterval(this.getPaymentStatus, 6000);
+
+            this.intervalId = setInterval(this.getPaymentStatus, 60000);
           }
 
 
@@ -271,10 +260,10 @@ class MobileMoneyPaymentProcess extends React.Component {
         if (this.webSocket) {
           this.webSocket.close();
         }
-
-        // navigate(`/${orgSlug}/payment/${paymentStatus}`);
+        navigate(`/${orgSlug}/payment/${paymentStatus}`);
         return;
       case "failed":
+        await this.getCurrentUserPlan();
         setUserData({...userData, payment_url: null});
         toast.info("The payment failed");
         this.setState({payment_id: null, payment_status: null});
@@ -282,7 +271,7 @@ class MobileMoneyPaymentProcess extends React.Component {
         if (this.webSocket) {
           this.webSocket.close();
         }
-        // navigate(`/${orgSlug}/payment/${paymentStatus}`);
+        navigate(`/${orgSlug}/payment/${paymentStatus}`);
         return;
       default:
         return;
@@ -312,41 +301,8 @@ class MobileMoneyPaymentProcess extends React.Component {
 
     const paymentStatus = await getPaymentStatus(orgSlug, payment_id, userData.auth_token);
 
-    this.setState({
-      "payment_status": paymentStatus,
-    });
-    switch (paymentStatus) {
-      case "waiting":
-        return;
-      case "success":
-        await this.getCurrentUserPlan();
-        setUserData({
-          ...userData,
-          is_verified: true,
-          payment_url: null,
-          repeatLogin: true,
-          mustLogin: true,
-          mustLogout: true,
-        });
-        toast.success("Payment was successfully");
-        this.setState({payment_id: null});
-        clearInterval(this.intervalId);
-        return navigate(`/${orgSlug}/payment/${paymentStatus}`);
-      case "failed":
-        setUserData({...userData, payment_url: null});
-        this.setState({payment_id: null});
-        toast.info("The payment failed");
-        clearInterval(this.intervalId);
-        return navigate(`/${orgSlug}/payment/${paymentStatus}`);
-      default:
-        // Request failed
-        toast.error(t`ERR_OCCUR`);
-        setUserData({...userData, payment_url: null});
-        this.setState({payment_id: null});
-        clearInterval(this.intervalId);
-        return navigate(`/${orgSlug}/payment/failed`);
-    }
-    // navigate(redirectUrl);
+    this.handlePaymentStatusChange(paymentStatus);
+
   };
 
   getPlan = (plan, index) => {
@@ -660,7 +616,7 @@ class MobileMoneyPaymentProcess extends React.Component {
           payment_status: response.data.payment.status,
         });
         this.getPaymentStatusWs();
-        // this.intervalId = setInterval(this.getPaymentStatus, 6000);
+        this.intervalId = setInterval(this.getPaymentStatus, 60000);
         setLoading(false);
         this.toggleTab(3);
         toast.info(response.data.payment.message);
@@ -668,7 +624,7 @@ class MobileMoneyPaymentProcess extends React.Component {
         // navigate(`/${orgSlug}/mobile-phone-verification`);
       })
       .catch((error) => {
-        console.log(error);
+
         const {data} = error.response;
         const errorText = getErrorText(error);
         if (errorText) {

@@ -116,7 +116,7 @@ export default class Status extends React.Component {
         return;
       }
 
-      await this.getUserPlan();
+
 
       const {mustLogin, mustLogout, repeatLogin} = userData;
       ({userData} = this.props);
@@ -190,20 +190,20 @@ export default class Status extends React.Component {
           isVerified === false &&
           !settings.payment_requires_internet
         ) {
-          this.finalOperations();
+          await this.finalOperations();
           return;
         }
         if (method === "mpesa" &&
           isVerified === false || userplan.is_expired === true) {
 
-          this.mpesaFinalOperations();
+          await this.mpesaFinalOperations();
           return;
         }
         this.notifyCpLogin(userData);
         this.loginFormRef.current.submit();
         // if user is already authenticated and coming from other pages
       } else if (!mustLogin) {
-        this.finalOperations();
+        await this.finalOperations();
       }
     }
   }
@@ -216,14 +216,21 @@ export default class Status extends React.Component {
   async mpesaFinalOperations() {
     const {userData, orgSlug, settings, navigate, setUserData} = this.props;
     const {setLoading} = this.context;
-    const {userplan} = userData;
+
+    const {auth_token, mustLogout} = userData;
+
+    if (auth_token === undefined || mustLogout === true) {
+      return;
+    }
 
     await this.getUserPlan();
+
+    const {userplan} = userData;
 
     if (userplan) {
       setUserData({
         ...userData,
-        is_verified: Boolean(userplan.active),
+        is_verified: !userplan.is_expired,
       });
     }
 
@@ -236,11 +243,14 @@ export default class Status extends React.Component {
         setUserData({
           ...userData,
           proceedToPayment: false,
+          is_verified: false,
         });
-        navigate(`/${orgSlug}/payment/mobile-money/process`);
+        this.handleBuyPlanRedirect();
+        navigate(`/${orgSlug}/payment/draft`);
         return;
       }
-      navigate(`/${orgSlug}/payment/mobile-money/process`);
+      navigate(`/${orgSlug}/payment/draft`);
+      this.handleBuyPlanRedirect();
       toast.warning("You account has expired! You need to recharge your account to continue enjoying our services");
       return;
     }
@@ -274,6 +284,10 @@ export default class Status extends React.Component {
       this.props;
     const currentPlanUrl = currentPlanApiUrl(orgSlug);
     setLoading(true);
+    setUserData({
+      ...userData,
+      is_verifying_plan: true,
+    });
     axios({
       method: "get",
       headers: {
@@ -288,13 +302,14 @@ export default class Status extends React.Component {
         setUserData({
           ...userData,
           userplan: response.data,
+          is_verifying_plan: false,
         });
-
         setLoading(false);
       })
       .catch((error) => {
         toast.error(t`ERR_OCCUR`);
         logError(error, "Error while getting current user plan");
+        return {};
       });
   }
 
@@ -304,11 +319,13 @@ export default class Status extends React.Component {
     const {userData, orgSlug, settings, navigate, setUserData} = this.props;
     const {setLoading} = this.context;
 
+
     const {method} = userData;
     if (method === "mpesa") {
-      this.mpesaFinalOperations();
+      await this.mpesaFinalOperations();
       return;
     }
+
     // if the user needs bank card verification,
     // redirect to payment page and stop here
     if (needsVerify("bank_card", userData, settings)) {
