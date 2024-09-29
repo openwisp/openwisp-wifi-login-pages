@@ -10,6 +10,7 @@ const mapStateToProps = (state, ownProps) => {
   componentConf.input_fields = {
     phone_number: conf.components.registration_form.input_fields.phone_number,
   };
+
   return {
     mobile_money_payment_form: conf.components.mobile_money_payment_form,
     settings: conf.settings,

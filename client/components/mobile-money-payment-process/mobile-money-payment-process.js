@@ -13,7 +13,7 @@ import {gettext, t} from "ttag";
 import "react-phone-input-2/lib/style.css";
 import ReactLoading from "react-loading";
 import LoadingContext from "../../utils/loading-context";
-import {buyPlanUrl, currentPlanApiUrl, plansApiUrl} from "../../constants";
+import {buyPlanUrl, currentPlanApiUrl, paymentUrlWs, plansApiUrl, prefix} from "../../constants";
 import getErrorText from "../../utils/get-error-text";
 import logError from "../../utils/log-error";
 import handleChange from "../../utils/handle-change";
@@ -23,6 +23,11 @@ import getError from "../../utils/get-error";
 import getLanguageHeaders from "../../utils/get-language-headers";
 import {getPaymentStatus} from "../../utils/get-payment-status";
 import Modal from "../modal";
+import ReconnectingWebSocket from "../../utils/websocker_helper";
+import merge from "deepmerge";
+import defaultConfig from "../../../server/utils/default-config";
+import config from "../../../server/config.json";
+
 
 const PhoneInput = React.lazy(() =>
   import(/* webpackChunkName: 'PhoneInput' */ "react-phone-input-2"),
@@ -39,7 +44,7 @@ class MobileMoneyPaymentProcess extends React.Component {
       location: "",
       order: "",
       errors: {},
-      payment_id: "",
+      payment_id: null,
       payment_status: null,
       activeTab: 1,
       passedSteps: [1],
@@ -54,10 +59,14 @@ class MobileMoneyPaymentProcess extends React.Component {
       zipcode: "",
       country: "",
       countrySelected: {},
+      messageHistory: [],
+      readyState: null,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.changePlan = this.changePlan.bind(this);
+    this.webSocket = null;
+
   }
 
   async componentDidMount() {
@@ -98,7 +107,71 @@ class MobileMoneyPaymentProcess extends React.Component {
     }
     this.getCurrentUserPlan();
     this.autoSelectFirstPlan();
+    const {payment_id} = this.state;
+    if (payment_id && !this.webSocket) {
+      this.getPaymentStatusWs();
+    }
+
   }
+
+
+  getPaymentStatusWs = () => {
+    const {userData, orgSlug, orgHost, setUserData, navigate} = this.props;
+    const {setLoading} = this.context;
+    const {payment_id, payment_statu} = this.state;
+    const {userplan} = userData;
+
+    const validSlug = config.some((org) => {
+      if (org.slug === orgSlug) {
+        // merge default config and custom config
+        const conf = merge(defaultConfig, org);
+        const {host} = conf;
+        const url = `${host.replace("http", "ws")}${paymentUrlWs(orgSlug, payment_id).replace(prefix, "/ws/payments/organization")}?token=${userData.auth_token}`;
+
+        this.webSocket = new ReconnectingWebSocket(url, []);
+
+        this.webSocket.onopen = () => {
+          console.log("WebSocket connection opened");
+          this.setState({readyState: this.webSocket.readyState});
+        };
+        this.webSocket.onmessage = (event) => {
+          console.log(event.data);
+          let payment_data = JSON.parse(event.data);
+          let payment_status = payment_data.status;
+          this.handlePaymentStatusChange(payment_status);
+
+        };
+
+        this.webSocket.onerror = (error) => {
+          console.error("WebSocket error:", error);
+        };
+
+        this.webSocket.onclose = () => {
+          console.log("WebSocket connection closed");
+          this.setState({readyState: this.webSocket.readyState});
+        };
+
+      }
+      return org.slug === orgSlug;
+    });
+
+    if (!validSlug) {
+      toast.error("Invalid organization");
+  }
+
+
+  };
+
+  handleClickChangeSocketUrl = () => {
+    // Close existing WebSocket connection if it's open
+    if (this.webSocket) {
+      this.webSocket.close();
+    }
+
+  };
+
+
+
 
   async getCurrentUserPlan() {
     const {setLoading} = this.context;
@@ -141,7 +214,7 @@ class MobileMoneyPaymentProcess extends React.Component {
   }
 
   async componentDidUpdate(prevProps) {
-    const {plans} = this.state;
+    const {plans, payment_id} = this.state;
     const {settings, loading} = this.props;
     const {setLoading} = this.context;
     if (
@@ -151,6 +224,9 @@ class MobileMoneyPaymentProcess extends React.Component {
       prevProps.loading === true
     ) {
       setLoading(true);
+    }
+    if (payment_id && !this.webSocket) {
+      this.getPaymentStatusWs();
     }
 
   }
@@ -163,6 +239,61 @@ class MobileMoneyPaymentProcess extends React.Component {
   componentWillUnmount = () => {
     clearInterval(this.intervalId);
     window.removeEventListener("resize", this.updateScreenWidth);
+    if (this.webSocket) {
+      this.webSocket.close();
+    }
+  };
+
+  handlePaymentStatusChange = async (paymentStatus) => {
+
+    const {userData, orgSlug, setUserData, navigate} = this.props;
+
+    this.setState({
+      "payment_status": paymentStatus,
+    });
+
+    switch (paymentStatus) {
+      case "waiting":
+        return;
+      case "pending":
+        return;
+      case "success":
+        await this.getCurrentUserPlan();
+        setUserData({
+          ...userData,
+          is_verified: true,
+          payment_url: null,
+
+        });
+        toast.success("Payment was successfully");
+        this.setState({payment_id: null, payment_status: null});
+        clearInterval(this.intervalId);
+        if (this.webSocket) {
+          this.webSocket.close();
+        }
+
+        // navigate(`/${orgSlug}/payment/${paymentStatus}`);
+        return;
+      case "failed":
+        setUserData({...userData, payment_url: null});
+        toast.info("The payment failed");
+        this.setState({payment_id: null, payment_status: null});
+        clearInterval(this.intervalId);
+        if (this.webSocket) {
+          this.webSocket.close();
+        }
+        // navigate(`/${orgSlug}/payment/${paymentStatus}`);
+        return;
+      default:
+        return;
+      // Request failed
+      // toast.error(t`ERR_OCCUR`);
+      // setUserData({...userData, payment_url: null});
+      // this.setState({payment_id: null});
+      // clearInterval(this.intervalId);
+      // navigate(`/${orgSlug}/payment/failed`);
+
+    }
   };
 
   getPaymentStatus = async () => {
@@ -528,7 +659,8 @@ class MobileMoneyPaymentProcess extends React.Component {
           payment_id: response.data.payment.id,
           payment_status: response.data.payment.status,
         });
-        this.intervalId = setInterval(this.getPaymentStatus, 6000);
+        this.getPaymentStatusWs();
+        // this.intervalId = setInterval(this.getPaymentStatus, 6000);
         setLoading(false);
         this.toggleTab(3);
         toast.info(response.data.payment.message);
@@ -536,6 +668,7 @@ class MobileMoneyPaymentProcess extends React.Component {
         // navigate(`/${orgSlug}/mobile-phone-verification`);
       })
       .catch((error) => {
+        console.log(error);
         const {data} = error.response;
         const errorText = getErrorText(error);
         if (errorText) {

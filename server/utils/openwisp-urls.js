@@ -14,6 +14,7 @@ const paths = {
   plans: "/plan",
   payment_status: "/payment/{paymentId}",
   initiate_payment: "/payment/initiate",
+  payment_ws: "/payment/ws/{paymentId}",
   buy_plan: "/plan/buy",
   current_plan: "/plan/current",
 };
@@ -29,6 +30,9 @@ const reverse = (name, orgSlug) => {
   }
   if (name === "initiate_payment" || name === "buy_plan" || name === "payment_status") {
     prefix = prefix.replace("/radius/", "/payments/");
+  }
+  if (name === "payment_ws") {
+    prefix = prefix.replace("/api/v1/radius/", "/payments/");
   }
   return `${prefix.replace("{orgSlug}", orgSlug)}${path}`;
 };
