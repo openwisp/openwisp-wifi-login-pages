@@ -53,6 +53,8 @@ export default class PaymentStatus extends React.Component {
         mustLogout: settings.payment_requires_internet,
         repeatLogin: settings.payment_requires_internet,
       });
+
+
     } else if (
       status === "draft" &&
       settings.payment_methods.includes(method) &&
@@ -105,7 +107,7 @@ export default class PaymentStatus extends React.Component {
       (status === "success" && isVerified === false) ||
       isTokenValid === false
     ) {
-      return redirectToStatus();
+      window.location.replace(`/${orgSlug}/status`);
     }
 
 
