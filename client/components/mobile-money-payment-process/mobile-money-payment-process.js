@@ -47,6 +47,7 @@ class MobileMoneyPaymentProcess extends React.Component {
       voucher_code: "",
       errors: {},
       payment_id: null,
+      ws_token: null,
       payment_status: null,
       activeTab: 1,
       passedSteps: [1],
@@ -136,7 +137,7 @@ class MobileMoneyPaymentProcess extends React.Component {
   getPaymentStatusWs = () => {
     const {userData, orgSlug, orgHost, setUserData, navigate} = this.props;
     const {setLoading} = this.context;
-    const {payment_id, payment_statu} = this.state;
+    const {payment_id, payment_statu, ws_token} = this.state;
     const {userplan} = userData;
 
     const validSlug = config.some((org) => {
@@ -144,7 +145,7 @@ class MobileMoneyPaymentProcess extends React.Component {
         // merge default config and custom config
         const conf = merge(defaultConfig, org);
         const {host} = conf;
-        const url = `${host.replace("http", "ws")}${paymentUrlWs(orgSlug, payment_id).replace(prefix, "/ws/payments/organization")}?token=${userData.auth_token}`;
+        const url = `${host.replace("http", "ws")}${paymentUrlWs(orgSlug, payment_id).replace(prefix, "/ws/payments/organization")}?token=${ws_token || userData.auth_token}`;
 
         this.webSocket = new ReconnectingWebSocket(url, []);
 
@@ -155,6 +156,11 @@ class MobileMoneyPaymentProcess extends React.Component {
         this.webSocket.onmessage = (event) => {
           const payment_data = JSON.parse(event.data);
           const payment_status = payment_data.status;
+
+          if (payment_status === "success") {
+            this.handleLoginUserAfterOrderSuccess(payment_data.username, payment_data.key);
+          }
+
           this.handlePaymentStatusChange(payment_status);
 
         };
@@ -224,8 +230,10 @@ class MobileMoneyPaymentProcess extends React.Component {
         setLoading(false);
       })
       .catch((error) => {
+
         const {response} = error;
-        if (response.status !== 403) {
+        const excludeErrorMessageStatus = [401, 403];
+        if (!excludeErrorMessageStatus.includes(response.status)) {
           toast.error(t`ERR_OCCUR`);
         }
         setLoading(false);
@@ -269,9 +277,15 @@ class MobileMoneyPaymentProcess extends React.Component {
 
     const {userData, orgSlug, setUserData, navigate} = this.props;
 
-    this.setState({
+    if (paymentStatus) {
+      this.setState({
       "payment_status": paymentStatus,
     });
+    } else {
+      return;
+    }
+
+
 
     switch (paymentStatus) {
       case "waiting":
@@ -306,7 +320,7 @@ class MobileMoneyPaymentProcess extends React.Component {
         navigate(`/${orgSlug}/payment/${paymentStatus}`);
 
       default:
-
+        return;
       // Request failed
       // toast.error(t`ERR_OCCUR`);
       // setUserData({...userData, payment_url: null});
@@ -676,6 +690,10 @@ class MobileMoneyPaymentProcess extends React.Component {
 
     this.setState({errors: {...errors, phone_number: ""}});
     setLoading(true);
+    console.log(userData);
+
+    const {auth_token} = userData;
+
     return axios({
       method: "post",
       headers: {
@@ -691,7 +709,15 @@ class MobileMoneyPaymentProcess extends React.Component {
           errors: {},
         });
 
-
+        if (auth_token === undefined) {
+          this.setState({
+            ws_token: response.data.ws_token,
+          });
+        } else {
+          this.setState({
+            ws_token: auth_token,
+          });
+        }
         if (response && response.data && response.data.payment && response.data.payment.status === "success") {
           this.handleLoginUserAfterOrderSuccess(response.data.username, response.data.key);
           await this.handlePaymentStatusChange(response.data.payment.status);
