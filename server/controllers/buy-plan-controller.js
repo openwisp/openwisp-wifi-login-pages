@@ -30,6 +30,7 @@ const buyPlan = (req, res) => {
         data: {
           phone_number: req.body.phone_number,
           plan_pricing: req.body.plan_pricing,
+          voucher: req.body.voucher,
           requires_payment: req.body.requires_payment,
           method: req.body.method,
         },

@@ -14,6 +14,9 @@ export const getPaymentStatus = async (orgSlug, paymentId, auth_token) => {
         "content-type": "application/x-www-form-urlencoded",
         Authorization: `Bearer ${auth_token}`,
       },
+      params: {
+        "get-token": "1",
+      },
       url,
     });
     if (response.status === 200) {

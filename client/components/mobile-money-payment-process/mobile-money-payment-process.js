@@ -12,6 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 import {gettext, t} from "ttag";
 import "react-phone-input-2/lib/style.css";
 import ReactLoading from "react-loading";
+import merge from "deepmerge";
 import LoadingContext from "../../utils/loading-context";
 import {buyPlanUrl, currentPlanApiUrl, paymentUrlWs, plansApiUrl, prefix} from "../../constants";
 import getErrorText from "../../utils/get-error-text";
@@ -24,9 +25,9 @@ import getLanguageHeaders from "../../utils/get-language-headers";
 import {getPaymentStatus} from "../../utils/get-payment-status";
 import Modal from "../modal";
 import ReconnectingWebSocket from "../../utils/websocker_helper";
-import merge from "deepmerge";
 import defaultConfig from "../../../server/utils/default-config";
 import config from "../../../server/config.json";
+import handleLogout from "../../utils/handle-logout";
 
 
 const PhoneInput = React.lazy(() =>
@@ -43,6 +44,7 @@ class MobileMoneyPaymentProcess extends React.Component {
       last_name: "",
       location: "",
       order: "",
+      voucher_code: "",
       errors: {},
       payment_id: null,
       payment_status: null,
@@ -74,6 +76,7 @@ class MobileMoneyPaymentProcess extends React.Component {
     const {cookies, orgSlug, setUserData, logout, setTitle, orgName, language, settings} =
       this.props;
     setLoading(true);
+
 
     const {userData} = this.props;
 
@@ -114,6 +117,21 @@ class MobileMoneyPaymentProcess extends React.Component {
 
   }
 
+  handleLoginUserAfterOrderSuccess(username, auth_token) {
+    const {cookies, orgSlug, setUserData, userData, logout, setTitle, orgName, language, settings} =
+      this.props;
+
+    cookies.set(`${orgSlug}_auth_token`, auth_token, {path: "/"});
+    cookies.set(`${orgSlug}_username`, username, {path: "/"});
+    setUserData({
+      ...userData,
+      username,
+      auth_token,
+      is_verified: false,
+
+    });
+  }
+
 
   getPaymentStatusWs = () => {
     const {userData, orgSlug, orgHost, setUserData, navigate} = this.props;
@@ -135,8 +153,8 @@ class MobileMoneyPaymentProcess extends React.Component {
           this.setState({readyState: this.webSocket.readyState});
         };
         this.webSocket.onmessage = (event) => {
-          let payment_data = JSON.parse(event.data);
-          let payment_status = payment_data.status;
+          const payment_data = JSON.parse(event.data);
+          const payment_status = payment_data.status;
           this.handlePaymentStatusChange(payment_status);
 
         };
@@ -167,14 +185,23 @@ class MobileMoneyPaymentProcess extends React.Component {
       this.props;
     const currentPlanUrl = currentPlanApiUrl(orgSlug);
     setLoading(true);
-    axios({
-      method: "get",
-      headers: {
+    const headers_data = {
         "content-type": "application/x-www-form-urlencoded",
         "accept-language": getLanguageHeaders(language),
         Authorization: `Bearer ${userData.auth_token}`,
-      },
+    };
+    if (userData.auth_token === undefined) {
+      delete headers_data.Authorization;
+    }
+
+    axios({
+      method: "get",
+      headers: headers_data,
       url: currentPlanUrl,
+      withCredentials: true,
+      params: {
+        "get-token": "1",
+      },
     })
       .then((response) => {
 
@@ -197,7 +224,12 @@ class MobileMoneyPaymentProcess extends React.Component {
         setLoading(false);
       })
       .catch((error) => {
-        toast.error(t`ERR_OCCUR`);
+        const {response} = error;
+        if (response.status !== 403) {
+          toast.error(t`ERR_OCCUR`);
+        }
+        setLoading(false);
+
         logError(error, "Error while getting current user plan");
       });
   }
@@ -272,9 +304,9 @@ class MobileMoneyPaymentProcess extends React.Component {
           this.webSocket.close();
         }
         navigate(`/${orgSlug}/payment/${paymentStatus}`);
-        return;
+
       default:
-        return;
+
       // Request failed
       // toast.error(t`ERR_OCCUR`);
       // setUserData({...userData, payment_url: null});
@@ -397,6 +429,7 @@ class MobileMoneyPaymentProcess extends React.Component {
       errors,
       selectedPlan,
       plans,
+      voucher_code,
       tax_number,
       street,
       city,
@@ -505,6 +538,26 @@ class MobileMoneyPaymentProcess extends React.Component {
                           </div>
                         )}
 
+                      <div className="row voucher_code">
+                        <label htmlFor="firsvoucher_codet_name">
+                          Voucher Code {`(${t`OPTIONAL`})`}
+                        </label>
+                        {getError(errors, "voucher_code")}
+                        <input
+                          className={`input ${
+                            errors.voucher_code ? "error" : ""
+                          }`}
+                          type="text"
+                          id="voucher_code"
+
+                          name="voucher_code"
+                          value={voucher_code}
+                          onChange={this.handleChange}
+                          autoComplete="given-name"
+                          placeholder="Enter voucher code"
+                        />
+                      </div>
+
                     </>
                   )}
                 </div>
@@ -526,6 +579,12 @@ class MobileMoneyPaymentProcess extends React.Component {
                       value="Buy Plan"
                     />
                   )}
+                </div>
+                <div className="row cancel">
+
+                  <Link className="button full" to="/">
+                    {t`CANCEL`}
+                  </Link>
                 </div>
 
                 {links && (
@@ -565,19 +624,37 @@ class MobileMoneyPaymentProcess extends React.Component {
     );
   };
 
+  logout = () => {
+    const {logout, cookies, orgSlug, setUserData, userData, navigate} =
+      this.props;
+    const redirectToStatus = (statusUrl = `/${orgSlug}/status`) =>
+      navigate(statusUrl);
+    handleLogout(
+      logout,
+      cookies,
+      orgSlug,
+      setUserData,
+      userData,
+      false,
+      redirectToStatus,
+    );
+  };
+
+
 
   handleSubmit(event) {
     event.preventDefault();
     const {setLoading} = this.context;
     const {orgSlug, setUserData, userData, language, navigate} = this.props;
     const {method} = userData;
-    const {phone_number, errors, plans, selectedPlan} = this.state;
+    const {phone_number, voucher_code, errors, plans, selectedPlan} = this.state;
     const url = buyPlanUrl(orgSlug);
 
 
     const data = {
       "phone_number": phone_number,
       "method": method,
+      "voucher": voucher_code,
     };
 
     if (method === "" || method === undefined || method === null) {
@@ -585,10 +662,15 @@ class MobileMoneyPaymentProcess extends React.Component {
     }
 
     let plan_pricing;
+
     if (selectedPlan !== null) {
+
       plan_pricing = plans[selectedPlan];
-      data.plan_pricing = plan_pricing.id;
-      data.requires_payment = plan_pricing.requires_payment;
+      if (plan_pricing) {
+        data.plan_pricing = plan_pricing.id;
+        data.requires_payment = plan_pricing.requires_payment;
+      }
+
     }
 
 
@@ -608,6 +690,13 @@ class MobileMoneyPaymentProcess extends React.Component {
         this.setState({
           errors: {},
         });
+
+
+        if (response && response.data && response.data.payment && response.data.payment.status === "success") {
+          this.handleLoginUserAfterOrderSuccess(response.data.username, response.data.key);
+          await this.handlePaymentStatusChange(response.data.payment.status);
+          return;
+        }
 
         // setUserData({...userData,phone_number,status: response.status,payment_id:response.data.payment.id,payment_status:response.data.payment.status});
         setUserData({...userData, phone_number, payment_id: response.data.payment.id});
@@ -636,6 +725,7 @@ class MobileMoneyPaymentProcess extends React.Component {
           errors: {
             ...errors,
             ...(data.phone_number ? {phone_number: data.phone_number} : null),
+            ...(data.voucher ? {voucher_code: data.voucher} : null),
             ...(errorText ? {nonField: errorText} : {nonField: ""}),
           },
         });
@@ -712,7 +802,6 @@ class MobileMoneyPaymentProcess extends React.Component {
               <div className="row register">
                 <button
                   onClick={this.handBuyPlanAgain}
-
                   className="button full"
                 >Payment Again
                 </button>
@@ -790,13 +879,13 @@ class MobileMoneyPaymentProcess extends React.Component {
 
 
     // likely somebody opening this page by mistake
-    if (isAuthenticated === false) {
-      redirectToStatus();
-    }
-
-    if (!auth_token) {
-      redirectToStatus();
-    }
+    // if (isAuthenticated === false) {
+    //   redirectToStatus();
+    // }
+    //
+    // if (!auth_token) {
+    //   redirectToStatus();
+    // }
 
     return (
 
@@ -823,6 +912,9 @@ MobileMoneyPaymentProcess.propTypes = {
       }),
       last_name: PropTypes.shape({
         setting: PropTypes.string.isRequired,
+      }),
+      voucher_code: PropTypes.shape({
+        setting: PropTypes.string,
       }),
       location: PropTypes.shape({
         setting: PropTypes.string.isRequired,

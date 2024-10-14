@@ -17,19 +17,31 @@ const currentPlan = (req, res) => {
       const url = reverse("current_plan", getSlug(conf));
       const timeout = conf.timeout * 1000;
 
+      const headersData = {
+        "content-type": "application/x-www-form-urlencoded",
+        // Authorization: req.headers.authorization,
+        "accept-language": req.headers["accept-language"],
+      };
+
+      if (req.headers && req.headers.authorization) {
+        headersData.Authorization = req.headers.authorization;
+      }
+
+
       // make AJAX request
       axios({
         method: "get",
-        headers: {
-          "content-type": "application/x-www-form-urlencoded",
-          Authorization: req.headers.authorization,
-          "accept-language": req.headers["accept-language"],
-        },
+        headers: headersData,
         url: `${host}${url}/`,
         timeout,
+        withCredentials: true,
+        params: {
+          "get-token": "1",
+        },
 
       })
         .then((response) => {
+
           res
             .status(response.status)
             .type("application/json")
