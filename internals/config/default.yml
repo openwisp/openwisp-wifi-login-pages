@@ -42,8 +42,8 @@ client:
   components:
     header:
       logo:
-        url: "openwisp-logo-black.svg" # logo url
-        alternate_text: "openwisp"
+        url: "noch-wired-logo-grey.png" # logo url
+        alternate_text: "Noch Wired Logo"
       links: []
 
     footer:
