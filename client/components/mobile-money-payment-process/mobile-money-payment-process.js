@@ -690,7 +690,6 @@ class MobileMoneyPaymentProcess extends React.Component {
 
     this.setState({errors: {...errors, phone_number: ""}});
     setLoading(true);
-    console.log(userData);
 
     const {auth_token} = userData;
 
