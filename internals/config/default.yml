@@ -51,6 +51,7 @@ client:
       secondary_text: false
 
     registration_form:
+      auto_select_first_plan: true
       input_fields:
         phone_number: {}
         username:
@@ -164,7 +165,7 @@ client:
           pattern: '[0-9]{6,}'
 
     mobile_money_payment_form:
-      auto_select_first_plan: true
+      auto_select_first_plan: false
       buttons:
         change_phone_number: true
         cancel: true
