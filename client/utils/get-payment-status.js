@@ -4,7 +4,7 @@ import {toast} from "react-toastify";
 import {paymentStatusUrl} from "../constants";
 import logError from "./log-error";
 
-export const getPaymentStatus = async (orgSlug, paymentId, auth_token) => {
+export const getPaymentStatus = async (orgSlug, paymentId, auth_token, ws_token) => {
   const url = paymentStatusUrl(orgSlug, paymentId);
 
   try {
@@ -16,6 +16,7 @@ export const getPaymentStatus = async (orgSlug, paymentId, auth_token) => {
       },
       params: {
         "get-token": "1",
+        "token": ws_token,
       },
       url,
     });

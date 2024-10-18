@@ -144,8 +144,8 @@ class MobileMoneyPaymentProcess extends React.Component {
       if (org.slug === orgSlug) {
         // merge default config and custom config
         const conf = merge(defaultConfig, org);
-        const {host} = conf;
-        const url = `${host.replace("http", "ws")}${paymentUrlWs(orgSlug, payment_id).replace(prefix, "/ws/payments/organization")}?token=${ws_token || userData.auth_token}`;
+        const {dashboard_host} = conf;
+        const url = `${dashboard_host.replace("http", "ws")}${paymentUrlWs(orgSlug, payment_id).replace(prefix, "/ws/payments/organization")}?token=${ws_token || userData.auth_token}`;
 
         this.webSocket = new ReconnectingWebSocket(url, []);
 
@@ -334,7 +334,7 @@ class MobileMoneyPaymentProcess extends React.Component {
   getPaymentStatus = async () => {
     const {userData, orgSlug, setUserData, navigate} = this.props;
     const {setLoading} = this.context;
-    const {payment_id, payment_status} = this.state;
+    const {payment_id, payment_status, ws_token} = this.state;
     const {userplan} = userData;
 
     if (!payment_id) {
@@ -345,7 +345,7 @@ class MobileMoneyPaymentProcess extends React.Component {
     }
 
 
-    const paymentStatus = await getPaymentStatus(orgSlug, payment_id, userData.auth_token);
+    const paymentStatus = await getPaymentStatus(orgSlug, payment_id, userData.auth_token, ws_token);
 
     this.handlePaymentStatusChange(paymentStatus);
 

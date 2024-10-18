@@ -16,6 +16,7 @@ settings:
 server:
   # put the URL of openwisp-radius here
   host: "http://127.0.0.1:8000"
+  dashboard_host: "http://127.0.0.1:8000"
   uuid: organization_uuid
   secret_key: organization_secret_key
   timeout: 10 #request timeout period in seconds
