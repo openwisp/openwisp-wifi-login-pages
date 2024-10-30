@@ -1,6 +1,6 @@
 import {shallow} from "enzyme";
 import React from "react";
-import {HashRouter as Router} from "react-router-dom";
+import {BrowserRouter as Router} from "react-router-dom";
 import renderer from "react-test-renderer";
 
 import getConfig from "../../utils/get-config";

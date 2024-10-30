@@ -1,5 +1,5 @@
 import React from "react";
-import {HashRouter as Router} from "react-router-dom";
+import {BrowserRouter as Router} from "react-router-dom";
 import axios from "axios";
 import {Cookies} from "react-cookie";
 import {mount, shallow} from "enzyme";
