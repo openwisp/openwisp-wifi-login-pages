@@ -2,11 +2,14 @@ import compression from "compression";
 import cookieParser from "cookie-parser";
 import cookiesMiddleware from "universal-cookie-express";
 import express from "express";
+
 import net from "net";
 import path from "path";
 import routes from "./routes";
 import morganMiddleware from "./morganMiddleware";
 import Logger from "./utils/logger";
+
+const cors = require("cors");
 
 const app = express();
 app.use(compression());
@@ -14,6 +17,12 @@ app.use(morganMiddleware);
 app.use(express.static(path.join(process.cwd(), "dist")));
 app.use(cookieParser());
 app.use(cookiesMiddleware());
+app.use(
+  cors({
+    origin: "localhost",
+    credentials: true,
+  }),
+);
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 const prefix = "/api/v1/:organization";

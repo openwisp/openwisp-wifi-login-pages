@@ -6,6 +6,7 @@ import defaultConfig from "../utils/default-config";
 import {logResponseError} from "../utils/logger";
 import reverse from "../utils/openwisp-urls";
 import getSlug from "../utils/get-slug";
+import sendSessionCookies from "../utils/send-session-cookies";
 
 const buyPlan = (req, res) => {
   const reqOrg = req.params.organization;
@@ -31,6 +32,7 @@ const buyPlan = (req, res) => {
         headers: requestHeaders,
         url: `${host}${url}/`,
         timeout,
+        withCredentials: true,
         data: {
           phone_number: req.body.phone_number,
           plan_pricing: req.body.plan_pricing,
@@ -39,12 +41,7 @@ const buyPlan = (req, res) => {
           method: req.body.method,
         },
       })
-        .then((response) => {
-          res
-            .status(response.status)
-            .type("application/json")
-            .send(response.data);
-        })
+        .then((response) => sendSessionCookies(response, conf, res))
         .catch((error) => {
           logResponseError(error);
           // forward error

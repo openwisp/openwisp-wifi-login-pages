@@ -101,13 +101,21 @@ export default class PaymentStatus extends React.Component {
     }
 
     // likely somebody opening this page by mistake
+    // if (
+    //   (isAuthenticated === false && status !== "draft") ||
+    //   // (!["failed", "draft"].includes(status) && !payment_url && isVerified === true) ||
+    //   (status === "success" && isVerified === false) ||
+    //   isTokenValid === false
+    // ) {
+    //   window.location.replace(`/${orgSlug}/status`);
+    // }
+
     if (
-      (isAuthenticated === false && status !== "draft") ||
-      // (!["failed", "draft"].includes(status) && !payment_url && isVerified === true) ||
-      (status === "success" && isVerified === false) ||
-      isTokenValid === false
+      isAuthenticated === false ||
+      (status === "failed" && isVerified === true) ||
+      (status === "success" && isVerified === false)
     ) {
-      window.location.replace(`/${orgSlug}/status`);
+      return redirectToStatus();
     }
 
 

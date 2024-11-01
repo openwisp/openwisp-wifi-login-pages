@@ -16,6 +16,7 @@
     "cookie-parser": "^1.4.5",
     "cookie-signature": "^1.1.0",
     "core-js": "^3.19.0",
+    "cors": "^2.8.5",
     "deep-object-diff": "^1.1.0",
     "deepmerge": "^4.2.2",
     "dompurify": "^3.0.6",

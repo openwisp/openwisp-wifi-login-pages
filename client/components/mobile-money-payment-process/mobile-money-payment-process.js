@@ -29,6 +29,7 @@ import defaultConfig from "../../../server/utils/default-config";
 import config from "../../../server/config.json";
 import handleLogout from "../../utils/handle-logout";
 
+axios.defaults.withCredentials = true;
 
 const PhoneInput = React.lazy(() =>
   import(/* webpackChunkName: 'PhoneInput' */ "react-phone-input-2"),
@@ -276,8 +277,10 @@ class MobileMoneyPaymentProcess extends React.Component {
   handlePaymentStatusChange = async (paymentStatus) => {
 
     const {userData, orgSlug, setUserData, navigate} = this.props;
-
+    console.log("payment_status");
+    console.log(paymentStatus);
     if (paymentStatus) {
+
       this.setState({
       "payment_status": paymentStatus,
     });

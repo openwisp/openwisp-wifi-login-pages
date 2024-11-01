@@ -5,6 +5,9 @@ import defaultConfig from "../utils/default-config";
 import {logResponseError} from "../utils/logger";
 import reverse from "../utils/openwisp-urls";
 import getSlug from "../utils/get-slug";
+import sendSessionCookies from "../utils/send-session-cookies";
+
+axios.defaults.withCredentials = true;
 
 const plans = (req, res) => {
   const reqOrg = req.params.organization;
@@ -21,15 +24,13 @@ const plans = (req, res) => {
         headers: {
           "content-type": "application/x-www-form-urlencoded",
           "accept-language": req.headers["accept-language"],
+          "Cookie": req.headers.cookie,
         },
         url: `${host}${plansUrl}/`,
         timeout,
       })
         .then((response) => {
-          res
-            .status(response.status)
-            .type("application/json")
-            .send(response.data);
+          sendSessionCookies(response, conf, res);
         })
         .catch((error) => {
           logResponseError(error);
