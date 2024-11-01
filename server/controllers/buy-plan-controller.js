@@ -16,15 +16,19 @@ const buyPlan = (req, res) => {
       const {host} = conf;
       const url = reverse("buy_plan", getSlug(conf));
       const timeout = conf.timeout * 1000;
-      const token = req.headers.authorization.split(" ");
       // make AJAX request
+      const requestHeaders = {
+        "content-type": "application/x-www-form-urlencoded",
+        "accept-language": req.headers["accept-language"],
+      };
+
+      if (req.headers.authorization) {
+        requestHeaders.Authorization = req.headers.authorization;
+      }
+
       axios({
         method: "post",
-        headers: {
-          "content-type": "application/x-www-form-urlencoded",
-          Authorization: req.headers.authorization,
-          "accept-language": req.headers["accept-language"],
-        },
+        headers: requestHeaders,
         url: `${host}${url}/`,
         timeout,
         data: {

@@ -693,13 +693,20 @@ class MobileMoneyPaymentProcess extends React.Component {
 
     const {auth_token} = userData;
 
+    const requestHeaders = {
+      "content-type": "application/x-www-form-urlencoded",
+      "accept-language": getLanguageHeaders(language),
+      Authorization: `Bearer ${userData.auth_token}`,
+    };
+
+
+    if (userData.auth_token === undefined) {
+      delete requestHeaders.Authorization;
+    }
+
     return axios({
       method: "post",
-      headers: {
-        "content-type": "application/x-www-form-urlencoded",
-        "accept-language": getLanguageHeaders(language),
-        Authorization: `Bearer ${userData.auth_token}`,
-      },
+      headers: requestHeaders,
       url,
       data: qs.stringify(data),
     })
