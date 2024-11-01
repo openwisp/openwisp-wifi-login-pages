@@ -6,6 +6,7 @@ import defaultConfig from "../utils/default-config";
 import {logResponseError} from "../utils/logger";
 import reverse from "../utils/openwisp-urls";
 import getSlug from "../utils/get-slug";
+import sendSessionCookies from "../utils/send-session-cookies";
 
 const currentPlan = (req, res) => {
   const reqOrg = req.params.organization;
@@ -19,12 +20,15 @@ const currentPlan = (req, res) => {
 
       const headersData = {
         "content-type": "application/x-www-form-urlencoded",
-        // Authorization: req.headers.authorization,
         "accept-language": req.headers["accept-language"],
       };
 
       if (req.headers && req.headers.authorization) {
         headersData.Authorization = req.headers.authorization;
+      }
+
+      if (req.headers && req.headers.cookie) {
+        headersData.Cookie = req.headers.cookie;
       }
 
 
@@ -40,13 +44,7 @@ const currentPlan = (req, res) => {
         },
 
       })
-        .then((response) => {
-
-          res
-            .status(response.status)
-            .type("application/json")
-            .send(response.data);
-        })
+        .then((response) => sendSessionCookies(response, conf, res))
         .catch((error) => {
           logResponseError(error);
           // forward error

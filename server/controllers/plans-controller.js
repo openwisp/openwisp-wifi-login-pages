@@ -19,13 +19,18 @@ const plans = (req, res) => {
       const plansUrl = reverse("plans", getSlug(conf));
       const timeout = conf.timeout * 1000;
       // make AJAX request
+      const reqHeaders = {
+        "content-type": "application/x-www-form-urlencoded",
+        "accept-language": req.headers["accept-language"],
+
+      };
+      if (req.headers && req.headers.cookie) {
+        reqHeaders.Cookie = req.headers.cookie;
+      }
+
       axios({
         method: "get",
-        headers: {
-          "content-type": "application/x-www-form-urlencoded",
-          "accept-language": req.headers["accept-language"],
-          "Cookie": req.headers.cookie,
-        },
+        headers: reqHeaders,
         url: `${host}${plansUrl}/`,
         timeout,
       })

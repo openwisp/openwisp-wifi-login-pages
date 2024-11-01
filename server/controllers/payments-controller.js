@@ -5,6 +5,7 @@ import defaultConfig from "../utils/default-config";
 import {logResponseError} from "../utils/logger";
 import reverse from "../utils/openwisp-urls";
 import getSlug from "../utils/get-slug";
+import sendSessionCookies from "../utils/send-session-cookies";
 
 const payments = (req, res) => {
   const reqOrg = req.params.organization;
@@ -18,24 +19,28 @@ const payments = (req, res) => {
         "{paymentId}",
         reqPaymentId,
       );
+
+      const requestHeaders = {
+        "content-type": "application/x-www-form-urlencoded",
+        "accept-language": req.headers["accept-language"],
+      };
+
+      if (req.headers.authorization) {
+        requestHeaders.Authorization = req.headers.authorization;
+      }
+
+      if (req.headers && req.headers.cookie) {
+        requestHeaders.Cookie = req.headers.cookie;
+      }
       const timeout = conf.timeout * 1000;
       // make AJAX request
       axios({
         method: "get",
-        headers: {
-          "content-type": "application/x-www-form-urlencoded",
-          "accept-language": req.headers["accept-language"],
-          Authorization: req.headers.authorization,
-        },
+        headers: requestHeaders,
         url: `${host}${paymentUrl}/`,
         timeout,
       })
-        .then((response) => {
-          res
-            .status(response.status)
-            .type("application/json")
-            .send(response.data);
-        })
+        .then((response) => sendSessionCookies(response, conf, res))
         .catch((error) => {
           logResponseError(error);
           // forward error

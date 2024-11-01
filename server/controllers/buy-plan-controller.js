@@ -27,6 +27,10 @@ const buyPlan = (req, res) => {
         requestHeaders.Authorization = req.headers.authorization;
       }
 
+      if (req.headers && req.headers.cookie) {
+        requestHeaders.Cookie = req.headers.cookie;
+      }
+
       axios({
         method: "post",
         headers: requestHeaders,

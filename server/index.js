@@ -19,7 +19,7 @@ app.use(cookieParser());
 app.use(cookiesMiddleware());
 app.use(
   cors({
-    origin: "localhost",
+    origin: process.env.REACT_APP_SERVER_URL,
     credentials: true,
   }),
 );
