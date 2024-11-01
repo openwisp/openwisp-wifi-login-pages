@@ -25,9 +25,7 @@ const currentPlan = (req, res) => {
 
       if (req.headers && req.headers.authorization) {
         headersData.Authorization = req.headers.authorization;
-      }
-
-      if (req.headers && req.headers.cookie) {
+      } else if (req.headers && req.headers.cookie) {
         headersData.Cookie = req.headers.cookie;
       }
 

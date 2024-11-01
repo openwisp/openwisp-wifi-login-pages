@@ -154,7 +154,7 @@ class MobileMoneyPaymentProcess extends React.Component {
 
           this.setState({readyState: this.webSocket.readyState});
         };
-        this.webSocket.onmessage = (event) => {
+        this.webSocket.onmessage = async (event) => {
           const payment_data = JSON.parse(event.data);
           const payment_status = payment_data.status;
 
@@ -162,7 +162,7 @@ class MobileMoneyPaymentProcess extends React.Component {
             this.handleLoginUserAfterOrderSuccess(payment_data.username, payment_data.key);
           }
 
-          this.handlePaymentStatusChange(payment_status);
+          await this.handlePaymentStatusChange(payment_status);
 
         };
 
@@ -188,7 +188,7 @@ class MobileMoneyPaymentProcess extends React.Component {
 
   async getCurrentUserPlan() {
     const {setLoading} = this.context;
-    const {cookies, orgSlug, setUserData, logout, setTitle, orgName, language, settings, userData} =
+    const {cookies, orgSlug, setUserData, logout, setTitle, orgName, language, settings, userData, navigate} =
       this.props;
     const currentPlanUrl = currentPlanApiUrl(orgSlug);
     setLoading(true);
@@ -215,7 +215,17 @@ class MobileMoneyPaymentProcess extends React.Component {
         setUserData({
           ...userData,
           userplan: response.data,
+          is_verified: !response.data.is_expired,
         });
+
+        if (
+          response.data.is_expired === false && !userData.auth_token ||
+          response.data.is_expired === false && !userData.radius_user_token
+        ) {
+          this.handleLoginUserAfterOrderSuccess(response.data.username, response.data.key);
+          navigate(`/${orgSlug}/payment/success`);
+        }
+
         if (response.data.active_order) {
           this.setState({
             payment_id: response.data.active_order.payment_id,
@@ -234,7 +244,7 @@ class MobileMoneyPaymentProcess extends React.Component {
 
         const {response} = error;
         const excludeErrorMessageStatus = [401, 403];
-        if (!excludeErrorMessageStatus.includes(response.status)) {
+        if (!excludeErrorMessageStatus.includes(error.status)) {
           toast.error(t`ERR_OCCUR`);
         }
         setLoading(false);
@@ -350,7 +360,7 @@ class MobileMoneyPaymentProcess extends React.Component {
 
     const paymentStatus = await getPaymentStatus(orgSlug, payment_id, userData.auth_token, ws_token);
 
-    this.handlePaymentStatusChange(paymentStatus);
+    await this.handlePaymentStatusChange(paymentStatus);
 
   };
 

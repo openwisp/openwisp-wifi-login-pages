@@ -223,7 +223,12 @@ export default class Status extends React.Component {
       return;
     }
 
-    await this.getUserPlan();
+    if (userData.is_verifying_plan === true) {
+      return;
+    }
+
+    await this.fetchCurrentUserPlan();
+
 
     const {userplan} = userData;
 
@@ -236,7 +241,8 @@ export default class Status extends React.Component {
 
     // if the user needs bank card verification,
     // redirect to payment page and stop here
-    if (!userplan.active || userplan.is_expired === true) {
+    if (userData.is_verifying_plan !== true && !userplan.active ||
+      userData.is_verifying_plan !== true && userplan.is_expired === true) {
       // avoid redirect loop from proceed to payment
       if (settings.payment_requires_internet && userData.proceedToPayment) {
         // reset proceedToPayment
@@ -244,6 +250,7 @@ export default class Status extends React.Component {
           ...userData,
           proceedToPayment: false,
           is_verified: false,
+
         });
         this.handleBuyPlanRedirect();
         navigate(`/${orgSlug}/payment/draft`);
@@ -298,18 +305,26 @@ export default class Status extends React.Component {
       url: currentPlanUrl,
     })
       .then((response) => {
-
         setUserData({
           ...userData,
           userplan: response.data,
           is_verifying_plan: false,
+          payment_url: null,
+          is_verified: !response.data.is_expired,
+
         });
         setLoading(false);
+
       })
       .catch((error) => {
+        setUserData({
+          is_verifying_plan: false,
+        });
+        setLoading(false);
         toast.error(t`ERR_OCCUR`);
         logError(error, "Error while getting current user plan");
         return {};
+
       });
   }
 

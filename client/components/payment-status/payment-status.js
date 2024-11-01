@@ -118,9 +118,11 @@ export default class PaymentStatus extends React.Component {
       return redirectToStatus();
     }
 
-
     // draft case
-    // if (isAuthenticated === false && status === "draft") {
+    if (isAuthenticated === true && userData.is_verified === true && !userData.payment_url) {
+
+      return redirectToStatus();
+    }
     if (status === "draft") {
       return this.renderDraft();
     }
