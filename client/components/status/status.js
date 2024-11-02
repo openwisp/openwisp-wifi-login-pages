@@ -119,6 +119,8 @@ export default class Status extends React.Component {
 
 
       const {mustLogin, mustLogout, repeatLogin} = userData;
+
+
       ({userData} = this.props);
       if (userData.password_expired === true) {
         toast.warning(t`PASSWORD_EXPIRED`);

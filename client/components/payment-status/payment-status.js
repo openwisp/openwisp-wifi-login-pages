@@ -84,7 +84,7 @@ export default class PaymentStatus extends React.Component {
   };
 
   render() {
-    const {orgSlug, params, isAuthenticated, userData, settings} = this.props;
+    const {orgSlug, params, isAuthenticated, mustLogin, userData, settings} = this.props;
     const {status} = params;
     const {method, is_verified: isVerified, payment_url} = userData;
     const redirectToStatus = () => <Navigate to={`/${orgSlug}/status`} />;
@@ -105,7 +105,8 @@ export default class PaymentStatus extends React.Component {
       (isAuthenticated === false && status !== "draft") ||
       // (!["failed", "draft"].includes(status) && !payment_url && isVerified === true) ||
       (status === "success" && isVerified === false) ||
-      isTokenValid === false
+      isTokenValid === false ||
+      status === "success" && mustLogin === true
     ) {
       window.location.replace(`/${orgSlug}/status`);
     }

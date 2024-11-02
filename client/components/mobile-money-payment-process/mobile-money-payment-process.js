@@ -287,8 +287,7 @@ class MobileMoneyPaymentProcess extends React.Component {
   handlePaymentStatusChange = async (paymentStatus) => {
 
     const {userData, orgSlug, setUserData, navigate} = this.props;
-    console.log("payment_status");
-    console.log(paymentStatus);
+
     if (paymentStatus) {
 
       this.setState({
@@ -297,8 +296,6 @@ class MobileMoneyPaymentProcess extends React.Component {
     } else {
       return;
     }
-
-
 
     switch (paymentStatus) {
       case "waiting":
@@ -311,6 +308,7 @@ class MobileMoneyPaymentProcess extends React.Component {
           ...userData,
           is_verified: true,
           payment_url: null,
+          mustLogin: true,
 
         });
         toast.success("Payment was successfully");
