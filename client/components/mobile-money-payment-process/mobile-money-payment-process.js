@@ -82,7 +82,6 @@ class MobileMoneyPaymentProcess extends React.Component {
 
     const {userData} = this.props;
 
-
     setLoading(false);
     const plansUrl = plansApiUrl.replace("{orgSlug}", orgSlug);
 
@@ -288,6 +287,13 @@ class MobileMoneyPaymentProcess extends React.Component {
 
     const {userData, orgSlug, setUserData, navigate} = this.props;
 
+    if (!userData.mustLogin) {
+      setUserData({
+        ...userData,
+        mustLogin: true,
+      });
+    }
+
     if (paymentStatus) {
 
       this.setState({
@@ -306,9 +312,9 @@ class MobileMoneyPaymentProcess extends React.Component {
         await this.getCurrentUserPlan();
         setUserData({
           ...userData,
-          is_verified: true,
           payment_url: null,
           mustLogin: true,
+          is_verified: true,
 
         });
         toast.success("Payment was successfully");
@@ -317,7 +323,7 @@ class MobileMoneyPaymentProcess extends React.Component {
         if (this.webSocket) {
           this.webSocket.close();
         }
-        navigate(`/${orgSlug}/payment/${paymentStatus}`);
+        navigate(`/${orgSlug}/status`);
         return;
       case "failed":
         await this.getCurrentUserPlan();
@@ -900,7 +906,7 @@ class MobileMoneyPaymentProcess extends React.Component {
 
   render() {
 
-    const {orgSlug, isAuthenticated, userData, settings, navigate} = this.props;
+    const {orgSlug, isAuthenticated, setUserData, userData, settings, navigate} = this.props;
 
     const {plansFetched, modalActive, errors, payment_status} = this.state;
     const redirectToStatus = () => navigate(`/${orgSlug}/status`);
