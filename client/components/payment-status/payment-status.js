@@ -101,14 +101,14 @@ export default class PaymentStatus extends React.Component {
     }
 
     // likely somebody opening this page by mistake
-    // if (
-    //   (isAuthenticated === false && status !== "draft") ||
-    //   // (!["failed", "draft"].includes(status) && !payment_url && isVerified === true) ||
-    //   (status === "success" && isVerified === false) ||
-    //   isTokenValid === false
-    // ) {
-    //   window.location.replace(`/${orgSlug}/status`);
-    // }
+    if (
+      (isAuthenticated === false && status !== "draft") ||
+      // (!["failed", "draft"].includes(status) && !payment_url && isVerified === true) ||
+      (status === "success" && isVerified === false) ||
+      isTokenValid === false
+    ) {
+      window.location.replace(`/${orgSlug}/status`);
+    }
 
     if (
       isAuthenticated === false ||
@@ -131,7 +131,8 @@ export default class PaymentStatus extends React.Component {
     // success case
     if (isTokenValid === true && status === "success" && isVerified === true) {
       toast.success(t`PAY_SUCCESS`);
-      return redirectToStatus();
+      // return redirectToStatus();
+      window.location.replace(`/${orgSlug}/status`);
     }
 
     return this.renderFailed();
