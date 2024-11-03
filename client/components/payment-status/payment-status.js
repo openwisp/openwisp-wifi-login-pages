@@ -108,7 +108,7 @@ export default class PaymentStatus extends React.Component {
       isTokenValid === false ||
       status === "success" && mustLogin === true
     ) {
-      window.location.replace(`/${orgSlug}/status`);
+      return redirectToStatus();
     }
 
     if (
@@ -132,8 +132,7 @@ export default class PaymentStatus extends React.Component {
     // success case
     if (isTokenValid === true && status === "success" && isVerified === true) {
       toast.success(t`PAY_SUCCESS`);
-      // return redirectToStatus();
-      window.location.replace(`/${orgSlug}/status`);
+      return redirectToStatus();
     }
 
     return this.renderFailed();

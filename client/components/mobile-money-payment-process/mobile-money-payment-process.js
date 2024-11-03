@@ -323,7 +323,7 @@ class MobileMoneyPaymentProcess extends React.Component {
         if (this.webSocket) {
           this.webSocket.close();
         }
-        navigate(`/${orgSlug}/status`);
+        navigate(`/${orgSlug}/payment/${paymentStatus}`);
         return;
       case "failed":
         await this.getCurrentUserPlan();
