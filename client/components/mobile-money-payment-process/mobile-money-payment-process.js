@@ -50,9 +50,9 @@ class MobileMoneyPaymentProcess extends React.Component {
       payment_id: null,
       ws_token: null,
       payment_status: null,
+      order_stage: 1,
       activeTab: 1,
       passedSteps: [1],
-      modifiedSteps: [1],
       plans: [],
       plansFetched: false,
       selectedPlan: {},
@@ -85,7 +85,7 @@ class MobileMoneyPaymentProcess extends React.Component {
     setLoading(false);
     const plansUrl = plansApiUrl.replace("{orgSlug}", orgSlug);
 
-    setTitle("Buy internet plans", orgName);
+    setTitle(`Buy internet plans`, orgName);
 
     const {phone_number} = userData;
 
@@ -387,16 +387,26 @@ class MobileMoneyPaymentProcess extends React.Component {
 
   changePlan = (event) => {
 
-    this.setState({selectedPlan: event.target.value});
+    this.setState({
+      selectedPlan: event.target.value,
+      order_stage: 2,
+    });
+
+
   };
 
   getPlanSelection = () => {
     const {mobile_money_payment_form} = this.props;
-    const {plans, selectedPlan} = this.state;
+    const {plans, selectedPlan, order_stage} = this.state;
     const {auto_select_first_plan} = mobile_money_payment_form;
     let index = 0;
+    let isHidden = !!auto_select_first_plan;
+    if (isHidden === false && order_stage !== 1) {
+      isHidden = true;
+    }
     return (
-      <div className={`plans ${auto_select_first_plan ? "hidden" : ""}`}>
+      <div className={`plans ${isHidden ? "hidden" : ""}`}>
+        <h3>Choose An Internet Plans</h3>
         <p className="intro">{t`PLAN_SETTING_TXT`}.</p>
         {plans.map((plan) => {
           const currentIndex = String(index);
@@ -422,6 +432,7 @@ class MobileMoneyPaymentProcess extends React.Component {
             </div>
           );
         })}
+
       </div>
     );
   };
@@ -452,6 +463,171 @@ class MobileMoneyPaymentProcess extends React.Component {
     );
   };
 
+  renderBillingForm = () => {
+    const {mobile_money_payment_form, settings, orgSlug} = this.props;
+    const {additional_info_text, input_fields, links} = mobile_money_payment_form;
+    const {
+      success,
+      errors,
+      selectedPlan,
+      plans,
+      voucher_code,
+      tax_number,
+      street,
+      city,
+      zipcode,
+      countrySelected,
+      hidePassword,
+      order_stage,
+    } = this.state;
+
+    const {userData} = this.props;
+
+    const {phone_number} = userData;
+
+    const isHidden = order_stage !== 2;
+
+    let currentPlan = {};
+    if (plans && selectedPlan !== {}) {
+      currentPlan = plans[selectedPlan] || {};
+    }
+    return (
+      <div className={isHidden ? "hidden" : ""}>
+        <h3>Complete Order</h3>
+        <p className="intro">Complete your order by filling you safaricom phone number that you are going to pay for the
+          order.</p>
+        <div className={"row"}>
+          <table className="small-table"
+
+            >
+            <tbody>
+            <tr>
+              <th>Plan Name</th>
+              <td>{currentPlan.plan}</td>
+            </tr>
+            <tr>
+              <th>Description</th>
+              <td>{currentPlan.plan_description}</td>
+            </tr>
+            <tr>
+              <th>Price</th>
+              <td>{currentPlan.currency}{" "}{currentPlan.price} </td>
+            </tr>
+            </tbody>
+          </table>
+
+        </div>
+
+        <div className="row phone-number">
+          <label htmlFor="phone-number">{t`PHONE_LBL`}</label>
+          {getError(errors, "phone_number")}
+          <Suspense
+            fallback={
+              <input
+                type="tel"
+                className="input"
+                name="phone_number"
+                value={phone_number}
+                onChange={(value) =>
+                  this.handleChange({
+                    target: {
+                      name: "phone_number",
+                      value: `+${value}`,
+                    },
+                  })
+                }
+                onKeyDown={(event) => {
+                  submitOnEnter(
+                    event,
+                    this,
+                    "registration-form",
+                  );
+                }}
+                placeholder={t`PHONE_PHOLD`}
+              />
+            }
+          >
+            <PhoneInput
+              name="phone_number"
+              country={input_fields.phone_number.country}
+              onlyCountries={
+                input_fields.phone_number.only_countries || []
+              }
+              preferredCountries={
+                input_fields.phone_number
+                  .preferred_countries || []
+              }
+              excludeCountries={
+                input_fields.phone_number.exclude_countries ||
+                []
+              }
+              value={phone_number}
+              onChange={(value) =>
+                this.handleChange({
+                  target: {
+                    name: "phone_number",
+                    value: `+${value}`,
+                  },
+                })
+              }
+              onKeyDown={(event) => {
+                submitOnEnter(
+                  event,
+                  this,
+                  "registration-form",
+                );
+              }}
+              placeholder={t`PHONE_PHOLD`}
+              enableSearch={Boolean(
+                input_fields.phone_number.enable_search,
+              )}
+              inputProps={{
+                name: "phone_number",
+                id: "phone-number",
+                className: `form-control input ${
+                  errors.phone_number ? "error" : ""
+                }`,
+                required: true,
+                autoComplete: "tel",
+              }}
+            />
+          </Suspense>
+        </div>
+        <div className="row voucher_code">
+          <label htmlFor="firsvoucher_codet_name">
+            Voucher Code {`(${t`OPTIONAL`})`}
+          </label>
+          {getError(errors, "voucher_code")}
+          <input
+            className={`input ${
+              errors.voucher_code ? "error" : ""
+            }`}
+            type="text"
+            id="voucher_code"
+
+            name="voucher_code"
+            value={voucher_code}
+            onChange={this.handleChange}
+            autoComplete="given-name"
+            placeholder="Enter voucher code"
+          />
+        </div>
+
+        <div className="row register">
+          {(plans.length === 0 ||
+            (plans.length > 0 && selectedPlan !== null)) && (
+            <input
+              type="submit"
+              className="button full"
+              value="Buy Plan"
+            />
+          )}
+        </div>
+      </div>
+
+    );
+  }
+
   getForm = () => {
     const {mobile_money_payment_form, settings, orgSlug} = this.props;
     const {additional_info_text, input_fields, links} = mobile_money_payment_form;
@@ -467,6 +643,7 @@ class MobileMoneyPaymentProcess extends React.Component {
       zipcode,
       countrySelected,
       hidePassword,
+      order_stage,
     } = this.state;
 
     const {userData} = this.props;
@@ -483,6 +660,8 @@ class MobileMoneyPaymentProcess extends React.Component {
               id="registration-form"
             >
               <div className="inner">
+                <h1>Buy Plan</h1>
+                <p>Follow the steps below to buy our plans</p>
                 <div className="fieldset">
                   {getError(errors)}
                   {plans.length > 0 && this.getPlanSelection()}
@@ -492,102 +671,9 @@ class MobileMoneyPaymentProcess extends React.Component {
                       {
                         settings.mobile_phone_verification &&
                         input_fields.phone_number && (
-                          <div className="row phone-number">
-                            <label htmlFor="phone-number">{t`PHONE_LBL`}</label>
-                            {getError(errors, "phone_number")}
-                            <Suspense
-                              fallback={
-                                <input
-                                  type="tel"
-                                  className="input"
-                                  name="phone_number"
-                                  value={phone_number}
-                                  onChange={(value) =>
-                                    this.handleChange({
-                                      target: {
-                                        name: "phone_number",
-                                        value: `+${value}`,
-                                      },
-                                    })
-                                  }
-                                  onKeyDown={(event) => {
-                                    submitOnEnter(
-                                      event,
-                                      this,
-                                      "registration-form",
-                                    );
-                                  }}
-                                  placeholder={t`PHONE_PHOLD`}
-                                />
-                              }
-                            >
-                              <PhoneInput
-                                name="phone_number"
-                                country={input_fields.phone_number.country}
-                                onlyCountries={
-                                  input_fields.phone_number.only_countries || []
-                                }
-                                preferredCountries={
-                                  input_fields.phone_number
-                                    .preferred_countries || []
-                                }
-                                excludeCountries={
-                                  input_fields.phone_number.exclude_countries ||
-                                  []
-                                }
-                                value={phone_number}
-                                onChange={(value) =>
-                                  this.handleChange({
-                                    target: {
-                                      name: "phone_number",
-                                      value: `+${value}`,
-                                    },
-                                  })
-                                }
-                                onKeyDown={(event) => {
-                                  submitOnEnter(
-                                    event,
-                                    this,
-                                    "registration-form",
-                                  );
-                                }}
-                                placeholder={t`PHONE_PHOLD`}
-                                enableSearch={Boolean(
-                                  input_fields.phone_number.enable_search,
-                                )}
-                                inputProps={{
-                                  name: "phone_number",
-                                  id: "phone-number",
-                                  className: `form-control input ${
-                                    errors.phone_number ? "error" : ""
-                                  }`,
-                                  required: true,
-                                  autoComplete: "tel",
-                                }}
-                              />
-                            </Suspense>
-                          </div>
+                          this.renderBillingForm()
                         )}
 
-                      <div className="row voucher_code">
-                        <label htmlFor="firsvoucher_codet_name">
-                          Voucher Code {`(${t`OPTIONAL`})`}
-                        </label>
-                        {getError(errors, "voucher_code")}
-                        <input
-                          className={`input ${
-                            errors.voucher_code ? "error" : ""
-                          }`}
-                          type="text"
-                          id="voucher_code"
-
-                          name="voucher_code"
-                          value={voucher_code}
-                          onChange={this.handleChange}
-                          autoComplete="given-name"
-                          placeholder="Enter voucher code"
-                        />
-                      </div>
 
                     </>
                   )}
@@ -601,16 +687,6 @@ class MobileMoneyPaymentProcess extends React.Component {
                     </div>
                   )}
 
-                <div className="row register">
-                  {(plans.length === 0 ||
-                    (plans.length > 0 && selectedPlan !== null)) && (
-                    <input
-                      type="submit"
-                      className="button full"
-                      value="Buy Plan"
-                    />
-                  )}
-                </div>
                 <div className="row cancel">
 
                   <Link className="button full" to="/">
