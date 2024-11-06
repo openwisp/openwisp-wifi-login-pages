@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';  
+import React, {useState, useEffect} from "react";
+import PropTypes from "prop-types";
 import {connect} from "react-redux";
 
 import {authenticate, setUserData, setTitle} from "../../actions/dispatchers";
 import Component from "./login";
-import handleCaptivePortalLogin from './captive-portal-handler';
+import handleCaptivePortalLogin from "./captive-portal-handler";
 
 export const mapStateToProps = (state) => {
   const conf = state.organization.configuration;
@@ -29,16 +30,19 @@ export const mapDispatchToProps = (dispatch) => ({
   setTitle: setTitle(dispatch),
 });
 
-export const Login = (props) => {
+export const Login = ({captivePortalLoginForm, ...props}) => {
   const [captivePortalError, setCaptivePortalError] = useState(null);
+
   useEffect(() => {
-    handleCaptivePortalLogin(props.captivePortalLoginForm, setCaptivePortalError);
-  }, [props.captivePortalLoginForm]);
-  return (
-    <Component
-      {...props}
-      captivePortalError={captivePortalError}
-    />
-  );
+    handleCaptivePortalLogin(captivePortalLoginForm, setCaptivePortalError);
+  }, [captivePortalLoginForm]);
+
+  return <Component {...props} captivePortalError={captivePortalError} />;
 };
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+
+Login.propTypes = {
+  captivePortalLoginForm: PropTypes.shape({}).isRequired,
+};
+
+const ConnectedLogin = connect(mapStateToProps, mapDispatchToProps)(Login);
+export default ConnectedLogin;
