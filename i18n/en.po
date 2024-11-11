@@ -84,7 +84,8 @@ msgid "STATUS_CONTENT"
 msgstr ""
 "WiFi Login Successful!\n"
 "        You can now use the internet.\n"
-"        You may leave this page open in case you want to log out."
+"        You may leave this page open in case you want to log out.\n"
+"        If you cant still access the internet, please reload this page."
 
 #: client/components/status/status.js:716
 msgid "LOGOUT_MODAL_CONTENT"
