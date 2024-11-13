@@ -2,7 +2,7 @@ import qs from "qs";
 import axios from "axios";
 import {t} from "ttag";
 import {toast} from "react-toastify";
-import {validateApiUrl, mainToastId} from "../constants";
+import {mainToastId, validateApiUrl} from "../constants";
 import handleSession from "./session";
 import logError from "./log-error";
 import handleLogout from "./handle-logout";
@@ -29,7 +29,10 @@ const validateToken = async (
         userData.password_expired === true)) ||
       (userData.method === "bank_card" &&
         userData.is_verified !== true &&
-        !userData.payment_url))
+        !userData.payment_url) ||
+      (userData.method === "mpesa" &&
+        userData.plan_changed === true)
+    )
   ) {
     try {
       const response = await axios({

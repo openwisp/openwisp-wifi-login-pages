@@ -190,6 +190,10 @@ class MobileMoneyPaymentProcess extends React.Component {
     const {cookies, orgSlug, setUserData, logout, setTitle, orgName, language, settings, userData, navigate} =
       this.props;
     const currentPlanUrl = currentPlanApiUrl(orgSlug);
+    setUserData({
+      ...userData,
+      is_verifying_plan: true,
+    });
     setLoading(true);
     const headers_data = {
         "content-type": "application/x-www-form-urlencoded",
@@ -215,6 +219,7 @@ class MobileMoneyPaymentProcess extends React.Component {
           ...userData,
           userplan: response.data,
           is_verified: !response.data.is_expired,
+          is_verifying_plan: false,
         });
 
         if (
@@ -222,7 +227,7 @@ class MobileMoneyPaymentProcess extends React.Component {
           response.data.is_expired === false && !userData.radius_user_token
         ) {
           this.handleLoginUserAfterOrderSuccess(response.data.username, response.data.key);
-          navigate(`/${orgSlug}/payment/success`);
+          document.location.replace(`/${orgSlug}/payment/success`);
         }
 
         if (response.data.active_order) {
@@ -242,10 +247,19 @@ class MobileMoneyPaymentProcess extends React.Component {
       .catch((error) => {
 
         const {response} = error;
+        console.log(error);
         const excludeErrorMessageStatus = [401, 403];
-        if (!excludeErrorMessageStatus.includes(error.status)) {
+        let statusCode = 500;
+        if (error && error.response && error.response.status) {
+          statusCode = error.response.status;
+        }
+        if (!excludeErrorMessageStatus.includes(statusCode)) {
           toast.error(t`ERR_OCCUR`);
         }
+        setUserData({
+          ...userData,
+          is_verifying_plan: false,
+        });
         setLoading(false);
 
         logError(error, "Error while getting current user plan");
@@ -291,6 +305,7 @@ class MobileMoneyPaymentProcess extends React.Component {
       setUserData({
         ...userData,
         mustLogin: true,
+        plan_changed: true,
       });
     }
 
@@ -315,6 +330,7 @@ class MobileMoneyPaymentProcess extends React.Component {
           payment_url: null,
           mustLogin: true,
           is_verified: true,
+          plan_changed: true,
 
         });
         toast.success("Payment was successfully");
@@ -326,8 +342,11 @@ class MobileMoneyPaymentProcess extends React.Component {
         navigate(`/${orgSlug}/payment/${paymentStatus}`);
         return;
       case "failed":
-        await this.getCurrentUserPlan();
-        setUserData({...userData, payment_url: null});
+        // await this.getCurrentUserPlan();
+        setUserData({
+          ...userData,
+          payment_url: null,
+        });
         toast.info("The payment failed");
         this.setState({payment_id: null, payment_status: null});
         clearInterval(this.intervalId);
@@ -991,6 +1010,15 @@ class MobileMoneyPaymentProcess extends React.Component {
     if (settings.subscriptions && !plansFetched) {
       return null;
     }
+    console.log(userData);
+
+    // if (userData && !userData.plan_changed){
+    //   setUserData({
+    //     ...userData,
+    //     plan_changed:true,
+    //     mustLogin:true
+    //   })
+    // }
 
 
     if (payment_status === "pending") {

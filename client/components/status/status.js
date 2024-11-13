@@ -55,7 +55,7 @@ export default class Status extends React.Component {
     this.getUserRadiusSessions = this.getUserRadiusSessions.bind(this);
     this.handleSessionLogout = this.handleSessionLogout.bind(this);
     this.fetchMoreSessions = this.fetchMoreSessions.bind(this);
-    this.getUserPlan = this.fetchCurrentUserPlan.bind(this);
+    // this.getUserPlan = this.fetchCurrentUserPlan.bind(this);
     this.updateScreenWidth = this.updateScreenWidth.bind(this);
     this.updateSpinner = this.updateSpinner.bind(this);
   }
@@ -79,7 +79,8 @@ export default class Status extends React.Component {
       rememberMe: localStorage.getItem("rememberMe") === "true",
     });
     Logout.preload();
-
+    console.log(userData);
+    console.log(1);
     // to prevent recursive call in case redirect url is status page
     if (window.top === window.self) {
       try {
@@ -109,13 +110,15 @@ export default class Status extends React.Component {
         logout,
         language,
       );
+      console.log("is valid", isValid);
+      console.log(userData);
+      console.log(2);
 
       // stop here if token is invalid
       if (isValid === false) {
         setLoading(false);
         return;
       }
-
 
 
       const {mustLogin, mustLogout, repeatLogin} = userData;
@@ -228,9 +231,6 @@ export default class Status extends React.Component {
     if (userData.is_verifying_plan === true) {
       return;
     }
-
-    await this.fetchCurrentUserPlan();
-
 
     const {userplan} = userData;
 

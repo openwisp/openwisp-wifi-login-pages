@@ -3,7 +3,6 @@ import {t} from "ttag";
 import {toast} from "react-toastify";
 import {paymentStatusUrl} from "../constants";
 import logError from "./log-error";
-import getLanguageHeaders from "./get-language-headers";
 
 export const getPaymentStatus = async (orgSlug, paymentId, auth_token, ws_token) => {
   const url = paymentStatusUrl(orgSlug, paymentId);
@@ -11,13 +10,11 @@ export const getPaymentStatus = async (orgSlug, paymentId, auth_token, ws_token)
   try {
     const requestHeaders = {
       "content-type": "application/x-www-form-urlencoded",
-      "accept-language": getLanguageHeaders(language),
+      // "accept-language": getLanguageHeaders(language),
       Authorization: `Bearer ${auth_token}`,
     };
 
-    console.log(auth_token);
-
-    if (userData.auth_token === undefined) {
+    if (auth_token === undefined) {
       delete requestHeaders.Authorization;
     }
 
