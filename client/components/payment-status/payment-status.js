@@ -99,7 +99,7 @@ export default class PaymentStatus extends React.Component {
       redirectToStatus();
     }
 
-    if (isAuthenticated === undefined && status === "success" && isVerified === true) {
+    if (isAuthenticated === undefined && status === "success" && userData && userData.plan_changed === true) {
       authenticate(true);
     }
 
