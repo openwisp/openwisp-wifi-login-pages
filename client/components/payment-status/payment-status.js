@@ -2,7 +2,7 @@
 import {Cookies} from "react-cookie";
 import PropTypes from "prop-types";
 import React from "react";
-import {Link, Navigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {toast} from "react-toastify";
 import {t} from "ttag";
 import LoadingContext from "../../utils/loading-context";
@@ -84,20 +84,23 @@ export default class PaymentStatus extends React.Component {
   };
 
   render() {
-    const {orgSlug, params, isAuthenticated, mustLogin, userData, settings} = this.props;
+    const {orgSlug, params, isAuthenticated, mustLogin, userData, settings, navigate, authenticate} = this.props;
     const {status} = params;
     const {method, is_verified: isVerified, payment_url} = userData;
-    const redirectToStatus = () => <Navigate to={`/${orgSlug}/status`} />;
+    const redirectToStatus = () => navigate(`/${orgSlug}/status`, {replace: true});
     const acceptedValues = ["success", "failed", "draft"];
     // const acceptedValues = ["success", "failed", "draft"];
     const {isTokenValid} = this.state;
-
     // not registered with bank card flow
     if (
       (method && !settings.payment_methods.includes(method)) ||
       !acceptedValues.includes(status)
     ) {
-      return redirectToStatus();
+      redirectToStatus();
+    }
+
+    if (isAuthenticated === undefined && status === "success" && isVerified === true) {
+      authenticate(true);
     }
 
     // likely somebody opening this page by mistake
@@ -108,21 +111,22 @@ export default class PaymentStatus extends React.Component {
       isTokenValid === false ||
       status === "success" && mustLogin === true
     ) {
-      return redirectToStatus();
+      // document.location.replace(`/${orgSlug}/status`);
+      // return null;
+      redirectToStatus();
     }
-
     if (
       isAuthenticated === false ||
       (status === "failed" && isVerified === true) ||
       (status === "success" && isVerified === false)
     ) {
-      return redirectToStatus();
-    }
 
+      redirectToStatus();
+    }
     // draft case
     if (isAuthenticated === true && userData.is_verified === true && !userData.payment_url) {
 
-      return redirectToStatus();
+      redirectToStatus();
     }
     if (status === "draft") {
       return this.renderDraft();
@@ -132,14 +136,13 @@ export default class PaymentStatus extends React.Component {
     // success case
     if (isTokenValid === true && status === "success" && isVerified === true) {
       toast.success(t`PAY_SUCCESS`);
-
       return redirectToStatus();
     }
 
     return this.renderFailed();
   }
 
-  async paymentProceedHandler() {
+  paymentProceedHandler() {
     const {authenticate, setUserData, orgSlug, userData, settings} = this.props;
     const {method, is_verified: isVerified, payment_id} = userData;
 

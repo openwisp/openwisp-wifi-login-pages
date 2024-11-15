@@ -15,6 +15,8 @@ const handleLogout = (
    * Redirecting to the status page for captive-portal logout if the
    * method is unspecified or bank_card or the user is verified.
    */
+  console.log("this is the logout");
+  console.log(userData);
   if (
     userData.is_active === true &&
     (userData.method === "" ||

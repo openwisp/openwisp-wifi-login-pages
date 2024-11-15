@@ -18,11 +18,11 @@ export const getPaymentStatus = async (orgSlug, paymentId, auth_token, ws_token)
       delete requestHeaders.Authorization;
     }
 
-    if (req.headers.authorization) {
-      requestHeaders.Authorization = req.headers.authorization;
-    } else if (req.headers && req.headers.cookie) {
-      requestHeaders.Cookie = req.headers.cookie;
-    }
+    // if (req.headers.authorization) {
+    //   requestHeaders.Authorization = req.headers.authorization;
+    // } else if (req.headers && req.headers.cookie) {
+    //   requestHeaders.Cookie = req.headers.cookie;
+    // }
 
     const response = await axios({
       method: "get",

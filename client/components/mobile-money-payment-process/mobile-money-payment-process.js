@@ -129,6 +129,8 @@ class MobileMoneyPaymentProcess extends React.Component {
       username,
       auth_token,
       is_verified: false,
+      method: "mpesa",
+      is_active: true,
 
     });
   }
@@ -227,7 +229,8 @@ class MobileMoneyPaymentProcess extends React.Component {
           response.data.is_expired === false && !userData.radius_user_token
         ) {
           this.handleLoginUserAfterOrderSuccess(response.data.username, response.data.key);
-          document.location.replace(`/${orgSlug}/payment/success`);
+          navigate(`/${orgSlug}/payment/success`, {replace: true});
+          return;
         }
 
         if (response.data.active_order) {
@@ -247,7 +250,7 @@ class MobileMoneyPaymentProcess extends React.Component {
       .catch((error) => {
 
         const {response} = error;
-        console.log(error);
+
         const excludeErrorMessageStatus = [401, 403];
         let statusCode = 500;
         if (error && error.response && error.response.status) {
@@ -668,6 +671,8 @@ class MobileMoneyPaymentProcess extends React.Component {
     const {userData} = this.props;
 
     const {phone_number} = userData;
+    const statusPageUrl = `/${orgSlug}/status`;
+
 
     return (
       <>
@@ -708,7 +713,7 @@ class MobileMoneyPaymentProcess extends React.Component {
 
                 <div className="row cancel">
 
-                  <Link className="button full" to="/">
+                  <Link className="button full" to={statusPageUrl}>
                     {t`CANCEL`}
                   </Link>
                 </div>
@@ -895,6 +900,8 @@ class MobileMoneyPaymentProcess extends React.Component {
   }
 
   renderWaitingPayment() {
+    const {orgSlug} = this.props;
+    const statusPageUrl = `/${orgSlug}/status`;
     return (
       <>
         <div className="container content" id="registration">
@@ -909,7 +916,7 @@ class MobileMoneyPaymentProcess extends React.Component {
 
 
               <div className="row cancel">
-                <Link className="button full" to="/">
+                <Link className="button full" to={statusPageUrl}>
                   {t`CANCEL`}
                 </Link>
               </div>
@@ -932,6 +939,7 @@ class MobileMoneyPaymentProcess extends React.Component {
 
   renderCheckPaymentStatus() {
     const {orgSlug} = this.props;
+    const statusPageUrl = `/${orgSlug}/status`;
     return (
       <>
         <div className="container content" id="registration">
@@ -951,7 +959,7 @@ class MobileMoneyPaymentProcess extends React.Component {
                 </button>
               </div>
               <div className="row cancel">
-                <Link className="button full" to="/">
+                <Link className="button full" to={statusPageUrl}>
                   {t`CANCEL`}
                 </Link>
               </div>
@@ -970,7 +978,7 @@ class MobileMoneyPaymentProcess extends React.Component {
     const {userData, orgSlug} = this.props;
     const {phone_number, order} = userData;
     const {userplan} = userData;
-
+    const statusPageUrl = `/${orgSlug}/status`;
 
     return (
 
@@ -989,7 +997,7 @@ class MobileMoneyPaymentProcess extends React.Component {
           ID: {(userplan && userplan.active_order ? userplan.active_order.id : "N/A")}<a
             className="text-decoration-underline" /></h3>
         <div className="row cancel">
-          <Link className="button full" to="/">
+          <Link className="button full" to={statusPageUrl}>
             {t`CANCEL`}
           </Link>
         </div>
@@ -1004,13 +1012,13 @@ class MobileMoneyPaymentProcess extends React.Component {
     const {orgSlug, isAuthenticated, setUserData, userData, settings, navigate} = this.props;
 
     const {plansFetched, modalActive, errors, payment_status} = this.state;
-    const redirectToStatus = () => navigate(`/${orgSlug}/status`);
+    const redirectToStatus = () => navigate(`/${orgSlug}/status`, {replace: true});
     const {auth_token} = userData;
 
     if (settings.subscriptions && !plansFetched) {
       return null;
     }
-    console.log(userData);
+
 
     // if (userData && !userData.plan_changed){
     //   setUserData({

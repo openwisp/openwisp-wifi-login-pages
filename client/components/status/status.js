@@ -79,8 +79,6 @@ export default class Status extends React.Component {
       rememberMe: localStorage.getItem("rememberMe") === "true",
     });
     Logout.preload();
-    console.log(userData);
-    console.log(1);
     // to prevent recursive call in case redirect url is status page
     if (window.top === window.self) {
       try {
@@ -110,9 +108,6 @@ export default class Status extends React.Component {
         logout,
         language,
       );
-      console.log("is valid", isValid);
-      console.log(userData);
-      console.log(2);
 
       // stop here if token is invalid
       if (isValid === false) {
