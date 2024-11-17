@@ -185,6 +185,10 @@ client:
           pattern: '[a-zA-Z@.+\-_\d]{1,150}'
           setting: "disabled"
 
+      links:
+        login: true
+        register: true
+
     phone_number_change_form:
       buttons:
         change_phone_number: true

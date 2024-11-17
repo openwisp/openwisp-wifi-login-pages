@@ -684,8 +684,6 @@ class MobileMoneyPaymentProcess extends React.Component {
               id="registration-form"
             >
               <div className="inner">
-                <h1>Buy Plan</h1>
-                <p>Follow the steps below to buy our plans</p>
                 <div className="fieldset">
                   {getError(errors)}
                   {plans.length > 0 && this.getPlanSelection()}
