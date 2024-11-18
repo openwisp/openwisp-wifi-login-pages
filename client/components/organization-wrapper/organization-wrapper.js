@@ -128,6 +128,12 @@ export default class OrganizationWrapper extends React.Component {
       let extraClasses = "";
       if (loading) extraClasses += " no-scroll";
       if (isOldBrowser()) extraClasses += " oldbrowser";
+      let hasOrgCookies = false;
+      let orgAuthToken = null;
+      if (cookies && cookies.cookies) {
+        orgAuthToken = cookies.cookies[`${orgSlug}_auth_token`];
+        if (orgAuthToken) hasOrgCookies = true;
+      }
       return (
         <>
           {translationLoaded && configLoaded ? (
@@ -239,7 +245,7 @@ export default class OrganizationWrapper extends React.Component {
                             to={`/${orgSlug}/mobile-phone-verification`}
                           />
                         );
-                      if (isAuthenticated) {
+                      if (isAuthenticated || (hasOrgCookies && isAuthenticated === undefined)) {
                         return (
                           <Suspense fallback={<Loader />}>
                             <Status
@@ -317,11 +323,18 @@ export default class OrganizationWrapper extends React.Component {
                   />
                   <Route
                     path="buy-plan/*"
-                    element={
-                      <Suspense fallback={<Loader />}>
-                        <BuyInternetPlan cookies={cookies} navigate={navigate} />
-                      </Suspense>
-                    }
+                    element={(() => {
+                      if (hasOrgCookies && userData.auth_token === undefined) {
+                        return <Navigate to={`/${orgSlug}/status`} />;
+
+                      }
+
+                      return (
+                        <Suspense fallback={<Loader />}>
+                          <BuyInternetPlan cookies={cookies} navigate={navigate} />
+                        </Suspense>
+                      );
+                    })()}
                   />
                 </Routes>
                 <Routes>
@@ -399,6 +412,7 @@ OrganizationWrapper.propTypes = {
       title: PropTypes.string,
       pageTitle: PropTypes.string,
       css_path: PropTypes.string,
+      unauthRedirectUrl: PropTypes.string,
       css: PropTypes.array,
       slug: PropTypes.string,
       name: PropTypes.string,

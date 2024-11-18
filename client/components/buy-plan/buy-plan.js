@@ -119,7 +119,7 @@ class BuyPlan extends React.Component {
   }
 
   handleLoginUserAfterOrderSuccess(username, auth_token) {
-    const {cookies, orgSlug, setUserData, userData, logout, setTitle, orgName, language, settings} =
+    const {cookies, orgSlug, setUserData, userData, logout, setTitle, orgName, language, settings, authenticate} =
       this.props;
 
     cookies.set(`${orgSlug}_auth_token`, auth_token, {path: "/"});
@@ -133,6 +133,8 @@ class BuyPlan extends React.Component {
       is_active: true,
 
     });
+    authenticate(true);
+
   }
 
 
@@ -229,7 +231,7 @@ class BuyPlan extends React.Component {
           response.data.is_expired === false && !userData.radius_user_token
         ) {
           this.handleLoginUserAfterOrderSuccess(response.data.username, response.data.key);
-          navigate(`/${orgSlug}/payment/success`, {replace: true});
+          navigate(`/${orgSlug}/status`);
           return;
         }
 
@@ -1106,6 +1108,7 @@ BuyPlan.propTypes = {
   orgSlug: PropTypes.string.isRequired,
   orgName: PropTypes.string.isRequired,
   cookies: PropTypes.instanceOf(Cookies).isRequired,
+  authenticate: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
   logout: PropTypes.func.isRequired,
   userData: PropTypes.object.isRequired,

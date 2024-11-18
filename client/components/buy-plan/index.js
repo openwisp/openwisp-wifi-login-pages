@@ -2,7 +2,7 @@ import "./index.css";
 
 import {connect} from "react-redux";
 import Component from "./buy-plan";
-import {logout, setTitle, setUserData} from "../../actions/dispatchers";
+import {authenticate, logout, setTitle, setUserData} from "../../actions/dispatchers";
 
 const mapStateToProps = (state, ownProps) => {
   const conf = state.organization.configuration;
@@ -29,6 +29,7 @@ const mapDispatchToProps = (dispatch) => ({
   logout: logout(dispatch),
   setUserData: setUserData(dispatch),
   setTitle: setTitle(dispatch),
+  authenticate: authenticate(dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Component);
