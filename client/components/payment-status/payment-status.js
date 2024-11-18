@@ -170,7 +170,7 @@ export default class PaymentStatus extends React.Component {
 
     if (!payProceedUrl) {
       if (method && method === "mpesa") {
-        payProceedUrl = `/${orgSlug}/payment/mobile-money/process`;
+        payProceedUrl = `/${orgSlug}/buy-plan`;
       } else {
         payProceedUrl = settings.payment_requires_internet
           ? `/${orgSlug}/status`

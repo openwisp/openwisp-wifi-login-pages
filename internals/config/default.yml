@@ -27,6 +27,7 @@ server:
 client:
 
   auto_login: True
+  unauthRedirectUrl: "/{orgSlug}/buy-plan"
 
   # path of favicon
   favicon: "favicon.png"

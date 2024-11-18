@@ -35,7 +35,7 @@ const PhoneInput = React.lazy(() =>
   import(/* webpackChunkName: 'PhoneInput' */ "react-phone-input-2"),
 );
 
-class MobileMoneyPaymentProcess extends React.Component {
+class BuyPlan extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -931,7 +931,7 @@ class MobileMoneyPaymentProcess extends React.Component {
   handBuyPlanAgain() {
     const {navigate, orgSlug} = this.props;
     this.setState({payment_status: null});
-    navigate(`/${orgSlug}/payment/mobile-money/process`);
+    navigate(`/${orgSlug}/buy-plan`);
 
   }
 
@@ -1054,9 +1054,9 @@ class MobileMoneyPaymentProcess extends React.Component {
   }
 }
 
-export default MobileMoneyPaymentProcess;
-MobileMoneyPaymentProcess.contextType = LoadingContext;
-MobileMoneyPaymentProcess.propTypes = {
+export default BuyPlan;
+BuyPlan.contextType = LoadingContext;
+BuyPlan.propTypes = {
   mobile_money_payment_form: PropTypes.shape({
     input_fields: PropTypes.shape({
       phone_number: PropTypes.shape({

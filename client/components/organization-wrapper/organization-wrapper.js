@@ -18,9 +18,9 @@ import needsVerify from "../../utils/needs-verify";
 import loadTranslation from "../../utils/load-translation";
 import Login from "../login";
 import {
+  BuyInternetPlan,
   ConnectedDoesNotExist,
   DoesNotExist,
-  MobileMoneyPaymentProcess,
   MobilePhoneChange,
   MobilePhoneVerification,
   PasswordChange,
@@ -111,6 +111,12 @@ export default class OrganizationWrapper extends React.Component {
       css_path: cssPath,
       js,
     } = organization.configuration;
+    let {unauthRedirectUrl} = organization.configuration;
+
+    const loginUrl = `/${orgSlug}/login`;
+    if (!unauthRedirectUrl) unauthRedirectUrl = loginUrl;
+    unauthRedirectUrl = unauthRedirectUrl.replace("{orgSlug}", orgSlug);
+
     const {is_active} = userData;
     let {css} = organization.configuration;
     if (!css) css = [];
@@ -246,7 +252,7 @@ export default class OrganizationWrapper extends React.Component {
                       }
                       if (userAutoLogin)
                         return <Navigate to={`/${orgSlug}/logout`} />;
-                      return <Navigate to={`/${orgSlug}/login`} />;
+                      return <Navigate to={unauthRedirectUrl} />;
                     })()}
                   />
                   <Route
@@ -310,10 +316,10 @@ export default class OrganizationWrapper extends React.Component {
                     }
                   />
                   <Route
-                    path="payment/mobile-money/process"
+                    path="buy-plan/*"
                     element={
                       <Suspense fallback={<Loader />}>
-                        <MobileMoneyPaymentProcess cookies={cookies} navigate={navigate} />
+                        <BuyInternetPlan cookies={cookies} navigate={navigate} />
                       </Suspense>
                     }
                   />

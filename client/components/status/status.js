@@ -99,6 +99,7 @@ export default class Status extends React.Component {
         //
       }
 
+
       setLoading(true);
       const isValid = await validateToken(
         cookies,
@@ -108,6 +109,9 @@ export default class Status extends React.Component {
         logout,
         language,
       );
+
+      console.log(isValid);
+      console.log(userData);
 
       // stop here if token is invalid
       if (isValid === false) {
@@ -899,7 +903,7 @@ export default class Status extends React.Component {
 
   handleBuyPlanRedirect = () => {
     const {orgSlug, setUserData, userData} = this.props;
-    const payment_url = `/${orgSlug}/payment/mobile-money/process`;
+    const payment_url = `/${orgSlug}/buy-plan`;
     setUserData({...userData, payment_url, method: "mpesa"});
   };
 

@@ -1,7 +1,7 @@
 import "./index.css";
 
 import {connect} from "react-redux";
-import Component from "./mobile-money-payment-process";
+import Component from "./buy-plan";
 import {logout, setTitle, setUserData} from "../../actions/dispatchers";
 
 const mapStateToProps = (state, ownProps) => {
