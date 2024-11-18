@@ -344,10 +344,9 @@ class BuyPlan extends React.Component {
         if (this.webSocket) {
           this.webSocket.close();
         }
-        navigate(`/${orgSlug}/payment/${paymentStatus}`);
+        navigate(`/${orgSlug}/status`);
         return;
       case "failed":
-        // await this.getCurrentUserPlan();
         setUserData({
           ...userData,
           payment_url: null,
