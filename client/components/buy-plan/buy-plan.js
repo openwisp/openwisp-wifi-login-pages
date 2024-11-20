@@ -109,7 +109,19 @@ class BuyPlan extends React.Component {
           logError(error, "Error while fetching plans");
         });
     }
-    this.getCurrentUserPlan();
+
+    const {auth_token} = userData;
+
+    let hasOrgCookies = false;
+    let orgAuthToken = null;
+    if (cookies && cookies.cookies) {
+      orgAuthToken = cookies.cookies[`${orgSlug}_auth_token`];
+      if (orgAuthToken) hasOrgCookies = true;
+    }
+
+    if (hasOrgCookies && auth_token === undefined) {
+      await this.getCurrentUserPlan();
+    }
     this.autoSelectFirstPlan();
     const {payment_id} = this.state;
     if (payment_id && !this.webSocket) {
@@ -191,7 +203,7 @@ class BuyPlan extends React.Component {
 
   async getCurrentUserPlan() {
     const {setLoading} = this.context;
-    const {cookies, orgSlug, setUserData, logout, setTitle, orgName, language, settings, userData, navigate} =
+    const {orgSlug, setUserData, language, userData, navigate} =
       this.props;
     const currentPlanUrl = currentPlanApiUrl(orgSlug);
     setUserData({

@@ -13,8 +13,12 @@ const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const dotenv = require("dotenv");
 const CURRENT_WORKING_DIR = process.cwd();
 const DEFAULT_PORT = 8080;
+
 const DEFAULT_SERVER_URL = "http://localhost:3030";
-let minimizers = [];
+let minimizers = [
+  new TerserPlugin(), // Minify JavaScript
+  new CssMinimizerPlugin(), // Minify CSS
+];
 
 const env = dotenv.config({
   path: path.resolve(CURRENT_WORKING_DIR, ".env"),
@@ -118,6 +122,7 @@ module.exports = (env, argv) => {
       path: path.resolve(CURRENT_WORKING_DIR, "dist"),
       sourceMapFilename: "[file].map",
       publicPath: "/",
+      // clean: true,
       pathinfo: false,
     },
     devtool:
@@ -141,7 +146,7 @@ module.exports = (env, argv) => {
           use: ["file-loader"],
         },
         {
-          test: /\.(svg|png|jpg|jpeg|gif)$/,
+          test: /\.(svg|png|jpg|jpeg|gif|webp)$/,
           type: "asset/resource",
         },
         {
@@ -180,6 +185,7 @@ module.exports = (env, argv) => {
       runtimeChunk: "single",
       minimizer: minimizers,
       minimize: true,
+      usedExports: true,
       splitChunks: {
         chunks: "all",
         minSize: 30000,
