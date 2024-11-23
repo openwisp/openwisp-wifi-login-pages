@@ -257,9 +257,13 @@ export default class Status extends React.Component {
         navigate(`/${orgSlug}/payment/draft`);
         return;
       }
+      let toastMessage = "You account has expired! You need to recharge your account to continue enjoying our services";
+      if (userplan.active === false) {
+        toastMessage = "Your current plan is inactive ! Please recharge your account";
+      }
       navigate(`/${orgSlug}/payment/draft`);
       this.handleBuyPlanRedirect();
-      toast.warning("You account has expired! You need to recharge your account to continue enjoying our services");
+      toast.warning(toastMessage);
       return;
     }
 
