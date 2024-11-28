@@ -17,6 +17,7 @@ const paths = {
   payment_ws: "/payment/ws/{paymentId}",
   buy_plan: "/plan/buy",
   current_plan: "/plan/current",
+  validate_payment_id: "/payment/validate",
 };
 
 const reverse = (name, orgSlug) => {
@@ -28,7 +29,7 @@ const reverse = (name, orgSlug) => {
   if (name === "plans" || name === "current_plan") {
     prefix = prefix.replace("/radius/", "/subscriptions/");
   }
-  if (name === "initiate_payment" || name === "buy_plan" || name === "payment_status") {
+  if (name === "initiate_payment" || name === "buy_plan" || name === "payment_status" || name === "validate_payment_id") {
     prefix = prefix.replace("/radius/", "/payments/");
   }
   if (name === "payment_ws") {

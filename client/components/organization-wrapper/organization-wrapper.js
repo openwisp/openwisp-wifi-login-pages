@@ -26,6 +26,7 @@ import {
   PasswordChange,
   PasswordConfirm,
   PasswordReset,
+  PaymentCodeVerification,
   PaymentProcess,
   PaymentStatus,
   Registration,
@@ -314,6 +315,14 @@ export default class OrganizationWrapper extends React.Component {
                     }
                   />
                   <Route
+                    path="payment/verify/"
+                    element={
+                      <Suspense fallback={<Loader />}>
+                        <PaymentCodeVerification cookies={cookies} navigate={navigate} />
+                      </Suspense>
+                    }
+                  />
+                  <Route
                     path="payment/:status"
                     element={
                       <Suspense fallback={<Loader />}>
@@ -336,6 +345,7 @@ export default class OrganizationWrapper extends React.Component {
                       );
                     })()}
                   />
+
                 </Routes>
                 <Routes>
                   <Route path="*" element={<Footer />} />

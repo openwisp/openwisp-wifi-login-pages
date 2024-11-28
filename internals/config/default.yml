@@ -190,6 +190,14 @@ client:
         login: true
         register: true
 
+    payment_verify_form:
+      input_fields:
+        phone_number:
+          country: "ke"
+          only_countries:
+            - "ke"
+        payment_id:
+
     phone_number_change_form:
       buttons:
         change_phone_number: true

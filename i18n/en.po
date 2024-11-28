@@ -368,6 +368,8 @@ msgstr "Verify mobile number"
 msgid "TOKEN_SENT"
 msgstr "SMS verification code sent successfully."
 
+msgid "PAYMENT_VERIFY_TITL"
+msgstr "Verify Payment Code"
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:200
 #, javascript-format
 msgid "PHONE_VERIFY (${ phone_number })"
@@ -375,9 +377,18 @@ msgstr ""
 "Verify your mobile phone number (${ phone_number }) by inserting the code "
 "you received via SMS below."
 
+msgid "VERIFY_PAYMENT (${ phone_number })"
+msgstr ""
+"Insert the M-Pesa transaction code that was sent to (${ phone_number }) "
+"to verfy your plan"
+
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:215
 msgid "MOBILE_CODE_PHOLD"
 msgstr "enter SMS verification code"
+
+msgid "PAYMENT_ID_PHOLD"
+msgstr "Enter M-Pesa Transaction code"
+
 
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:217
 msgid "MOBILE_CODE_TITL"
