@@ -1,6 +1,5 @@
 /* eslint-disable camelcase */
 import "./index.css";
-import Countdown from "react-countdown";
 
 import axios from "axios";
 import PropTypes from "prop-types";
@@ -10,6 +9,7 @@ import {Cookies} from "react-cookie";
 import {toast} from "react-toastify";
 import {t} from "ttag";
 import "react-toastify/dist/ReactToastify.css";
+import {Link} from "react-router-dom";
 import LoadingContext from "../../utils/loading-context";
 
 import {mobilePhoneTokenStatusUrl, verifyPaymentIdUrl} from "../../constants";
@@ -17,7 +17,7 @@ import getErrorText from "../../utils/get-error-text";
 import logError from "../../utils/log-error";
 import handleChange from "../../utils/handle-change";
 import Contact from "../contact-box";
-import handleLogout from "../../utils/handle-logout";
+
 import getError from "../../utils/get-error";
 import getLanguageHeaders from "../../utils/get-language-headers";
 import {sessionStorage} from "../../utils/storage";
@@ -37,7 +37,6 @@ export default class PaymentCodeVerification extends React.Component {
       phone_number: "",
       errors: {},
       success: false,
-      resendButtonDisabledCooldown: 0,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -46,21 +45,10 @@ export default class PaymentCodeVerification extends React.Component {
 
   async componentDidMount() {
     const {
-      cookies,
-      orgSlug,
-      settings,
-      setUserData,
-      logout,
       orgName,
       setTitle,
-      language,
     } = this.props;
     setTitle(t`PAYMENT_VERIFY_TITL`, orgName);
-    const {userData} = this.props;
-    const {setLoading} = this.context;
-    setLoading(true);
-
-    setLoading(false);
   }
 
   handleChange(event) {
@@ -71,7 +59,7 @@ export default class PaymentCodeVerification extends React.Component {
     const {setLoading} = this.context;
     setLoading(true);
     event.preventDefault();
-    const {orgSlug, setUserData, userData, language} = this.props;
+    const {orgSlug, navigate, userData, language} = this.props;
     const {payment_id, phone_number, errors} = this.state;
     this.setState({errors: {...errors, code: ""}});
     const url = verifyPaymentIdUrl(orgSlug);
@@ -91,14 +79,14 @@ export default class PaymentCodeVerification extends React.Component {
         this.setState({
           errors: {},
         });
-        console.log(response);
-        // setUserData({
-        //   ...userData,
-        //   is_active: true,
-        //   is_verified: true,
-        //   mustLogin: true,
-        //   username: userData.phone_number,
-        // });
+        setLoading(false);
+        toast.success("Payment Code verified successfully");
+        if (
+          !userData.auth_token || !userData.radius_user_token
+        ) {
+          this.handleLoginUserAfterOrderSuccess(response.data.username, response.data.key);
+        }
+        navigate(`/${orgSlug}/status`);
       })
       .catch((error) => {
         const {data} = error.response;
@@ -116,6 +104,25 @@ export default class PaymentCodeVerification extends React.Component {
           },
         });
       });
+  }
+
+  handleLoginUserAfterOrderSuccess(username, auth_token) {
+    const {cookies, orgSlug, setUserData, userData, authenticate} =
+      this.props;
+
+    cookies.set(`${orgSlug}_auth_token`, auth_token, {path: "/"});
+    cookies.set(`${orgSlug}_username`, username, {path: "/"});
+    setUserData({
+      ...userData,
+      username,
+      auth_token,
+      is_verified: false,
+      method: "mpesa",
+      is_active: true,
+
+    });
+    authenticate(true);
+
   }
 
   hasPhoneTokenBeenSent() {
@@ -160,24 +167,24 @@ export default class PaymentCodeVerification extends React.Component {
     // reset error messages
     this.setState({
       errors: {},
-      code: "",
     });
     setLoading(false);
   }
 
   render() {
-    const {payment_id, errors, success, phone_number, resendButtonDisabledCooldown} =
+    const {payment_id, errors, success, phone_number} =
       this.state;
-    console.log(errors);
+
     const {
       orgSlug,
       payment_verify_form,
-      logout,
-      cookies,
-      setUserData,
       userData,
     } = this.props;
-    const {input_fields} = payment_verify_form;
+    const {input_fields, links} = payment_verify_form;
+
+    if (!phone_number && userData.phone_number) {
+      this.setState({phone_number: userData.phone_number});
+    }
 
     return (
       <div className="container content" id="mobile-phone-verification">
@@ -269,7 +276,8 @@ export default class PaymentCodeVerification extends React.Component {
                   <p className="label">{t`VERIFY_PAYMENT (${phone_number})`}</p>
 
                   <div className="row">
-                    <label htmlFor="phone-number">M-Pesa Transaction Code</label>
+                    {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+                    <label htmlFor="payment_id">M-Pesa Transaction Code</label>
                     {getError(errors, "payment_id")}
                     <input
                       className={`input ${
@@ -292,62 +300,36 @@ export default class PaymentCodeVerification extends React.Component {
                 </div>
               </form>
 
-              <div className="row fieldset resend">
-                <p className="label">
-                  {resendButtonDisabledCooldown === 0 ? (
-                    t`RESEND_TOKEN_LBL`
-                  ) : (
-                    <Countdown
-                      date={Date.now() + resendButtonDisabledCooldown * 1000}
-                      renderer={({seconds}) =>
-                        t`RESEND_TOKEN_WAIT_LBL${seconds}`
-                      }
-                      onComplete={() =>
-                        this.setState({resendButtonDisabledCooldown: 0})
-                      }
-                    />
-                  )}
-                </p>
-
-                <button
-                  type="button"
-                  className="button full"
-                  onClick={this.resendPhoneToken}
-                  disabled={Boolean(resendButtonDisabledCooldown)}
-                >
-                  {t`RESEND_TOKEN`}
-                </button>
-              </div>
-
               <div className="row fieldset change">
-                <p className="label">{t`PHONE_CHANGE_LBL`}</p>
+                <p className="label">{t`PHONE_CHANGE_LBL`} Buy new plan</p>
                 <a
-                  href={`/${orgSlug}/change-phone-number`}
+                  href={`/${orgSlug}/buy-plan`}
                   className="button full"
-                >
-                  {t`PHONE_CHANGE_BTN`}
-                </a>
+                >Buy Plan</a>
               </div>
 
-              <div className="row fieldset logout">
-                <p className="label">{t`LOGOUT_LBL`}</p>
-                <button
-                  type="button"
-                  className="button full"
-                  onClick={() =>
-                    handleLogout(
-                      logout,
-                      cookies,
-                      orgSlug,
-                      setUserData,
-                      userData,
-                      true,
-                    )
-                  }
-                >
-                  {t`LOGOUT`}
-                </button>
-              </div>
+              {links && (
+                <div className="row links">
+                  {links.forget_password && (
+                    <p>
+                      <Link
+                        to={`/${orgSlug}/password/reset`}
+                        className="link"
+                      >
+                        {t`FORGOT_PASSWORD`}
+                      </Link>
+                    </p>
+                  )}
+                  {links.login && (
+                    <p>
+                      <Link to={`/${orgSlug}/login`} className="link">
+                        {t`LINKS_LOGIN_TXT`}
+                      </Link>
+                    </p>
+                  )}
+                </div>
+              )}
+
             </div>
           </div>
           <Contact />
@@ -364,8 +346,9 @@ PaymentCodeVerification.propTypes = {
   orgSlug: PropTypes.string.isRequired,
   orgName: PropTypes.string.isRequired,
   cookies: PropTypes.instanceOf(Cookies).isRequired,
-  logout: PropTypes.func.isRequired,
+  authenticate: PropTypes.func.isRequired,
   payment_verify_form: PropTypes.shape({
+    links: PropTypes.object,
     input_fields: PropTypes.shape({
       payment_id: PropTypes.shape({}),
       phone_number: PropTypes.shape({
@@ -381,4 +364,5 @@ PaymentCodeVerification.propTypes = {
   setUserData: PropTypes.func.isRequired,
   setTitle: PropTypes.func.isRequired,
   language: PropTypes.string.isRequired,
+  navigate: PropTypes.func.isRequired,
 };

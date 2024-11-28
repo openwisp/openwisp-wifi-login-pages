@@ -197,6 +197,9 @@ client:
           only_countries:
             - "ke"
         payment_id:
+      links:
+        login: true
+        register: true
 
     phone_number_change_form:
       buttons:

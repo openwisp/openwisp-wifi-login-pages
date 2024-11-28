@@ -1,6 +1,6 @@
 import {connect} from "react-redux";
 
-import {logout, setTitle, setUserData} from "../../actions/dispatchers";
+import {authenticate, logout, setTitle, setUserData} from "../../actions/dispatchers";
 import Component from "./payment-verify";
 
 const mapStateToProps = (state) => {
@@ -18,5 +18,6 @@ const mapDispatchToProps = (dispatch) => ({
   logout: logout(dispatch),
   setUserData: setUserData(dispatch),
   setTitle: setTitle(dispatch),
+  authenticate: authenticate(dispatch),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Component);
