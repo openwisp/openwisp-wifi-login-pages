@@ -123,6 +123,7 @@ client:
         register: true
       links:
         forget_password: true
+        verify_payment_id: true
 
     password_change_form:
       input_fields:
@@ -189,6 +190,7 @@ client:
       links:
         login: true
         register: true
+        verify_payment_id: true
 
     payment_verify_form:
       input_fields:
@@ -200,6 +202,7 @@ client:
       links:
         login: true
         register: true
+
 
     phone_number_change_form:
       buttons:

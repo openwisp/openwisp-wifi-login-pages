@@ -664,7 +664,7 @@ class BuyPlan extends React.Component {
   }
 
   getForm = () => {
-    const {mobile_money_payment_form, settings, orgSlug} = this.props;
+    const {mobile_money_payment_form, settings, orgSlug, isAuthenticated} = this.props;
     const {additional_info_text, input_fields, links} = mobile_money_payment_form;
     const {
       success,
@@ -729,7 +729,7 @@ class BuyPlan extends React.Component {
                   </Link>
                 </div>
 
-                {links && (
+                {links && !isAuthenticated && (
                   <div className="row links">
                     {links.forget_password && (
                       <p>
@@ -745,6 +745,13 @@ class BuyPlan extends React.Component {
                       <p>
                         <Link to={`/${orgSlug}/login`} className="link">
                           {t`LINKS_LOGIN_TXT`}
+                        </Link>
+                      </p>
+                    )}
+                    {links.verify_payment_id && (
+                      <p>
+                        <Link to={`/${orgSlug}/payment/verify`} className="link">
+                          {t`VERIFY_PAYMENT_CODE_TXT`}
                         </Link>
                       </p>
                     )}

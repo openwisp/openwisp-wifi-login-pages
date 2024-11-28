@@ -51,6 +51,10 @@ client:
           url: "/{orgSlug}/registration"
           authenticated: false
         - text:
+            en: "Verify Mpesa code"
+          url: "/{orgSlug}/payment/verify"
+          authenticated: false
+        - text:
             en: "Change password"
           url: "/{orgSlug}/change-password"
           authenticated: true

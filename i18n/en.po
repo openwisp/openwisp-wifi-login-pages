@@ -248,6 +248,9 @@ msgstr "Forgot your password?"
 msgid "LINKS_LOGIN_TXT"
 msgstr "Already have an account? Log in"
 
+msgid "VERIFY_PAYMENT_CODE_TXT"
+msgstr "Already paid? Login using M-pesa transaction code"
+
 #: client/components/registration/registration.js:72
 msgid "REGISTRATION_TITL"
 msgstr "Sign up"

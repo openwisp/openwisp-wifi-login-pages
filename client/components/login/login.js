@@ -489,6 +489,14 @@ export default class Login extends React.Component {
                   </div>
                 )}
 
+                {links && links.verify_payment_id && (
+                  <p>
+                    <Link to={`/${orgSlug}/payment/verify`} className="link">
+                      {t`VERIFY_PAYMENT_CODE_TXT`}
+                    </Link>
+                  </p>
+                )}
+
                 {getHtml(after_html, language, "after-html")}
               </div>
             </form>
