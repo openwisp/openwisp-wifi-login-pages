@@ -41,18 +41,18 @@ services!**
 OpenWISP WiFi login pages provides unified and consistent user experience
 for public/private WiFi services. This app replaces the classic
 captive/login page of a WiFi service by integrating the `OpenWISP Radius
-API <https://openwisp.io/docs/dev/radius/>`_.
+API <https://openwisp.io/docs/stable/radius/>`_.
 
 Refer to `WiFi Login Pages: Features
-<https://openwisp.io/docs/dev/wifi-login-pages/user/intro.html>`_ of
+<https://openwisp.io/docs/stable/wifi-login-pages/user/intro.html>`_ of
 OpenWISP documentation for a complete overview of features.
 
 Documentation
 -------------
 
-- `Usage documentation <https://openwisp.io/docs/dev/wifi-login-pages/>`_
+- `Usage documentation <https://openwisp.io/docs/stable/wifi-login-pages/>`_
 - `Developer documentation
-  <https://openwisp.io/docs/dev/wifi-login-pages/developer/>`_
+  <https://openwisp.io/docs/stable/wifi-login-pages/developer/>`_
 
 Contributing
 ------------
