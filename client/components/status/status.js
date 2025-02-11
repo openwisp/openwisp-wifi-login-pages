@@ -340,35 +340,42 @@ export default class Status extends React.Component {
     const options = {radiusUsageSpinner: false};
     let isPlanExhausted = false;
     try {
-      const response = await axios({
-        method: "get",
-        headers: {
-          "content-type": "application/x-www-form-urlencoded",
-          Authorization: `Bearer ${userData.auth_token}`,
-        },
-        url,
-      });
-      options.userChecks = response.data.checks;
-      if (options.userChecks) {
-        options.userChecks.forEach((check) => {
-          if (check.value === String(check.result)) {
-            isPlanExhausted = true;
-          }
-        });
-      }
-      if (planExhausted !== isPlanExhausted) {
-        setPlanExhausted(isPlanExhausted);
-        if (isPlanExhausted) {
-          toast.info(t`PLAN_EXHAUSTED_TOAST`);
-        }
-      }
-      if (response.data.plan) {
-        options.userPlan = response.data.plan;
-      }
-      if (!showRadiusUsage) {
-        options.showRadiusUsage = true;
-      }
-      this.setState(options);
+     const response = await axios({
+       method: "get",
+       headers: {
+         "content-type": "application/x-www-form-urlencoded",
+         Authorization: `Bearer ${userData.auth_token}`,
+       },
+       url,
+     });
+
+     // Only set userChecks if checks array exists and is not empty
+     if (response.data.checks && response.data.checks.length > 0) {
+       options.userChecks = response.data.checks;
+       options.userChecks.forEach((check) => {
+         if (check.value === String(check.result)) {
+           isPlanExhausted = true;
+         }
+       });
+
+       if (planExhausted !== isPlanExhausted) {
+         setPlanExhausted(isPlanExhausted);
+         if (isPlanExhausted) {
+           toast.info(t`PLAN_EXHAUSTED_TOAST`);
+         }
+       }
+
+       // Only enable radius usage display if we have checks
+       if (!showRadiusUsage) {
+         options.showRadiusUsage = true;
+       }
+     }
+
+     if (response.data.plan) {
+       options.userPlan = response.data.plan;
+     }
+
+     this.setState(options);
     } catch (error) {
       // logout only if unauthorized or forbidden
       if (error.response) {
