@@ -2015,3 +2015,51 @@ describe("<Status /> interactions", () => {
     });
   });
 });
+
+describe("getUserRadiusUsage method", () => {
+  it("should update state with userChecks, userPlan and handle plan exhaustion", async () => {
+    // Simulate a response with checks that indicate plan exhaustion and a plan object
+    const testChecks = [{value: "1", result: "1"}];
+    const testPlan = {is_free: true};
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        data: {
+          checks: testChecks,
+          plan: testPlan,
+        },
+      }),
+    );
+    const props = createTestProps({defaultLanguage: "en"});
+    props.statusPage.radius_usage_enabled = true;
+    // Ensure flags for controlling view are set as needed (if applicable)
+    props.planExhausted = false;
+
+    const wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+
+    // Spy on setPlanExhausted and toast.info
+    const spySetPlanExhausted = jest.spyOn(props, "setPlanExhausted");
+    const spyToastInfo = jest.spyOn(toast, "info");
+
+    // Call the method and wait for asynchronous updates
+    await wrapper.instance().getUserRadiusUsage();
+    await tick();
+
+    // Validate that the state was updated correctly
+    expect(wrapper.instance().state.userChecks).toEqual(testChecks);
+    expect(wrapper.instance().state.userPlan).toEqual(testPlan);
+
+    // Since our check values indicate exhaustion, setPlanExhausted should be called with true
+    expect(spySetPlanExhausted).toHaveBeenCalledWith(true);
+    // Verify that a toast was shown for plan exhaustion
+    expect(spyToastInfo).toHaveBeenCalledWith(
+      expect.stringContaining("PLAN_EXHAUSTED_TOAST"),
+    );
+
+    // Also expect that radiusUsageSpinner is set to false (as initialized)
+    expect(wrapper.instance().state.radiusUsageSpinner).toBe(false);
+  });
+});
