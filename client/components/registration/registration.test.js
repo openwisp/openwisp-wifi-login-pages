@@ -30,6 +30,7 @@ const createTestProps = (props, configName = "default") => {
   const config = getConfig(configName);
   return {
     language: "en",
+    defaultLanguage: "en",
     orgSlug: configName,
     orgName: config.name,
     settings: config.settings,
@@ -54,7 +55,9 @@ const responseData = {
 };
 
 describe("<Registration /> rendering with placeholder translation tags", () => {
-  const props = createTestProps();
+  const props = createTestProps({
+    defaultLanguage: "en",
+  });
   const wrapper = shallow(<Registration {...props} />, {
     context: loadingContextValue,
   });
