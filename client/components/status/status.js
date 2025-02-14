@@ -338,62 +338,72 @@ export default class Status extends React.Component {
     const auth_token = cookies.get(`${orgSlug}_auth_token`);
     handleSession(orgSlug, auth_token, cookies);
     const options = {radiusUsageSpinner: false};
-    let isPlanExhausted = false;
+
     try {
-     const response = await axios({
-       method: "get",
-       headers: {
-         "content-type": "application/x-www-form-urlencoded",
-         Authorization: `Bearer ${userData.auth_token}`,
-       },
-       url,
-     });
+      const response = await axios({
+        method: "get",
+        headers: {
+          "content-type": "application/x-www-form-urlencoded",
+          Authorization: `Bearer ${userData.auth_token}`,
+        },
+        url,
+      });
 
-     // Only set userChecks if checks array exists and is not empty
-     if (response.data.checks && response.data.checks.length > 0) {
-       options.userChecks = response.data.checks;
-       options.userChecks.forEach((check) => {
-         if (check.value === String(check.result)) {
-           isPlanExhausted = true;
-         }
-       });
+      // Early return if no checks data
+      if (!response.data.checks || response.data.checks.length === 0) {
+        if (response.data.plan) {
+          options.userPlan = response.data.plan;
+        }
+        this.setState(options);
+        return;
+      }
 
-       if (planExhausted !== isPlanExhausted) {
-         setPlanExhausted(isPlanExhausted);
-         if (isPlanExhausted) {
-           toast.info(t`PLAN_EXHAUSTED_TOAST`);
-         }
-       }
+      // Handle checks data
+      options.userChecks = response.data.checks;
+      let isPlanExhausted = false;
 
-       // Only enable radius usage display if we have checks
-       if (!showRadiusUsage) {
-         options.showRadiusUsage = true;
-       }
-     }
+      options.userChecks.forEach((check) => {
+        if (check.value === String(check.result)) {
+          isPlanExhausted = true;
+        }
+      });
 
-     if (response.data.plan) {
-       options.userPlan = response.data.plan;
-     }
+      if (planExhausted !== isPlanExhausted) {
+        setPlanExhausted(isPlanExhausted);
+        if (isPlanExhausted) {
+          toast.info(t`PLAN_EXHAUSTED_TOAST`);
+        }
+      }
 
-     this.setState(options);
+      // Enable radius usage display if we have checks
+      if (!showRadiusUsage) {
+        options.showRadiusUsage = true;
+      }
+
+      // Handle plan data if present
+      if (response.data.plan) {
+        options.userPlan = response.data.plan;
+      }
+
+      this.setState(options);
     } catch (error) {
-      // logout only if unauthorized or forbidden
+      // Early return for client-side errors
       if (error.response) {
         if (error.response.status === 401 || error.response.status === 403) {
           logout(cookies, orgSlug);
           toast.error(t`ERR_OCCUR`, {
             onOpen: () => toast.dismiss(mainToastId),
           });
-        } else if (
-          error.response.status >= 400 &&
-          error.response.status < 500
-        ) {
-          // Do not retry for client side errors
+          return;
+        }
+
+        if (error.response.status >= 400 && error.response.status < 500) {
           logError(error, t`ERR_OCCUR`);
           this.setState({showRadiusUsage: false});
           return;
         }
       }
+
       logError(error, t`ERR_OCCUR`);
       setTimeout(async () => {
         this.getUserRadiusUsage();
