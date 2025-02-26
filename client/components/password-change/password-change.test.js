@@ -64,6 +64,14 @@ describe("<PasswordChange /> rendering", () => {
     const wrapper = createShallow(props);
     expect(wrapper).toMatchSnapshot();
   });
+
+  it("should not show 'cancel' button if password is expired", async () => {
+    props = createTestProps();
+    props.userData.password_expired = true;
+    loadTranslation("en", "default");
+    const wrapper = createShallow(props);
+    expect(wrapper).toMatchSnapshot();
+  });
 });
 
 describe("<PasswordChange /> interactions", () => {

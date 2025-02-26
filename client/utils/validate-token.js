@@ -24,7 +24,9 @@ const validateToken = async (
   // or payment_url of user is undefined
   if (
     userData &&
-    ((token && userData.radius_user_token === undefined) ||
+    ((token &&
+      (userData.radius_user_token === undefined ||
+        userData.password_expired === true)) ||
       (userData.method === "bank_card" &&
         userData.is_verified !== true &&
         !userData.payment_url))

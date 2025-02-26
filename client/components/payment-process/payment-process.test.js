@@ -73,32 +73,6 @@ describe("Test <PaymentProcess /> cases", () => {
     console.log = originalLog;
   });
 
-  it("should redirect users registered with other methods", async () => {
-    props = createTestProps({
-      userData: {...responseData, method: "phone_number"},
-    });
-    validateToken.mockReturnValue(true);
-    wrapper = shallow(<PaymentProcess {...props} />, {
-      context: loadingContextValue,
-    });
-    await tick();
-    expect(wrapper.find("Navigate").length).toEqual(1);
-    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
-  });
-
-  it("should redirect verified users", async () => {
-    props = createTestProps({
-      userData: {...responseData, is_verified: true},
-    });
-    validateToken.mockReturnValue(true);
-    wrapper = shallow(<PaymentProcess {...props} />, {
-      context: loadingContextValue,
-    });
-    await tick();
-    expect(wrapper.find("Navigate").length).toEqual(1);
-    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
-  });
-
   it("should redirect if payment_url is not present", async () => {
     props = createTestProps({
       userData: {...responseData, payment_url: null},

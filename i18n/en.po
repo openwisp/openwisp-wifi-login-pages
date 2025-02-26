@@ -71,6 +71,10 @@ msgstr "Status"
 msgid "LOGGED_IN"
 msgstr "Logged in"
 
+#: client/components/status/status.js:665
+msgid "TRAFFIC_EXHAUSTED"
+msgstr "Traffic exhausted"
+
 #: client/components/status/status.js:672
 msgid "USERNAME"
 msgstr "Username"
@@ -341,6 +345,10 @@ msgstr "Change password"
 msgid "PWD_CHANGE_TITL"
 msgstr "Change your password"
 
+#: client/components/password-change/password-change.js:177
+msgid "PWD_CHANGE_HELP_TXT"
+msgstr "Use the form below to change your password."
+
 #: client/components/password-change/password-change.js:185
 msgid "PWD1_LBL"
 msgstr "New Password"
@@ -516,6 +524,30 @@ msgstr "Login successful"
 #: client/utils/handle-logout.js:33
 msgid "LOGOUT_SUCCESS"
 msgstr "Logout successful"
+
+#: client/components/status/status.js:119
+msgid "PASSWORD_EXPIRED"
+msgstr "Your password has expired, please update it."
+
+#: client/components/status/status.js:384
+msgid "SUCCESS_UPGRADE_PLAN"
+msgstr "Plan upgrade in progress"
+
+#: client/components/status/status.js:934
+msgid "CURRENT_SUBSCRIPTION_TXT"
+msgstr "Current subscription:"
+
+#: client/components/status/status.js:1000
+msgid "USAGE_LIMIT_EXHAUSTED_TXT"
+msgstr "You have exhausted the available traffic. Upgrade to continue using the service."
+
+#: client/components/status/status.js:964
+msgid "PLAN_UPGRADE_BTN_TXT"
+msgstr "Upgrade"
+
+#: client/components/status/status.js:964
+msgid "PLAN_EXHAUSTED_TOAST"
+msgstr "You have exhausted the traffic available on your bundle."
 
 #: client/components/password-change/password-change.js:101
 #: client/components/password-change/password-change.js:109

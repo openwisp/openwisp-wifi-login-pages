@@ -71,14 +71,14 @@ exports[`<Login /> interactions phone_number field should be present if mobile p
                 class="inner"
               >
                 <img
-                  alt="Login with Twitter"
+                  alt="Login with X"
                   class="icon"
                   src="/assets/default/twitter.svg"
                 />
                 <span
                   class="text"
                 >
-                  Login with Twitter
+                  Login with X
                 </span>
               </span>
             </a>
@@ -375,14 +375,14 @@ exports[`<Login /> interactions should not show phone_number field if auto_switc
                 class="inner"
               >
                 <img
-                  alt="Login with Twitter"
+                  alt="Login with X"
                   class="icon"
                   src="/assets/default/twitter.svg"
                 />
                 <span
                   class="text"
                 >
-                  Login with Twitter
+                  Login with X
                 </span>
               </span>
             </a>
@@ -653,14 +653,14 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
                 class="inner"
               >
                 <img
-                  alt="Login with Twitter"
+                  alt="Login with X"
                   class="icon"
                   src="/assets/default/twitter.svg"
                 />
                 <span
                   class="text"
                 >
-                  Login with Twitter
+                  Login with X
                 </span>
               </span>
             </a>
@@ -1182,14 +1182,14 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
                   className="inner"
                 >
                   <img
-                    alt="Login with Twitter"
+                    alt="Login with X"
                     className="icon"
                     src="/assets/default/twitter.svg"
                   />
                   <span
                     className="text"
                   >
-                    Login with Twitter
+                    Login with X
                   </span>
                 </span>
               </a>
@@ -1437,14 +1437,14 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
                   className="inner"
                 >
                   <img
-                    alt="Login with Twitter"
+                    alt="Login with X"
                     className="icon"
                     src="/assets/default/twitter.svg"
                   />
                   <span
                     className="text"
                   >
-                    Login with Twitter
+                    Login with X
                   </span>
                 </span>
               </a>

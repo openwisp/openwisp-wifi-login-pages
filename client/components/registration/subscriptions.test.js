@@ -5,6 +5,7 @@ import {shallow} from "enzyme";
 import React from "react";
 import PropTypes from "prop-types";
 import {toast} from "react-toastify";
+import {cloneDeep} from "lodash";
 import {loadingContextValue} from "../../utils/loading-context";
 import tick from "../../utils/tick";
 import getConfig from "../../utils/get-config";
@@ -123,6 +124,29 @@ describe("test subscriptions", () => {
     );
     wrapper = initShallow(props);
     expect(wrapper.find("input[name='plan_selection']").length).toBe(0);
+  });
+
+  it("should auto select first plan when auto_select_first_plan is true", () => {
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 201,
+        statusText: "ok",
+        data: plans,
+      }),
+    );
+    const customProps = cloneDeep(createTestProps());
+    customProps.settings.mobile_phone_verification = true;
+    customProps.registration.auto_select_first_plan = true;
+    wrapper = initShallow(customProps);
+    wrapper.instance().setState({plans, plansFetched: true});
+
+    expect(wrapper.find(".plans").exists()).toBe(true);
+    expect(wrapper.find(".plans").hasClass("hidden")).toBe(true);
+    expect(wrapper.state("selectedPlan")).toEqual(0);
+
+    expect(wrapper.find(".row.register").exists()).toBe(true);
+    expect(wrapper.find(".row.phone-number").exists()).toBe(true);
+    expect(wrapper.find(".row.email").exists()).toBe(true);
   });
 
   it("should plan selection when multiple plans are present", () => {

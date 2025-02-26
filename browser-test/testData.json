@@ -4,6 +4,11 @@
     "password": "testuser",
     "organization": "default"
   },
+  "expiredPasswordUser": {
+    "email": "expiredpassworduser@openwisp.org",
+    "password": "testuser",
+    "organization": "default"
+  },
   "mobileVerificationTestUser": {
     "phoneNumber": "+911234567890",
     "password": "testuser",
