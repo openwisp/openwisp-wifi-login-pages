@@ -84,16 +84,16 @@ jobs:
 
       - name: Get openwisp-radius
         run: |
-          curl -L https://github.com/openwisp/openwisp-radius/tarball/master \
-               -o openwisp-radius.tar.gz
-          tar -xvzf openwisp-radius.tar.gz && mkdir openwisp-radius
-          mv openwisp-*/* openwisp-radius
+          git clone --depth=1 https://github.com/openwisp/openwisp-radius/ openwisp-radius
+          cd openwisp-radius
+          echo "OpenWISP RADIUS commit: $(git rev-parse HEAD)"
+          echo "OW_RADIUS_VERSION=$(git rev-parse HEAD)" >> $GITHUB_ENV
 
       - name: Cache python environment
         uses: actions/cache@v4
         with:
           path: ${{ env.pythonLocation }}
-          key: ${{ env.pythonLocation }}-${{secrets.CACHE_VERSION}}-${{ hashFiles('openwisp-radius/setup.py') }}
+          key: ${{ env.pythonLocation }}-${{ env.OW_RADIUS_VERSION }}
 
       - name: Installing OpenWISP Radius
         run: |
