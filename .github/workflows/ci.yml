@@ -89,11 +89,13 @@ jobs:
           echo "OW_RADIUS_VERSION=$(git rev-parse HEAD)" >> $GITHUB_ENV
           python --version
 
-      - name: Cache python environment
+      - name: Cache pip environment
         uses: actions/cache@v4
         with:
           path: ~/.cache/pip
-          key: ${{ env.OW_RADIUS_VERSION }}
+          key: ${{ runner.os }}-pip-${{ env.OW_RADIUS_VERSION }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
 
       - name: Installing OpenWISP Radius
         run: |
