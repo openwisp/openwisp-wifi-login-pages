@@ -41,6 +41,8 @@ updates:
       - dependency-name: eslint-config-airbnb
         versions:
           - 18.2.1
+    commit-message:
+      prefix: "[deps] "
   - package-ecosystem: "github-actions" # Check for GitHub Actions updates
     directory: "/" # The root directory where the Ansible role is located
     schedule:
