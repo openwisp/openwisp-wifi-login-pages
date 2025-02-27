@@ -58,6 +58,7 @@ const getLinkText = (wrapper, selector) => {
 
 const createTestProps = (props) => ({
   language: "en",
+  defaultLanguage: "en",
   orgSlug: "default",
   orgName: "default name",
   statusPage: defaultConfig.components.status_page,
@@ -94,9 +95,11 @@ const responseData = {
 };
 
 describe("<Status /> rendering with placeholder translation tags", () => {
-  const props = createTestProps();
-  props.statusPage.radius_usage_enabled = true;
   it("should render translation placeholder correctly", () => {
+    const props = createTestProps({
+      defaultLanguage: "en", // Add the required defaultLanguage prop
+    });
+    props.statusPage.radius_usage_enabled = true;
     const renderer = new ShallowRenderer();
     const wrapper = renderer.render(<Status {...props} />);
     expect(wrapper).toMatchSnapshot();
@@ -107,7 +110,9 @@ describe("<Status /> rendering", () => {
   let props;
 
   it("should render correctly", () => {
-    props = createTestProps();
+    props = createTestProps({
+      defaultLanguage: "en",
+    });
     props.statusPage.radius_usage_enabled = true;
     const renderer = new ShallowRenderer();
     loadTranslation("en", "default");
@@ -1674,8 +1679,11 @@ describe("<Status /> interactions", () => {
   it("test getUserRadiusUsage method", async () => {
     jest.spyOn(toast, "error");
     jest.spyOn(toast, "dismiss");
+
+    // Mock axios calls in sequence
     axios
       .mockImplementationOnce(() =>
+        // First call fails with 500
         Promise.reject({
           response: {
             status: 500,
@@ -1684,10 +1692,12 @@ describe("<Status /> interactions", () => {
         }),
       )
       .mockImplementationOnce(() =>
+        // Second call returns checks data
         Promise.resolve({
           status: 200,
           statusText: "OK",
           data: {
+            response: "radius_sessions_retrieved_successfully",
             checks: [
               {
                 attribute: "Max-Daily-Session",
@@ -1702,10 +1712,12 @@ describe("<Status /> interactions", () => {
         }),
       )
       .mockImplementationOnce(() =>
+        // Third call returns plan data
         Promise.resolve({
           status: 200,
           statusText: "OK",
           data: {
+            response: "radius_usage_retrieved_successfully",
             plan: {
               id: "d5bc4d5a-0a8c-4e94-8d52-4c54836bd013",
               name: "Free",
@@ -1719,10 +1731,12 @@ describe("<Status /> interactions", () => {
         }),
       )
       .mockImplementationOnce(() =>
+        // Fourth call returns both checks and plan
         Promise.resolve({
           status: 200,
           statusText: "OK",
           data: {
+            response: "radius_usage_retrieved_successfully",
             checks: [
               {
                 attribute: "Max-Daily-Session",
@@ -1745,6 +1759,7 @@ describe("<Status /> interactions", () => {
         }),
       )
       .mockImplementationOnce(() =>
+        // Fifth call fails with 401
         Promise.reject({
           response: {
             status: 401,
@@ -1752,25 +1767,35 @@ describe("<Status /> interactions", () => {
           },
         }),
       );
+
     props = createTestProps();
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: true,
     });
-    jest.spyOn(wrapper.instance(), "getUserRadiusUsage");
+
+    // Test first call - 500 error
     wrapper.instance().getUserRadiusUsage();
     await tick();
     expect(wrapper.instance().state.radiusUsageSpinner).toBe(true);
+
+    // Test second call - get checks
     wrapper.instance().getUserRadiusUsage();
     await tick();
     expect(wrapper.instance().state.userChecks.length).toBe(1);
+
+    // Test third call - get plan
     wrapper.instance().getUserRadiusUsage();
     await tick();
     expect(wrapper.instance().state.userPlan.is_free).toBe(true);
+
+    // Test fourth call - plan exhausted
     wrapper.instance().getUserRadiusUsage();
     await tick();
     expect(props.setPlanExhausted).toHaveBeenCalledTimes(1);
     expect(props.setPlanExhausted).toHaveBeenCalledWith(true);
+
+    // Test fifth call - 401 unauthorized
     wrapper.instance().getUserRadiusUsage();
     await tick();
     expect(toast.error.mock.calls.length).toBe(1);
@@ -1988,5 +2013,53 @@ describe("<Status /> interactions", () => {
       ...prop.userData,
       payment_url: "https://account.openwisp.io/payment/123",
     });
+  });
+});
+
+describe("getUserRadiusUsage method", () => {
+  it("should update state with userChecks, userPlan and handle plan exhaustion", async () => {
+    // Simulate a response with checks that indicate plan exhaustion and a plan object
+    const testChecks = [{value: "1", result: "1"}];
+    const testPlan = {is_free: true};
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        data: {
+          checks: testChecks,
+          plan: testPlan,
+        },
+      }),
+    );
+    const props = createTestProps({defaultLanguage: "en"});
+    props.statusPage.radius_usage_enabled = true;
+    // Ensure flags for controlling view are set as needed (if applicable)
+    props.planExhausted = false;
+
+    const wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+
+    // Spy on setPlanExhausted and toast.info
+    const spySetPlanExhausted = jest.spyOn(props, "setPlanExhausted");
+    const spyToastInfo = jest.spyOn(toast, "info");
+
+    // Call the method and wait for asynchronous updates
+    await wrapper.instance().getUserRadiusUsage();
+    await tick();
+
+    // Validate that the state was updated correctly
+    expect(wrapper.instance().state.userChecks).toEqual(testChecks);
+    expect(wrapper.instance().state.userPlan).toEqual(testPlan);
+
+    // Since our check values indicate exhaustion, setPlanExhausted should be called with true
+    expect(spySetPlanExhausted).toHaveBeenCalledWith(true);
+    // Verify that a toast was shown for plan exhaustion
+    expect(spyToastInfo).toHaveBeenCalledWith(
+      expect.stringContaining("PLAN_EXHAUSTED_TOAST"),
+    );
+
+    // Also expect that radiusUsageSpinner is set to false (as initialized)
+    expect(wrapper.instance().state.radiusUsageSpinner).toBe(false);
   });
 });
