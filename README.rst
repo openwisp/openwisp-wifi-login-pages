@@ -1,8 +1,8 @@
 openwisp-wifi-login-pages
 =========================
 
-.. image:: https://github.com/openwisp/openwisp-wifi-login-pages/workflows/OpenWisp%20WiFi%20Login%20Pages%20CI%20BUILD/badge.svg?branch=master
-    :target: https://github.com/openwisp/openwisp-wifi-login-pages/actions
+.. image:: https://github.com/openwisp/openwisp-wifi-login-pages/actions/workflows/ci.yml/badge.svg
+    :target: https://github.com/openwisp/openwisp-wifi-login-pages/actions/workflows/ci.yml
 
 .. image:: https://coveralls.io/repos/github/openwisp/openwisp-wifi-login-pages/badge.svg
     :target: https://coveralls.io/github/openwisp/openwisp-wifi-login-pages
@@ -50,7 +50,8 @@ OpenWISP documentation for a complete overview of features.
 Documentation
 -------------
 
-- `Usage documentation <https://openwisp.io/docs/stable/wifi-login-pages/>`_
+- `Usage documentation
+  <https://openwisp.io/docs/stable/wifi-login-pages/>`_
 - `Developer documentation
   <https://openwisp.io/docs/stable/wifi-login-pages/developer/>`_
 
