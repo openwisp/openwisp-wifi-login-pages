@@ -12,7 +12,7 @@ on:
 jobs:
   qa-checks:
     name: QA-Checks
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -31,16 +31,16 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-
 
-      - name: Set up Python 3.10
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
           cache: "pip"
           cache-dependency-path: "**/requirements*.txt"
 
       - name: Installing dependencies
         run: |
           yarn install
+          python --version
           pip install -r requirements-qa.txt
 
       - name: QA checks
@@ -48,7 +48,7 @@ jobs:
 
   build:
     name: Tests and Coverage
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -75,25 +75,26 @@ jobs:
       - name: Tests
         run: yarn coverage
 
-      - name: Set up Python 3.10
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
           cache: "pip"
           cache-dependency-path: "**/requirements*.txt"
 
       - name: Get openwisp-radius
         run: |
-          curl -L https://github.com/openwisp/openwisp-radius/tarball/master \
-               -o openwisp-radius.tar.gz
-          tar -xvzf openwisp-radius.tar.gz && mkdir openwisp-radius
-          mv openwisp-*/* openwisp-radius
+          git clone --depth=1 https://github.com/openwisp/openwisp-radius/ openwisp-radius
+          cd openwisp-radius
+          echo "OpenWISP RADIUS commit: $(git rev-parse HEAD)"
+          echo "OW_RADIUS_VERSION=$(git rev-parse HEAD)" >> $GITHUB_ENV
+          python --version
 
-      - name: Cache python environment
+      - name: Cache pip environment
         uses: actions/cache@v4
         with:
-          path: ${{ env.pythonLocation }}
-          key: ${{ env.pythonLocation }}-${{secrets.CACHE_VERSION}}-${{ hashFiles('openwisp-radius/setup.py') }}
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ env.OW_RADIUS_VERSION }}
+          restore-keys: ${{ runner.os }}-pip-
 
       - name: Installing OpenWISP Radius
         run: |
