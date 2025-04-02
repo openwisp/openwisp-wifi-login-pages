@@ -387,9 +387,7 @@ export default class Status extends React.Component {
         }
       }
       logError(error, t`ERR_OCCUR`);
-      setTimeout(async () => {
-        this.getUserRadiusUsage();
-      }, 10000);
+      setTimeout(this.getUserRadiusUsage, 10000);
     }
   }
 

@@ -1694,7 +1694,12 @@ describe("<Status /> interactions", () => {
     wrapper.instance().getUserRadiusUsage();
     await tick();
     expect(wrapper.instance().state.radiusUsageSpinner).toBe(true);
-    expect(setTimeout).toHaveBeenCalledWith(expect.any(Function), 10000);
+    // Ensure that the radius usage logic is retried again after
+    // 10 seconds if there was a server error
+    expect(setTimeout).toHaveBeenCalledWith(
+      wrapper.instance().getUserRadiusUsage,
+      10000,
+    );
 
     // Only check is present in the response
     axios.mockImplementationOnce(() =>
