@@ -15,7 +15,7 @@ describe("handleCaptivePortalLogin", () => {
       "?res=failed&reply=Maximum%20usage%20time%20reached";
     const mockSetCaptivePortalError = jest.fn();
     handleCaptivePortalLogin(
-      {method: "POST", action: "https://example.com/login"},
+      {method: "POST", action: "https://radius-proxy/login/"},
       mockSetCaptivePortalError,
     );
     expect(mockSetCaptivePortalError).toHaveBeenCalledWith({
@@ -28,7 +28,7 @@ describe("handleCaptivePortalLogin", () => {
     window.location.search = "?res=success";
     const mockSetCaptivePortalError = jest.fn();
     handleCaptivePortalLogin(
-      {method: "POST", action: "https://example.com/login"},
+      {method: "POST", action: "https://radius-proxy/login/"},
       mockSetCaptivePortalError,
     );
     expect(mockSetCaptivePortalError).toHaveBeenCalledWith(null);
@@ -38,7 +38,7 @@ describe("handleCaptivePortalLogin", () => {
     window.location.search = "?someOtherParam=value";
     const mockSetCaptivePortalError = jest.fn();
     handleCaptivePortalLogin(
-      {method: "POST", action: "https://example.com/login"},
+      {method: "POST", action: "https://radius-proxy/login/"},
       mockSetCaptivePortalError,
     );
     expect(mockSetCaptivePortalError).toHaveBeenCalledWith(null);
@@ -48,7 +48,7 @@ describe("handleCaptivePortalLogin", () => {
     window.location.search = "?res=failed";
     const mockSetCaptivePortalError = jest.fn();
     handleCaptivePortalLogin(
-      {method: "POST", action: "https://example.com/login"},
+      {method: "POST", action: "https://radius-proxy/login/"},
       mockSetCaptivePortalError,
     );
     expect(mockSetCaptivePortalError).toHaveBeenCalledWith(null);
@@ -59,7 +59,7 @@ describe("handleCaptivePortalLogin", () => {
       "?res=failed&reply=Maximum%20usage%20time%20reached";
     const mockSetCaptivePortalError = jest.fn();
     handleCaptivePortalLogin(
-      {method: "POST", action: "https://example.com/login"},
+      {method: "POST", action: "https://radius-proxy/login/"},
       mockSetCaptivePortalError,
     );
     expect(mockSetCaptivePortalError).toHaveBeenCalledWith({
