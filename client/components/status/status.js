@@ -333,7 +333,6 @@ export default class Status extends React.Component {
       planExhausted,
       setPlanExhausted,
     } = this.props;
-    const {showRadiusUsage} = this.state;
     const url = getUserRadiusUsageUrl(orgSlug);
     const auth_token = cookies.get(`${orgSlug}_auth_token`);
     handleSession(orgSlug, auth_token, cookies);
@@ -348,49 +347,47 @@ export default class Status extends React.Component {
         },
         url,
       });
-      options.userChecks = response.data.checks;
-      if (options.userChecks) {
+      if (response.data.plan) {
+        options.userPlan = response.data.plan;
+      }
+      // Ensures showRadiusUsage is set to a boolean value even if response.data.checks is undefined.
+      // This check confirms if the checks property exists, is an array, and contains elements.
+      options.showRadiusUsage =
+        Array.isArray(response.data.checks) && response.data.checks.length > 0;
+      if (options.showRadiusUsage) {
+        options.userChecks = response.data.checks;
         options.userChecks.forEach((check) => {
           if (check.value === String(check.result)) {
             isPlanExhausted = true;
           }
         });
-      }
-      if (planExhausted !== isPlanExhausted) {
-        setPlanExhausted(isPlanExhausted);
-        if (isPlanExhausted) {
-          toast.info(t`PLAN_EXHAUSTED_TOAST`);
+        if (planExhausted !== isPlanExhausted) {
+          setPlanExhausted(isPlanExhausted);
+          if (isPlanExhausted) {
+            toast.info(t`PLAN_EXHAUSTED_TOAST`);
+          }
         }
-      }
-      if (response.data.plan) {
-        options.userPlan = response.data.plan;
-      }
-      if (!showRadiusUsage) {
-        options.showRadiusUsage = true;
       }
       this.setState(options);
     } catch (error) {
-      // logout only if unauthorized or forbidden
       if (error.response) {
-        if (error.response.status === 401 || error.response.status === 403) {
-          logout(cookies, orgSlug);
-          toast.error(t`ERR_OCCUR`, {
-            onOpen: () => toast.dismiss(mainToastId),
-          });
-        } else if (
-          error.response.status >= 400 &&
-          error.response.status < 500
-        ) {
-          // Do not retry for client side errors
-          logError(error, t`ERR_OCCUR`);
+        // Do not retry for client side errors
+        if (error.response.status >= 400 && error.response.status < 500) {
+          // Logout only if unauthorized or forbidden
           this.setState({showRadiusUsage: false});
+          if (error.response.status === 401 || error.response.status === 403) {
+            logout(cookies, orgSlug);
+            toast.error(t`ERR_OCCUR`, {
+              onOpen: () => toast.dismiss(mainToastId),
+            });
+          } else {
+            logError(error, t`ERR_OCCUR`);
+          }
           return;
         }
       }
       logError(error, t`ERR_OCCUR`);
-      setTimeout(async () => {
-        this.getUserRadiusUsage();
-      }, 10000);
+      setTimeout(this.getUserRadiusUsage, 10000);
     }
   }
 

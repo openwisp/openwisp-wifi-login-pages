@@ -1674,103 +1674,121 @@ describe("<Status /> interactions", () => {
   it("test getUserRadiusUsage method", async () => {
     jest.spyOn(toast, "error");
     jest.spyOn(toast, "dismiss");
-    axios
-      .mockImplementationOnce(() =>
-        Promise.reject({
-          response: {
-            status: 500,
-            headers: {},
-          },
-        }),
-      )
-      .mockImplementationOnce(() =>
-        Promise.resolve({
-          status: 200,
-          statusText: "OK",
-          data: {
-            checks: [
-              {
-                attribute: "Max-Daily-Session",
-                op: ":=",
-                value: "10800",
-                result: 0,
-                type: "seconds",
-              },
-            ],
-          },
-          headers: {},
-        }),
-      )
-      .mockImplementationOnce(() =>
-        Promise.resolve({
-          status: 200,
-          statusText: "OK",
-          data: {
-            plan: {
-              id: "d5bc4d5a-0a8c-4e94-8d52-4c54836bd013",
-              name: "Free",
-              currency: "EUR",
-              is_free: true,
-              expire: null,
-              active: true,
-            },
-          },
-          headers: {},
-        }),
-      )
-      .mockImplementationOnce(() =>
-        Promise.resolve({
-          status: 200,
-          statusText: "OK",
-          data: {
-            checks: [
-              {
-                attribute: "Max-Daily-Session",
-                op: ":=",
-                value: "10800",
-                result: 10800,
-                type: "seconds",
-              },
-            ],
-            plan: {
-              id: "d5bc4d5a-0a8c-4e94-8d52-4c54836bd013",
-              name: "Free",
-              currency: "EUR",
-              is_free: true,
-              expire: null,
-              active: true,
-            },
-          },
-          headers: {},
-        }),
-      )
-      .mockImplementationOnce(() =>
-        Promise.reject({
-          response: {
-            status: 401,
-            headers: {},
-          },
-        }),
-      );
+    jest.spyOn(global, "setTimeout");
     props = createTestProps();
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: true,
     });
     jest.spyOn(wrapper.instance(), "getUserRadiusUsage");
+
+    // Retry when server responds with 500 error
+    axios.mockImplementationOnce(() =>
+      Promise.reject({
+        response: {
+          status: 500,
+          headers: {},
+        },
+      }),
+    );
     wrapper.instance().getUserRadiusUsage();
     await tick();
     expect(wrapper.instance().state.radiusUsageSpinner).toBe(true);
+    // Ensure that the radius usage logic is retried again after
+    // 10 seconds if there was a server error
+    expect(setTimeout).toHaveBeenCalledWith(
+      wrapper.instance().getUserRadiusUsage,
+      10000,
+    );
+
+    // Only check is present in the response
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: {
+          checks: [
+            {
+              attribute: "Max-Daily-Session",
+              op: ":=",
+              value: "10800",
+              result: 0,
+              type: "seconds",
+            },
+          ],
+        },
+        headers: {},
+      }),
+    );
     wrapper.instance().getUserRadiusUsage();
     await tick();
     expect(wrapper.instance().state.userChecks.length).toBe(1);
+    expect(wrapper.instance().state.showRadiusUsage).toBe(true);
+
+    // A free plan is present in the response
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: {
+          plan: {
+            id: "d5bc4d5a-0a8c-4e94-8d52-4c54836bd013",
+            name: "Free",
+            currency: "EUR",
+            is_free: true,
+            expire: null,
+            active: true,
+          },
+        },
+        headers: {},
+      }),
+    );
     wrapper.instance().getUserRadiusUsage();
     await tick();
     expect(wrapper.instance().state.userPlan.is_free).toBe(true);
+    expect(wrapper.instance().state.showRadiusUsage).toBe(false);
+
+    // User has exhausted plan quota
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: {
+          checks: [
+            {
+              attribute: "Max-Daily-Session",
+              op: ":=",
+              value: "10800",
+              result: 10800,
+              type: "seconds",
+            },
+          ],
+          plan: {
+            id: "d5bc4d5a-0a8c-4e94-8d52-4c54836bd013",
+            name: "Free",
+            currency: "EUR",
+            is_free: true,
+            expire: null,
+            active: true,
+          },
+        },
+        headers: {},
+      }),
+    );
     wrapper.instance().getUserRadiusUsage();
     await tick();
     expect(props.setPlanExhausted).toHaveBeenCalledTimes(1);
     expect(props.setPlanExhausted).toHaveBeenCalledWith(true);
+
+    // Unauthorized request
+    axios.mockImplementationOnce(() =>
+      Promise.reject({
+        response: {
+          status: 401,
+          headers: {},
+        },
+      }),
+    );
     wrapper.instance().getUserRadiusUsage();
     await tick();
     expect(toast.error.mock.calls.length).toBe(1);
@@ -1814,6 +1832,40 @@ describe("<Status /> interactions", () => {
         },
       }),
     );
+    const prop = createTestProps();
+    prop.statusPage.links = links;
+    prop.isAuthenticated = true;
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+    });
+    await tick();
+    expect(wrapper.find(".limit-info").exists()).toBe(false);
+  });
+  it("should hide limit-info element if user plan has no checks", async () => {
+    validateToken.mockReturnValue(true);
+    axios
+      // Response for getUserRadiusSessions
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          response: {
+            status: 200,
+            statusText: "OK",
+          },
+          data: [],
+          headers: {},
+        }),
+      )
+      // Resonse for getUserRadiusUsage
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: {
+            checks: [],
+          },
+          headers: {},
+        }),
+      );
     const prop = createTestProps();
     prop.statusPage.links = links;
     prop.isAuthenticated = true;
