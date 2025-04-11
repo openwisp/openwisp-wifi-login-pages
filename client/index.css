@@ -3,7 +3,9 @@
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: local("Montserrat Medium"), local("Montserrat-Medium"),
+  src:
+    local("Montserrat Medium"),
+    local("Montserrat-Medium"),
     url(assets/fonts/montserrat-medium.woff2) format("woff2");
 }
 @font-face {
@@ -11,7 +13,9 @@
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: local("Montserrat Bold"), local("Montserrat-Bold"),
+  src:
+    local("Montserrat Bold"),
+    local("Montserrat-Bold"),
     url(assets/fonts/montserrat-bold.woff2) format("woff2");
 }
 
@@ -265,14 +269,18 @@ h1 {
   width: 100%;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s 0s, visibility 0s 0.3s;
+  transition:
+    opacity 0.3s 0s,
+    visibility 0s 0.3s;
   z-index: 999;
 }
 
 .modal.is-visible {
   opacity: 1;
   visibility: visible;
-  transition: opacity 0.3s 0s, visibility 0s 0s;
+  transition:
+    opacity 0.3s 0s,
+    visibility 0s 0s;
 }
 
 #root .modal-container {

@@ -28,8 +28,8 @@ import InfoModal from "../../utils/modal";
 import getPlanSelection from "../../utils/get-plan-selection";
 import getPlans from "../../utils/get-plans";
 
-const PhoneInput = React.lazy(() =>
-  import(/* webpackChunkName: 'PhoneInput' */ "react-phone-input-2"),
+const PhoneInput = React.lazy(
+  () => import(/* webpackChunkName: 'PhoneInput' */ "react-phone-input-2"),
 );
 
 export default class Registration extends React.Component {
