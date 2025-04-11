@@ -24,7 +24,7 @@ export const executeCommand = (command, argv) => {
 export const getDriver = async () =>
   new Builder()
     .forBrowser("firefox")
-    .setFirefoxOptions(new firefox.Options().headless())
+    .setFirefoxOptions(new firefox.Options().addArguments("-headless"))
     .build();
 
 export const getElementByCss = async (driver, css) => {
