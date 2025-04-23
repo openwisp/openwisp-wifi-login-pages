@@ -124,7 +124,7 @@ module.exports = (env, argv) => {
         },
         {
           test: /\.(eot|svg|ttf|woff|woff2)$/,
-          use: ["file-loader"],
+          type: "asset",
         },
       ],
     },
