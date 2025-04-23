@@ -104,6 +104,8 @@ exports[`<OrganizationWrapper /> interactions should render main title if pageTi
                     "HAS_DOCUMENT_COOKIE": true,
                     "changeListeners": Array [],
                     "cookies": Object {},
+                    "defaultSetOptions": Object {},
+                    "update": [Function],
                   }
                 }
                 location={
@@ -136,6 +138,8 @@ exports[`<OrganizationWrapper /> interactions should render main title if pageTi
                     "HAS_DOCUMENT_COOKIE": true,
                     "changeListeners": Array [],
                     "cookies": Object {},
+                    "defaultSetOptions": Object {},
+                    "update": [Function],
                   }
                 }
                 navigate={[MockFunction]}
@@ -155,6 +159,8 @@ exports[`<OrganizationWrapper /> interactions should render main title if pageTi
                     "HAS_DOCUMENT_COOKIE": true,
                     "changeListeners": Array [],
                     "cookies": Object {},
+                    "defaultSetOptions": Object {},
+                    "update": [Function],
                   }
                 }
                 navigate={[MockFunction]}
@@ -174,6 +180,8 @@ exports[`<OrganizationWrapper /> interactions should render main title if pageTi
                     "HAS_DOCUMENT_COOKIE": true,
                     "changeListeners": Array [],
                     "cookies": Object {},
+                    "defaultSetOptions": Object {},
+                    "update": [Function],
                   }
                 }
                 navigate={[MockFunction]}
@@ -193,6 +201,8 @@ exports[`<OrganizationWrapper /> interactions should render main title if pageTi
                     "HAS_DOCUMENT_COOKIE": true,
                     "changeListeners": Array [],
                     "cookies": Object {},
+                    "defaultSetOptions": Object {},
+                    "update": [Function],
                   }
                 }
               />
@@ -324,6 +334,8 @@ exports[`<OrganizationWrapper /> interactions should render pageTitle if it is n
                     "HAS_DOCUMENT_COOKIE": true,
                     "changeListeners": Array [],
                     "cookies": Object {},
+                    "defaultSetOptions": Object {},
+                    "update": [Function],
                   }
                 }
                 location={
@@ -356,6 +368,8 @@ exports[`<OrganizationWrapper /> interactions should render pageTitle if it is n
                     "HAS_DOCUMENT_COOKIE": true,
                     "changeListeners": Array [],
                     "cookies": Object {},
+                    "defaultSetOptions": Object {},
+                    "update": [Function],
                   }
                 }
                 navigate={[MockFunction]}
@@ -375,6 +389,8 @@ exports[`<OrganizationWrapper /> interactions should render pageTitle if it is n
                     "HAS_DOCUMENT_COOKIE": true,
                     "changeListeners": Array [],
                     "cookies": Object {},
+                    "defaultSetOptions": Object {},
+                    "update": [Function],
                   }
                 }
                 navigate={[MockFunction]}
@@ -394,6 +410,8 @@ exports[`<OrganizationWrapper /> interactions should render pageTitle if it is n
                     "HAS_DOCUMENT_COOKIE": true,
                     "changeListeners": Array [],
                     "cookies": Object {},
+                    "defaultSetOptions": Object {},
+                    "update": [Function],
                   }
                 }
                 navigate={[MockFunction]}
@@ -413,6 +431,8 @@ exports[`<OrganizationWrapper /> interactions should render pageTitle if it is n
                     "HAS_DOCUMENT_COOKIE": true,
                     "changeListeners": Array [],
                     "cookies": Object {},
+                    "defaultSetOptions": Object {},
+                    "update": [Function],
                   }
                 }
               />
@@ -544,6 +564,8 @@ exports[`<OrganizationWrapper /> interactions should show route for authenticate
                     "HAS_DOCUMENT_COOKIE": true,
                     "changeListeners": Array [],
                     "cookies": Object {},
+                    "defaultSetOptions": Object {},
+                    "update": [Function],
                   }
                 }
                 location={
@@ -576,6 +598,8 @@ exports[`<OrganizationWrapper /> interactions should show route for authenticate
                     "HAS_DOCUMENT_COOKIE": true,
                     "changeListeners": Array [],
                     "cookies": Object {},
+                    "defaultSetOptions": Object {},
+                    "update": [Function],
                   }
                 }
                 navigate={[MockFunction]}
@@ -595,6 +619,8 @@ exports[`<OrganizationWrapper /> interactions should show route for authenticate
                     "HAS_DOCUMENT_COOKIE": true,
                     "changeListeners": Array [],
                     "cookies": Object {},
+                    "defaultSetOptions": Object {},
+                    "update": [Function],
                   }
                 }
                 navigate={[MockFunction]}
@@ -614,6 +640,8 @@ exports[`<OrganizationWrapper /> interactions should show route for authenticate
                     "HAS_DOCUMENT_COOKIE": true,
                     "changeListeners": Array [],
                     "cookies": Object {},
+                    "defaultSetOptions": Object {},
+                    "update": [Function],
                   }
                 }
                 navigate={[MockFunction]}
@@ -633,6 +661,8 @@ exports[`<OrganizationWrapper /> interactions should show route for authenticate
                     "HAS_DOCUMENT_COOKIE": true,
                     "changeListeners": Array [],
                     "cookies": Object {},
+                    "defaultSetOptions": Object {},
+                    "update": [Function],
                   }
                 }
               />
@@ -731,6 +761,8 @@ exports[`Test Organization Wrapper for authenticated and unverified users should
                     "HAS_DOCUMENT_COOKIE": true,
                     "changeListeners": Array [],
                     "cookies": Object {},
+                    "defaultSetOptions": Object {},
+                    "update": [Function],
                   }
                 }
               />
@@ -790,6 +822,8 @@ exports[`Test Organization Wrapper for authenticated and unverified users should
                     "HAS_DOCUMENT_COOKIE": true,
                     "changeListeners": Array [],
                     "cookies": Object {},
+                    "defaultSetOptions": Object {},
+                    "update": [Function],
                   }
                 }
                 navigate={[MockFunction]}
@@ -809,6 +843,8 @@ exports[`Test Organization Wrapper for authenticated and unverified users should
                     "HAS_DOCUMENT_COOKIE": true,
                     "changeListeners": Array [],
                     "cookies": Object {},
+                    "defaultSetOptions": Object {},
+                    "update": [Function],
                   }
                 }
                 navigate={[MockFunction]}
@@ -828,6 +864,8 @@ exports[`Test Organization Wrapper for authenticated and unverified users should
                     "HAS_DOCUMENT_COOKIE": true,
                     "changeListeners": Array [],
                     "cookies": Object {},
+                    "defaultSetOptions": Object {},
+                    "update": [Function],
                   }
                 }
                 navigate={[MockFunction]}
@@ -847,6 +885,8 @@ exports[`Test Organization Wrapper for authenticated and unverified users should
                     "HAS_DOCUMENT_COOKIE": true,
                     "changeListeners": Array [],
                     "cookies": Object {},
+                    "defaultSetOptions": Object {},
+                    "update": [Function],
                   }
                 }
               />
@@ -1021,6 +1061,8 @@ exports[`Test Organization Wrapper for unauthenticated users should show route f
                     "HAS_DOCUMENT_COOKIE": true,
                     "changeListeners": Array [],
                     "cookies": Object {},
+                    "defaultSetOptions": Object {},
+                    "update": [Function],
                   }
                 }
                 navigate={[MockFunction]}
@@ -1040,6 +1082,8 @@ exports[`Test Organization Wrapper for unauthenticated users should show route f
                     "HAS_DOCUMENT_COOKIE": true,
                     "changeListeners": Array [],
                     "cookies": Object {},
+                    "defaultSetOptions": Object {},
+                    "update": [Function],
                   }
                 }
               />

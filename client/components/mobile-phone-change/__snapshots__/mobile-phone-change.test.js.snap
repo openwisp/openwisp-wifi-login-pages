@@ -288,6 +288,8 @@ Openwisp-wifi-login-pages and using its services in the future.</p>
             "HAS_DOCUMENT_COOKIE": true,
             "changeListeners": Array [],
             "cookies": Object {},
+            "defaultSetOptions": Object {},
+            "update": [Function],
           }
         }
         language="en"

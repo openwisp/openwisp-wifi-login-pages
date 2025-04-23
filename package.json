@@ -35,7 +35,7 @@
     "qs": "^6.9.4",
     "raf": "^3.4.1",
     "react": "^16.13.1",
-    "react-cookie": "^4.0.3",
+    "react-cookie": "^8.0.1",
     "react-countdown": "^2.3.5",
     "react-dom": "^16.13.1",
     "react-helmet": "^6.1.0",
