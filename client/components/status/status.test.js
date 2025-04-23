@@ -1366,14 +1366,9 @@ describe("<Status /> interactions", () => {
       disableLifecycleMethods: true,
     });
     await wrapper.instance().getUserRadiusSessions();
-    expect(prop.logout).toHaveBeenCalledWith(
-      {
-        HAS_DOCUMENT_COOKIE: true,
-        changeListeners: [],
-        cookies: {default_macaddr: "4e:ed:11:2b:17:ae"},
-      },
-      "default",
-    );
+    expect(prop.logout).toHaveBeenCalledWith(expect.any(Cookies), "default");
+    const cookiesArg = prop.logout.mock.calls[0][0];
+    expect(cookiesArg.cookies).toEqual({default_macaddr: "4e:ed:11:2b:17:ae"});
     expect(toast.error).toHaveBeenCalledWith("Error occurred!", {
       onOpen: expect.any(Function),
     });

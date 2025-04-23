@@ -317,14 +317,9 @@ describe("Validate Token tests", () => {
     expect(result).toBe(false);
     expect(setUserData.mock.calls.length).toBe(1);
     expect(errorMethod).toBeCalledWith("Error occurred!");
-    expect(logout).toHaveBeenCalledWith(
-      {
-        HAS_DOCUMENT_COOKIE: true,
-        changeListeners: [],
-        cookies: {default_auth_token: "token"},
-      },
-      "default",
-    );
+    expect(logout).toHaveBeenCalledWith(expect.any(Cookies), "default");
+    const cookiesArg = logout.mock.calls[0][0];
+    expect(cookiesArg.cookies).toEqual({default_auth_token: "token"});
     expect(console.log).toHaveBeenCalledWith(response);
   });
   it("should show error toast on invalid token", async () => {
@@ -350,14 +345,9 @@ describe("Validate Token tests", () => {
     );
     expect(result).toEqual(false);
     expect(errorMethod).toBeCalledWith("Error occurred!");
-    expect(logout).toHaveBeenCalledWith(
-      {
-        HAS_DOCUMENT_COOKIE: true,
-        changeListeners: [],
-        cookies: {default_auth_token: "token"},
-      },
-      "default",
-    );
+    expect(logout).toHaveBeenCalledWith(expect.any(Cookies), "default");
+    const cookiesArg = logout.mock.calls[0][0];
+    expect(cookiesArg.cookies).toEqual({default_auth_token: "token"});
     expect(setUserData.mock.calls.length).toBe(1);
     expect(console.log).toHaveBeenCalledWith(response);
     expect(setUserData.mock.calls.pop()).toEqual([initialState.userData]);
@@ -386,14 +376,9 @@ describe("Validate Token tests", () => {
     expect(errorMethod).toBeCalledWith(responseError.response.data.detail, {
       toastId: "main_toast_id",
     });
-    expect(logout).toHaveBeenCalledWith(
-      {
-        HAS_DOCUMENT_COOKIE: true,
-        changeListeners: [],
-        cookies: {default_auth_token: "token"},
-      },
-      "default",
-    );
+    expect(logout).toHaveBeenCalledWith(expect.any(Cookies), "default");
+    const cookiesArg = logout.mock.calls[0][0];
+    expect(cookiesArg.cookies).toEqual({default_auth_token: "token"});
     expect(setUserData.mock.calls.length).toBe(1);
     expect(setUserData.mock.calls.pop()).toEqual([initialState.userData]);
   });
