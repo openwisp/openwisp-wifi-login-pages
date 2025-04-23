@@ -316,7 +316,7 @@ describe("Validate Token tests", () => {
     expect(axios.mock.calls.length).toBe(1);
     expect(result).toBe(false);
     expect(setUserData.mock.calls.length).toBe(1);
-    expect(errorMethod).toBeCalledWith("Error occurred!");
+    expect(errorMethod).toHaveBeenCalledWith("Error occurred!");
     expect(logout).toHaveBeenCalledWith(
       {
         HAS_DOCUMENT_COOKIE: true,
@@ -349,7 +349,7 @@ describe("Validate Token tests", () => {
       language,
     );
     expect(result).toEqual(false);
-    expect(errorMethod).toBeCalledWith("Error occurred!");
+    expect(errorMethod).toHaveBeenCalledWith("Error occurred!");
     expect(logout).toHaveBeenCalledWith(
       {
         HAS_DOCUMENT_COOKIE: true,
@@ -383,9 +383,12 @@ describe("Validate Token tests", () => {
       logout,
     );
     expect(result).toEqual(false);
-    expect(errorMethod).toBeCalledWith(responseError.response.data.detail, {
-      toastId: "main_toast_id",
-    });
+    expect(errorMethod).toHaveBeenCalledWith(
+      responseError.response.data.detail,
+      {
+        toastId: "main_toast_id",
+      },
+    );
     expect(logout).toHaveBeenCalledWith(
       {
         HAS_DOCUMENT_COOKIE: true,

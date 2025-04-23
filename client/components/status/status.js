@@ -680,7 +680,7 @@ export default class Status extends React.Component {
     await this.getUserPassedRadiusSessions({page: currentPage + 1});
   }
 
-  getDuration = (seconds) => {
+  static getDuration = (seconds) => {
     const number = Number(seconds);
     const h = Math.floor(number / 3600);
     const m = Math.floor((number % 3600) / 60);
@@ -691,7 +691,7 @@ export default class Status extends React.Component {
     return hDisplay + mDisplay + sDisplay;
   };
 
-  getDateTimeFormat = (language, time_option, date) => {
+  static getDateTimeFormat = (language, time_option, date) => {
     if (typeof Intl !== "undefined") {
       return new Intl.DateTimeFormat(language, time_option).format(
         new Date(date),
@@ -906,9 +906,9 @@ export default class Status extends React.Component {
     return this.getSmallTable(session_info);
   };
 
-  getSpinner = () => <Loader full={false} small />;
+  static getSpinner = () => <Loader full={false} small />;
 
-  getSessionInfo = () => ({
+  static getSessionInfo = () => ({
     header: {
       start_time: t`ACCT_START_TIME`,
       stop_time: t`ACCT_STOP_TIME`,
@@ -922,7 +922,7 @@ export default class Status extends React.Component {
     },
   });
 
-  getUserInfo = () => ({
+  static getUserInfo = () => ({
     status: {
       text: t`STATUS`,
       value: t`LOGGED_IN`,
@@ -938,7 +938,7 @@ export default class Status extends React.Component {
     },
   });
 
-  getUserCheckFormattedValue = (value, type) => {
+  static getUserCheckFormattedValue = (value, type) => {
     const intValue = parseInt(value, 10);
     switch (type) {
       case "bytes":
