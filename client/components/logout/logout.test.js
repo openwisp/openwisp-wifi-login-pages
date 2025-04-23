@@ -100,7 +100,7 @@ describe("<Logout /> interactions", () => {
     });
     wrapper.instance().loginUser(true);
     expect(spyToast).toHaveBeenCalled();
-    expect(spyToast).toBeCalledWith("Login successful", {
+    expect(spyToast).toHaveBeenCalledWith("Login successful", {
       toastId: "main_toast_id",
     });
     expect(props.userData.mustLogin).toBe(false);
