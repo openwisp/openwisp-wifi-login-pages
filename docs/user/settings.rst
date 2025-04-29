@@ -114,6 +114,16 @@ although some may also accept ``GET``.
 
     additional_fields: []
 
+``captive_portal_sync_auth``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+By default, captive portal authentication is performed asynchronously via
+an iframe to avoid reloading the page. However, some embedded or mini
+browsers may fail to detect successful login when this method is used.
+
+Set ``captive_portal_sync_auth`` to ``true`` to submit the login form
+synchronously and trigger a full page reload upon authentication:
+
 .. _wlp_menu_items:
 
 Menu Items
