@@ -95,7 +95,7 @@
     "file-loader": "^6.1.0",
     "html-webpack-plugin": "^4.5.2",
     "jest": "^27.0.6",
-    "mini-css-extract-plugin": "1.6.2",
+    "mini-css-extract-plugin": "2.9.2",
     "mock-local-storage": "^1.1.17",
     "prettier": "^3.5.3",
     "react-test-renderer": "^16.13.1",
