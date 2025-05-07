@@ -239,12 +239,18 @@ const createConfigurationWithoutPrompts = (passedData) => {
   ];
   try {
     const response = JSON.parse(passedData);
-    // eslint-disable-next-line no-prototype-builtins
-    if (requiredKeys.every((key) => response.hasOwnProperty(key)))
+    const missingKeys = requiredKeys.filter(
+      // eslint-disable-next-line no-prototype-builtins
+      (key) => !response.hasOwnProperty(key),
+    );
+    if (missingKeys.length === 0) {
       createConfiguration(response);
-    else console.error("Key is missing");
+    } else {
+      throw new Error(`Require key(s) missing: ${missingKeys.join(", ")}`);
+    }
   } catch (err) {
     console.error(err);
+    process.exit(1);
   }
 };
 

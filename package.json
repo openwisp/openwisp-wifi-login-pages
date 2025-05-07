@@ -50,7 +50,7 @@
     "regenerator-runtime": "^0.13.9",
     "tsutils": "^3.17.1",
     "ttag": "^1.7.24",
-    "universal-cookie-express": "^6.1.1",
+    "universal-cookie-express": "^8.0.1",
     "winston": "^3.3.3",
     "winston-transport-sentry-node": "^2.0.0"
   },
@@ -95,7 +95,7 @@
     "file-loader": "^6.1.0",
     "html-webpack-plugin": "^4.5.2",
     "jest": "^27.0.6",
-    "mini-css-extract-plugin": "1.6.2",
+    "mini-css-extract-plugin": "2.9.2",
     "mock-local-storage": "^1.1.17",
     "prettier": "^3.5.3",
     "react-test-renderer": "^16.13.1",
