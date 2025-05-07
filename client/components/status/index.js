@@ -19,6 +19,7 @@ export const mapStateToProps = (state, ownProps) => {
     defaultLanguage: conf.default_language,
     captivePortalLoginForm: conf.components.captive_portal_login_form,
     captivePortalLogoutForm: conf.components.captive_portal_logout_form,
+    captivePortalSyncAuth: conf.components.captive_portal_sync_auth,
     isAuthenticated: conf.isAuthenticated,
     cookies: ownProps.cookies,
     language: state.language,

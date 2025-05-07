@@ -8,6 +8,8 @@ const logout = (cookies, orgSlug, userAutoLogin = false) => {
     cookies.remove(`${orgSlug}_macaddr`, {path: "/"});
     sessionStorage.clear();
   }
+  cookies.remove(`${orgSlug}_mustLogin`, {path: "/"});
+  cookies.remove(`${orgSlug}_mustLogout`, {path: "/"});
 
   return {
     type: SET_AUTHENTICATION_STATUS,
