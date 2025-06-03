@@ -1185,9 +1185,9 @@
     "@babel/plugin-transform-typescript" "^7.7.0"
 
 "@babel/register@^7.10.1":
-  version "7.24.6"
-  resolved "https://registry.npmjs.org/@babel/register/-/register-7.24.6.tgz"
-  integrity sha512-WSuFCc2wCqMeXkz/i3yfAAsxwWflEgbVkZzivgAmXl/MxrXeoYFZOOPllbC8R8WTF7u61wSRQtDVZ1879cdu6w==
+  version "7.27.1"
+  resolved "https://registry.yarnpkg.com/@babel/register/-/register-7.27.1.tgz#ea4d701649d788d7cb8a064b7540fd21083147f1"
+  integrity sha512-K13lQpoV54LATKkzBpBAEu1GGSIRzxR9f4IN4V8DCDgiUMo2UDGagEZr3lPeVNJPLkWUi5JE4hCHKneVTwQlYQ==
   dependencies:
     clone-deep "^4.0.1"
     find-cache-dir "^2.0.0"
