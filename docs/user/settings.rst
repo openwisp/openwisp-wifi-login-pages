@@ -118,7 +118,7 @@ although some may also accept ``GET``.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 By default, captive portal authentication is performed asynchronously via
-an iframe to avoid reloading the page. However, some embedded or mini
+an ``iframe`` to avoid reloading the page. However, some embedded or mini
 browsers may fail to detect successful login when this method is used.
 
 Set ``captive_portal_sync_auth`` to ``true`` to submit the login form
