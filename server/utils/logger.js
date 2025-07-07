@@ -1,4 +1,5 @@
 import winston from "winston";
+import "winston-daily-rotate-file";
 import SentryTransport from "winston-transport-sentry-node";
 import logFilePath from "../loggerConfig";
 
@@ -48,27 +49,35 @@ const transports = [
     handleExceptions: true,
     silent: false,
   }),
-  new winston.transports.File({
+  new winston.transports.DailyRotateFile({
     filename: logFilePath.error,
     level: "error",
+    maxFiles: "10d",
   }),
-  new winston.transports.File({
+  new winston.transports.DailyRotateFile({
     filename: logFilePath.warn,
     level: "warn",
+    maxFiles: "10d",
   }),
-  new winston.transports.File({
+  new winston.transports.DailyRotateFile({
     filename: logFilePath.info,
     level: "info",
+    maxFiles: "10d",
   }),
-  new winston.transports.File({
+  new winston.transports.DailyRotateFile({
     filename: logFilePath.http,
     level: "http",
+    maxFiles: "10d",
   }),
-  new winston.transports.File({
+  new winston.transports.DailyRotateFile({
     filename: logFilePath.debug,
     level: "debug",
+    maxFiles: "10d",
   }),
-  new winston.transports.File({filename: logFilePath.all}),
+  new winston.transports.DailyRotateFile({
+    filename: logFilePath.all,
+    maxFiles: "10d",
+  }),
 ];
 
 const Logger = winston.createLogger({
@@ -78,10 +87,16 @@ const Logger = winston.createLogger({
   transports,
   exitOnError: false,
   exceptionHandlers: [
-    new winston.transports.File({filename: logFilePath.error}),
+    new winston.transports.DailyRotateFile({
+      filename: logFilePath.error,
+      maxFiles: "10d",
+    }),
   ],
   rejectionHandlers: [
-    new winston.transports.File({filename: logFilePath.error}),
+    new winston.transports.DailyRotateFile({
+      filename: logFilePath.error,
+      maxFiles: "10d",
+    }),
   ],
 });
 
