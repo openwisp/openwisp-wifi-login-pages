@@ -52,31 +52,31 @@ const transports = [
   new winston.transports.DailyRotateFile({
     filename: logFilePath.error,
     level: "error",
-    maxFiles: "10d",
+    maxFiles: "14d",
   }),
   new winston.transports.DailyRotateFile({
     filename: logFilePath.warn,
     level: "warn",
-    maxFiles: "10d",
+    maxFiles: "14d",
   }),
   new winston.transports.DailyRotateFile({
     filename: logFilePath.info,
     level: "info",
-    maxFiles: "10d",
+    maxFiles: "14d",
   }),
   new winston.transports.DailyRotateFile({
     filename: logFilePath.http,
     level: "http",
-    maxFiles: "10d",
+    maxFiles: "14d",
   }),
   new winston.transports.DailyRotateFile({
     filename: logFilePath.debug,
     level: "debug",
-    maxFiles: "10d",
+    maxFiles: "14d",
   }),
   new winston.transports.DailyRotateFile({
     filename: logFilePath.all,
-    maxFiles: "10d",
+    maxFiles: "14d",
   }),
 ];
 
@@ -89,13 +89,13 @@ const Logger = winston.createLogger({
   exceptionHandlers: [
     new winston.transports.DailyRotateFile({
       filename: logFilePath.error,
-      maxFiles: "10d",
+      maxFiles: "14d",
     }),
   ],
   rejectionHandlers: [
     new winston.transports.DailyRotateFile({
       filename: logFilePath.error,
-      maxFiles: "10d",
+      maxFiles: "14d",
     }),
   ],
 });
