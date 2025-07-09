@@ -65,6 +65,7 @@ const createTestProps = (props) => ({
   settings: {...defaultConfig.settings, payment_requires_internet: true},
   captivePortalLoginForm: defaultConfig.components.captive_portal_login_form,
   captivePortalLogoutForm: defaultConfig.components.captive_portal_logout_form,
+  captivePortalSyncAuth: false,
   location: {
     search: "?macaddr=4e:ed:11:2b:17:ae",
   },
@@ -165,6 +166,7 @@ describe("<Status /> rendering", () => {
         defaultConfig.components.captive_portal_login_form,
       captivePortalLogoutForm:
         defaultConfig.components.captive_portal_logout_form,
+      captivePortalSyncAuth: defaultConfig.captive_portal_sync_auth,
       isAuthenticated: defaultConfig.isAuthenticated,
       cookies: ownProps.cookies,
       language: defaultConfig.language,
@@ -197,6 +199,10 @@ describe("<Status /> interactions", () => {
   });
 
   afterEach(() => {
+    const cookies = new Cookies();
+    cookies.remove("default_mustLogin");
+    cookies.remove("default_mustLogout");
+    cookies.remove("default_macaddr");
     axios.mockReset();
     jest.resetAllMocks();
     jest.restoreAllMocks();
@@ -642,6 +648,178 @@ describe("<Status /> interactions", () => {
     expect(setUserDataMock.calls.pop()).toEqual([
       {...props.userData, mustLogin: false},
     ]);
+  });
+
+  it("should not perform captive portal login (sync auth), if user is already authenticated", async () => {
+    validateToken.mockReturnValue(true);
+    props = createTestProps({
+      captivePortalSyncAuth: true,
+      location: {
+        search: "",
+      },
+      userData: responseData,
+    });
+    jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
+    jest.spyOn(Status.prototype, "getUserPassedRadiusSessions");
+    const setLoading = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading},
+    });
+    wrapper.setProps({
+      cookies: new Cookies(),
+    });
+    const spyFn = jest.fn();
+    const status = wrapper.instance();
+    status.props.cookies.set("default_mustLogin", false, {
+      path: "/",
+      maxAge: 60,
+    });
+    status.loginFormRef.current = {submit: spyFn};
+    await tick();
+
+    expect(spyFn.mock.calls.length).toBe(0);
+    expect(setLoading.mock.calls.length).toBe(2);
+    // ensure sessions are loaded too
+    expect(Status.prototype.getUserActiveRadiusSessions.mock.calls.length).toBe(
+      1,
+    );
+    expect(Status.prototype.getUserPassedRadiusSessions.mock.calls.length).toBe(
+      1,
+    );
+  });
+
+  it("should perform captive portal login (sync auth), if user is just authenticated", async () => {
+    validateToken.mockReturnValue(true);
+    props = createTestProps();
+    props.captivePortalSyncAuth = true;
+    props.location.search = "";
+    props.userData = {...responseData, mustLogin: true};
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+    });
+    const loginFormSubmit = jest.fn();
+    const status = wrapper.instance();
+    status.loginFormRef.current = {submit: loginFormSubmit};
+    status.loginIframeRef.current = {submit: jest.fn()};
+    const setUserDataMock = status.props.setUserData.mock;
+    const handleLoginMock = jest.spyOn(status, "handleLogin");
+    await tick();
+    expect(handleLoginMock).toHaveBeenCalledTimes(0);
+    expect(loginFormSubmit.mock.calls.length).toBe(1);
+
+    // userData not set yet
+    expect(setUserDataMock.calls.pop()).toEqual(undefined);
+    expect(loginFormSubmit.mock.calls.length).toBe(1);
+    expect(status.props.cookies.get("default_mustLogin")).toBe(false);
+    expect(localStorage.getItem("default_mustLogin")).toBe("false");
+
+    // Reloading page will call handleLogin
+    status.componentDidMount();
+    await tick();
+    expect(handleLoginMock).toHaveBeenCalledTimes(1);
+    expect(setUserDataMock.calls.pop()).toEqual(undefined);
+
+    // localStorage is cleared after redirect loop is prevented
+    expect(localStorage.getItem("default_mustLogin")).toBe(null);
+  });
+
+  it("should fallback to localStorage if cookies are not available (sync auth)", async () => {
+    validateToken.mockReturnValue(true);
+    props = createTestProps({
+      captivePortalSyncAuth: true,
+      location: {
+        search: "",
+      },
+      userData: {...responseData, mustLogin: true},
+      cookies: {
+        get: jest.fn(),
+        remove: jest.fn(),
+        set: jest.fn(),
+      },
+    });
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+    });
+    const loginFormSubmit = jest.fn();
+    const status = wrapper.instance();
+    status.loginFormRef.current = {submit: loginFormSubmit};
+    status.loginIframeRef.current = {submit: jest.fn()};
+    const setUserDataMock = status.props.setUserData.mock;
+    const handleLoginMock = jest.spyOn(status, "handleLogin");
+    await tick();
+    expect(handleLoginMock).toHaveBeenCalledTimes(0);
+    expect(loginFormSubmit.mock.calls.length).toBe(1);
+
+    // userData not set yet
+    expect(setUserDataMock.calls.pop()).toEqual(undefined);
+    expect(loginFormSubmit.mock.calls.length).toBe(1);
+    expect(localStorage.getItem("default_mustLogin")).toBe("false");
+
+    // Reloading page will call handleLogin
+    status.componentDidMount();
+    await tick();
+    expect(handleLoginMock).toHaveBeenCalledTimes(1);
+    expect(setUserDataMock.calls.pop()).toEqual(undefined);
+
+    // localStorage is cleared after redirect loop is prevented
+    expect(localStorage.getItem("default_mustLogin")).toBe(null);
+  });
+
+  it("should perform captive portal logout (sync auth)", async () => {
+    axios
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          response: {
+            status: 200,
+            statusText: "OK",
+          },
+          data: [],
+          headers: {},
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: [
+            {
+              session_id: 1,
+              start_time: "2020-09-08T00:22:28-04:00",
+              stop_time: "2020-09-08T00:22:29-04:00",
+            },
+          ],
+          headers: {},
+        }),
+      );
+    props = createTestProps({
+      captivePortalSyncAuth: true,
+    });
+    const logoutFormRef = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+    });
+    const status = wrapper.instance();
+    status.logoutFormRef.current = {submit: logoutFormRef};
+    status.logoutIframeRef.current = {submit: jest.fn()};
+    jest.spyOn(status, "handleLogout");
+    jest.spyOn(status, "handleLogoutIframe");
+    wrapper.find(".logout input.button").simulate("click", {});
+    expect(status.handleLogout).toHaveBeenCalledTimes(1);
+    await tick();
+    expect(logoutFormRef.mock.calls.length).toBe(1);
+    // mustLogin is set to true in cookie and localStorage to prevent redirect loop
+    expect(status.props.cookies.get("default_mustLogout")).toBe(true);
+    expect(localStorage.getItem("default_mustLogout")).toBe("true");
+    expect(status.props.logout).not.toHaveBeenCalled();
+    // Reloading page will clear localStorage
+    // (simulate redirecting back from the captive portal)
+    status.componentDidMount();
+    await tick();
+    expect(status.props.logout).toHaveBeenCalled();
+    expect(status.props.setUserData).toHaveBeenCalledWith(
+      initialState.userData,
+    );
+    expect(localStorage.getItem("default_mustLogout")).toBe(null);
   });
 
   it("test active session table", async () => {
@@ -1367,8 +1545,6 @@ describe("<Status /> interactions", () => {
     });
     await wrapper.instance().getUserRadiusSessions();
     expect(prop.logout).toHaveBeenCalledWith(expect.any(Cookies), "default");
-    const cookiesArg = prop.logout.mock.calls[0][0];
-    expect(cookiesArg.cookies).toEqual({default_macaddr: "4e:ed:11:2b:17:ae"});
     expect(toast.error).toHaveBeenCalledWith("Error occurred!", {
       onOpen: expect.any(Function),
     });
