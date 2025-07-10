@@ -197,6 +197,7 @@ export default class Header extends React.Component {
                   className="header-hamburger"
                   onClick={this.handleHamburger}
                   onKeyUp={this.handleKeyUp}
+                  aria-label={getText({en: "Menu Button"}, language)}
                 >
                   <div className={`${menu ? "rot45" : ""}`} />
                   <div className={`${menu ? "rot-45" : ""}`} />
