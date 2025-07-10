@@ -961,6 +961,7 @@ export default class Status extends React.Component {
                   onClick={() => {
                     this.handleSessionLogout(session);
                   }}
+                  aria-label="Logout"
                 />
               </td>
             </tr>
