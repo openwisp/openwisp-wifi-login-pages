@@ -209,7 +209,7 @@ describe("Change Phone Number: standard flow", () => {
       onChange: expect.any(Function),
       onKeyDown: expect.any(Function),
       onlyCountries: [],
-      placeholder: "enter mobile phone number",
+      placeholder: "PHONE_PHOLD",
       preferredCountries: [],
       value: "",
     });
@@ -241,7 +241,7 @@ describe("Change Phone Number: standard flow", () => {
       value: "",
       onChange: expect.any(Function),
       onKeyDown: expect.any(Function),
-      placeholder: "enter mobile phone number",
+      placeholder: "PHONE_PHOLD",
       id: "phone-number",
     });
     fallback.props.onChange("+911234567890");
@@ -345,7 +345,7 @@ describe("Change Phone Number: standard flow", () => {
     const component = wrapper.find(MobilePhoneChange);
     const setTitleMock = component.props().setTitle.mock;
     expect(setTitleMock.calls.pop()).toEqual([
-      "Change mobile number",
+      "PHONE_CHANGE_TITL",
       props.orgName,
     ]);
   });

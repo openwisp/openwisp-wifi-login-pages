@@ -93,7 +93,7 @@ exports[`Change Phone Number: standard flow should render PhoneInput lazily and 
       name="phone_number"
       onChange={[Function]}
       onKeyDown={[Function]}
-      placeholder="enter mobile phone number"
+      placeholder="PHONE_PHOLD"
       value=""
     />
   }
@@ -113,7 +113,7 @@ exports[`Change Phone Number: standard flow should render PhoneInput lazily and 
     onChange={[Function]}
     onKeyDown={[Function]}
     onlyCountries={Array []}
-    placeholder="enter mobile phone number"
+    placeholder="PHONE_PHOLD"
     preferredCountries={Array []}
     value=""
   />
@@ -315,7 +315,7 @@ Openwisp-wifi-login-pages and using its services in the future.</p>
           [MockFunction] {
             "calls": Array [
               Array [
-                "Change mobile number",
+                "PHONE_CHANGE_TITL",
                 "test org 2 (sms)",
               ],
             ],

@@ -149,7 +149,7 @@ describe("<Login /> rendering", () => {
       name: "username",
       onChange: expect.any(Function),
       onlyCountries: [],
-      placeholder: "enter mobile phone number",
+      placeholder: "PHONE_PHOLD",
       preferredCountries: [],
       value: "",
     });
@@ -174,7 +174,7 @@ describe("<Login /> rendering", () => {
       className: "form-control input",
       value: "",
       onChange: expect.any(Function),
-      placeholder: "enter mobile phone number",
+      placeholder: "PHONE_PHOLD",
       id: "username",
       type: "tel",
     });
@@ -503,16 +503,16 @@ describe("<Login /> interactions", () => {
   });
   it("phone_number field should be present if mobile phone verification is on", async () => {
     props.settings = {mobile_phone_verification: true};
-    wrapper = mountComponent(props);
-    expect(wrapper.render()).toMatchSnapshot();
+    const wrapper = shallow(<Login {...props} />);
+    expect(wrapper).toMatchSnapshot();
     expect(wrapper.find("input[type='tel']").length).toBe(1);
     expect(wrapper.find("#username").length).toEqual(1);
     expect(wrapper.find(".row.phone-number").length).toEqual(1);
   });
   it("username should be text field if mobile phone verification is off", async () => {
     props.settings = {mobile_phone_verification: false};
-    wrapper = mountComponent(props);
-    expect(wrapper.render()).toMatchSnapshot();
+    const wrapper = shallow(<Login {...props} />);
+    expect(wrapper).toMatchSnapshot();
     expect(wrapper.find("input[type='tel']").length).toBe(0);
     expect(wrapper.find("#username").length).toEqual(1);
     expect(wrapper.find(".row.phone-number").length).toEqual(0);
@@ -521,8 +521,8 @@ describe("<Login /> interactions", () => {
     props.settings = {mobile_phone_verification: true};
     props.loginForm = {...loginForm};
     props.loginForm.input_fields.username.auto_switch_phone_input = false;
-    wrapper = mountComponent(props);
-    expect(wrapper.render()).toMatchSnapshot();
+    const wrapper = shallow(<Login {...props} />);
+    expect(wrapper).toMatchSnapshot();
     expect(wrapper.find("input[type='tel']").length).toBe(0);
     expect(wrapper.find("#username").length).toEqual(1);
     expect(wrapper.find(".row.phone-number").length).toEqual(0);
@@ -608,7 +608,7 @@ describe("<Login /> interactions", () => {
         expect(wrapper.instance().props.authenticate.mock.calls.length).toBe(0);
         expect(lastConsoleOutuput).not.toBe(null);
         expect(errorMethod).toHaveBeenCalled();
-        expect(errorMethod).toBeCalledWith("Internal server error");
+        expect(errorMethod).toBeCalledWith("LOGIN_ERR");
       });
   });
   it("should show error toast when connection refused or timeout", async () => {
@@ -628,7 +628,7 @@ describe("<Login /> interactions", () => {
     expect(wrapper.instance().props.authenticate.mock.calls.length).toBe(0);
     expect(lastConsoleOutuput).not.toBe(null);
     expect(errorMethod).toHaveBeenCalled();
-    expect(errorMethod).toBeCalledWith("Login error occurred.");
+    expect(errorMethod).toBeCalledWith("LOGIN_ERR");
   });
   it("should set mustLogin on login success", async () => {
     axios.mockImplementationOnce(() =>
@@ -664,7 +664,7 @@ describe("<Login /> interactions", () => {
     wrapper = mountComponent(props);
     const login = wrapper.find(Login);
     const setTitleMock = login.props().setTitle.mock;
-    expect(setTitleMock.calls.pop()).toEqual(["Log in", props.orgName]);
+    expect(setTitleMock.calls.pop()).toEqual(["LOGIN", props.orgName]);
   });
 
   it("should call handleAuthentication on social login / SAML", () => {

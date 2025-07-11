@@ -65,13 +65,13 @@ describe("<PasswordReset /> rendering", () => {
   it("should render input field correctly", () => {
     const emailInput = wrapper.find("input[type='text']");
     expect(wrapper.find(".row label").text()).toBe(
-      getTranslationString("USERNAME_LOG_LBL"),
+      "USERNAME_LOG_LBL",
     );
     expect(emailInput.prop("placeholder")).toBe(
-      getTranslationString("USERNAME_LOG_PHOLD"),
+      "USERNAME_LOG_PHOLD",
     );
     expect(emailInput.prop("title")).toBe(
-      getTranslationString("USERNAME_LOG_TITL"),
+      "USERNAME_LOG_TITL",
     );
     expect(emailInput.prop("type")).toBe("text");
   });
@@ -167,6 +167,6 @@ describe("<PasswordReset /> interactions", () => {
   });
   it("should set title", () => {
     const setTitleMock = wrapper.instance().props.setTitle.mock;
-    expect(setTitleMock.calls.pop()).toEqual(["Reset Password", props.orgName]);
+    expect(setTitleMock.calls.pop()).toEqual(["PWD_RESET_TITL", props.orgName]);
   });
 });

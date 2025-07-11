@@ -88,7 +88,7 @@ describe("<Logout /> interactions", () => {
       context: {setLoading: jest.fn()},
     });
     const setTitleMock = wrapper.instance().props.setTitle.mock;
-    expect(setTitleMock.calls.pop()).toEqual(["Logout", props.orgName]);
+    expect(setTitleMock.calls.pop()).toEqual(["LOGOUT", props.orgName]);
   });
 
   it("should login if user is already authenticated and clicks log in again", () => {
@@ -100,7 +100,7 @@ describe("<Logout /> interactions", () => {
     });
     wrapper.instance().loginUser(true);
     expect(spyToast).toHaveBeenCalled();
-    expect(spyToast).toBeCalledWith("Login successful", {
+    expect(spyToast).toBeCalledWith("LOGIN_SUCCESS", {
       toastId: "main_toast_id",
     });
     expect(props.userData.mustLogin).toBe(false);

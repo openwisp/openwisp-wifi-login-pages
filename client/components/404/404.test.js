@@ -48,7 +48,7 @@ describe("<DoesNotExist /> rendering", () => {
     const props = createTestProps();
     const wrapper = shallow(<DoesNotExist {...props} />);
     const setTitleMock = wrapper.instance().props.setTitle.mock;
-    expect(setTitleMock.calls.pop()).toEqual(["404 Not found", props.orgName]);
+    expect(setTitleMock.calls.pop()).toEqual(["404_PG_TITL", props.orgName]);
   });
 
   it("should not call setTitle if organization is undefined", () => {

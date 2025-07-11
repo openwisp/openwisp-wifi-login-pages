@@ -842,10 +842,10 @@ describe("<Status /> interactions", () => {
       context: {setLoading: jest.fn()},
     });
     await tick();
-    expect(wrapper.contains(<th>Start time</th>)).toBe(true);
-    expect(wrapper.contains(<th>Stop time</th>)).toBe(true);
-    expect(wrapper.contains(<th>Duration</th>)).toBe(true);
-    expect(wrapper.contains(<th>Device address</th>)).toBe(true);
+    expect(wrapper.contains(<th>ACCT_START_TIME</th>)).toBe(true);
+    expect(wrapper.contains(<th>ACCT_STOP_TIME</th>)).toBe(true);
+    expect(wrapper.contains(<th>ACCT_DURATION</th>)).toBe(true);
+    expect(wrapper.contains(<th>ACCT_DEVICE_ADDRESS</th>)).toBe(true);
   });
 
   it("test passed session table", async () => {
@@ -868,10 +868,10 @@ describe("<Status /> interactions", () => {
       context: {setLoading: jest.fn()},
     });
     await tick();
-    expect(wrapper.contains(<th>Start time</th>)).toBe(true);
-    expect(wrapper.contains(<th>Stop time</th>)).toBe(true);
-    expect(wrapper.contains(<th>Duration</th>)).toBe(true);
-    expect(wrapper.contains(<th>Device address</th>)).toBe(true);
+    expect(wrapper.contains(<th>ACCT_START_TIME</th>)).toBe(true);
+    expect(wrapper.contains(<th>ACCT_STOP_TIME</th>)).toBe(true);
+    expect(wrapper.contains(<th>ACCT_DURATION</th>)).toBe(true);
+    expect(wrapper.contains(<th>ACCT_DEVICE_ADDRESS</th>)).toBe(true);
   });
 
   it("test empty session table", async () => {
@@ -1347,7 +1347,7 @@ describe("<Status /> interactions", () => {
       disableLifecycleMethods: false,
     });
     const setTitleMock = wrapper.instance().props.setTitle.mock;
-    expect(setTitleMock.calls.pop()).toEqual(["Status", props.orgName]);
+    expect(setTitleMock.calls.pop()).toEqual(["STATUS_TITL", props.orgName]);
   });
 
   it("should perform call saml_logout_url if logged in via SAML", async () => {
@@ -1424,13 +1424,13 @@ describe("<Status /> interactions", () => {
         wrapper.instance().getSessionInfo(),
       ),
     );
-    expect(TableRowWrapper.contains(<th>Start time:</th>)).toBe(true);
-    expect(TableRowWrapper.contains(<th>Stop time:</th>)).toBe(true);
-    expect(TableRowWrapper.contains(<td>session is active</td>)).toBe(true);
-    expect(TableRowWrapper.contains(<th>Duration:</th>)).toBe(true);
-    expect(TableRowWrapper.contains(<th>Download:</th>)).toBe(true);
-    expect(TableRowWrapper.contains(<th>Upload:</th>)).toBe(true);
-    expect(TableRowWrapper.contains(<th>Device address:</th>)).toBe(true);
+    expect(TableRowWrapper.contains(<th>ACCT_START_TIME:</th>)).toBe(true);
+    expect(TableRowWrapper.contains(<th>ACCT_STOP_TIME:</th>)).toBe(true);
+    expect(TableRowWrapper.contains(<td>ACCT_ACTIVE</td>)).toBe(true);
+    expect(TableRowWrapper.contains(<th>ACCT_DURATION:</th>)).toBe(true);
+    expect(TableRowWrapper.contains(<th>ACCT_DOWNLOAD:</th>)).toBe(true);
+    expect(TableRowWrapper.contains(<th>ACCT_UPLOAD:</th>)).toBe(true);
+    expect(TableRowWrapper.contains(<th>ACCT_DEVICE_ADDRESS:</th>)).toBe(true);
     TableRowWrapper.find(".button").simulate("click");
     expect(handleSessionLogout.mock.calls.length).toBe(1);
   });
@@ -1471,8 +1471,8 @@ describe("<Status /> interactions", () => {
     expect(
       getSmallTableWrapper.contains(
         <tr className="active-session" key="1stop_time">
-          <th>Stop time:</th>
-          <td>session is active</td>
+          <th>ACCT_STOP_TIME:</th>
+          <td>ACCT_ACTIVE</td>
         </tr>,
       ),
     ).toBe(true);
@@ -1545,14 +1545,14 @@ describe("<Status /> interactions", () => {
     });
     await wrapper.instance().getUserRadiusSessions();
     expect(prop.logout).toHaveBeenCalledWith(expect.any(Cookies), "default");
-    expect(toast.error).toHaveBeenCalledWith("Error occurred!", {
+    expect(toast.error).toHaveBeenCalledWith("ERR_OCCUR", {
       onOpen: expect.any(Function),
     });
     toast.error.mock.calls.pop()[1].onOpen();
     expect(toast.dismiss).toHaveBeenCalledWith("main_toast_id");
     await wrapper.instance().getUserRadiusSessions();
     expect(prop.logout).toHaveBeenCalledWith(expect.any(Object), "default");
-    expect(toast.error).toHaveBeenCalledWith("Error occurred!", {
+    expect(toast.error).toHaveBeenCalledWith("ERR_OCCUR", {
       onOpen: expect.any(Function),
     });
     toast.error.mock.calls.pop()[1].onOpen();
@@ -1705,7 +1705,7 @@ describe("<Status /> interactions", () => {
     expect(inputBtn.props).toEqual({
       type: "button",
       className: "button small session-logout",
-      value: "Logout",
+      value: "LOGOUT",
       onClick: expect.any(Function),
     });
     inputBtn.props.onClick();
@@ -1794,7 +1794,7 @@ describe("<Status /> interactions", () => {
     await wrapper.instance().getUserRadiusSessions();
     expect(prop.logout).not.toHaveBeenCalled();
     expect(toast.error).not.toHaveBeenCalled();
-    expect(logError).toHaveBeenCalledWith(response, "Error occurred!");
+    expect(logError).toHaveBeenCalledWith(response, "ERR_OCCUR");
   });
   it("should not concat same past session again", async () => {
     const data = [

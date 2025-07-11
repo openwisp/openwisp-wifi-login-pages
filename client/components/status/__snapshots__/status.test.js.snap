@@ -8,7 +8,7 @@ exports[`<Status /> interactions should show user's plan when subscription modul
       <p
         className="message"
       >
-        Do you want to automatically log in the next time?
+        LOGOUT_MODAL_CONTENT
       </p>
     }
     handleResponse={[Function]}
@@ -114,7 +114,7 @@ exports[`<Status /> interactions should show user's plan when subscription modul
             key="status"
           >
             <label>
-              Status
+              STATUS
               :
             </label>
             <span>
@@ -126,7 +126,7 @@ exports[`<Status /> interactions should show user's plan when subscription modul
             key="email"
           >
             <label>
-              Email
+              EMAIL
               :
             </label>
             <span />
@@ -138,7 +138,7 @@ exports[`<Status /> interactions should show user's plan when subscription modul
               className="button full"
               onClick={[Function]}
               type="button"
-              value="Logout"
+              value="LOGOUT"
             />
           </div>
           <div
@@ -253,7 +253,7 @@ exports[`<Status /> interactions should show user's plan when subscription modul
       <p
         className="message"
       >
-        Do you want to automatically log in the next time?
+        LOGOUT_MODAL_CONTENT
       </p>
     }
     handleResponse={[Function]}
@@ -273,7 +273,7 @@ exports[`<Status /> interactions should show user's plan when subscription modul
           <p
             className="intro"
           >
-            Please select the preferred subscription plan
+            PLAN_SETTING_TXT
             .
           </p>
           <div
@@ -440,7 +440,7 @@ exports[`<Status /> interactions should show user's plan when subscription modul
             key="status"
           >
             <label>
-              Status
+              STATUS
               :
             </label>
             <span>
@@ -452,7 +452,7 @@ exports[`<Status /> interactions should show user's plan when subscription modul
             key="email"
           >
             <label>
-              Email
+              EMAIL
               :
             </label>
             <span />
@@ -464,7 +464,7 @@ exports[`<Status /> interactions should show user's plan when subscription modul
               className="button full"
               onClick={[Function]}
               type="button"
-              value="Logout"
+              value="LOGOUT"
             />
           </div>
           <div
@@ -579,7 +579,7 @@ exports[`<Status /> interactions should show user's radius usage 1`] = `
       <p
         className="message"
       >
-        Do you want to automatically log in the next time?
+        LOGOUT_MODAL_CONTENT
       </p>
     }
     handleResponse={[Function]}
@@ -653,32 +653,20 @@ exports[`<Status /> interactions should show user's radius usage 1`] = `
         >
           <p
             className="status-content"
-            key="WiFi Login Successful!"
+            key="STATUS_CONTENT"
           >
-            WiFi Login Successful!
-          </p>
-          <p
-            className="status-content"
-            key="You can now use the internet."
-          >
-            You can now use the internet.
-          </p>
-          <p
-            className="status-content"
-            key="You may leave this page open in case you want to log out."
-          >
-            You may leave this page open in case you want to log out.
+            STATUS_CONTENT
           </p>
           <p
             className="status-content"
             key="status"
           >
             <label>
-              Status
+              STATUS
               :
             </label>
             <span>
-              Logged in
+              LOGGED_IN
             </span>
           </p>
           <p
@@ -686,7 +674,7 @@ exports[`<Status /> interactions should show user's radius usage 1`] = `
             key="email"
           >
             <label>
-              Email
+              EMAIL
               :
             </label>
             <span />
@@ -698,7 +686,7 @@ exports[`<Status /> interactions should show user's radius usage 1`] = `
               className="button full"
               onClick={[Function]}
               type="button"
-              value="Logout"
+              value="LOGOUT"
             />
           </div>
           <div
@@ -813,7 +801,7 @@ exports[`<Status /> rendering should render correctly 1`] = `
       <p
         className="message"
       >
-        Do you want to automatically log in the next time?
+        LOGOUT_MODAL_CONTENT
       </p>
     }
     handleResponse={[Function]}
@@ -848,27 +836,17 @@ exports[`<Status /> rendering should render correctly 1`] = `
           <p
             className="status-content"
           >
-            WiFi Login Successful!
-          </p>
-          <p
-            className="status-content"
-          >
-            You can now use the internet.
-          </p>
-          <p
-            className="status-content"
-          >
-            You may leave this page open in case you want to log out.
+            STATUS_CONTENT
           </p>
           <p
             className="status-content"
           >
             <label>
-              Status
+              STATUS
               :
             </label>
             <span>
-              Logged in
+              LOGGED_IN
             </span>
           </p>
           <div
@@ -878,7 +856,7 @@ exports[`<Status /> rendering should render correctly 1`] = `
               className="button full"
               onClick={[Function]}
               type="button"
-              value="Logout"
+              value="LOGOUT"
             />
           </div>
           <div

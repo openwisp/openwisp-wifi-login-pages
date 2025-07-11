@@ -223,7 +223,7 @@ exports[`<OrganizationWrapper /> interactions should render main title if pageTi
       encodeSpecialCharacters={true}
     >
       <title>
-        Login to default name
+        DEFAULT_TITLdefault name
       </title>
     </HelmetWrapper>
   </ContextProvider>
@@ -683,7 +683,7 @@ exports[`<OrganizationWrapper /> interactions should show route for authenticate
       encodeSpecialCharacters={true}
     >
       <title>
-        Login to default name
+        DEFAULT_TITLdefault name
       </title>
     </HelmetWrapper>
   </ContextProvider>
@@ -907,7 +907,7 @@ exports[`Test Organization Wrapper for authenticated and unverified users should
       encodeSpecialCharacters={true}
     >
       <title>
-        Login to default name
+        DEFAULT_TITLdefault name
       </title>
     </HelmetWrapper>
   </ContextProvider>
@@ -1104,7 +1104,7 @@ exports[`Test Organization Wrapper for unauthenticated users should show route f
       encodeSpecialCharacters={true}
     >
       <title>
-        Login to default name
+        DEFAULT_TITLdefault name
       </title>
     </HelmetWrapper>
   </ContextProvider>

@@ -31,7 +31,7 @@ exports[`<Registration /> interactions should show modal if user is already regi
         className="message"
       >
         <p>
-          A user with credentials like the one being entered already exists in other organizations:
+          CONFLICT_ORGS
         </p>
         <ul>
           <li
@@ -42,7 +42,7 @@ exports[`<Registration /> interactions should show modal if user is already regi
           </li>
         </ul>
         <p>
-          Do you own the account mentioned above and want to sign in with this organization?
+          CONFLICT_SIGNIN
         </p>
       </div>
     </div>
@@ -54,14 +54,14 @@ exports[`<Registration /> interactions should show modal if user is already regi
         onClick={[Function]}
         type="button"
       >
-        Yes
+        YES
       </button>
       <button
         className="button partial"
         onClick={[Function]}
         type="button"
       >
-        No
+        NO
       </button>
     </p>
   </div>
@@ -87,11 +87,11 @@ exports[`<Registration /> interactions should show modal if user is registered b
         className="message"
       >
         <p>
-          A user with these credentials already exists.
+          NO_ORGS
         </p>
         <ul />
         <p>
-          Do you own the account mentioned above and want to sign in with this organization?
+          CONFLICT_SIGNIN
         </p>
       </div>
     </div>
@@ -103,14 +103,14 @@ exports[`<Registration /> interactions should show modal if user is registered b
         onClick={[Function]}
         type="button"
       >
-        Yes
+        YES
       </button>
       <button
         className="button partial"
         onClick={[Function]}
         type="button"
       >
-        No
+        NO
       </button>
     </p>
   </div>
@@ -143,7 +143,7 @@ exports[`<Registration /> rendering should render correctly 1`] = `
               <label
                 htmlFor="email"
               >
-                Email
+                EMAIL
               </label>
               <input
                 autoComplete="email"
@@ -152,9 +152,9 @@ exports[`<Registration /> rendering should render correctly 1`] = `
                 name="email"
                 onChange={[Function]}
                 pattern=".+@.+\\\\..+"
-                placeholder="email address"
+                placeholder="EMAIL_PHOLD"
                 required={true}
-                title="enter valid email address"
+                title="EMAIL_PTRN_DESC"
                 type="email"
                 value=""
               />
@@ -165,7 +165,7 @@ exports[`<Registration /> rendering should render correctly 1`] = `
               <label
                 htmlFor="password"
               >
-                Password
+                PWD_LBL
               </label>
               <input
                 autoComplete="new-password"
@@ -174,9 +174,9 @@ exports[`<Registration /> rendering should render correctly 1`] = `
                 name="password1"
                 onChange={[Function]}
                 pattern=".{6,}"
-                placeholder="password"
+                placeholder="PWD_PHOLD"
                 required={true}
-                title="password must be a minimum of 6 characters"
+                title="PWD_PTRN_DESC"
                 type="password"
                 value=""
               />
@@ -203,7 +203,7 @@ exports[`<Registration /> rendering should render correctly 1`] = `
               <label
                 htmlFor="password-confirm"
               >
-                Confirm password
+                CONFIRM_PWD_LBL
               </label>
               <input
                 autoComplete="new-password"
@@ -212,9 +212,9 @@ exports[`<Registration /> rendering should render correctly 1`] = `
                 name="password2"
                 onChange={[Function]}
                 pattern=".{6,}"
-                placeholder="confirm password"
+                placeholder="CONFIRM_PWD_PHOLD"
                 required={true}
-                title="password must be a minimum of 6 characters"
+                title="PWD_PTRN_DESC"
                 type="password"
                 value=""
               />
@@ -239,23 +239,7 @@ exports[`<Registration /> rendering should render correctly 1`] = `
           <div
             className="row add-info"
           >
-            By signing up, you accept the 
-            <Link
-              className="link additional registration"
-              key="terms-and-conditions"
-              to="/default/registration/terms-and-conditions"
-            >
-              terms and conditions
-            </Link>
-             and the 
-            <Link
-              className="link additional registration"
-              key="privacy-policy"
-              to="/default/registration/privacy-policy"
-            >
-              privacy policy
-            </Link>
-             of this WiFi service.
+            REGISTER_ADD_INFO_TXT
           </div>
           <div
             className="row register"
@@ -263,7 +247,7 @@ exports[`<Registration /> rendering should render correctly 1`] = `
             <input
               className="button full"
               type="submit"
-              value="Sign up"
+              value="REGISTER_BTN_TXT"
             />
           </div>
           <div
@@ -274,7 +258,7 @@ exports[`<Registration /> rendering should render correctly 1`] = `
                 className="link"
                 to="/default/login"
               >
-                Already have an account? Log in
+                LINKS_LOGIN_TXT
               </Link>
             </p>
           </div>
@@ -467,7 +451,7 @@ exports[`Registration and Mobile Phone Verification interactions should render P
       name="phone_number"
       onChange={[Function]}
       onKeyDown={[Function]}
-      placeholder="enter mobile phone number"
+      placeholder="PHONE_PHOLD"
       type="tel"
       value=""
     />
@@ -490,7 +474,7 @@ exports[`Registration and Mobile Phone Verification interactions should render P
     onChange={[Function]}
     onKeyDown={[Function]}
     onlyCountries={Array []}
-    placeholder="enter mobile phone number"
+    placeholder="PHONE_PHOLD"
     preferredCountries={Array []}
     value=""
   />

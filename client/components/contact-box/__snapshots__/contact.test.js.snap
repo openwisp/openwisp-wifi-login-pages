@@ -87,7 +87,7 @@ exports[`<Status /> rendering should render correctly 1`] = `
       <span
         className="label"
       >
-        Email
+        EMAIL
         :
       </span>
       <a
@@ -103,7 +103,7 @@ exports[`<Status /> rendering should render correctly 1`] = `
       <span
         className="label"
       >
-        Helpdesk
+        HELPDESK
         :
       </span>
       <a

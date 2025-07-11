@@ -129,7 +129,7 @@ exports[`Mobile Phone Token verification: standard flow should disable resend bu
             <p
               className="label"
             >
-              Verify your mobile phone number (+393660011222) by inserting the code you received via SMS below.
+              PHONE_VERIFY (+393660011222)
             </p>
             <div
               className="error non-field"
@@ -152,9 +152,9 @@ exports[`Mobile Phone Token verification: standard flow should disable resend bu
                 name="code"
                 onChange={[Function]}
                 pattern="[0-9]{6,}"
-                placeholder="enter SMS verification code"
+                placeholder="MOBILE_CODE_PHOLD"
                 required={true}
-                title="this field must be a 6 digit numeric code"
+                title="MOBILE_CODE_TITL"
                 type="text"
                 value=""
               />
@@ -163,7 +163,7 @@ exports[`Mobile Phone Token verification: standard flow should disable resend bu
               className="button full"
               type="submit"
             >
-              Submit
+              MOBILE_PHONE_VERIFY
             </button>
           </div>
         </form>
@@ -191,7 +191,7 @@ exports[`Mobile Phone Token verification: standard flow should disable resend bu
             onClick={[Function]}
             type="button"
           >
-            Send a new verification code
+            RESEND_TOKEN
           </button>
         </div>
         <div
@@ -200,13 +200,13 @@ exports[`Mobile Phone Token verification: standard flow should disable resend bu
           <p
             className="label"
           >
-            Wrong phone number?
+            PHONE_CHANGE_LBL
           </p>
           <a
             className="button full"
             href="/test-org-2/change-phone-number"
           >
-            Change your phone number
+            PHONE_CHANGE_BTN
           </a>
         </div>
         <div
@@ -215,14 +215,14 @@ exports[`Mobile Phone Token verification: standard flow should disable resend bu
           <p
             className="label"
           >
-            If you need to cancel the process you can log out below.
+            LOGOUT_LBL
           </p>
           <button
             className="button full"
             onClick={[Function]}
             type="button"
           >
-            Logout
+            LOGOUT
           </button>
         </div>
       </div>
@@ -256,7 +256,7 @@ exports[`Mobile Phone Token verification: standard flow should disable resend bu
             <p
               className="label"
             >
-              Verify your mobile phone number (+393660011222) by inserting the code you received via SMS below.
+              PHONE_VERIFY (+393660011222)
             </p>
             <div
               className="row"
@@ -267,9 +267,9 @@ exports[`Mobile Phone Token verification: standard flow should disable resend bu
                 name="code"
                 onChange={[Function]}
                 pattern="[0-9]{6,}"
-                placeholder="enter SMS verification code"
+                placeholder="MOBILE_CODE_PHOLD"
                 required={true}
-                title="this field must be a 6 digit numeric code"
+                title="MOBILE_CODE_TITL"
                 type="text"
                 value=""
               />
@@ -278,7 +278,7 @@ exports[`Mobile Phone Token verification: standard flow should disable resend bu
               className="button full"
               type="submit"
             >
-              Submit
+              MOBILE_PHONE_VERIFY
             </button>
           </div>
         </form>
@@ -306,7 +306,7 @@ exports[`Mobile Phone Token verification: standard flow should disable resend bu
             onClick={[Function]}
             type="button"
           >
-            Send a new verification code
+            RESEND_TOKEN
           </button>
         </div>
         <div
@@ -315,13 +315,13 @@ exports[`Mobile Phone Token verification: standard flow should disable resend bu
           <p
             className="label"
           >
-            Wrong phone number?
+            PHONE_CHANGE_LBL
           </p>
           <a
             className="button full"
             href="/test-org-2/change-phone-number"
           >
-            Change your phone number
+            PHONE_CHANGE_BTN
           </a>
         </div>
         <div
@@ -330,14 +330,14 @@ exports[`Mobile Phone Token verification: standard flow should disable resend bu
           <p
             className="label"
           >
-            If you need to cancel the process you can log out below.
+            LOGOUT_LBL
           </p>
           <button
             className="button full"
             onClick={[Function]}
             type="button"
           >
-            Logout
+            LOGOUT
           </button>
         </div>
       </div>
@@ -371,7 +371,7 @@ exports[`Mobile Phone Token verification: standard flow should render successful
             <p
               className="label"
             >
-              Verify your mobile phone number (+393660011222) by inserting the code you received via SMS below.
+              PHONE_VERIFY (+393660011222)
             </p>
             <div
               className="row"
@@ -382,9 +382,9 @@ exports[`Mobile Phone Token verification: standard flow should render successful
                 name="code"
                 onChange={[Function]}
                 pattern="[0-9]{6,}"
-                placeholder="enter SMS verification code"
+                placeholder="MOBILE_CODE_PHOLD"
                 required={true}
-                title="this field must be a 6 digit numeric code"
+                title="MOBILE_CODE_TITL"
                 type="text"
                 value=""
               />
@@ -393,7 +393,7 @@ exports[`Mobile Phone Token verification: standard flow should render successful
               className="button full"
               type="submit"
             >
-              Submit
+              MOBILE_PHONE_VERIFY
             </button>
           </div>
         </form>
@@ -403,7 +403,7 @@ exports[`Mobile Phone Token verification: standard flow should render successful
           <p
             className="label"
           >
-            If you did not receive the verification SMS code, you can try sending it again by clicking below.
+            RESEND_TOKEN_LBL
           </p>
           <button
             className="button full"
@@ -411,7 +411,7 @@ exports[`Mobile Phone Token verification: standard flow should render successful
             onClick={[Function]}
             type="button"
           >
-            Send a new verification code
+            RESEND_TOKEN
           </button>
         </div>
         <div
@@ -420,13 +420,13 @@ exports[`Mobile Phone Token verification: standard flow should render successful
           <p
             className="label"
           >
-            Wrong phone number?
+            PHONE_CHANGE_LBL
           </p>
           <a
             className="button full"
             href="/test-org-2/change-phone-number"
           >
-            Change your phone number
+            PHONE_CHANGE_BTN
           </a>
         </div>
         <div
@@ -435,14 +435,14 @@ exports[`Mobile Phone Token verification: standard flow should render successful
           <p
             className="label"
           >
-            If you need to cancel the process you can log out below.
+            LOGOUT_LBL
           </p>
           <button
             className="button full"
             onClick={[Function]}
             type="button"
           >
-            Logout
+            LOGOUT
           </button>
         </div>
       </div>

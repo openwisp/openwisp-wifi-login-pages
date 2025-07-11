@@ -16,7 +16,7 @@ exports[`<Logout /> rendering should render correctly 1`] = `
           className="inner"
         >
           <h2>
-            Logout successful
+            LOGOUT_CONTENT
           </h2>
           <div
             className="links row"
@@ -26,7 +26,7 @@ exports[`<Logout /> rendering should render correctly 1`] = `
               onClick={[Function]}
               to="/default/status"
             >
-              Login again
+              LOGIN_AGAIN
             </Link>
           </div>
         </div>

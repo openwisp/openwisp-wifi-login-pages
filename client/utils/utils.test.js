@@ -48,19 +48,19 @@ describe("renderAdditionalInfo tests", () => {
     expect(output[0]).toEqual("sample test");
     text = "sample {terms_and_conditions} test";
     output = renderAdditionalInfo(text, orgSlug, component);
-    expect(output[1].props.children).toBe("terms and conditions");
+    expect(output[1].props.children).toBe("TOS_TITL");
     text = "sample {privacy_policy} test";
     output = renderAdditionalInfo(text, orgSlug, component);
-    expect(output[1].props.children).toBe("privacy policy");
+    expect(output[1].props.children).toBe("PRIV_POL_TITL");
     text = "sample {privacy_policy} test {terms_and_conditions}";
     output = renderAdditionalInfo(text, orgSlug, component);
-    expect(output[1].props.children).toBe("privacy policy");
-    expect(output[3].props.children).toBe("terms and conditions");
+    expect(output[1].props.children).toBe("PRIV_POL_TITL");
+    expect(output[3].props.children).toBe("TOS_TITL");
 
     text = "{terms_and_conditions} sample {privacy_policy} test";
     output = renderAdditionalInfo(text, orgSlug, component);
-    expect(output[1].props.children).toBe("terms and conditions");
-    expect(output[3].props.children).toBe("privacy policy");
+    expect(output[1].props.children).toBe("TOS_TITL");
+    expect(output[3].props.children).toBe("PRIV_POL_TITL");
   });
 });
 describe("customMerge tests", () => {
@@ -316,7 +316,7 @@ describe("Validate Token tests", () => {
     expect(axios.mock.calls.length).toBe(1);
     expect(result).toBe(false);
     expect(setUserData.mock.calls.length).toBe(1);
-    expect(errorMethod).toBeCalledWith("Error occurred!");
+    expect(errorMethod).toBeCalledWith("ERR_OCCUR");
     expect(logout).toHaveBeenCalledWith(expect.any(Cookies), "default");
     const cookiesArg = logout.mock.calls[0][0];
     expect(cookiesArg.cookies).toEqual({default_auth_token: "token"});
@@ -344,7 +344,7 @@ describe("Validate Token tests", () => {
       language,
     );
     expect(result).toEqual(false);
-    expect(errorMethod).toBeCalledWith("Error occurred!");
+    expect(errorMethod).toBeCalledWith("ERR_OCCUR");
     expect(logout).toHaveBeenCalledWith(expect.any(Cookies), "default");
     const cookiesArg = logout.mock.calls[0][0];
     expect(cookiesArg.cookies).toEqual({default_auth_token: "token"});
@@ -503,7 +503,7 @@ describe("password-toggle tests", () => {
       />,
     );
     expect(
-      wrapper.contains(<i className="eye" title="reveal password" />),
+      wrapper.contains(<i className="eye" title="PWD_REVEAL" />),
     ).toEqual(true);
     wrapper = shallow(
       <PasswordToggleIcon
@@ -514,7 +514,7 @@ describe("password-toggle tests", () => {
       />,
     );
     expect(
-      wrapper.contains(<i className="eye-slash" title="hide password" />),
+      wrapper.contains(<i className="eye-slash" title="PWD_HIDE" />),
     ).toEqual(true);
     wrapper.instance().handleClick(inputRef, secondInputRef);
     expect(toggler).toHaveBeenCalled();
@@ -839,7 +839,7 @@ describe("getPaymentStatusRedirectUrl tests", () => {
     );
     expect(result).toBe("/default/payment/failed");
     expect(errorMethod).toHaveBeenCalledTimes(1);
-    expect(errorMethod).toHaveBeenCalledWith("Error occurred!");
+    expect(errorMethod).toHaveBeenCalledWith("ERR_OCCUR");
     expect(consoleLog).toHaveBeenCalledTimes(1);
     expect(consoleLog).toHaveBeenCalledWith(response);
   });
@@ -860,7 +860,7 @@ describe("getPaymentStatusRedirectUrl tests", () => {
     );
     expect(result).toBe("/default/payment/failed");
     expect(errorMethod).toHaveBeenCalledTimes(1);
-    expect(errorMethod).toHaveBeenCalledWith("Error occurred!");
+    expect(errorMethod).toHaveBeenCalledWith("ERR_OCCUR");
     expect(consoleLog).toHaveBeenCalledTimes(1);
     expect(consoleLog).toHaveBeenCalledWith(response);
   });

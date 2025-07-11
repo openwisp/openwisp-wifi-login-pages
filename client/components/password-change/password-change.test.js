@@ -155,7 +155,7 @@ describe("<PasswordChange /> interactions", () => {
   it("should set title", () => {
     const setTitleMock = wrapper.instance().props.setTitle.mock;
     expect(setTitleMock.calls.pop()).toEqual([
-      "Change your password",
+      "PWD_CHANGE_TITL",
       props.orgName,
     ]);
   });
@@ -168,9 +168,9 @@ describe("<PasswordChange /> interactions", () => {
       name: "newPassword1",
       onChange: expect.any(Function),
       pattern: ".{6,}",
-      placeholder: "Your new password",
+      placeholder: "PWD1_PHOLD",
       required: true,
-      title: "password must be a minimum of 6 characters",
+      title: "PWD_PTRN_DESC",
       type: "password",
       value: "",
     });
@@ -191,9 +191,9 @@ describe("<PasswordChange /> interactions", () => {
       name: "newPassword2",
       onChange: expect.any(Function),
       pattern: ".{6,}",
-      placeholder: "confirm password",
+      placeholder: "CONFIRM_PWD_PHOLD",
       required: true,
-      title: "password must be a minimum of 6 characters",
+      title: "PWD_PTRN_DESC",
       type: "password",
       value: "",
     });

@@ -295,10 +295,10 @@ describe("<Registration /> interactions", () => {
       disableLifecycleMethods: true,
     });
     expect(wrapper.find("[htmlFor='first_name']").text()).toEqual(
-      "First name (optional)",
+      "FIRST_NAME_LBL (OPTIONAL)",
     );
     expect(wrapper.find("[htmlFor='location']").text()).toEqual(
-      "Location (optional)",
+      "LOCATION_LBL (OPTIONAL)",
     );
     expect(wrapper.find(".last_name").length).toEqual(0);
     expect(wrapper.find(".birth_date").length).toEqual(0);
@@ -312,13 +312,13 @@ describe("<Registration /> interactions", () => {
       context: loadingContextValue,
       disableLifecycleMethods: true,
     });
-    expect(wrapper.find("[htmlFor='first_name']").text()).toEqual("First name");
-    expect(wrapper.find("[htmlFor='birth_date']").text()).toEqual("Birth date");
+    expect(wrapper.find("[htmlFor='first_name']").text()).toEqual("FIRST_NAME_LBL");
+    expect(wrapper.find("[htmlFor='birth_date']").text()).toEqual("BIRTH_DATE_LBL");
     expect(wrapper.find("[htmlFor='last_name']").text()).toEqual(
-      "Last name (optional)",
+      "LAST_NAME_LBL (OPTIONAL)",
     );
     expect(wrapper.find("[htmlFor='location']").text()).toEqual(
-      "Location (optional)",
+      "LOCATION_LBL (OPTIONAL)",
     );
   });
   it("should execute authenticate in mobile phone verification flow", async () => {
@@ -512,7 +512,7 @@ describe("Registration and Mobile Phone Verification interactions", () => {
       onChange: expect.any(Function),
       onKeyDown: expect.any(Function),
       onlyCountries: [],
-      placeholder: "enter mobile phone number",
+      placeholder: "PHONE_PHOLD",
       preferredCountries: [],
       value: "",
     });
@@ -587,7 +587,7 @@ describe("Registration and Mobile Phone Verification interactions", () => {
       value: "",
       onChange: expect.any(Function),
       onKeyDown: expect.any(Function),
-      placeholder: "enter mobile phone number",
+      placeholder: "PHONE_PHOLD",
       type: "tel",
     });
     fallback.props.onChange("+911234567890");
@@ -752,7 +752,7 @@ describe("Registration without identity verification (Email registration)", () =
     expect(wrapper.find("form")).toHaveLength(1);
     const component = wrapper.find(Registration);
     const setTitleMock = component.props().setTitle.mock;
-    expect(setTitleMock.calls.pop()).toEqual(["Sign up", props.orgName]);
+    expect(setTitleMock.calls.pop()).toEqual(["REGISTRATION_TITL", props.orgName]);
   });
   it("should set country when selectedCountry is executed", async () => {
     wrapper = await mountComponent(props);
