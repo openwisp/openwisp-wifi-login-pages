@@ -502,9 +502,9 @@ describe("password-toggle tests", () => {
         hidePassword
       />,
     );
-    expect(
-      wrapper.contains(<i className="eye" title="PWD_REVEAL" />),
-    ).toEqual(true);
+    expect(wrapper.contains(<i className="eye" title="PWD_REVEAL" />)).toEqual(
+      true,
+    );
     wrapper = shallow(
       <PasswordToggleIcon
         inputRef={inputRef}

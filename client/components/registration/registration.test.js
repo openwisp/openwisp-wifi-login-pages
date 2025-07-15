@@ -312,8 +312,12 @@ describe("<Registration /> interactions", () => {
       context: loadingContextValue,
       disableLifecycleMethods: true,
     });
-    expect(wrapper.find("[htmlFor='first_name']").text()).toEqual("FIRST_NAME_LBL");
-    expect(wrapper.find("[htmlFor='birth_date']").text()).toEqual("BIRTH_DATE_LBL");
+    expect(wrapper.find("[htmlFor='first_name']").text()).toEqual(
+      "FIRST_NAME_LBL",
+    );
+    expect(wrapper.find("[htmlFor='birth_date']").text()).toEqual(
+      "BIRTH_DATE_LBL",
+    );
     expect(wrapper.find("[htmlFor='last_name']").text()).toEqual(
       "LAST_NAME_LBL (OPTIONAL)",
     );
@@ -752,7 +756,10 @@ describe("Registration without identity verification (Email registration)", () =
     expect(wrapper.find("form")).toHaveLength(1);
     const component = wrapper.find(Registration);
     const setTitleMock = component.props().setTitle.mock;
-    expect(setTitleMock.calls.pop()).toEqual(["REGISTRATION_TITL", props.orgName]);
+    expect(setTitleMock.calls.pop()).toEqual([
+      "REGISTRATION_TITL",
+      props.orgName,
+    ]);
   });
   it("should set country when selectedCountry is executed", async () => {
     wrapper = await mountComponent(props);

@@ -91,16 +91,10 @@ describe("<PasswordConfirm /> rendering", () => {
   });
 
   it("should render password field correctly", () => {
-    expect(wrapper.find(".row.password label").text()).toBe(
-      "PWD_LBL",
-    );
+    expect(wrapper.find(".row.password label").text()).toBe("PWD_LBL");
     const passwordInput = wrapper.find(".row.password input");
-    expect(passwordInput.prop("placeholder")).toBe(
-      "PWD_PHOLD",
-    );
-    expect(passwordInput.prop("title")).toBe(
-      "PWD_PTRN_DESC",
-    );
+    expect(passwordInput.prop("placeholder")).toBe("PWD_PHOLD");
+    expect(passwordInput.prop("title")).toBe("PWD_PTRN_DESC");
     expect(passwordInput.prop("type")).toBe("password");
   });
 
@@ -109,12 +103,8 @@ describe("<PasswordConfirm /> rendering", () => {
       "CONFIRM_PWD_LBL",
     );
     const confirmInput = wrapper.find(".row.password-confirm input");
-    expect(confirmInput.prop("placeholder")).toBe(
-      "CONFIRM_PWD_PHOLD",
-    );
-    expect(confirmInput.prop("title")).toBe(
-      "PWD_PTRN_DESC",
-    );
+    expect(confirmInput.prop("placeholder")).toBe("CONFIRM_PWD_PHOLD");
+    expect(confirmInput.prop("title")).toBe("PWD_PTRN_DESC");
     expect(confirmInput.prop("type")).toBe("password");
   });
 });
@@ -243,7 +233,10 @@ describe("<PasswordConfirm /> interactions", () => {
   });
   it("should set title", () => {
     const setTitleMock = wrapper.instance().props.setTitle.mock;
-    expect(setTitleMock.calls.pop()).toEqual(["PWD_CONFIRM_TITL", props.orgName]);
+    expect(setTitleMock.calls.pop()).toEqual([
+      "PWD_CONFIRM_TITL",
+      props.orgName,
+    ]);
   });
   it("should toggle password icon for both password fields in PasswordToggleIcon", async () => {
     const nodes = wrapper.find(PasswordToggleIcon);

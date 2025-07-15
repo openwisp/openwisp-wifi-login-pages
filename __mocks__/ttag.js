@@ -1,5 +1,5 @@
 const passthrough = (strings, ...values) => {
-  let str = '';
+  let str = "";
   for (let i = 0; i < strings.length; i++) {
     str += strings[i];
     if (i < values.length) str += values[i];
@@ -14,5 +14,5 @@ module.exports = {
   ngettext: (s, p, c) => (c === 1 ? s : p),
   msgid: passthrough,
   c: passthrough,
-  gettext: (str) => (typeof str === 'string' ? str : ''),
+  gettext: (str) => (typeof str === "string" ? str : ""),
 };

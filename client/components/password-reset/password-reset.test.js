@@ -64,15 +64,9 @@ describe("<PasswordReset /> rendering", () => {
 
   it("should render input field correctly", () => {
     const emailInput = wrapper.find("input[type='text']");
-    expect(wrapper.find(".row label").text()).toBe(
-      "USERNAME_LOG_LBL",
-    );
-    expect(emailInput.prop("placeholder")).toBe(
-      "USERNAME_LOG_PHOLD",
-    );
-    expect(emailInput.prop("title")).toBe(
-      "USERNAME_LOG_TITL",
-    );
+    expect(wrapper.find(".row label").text()).toBe("USERNAME_LOG_LBL");
+    expect(emailInput.prop("placeholder")).toBe("USERNAME_LOG_PHOLD");
+    expect(emailInput.prop("title")).toBe("USERNAME_LOG_TITL");
     expect(emailInput.prop("type")).toBe("text");
   });
 });
