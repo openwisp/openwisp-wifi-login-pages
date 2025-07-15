@@ -1,10 +1,39 @@
 msgid ""
 msgstr ""
-"Content-Type: text/plain; charset=utf-8\n"
-"Plural-Forms: nplurals = 2; plural = (n != 1);\n"
 "Language: it\n"
-"mime-version: 1.0\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals = 2; plural = (n != 1);\n"
+
+#.  Request failed
+#: client/components/login/login.js:243 client/components/status/status.js:319
+#: client/components/status/status.js:323
+#: client/components/status/status.js:380
+#: client/components/status/status.js:384
+#: client/components/status/status.js:389
+#: client/components/status/status.js:430 client/utils/get-payment-status.js:67
+#: client/utils/get-plans.js:21 client/utils/handle-logout.js:30
+#: client/utils/validate-token.js:72
+msgid "ERR_OCCUR"
+msgstr "Si è verificato un errore!"
+
+#: client/utils/get-plan-selection.js:42
+msgid "PLAN_SETTING_TXT"
+msgstr "Seleziona il piano che preferisci"
+
+#: client/components/status/status.js:482
+#: client/components/status/status.js:561 client/utils/handle-logout.js:29
+msgid "LOGOUT_SUCCESS"
+msgstr "Log out effettuato con successo"
+
+#: client/utils/modal.js:28
+msgid "YES"
+msgstr "Sì"
+
+#: client/utils/modal.js:35
+msgid "NO"
+msgstr "No"
 
 #: client/utils/password-toggle.js:53
 msgid "PWD_REVEAL"
@@ -22,297 +51,396 @@ msgstr "informativa sul trattamento dei dati personali"
 msgid "TOS_TITL"
 msgstr "termini e le condizioni di utilizzo"
 
-#: client/components/status/status.js:467
-#: client/components/status/status.js:658
+#: client/components/login/login.js:216
+#: client/components/payment-process/payment-process.js:28
+#: client/components/status/status.js:564
+#: client/components/status/status.js:579
+msgid "PLEASE_WAIT"
+msgstr "Attendere prego..."
+
+#: client/components/registration/registration.js:340
+#: client/components/registration/registration.test.js:417
+#: client/components/status/status.js:581
+msgid "PLEASE_LOGIN"
+msgstr "Ti preghiamo di accedere"
+
+#: client/components/status/status.js:710
+#: client/components/status/status.js:921
 msgid "ACCT_ACTIVE"
 msgstr "Sessione attiva"
 
-#: client/components/logout/logout.js:23
-#: client/components/mobile-phone-verification/mobile-phone-verification.js:265
-#: client/components/status/status.js:491
-#: client/components/status/status.js:572
-#: client/components/status/status.js:754
+#: client/components/logout/logout.js:24
+#: client/components/mobile-phone-verification/mobile-phone-verification.js:331
+#: client/components/status/status.js:742
+#: client/components/status/status.js:835
+#: client/components/status/status.js:1099
 msgid "LOGOUT"
 msgstr "Esci"
 
-#: client/components/status/status.js:650
+#: client/components/status/status.js:913
 msgid "ACCT_START_TIME"
 msgstr "Data/ora inizio"
 
-#: client/components/status/status.js:651
+#: client/components/status/status.js:914
 msgid "ACCT_STOP_TIME"
 msgstr "Data/ora fine"
 
-#: client/components/status/status.js:652
+#: client/components/status/status.js:915
 msgid "ACCT_DURATION"
 msgstr "Durata"
 
-#: client/components/status/status.js:653
+#: client/components/status/status.js:916
 msgid "ACCT_DOWNLOAD"
 msgstr "Traffico download"
 
-#: client/components/status/status.js:654
+#: client/components/status/status.js:917
 msgid "ACCT_UPLOAD"
 msgstr "Traffico Upload"
 
-#: client/components/status/status.js:655
+#: client/components/status/status.js:918
 msgid "ACCT_DEVICE_ADDRESS"
 msgstr "Indirizzo dispositivo"
 
-#: client/components/status/status.js:664
+#: client/components/status/status.js:927
 msgid "STATUS"
 msgstr "Stato"
 
-#: client/components/status/status.js:665
+#: client/components/status/status.js:928
 msgid "LOGGED_IN"
 msgstr "Autenticato"
 
-#: client/components/status/status.js:665
-msgid "TRAFFIC_EXHAUSTED"
-msgstr "Traffico esaurito"
-
 #: client/components/contact-box/contact.js:25
-#: client/components/password-reset/password-reset.js:106
-#: client/components/registration/registration.js:467
-#: client/components/status/status.js:668
+#: client/components/login/login.js:117
+#: client/components/registration/registration.js:476
+#: client/components/status/status.js:931
 msgid "EMAIL"
 msgstr "Email"
 
-#: client/components/status/status.js:671
+#: client/components/status/status.js:934
 msgid "USERNAME"
 msgstr "Nome utente"
 
-#: client/components/status/status.js:674
+#: client/components/status/status.js:937
 msgid "PHONE_NUMBER"
 msgstr "Numero di telefono"
 
-#: client/components/status/status.js:62
+#: client/components/status/status.js:1242
+msgid "CP_LOGIN"
+msgstr ""
+"Stiamo inizializzando la tua sessione sul servizio WiFi, potrebbero essere "
+"necessari alcuni secondi, attendere prego..."
+
+#: client/components/status/status.js:93
 msgid "STATUS_TITL"
 msgstr "Stato"
 
-#: client/components/status/status.js:702
+#: client/components/status/status.js:140
+msgid "PASSWORD_EXPIRED"
+msgstr "La tua password è scaduta, aggiornala."
+
+#: client/components/status/status.js:367
+msgid "PLAN_EXHAUSTED_TOAST"
+msgstr "Hai esaurito il traffico disponibile nel tuo abbonamento."
+
+#: client/components/status/status.js:420
+msgid "SUCCESS_UPGRADE_PLAN"
+msgstr "Ricarica in corso"
+
+#: client/components/status/status.js:987
 msgid "STATUS_CONTENT"
 msgstr ""
 "Login al servizio WiFi effettuato con successo!\n"
 "        Ora è possibile accedere ad internet.\n"
-"        Puoi lasciare questa pagina aperta per poter chiudere la sessione attiva."
+"        Puoi lasciare questa pagina aperta per poter chiudere la sessione "
+"attiva."
 
-#: client/components/status/status.js:715
+#: client/components/status/status.js:989
+msgid "TRAFFIC_EXHAUSTED"
+msgstr "Traffico esaurito"
+
+#: client/components/status/status.js:998
 msgid "LOGOUT_MODAL_CONTENT"
 msgstr "Autenticarsi automaticamente la prossima volta?"
 
-#: client/components/status/status.js:723
-msgid "YES"
-msgstr "Sì"
+#: client/components/status/status.js:1025
+msgid "CURRENT_SUBSCRIPTION_TXT"
+msgstr "Abbonamento attuale:"
 
-#: client/components/status/status.js:730
-msgid "NO"
-msgstr "No"
+#: client/components/status/status.js:1054
+msgid "USAGE_LIMIT_EXHAUSTED_TXT"
+msgstr ""
+"Hai esaurito il traffico disponibile. Effettua una ricarica per continuare a "
+"utilizzare il servizio."
 
-#: client/components/registration/registration.js:298
-msgid "PLAN_SETTING_TXT"
-msgstr "Seleziona il piano che preferisci"
+#: client/components/status/status.js:1067
+msgid "PLAN_UPGRADE_BTN_TXT"
+msgstr "Ricarica"
 
-#: client/components/login/login.js:139
-#: client/components/mobile-phone-change/mobile-phone-change.js:139
-#: client/components/registration/registration.js:390
+#: client/components/login/login.js:152
+#: client/components/mobile-phone-change/mobile-phone-change.js:137
+#: client/components/registration/registration.js:399
 msgid "PHONE_LBL"
 msgstr "Numero di cellulare"
 
-#: client/components/login/login.js:154
-#: client/components/login/login.js:172
-#: client/components/mobile-phone-change/mobile-phone-change.js:155
-#: client/components/mobile-phone-change/mobile-phone-change.js:180
-#: client/components/registration/registration.js:414
-#: client/components/registration/registration.js:448
+#: client/components/login/login.js:167 client/components/login/login.js:185
+#: client/components/mobile-phone-change/mobile-phone-change.js:153
+#: client/components/mobile-phone-change/mobile-phone-change.js:178
+#: client/components/registration/registration.js:423
+#: client/components/registration/registration.js:457
 msgid "PHONE_PHOLD"
 msgstr "Numero di telefono cellulare"
 
-#: client/components/password-reset/password-reset.js:116
-#: client/components/registration/registration.js:477
+#: client/components/registration/registration.js:486
 msgid "EMAIL_PHOLD"
 msgstr "Indirizzo email"
 
-#: client/components/password-reset/password-reset.js:118
-#: client/components/registration/registration.js:480
+#: client/components/registration/registration.js:489
 msgid "EMAIL_PTRN_DESC"
 msgstr "Indirizzo email valido"
 
-#: client/components/login/login.js:107
-msgid "USERNAME_LOG_LBL"
-msgstr "Email, numero di telefono o nome utente"
+#: client/components/registration/registration.js:496
+msgid "USERNAME_REG_LBL"
+msgstr "Nome utente"
 
-#: client/components/login/login.js:110
-msgid "USERNAME_LOG_PHOLD"
-msgstr "Email, numero di telefono o nome utente"
+#: client/components/registration/registration.js:509
+msgid "USERNAME_REG_PHOLD"
+msgstr "Nome utente"
 
-#: client/components/registration/registration.js:503
+#: client/components/registration/registration.js:512
 msgid "USERNAME_PTRN_DESC"
 msgstr "Solo lettere, numeri e caratteri speciali @/./+/-/_"
 
-#: client/components/registration/registration.js:513
-#: client/components/registration/registration.js:514
+#: client/components/registration/registration.js:522
+#: client/components/registration/registration.js:523
 msgid "FIRST_NAME_LBL"
 msgstr "Nome"
 
-#: client/components/registration/registration.js:514
-#: client/components/registration/registration.js:542
-#: client/components/registration/registration.js:569
-#: client/components/registration/registration.js:594
+#: client/components/registration/registration.js:523
+#: client/components/registration/registration.js:551
+#: client/components/registration/registration.js:578
+#: client/components/registration/registration.js:603
 msgid "OPTIONAL"
 msgstr "Opzionale"
 
-#: client/components/registration/registration.js:531
+#: client/components/registration/registration.js:540
 msgid "FIRST_NAME_PHOLD"
 msgstr "Nome"
 
-#: client/components/registration/registration.js:541
-#: client/components/registration/registration.js:542
+#: client/components/registration/registration.js:550
+#: client/components/registration/registration.js:551
 msgid "LAST_NAME_LBL"
 msgstr "Cognome"
 
-#: client/components/registration/registration.js:559
+#: client/components/registration/registration.js:568
 msgid "LAST_NAME_PHOLD"
 msgstr "Cognome"
 
-#: client/components/registration/registration.js:568
-#: client/components/registration/registration.js:569
+#: client/components/registration/registration.js:577
+#: client/components/registration/registration.js:578
 msgid "BIRTH_DATE_LBL"
 msgstr "Data di nascita"
 
-#: client/components/registration/registration.js:593
-#: client/components/registration/registration.js:594
+#: client/components/registration/registration.js:602
+#: client/components/registration/registration.js:603
 msgid "LOCATION_LBL"
 msgstr "Indirizzo"
 
-#: client/components/registration/registration.js:609
+#: client/components/registration/registration.js:618
 msgid "LOCATION_PHOLD"
 msgstr "Luogo di residenza"
 
-#: client/components/registration/registration.js:612
+#: client/components/registration/registration.js:621
 msgid "LOCATION_PTRN_DESC"
 msgstr "Solo caratteri, numeri, spazi e punteggiatura"
 
-#: client/components/login/login.js:347
+#: client/components/login/login.js:419
 #: client/components/password-confirm/password-confirm.js:145
-#: client/components/registration/registration.js:618
+#: client/components/registration/registration.js:627
 msgid "PWD_LBL"
 msgstr "Password"
 
-#: client/components/login/login.js:357
+#: client/components/login/login.js:429
 #: client/components/password-confirm/password-confirm.js:156
-#: client/components/registration/registration.js:628
+#: client/components/registration/registration.js:637
 msgid "PWD_PHOLD"
 msgstr "Inserisci la password"
 
-#: client/components/login/login.js:359
-#: client/components/password-change/password-change.js:129
-#: client/components/password-change/password-change.js:155
+#: client/components/login/login.js:431
+#: client/components/password-change/password-change.js:152
 #: client/components/password-confirm/password-confirm.js:158
 #: client/components/password-confirm/password-confirm.js:186
-#: client/components/registration/registration.js:630
-#: client/components/registration/registration.js:659
+#: client/components/registration/registration.js:639
+#: client/components/registration/registration.js:668
 msgid "PWD_PTRN_DESC"
 msgstr "La password deve essere di almeno 6 caratteri"
 
-#: client/components/password-change/password-change.js:143
+#: client/components/password-change/password-change.js:205
 #: client/components/password-confirm/password-confirm.js:173
-#: client/components/registration/registration.js:646
+#: client/components/registration/registration.js:655
 msgid "CONFIRM_PWD_LBL"
 msgstr "Conferma password"
 
-#: client/components/password-change/password-change.js:153
+#: client/components/password-change/password-change.js:208
 #: client/components/password-confirm/password-confirm.js:184
-#: client/components/registration/registration.js:657
+#: client/components/registration/registration.js:666
 msgid "CONFIRM_PWD_PHOLD"
 msgstr "Conferma password"
 
-#: client/components/registration/registration.js:677
+#: client/components/registration/registration.js:686
 msgid "COUNTRY_LBL"
 msgstr "Stato"
 
-#: client/components/registration/registration.js:686
+#: client/components/registration/registration.js:695
 msgid "CITY_LBL"
 msgstr "Cittá"
 
-#: client/components/registration/registration.js:699
+#: client/components/registration/registration.js:708
 msgid "CITY_PHOLD"
 msgstr "Inserisci la città"
 
-#: client/components/registration/registration.js:703
+#: client/components/registration/registration.js:712
 msgid "STREET_LBL"
 msgstr "Indirizzo"
 
-#: client/components/registration/registration.js:716
+#: client/components/registration/registration.js:725
 msgid "STREET_PHOLD"
 msgstr "Inserisci l'indirizzo"
 
-#: client/components/registration/registration.js:720
+#: client/components/registration/registration.js:729
 msgid "ZIP_CODE_LBL"
 msgstr "Codice Avviamento Postale"
 
-#: client/components/registration/registration.js:737
+#: client/components/registration/registration.js:746
 msgid "TAX_NUMBER_LBL"
 msgstr "Codice fiscale o p.IVA"
 
-#: client/components/registration/registration.js:749
+#: client/components/registration/registration.js:758
 msgid "TAX_NUMBER_PHOLD"
 msgstr "Inserisci il codice fiscale o la p.IVA"
 
-#: client/components/registration/registration.js:751
+#: client/components/registration/registration.js:760
 msgid "TAX_NUMBER_PTRN_DESC"
 msgstr "Solo lettere e numeri"
 
-#: client/components/registration/registration.js:766
+#: client/components/registration/registration.js:775
 msgid "REGISTER_ADD_INFO_TXT"
 msgstr ""
 "Compilando ed inviando questo modulo di registrazione, si accettano i "
 "{terms_and_conditions} e l'{privacy_policy} del servizio WiFi."
 
-#: client/components/login/login.js:403
-#: client/components/registration/registration.js:779
+#: client/components/login/login.js:475
+#: client/components/registration/registration.js:788
 msgid "REGISTER_BTN_TXT"
 msgstr "Registrati"
 
-#: client/components/login/login.js:411
-#: client/components/registration/registration.js:792
+#: client/components/login/login.js:483
+#: client/components/registration/registration.js:801
 msgid "FORGOT_PASSWORD"
 msgstr "Password dimenticata?"
 
-#: client/components/registration/registration.js:799
+#: client/components/registration/registration.js:808
 msgid "LINKS_LOGIN_TXT"
 msgstr "Hai già un account? Effettua l'accesso"
 
-#: client/components/registration/registration.js:69
+#: client/components/registration/registration.js:75
 msgid "REGISTRATION_TITL"
 msgstr "Registrazione"
 
-#: client/components/payment-status/payment-status.js:143
-#. failed payment case
+#: client/components/password-change/password-change.js:71
+#: client/components/password-change/password-change.test.js:124
+#: client/components/password-change/password-change.test.js:129
+#: client/components/password-confirm/password-confirm.js:55
+#: client/components/registration/registration.js:141
+msgid "PWD_CNF_ERR"
+msgstr "le password non coincidono."
+
+#: client/components/registration/registration.js:228
+msgid "REGISTER_SUCCESS"
+msgstr "Registrazione avvenuta con successo"
+
+#: client/components/404/404.js:13
+#: client/components/registration/registration.js:244
+#: client/components/registration/registration.test.js:467
+msgid "404_PG_TITL"
+msgstr "404 Non trovato"
+
+#: client/components/registration/registration.js:258
+msgid "REGISTER_ERR"
+msgstr "Si è verificato un errore durante la registrazione."
+
+#: client/components/registration/registration.js:848
+#: client/components/registration/registration.test.js:445
+msgid "NO_ORGS"
+msgstr "Esiste già un utente con credenziali simili."
+
+#: client/components/registration/registration.js:849
+msgid "CONFLICT_ORGS"
+msgstr ""
+"Un utente con credenziali simili a quelle inserite esiste già in altre "
+"organizzazioni:"
+
+#: client/components/registration/registration.js:858
+msgid "CONFLICT_SIGNIN"
+msgstr ""
+"Sei il proprietario dell'account appena menzionato e vuoi associare il tuo "
+"account esistente a questo servizio WiFI?"
+
+#: client/components/payment-status/payment-status.js:116
+msgid "PAY_SUCCESS"
+msgstr "Il pagamento è stato ricevuto con successo."
+
+#: client/components/payment-status/payment-status.js:150
+msgid "PAY_REQ"
+msgstr "Pagamento richiesto per procedere"
+
+#: client/components/payment-status/payment-status.js:155
+#, javascript-format
+msgid "PAY_WARN${ timeout }${ maxAttempts }"
+msgstr ""
+"<p>Cliccando sul pulsante sottostante raggiungerai il servizio di pagamento "
+"dove potrai inserire i dati della tua carta di credito/debito in totale "
+"sicurezza. Dopodichè raggiungerai il sito web della tua banca per confermare "
+"la transazione.</p><p>Avrai a disposizione ${ timeout } minuti per "
+"completare il processo.<br /><strong>Per questo motivo ti consigliamo di "
+"preparare la tua carta debito/credito prima di avviare il processo di "
+"pagamento.</strong></p><p>Se per qualsiasi motivo il processo non viene "
+"completato entro il tempo disponibile, la connessione internet che ti "
+"permette di raggiungere il sito web della tua banca verrà chiusa, se ciò "
+"accade puoi accedere nuovamente con le credenziali appena registrate e "
+"ripetere il processo fino ad un massimo di ${ maxAttempts } volte.</p>"
+
+#: client/components/payment-status/payment-status.js:165
+#: client/components/payment-status/payment-status.test.js:221
+#: client/components/payment-status/payment-status.test.js:237
+msgid "PAY_PROC_BTN"
+msgstr "Procedi con il pagamento"
+
+#: client/components/payment-status/payment-status.js:175
+#: client/components/payment-status/payment-status.js:208
+msgid "PAY_GIVE_UP_BTN"
+msgstr "Annulla ed esci"
+
+#.  failed payment case
+#: client/components/payment-status/payment-status.js:193
 msgid "PAY_FAIL"
 msgstr "Pagamento fallito"
 
-#: client/components/payment-status/payment-status.js:144
-#. failed payment case
+#.  failed payment case
+#: client/components/payment-status/payment-status.js:194
 msgid "PAY_SUB_H"
 msgstr "Il pagamento non è andato a buon fine."
 
-#: client/components/payment-status/payment-status.js:147
-#. failed payment case
+#.  failed payment case
+#: client/components/payment-status/payment-status.js:197
 msgid "PAY_TRY_AGAIN_BTN"
 msgstr "Riprova"
 
-#: client/components/payment-status/payment-status.js:152
-#. failed payment case
+#.  failed payment case
+#: client/components/payment-status/payment-status.js:202
 msgid "PAY_GIVE_UP_TXT"
 msgstr ""
-"Se non riesci a completare la transazione puoi provare a metterti in contatto "
-"con la tua banca o annullare l'operazione."
-
-#: client/components/payment-status/payment-status.js:125
-#: client/components/payment-status/payment-status.js:158
-msgid "PAY_GIVE_UP_BTN"
-msgstr "Annulla ed esci"
+"Se non riesci a completare la transazione puoi provare a metterti in "
+"contatto con la tua banca o annullare l'operazione."
 
 #: client/components/password-reset/password-reset.js:32
 msgid "PWD_RESET_TITL"
@@ -320,23 +448,41 @@ msgstr "Reimposta password"
 
 #: client/components/password-confirm/password-confirm.js:125
 #: client/components/password-confirm/password-confirm.js:215
-#: client/components/password-reset/password-reset.js:93
-#: client/components/password-reset/password-reset.js:139
+#: client/components/password-reset/password-reset.js:92
+#: client/components/password-reset/password-reset.js:137
 msgid "LOGIN_PG_LNK"
 msgstr "Torna alla pagina di accesso"
 
-#: client/components/password-reset/password-reset.js:101
+#: client/components/password-reset/password-reset.js:100
 msgid "PWD_RESET_ADD_TXT"
 msgstr ""
-"Hai dimenticato la password? Inserisci il tuo indirizzo email, numero di telefono "
-"o nome utente di seguito e ti invieremo le istruzioni per reimpostarlo."
+"Hai dimenticato la password? Inserisci il tuo indirizzo email, numero di "
+"telefono o nome utente di seguito e ti invieremo le istruzioni per "
+"reimpostarlo."
 
-#: client/components/password-reset/password-reset.js:127
+#: client/components/login/login.js:117
+#: client/components/password-reset/password-reset.js:105
+msgid "USERNAME_LOG_LBL"
+msgstr "Email, numero di telefono o nome utente"
+
+#: client/components/login/login.js:123
+#: client/components/password-reset/password-reset.js:115
+msgid "USERNAME_LOG_PHOLD"
+msgstr "Email, numero di telefono o nome utente"
+
+#: client/components/login/login.js:126
+#: client/components/password-reset/password-reset.js:116
+msgid "USERNAME_LOG_TITL"
+msgstr ""
+"Inserisci un indirizzo email valido, un nome utente o un numero di telefono "
+"cellulare"
+
+#: client/components/password-reset/password-reset.js:125
 msgid "PWD_RESET_BTN"
 msgstr "Reimposta password"
 
 #: client/components/password-confirm/password-confirm.js:210
-#: client/components/password-reset/password-reset.js:133
+#: client/components/password-reset/password-reset.js:131
 msgid "PWD_RESET_CNTC_TXT"
 msgstr ""
 "Si prega di contattare il supporto in caso di problemi nella reimpostazione "
@@ -358,128 +504,161 @@ msgstr "Inserisci la nuova password di seguito."
 msgid "PWD_CONFIRM"
 msgstr "Conferma cambio password"
 
-#: client/components/password-change/password-change.js:44
-#: client/components/password-change/password-change.js:113
+#: client/components/password-change/password-change.js:46
+#: client/components/password-change/password-change.js:176
 msgid "PWD_CHANGE_TITL"
 msgstr "Cambia password"
+
+#: client/components/password-change/password-change.js:79
+#: client/components/password-change/password-change.js:80
+#: client/components/password-change/password-change.test.js:138
+#: client/components/password-change/password-change.test.js:139
+msgid "PWD_CURR_ERR"
+msgstr "La nuova password non puó essere uguale alla password attuale."
+
+#: client/components/password-change/password-change.js:107
+#: client/components/password-change/password-change.js:115
+#: client/components/password-change/password-change.test.js:149
+msgid "PWD_CHNG_ERR"
+msgstr "Si è verificato un errore, la password non è stata cambiata."
 
 #: client/components/password-change/password-change.js:177
 msgid "PWD_CHANGE_HELP_TXT"
 msgstr "Utilizza il modulo sottostante per modificare la tua password."
 
-#: client/components/password-change/password-change.js:117
+#: client/components/password-change/password-change.js:182
+msgid "CURR_PWD_LBL"
+msgstr "Password attuale"
+
+#: client/components/password-change/password-change.js:185
+msgid "CURR_PWD_PHOLD"
+msgstr "La tua password attuale"
+
+#: client/components/password-change/password-change.js:192
 msgid "PWD1_LBL"
 msgstr "Nuova password"
 
-#: client/components/password-change/password-change.js:127
+#: client/components/password-change/password-change.js:195
 msgid "PWD1_PHOLD"
 msgstr "inserisci la nuova password"
 
-#: client/components/password-change/password-change.js:172
+#: client/components/password-change/password-change.js:220
 msgid "PASSWORD_CHANGE"
 msgstr "Cambia password"
 
-#: client/components/mobile-phone-verification/mobile-phone-verification.js:47
+#: client/components/mobile-phone-change/mobile-phone-change.js:204
+#: client/components/password-change/password-change.js:227
+msgid "CANCEL"
+msgstr "Annulla"
+
+#: client/components/organization-wrapper/organization-wrapper.js:319
+#, javascript-format
+msgid "DEFAULT_TITL${ orgName }"
+msgstr "Accedi a ${ orgName }"
+
+#: client/components/mobile-phone-verification/mobile-phone-verification.js:58
 msgid "PHONE_VERIF_TITL"
 msgstr "Verifica numero di telefono"
 
-#: client/components/mobile-phone-change/mobile-phone-change.js:91
-#: client/components/mobile-phone-verification/mobile-phone-verification.js:152
+#: client/components/mobile-phone-change/mobile-phone-change.js:89
+#: client/components/mobile-phone-verification/mobile-phone-verification.js:164
 msgid "TOKEN_SENT"
 msgstr "Codice di verifica SMS inviato con successo"
 
-#: client/components/mobile-phone-verification/mobile-phone-verification.js:200
+#: client/components/mobile-phone-verification/mobile-phone-verification.js:251
 #, javascript-format
 msgid "PHONE_VERIFY (${ phone_number })"
 msgstr ""
 "Verifica il numero di telefono (${ phone_number }) inserendo il codice che "
 "hai ricevuto via SMS."
 
-#: client/components/mobile-phone-verification/mobile-phone-verification.js:215
+#: client/components/mobile-phone-verification/mobile-phone-verification.js:266
 msgid "MOBILE_CODE_PHOLD"
 msgstr "Inserisci il codice di verifica ricevuto via SMS"
 
-#: client/components/mobile-phone-verification/mobile-phone-verification.js:217
+#: client/components/mobile-phone-verification/mobile-phone-verification.js:268
 msgid "MOBILE_CODE_TITL"
 msgstr "Il campo deve essere un codice numerico di 6 cifre"
 
-#: client/components/mobile-phone-verification/mobile-phone-verification.js:228
+#: client/components/mobile-phone-verification/mobile-phone-verification.js:273
+msgid "MOBILE_PHONE_VERIFY"
+msgstr "Invio"
+
+#: client/components/mobile-phone-verification/mobile-phone-verification.js:281
 msgid "RESEND_TOKEN_LBL"
 msgstr ""
 "Se non hai ricevuto un SMS con il codice di verifica, richiedine uno nuovo "
 "cliccando sul pulsante seguente."
 
-#: client/components/mobile-phone-verification/mobile-phone-verification.js:228
-msgid "RESEND_TOKEN_WAIT_LBL${ cooldown }"
-msgstr ""
-"Un nuovo SMS può essere richiesto in ${ cooldown } secondi."
+#: client/components/mobile-phone-verification/mobile-phone-verification.js:286
+#, fuzzy, javascript-format
+msgid "RESEND_TOKEN_WAIT_LBL${ seconds }"
+msgstr "Un nuovo SMS può essere richiesto in ${ cooldown } secondi."
 
-#: client/components/mobile-phone-verification/mobile-phone-verification.js:235
+#: client/components/mobile-phone-verification/mobile-phone-verification.js:301
 msgid "RESEND_TOKEN"
 msgstr "Invia un nuovo codice di verifica"
 
-#: client/components/mobile-phone-verification/mobile-phone-verification.js:240
+#: client/components/mobile-phone-verification/mobile-phone-verification.js:306
 msgid "PHONE_CHANGE_LBL"
 msgstr "Numero di telefono errato? "
 
-#: client/components/mobile-phone-change/mobile-phone-change.js:200
-#: client/components/mobile-phone-verification/mobile-phone-verification.js:245
+#: client/components/mobile-phone-change/mobile-phone-change.js:198
+#: client/components/mobile-phone-verification/mobile-phone-verification.js:311
 msgid "PHONE_CHANGE_BTN"
 msgstr "Cambia il numero di telefono"
 
-#: client/components/mobile-phone-verification/mobile-phone-verification.js:250
+#: client/components/mobile-phone-verification/mobile-phone-verification.js:316
 msgid "LOGOUT_LBL"
-msgstr "Se non riesci a completare la verifica la sessione può essere terminata."
+msgstr ""
+"Se non riesci a completare la verifica la sessione può essere terminata."
 
-#: client/components/mobile-phone-change/mobile-phone-change.js:44
+#: client/components/mobile-phone-change/mobile-phone-change.js:45
 msgid "PHONE_CHANGE_TITL"
 msgstr "Cambia numero di telefono"
 
-#: client/components/mobile-phone-change/mobile-phone-change.js:206
-#: client/components/password-change/password-change.js:178
-msgid "CANCEL"
-msgstr "Annulla"
+#: client/components/login/login.js:303 client/components/logout/logout.js:33
+msgid "LOGIN_SUCCESS"
+msgstr "Autenticazione avvenuta con successo"
 
-#: client/components/logout/logout.js:46
+#: client/components/logout/logout.js:47
 msgid "LOGOUT_CONTENT"
 msgstr "Logout effettuato con successo"
 
-#: client/components/login/login.js:52
-#: client/components/login/login.js:392
-msgid "LOGIN"
-msgstr "Accedi"
-
-#: client/components/logout/logout.js:53
+#: client/components/logout/logout.js:54
 msgid "LOGIN_AGAIN"
 msgstr "Accedi nuovamente"
 
-#: client/components/login/login.js:113
-msgid "USERNAME_LOG_TITL"
-msgstr ""
-"Inserisci un indirizzo email valido, un nome utente o un numero di telefono "
-"cellulare"
+#: client/components/login/login.js:58 client/components/login/login.js:464
+msgid "LOGIN"
+msgstr "Accedi"
 
-#: client/components/login/login.js:374
+#: client/components/login/login.js:259
+msgid "USER_INACTIVE"
+msgstr ""
+"Il tuo account è stato disattivato. Ti preghiamo di contattare il supporto."
+
+#: client/components/login/login.js:260
+msgid "LOGIN_ERR"
+msgstr "Si è verificato un errore durante l'autenticazione."
+
+#: client/components/login/login.js:446
 msgid "REMEMBER_ME"
 msgstr "Ricorda l'accesso su questo dispositivo"
 
-#: client/components/login/login.js:381
+#: client/components/login/login.js:453
 msgid "LOGIN_ADD_INFO_TXT"
 msgstr ""
 "Effettuando il login, dichiari di accettare i {terms_and_conditions} e "
 "l'{privacy_policy} del servizio WiFi."
 
-#: client/components/login/login.js:398
+#: client/components/login/login.js:470
 msgid "REGISTER_BTN_LBL"
 msgstr "Non hai un account?"
 
 #: client/components/contact-box/contact.js:34
 msgid "HELPDESK"
 msgstr "Supporto"
-
-#: client/components/404/404.js:13
-msgid "404_PG_TITL"
-msgstr "404 Non trovato"
 
 #: client/components/404/404.js:24
 msgid "404_H"
@@ -493,166 +672,6 @@ msgstr "Non trovato"
 msgid "404_MESSAGE"
 msgstr "Ci scusiamo, la pagina cercata non è stata trovata."
 
-#: client/components/payment-status/payment-status.js:84
-msgid "PAY_SUCCESS"
-msgstr "Il pagamento è stato ricevuto con successo."
-
-#: client/components/mobile-phone-verification/mobile-phone-verification.js:222
-msgid "MOBILE_PHONE_VERIFY"
-msgstr "Invio"
-
 #: client/components/404/404.js:37
 msgid "HOME_PG_LINK_TXT"
 msgstr "Torna alla prima pagina"
-
-#: client/components/login/login.js:220
-#: client/components/registration/registration.js:86
-#: client/components/status/status.js:247
-#: client/components/status/status.js:251
-#: client/utils/handle-logout.js:34
-#: client/utils/validate-token.js:45
-msgid "ERR_OCCUR"
-msgstr "Si è verificato un errore!"
-
-#: client/components/status/status.js:300
-#: client/components/status/status.js:361
-#: client/utils/handle-logout.js:33
-msgid "LOGOUT_SUCCESS"
-msgstr "Log out effettuato con successo"
-
-#: client/components/status/status.js:119
-msgid "PASSWORD_EXPIRED"
-msgstr "La tua password è scaduta, aggiornala."
-
-#: client/components/status/status.js:384
-msgid "SUCCESS_UPGRADE_PLAN"
-msgstr "Ricarica in corso"
-
-#: client/components/status/status.js:934
-msgid "CURRENT_SUBSCRIPTION_TXT"
-msgstr "Abbonamento attuale:"
-
-#: client/components/status/status.js:1000
-msgid "USAGE_LIMIT_EXHAUSTED_TXT"
-msgstr "Hai esaurito il traffico disponibile. Effettua una ricarica per continuare a utilizzare il servizio."
-
-#: client/components/status/status.js:964
-msgid "PLAN_UPGRADE_BTN_TXT"
-msgstr "Ricarica"
-
-#: client/components/status/status.js:964
-msgid "PLAN_EXHAUSTED_TOAST"
-msgstr "Hai esaurito il traffico disponibile nel tuo abbonamento."
-
-#: client/components/password-change/password-change.js:61
-#: client/components/password-change/password-change.test.js:115
-#: client/components/password-change/password-change.test.js:120
-#: client/components/password-confirm/password-confirm.js:55
-#: client/components/registration/registration.js:123
-msgid "PWD_CNF_ERR"
-msgstr "le password non coincidono."
-
-#: client/components/registration/registration.js:203
-msgid "REGISTER_SUCCESS"
-msgstr "Registrazione avvenuta con successo"
-
-#: client/components/registration/registration.js:222
-msgid "REGISTER_ERR"
-msgstr "Si è verificato un errore durante la registrazione."
-
-#: client/components/password-change/password-change.js:87
-#: client/components/password-change/password-change.js:93
-#: client/components/password-change/password-change.test.js:129
-msgid "PWD_CHNG_ERR"
-msgstr "Si è verificato un errore, la password non è stata cambiata."
-
-#: client/components/login/login.js:270
-#: client/components/logout/logout.js:32
-msgid "LOGIN_SUCCESS"
-msgstr "Autenticazione avvenuta con successo"
-
-#: client/components/login/login.js:236
-msgid "USER_INACTIVE"
-msgstr "Il tuo account è stato disattivato. Ti preghiamo di contattare il supporto."
-
-#: client/components/login/login.js:237
-msgid "LOGIN_ERR"
-msgstr "Si è verificato un errore durante l'autenticazione."
-
-#: client/components/registration/registration.js:487
-msgid "USERNAME_REG_LBL"
-msgstr "Nome utente"
-
-#: client/components/registration/registration.js:500
-msgid "USERNAME_REG_PHOLD"
-msgstr "Nome utente"
-
-#: client/components/organization-wrapper/organization-wrapper.js:306
-#, javascript-format
-msgid "DEFAULT_TITL${ orgName }"
-msgstr "Accedi a ${ orgName }"
-
-#: client/components/status/status.js:897
-msgid "CP_LOGIN"
-msgstr ""
-"Stiamo inizializzando la tua sessione sul servizio WiFi, potrebbero essere "
-"necessari alcuni secondi, attendere prego..."
-
-#: client/components/payment-status/payment-status.js:100
-msgid "PAY_REQ"
-msgstr "Pagamento richiesto per procedere"
-
-#: client/components/payment-status/payment-status.js:115
-msgid "PAY_PROC_BTN"
-msgstr "Procedi con il pagamento"
-
-#: client/components/payment-status/payment-status.js:105
-#, javascript-format
-msgid "PAY_WARN${ timeout }${ maxAttempts }"
-msgstr ""
-"<p>Cliccando sul pulsante sottostante raggiungerai il servizio di pagamento "
-"dove potrai inserire i dati della tua carta di credito/debito in totale "
-"sicurezza. Dopodichè raggiungerai il sito web della tua banca per "
-"confermare la transazione.</p><p>Avrai a disposizione ${ timeout } minuti "
-"per completare il processo.<br /><strong>Per questo motivo ti consigliamo "
-"di preparare la tua carta debito/credito prima di avviare il processo di "
-"pagamento.</strong></p><p>Se per qualsiasi motivo il processo non viene "
-"completato entro il tempo disponibile, la connessione internet che ti "
-"permette di raggiungere il sito web della tua banca verrà chiusa, se ciò "
-"accade puoi accedere nuovamente con le credenziali appena registrate e "
-"ripetere il processo fino ad un massimo di ${ maxAttempts } volte.</p>"
-
-#: client/components/status/status.js:375
-#. wait to trigger login to avoid getting stuck
-#. in captive portal firewall rule reloading
-msgid "PLEASE_WAIT"
-msgstr "Attendere prego..."
-
-#: client/components/status/status.js:377
-msgid "PLEASE_LOGIN"
-msgstr "Ti preghiamo di accedere"
-
-#: client/components/registration/registration.js:872
-msgid "CONFLICT_ORGS"
-msgstr "Un utente con credenziali simili a quelle inserite esiste già in altre organizzazioni:"
-
-#: client/components/registration/registration.js:871
-msgid "NO_ORGS"
-msgstr "Esiste già un utente con credenziali simili."
-
-#: client/components/registration/registration.js:878
-msgid "CONFLICT_SIGNIN"
-msgstr "Sei il proprietario dell'account appena menzionato e vuoi associare il tuo account esistente a questo servizio WiFI?"
-
-#: client/components/password-change/password-change.js:72
-#: client/components/password-change/password-change.js:73
-msgid "PWD_CURR_ERR"
-msgstr "La nuova password non puó essere uguale alla password attuale."
-
-#: client/components/password-change/password-change.js:175
-msgid "CURR_PWD_LBL"
-msgstr "Password attuale"
-
-#: client/components/password-change/password-change.js:178
-msgid "CURR_PWD_PHOLD"
-msgstr "La tua password attuale"
