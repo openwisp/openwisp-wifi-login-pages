@@ -109,6 +109,7 @@ exports[`<Header /> rendering should render sticky msg and close it on clicking 
           className="header-right"
         >
           <div
+            aria-label="Menu Button"
             className="header-hamburger"
             onClick={[Function]}
             onKeyUp={[Function]}
@@ -309,6 +310,7 @@ Array [
           className="header-right"
         >
           <div
+            aria-label="Menu Button"
             className="header-hamburger"
             onClick={[Function]}
             onKeyUp={[Function]}
@@ -460,6 +462,7 @@ Array [
           className="header-right"
         >
           <div
+            aria-label="Menu Button"
             className="header-hamburger"
             onClick={[Function]}
             onKeyUp={[Function]}
@@ -614,6 +617,7 @@ exports[`<Header /> rendering with placeholder translation tags should render tr
           className="header-right"
         >
           <div
+            aria-label="Menu Button"
             className="header-hamburger"
             onClick={[Function]}
             onKeyUp={[Function]}

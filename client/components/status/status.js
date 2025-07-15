@@ -89,6 +89,7 @@ export default class Status extends React.Component {
       language,
       navigate,
       statusPage,
+      captivePortalSyncAuth,
     } = this.props;
     setTitle(t`STATUS_TITL`, orgName);
     const {setLoading} = this.context;
@@ -134,7 +135,28 @@ export default class Status extends React.Component {
         return;
       }
 
-      const {mustLogin, mustLogout, repeatLogin} = userData;
+      const {
+        mustLogin: userMustLogin,
+        mustLogout: userMustLogout,
+        repeatLogin,
+      } = userData;
+      const mustLogin = this.resolveStoredValue(
+        captivePortalSyncAuth,
+        `${orgSlug}_mustLogin`,
+        userMustLogin,
+        cookies,
+      );
+      const mustLogout = this.resolveStoredValue(
+        captivePortalSyncAuth,
+        `${orgSlug}_mustLogout`,
+        userMustLogout,
+        cookies,
+      );
+      // If the user is already logged in, we need to handle the
+      // the response from the captive portal.
+      if (captivePortalSyncAuth && !mustLogin && !mustLogout) {
+        this.handleLogin();
+      }
       ({userData} = this.props);
       if (userData.password_expired === true) {
         toast.warning(t`PASSWORD_EXPIRED`);
@@ -180,7 +202,14 @@ export default class Status extends React.Component {
       }
 
       if (mustLogout) {
-        await this.handleLogout(false, repeatLogin);
+        if (captivePortalSyncAuth) {
+          // In synchronous captive portal authentication, the page reloads
+          // after form submission, so handleLogoutIframe() must be called manually here.
+          // (handleLogout() is already triggered when the user clicks the "Logout" button.)
+          this.handleLogoutIframe();
+        } else {
+          await this.handleLogout(false, repeatLogin);
+        }
         return;
       }
 
@@ -210,6 +239,15 @@ export default class Status extends React.Component {
           return;
         }
         this.notifyCpLogin(userData);
+        // When captivePortalSyncAuth is enabled, submitting the form causes a page reload,
+        // which resets the component state and can trigger a redirect loop.
+        // Storing the value in cookies preserves it across reloads and prevents the loop.
+        this.storeValue(
+          captivePortalSyncAuth,
+          `${orgSlug}_mustLogin`,
+          false,
+          cookies,
+        );
         this.loginFormRef.current.submit();
         // if user is already authenticated and coming from other pages
       } else if (!mustLogin) {
@@ -451,7 +489,14 @@ export default class Status extends React.Component {
 
   handleLogout = async (userAutoLogin, repeatLogin = false) => {
     const {setLoading} = this.context;
-    const {orgSlug, logout, cookies, setUserData, internetMode} = this.props;
+    const {
+      orgSlug,
+      logout,
+      cookies,
+      setUserData,
+      internetMode,
+      captivePortalSyncAuth,
+    } = this.props;
     const macaddr = cookies.get(`${orgSlug}_macaddr`);
     const params = {macaddr};
     localStorage.setItem("userAutoLogin", String(userAutoLogin));
@@ -467,6 +512,12 @@ export default class Status extends React.Component {
           this.repeatLogin = true;
         }
         if (!internetMode) {
+          this.storeValue(
+            captivePortalSyncAuth,
+            `${orgSlug}_mustLogout`,
+            true,
+            cookies,
+          );
           this.logoutFormRef.current.submit();
         }
         return;
@@ -491,30 +542,42 @@ export default class Status extends React.Component {
     if (!this.loginIframeRef || !this.loginIframeRef.current) {
       return;
     }
+    const {userData, setUserData} = this.props;
+    userData.mustLogin = false;
+    setUserData(userData);
+    /* eslint-disable-next-line no-underscore-dangle */
+    this._handleLogin("iframe");
+  };
+
+  handleLogin = () => {
+    /* eslint-disable-next-line no-underscore-dangle */
+    this._handleLogin("window");
+  };
+
+  /* eslint-disable-next-line no-underscore-dangle */
+  _handleLogin = (mode) => {
     const {
+      captivePortalLoginForm,
+      captivePortalSyncAuth,
       cookies,
       orgSlug,
       logout,
-      captivePortalLoginForm,
-      userData,
-      setUserData,
     } = this.props;
-
-    userData.mustLogin = false;
-    setUserData(userData);
-
     try {
-      const searchParams = new URLSearchParams(
-        this.loginIframeRef.current.contentWindow.location.search,
-      );
+      const location =
+        mode === "iframe"
+          ? this.loginIframeRef.current.contentWindow.location
+          : window.location;
+      const title =
+        mode === "iframe"
+          ? this.loginIframeRef.current.contentDocument.title
+          : document.title;
+      const searchParams = new URLSearchParams(location.search);
       const reply = searchParams.get("reply");
       const macaddr = searchParams.get(
         captivePortalLoginForm.macaddr_param_name,
       );
-      if (
-        reply ||
-        this.loginIframeRef.current.contentDocument.title.indexOf("404") >= 0
-      ) {
+      if (reply || title.indexOf("404") >= 0) {
         logout(cookies, orgSlug);
         toast.error(reply, {
           onOpen: () => toast.dismiss(mainToastId),
@@ -526,8 +589,9 @@ export default class Status extends React.Component {
     } catch {
       //
     }
-
-    this.finalOperations();
+    if (!captivePortalSyncAuth) {
+      this.finalOperations();
+    }
   };
 
   /*
@@ -546,6 +610,7 @@ export default class Status extends React.Component {
       logout,
       cookies,
       captivePortalLogoutForm,
+      captivePortalSyncAuth,
     } = this.props;
     const {saml_logout_url} = statusPage;
     const {loggedOut} = this.state;
@@ -556,7 +621,15 @@ export default class Status extends React.Component {
     const logoutMethod = localStorage.getItem(logoutMethodKey);
     const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
 
-    if (loggedOut) {
+    if (
+      loggedOut ||
+      this.resolveStoredValue(
+        captivePortalSyncAuth,
+        `${orgSlug}_mustLogout`,
+        false,
+        cookies,
+      )
+    ) {
       logout(cookies, orgSlug, userAutoLogin);
       toast.success(t`LOGOUT_SUCCESS`);
 
@@ -632,6 +705,58 @@ export default class Status extends React.Component {
         // do nothing
       }
     }
+  };
+
+  storeValue = (captivePortalSyncAuth, key, value, cookies) => {
+    /**
+     * Stores a value in both cookies and localStorage if synchronous
+     * captive portal authentication is enabled.
+     *
+     * In synchronous authentication, submitting the captive portal form
+     * triggers a page reload, which resets the component state.
+     * Storing the value in cookies ensures it persists across reloads.
+     *
+     * The value is also saved in localStorage as a fallback in case the browser does not support cookies.
+     *
+     * @param {boolean} captivePortalSyncAuth - Whether synchronous authentication is enabled.
+     * @param {string} key - The key under which the value is stored.
+     * @param {boolean} value - The value to store.
+     * @param {Cookies} cookies - The cookies instance used to set the cookie.
+     */
+    if (!captivePortalSyncAuth) {
+      return;
+    }
+    localStorage.setItem(key, value);
+    cookies.set(key, value, {path: "/", maxAge: 60});
+  };
+
+  resolveStoredValue = (captivePortalSyncAuth, key, fallback, cookies) => {
+    /**
+     * Resolves the correct value by checking cookies, then localStorage,
+     * falling back to a default value if neither is found.
+     *
+     * @param {boolean} captivePortalSyncAuth - Whether synchronization is enabled.
+     * @param {string} cookieKey - The key to look for in cookies and localStorage.
+     * @param {*} fallback - The fallback value if no valid stored value is found.
+     * @returns {*} - The selected value based on storage or fallback.
+     */
+    if (!captivePortalSyncAuth) {
+      return fallback;
+    }
+
+    const cookieValue = cookies.get(key);
+    if (cookieValue !== undefined) {
+      localStorage.removeItem(key);
+      return cookieValue;
+    }
+
+    const localStorageValue = localStorage.getItem(key);
+    if (localStorageValue !== null) {
+      localStorage.removeItem(key);
+      return localStorageValue === "true";
+    }
+
+    return fallback;
   };
 
   updateScreenWidth = () => {
@@ -836,6 +961,7 @@ export default class Status extends React.Component {
                   onClick={() => {
                     this.handleSessionLogout(session);
                   }}
+                  aria-label={t`LOGOUT`}
                 />
               </td>
             </tr>
@@ -957,6 +1083,7 @@ export default class Status extends React.Component {
       orgSlug,
       captivePortalLoginForm,
       captivePortalLogoutForm,
+      captivePortalSyncAuth,
       isAuthenticated,
       userData,
       internetMode,
@@ -1151,7 +1278,7 @@ export default class Status extends React.Component {
               method={captivePortalLoginForm.method || "post"}
               id="cp-login-form"
               action={captivePortalLoginForm.action || ""}
-              target="owisp-auth-iframe"
+              target={captivePortalSyncAuth ? "_self" : "owisp-auth-iframe"}
               className="hidden"
             >
               <input
@@ -1198,7 +1325,9 @@ export default class Status extends React.Component {
               method={captivePortalLogoutForm.method || "post"}
               id="cp-logout-form"
               action={captivePortalLogoutForm.action || ""}
-              target="owisp-auth-logout-iframe"
+              target={
+                captivePortalSyncAuth ? "_self" : "owisp-auth-logout-iframe"
+              }
               className="hidden"
             >
               <input
@@ -1273,6 +1402,7 @@ Status.propTypes = {
   planExhausted: PropTypes.bool,
   cookies: PropTypes.instanceOf(Cookies).isRequired,
   logout: PropTypes.func.isRequired,
+  captivePortalSyncAuth: PropTypes.bool.isRequired,
   captivePortalLoginForm: PropTypes.shape({
     method: PropTypes.string,
     action: PropTypes.string,
