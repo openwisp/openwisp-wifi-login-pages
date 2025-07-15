@@ -1,6 +1,6 @@
 const passthrough = (strings, ...values) => {
   let str = "";
-  for (let i = 0; i < strings.length; i++) {
+  for (let i = 0; i < strings.length; i += 1) {
     str += strings[i];
     if (i < values.length) str += values[i];
   }

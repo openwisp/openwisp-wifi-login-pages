@@ -1,1 +1,1 @@
-import "./polyfill.js";
+import "./polyfill";

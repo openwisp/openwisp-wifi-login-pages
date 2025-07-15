@@ -12,7 +12,7 @@ import {loadingContextValue} from "../../utils/loading-context";
 import getConfig from "../../utils/get-config";
 import loadTranslation from "../../utils/load-translation";
 import PasswordConfirm from "./password-confirm";
-import translation from "../../test-translation.json";
+
 import PasswordToggleIcon from "../../utils/password-toggle";
 
 jest.mock("axios");
@@ -32,16 +32,6 @@ const createTestProps = (props) => ({
   },
   ...props,
 });
-
-const getTranslationString = (msgid) => {
-  try {
-    return translation.translations[""][msgid].msgstr[0];
-  } catch (err) {
-    // eslint-disable-next-line no-console
-    console.error(err, msgid);
-    return msgid;
-  }
-};
 
 describe("<PasswordConfirm /> rendering with placeholder translation tags", () => {
   const props = createTestProps();

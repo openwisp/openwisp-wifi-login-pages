@@ -503,7 +503,7 @@ describe("<Login /> interactions", () => {
   });
   it("phone_number field should be present if mobile phone verification is on", async () => {
     props.settings = {mobile_phone_verification: true};
-    const wrapper = shallow(<Login {...props} />);
+    wrapper = shallow(<Login {...props} />);
     expect(wrapper).toMatchSnapshot();
     expect(wrapper.find("input[type='tel']").length).toBe(1);
     expect(wrapper.find("#username").length).toEqual(1);
@@ -511,7 +511,7 @@ describe("<Login /> interactions", () => {
   });
   it("username should be text field if mobile phone verification is off", async () => {
     props.settings = {mobile_phone_verification: false};
-    const wrapper = shallow(<Login {...props} />);
+    wrapper = shallow(<Login {...props} />);
     expect(wrapper).toMatchSnapshot();
     expect(wrapper.find("input[type='tel']").length).toBe(0);
     expect(wrapper.find("#username").length).toEqual(1);
@@ -521,7 +521,7 @@ describe("<Login /> interactions", () => {
     props.settings = {mobile_phone_verification: true};
     props.loginForm = {...loginForm};
     props.loginForm.input_fields.username.auto_switch_phone_input = false;
-    const wrapper = shallow(<Login {...props} />);
+    wrapper = shallow(<Login {...props} />);
     expect(wrapper).toMatchSnapshot();
     expect(wrapper.find("input[type='tel']").length).toBe(0);
     expect(wrapper.find("#username").length).toEqual(1);

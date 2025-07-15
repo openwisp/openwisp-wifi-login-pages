@@ -8,7 +8,6 @@ import getConfig from "../../utils/get-config";
 import {loadingContextValue} from "../../utils/loading-context";
 import loadTranslation from "../../utils/load-translation";
 import PasswordReset from "./password-reset";
-import translation from "../../test-translation.json";
 
 jest.mock("axios");
 jest.mock("../../utils/get-config");
@@ -23,16 +22,6 @@ const createTestProps = (props) => ({
   language: "en",
   ...props,
 });
-
-const getTranslationString = (msgid) => {
-  try {
-    return translation.translations[""][msgid].msgstr[0];
-  } catch (err) {
-    // eslint-disable-next-line no-console
-    console.error(err, msgid);
-    return msgid;
-  }
-};
 
 describe("<PasswordReset /> rendering with placeholder translation tags", () => {
   const props = createTestProps();
