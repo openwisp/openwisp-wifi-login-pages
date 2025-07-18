@@ -22,7 +22,9 @@ const fillPhoneField = async (driver, data) => {
     await fillField();
   } catch (err) {
     // Stale Reference Error due to DOM reload by PhoneInput Field
-    await new Promise((r) => setTimeout(r, 1000));
+    await new Promise((r) => {
+      setTimeout(r, 1000);
+    });
     await fillField();
   }
 };

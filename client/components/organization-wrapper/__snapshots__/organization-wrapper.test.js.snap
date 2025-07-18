@@ -4,7 +4,7 @@ exports[`<OrganizationWrapper /> interactions should render main title if pageTi
 <Fragment>
   <ContextProvider
     value={
-      Object {
+      {
         "getLoading": [Function],
         "setLoading": [Function],
       }
@@ -18,12 +18,12 @@ exports[`<OrganizationWrapper /> interactions should render main title if pageTi
           element={
             <Memo(Connect(Header))
               location={
-                Object {
+                {
                   "pathname": "",
                 }
               }
               params={
-                Object {
+                {
                   "organization": "default",
                 }
               }
@@ -102,14 +102,14 @@ exports[`<OrganizationWrapper /> interactions should render main title if pageTi
                 cookies={
                   Cookies {
                     "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": Array [],
-                    "cookies": Object {},
-                    "defaultSetOptions": Object {},
+                    "changeListeners": [],
+                    "cookies": {},
+                    "defaultSetOptions": {},
                     "update": [Function],
                   }
                 }
                 location={
-                  Object {
+                  {
                     "pathname": "",
                   }
                 }
@@ -136,9 +136,9 @@ exports[`<OrganizationWrapper /> interactions should render main title if pageTi
                 cookies={
                   Cookies {
                     "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": Array [],
-                    "cookies": Object {},
-                    "defaultSetOptions": Object {},
+                    "changeListeners": [],
+                    "cookies": {},
+                    "defaultSetOptions": {},
                     "update": [Function],
                   }
                 }
@@ -157,9 +157,9 @@ exports[`<OrganizationWrapper /> interactions should render main title if pageTi
                 cookies={
                   Cookies {
                     "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": Array [],
-                    "cookies": Object {},
-                    "defaultSetOptions": Object {},
+                    "changeListeners": [],
+                    "cookies": {},
+                    "defaultSetOptions": {},
                     "update": [Function],
                   }
                 }
@@ -178,9 +178,9 @@ exports[`<OrganizationWrapper /> interactions should render main title if pageTi
                 cookies={
                   Cookies {
                     "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": Array [],
-                    "cookies": Object {},
-                    "defaultSetOptions": Object {},
+                    "changeListeners": [],
+                    "cookies": {},
+                    "defaultSetOptions": {},
                     "update": [Function],
                   }
                 }
@@ -199,9 +199,9 @@ exports[`<OrganizationWrapper /> interactions should render main title if pageTi
                 cookies={
                   Cookies {
                     "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": Array [],
-                    "cookies": Object {},
-                    "defaultSetOptions": Object {},
+                    "changeListeners": [],
+                    "cookies": {},
+                    "defaultSetOptions": {},
                     "update": [Function],
                   }
                 }
@@ -234,7 +234,7 @@ exports[`<OrganizationWrapper /> interactions should render pageTitle if it is n
 <Fragment>
   <ContextProvider
     value={
-      Object {
+      {
         "getLoading": [Function],
         "setLoading": [Function],
       }
@@ -248,12 +248,12 @@ exports[`<OrganizationWrapper /> interactions should render pageTitle if it is n
           element={
             <Memo(Connect(Header))
               location={
-                Object {
+                {
                   "pathname": "",
                 }
               }
               params={
-                Object {
+                {
                   "organization": "default",
                 }
               }
@@ -332,14 +332,14 @@ exports[`<OrganizationWrapper /> interactions should render pageTitle if it is n
                 cookies={
                   Cookies {
                     "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": Array [],
-                    "cookies": Object {},
-                    "defaultSetOptions": Object {},
+                    "changeListeners": [],
+                    "cookies": {},
+                    "defaultSetOptions": {},
                     "update": [Function],
                   }
                 }
                 location={
-                  Object {
+                  {
                     "pathname": "",
                   }
                 }
@@ -366,9 +366,9 @@ exports[`<OrganizationWrapper /> interactions should render pageTitle if it is n
                 cookies={
                   Cookies {
                     "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": Array [],
-                    "cookies": Object {},
-                    "defaultSetOptions": Object {},
+                    "changeListeners": [],
+                    "cookies": {},
+                    "defaultSetOptions": {},
                     "update": [Function],
                   }
                 }
@@ -387,9 +387,9 @@ exports[`<OrganizationWrapper /> interactions should render pageTitle if it is n
                 cookies={
                   Cookies {
                     "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": Array [],
-                    "cookies": Object {},
-                    "defaultSetOptions": Object {},
+                    "changeListeners": [],
+                    "cookies": {},
+                    "defaultSetOptions": {},
                     "update": [Function],
                   }
                 }
@@ -408,9 +408,9 @@ exports[`<OrganizationWrapper /> interactions should render pageTitle if it is n
                 cookies={
                   Cookies {
                     "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": Array [],
-                    "cookies": Object {},
-                    "defaultSetOptions": Object {},
+                    "changeListeners": [],
+                    "cookies": {},
+                    "defaultSetOptions": {},
                     "update": [Function],
                   }
                 }
@@ -429,9 +429,9 @@ exports[`<OrganizationWrapper /> interactions should render pageTitle if it is n
                 cookies={
                   Cookies {
                     "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": Array [],
-                    "cookies": Object {},
-                    "defaultSetOptions": Object {},
+                    "changeListeners": [],
+                    "cookies": {},
+                    "defaultSetOptions": {},
                     "update": [Function],
                   }
                 }
@@ -464,7 +464,7 @@ exports[`<OrganizationWrapper /> interactions should show route for authenticate
 <Fragment>
   <ContextProvider
     value={
-      Object {
+      {
         "getLoading": [Function],
         "setLoading": [Function],
       }
@@ -478,12 +478,12 @@ exports[`<OrganizationWrapper /> interactions should show route for authenticate
           element={
             <Memo(Connect(Header))
               location={
-                Object {
+                {
                   "pathname": "",
                 }
               }
               params={
-                Object {
+                {
                   "organization": "default",
                 }
               }
@@ -562,14 +562,14 @@ exports[`<OrganizationWrapper /> interactions should show route for authenticate
                 cookies={
                   Cookies {
                     "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": Array [],
-                    "cookies": Object {},
-                    "defaultSetOptions": Object {},
+                    "changeListeners": [],
+                    "cookies": {},
+                    "defaultSetOptions": {},
                     "update": [Function],
                   }
                 }
                 location={
-                  Object {
+                  {
                     "pathname": "",
                   }
                 }
@@ -596,9 +596,9 @@ exports[`<OrganizationWrapper /> interactions should show route for authenticate
                 cookies={
                   Cookies {
                     "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": Array [],
-                    "cookies": Object {},
-                    "defaultSetOptions": Object {},
+                    "changeListeners": [],
+                    "cookies": {},
+                    "defaultSetOptions": {},
                     "update": [Function],
                   }
                 }
@@ -617,9 +617,9 @@ exports[`<OrganizationWrapper /> interactions should show route for authenticate
                 cookies={
                   Cookies {
                     "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": Array [],
-                    "cookies": Object {},
-                    "defaultSetOptions": Object {},
+                    "changeListeners": [],
+                    "cookies": {},
+                    "defaultSetOptions": {},
                     "update": [Function],
                   }
                 }
@@ -638,9 +638,9 @@ exports[`<OrganizationWrapper /> interactions should show route for authenticate
                 cookies={
                   Cookies {
                     "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": Array [],
-                    "cookies": Object {},
-                    "defaultSetOptions": Object {},
+                    "changeListeners": [],
+                    "cookies": {},
+                    "defaultSetOptions": {},
                     "update": [Function],
                   }
                 }
@@ -659,9 +659,9 @@ exports[`<OrganizationWrapper /> interactions should show route for authenticate
                 cookies={
                   Cookies {
                     "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": Array [],
-                    "cookies": Object {},
-                    "defaultSetOptions": Object {},
+                    "changeListeners": [],
+                    "cookies": {},
+                    "defaultSetOptions": {},
                     "update": [Function],
                   }
                 }
@@ -694,7 +694,7 @@ exports[`Test Organization Wrapper for authenticated and unverified users should
 <Fragment>
   <ContextProvider
     value={
-      Object {
+      {
         "getLoading": [Function],
         "setLoading": [Function],
       }
@@ -708,12 +708,12 @@ exports[`Test Organization Wrapper for authenticated and unverified users should
           element={
             <Memo(Connect(Header))
               location={
-                Object {
+                {
                   "pathname": "",
                 }
               }
               params={
-                Object {
+                {
                   "organization": "default",
                 }
               }
@@ -759,9 +759,9 @@ exports[`Test Organization Wrapper for authenticated and unverified users should
                 cookies={
                   Cookies {
                     "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": Array [],
-                    "cookies": Object {},
-                    "defaultSetOptions": Object {},
+                    "changeListeners": [],
+                    "cookies": {},
+                    "defaultSetOptions": {},
                     "update": [Function],
                   }
                 }
@@ -820,9 +820,9 @@ exports[`Test Organization Wrapper for authenticated and unverified users should
                 cookies={
                   Cookies {
                     "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": Array [],
-                    "cookies": Object {},
-                    "defaultSetOptions": Object {},
+                    "changeListeners": [],
+                    "cookies": {},
+                    "defaultSetOptions": {},
                     "update": [Function],
                   }
                 }
@@ -841,9 +841,9 @@ exports[`Test Organization Wrapper for authenticated and unverified users should
                 cookies={
                   Cookies {
                     "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": Array [],
-                    "cookies": Object {},
-                    "defaultSetOptions": Object {},
+                    "changeListeners": [],
+                    "cookies": {},
+                    "defaultSetOptions": {},
                     "update": [Function],
                   }
                 }
@@ -862,9 +862,9 @@ exports[`Test Organization Wrapper for authenticated and unverified users should
                 cookies={
                   Cookies {
                     "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": Array [],
-                    "cookies": Object {},
-                    "defaultSetOptions": Object {},
+                    "changeListeners": [],
+                    "cookies": {},
+                    "defaultSetOptions": {},
                     "update": [Function],
                   }
                 }
@@ -883,9 +883,9 @@ exports[`Test Organization Wrapper for authenticated and unverified users should
                 cookies={
                   Cookies {
                     "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": Array [],
-                    "cookies": Object {},
-                    "defaultSetOptions": Object {},
+                    "changeListeners": [],
+                    "cookies": {},
+                    "defaultSetOptions": {},
                     "update": [Function],
                   }
                 }
@@ -918,7 +918,7 @@ exports[`Test Organization Wrapper for unauthenticated users should show route f
 <Fragment>
   <ContextProvider
     value={
-      Object {
+      {
         "getLoading": [Function],
         "setLoading": [Function],
       }
@@ -932,12 +932,12 @@ exports[`Test Organization Wrapper for unauthenticated users should show route f
           element={
             <Memo(Connect(Header))
               location={
-                Object {
+                {
                   "pathname": "",
                 }
               }
               params={
-                Object {
+                {
                   "organization": "default",
                 }
               }
@@ -1059,9 +1059,9 @@ exports[`Test Organization Wrapper for unauthenticated users should show route f
                 cookies={
                   Cookies {
                     "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": Array [],
-                    "cookies": Object {},
-                    "defaultSetOptions": Object {},
+                    "changeListeners": [],
+                    "cookies": {},
+                    "defaultSetOptions": {},
                     "update": [Function],
                   }
                 }
@@ -1080,9 +1080,9 @@ exports[`Test Organization Wrapper for unauthenticated users should show route f
                 cookies={
                   Cookies {
                     "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": Array [],
-                    "cookies": Object {},
-                    "defaultSetOptions": Object {},
+                    "changeListeners": [],
+                    "cookies": {},
+                    "defaultSetOptions": {},
                     "update": [Function],
                   }
                 }

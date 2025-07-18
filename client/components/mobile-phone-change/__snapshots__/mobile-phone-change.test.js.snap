@@ -39,9 +39,9 @@ exports[`<MobilePhoneChange /> rendering with placeholder translation tags shoul
           >
             <lazy
               enableSearch={false}
-              excludeCountries={Array []}
+              excludeCountries={[]}
               inputProps={
-                Object {
+                {
                   "className": "form-control input ",
                   "id": "phone-number",
                   "name": "phone_number",
@@ -51,9 +51,9 @@ exports[`<MobilePhoneChange /> rendering with placeholder translation tags shoul
               name="phone_number"
               onChange={[Function]}
               onKeyDown={[Function]}
-              onlyCountries={Array []}
+              onlyCountries={[]}
               placeholder="PHONE_PHOLD"
-              preferredCountries={Array []}
+              preferredCountries={[]}
               value=""
             />
           </Suspense>
@@ -100,9 +100,9 @@ exports[`Change Phone Number: standard flow should render PhoneInput lazily and 
 >
   <lazy
     enableSearch={false}
-    excludeCountries={Array []}
+    excludeCountries={[]}
     inputProps={
-      Object {
+      {
         "className": "form-control input ",
         "id": "phone-number",
         "name": "phone_number",
@@ -112,9 +112,9 @@ exports[`Change Phone Number: standard flow should render PhoneInput lazily and 
     name="phone_number"
     onChange={[Function]}
     onKeyDown={[Function]}
-    onlyCountries={Array []}
+    onlyCountries={[]}
     placeholder="enter mobile phone number"
-    preferredCountries={Array []}
+    preferredCountries={[]}
     value=""
   />
 </Suspense>
@@ -130,113 +130,113 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
     element={
       <MobilePhoneChange
         configuration={
-          Object {
+          {
             "auto_login": true,
-            "components": Object {
-              "contact_page": Object {
+            "components": {
+              "contact_page": {
                 "email": "support@openwisp.co",
                 "helpdesk": "+789 948 564",
-                "social_links": Array [
-                  Object {
+                "social_links": [
+                  {
                     "alt": "twitter",
                     "icon": "twitter.svg",
                     "url": "https://twitter.com/openwisp",
                   },
-                  Object {
+                  {
                     "alt": "facebook",
                     "icon": "facebook.svg",
                     "url": "https://facebook.com/openwisp",
                   },
                 ],
               },
-              "mobile_phone_verification_form": Object {
-                "input_fields": Object {
-                  "code": Object {
+              "mobile_phone_verification_form": {
+                "input_fields": {
+                  "code": {
                     "pattern": "[0-9]{6,}",
                     "type": "text",
                   },
                 },
               },
-              "phone_number_change_form": Object {
-                "buttons": Object {
+              "phone_number_change_form": {
+                "buttons": {
                   "cancel": true,
                   "change_phone_number": true,
                 },
-                "input_fields": Object {
-                  "phone_number": Object {
+                "input_fields": {
+                  "phone_number": {
                     "country": "it",
                     "type": "tel",
                   },
                 },
               },
-              "registration_form": Object {
+              "registration_form": {
                 "additional_info_text": true,
-                "input_fields": Object {
-                  "birth_date": Object {
+                "input_fields": {
+                  "birth_date": {
                     "setting": "disabled",
                     "type": "date",
                   },
-                  "city": Object {
+                  "city": {
                     "type": "text",
                   },
-                  "country": Object {
+                  "country": {
                     "type": "text",
                   },
-                  "email": Object {
-                    "pattern": ".+@.+\\\\..+",
+                  "email": {
+                    "pattern": ".+@.+\\..+",
                     "type": "email",
                   },
-                  "first_name": Object {
-                    "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
+                  "first_name": {
+                    "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}",
                     "setting": "disabled",
                     "type": "text",
                   },
-                  "last_name": Object {
-                    "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
+                  "last_name": {
+                    "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}",
                     "setting": "disabled",
                     "type": "text",
                   },
-                  "location": Object {
-                    "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
+                  "location": {
+                    "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}",
                     "setting": "disabled",
                     "type": "text",
                   },
-                  "password": Object {
+                  "password": {
                     "pattern": ".{6,}",
                     "type": "password",
                   },
-                  "password_confirm": Object {
+                  "password_confirm": {
                     "pattern": null,
                     "type": "password",
                   },
-                  "phone_number": Object {
+                  "phone_number": {
                     "country": "it",
                     "type": "tel",
                   },
-                  "street": Object {
+                  "street": {
                     "type": "text",
                   },
-                  "tax_number": Object {
-                    "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
+                  "tax_number": {
+                    "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}",
                     "type": "text",
                   },
-                  "username": Object {
-                    "pattern": "[a-zA-Z@.+\\\\-_\\\\d]{1,150}",
+                  "username": {
+                    "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}",
                     "type": "text",
                   },
-                  "zipcode": Object {
+                  "zipcode": {
                     "type": "number",
                   },
                 },
-                "links": Object {
+                "links": {
                   "login": true,
                 },
               },
             },
             "default_language": "en",
             "name": "test org 2 (sms)",
-            "privacy_policy": Object {
-              "en": "<h1 id=\\"openwisp-wifi-login-pages-privacy-policy\\">openwisp-wifi-login-pages Privacy Policy</h1>
+            "privacy_policy": {
+              "en": "<h1 id="openwisp-wifi-login-pages-privacy-policy">openwisp-wifi-login-pages Privacy Policy</h1>
 <ul>
 <li><p>Your privacy is important to us. It is Openwisp's policy to respect your privacy regarding any information we may collect from you across openwisp-wifi-login-pages.</p>
 </li>
@@ -255,15 +255,15 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
 </ul>
 ",
             },
-            "settings": Object {
+            "settings": {
               "mobile_phone_verification": true,
             },
             "slug": "test-org-2",
-            "terms_and_conditions": Object {
-              "en": "<h1 id=\\"openwisp-wifi-login-pages-terms-and-conditions\\">Openwisp-wifi-login-pages Terms and Conditions</h1>
+            "terms_and_conditions": {
+              "en": "<h1 id="openwisp-wifi-login-pages-terms-and-conditions">Openwisp-wifi-login-pages Terms and Conditions</h1>
 <ul>
 <li><p>By using or visiting the Openwisp-wifi-login-pages, you signify your agreement
-to these terms and conditions (the \\"Terms of Service\\") and the Privacy policy.</p>
+to these terms and conditions (the "Terms of Service") and the Privacy policy.</p>
 </li>
 <li><p>In order to access the wifi service, you need to be a registered user of the
 default organization.</p>
@@ -286,9 +286,9 @@ Openwisp-wifi-login-pages and using its services in the future.</p>
         cookies={
           Cookies {
             "HAS_DOCUMENT_COOKIE": true,
-            "changeListeners": Array [],
-            "cookies": Object {},
-            "defaultSetOptions": Object {},
+            "changeListeners": [],
+            "cookies": {},
+            "defaultSetOptions": {},
             "update": [Function],
           }
         }
@@ -298,13 +298,13 @@ Openwisp-wifi-login-pages and using its services in the future.</p>
         orgName="test org 2 (sms)"
         orgSlug="test-org-2"
         phone_number_change={
-          Object {
-            "buttons": Object {
+          {
+            "buttons": {
               "cancel": true,
               "change_phone_number": true,
             },
-            "input_fields": Object {
-              "phone_number": Object {
+            "input_fields": {
+              "phone_number": {
                 "country": "it",
                 "type": "tel",
               },
@@ -313,14 +313,14 @@ Openwisp-wifi-login-pages and using its services in the future.</p>
         }
         setTitle={
           [MockFunction] {
-            "calls": Array [
-              Array [
+            "calls": [
+              [
                 "Change mobile number",
                 "test org 2 (sms)",
               ],
             ],
-            "results": Array [
-              Object {
+            "results": [
+              {
                 "type": "return",
                 "value": undefined,
               },
@@ -329,12 +329,12 @@ Openwisp-wifi-login-pages and using its services in the future.</p>
         }
         setUserData={[MockFunction]}
         settings={
-          Object {
+          {
             "mobile_phone_verification": true,
           }
         }
         userData={
-          Object {
+          {
             "is_active": false,
             "phone_number": "+393660011222",
             "radius_user_token": "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",

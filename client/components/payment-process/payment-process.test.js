@@ -212,17 +212,14 @@ describe("Test <PaymentProcess /> cases", () => {
       userData: responseData,
       settings: {...props.settings, payment_iframe: false},
     });
-    // mock window.location.assign
-    const location = new URL("https://wifi.openwisp.io");
-    location.assign = jest.fn();
-    delete window.location;
-    window.location = location;
     validateToken.mockReturnValue(true);
     wrapper = shallow(<PaymentProcess {...props} />, {
       context: loadingContextValue,
     });
+    wrapper.instance().redirectToPaymentUrl = jest.fn();
     await tick();
-    expect(location.assign.mock.calls.length).toBe(1);
-    expect(location.assign).toHaveBeenCalledWith(responseData.payment_url);
+    expect(wrapper.instance().redirectToPaymentUrl).toHaveBeenCalledWith(
+      responseData.payment_url,
+    );
   });
 });

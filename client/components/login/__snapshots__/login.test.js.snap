@@ -404,7 +404,7 @@ exports[`<Login /> interactions should not show phone_number field if auto_switc
               class="input "
               id="username"
               name="username"
-              pattern=".+@.+\\\\..+"
+              pattern=".+@.+\\..+"
               placeholder="enter email, phone number or username"
               required=""
               title="enter valid email address, an username or a phone number"
@@ -682,7 +682,7 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
               class="input "
               id="username"
               name="username"
-              pattern=".+@.+\\\\..+"
+              pattern=".+@.+\\..+"
               placeholder="enter email, phone number or username"
               required=""
               title="enter valid email address, an username or a phone number"
@@ -876,9 +876,9 @@ exports[`<Login /> rendering should render PhoneInput lazily and handlers should
 >
   <lazy
     enableSearch={false}
-    excludeCountries={Array []}
+    excludeCountries={[]}
     inputProps={
-      Object {
+      {
         "autoComplete": "tel",
         "className": "form-control input ",
         "id": "username",
@@ -888,9 +888,9 @@ exports[`<Login /> rendering should render PhoneInput lazily and handlers should
     }
     name="username"
     onChange={[Function]}
-    onlyCountries={Array []}
+    onlyCountries={[]}
     placeholder="enter mobile phone number"
-    preferredCountries={Array []}
+    preferredCountries={[]}
     value=""
   />
 </Suspense>
@@ -979,7 +979,7 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
                 id="username"
                 name="username"
                 onChange={[Function]}
-                pattern=".+@.+\\\\..+"
+                pattern=".+@.+\\..+"
                 placeholder="enter email, phone number or username"
                 required={true}
                 title="enter valid email address, an username or a phone number"
@@ -1011,13 +1011,13 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
               <PasswordToggleIcon
                 hidePassword={true}
                 inputRef={
-                  Object {
+                  {
                     "current": null,
                   }
                 }
                 isVisible={false}
                 parentClassName=""
-                secondInputRef={Object {}}
+                secondInputRef={{}}
                 toggler={[Function]}
               />
             </div>
@@ -1213,7 +1213,7 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
                 id="username"
                 name="username"
                 onChange={[Function]}
-                pattern=".+@.+\\\\..+"
+                pattern=".+@.+\\..+"
                 placeholder="enter email, phone number or username"
                 required={true}
                 title="enter valid email address, an username or a phone number"
@@ -1245,13 +1245,13 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
               <PasswordToggleIcon
                 hidePassword={true}
                 inputRef={
-                  Object {
+                  {
                     "current": null,
                   }
                 }
                 isVisible={false}
                 parentClassName=""
-                secondInputRef={Object {}}
+                secondInputRef={{}}
                 toggler={[Function]}
               />
             </div>
@@ -1468,7 +1468,7 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
                 id="username"
                 name="username"
                 onChange={[Function]}
-                pattern=".+@.+\\\\..+"
+                pattern=".+@.+\\..+"
                 placeholder="USERNAME_LOG_PHOLD"
                 required={true}
                 title="USERNAME_LOG_TITL"
@@ -1500,13 +1500,13 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
               <PasswordToggleIcon
                 hidePassword={true}
                 inputRef={
-                  Object {
+                  {
                     "current": null,
                   }
                 }
                 isVisible={false}
                 parentClassName=""
-                secondInputRef={Object {}}
+                secondInputRef={{}}
                 toggler={[Function]}
               />
             </div>
