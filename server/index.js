@@ -21,42 +21,57 @@ app.use(`${prefix}/account`, routes.account);
 app.use(`${prefix}/modal`, routes.modal);
 app.use(`${prefix}/plan`, routes.plans);
 app.use(`${prefix}/payment`, routes.payment);
-app.get("*", (req, res) => {
+app.get("/*splat", (req, res) => {
   res.sendFile(path.join(process.cwd(), "dist", "index.html"));
 });
 
 const DEFAULT_PORT = 3030;
 
 // Finds the next free port, starting at the passed port
-const nextFreePort = (port, callback) => {
-  const server = net.createServer((socket) => {
-    socket.write("Testing socket..\r\n");
-    socket.pipe(socket);
+const nextFreePort = (port) =>
+  new Promise((resolve, reject) => {
+    try {
+      const server = net.createServer((socket) => {
+        socket.write("Testing socket..\r\n");
+        socket.pipe(socket);
+      });
+
+      // If port is already in use, try next port
+      server.listen(port, "127.0.0.1");
+      server.on("error", () => {
+        server.close();
+        resolve(nextFreePort(port + 1));
+      });
+
+      // If port is available, pass port to callback
+      server.on("listening", () => {
+        server.close();
+        resolve(port);
+      });
+    } catch (error) {
+      Logger.error("Failed to find next free port:", error);
+      reject(error);
+    }
   });
 
-  // If port is already in use, try next port
-  server.listen(port, "127.0.0.1");
-  server.on("error", () => {
-    nextFreePort(port + 1, callback);
-  });
-
-  // If port is available, pass port to callback
-  server.on("listening", () => {
-    server.close();
-    callback(port);
-  });
+const startServer = async () => {
+  try {
+    if (process.env.SERVER !== undefined) {
+      const port = parseInt(process.env.SERVER, 10);
+      app.listen(port, () => {
+        Logger.info(`Server started on port ${port}`);
+      });
+    } else {
+      // Otherwise, find the next free port starting at the default port
+      const port = await nextFreePort(DEFAULT_PORT);
+      app.listen(port, () => {
+        Logger.info(`Server started on port ${port}`);
+      });
+    }
+  } catch (error) {
+    Logger.error("Failed to start server:", error);
+    process.exit(1);
+  }
 };
 
-// If a port was passed as an argument, use that port
-if (process.env.SERVER !== undefined) {
-  app.listen(process.env.SERVER, () => {
-    Logger.info(`Server started on port ${process.env.SERVER}`);
-  });
-} else {
-  // Otherwise, find the next free port starting at the default port
-  nextFreePort(DEFAULT_PORT, (port) => {
-    app.listen(port, () => {
-      Logger.info(`Server started on port ${port}`);
-    });
-  });
-}
+startServer();

@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 /* eslint jsx-a11y/label-has-associated-control: 0 */
+/* eslint-disable react/no-unstable-nested-components */
 import "./index.css";
 
 import PropTypes from "prop-types";
@@ -125,6 +126,7 @@ export default class OrganizationWrapper extends React.Component {
         <>
           {translationLoaded && configLoaded ? (
             <LoadingContext.Provider
+              // eslint-disable-next-line react/jsx-no-constructed-context-values
               value={{setLoading, getLoading: () => loading}}
             >
               <div className={`app-container ${extraClasses}`}>
@@ -355,13 +357,11 @@ export default class OrganizationWrapper extends React.Component {
     }
     if (organization.exists === false) {
       return (
-        <>
-          <div className="org-wrapper-not-found">
-            <Suspense fallback={<Loader />}>
-              <DoesNotExist />
-            </Suspense>
-          </div>
-        </>
+        <div className="org-wrapper-not-found">
+          <Suspense fallback={<Loader />}>
+            <DoesNotExist />
+          </Suspense>
+        </div>
       );
     }
     return <Loader />;

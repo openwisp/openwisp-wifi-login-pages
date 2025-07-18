@@ -23,7 +23,9 @@ jest.mock("../../utils/load-translation");
 jest.mock("../../utils/submit-on-enter");
 jest.mock("axios");
 
-const StatusMock = () => <div />;
+function StatusMock() {
+  return <div />;
+}
 
 MobilePhoneChange.contextTypes = {
   setLoading: PropTypes.func,

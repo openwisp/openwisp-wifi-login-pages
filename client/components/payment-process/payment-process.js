@@ -89,6 +89,11 @@ export default class PaymentProcess extends React.Component {
     }
   };
 
+  // eslint-disable-next-line class-methods-use-this
+  redirectToPaymentUrl(paymentUrl) {
+    window.location.assign(paymentUrl);
+  }
+
   render() {
     const {orgSlug, isAuthenticated, userData, settings} = this.props;
     const redirectToStatus = () => <Navigate to={`/${orgSlug}/status`} />;
@@ -105,7 +110,7 @@ export default class PaymentProcess extends React.Component {
     }
 
     if (isTokenValid === true && !settings.payment_iframe) {
-      window.location.assign(userData.payment_url);
+      return this.redirectToPaymentUrl(userData.payment_url);
     }
 
     return (

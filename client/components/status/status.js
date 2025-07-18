@@ -256,14 +256,14 @@ export default class Status extends React.Component {
     }
   }
 
-  componentWillUnmount = () => {
+  componentWillUnmount() {
     const {statusPage} = this.props;
     clearInterval(this.intervalId);
     if (statusPage.radius_usage_enabled) {
       clearInterval(this.usageIntervalId);
     }
     window.removeEventListener("resize", this.updateScreenWidth);
-  };
+  }
 
   async finalOperations() {
     const {userData, orgSlug, settings, navigate, setUserData, statusPage} =
@@ -594,6 +594,11 @@ export default class Status extends React.Component {
     }
   };
 
+  // eslint-disable-next-line class-methods-use-this
+  handleSamlLogout = (saml_logout_url) => {
+    window.location.assign(saml_logout_url);
+  };
+
   /*
    * We use <iframe> to perform the POST to the captive portal logout URL
    * so that the request is transparent for the user, which does not need
@@ -637,7 +642,7 @@ export default class Status extends React.Component {
         toast.info(t`PLEASE_WAIT`, {autoClose: wait_after});
         setTimeout(async () => {
           localStorage.removeItem(logoutMethodKey);
-          window.location.assign(saml_logout_url);
+          this.handleSamlLogout(saml_logout_url);
         }, wait_after);
         return;
       }
@@ -707,6 +712,7 @@ export default class Status extends React.Component {
     }
   };
 
+  // eslint-disable-next-line class-methods-use-this
   storeValue = (captivePortalSyncAuth, key, value, cookies) => {
     /**
      * Stores a value in both cookies and localStorage if synchronous
@@ -730,6 +736,7 @@ export default class Status extends React.Component {
     cookies.set(key, value, {path: "/", maxAge: 60});
   };
 
+  // eslint-disable-next-line class-methods-use-this
   resolveStoredValue = (captivePortalSyncAuth, key, fallback, cookies) => {
     /**
      * Resolves the correct value by checking cookies, then localStorage,
@@ -805,6 +812,7 @@ export default class Status extends React.Component {
     await this.getUserPassedRadiusSessions({page: currentPage + 1});
   }
 
+  // eslint-disable-next-line class-methods-use-this
   getDuration = (seconds) => {
     const number = Number(seconds);
     const h = Math.floor(number / 3600);
@@ -816,6 +824,7 @@ export default class Status extends React.Component {
     return hDisplay + mDisplay + sDisplay;
   };
 
+  // eslint-disable-next-line class-methods-use-this
   getDateTimeFormat = (language, time_option, date) => {
     if (typeof Intl !== "undefined") {
       return new Intl.DateTimeFormat(language, time_option).format(
@@ -1032,8 +1041,10 @@ export default class Status extends React.Component {
     return this.getSmallTable(session_info);
   };
 
+  // eslint-disable-next-line class-methods-use-this
   getSpinner = () => <Loader full={false} small />;
 
+  // eslint-disable-next-line class-methods-use-this
   getSessionInfo = () => ({
     header: {
       start_time: t`ACCT_START_TIME`,
@@ -1048,6 +1059,7 @@ export default class Status extends React.Component {
     },
   });
 
+  // eslint-disable-next-line class-methods-use-this
   getUserInfo = () => ({
     status: {
       text: t`STATUS`,
@@ -1064,6 +1076,7 @@ export default class Status extends React.Component {
     },
   });
 
+  // eslint-disable-next-line class-methods-use-this
   getUserCheckFormattedValue = (value, type) => {
     const intValue = parseInt(value, 10);
     switch (type) {

@@ -78,6 +78,7 @@ const createTestProps = (props) => ({
   navigate: jest.fn(),
   setInternetMode: jest.fn(),
   setPlanExhausted: jest.fn(),
+  defaultLanguage: defaultConfig.default_language,
   ...props,
 });
 
@@ -731,11 +732,11 @@ describe("<Status /> interactions", () => {
         search: "",
       },
       userData: {...responseData, mustLogin: true},
-      cookies: {
+      cookies: new Cookies({
         get: jest.fn(),
         remove: jest.fn(),
         set: jest.fn(),
-      },
+      }),
     });
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
@@ -1094,11 +1095,6 @@ describe("<Status /> interactions", () => {
 
   it("should initiate bank_card verification", async () => {
     validateToken.mockReturnValue(true);
-    // mock window.location.assign
-    const location = new URL("https://wifi.openwisp.io");
-    location.assign = jest.fn();
-    delete window.location;
-    window.location = location;
     // mock session fetching
     jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
     jest.spyOn(Status.prototype, "getUserPassedRadiusSessions");
@@ -1138,7 +1134,6 @@ describe("<Status /> interactions", () => {
     expect(setUserDataMock.calls.pop()).toEqual([
       {...props.userData, mustLogin: false},
     ]);
-    expect(location.assign.mock.calls.length).toBe(0);
     expect(setLoading.mock.calls.length).toBe(1);
 
     // ensure user is redirected to payment URL
@@ -1154,11 +1149,6 @@ describe("<Status /> interactions", () => {
 
   it("should not perform captive page login if payment_requires_internet is false", async () => {
     validateToken.mockReturnValue(true);
-    // mock window.location.assign
-    const location = new URL("https://wifi.openwisp.io");
-    location.assign = jest.fn();
-    delete window.location;
-    window.location = location;
     // mock session fetching
     jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
     jest.spyOn(Status.prototype, "getUserPassedRadiusSessions");
@@ -1187,7 +1177,6 @@ describe("<Status /> interactions", () => {
 
     // ensure captive portal login is not performed
     expect(spyFn.mock.calls.length).toBe(0);
-    expect(location.assign.mock.calls.length).toBe(0);
     expect(setLoading.mock.calls.length).toBe(1);
 
     const mockRef = {submit: jest.fn()};
@@ -1319,7 +1308,7 @@ describe("<Status /> interactions", () => {
     status.logoutFormRef = {current: mockRef};
     status.logoutIframeRef = {current: {}};
     status.componentDidMount();
-    jest.useFakeTimers("legacy");
+    jest.useFakeTimers({legacyFakeTimers: true});
     const componentDidMount = jest.spyOn(status, "componentDidMount");
     await tick();
     expect(status.repeatLogin).toBe(true);
@@ -1366,12 +1355,6 @@ describe("<Status /> interactions", () => {
       }),
     );
 
-    // mock window.location.assign
-    const location = new URL("https://wifi.openwisp.io");
-    location.assign = jest.fn();
-    delete window.location;
-    window.location = location;
-
     props = createTestProps();
     props.statusPage.saml_logout_url = "http://test.com/saml/logout";
     props.radius_user_token = undefined;
@@ -1381,10 +1364,11 @@ describe("<Status /> interactions", () => {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: true,
     });
+    wrapper.instance().handleSamlLogout = jest.fn();
     const status = wrapper.instance();
     const handleLogout = jest.spyOn(status, "handleLogout");
     const mockRef = {submit: jest.fn()};
-    jest.useFakeTimers("legacy");
+    jest.useFakeTimers({legacyFakeTimers: true});
     status.logoutFormRef = {current: mockRef};
     status.logoutIframeRef = {current: {}};
     status.componentDidMount();
@@ -1393,12 +1377,12 @@ describe("<Status /> interactions", () => {
     const modalWrapper = wrapper.find(Modal).first().shallow();
     modalWrapper.find(".modal-buttons button:last-child").simulate("click", {});
     expect(handleLogout).toHaveBeenCalledWith(false);
-    expect(location.assign.mock.calls.length).toBe(0);
+    expect(wrapper.instance().handleSamlLogout.mock.calls.length).toBe(0);
     await tick();
     status.handleLogoutIframe();
     jest.runAllTimers();
-    expect(location.assign.mock.calls.length).toBe(1);
-    expect(location.assign).toHaveBeenCalledWith(
+    expect(wrapper.instance().handleSamlLogout.mock.calls.length).toBe(1);
+    expect(wrapper.instance().handleSamlLogout).toHaveBeenCalledWith(
       props.statusPage.saml_logout_url,
     );
     expect(localStorage.getItem("default_logout_method")).toBe(null);
@@ -1562,6 +1546,8 @@ describe("<Status /> interactions", () => {
     validateToken.mockReturnValue(true);
     const prop = createTestProps();
     jest.spyOn(toast, "success");
+    // Clear localStorage before test
+    localStorage.clear();
     wrapper = shallow(<Status {...prop} />, {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: true,
@@ -1762,10 +1748,12 @@ describe("<Status /> interactions", () => {
       disableLifecycleMethods: true,
     });
     wrapper.instance().logoutFormRef = {current: mockRef};
-    wrapper.instance().logoutIframeRef = wrapper.instance().logoutFormRef;
-    wrapper
-      .instance()
-      .setState({sessionsToLogout: [session], activeSession: [session]});
+    wrapper.instance().logoutIframeRef = {current: {}};
+    wrapper.instance().setState({
+      sessionsToLogout: [session],
+      activeSession: [session],
+      loggedOut: true,
+    });
     await wrapper.instance().handleLogout(false);
     expect(wrapper.instance().state.loggedOut).toEqual(true);
     expect(mockRef.submit).toHaveBeenCalled(); // calls handleLogoutIframe

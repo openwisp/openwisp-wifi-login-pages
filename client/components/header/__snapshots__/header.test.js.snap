@@ -184,7 +184,7 @@ exports[`<Header /> rendering should render sticky msg and close it on clicking 
       <div
         className="sticky-msg"
         dangerouslySetInnerHTML={
-          Object {
+          {
             "__html": <p>
               announcement
             </p>,
@@ -204,7 +204,7 @@ exports[`<Header /> rendering should render sticky msg and close it on clicking 
 `;
 
 exports[`<Header /> rendering should render with links 1`] = `
-Array [
+[
   <div
     className="header-container header-desktop"
   >
@@ -375,7 +375,7 @@ Array [
 `;
 
 exports[`<Header /> rendering should render without links 1`] = `
-Array [
+[
   <div
     className="header-container header-desktop"
   >

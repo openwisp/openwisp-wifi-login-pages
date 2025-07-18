@@ -26,7 +26,7 @@ exports[`<Footer /> rendering should render correctly 1`] = `
     <div
       className="footer-row-2-inner"
       dangerouslySetInnerHTML={
-        Object {
+        {
           "__html": "after html",
         }
       }
@@ -62,7 +62,7 @@ exports[`<Footer /> rendering with placeholder translation tags should render tr
     <div
       className="footer-row-2-inner"
       dangerouslySetInnerHTML={
-        Object {
+        {
           "__html": "after html",
         }
       }

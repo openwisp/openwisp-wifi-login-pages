@@ -11,11 +11,11 @@ exports[`<Registration /> interactions should show modal if user is already regi
       className="modal-close-btn"
       onClick={
         [MockFunction] {
-          "calls": Array [
-            Array [],
+          "calls": [
+            [],
           ],
-          "results": Array [
-            Object {
+          "results": [
+            {
               "type": "return",
               "value": undefined,
             },
@@ -151,7 +151,7 @@ exports[`<Registration /> rendering should render correctly 1`] = `
                 id="email"
                 name="email"
                 onChange={[Function]}
-                pattern=".+@.+\\\\..+"
+                pattern=".+@.+\\..+"
                 placeholder="email address"
                 required={true}
                 title="enter valid email address"
@@ -183,14 +183,14 @@ exports[`<Registration /> rendering should render correctly 1`] = `
               <PasswordToggleIcon
                 hidePassword={true}
                 inputRef={
-                  Object {
+                  {
                     "current": null,
                   }
                 }
                 isVisible={false}
                 parentClassName=""
                 secondInputRef={
-                  Object {
+                  {
                     "current": null,
                   }
                 }
@@ -221,14 +221,14 @@ exports[`<Registration /> rendering should render correctly 1`] = `
               <PasswordToggleIcon
                 hidePassword={true}
                 inputRef={
-                  Object {
+                  {
                     "current": null,
                   }
                 }
                 isVisible={false}
                 parentClassName=""
                 secondInputRef={
-                  Object {
+                  {
                     "current": null,
                   }
                 }
@@ -330,7 +330,7 @@ exports[`<Registration /> rendering with placeholder translation tags should ren
                 id="email"
                 name="email"
                 onChange={[Function]}
-                pattern=".+@.+\\\\..+"
+                pattern=".+@.+\\..+"
                 placeholder="EMAIL_PHOLD"
                 required={true}
                 title="EMAIL_PTRN_DESC"
@@ -362,14 +362,14 @@ exports[`<Registration /> rendering with placeholder translation tags should ren
               <PasswordToggleIcon
                 hidePassword={true}
                 inputRef={
-                  Object {
+                  {
                     "current": null,
                   }
                 }
                 isVisible={false}
                 parentClassName=""
                 secondInputRef={
-                  Object {
+                  {
                     "current": null,
                   }
                 }
@@ -400,14 +400,14 @@ exports[`<Registration /> rendering with placeholder translation tags should ren
               <PasswordToggleIcon
                 hidePassword={true}
                 inputRef={
-                  Object {
+                  {
                     "current": null,
                   }
                 }
                 isVisible={false}
                 parentClassName=""
                 secondInputRef={
-                  Object {
+                  {
                     "current": null,
                   }
                 }
@@ -476,9 +476,9 @@ exports[`Registration and Mobile Phone Verification interactions should render P
   <lazy
     country="it"
     enableSearch={false}
-    excludeCountries={Array []}
+    excludeCountries={[]}
     inputProps={
-      Object {
+      {
         "autoComplete": "tel",
         "className": "form-control input ",
         "id": "phone-number",
@@ -489,9 +489,9 @@ exports[`Registration and Mobile Phone Verification interactions should render P
     name="phone_number"
     onChange={[Function]}
     onKeyDown={[Function]}
-    onlyCountries={Array []}
+    onlyCountries={[]}
     placeholder="enter mobile phone number"
-    preferredCountries={Array []}
+    preferredCountries={[]}
     value=""
   />
 </Suspense>
