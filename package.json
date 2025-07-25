@@ -52,6 +52,7 @@
     "ttag": "^1.7.24",
     "universal-cookie-express": "^8.0.1",
     "winston": "^3.3.3",
+    "winston-daily-rotate-file": "^5.0.0",
     "winston-transport-sentry-node": "^2.0.0"
   },
   "devDependencies": {

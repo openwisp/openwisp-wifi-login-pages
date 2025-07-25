@@ -2094,7 +2094,7 @@ describe("<Status /> interactions", () => {
     await tick();
     expect(wrapper).toMatchSnapshot();
   });
-  it("should show user's plan when subscription module is enabled", async () => {
+  it("subscriptions: should show upgrade option when user plan is free", async () => {
     validateToken.mockReturnValue(true);
     jest.spyOn(toast, "success");
     jest.spyOn(toast, "dismiss");
@@ -2147,12 +2147,116 @@ describe("<Status /> interactions", () => {
           statusText: "OK",
           data: [
             {
-              plan: "Free",
-              pricing: "no expiration (free) (0 days)",
-              plan_description: "3 hours per day\r\n300 MB per day",
+              plan: "Premium",
+              pricing: "per month (0 days)",
+              plan_description: "Unlimited time and traffic",
               currency: "EUR",
-              price: "0.00",
+              price: "1.99",
             },
+            {
+              plan: "Premium",
+              pricing: "per year (0 days)",
+              plan_description: "Unlimited time and traffic",
+              currency: "EUR",
+              price: "9.99",
+            },
+          ],
+          headers: {},
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          response: {
+            status: 200,
+            statusText: "OK",
+          },
+          data: {
+            payment_url: "https://account.openwisp.io/payment/123",
+          },
+          headers: {},
+        }),
+      );
+    const prop = createTestProps();
+    prop.statusPage.links = links;
+    prop.statusPage.radius_usage_enabled = true;
+    prop.isAuthenticated = true;
+    prop.planExhausted = true;
+    prop.settings.subscriptions = true;
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+    });
+    wrapper.setState({showRadiusUsage: false});
+    await tick();
+    expect(wrapper).toMatchSnapshot();
+    expect(prop.setPlanExhausted).toHaveBeenCalledTimes(0);
+    wrapper.find("#plan-upgrade-btn").simulate("click");
+    await tick();
+    expect(wrapper).toMatchSnapshot();
+    const modalWrapper = wrapper.find(Modal).last().shallow();
+    modalWrapper.find("#radio0").simulate("change", {target: {value: "0"}});
+    await tick();
+    toast.success.mock.calls.pop()[1].onOpen();
+    expect(toast.dismiss).toHaveBeenCalledWith("main_toast_id");
+    expect(prop.navigate).toHaveBeenCalledWith(
+      `/${prop.orgSlug}/payment/process`,
+    );
+    expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith({
+      ...prop.userData,
+      payment_url: "https://account.openwisp.io/payment/123",
+    });
+  });
+  it("subscriptions: should show upgrade option when user plan is exhausted", async () => {
+    validateToken.mockReturnValue(true);
+    jest.spyOn(toast, "success");
+    jest.spyOn(toast, "dismiss");
+    axios
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          response: {
+            status: 200,
+            statusText: "OK",
+          },
+          data: [],
+          headers: {},
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: {
+            checks: [
+              {
+                attribute: "Max-Daily-Session",
+                op: ":=",
+                value: "10800",
+                result: 10700,
+                type: "seconds",
+              },
+              {
+                attribute: "Max-Daily-Session-Traffic",
+                op: ":=",
+                value: "3000000000",
+                result: 3000000000,
+                type: "bytes",
+              },
+            ],
+            plan: {
+              name: "Premium",
+              currency: "EUR",
+              is_free: false,
+              expire: null,
+              active: true,
+            },
+          },
+          headers: {},
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: [
             {
               plan: "Premium",
               pricing: "per month (0 days)",
