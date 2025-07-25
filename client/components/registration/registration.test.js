@@ -45,6 +45,7 @@ const createTestProps = (props, configName = "default") => {
     },
     ...props,
     navigate: jest.fn(),
+    defaultLanguage: config.default_language,
   };
 };
 

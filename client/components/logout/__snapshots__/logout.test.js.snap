@@ -1,73 +1,69 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Logout /> rendering should render correctly 1`] = `
-<React.Fragment>
+<div
+  className="container content"
+  id="logout"
+>
   <div
-    className="container content"
-    id="logout"
+    className="inner"
   >
     <div
-      className="inner"
+      className="main-column w-100"
     >
       <div
-        className="main-column w-100"
+        className="inner"
       >
+        <h2>
+          Logout successful
+        </h2>
         <div
-          className="inner"
+          className="links row"
         >
-          <h2>
-            Logout successful
-          </h2>
-          <div
-            className="links row"
+          <Link
+            className="button partial"
+            onClick={[Function]}
+            to="/default/status"
           >
-            <Link
-              className="button partial"
-              onClick={[Function]}
-              to="/default/status"
-            >
-              Login again
-            </Link>
-          </div>
+            Login again
+          </Link>
         </div>
       </div>
     </div>
   </div>
-</React.Fragment>
+</div>
 `;
 
 exports[`<Logout /> rendering with placeholder translation tags should render translation placeholder correctly 1`] = `
-<React.Fragment>
+<div
+  className="container content"
+  id="logout"
+>
   <div
-    className="container content"
-    id="logout"
+    className="inner"
   >
     <div
-      className="inner"
+      className="main-column w-100"
     >
       <div
-        className="main-column w-100"
+        className="inner"
       >
+        <h2>
+          LOGOUT_CONTENT
+        </h2>
         <div
-          className="inner"
+          className="links row"
         >
-          <h2>
-            LOGOUT_CONTENT
-          </h2>
-          <div
-            className="links row"
+          <Link
+            className="button partial"
+            onClick={[Function]}
+            to="/default/status"
           >
-            <Link
-              className="button partial"
-              onClick={[Function]}
-              to="/default/status"
-            >
-              LOGIN_AGAIN
-            </Link>
-          </div>
+            LOGIN_AGAIN
+          </Link>
         </div>
       </div>
     </div>
   </div>
-</React.Fragment>
+</div>
 `;

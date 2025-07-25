@@ -680,88 +680,84 @@ export default class Registration extends React.Component {
                       </div>
 
                       {this.doesPlanRequireInvoice() && (
-                        <>
-                          <div className="billing-info">
-                            <div className="row country">
-                              <label htmlFor="country">{t`COUNTRY_LBL`}</label>
-                              {getError(errors, "country")}
-                              <Select
-                                options={countries}
-                                value={countrySelected}
-                                onChange={this.selectedCountry}
-                              />
-                            </div>
-                            <div className="row city">
-                              <label htmlFor="city">{t`CITY_LBL`}</label>
-                              {getError(errors, "city")}
-                              <input
-                                className={`input ${
-                                  errors.city ? "error" : ""
-                                }`}
-                                type="text"
-                                id="city"
-                                required
-                                name="city"
-                                value={city}
-                                onChange={this.handleChange}
-                                autoComplete="address-level2"
-                                placeholder={t`CITY_PHOLD`}
-                              />
-                            </div>
-                            <div className="row street">
-                              <label htmlFor="street">{t`STREET_LBL`}</label>
-                              {getError(errors, "street")}
-                              <input
-                                className={`input ${
-                                  errors.street ? "error" : ""
-                                }`}
-                                type="text"
-                                id="street"
-                                required
-                                name="street"
-                                value={street}
-                                onChange={this.handleChange}
-                                autoComplete="address"
-                                placeholder={t`STREET_PHOLD`}
-                              />
-                            </div>
-                            <div className="row zipcode">
-                              <label htmlFor="zipcode">{t`ZIP_CODE_LBL`}</label>
-                              {getError(errors, "zipcode")}
-                              <input
-                                className={`input ${
-                                  errors.zipcode ? "error" : ""
-                                }`}
-                                type="number"
-                                id="zipcode"
-                                required
-                                name="zipcode"
-                                value={zipcode}
-                                onChange={this.handleChange}
-                                autoComplete="postal-code"
-                              />
-                            </div>
-                            <div className="row tax_number">
-                              <label htmlFor="tax_number">
-                                {t`TAX_NUMBER_LBL`}
-                              </label>
-                              {getError(errors, "tax_number")}
-                              <input
-                                className={`input ${
-                                  errors.tax_number ? "error" : ""
-                                }`}
-                                type="text"
-                                id="tax_number"
-                                name="tax_number"
-                                value={tax_number}
-                                onChange={this.handleChange}
-                                placeholder={t`TAX_NUMBER_PHOLD`}
-                                pattern={input_fields.tax_number.pattern}
-                                title={t`TAX_NUMBER_PTRN_DESC`}
-                              />
-                            </div>
+                        <div className="billing-info">
+                          <div className="row country">
+                            <label htmlFor="country">{t`COUNTRY_LBL`}</label>
+                            {getError(errors, "country")}
+                            <Select
+                              options={countries}
+                              value={countrySelected}
+                              onChange={this.selectedCountry}
+                            />
                           </div>
-                        </>
+                          <div className="row city">
+                            <label htmlFor="city">{t`CITY_LBL`}</label>
+                            {getError(errors, "city")}
+                            <input
+                              className={`input ${errors.city ? "error" : ""}`}
+                              type="text"
+                              id="city"
+                              required
+                              name="city"
+                              value={city}
+                              onChange={this.handleChange}
+                              autoComplete="address-level2"
+                              placeholder={t`CITY_PHOLD`}
+                            />
+                          </div>
+                          <div className="row street">
+                            <label htmlFor="street">{t`STREET_LBL`}</label>
+                            {getError(errors, "street")}
+                            <input
+                              className={`input ${
+                                errors.street ? "error" : ""
+                              }`}
+                              type="text"
+                              id="street"
+                              required
+                              name="street"
+                              value={street}
+                              onChange={this.handleChange}
+                              autoComplete="address"
+                              placeholder={t`STREET_PHOLD`}
+                            />
+                          </div>
+                          <div className="row zipcode">
+                            <label htmlFor="zipcode">{t`ZIP_CODE_LBL`}</label>
+                            {getError(errors, "zipcode")}
+                            <input
+                              className={`input ${
+                                errors.zipcode ? "error" : ""
+                              }`}
+                              type="number"
+                              id="zipcode"
+                              required
+                              name="zipcode"
+                              value={zipcode}
+                              onChange={this.handleChange}
+                              autoComplete="postal-code"
+                            />
+                          </div>
+                          <div className="row tax_number">
+                            <label htmlFor="tax_number">
+                              {t`TAX_NUMBER_LBL`}
+                            </label>
+                            {getError(errors, "tax_number")}
+                            <input
+                              className={`input ${
+                                errors.tax_number ? "error" : ""
+                              }`}
+                              type="text"
+                              id="tax_number"
+                              name="tax_number"
+                              value={tax_number}
+                              onChange={this.handleChange}
+                              placeholder={t`TAX_NUMBER_PHOLD`}
+                              pattern={input_fields.tax_number.pattern}
+                              title={t`TAX_NUMBER_PTRN_DESC`}
+                            />
+                          </div>
+                        </div>
                       )}
                     </>
                   )}

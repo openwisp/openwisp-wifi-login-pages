@@ -7,7 +7,7 @@ import {
   SET_USER_DATA,
 } from "../constants/action-types";
 
-export const organizations = (state = [], action) => {
+export const organizations = (state = [], action = {}) => {
   switch (action.type) {
     case PARSE_ORGANIZATIONS:
       return action.payload;
@@ -35,7 +35,7 @@ export const initialState = {
 
 export const organization = (
   state = {exists: undefined, configuration: initialState},
-  action,
+  action = {},
 ) => {
   switch (action.type) {
     case SET_ORGANIZATION_CONFIG:

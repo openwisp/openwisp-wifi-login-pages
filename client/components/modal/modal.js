@@ -76,24 +76,22 @@ export default class Modal extends React.Component {
     const {prevPath} = this.props;
     const {loading, content} = this.state;
     return (
-      <>
-        <div className="modal is-visible content">
-          <div className="modal-container w-900 text-left">
-            <Link to={prevPath} className="modal-close-btn">
-              &#10006;
-            </Link>
-            {loading ? (
-              <Loader full={false} />
-            ) : (
-              <div
-                className="message"
-                // eslint-disable-next-line react/no-danger
-                dangerouslySetInnerHTML={content}
-              />
-            )}
-          </div>
+      <div className="modal is-visible content">
+        <div className="modal-container w-900 text-left">
+          <Link to={prevPath} className="modal-close-btn">
+            &#10006;
+          </Link>
+          {loading ? (
+            <Loader full={false} />
+          ) : (
+            <div
+              className="message"
+              // eslint-disable-next-line react/no-danger
+              dangerouslySetInnerHTML={content}
+            />
+          )}
         </div>
-      </>
+      </div>
     );
   }
 }

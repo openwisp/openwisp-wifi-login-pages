@@ -1,3 +1,4 @@
+/* eslint-disable import/no-import-module-exports */
 import "./index.css";
 
 import {Provider, connect} from "react-redux";
