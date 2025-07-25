@@ -1,6 +1,811 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Status /> interactions should show user's plan when subscription module is enabled 1`] = `
+exports[`<Status /> interactions should show user's radius usage 1`] = `
+<Fragment>
+  <InfoModal
+    active={false}
+    content={
+      <p
+        className="message"
+      >
+        Do you want to automatically log in the next time?
+      </p>
+    }
+    handleResponse={[Function]}
+    isConfirmationDialog={true}
+    toggleModal={[Function]}
+  />
+  <div
+    className="container content flex-wrapper"
+    id="status"
+  >
+    <div
+      className="inner flex-row limit-info"
+    >
+      <div
+        className="bg row"
+      >
+        <div
+          key="Max-Daily-Session"
+        >
+          <progress
+            id="Max-Daily-Session"
+            max="10800"
+            value={0}
+          />
+          <p
+            className="progress"
+          >
+            <strong>
+              00:00:00
+            </strong>
+             
+            of
+             
+            03:00:00
+             
+            used
+          </p>
+        </div>
+        <div
+          key="Max-Daily-Session-Traffic"
+        >
+          <progress
+            id="Max-Daily-Session-Traffic"
+            max="3000000000"
+            value={0}
+          />
+          <p
+            className="progress"
+          >
+            <strong>
+              0
+            </strong>
+             
+            of
+             
+            2.79 GB
+             
+            used
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      className="inner"
+    >
+      <div
+        className="main-column"
+      >
+        <div
+          className="inner"
+        >
+          <p
+            className="status-content"
+            key="WiFi Login Successful!"
+          >
+            WiFi Login Successful!
+          </p>
+          <p
+            className="status-content"
+            key="You can now use the internet."
+          >
+            You can now use the internet.
+          </p>
+          <p
+            className="status-content"
+            key="You may leave this page open in case you want to log out."
+          >
+            You may leave this page open in case you want to log out.
+          </p>
+          <p
+            className="status-content"
+            key="status"
+          >
+            <label>
+              Status
+              :
+            </label>
+            <span>
+              Logged in
+            </span>
+          </p>
+          <p
+            className="status-content"
+            key="email"
+          >
+            <label>
+              Email
+              :
+            </label>
+            <span />
+          </p>
+          <div
+            className="row logout"
+          >
+            <input
+              className="button full"
+              onClick={[Function]}
+              type="button"
+              value="Logout"
+            />
+          </div>
+          <div
+            className="links row"
+            key="/link1.com"
+          >
+            <Link
+              className="button full status-link"
+              to="/link1.com"
+            >
+              link-1
+            </Link>
+          </div>
+          <div
+            className="links row"
+            key="/link3.com"
+          >
+            <Link
+              className="button full status-link"
+              to="/link3.com"
+            >
+              link-3
+            </Link>
+          </div>
+        </div>
+      </div>
+      <Connect(Contact) />
+    </div>
+  </div>
+  <div
+    className="flex-column"
+    id="sessions"
+  >
+    <loader
+      full={false}
+      small={true}
+    />
+  </div>
+  <form
+    action="http://localhost/"
+    className="hidden"
+    id="cp-login-form"
+    method="post"
+    target="owisp-auth-iframe"
+  >
+    <input
+      name="auth_user"
+      readOnly={true}
+      type="text"
+    />
+    <input
+      name="auth_pass"
+      readOnly={true}
+      type="text"
+    />
+    <input
+      key="input-zone"
+      name="zone"
+      readOnly={true}
+      type="text"
+      value="zone_name"
+    />
+    <input
+      key="input-redirurl"
+      name="redirurl"
+      readOnly={true}
+      type="text"
+      value="http://localhost:8080/default/status"
+    />
+    <input
+      key="input-accept"
+      name="accept"
+      readOnly={true}
+      type="text"
+      value="accept"
+    />
+  </form>
+  <form
+    action="http://localhost:8081"
+    className="hidden"
+    id="cp-logout-form"
+    method="post"
+    target="owisp-auth-logout-iframe"
+  >
+    <input
+      name="logout_id"
+      readOnly={true}
+      type="hidden"
+      value=""
+    />
+    <input
+      name="mac_address"
+      readOnly={true}
+      type="text"
+      value="4e:ed:11:2b:17:ae"
+    />
+  </form>
+  <iframe
+    className="hidden"
+    name="owisp-auth-logout-iframe"
+    onLoad={[Function]}
+    title="owisp-auth-iframe"
+  />
+</Fragment>
+`;
+
+exports[`<Status /> interactions subscriptions: should show upgrade option when user plan is exhausted 1`] = `
+<Fragment>
+  <InfoModal
+    active={false}
+    content={
+      <p
+        className="message"
+      >
+        Do you want to automatically log in the next time?
+      </p>
+    }
+    handleResponse={[Function]}
+    isConfirmationDialog={true}
+    toggleModal={[Function]}
+  />
+  <div
+    className="container content flex-wrapper"
+    id="status"
+  >
+    <div
+      className="inner flex-row limit-info"
+    >
+      <div
+        className="bg row"
+      >
+        <h3>
+          CURRENT_SUBSCRIPTION_TXT
+           
+          Premium
+        </h3>
+        <div
+          key="Max-Daily-Session"
+        >
+          <progress
+            id="Max-Daily-Session"
+            max="10800"
+            value={10700}
+          />
+          <p
+            className="progress"
+          >
+            <strong>
+              02:58:20
+            </strong>
+             
+            of
+             
+            03:00:00
+             
+            used
+          </p>
+          <p
+            className="exhausted"
+          >
+            <strong>
+              USAGE_LIMIT_EXHAUSTED_TXT
+            </strong>
+          </p>
+        </div>
+        <div
+          key="Max-Daily-Session-Traffic"
+        >
+          <progress
+            id="Max-Daily-Session-Traffic"
+            max="3000000000"
+            value={3000000000}
+          />
+          <p
+            className="progress"
+          >
+            <strong>
+              2.79 GB
+            </strong>
+             
+            of
+             
+            2.79 GB
+             
+            used
+          </p>
+          <p
+            className="exhausted"
+          >
+            <strong>
+              USAGE_LIMIT_EXHAUSTED_TXT
+            </strong>
+          </p>
+        </div>
+        <p>
+          <button
+            className="button partial"
+            id="plan-upgrade-btn"
+            onClick={[Function]}
+            type="button"
+          >
+            PLAN_UPGRADE_BTN_TXT
+          </button>
+        </p>
+      </div>
+    </div>
+    <div
+      className="inner"
+    >
+      <div
+        className="main-column"
+      >
+        <div
+          className="inner"
+        >
+          <p
+            className="status-content"
+            key="status"
+          >
+            <label>
+              Status
+              :
+            </label>
+            <span>
+              TRAFFIC_EXHAUSTED
+            </span>
+          </p>
+          <p
+            className="status-content"
+            key="email"
+          >
+            <label>
+              Email
+              :
+            </label>
+            <span />
+          </p>
+          <div
+            className="row logout"
+          >
+            <input
+              className="button full"
+              onClick={[Function]}
+              type="button"
+              value="Logout"
+            />
+          </div>
+          <div
+            className="links row"
+            key="/link1.com"
+          >
+            <Link
+              className="button full status-link"
+              to="/link1.com"
+            >
+              link-1
+            </Link>
+          </div>
+          <div
+            className="links row"
+            key="/link3.com"
+          >
+            <Link
+              className="button full status-link"
+              to="/link3.com"
+            >
+              link-3
+            </Link>
+          </div>
+        </div>
+      </div>
+      <Connect(Contact) />
+    </div>
+  </div>
+  <div
+    className="flex-column"
+    id="sessions"
+  >
+    <loader
+      full={false}
+      small={true}
+    />
+  </div>
+  <form
+    action="http://localhost/"
+    className="hidden"
+    id="cp-login-form"
+    method="post"
+    target="owisp-auth-iframe"
+  >
+    <input
+      name="auth_user"
+      readOnly={true}
+      type="text"
+    />
+    <input
+      name="auth_pass"
+      readOnly={true}
+      type="text"
+    />
+    <input
+      key="input-zone"
+      name="zone"
+      readOnly={true}
+      type="text"
+      value="zone_name"
+    />
+    <input
+      key="input-redirurl"
+      name="redirurl"
+      readOnly={true}
+      type="text"
+      value="http://localhost:8080/default/status"
+    />
+    <input
+      key="input-accept"
+      name="accept"
+      readOnly={true}
+      type="text"
+      value="accept"
+    />
+  </form>
+  <form
+    action="http://localhost:8081"
+    className="hidden"
+    id="cp-logout-form"
+    method="post"
+    target="owisp-auth-logout-iframe"
+  >
+    <input
+      name="logout_id"
+      readOnly={true}
+      type="hidden"
+      value=""
+    />
+    <input
+      name="mac_address"
+      readOnly={true}
+      type="text"
+      value="4e:ed:11:2b:17:ae"
+    />
+  </form>
+  <iframe
+    className="hidden"
+    name="owisp-auth-logout-iframe"
+    onLoad={[Function]}
+    title="owisp-auth-iframe"
+  />
+</Fragment>
+`;
+
+exports[`<Status /> interactions subscriptions: should show upgrade option when user plan is exhausted 2`] = `
+<Fragment>
+  <InfoModal
+    active={false}
+    content={
+      <p
+        className="message"
+      >
+        Do you want to automatically log in the next time?
+      </p>
+    }
+    handleResponse={[Function]}
+    isConfirmationDialog={true}
+    toggleModal={[Function]}
+  />
+  <div
+    className="container content flex-wrapper"
+    id="status"
+  >
+    <InfoModal
+      active={true}
+      content={
+        <div
+          className="plans "
+        >
+          <p
+            className="intro"
+          >
+            Please select the preferred subscription plan
+            .
+          </p>
+          <div
+            className="plan"
+          >
+            <input
+              id="radio0"
+              name="plan_selection"
+              onChange={[Function]}
+              tabIndex="0"
+              type="radio"
+              value="0"
+            />
+            <label
+              htmlFor="radio0"
+            >
+              <span
+                className="title"
+              >
+                Premium
+              </span>
+              <span
+                className="desc"
+              >
+                Unlimited time and traffic
+              </span>
+              <span
+                className="price"
+              >
+                €1.99 per month 
+              </span>
+            </label>
+          </div>
+          <div
+            className="plan"
+          >
+            <input
+              id="radio1"
+              name="plan_selection"
+              onChange={[Function]}
+              tabIndex="1"
+              type="radio"
+              value="1"
+            />
+            <label
+              htmlFor="radio1"
+            >
+              <span
+                className="title"
+              >
+                Premium
+              </span>
+              <span
+                className="desc"
+              >
+                Unlimited time and traffic
+              </span>
+              <span
+                className="price"
+              >
+                €9.99 per year 
+              </span>
+            </label>
+          </div>
+        </div>
+      }
+      handleResponse={[Function]}
+      id="upgrade-plan-modal"
+      isConfirmationDialog={false}
+      toggleModal={[Function]}
+    />
+    <div
+      className="inner flex-row limit-info"
+    >
+      <div
+        className="bg row"
+      >
+        <h3>
+          CURRENT_SUBSCRIPTION_TXT
+           
+          Premium
+        </h3>
+        <div
+          key="Max-Daily-Session"
+        >
+          <progress
+            id="Max-Daily-Session"
+            max="10800"
+            value={10700}
+          />
+          <p
+            className="progress"
+          >
+            <strong>
+              02:58:20
+            </strong>
+             
+            of
+             
+            03:00:00
+             
+            used
+          </p>
+          <p
+            className="exhausted"
+          >
+            <strong>
+              USAGE_LIMIT_EXHAUSTED_TXT
+            </strong>
+          </p>
+        </div>
+        <div
+          key="Max-Daily-Session-Traffic"
+        >
+          <progress
+            id="Max-Daily-Session-Traffic"
+            max="3000000000"
+            value={3000000000}
+          />
+          <p
+            className="progress"
+          >
+            <strong>
+              2.79 GB
+            </strong>
+             
+            of
+             
+            2.79 GB
+             
+            used
+          </p>
+          <p
+            className="exhausted"
+          >
+            <strong>
+              USAGE_LIMIT_EXHAUSTED_TXT
+            </strong>
+          </p>
+        </div>
+        <p>
+          <button
+            className="button partial"
+            id="plan-upgrade-btn"
+            onClick={[Function]}
+            type="button"
+          >
+            PLAN_UPGRADE_BTN_TXT
+          </button>
+        </p>
+      </div>
+    </div>
+    <div
+      className="inner"
+    >
+      <div
+        className="main-column"
+      >
+        <div
+          className="inner"
+        >
+          <p
+            className="status-content"
+            key="status"
+          >
+            <label>
+              Status
+              :
+            </label>
+            <span>
+              TRAFFIC_EXHAUSTED
+            </span>
+          </p>
+          <p
+            className="status-content"
+            key="email"
+          >
+            <label>
+              Email
+              :
+            </label>
+            <span />
+          </p>
+          <div
+            className="row logout"
+          >
+            <input
+              className="button full"
+              onClick={[Function]}
+              type="button"
+              value="Logout"
+            />
+          </div>
+          <div
+            className="links row"
+            key="/link1.com"
+          >
+            <Link
+              className="button full status-link"
+              to="/link1.com"
+            >
+              link-1
+            </Link>
+          </div>
+          <div
+            className="links row"
+            key="/link3.com"
+          >
+            <Link
+              className="button full status-link"
+              to="/link3.com"
+            >
+              link-3
+            </Link>
+          </div>
+        </div>
+      </div>
+      <Connect(Contact) />
+    </div>
+  </div>
+  <div
+    className="flex-column"
+    id="sessions"
+  >
+    <loader
+      full={false}
+      small={true}
+    />
+  </div>
+  <form
+    action="http://localhost/"
+    className="hidden"
+    id="cp-login-form"
+    method="post"
+    target="owisp-auth-iframe"
+  >
+    <input
+      name="auth_user"
+      readOnly={true}
+      type="text"
+    />
+    <input
+      name="auth_pass"
+      readOnly={true}
+      type="text"
+    />
+    <input
+      key="input-zone"
+      name="zone"
+      readOnly={true}
+      type="text"
+      value="zone_name"
+    />
+    <input
+      key="input-redirurl"
+      name="redirurl"
+      readOnly={true}
+      type="text"
+      value="http://localhost:8080/default/status"
+    />
+    <input
+      key="input-accept"
+      name="accept"
+      readOnly={true}
+      type="text"
+      value="accept"
+    />
+  </form>
+  <form
+    action="http://localhost:8081"
+    className="hidden"
+    id="cp-logout-form"
+    method="post"
+    target="owisp-auth-logout-iframe"
+  >
+    <input
+      name="logout_id"
+      readOnly={true}
+      type="hidden"
+      value=""
+    />
+    <input
+      name="mac_address"
+      readOnly={true}
+      type="text"
+      value="4e:ed:11:2b:17:ae"
+    />
+  </form>
+  <iframe
+    className="hidden"
+    name="owisp-auth-logout-iframe"
+    onLoad={[Function]}
+    title="owisp-auth-iframe"
+  />
+</Fragment>
+`;
+
+exports[`<Status /> interactions subscriptions: should show upgrade option when user plan is free 1`] = `
 <Fragment>
   <InfoModal
     active={false}
@@ -245,7 +1050,7 @@ exports[`<Status /> interactions should show user's plan when subscription modul
 </Fragment>
 `;
 
-exports[`<Status /> interactions should show user's plan when subscription module is enabled 2`] = `
+exports[`<Status /> interactions subscriptions: should show upgrade option when user plan is free 2`] = `
 <Fragment>
   <InfoModal
     active={false}
@@ -445,240 +1250,6 @@ exports[`<Status /> interactions should show user's plan when subscription modul
             </label>
             <span>
               TRAFFIC_EXHAUSTED
-            </span>
-          </p>
-          <p
-            className="status-content"
-            key="email"
-          >
-            <label>
-              Email
-              :
-            </label>
-            <span />
-          </p>
-          <div
-            className="row logout"
-          >
-            <input
-              className="button full"
-              onClick={[Function]}
-              type="button"
-              value="Logout"
-            />
-          </div>
-          <div
-            className="links row"
-            key="/link1.com"
-          >
-            <Link
-              className="button full status-link"
-              to="/link1.com"
-            >
-              link-1
-            </Link>
-          </div>
-          <div
-            className="links row"
-            key="/link3.com"
-          >
-            <Link
-              className="button full status-link"
-              to="/link3.com"
-            >
-              link-3
-            </Link>
-          </div>
-        </div>
-      </div>
-      <Connect(Contact) />
-    </div>
-  </div>
-  <div
-    className="flex-column"
-    id="sessions"
-  >
-    <loader
-      full={false}
-      small={true}
-    />
-  </div>
-  <form
-    action="http://localhost/"
-    className="hidden"
-    id="cp-login-form"
-    method="post"
-    target="owisp-auth-iframe"
-  >
-    <input
-      name="auth_user"
-      readOnly={true}
-      type="text"
-    />
-    <input
-      name="auth_pass"
-      readOnly={true}
-      type="text"
-    />
-    <input
-      key="input-zone"
-      name="zone"
-      readOnly={true}
-      type="text"
-      value="zone_name"
-    />
-    <input
-      key="input-redirurl"
-      name="redirurl"
-      readOnly={true}
-      type="text"
-      value="http://localhost:8080/default/status"
-    />
-    <input
-      key="input-accept"
-      name="accept"
-      readOnly={true}
-      type="text"
-      value="accept"
-    />
-  </form>
-  <form
-    action="http://localhost:8081"
-    className="hidden"
-    id="cp-logout-form"
-    method="post"
-    target="owisp-auth-logout-iframe"
-  >
-    <input
-      name="logout_id"
-      readOnly={true}
-      type="hidden"
-      value=""
-    />
-    <input
-      name="mac_address"
-      readOnly={true}
-      type="text"
-      value="4e:ed:11:2b:17:ae"
-    />
-  </form>
-  <iframe
-    className="hidden"
-    name="owisp-auth-logout-iframe"
-    onLoad={[Function]}
-    title="owisp-auth-iframe"
-  />
-</Fragment>
-`;
-
-exports[`<Status /> interactions should show user's radius usage 1`] = `
-<Fragment>
-  <InfoModal
-    active={false}
-    content={
-      <p
-        className="message"
-      >
-        Do you want to automatically log in the next time?
-      </p>
-    }
-    handleResponse={[Function]}
-    isConfirmationDialog={true}
-    toggleModal={[Function]}
-  />
-  <div
-    className="container content flex-wrapper"
-    id="status"
-  >
-    <div
-      className="inner flex-row limit-info"
-    >
-      <div
-        className="bg row"
-      >
-        <div
-          key="Max-Daily-Session"
-        >
-          <progress
-            id="Max-Daily-Session"
-            max="10800"
-            value={0}
-          />
-          <p
-            className="progress"
-          >
-            <strong>
-              00:00:00
-            </strong>
-             
-            of
-             
-            03:00:00
-             
-            used
-          </p>
-        </div>
-        <div
-          key="Max-Daily-Session-Traffic"
-        >
-          <progress
-            id="Max-Daily-Session-Traffic"
-            max="3000000000"
-            value={0}
-          />
-          <p
-            className="progress"
-          >
-            <strong>
-              0
-            </strong>
-             
-            of
-             
-            2.79 GB
-             
-            used
-          </p>
-        </div>
-      </div>
-    </div>
-    <div
-      className="inner"
-    >
-      <div
-        className="main-column"
-      >
-        <div
-          className="inner"
-        >
-          <p
-            className="status-content"
-            key="WiFi Login Successful!"
-          >
-            WiFi Login Successful!
-          </p>
-          <p
-            className="status-content"
-            key="You can now use the internet."
-          >
-            You can now use the internet.
-          </p>
-          <p
-            className="status-content"
-            key="You may leave this page open in case you want to log out."
-          >
-            You may leave this page open in case you want to log out.
-          </p>
-          <p
-            className="status-content"
-            key="status"
-          >
-            <label>
-              Status
-              :
-            </label>
-            <span>
-              Logged in
             </span>
           </p>
           <p
