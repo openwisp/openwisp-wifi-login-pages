@@ -156,7 +156,7 @@ msgstr ""
 
 #: client/components/status/status.js:1116
 msgid "TRAFFIC_EXHAUSTED"
-msgstr "Data limits reached"
+msgstr "Data limit reached"
 
 #: client/components/status/status.js:1125
 msgid "LOGOUT_MODAL_CONTENT"
