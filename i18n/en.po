@@ -140,7 +140,7 @@ msgstr "Your password has expired, please update it."
 
 #: client/components/status/status.js:367
 msgid "PLAN_EXHAUSTED_TOAST"
-msgstr "You have exhausted the traffic available on your bundle."
+msgstr "You have used all the data in your plan."
 
 #: client/components/status/status.js:420
 msgid "SUCCESS_UPGRADE_PLAN"
@@ -155,7 +155,7 @@ msgstr ""
 
 #: client/components/status/status.js:989
 msgid "TRAFFIC_EXHAUSTED"
-msgstr "Traffic exhausted"
+msgstr "Data limits reached"
 
 #: client/components/status/status.js:998
 msgid "LOGOUT_MODAL_CONTENT"
@@ -168,12 +168,11 @@ msgstr "Current subscription:"
 #: client/components/status/status.js:1054
 msgid "USAGE_LIMIT_EXHAUSTED_TXT"
 msgstr ""
-"You have exhausted the available traffic. Upgrade to continue using the "
-"service."
+"You have reached your data limit. Please top up your account to continue."
 
 #: client/components/status/status.js:1067
 msgid "PLAN_UPGRADE_BTN_TXT"
-msgstr "Upgrade"
+msgstr "Top up"
 
 #: client/components/login/login.js:152
 #: client/components/mobile-phone-change/mobile-phone-change.js:137
@@ -669,4 +668,3 @@ msgstr "Sorry, we couldn't find the page you were looking for."
 #: client/components/404/404.js:37
 msgid "HOME_PG_LINK_TXT"
 msgstr "Go back to homepage"
-
