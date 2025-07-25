@@ -589,7 +589,7 @@ msgstr "¿Aún no estás registrado?"
 
 #: client/components/contact-box/contact.js:34
 msgid "HELPDESK"
-msgstr "Mesa de ayuda"
+msgstr "Soporte"
 
 #: client/components/404/404.js:24
 msgid "404_H"
