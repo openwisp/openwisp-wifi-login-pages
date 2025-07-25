@@ -39,11 +39,11 @@ exports[`<Status /> interactions should show user's radius usage 1`] = `
             <strong>
               00:00:00
             </strong>
-
+             
             of
-
+             
             03:00:00
-
+             
             used
           </p>
         </div>
@@ -61,11 +61,11 @@ exports[`<Status /> interactions should show user's radius usage 1`] = `
             <strong>
               0
             </strong>
-
+             
             of
-
+             
             2.79 GB
-
+             
             used
           </p>
         </div>
@@ -260,8 +260,8 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
         className="bg row"
       >
         <h3>
-          Current subscription:
-
+          CURRENT_SUBSCRIPTION_TXT
+           
           Premium
         </h3>
         <div
@@ -278,18 +278,18 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
             <strong>
               02:58:20
             </strong>
-
+             
             of
-
+             
             03:00:00
-
+             
             used
           </p>
           <p
             className="exhausted"
           >
             <strong>
-              You have exhausted the available traffic. Upgrade to continue using the service.
+              USAGE_LIMIT_EXHAUSTED_TXT
             </strong>
           </p>
         </div>
@@ -307,18 +307,18 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
             <strong>
               2.79 GB
             </strong>
-
+             
             of
-
+             
             2.79 GB
-
+             
             used
           </p>
           <p
             className="exhausted"
           >
             <strong>
-              You have exhausted the available traffic. Upgrade to continue using the service.
+              USAGE_LIMIT_EXHAUSTED_TXT
             </strong>
           </p>
         </div>
@@ -329,7 +329,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
             onClick={[Function]}
             type="button"
           >
-            Upgrade
+            PLAN_UPGRADE_BTN_TXT
           </button>
         </p>
       </div>
@@ -537,7 +537,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
               <span
                 className="price"
               >
-                €1.99 per month
+                €1.99 per month 
               </span>
             </label>
           </div>
@@ -568,7 +568,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
               <span
                 className="price"
               >
-                €9.99 per year
+                €9.99 per year 
               </span>
             </label>
           </div>
@@ -586,8 +586,8 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
         className="bg row"
       >
         <h3>
-          Current subscription:
-
+          CURRENT_SUBSCRIPTION_TXT
+           
           Premium
         </h3>
         <div
@@ -604,18 +604,18 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
             <strong>
               02:58:20
             </strong>
-
+             
             of
-
+             
             03:00:00
-
+             
             used
           </p>
           <p
             className="exhausted"
           >
             <strong>
-              You have exhausted the available traffic. Upgrade to continue using the service.
+              USAGE_LIMIT_EXHAUSTED_TXT
             </strong>
           </p>
         </div>
@@ -633,18 +633,18 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
             <strong>
               2.79 GB
             </strong>
-
+             
             of
-
+             
             2.79 GB
-
+             
             used
           </p>
           <p
             className="exhausted"
           >
             <strong>
-              You have exhausted the available traffic. Upgrade to continue using the service.
+              USAGE_LIMIT_EXHAUSTED_TXT
             </strong>
           </p>
         </div>
@@ -655,7 +655,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
             onClick={[Function]}
             type="button"
           >
-            Upgrade
+            PLAN_UPGRADE_BTN_TXT
           </button>
         </p>
       </div>
@@ -831,8 +831,8 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
         className="bg row"
       >
         <h3>
-          Current subscription:
-
+          CURRENT_SUBSCRIPTION_TXT
+           
           Free
         </h3>
         <div
@@ -849,18 +849,18 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
             <strong>
               02:58:20
             </strong>
-
+             
             of
-
+             
             03:00:00
-
+             
             used
           </p>
           <p
             className="exhausted"
           >
             <strong>
-              You have exhausted the available traffic. Upgrade to continue using the service.
+              USAGE_LIMIT_EXHAUSTED_TXT
             </strong>
           </p>
         </div>
@@ -878,18 +878,18 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
             <strong>
               2.79 GB
             </strong>
-
+             
             of
-
+             
             2.79 GB
-
+             
             used
           </p>
           <p
             className="exhausted"
           >
             <strong>
-              You have exhausted the available traffic. Upgrade to continue using the service.
+              USAGE_LIMIT_EXHAUSTED_TXT
             </strong>
           </p>
         </div>
@@ -900,7 +900,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
             onClick={[Function]}
             type="button"
           >
-            Upgrade
+            PLAN_UPGRADE_BTN_TXT
           </button>
         </p>
       </div>
@@ -1108,7 +1108,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
               <span
                 className="price"
               >
-                €1.99 per month
+                €1.99 per month 
               </span>
             </label>
           </div>
@@ -1139,7 +1139,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
               <span
                 className="price"
               >
-                €9.99 per year
+                €9.99 per year 
               </span>
             </label>
           </div>
@@ -1157,8 +1157,8 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
         className="bg row"
       >
         <h3>
-          Current subscription:
-
+          CURRENT_SUBSCRIPTION_TXT
+           
           Free
         </h3>
         <div
@@ -1175,18 +1175,18 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
             <strong>
               02:58:20
             </strong>
-
+             
             of
-
+             
             03:00:00
-
+             
             used
           </p>
           <p
             className="exhausted"
           >
             <strong>
-              You have exhausted the available traffic. Upgrade to continue using the service.
+              USAGE_LIMIT_EXHAUSTED_TXT
             </strong>
           </p>
         </div>
@@ -1204,18 +1204,18 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
             <strong>
               2.79 GB
             </strong>
-
+             
             of
-
+             
             2.79 GB
-
+             
             used
           </p>
           <p
             className="exhausted"
           >
             <strong>
-              You have exhausted the available traffic. Upgrade to continue using the service.
+              USAGE_LIMIT_EXHAUSTED_TXT
             </strong>
           </p>
         </div>
@@ -1226,7 +1226,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
             onClick={[Function]}
             type="button"
           >
-            Upgrade
+            PLAN_UPGRADE_BTN_TXT
           </button>
         </p>
       </div>
@@ -1515,7 +1515,7 @@ exports[`<Status /> rendering should render correctly 1`] = `
         value="accept"
       />
     </form>
-
+    
   </React.Fragment>
   <React.Fragment>
     <form
@@ -1671,7 +1671,7 @@ exports[`<Status /> rendering with placeholder translation tags should render tr
         value="accept"
       />
     </form>
-
+    
   </React.Fragment>
   <React.Fragment>
     <form
