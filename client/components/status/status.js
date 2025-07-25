@@ -1174,27 +1174,26 @@ export default class Status extends React.Component {
                         )}{" "}
                         used
                       </p>
-                      {settings.subscriptions &&
-                        userPlan.is_free &&
-                        planExhausted && (
-                          <p className="exhausted">
-                            <strong>{t`USAGE_LIMIT_EXHAUSTED_TXT`}</strong>
-                          </p>
-                        )}
+                      {settings.subscriptions && planExhausted && (
+                        <p className="exhausted">
+                          <strong>{t`USAGE_LIMIT_EXHAUSTED_TXT`}</strong>
+                        </p>
+                      )}
                     </div>
                   ))}
-                {settings.subscriptions && userPlan.is_free && (
-                  <p>
-                    <button
-                      id="plan-upgrade-btn"
-                      type="button"
-                      className="button partial"
-                      onClick={this.toggleUpgradePlanModal}
-                    >
-                      {t`PLAN_UPGRADE_BTN_TXT`}
-                    </button>
-                  </p>
-                )}
+                {settings.subscriptions &&
+                  (userPlan.is_free || planExhausted) && (
+                    <p>
+                      <button
+                        id="plan-upgrade-btn"
+                        type="button"
+                        className="button partial"
+                        onClick={this.toggleUpgradePlanModal}
+                      >
+                        {t`PLAN_UPGRADE_BTN_TXT`}
+                      </button>
+                    </p>
+                  )}
               </div>
             </div>
           )}
