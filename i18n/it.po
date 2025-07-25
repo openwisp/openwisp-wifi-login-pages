@@ -7,12 +7,12 @@ msgstr ""
 "Plural-Forms: nplurals = 2; plural = (n != 1);\n"
 
 #.  Request failed
-#: client/components/login/login.js:243 client/components/status/status.js:319
-#: client/components/status/status.js:323
-#: client/components/status/status.js:380
-#: client/components/status/status.js:384
-#: client/components/status/status.js:389
-#: client/components/status/status.js:430 client/utils/get-payment-status.js:67
+#: client/components/login/login.js:243 client/components/status/status.js:357
+#: client/components/status/status.js:361
+#: client/components/status/status.js:418
+#: client/components/status/status.js:422
+#: client/components/status/status.js:427
+#: client/components/status/status.js:468 client/utils/get-payment-status.js:67
 #: client/utils/get-plans.js:21 client/utils/handle-logout.js:30
 #: client/utils/validate-token.js:72
 msgid "ERR_OCCUR"
@@ -22,8 +22,8 @@ msgstr "Si è verificato un errore!"
 msgid "PLAN_SETTING_TXT"
 msgstr "Seleziona il piano che preferisci"
 
-#: client/components/status/status.js:482
-#: client/components/status/status.js:561 client/utils/handle-logout.js:29
+#: client/components/status/status.js:533
+#: client/components/status/status.js:634 client/utils/handle-logout.js:29
 msgid "LOGOUT_SUCCESS"
 msgstr "Log out effettuato con successo"
 
@@ -53,100 +53,101 @@ msgstr "termini e le condizioni di utilizzo"
 
 #: client/components/login/login.js:216
 #: client/components/payment-process/payment-process.js:28
-#: client/components/status/status.js:564
-#: client/components/status/status.js:579
+#: client/components/status/status.js:637
+#: client/components/status/status.js:652
 msgid "PLEASE_WAIT"
 msgstr "Attendere prego..."
 
 #: client/components/registration/registration.js:340
 #: client/components/registration/registration.test.js:417
-#: client/components/status/status.js:581
+#: client/components/status/status.js:654
 msgid "PLEASE_LOGIN"
 msgstr "Ti preghiamo di accedere"
 
-#: client/components/status/status.js:710
-#: client/components/status/status.js:921
+#: client/components/status/status.js:835
+#: client/components/status/status.js:1047
 msgid "ACCT_ACTIVE"
 msgstr "Sessione attiva"
 
 #: client/components/logout/logout.js:24
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:331
-#: client/components/status/status.js:742
-#: client/components/status/status.js:835
-#: client/components/status/status.js:1099
+#: client/components/status/status.js:867
+#: client/components/status/status.js:960
+#: client/components/status/status.js:964
+#: client/components/status/status.js:1225
 msgid "LOGOUT"
 msgstr "Esci"
 
-#: client/components/status/status.js:913
+#: client/components/status/status.js:1039
 msgid "ACCT_START_TIME"
 msgstr "Data/ora inizio"
 
-#: client/components/status/status.js:914
+#: client/components/status/status.js:1040
 msgid "ACCT_STOP_TIME"
 msgstr "Data/ora fine"
 
-#: client/components/status/status.js:915
+#: client/components/status/status.js:1041
 msgid "ACCT_DURATION"
 msgstr "Durata"
 
-#: client/components/status/status.js:916
+#: client/components/status/status.js:1042
 msgid "ACCT_DOWNLOAD"
 msgstr "Traffico download"
 
-#: client/components/status/status.js:917
+#: client/components/status/status.js:1043
 msgid "ACCT_UPLOAD"
 msgstr "Traffico Upload"
 
-#: client/components/status/status.js:918
+#: client/components/status/status.js:1044
 msgid "ACCT_DEVICE_ADDRESS"
 msgstr "Indirizzo dispositivo"
 
-#: client/components/status/status.js:927
+#: client/components/status/status.js:1053
 msgid "STATUS"
 msgstr "Stato"
 
-#: client/components/status/status.js:928
+#: client/components/status/status.js:1054
 msgid "LOGGED_IN"
 msgstr "Autenticato"
 
 #: client/components/contact-box/contact.js:25
 #: client/components/login/login.js:117
 #: client/components/registration/registration.js:476
-#: client/components/status/status.js:931
+#: client/components/status/status.js:1057
 msgid "EMAIL"
 msgstr "Email"
 
-#: client/components/status/status.js:934
+#: client/components/status/status.js:1060
 msgid "USERNAME"
 msgstr "Nome utente"
 
-#: client/components/status/status.js:937
+#: client/components/status/status.js:1063
 msgid "PHONE_NUMBER"
 msgstr "Numero di telefono"
 
-#: client/components/status/status.js:1242
+#: client/components/status/status.js:1370
 msgid "CP_LOGIN"
 msgstr ""
 "Stiamo inizializzando la tua sessione sul servizio WiFi, potrebbero essere "
 "necessari alcuni secondi, attendere prego..."
 
-#: client/components/status/status.js:93
+#: client/components/status/status.js:94
 msgid "STATUS_TITL"
 msgstr "Stato"
 
-#: client/components/status/status.js:140
+#: client/components/status/status.js:162
 msgid "PASSWORD_EXPIRED"
 msgstr "La tua password è scaduta, aggiornala."
 
-#: client/components/status/status.js:367
+#: client/components/status/status.js:405
 msgid "PLAN_EXHAUSTED_TOAST"
 msgstr "Hai esaurito il traffico disponibile nel tuo abbonamento."
 
-#: client/components/status/status.js:420
+#: client/components/status/status.js:458
 msgid "SUCCESS_UPGRADE_PLAN"
 msgstr "Ricarica in corso"
 
-#: client/components/status/status.js:987
+#: client/components/status/status.js:1114
 msgid "STATUS_CONTENT"
 msgstr ""
 "Login al servizio WiFi effettuato con successo!\n"
@@ -154,25 +155,25 @@ msgstr ""
 "        Puoi lasciare questa pagina aperta per poter chiudere la sessione "
 "attiva."
 
-#: client/components/status/status.js:989
+#: client/components/status/status.js:1116
 msgid "TRAFFIC_EXHAUSTED"
 msgstr "Traffico esaurito"
 
-#: client/components/status/status.js:998
+#: client/components/status/status.js:1125
 msgid "LOGOUT_MODAL_CONTENT"
 msgstr "Autenticarsi automaticamente la prossima volta?"
 
-#: client/components/status/status.js:1025
+#: client/components/status/status.js:1152
 msgid "CURRENT_SUBSCRIPTION_TXT"
 msgstr "Abbonamento attuale:"
 
-#: client/components/status/status.js:1054
+#: client/components/status/status.js:1179
 msgid "USAGE_LIMIT_EXHAUSTED_TXT"
 msgstr ""
 "Hai esaurito il traffico disponibile. Effettua una ricarica per continuare a "
 "utilizzare il servizio."
 
-#: client/components/status/status.js:1067
+#: client/components/status/status.js:1193
 msgid "PLAN_UPGRADE_BTN_TXT"
 msgstr "Ricarica"
 
