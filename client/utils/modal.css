@@ -35,10 +35,10 @@
   margin-top: 0;
 }
 .modal-container .modal-buttons {
-  margin: 2.5em 0 0;
+  margin: 1.5em 0 1em;
 }
 .modal-container .modal-buttons button {
-  margin: 0 20px;
+  margin: 0 15px;
   padding-left: 25px;
   padding-right: 25px;
 }

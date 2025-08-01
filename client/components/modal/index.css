@@ -11,37 +11,34 @@
   text-decoration: none;
   color: inherit;
 }
-.modal-container .message h1 {
-  text-align: center;
-}
-.message {
+.modal-container .message {
   max-height: 70vh;
   overflow: auto;
+  font-size: 0.95em;
+  line-height: 1.8em;
 }
 .modal-container .message h1 {
+  text-align: center;
   font-size: 21px;
 }
 .modal-container .message h2 {
   font-size: 18px;
 }
-.modal-container .message {
-  line-height: 30px;
-}
 
 @media screen and (min-width: 0px) and (max-width: 767px) {
   #root .modal-container {
-    width: 100%;
+    width: 95%;
     max-width: none;
     box-sizing: border-box;
-    padding: 40px 5px 20px;
+    padding: 20px 5px;
   }
 
   #root .modal.content {
     padding-top: 0;
   }
   #root .modal.content .modal-container {
-    top: 0;
-    height: 100%;
+    top: 1%;
+    height: 98%;
     transform: none;
   }
 
