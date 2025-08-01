@@ -9,7 +9,6 @@
     },
     "components": {
       "status_page": {
-        "radius_usage_show_progress": true,
         "links": [
           {
             "text": {

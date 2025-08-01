@@ -2086,7 +2086,7 @@ describe("<Status /> interactions", () => {
     await tick();
     expect(wrapper).toMatchSnapshot();
   });
-  it("should show user's radius usage without progress bar", async () => {
+  it("should hide check if check.value is zero", async () => {
     validateToken.mockReturnValue(true);
     axios
       .mockImplementationOnce(() =>
@@ -2115,7 +2115,7 @@ describe("<Status /> interactions", () => {
               {
                 attribute: "Max-Daily-Session-Traffic",
                 op: ":=",
-                value: "3000000000",
+                value: "0",
                 result: 0,
                 type: "bytes",
               },
@@ -2127,7 +2127,63 @@ describe("<Status /> interactions", () => {
     const prop = createTestProps();
     prop.statusPage.links = links;
     prop.statusPage.radius_usage_enabled = true;
-    prop.statusPage.radius_usage_show_progress = false;
+    prop.isAuthenticated = true;
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+    });
+    await tick();
+    expect(wrapper).toMatchSnapshot();
+  });
+  it("subscriptions: should hide checks and show upgrade option if all checks have zero value", async () => {
+    validateToken.mockReturnValue(true);
+    axios
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          response: {
+            status: 200,
+            statusText: "OK",
+          },
+          data: [],
+          headers: {},
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: {
+            checks: [
+              {
+                attribute: "Max-Daily-Session",
+                op: ":=",
+                value: "0",
+                result: 0,
+                type: "seconds",
+              },
+              {
+                attribute: "Max-Daily-Session-Traffic",
+                op: ":=",
+                value: "0",
+                result: 0,
+                type: "bytes",
+              },
+            ],
+            plan: {
+              name: "Premium",
+              currency: "EUR",
+              is_free: false,
+              expire: null,
+              active: true,
+            },
+          },
+          headers: {},
+        }),
+      );
+    const prop = createTestProps();
+    prop.settings.subscriptions = true;
+    prop.statusPage.links = links;
+    prop.statusPage.radius_usage_enabled = true;
+    prop.planExhausted = true;
     prop.isAuthenticated = true;
     wrapper = shallow(<Status {...prop} />, {
       context: {setLoading: jest.fn()},

@@ -1166,36 +1166,37 @@ export default class Status extends React.Component {
                   </h3>
                 )}
                 {userChecks &&
-                  userChecks.map((check) => (
-                    <div key={check.attribute}>
-                      {statusPage.radius_usage_show_progress && (
-                        <progress
-                          id={check.attribute}
-                          max={check.value}
-                          value={check.result}
-                        />
-                      )}
-                      <p className="progress">
-                        <strong>
-                          {this.getUserCheckFormattedValue(
-                            check.result,
-                            check.type,
-                          )}
-                        </strong>{" "}
-                        of{" "}
-                        {this.getUserCheckFormattedValue(
-                          check.value,
-                          check.type,
-                        )}{" "}
-                        used
-                      </p>
-                      {settings.subscriptions && planExhausted && (
-                        <p className="exhausted">
-                          <strong>{t`USAGE_LIMIT_EXHAUSTED_TXT`}</strong>
-                        </p>
-                      )}
-                    </div>
-                  ))}
+                  userChecks.map(
+                    (check) =>
+                      check.value !== "0" && (
+                        <div key={check.attribute}>
+                          <progress
+                            id={check.attribute}
+                            max={check.value}
+                            value={check.result}
+                          />
+                          <p className="progress">
+                            <strong>
+                              {this.getUserCheckFormattedValue(
+                                check.result,
+                                check.type,
+                              )}
+                            </strong>{" "}
+                            of{" "}
+                            {this.getUserCheckFormattedValue(
+                              check.value,
+                              check.type,
+                            )}{" "}
+                            used
+                          </p>
+                        </div>
+                      ),
+                  )}
+                {settings.subscriptions && planExhausted && (
+                  <p className="exhausted">
+                    <strong>{t`USAGE_LIMIT_EXHAUSTED_TXT`}</strong>
+                  </p>
+                )}
                 {settings.subscriptions &&
                   (userPlan.is_free || planExhausted) && (
                     <p>
@@ -1405,7 +1406,6 @@ Status.propTypes = {
       }),
     ),
     radius_usage_enabled: PropTypes.bool,
-    radius_usage_show_progress: PropTypes.bool,
     saml_logout_url: PropTypes.string,
   }).isRequired,
   language: PropTypes.string.isRequired,
