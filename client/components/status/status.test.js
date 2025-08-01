@@ -60,11 +60,15 @@ const createTestProps = (props) => ({
   language: "en",
   orgSlug: "default",
   orgName: "default name",
-  statusPage: defaultConfig.components.status_page,
+  statusPage: {...defaultConfig.components.status_page},
   cookies: new Cookies(),
   settings: {...defaultConfig.settings, payment_requires_internet: true},
-  captivePortalLoginForm: defaultConfig.components.captive_portal_login_form,
-  captivePortalLogoutForm: defaultConfig.components.captive_portal_logout_form,
+  captivePortalLoginForm: {
+    ...defaultConfig.components.captive_portal_login_form,
+  },
+  captivePortalLogoutForm: {
+    ...defaultConfig.components.captive_portal_logout_form,
+  },
   captivePortalSyncAuth: false,
   location: {
     search: "?macaddr=4e:ed:11:2b:17:ae",
@@ -2075,6 +2079,55 @@ describe("<Status /> interactions", () => {
     const prop = createTestProps();
     prop.statusPage.links = links;
     prop.statusPage.radius_usage_enabled = true;
+    prop.isAuthenticated = true;
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+    });
+    await tick();
+    expect(wrapper).toMatchSnapshot();
+  });
+  it("should show user's radius usage without progress bar", async () => {
+    validateToken.mockReturnValue(true);
+    axios
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          response: {
+            status: 200,
+            statusText: "OK",
+          },
+          data: [],
+          headers: {},
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: {
+            checks: [
+              {
+                attribute: "Max-Daily-Session",
+                op: ":=",
+                value: "10800",
+                result: 0,
+                type: "seconds",
+              },
+              {
+                attribute: "Max-Daily-Session-Traffic",
+                op: ":=",
+                value: "3000000000",
+                result: 0,
+                type: "bytes",
+              },
+            ],
+          },
+          headers: {},
+        }),
+      );
+    const prop = createTestProps();
+    prop.statusPage.links = links;
+    prop.statusPage.radius_usage_enabled = true;
+    prop.statusPage.radius_usage_show_progress = false;
     prop.isAuthenticated = true;
     wrapper = shallow(<Status {...prop} />, {
       context: {setLoading: jest.fn()},

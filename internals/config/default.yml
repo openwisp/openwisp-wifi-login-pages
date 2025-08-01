@@ -102,6 +102,7 @@ client:
 
     status_page:
       radius_usage_enabled: false
+      radius_usage_show_progress: true
       links: []
 
     login_form:

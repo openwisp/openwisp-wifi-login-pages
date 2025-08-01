@@ -146,6 +146,7 @@ client:
             en: "Change your password"
           url: "/{orgSlug}/change-password/"
       radius_usage_enabled: true
+      radius_usage_show_progress: true
 
     login_form:
       social_login:

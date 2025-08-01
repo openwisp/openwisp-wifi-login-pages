@@ -1168,11 +1168,13 @@ export default class Status extends React.Component {
                 {userChecks &&
                   userChecks.map((check) => (
                     <div key={check.attribute}>
-                      <progress
-                        id={check.attribute}
-                        max={check.value}
-                        value={check.result}
-                      />
+                      {statusPage.radius_usage_show_progress && (
+                        <progress
+                          id={check.attribute}
+                          max={check.value}
+                          value={check.result}
+                        />
+                      )}
                       <p className="progress">
                         <strong>
                           {this.getUserCheckFormattedValue(
@@ -1403,6 +1405,7 @@ Status.propTypes = {
       }),
     ),
     radius_usage_enabled: PropTypes.bool,
+    radius_usage_show_progress: PropTypes.bool,
     saml_logout_url: PropTypes.string,
   }).isRequired,
   language: PropTypes.string.isRequired,
