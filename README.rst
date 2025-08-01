@@ -32,8 +32,8 @@ openwisp-wifi-login-pages
 
 ----
 
-**Need a quick overview?** `Try the OpenWISP Demo
-<https://openwisp.org/demo.html>`_.
+**Need a quick overview?** `Try the demo instance of OpenWISP WiFi Login
+Pages <https://wifi.openwisp.io/demo/login>`_!
 
 **No more ugly and fragmented User Experience for public/private WiFi
 services!**

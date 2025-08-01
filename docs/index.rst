@@ -17,6 +17,9 @@ Radius API </radius/user/rest-api>`.
 
 Refer to :doc:`user/intro` for a complete overview of features.
 
+**Need a quick overview?** `Try the demo instance of OpenWISP WiFi Login
+Pages <https://wifi.openwisp.io/demo/login>`_!
+
 The following diagram illustrates the role of the WiFi Login Pages module
 within the OpenWISP architecture.
 
