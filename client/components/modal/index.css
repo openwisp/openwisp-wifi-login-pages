@@ -30,7 +30,7 @@
     width: 95%;
     max-width: none;
     box-sizing: border-box;
-    padding: 20px 5px;
+    padding: 20px;
   }
 
   #root .modal.content {
