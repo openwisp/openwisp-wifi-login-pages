@@ -5,8 +5,15 @@ import "./modal.css";
 
 class InfoModal extends Component {
   render() {
-    const {active, toggleModal, handleResponse, content, isConfirmationDialog} =
-      this.props;
+    const {
+      active,
+      toggleModal,
+      handleResponse,
+      content,
+      isConfirmationDialog,
+      isScrollable,
+    } = this.props;
+
     return (
       <div className={active ? "modal is-visible" : "modal"}>
         <div className="modal-container bg">
@@ -17,7 +24,7 @@ class InfoModal extends Component {
           >
             &#10006;
           </button>
-          <div>{content}</div>
+          <div className={isScrollable ? "message" : null}>{content}</div>
           {isConfirmationDialog && (
             <p className="modal-buttons">
               <button
@@ -50,7 +57,9 @@ InfoModal.propTypes = {
   handleResponse: propTypes.func.isRequired,
   content: propTypes.object.isRequired,
   isConfirmationDialog: propTypes.bool,
+  isScrollable: propTypes.bool,
 };
 InfoModal.defaultProps = {
   isConfirmationDialog: true,
+  isScrollable: false,
 };

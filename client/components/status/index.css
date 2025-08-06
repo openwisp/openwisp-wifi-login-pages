@@ -115,18 +115,15 @@ progress + p.progress {
   margin-top: 15px;
   line-height: 1.5em;
 }
-#status .plans {
-  margin: 0 30px;
-}
 #status .plans .intro {
   margin-top: 0px;
   margin-bottom: 15px;
 }
 #status .plans .plan {
-  padding: 20px;
+  padding: 10px;
   margin-bottom: 20px;
   text-align: left;
-  line-height: 1.8em;
+  line-height: 1.6em;
   border: 1px solid #b4b4b4 !important;
 }
 #status .plans .plan:last-child {

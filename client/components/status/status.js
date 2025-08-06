@@ -1145,6 +1145,7 @@ export default class Status extends React.Component {
               toggleModal={this.toggleUpgradePlanModal}
               handleResponse={() => {}}
               isConfirmationDialog={false}
+              isScrollable
               content={
                 (upgradePlans.length &&
                   getPlanSelection(

@@ -13,6 +13,7 @@ exports[`<Status /> interactions should hide check if check.value is zero 1`] = 
     }
     handleResponse={[Function]}
     isConfirmationDialog={true}
+    isScrollable={false}
     toggleModal={[Function]}
   />
   <div
@@ -219,6 +220,7 @@ exports[`<Status /> interactions should show user's radius usage 1`] = `
     }
     handleResponse={[Function]}
     isConfirmationDialog={true}
+    isScrollable={false}
     toggleModal={[Function]}
   />
   <div
@@ -447,6 +449,7 @@ exports[`<Status /> interactions subscriptions: should hide checks and show upgr
     }
     handleResponse={[Function]}
     isConfirmationDialog={true}
+    isScrollable={false}
     toggleModal={[Function]}
   />
   <div
@@ -635,6 +638,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
     }
     handleResponse={[Function]}
     isConfirmationDialog={true}
+    isScrollable={false}
     toggleModal={[Function]}
   />
   <div
@@ -867,6 +871,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
     }
     handleResponse={[Function]}
     isConfirmationDialog={true}
+    isScrollable={false}
     toggleModal={[Function]}
   />
   <div
@@ -952,6 +957,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
       handleResponse={[Function]}
       id="upgrade-plan-modal"
       isConfirmationDialog={false}
+      isScrollable={true}
       toggleModal={[Function]}
     />
     <div
@@ -1180,6 +1186,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
     }
     handleResponse={[Function]}
     isConfirmationDialog={true}
+    isScrollable={false}
     toggleModal={[Function]}
   />
   <div
@@ -1412,6 +1419,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
     }
     handleResponse={[Function]}
     isConfirmationDialog={true}
+    isScrollable={false}
     toggleModal={[Function]}
   />
   <div
@@ -1497,6 +1505,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
       handleResponse={[Function]}
       id="upgrade-plan-modal"
       isConfirmationDialog={false}
+      isScrollable={true}
       toggleModal={[Function]}
     />
     <div
@@ -1725,6 +1734,7 @@ exports[`<Status /> rendering should render correctly 1`] = `
     }
     handleResponse={[Function]}
     isConfirmationDialog={true}
+    isScrollable={false}
     toggleModal={[Function]}
   />
   <div
@@ -1891,6 +1901,7 @@ exports[`<Status /> rendering with placeholder translation tags should render tr
     }
     handleResponse={[Function]}
     isConfirmationDialog={true}
+    isScrollable={false}
     toggleModal={[Function]}
   />
   <div

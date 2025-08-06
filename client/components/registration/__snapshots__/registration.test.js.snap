@@ -26,7 +26,9 @@ exports[`<Registration /> interactions should show modal if user is already regi
     >
       ✖
     </button>
-    <div>
+    <div
+      className={null}
+    >
       <div
         className="message"
       >
@@ -82,7 +84,9 @@ exports[`<Registration /> interactions should show modal if user is registered b
     >
       ✖
     </button>
-    <div>
+    <div
+      className={null}
+    >
       <div
         className="message"
       >
