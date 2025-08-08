@@ -272,7 +272,7 @@ exports[`<Status /> interactions should show user's radius usage 1`] = `
              
             of
              
-            2.79 GB
+            3 GB
              
             used
           </p>
@@ -690,12 +690,12 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
             className="progress"
           >
             <strong>
-              2.79 GB
+              3 GB
             </strong>
              
             of
              
-            2.79 GB
+            3 GB
              
             used
           </p>
@@ -1005,12 +1005,12 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
             className="progress"
           >
             <strong>
-              2.79 GB
+              3 GB
             </strong>
              
             of
              
-            2.79 GB
+            3 GB
              
             used
           </p>
@@ -1238,12 +1238,12 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
             className="progress"
           >
             <strong>
-              2.79 GB
+              3 GB
             </strong>
              
             of
              
-            2.79 GB
+            3 GB
              
             used
           </p>
@@ -1553,12 +1553,12 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
             className="progress"
           >
             <strong>
-              2.79 GB
+              3 GB
             </strong>
              
             of
              
-            2.79 GB
+            3 GB
              
             used
           </p>

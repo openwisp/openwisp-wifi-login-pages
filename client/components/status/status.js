@@ -12,7 +12,7 @@ import {Link} from "react-router-dom";
 import {toast} from "react-toastify";
 import InfinteScroll from "react-infinite-scroll-component";
 import {t, gettext} from "ttag";
-import bytes from "bytes";
+import prettyBytes from "pretty-bytes";
 import {timeFromSeconds} from "duration-formatter";
 import getLanguageHeaders from "../../utils/get-language-headers";
 
@@ -854,17 +854,15 @@ export default class Status extends React.Component {
         </td>
         <td>{this.getDuration(session.session_time)}</td>
         <td>
-          {bytes(session.output_octets, {
-            decimalPlaces: 0,
-            unitSeparator: " ",
-            unit: "MB",
+          {prettyBytes(session.output_octets, {
+            maximumFractionDigits: 0,
+            space: true,
           })}
         </td>
         <td>
-          {bytes(session.input_octets, {
-            decimalPlaces: 0,
-            unitSeparator: " ",
-            unit: "MB",
+          {prettyBytes(session.input_octets, {
+            maximumFractionDigits: 0,
+            space: true,
           })}
         </td>
         <td>
@@ -932,10 +930,9 @@ export default class Status extends React.Component {
         >
           <th>{session_info.header.download}:</th>
           <td>
-            {bytes(session.output_octets, {
-              decimalPlaces: 0,
-              unitSeparator: " ",
-              unit: "MB",
+            {prettyBytes(session.output_octets, {
+              maximumFractionDigits: 0,
+              space: true,
             })}
           </td>
         </tr>
@@ -945,10 +942,9 @@ export default class Status extends React.Component {
         >
           <th>{session_info.header.upload}:</th>
           <td>
-            {bytes(session.input_octets, {
-              decimalPlaces: 0,
-              unitSeparator: " ",
-              unit: "MB",
+            {prettyBytes(session.input_octets, {
+              maximumFractionDigits: 0,
+              space: true,
             })}
           </td>
         </tr>
@@ -1081,7 +1077,9 @@ export default class Status extends React.Component {
     const intValue = parseInt(value, 10);
     switch (type) {
       case "bytes":
-        return intValue === 0 ? 0 : bytes(intValue, {unitSeparator: " "});
+        return intValue === 0
+          ? 0
+          : prettyBytes(intValue, {space: true, maximumFractionDigits: 2});
       case "seconds":
         return timeFromSeconds(intValue);
       default:
