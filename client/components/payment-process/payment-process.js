@@ -110,7 +110,8 @@ export default class PaymentProcess extends React.Component {
     }
 
     if (isTokenValid === true && !settings.payment_iframe) {
-      return this.redirectToPaymentUrl(userData.payment_url);
+      this.redirectToPaymentUrl(userData.payment_url);
+      return null;
     }
 
     return (
