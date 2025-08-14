@@ -70,6 +70,26 @@ Run tests with:
 
     yarn test # headless tests
 
+ESM Support in Jest
+-------------------
+
+Some modern Node.js packages use ESM format which can cause Jest tests to
+fail with ``SyntaxError: Unexpected token 'export'``. This happens because
+Jest doesn't transform ``node_modules`` by default.
+
+To fix this, add ESM packages to Jest's ``transformIgnorePatterns`` in the
+``package.json`` file:
+
+.. code-block:: json
+
+    {
+      "jest": {
+        "transformIgnorePatterns": [
+          "node_modules/(?!(package-name|another-package|.*\\.mjs$))"
+        ]
+      }
+    }
+
 Running Automated Browser Tests
 -------------------------------
 
