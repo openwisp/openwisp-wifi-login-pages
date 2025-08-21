@@ -109,6 +109,7 @@ export default class Status extends React.Component {
         );
 
         window.addEventListener("message", this.handlePostMessage);
+        window.postMessage({type: "owlp-ready"}, window.location.origin);
 
         if (macaddr) {
           cookies.set(`${orgSlug}_macaddr`, macaddr, {path: "/"});
@@ -223,11 +224,20 @@ export default class Status extends React.Component {
         /* request to captive portal is made only if there is
           no active session from macaddr stored in the cookie */
         const {activeSessions} = this.state;
-        if (activeSessions && activeSessions.length === 0) {
+        if (activeSessions && activeSessions.length === 0 && mustLogin) {
           if (this.loginFormRef && this.loginFormRef.current) {
+            this.storeValue(
+              captivePortalSyncAuth,
+              `${orgSlug}_mustLogin`,
+              false,
+              cookies,
+            );
             this.notifyCpLogin(userData);
             this.loginFormRef.current.submit();
           }
+        }
+        if (captivePortalSyncAuth) {
+          this.finalOperations();
         }
       } else if (this.loginFormRef && this.loginFormRef.current && mustLogin) {
         if (
@@ -402,7 +412,9 @@ export default class Status extends React.Component {
         if (planExhausted !== isPlanExhausted) {
           setPlanExhausted(isPlanExhausted);
           if (isPlanExhausted) {
-            toast.info(t`PLAN_EXHAUSTED_TOAST`);
+            toast.info(t`PLAN_EXHAUSTED_TOAST`, {
+              toastId: mainToastId,
+            });
           }
         }
       }
@@ -436,8 +448,15 @@ export default class Status extends React.Component {
   }
 
   async upgradeUserPlan(event) {
-    const {language, orgSlug, cookies, userData, navigate, setUserData} =
-      this.props;
+    const {
+      language,
+      orgSlug,
+      cookies,
+      userData,
+      navigate,
+      setUserData,
+      captivePortalSyncAuth,
+    } = this.props;
     const upgradePlanUrl = upgradePlanApiUrl.replace("{orgSlug}", orgSlug);
     const auth_token = cookies.get(`${orgSlug}_auth_token`);
     const {upgradePlans} = this.state;
@@ -462,6 +481,15 @@ export default class Status extends React.Component {
           ...userData,
           payment_url: response.data.payment_url,
         });
+        // After a successful payment, the user is redirected back to the status page.
+        // If the user plan was previously exhausted, they need to be logged into the captive portal
+        // to regain internet access. This ensures seamless browsing after upgrading their plan.
+        this.storeValue(
+          captivePortalSyncAuth,
+          `${orgSlug}_mustLogin`,
+          true,
+          cookies,
+        );
         navigate(`/${orgSlug}/payment/process`);
       })
       .catch((error) => {
@@ -577,11 +605,13 @@ export default class Status extends React.Component {
       const macaddr = searchParams.get(
         captivePortalLoginForm.macaddr_param_name,
       );
-      if (reply || title.indexOf("404") >= 0) {
+      if (title.indexOf("404") >= 0) {
         logout(cookies, orgSlug);
-        toast.error(reply, {
-          onOpen: () => toast.dismiss(mainToastId),
-        });
+      }
+      if (reply && !toast.isActive(mainToastId)) {
+        /* disable ttag */
+        toast.error(gettext(reply));
+        /* enable ttag */
       }
       if (macaddr) {
         cookies.set(`${orgSlug}_macaddr`, macaddr, {path: "/"});
@@ -684,22 +714,37 @@ export default class Status extends React.Component {
         case "authMessage":
         case "authError":
           if (!message) break;
+          setLoading(true);
           toast.dismiss();
           if (type === "authMessage") {
             /* disable ttag */
-            toast.info(gettext(message));
+            toast.dismiss();
+            toast.info(gettext(message), {
+              toastId: mainToastId,
+            });
             /* enable ttag */
             // Change the message on the status page to reflect plan exhaustion
             setPlanExhausted(true);
+            setLoading(false);
           } else {
             /* disable ttag */
+            toast.dismiss();
             toast.error(gettext(message), {
               autoClose: 10000,
+              toastId: mainToastId,
             });
             /* enable ttag */
-            logout(cookies, orgSlug);
+            this.setState({loggedOut: true}, () => {
+              // Logout after state update and a small delay
+              // The delay ensures the component has sufficient time to unmount
+              // and complete any ongoing XHR requests. Without this, erroring
+              // requests may trigger error toast messages.
+              setTimeout(() => {
+                logout(cookies, orgSlug);
+                setLoading(false);
+              }, 250);
+            });
           }
-          setLoading(false);
           break;
 
         case "internet-mode":
