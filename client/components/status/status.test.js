@@ -496,11 +496,7 @@ describe("<Status /> interactions", () => {
       "4e:ed:11:2b:17:ae",
       {path: "/"},
     );
-    expect(toast.error).toHaveBeenCalledWith("true?macaddr=4e:ed:11:2b:17:ae", {
-      onOpen: expect.any(Function),
-    });
-    toast.error.mock.calls.pop()[1].onOpen();
-    expect(toast.dismiss).toHaveBeenCalledWith("main_toast_id");
+    expect(toast.error).toHaveBeenCalledWith("true?macaddr=4e:ed:11:2b:17:ae");
   });
 
   it("test postMessage event listener firing", async () => {
@@ -525,6 +521,7 @@ describe("<Status /> interactions", () => {
   });
 
   it("test handlePostMessage", async () => {
+    jest.useFakeTimers();
     props = createTestProps();
     const setLoadingMock = jest.fn();
     wrapper = shallow(<Status {...props} />, {
@@ -572,10 +569,11 @@ describe("<Status /> interactions", () => {
       data: {message: "RADIUS Error", type: "authError"},
       origin: "http://localhost",
     });
-    expect(toast.dismiss).toHaveBeenCalledTimes(1);
+    jest.runAllTimers();
+    expect(toast.dismiss).toHaveBeenCalledTimes(2);
     expect(toast.error).toHaveBeenCalledTimes(1);
     expect(props.logout).toHaveBeenCalledTimes(1);
-    expect(setLoadingMock).toHaveBeenCalledTimes(2);
+    expect(setLoadingMock).toHaveBeenCalledTimes(3);
     expect(setLoadingMock).toHaveBeenLastCalledWith(false);
 
     toast.dismiss.mockReset();
@@ -588,12 +586,14 @@ describe("<Status /> interactions", () => {
       data: {message: "RADIUS Info", type: "authMessage"},
       origin: "http://localhost",
     });
-    expect(toast.dismiss).toHaveBeenCalledTimes(1);
+    expect(toast.dismiss).toHaveBeenCalledTimes(2);
     expect(toast.info).toHaveBeenCalledTimes(1);
     expect(props.setPlanExhausted).toHaveBeenCalledTimes(1);
     expect(props.logout).toHaveBeenCalledTimes(0);
-    expect(setLoadingMock).toHaveBeenCalledTimes(1);
+    expect(setLoadingMock).toHaveBeenCalledTimes(2);
     expect(setLoadingMock).toHaveBeenLastCalledWith(false);
+
+    jest.useRealTimers();
   });
 
   it("test handlePostMessage internet-mode", async () => {
@@ -666,7 +666,7 @@ describe("<Status /> interactions", () => {
     props = createTestProps({
       captivePortalSyncAuth: true,
       location: {
-        search: "",
+        search: "macaddr=AA:BB:CC:DD:EE:FF",
       },
       userData: responseData,
     });
@@ -679,6 +679,24 @@ describe("<Status /> interactions", () => {
     wrapper.setProps({
       cookies: new Cookies(),
     });
+    const activeSession = {
+      session_id: 1,
+      start_time: "2021-07-08T00:22:28-04:00",
+      stop_time: null,
+      input_octets: 0,
+      output_octets: 0,
+    };
+    const pastSession = {
+      session_id: 2,
+      start_time: "2021-07-08T00:22:28-04:00",
+      stop_time: "2021-07-08T00:22:29-04:00",
+      input_octets: 10000,
+      output_octets: 100000,
+    };
+    wrapper.setState({
+      activeSessions: [activeSession],
+      pastSessions: [pastSession],
+    });
     const spyFn = jest.fn();
     const status = wrapper.instance();
     status.props.cookies.set("default_mustLogin", false, {
@@ -689,10 +707,62 @@ describe("<Status /> interactions", () => {
     await tick();
 
     expect(spyFn.mock.calls.length).toBe(0);
-    expect(setLoading.mock.calls.length).toBe(2);
+    expect(setLoading.mock.calls).toEqual([[true], [false]]);
     // ensure sessions are loaded too
     expect(Status.prototype.getUserActiveRadiusSessions.mock.calls.length).toBe(
+      2,
+    );
+    expect(Status.prototype.getUserPassedRadiusSessions.mock.calls.length).toBe(
       1,
+    );
+  });
+
+  it("should not perform captive portal login again (sync auth), if captive portal rejected", async () => {
+    // The captive portal login was rejected, the captive portal returned with
+    // "macaddr=AA:BB:CC:DD:EE:FF&reply=Rejected"
+    validateToken.mockReturnValue(true);
+    props = createTestProps({
+      captivePortalSyncAuth: true,
+      location: {
+        search: "macaddr=AA:BB:CC:DD:EE:FF&reply=Rejected",
+      },
+      userData: responseData,
+    });
+    jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
+    jest.spyOn(Status.prototype, "getUserPassedRadiusSessions");
+    const setLoading = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading},
+    });
+    wrapper.setProps({
+      cookies: new Cookies(),
+    });
+    const pastSession = {
+      session_id: 2,
+      start_time: "2021-07-08T00:22:28-04:00",
+      stop_time: "2021-07-08T00:22:29-04:00",
+      input_octets: 10000,
+      output_octets: 100000,
+    };
+    wrapper.setState({
+      // The captive portal login was rejected earlier, there'll be no active sessions
+      activeSessions: [],
+      pastSessions: [pastSession],
+    });
+    const spyFn = jest.fn();
+    const status = wrapper.instance();
+    status.props.cookies.set("default_mustLogin", false, {
+      path: "/",
+      maxAge: 60,
+    });
+    status.loginFormRef.current = {submit: spyFn};
+    await tick();
+
+    expect(spyFn.mock.calls.length).toBe(0);
+    expect(setLoading.mock.calls).toEqual([[true], [false]]);
+    // ensure sessions are loaded too
+    expect(Status.prototype.getUserActiveRadiusSessions.mock.calls.length).toBe(
+      2,
     );
     expect(Status.prototype.getUserPassedRadiusSessions.mock.calls.length).toBe(
       1,

@@ -219,7 +219,9 @@ export default class OrganizationWrapper extends React.Component {
                     path="login/*"
                     element={
                       isAuthenticated && is_active ? (
-                        <Navigate to={`/${orgSlug}/status`} />
+                        <Navigate
+                          to={`/${orgSlug}/status${location.search || ""}`}
+                        />
                       ) : (
                         <Login navigate={navigate} />
                       )
