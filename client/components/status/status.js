@@ -835,7 +835,15 @@ export default class Status extends React.Component {
   };
 
   getLargeTableRow = (session, sessionSettings, showLogoutButton = false) => {
-    const {language} = this.props;
+    const {language, statusPage} = this.props;
+    const {accounting_swap_octets} = statusPage;
+    let downloadOctets = session.output_octets;
+    let uploadOctets = session.input_octets;
+
+    if (accounting_swap_octets) {
+      downloadOctets = session.input_octets;
+      uploadOctets = session.output_octets;
+    }
     const time_option = {
       dateStyle: "medium",
       timeStyle: "short",
@@ -854,13 +862,13 @@ export default class Status extends React.Component {
         </td>
         <td>{this.getDuration(session.session_time)}</td>
         <td>
-          {prettyBytes(session.output_octets, {
+          {prettyBytes(downloadOctets, {
             maximumFractionDigits: 0,
             space: true,
           })}
         </td>
         <td>
-          {prettyBytes(session.input_octets, {
+          {prettyBytes(uploadOctets, {
             maximumFractionDigits: 0,
             space: true,
           })}
@@ -883,14 +891,21 @@ export default class Status extends React.Component {
   };
 
   getSmallTableRow = (session, session_info) => {
-    const {captivePortalLogoutForm} = this.props;
+    const {captivePortalLogoutForm, language, statusPage} = this.props;
+    const {accounting_swap_octets} = statusPage;
+    let downloadOctets = session.output_octets;
+    let uploadOctets = session.input_octets;
+
+    if (accounting_swap_octets) {
+      downloadOctets = session.input_octets;
+      uploadOctets = session.output_octets;
+    }
     const time_option = {
       dateStyle: "medium",
       timeStyle: "short",
       hour12: false,
     };
     const activeSessionText = session_info.settings.active_session;
-    const {language} = this.props;
     return (
       <tbody key={session.session_id}>
         <tr
@@ -930,7 +945,7 @@ export default class Status extends React.Component {
         >
           <th>{session_info.header.download}:</th>
           <td>
-            {prettyBytes(session.output_octets, {
+            {prettyBytes(downloadOctets, {
               maximumFractionDigits: 0,
               space: true,
             })}
@@ -942,7 +957,7 @@ export default class Status extends React.Component {
         >
           <th>{session_info.header.upload}:</th>
           <td>
-            {prettyBytes(session.input_octets, {
+            {prettyBytes(uploadOctets, {
               maximumFractionDigits: 0,
               space: true,
             })}
@@ -1406,6 +1421,7 @@ Status.propTypes = {
     ),
     radius_usage_enabled: PropTypes.bool,
     saml_logout_url: PropTypes.string,
+    accounting_swap_octets: PropTypes.bool,
   }).isRequired,
   language: PropTypes.string.isRequired,
   defaultLanguage: PropTypes.string.isRequired,

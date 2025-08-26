@@ -101,6 +101,7 @@ client:
       social_links: []
 
     status_page:
+      accounting_swap_octets: false
       radius_usage_enabled: false
       links: []
 

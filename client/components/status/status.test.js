@@ -2449,3 +2449,84 @@ describe("<Status /> interactions", () => {
     });
   });
 });
+
+describe("<Status /> accounting_swap_octets", () => {
+  let props;
+  let wrapper;
+  const sessionData = {
+    session_id: 1,
+    start_time: "2020-09-08T00:22:28-04:00",
+    stop_time: null,
+    input_octets: 1000, // upload
+    output_octets: 2000, // download
+  };
+
+  beforeEach(() => {
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: [sessionData],
+        headers: {},
+      }),
+    );
+    props = createTestProps();
+  });
+
+  it("should not swap download and upload when accounting_swap_octets is false", async () => {
+    props.statusPage.accounting_swap_octets = false;
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+    });
+    await wrapper.instance().getUserActiveRadiusSessions();
+
+    const largeTableRow = wrapper
+      .instance()
+      .getLargeTableRow(
+        sessionData,
+        wrapper.instance().getSessionInfo().settings,
+      );
+    const largeTableWrapper = shallow(<div>{largeTableRow}</div>);
+    // download is output_octets (2000 => '2 kB'), upload is input_octets (1000 => '1 kB')
+    // download is the 4th td (index 3), upload is the 5th (index 4)
+    expect(largeTableWrapper.find("td").at(3).text()).toBe("2 kB");
+    expect(largeTableWrapper.find("td").at(4).text()).toBe("1 kB");
+
+    const smallTableRow = wrapper
+      .instance()
+      .getSmallTableRow(sessionData, wrapper.instance().getSessionInfo());
+    const smallTableWrapper = shallow(<table>{smallTableRow}</table>);
+    const rows = smallTableWrapper.find("tr");
+    // download is the 4th row (index 3), upload is the 5th (index 4)
+    expect(rows.at(3).find("td").text()).toBe("2 kB");
+    expect(rows.at(4).find("td").text()).toBe("1 kB");
+  });
+
+  it("should swap download and upload when accounting_swap_octets is true", async () => {
+    props.statusPage.accounting_swap_octets = true;
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+    });
+    await wrapper.instance().getUserActiveRadiusSessions();
+
+    const largeTableRow = wrapper
+      .instance()
+      .getLargeTableRow(
+        sessionData,
+        wrapper.instance().getSessionInfo().settings,
+      );
+    const largeTableWrapper = shallow(<div>{largeTableRow}</div>);
+    // download is input_octets (1000 => '1 kB'), upload is output_octets (2000 => '2 kB')
+    expect(largeTableWrapper.find("td").at(3).text()).toBe("1 kB");
+    expect(largeTableWrapper.find("td").at(4).text()).toBe("2 kB");
+
+    const smallTableRow = wrapper
+      .instance()
+      .getSmallTableRow(sessionData, wrapper.instance().getSessionInfo());
+    const smallTableWrapper = shallow(<table>{smallTableRow}</table>);
+    const rows = smallTableWrapper.find("tr");
+    // download is the 4th row, upload is the 5th
+    expect(rows.at(3).find("td").text()).toBe("1 kB");
+    expect(rows.at(4).find("td").text()).toBe("2 kB");
+  });
+});
