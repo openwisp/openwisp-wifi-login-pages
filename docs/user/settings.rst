@@ -124,6 +124,29 @@ browsers may fail to detect successful login when this method is used.
 Set ``captive_portal_sync_auth`` to ``true`` to submit the login form
 synchronously and trigger a full page reload upon authentication:
 
+Status Page Settings
+--------------------
+
+``accounting_swap_octets``
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Some RADIUS servers may report accounting octets (data usage) with
+download and upload values swapped. This setting allows you to correct the
+display on the status page.
+
+- **Type**: ``boolean``
+- **Default**: ``false``
+
+When set to ``true``, the "Download" and "Upload" values on the status
+page will be swapped.
+
+Example:
+
+.. code-block:: yaml
+
+    status_page:
+      accounting_swap_octets: true
+
 .. _wlp_menu_items:
 
 Menu Items
