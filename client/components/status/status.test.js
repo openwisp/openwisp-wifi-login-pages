@@ -2457,8 +2457,8 @@ describe("<Status /> accounting_swap_octets", () => {
     session_id: 1,
     start_time: "2020-09-08T00:22:28-04:00",
     stop_time: null,
-    input_octets: 1000, // upload
-    output_octets: 2000, // download
+    input_octets: 2000, // Download: 2 kB
+    output_octets: 1000, // Upload: 1 kB
   };
 
   beforeEach(() => {
@@ -2487,7 +2487,7 @@ describe("<Status /> accounting_swap_octets", () => {
         wrapper.instance().getSessionInfo().settings,
       );
     const largeTableWrapper = shallow(<div>{largeTableRow}</div>);
-    // download is output_octets (2000 => '2 kB'), upload is input_octets (1000 => '1 kB')
+    // download is input_octets (2000 => '2 kB'), upload is output_octets (1000 => '1 kB')
     // download is the 4th td (index 3), upload is the 5th (index 4)
     expect(largeTableWrapper.find("td").at(3).text()).toBe("2 kB");
     expect(largeTableWrapper.find("td").at(4).text()).toBe("1 kB");
@@ -2516,7 +2516,7 @@ describe("<Status /> accounting_swap_octets", () => {
         wrapper.instance().getSessionInfo().settings,
       );
     const largeTableWrapper = shallow(<div>{largeTableRow}</div>);
-    // download is input_octets (1000 => '1 kB'), upload is output_octets (2000 => '2 kB')
+    // download is output_octets (1000 => '1 kB'), upload is input_octets (2000 => '2 kB')
     expect(largeTableWrapper.find("td").at(3).text()).toBe("1 kB");
     expect(largeTableWrapper.find("td").at(4).text()).toBe("2 kB");
 

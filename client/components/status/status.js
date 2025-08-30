@@ -837,12 +837,12 @@ export default class Status extends React.Component {
   getLargeTableRow = (session, sessionSettings, showLogoutButton = false) => {
     const {language, statusPage} = this.props;
     const {accounting_swap_octets} = statusPage;
-    let downloadOctets = session.output_octets;
-    let uploadOctets = session.input_octets;
+    let downloadOctets = session.input_octets;
+    let uploadOctets = session.output_octets;
 
     if (accounting_swap_octets) {
-      downloadOctets = session.input_octets;
-      uploadOctets = session.output_octets;
+      downloadOctets = session.output_octets;
+      uploadOctets = session.input_octets;
     }
     const time_option = {
       dateStyle: "medium",
@@ -893,12 +893,12 @@ export default class Status extends React.Component {
   getSmallTableRow = (session, session_info) => {
     const {captivePortalLogoutForm, language, statusPage} = this.props;
     const {accounting_swap_octets} = statusPage;
-    let downloadOctets = session.output_octets;
-    let uploadOctets = session.input_octets;
+    let downloadOctets = session.input_octets;
+    let uploadOctets = session.output_octets;
 
     if (accounting_swap_octets) {
-      downloadOctets = session.input_octets;
-      uploadOctets = session.output_octets;
+      downloadOctets = session.output_octets;
+      uploadOctets = session.input_octets;
     }
     const time_option = {
       dateStyle: "medium",
