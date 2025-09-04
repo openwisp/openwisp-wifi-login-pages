@@ -145,6 +145,7 @@ client:
         - text:
             en: "Change your password"
           url: "/{orgSlug}/change-password/"
+      accounting_swap_octets: false
       radius_usage_enabled: true
 
     login_form:
