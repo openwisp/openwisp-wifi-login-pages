@@ -1,5 +1,5 @@
 import {SET_AUTHENTICATION_STATUS} from "../constants/action-types";
-import {sessionStorage} from "../utils/storage";
+import {sessionStorage, localStorage} from "../utils/storage";
 
 const logout = (cookies, orgSlug, userAutoLogin = false) => {
   if (!userAutoLogin) {
@@ -8,8 +8,10 @@ const logout = (cookies, orgSlug, userAutoLogin = false) => {
     cookies.remove(`${orgSlug}_macaddr`, {path: "/"});
     sessionStorage.clear();
   }
-  cookies.remove(`${orgSlug}_mustLogin`, {path: "/"});
-  cookies.remove(`${orgSlug}_mustLogout`, {path: "/"});
+  [`${orgSlug}_mustLogin`, `${orgSlug}_mustLogout`].forEach((element) => {
+    cookies.remove(element, {path: "/"});
+    localStorage.removeItem(element);
+  });
 
   return {
     type: SET_AUTHENTICATION_STATUS,
