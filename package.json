@@ -46,7 +46,7 @@
     "react-toastify": "^9.1.3",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "regenerator-runtime": "^0.13.9",
+    "regenerator-runtime": "^0.14.1",
     "tsutils": "^3.17.1",
     "ttag": "^1.7.24",
     "universal-cookie-express": "^8.0.1",
