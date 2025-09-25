@@ -216,7 +216,7 @@ export default class Status extends React.Component {
 
       const macaddr = cookies.get(`${orgSlug}_macaddr`);
       if (macaddr) {
-        const params = {macaddr};
+        const params = {calling_station_id: macaddr};
         await this.getUserActiveRadiusSessions(params);
         if (statusPage.radius_usage_enabled) {
           await this.getUserRadiusUsage();
