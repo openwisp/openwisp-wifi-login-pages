@@ -65,6 +65,8 @@ export default class Status extends React.Component {
       userPlan: {},
       upgradePlanModalActive: false,
       upgradePlans: [],
+      warningMessage: null,
+      showUpgradeBtn: true,
     };
     this.repeatLogin = false;
     this.getUserRadiusSessions = this.getUserRadiusSessions.bind(this);
@@ -381,6 +383,7 @@ export default class Status extends React.Component {
       planExhausted,
       setPlanExhausted,
     } = this.props;
+    const {warningMessage} = this.state;
     const url = getUserRadiusUsageUrl(orgSlug);
     const auth_token = cookies.get(`${orgSlug}_auth_token`);
     handleSession(orgSlug, auth_token, cookies);
@@ -404,11 +407,18 @@ export default class Status extends React.Component {
         Array.isArray(response.data.checks) && response.data.checks.length > 0;
       if (options.showRadiusUsage) {
         options.userChecks = response.data.checks;
-        options.userChecks.forEach((check) => {
-          if (check.value === String(check.result)) {
-            isPlanExhausted = true;
-          }
+        const isAnyQuotaExceeded = options.userChecks.some((check) => {
+          const quota = Number(check.value);
+          const usage = check.result;
+          return quota > 0 && usage >= quota;
         });
+        const allQuotasZero = options.userChecks.every(
+          (check) => Number(check.value) === 0,
+        );
+        isPlanExhausted = isAnyQuotaExceeded || allQuotasZero;
+        if (isPlanExhausted && !warningMessage) {
+          options.warningMessage = "USAGE_LIMIT_EXHAUSTED_TXT";
+        }
         if (planExhausted !== isPlanExhausted) {
           setPlanExhausted(isPlanExhausted);
           if (isPlanExhausted) {
@@ -704,56 +714,69 @@ export default class Status extends React.Component {
       setPlanExhausted,
     } = this.props;
     const {setLoading} = this.context;
-    const {message, type} = event.data;
-    // For security reasons, read https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage#security_concern
-    if (
+    const {message, type, warningMessage, showUpgradeBtn} = event.data;
+
+    // Only accept messages from trusted origins,
+    // For more info read: https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage#security_concern
+    const trustedOrigin =
       event.origin === new URL(captivePortalLoginForm.action).origin ||
-      event.origin === window.location.origin
+      event.origin === window.location.origin;
+
+    if (
+      !trustedOrigin ||
+      !type ||
+      // internet-mode will not contain message, but message
+      // is required for authError and authMessage type
+      (!message && type !== "internet-mode")
     ) {
-      switch (type) {
-        case "authMessage":
-        case "authError":
-          if (!message) break;
-          setLoading(true);
-          toast.dismiss();
-          if (type === "authMessage") {
-            /* disable ttag */
-            toast.dismiss();
-            toast.info(gettext(message), {
-              toastId: mainToastId,
-            });
-            /* enable ttag */
+      return;
+    }
+
+    switch (type) {
+      case "authMessage":
+        setLoading(true);
+        toast.dismiss();
+        /* disable ttag */
+        toast.info(gettext(message), {toastId: mainToastId});
+        /* enable ttag */
+        this.setState(
+          {
+            warningMessage: warningMessage || "USAGE_LIMIT_EXHAUSTED_TXT",
+            ...(showUpgradeBtn !== undefined && {showUpgradeBtn}),
+          },
+          () => {
             // Change the message on the status page to reflect plan exhaustion
             setPlanExhausted(true);
             setLoading(false);
-          } else {
-            /* disable ttag */
-            toast.dismiss();
-            toast.error(gettext(message), {
-              autoClose: 10000,
-              toastId: mainToastId,
-            });
-            /* enable ttag */
-            this.setState({loggedOut: true}, () => {
-              // Logout after state update and a small delay
-              // The delay ensures the component has sufficient time to unmount
-              // and complete any ongoing XHR requests. Without this, erroring
-              // requests may trigger error toast messages.
-              setTimeout(() => {
-                logout(cookies, orgSlug);
-                setLoading(false);
-              }, 250);
-            });
-          }
-          break;
-
-        case "internet-mode":
-          setInternetMode(true);
-          break;
-
-        default:
-        // do nothing
-      }
+          },
+        );
+        break;
+      case "authError":
+        setLoading(true);
+        toast.dismiss();
+        /* disable ttag */
+        toast.error(gettext(message), {
+          autoClose: 10000,
+          toastId: mainToastId,
+        });
+        /* enable ttag */
+        this.setState({loggedOut: true}, () => {
+          // Logout after state update and a small delay
+          // The delay ensures the component has sufficient time to unmount
+          // and complete any ongoing XHR requests. Without this, erroring
+          // requests may trigger error toast messages.
+          setTimeout(() => {
+            logout(cookies, orgSlug);
+            setLoading(false);
+          }, 250);
+        });
+        break;
+      case "internet-mode":
+        setInternetMode(true);
+        break;
+      default:
+        // Unknown message type, do nothing
+        break;
     }
   };
 
@@ -1178,6 +1201,8 @@ export default class Status extends React.Component {
       radiusUsageSpinner,
       upgradePlanModalActive,
       upgradePlans,
+      showUpgradeBtn,
+      warningMessage,
       modalActive,
       rememberMe,
     } = this.state;
@@ -1251,13 +1276,14 @@ export default class Status extends React.Component {
                         </div>
                       ),
                   )}
-                {settings.subscriptions && planExhausted && (
-                  <p className="exhausted">
-                    <strong>{t`USAGE_LIMIT_EXHAUSTED_TXT`}</strong>
+                {warningMessage && (
+                  <p className="important">
+                    <strong>{gettext(warningMessage)}</strong>
                   </p>
                 )}
                 {settings.subscriptions &&
-                  (userPlan.is_free || planExhausted) && (
+                  (userPlan.is_free || planExhausted) &&
+                  showUpgradeBtn && (
                     <p>
                       <button
                         id="plan-upgrade-btn"
