@@ -570,7 +570,7 @@ describe("<Status /> interactions", () => {
       origin: "http://localhost",
     });
     jest.runAllTimers();
-    expect(toast.dismiss).toHaveBeenCalledTimes(2);
+    expect(toast.dismiss).toHaveBeenCalledTimes(1);
     expect(toast.error).toHaveBeenCalledTimes(1);
     expect(props.logout).toHaveBeenCalledTimes(1);
     expect(setLoadingMock).toHaveBeenCalledTimes(3);
@@ -586,9 +586,34 @@ describe("<Status /> interactions", () => {
       data: {message: "RADIUS Info", type: "authMessage"},
       origin: "http://localhost",
     });
-    expect(toast.dismiss).toHaveBeenCalledTimes(2);
+    expect(toast.dismiss).toHaveBeenCalledTimes(1);
     expect(toast.info).toHaveBeenCalledTimes(1);
     expect(props.setPlanExhausted).toHaveBeenCalledTimes(1);
+    expect(props.logout).toHaveBeenCalledTimes(0);
+    expect(setLoadingMock).toHaveBeenCalledTimes(2);
+    expect(setLoadingMock).toHaveBeenLastCalledWith(false);
+
+    toast.info.mockReset();
+    toast.dismiss.mockReset();
+    props.logout.mockReset();
+    setLoadingMock.mockReset();
+    props.setPlanExhausted.mockReset();
+
+    // Test valid authMessage with warningMessage and showUpgradeBtn
+    status.handlePostMessage({
+      data: {
+        message: "RADIUS Info",
+        type: "authMessage",
+        warningMessage: "Custom warning",
+        showUpgradeBtn: false,
+      },
+      origin: "http://localhost",
+    });
+    expect(toast.dismiss).toHaveBeenCalledTimes(1);
+    expect(toast.info).toHaveBeenCalledTimes(1);
+    expect(props.setPlanExhausted).toHaveBeenCalledTimes(1);
+    expect(status.state.warningMessage).toBe("Custom warning");
+    expect(status.state.showUpgradeBtn).toBe(false);
     expect(props.logout).toHaveBeenCalledTimes(0);
     expect(setLoadingMock).toHaveBeenCalledTimes(2);
     expect(setLoadingMock).toHaveBeenLastCalledWith(false);

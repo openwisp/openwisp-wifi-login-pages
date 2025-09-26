@@ -468,7 +468,7 @@ exports[`<Status /> interactions subscriptions: should hide checks and show upgr
           Premium
         </h3>
         <p
-          className="exhausted"
+          className="important"
         >
           <strong>
             USAGE_LIMIT_EXHAUSTED_TXT
@@ -701,7 +701,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
           </p>
         </div>
         <p
-          className="exhausted"
+          className="important"
         >
           <strong>
             USAGE_LIMIT_EXHAUSTED_TXT
@@ -1016,7 +1016,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
           </p>
         </div>
         <p
-          className="exhausted"
+          className="important"
         >
           <strong>
             USAGE_LIMIT_EXHAUSTED_TXT
@@ -1249,7 +1249,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
           </p>
         </div>
         <p
-          className="exhausted"
+          className="important"
         >
           <strong>
             USAGE_LIMIT_EXHAUSTED_TXT
@@ -1564,7 +1564,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
           </p>
         </div>
         <p
-          className="exhausted"
+          className="important"
         >
           <strong>
             USAGE_LIMIT_EXHAUSTED_TXT
