@@ -110,7 +110,7 @@ progress + p.progress {
 .limit-info .button {
   margin-top: 5px;
 }
-.limit-info .exhausted {
+.limit-info .important {
   color: #ba2121f7;
   margin-top: 15px;
   line-height: 1.5em;
