@@ -199,7 +199,9 @@ describe("<Header /> rendering", () => {
     expect(wrapper.find(".sticky-container").length).toEqual(1);
     expect(wrapper.find(".sticky-msg").length).toEqual(1);
     expect(wrapper.find(".sticky-msg").props().dangerouslySetInnerHTML).toEqual(
-      {__html: <p>announcement</p>},
+      {
+        __html: <p>announcement</p>,
+      },
     );
     expect(wrapper).toMatchSnapshot();
     expect(wrapper.find(".close-sticky-btn").length).toEqual(1);
