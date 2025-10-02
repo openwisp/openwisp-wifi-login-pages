@@ -114,7 +114,7 @@ export const mobilePhoneTokenStatus = (req, res) => {
         // is not implemented in OpenWISP RADIUS. Thus, the response
         // code is used to distinguish between the two scenarios.
         response_code: "INVALID_ORGANIZATION",
-        non_field_errors: ["Not found."],
+        non_field_errors: ["NOT_FOUND"],
       });
   }
 };
@@ -167,7 +167,7 @@ export const verifyMobilePhoneToken = (req, res) => {
   // return 404 for invalid organization slug or org not listed in config
   if (!validSlug) {
     res.status(404).type("application/json").send({
-      response_code: "INTERNAL_SERVER_ERROR",
+      response_code: "NOT_FOUND",
     });
   }
 };
