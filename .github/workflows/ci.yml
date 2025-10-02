@@ -72,9 +72,6 @@ jobs:
           sudo apt update -qq
           sudo apt install -qq -y libssl-dev libffi-dev
 
-      - name: Tests
-        run: yarn coverage
-
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -113,6 +110,9 @@ jobs:
 
       - name: Running OpenWISP WiFi Login Pages
         run: yarn start &
+
+      - name: Tests
+        run: yarn coverage
 
       - name: Running OpenWISP Radius
         run: |

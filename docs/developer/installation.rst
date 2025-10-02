@@ -68,7 +68,11 @@ Run tests with:
 
 .. code-block::
 
-    yarn test # headless tests
+    # ensure dev server is started, eg:
+    yarn start &
+
+    # run tests
+    yarn test
 
 ESM Support in Jest
 -------------------
