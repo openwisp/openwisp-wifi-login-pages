@@ -53,6 +53,14 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      - name: geckodriver/firefox
+        run: |
+          echo "geckodriver/firefox"
+          which geckodriver
+          geckodriver --version
+          which firefox
+          firefox --version
+
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
@@ -111,9 +119,6 @@ jobs:
       - name: Running OpenWISP WiFi Login Pages
         run: yarn start &
 
-      - name: Tests
-        run: yarn coverage
-
       - name: Running OpenWISP Radius
         run: |
           cp browser-test/local_settings.py \
@@ -121,13 +126,10 @@ jobs:
           cd openwisp-radius
           ./tests/manage.py runserver &
 
-      - name: geckodriver/firefox
+      - name: Tests
         run: |
-          echo "geckodriver/firefox"
-          which geckodriver
-          geckodriver --version
-          which firefox
-          firefox --version
+          ./browser-test/wait_for_url.sh http://0.0.0.0:8080
+          yarn coverage
 
       - name: Browser Tests
         run: |
