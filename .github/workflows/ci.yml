@@ -32,7 +32,7 @@ jobs:
           restore-keys: ${{ runner.os }}-yarn-
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           cache: "pip"
           cache-dependency-path: "**/requirements*.txt"
@@ -76,7 +76,7 @@ jobs:
         run: yarn coverage
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           cache: "pip"
           cache-dependency-path: "**/requirements*.txt"
