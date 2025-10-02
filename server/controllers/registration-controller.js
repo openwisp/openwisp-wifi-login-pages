@@ -77,7 +77,7 @@ const registration = (req, res) => {
   // return 404 for invalid organization slug or org not listed in config
   if (!validSlug) {
     res.status(404).type("application/json").send({
-      detail: "Not found.",
+      detail: "NOT_FOUND",
     });
   }
 };

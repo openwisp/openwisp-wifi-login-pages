@@ -22,7 +22,6 @@ server:
 # Path of all the assets should be defined relative to the organization's folder
 # in assets directory.
 client:
-
   auto_login: True
 
   # path of favicon
@@ -164,7 +163,7 @@ client:
     mobile_phone_verification_form:
       input_fields:
         code:
-          pattern: '[0-9]{6,}'
+          pattern: "[0-9]{6,}"
 
     phone_number_change_form:
       buttons:

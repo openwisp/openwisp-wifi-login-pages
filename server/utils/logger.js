@@ -126,9 +126,7 @@ export const logResponseError = (error) => {
       if (status >= 500) Logger.error(error.response);
       else
         Logger.info(
-          `Request to ${config.url} failed with ${status}:\n${JSON.stringify(
-            data,
-          )}`,
+          `Request to ${config.url} failed with ${status}:\n${JSON.stringify(data)}`,
         );
     } else if (error.request) {
       // The request was made but no response was received

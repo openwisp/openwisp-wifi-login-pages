@@ -492,14 +492,10 @@ export default class Registration extends React.Component {
 
                       {this.isPlanIdentityVerifier() && (
                         <div className="row username">
-                          <label htmlFor="username">
-                            {t`USERNAME_REG_LBL`}
-                          </label>
+                          <label htmlFor="username">{t`USERNAME_REG_LBL`}</label>
                           {getError(errors, "username")}
                           <input
-                            className={`input ${
-                              errors.username ? "error" : ""
-                            }`}
+                            className={`input ${errors.username ? "error" : ""}`}
                             type="text"
                             id="username"
                             required
@@ -524,9 +520,7 @@ export default class Registration extends React.Component {
                           </label>
                           {getError(errors, "first_name")}
                           <input
-                            className={`input ${
-                              errors.first_name ? "error" : ""
-                            }`}
+                            className={`input ${errors.first_name ? "error" : ""}`}
                             type="text"
                             id="first_name"
                             required={
@@ -552,9 +546,7 @@ export default class Registration extends React.Component {
                           </label>
                           {getError(errors, "last_name")}
                           <input
-                            className={`input ${
-                              errors.last_name ? "error" : ""
-                            }`}
+                            className={`input ${errors.last_name ? "error" : ""}`}
                             type="text"
                             id="last_name"
                             required={
@@ -579,9 +571,7 @@ export default class Registration extends React.Component {
                           </label>
                           {getError(errors, "birth_date")}
                           <input
-                            className={`input ${
-                              errors.birth_date ? "error" : ""
-                            }`}
+                            className={`input ${errors.birth_date ? "error" : ""}`}
                             type="date"
                             id="birth_date"
                             required={
@@ -604,9 +594,7 @@ export default class Registration extends React.Component {
                           </label>
                           {getError(errors, "location")}
                           <input
-                            className={`input ${
-                              errors.location ? "error" : ""
-                            }`}
+                            className={`input ${errors.location ? "error" : ""}`}
                             type="text"
                             id="location"
                             required={
@@ -651,9 +639,7 @@ export default class Registration extends React.Component {
                       </div>
 
                       <div className="row password-confirm">
-                        <label htmlFor="password-confirm">
-                          {t`CONFIRM_PWD_LBL`}
-                        </label>
+                        <label htmlFor="password-confirm">{t`CONFIRM_PWD_LBL`}</label>
                         {getError(errors, "password2")}
                         <input
                           className={`input ${errors.password2 ? "error" : ""}`}
@@ -709,9 +695,7 @@ export default class Registration extends React.Component {
                             <label htmlFor="street">{t`STREET_LBL`}</label>
                             {getError(errors, "street")}
                             <input
-                              className={`input ${
-                                errors.street ? "error" : ""
-                              }`}
+                              className={`input ${errors.street ? "error" : ""}`}
                               type="text"
                               id="street"
                               required
@@ -726,9 +710,7 @@ export default class Registration extends React.Component {
                             <label htmlFor="zipcode">{t`ZIP_CODE_LBL`}</label>
                             {getError(errors, "zipcode")}
                             <input
-                              className={`input ${
-                                errors.zipcode ? "error" : ""
-                              }`}
+                              className={`input ${errors.zipcode ? "error" : ""}`}
                               type="number"
                               id="zipcode"
                               required
@@ -739,14 +721,10 @@ export default class Registration extends React.Component {
                             />
                           </div>
                           <div className="row tax_number">
-                            <label htmlFor="tax_number">
-                              {t`TAX_NUMBER_LBL`}
-                            </label>
+                            <label htmlFor="tax_number">{t`TAX_NUMBER_LBL`}</label>
                             {getError(errors, "tax_number")}
                             <input
-                              className={`input ${
-                                errors.tax_number ? "error" : ""
-                              }`}
+                              className={`input ${errors.tax_number ? "error" : ""}`}
                               type="text"
                               id="tax_number"
                               name="tax_number"

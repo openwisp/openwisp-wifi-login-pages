@@ -14,10 +14,7 @@ const getPlan = (plan, index, language) => {
   });
   /* enable ttag */
   const pricingText = Number(plan.price)
-    ? `${currencyFormatter.format(plan.price)} ${plan.pricing.replace(
-        "(0 days)",
-        "",
-      )}`
+    ? `${currencyFormatter.format(plan.price)} ${plan.pricing.replace("(0 days)", "")}`
     : "";
   return (
     <label htmlFor={`radio${index}`}>

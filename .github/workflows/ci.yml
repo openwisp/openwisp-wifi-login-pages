@@ -53,6 +53,14 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      - name: geckodriver/firefox
+        run: |
+          echo "geckodriver/firefox"
+          which geckodriver
+          geckodriver --version
+          which firefox
+          firefox --version
+
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
@@ -71,9 +79,6 @@ jobs:
           yarn setup
           sudo apt update -qq
           sudo apt install -qq -y libssl-dev libffi-dev
-
-      - name: Tests
-        run: yarn coverage
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -121,13 +126,10 @@ jobs:
           cd openwisp-radius
           ./tests/manage.py runserver &
 
-      - name: geckodriver/firefox
+      - name: Tests
         run: |
-          echo "geckodriver/firefox"
-          which geckodriver
-          geckodriver --version
-          which firefox
-          firefox --version
+          ./browser-test/wait_for_url.sh http://0.0.0.0:8080
+          yarn coverage
 
       - name: Browser Tests
         run: |

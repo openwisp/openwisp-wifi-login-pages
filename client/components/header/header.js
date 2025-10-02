@@ -207,9 +207,7 @@ export default class Header extends React.Component {
             </div>
           </div>
           <div
-            className={`${
-              menu ? "display-flex" : "display-none"
-            } header-mobile-menu`}
+            className={`${menu ? "display-flex" : "display-none"} header-mobile-menu`}
           >
             {links &&
               links.map((link, index) => {

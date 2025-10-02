@@ -73,7 +73,9 @@ describe("add-org command", () => {
     result = spawnSync(
       "yarn",
       ["add-org", "--noprompt", JSON.stringify(validData)],
-      {encoding: "utf-8"},
+      {
+        encoding: "utf-8",
+      },
     );
     expect(result.status).not.toBe(0);
     expect(result.stderr).toMatch(/already exists/);

@@ -51,7 +51,7 @@ const plans = (req, res) => {
   // return 404 for invalid organization slug or org not listed in config
   if (!validSlug) {
     res.status(404).type("application/json").send({
-      response_code: "INTERNAL_SERVER_ERROR",
+      response_code: "NOT_FOUND",
     });
   }
 };
