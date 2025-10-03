@@ -347,6 +347,52 @@ describe("<Status /> interactions", () => {
     Status.prototype.getUserActiveRadiusSessions.mockRestore();
   });
 
+  it("should call getUserActiveRadiusSessions with calling_station_id on logout if macaddr is in cookies", async () => {
+    axios.mockImplementationOnce(() => Promise.resolve({data: []}));
+    const macaddr = "4e:ed:11:2b:17:ae";
+    props = createTestProps({
+      userData: {...responseData, mustLogin: true},
+    }); // macaddr is not in location.search
+    props.cookies.set(`${props.orgSlug}_macaddr`, macaddr);
+    validateToken.mockReturnValue(true);
+    const getUserActiveRadiusSessionsSpy = jest.spyOn(
+      Status.prototype,
+      "getUserActiveRadiusSessions",
+    );
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+    });
+    await tick();
+    // clear spy from componentDidMount call
+    getUserActiveRadiusSessionsSpy.mockClear();
+    wrapper.instance().handleLogout(false);
+    expect(getUserActiveRadiusSessionsSpy).toHaveBeenCalledWith({
+      calling_station_id: macaddr,
+    });
+  });
+
+  it("should call getUserActiveRadiusSessions with calling_station_id", async () => {
+    axios.mockImplementationOnce(() => Promise.resolve({data: []}));
+    props = createTestProps({
+      location: {
+        search: "?macaddr=4e:ed:11:2b:17:ae",
+      },
+      userData: {...responseData, mustLogin: true},
+    });
+    validateToken.mockReturnValue(true);
+    const getUserActiveRadiusSessionsSpy = jest.spyOn(
+      Status.prototype,
+      "getUserActiveRadiusSessions",
+    );
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+    });
+    await tick();
+    expect(getUserActiveRadiusSessionsSpy).toHaveBeenCalledWith({
+      calling_station_id: "4e:ed:11:2b:17:ae",
+    });
+  });
+
   it("test getUserActiveRadiusSessions method", async () => {
     axios
       .mockImplementationOnce(() =>
