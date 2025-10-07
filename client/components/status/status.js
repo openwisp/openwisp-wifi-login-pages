@@ -313,7 +313,7 @@ export default class Status extends React.Component {
 
     // if everything went fine, load the user sessions
     await this.getUserActiveRadiusSessions();
-    await this.getUserPassedRadiusSessions();
+    await this.getUserPastRadiusSessions();
     this.intervalId = setInterval(() => {
       this.getUserActiveRadiusSessions();
     }, 60000);
@@ -516,7 +516,7 @@ export default class Status extends React.Component {
     await this.getUserRadiusSessions(para);
   }
 
-  async getUserPassedRadiusSessions(params = {}) {
+  async getUserPastRadiusSessions(params = {}) {
     const para = {
       page: 1,
       is_open: false,
@@ -870,14 +870,14 @@ export default class Status extends React.Component {
       this.logoutFormRef.current.submit();
     }
     setLoading(true);
-    await this.getUserPassedRadiusSessions();
+    await this.getUserPastRadiusSessions();
     await this.getUserActiveRadiusSessions();
     setLoading(false);
   }
 
   async fetchMoreSessions() {
     const {currentPage} = this.state;
-    await this.getUserPassedRadiusSessions({page: currentPage + 1});
+    await this.getUserPastRadiusSessions({page: currentPage + 1});
   }
 
   // eslint-disable-next-line class-methods-use-this

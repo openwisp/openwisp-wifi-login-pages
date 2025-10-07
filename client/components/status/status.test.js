@@ -642,7 +642,7 @@ describe("<Status /> interactions", () => {
     props.location.search = "";
     props.userData = responseData;
     jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
-    jest.spyOn(Status.prototype, "getUserPassedRadiusSessions");
+    jest.spyOn(Status.prototype, "getUserPastRadiusSessions");
     const setLoading = jest.fn();
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading},
@@ -656,7 +656,7 @@ describe("<Status /> interactions", () => {
     expect(Status.prototype.getUserActiveRadiusSessions.mock.calls.length).toBe(
       1,
     );
-    expect(Status.prototype.getUserPassedRadiusSessions.mock.calls.length).toBe(
+    expect(Status.prototype.getUserPastRadiusSessions.mock.calls.length).toBe(
       1,
     );
   });
@@ -696,7 +696,7 @@ describe("<Status /> interactions", () => {
       userData: responseData,
     });
     jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
-    jest.spyOn(Status.prototype, "getUserPassedRadiusSessions");
+    jest.spyOn(Status.prototype, "getUserPastRadiusSessions");
     const setLoading = jest.fn();
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading},
@@ -737,7 +737,7 @@ describe("<Status /> interactions", () => {
     expect(Status.prototype.getUserActiveRadiusSessions.mock.calls.length).toBe(
       2,
     );
-    expect(Status.prototype.getUserPassedRadiusSessions.mock.calls.length).toBe(
+    expect(Status.prototype.getUserPastRadiusSessions.mock.calls.length).toBe(
       1,
     );
   });
@@ -754,7 +754,7 @@ describe("<Status /> interactions", () => {
       userData: responseData,
     });
     jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
-    jest.spyOn(Status.prototype, "getUserPassedRadiusSessions");
+    jest.spyOn(Status.prototype, "getUserPastRadiusSessions");
     const setLoading = jest.fn();
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading},
@@ -789,7 +789,7 @@ describe("<Status /> interactions", () => {
     expect(Status.prototype.getUserActiveRadiusSessions.mock.calls.length).toBe(
       2,
     );
-    expect(Status.prototype.getUserPassedRadiusSessions.mock.calls.length).toBe(
+    expect(Status.prototype.getUserPastRadiusSessions.mock.calls.length).toBe(
       1,
     );
   });
@@ -1009,7 +1009,7 @@ describe("<Status /> interactions", () => {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: true,
     });
-    wrapper.instance().getUserPassedRadiusSessions();
+    wrapper.instance().getUserPastRadiusSessions();
     await tick();
     expect(wrapper.contains(<th>Start time</th>)).toBe(false);
     expect(wrapper.contains(<th>Stop time</th>)).toBe(false);
@@ -1163,7 +1163,7 @@ describe("<Status /> interactions", () => {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: true,
     });
-    wrapper.instance().getUserPassedRadiusSessions();
+    wrapper.instance().getUserPastRadiusSessions();
     await tick();
     expect(wrapper.instance().state.hasMoreSessions).toEqual(false);
   });
@@ -1172,7 +1172,7 @@ describe("<Status /> interactions", () => {
     validateToken.mockReturnValue(true);
     // mock session fetching
     jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
-    jest.spyOn(Status.prototype, "getUserPassedRadiusSessions");
+    jest.spyOn(Status.prototype, "getUserPastRadiusSessions");
 
     props = createTestProps();
     props.userData = {
@@ -1205,7 +1205,7 @@ describe("<Status /> interactions", () => {
     );
     // ensure sessions are not fetched
     expect(Status.prototype.getUserActiveRadiusSessions).not.toHaveBeenCalled();
-    expect(Status.prototype.getUserPassedRadiusSessions).not.toHaveBeenCalled();
+    expect(Status.prototype.getUserPastRadiusSessions).not.toHaveBeenCalled();
     // ensure loading overlay not removed
     expect(setLoading.mock.calls.length).toBe(1);
   });
@@ -1214,7 +1214,7 @@ describe("<Status /> interactions", () => {
     validateToken.mockReturnValue(true);
     // mock session fetching
     jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
-    jest.spyOn(Status.prototype, "getUserPassedRadiusSessions");
+    jest.spyOn(Status.prototype, "getUserPastRadiusSessions");
 
     props = createTestProps();
     props.userData = {
@@ -1259,7 +1259,7 @@ describe("<Status /> interactions", () => {
     );
     // ensure sessions are not fetched
     expect(Status.prototype.getUserActiveRadiusSessions).not.toHaveBeenCalled();
-    expect(Status.prototype.getUserPassedRadiusSessions).not.toHaveBeenCalled();
+    expect(Status.prototype.getUserPastRadiusSessions).not.toHaveBeenCalled();
     // ensure loading overlay not removed
     expect(setLoading.mock.calls.length).toBe(1);
   });
@@ -1268,7 +1268,7 @@ describe("<Status /> interactions", () => {
     validateToken.mockReturnValue(true);
     // mock session fetching
     jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
-    jest.spyOn(Status.prototype, "getUserPassedRadiusSessions");
+    jest.spyOn(Status.prototype, "getUserPastRadiusSessions");
 
     props = createTestProps();
     props.userData = {
@@ -1307,7 +1307,7 @@ describe("<Status /> interactions", () => {
     );
     // ensure sessions are not fetched
     expect(Status.prototype.getUserActiveRadiusSessions).not.toHaveBeenCalled();
-    expect(Status.prototype.getUserPassedRadiusSessions).not.toHaveBeenCalled();
+    expect(Status.prototype.getUserPastRadiusSessions).not.toHaveBeenCalled();
     // ensure loading overlay not removed
     expect(setLoading.mock.calls.length).toBe(1);
   });
@@ -1771,15 +1771,15 @@ describe("<Status /> interactions", () => {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: true,
     });
-    const getUserPassedRadiusSessions = jest.spyOn(
+    const getUserPastRadiusSessions = jest.spyOn(
       wrapper.instance(),
-      "getUserPassedRadiusSessions",
+      "getUserPastRadiusSessions",
     );
     await wrapper.instance().fetchMoreSessions();
-    expect(getUserPassedRadiusSessions).toHaveBeenCalledWith({page: 2});
+    expect(getUserPastRadiusSessions).toHaveBeenCalledWith({page: 2});
     wrapper.instance().setState({currentPage: 10});
     await wrapper.instance().fetchMoreSessions();
-    expect(getUserPassedRadiusSessions).toHaveBeenCalledWith({page: 11});
+    expect(getUserPastRadiusSessions).toHaveBeenCalledWith({page: 11});
   });
   it("should submit logoutForm in iframe on calling handleSessionLogout", async () => {
     validateToken.mockReturnValue(true);
@@ -1948,9 +1948,9 @@ describe("<Status /> interactions", () => {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: true,
     });
-    await wrapper.instance().getUserPassedRadiusSessions();
+    await wrapper.instance().getUserPastRadiusSessions();
     expect(wrapper.instance().state.pastSessions).toEqual(data);
-    await wrapper.instance().getUserPassedRadiusSessions();
+    await wrapper.instance().getUserPastRadiusSessions();
     expect(wrapper.instance().state.pastSessions).toEqual(data);
   });
   it("should set loading to false if user is not validated", async () => {
