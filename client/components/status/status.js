@@ -90,7 +90,6 @@ export default class Status extends React.Component {
       orgName,
       language,
       navigate,
-      statusPage,
       captivePortalSyncAuth,
     } = this.props;
     setTitle(t`STATUS_TITL`, orgName);
@@ -178,8 +177,6 @@ export default class Status extends React.Component {
         email,
         phone_number,
         is_active,
-        method,
-        is_verified: isVerified,
       } = userData;
       const userInfo = {};
       userInfo.status = "";
@@ -216,52 +213,15 @@ export default class Status extends React.Component {
         return;
       }
 
-      const macaddr = cookies.get(`${orgSlug}_macaddr`);
-      if (macaddr) {
-        const params = {calling_station_id: macaddr};
-        await this.getUserActiveRadiusSessions(params);
-        if (statusPage.radius_usage_enabled) {
-          await this.getUserRadiusUsage();
-        }
-        /* request to captive portal is made only if there is
-          no active session from macaddr stored in the cookie */
-        const {activeSessions} = this.state;
-        if (activeSessions && activeSessions.length === 0 && mustLogin) {
-          if (this.loginFormRef && this.loginFormRef.current) {
-            this.storeValue(
-              captivePortalSyncAuth,
-              `${orgSlug}_mustLogin`,
-              false,
-              cookies,
-            );
-            this.notifyCpLogin(userData);
-            this.loginFormRef.current.submit();
-          }
-        }
-        if (captivePortalSyncAuth) {
-          this.finalOperations();
-        }
-      } else if (this.loginFormRef && this.loginFormRef.current && mustLogin) {
-        if (
-          method === "bank_card" &&
-          isVerified === false &&
-          !settings.payment_requires_internet
-        ) {
-          this.finalOperations();
-          return;
-        }
-        this.notifyCpLogin(userData);
-        // When captivePortalSyncAuth is enabled, submitting the form causes a page reload,
-        // which resets the component state and can trigger a redirect loop.
-        // Storing the value in cookies preserves it across reloads and prevents the loop.
+      if (this.loginFormRef && this.loginFormRef.current && mustLogin) {
         this.storeValue(
           captivePortalSyncAuth,
           `${orgSlug}_mustLogin`,
           false,
           cookies,
         );
+        this.notifyCpLogin(userData);
         this.loginFormRef.current.submit();
-        // if user is already authenticated and coming from other pages
       } else if (!mustLogin) {
         this.finalOperations();
       }
@@ -665,7 +625,6 @@ export default class Status extends React.Component {
     const logoutMethodKey = `${orgSlug}_logout_method`;
     const logoutMethod = localStorage.getItem(logoutMethodKey);
     const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
-
     if (
       loggedOut ||
       this.resolveStoredValue(
