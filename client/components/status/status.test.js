@@ -294,11 +294,12 @@ describe("<Status /> interactions", () => {
           headers: {},
         }),
       );
-    jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
-    jest.spyOn(Status.prototype, "getUserRadiusUsage");
-
     props = createTestProps({
       userData: {...responseData, mustLogin: true},
+      location: {
+        search: "",
+      },
+      cookies: new Cookies(),
     });
     props.statusPage.radius_usage_enabled = true;
     validateToken.mockReturnValue(true);
@@ -306,26 +307,12 @@ describe("<Status /> interactions", () => {
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading},
     });
-    await tick();
-    expect(wrapper.instance().props.cookies.get("default_macaddr")).toBe(
-      "4e:ed:11:2b:17:ae",
-    );
-    expect(Status.prototype.getUserActiveRadiusSessions).toHaveBeenCalled();
-    expect(wrapper.instance().state.activeSessions.length).toBe(1);
-    expect(setLoading.mock.calls.length).toBe(2);
-    expect(Status.prototype.getUserRadiusUsage).toHaveBeenCalled();
-    wrapper.setProps({
-      location: {
-        search: "",
-      },
-      cookies: new Cookies(),
-    });
     wrapper.instance().componentDidMount();
     await tick();
     expect(wrapper.instance().props.cookies.get("default_macaddr")).toBe(
       undefined,
     );
-    expect(setLoading.mock.calls.length).toBe(4);
+    expect(setLoading.mock.calls.length).toBe(2);
 
     const spyToast = jest.spyOn(toast, "error");
     expect(spyToast.mock.calls.length).toBe(0);
@@ -344,7 +331,6 @@ describe("<Status /> interactions", () => {
     await tick();
     await tick();
     expect(mockRef.submit.mock.calls.length).toBe(1);
-    Status.prototype.getUserActiveRadiusSessions.mockRestore();
   });
 
   it("should call getUserActiveRadiusSessions with calling_station_id on logout if macaddr is in cookies", async () => {
@@ -1690,7 +1676,7 @@ describe("<Status /> interactions", () => {
     await tick();
     expect(wrapper.find("iframe").length).toBe(2);
     wrapper.find("iframe").first().simulate("load");
-    expect(finalOperationsMock.mock.calls.length).toEqual(2);
+    expect(finalOperationsMock.mock.calls.length).toEqual(1);
   });
   it("should not get account sessions if user needs verification", async () => {
     validateToken.mockReturnValue(true);

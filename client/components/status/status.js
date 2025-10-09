@@ -206,6 +206,7 @@ export default class Status extends React.Component {
           // In synchronous captive portal authentication, the page reloads
           // after form submission, so handleLogoutIframe() must be called manually here.
           // (handleLogout() is already triggered when the user clicks the "Logout" button.)
+          this.setState({loggedOut: mustLogout});
           this.handleLogoutIframe();
         } else {
           await this.handleLogout(false, repeatLogin);
