@@ -294,31 +294,18 @@ describe("<Status /> interactions", () => {
           headers: {},
         }),
       );
-    jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
-    jest.spyOn(Status.prototype, "getUserRadiusUsage");
-
     props = createTestProps({
       userData: {...responseData, mustLogin: true},
+      location: {
+        search: "",
+      },
+      cookies: new Cookies(),
     });
     props.statusPage.radius_usage_enabled = true;
     validateToken.mockReturnValue(true);
     const setLoading = jest.fn();
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading},
-    });
-    await tick();
-    expect(wrapper.instance().props.cookies.get("default_macaddr")).toBe(
-      "4e:ed:11:2b:17:ae",
-    );
-    expect(Status.prototype.getUserActiveRadiusSessions).toHaveBeenCalled();
-    expect(wrapper.instance().state.activeSessions.length).toBe(1);
-    expect(setLoading.mock.calls.length).toBe(1);
-    expect(Status.prototype.getUserRadiusUsage).toHaveBeenCalled();
-    wrapper.setProps({
-      location: {
-        search: "",
-      },
-      cookies: new Cookies(),
     });
     wrapper.instance().componentDidMount();
     await tick();
@@ -344,7 +331,6 @@ describe("<Status /> interactions", () => {
     await tick();
     await tick();
     expect(mockRef.submit.mock.calls.length).toBe(1);
-    Status.prototype.getUserActiveRadiusSessions.mockRestore();
   });
 
   it("should call getUserActiveRadiusSessions with calling_station_id on logout if macaddr is in cookies", async () => {
@@ -368,28 +354,6 @@ describe("<Status /> interactions", () => {
     wrapper.instance().handleLogout(false);
     expect(getUserActiveRadiusSessionsSpy).toHaveBeenCalledWith({
       calling_station_id: macaddr,
-    });
-  });
-
-  it("should call getUserActiveRadiusSessions with calling_station_id", async () => {
-    axios.mockImplementationOnce(() => Promise.resolve({data: []}));
-    props = createTestProps({
-      location: {
-        search: "?macaddr=4e:ed:11:2b:17:ae",
-      },
-      userData: {...responseData, mustLogin: true},
-    });
-    validateToken.mockReturnValue(true);
-    const getUserActiveRadiusSessionsSpy = jest.spyOn(
-      Status.prototype,
-      "getUserActiveRadiusSessions",
-    );
-    wrapper = shallow(<Status {...props} />, {
-      context: {setLoading: jest.fn()},
-    });
-    await tick();
-    expect(getUserActiveRadiusSessionsSpy).toHaveBeenCalledWith({
-      calling_station_id: "4e:ed:11:2b:17:ae",
     });
   });
 
@@ -686,7 +650,10 @@ describe("<Status /> interactions", () => {
     validateToken.mockReturnValue(true);
     props = createTestProps();
     props.location.search = "";
-    props.userData = responseData;
+    props.userData = {
+      ...responseData,
+      mustLogin: false,
+    };
     jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
     jest.spyOn(Status.prototype, "getUserPastRadiusSessions");
     const setLoading = jest.fn();
@@ -781,7 +748,7 @@ describe("<Status /> interactions", () => {
     expect(setLoading.mock.calls).toEqual([[true], [false]]);
     // ensure sessions are loaded too
     expect(Status.prototype.getUserActiveRadiusSessions.mock.calls.length).toBe(
-      2,
+      1,
     );
     expect(Status.prototype.getUserPastRadiusSessions.mock.calls.length).toBe(
       1,
@@ -833,7 +800,7 @@ describe("<Status /> interactions", () => {
     expect(setLoading.mock.calls).toEqual([[true], [false]]);
     // ensure sessions are loaded too
     expect(Status.prototype.getUserActiveRadiusSessions.mock.calls.length).toBe(
-      2,
+      1,
     );
     expect(Status.prototype.getUserPastRadiusSessions.mock.calls.length).toBe(
       1,
@@ -977,22 +944,39 @@ describe("<Status /> interactions", () => {
   });
 
   it("test active session table", async () => {
-    axios.mockImplementationOnce(() =>
-      Promise.resolve({
-        status: 200,
-        statusText: "OK",
-        data: [
-          {
-            session_id: 1,
-            start_time: "2020-09-08T00:22:28-04:00",
-            stop_time: "2020-09-08T00:22:29-04:00",
-            input_octets: 100000,
-            output_octets: 100000,
-          },
-        ],
-        headers: {},
-      }),
-    );
+    axios
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: [
+            {
+              session_id: 1,
+              start_time: "2020-09-08T00:22:28-04:00",
+              stop_time: "2020-09-08T00:22:29-04:00",
+              input_octets: 100000,
+              output_octets: 100000,
+            },
+          ],
+          headers: {},
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: [
+            {
+              session_id: 1,
+              start_time: "2020-09-08T00:22:28-04:00",
+              stop_time: "2020-09-08T00:22:29-04:00",
+              input_octets: 100000,
+              output_octets: 100000,
+            },
+          ],
+          headers: {},
+        }),
+      );
     props = createTestProps({userData: responseData});
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
@@ -1005,22 +989,31 @@ describe("<Status /> interactions", () => {
   });
 
   it("test passed session table", async () => {
-    axios.mockImplementationOnce(() =>
-      Promise.resolve({
-        status: 200,
-        statusText: "OK",
-        data: [
-          {
-            session_id: 1,
-            start_time: "2020-09-08T00:22:28-04:00",
-            stop_time: "2020-09-08T00:22:29-04:00",
-            input_octets: 100000,
-            output_octets: 100000,
-          },
-        ],
-        headers: {},
-      }),
-    );
+    axios
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: [],
+          headers: {},
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: [
+            {
+              session_id: 1,
+              start_time: "2020-09-08T00:22:28-04:00",
+              stop_time: "2020-09-08T00:22:29-04:00",
+              input_octets: 100000,
+              output_octets: 100000,
+            },
+          ],
+          headers: {},
+        }),
+      );
     props = createTestProps({userData: responseData});
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
@@ -1549,7 +1542,7 @@ describe("<Status /> interactions", () => {
     expect(wrapper.instance().handleSamlLogout.mock.calls.length).toBe(0);
     await tick();
     status.handleLogoutIframe();
-    jest.runAllTimers();
+    jest.runOnlyPendingTimers();
     expect(wrapper.instance().handleSamlLogout.mock.calls.length).toBe(1);
     expect(wrapper.instance().handleSamlLogout).toHaveBeenCalledWith(
       props.statusPage.saml_logout_url,
@@ -1651,7 +1644,12 @@ describe("<Status /> interactions", () => {
     wrapper.instance().finalOperations = finalOperationsMock;
     expect(wrapper.find("iframe").length).toBe(1);
     wrapper.find("iframe").first().simulate("load");
-    wrapper.setProps({userData: responseData});
+    wrapper.setProps({
+      userData: {
+        ...responseData,
+        mustLogin: true,
+      },
+    });
     wrapper.instance().componentDidMount();
     await tick();
     expect(wrapper.find("iframe").length).toBe(2);
@@ -2229,6 +2227,16 @@ describe("<Status /> interactions", () => {
       )
       .mockImplementationOnce(() =>
         Promise.resolve({
+          response: {
+            status: 200,
+            statusText: "OK",
+          },
+          data: [],
+          headers: {},
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
           status: 200,
           statusText: "OK",
           data: {
@@ -2265,6 +2273,16 @@ describe("<Status /> interactions", () => {
   it("should hide check if check.value is zero", async () => {
     validateToken.mockReturnValue(true);
     axios
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          response: {
+            status: 200,
+            statusText: "OK",
+          },
+          data: [],
+          headers: {},
+        }),
+      )
       .mockImplementationOnce(() =>
         Promise.resolve({
           response: {
@@ -2325,6 +2343,16 @@ describe("<Status /> interactions", () => {
       )
       .mockImplementationOnce(() =>
         Promise.resolve({
+          response: {
+            status: 200,
+            statusText: "OK",
+          },
+          data: [],
+          headers: {},
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
           status: 200,
           statusText: "OK",
           data: {
@@ -2372,6 +2400,18 @@ describe("<Status /> interactions", () => {
     jest.spyOn(toast, "success");
     jest.spyOn(toast, "dismiss");
     axios
+      // Active Sessions
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          response: {
+            status: 200,
+            statusText: "OK",
+          },
+          data: [],
+          headers: {},
+        }),
+      )
+      // Past sessions
       .mockImplementationOnce(() =>
         Promise.resolve({
           response: {
@@ -2483,6 +2523,16 @@ describe("<Status /> interactions", () => {
     jest.spyOn(toast, "success");
     jest.spyOn(toast, "dismiss");
     axios
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          response: {
+            status: 200,
+            statusText: "OK",
+          },
+          data: [],
+          headers: {},
+        }),
+      )
       .mockImplementationOnce(() =>
         Promise.resolve({
           response: {

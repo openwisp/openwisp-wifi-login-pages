@@ -139,12 +139,7 @@ exports[`<Status /> interactions should hide check if check.value is zero 1`] = 
   <div
     className="flex-column"
     id="sessions"
-  >
-    <loader
-      full={false}
-      small={true}
-    />
-  </div>
+  />
   <form
     action="http://localhost/"
     className="hidden"
@@ -368,12 +363,7 @@ exports[`<Status /> interactions should show user's radius usage 1`] = `
   <div
     className="flex-column"
     id="sessions"
-  >
-    <loader
-      full={false}
-      small={true}
-    />
-  </div>
+  />
   <form
     action="http://localhost/"
     className="hidden"
@@ -557,12 +547,7 @@ exports[`<Status /> interactions subscriptions: should hide checks and show upgr
   <div
     className="flex-column"
     id="sessions"
-  >
-    <loader
-      full={false}
-      small={true}
-    />
-  </div>
+  />
   <form
     action="http://localhost/"
     className="hidden"
@@ -790,12 +775,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
   <div
     className="flex-column"
     id="sessions"
-  >
-    <loader
-      full={false}
-      small={true}
-    />
-  </div>
+  />
   <form
     action="http://localhost/"
     className="hidden"
@@ -1105,12 +1085,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
   <div
     className="flex-column"
     id="sessions"
-  >
-    <loader
-      full={false}
-      small={true}
-    />
-  </div>
+  />
   <form
     action="http://localhost/"
     className="hidden"
@@ -1338,12 +1313,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
   <div
     className="flex-column"
     id="sessions"
-  >
-    <loader
-      full={false}
-      small={true}
-    />
-  </div>
+  />
   <form
     action="http://localhost/"
     className="hidden"
@@ -1653,12 +1623,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
   <div
     className="flex-column"
     id="sessions"
-  >
-    <loader
-      full={false}
-      small={true}
-    />
-  </div>
+  />
   <form
     action="http://localhost/"
     className="hidden"

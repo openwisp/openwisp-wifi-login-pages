@@ -90,7 +90,6 @@ export default class Status extends React.Component {
       orgName,
       language,
       navigate,
-      statusPage,
       captivePortalSyncAuth,
     } = this.props;
     setTitle(t`STATUS_TITL`, orgName);
@@ -209,6 +208,7 @@ export default class Status extends React.Component {
           // In synchronous captive portal authentication, the page reloads
           // after form submission, so handleLogoutIframe() must be called manually here.
           // (handleLogout() is already triggered when the user clicks the "Logout" button.)
+          this.setState({loggedOut: mustLogout});
           this.handleLogoutIframe();
         } else {
           await this.handleLogout(false, repeatLogin);
@@ -216,53 +216,20 @@ export default class Status extends React.Component {
         return;
       }
 
-      const macaddr = cookies.get(`${orgSlug}_macaddr`);
-      if (macaddr) {
-        const params = {calling_station_id: macaddr};
-        await this.getUserActiveRadiusSessions(params);
-        if (statusPage.radius_usage_enabled) {
-          await this.getUserRadiusUsage();
-        }
-        /* request to captive portal is made only if there is
-          no active session from macaddr stored in the cookie */
-        const {activeSessions} = this.state;
-        if (activeSessions && activeSessions.length === 0 && mustLogin) {
-          if (this.loginFormRef && this.loginFormRef.current) {
-            this.storeValue(
-              captivePortalSyncAuth,
-              `${orgSlug}_mustLogin`,
-              false,
-              cookies,
-            );
-            this.notifyCpLogin(userData);
-            this.loginFormRef.current.submit();
-          }
-        }
-        if (captivePortalSyncAuth) {
-          this.finalOperations();
-        }
-      } else if (this.loginFormRef && this.loginFormRef.current && mustLogin) {
-        if (
-          method === "bank_card" &&
-          isVerified === false &&
-          !settings.payment_requires_internet
-        ) {
-          this.finalOperations();
-          return;
-        }
-        this.notifyCpLogin(userData);
-        // When captivePortalSyncAuth is enabled, submitting the form causes a page reload,
-        // which resets the component state and can trigger a redirect loop.
-        // Storing the value in cookies preserves it across reloads and prevents the loop.
+      let shouldLogin = mustLogin;
+      if (method === "bank_card" && isVerified === false) {
+        shouldLogin = shouldLogin && settings.payment_requires_internet;
+      }
+      if (this.loginFormRef && this.loginFormRef.current && shouldLogin) {
         this.storeValue(
           captivePortalSyncAuth,
           `${orgSlug}_mustLogin`,
           false,
           cookies,
         );
+        this.notifyCpLogin(userData);
         this.loginFormRef.current.submit();
-        // if user is already authenticated and coming from other pages
-      } else if (!mustLogin) {
+      } else if (!shouldLogin) {
         this.finalOperations();
       }
     }
@@ -665,7 +632,6 @@ export default class Status extends React.Component {
     const logoutMethodKey = `${orgSlug}_logout_method`;
     const logoutMethod = localStorage.getItem(logoutMethodKey);
     const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
-
     if (
       loggedOut ||
       this.resolveStoredValue(
