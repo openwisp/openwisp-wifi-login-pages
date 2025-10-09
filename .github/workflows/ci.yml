@@ -101,6 +101,11 @@ jobs:
           key: ${{ runner.os }}-pip-${{ env.OW_RADIUS_VERSION }}
           restore-keys: ${{ runner.os }}-pip-
 
+      - name: Start InfluxDB and Redis container
+        run: |
+          cd openwisp-radius
+          docker compose up -d redis
+
       - name: Installing OpenWISP Radius
         run: |
           cd openwisp-radius
