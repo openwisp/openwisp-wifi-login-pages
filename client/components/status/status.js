@@ -177,6 +177,8 @@ export default class Status extends React.Component {
         email,
         phone_number,
         is_active,
+        method,
+        is_verified: isVerified,
       } = userData;
       const userInfo = {};
       userInfo.status = "";
@@ -214,7 +216,11 @@ export default class Status extends React.Component {
         return;
       }
 
-      if (this.loginFormRef && this.loginFormRef.current && mustLogin) {
+      let shouldLogin = mustLogin;
+      if (method === "bank_card" && isVerified === false) {
+        shouldLogin = shouldLogin && settings.payment_requires_internet;
+      }
+      if (this.loginFormRef && this.loginFormRef.current && shouldLogin) {
         this.storeValue(
           captivePortalSyncAuth,
           `${orgSlug}_mustLogin`,
@@ -223,7 +229,7 @@ export default class Status extends React.Component {
         );
         this.notifyCpLogin(userData);
         this.loginFormRef.current.submit();
-      } else if (!mustLogin) {
+      } else if (!shouldLogin) {
         this.finalOperations();
       }
     }
