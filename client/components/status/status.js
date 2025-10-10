@@ -154,11 +154,6 @@ export default class Status extends React.Component {
         userMustLogout,
         cookies,
       );
-      // If the user is already logged in, we need to handle the
-      // the response from the captive portal.
-      if (captivePortalSyncAuth && !mustLogin && !mustLogout) {
-        this.handleLogin();
-      }
       ({userData} = this.props);
       if (userData.password_expired === true) {
         toast.warning(t`PASSWORD_EXPIRED`);
@@ -230,6 +225,11 @@ export default class Status extends React.Component {
         this.notifyCpLogin(userData);
         this.loginFormRef.current.submit();
       } else if (!shouldLogin) {
+        // If the user is already logged in, we need to handle the
+        // the response from the captive portal.
+        if (captivePortalSyncAuth) {
+          this.handleLogin();
+        }
         this.finalOperations();
       }
     }
@@ -245,8 +245,15 @@ export default class Status extends React.Component {
   }
 
   async finalOperations() {
-    const {userData, orgSlug, settings, navigate, setUserData, statusPage} =
-      this.props;
+    const {
+      userData,
+      orgSlug,
+      settings,
+      navigate,
+      setUserData,
+      statusPage,
+      internetMode,
+    } = this.props;
     const {setLoading} = this.context;
     // if the user needs bank card verification,
     // redirect to payment page and stop here
@@ -284,7 +291,8 @@ export default class Status extends React.Component {
     this.intervalId = setInterval(() => {
       this.getUserActiveRadiusSessions();
     }, 60000);
-    if (statusPage.radius_usage_enabled) {
+    // We don't show radius usage in the internet mode.
+    if (statusPage.radius_usage_enabled && !internetMode) {
       await this.getUserRadiusUsage();
       this.usageIntervalId = setInterval(() => {
         this.getUserRadiusUsage();
@@ -1206,64 +1214,66 @@ export default class Status extends React.Component {
               }
             />
           )}
-          {statusPage.radius_usage_enabled && showRadiusUsage && (
-            <div className="inner flex-row limit-info">
-              <div className="bg row">
-                {radiusUsageSpinner ? this.getSpinner() : null}
-                {settings.subscriptions && userPlan.name && (
-                  <h3>
-                    {t`CURRENT_SUBSCRIPTION_TXT`} {userPlan.name}
-                  </h3>
-                )}
-                {userChecks &&
-                  userChecks.map(
-                    (check) =>
-                      check.value !== "0" && (
-                        <div key={check.attribute}>
-                          <progress
-                            id={check.attribute}
-                            max={check.value}
-                            value={check.result}
-                          />
-                          <p className="progress">
-                            <strong>
-                              {this.getUserCheckFormattedValue(
-                                check.result,
-                                check.type,
-                              )}
-                            </strong>{" "}
-                            of{" "}
-                            {this.getUserCheckFormattedValue(
-                              check.value,
-                              check.type,
-                            )}{" "}
-                            used
-                          </p>
-                        </div>
-                      ),
+          {statusPage.radius_usage_enabled &&
+            showRadiusUsage &&
+            !internetMode && (
+              <div className="inner flex-row limit-info">
+                <div className="bg row">
+                  {radiusUsageSpinner ? this.getSpinner() : null}
+                  {settings.subscriptions && userPlan.name && (
+                    <h3>
+                      {t`CURRENT_SUBSCRIPTION_TXT`} {userPlan.name}
+                    </h3>
                   )}
-                {warningMessage && (
-                  <p className="important">
-                    <strong>{gettext(warningMessage)}</strong>
-                  </p>
-                )}
-                {settings.subscriptions &&
-                  (userPlan.is_free || planExhausted) &&
-                  showUpgradeBtn && (
-                    <p>
-                      <button
-                        id="plan-upgrade-btn"
-                        type="button"
-                        className="button partial"
-                        onClick={this.toggleUpgradePlanModal}
-                      >
-                        {t`PLAN_UPGRADE_BTN_TXT`}
-                      </button>
+                  {userChecks &&
+                    userChecks.map(
+                      (check) =>
+                        check.value !== "0" && (
+                          <div key={check.attribute}>
+                            <progress
+                              id={check.attribute}
+                              max={check.value}
+                              value={check.result}
+                            />
+                            <p className="progress">
+                              <strong>
+                                {this.getUserCheckFormattedValue(
+                                  check.result,
+                                  check.type,
+                                )}
+                              </strong>{" "}
+                              of{" "}
+                              {this.getUserCheckFormattedValue(
+                                check.value,
+                                check.type,
+                              )}{" "}
+                              used
+                            </p>
+                          </div>
+                        ),
+                    )}
+                  {warningMessage && (
+                    <p className="important">
+                      <strong>{gettext(warningMessage)}</strong>
                     </p>
                   )}
+                  {settings.subscriptions &&
+                    (userPlan.is_free || planExhausted) &&
+                    showUpgradeBtn && (
+                      <p>
+                        <button
+                          id="plan-upgrade-btn"
+                          type="button"
+                          className="button partial"
+                          onClick={this.toggleUpgradePlanModal}
+                        >
+                          {t`PLAN_UPGRADE_BTN_TXT`}
+                        </button>
+                      </p>
+                    )}
+                </div>
               </div>
-            </div>
-          )}
+            )}
           <div className="inner">
             <div className="main-column">
               <div className="inner">

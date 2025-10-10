@@ -202,6 +202,149 @@ exports[`<Status /> interactions should hide check if check.value is zero 1`] = 
 </Fragment>
 `;
 
+exports[`<Status /> interactions should not display STATUS_CONTENT and radius usage when logged in internetMode 1`] = `
+<Fragment>
+  <InfoModal
+    active={false}
+    content={
+      <p
+        className="message"
+      >
+        Do you want to automatically log in the next time?
+      </p>
+    }
+    handleResponse={[Function]}
+    isConfirmationDialog={true}
+    isScrollable={false}
+    toggleModal={[Function]}
+  />
+  <div
+    className="container content flex-wrapper"
+    id="status"
+  >
+    <div
+      className="inner"
+    >
+      <div
+        className="main-column"
+      >
+        <div
+          className="inner"
+        >
+          <p
+            className="status-content"
+            key="status"
+          >
+            <label>
+              Status
+              :
+            </label>
+            <span>
+              Logged in
+            </span>
+          </p>
+          <p
+            className="status-content"
+            key="email"
+          >
+            <label>
+              Email
+              :
+            </label>
+            <span />
+          </p>
+          <div
+            className="row logout"
+          >
+            <input
+              className="button full"
+              onClick={[Function]}
+              type="button"
+              value="Logout"
+            />
+          </div>
+          <div
+            className="links row"
+            key="/{orgSlug}/change-password/"
+          >
+            <Link
+              className="button full status-link"
+              to="/default/change-password/"
+            >
+              Change your password
+            </Link>
+          </div>
+        </div>
+      </div>
+      <Connect(Contact) />
+    </div>
+  </div>
+  <div
+    className="flex-column"
+    id="sessions"
+  />
+  <form
+    action="http://localhost/"
+    className="hidden"
+    id="cp-login-form"
+    method="post"
+    target="owisp-auth-iframe"
+  >
+    <input
+      name="auth_user"
+      readOnly={true}
+      type="text"
+    />
+    <input
+      name="auth_pass"
+      readOnly={true}
+      type="text"
+    />
+    <input
+      key="input-zone"
+      name="zone"
+      readOnly={true}
+      type="text"
+      value="zone_name"
+    />
+    <input
+      key="input-redirurl"
+      name="redirurl"
+      readOnly={true}
+      type="text"
+      value="http://localhost:8080/default/status"
+    />
+    <input
+      key="input-accept"
+      name="accept"
+      readOnly={true}
+      type="text"
+      value="accept"
+    />
+  </form>
+  <form
+    action="http://localhost:8081"
+    className="hidden"
+    id="cp-logout-form"
+    method="post"
+    target="owisp-auth-logout-iframe"
+  >
+    <input
+      name="logout_id"
+      readOnly={true}
+      type="hidden"
+      value=""
+    />
+  </form>
+  <iframe
+    className="hidden"
+    name="owisp-auth-logout-iframe"
+    onLoad={[Function]}
+    title="owisp-auth-iframe"
+  />
+</Fragment>
+`;
+
 exports[`<Status /> interactions should show user's radius usage 1`] = `
 <Fragment>
   <InfoModal

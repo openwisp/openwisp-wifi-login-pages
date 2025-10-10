@@ -1764,15 +1764,21 @@ describe("<Status /> interactions", () => {
     await tick();
     expect(mockRef.submit).toHaveBeenCalledTimes(1);
   });
-  it("should not display STATUS_CONTENT when logged in internetMode", () => {
-    const prop = createTestProps();
-    prop.isAuthenticated = true;
+  it("should not display STATUS_CONTENT and radius usage when logged in internetMode", async () => {
+    const prop = createTestProps({
+      internetMode: true,
+    });
+    validateToken.mockReturnValue(true);
+    const getUserRadiusUsageSpy = jest.spyOn(
+      Status.prototype,
+      "getUserRadiusUsage",
+    );
     wrapper = shallow(<Status {...prop} />, {
       context: {setLoading: jest.fn()},
-      disableLifecycleMethods: true,
     });
-    wrapper.instance().setState({internetMode: true});
-    expect(wrapper.find("status-content").length).toEqual(0);
+    await tick();
+    expect(getUserRadiusUsageSpy).not.toHaveBeenCalled();
+    expect(wrapper).toMatchSnapshot();
   });
   it("should not display status-content when planExhausted is true", () => {
     const prop = createTestProps();
