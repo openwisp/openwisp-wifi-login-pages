@@ -150,12 +150,12 @@ Example:
 ``radius_usage_enabled``
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-This setting controls whether RADIUS usage statistics (such as data usage, session time, etc.) are displayed on the status page.
+This setting controls whether RADIUS usage information (such as data usage, session time, etc.) is displayed on the status page.
 
 - **Type**: ``boolean``
-- **Default**: ``true``
+- **Default**: ``false``
 
-When set to ``false``, RADIUS usage information will be hidden from the status page.
+When set to ``true``, the user's session and accounting information will be displayed.
 
 Example:
 
