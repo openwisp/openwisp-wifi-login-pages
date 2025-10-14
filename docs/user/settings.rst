@@ -162,7 +162,7 @@ Example:
 .. code-block:: yaml
 
     status_page:
-      radius_usage_enabled: false
+      radius_usage_enabled: true
 
 .. _wlp_menu_items:
 
