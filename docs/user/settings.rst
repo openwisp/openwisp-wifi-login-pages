@@ -147,6 +147,25 @@ Example:
     status_page:
       accounting_swap_octets: true
 
+``radius_usage_enabled``
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+This setting controls whether RADIUS usage information (such as data
+usage, session time, etc.) is displayed on the status page.
+
+- **Type**: ``boolean``
+- **Default**: ``false``
+
+When set to ``true``, the user's session and accounting information will
+be displayed.
+
+Example:
+
+.. code-block:: yaml
+
+    status_page:
+      radius_usage_enabled: true
+
 .. _wlp_menu_items:
 
 Menu Items
