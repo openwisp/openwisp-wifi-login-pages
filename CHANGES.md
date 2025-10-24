@@ -1,5 +1,53 @@
 # Change log
 
+## Version 1.2.0 [2025-10-24]
+
+### Features
+
+- Enabled synchronous captive portal authentication
+  ([#864](https://github.com/openwisp/openwisp-wifi-login-pages/issues/864)).
+- Allowed swapping RADIUS accounting octets in the status page
+  ([#900](https://github.com/openwisp/openwisp-wifi-login-pages/issues/900)).
+- Hid progress bar in the RADIUS usage component when the check value is zero.
+- Added Spanish translations for WiFi login pages.
+- Implemented daily log rotation
+  ([#46](https://github.com/openwisp/openwisp-wifi-login-pages/issues/46)).
+
+### Changes
+
+#### Other changes
+
+- Made warning message in status page customizable.
+
+##### Dependencies
+
+- Bumped `react==17.0.2`.
+- Bumped `react-cookie==8.0.1`.
+- Bumped `react-dom==17.0.2`.
+- Bumped `react-toastify==9.1.3`.
+- Bumped `axios==1.10.0`.
+- Bumped `compression==1.8.0`.
+- Bumped `express==5.1.0`.
+- Bumped `marked==16.3.0`.
+- Bumped `pretty-bytes==7.0.0`.
+- Bumped `regenerator-runtime==0.14.1`.
+- Bumped `universal-cookie-express==8.0.1`.
+- Bumped `winston-daily-rotate-file==5.0.0`.
+
+### Bugfixes
+
+- Don't render RADIUS usage in Internet mode.
+- Removed check for active session before performing captive portal login
+  ([#918](https://github.com/openwisp/openwisp-wifi-login-pages/issues/918)).
+- Used `calling_station_id` instead of `macaddr` for MAC filtering
+  ([#914](https://github.com/openwisp/openwisp-wifi-login-pages/issues/914)).
+- Server: consistently return `NOT_FOUND` message on 404 errors.
+- Displayed RADIUS usage in MB/GB (base 10) instead of MiB/GiB (base 2).
+- Made the plans modal scrollable in the status page.
+- Fixed upgrade button and limit exceeded message not rendering
+  when users exceeded data usage on paid plans.
+- Don't show Radius Usage if API does not return any check [#819](https://github.com/openwisp/openwisp-wifi-login-pages/issues/819)
+
 ## Version 1.1.0 [2024-11-27]
 
 ### Features
