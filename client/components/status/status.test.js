@@ -211,6 +211,8 @@ describe("<Status /> interactions", () => {
     axios.mockReset();
     jest.resetAllMocks();
     jest.restoreAllMocks();
+    jest.clearAllMocks();
+    jest.clearAllTimers();
     jest.useRealTimers();
   });
 
@@ -1433,25 +1435,170 @@ describe("<Status /> interactions", () => {
     );
   });
 
+  it("should logout if activeSession do not contain current MAC", async () => {
+    validateToken.mockReturnValue(true);
+    jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
+    axios
+      // Active sessions
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: [
+            {
+              session_id: 1,
+              start_time: "2020-09-08T00:22:28-04:00",
+              stop_time: null,
+              input_octets: 100000,
+              output_octets: 100000,
+              calling_station_id: "4e:ed:11:2b:17:ae",
+            },
+          ],
+          headers: {},
+        }),
+      )
+      // Past sessions
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: [],
+          headers: {},
+        }),
+      )
+      // Active sessions for axios request triggered by setInterval.
+      // (Previously open session is terminated by NAS)
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: [],
+          headers: {},
+        }),
+      );
+    jest.useFakeTimers({legacyFakeTimers: true});
+    props = createTestProps({userData: {...responseData}});
+    const setLoading = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading},
+      disableLifecycleMethods: true,
+    });
+    const status = wrapper.instance();
+    const handleLogout = jest.spyOn(status, "handleLogout");
+    const mockRef = {submit: jest.fn()};
+    status.logoutFormRef = {current: mockRef};
+    status.logoutIframeRef = {current: {}};
+    status.componentDidMount();
+    await tick();
+    jest.runOnlyPendingTimers();
+    await tick();
+    // There are no active session, we don't perform captive portal logout.
+    // We only need to logout the user from WLP.
+    expect(mockRef.submit.mock.calls.length).toBe(0);
+    expect(status.repeatLogin).toBe(false);
+    expect(handleLogout).toHaveBeenCalledWith(true);
+    // This allows user to perform quick login.
+    expect(localStorage).toEqual({userAutoLogin: "true"});
+  });
+
+  it("should not logout in internetMode with zero active sessions", async () => {
+    validateToken.mockReturnValue(true);
+    jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
+    axios
+      // Active sessions
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: [],
+          headers: {},
+        }),
+      )
+      // Past sessions
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: [],
+          headers: {},
+        }),
+      )
+      // Active sessions for axios request triggered by setInterval.
+      // (Previously open session is terminated by NAS)
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: [],
+          headers: {},
+        }),
+      );
+    jest.useFakeTimers({legacyFakeTimers: true});
+    props = createTestProps({userData: {...responseData}, internetMode: true});
+    const setLoading = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading},
+      disableLifecycleMethods: true,
+    });
+    const status = wrapper.instance();
+    const handleLogout = jest.spyOn(status, "handleLogout");
+    const mockRef = {submit: jest.fn()};
+    status.logoutFormRef = {current: mockRef};
+    status.logoutIframeRef = {current: {}};
+    status.componentDidMount();
+    await tick();
+    jest.runOnlyPendingTimers();
+    await tick();
+    expect(handleLogout).not.toHaveBeenCalled();
+  });
+
   it("should repeat login if mustLogout and repeatLogin are true", async () => {
     validateToken.mockReturnValue(true);
     jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
-    axios.mockImplementationOnce(() =>
-      Promise.resolve({
-        status: 200,
-        statusText: "OK",
-        data: [
-          {
-            session_id: 1,
-            start_time: "2020-09-08T00:22:28-04:00",
-            stop_time: "2020-09-08T00:22:29-04:00",
-            input_octets: 100000,
-            output_octets: 100000,
-          },
-        ],
-        headers: {},
-      }),
-    );
+    axios
+      // Active session
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: [
+            {
+              session_id: 1,
+              start_time: "2020-09-08T00:22:28-04:00",
+              stop_time: "2020-09-08T00:22:29-04:00",
+              input_octets: 100000,
+              output_octets: 100000,
+            },
+          ],
+          headers: {},
+        }),
+      )
+      // Past session
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: [],
+          headers: {},
+        }),
+      )
+      // Active session from setInterval
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 200,
+          statusText: "OK",
+          data: [
+            {
+              session_id: 1,
+              start_time: "2020-09-08T00:22:28-04:00",
+              stop_time: "2020-09-08T00:22:29-04:00",
+              input_octets: 100000,
+              output_octets: 100000,
+            },
+          ],
+          headers: {},
+        }),
+      );
     const spyToast = jest.spyOn(toast, "success");
     props = createTestProps({
       userData: {...responseData, mustLogout: true, repeatLogin: true},
@@ -1473,7 +1620,7 @@ describe("<Status /> interactions", () => {
     await tick();
     expect(status.repeatLogin).toBe(true);
     await status.handleLogoutIframe();
-    jest.runAllTimers();
+    jest.runOnlyPendingTimers();
     expect(status.state.loggedOut).toBe(false);
     expect(status.repeatLogin).toBe(false);
     expect(mockRef.submit.mock.calls.length).toBe(1);

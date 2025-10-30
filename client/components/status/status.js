@@ -288,8 +288,9 @@ export default class Status extends React.Component {
     // if everything went fine, load the user sessions
     await this.getUserActiveRadiusSessions();
     await this.getUserPastRadiusSessions();
-    this.intervalId = setInterval(() => {
-      this.getUserActiveRadiusSessions();
+    this.intervalId = setInterval(async () => {
+      await this.getUserActiveRadiusSessions();
+      this.logoutIfCurrentRadiusSessionIsInactive();
     }, 60000);
     // We don't show radius usage in the internet mode.
     if (statusPage.radius_usage_enabled && !internetMode) {
@@ -498,6 +499,35 @@ export default class Status extends React.Component {
       ...params,
     };
     await this.getUserRadiusSessions(para);
+  }
+
+  async logoutIfCurrentRadiusSessionIsInactive() {
+    // If OpenWISP no longer reports an active session for this MAC address,
+    // the NAS has likely terminated the connection (e.g. due to Idle-Timeout).
+    // In that case, log out the user from the WiFi Login Pages to keep the UI
+    // consistent and allow them to reconnect quickly.
+    const {internetMode, cookies, orgSlug} = this.props;
+
+    if (internetMode) {
+      return;
+    }
+
+    const mac = cookies.get(`${orgSlug}_macaddr`);
+    if (!mac) {
+      // Cannot determine session state without a MAC address.
+      return;
+    }
+
+    const {activeSessions} = this.state;
+    const isCurrentSessionActive = activeSessions.some(
+      (session) => session.calling_station_id === mac,
+    );
+
+    if (!isCurrentSessionActive) {
+      // Session for this MAC is no longer active on the NAS — log out from WLP.
+      // The "true" argument ensures the user can quickly sign in again.
+      await this.handleLogout(true);
+    }
   }
 
   handleLogout = async (userAutoLogin, repeatLogin = false) => {
