@@ -27,7 +27,7 @@ describe("Selenium tests to check JS file injection in organization page", () =>
         scriptSources.push(await script.getAttribute("src"));
       }),
     );
-    expect(scriptSources.includes(`http://0.0.0.0:8080/${jsFile}`)).toEqual(
+    expect(scriptSources.includes(`http://127.0.0.1:8080/${jsFile}`)).toEqual(
       true,
     );
     const data = initialData().mobileVerificationTestUser;
@@ -39,7 +39,7 @@ describe("Selenium tests to check JS file injection in organization page", () =>
         scriptSources.push(await script.getAttribute("src"));
       }),
     );
-    expect(scriptSources.includes(`http://0.0.0.0:8080/${jsFile}`)).toEqual(
+    expect(scriptSources.includes(`http://127.0.0.1:8080/${jsFile}`)).toEqual(
       true,
     );
   });
