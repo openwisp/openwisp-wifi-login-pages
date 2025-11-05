@@ -507,7 +507,6 @@ export default class Status extends React.Component {
     // In that case, log out the user from the WiFi Login Pages to keep the UI
     // consistent and allow them to reconnect quickly.
     const {internetMode, cookies, orgSlug} = this.props;
-
     if (internetMode) {
       return;
     }
@@ -522,15 +521,19 @@ export default class Status extends React.Component {
     const isCurrentSessionActive = activeSessions.some(
       (session) => session.calling_station_id === mac,
     );
-
     if (!isCurrentSessionActive) {
       // Session for this MAC is no longer active on the NAS — log out from WLP.
       // The "true" argument ensures the user can quickly sign in again.
-      await this.handleLogout(true);
+      await this.handleLogout(true, false, "error", t`INACTIVE_SESSION_LOGOUT`);
     }
   }
 
-  handleLogout = async (userAutoLogin, repeatLogin = false) => {
+  handleLogout = async (
+    userAutoLogin,
+    repeatLogin = false,
+    toastLevel = "success",
+    toastMessage = t`LOGOUT_SUCCESS`,
+  ) => {
     const {setLoading} = this.context;
     const {
       orgSlug,
@@ -573,7 +576,7 @@ export default class Status extends React.Component {
     setUserData(initialState.userData);
     logout(cookies, orgSlug, userAutoLogin);
     setLoading(false);
-    toast.success(t`LOGOUT_SUCCESS`);
+    toast[toastLevel](toastMessage);
   };
 
   /*

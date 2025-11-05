@@ -29,6 +29,10 @@ msgstr "Была ошибка!"
 msgid "PLAN_SETTING_TXT"
 msgstr "Выберите предпочитаемый тип подписки"
 
+#: client/components/status/status.js:532
+msgid "INACTIVE_SESSION_LOGOUT"
+msgstr "Wi-Fi сессия завершена. Вы можете войти снова, чтобы начать новую сессию."
+
 #: client/components/status/status.js:533
 #: client/components/status/status.js:634 client/utils/handle-logout.js:29
 msgid "LOGOUT_SUCCESS"

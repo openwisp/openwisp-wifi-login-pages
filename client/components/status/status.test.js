@@ -1437,6 +1437,8 @@ describe("<Status /> interactions", () => {
 
   it("should logout if activeSession do not contain current MAC", async () => {
     validateToken.mockReturnValue(true);
+    const successToast = jest.spyOn(toast, "success");
+    const errorToast = jest.spyOn(toast, "error");
     jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
     axios
       // Active sessions
@@ -1496,13 +1498,22 @@ describe("<Status /> interactions", () => {
     // We only need to logout the user from WLP.
     expect(mockRef.submit.mock.calls.length).toBe(0);
     expect(status.repeatLogin).toBe(false);
-    expect(handleLogout).toHaveBeenCalledWith(true);
+    expect(handleLogout).toHaveBeenCalledWith(
+      true,
+      false,
+      "error",
+      "INACTIVE_SESSION_LOGOUT",
+    );
+    expect(successToast).not.toHaveBeenCalled();
+    expect(errorToast).toHaveBeenCalledWith("INACTIVE_SESSION_LOGOUT");
     // This allows user to perform quick login.
     expect(localStorage).toEqual({userAutoLogin: "true"});
   });
 
   it("should not logout in internetMode with zero active sessions", async () => {
     validateToken.mockReturnValue(true);
+    const successToast = jest.spyOn(toast, "success");
+    const errorToast = jest.spyOn(toast, "error");
     jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
     axios
       // Active sessions
@@ -1550,6 +1561,8 @@ describe("<Status /> interactions", () => {
     jest.runOnlyPendingTimers();
     await tick();
     expect(handleLogout).not.toHaveBeenCalled();
+    expect(successToast).not.toHaveBeenCalled();
+    expect(errorToast).not.toHaveBeenCalled();
   });
 
   it("should repeat login if mustLogout and repeatLogin are true", async () => {
