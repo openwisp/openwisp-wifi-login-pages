@@ -22,6 +22,10 @@ msgstr "Es ist ein Fehler aufgetreten!"
 msgid "PLAN_SETTING_TXT"
 msgstr "Wählen Sie die Art des Abonnements aus"
 
+#: client/components/status/status.js:532
+msgid "INACTIVE_SESSION_LOGOUT"
+msgstr "Die WLAN-Sitzung wurde beendet. Sie können sich erneut anmelden, um eine neue Sitzung zu starten."
+
 #: client/components/status/status.js:533
 #: client/components/status/status.js:634 client/utils/handle-logout.js:29
 msgid "LOGOUT_SUCCESS"

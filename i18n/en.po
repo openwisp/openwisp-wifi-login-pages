@@ -22,6 +22,10 @@ msgstr "Error occurred!"
 msgid "PLAN_SETTING_TXT"
 msgstr "Please select the preferred subscription plan"
 
+#: client/components/status/status.js:532
+msgid "INACTIVE_SESSION_LOGOUT"
+msgstr "The WiFi session ended. You can log in again to start a new session."
+
 #: client/components/status/status.js:533
 #: client/components/status/status.js:634 client/utils/handle-logout.js:29
 msgid "LOGOUT_SUCCESS"

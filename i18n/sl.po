@@ -22,6 +22,10 @@ msgstr "Pojavila se je napaka!"
 msgid "PLAN_SETTING_TXT"
 msgstr "Izberite vrsto naročnine"
 
+#: client/components/status/status.js:532
+msgid "INACTIVE_SESSION_LOGOUT"
+msgstr "Seja Wi-Fi je bila končana. Znova se lahko prijavite in začnete novo sejo."
+
 #: client/components/status/status.js:533
 #: client/components/status/status.js:634 client/utils/handle-logout.js:29
 msgid "LOGOUT_SUCCESS"

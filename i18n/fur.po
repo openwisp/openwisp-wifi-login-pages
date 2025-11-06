@@ -22,6 +22,10 @@ msgstr "Al è capitât un erôr!"
 msgid "PLAN_SETTING_TXT"
 msgstr "Selezione la tipologjie di sotscrizion"
 
+#: client/components/status/status.js:532
+msgid "INACTIVE_SESSION_LOGOUT"
+msgstr "La session WiFi e je finide. Tu puedis tornâ a jentrâ par tacâ une gnove session."
+
 #: client/components/status/status.js:533
 #: client/components/status/status.js:634 client/utils/handle-logout.js:29
 msgid "LOGOUT_SUCCESS"
