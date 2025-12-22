@@ -578,7 +578,7 @@ msgstr ""
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:286
 #, fuzzy, javascript-format
 msgid "RESEND_TOKEN_WAIT_LBL${ seconds }"
-msgstr "Nov SMS lahko zahtevate v ${ cooldown } sekundah."
+msgstr "Nov SMS lahko zahtevate v ${ seconds } sekundah."
 
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:301
 msgid "RESEND_TOKEN"
