@@ -4,6 +4,16 @@
 
 Work in progress.
 
+## Version 1.2.1 [2025-12-22]
+
+# Bugfixes
+
+- Fixed an issue on the mobile verification page where the SMS cooldown
+  countdown was displayed as `${undefined}` due to a
+  mismatched translation variable.
+- Restored compatibility with older browsers by adjusting the Babel
+  preset configuration.
+
 ## Version 1.2.0 [2025-10-24]
 
 ### Features
