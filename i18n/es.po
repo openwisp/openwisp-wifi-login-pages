@@ -28,6 +28,10 @@ msgstr "¡Ocurrió un error!"
 msgid "PLAN_SETTING_TXT"
 msgstr "Por favor seleccione el plan de suscripción preferido"
 
+#: client/components/status/status.js:532
+msgid "INACTIVE_SESSION_LOGOUT"
+msgstr "La sesión de WiFi ha finalizado. Puedes iniciar sesión de nuevo para comenzar una nueva sesión."
+
 #: client/components/status/status.js:533
 #: client/components/status/status.js:634 client/utils/handle-logout.js:29
 msgid "LOGOUT_SUCCESS"

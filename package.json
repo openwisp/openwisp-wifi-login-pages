@@ -1,6 +1,6 @@
 {
   "name": "openwisp-wifi-login-pages",
-  "version": "1.2.0",
+  "version": "1.3.0-dev",
   "description": "",
   "main": "src/index.js",
   "dependencies": {
@@ -128,7 +128,7 @@
     "format": "prettier --write \"**/*.+(js|jsx|json|css|md)\"",
     "format:check": "prettier -c \"**/*.+(js|jsx|json|css|md)\"",
     "test": "jest --testPathIgnorePatterns=/browser-test/",
-    "browser-test": "./browser-test/wait_for_url.sh http://0.0.0.0:8080 http://localhost:8000/admin && jest browser-test --runInBand",
+    "browser-test": "./browser-test/wait_for_url.sh http://localhost:8080 http://localhost:8000/admin && jest browser-test --runInBand",
     "test-inspect": "node inspect ./node_modules/.bin/jest --runInBand",
     "stats": "STATS=true webpack-cli --profile --json --mode production --config config/webpack.config.js > compilation-stats.json && webpack-bundle-analyzer dist/stats.json",
     "translations-add": "ttag init",

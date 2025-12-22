@@ -71,22 +71,22 @@ export const getPhoneToken = () => {
 };
 
 export const urls = {
-  registration: `http://0.0.0.0:8080/${orgSlug}/registration`,
-  registrationTos: `http://0.0.0.0:8080/${orgSlug}/registration/terms-and-conditions`,
-  registrationPrivacy: `http://0.0.0.0:8080/${orgSlug}/registration/privacy-policy`,
-  login: `http://0.0.0.0:8080/${orgSlug}/login`,
-  loginTos: `http://0.0.0.0:8080/${orgSlug}/login/terms-and-conditions`,
-  loginPrivacy: `http://0.0.0.0:8080/${orgSlug}/login/privacy-policy`,
-  status: `http://0.0.0.0:8080/${orgSlug}/status`,
-  passwordChange: `http://0.0.0.0:8080/${orgSlug}/change-password`,
-  passwordReset: `http://0.0.0.0:8080/${orgSlug}/password/reset`,
+  registration: `http://127.0.0.1:8080/${orgSlug}/registration`,
+  registrationTos: `http://127.0.0.1:8080/${orgSlug}/registration/terms-and-conditions`,
+  registrationPrivacy: `http://127.0.0.1:8080/${orgSlug}/registration/privacy-policy`,
+  login: `http://127.0.0.1:8080/${orgSlug}/login`,
+  loginTos: `http://127.0.0.1:8080/${orgSlug}/login/terms-and-conditions`,
+  loginPrivacy: `http://127.0.0.1:8080/${orgSlug}/login/privacy-policy`,
+  status: `http://127.0.0.1:8080/${orgSlug}/status`,
+  passwordChange: `http://127.0.0.1:8080/${orgSlug}/change-password`,
+  passwordReset: `http://127.0.0.1:8080/${orgSlug}/password/reset`,
   passwordConfirm: (uid, token) =>
-    `http://0.0.0.0:8080/${orgSlug}/password/reset/confirm/${uid}/${token}`,
-  verificationLogin: (slug) => `http://0.0.0.0:8080/${slug}/login`,
+    `http://127.0.0.1:8080/${orgSlug}/password/reset/confirm/${uid}/${token}`,
+  verificationLogin: (slug) => `http://127.0.0.1:8080/${slug}/login`,
   mobileVerification: (slug) =>
-    `http://0.0.0.0:8080/${slug}/mobile-phone-verification`,
+    `http://127.0.0.1:8080/${slug}/mobile-phone-verification`,
   mobilePhoneChange: (slug) =>
-    `http://0.0.0.0:8080/${slug}/change-phone-number`,
+    `http://127.0.0.1:8080/${slug}/change-phone-number`,
 };
 
 export const successToastSelector = ".Toastify__toast--success div[role=alert]";
