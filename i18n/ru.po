@@ -592,7 +592,7 @@ msgstr "Если вы не получили SMS-код, попробуйте з�
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:286
 #, fuzzy, javascript-format
 msgid "RESEND_TOKEN_WAIT_LBL${ seconds }"
-msgstr "Новое SMS может быть запрошено за ${ cooldown } секунд."
+msgstr "Новое SMS может быть запрошено за ${ seconds } секунд."
 
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:301
 msgid "RESEND_TOKEN"
