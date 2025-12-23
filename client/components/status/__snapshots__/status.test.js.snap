@@ -67,15 +67,15 @@ exports[`<Status /> interactions should hide check if check.value is zero 1`] = 
           </p>
           <p
             className="status-content"
-            key="You can now use the internet."
+            key="        You can now use the internet."
           >
-            You can now use the internet.
+                    You can now use the internet.
           </p>
           <p
             className="status-content"
-            key="You may leave this page open in case you want to log out."
+            key="        You may leave this page open in case you want to log out."
           >
-            You may leave this page open in case you want to log out.
+                    You may leave this page open in case you want to log out.
           </p>
           <p
             className="status-content"
@@ -434,15 +434,15 @@ exports[`<Status /> interactions should show user's radius usage 1`] = `
           </p>
           <p
             className="status-content"
-            key="You can now use the internet."
+            key="        You can now use the internet."
           >
-            You can now use the internet.
+                    You can now use the internet.
           </p>
           <p
             className="status-content"
-            key="You may leave this page open in case you want to log out."
+            key="        You may leave this page open in case you want to log out."
           >
-            You may leave this page open in case you want to log out.
+                    You may leave this page open in case you want to log out.
           </p>
           <p
             className="status-content"
@@ -1878,12 +1878,12 @@ exports[`<Status /> rendering should render correctly 1`] = `
           <p
             className="status-content"
           >
-            You can now use the internet.
+                    You can now use the internet.
           </p>
           <p
             className="status-content"
           >
-            You may leave this page open in case you want to log out.
+                    You may leave this page open in case you want to log out.
           </p>
           <p
             className="status-content"
