@@ -608,7 +608,7 @@ describe("<Login /> interactions", () => {
         expect(wrapper.instance().props.authenticate.mock.calls.length).toBe(0);
         expect(lastConsoleOutuput).not.toBe(null);
         expect(errorMethod).toHaveBeenCalled();
-        expect(errorMethod).toBeCalledWith("Internal server error");
+        expect(errorMethod).toHaveBeenCalledWith("Internal server error");
       });
   });
   it("should show error toast when connection refused or timeout", async () => {
@@ -628,7 +628,7 @@ describe("<Login /> interactions", () => {
     expect(wrapper.instance().props.authenticate.mock.calls.length).toBe(0);
     expect(lastConsoleOutuput).not.toBe(null);
     expect(errorMethod).toHaveBeenCalled();
-    expect(errorMethod).toBeCalledWith("Login error occurred.");
+    expect(errorMethod).toHaveBeenCalledWith("Login error occurred.");
   });
   it("should set mustLogin on login success", async () => {
     axios.mockImplementationOnce(() =>

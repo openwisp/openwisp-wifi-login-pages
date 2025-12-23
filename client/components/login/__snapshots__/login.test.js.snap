@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`<Login /> interactions phone_number field should be present if mobile phone verification is on 1`] = `
 <div
@@ -912,7 +912,6 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
         <div
           className="inner"
         >
-          
           <div
             className="social-links row"
           >
@@ -961,7 +960,6 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
               </a>
             </p>
           </div>
-          
           <div
             className="fieldset"
           >
@@ -1089,7 +1087,6 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
               Forgot your password?
             </Link>
           </div>
-          
         </div>
       </form>
       <Memo(Connect(Contact)) />
@@ -1124,7 +1121,6 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
         <div
           className="inner"
         >
-          
           <div
             className="social-links row"
           >
@@ -1195,7 +1191,6 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
               </a>
             </p>
           </div>
-          
           <div
             className="fieldset"
           >
@@ -1323,7 +1318,6 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
               Forgot your password?
             </Link>
           </div>
-          
         </div>
       </form>
       <Memo(Connect(Contact)) />
@@ -1379,7 +1373,6 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
         <div
           className="inner"
         >
-          
           <div
             className="social-links row"
           >
@@ -1450,7 +1443,6 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
               </a>
             </p>
           </div>
-          
           <div
             className="fieldset"
           >
@@ -1564,7 +1556,6 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
               FORGOT_PASSWORD
             </Link>
           </div>
-          
         </div>
       </form>
       <Memo(Connect(Contact)) />
