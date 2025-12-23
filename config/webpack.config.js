@@ -66,7 +66,7 @@ module.exports = (env, argv) => {
     setup.removeDefaultConfig();
     plugins.push(
       new MiniCssExtractPlugin({
-        filename: "[name].[contentHash].css",
+        filename: "[name].[contenthash].css",
         ignoreOrder: true,
       }),
     );
