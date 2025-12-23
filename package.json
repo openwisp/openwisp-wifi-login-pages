@@ -7,7 +7,6 @@
     "@babel/register": "^7.10.1",
     "@types/morgan": "^1.9.2",
     "add": "^2.0.6",
-    "autoprefixer": "^9.8.0",
     "axios": "^1.10.0",
     "compression": "^1.8.0",
     "concurrently": "^8.2.1",
