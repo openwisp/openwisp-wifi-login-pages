@@ -15,7 +15,7 @@
     "core-js": "^3.19.0",
     "deep-object-diff": "^1.1.0",
     "deepmerge": "^4.2.2",
-    "dompurify": "^3.0.6",
+    "dompurify": "^3.3.1",
     "duration-formatter": "^1.0.7",
     "express": "^5.2.1",
     "fs-extra": "^11.1.0",
