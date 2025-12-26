@@ -9545,7 +9545,11 @@ select-hose@^2.0.0:
   resolved "https://registry.yarnpkg.com/select-hose/-/select-hose-2.0.0.tgz#625d8658f865af43ec962bfc376a37359a4994ca"
   integrity sha512-mEugaLK+YfkijB4fx0e6kImuJdCIt2LxCRcbEYPqRGCs4F2ogyfZU5IAZRdjCP8JPq2AtdNoC/Dux63d9Kiryg==
 
+<<<<<<< HEAD
 selenium-webdriver@^4.0.0-beta.4:
+=======
+selenium-webdriver@^4.39.0:
+>>>>>>> ce5b394 ([deps] Upgraded selenium-webdriver to 4.39.0 #986)
   version "4.39.0"
   resolved "https://registry.yarnpkg.com/selenium-webdriver/-/selenium-webdriver-4.39.0.tgz#82c5dd78d2e03b3054d77ea591c3cb601022f801"
   integrity sha512-NAs9jCU+UeZ/ZmRb8R6zOp7N8eMklefdBYASnaRmCNXdgFE8w3OCxxZmLixkwqnGDHY5VF7hCulfw1Mls43N/A==
