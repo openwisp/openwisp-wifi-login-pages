@@ -171,6 +171,7 @@
     ]
   },
   "resolutions": {
-    "marked": "^15.0.12"
+    "marked": "^15.0.12",
+    "cheerio": "1.0.0-rc.12"
   }
 }
