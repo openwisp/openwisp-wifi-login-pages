@@ -67,7 +67,7 @@ module.exports = (env, argv) => {
           compress: {
             ecma: 5,
           },
-          output: {
+          format: {
             ecma: 5,
           },
         },
