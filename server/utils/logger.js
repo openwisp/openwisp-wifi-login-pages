@@ -1,6 +1,5 @@
 import winston from "winston";
 import "winston-daily-rotate-file";
-import SentryTransport from "winston-transport-sentry-node";
 import logFilePath from "../loggerConfig";
 
 const levels = {
@@ -103,7 +102,10 @@ const Logger = winston.createLogger({
 /* eslint-disable global-require */
 /* eslint-disable import/no-unresolved */
 try {
+  const SentryTransport = require("winston-transport-sentry-node");
+
   const sentryConfig = require("../../sentry-env.json");
+
   Logger.add(
     new SentryTransport({
       sentry: sentryConfig.sentryTransportLogger.sentry,
@@ -111,12 +113,12 @@ try {
       levelsMap: sentryConfig.sentryTransportLogger.levelsMap,
       format: winston.format.combine(
         format,
-        winston.format.uncolorize({raw: false}),
+        winston.format.uncolorize({ raw: false }),
       ),
     }),
   );
 } catch (error) {
-  // no op
+  // Sentry is optional: ignore if dependency is missing
 }
 
 export const logResponseError = (error) => {
