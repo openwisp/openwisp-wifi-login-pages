@@ -26,4 +26,5 @@ const needsVerify = (method, user, settings) => {
 
   return false;
 };
+
 export default needsVerify;
