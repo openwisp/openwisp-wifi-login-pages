@@ -113,7 +113,7 @@ try {
       levelsMap: sentryConfig.sentryTransportLogger.levelsMap,
       format: winston.format.combine(
         format,
-        winston.format.uncolorize({ raw: false }),
+        winston.format.uncolorize({raw: false}),
       ),
     }),
   );
