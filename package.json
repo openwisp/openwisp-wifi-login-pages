@@ -24,7 +24,11 @@
     "js-yaml": "^4.1.0",
     "jsdom": "^22.1.0",
     "lodash": "^4.17.21",
+<<<<<<< HEAD
     "marked": "^15.0.12",
+=======
+    "marked": "^17.0.1",
+>>>>>>> e524a89 ([deps] Upgraded marked to ^17.0.1 #986)
     "morgan": "^1.10.0",
     "node-plop": "^0.32.0",
     "nodemon": "^3.1.11",
