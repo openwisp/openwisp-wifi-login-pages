@@ -124,6 +124,28 @@ browsers may fail to detect successful login when this method is used.
 Set ``captive_portal_sync_auth`` to ``true`` to submit the login form
 synchronously and trigger a full page reload upon authentication:
 
+``captive_portal_api``
+~~~~~~~~~~~~~~~~~~~~~~
+
+This configuration section allows you to configure the `RFC 8908 Captive
+Portal API <https://www.rfc-editor.org/rfc/rfc8908.html>`_ endpoint.
+
+This API is used to check if the user is in a captive portal state or if
+they have internet access.
+
+- **url**: The URL of the Captive Portal API. If ``null``, the feature is
+  disabled.
+- **timeout**: The timeout in milliseconds for the API request. Default is
+  ``2000`` (2 seconds).
+
+Example:
+
+.. code-block:: yaml
+
+    captive_portal_api:
+      url: "https://captive.portal/api"
+      timeout: 2000
+
 Status Page Settings
 --------------------
 

@@ -77,6 +77,7 @@ export default class Status extends React.Component {
     this.fetchMoreSessions = this.fetchMoreSessions.bind(this);
     this.updateScreenWidth = this.updateScreenWidth.bind(this);
     this.updateSpinner = this.updateSpinner.bind(this);
+    this.checkCaptivePortalApi = this.checkCaptivePortalApi.bind(this);
   }
 
   async componentDidMount() {
@@ -302,6 +303,32 @@ export default class Status extends React.Component {
 
     window.addEventListener("resize", this.updateScreenWidth);
     this.updateSpinner();
+    this.checkCaptivePortalApi();
+  }
+
+  async checkCaptivePortalApi() {
+    const {captivePortalApi, setInternetMode} = this.props;
+    if (!captivePortalApi || !captivePortalApi.url) {
+      return;
+    }
+
+    try {
+      const response = await axios.get(captivePortalApi.url, {
+        timeout: captivePortalApi.timeout,
+        headers: {
+          Accept: "application/captive+json",
+        },
+      });
+
+      if (response.status === 200 && response.data) {
+        // RFC 8908: "captive": false means we have internet access
+        if (response.data.captive === false) {
+          setInternetMode(true);
+        }
+      }
+    } catch (error) {
+      // Ignore errors as the API is optional
+    }
   }
 
   async getUserRadiusSessions(params) {
@@ -1490,6 +1517,7 @@ Status.defaultProps = {
   isAuthenticated: false,
   internetMode: false,
   planExhausted: false,
+  captivePortalApi: null,
 };
 Status.propTypes = {
   statusPage: PropTypes.shape({
@@ -1533,6 +1561,10 @@ Status.propTypes = {
     logout_by_session: PropTypes.bool.isRequired,
     wait_after: PropTypes.number.isRequired,
   }).isRequired,
+  captivePortalApi: PropTypes.shape({
+    url: PropTypes.string,
+    timeout: PropTypes.number,
+  }),
   location: PropTypes.shape({
     search: PropTypes.string,
   }).isRequired,

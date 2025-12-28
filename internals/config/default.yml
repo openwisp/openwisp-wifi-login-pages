@@ -160,6 +160,10 @@ client:
       logout_by_session: true
       wait_after: 3000
 
+    captive_portal_api:
+      url: null
+      timeout: 2000
+
     mobile_phone_verification_form:
       input_fields:
         code:

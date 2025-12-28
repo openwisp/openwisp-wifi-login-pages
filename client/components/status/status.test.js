@@ -2887,3 +2887,56 @@ describe("<Status /> accounting_swap_octets", () => {
     expect(rows.at(4).find("td").text()).toBe("2 kB");
   });
 });
+
+describe("<Status /> captive portal api", () => {
+  let props;
+  let wrapper;
+
+  it("test checkCaptivePortalApi method", async () => {
+    props = createTestProps({
+      captivePortalApi: {
+        url: "http://captive.portal/api",
+        timeout: 2000,
+      },
+    });
+    const setInternetMode = jest.fn();
+    wrapper = shallow(<Status {...props} setInternetMode={setInternetMode} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+
+    // Mock axios response for captive: false (internet access)
+    axios.get.mockResolvedValueOnce({
+      status: 200,
+      data: {
+        captive: false,
+      },
+    });
+
+    await wrapper.instance().checkCaptivePortalApi();
+    expect(axios.get).toHaveBeenCalledWith("http://captive.portal/api", {
+      timeout: 2000,
+      headers: {
+        Accept: "application/captive+json",
+      },
+    });
+    expect(setInternetMode).toHaveBeenCalledWith(true);
+
+    // Mock axios response for captive: true
+    setInternetMode.mockClear();
+    axios.get.mockResolvedValueOnce({
+      status: 200,
+      data: {
+        captive: true,
+      },
+    });
+    await wrapper.instance().checkCaptivePortalApi();
+    expect(setInternetMode).not.toHaveBeenCalled();
+
+    // Mock axios error
+    setInternetMode.mockClear();
+    axios.get.mockRejectedValueOnce(new Error("Network Error"));
+    await wrapper.instance().checkCaptivePortalApi();
+    expect(setInternetMode).not.toHaveBeenCalled();
+  });
+});
