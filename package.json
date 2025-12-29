@@ -73,7 +73,6 @@
     "babel-loader": "^8.1.0",
     "babel-plugin-transform-remove-strict-mode": "^0.0.2",
     "brotli-webpack-plugin": "^1.1.0",
-    "cheerio": "0.22.0",
     "clean-webpack-plugin": "^4.0.0",
     "compression-webpack-plugin": "11.1.0",
     "copy-webpack-plugin": "^6.4.1",
@@ -168,9 +167,5 @@
     "ignore": [
       "client/*"
     ]
-  },
-  "resolutions": {
-    "marked": "^15.0.12",
-    "cheerio": "1.0.0-rc.12"
   }
 }
