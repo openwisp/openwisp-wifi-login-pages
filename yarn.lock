@@ -5122,10 +5122,17 @@ dunder-proto@^1.0.0, dunder-proto@^1.0.1:
     es-errors "^1.3.0"
     gopd "^1.2.0"
 
-duration-formatter@^1.0.7:
-  version "1.0.7"
-  resolved "https://registry.npmjs.org/duration-formatter/-/duration-formatter-1.0.7.tgz"
-  integrity sha512-uM0qX7L1HF1m3zX4yPYU264chtwZUmneHUmzEYG70pTO+PTjhSeMm7v6L+q+ZFOFerT39Gce6WXX+FMssBWplQ==
+duration-formatter@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/duration-formatter/-/duration-formatter-1.1.1.tgz#28ac6c67c9aee7ce233c651ccac5ac3f5dafec32"
+  integrity sha512-5+Fdf56V6nZAkbvJXLeKpFkE+5g6UulOu85TLAlbbciw1NSyRKP4egWIHYVi7JAqfJr2vyCEf0vDldpGR3Moyw==
+  dependencies:
+    duration-str "^1.0.0"
+
+duration-str@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/duration-str/-/duration-str-1.0.1.tgz#3c136ada245715aea74fd4b475e1ef0cbeb71372"
+  integrity sha512-GuplZNXwiPWYMFKpbFUg8KtRuXUqvNZd5BdXTEAvhzQtOMfFfvfGo3SCFmDvq4aLUIaqQLTgjzyD+qek0j/02w==
 
 eastasianwidth@^0.2.0:
   version "0.2.0"
