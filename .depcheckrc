@@ -1,0 +1,10 @@
+{
+  "ignores": [
+    "css-loader",
+    "style-loader",
+    "jest-environment-jsdom",
+    "webpack-dev-server",
+    "depcheck",
+    "babel-loader"
+  ]
+}
