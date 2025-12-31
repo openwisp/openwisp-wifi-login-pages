@@ -383,12 +383,12 @@ exports[`<Status /> interactions should show user's radius usage 1`] = `
             className="progress"
           >
             <strong>
-              00:00:00
+              
             </strong>
              
             of
              
-            03:00:00
+            3 hrs 
              
             used
           </p>

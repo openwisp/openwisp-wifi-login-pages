@@ -1171,7 +1171,7 @@ export default class Status extends React.Component {
           ? 0
           : prettyBytes(intValue, {space: true, maximumFractionDigits: 2});
       case "seconds":
-        return timeFromSeconds(intValue);
+        return this.getDuration(intValue);
       default:
         return value;
     }
@@ -1280,7 +1280,12 @@ export default class Status extends React.Component {
                                 check.value,
                                 check.type,
                               )}{" "}
-                              used
+                              used (
+                              {this.getUserCheckFormattedValue(
+                                check.value - check.result,
+                                check.type,
+                              )}{" "}
+                              {t`REMAINING`})
                             </p>
                           </div>
                         ),
