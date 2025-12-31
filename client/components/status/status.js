@@ -13,7 +13,7 @@ import {toast} from "react-toastify";
 import InfinteScroll from "react-infinite-scroll-component";
 import {t, gettext} from "ttag";
 import prettyBytes from "pretty-bytes";
-import {timeFromSeconds} from "duration-formatter";
+
 import getLanguageHeaders from "../../utils/get-language-headers";
 
 import {
