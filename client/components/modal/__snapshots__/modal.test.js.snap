@@ -1,101 +1,93 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`<Modal /> rendering should render nothing on incorrect param name 1`] = `
-<div
-  className="modal is-visible content"
->
+<div>
   <div
-    className="modal-container w-900 text-left"
+    class="modal is-visible content"
   >
-    <Link
-      className="modal-close-btn"
-      to="/default/login"
-    >
-      ✖
-    </Link>
     <div
-      className="message"
-      dangerouslySetInnerHTML={
-        {
-          "__html": "",
-        }
-      }
-    />
+      class="modal-container w-900 text-left"
+    >
+      <a
+        class="modal-close-btn"
+        href="/default/login"
+      >
+        ✖
+      </a>
+      <div
+        class="message"
+      />
+    </div>
   </div>
 </div>
 `;
 
 exports[`<Modal /> rendering should render nothing when request is bad 1`] = `
-<div
-  className="modal is-visible content"
->
+<div>
   <div
-    className="modal-container w-900 text-left"
+    class="modal is-visible content"
   >
-    <Link
-      className="modal-close-btn"
-      to="/default/login"
-    >
-      ✖
-    </Link>
     <div
-      className="message"
-      dangerouslySetInnerHTML={
-        {
-          "__html": "",
-        }
-      }
-    />
+      class="modal-container w-900 text-left"
+    >
+      <a
+        class="modal-close-btn"
+        href="/default/login"
+      >
+        ✖
+      </a>
+      <div
+        class="message"
+      />
+    </div>
   </div>
 </div>
 `;
 
 exports[`<Modal /> rendering should render privacy-policy correctly 1`] = `
-<div
-  className="modal is-visible content"
->
+<div>
   <div
-    className="modal-container w-900 text-left"
+    class="modal is-visible content"
   >
-    <Link
-      className="modal-close-btn"
-      to="/default/login"
-    >
-      ✖
-    </Link>
     <div
-      className="message"
-      dangerouslySetInnerHTML={
-        {
-          "__html": "privacy policy modal content",
-        }
-      }
-    />
+      class="modal-container w-900 text-left"
+    >
+      <a
+        class="modal-close-btn"
+        href="/default/login"
+      >
+        ✖
+      </a>
+      <div
+        class="message"
+      >
+        privacy policy modal content
+      </div>
+    </div>
   </div>
 </div>
 `;
 
 exports[`<Modal /> rendering should render terms-and-conditions correctly 1`] = `
-<div
-  className="modal is-visible content"
->
+<div>
   <div
-    className="modal-container w-900 text-left"
+    class="modal is-visible content"
   >
-    <Link
-      className="modal-close-btn"
-      to="/default/login"
-    >
-      ✖
-    </Link>
     <div
-      className="message"
-      dangerouslySetInnerHTML={
-        {
-          "__html": "t&c modal content",
-        }
-      }
-    />
+      class="modal-container w-900 text-left"
+    >
+      <a
+        class="modal-close-btn"
+        href="/default/login"
+      >
+        ✖
+      </a>
+      <div
+        class="message"
+      >
+        t&c modal content
+      </div>
+    </div>
   </div>
 </div>
 `;

@@ -6,7 +6,7 @@ import "./index.css";
 import PropTypes from "prop-types";
 import React, {Suspense} from "react";
 import {Cookies} from "react-cookie";
-import {Helmet} from "react-helmet";
+import {Helmet} from "react-helmet-async";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {t} from "ttag";
 

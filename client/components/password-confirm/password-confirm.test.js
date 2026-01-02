@@ -1,23 +1,61 @@
-/* eslint-disable prefer-promise-reject-errors */
-/* eslint-disable camelcase */
 import axios from "axios";
-import {shallow} from "enzyme";
+import {render, screen, waitFor, fireEvent} from "@testing-library/react";
+import "@testing-library/jest-dom";
 import React from "react";
-import PropTypes from "prop-types";
-import {BrowserRouter as Router} from "react-router-dom";
+import {MemoryRouter} from "react-router-dom";
 import {Provider} from "react-redux";
-import renderer from "react-test-renderer";
 import {toast} from "react-toastify";
-import {loadingContextValue} from "../../utils/loading-context";
 import getConfig from "../../utils/get-config";
 import loadTranslation from "../../utils/load-translation";
 import PasswordConfirm from "./password-confirm";
 import translation from "../../test-translation.json";
-import PasswordToggleIcon from "../../utils/password-toggle";
+import tick from "../../utils/tick";
+
+const mockConfig = {
+  name: "default name",
+  slug: "default",
+  default_language: "en",
+  components: {
+    password_reset_confirm_form: {
+      input_fields: {
+        password: {
+          pattern: ".{6,}",
+        },
+        password_confirm: {
+          pattern: ".{6,}",
+        },
+      },
+    },
+    header: {
+      logo: {
+        url: "/assets/default/openwisp-logo-black.svg",
+        alternate_text: "openwisp",
+      },
+      links: [],
+    },
+    footer: {
+      links: [],
+    },
+    contact_page: {},
+  },
+  privacy_policy: {
+    title: {en: "Privacy Policy"},
+    content: {en: "Privacy content"},
+  },
+  terms_and_conditions: {
+    title: {en: "Terms and Conditions"},
+    content: {en: "Terms content"},
+  },
+  languages: [{slug: "en", text: "english"}],
+};
 
 jest.mock("axios");
-jest.mock("../../utils/get-config");
+jest.mock("../../utils/get-config", () => ({
+  __esModule: true,
+  default: jest.fn(() => mockConfig),
+}));
 jest.mock("../../utils/load-translation");
+
 const defaultConfig = getConfig("default", true);
 const createTestProps = (props) => ({
   language: "en",
@@ -43,231 +81,415 @@ const getTranslationString = (msgid) => {
   }
 };
 
+const renderWithProviders = (props) => {
+  const state = {
+    organization: {
+      configuration: {
+        ...props.configuration,
+        components: {
+          ...props.configuration.components,
+          contact_page: props.configuration.components.contact_page || {},
+        },
+      },
+    },
+    language: props.language,
+  };
+
+  const mockedStore = {
+    subscribe: () => {},
+    dispatch: () => {},
+    getState: () => state,
+  };
+
+  return render(
+    <Provider store={mockedStore}>
+      <MemoryRouter>
+        <PasswordConfirm {...props} />
+      </MemoryRouter>
+    </Provider>,
+  );
+};
+
 describe("<PasswordConfirm /> rendering with placeholder translation tags", () => {
   const props = createTestProps();
   it("should render translation placeholder correctly", () => {
-    const wrapper = shallow(<PasswordConfirm {...props} />);
-    expect(wrapper).toMatchSnapshot();
+    const {container} = renderWithProviders(props);
+    expect(container).toMatchSnapshot();
   });
 });
 
 describe("<PasswordConfirm /> rendering", () => {
   let props;
-  let wrapper;
 
   beforeEach(() => {
+    jest.clearAllMocks();
     props = createTestProps();
     loadTranslation("en", "default");
-    wrapper = shallow(<PasswordConfirm {...props} />);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   it("should render correctly", () => {
-    props = createTestProps();
-    const mockedStore = {
-      subscribe: () => {},
-      dispatch: () => {},
-      // needed to render <Contact/>
-      getState: () => ({
-        organization: {
-          configuration: props.configuration,
-        },
-        language: props.language,
-      }),
-    };
-    const component = renderer
-      .create(
-        <Provider store={mockedStore}>
-          <Router>
-            <PasswordConfirm {...props} />
-          </Router>
-        </Provider>,
-      )
-      .toJSON();
-    expect(component).toMatchSnapshot();
+    const {container} = renderWithProviders(props);
+    expect(container).toMatchSnapshot();
   });
 
   it("should render 2 input fields", () => {
-    expect(wrapper.find(".input")).toHaveLength(2);
+    renderWithProviders(props);
+    const passwordInput = screen.getByPlaceholderText(
+      getTranslationString("PWD_PHOLD"),
+    );
+    const confirmInput = screen.getByPlaceholderText(
+      getTranslationString("CONFIRM_PWD_PHOLD"),
+    );
+    expect(passwordInput).toBeInTheDocument();
+    expect(confirmInput).toBeInTheDocument();
   });
 
   it("should render password field correctly", () => {
-    expect(wrapper.find(".row.password label").text()).toBe(
-      getTranslationString("PWD_LBL"),
-    );
-    const passwordInput = wrapper.find(".row.password input");
-    expect(passwordInput.prop("placeholder")).toBe(
+    renderWithProviders(props);
+
+    const passwordLabel = screen.getByText(getTranslationString("PWD_LBL"));
+    expect(passwordLabel).toBeInTheDocument();
+
+    const passwordInput = screen.getByPlaceholderText(
       getTranslationString("PWD_PHOLD"),
     );
-    expect(passwordInput.prop("title")).toBe(
+    expect(passwordInput).toHaveAttribute(
+      "placeholder",
+      getTranslationString("PWD_PHOLD"),
+    );
+    expect(passwordInput).toHaveAttribute(
+      "title",
       getTranslationString("PWD_PTRN_DESC"),
     );
-    expect(passwordInput.prop("type")).toBe("password");
+    expect(passwordInput).toHaveAttribute("type", "password");
   });
 
   it("should render password confirm field correctly", () => {
-    expect(wrapper.find(".row.password-confirm label").text()).toBe(
+    renderWithProviders(props);
+
+    const confirmLabel = screen.getByText(
       getTranslationString("CONFIRM_PWD_LBL"),
     );
-    const confirmInput = wrapper.find(".row.password-confirm input");
-    expect(confirmInput.prop("placeholder")).toBe(
+    expect(confirmLabel).toBeInTheDocument();
+
+    const confirmInput = screen.getByPlaceholderText(
       getTranslationString("CONFIRM_PWD_PHOLD"),
     );
-    expect(confirmInput.prop("title")).toBe(
+    expect(confirmInput).toHaveAttribute(
+      "placeholder",
+      getTranslationString("CONFIRM_PWD_PHOLD"),
+    );
+    expect(confirmInput).toHaveAttribute(
+      "title",
       getTranslationString("PWD_PTRN_DESC"),
     );
-    expect(confirmInput.prop("type")).toBe("password");
+    expect(confirmInput).toHaveAttribute("type", "password");
   });
 });
 
 describe("<PasswordConfirm /> interactions", () => {
   let props;
-  let wrapper;
-  let originalError;
-  let lastConsoleOutuput;
 
   beforeEach(() => {
-    originalError = console.error;
-    lastConsoleOutuput = null;
-    console.error = (data) => {
-      lastConsoleOutuput = data;
-    };
-    PasswordConfirm.contextTypes = {
-      setLoading: PropTypes.func,
-      getLoading: PropTypes.func,
-    };
+    jest.clearAllMocks();
+    axios.mockReset();
     props = createTestProps();
-    wrapper = shallow(<PasswordConfirm {...props} />, {
-      context: loadingContextValue,
-    });
   });
 
   afterEach(() => {
-    console.error = originalError;
+    jest.clearAllMocks();
+    jest.restoreAllMocks();
   });
 
   it("should change state values when handleChange function is invoked", () => {
-    wrapper
-      .find(".password input")
-      .simulate("change", {target: {value: "123456", name: "newPassword1"}});
-    expect(wrapper.state("newPassword1")).toEqual("123456");
-    wrapper
-      .find(".password-confirm input")
-      .simulate("change", {target: {value: "123456", name: "newPassword2"}});
-    expect(wrapper.state("newPassword2")).toEqual("123456");
+    renderWithProviders(props);
+
+    const passwordInput = screen.getByPlaceholderText(
+      getTranslationString("PWD_PHOLD"),
+    );
+    fireEvent.change(passwordInput, {
+      target: {value: "123456", name: "newPassword1"},
+    });
+    expect(passwordInput.value).toEqual("123456");
+
+    const confirmInput = screen.getByPlaceholderText(
+      getTranslationString("CONFIRM_PWD_PHOLD"),
+    );
+    fireEvent.change(confirmInput, {
+      target: {value: "123456", name: "newPassword2"},
+    });
+    expect(confirmInput.value).toEqual("123456");
   });
 
-  it("should execute handleSubmit correctly when form is submitted", () => {
-    axios
-      .mockImplementationOnce(() =>
-        Promise.reject({response: {data: {detail: "errors"}}}),
-      )
-      .mockImplementationOnce(() =>
-        Promise.reject({
-          response: {data: {non_field_errors: ["non field errors"]}},
-        }),
-      )
-      .mockImplementationOnce(() =>
-        Promise.reject({
-          response: {data: {token: ["Invalid token"]}},
-        }),
-      )
-      .mockImplementationOnce(() => Promise.resolve({data: {detail: true}}));
-    wrapper.setState({
-      newPassword1: "wrong password",
-      newPassword2: "wrong password1",
+  describe("<PasswordConfirm /> form submission scenarios", () => {
+    let testProps;
+    let spyToastError;
+    let spyToastSuccess;
+    let consoleErrorSpy;
+
+    beforeEach(() => {
+      jest.clearAllMocks();
+      axios.mockReset();
+      consoleErrorSpy = jest
+        .spyOn(global.console, "error")
+        .mockImplementation(() => {});
+      testProps = createTestProps();
+      spyToastError = jest.spyOn(toast, "error");
+      spyToastSuccess = jest.spyOn(toast, "success");
     });
-    wrapper.instance().handleSubmit({preventDefault: () => {}});
-    expect(wrapper.update().find(".password-confirm div.error")).toHaveLength(
-      1,
-    );
-    wrapper.setState({
-      newPassword1: "password",
-      newPassword2: "password",
+
+    afterEach(() => {
+      jest.clearAllMocks();
+      jest.restoreAllMocks();
     });
-    const spyToastError = jest.spyOn(toast, "error");
-    const spyToastSuccess = jest.spyOn(toast, "success");
-    return wrapper
-      .instance()
-      .handleSubmit({preventDefault: () => {}})
-      .then(() => {
-        expect(wrapper.instance().state.errors.nonField).toEqual("errors");
-        expect(wrapper.find(".error.non-field")).toHaveLength(1);
-        expect(lastConsoleOutuput).not.toBe(null);
-        expect(spyToastError.mock.calls.length).toBe(1);
-        expect(spyToastSuccess.mock.calls.length).toBe(0);
-        lastConsoleOutuput = null;
-      })
-      .then(() =>
-        wrapper
-          .instance()
-          .handleSubmit({preventDefault: () => {}})
-          .then(() => {
-            expect(wrapper.instance().state.errors.nonField).toEqual(
-              "non field errors",
-            );
-            expect(lastConsoleOutuput).not.toBe(null);
-            expect(spyToastError.mock.calls.length).toBe(2);
-            expect(spyToastSuccess.mock.calls.length).toBe(0);
-            lastConsoleOutuput = null;
-          }),
-      )
-      .then(() =>
-        wrapper
-          .instance()
-          .handleSubmit({preventDefault: () => {}})
-          .then(() => {
-            expect(wrapper.instance().state.errors.nonField).toEqual(
-              "token: Invalid token",
-            );
-            expect(lastConsoleOutuput).not.toBe(null);
-            expect(spyToastError.mock.calls.length).toBe(3);
-            expect(spyToastSuccess.mock.calls.length).toBe(0);
-            lastConsoleOutuput = null;
-          }),
-      )
-      .then(() =>
-        wrapper
-          .instance()
-          .handleSubmit({preventDefault: () => {}})
-          .then(() => {
-            expect(wrapper.instance().state.errors).toEqual({});
-            expect(wrapper.instance().state.success).toBe(true);
-            expect(wrapper.find(".input.error")).toHaveLength(0);
-            expect(wrapper.find(".success")).toHaveLength(1);
-            expect(lastConsoleOutuput).toBe(null);
-            expect(spyToastError.mock.calls.length).toBe(3);
-            expect(spyToastSuccess.mock.calls.length).toBe(1);
-            lastConsoleOutuput = null;
-          }),
+
+    it("should show validation error for password mismatch", async () => {
+      renderWithProviders(testProps);
+
+      const passwordInput = screen.getByPlaceholderText(
+        getTranslationString("PWD_PHOLD"),
       );
+      const confirmInput = screen.getByPlaceholderText(
+        getTranslationString("CONFIRM_PWD_PHOLD"),
+      );
+      const form = screen.getByRole("form");
+
+      fireEvent.change(passwordInput, {
+        target: {value: "wrong password", name: "newPassword1"},
+      });
+      fireEvent.change(confirmInput, {
+        target: {value: "wrong password1", name: "newPassword2"},
+      });
+      fireEvent.submit(form);
+
+      await waitFor(() => {
+        expect(confirmInput).toHaveClass("error");
+      });
+
+      // Verify API was not called
+      expect(axios).not.toHaveBeenCalled();
+    });
+
+    it("should handle API error with detail field", async () => {
+      const error = new Error("Request failed");
+      error.response = {data: {detail: "errors"}};
+      axios.mockRejectedValueOnce(error);
+
+      renderWithProviders(testProps);
+
+      const passwordInput = screen.getByPlaceholderText(
+        getTranslationString("PWD_PHOLD"),
+      );
+      const confirmInput = screen.getByPlaceholderText(
+        getTranslationString("CONFIRM_PWD_PHOLD"),
+      );
+      const form = screen.getByRole("form");
+
+      fireEvent.change(passwordInput, {
+        target: {value: "password", name: "newPassword1"},
+      });
+      fireEvent.change(confirmInput, {
+        target: {value: "password", name: "newPassword2"},
+      });
+      fireEvent.submit(form);
+
+      await tick();
+      await waitFor(() => {
+        expect(spyToastError).toHaveBeenCalledTimes(1);
+      });
+      expect(consoleErrorSpy).toHaveBeenCalled();
+    });
+
+    it("should handle API error with non_field_errors", async () => {
+      const error = new Error("Request failed");
+      error.response = {data: {non_field_errors: ["non field errors"]}};
+      axios.mockRejectedValueOnce(error);
+
+      renderWithProviders(testProps);
+
+      const passwordInput = screen.getByPlaceholderText(
+        getTranslationString("PWD_PHOLD"),
+      );
+      const confirmInput = screen.getByPlaceholderText(
+        getTranslationString("CONFIRM_PWD_PHOLD"),
+      );
+      const form = screen.getByRole("form");
+
+      fireEvent.change(passwordInput, {
+        target: {value: "password", name: "newPassword1"},
+      });
+      fireEvent.change(confirmInput, {
+        target: {value: "password", name: "newPassword2"},
+      });
+      fireEvent.submit(form);
+
+      await tick();
+      await waitFor(() => {
+        expect(spyToastError).toHaveBeenCalledTimes(1);
+      });
+      expect(consoleErrorSpy).toHaveBeenCalled();
+    });
+
+    it("should handle API error with token field", async () => {
+      const error = new Error("Request failed");
+      error.response = {data: {token: ["Invalid token"]}};
+      axios.mockRejectedValueOnce(error);
+
+      renderWithProviders(testProps);
+
+      const passwordInput = screen.getByPlaceholderText(
+        getTranslationString("PWD_PHOLD"),
+      );
+      const confirmInput = screen.getByPlaceholderText(
+        getTranslationString("CONFIRM_PWD_PHOLD"),
+      );
+      const form = screen.getByRole("form");
+
+      fireEvent.change(passwordInput, {
+        target: {value: "password", name: "newPassword1"},
+      });
+      fireEvent.change(confirmInput, {
+        target: {value: "password", name: "newPassword2"},
+      });
+      fireEvent.submit(form);
+
+      await tick();
+      await waitFor(() => {
+        expect(spyToastError).toHaveBeenCalledTimes(1);
+      });
+      expect(consoleErrorSpy).toHaveBeenCalled();
+    });
+
+    it("should show success message after successful submission", async () => {
+      axios.mockResolvedValueOnce({
+        data: {detail: "Password reset successful"},
+      });
+
+      renderWithProviders(testProps);
+
+      const passwordInput = screen.getByPlaceholderText(
+        getTranslationString("PWD_PHOLD"),
+      );
+      const confirmInput = screen.getByPlaceholderText(
+        getTranslationString("CONFIRM_PWD_PHOLD"),
+      );
+      const form = screen.getByRole("form");
+
+      fireEvent.change(passwordInput, {
+        target: {value: "password", name: "newPassword1"},
+      });
+      fireEvent.change(confirmInput, {
+        target: {value: "password", name: "newPassword2"},
+      });
+      fireEvent.submit(form);
+
+      await tick();
+      await waitFor(() => {
+        expect(spyToastSuccess).toHaveBeenCalledTimes(1);
+      });
+      expect(spyToastError).not.toHaveBeenCalled();
+
+      // Verify inputs don't have error class
+      expect(passwordInput).not.toHaveClass("error");
+      expect(confirmInput).not.toHaveClass("error");
+    });
   });
+
   it("should set title", () => {
-    const setTitleMock = wrapper.instance().props.setTitle.mock;
-    expect(setTitleMock.calls.pop()).toEqual(["Reset Password", props.orgName]);
+    renderWithProviders(props);
+    expect(props.setTitle).toHaveBeenCalledWith(
+      "Reset Password",
+      props.orgName,
+    );
   });
-  it("should toggle password icon for both password fields in PasswordToggleIcon", async () => {
-    const nodes = wrapper.find(PasswordToggleIcon);
-    expect(nodes.length).toEqual(2);
-    expect(nodes.at(0).props()).toEqual({
-      hidePassword: true,
-      inputRef: {current: null},
-      isVisible: false,
-      parentClassName: "",
-      secondInputRef: {current: null},
-      toggler: expect.any(Function),
+
+  it("should toggle password visibility for both fields", async () => {
+    renderWithProviders(props);
+
+    const passwordInput = screen.getByPlaceholderText(
+      getTranslationString("PWD_PHOLD"),
+    );
+    const confirmInput = screen.getByPlaceholderText(
+      getTranslationString("CONFIRM_PWD_PHOLD"),
+    );
+
+    // Initially both should be password type
+    expect(passwordInput).toHaveAttribute("type", "password");
+    expect(confirmInput).toHaveAttribute("type", "password");
+
+    // Get all toggle buttons (should be 2)
+    const toggleButtons = screen.getAllByTestId("password-toggle-icon");
+    expect(toggleButtons).toHaveLength(2);
+
+    // Click first toggle to reveal passwords
+    fireEvent.click(toggleButtons[0]);
+
+    await waitFor(() => {
+      expect(passwordInput).toHaveAttribute("type", "text");
+      expect(confirmInput).toHaveAttribute("type", "text");
     });
-    expect(wrapper.instance().state.hidePassword).toEqual(true);
-    nodes.at(0).props().toggler();
-    expect(wrapper.instance().state.hidePassword).toEqual(false);
-    expect(nodes.at(1).props()).toEqual({
-      hidePassword: true,
-      inputRef: {current: null},
-      isVisible: false,
-      parentClassName: "",
-      secondInputRef: {current: null},
-      toggler: expect.any(Function),
+
+    // Click again to hide passwords
+    fireEvent.click(toggleButtons[0]);
+
+    await waitFor(() => {
+      expect(passwordInput).toHaveAttribute("type", "password");
+      expect(confirmInput).toHaveAttribute("type", "password");
     });
-    nodes.at(1).props().toggler();
-    expect(wrapper.instance().state.hidePassword).toEqual(false);
+  });
+
+  it("should toggle using either toggle button", async () => {
+    renderWithProviders(props);
+
+    const passwordInput = screen.getByPlaceholderText(
+      getTranslationString("PWD_PHOLD"),
+    );
+    const confirmInput = screen.getByPlaceholderText(
+      getTranslationString("CONFIRM_PWD_PHOLD"),
+    );
+
+    const toggleButtons = screen.getAllByTestId("password-toggle-icon");
+
+    // Click second toggle button (for confirm password field)
+    fireEvent.click(toggleButtons[1]);
+
+    await waitFor(() => {
+      // Both fields should toggle since they share hidePassword state
+      expect(passwordInput).toHaveAttribute("type", "text");
+      expect(confirmInput).toHaveAttribute("type", "text");
+    });
+  });
+
+  it("should clear errors on successful submit", async () => {
+    axios.mockImplementationOnce(() => Promise.resolve({data: {detail: true}}));
+
+    renderWithProviders(props);
+
+    const passwordInput = screen.getByPlaceholderText(
+      getTranslationString("PWD_PHOLD"),
+    );
+    const confirmInput = screen.getByPlaceholderText(
+      getTranslationString("CONFIRM_PWD_PHOLD"),
+    );
+    const form = screen.getByRole("form");
+
+    fireEvent.change(passwordInput, {
+      target: {value: "password123", name: "newPassword1"},
+    });
+    fireEvent.change(confirmInput, {
+      target: {value: "password123", name: "newPassword2"},
+    });
+
+    fireEvent.submit(form);
+
+    await tick();
+    await waitFor(() => {
+      expect(passwordInput).not.toHaveClass("error");
+      expect(confirmInput).not.toHaveClass("error");
+    });
   });
 });

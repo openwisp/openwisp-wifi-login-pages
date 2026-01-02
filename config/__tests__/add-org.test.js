@@ -9,6 +9,7 @@ const configDir = path.resolve(__dirname, "../../organizations");
 const testOrgSlug = "testorg";
 const testOrgDir = path.join(configDir, testOrgSlug);
 const testOrgConfig = path.join(testOrgDir, `${testOrgSlug}.yml`);
+const addOrgScript = path.resolve(__dirname, "../add-org.js");
 
 const validData = {
   name: "Test Organization",
@@ -38,8 +39,8 @@ describe("add-org command", () => {
 
   it("creates a new organization config with --noprompt and valid data", () => {
     const result = spawnSync(
-      "yarn",
-      ["add-org", "--noprompt", JSON.stringify(validData)],
+      "node",
+      [addOrgScript, "--noprompt", JSON.stringify(validData)],
       {encoding: "utf-8"},
     );
     expect(result.status).toBe(0);
@@ -53,8 +54,8 @@ describe("add-org command", () => {
     const invalidData = {...validData};
     delete invalidData.name;
     const result = spawnSync(
-      "yarn",
-      ["add-org", "--noprompt", JSON.stringify(invalidData)],
+      "node",
+      [addOrgScript, "--noprompt", JSON.stringify(invalidData)],
       {encoding: "utf-8"},
     );
     expect(result.status).not.toBe(0);
@@ -63,16 +64,16 @@ describe("add-org command", () => {
 
   it("prevents duplicate organization slugs", () => {
     // First creation should succeed
-    let result = spawnSync(
-      "yarn",
-      ["add-org", "--noprompt", JSON.stringify(validData)],
+    const result1 = spawnSync(
+      "node",
+      [addOrgScript, "--noprompt", JSON.stringify(validData)],
       {encoding: "utf-8"},
     );
-    expect(result.status).toBe(0);
+    expect(result1.status).toBe(0);
     // Second creation with same slug should fail
-    result = spawnSync(
-      "yarn",
-      ["add-org", "--noprompt", JSON.stringify(validData)],
+    const result = spawnSync(
+      "node",
+      [addOrgScript, "--noprompt", JSON.stringify(validData)],
       {
         encoding: "utf-8",
       },
@@ -81,16 +82,82 @@ describe("add-org command", () => {
     expect(result.stderr).toMatch(/already exists/);
   });
 
-  it("runs interactively and creates config (smoke test)", () => {
-    // Use expect to spawn and simulate user input if possible
-    // Here, just check that the process starts and prompts for input
-    const proc = spawnSync("yarn", ["add-org"], {
-      input: "\n", // send empty input to first prompt
-      encoding: "utf-8",
-      timeout: 5000,
-    });
-    expect(proc.stdout).toMatch(/What is the name of the organization/);
-    // Should not create config file with empty input
-    expect(fs.existsSync(testOrgConfig)).toBe(false);
+  it("creates config via interactive prompts using expect for TTY", () => {
+    // Use 'expect' command to provide a pseudo-TTY for inquirer
+    // This allows us to actually test the interactive flow
+    // eslint-disable-next-line global-require
+    const {execSync} = require("child_process");
+
+    // Create an expect script that automates the interactive prompts
+    const expectScript = `#!/usr/bin/expect -f
+set timeout 30
+spawn node ${addOrgScript}
+
+expect "name of the organization"
+send "${validData.name}\\r"
+
+expect "slug of the organization"
+send "${validData.slug}\\r"
+
+expect "uuid of the organization"
+send "${validData.uuid}\\r"
+
+expect "Organization RADIUS"
+send "${validData.secret_key}\\r"
+
+expect "REALMs"
+send "n\\r"
+
+expect "SMS verification"
+send "n\\r"
+
+expect "Subscriptions"
+send "n\\r"
+
+expect "login action URL"
+send "${validData.login_action_url}\\r"
+
+expect "logout action URL"
+send "${validData.logout_action_url}\\r"
+
+expect "session ID"
+send "n\\r"
+
+expect "remember me"
+send "y\\r"
+
+expect "URL of OpenWISP"
+send "${validData.openwisp_radius_url}\\r"
+
+expect "copy the default assets"
+send "n\\r"
+
+expect eof
+`;
+
+    // Write expect script to a temp file
+    const expectFile = path.join(configDir, ".test-expect.exp");
+    fs.writeFileSync(expectFile, expectScript);
+    fs.chmodSync(expectFile, "755");
+
+    try {
+      // Run the expect script
+      execSync(`expect ${expectFile}`, {
+        encoding: "utf-8",
+        timeout: 30000,
+        cwd: process.cwd(),
+      });
+
+      // Verify the config was created
+      expect(fs.existsSync(testOrgConfig)).toBe(true);
+      const config = yaml.load(fs.readFileSync(testOrgConfig, "utf8"));
+      expect(config.name).toBe(validData.name);
+      expect(config.slug).toBe(validData.slug);
+    } finally {
+      // Clean up temp expect file
+      if (fs.existsSync(expectFile)) {
+        fs.unlinkSync(expectFile);
+      }
+    }
   });
 });

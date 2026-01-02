@@ -68,6 +68,7 @@ class PasswordToggleIcon extends React.PureComponent {
         role="button"
         tabIndex={0}
         onKeyDown={() => {}}
+        data-testid="password-toggle-icon"
       >
         {icon}
       </div>

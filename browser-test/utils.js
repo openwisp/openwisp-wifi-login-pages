@@ -32,6 +32,7 @@ export const getElementByCss = async (driver, css) => {
   try {
     el = await driver.wait(until.elementLocated(By.css(css)), waitTime);
   } catch (err) {
+    /* eslint-disable-next-line no-console */
     console.log(err, css, await driver.getPageSource());
   }
   return el;
@@ -42,6 +43,7 @@ export const getElementsByCss = async (driver, css) => {
   try {
     el = await driver.wait(until.elementsLocated(By.css(css)), waitTime);
   } catch (err) {
+    /* eslint-disable-next-line no-console */
     console.log(err, css, await driver.getPageSource());
   }
   return el;

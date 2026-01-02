@@ -18,8 +18,10 @@ describe("Translations tests", () => {
   beforeEach(() => {
     consoleError = jest.fn();
     consoleLog = jest.fn();
+    /* eslint-disable no-console */
     console.error = consoleError;
     console.log = consoleLog;
+    /* eslint-enable no-console */
     languages = jest.spyOn(navigator, "languages", "get");
     setLanguage = jest.fn();
   });

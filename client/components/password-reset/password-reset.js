@@ -94,7 +94,11 @@ export default class PasswordReset extends React.Component {
               </div>
             </div>
           ) : (
-            <form className="main-column" onSubmit={this.handleSubmit}>
+            <form
+              className="main-column"
+              onSubmit={this.handleSubmit}
+              aria-label="password reset form"
+            >
               <div className="inner">
                 {passwordReset.additional_text && (
                   <p className="label">{t`PWD_RESET_ADD_TXT`}</p>

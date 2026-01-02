@@ -35,9 +35,11 @@ export default class PasswordChange extends React.Component {
     this.currentPasswordToggleRef = React.createRef();
     this.passwordToggleRef = React.createRef();
     this.confirmPasswordToggleRef = React.createRef();
+    this.componentIsMounted = false;
   }
 
   async componentDidMount() {
+    this.componentIsMounted = true;
     const {setLoading} = this.context;
     const {setTitle, orgName, cookies, setUserData, logout, orgSlug, language} =
       this.props;
@@ -56,6 +58,10 @@ export default class PasswordChange extends React.Component {
     ({userData} = this.props);
     setUserData({...userData, mustLogin, mustLogout, repeatLogin});
     setLoading(false);
+  }
+
+  componentWillUnmount() {
+    this.componentIsMounted = false;
   }
 
   handleSubmit(e) {
@@ -108,13 +114,15 @@ export default class PasswordChange extends React.Component {
         logError(error, errorText);
         toast.error(errorText);
         setLoading(false);
-        this.setState({
-          errors: {
-            ...(data.current_password
-              ? {currentPassword: data.current_password.toString()}
-              : {nonField: t`PWD_CHNG_ERR`}),
-          },
-        });
+        if (this.componentIsMounted) {
+          this.setState({
+            errors: {
+              ...(data.current_password
+                ? {currentPassword: data.current_password.toString()}
+                : {nonField: t`PWD_CHNG_ERR`}),
+            },
+          });
+        }
       });
   }
 
@@ -171,7 +179,11 @@ export default class PasswordChange extends React.Component {
     return (
       <div className="container content" id="password-change">
         <div className="inner">
-          <form className="main-column" onSubmit={this.handleSubmit}>
+          <form
+            className="main-column"
+            onSubmit={this.handleSubmit}
+            aria-label="password change form"
+          >
             <div className="inner">
               <h1>{t`PWD_CHANGE_TITL`}</h1>
               <p>{t`PWD_CHANGE_HELP_TXT`}</p>

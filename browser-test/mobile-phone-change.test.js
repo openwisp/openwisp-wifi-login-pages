@@ -89,7 +89,7 @@ describe("Selenium tests for <MobilePhoneChange />", () => {
     submitBtn = await getElementByCss(driver, "input[type='submit']");
     await driver.wait(until.elementIsVisible(submitBtn));
     submitBtn.click();
-    successToastDiv = await getElementByCss(driver, "div[role=alert]");
+    successToastDiv = await getElementByCss(driver, successToastSelector);
     await driver.wait(until.elementIsVisible(successToastDiv));
     expect(await successToastDiv.getText()).toEqual(
       "SMS verification code sent successfully.",

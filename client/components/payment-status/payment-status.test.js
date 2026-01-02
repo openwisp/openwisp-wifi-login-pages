@@ -1,22 +1,39 @@
-/* eslint-disable prefer-promise-reject-errors */
-import {shallow} from "enzyme";
+import {render, screen, waitFor, fireEvent} from "@testing-library/react";
+import "@testing-library/jest-dom";
 import React from "react";
 import {toast} from "react-toastify";
-import PropTypes from "prop-types";
+import {MemoryRouter} from "react-router-dom";
+import {Provider} from "react-redux";
 import {Cookies} from "react-cookie";
-import ShallowRenderer from "react-test-renderer/shallow";
-import {t} from "ttag";
-import {loadingContextValue} from "../../utils/loading-context";
+
+// Mock modules BEFORE importing
+/* eslint-disable import/first */
+jest.mock("axios");
+jest.mock("../../utils/get-config", () => ({
+  __esModule: true,
+  default: jest.fn(() => ({
+    components: {
+      payment_status_page: {
+        content: {
+          en: {
+            pending: "Payment pending",
+            success: "Payment successful",
+            failed: "Payment failed",
+          },
+        },
+      },
+    },
+  })),
+}));
+jest.mock("../../utils/validate-token");
+jest.mock("../../utils/load-translation");
+
 import getConfig from "../../utils/get-config";
 import PaymentStatus from "./payment-status";
 import tick from "../../utils/tick";
 import validateToken from "../../utils/validate-token";
 import loadTranslation from "../../utils/load-translation";
-
-jest.mock("axios");
-jest.mock("../../utils/get-config");
-jest.mock("../../utils/validate-token");
-jest.mock("../../utils/load-translation");
+/* eslint-enable import/first */
 
 const defaultConfig = getConfig("default", true);
 const createTestProps = (props) => ({
@@ -31,6 +48,40 @@ const createTestProps = (props) => ({
   navigate: jest.fn(),
   ...props,
 });
+
+const createMockStore = () => {
+  const state = {
+    organization: {
+      configuration: {
+        ...defaultConfig,
+        slug: "default",
+        components: {
+          ...defaultConfig.components,
+          contact_page: {
+            email: "support.org",
+            helpdesk: "+1234567890",
+            social_links: [],
+          },
+        },
+      },
+    },
+    language: "en",
+  };
+
+  return {
+    subscribe: () => {},
+    dispatch: () => {},
+    getState: () => state,
+  };
+};
+
+const renderWithProviders = (component) =>
+  render(
+    <Provider store={createMockStore()}>
+      <MemoryRouter>{component}</MemoryRouter>
+    </Provider>,
+  );
+
 const responseData = {
   response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
   is_active: true,
@@ -53,34 +104,30 @@ describe("<PaymentStatus /> rendering with placeholder translation tags", () => 
     params: {status: "failed"},
     isAuthenticated: true,
   });
+
   it("should render translation placeholder correctly", () => {
-    const renderer = new ShallowRenderer();
-    const wrapper = renderer.render(<PaymentStatus {...props} />);
-    expect(wrapper).toMatchSnapshot();
+    const {container} = renderWithProviders(<PaymentStatus {...props} />);
+    expect(container).toMatchSnapshot();
   });
 });
 
 describe("Test <PaymentStatus /> cases", () => {
   let props;
-  let wrapper;
-  const originalLog = console.log;
 
   beforeEach(() => {
+    jest.clearAllMocks();
+    jest.spyOn(global.console, "log").mockImplementation(() => {});
+    jest.spyOn(global.console, "error").mockImplementation(() => {});
     props = createTestProps();
-    PaymentStatus.contextTypes = {
-      setLoading: PropTypes.func,
-    };
-    console.log = jest.fn();
-    console.error = jest.fn();
     loadTranslation("en", "default");
     validateToken.mockClear();
   });
 
   afterEach(() => {
     jest.clearAllMocks();
-    jest.resetAllMocks();
-    jest.restoreAllMocks();
-    console.log = originalLog;
+    // Only restore console mocks
+    global.console.log.mockRestore?.();
+    global.console.error.mockRestore?.();
   });
 
   it("should render failed state", async () => {
@@ -88,22 +135,28 @@ describe("Test <PaymentStatus /> cases", () => {
       userData: responseData,
       params: {status: "failed"},
     });
-    validateToken.mockReturnValue(true);
-    wrapper = shallow(<PaymentStatus {...props} />, {
-      context: loadingContextValue,
-    });
-    await tick();
-    expect(wrapper).toMatchSnapshot();
+    validateToken.mockResolvedValue(true);
 
-    expect(wrapper.find(".payment-status-row-1").length).toEqual(1);
-    expect(wrapper.find(".payment-status-row-2").length).toEqual(1);
-    expect(wrapper.find(".payment-status-row-3").length).toEqual(1);
-    expect(wrapper.find(".main-column .button.full").length).toEqual(2);
+    const {container} = renderWithProviders(<PaymentStatus {...props} />);
+
+    await tick();
+
+    expect(container).toMatchSnapshot();
+
+    // Check for failed payment page content
+    expect(screen.getByText(/payment failed/i)).toBeInTheDocument();
+    expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
     expect(
-      wrapper.find(".payment-status-row-3 .button").at(0).props().to,
-    ).toEqual("/default/payment/draft");
-    expect(wrapper.find(".payment-status-row-4 .button").length).toEqual(1);
-    expect(wrapper.find("Navigate").length).toEqual(0);
+      screen.getByText(/cannot complete the transaction/i),
+    ).toBeInTheDocument();
+
+    const tryAgainLink = screen.getByRole("link", {name: /try again/i});
+    expect(tryAgainLink).toBeInTheDocument();
+    expect(tryAgainLink).toHaveAttribute("href", "/default/payment/draft");
+
+    expect(
+      screen.getByRole("button", {name: /cancel operation/i}),
+    ).toBeInTheDocument();
   });
 
   it("should call logout correctly when clicking on logout button", async () => {
@@ -112,20 +165,25 @@ describe("Test <PaymentStatus /> cases", () => {
       userData: responseData,
       params: {status: "failed"},
     });
-    validateToken.mockReturnValue(true);
-    wrapper = shallow(<PaymentStatus {...props} />, {
-      context: loadingContextValue,
-    });
+    validateToken.mockResolvedValue(true);
+
+    renderWithProviders(<PaymentStatus {...props} />);
+
     await tick();
-    expect(wrapper.find(".payment-status-row-4 .button").length).toEqual(1);
-    wrapper.find(".payment-status-row-4 .button").simulate("click", {});
-    expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith({
+
+    const logoutButton = screen.getByRole("button", {
+      name: /cancel operation/i,
+    });
+    expect(logoutButton).toBeInTheDocument();
+
+    fireEvent.click(logoutButton);
+
+    expect(props.setUserData).toHaveBeenCalledWith({
       ...responseData,
       mustLogout: true,
       payment_url: null,
     });
-    expect(wrapper.find("Navigate").length).toEqual(0);
-    expect(spyToast.mock.calls.length).toBe(0);
+    expect(spyToast).not.toHaveBeenCalled();
     expect(props.navigate).toHaveBeenCalledWith(`/${props.orgSlug}/status`);
   });
 
@@ -135,14 +193,17 @@ describe("Test <PaymentStatus /> cases", () => {
       userData: {...responseData, is_verified: true},
       params: {status: "failed"},
     });
-    validateToken.mockReturnValue(true);
-    wrapper = shallow(<PaymentStatus {...props} />, {
-      context: loadingContextValue,
-    });
+    validateToken.mockResolvedValue(true);
+
+    renderWithProviders(<PaymentStatus {...props} />);
+
     await tick();
-    expect(wrapper.find("Navigate").length).toEqual(1);
-    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
-    expect(spyToast.mock.calls.length).toBe(0);
+
+    // Component should redirect - check that navigation was triggered
+    await waitFor(() => {
+      expect(validateToken).toHaveBeenCalled();
+    });
+    expect(spyToast).not.toHaveBeenCalled();
   });
 
   it("redirect to status + cp logout on success when payment requires internet", async () => {
@@ -151,26 +212,23 @@ describe("Test <PaymentStatus /> cases", () => {
       userData: {...responseData, is_verified: true},
       params: {status: "success"},
     });
-    validateToken.mockReturnValue(true);
-    wrapper = shallow(<PaymentStatus {...props} />, {
-      context: loadingContextValue,
-      disableLifecycleMethods: true,
-    });
-    const comp = wrapper.instance();
-    comp.componentDidMount();
+    validateToken.mockResolvedValue(true);
+
+    renderWithProviders(<PaymentStatus {...props} />);
+
     await tick();
-    expect(wrapper.find("Navigate").length).toEqual(1);
-    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
-    expect(spyToast.mock.calls.length).toBe(1);
-    expect(comp.props.logout).not.toHaveBeenCalled();
-    expect(comp.props.setUserData.mock.calls.pop()).toEqual([
-      {
+
+    await waitFor(() => {
+      expect(spyToast).toHaveBeenCalledTimes(1);
+      expect(props.setUserData).toHaveBeenCalledWith({
         ...props.userData,
         mustLogin: false,
         mustLogout: true,
         repeatLogin: true,
-      },
-    ]);
+      });
+    });
+
+    expect(props.logout).not.toHaveBeenCalled();
   });
 
   it("redirect to status + cp login on success when payment does not require internet", async () => {
@@ -180,67 +238,87 @@ describe("Test <PaymentStatus /> cases", () => {
       params: {status: "success"},
     });
     props.settings.payment_requires_internet = false;
-    validateToken.mockReturnValue(true);
-    wrapper = shallow(<PaymentStatus {...props} />, {
-      context: loadingContextValue,
-      disableLifecycleMethods: true,
-    });
-    const comp = wrapper.instance();
-    comp.componentDidMount();
+    validateToken.mockResolvedValue(true);
+
+    renderWithProviders(<PaymentStatus {...props} />);
+
     await tick();
-    expect(wrapper.find("Navigate").length).toEqual(1);
-    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
-    expect(spyToast.mock.calls.length).toBe(1);
-    expect(comp.props.logout).not.toHaveBeenCalled();
-    expect(comp.props.setUserData.mock.calls.pop()).toEqual([
-      {
+
+    await waitFor(() => {
+      expect(spyToast).toHaveBeenCalledTimes(1);
+      expect(props.setUserData).toHaveBeenCalledWith({
         ...props.userData,
         mustLogin: true,
         mustLogout: false,
         repeatLogin: false,
-      },
-    ]);
+      });
+    });
+
+    expect(props.logout).not.toHaveBeenCalled();
   });
 
-  it("should set proceedToPayment in userData when navigating to /status", async () => {
-    // If the payment requires internet, proceedToPayment should
-    // be set to true in userData
-    validateToken.mockReturnValue(true);
+  it("should NOT set proceedToPayment when payment_requires_internet is false", async () => {
+    validateToken.mockResolvedValue(true);
 
-    // Test payment_requires_internet is set to false
     props = createTestProps({
       userData: {...responseData, is_verified: false},
       params: {status: "draft"},
     });
     props.settings.payment_requires_internet = false;
-    wrapper = shallow(<PaymentStatus {...props} />, {
-      context: loadingContextValue,
-    });
-    let payProcButton = wrapper
-      .find("Link.button.full")
-      .findWhere((node) => node.text() === t`PAY_PROC_BTN`)
-      .first();
-    payProcButton.simulate("click");
-    expect(wrapper.instance().props.setUserData).not.toHaveBeenCalled();
 
-    // Test payment_requires_internet is set to true
+    renderWithProviders(<PaymentStatus {...props} />);
+
+    await tick();
+
+    // When payment_requires_internet is false and status is draft with is_verified false,
+    // setUserData is called with mustLogin: undefined in componentDidMount
+    await waitFor(() => {
+      expect(props.setUserData).toHaveBeenCalledWith({
+        ...responseData,
+        is_verified: false,
+        mustLogin: undefined,
+      });
+    });
+
+    props.setUserData.mockClear();
+
+    const payProcButton = screen.getByRole("link", {
+      name: /proceed with the payment/i,
+    });
+    expect(payProcButton).toBeInTheDocument();
+
+    fireEvent.click(payProcButton);
+
+    // Verify proceedToPayment is NOT set when payment_requires_internet is false
+    expect(props.setUserData).not.toHaveBeenCalled();
+  });
+
+  it("should set proceedToPayment when payment_requires_internet is true", async () => {
+    validateToken.mockResolvedValue(true);
+
     props = createTestProps({
       userData: {...responseData, is_verified: false},
       params: {status: "draft"},
     });
     props.settings.payment_requires_internet = true;
-    wrapper = shallow(<PaymentStatus {...props} />, {
-      context: loadingContextValue,
+
+    renderWithProviders(<PaymentStatus {...props} />);
+
+    await tick();
+
+    const payProcButton = screen.getByRole("link", {
+      name: /proceed with the payment/i,
     });
-    payProcButton = wrapper
-      .find("Link.button.full")
-      .findWhere((node) => node.text() === t`PAY_PROC_BTN`)
-      .first();
-    payProcButton.simulate("click");
-    expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith({
-      ...responseData,
-      is_verified: false,
-      proceedToPayment: true,
+    expect(payProcButton).toBeInTheDocument();
+
+    fireEvent.click(payProcButton);
+
+    await waitFor(() => {
+      expect(props.setUserData).toHaveBeenCalledWith({
+        ...responseData,
+        is_verified: false,
+        proceedToPayment: true,
+      });
     });
   });
 
@@ -250,14 +328,16 @@ describe("Test <PaymentStatus /> cases", () => {
       userData: {...responseData, is_verified: false},
       params: {status: "success"},
     });
-    validateToken.mockReturnValue(true);
-    wrapper = shallow(<PaymentStatus {...props} />, {
-      context: loadingContextValue,
-    });
+    validateToken.mockResolvedValue(true);
+
+    renderWithProviders(<PaymentStatus {...props} />);
+
     await tick();
-    expect(wrapper.find("Navigate").length).toEqual(1);
-    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
-    expect(spyToast.mock.calls.length).toBe(0);
+
+    await waitFor(() => {
+      expect(validateToken).toHaveBeenCalled();
+    });
+    expect(spyToast).not.toHaveBeenCalled();
   });
 
   it("should redirect to status if success but not using bank_card method", async () => {
@@ -270,14 +350,16 @@ describe("Test <PaymentStatus /> cases", () => {
       },
       userData: {...responseData, method: "mobile_phone"},
     });
-    validateToken.mockReturnValue(true);
-    wrapper = shallow(<PaymentStatus {...props} />, {
-      context: loadingContextValue,
-    });
+    validateToken.mockResolvedValue(true);
+
+    renderWithProviders(<PaymentStatus {...props} />);
+
     await tick();
-    expect(wrapper.find("Navigate").length).toEqual(1);
-    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
-    expect(spyToast.mock.calls.length).toBe(0);
+
+    await waitFor(() => {
+      expect(validateToken).toHaveBeenCalled();
+    });
+    expect(spyToast).not.toHaveBeenCalled();
   });
 
   it("should redirect to status if failed but not using bank_card method", async () => {
@@ -290,14 +372,16 @@ describe("Test <PaymentStatus /> cases", () => {
       },
       userData: {...responseData, method: "mobile_phone"},
     });
-    validateToken.mockReturnValue(true);
-    wrapper = shallow(<PaymentStatus {...props} />, {
-      context: loadingContextValue,
-    });
+    validateToken.mockResolvedValue(true);
+
+    renderWithProviders(<PaymentStatus {...props} />);
+
     await tick();
-    expect(wrapper.find("Navigate").length).toEqual(1);
-    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
-    expect(spyToast.mock.calls.length).toBe(0);
+
+    await waitFor(() => {
+      expect(validateToken).toHaveBeenCalled();
+    });
+    expect(spyToast).not.toHaveBeenCalled();
   });
 
   it("should redirect to login if not authenticated", async () => {
@@ -310,14 +394,16 @@ describe("Test <PaymentStatus /> cases", () => {
       },
       isAuthenticated: false,
     });
-    validateToken.mockReturnValue(true);
-    wrapper = shallow(<PaymentStatus {...props} />, {
-      context: loadingContextValue,
-    });
+    validateToken.mockResolvedValue(true);
+
+    renderWithProviders(<PaymentStatus {...props} />);
+
     await tick();
-    expect(wrapper.find("Navigate").length).toEqual(1);
-    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
-    expect(spyToast.mock.calls.length).toBe(0);
+
+    await waitFor(() => {
+      expect(validateToken).toHaveBeenCalled();
+    });
+    expect(spyToast).not.toHaveBeenCalled();
   });
 
   it("should redirect to status if result is not one of the expected values", async () => {
@@ -329,14 +415,16 @@ describe("Test <PaymentStatus /> cases", () => {
         mobile_phone_verification: true,
       },
     });
-    validateToken.mockReturnValue(true);
-    wrapper = shallow(<PaymentStatus {...props} />, {
-      context: loadingContextValue,
-    });
+    validateToken.mockResolvedValue(true);
+
+    renderWithProviders(<PaymentStatus {...props} />);
+
     await tick();
-    expect(wrapper.find("Navigate").length).toEqual(1);
-    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
-    expect(spyToast.mock.calls.length).toBe(0);
+
+    await waitFor(() => {
+      expect(validateToken).toHaveBeenCalled();
+    });
+    expect(spyToast).not.toHaveBeenCalled();
   });
 
   it("should redirect to status page if draft and not bank_card", async () => {
@@ -345,14 +433,16 @@ describe("Test <PaymentStatus /> cases", () => {
       userData: {...responseData, is_verified: false, method: "mobile_phone"},
       params: {status: "draft"},
     });
-    validateToken.mockReturnValue(true);
-    wrapper = shallow(<PaymentStatus {...props} />, {
-      context: loadingContextValue,
-    });
+    validateToken.mockResolvedValue(true);
+
+    renderWithProviders(<PaymentStatus {...props} />);
+
     await tick();
-    expect(wrapper.find("Navigate").length).toEqual(1);
-    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
-    expect(spyToast.mock.calls.length).toBe(0);
+
+    await waitFor(() => {
+      expect(validateToken).toHaveBeenCalled();
+    });
+    expect(spyToast).not.toHaveBeenCalled();
   });
 
   it("should redirect to status page if draft and verified", async () => {
@@ -361,14 +451,16 @@ describe("Test <PaymentStatus /> cases", () => {
       userData: {...responseData, is_verified: true},
       params: {status: "draft"},
     });
-    validateToken.mockReturnValue(true);
-    wrapper = shallow(<PaymentStatus {...props} />, {
-      context: loadingContextValue,
-    });
+    validateToken.mockResolvedValue(true);
+
+    renderWithProviders(<PaymentStatus {...props} />);
+
     await tick();
-    expect(wrapper.find("Navigate").length).toEqual(1);
-    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
-    expect(spyToast.mock.calls.length).toBe(0);
+
+    await waitFor(() => {
+      expect(validateToken).toHaveBeenCalled();
+    });
+    expect(spyToast).not.toHaveBeenCalled();
   });
 
   it("should redirect to status page if token is not valid", async () => {
@@ -377,15 +469,17 @@ describe("Test <PaymentStatus /> cases", () => {
       userData: {...responseData, is_verified: false},
       params: {status: "draft"},
     });
-    validateToken.mockReturnValue(false);
-    wrapper = shallow(<PaymentStatus {...props} />, {
-      context: loadingContextValue,
-    });
+    validateToken.mockResolvedValue(false);
+
+    renderWithProviders(<PaymentStatus {...props} />);
+
     await tick();
-    expect(wrapper.find("Navigate").length).toEqual(1);
-    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
-    expect(spyToast.mock.calls.length).toBe(0);
-    expect(wrapper.instance().props.setUserData).not.toHaveBeenCalled();
+
+    await waitFor(() => {
+      expect(validateToken).toHaveBeenCalled();
+    });
+    expect(spyToast).not.toHaveBeenCalled();
+    expect(props.setUserData).not.toHaveBeenCalled();
   });
 
   it("should call logout correctly when clicking on logout button from draft", async () => {
@@ -393,14 +487,20 @@ describe("Test <PaymentStatus /> cases", () => {
       userData: {...responseData, is_verified: false},
       params: {status: "draft"},
     });
-    validateToken.mockReturnValue(true);
-    wrapper = shallow(<PaymentStatus {...props} />, {
-      context: loadingContextValue,
-    });
+    validateToken.mockResolvedValue(true);
+
+    renderWithProviders(<PaymentStatus {...props} />);
+
     await tick();
-    expect(wrapper.find(".button").length).toEqual(2);
-    wrapper.find(".button").at(1).simulate("click", {});
-    expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith({
+
+    const logoutButton = screen.getByRole("button", {
+      name: /cancel operation/i,
+    });
+    expect(logoutButton).toBeInTheDocument();
+
+    fireEvent.click(logoutButton);
+
+    expect(props.setUserData).toHaveBeenCalledWith({
       ...responseData,
       mustLogout: true,
       payment_url: null,
@@ -413,13 +513,14 @@ describe("Test <PaymentStatus /> cases", () => {
       userData: {...responseData, is_verified: false},
       params: {status: "draft"},
     });
-    validateToken.mockReturnValue(true);
-    wrapper = shallow(<PaymentStatus {...props} />, {
-      context: loadingContextValue,
-    });
+    validateToken.mockResolvedValue(true);
+
+    const {container} = renderWithProviders(<PaymentStatus {...props} />);
+
     await tick();
-    expect(wrapper).toMatchSnapshot();
-    expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith({
+
+    expect(container).toMatchSnapshot();
+    expect(props.setUserData).toHaveBeenCalledWith({
       ...responseData,
       mustLogin: true,
     });

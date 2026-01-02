@@ -1,13 +1,12 @@
 /* eslint-disable import/no-import-module-exports */
 import "./index.css";
-
+import {createRoot} from "react-dom/client";
 import {Provider, connect} from "react-redux";
-
+import {HelmetProvider} from "react-helmet-async";
 import {CookiesProvider} from "react-cookie";
 import PropTypes from "prop-types";
 import React from "react";
 import {Route, BrowserRouter as Router, Routes} from "react-router-dom";
-import {render} from "react-dom";
 import {ToastContainer} from "react-toastify";
 import OrganizationRoutes from "./routes";
 import organizations from "./organizations.json";
@@ -25,7 +24,7 @@ class BaseApp extends React.Component {
 
   render() {
     return (
-      <Router history={history}>
+      <Router>
         <ToastContainer className={isOldBrowser() ? "oldbrowser" : null} />
         <Routes>
           <Route path="*" element={<OrganizationRoutes />} />
@@ -48,13 +47,17 @@ const mapDispatchToProps = (dispatch) => ({
 const App = connect(null, mapDispatchToProps)(BaseApp);
 
 export default function app() {
-  render(
-    <CookiesProvider>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </CookiesProvider>,
-    document.getElementById("root"),
+  const container = document.getElementById("root");
+  const root = createRoot(container);
+
+  root.render(
+    <HelmetProvider>
+      <CookiesProvider>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </CookiesProvider>
+    </HelmetProvider>,
   );
 }
 
