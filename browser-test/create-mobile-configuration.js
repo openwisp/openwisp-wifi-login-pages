@@ -60,5 +60,6 @@ try {
   fs.writeFileSync(configPath, yaml.dump(content));
   fs.writeFileSync(path.join(jsDir, data.allOrgScript), "");
 } catch (err) {
+  /* eslint-disable-next-line no-console */
   console.log(err);
 }

@@ -35,9 +35,11 @@ class MobilePhoneChange extends React.Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.componentIsMounted = false;
   }
 
   async componentDidMount() {
+    this.componentIsMounted = true;
     const {setLoading} = this.context;
     const {cookies, orgSlug, setUserData, logout, setTitle, orgName, language} =
       this.props;
@@ -52,12 +54,16 @@ class MobilePhoneChange extends React.Component {
       logout,
       language,
     );
-    if (isValid) {
+    if (isValid && this.componentIsMounted) {
       ({userData} = this.props);
       const {phone_number} = userData;
       this.setState({phone_number});
     }
     setLoading(false);
+  }
+
+  componentWillUnmount() {
+    this.componentIsMounted = false;
   }
 
   handleSubmit(event) {
@@ -86,7 +92,7 @@ class MobilePhoneChange extends React.Component {
         });
         setUserData({...userData, is_verified: false, phone_number});
         setLoading(false);
-        toast.info(t`TOKEN_SENT`);
+        toast.success(t`TOKEN_SENT`);
         navigate(`/${orgSlug}/mobile-phone-verification`);
       })
       .catch((error) => {
@@ -130,6 +136,7 @@ class MobilePhoneChange extends React.Component {
             className="main-column"
             id="mobile-phone-change-form"
             onSubmit={this.handleSubmit}
+            aria-label="mobile phone change form"
           >
             <div className="inner">
               {getError(errors)}

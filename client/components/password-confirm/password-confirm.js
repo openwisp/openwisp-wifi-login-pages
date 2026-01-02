@@ -130,7 +130,11 @@ export default class PasswordConfirm extends React.Component {
               </div>
             </div>
           ) : (
-            <form className="main-column" onSubmit={this.handleSubmit}>
+            <form
+              className="main-column"
+              onSubmit={this.handleSubmit}
+              aria-label="password confirm form"
+            >
               <div className="inner">
                 <h1>{t`PWD_CONFIRM_H`}</h1>
 

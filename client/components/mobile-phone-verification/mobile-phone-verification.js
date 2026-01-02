@@ -42,9 +42,11 @@ export default class MobilePhoneVerification extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.resendPhoneToken = this.resendPhoneToken.bind(this);
+    this.componentIsMounted = false;
   }
 
   async componentDidMount() {
+    this.componentIsMounted = true;
     const {
       cookies,
       orgSlug,
@@ -67,7 +69,7 @@ export default class MobilePhoneVerification extends React.Component {
       logout,
       language,
     );
-    if (isValid) {
+    if (isValid && this.componentIsMounted) {
       ({userData} = this.props);
       const {phone_number, is_verified} = userData;
       this.setState({phone_number});
@@ -79,6 +81,10 @@ export default class MobilePhoneVerification extends React.Component {
       }
     }
     setLoading(false);
+  }
+
+  componentWillUnmount() {
+    this.componentIsMounted = false;
   }
 
   handleChange(event) {

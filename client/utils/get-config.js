@@ -5,6 +5,7 @@ const getConfig = async (slug) => {
   try {
     config = await loadConfig(slug);
   } catch (err) {
+    /* eslint-disable-next-line no-console */
     console.error(`Configuration for organization ${slug} does not exists.`);
     config = undefined;
   }

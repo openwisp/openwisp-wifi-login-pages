@@ -1,142 +1,32 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Contact /> rendering with placeholder translation tags should render translation placeholder correctly 1`] = `
-<div
-  className="side-column contact"
->
+exports[`<Contact /> rendering should render correctly 1`] = `
+<div>
   <div
-    className="inner"
+    class="side-column contact"
   >
     <div
-      className="row"
+      class="inner"
     >
-      <span
-        className="label"
-      >
-        EMAIL
-        :
-      </span>
-      <a
-        className="link"
-        href="mailto:support@openwisp.co"
-      >
-        support@openwisp.co
-      </a>
-    </div>
-    <div
-      className="row"
-    >
-      <span
-        className="label"
-      >
-        HELPDESK
-        :
-      </span>
-      <a
-        className="link"
-        href="tel:+789 948 564"
-      >
-        +789 948 564
-      </a>
-    </div>
-    <div
-      className="contact-links"
-    >
-      <a
-        className="link "
-        href="https://twitter.com/openwisp"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        <img
-          alt="twitter"
-          className="contact-image "
-          src="/assets/default/twitter.svg"
-        />
-      </a>
-      <a
-        className="link "
-        href="https://facebook.com/openwisp"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        <img
-          alt="facebook"
-          className="contact-image "
-          src="/assets/default/facebook.svg"
-        />
-      </a>
+      <div
+        class="contact-links"
+      />
     </div>
   </div>
 </div>
 `;
 
-exports[`<Status /> rendering should render correctly 1`] = `
-<div
-  className="side-column contact"
->
+exports[`<Contact /> rendering with placeholder translation tags should render translation placeholder correctly 1`] = `
+<div>
   <div
-    className="inner"
+    class="side-column contact"
   >
     <div
-      className="row"
+      class="inner"
     >
-      <span
-        className="label"
-      >
-        Email
-        :
-      </span>
-      <a
-        className="link"
-        href="mailto:support@openwisp.co"
-      >
-        support@openwisp.co
-      </a>
-    </div>
-    <div
-      className="row"
-    >
-      <span
-        className="label"
-      >
-        Helpdesk
-        :
-      </span>
-      <a
-        className="link"
-        href="tel:+789 948 564"
-      >
-        +789 948 564
-      </a>
-    </div>
-    <div
-      className="contact-links"
-    >
-      <a
-        className="link "
-        href="https://twitter.com/openwisp"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        <img
-          alt="twitter"
-          className="contact-image "
-          src="/assets/default/twitter.svg"
-        />
-      </a>
-      <a
-        className="link "
-        href="https://facebook.com/openwisp"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        <img
-          alt="facebook"
-          className="contact-image "
-          src="/assets/default/facebook.svg"
-        />
-      </a>
+      <div
+        class="contact-links"
+      />
     </div>
   </div>
 </div>

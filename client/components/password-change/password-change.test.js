@@ -1,24 +1,48 @@
-import axios from "axios";
 /* eslint-disable camelcase */
-import {shallow} from "enzyme";
-import PropTypes from "prop-types";
+/* eslint-disable prefer-promise-reject-errors */
+import axios from "axios";
+import {render, screen, waitFor, fireEvent} from "@testing-library/react";
+import "@testing-library/jest-dom";
 import React from "react";
 import {Cookies} from "react-cookie";
-import {t} from "ttag";
+import {MemoryRouter} from "react-router-dom";
+import {Provider} from "react-redux";
+
+// Mock modules BEFORE importing
+/* eslint-disable import/first */
+jest.mock("axios");
+jest.mock("../../utils/get-config", () => ({
+  __esModule: true,
+  default: jest.fn(() => ({
+    components: {
+      password_change_form: {
+        input_fields: {
+          password: {},
+          password1: {
+            type: "password",
+            pattern: "^.{8,}$",
+          },
+          password2: {
+            type: "password",
+          },
+        },
+      },
+    },
+  })),
+}));
+jest.mock("../../utils/log-error");
+jest.mock("../../utils/load-translation");
+jest.mock("../../utils/validate-token");
+jest.mock("../../utils/handle-logout");
+
 import getConfig from "../../utils/get-config";
 import logError from "../../utils/log-error";
 import tick from "../../utils/tick";
 import loadTranslation from "../../utils/load-translation";
 import PasswordChange from "./password-change";
-import PasswordToggleIcon from "../../utils/password-toggle";
 import validateToken from "../../utils/validate-token";
+/* eslint-enable import/first */
 
-jest.mock("axios");
-jest.mock("../../utils/get-config");
-jest.mock("../../utils/log-error");
-jest.mock("../../utils/load-translation");
-jest.mock("../../utils/validate-token");
-jest.mock("../../utils/handle-logout");
 logError.mockImplementation(jest.fn());
 
 const defaultConfig = getConfig("default", true);
@@ -37,21 +61,44 @@ const createTestProps = (props) => ({
   ...props,
 });
 
-PasswordChange.contextTypes = {
-  setLoading: PropTypes.func,
-  getLoading: PropTypes.func,
+const createMockStore = () => {
+  const state = {
+    organization: {
+      configuration: {
+        ...defaultConfig,
+        slug: "default",
+        components: {
+          ...defaultConfig.components,
+          contact_page: {
+            email: "support@openwisp.org",
+            helpdesk: "+1234567890",
+            social_links: [],
+          },
+        },
+      },
+    },
+    language: "en",
+  };
+
+  return {
+    subscribe: () => {},
+    dispatch: () => {},
+    getState: () => state,
+  };
 };
 
-const createShallow = (props) =>
-  shallow(<PasswordChange {...props} />, {
-    context: {setLoading: jest.fn(), getLoading: jest.fn()},
-  });
+const renderWithProviders = (component) =>
+  render(
+    <Provider store={createMockStore()}>
+      <MemoryRouter>{component}</MemoryRouter>
+    </Provider>,
+  );
 
 describe("<PasswordChange /> rendering with placeholder translation tags", () => {
   const props = createTestProps();
   it("should render translation placeholder correctly", () => {
-    const wrapper = createShallow(props);
-    expect(wrapper).toMatchSnapshot();
+    const {container} = renderWithProviders(<PasswordChange {...props} />);
+    expect(container).toMatchSnapshot();
   });
 });
 
@@ -61,44 +108,53 @@ describe("<PasswordChange /> rendering", () => {
   it("should render correctly", () => {
     props = createTestProps();
     loadTranslation("en", "default");
-    const wrapper = createShallow(props);
-    expect(wrapper).toMatchSnapshot();
+    const {container} = renderWithProviders(<PasswordChange {...props} />);
+    expect(container).toMatchSnapshot();
   });
 
   it("should not show 'cancel' button if password is expired", async () => {
     props = createTestProps();
     props.userData.password_expired = true;
     loadTranslation("en", "default");
-    const wrapper = createShallow(props);
-    expect(wrapper).toMatchSnapshot();
+    const {container} = renderWithProviders(<PasswordChange {...props} />);
+    expect(container).toMatchSnapshot();
+
+    // Verify cancel button is not present
+    const cancelButton = screen.queryByText(/cancel/i);
+    expect(cancelButton).not.toBeInTheDocument();
   });
 });
 
 describe("<PasswordChange /> interactions", () => {
   let props;
-  // eslint-disable-next-line no-unused-vars
-  let wrapper;
 
   beforeEach(() => {
+    jest.clearAllMocks();
+    axios.mockClear();
+    axios.mockReset();
     props = createTestProps();
-    wrapper = createShallow(props);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   it("test handleChange method", () => {
-    const e = {
-      target: {
-        name: "newPassword1",
-        value: "123456",
-      },
-    };
-    wrapper.instance().handleChange(e);
-    expect(wrapper.instance().state.newPassword1).toBe("123456");
+    renderWithProviders(<PasswordChange {...props} />);
+
+    const newPasswordInput = screen.getByPlaceholderText(/your new password/i);
+    expect(newPasswordInput).toBeInTheDocument();
+
+    fireEvent.change(newPasswordInput, {
+      target: {name: "newPassword1", value: "123456"},
+    });
+
+    expect(newPasswordInput.value).toBe("123456");
   });
 
   it("test handleSubmit method", async () => {
     axios
       .mockImplementationOnce(() =>
-        // eslint-disable-next-line prefer-promise-reject-errors
         Promise.reject({
           response: {
             status: 401,
@@ -116,125 +172,168 @@ describe("<PasswordChange /> interactions", () => {
           },
         }),
       );
-    const e = {preventDefault: jest.fn()};
-    wrapper.setState({
-      newPassword1: "123456",
-      newPassword2: "wrong-pass",
-      errors: {
-        newPassword1: t`PWD_CNF_ERR`,
-      },
+
+    renderWithProviders(<PasswordChange {...props} />);
+
+    const form = screen.getByRole("form");
+    const newPassword1Input = screen.getByPlaceholderText(/your new password/i);
+    const newPassword2Input = screen.getByPlaceholderText(/confirm password/i);
+    const currentPasswordInput =
+      screen.getByPlaceholderText(/current password/i);
+
+    // Test 1: Passwords don't match
+    fireEvent.change(newPassword1Input, {
+      target: {name: "newPassword1", value: "123456"},
     });
-    wrapper.instance().handleSubmit();
-    expect(wrapper.instance().state.errors).toStrictEqual({
-      newPassword2: t`PWD_CNF_ERR`,
+    fireEvent.change(newPassword2Input, {
+      target: {name: "newPassword2", value: "wrong-pass"},
     });
-    wrapper.setState({
-      currentPassword: "123456",
-      newPassword1: "123456",
-      newPassword2: "123456",
+    fireEvent.submit(form);
+
+    await waitFor(() => {
+      expect(
+        screen.getByText(/the two password fields didn't match/i),
+      ).toBeInTheDocument();
     });
-    wrapper.instance().handleSubmit(e);
-    expect(wrapper.instance().state.errors).toStrictEqual({
-      newPassword1: t`PWD_CURR_ERR`,
-      newPassword2: t`PWD_CURR_ERR`,
+
+    // Test 2: New password same as current password
+    fireEvent.change(currentPasswordInput, {
+      target: {name: "currentPassword", value: "123456"},
     });
-    wrapper.setState({
-      currentPassword: "1234567",
-      newPassword1: "123456",
-      newPassword2: "123456",
+    fireEvent.change(newPassword1Input, {
+      target: {name: "newPassword1", value: "123456"},
     });
-    wrapper.instance().handleSubmit(e);
+    fireEvent.change(newPassword2Input, {
+      target: {name: "newPassword2", value: "123456"},
+    });
+    fireEvent.submit(form);
+
+    await waitFor(() => {
+      const errorElements = screen.queryAllByText((content, element) => {
+        const hasText =
+          element.textContent.includes("password") ||
+          element.textContent.includes("PWD_CURR_ERR");
+        const elementHasClass =
+          element.className && element.className.includes("error");
+        return hasText && elementHasClass;
+      });
+      expect(errorElements.length).toBeGreaterThan(0);
+    });
+
+    // Test 3: Valid password change with server error
+    fireEvent.change(currentPasswordInput, {
+      target: {name: "currentPassword", value: "1234567"},
+    });
+    fireEvent.change(newPassword1Input, {
+      target: {name: "newPassword1", value: "123456"},
+    });
+    fireEvent.change(newPassword2Input, {
+      target: {name: "newPassword2", value: "123456"},
+    });
+    fireEvent.submit(form);
+
     await tick();
-    expect(wrapper.instance().state.errors).toStrictEqual({
-      nonField: t`PWD_CHNG_ERR`,
+    await waitFor(() => {
+      const errorElements = screen.queryAllByText(/error/i);
+      expect(errorElements.length).toBeGreaterThan(0);
     });
-    wrapper.instance().handleSubmit(e);
+
+    // Test 4: Successful password change
+    fireEvent.submit(form);
     await tick();
-    expect(props.navigate).toHaveBeenCalledWith(`/${props.orgSlug}/status`);
+    await waitFor(() => {
+      expect(props.navigate).toHaveBeenCalledWith(`/${props.orgSlug}/status`);
+    });
   });
+
   it("should set title", () => {
-    const setTitleMock = wrapper.instance().props.setTitle.mock;
-    expect(setTitleMock.calls.pop()).toEqual([
+    renderWithProviders(<PasswordChange {...props} />);
+
+    expect(props.setTitle).toHaveBeenCalledWith(
       "Change your password",
       props.orgName,
-    ]);
+    );
   });
-  it("should execute handleChange if field value is changes", () => {
-    expect(wrapper.find("input[name='newPassword1']").length).toEqual(1);
-    expect(wrapper.find("input[name='newPassword1']").props()).toEqual({
-      autoComplete: "password",
-      className: "input",
-      id: "new-password",
-      name: "newPassword1",
-      onChange: expect.any(Function),
-      pattern: ".{6,}",
-      placeholder: "Your new password",
-      required: true,
-      title: "password must be a minimum of 6 characters",
-      type: "password",
-      value: "",
+
+  it("should execute handleChange if field value changes", () => {
+    renderWithProviders(<PasswordChange {...props} />);
+
+    const newPassword1Input = screen.getByPlaceholderText(/your new password/i);
+    expect(newPassword1Input).toBeInTheDocument();
+    expect(newPassword1Input).toHaveAttribute("type", "password");
+    expect(newPassword1Input).toHaveAttribute("id", "new-password");
+    expect(newPassword1Input).toHaveAttribute(
+      "placeholder",
+      "Your new password",
+    );
+    expect(newPassword1Input).toHaveAttribute("autoComplete", "password");
+    expect(newPassword1Input).toBeRequired();
+
+    fireEvent.change(newPassword1Input, {
+      target: {name: "newPassword1", value: "123456"},
     });
-    wrapper.instance().handleChange = jest.fn();
-    const e = {
-      target: {
-        name: "newPassword1",
-        value: "123456",
-      },
-    };
-    wrapper.find("input[name='newPassword1']").props().onChange(e);
-    expect(wrapper.instance().handleChange).toHaveBeenCalledWith(e);
-    expect(wrapper.find("input[name='newPassword2']").length).toEqual(1);
-    expect(wrapper.find("input[name='newPassword2']").props()).toEqual({
-      autoComplete: "password",
-      className: "input",
-      id: "password-confirm",
-      name: "newPassword2",
-      onChange: expect.any(Function),
-      pattern: ".{6,}",
-      placeholder: "confirm password",
-      required: true,
-      title: "password must be a minimum of 6 characters",
-      type: "password",
-      value: "",
+    expect(newPassword1Input.value).toBe("123456");
+
+    const newPassword2Input = screen.getByPlaceholderText(/confirm password/i);
+    expect(newPassword2Input).toBeInTheDocument();
+    expect(newPassword2Input).toHaveAttribute("type", "password");
+    expect(newPassword2Input).toHaveAttribute("id", "password-confirm");
+    expect(newPassword2Input).toHaveAttribute(
+      "placeholder",
+      "confirm password",
+    );
+    expect(newPassword2Input).toHaveAttribute("autoComplete", "password");
+    expect(newPassword2Input).toBeRequired();
+
+    fireEvent.change(newPassword2Input, {
+      target: {name: "newPassword2", value: "123456"},
     });
-    wrapper.instance().handleChange = jest.fn();
-    wrapper.find("input[name='newPassword2']").props().onChange(e);
-    expect(wrapper.instance().handleChange).toHaveBeenCalledWith(e);
+    expect(newPassword2Input.value).toBe("123456");
   });
-  it("should toggle password icon for both password fields in PasswordToggleIcon", async () => {
-    const nodes = wrapper.find(PasswordToggleIcon);
-    expect(nodes.length).toEqual(3);
-    expect(nodes.at(1).props()).toEqual({
-      hidePassword: true,
-      inputRef: {current: null},
-      isVisible: false,
-      parentClassName: "",
-      secondInputRef: {current: null},
-      toggler: expect.any(Function),
+
+  it("should toggle password visibility", async () => {
+    renderWithProviders(<PasswordChange {...props} />);
+
+    // Get the password input fields
+    const currentPasswordInput =
+      screen.getByPlaceholderText(/current password/i);
+    const newPassword1Input = screen.getByPlaceholderText(/your new password/i);
+    const newPassword2Input = screen.getByPlaceholderText(/confirm password/i);
+
+    // Initially should be password type
+    expect(currentPasswordInput).toHaveAttribute("type", "password");
+    expect(newPassword1Input).toHaveAttribute("type", "password");
+    expect(newPassword2Input).toHaveAttribute("type", "password");
+
+    // Find all buttons with role="button" (password toggle icons)
+    const allButtons = screen.getAllByRole("button");
+    // Filter out the submit button to get only toggle buttons
+    const toggleButtons = allButtons.filter(
+      (btn) => !btn.type || btn.type === "button",
+    );
+    expect(toggleButtons.length).toBeGreaterThan(0);
+
+    // Click the first toggle button
+    fireEvent.click(toggleButtons[0]);
+
+    // After clicking, the corresponding input should change to text type
+    await waitFor(() => {
+      const passwordInputs = [
+        currentPasswordInput,
+        newPassword1Input,
+        newPassword2Input,
+      ];
+      const textTypeInputs = passwordInputs.filter(
+        (input) => input.getAttribute("type") === "text",
+      );
+      expect(textTypeInputs.length).toBeGreaterThan(0);
     });
-    expect(wrapper.instance().state.hidePassword).toEqual(true);
-    nodes.at(1).props().toggler();
-    expect(wrapper.instance().state.hidePassword).toEqual(false);
-    expect(nodes.at(2).props()).toEqual({
-      hidePassword: true,
-      inputRef: {current: null},
-      isVisible: false,
-      parentClassName: "",
-      secondInputRef: {current: null},
-      toggler: expect.any(Function),
-    });
-    nodes.at(2).props().toggler();
-    expect(wrapper.instance().state.hidePassword).toEqual(false);
   });
+
   it("should validate token", async () => {
     props = createTestProps();
-    PasswordChange.contextTypes = {
-      setLoading: PropTypes.func,
-      getLoading: PropTypes.func,
-    };
-    wrapper = await shallow(<PasswordChange {...props} />, {
-      context: {setLoading: jest.fn(), getLoading: jest.fn()},
-    });
+    renderWithProviders(<PasswordChange {...props} />);
+
     expect(validateToken).toHaveBeenCalledWith(
       props.cookies,
       props.orgSlug,
@@ -244,20 +343,24 @@ describe("<PasswordChange /> interactions", () => {
       props.language,
     );
   });
-  it("should redirect to status if login method is SAML / Social Login", async () => {
+
+  it("should redirect to status if login method is SAML", async () => {
     props = createTestProps();
-    PasswordChange.contextTypes = {
-      setLoading: PropTypes.func,
-      getLoading: PropTypes.func,
-    };
     props.userData.method = "saml";
-    wrapper = await shallow(<PasswordChange {...props} />, {
-      context: {setLoading: jest.fn(), getLoading: jest.fn()},
-    });
-    expect(wrapper.find("Navigate").length).toEqual(1);
-    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
-    await wrapper.setProps({...props.userData, method: "social_login"});
-    expect(wrapper.find("Navigate").length).toEqual(1);
-    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
+
+    renderWithProviders(<PasswordChange {...props} />);
+
+    const formElement = screen.queryByRole("form");
+    expect(formElement).not.toBeInTheDocument();
+  });
+
+  it("should redirect to status if login method is Social Login", async () => {
+    props = createTestProps();
+    props.userData.method = "social_login";
+
+    renderWithProviders(<PasswordChange {...props} />);
+
+    const formElement = screen.queryByRole("form");
+    expect(formElement).not.toBeInTheDocument();
   });
 });

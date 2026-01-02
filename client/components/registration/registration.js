@@ -376,6 +376,7 @@ export default class Registration extends React.Component {
               className={`main-column ${success ? "success" : ""}`}
               onSubmit={this.handleSubmit}
               id="registration-form"
+              data-testid="registration-form"
             >
               <div className="inner">
                 <div className="fieldset">
@@ -455,6 +456,7 @@ export default class Registration extends React.Component {
                                   );
                                 }}
                                 placeholder={t`PHONE_PHOLD`}
+                                aria-label="Phone Number"
                                 enableSearch={Boolean(
                                   input_fields.phone_number.enable_search,
                                 )}
@@ -627,10 +629,12 @@ export default class Registration extends React.Component {
                           title={t`PWD_PTRN_DESC`}
                           ref={this.passwordToggleRef}
                           autoComplete="new-password"
+                          aria-label="Password"
                         />
                         <PasswordToggleIcon
                           inputRef={this.passwordToggleRef}
                           secondInputRef={this.confirmPasswordToggleRef}
+                          parentClassName="password-toggle"
                           hidePassword={hidePassword}
                           toggler={() =>
                             this.setState({hidePassword: !hidePassword})
@@ -654,10 +658,12 @@ export default class Registration extends React.Component {
                           title={t`PWD_PTRN_DESC`}
                           ref={this.confirmPasswordToggleRef}
                           autoComplete="new-password"
+                          aria-label="Confirm Password"
                         />
                         <PasswordToggleIcon
                           inputRef={this.confirmPasswordToggleRef}
                           secondInputRef={this.passwordToggleRef}
+                          parentClassName="password-toggle"
                           hidePassword={hidePassword}
                           toggler={() =>
                             this.setState({hidePassword: !hidePassword})
@@ -666,7 +672,10 @@ export default class Registration extends React.Component {
                       </div>
 
                       {this.doesPlanRequireInvoice() && (
-                        <div className="billing-info">
+                        <div
+                          className="billing-info"
+                          data-testid="billing-info"
+                        >
                           <div className="row country">
                             <label htmlFor="country">{t`COUNTRY_LBL`}</label>
                             {getError(errors, "country")}
@@ -689,6 +698,7 @@ export default class Registration extends React.Component {
                               onChange={this.handleChange}
                               autoComplete="address-level2"
                               placeholder={t`CITY_PHOLD`}
+                              aria-label="City"
                             />
                           </div>
                           <div className="row street">
@@ -704,6 +714,7 @@ export default class Registration extends React.Component {
                               onChange={this.handleChange}
                               autoComplete="address"
                               placeholder={t`STREET_PHOLD`}
+                              aria-label="Street"
                             />
                           </div>
                           <div className="row zipcode">
@@ -718,6 +729,7 @@ export default class Registration extends React.Component {
                               value={zipcode}
                               onChange={this.handleChange}
                               autoComplete="postal-code"
+                              aria-label="Zip Code"
                             />
                           </div>
                           <div className="row tax_number">
@@ -733,6 +745,7 @@ export default class Registration extends React.Component {
                               placeholder={t`TAX_NUMBER_PHOLD`}
                               pattern={input_fields.tax_number.pattern}
                               title={t`TAX_NUMBER_PTRN_DESC`}
+                              aria-label="Tax Number"
                             />
                           </div>
                         </div>

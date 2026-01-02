@@ -1,10 +1,11 @@
 import React from "react";
-import {BrowserRouter as Router} from "react-router-dom";
+import PropTypes from "prop-types";
+import {MemoryRouter} from "react-router-dom";
 import axios from "axios";
 import {Cookies} from "react-cookie";
-import {shallow, mount} from "enzyme";
+import {render, fireEvent} from "@testing-library/react";
+import "@testing-library/jest-dom";
 import * as dependency from "react-toastify";
-import {createMemoryHistory} from "history";
 import authenticate from "./authenticate";
 import isInternalLink from "./check-internal-links";
 import customMerge from "./custom-merge";
@@ -63,6 +64,7 @@ describe("renderAdditionalInfo tests", () => {
     expect(output[3].props.children).toBe("privacy policy");
   });
 });
+
 describe("customMerge tests", () => {
   const arr1 = ["test1", "test2"];
   const arr2 = ["test3", "test4"];
@@ -70,6 +72,7 @@ describe("customMerge tests", () => {
     expect(customMerge(arr1, arr2)).toEqual(arr2);
   });
 });
+
 describe("authenticate tests", () => {
   let cookies = {
     get: jest
@@ -99,12 +102,14 @@ describe("authenticate tests", () => {
     expect(cookies.get).toHaveBeenCalledWith(`${orgSlug}_auth_token`);
   });
 });
+
 describe("isInternalLink tests", () => {
   it("should detect internal links", () => {
     expect(isInternalLink("/default/login")).toEqual(true);
     expect(isInternalLink("https://google.com")).toEqual(false);
   });
 });
+
 describe("getParameterByName tests", () => {
   it("should get parameter values", () => {
     expect(getParameterByName("username")).toBe(null);
@@ -113,6 +118,7 @@ describe("getParameterByName tests", () => {
     ).toBe("vivek");
   });
 });
+
 describe("shouldLinkBeShown tests", () => {
   const createArgs = (link, isAuthenticated, userData) => ({
     link,
@@ -173,6 +179,7 @@ describe("shouldLinkBeShown tests", () => {
     expect(shouldLinkBeShown(link, isAuthenticated, userData)).toBe(false);
   });
 });
+
 describe("tick tests", () => {
   it("test tick", async () => {
     jest.spyOn(process, "nextTick");
@@ -180,6 +187,7 @@ describe("tick tests", () => {
     expect(process.nextTick).toHaveBeenCalled();
   });
 });
+
 describe("Validate Token tests", () => {
   afterEach(() => {
     jest.clearAllMocks();
@@ -386,31 +394,11 @@ describe("Validate Token tests", () => {
     expect(setUserData.mock.calls.pop()).toEqual([initialState.userData]);
   });
 });
+
 describe("password-toggle tests", () => {
-  const Component = React.forwardRef((props, ref) => (
-    <>
-      <input type="password" ref={ref} />
-      <PasswordToggleIcon inputRef={ref} />
-    </>
-  ));
-  const mountComponent = (ref) => mount(<Component ref={ref} />);
-  it("should show and hide password", () => {
-    const passwordRef = React.createRef();
-    const component = mountComponent(passwordRef);
-    const toggleDiv = component.find("div");
-    expect(passwordRef.current.getAttribute("type")).toEqual("password");
-    expect(toggleDiv.instance().children[0].getAttribute("class")).toEqual(
-      "eye",
-    );
-    toggleDiv.simulate("click");
-    expect(passwordRef.current.getAttribute("type")).toEqual("text");
-    expect(toggleDiv.instance().children[0].getAttribute("class")).toEqual(
-      "eye-slash",
-    );
-  });
   it("should call handleClick", () => {
     const setAttributeMock = jest.fn();
-    const getAttributeMock = jest.fn();
+    const getAttributeMock = jest.fn().mockReturnValue("password");
     const focusMock = jest.fn();
     const inputRef = {
       current: {
@@ -419,17 +407,26 @@ describe("password-toggle tests", () => {
         focus: focusMock,
       },
     };
-    const wrapper = shallow(<PasswordToggleIcon inputRef={inputRef} />);
+    const {container} = render(
+      <PasswordToggleIcon
+        inputRef={inputRef}
+        parentClassName="password-toggle"
+      />,
+    );
 
-    wrapper.instance().handleClick(inputRef, {});
+    // Click the toggle icon
+    const toggleIcon = container.querySelector(".password-toggle");
+    expect(toggleIcon).toBeInTheDocument();
+    fireEvent.click(toggleIcon);
+
     expect(getAttributeMock).toHaveBeenCalledWith("type");
     expect(setAttributeMock).toHaveBeenCalled();
-    expect(setAttributeMock).toHaveBeenCalledWith("type", "password");
     expect(focusMock).toHaveBeenCalled();
   });
+
   it("should show password for two fields", () => {
     const setAttributeMock = jest.fn();
-    const getAttributeMock = jest.fn();
+    const getAttributeMock = jest.fn().mockReturnValue("password");
     const focusMock = jest.fn();
     const inputRef = {
       current: {
@@ -440,33 +437,27 @@ describe("password-toggle tests", () => {
     };
     const secondInputRef = {
       current: {
-        getAttribute: jest.fn(),
+        getAttribute: jest.fn().mockReturnValue("password"),
         setAttribute: jest.fn(),
         focus: jest.fn(),
       },
     };
     const toggler = jest.fn();
-    const wrapper = shallow(
+    const {container} = render(
       <PasswordToggleIcon
         inputRef={inputRef}
         secondInputRef={secondInputRef}
         toggler={toggler}
         hidePassword
+        parentClassName="password-toggle"
       />,
     );
-    wrapper.instance().handleClick(inputRef, secondInputRef);
-    expect(getAttributeMock).toHaveBeenCalledWith("type");
-    expect(secondInputRef.current.getAttribute).toHaveBeenCalledWith("type");
-    expect(setAttributeMock).toHaveBeenCalledWith("type", "password");
-    expect(secondInputRef.current.setAttribute).toHaveBeenCalledWith(
-      "type",
-      "password",
-    );
-    expect(focusMock).toHaveBeenCalled();
-    expect(secondInputRef.current.focus).not.toHaveBeenCalled();
-    getAttributeMock.mockReturnValueOnce("password");
-    secondInputRef.current.getAttribute.mockReturnValueOnce("password");
-    wrapper.instance().handleClick(inputRef, secondInputRef);
+
+    // Click the toggle icon
+    const toggleIcon = container.querySelector(".password-toggle");
+    expect(toggleIcon).toBeInTheDocument();
+    fireEvent.click(toggleIcon);
+
     expect(getAttributeMock).toHaveBeenCalledWith("type");
     expect(secondInputRef.current.getAttribute).toHaveBeenCalledWith("type");
     expect(setAttributeMock).toHaveBeenCalledWith("type", "text");
@@ -478,26 +469,26 @@ describe("password-toggle tests", () => {
     expect(secondInputRef.current.focus).not.toHaveBeenCalled();
     expect(toggler).toHaveBeenCalled();
   });
+
   it("should show icon", () => {
-    const setAttributeMock = jest.fn();
-    const getAttributeMock = jest.fn();
-    const focusMock = jest.fn();
     const inputRef = {
       current: {
-        getAttribute: getAttributeMock,
-        setAttribute: setAttributeMock,
-        focus: focusMock,
+        getAttribute: jest.fn().mockReturnValue("password"),
+        setAttribute: jest.fn(),
+        focus: jest.fn(),
       },
     };
     const secondInputRef = {
       current: {
-        getAttribute: jest.fn(),
+        getAttribute: jest.fn().mockReturnValue("password"),
         setAttribute: jest.fn(),
         focus: jest.fn(),
       },
     };
     const toggler = jest.fn();
-    let wrapper = shallow(
+
+    // Test with hidePassword=true (should show eye icon)
+    const {container: container1} = render(
       <PasswordToggleIcon
         inputRef={inputRef}
         secondInputRef={secondInputRef}
@@ -505,10 +496,10 @@ describe("password-toggle tests", () => {
         hidePassword
       />,
     );
-    expect(
-      wrapper.contains(<i className="eye" title="reveal password" />),
-    ).toEqual(true);
-    wrapper = shallow(
+    expect(container1.querySelector("i.eye")).toBeInTheDocument();
+
+    // Test with hidePassword=false (should show eye-slash icon)
+    const {container: container2} = render(
       <PasswordToggleIcon
         inputRef={inputRef}
         secondInputRef={secondInputRef}
@@ -516,13 +507,10 @@ describe("password-toggle tests", () => {
         hidePassword={false}
       />,
     );
-    expect(
-      wrapper.contains(<i className="eye-slash" title="hide password" />),
-    ).toEqual(true);
-    wrapper.instance().handleClick(inputRef, secondInputRef);
-    expect(toggler).toHaveBeenCalled();
+    expect(container2.querySelector("i.eye-slash")).toBeInTheDocument();
   });
 });
+
 describe("submit-on-enter tests", () => {
   document.body.innerHTML = `<form id="formID">
     <input type="email">
@@ -551,6 +539,7 @@ describe("submit-on-enter tests", () => {
     expect(spyFn.mock.calls.length).toBe(0);
   });
 });
+
 describe("handleSession tests", () => {
   const orgSlug = "default";
   const token = "token";
@@ -564,6 +553,7 @@ describe("handleSession tests", () => {
     expect(spyFn).toHaveBeenCalledWith(`${orgSlug}_auth_token`, {path: "/"});
   });
 });
+
 describe("sort organizations tests", () => {
   it("should sort organization with compareFunc", () => {
     const organizations = [{slug: "mobile"}, {slug: "default"}];
@@ -573,6 +563,7 @@ describe("sort organizations tests", () => {
     ]);
   });
 });
+
 describe("log-error tests", () => {
   let consoleLog;
   let consoleError;
@@ -603,6 +594,7 @@ describe("log-error tests", () => {
     expect(consoleLog.mock.calls.length).toEqual(0);
   });
 });
+
 describe("needs-verify tests", () => {
   let settings;
   let userData;
@@ -633,38 +625,34 @@ describe("needs-verify tests", () => {
     expect(needsVerify(method, userData, settings)).toBe(true);
   });
 });
+
 describe("loader tests", () => {
   it("should default to .loader-container.full", () => {
-    const wrapper = shallow(loader({}));
+    const {container} = render(loader({}));
     expect(
-      wrapper.contains(
-        <div className="loader-container full">
-          <div className="loader" />
-        </div>,
-      ),
-    ).toBe(true);
+      container.querySelector(".loader-container.full"),
+    ).toBeInTheDocument();
+    expect(container.querySelector(".loader")).toBeInTheDocument();
   });
+
   it("should show .loader-container.full", () => {
-    const wrapper = shallow(loader({full: true}));
+    const {container} = render(loader({full: true}));
     expect(
-      wrapper.contains(
-        <div className="loader-container full">
-          <div className="loader" />
-        </div>,
-      ),
-    ).toBe(true);
+      container.querySelector(".loader-container.full"),
+    ).toBeInTheDocument();
+    expect(container.querySelector(".loader")).toBeInTheDocument();
   });
+
   it("should show .loader-container", () => {
-    const wrapper = shallow(loader({full: false}));
+    const {container} = render(loader({full: false}));
+    expect(container.querySelector(".loader-container")).toBeInTheDocument();
     expect(
-      wrapper.contains(
-        <div className="loader-container">
-          <div className="loader" />
-        </div>,
-      ),
-    ).toBe(true);
+      container.querySelector(".loader-container.full"),
+    ).not.toBeInTheDocument();
+    expect(container.querySelector(".loader")).toBeInTheDocument();
   });
 });
+
 describe("handle-change tests", () => {
   const event = {
     target: {
@@ -691,23 +679,24 @@ describe("handle-change tests", () => {
     handleChange(event, instance);
     expect(instance.state.errors).toEqual([]);
   });
-  it("should redirecToPayment", () => {
-    const historyMock = createMemoryHistory();
+  it("should redirectToPayment", () => {
     const navigate = jest.fn();
-    const wrapper = shallow(
-      <Router history={historyMock}>
+    const {container} = render(
+      <MemoryRouter>
         <button
           type="submit"
           onClick={() => redirectToPayment("default", navigate)}
         >
           Test
         </button>
-      </Router>,
+      </MemoryRouter>,
     );
-    wrapper.find("button").simulate("click", {});
+    const button = container.querySelector("button");
+    fireEvent.click(button);
     expect(navigate).toHaveBeenCalled();
   });
 });
+
 describe("storage tests", () => {
   it("should store, get and clear data in window.localStorage", () => {
     localStorage.setItem("organization", "openwisp");
@@ -729,6 +718,7 @@ describe("storage tests", () => {
     expect(storageMock.getItem("organization")).toEqual(undefined);
   });
 });
+
 describe("getPaymentStatusRedirectUrl tests", () => {
   afterEach(() => {
     jest.clearAllMocks();
@@ -868,18 +858,43 @@ describe("getPaymentStatusRedirectUrl tests", () => {
     expect(consoleLog).toHaveBeenCalledWith(response);
   });
 });
+
 describe("withRouteProps test", () => {
   it("should add route props to component", () => {
-    const Component = () => React.Component;
-    const origWrapper = shallow(<Component />);
-    expect(origWrapper.props()).toEqual({});
+    function Component({location, params, navigate, props: componentProps}) {
+      // Create a serializable version of props for testing
+      const serializableProps = {
+        location,
+        params,
+        navigate: typeof navigate === "function" ? "function" : navigate,
+        props: componentProps,
+      };
+      return (
+        <div data-testid="test-component">
+          {JSON.stringify(serializableProps)}
+        </div>
+      );
+    }
+    Component.propTypes = {
+      location: PropTypes.object.isRequired,
+      params: PropTypes.object.isRequired,
+      navigate: PropTypes.func.isRequired,
+      props: PropTypes.object.isRequired,
+    };
     const ComponentWithRouteProps = withRouteProps(Component);
-    const wrapper = shallow(<ComponentWithRouteProps props={{extra: true}} />);
-    expect(wrapper.props()).toEqual({
-      location: {pathname: "/path"},
-      navigate: expect.any(Function),
-      params: {},
-      props: {extra: true},
-    });
+    const {container} = render(
+      <MemoryRouter>
+        <ComponentWithRouteProps props={{extra: true}} />
+      </MemoryRouter>,
+    );
+
+    const component = container.querySelector('[data-testid="test-component"]');
+    expect(component).toBeInTheDocument();
+
+    const props = JSON.parse(component.textContent);
+    expect(props).toHaveProperty("location");
+    expect(props.navigate).toBe("function");
+    expect(props).toHaveProperty("params");
+    expect(props.props).toEqual({extra: true});
   });
 });

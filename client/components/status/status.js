@@ -69,6 +69,7 @@ export default class Status extends React.Component {
       showUpgradeBtn: true,
     };
     this.repeatLogin = false;
+    this.componentIsMounted = false;
     this.getUserRadiusSessions = this.getUserRadiusSessions.bind(this);
     this.getUserRadiusUsage = this.getUserRadiusUsage.bind(this);
     this.getPlansSuccessCallback = this.getPlansSuccessCallback.bind(this);
@@ -80,6 +81,7 @@ export default class Status extends React.Component {
   }
 
   async componentDidMount() {
+    this.componentIsMounted = true;
     const {
       cookies,
       orgSlug,
@@ -95,9 +97,11 @@ export default class Status extends React.Component {
     setTitle(t`STATUS_TITL`, orgName);
     const {setLoading} = this.context;
     let {userData} = this.props;
-    this.setState({
-      rememberMe: localStorage.getItem("rememberMe") === "true",
-    });
+    if (this.componentIsMounted) {
+      this.setState({
+        rememberMe: localStorage.getItem("rememberMe") === "true",
+      });
+    }
     Logout.preload();
 
     // to prevent recursive call in case redirect url is status page
@@ -184,17 +188,14 @@ export default class Status extends React.Component {
       if (settings.mobile_phone_verification && phone_number) {
         userInfo.phone_number = phone_number;
       }
-      this.setState({username, password, userInfo}, () => {
-        // if the user is being automatically logged in but it's not
-        // active anymore (eg: has been banned)
-        // automatically perform log out
-        if (is_active === false) {
-          this.handleLogout(false);
-        }
-      });
 
       // stop here if user is banned
       if (is_active === false) {
+        if (this.componentIsMounted) {
+          this.setState({username, password, userInfo}, () => {
+            this.handleLogout(false);
+          });
+        }
         return;
       }
 
@@ -203,7 +204,9 @@ export default class Status extends React.Component {
           // In synchronous captive portal authentication, the page reloads
           // after form submission, so handleLogoutIframe() must be called manually here.
           // (handleLogout() is already triggered when the user clicks the "Logout" button.)
-          this.setState({loggedOut: mustLogout});
+          if (this.componentIsMounted) {
+            this.setState({loggedOut: mustLogout});
+          }
           this.handleLogoutIframe();
         } else {
           await this.handleLogout(false, repeatLogin);
@@ -215,33 +218,42 @@ export default class Status extends React.Component {
       if (method === "bank_card" && isVerified === false) {
         shouldLogin = shouldLogin && settings.payment_requires_internet;
       }
-      if (this.loginFormRef && this.loginFormRef.current && shouldLogin) {
-        this.storeValue(
-          captivePortalSyncAuth,
-          `${orgSlug}_mustLogin`,
-          false,
-          cookies,
-        );
-        this.notifyCpLogin(userData);
-        this.loginFormRef.current.submit();
-      } else if (!shouldLogin) {
-        // If the user is already logged in, we need to handle the
-        // the response from the captive portal.
-        if (captivePortalSyncAuth) {
-          this.handleLogin();
-        }
-        this.finalOperations();
+
+      // Set username/password state first, then submit form in callback
+      // This ensures the iframe (which requires username) is rendered before form submission
+      if (this.componentIsMounted) {
+        this.setState({username, password, userInfo}, () => {
+          if (this.loginFormRef && this.loginFormRef.current && shouldLogin) {
+            this.storeValue(
+              captivePortalSyncAuth,
+              `${orgSlug}_mustLogin`,
+              false,
+              cookies,
+            );
+            this.notifyCpLogin(userData);
+            this.loginFormRef.current.submit();
+          } else {
+            // If the user is already logged in, we need to handle the
+            // the response from the captive portal.
+            if (!shouldLogin && captivePortalSyncAuth) {
+              this.handleLogin();
+            }
+            this.finalOperations();
+          }
+        });
       }
     }
   }
 
   componentWillUnmount() {
+    this.componentIsMounted = false;
     const {statusPage} = this.props;
     clearInterval(this.intervalId);
     if (statusPage.radius_usage_enabled) {
       clearInterval(this.usageIntervalId);
     }
     window.removeEventListener("resize", this.updateScreenWidth);
+    window.removeEventListener("message", this.handlePostMessage);
   }
 
   async finalOperations() {
@@ -334,7 +346,9 @@ export default class Status extends React.Component {
       }
       options.hasMoreSessions =
         "link" in headers && headers.link.includes("next");
-      this.setState(options);
+      if (this.componentIsMounted) {
+        this.setState(options);
+      }
     } catch (error) {
       // logout only if unauthorized or forbidden
       if (
@@ -404,13 +418,17 @@ export default class Status extends React.Component {
           }
         }
       }
-      this.setState(options);
+      if (this.componentIsMounted) {
+        this.setState(options);
+      }
     } catch (error) {
       if (error.response) {
         // Do not retry for client side errors
         if (error.response.status >= 400 && error.response.status < 500) {
           // Logout only if unauthorized or forbidden
-          this.setState({showRadiusUsage: false});
+          if (this.componentIsMounted) {
+            this.setState({showRadiusUsage: false});
+          }
           if (error.response.status === 401 || error.response.status === 403) {
             logout(cookies, orgSlug);
             toast.error(t`ERR_OCCUR`, {
@@ -428,9 +446,11 @@ export default class Status extends React.Component {
   }
 
   getPlansSuccessCallback(plans) {
-    this.setState({
-      upgradePlans: plans.filter((plan) => plan.price !== "0.00"),
-    });
+    if (this.componentIsMounted) {
+      this.setState({
+        upgradePlans: plans.filter((plan) => plan.price !== "0.00"),
+      });
+    }
   }
 
   async upgradeUserPlan(event) {
@@ -553,7 +573,9 @@ export default class Status extends React.Component {
     if (sessionsToLogout.length > 0) {
       if (this.logoutFormRef && this.logoutFormRef.current) {
         if (!repeatLogin) {
-          this.setState({loggedOut: true});
+          if (this.componentIsMounted) {
+            this.setState({loggedOut: true});
+          }
         } else {
           this.repeatLogin = true;
         }
@@ -746,17 +768,19 @@ export default class Status extends React.Component {
         /* disable ttag */
         toast.info(gettext(message), {toastId: mainToastId});
         /* enable ttag */
-        this.setState(
-          {
-            warningMessage: warningMessage || "USAGE_LIMIT_EXHAUSTED_TXT",
-            ...(showUpgradeBtn !== undefined && {showUpgradeBtn}),
-          },
-          () => {
-            // Change the message on the status page to reflect plan exhaustion
-            setPlanExhausted(true);
-            setLoading(false);
-          },
-        );
+        if (this.componentIsMounted) {
+          this.setState(
+            {
+              warningMessage: warningMessage || "USAGE_LIMIT_EXHAUSTED_TXT",
+              ...(showUpgradeBtn !== undefined && {showUpgradeBtn}),
+            },
+            () => {
+              // Change the message on the status page to reflect plan exhaustion
+              setPlanExhausted(true);
+              setLoading(false);
+            },
+          );
+        }
         break;
       case "authError":
         setLoading(true);
@@ -767,16 +791,18 @@ export default class Status extends React.Component {
           toastId: mainToastId,
         });
         /* enable ttag */
-        this.setState({loggedOut: true}, () => {
-          // Logout after state update and a small delay
-          // The delay ensures the component has sufficient time to unmount
-          // and complete any ongoing XHR requests. Without this, erroring
-          // requests may trigger error toast messages.
-          setTimeout(() => {
-            logout(cookies, orgSlug);
-            setLoading(false);
-          }, 250);
-        });
+        if (this.componentIsMounted) {
+          this.setState({loggedOut: true}, () => {
+            // Logout after state update and a small delay
+            // The delay ensures the component has sufficient time to unmount
+            // and complete any ongoing XHR requests. Without this, erroring
+            // requests may trigger error toast messages.
+            setTimeout(() => {
+              logout(cookies, orgSlug);
+              setLoading(false);
+            }, 250);
+          });
+        }
         break;
       case "internet-mode":
         setInternetMode(true);
@@ -842,36 +868,48 @@ export default class Status extends React.Component {
   };
 
   updateScreenWidth = () => {
-    this.setState({screenWidth: window.innerWidth});
+    if (this.componentIsMounted) {
+      this.setState({screenWidth: window.innerWidth});
+    }
   };
 
   updateSpinner = () => {
     const {activeSessions, pastSessions} = this.state;
-    this.setState({loadSpinner: activeSessions.length || pastSessions.length});
+    if (this.componentIsMounted) {
+      this.setState({
+        loadSpinner: activeSessions.length || pastSessions.length,
+      });
+    }
   };
 
   toggleModal = () => {
     const {modalActive} = this.state;
-    this.setState({modalActive: !modalActive});
+    if (this.componentIsMounted) {
+      this.setState({modalActive: !modalActive});
+    }
   };
 
   toggleUpgradePlanModal = async () => {
     const {orgSlug, language} = this.props;
     const {upgradePlanModalActive, upgradePlans} = this.state;
-    this.setState({upgradePlanModalActive: !upgradePlanModalActive});
+    if (this.componentIsMounted) {
+      this.setState({upgradePlanModalActive: !upgradePlanModalActive});
+    }
     if (!upgradePlans.length) {
       await getPlans(orgSlug, language, this.getPlansSuccessCallback);
     }
   };
 
   async handleSessionLogout(session) {
-    this.setState({
-      sessionsToLogout: [session],
-      pastSessions: [],
-      activeSessions: [],
-      currentPage: 0,
-      hasMoreSessions: true,
-    });
+    if (this.componentIsMounted) {
+      this.setState({
+        sessionsToLogout: [session],
+        pastSessions: [],
+        activeSessions: [],
+        currentPage: 0,
+        hasMoreSessions: true,
+      });
+    }
     const {setLoading} = this.context;
     if (this.logoutFormRef && this.logoutFormRef.current) {
       this.logoutFormRef.current.submit();

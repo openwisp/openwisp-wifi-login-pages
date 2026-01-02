@@ -1,48 +1,39 @@
-import {mount} from "enzyme";
+import {render} from "@testing-library/react";
 import React from "react";
 import {Provider} from "react-redux";
-import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
-import PropTypes from "prop-types";
+import {MemoryRouter, Route, Routes} from "react-router-dom";
 import {createMemoryHistory} from "history";
 import Registration from "./registration";
-import {loadingContextValue} from "../../utils/loading-context";
 
-const mountComponent = async (passedProps) => {
+const mountComponent = (passedProps) => {
   const historyMock = createMemoryHistory();
   const props = {...passedProps};
 
-  Registration.contextTypes = undefined;
   const mockedStore = {
     subscribe: () => {},
     dispatch: () => {},
-    // needed to render <Contact/>
     getState: () => ({
       organization: {
-        configuration: props.configuration,
+        configuration: {
+          ...props.configuration,
+          components: {
+            ...props.configuration?.components,
+            contact_page: props.configuration?.components?.contact_page || {},
+          },
+        },
       },
       language: props.language,
     }),
   };
 
-  return mount(
+  return render(
     <Provider store={mockedStore}>
-      <Router history={historyMock}>
+      <MemoryRouter location={historyMock.location} navigator={historyMock}>
         <Routes>
           <Route path="/*" element={<Registration {...props} />} />
         </Routes>
-      </Router>
+      </MemoryRouter>
     </Provider>,
-    {
-      context: {
-        store: mockedStore,
-        ...loadingContextValue,
-      },
-      childContextTypes: {
-        store: PropTypes.object.isRequired,
-        setLoading: PropTypes.func,
-        getLoading: PropTypes.func,
-      },
-    },
   );
 };
 
