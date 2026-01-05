@@ -1,6 +1,5 @@
-/* eslint-disable camelcase */
 const shouldLinkBeShown = (link, isAuthenticated, userData) => {
-  const {is_verified, method} = userData;
+  const {isVerified, method} = userData;
   if (
     method &&
     link.methods_excluded &&
@@ -12,9 +11,9 @@ const shouldLinkBeShown = (link, isAuthenticated, userData) => {
     link.authenticated === isAuthenticated &&
     isAuthenticated === true &&
     link.verified !== undefined &&
-    is_verified !== undefined
+    isVerified !== undefined
   ) {
-    return link.verified === is_verified;
+    return link.verified === isVerified;
   }
   if (
     link.authenticated === isAuthenticated &&

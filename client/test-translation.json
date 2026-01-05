@@ -79,8 +79,8 @@
         "msgid": "USERNAME",
         "msgstr": ["Username"]
       },
-      "PHONE_NUMBER": {
-        "msgid": "PHONE_NUMBER",
+      "phoneNumber": {
+        "msgid": "phoneNumber",
         "msgstr": ["Phone number"]
       },
       "STATUS_CONTENT": {
@@ -133,24 +133,24 @@
         "msgid": "USERNAME_PTRN_DESC",
         "msgstr": ["only letters, numbers and @/./+/-/_ characters"]
       },
-      "FIRST_NAME_LBL": {
-        "msgid": "FIRST_NAME_LBL",
+      "firstName_LBL": {
+        "msgid": "firstName_LBL",
         "msgstr": ["First name"]
       },
-      "FIRST_NAME_PHOLD": {
-        "msgid": "FIRST_NAME_PHOLD",
+      "firstName_PHOLD": {
+        "msgid": "firstName_PHOLD",
         "msgstr": ["first name"]
       },
-      "LAST_NAME_LBL": {
-        "msgid": "LAST_NAME_LBL",
+      "lastName_LBL": {
+        "msgid": "lastName_LBL",
         "msgstr": ["Last name"]
       },
-      "LAST_NAME_PHOLD": {
-        "msgid": "LAST_NAME_PHOLD",
+      "lastName_PHOLD": {
+        "msgid": "lastName_PHOLD",
         "msgstr": ["last name"]
       },
-      "BIRTH_DATE_LBL": {
-        "msgid": "BIRTH_DATE_LBL",
+      "birthDate_LBL": {
+        "msgid": "birthDate_LBL",
         "msgstr": ["Birth date"]
       },
       "LOCATION_LBL": {
@@ -201,22 +201,22 @@
         "msgid": "ZIP_CODE_LBL",
         "msgstr": ["Postal code"]
       },
-      "TAX_NUMBER_LBL": {
-        "msgid": "TAX_NUMBER_LBL",
+      "taxNumber_LBL": {
+        "msgid": "taxNumber_LBL",
         "msgstr": ["Tax number"]
       },
-      "TAX_NUMBER_PHOLD": {
-        "msgid": "TAX_NUMBER_PHOLD",
+      "taxNumber_PHOLD": {
+        "msgid": "taxNumber_PHOLD",
         "msgstr": ["enter your tax identification number (optional)"]
       },
-      "TAX_NUMBER_PTRN_DESC": {
-        "msgid": "TAX_NUMBER_PTRN_DESC",
+      "taxNumber_PTRN_DESC": {
+        "msgid": "taxNumber_PTRN_DESC",
         "msgstr": ["only numbers and letters"]
       },
       "REGISTER_ADD_INFO_TXT": {
         "msgid": "REGISTER_ADD_INFO_TXT",
         "msgstr": [
-          "By signing up, you accept the {terms_and_conditions} and the {privacy_policy} of this WiFi service."
+          "By signing up, you accept the {termsAndConditions} and the {privacyPolicy} of this WiFi service."
         ]
       },
       "FORGOT_PASSWORD": {
@@ -333,10 +333,10 @@
         "msgid": "TOKEN_SENT",
         "msgstr": ["SMS verification code sent successfully."]
       },
-      "PHONE_VERIFY (${ phone_number })": {
-        "msgid": "PHONE_VERIFY (${ phone_number })",
+      "PHONE_VERIFY (${ phoneNumber })": {
+        "msgid": "PHONE_VERIFY (${ phoneNumber })",
         "msgstr": [
-          "Verify your mobile phone number (${ phone_number }) by inserting the code you received via SMS below."
+          "Verify your mobile phone number (${ phoneNumber }) by inserting the code you received via SMS below."
         ]
       },
       "MOBILE_CODE_PHOLD": {
@@ -385,14 +385,14 @@
         "msgid": "USERNAME_LOG_TITL",
         "msgstr": ["enter valid email address, an username or a phone number"]
       },
-      "REMEMBER_ME": {
-        "msgid": "REMEMBER_ME",
+      "rememberMe": {
+        "msgid": "rememberMe",
         "msgstr": ["remember me on this device"]
       },
       "LOGIN_ADD_INFO_TXT": {
         "msgid": "LOGIN_ADD_INFO_TXT",
         "msgstr": [
-          "By logging in, you accept the {terms_and_conditions} and the {privacy_policy} of this WiFi service. "
+          "By logging in, you accept the {termsAndConditions} and the {privacyPolicy} of this WiFi service. "
         ]
       },
       "LOGIN": {

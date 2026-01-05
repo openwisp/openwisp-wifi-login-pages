@@ -1,10 +1,11 @@
 const getErrorText = (error, fallbackVal = "") => {
   const {data} = error.response;
-  // eslint-disable-next-line no-nested-ternary
-  return data.detail
-    ? data.detail
-    : data.non_field_errors
-      ? data.non_field_errors[0]
-      : fallbackVal;
+  if (data.detail) {
+    return data.detail;
+  }
+  if (data.non_field_errors) {
+    return data.non_field_errors[0];
+  }
+  return fallbackVal;
 };
 export default getErrorText;

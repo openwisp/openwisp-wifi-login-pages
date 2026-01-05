@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-/* eslint-disable prefer-promise-reject-errors */
 import axios from "axios";
 import {render, screen, waitFor, fireEvent} from "@testing-library/react";
 import "@testing-library/jest-dom";
@@ -8,15 +6,21 @@ import {Cookies} from "react-cookie";
 import {MemoryRouter} from "react-router-dom";
 import {Provider} from "react-redux";
 
+import getConfig from "../../utils/get-config";
+import logError from "../../utils/log-error";
+import tick from "../../utils/tick";
+import loadTranslation from "../../utils/load-translation";
+import PasswordChange from "./password-change";
+import validateToken from "../../utils/validate-token";
+
 // Mock modules BEFORE importing
-/* eslint-disable import/first */
 jest.mock("axios");
 jest.mock("../../utils/get-config", () => ({
   __esModule: true,
   default: jest.fn(() => ({
     components: {
       password_change_form: {
-        input_fields: {
+        inputFields: {
           password: {},
           password1: {
             type: "password",
@@ -34,13 +38,6 @@ jest.mock("../../utils/log-error");
 jest.mock("../../utils/load-translation");
 jest.mock("../../utils/validate-token");
 jest.mock("../../utils/handle-logout");
-
-import getConfig from "../../utils/get-config";
-import logError from "../../utils/log-error";
-import tick from "../../utils/tick";
-import loadTranslation from "../../utils/load-translation";
-import PasswordChange from "./password-change";
-import validateToken from "../../utils/validate-token";
 /* eslint-enable import/first */
 
 logError.mockImplementation(jest.fn());
@@ -72,7 +69,7 @@ const createMockStore = () => {
           contact_page: {
             email: "support@openwisp.org",
             helpdesk: "+1234567890",
-            social_links: [],
+            socialLinks: [],
           },
         },
       },
@@ -153,16 +150,15 @@ describe("<PasswordChange /> interactions", () => {
   });
 
   it("test handleSubmit method", async () => {
+    const error = new Error("Request failed");
+    error.response = {
+      status: 401,
+      statusText: "UNAUTHORIZED",
+      data: {},
+    };
+
     axios
-      .mockImplementationOnce(() =>
-        Promise.reject({
-          response: {
-            status: 401,
-            statusText: "UNAUTHORIZED",
-            data: {},
-          },
-        }),
-      )
+      .mockImplementationOnce(() => Promise.reject(error))
       .mockImplementationOnce(() =>
         Promise.resolve({
           status: 200,
@@ -356,7 +352,7 @@ describe("<PasswordChange /> interactions", () => {
 
   it("should redirect to status if login method is Social Login", async () => {
     props = createTestProps();
-    props.userData.method = "social_login";
+    props.userData.method = "socialLogin";
 
     renderWithProviders(<PasswordChange {...props} />);
 

@@ -1,4 +1,3 @@
-/* eslint-disable react/require-default-props */
 import {Cookies} from "react-cookie";
 import PropTypes from "prop-types";
 import React from "react";
@@ -46,7 +45,7 @@ export default class PaymentStatus extends React.Component {
     }
 
     ({userData} = this.props);
-    const {method, is_verified: isVerified} = userData;
+    const {method, isVerified} = userData;
     // flag user to repeat login in order to restart session with new radius group
     if (status === "success" && method === "bank_card" && isVerified === true) {
       setUserData({
@@ -90,7 +89,7 @@ export default class PaymentStatus extends React.Component {
   render() {
     const {orgSlug, params, isAuthenticated, userData} = this.props;
     const {status} = params;
-    const {method, is_verified: isVerified} = userData;
+    const {method, isVerified} = userData;
     const redirectToStatus = () => <Navigate to={`/${orgSlug}/status`} />;
     const acceptedValues = ["success", "failed", "draft"];
     const {isTokenValid} = this.state;
@@ -243,4 +242,11 @@ PaymentStatus.propTypes = {
     status: PropTypes.string,
   }).isRequired,
   navigate: PropTypes.func.isRequired,
+};
+
+PaymentStatus.defaultProps = {
+  language: undefined,
+  orgSlug: undefined,
+  isAuthenticated: undefined,
+  page: undefined,
 };

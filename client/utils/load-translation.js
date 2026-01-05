@@ -61,7 +61,6 @@ const loadTranslationUtil = async (
         await importTranslation(orgSlug, language, setLanguage);
       } catch (error) {
         // Using default language of that organization.
-        /* eslint-disable-next-line no-console */
         console.log(
           "Cannot found translation for this language. Using default language.",
         );
@@ -89,7 +88,6 @@ const loadTranslation = async (
       availableLanguages,
     );
   } catch (err) {
-    /* eslint-disable-next-line no-console */
     console.error("Error in loading translations.");
   }
 };

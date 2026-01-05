@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import "./index.css";
 
 import axios from "axios";
@@ -30,16 +29,16 @@ class MobilePhoneChange extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      phone_number: "",
+      phoneNumber: "",
       errors: {},
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.componentIsMounted = false;
+    this.abortController = null;
   }
 
   async componentDidMount() {
-    this.componentIsMounted = true;
+    this.abortController = new AbortController();
     const {setLoading} = this.context;
     const {cookies, orgSlug, setUserData, logout, setTitle, orgName, language} =
       this.props;
@@ -54,43 +53,46 @@ class MobilePhoneChange extends React.Component {
       logout,
       language,
     );
-    if (isValid && this.componentIsMounted) {
+    if (isValid && !this.abortController.signal.aborted) {
       ({userData} = this.props);
-      const {phone_number} = userData;
-      this.setState({phone_number});
+      const {phoneNumber} = userData;
+      this.setState({phoneNumber});
     }
     setLoading(false);
   }
 
   componentWillUnmount() {
-    this.componentIsMounted = false;
+    if (this.abortController) {
+      this.abortController.abort();
+    }
   }
 
   handleSubmit(event) {
     event.preventDefault();
     const {setLoading} = this.context;
     const {orgSlug, setUserData, userData, language, navigate} = this.props;
-    const {phone_number, errors} = this.state;
+    const {phoneNumber, errors} = this.state;
     const url = mobilePhoneChangeUrl(orgSlug);
-    this.setState({errors: {...errors, phone_number: ""}});
+    this.setState({errors: {...errors, phoneNumber: ""}});
     setLoading(true);
     return axios({
       method: "post",
       headers: {
         "content-type": "application/x-www-form-urlencoded",
         "accept-language": getLanguageHeaders(language),
-        Authorization: `Bearer ${userData.auth_token}`,
+        Authorization: `Bearer ${userData.authToken}`,
       },
       url,
       data: qs.stringify({
-        phone_number,
+        phoneNumber,
       }),
+      signal: this.abortController.signal,
     })
       .then(() => {
         this.setState({
           errors: {},
         });
-        setUserData({...userData, is_verified: false, phone_number});
+        setUserData({...userData, isVerified: false, phoneNumber});
         setLoading(false);
         toast.success(t`TOKEN_SENT`);
         navigate(`/${orgSlug}/mobile-phone-verification`);
@@ -106,7 +108,7 @@ class MobilePhoneChange extends React.Component {
         this.setState({
           errors: {
             ...errors,
-            ...(data.phone_number ? {phone_number: data.phone_number} : null),
+            ...(data.phoneNumber ? {phoneNumber: data.phoneNumber} : null),
             ...(errorText ? {nonField: errorText} : {nonField: ""}),
           },
         });
@@ -118,12 +120,12 @@ class MobilePhoneChange extends React.Component {
   }
 
   render() {
-    const {phone_number, errors} = this.state;
-    const {orgSlug, phone_number_change, settings, userData} = this.props;
-    const {input_fields} = phone_number_change;
+    const {phoneNumber, errors} = this.state;
+    const {orgSlug, phoneNumberChange, settings, userData} = this.props;
+    const {inputFields} = phoneNumberChange;
 
     if (
-      !settings.mobile_phone_verification ||
+      !settings.mobilePhoneVerification ||
       (userData.method !== undefined && userData.method !== "mobile_phone")
     ) {
       return <Navigate push to={`/${orgSlug}/status`} />;
@@ -142,16 +144,16 @@ class MobilePhoneChange extends React.Component {
               {getError(errors)}
               <div className="row phone-number">
                 <label htmlFor="phone-number">{t`PHONE_LBL`}</label>
-                {getError(errors, "phone_number")}
+                {getError(errors, "phoneNumber")}
                 <Suspense
                   fallback={
                     <input
-                      name="phone_number"
+                      name="phoneNumber"
                       className="form-control input"
-                      value={phone_number}
+                      value={phoneNumber}
                       onChange={(value) =>
                         this.handleChange({
-                          target: {name: "phone_number", value: `+${value}`},
+                          target: {name: "phoneNumber", value: `+${value}`},
                         })
                       }
                       onKeyDown={(event) => {
@@ -163,20 +165,18 @@ class MobilePhoneChange extends React.Component {
                   }
                 >
                   <PhoneInput
-                    name="phone_number"
-                    onlyCountries={
-                      input_fields.phone_number.only_countries || []
-                    }
+                    name="phoneNumber"
+                    onlyCountries={inputFields.phoneNumber.only_countries || []}
                     preferredCountries={
-                      input_fields.phone_number.preferred_countries || []
+                      inputFields.phoneNumber.preferred_countries || []
                     }
                     excludeCountries={
-                      input_fields.phone_number.exclude_countries || []
+                      inputFields.phoneNumber.exclude_countries || []
                     }
-                    value={phone_number}
+                    value={phoneNumber}
                     onChange={(value) =>
                       this.handleChange({
-                        target: {name: "phone_number", value: `+${value}`},
+                        target: {name: "phoneNumber", value: `+${value}`},
                       })
                     }
                     onKeyDown={(event) => {
@@ -184,13 +184,13 @@ class MobilePhoneChange extends React.Component {
                     }}
                     placeholder={t`PHONE_PHOLD`}
                     enableSearch={Boolean(
-                      input_fields.phone_number.enable_search,
+                      inputFields.phoneNumber.enable_search,
                     )}
                     inputProps={{
-                      name: "phone_number",
+                      name: "phoneNumber",
                       id: "phone-number",
                       className: `form-control input ${
-                        errors.phone_number ? "error" : ""
+                        errors.phoneNumber ? "error" : ""
                       }`,
                       required: true,
                     }}
@@ -223,9 +223,9 @@ class MobilePhoneChange extends React.Component {
 export default MobilePhoneChange;
 MobilePhoneChange.contextType = LoadingContext;
 MobilePhoneChange.propTypes = {
-  phone_number_change: PropTypes.shape({
-    input_fields: PropTypes.shape({
-      phone_number: PropTypes.shape({
+  phoneNumberChange: PropTypes.shape({
+    inputFields: PropTypes.shape({
+      phoneNumber: PropTypes.shape({
         only_countries: PropTypes.array,
         preferred_countries: PropTypes.array,
         exclude_countries: PropTypes.array,
@@ -233,12 +233,12 @@ MobilePhoneChange.propTypes = {
       }),
     }).isRequired,
     buttons: PropTypes.shape({
-      change_phone_number: PropTypes.bool,
+      change_phoneNumber: PropTypes.bool,
       cancel: PropTypes.bool,
     }).isRequired,
   }).isRequired,
   settings: PropTypes.shape({
-    mobile_phone_verification: PropTypes.bool,
+    mobilePhoneVerification: PropTypes.bool,
   }).isRequired,
   orgSlug: PropTypes.string.isRequired,
   orgName: PropTypes.string.isRequired,

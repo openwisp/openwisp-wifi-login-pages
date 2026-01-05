@@ -2,23 +2,22 @@ import {render, screen} from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
 
+import getConfig from "../../utils/get-config";
+import loadTranslation from "../../utils/load-translation";
+import Contact from "./contact";
+
 // Mock modules BEFORE importing - jest.mock must be before imports
-/* eslint-disable import/first */
 jest.mock("../../utils/get-config", () => ({
   __esModule: true,
   default: jest.fn(() => ({
     components: {
       contact_page: {
-        social_links: [],
+        socialLinks: [],
       },
     },
   })),
 }));
 jest.mock("../../utils/load-translation");
-
-import getConfig from "../../utils/get-config";
-import loadTranslation from "../../utils/load-translation";
-import Contact from "./contact";
 /* eslint-enable import/first */
 
 const defaultConfig = getConfig("default", true);
@@ -48,7 +47,7 @@ const createTestProps = (props) => ({
   language: "en",
   orgSlug: "default",
   contactPage: defaultConfig.components.contact_page,
-  userData: {is_verified: true},
+  userData: {isVerified: true},
   ...props,
 });
 
@@ -73,7 +72,7 @@ describe("<Contact /> rendering", () => {
 
   it("should render without authenticated links when not authenticated", () => {
     props = createTestProps();
-    props.contactPage.social_links = links;
+    props.contactPage.socialLinks = links;
     props.isAuthenticated = false;
     render(<Contact {...props} />);
 
@@ -85,7 +84,7 @@ describe("<Contact /> rendering", () => {
 
   it("should render with authenticated links when authenticated", () => {
     props = createTestProps();
-    props.contactPage.social_links = links;
+    props.contactPage.socialLinks = links;
     props.isAuthenticated = true;
     render(<Contact {...props} />);
 

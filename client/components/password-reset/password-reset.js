@@ -23,13 +23,19 @@ export default class PasswordReset extends React.Component {
       errors: {},
       success: false,
     };
+    this.componentIsMounted = false;
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
+    this.componentIsMounted = true;
     const {setTitle, orgName} = this.props;
     setTitle(t`PWD_RESET_TITL`, orgName);
+  }
+
+  componentWillUnmount() {
+    this.componentIsMounted = false;
   }
 
   handleChange(event) {
@@ -55,11 +61,13 @@ export default class PasswordReset extends React.Component {
       }),
     })
       .then((response) => {
-        this.setState({
-          errors: {},
-          input: "",
-          success: response.data.detail,
-        });
+        if (this.componentIsMounted) {
+          this.setState({
+            errors: {},
+            input: "",
+            success: response.data.detail,
+          });
+        }
         setLoading(false);
         toast.success(response.data.detail);
       })
@@ -68,12 +76,14 @@ export default class PasswordReset extends React.Component {
         logError(error, errorText);
         setLoading(false);
         toast.error(errorText);
-        this.setState({
-          errors: {
-            ...errors,
-            ...(errorText ? {input: errorText} : {input: ""}),
-          },
-        });
+        if (this.componentIsMounted) {
+          this.setState({
+            errors: {
+              ...errors,
+              ...(errorText ? {input: errorText} : {input: ""}),
+            },
+          });
+        }
       });
   }
 

@@ -1,5 +1,4 @@
-/* eslint-disable camelcase */
-import {render, waitFor} from "@testing-library/react";
+import {render, screen, waitFor} from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
 import {MemoryRouter} from "react-router-dom";
@@ -7,8 +6,12 @@ import {Cookies} from "react-cookie";
 import {Provider} from "react-redux";
 import {HelmetProvider} from "react-helmet-async";
 
+import getConfig from "../../utils/get-config";
+import loadTranslation from "../../utils/load-translation";
+import OrganizationWrapper from "./organization-wrapper";
+import needsVerify from "../../utils/needs-verify";
+
 // Mock modules BEFORE importing
-/* eslint-disable import/first */
 jest.mock("../../utils/get-config", () => ({
   __esModule: true,
   default: jest.fn(() => ({
@@ -38,25 +41,20 @@ jest.mock("../../utils/load-translation", () =>
   jest.fn().mockResolvedValue(undefined),
 );
 jest.mock("../../utils/needs-verify");
-
-import getConfig from "../../utils/get-config";
-import loadTranslation from "../../utils/load-translation";
-import OrganizationWrapper from "./organization-wrapper";
-import needsVerify from "../../utils/needs-verify";
 /* eslint-enable import/first */
 
 const userData = {
-  is_active: true,
-  is_verified: true,
+  isActive: true,
+  isVerified: true,
   method: "mobile_phone",
   email: "tester@test.com",
-  phone_number: "+393664050800",
+  phoneNumber: "+393664050800",
   username: "+393664050800",
   key: "b72dad1cca4807dc21c00b0b2f171d29415ac541",
   radius_user_token: "jwyVSZYOze16ej6cc1AW5cxhRjahesLzh1Tm2y0d",
-  first_name: "",
-  last_name: "",
-  birth_date: null,
+  firstName: "",
+  lastName: "",
+  birthDate: null,
   location: "",
 };
 
@@ -73,9 +71,9 @@ const createTestProps = (props) => ({
       favicon: null,
       isAuthenticated: true,
       settings: {
-        mobile_phone_verification: true,
+        mobilePhoneVerification: true,
         subscriptions: true,
-        passwordless_auth_token_name: "sesame",
+        passwordless_authToken_name: "sesame",
       },
       default_language: "en",
       userData,
@@ -141,49 +139,37 @@ describe("<OrganizationWrapper /> rendering", () => {
 
   it("should render correctly when in loading state", () => {
     props.organization = {...props.organization, exists: undefined};
-    const {container} = renderWithRouter(props);
+    renderWithRouter(props);
 
-    // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-    expect(container.querySelector(".app-container")).not.toBeInTheDocument();
-    // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
+    expect(screen.queryByTestId("app-container")).not.toBeInTheDocument();
     expect(
-      container.querySelector(".org-wrapper-not-found"),
+      screen.queryByTestId("org-wrapper-not-found"),
     ).not.toBeInTheDocument();
-    // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-    expect(container.querySelector(".loader-container")).toBeInTheDocument();
+    expect(screen.getByTestId("loader-container")).toBeInTheDocument();
   });
 
   it("should render correctly when organization doesn't exist", async () => {
     props.organization = {...props.organization, exists: false};
-    const {container} = renderWithRouter(props);
+    renderWithRouter(props);
 
     // Wait for the async DoesNotExist component to load
     await waitFor(() => {
-      // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-      expect(
-        container.querySelector(".org-wrapper-not-found"),
-      ).toBeInTheDocument();
+      expect(screen.getByTestId("org-wrapper-not-found")).toBeInTheDocument();
     });
-    // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-    expect(container.querySelector(".app-container")).not.toBeInTheDocument();
-    // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-    expect(
-      container.querySelector(".loader-container"),
-    ).not.toBeInTheDocument();
+    expect(screen.queryByTestId("app-container")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("loader-container")).not.toBeInTheDocument();
   });
 
   it("should render correctly when organization exists", async () => {
     props.organization = {...props.organization, exists: true};
-    const {container} = renderWithRouter(props);
+    renderWithRouter(props);
 
     // Component needs to go through async state changes before rendering app-container
     await waitFor(() => {
-      // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-      expect(container.querySelector(".app-container")).toBeInTheDocument();
+      expect(screen.getByTestId("app-container")).toBeInTheDocument();
     });
-    // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
     expect(
-      container.querySelector(".org-wrapper-not-found"),
+      screen.queryByTestId("org-wrapper-not-found"),
     ).not.toBeInTheDocument();
     // Note: There can be a loader-container if loading state is true,
     // but what matters is that the main content renders when org exists
@@ -199,12 +185,11 @@ describe("<OrganizationWrapper /> rendering", () => {
       exists: true,
     };
 
-    const {container} = renderWithRouter(props);
+    renderWithRouter(props);
 
     // Wait for component to render app-container (main content)
     await waitFor(() => {
-      // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-      expect(container.querySelector(".app-container")).toBeInTheDocument();
+      expect(screen.getByTestId("app-container")).toBeInTheDocument();
     });
 
     // CSS files are passed to Helmet which renders them in document.head
@@ -226,12 +211,11 @@ describe("<OrganizationWrapper /> rendering", () => {
       exists: true,
     };
 
-    const {container} = renderWithRouter(props);
+    renderWithRouter(props);
 
     // Wait for component to render app-container (main content)
     await waitFor(() => {
-      // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-      expect(container.querySelector(".app-container")).toBeInTheDocument();
+      expect(screen.getByTestId("app-container")).toBeInTheDocument();
     });
 
     // JS files are passed to Helmet which renders them in document.head
@@ -285,7 +269,7 @@ describe("<OrganizationWrapper /> interactions", () => {
           slug: "default",
           favicon: "favicon.png",
           default_language: "en",
-          userData: {is_active: true, is_verified: true},
+          userData: {isActive: true, isVerified: true},
           components: {
             ...defaultConfig.components,
             contact_page: {},
@@ -363,8 +347,7 @@ describe("<OrganizationWrapper /> interactions", () => {
 
     // Wait for async state changes
     await waitFor(() => {
-      // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-      expect(container.querySelector(".app-container")).toBeInTheDocument();
+      expect(screen.getByTestId("app-container")).toBeInTheDocument();
     });
 
     expect(container).toMatchSnapshot();
@@ -395,12 +378,11 @@ describe("<OrganizationWrapper /> interactions", () => {
   });
 
   it("should change language if different language is selected", async () => {
-    const {rerender, container} = renderWithRouter(props);
+    const {rerender} = renderWithRouter(props);
 
     // Wait for initial render to complete
     await waitFor(() => {
-      // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-      expect(container.querySelector(".app-container")).toBeInTheDocument();
+      expect(screen.getByTestId("app-container")).toBeInTheDocument();
     });
 
     // Get the call count after initial render
@@ -471,8 +453,7 @@ describe("<OrganizationWrapper /> interactions", () => {
 
     // Authenticated users should see the status page content
     await waitFor(() => {
-      // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-      expect(container.querySelector(".app-container")).toBeInTheDocument();
+      expect(screen.getByTestId("app-container")).toBeInTheDocument();
     });
   });
 });
@@ -501,8 +482,7 @@ describe("Test Organization Wrapper for unauthenticated users", () => {
 
     // Should render login page for unauthenticated users
     await waitFor(() => {
-      // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-      expect(container.querySelector(".app-container")).toBeInTheDocument();
+      expect(screen.getByTestId("app-container")).toBeInTheDocument();
     });
 
     localStorage.removeItem("userAutoLogin");
@@ -510,12 +490,11 @@ describe("Test Organization Wrapper for unauthenticated users", () => {
 
   it("should redirect unauthenticated users from protected routes", async () => {
     props.location = {pathname: "/default/change-password"};
-    const {container} = renderWithRouter(props);
+    renderWithRouter(props);
 
     // Unauthenticated users should be redirected away from protected routes
     await waitFor(() => {
-      // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-      expect(container.querySelector(".app-container")).toBeInTheDocument();
+      expect(screen.getByTestId("app-container")).toBeInTheDocument();
     });
   });
 });
@@ -543,26 +522,24 @@ describe("Test Organization Wrapper for authenticated and unverified users", () 
 
     // Unverified users should see verification page
     await waitFor(() => {
-      // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-      expect(container.querySelector(".app-container")).toBeInTheDocument();
+      expect(screen.getByTestId("app-container")).toBeInTheDocument();
     });
   });
 
   it("should redirect unverified users to verification", async () => {
     props.location = {pathname: "/default/status"};
-    const {container} = renderWithRouter(props);
+    renderWithRouter(props);
 
     // Unverified users trying to access status should be redirected
     await waitFor(() => {
-      // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-      expect(container.querySelector(".app-container")).toBeInTheDocument();
+      expect(screen.getByTestId("app-container")).toBeInTheDocument();
     });
   });
 });
 
 describe("Test <OrganizationWrapper /> routes", () => {
   let props;
-  const {components, languages, privacy_policy, terms_and_conditions} =
+  const {components, languages, privacyPolicy, termsAndConditions} =
     defaultConfig;
 
   const mountComponent = (passedProps, initialEntries) => {
@@ -612,8 +589,8 @@ describe("Test <OrganizationWrapper /> routes", () => {
       ...props.organization.configuration,
       components,
       languages,
-      privacy_policy,
-      terms_and_conditions,
+      privacyPolicy,
+      termsAndConditions,
     };
     jest.spyOn(global.console, "error").mockImplementation(() => {});
   });
@@ -627,8 +604,7 @@ describe("Test <OrganizationWrapper /> routes", () => {
     const {container} = mountComponent(props, ["/default/status"]);
 
     await waitFor(() => {
-      // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-      expect(container.querySelector(".app-container")).toBeInTheDocument();
+      expect(screen.getByTestId("app-container")).toBeInTheDocument();
     });
 
     // Authenticated users should see status content
@@ -640,8 +616,7 @@ describe("Test <OrganizationWrapper /> routes", () => {
     const {container} = mountComponent(props, ["/default/status"]);
 
     await waitFor(() => {
-      // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-      expect(container.querySelector(".app-container")).toBeInTheDocument();
+      expect(screen.getByTestId("app-container")).toBeInTheDocument();
     });
 
     // Should redirect or show login-related content
@@ -650,68 +625,58 @@ describe("Test <OrganizationWrapper /> routes", () => {
 
   it("should render registration page for unauthenticated users", async () => {
     props.organization.configuration.isAuthenticated = false;
-    const {container} = mountComponent(props, ["/default/registration"]);
+    mountComponent(props, ["/default/registration"]);
 
     await waitFor(() => {
-      // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-      expect(container.querySelector(".app-container")).toBeInTheDocument();
+      expect(screen.getByTestId("app-container")).toBeInTheDocument();
     });
   });
 
   it("should render password reset page", async () => {
     props.organization.configuration.isAuthenticated = false;
-    const {container} = mountComponent(props, ["/default/password/reset"]);
+    mountComponent(props, ["/default/password/reset"]);
 
     await waitFor(() => {
-      // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-      expect(container.querySelector(".app-container")).toBeInTheDocument();
+      expect(screen.getByTestId("app-container")).toBeInTheDocument();
     });
   });
 
   it("should render change password page for authenticated users", async () => {
-    const {container} = mountComponent(props, ["/default/change-password"]);
+    mountComponent(props, ["/default/change-password"]);
 
     await waitFor(() => {
-      // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-      expect(container.querySelector(".app-container")).toBeInTheDocument();
+      expect(screen.getByTestId("app-container")).toBeInTheDocument();
     });
   });
 
   it("should render mobile phone change page for authenticated users", async () => {
-    const {container} = mountComponent(props, ["/default/change-phone-number"]);
+    mountComponent(props, ["/default/change-phone-number"]);
 
     await waitFor(() => {
-      // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-      expect(container.querySelector(".app-container")).toBeInTheDocument();
+      expect(screen.getByTestId("app-container")).toBeInTheDocument();
     });
   });
 
   it("should handle 404 routes", async () => {
-    const {container} = mountComponent(props, ["/default/non-existent-route"]);
+    mountComponent(props, ["/default/non-existent-route"]);
 
     await waitFor(() => {
-      // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-      expect(container.querySelector(".app-container")).toBeInTheDocument();
+      expect(screen.getByTestId("app-container")).toBeInTheDocument();
     });
 
     // Should show 404 page content
     await waitFor(() => {
-      // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-      expect(container.querySelector("#not-foud-404")).toBeInTheDocument();
+      expect(screen.getByTestId("not-found-404")).toBeInTheDocument();
     });
   });
 
   it("should load header and footer on all routes", async () => {
-    const {container} = mountComponent(props, ["/default/status"]);
-
+    mountComponent(props, ["/default/status"]);
     await waitFor(() => {
-      // Header and footer should be present
-      // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-      expect(
-        container.querySelector(".header-container, .header-mobile"),
-      ).toBeTruthy();
-      // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-      expect(container.querySelector(".footer-container")).toBeTruthy();
+      // Header renders both desktop and mobile versions, so use queryAllByTestId
+      const headers = screen.queryAllByTestId("header");
+      expect(headers.length).toBeGreaterThan(0);
+      expect(screen.getByTestId("footer")).toBeInTheDocument();
     });
   });
 });

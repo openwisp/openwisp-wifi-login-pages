@@ -15,7 +15,7 @@ const mobilePhoneNumberChange = (req, res) => {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
       const {host} = conf;
-      const url = reverse("mobile_phone_number_change", getSlug(conf));
+      const url = reverse("mobile_phoneNumberChange", getSlug(conf));
       const timeout = conf.timeout * 1000;
       const token = req.headers.authorization.split(" ");
       // make AJAX request
@@ -28,7 +28,7 @@ const mobilePhoneNumberChange = (req, res) => {
         },
         url: `${host}${url}/`,
         timeout,
-        data: qs.stringify({token, phone_number: req.body.phone_number}),
+        data: qs.stringify({token, phoneNumber: req.body.phoneNumber}),
       })
         .then((response) => {
           res

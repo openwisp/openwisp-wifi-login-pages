@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import "./index.css";
 
 import PropTypes from "prop-types";
@@ -12,9 +11,9 @@ import shouldLinkBeShown from "../../utils/should-link-be-shown";
 export default class Footer extends React.Component {
   render() {
     const {footer, language, isAuthenticated, userData, orgSlug} = this.props;
-    const {links, after_html} = footer;
+    const {links, afterHtml} = footer;
     return (
-      <div className="footer-container">
+      <div data-testid="footer" className="footer-container">
         <div className="footer-row-1">
           <div className="footer-row-1-inner">
             {links &&
@@ -44,9 +43,9 @@ export default class Footer extends React.Component {
               })}
           </div>
         </div>
-        {after_html && (
+        {afterHtml && (
           <div className="footer-row-2">
-            {getHtml(after_html, language, "footer-row-2-inner")}
+            {getHtml(afterHtml, language, "footer-row-2-inner")}
           </div>
         )}
       </div>
@@ -62,7 +61,7 @@ Footer.propTypes = {
   orgSlug: PropTypes.string.isRequired,
   footer: PropTypes.shape({
     links: PropTypes.array,
-    after_html: PropTypes.object,
+    afterHtml: PropTypes.object,
   }).isRequired,
   isAuthenticated: PropTypes.bool,
   userData: PropTypes.object.isRequired,

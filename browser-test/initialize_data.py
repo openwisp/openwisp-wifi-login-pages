@@ -69,7 +69,7 @@ if create_mobile_verification_org:
         username=data["phoneNumber"],
         password=data["password"],
         email=data["email"],
-        phone_number=data["phoneNumber"],
+        phoneNumber=data["phoneNumber"],
     )
     RegisteredUser.objects.create(user=user, method=data["method"])
     OrganizationUser.objects.create(organization=org, user=user)

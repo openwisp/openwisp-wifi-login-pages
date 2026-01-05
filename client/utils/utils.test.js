@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {MemoryRouter} from "react-router-dom";
 import axios from "axios";
 import {Cookies} from "react-cookie";
-import {render, fireEvent} from "@testing-library/react";
+import {render, screen, fireEvent} from "@testing-library/react";
 import "@testing-library/jest-dom";
 import * as dependency from "react-toastify";
 import authenticate from "./authenticate";
@@ -45,23 +45,30 @@ describe("renderAdditionalInfo tests", () => {
   const component = "test";
   loadTranslation("en", "default");
   it("should return expected output", () => {
-    let output = renderAdditionalInfo(text, orgSlug, component);
-    expect(output[0]).toEqual("sample test");
-    text = "sample {terms_and_conditions} test";
-    output = renderAdditionalInfo(text, orgSlug, component);
-    expect(output[1].props.children).toBe("terms and conditions");
-    text = "sample {privacy_policy} test";
-    output = renderAdditionalInfo(text, orgSlug, component);
-    expect(output[1].props.children).toBe("privacy policy");
-    text = "sample {privacy_policy} test {terms_and_conditions}";
-    output = renderAdditionalInfo(text, orgSlug, component);
-    expect(output[1].props.children).toBe("privacy policy");
-    expect(output[3].props.children).toBe("terms and conditions");
+    let result;
+    result = renderAdditionalInfo(text, orgSlug, component);
+    expect(result[0]).toEqual("sample test");
+    text = "sample {termsAndConditions} test";
+    result = renderAdditionalInfo(text, orgSlug, component);
+    expect(result[1]).toHaveProperty("props");
+    expect(result[1].props).toHaveProperty("children", "terms and conditions");
+    text = "sample {privacyPolicy} test";
+    result = renderAdditionalInfo(text, orgSlug, component);
+    expect(result[1]).toHaveProperty("props");
+    expect(result[1].props).toHaveProperty("children", "privacy policy");
+    text = "sample {privacyPolicy} test {termsAndConditions}";
+    result = renderAdditionalInfo(text, orgSlug, component);
+    expect(result[1]).toHaveProperty("props");
+    expect(result[1].props).toHaveProperty("children", "privacy policy");
+    expect(result[3]).toHaveProperty("props");
+    expect(result[3].props).toHaveProperty("children", "terms and conditions");
 
-    text = "{terms_and_conditions} sample {privacy_policy} test";
-    output = renderAdditionalInfo(text, orgSlug, component);
-    expect(output[1].props.children).toBe("terms and conditions");
-    expect(output[3].props.children).toBe("privacy policy");
+    text = "{termsAndConditions} sample {privacyPolicy} test";
+    result = renderAdditionalInfo(text, orgSlug, component);
+    expect(result[1]).toHaveProperty("props");
+    expect(result[1].props).toHaveProperty("children", "terms and conditions");
+    expect(result[3]).toHaveProperty("props");
+    expect(result[3].props).toHaveProperty("children", "privacy policy");
   });
 });
 
@@ -91,15 +98,15 @@ describe("authenticate tests", () => {
       get: jest.fn(),
     };
     const sessionKey = "sessionKey";
-    sessionStorage.setItem(`${orgSlug}_auth_token`, sessionKey);
+    sessionStorage.setItem(`${orgSlug}_authToken`, sessionKey);
     expect(authenticate(cookies, orgSlug)).toBe(true);
-    expect(cookies.remove).toHaveBeenCalledWith(`${orgSlug}_auth_token`, {
+    expect(cookies.remove).toHaveBeenCalledWith(`${orgSlug}_authToken`, {
       path: "/",
     });
     expect(cookies.remove).toHaveBeenCalledWith(`${orgSlug}_username`, {
       path: "/",
     });
-    expect(cookies.get).toHaveBeenCalledWith(`${orgSlug}_auth_token`);
+    expect(cookies.get).toHaveBeenCalledWith(`${orgSlug}_authToken`);
   });
 });
 
@@ -150,7 +157,7 @@ describe("shouldLinkBeShown tests", () => {
     const {link, isAuthenticated, userData} = createArgs(
       {authenticated: true, verified: true},
       true,
-      {is_verified: false},
+      {isVerified: false},
     );
     expect(shouldLinkBeShown(link, isAuthenticated, userData)).toBe(false);
   });
@@ -199,7 +206,7 @@ describe("Validate Token tests", () => {
     orgSlug: "default",
     cookies: new Cookies(),
     setUserData: jest.fn(),
-    userData: {is_active: true, is_verified: null, mustLogin: true},
+    userData: {isActive: true, isVerified: null, mustLogin: true},
     logout: jest.fn(),
     language: "en",
   });
@@ -225,18 +232,18 @@ describe("Validate Token tests", () => {
         status: 200,
         statusText: "OK",
         data: {
-          response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+          response_code: "authToken_VALIDATION_SUCCESSFUL",
           radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
           username: "tester@tester.com",
-          is_active: true,
-          is_verified: true,
-          phone_number: "+393660011222",
+          isActive: true,
+          isVerified: true,
+          phoneNumber: "+393660011222",
         },
       }),
     );
     const {orgSlug, cookies, setUserData, userData, logout, language} =
       getArgs();
-    cookies.set(`${orgSlug}_auth_token`, "token");
+    cookies.set(`${orgSlug}_authToken`, "token");
     const result = await validateToken(
       cookies,
       orgSlug,
@@ -273,18 +280,18 @@ describe("Validate Token tests", () => {
         status: 200,
         statusText: "OK",
         data: {
-          response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+          response_code: "authToken_VALIDATION_SUCCESSFUL",
           radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
           username: "tester@tester.com",
-          is_active: true,
-          is_verified: true,
-          phone_number: "+393660011222",
+          isActive: true,
+          isVerified: true,
+          phoneNumber: "+393660011222",
         },
       }),
     );
     const {orgSlug, cookies, setUserData, userData, logout, language} =
       getArgs();
-    cookies.set(`${orgSlug}_auth_token`, "token");
+    cookies.set(`${orgSlug}_authToken`, "token");
     userData.password_expired = true;
     userData.radius_user_token = "token";
     const result = await validateToken(
@@ -327,7 +334,7 @@ describe("Validate Token tests", () => {
     expect(errorMethod).toHaveBeenCalledWith("Error occurred!");
     expect(logout).toHaveBeenCalledWith(expect.any(Cookies), "default");
     const cookiesArg = logout.mock.calls[0][0];
-    expect(cookiesArg.cookies).toEqual({default_auth_token: "token"});
+    expect(cookiesArg.cookies).toEqual({default_authToken: "token"});
     expect(console.log).toHaveBeenCalledWith(response);
   });
   it("should show error toast on invalid token", async () => {
@@ -355,7 +362,7 @@ describe("Validate Token tests", () => {
     expect(errorMethod).toHaveBeenCalledWith("Error occurred!");
     expect(logout).toHaveBeenCalledWith(expect.any(Cookies), "default");
     const cookiesArg = logout.mock.calls[0][0];
-    expect(cookiesArg.cookies).toEqual({default_auth_token: "token"});
+    expect(cookiesArg.cookies).toEqual({default_authToken: "token"});
     expect(setUserData.mock.calls.length).toBe(1);
     expect(console.log).toHaveBeenCalledWith(response);
     expect(setUserData.mock.calls.pop()).toEqual([initialState.userData]);
@@ -372,7 +379,7 @@ describe("Validate Token tests", () => {
     axios.mockImplementationOnce(() => Promise.reject(responseError));
     const errorMethod = jest.spyOn(dependency.toast, "error");
     const {orgSlug, cookies, setUserData, userData, logout} = getArgs();
-    cookies.set(`${orgSlug}_auth_token`, "token");
+    cookies.set(`${orgSlug}_authToken`, "token");
     const result = await validateToken(
       cookies,
       orgSlug,
@@ -389,7 +396,7 @@ describe("Validate Token tests", () => {
     );
     expect(logout).toHaveBeenCalledWith(expect.any(Cookies), "default");
     const cookiesArg = logout.mock.calls[0][0];
-    expect(cookiesArg.cookies).toEqual({default_auth_token: "token"});
+    expect(cookiesArg.cookies).toEqual({default_authToken: "token"});
     expect(setUserData.mock.calls.length).toBe(1);
     expect(setUserData.mock.calls.pop()).toEqual([initialState.userData]);
   });
@@ -407,7 +414,7 @@ describe("password-toggle tests", () => {
         focus: focusMock,
       },
     };
-    const {container} = render(
+    render(
       <PasswordToggleIcon
         inputRef={inputRef}
         parentClassName="password-toggle"
@@ -415,7 +422,7 @@ describe("password-toggle tests", () => {
     );
 
     // Click the toggle icon
-    const toggleIcon = container.querySelector(".password-toggle");
+    const toggleIcon = screen.getByTestId("password-toggle-icon");
     expect(toggleIcon).toBeInTheDocument();
     fireEvent.click(toggleIcon);
 
@@ -443,7 +450,7 @@ describe("password-toggle tests", () => {
       },
     };
     const toggler = jest.fn();
-    const {container} = render(
+    render(
       <PasswordToggleIcon
         inputRef={inputRef}
         secondInputRef={secondInputRef}
@@ -454,7 +461,7 @@ describe("password-toggle tests", () => {
     );
 
     // Click the toggle icon
-    const toggleIcon = container.querySelector(".password-toggle");
+    const toggleIcon = screen.getByTestId("password-toggle-icon");
     expect(toggleIcon).toBeInTheDocument();
     fireEvent.click(toggleIcon);
 
@@ -488,7 +495,7 @@ describe("password-toggle tests", () => {
     const toggler = jest.fn();
 
     // Test with hidePassword=true (should show eye icon)
-    const {container: container1} = render(
+    render(
       <PasswordToggleIcon
         inputRef={inputRef}
         secondInputRef={secondInputRef}
@@ -496,10 +503,10 @@ describe("password-toggle tests", () => {
         hidePassword
       />,
     );
-    expect(container1.querySelector("i.eye")).toBeInTheDocument();
+    expect(screen.getByTitle("reveal password")).toBeInTheDocument();
 
     // Test with hidePassword=false (should show eye-slash icon)
-    const {container: container2} = render(
+    render(
       <PasswordToggleIcon
         inputRef={inputRef}
         secondInputRef={secondInputRef}
@@ -507,7 +514,7 @@ describe("password-toggle tests", () => {
         hidePassword={false}
       />,
     );
-    expect(container2.querySelector("i.eye-slash")).toBeInTheDocument();
+    expect(screen.getByTitle("hide password")).toBeInTheDocument();
   });
 });
 
@@ -524,12 +531,13 @@ describe("submit-on-enter tests", () => {
     expect(spyFn).toHaveBeenCalled();
   });
   it("should call getElementById", () => {
-    const spyFn = jest.fn();
-    spyFn.mockReturnValueOnce({reportValidity: () => {}});
     const instance = {handleSubmit: () => {}};
-    document.getElementById = spyFn;
+    const spyFn = jest
+      .spyOn(document, "getElementById")
+      .mockReturnValueOnce({reportValidity: () => {}});
     submitOnEnter(event, instance, "formID");
     expect(spyFn).toHaveBeenCalledWith("formID");
+    spyFn.mockRestore();
   });
   it("should not call anything if enter is not pressed", () => {
     event.keyCode = 18;
@@ -543,14 +551,14 @@ describe("submit-on-enter tests", () => {
 describe("handleSession tests", () => {
   const orgSlug = "default";
   const token = "token";
-  it("should clear auth_token cookie if sessionKey is present", () => {
+  it("should clear authToken cookie if sessionKey is present", () => {
     const spyFn = jest.fn();
     const cookies = {
       remove: spyFn,
     };
-    sessionStorage.setItem(`${orgSlug}_auth_token`, token);
+    sessionStorage.setItem(`${orgSlug}_authToken`, token);
     handleSession(orgSlug, token, cookies);
-    expect(spyFn).toHaveBeenCalledWith(`${orgSlug}_auth_token`, {path: "/"});
+    expect(spyFn).toHaveBeenCalledWith(`${orgSlug}_authToken`, {path: "/"});
   });
 });
 
@@ -599,14 +607,14 @@ describe("needs-verify tests", () => {
   let settings;
   let userData;
   beforeEach(() => {
-    settings = {mobile_phone_verification: true, subscriptions: true};
-    userData = {is_active: true, is_verified: false};
+    settings = {mobilePhoneVerification: true, subscriptions: true};
+    userData = {isActive: true, isVerified: false};
   });
   it("should return false if method is none", () => {
     expect(needsVerify("", {}, {})).toBe(false);
   });
   it("should return false if user is verified but not active", () => {
-    expect(needsVerify("", {is_active: false, is_verified: true}, {})).toBe(
+    expect(needsVerify("", {isActive: false, isVerified: true}, {})).toBe(
       false,
     );
   });
@@ -614,7 +622,7 @@ describe("needs-verify tests", () => {
     const method = "mobile_phone";
     userData.method = method;
     expect(needsVerify(method, userData, settings)).toBe(true);
-    userData.is_verified = true;
+    userData.isVerified = true;
     expect(needsVerify(method, userData, settings)).toBe(false);
   });
   it("should return true or false for bank_card method", () => {
@@ -628,28 +636,25 @@ describe("needs-verify tests", () => {
 
 describe("loader tests", () => {
   it("should default to .loader-container.full", () => {
-    const {container} = render(loader({}));
-    expect(
-      container.querySelector(".loader-container.full"),
-    ).toBeInTheDocument();
-    expect(container.querySelector(".loader")).toBeInTheDocument();
+    render(loader({}));
+    const loaderContainer = screen.getByTestId("loader-container");
+    expect(loaderContainer).toBeInTheDocument();
+    expect(loaderContainer).toHaveClass("loader-container", "full");
   });
 
   it("should show .loader-container.full", () => {
-    const {container} = render(loader({full: true}));
-    expect(
-      container.querySelector(".loader-container.full"),
-    ).toBeInTheDocument();
-    expect(container.querySelector(".loader")).toBeInTheDocument();
+    render(loader({full: true}));
+    const loaderContainer = screen.getByTestId("loader-container");
+    expect(loaderContainer).toBeInTheDocument();
+    expect(loaderContainer).toHaveClass("loader-container", "full");
   });
 
   it("should show .loader-container", () => {
-    const {container} = render(loader({full: false}));
-    expect(container.querySelector(".loader-container")).toBeInTheDocument();
-    expect(
-      container.querySelector(".loader-container.full"),
-    ).not.toBeInTheDocument();
-    expect(container.querySelector(".loader")).toBeInTheDocument();
+    render(loader({full: false}));
+    const loaderContainer = screen.getByTestId("loader-container");
+    expect(loaderContainer).toBeInTheDocument();
+    expect(loaderContainer).toHaveClass("loader-container");
+    expect(loaderContainer).not.toHaveClass("full");
   });
 });
 
@@ -681,7 +686,7 @@ describe("handle-change tests", () => {
   });
   it("should redirectToPayment", () => {
     const navigate = jest.fn();
-    const {container} = render(
+    render(
       <MemoryRouter>
         <button
           type="submit"
@@ -691,7 +696,7 @@ describe("handle-change tests", () => {
         </button>
       </MemoryRouter>,
     );
-    const button = container.querySelector("button");
+    const button = screen.getByRole("button", {name: "Test"});
     fireEvent.click(button);
     expect(navigate).toHaveBeenCalled();
   });
@@ -782,7 +787,7 @@ describe("getPaymentStatusRedirectUrl tests", () => {
     expect(result).toBe(`/${orgSlug}/payment/success`);
     expect(setUserData).toHaveBeenCalledTimes(1);
     expect(setUserData).toHaveBeenCalledWith({
-      is_verified: true,
+      isVerified: true,
       mustLogin: true,
       payment_url: null,
     });
@@ -882,13 +887,13 @@ describe("withRouteProps test", () => {
       props: PropTypes.object.isRequired,
     };
     const ComponentWithRouteProps = withRouteProps(Component);
-    const {container} = render(
+    render(
       <MemoryRouter>
         <ComponentWithRouteProps props={{extra: true}} />
       </MemoryRouter>,
     );
 
-    const component = container.querySelector('[data-testid="test-component"]');
+    const component = screen.getByTestId("test-component");
     expect(component).toBeInTheDocument();
 
     const props = JSON.parse(component.textContent);

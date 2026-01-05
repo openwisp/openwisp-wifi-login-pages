@@ -1,10 +1,15 @@
-import {render, fireEvent, screen} from "@testing-library/react";
+import {render, fireEvent, screen, within} from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
 import {MemoryRouter} from "react-router-dom";
 
+import getConfig from "../../utils/get-config";
+import loadTranslation from "../../utils/load-translation";
+import isInternalLink from "../../utils/check-internal-links";
+import Header from "./header";
+import {mapDispatchToProps} from "./index";
+
 // Mock modules BEFORE importing - jest.mock must be before imports
-/* eslint-disable import/first */
 jest.mock("../../utils/get-config", () => ({
   __esModule: true,
   default: jest.fn(() => ({
@@ -21,12 +26,6 @@ jest.mock("../../utils/get-config", () => ({
 }));
 jest.mock("../../utils/load-translation");
 jest.mock("../../utils/check-internal-links");
-
-import getConfig from "../../utils/get-config";
-import loadTranslation from "../../utils/load-translation";
-import isInternalLink from "../../utils/check-internal-links";
-import Header from "./header";
-import {mapDispatchToProps} from "./index";
 /* eslint-enable import/first */
 
 const defaultConfig = getConfig("default", true);
@@ -65,7 +64,7 @@ const createTestProps = (props) => ({
   location: {
     pathname: "/default/login",
   },
-  userData: {is_verified: true},
+  userData: {isVerified: true},
   ...props,
 });
 
@@ -170,7 +169,7 @@ describe("<Header /> rendering", () => {
   it("should not render with verified links if not verified", () => {
     props = createTestProps();
     props.isAuthenticated = true;
-    props.userData.is_verified = false;
+    props.userData.isVerified = false;
     props.header.links = headerLinks;
     render(
       <MemoryRouter>
@@ -186,58 +185,54 @@ describe("<Header /> rendering", () => {
   });
 
   it("should render 2 links", () => {
-    const {container} = render(
+    render(
       <MemoryRouter>
         <Header {...props} />
       </MemoryRouter>,
     );
-    // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-    const desktopLinks = container.querySelectorAll(".header-desktop-link");
+    const desktopNav = screen.getByTestId("desktop-navigation");
+    const desktopLinks = within(desktopNav).getAllByRole("link");
     expect(desktopLinks).toHaveLength(2);
   });
 
   it("should render 2 languages", () => {
-    const {container} = render(
+    render(
       <MemoryRouter>
         <Header {...props} />
       </MemoryRouter>,
     );
-    // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-    const desktopLanguageButtons = container.querySelectorAll(
-      ".header-desktop-language-btn",
-    );
+    const languageSelector = screen.getByTestId("desktop-language-selector");
+    const desktopLanguageButtons =
+      within(languageSelector).getAllByRole("button");
     expect(desktopLanguageButtons).toHaveLength(2);
   });
 
   it("should render english as default language", () => {
-    const {container} = render(
+    render(
       <MemoryRouter>
         <Header {...props} />
       </MemoryRouter>,
     );
-    // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-    const englishBtn = container.querySelector(
-      ".header-desktop-language-btn.header-language-btn-en",
-    );
-    // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-    const italianBtn = container.querySelector(
-      ".header-desktop-language-btn.header-language-btn-it",
-    );
+    const languageSelector = screen.getByTestId("desktop-language-selector");
+    const englishBtn = within(languageSelector).getByRole("button", {
+      name: /english/i,
+    });
+    const italianBtn = within(languageSelector).getByRole("button", {
+      name: /italian/i,
+    });
     expect(englishBtn).toHaveClass("active");
     expect(italianBtn).not.toHaveClass("active");
   });
 
   it("should render logo", () => {
-    const {container} = render(
+    render(
       <MemoryRouter>
         <Header {...props} />
       </MemoryRouter>,
     );
-    // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-    const desktopLogo = container.querySelector(
-      ".header-logo-image.header-desktop-logo-image",
-    );
+    const desktopLogo = screen.getAllByAltText("openwisp")[0];
     expect(desktopLogo).toBeInTheDocument();
+    expect(desktopLogo).toHaveClass("header-desktop-logo-image");
   });
 
   it("should not render logo", () => {
@@ -248,15 +243,12 @@ describe("<Header /> rendering", () => {
       },
     };
     props = createTestProps(logo);
-    const {container} = render(
+    render(
       <MemoryRouter>
         <Header {...props} />
       </MemoryRouter>,
     );
-    // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-    const desktopLogo = container.querySelector(
-      ".header-logo-image.header-desktop-logo-image",
-    );
+    const desktopLogo = screen.queryByAltText("openwisp");
     expect(desktopLogo).not.toBeInTheDocument();
   });
 
@@ -277,16 +269,12 @@ describe("<Header /> rendering", () => {
     expect(screen.getByText("announcement")).toBeInTheDocument();
     expect(container).toMatchSnapshot();
 
-    // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-    const closeButton = container.querySelector(".close-sticky-btn");
+    const closeButton = screen.getByRole("button", {name: "✖"});
     expect(closeButton).toBeInTheDocument();
     fireEvent.click(closeButton);
 
     expect(screen.queryByText("announcement")).not.toBeInTheDocument();
-    // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-    expect(
-      container.querySelector(".close-sticky-btn"),
-    ).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", {name: "✖"})).not.toBeInTheDocument();
   });
 
   it("should not show change password if login method is SAML / Social Login", () => {
@@ -296,7 +284,7 @@ describe("<Header /> rendering", () => {
         text: {en: "Change Password"},
         url: "/{orgSlug}/change-password",
         authenticated: true,
-        methods_excluded: ["saml", "social_login"],
+        methods_excluded: ["saml", "socialLogin"],
       },
     ];
     props.isAuthenticated = true;
@@ -309,7 +297,7 @@ describe("<Header /> rendering", () => {
     let changePasswordLinks = screen.queryAllByText("Change Password");
     expect(changePasswordLinks).toHaveLength(0);
 
-    props.userData.method = "social_login";
+    props.userData.method = "socialLogin";
     rerender(
       <MemoryRouter>
         <Header {...props} />
@@ -354,31 +342,33 @@ describe("<Header /> interactions", () => {
   });
 
   it("should call handleHamburger function when 'hamburger button' is clicked", () => {
-    const {container} = render(
+    render(
       <MemoryRouter>
         <Header {...props} />
       </MemoryRouter>,
     );
 
     const hamburger = screen.getByRole("button", {name: /menu/i});
+
+    // Before click, mobile menu should have display-none class
+    const mobileMenu = screen.getByTestId("mobile-menu");
+    expect(mobileMenu).toHaveClass("display-none");
+
     fireEvent.click(hamburger);
 
-    // Check if mobile menu is displayed
-    // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-    const mobileMenu = container.querySelector(".header-mobile-menu");
+    // After click, mobile menu should have display-flex class
     expect(mobileMenu).toHaveClass("display-flex");
   });
 
   it("should call handleHamburger function on Enter key press", () => {
-    const {container} = render(
+    render(
       <MemoryRouter>
         <Header {...props} />
       </MemoryRouter>,
     );
 
     const hamburger = screen.getByRole("button", {name: /menu/i});
-    // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-    const mobileMenu = container.querySelector(".header-mobile-menu");
+    const mobileMenu = screen.getByTestId("mobile-menu");
 
     fireEvent.keyUp(hamburger, {keyCode: 1});
     expect(mobileMenu).toHaveClass("display-none");

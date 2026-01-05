@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import "./index.css";
 
 import axios from "axios";
@@ -39,7 +38,7 @@ export default class Login extends React.Component {
     this.state = {
       username: "",
       password: "",
-      remember_me: true,
+      rememberMe: true,
       errors: {},
     };
     this.realmsRadiusLoginForm = React.createRef();
@@ -52,18 +51,18 @@ export default class Login extends React.Component {
     const username = getParameterByName("username");
     const token = getParameterByName("token");
     const {loginForm, setTitle, orgName, orgSlug, settings} = this.props;
-    const sesame_token = getParameterByName(
-      settings.passwordless_auth_token_name,
+    const sesameToken = getParameterByName(
+      settings.passwordless_authToken_name,
     );
     setTitle(t`LOGIN`, orgName);
-    let remember_me;
+    let rememberMe;
 
     if (localStorage.getItem("rememberMe") !== null) {
-      remember_me = localStorage.getItem("rememberMe") === "true";
+      rememberMe = localStorage.getItem("rememberMe") === "true";
     } else {
-      remember_me = loginForm.input_fields.remember_me.value;
+      rememberMe = loginForm.inputFields.rememberMe.value;
     }
-    this.setState({remember_me});
+    this.setState({rememberMe});
     Status.preload();
 
     // social login / SAML login
@@ -80,7 +79,7 @@ export default class Login extends React.Component {
         {
           username,
           key: token,
-          is_active: true,
+          isActive: true,
           radius_user_token: undefined,
         },
         true,
@@ -88,41 +87,41 @@ export default class Login extends React.Component {
     }
 
     // password-less authentication
-    if (sesame_token) {
-      this.handleSubmit(null, sesame_token);
+    if (sesameToken) {
+      this.handleSubmit(null, sesameToken);
     }
   }
 
-  getUsernameField = (input_fields) => {
+  getUsernameField = (inputFields) => {
     const {settings} = this.props;
     let usePhoneNumberField;
-    if (typeof input_fields.username.auto_switch_phone_input !== "undefined") {
+    if (typeof inputFields.username.auto_switch_phone_input !== "undefined") {
       usePhoneNumberField = Boolean(
-        input_fields.username.auto_switch_phone_input,
+        inputFields.username.auto_switch_phone_input,
       );
     } else {
-      usePhoneNumberField = settings.mobile_phone_verification;
+      usePhoneNumberField = settings.mobilePhoneVerification;
     }
 
     if (usePhoneNumberField) {
-      return this.getPhoneNumberField(input_fields);
+      return this.getPhoneNumberField(inputFields);
     }
-    return this.getTextField(input_fields);
+    return this.getTextField(inputFields);
   };
 
-  getTextField = (input_fields) => {
+  getTextField = (inputFields) => {
     const {username, errors} = this.state;
     const {language} = this.props;
     const usernameLabel =
-      input_fields.username.type === "email" ? t`EMAIL` : t`USERNAME_LOG_LBL`;
-    const label = input_fields.username.label
-      ? getText(input_fields.username.label, language)
+      inputFields.username.type === "email" ? t`EMAIL` : t`USERNAME_LOG_LBL`;
+    const label = inputFields.username.label
+      ? getText(inputFields.username.label, language)
       : usernameLabel;
-    const placeholder = input_fields.username.placeholder
-      ? getText(input_fields.username.placeholder, language)
+    const placeholder = inputFields.username.placeholder
+      ? getText(inputFields.username.placeholder, language)
       : t`USERNAME_LOG_PHOLD`;
-    const patternDesc = input_fields.username.pattern_description
-      ? getText(input_fields.username.pattern_description, language)
+    const patternDesc = inputFields.username.pattern_description
+      ? getText(inputFields.username.pattern_description, language)
       : t`USERNAME_LOG_TITL`;
     return (
       <div className="row username">
@@ -130,14 +129,14 @@ export default class Login extends React.Component {
         {getError(errors, "username")}
         <input
           className={`input ${errors.username ? "error" : ""}`}
-          type={input_fields.username.type}
+          type={inputFields.username.type}
           id="username"
           name="username"
           value={username}
           onChange={this.handleChange}
           required
           placeholder={placeholder}
-          pattern={input_fields.username.pattern}
+          pattern={inputFields.username.pattern}
           autoComplete="username"
           title={patternDesc}
         />
@@ -145,11 +144,11 @@ export default class Login extends React.Component {
     );
   };
 
-  getPhoneNumberField = (input_fields) => {
+  getPhoneNumberField = (inputFields) => {
     const {username, errors} = this.state;
     return (
       <div className="row phone-number">
-        <label htmlFor="phone-number">{t`PHONE_LBL`}</label>
+        <label htmlFor="username">{t`PHONE_LBL`}</label>
         {getError(errors, "username")}
         <Suspense
           fallback={
@@ -170,12 +169,12 @@ export default class Login extends React.Component {
         >
           <PhoneInput
             name="username"
-            country={input_fields.phone_number.country}
-            onlyCountries={input_fields.phone_number.only_countries || []}
+            country={inputFields.phoneNumber.country}
+            onlyCountries={inputFields.phoneNumber.only_countries || []}
             preferredCountries={
-              input_fields.phone_number.preferred_countries || []
+              inputFields.phoneNumber.preferred_countries || []
             }
-            excludeCountries={input_fields.phone_number.exclude_countries || []}
+            excludeCountries={inputFields.phoneNumber.exclude_countries || []}
             value={username}
             onChange={(value) =>
               this.handleChange({
@@ -183,7 +182,7 @@ export default class Login extends React.Component {
               })
             }
             placeholder={t`PHONE_PHOLD`}
-            enableSearch={Boolean(input_fields.phone_number.enable_search)}
+            enableSearch={Boolean(inputFields.phoneNumber.enable_search)}
             inputProps={{
               name: "username",
               id: "username",
@@ -201,29 +200,29 @@ export default class Login extends React.Component {
     handleChange(event, this);
   }
 
-  handleSubmit(event, sesame_token = null) {
+  handleSubmit(event, sesameToken = null) {
     const {setLoading} = this.context;
     if (event) event.preventDefault();
     const {orgSlug, setUserData, language, settings} = this.props;
-    const {radius_realms} = settings;
+    const {radiusRealms} = settings;
     const {username, password, errors} = this.state;
     const url = loginApiUrl(orgSlug);
     this.setState({
       errors: {},
     });
     setLoading(true);
-    if (!sesame_token) {
+    if (!sesameToken) {
       this.waitToast = toast.info(t`PLEASE_WAIT`, {autoClose: 20000});
     }
-    if (radius_realms && username.includes("@")) {
+    if (radiusRealms && username.includes("@")) {
       return this.realmsRadiusLoginForm.current.submit();
     }
     const headers = {
       "content-type": "application/x-www-form-urlencoded",
       "accept-language": getLanguageHeaders(language),
     };
-    if (sesame_token) {
-      headers.Authorization = `${settings.passwordless_auth_token_name} ${sesame_token}`;
+    if (sesameToken) {
+      headers.Authorization = `${settings.passwordless_authToken_name} ${sesameToken}`;
     }
     return axios({
       method: "post",
@@ -247,7 +246,7 @@ export default class Login extends React.Component {
         const {data} = error.response;
         if (!data) throw new Error();
 
-        if (error.response.status === 401 && data.is_active) {
+        if (error.response.status === 401 && data.isActive) {
           this.handleAuthentication(data);
           return;
         }
@@ -255,13 +254,13 @@ export default class Login extends React.Component {
         setUserData(data);
 
         const errorText =
-          data.is_active === false
+          data.isActive === false
             ? getErrorText(error, t`USER_INACTIVE`)
             : getErrorText(error, t`LOGIN_ERR`);
         logError(error, errorText);
         toast.error(errorText);
 
-        if (data.is_active === false) {
+        if (data.isActive === false) {
           data.username = "";
         }
 
@@ -287,27 +286,26 @@ export default class Login extends React.Component {
 
   handleAuthentication = (data = {}, useSessionStorage = false) => {
     const {orgSlug, authenticate, setUserData, navigate} = this.props;
-    const {remember_me} = this.state;
+    const {rememberMe} = this.state;
     // useSessionStorage=true is passed from social login or SAML
     // user needs to repeat the login process each time
     localStorage.setItem(
       "rememberMe",
-      String(remember_me && !useSessionStorage),
+      String(rememberMe && !useSessionStorage),
     );
     // if remember me checkbox is unchecked
     // store auth token in sessionStorage instead of cookie
-    if (!remember_me || useSessionStorage) {
-      sessionStorage.setItem(`${orgSlug}_auth_token`, data.key);
+    if (!rememberMe || useSessionStorage) {
+      sessionStorage.setItem(`${orgSlug}_authToken`, data.key);
     }
     this.dismissWait();
     toast.success(t`LOGIN_SUCCESS`, {
       toastId: mainToastId,
     });
-    const {key: auth_token} = data;
-    delete data.key; // eslint-disable-line no-param-reassign
-    setUserData({...data, auth_token, mustLogin: true});
+    const {key: authToken} = data;
+    setUserData({...data, authToken, mustLogin: true});
     // if requires payment redirect to payment status component
-    if (data.method === "bank_card" && data.is_verified === false) {
+    if (data.method === "bank_card" && data.isVerified === false) {
       redirectToPayment(orgSlug, navigate);
     }
     authenticate(true);
@@ -315,22 +313,24 @@ export default class Login extends React.Component {
 
   handleCheckBoxChange = (event) => {
     this.setState({
-      remember_me: event.target.checked,
+      rememberMe: event.target.checked,
     });
   };
 
   getRealmRadiusForm = () => {
     const {username, password} = this.state;
     const {settings, captivePortalLoginForm} = this.props;
-    const {radius_realms} = settings;
-    if (radius_realms && captivePortalLoginForm)
+    const {radiusRealms} = settings;
+    if (radiusRealms && captivePortalLoginForm)
       return (
         <form
           ref={this.realmsRadiusLoginForm}
           method={captivePortalLoginForm.method || "post"}
           id="cp-login-form"
+          data-testid="cp-login-form"
           action={captivePortalLoginForm.action || ""}
           className="hidden"
+          aria-label="Captive portal login form"
         >
           <input
             type="hidden"
@@ -357,35 +357,39 @@ export default class Login extends React.Component {
   };
 
   render() {
-    const {errors, password, remember_me} = this.state;
+    const {errors, password, rememberMe} = this.state;
     const {loginForm, orgSlug, language} = this.props;
     const {
       links,
       buttons,
-      input_fields,
-      social_login,
-      additional_info_text,
-      intro_html,
-      pre_html,
-      help_html,
-      after_html,
+      inputFields,
+      socialLogin,
+      additionalInfoText,
+      introHtml,
+      preHtml,
+      helpHtml,
+      afterHtml,
     } = loginForm;
     return (
       <>
-        {intro_html && (
+        {introHtml && (
           <div className="container intro">
-            {getHtml(intro_html, language, "inner")}
+            {getHtml(introHtml, language, "inner")}
           </div>
         )}
         <div className="container content" id="login">
           <div className="inner">
-            <form className="main-column" onSubmit={this.handleSubmit}>
+            <form
+              className="main-column"
+              onSubmit={this.handleSubmit}
+              aria-label="Login form"
+            >
               <div className="inner">
-                {getHtml(pre_html, language, "pre-html")}
+                {getHtml(preHtml, language, "pre-html")}
 
-                {social_login && social_login.links && (
+                {socialLogin && socialLogin.links && (
                   <div className="social-links row">
-                    {social_login.links.map((link) => (
+                    {socialLogin.links.map((link) => (
                       <p key={link.url}>
                         <a
                           href={link.url}
@@ -408,12 +412,12 @@ export default class Login extends React.Component {
                   </div>
                 )}
 
-                {getHtml(help_html, language, "help-container")}
+                {getHtml(helpHtml, language, "help-container")}
 
                 <div className="fieldset">
                   {getError(errors)}
 
-                  {this.getUsernameField(input_fields)}
+                  {this.getUsernameField(inputFields)}
 
                   <div className="row password">
                     <label htmlFor="password">{t`PWD_LBL`}</label>
@@ -427,7 +431,7 @@ export default class Login extends React.Component {
                       value={password}
                       onChange={this.handleChange}
                       placeholder={t`PWD_PHOLD`}
-                      pattern={input_fields.password.pattern}
+                      pattern={inputFields.password.pattern}
                       title={t`PWD_PTRN_DESC`}
                       ref={this.passwordToggleRef}
                       autoComplete="current-password"
@@ -438,16 +442,16 @@ export default class Login extends React.Component {
                   <div className="row remember-me">
                     <input
                       type="checkbox"
-                      id="remember_me"
-                      name="remember_me"
-                      checked={remember_me}
+                      id="rememberMe"
+                      name="rememberMe"
+                      checked={rememberMe}
                       onChange={this.handleCheckBoxChange}
                     />
-                    <label htmlFor="remember_me">{t`REMEMBER_ME`}</label>
+                    <label htmlFor="rememberMe">{t`rememberMe`}</label>
                   </div>
                 </div>
 
-                {additional_info_text && (
+                {additionalInfoText && (
                   <div className="row add-info">
                     {renderAdditionalInfo(
                       t`LOGIN_ADD_INFO_TXT`,
@@ -485,7 +489,7 @@ export default class Login extends React.Component {
                   </div>
                 )}
 
-                {getHtml(after_html, language, "after-html")}
+                {getHtml(afterHtml, language, "after-html")}
               </div>
             </form>
 
@@ -508,7 +512,7 @@ export default class Login extends React.Component {
 Login.contextType = LoadingContext;
 Login.propTypes = {
   loginForm: PropTypes.shape({
-    social_login: PropTypes.shape({
+    socialLogin: PropTypes.shape({
       divider_text: PropTypes.object,
       description: PropTypes.object,
       links: PropTypes.arrayOf(
@@ -519,7 +523,7 @@ Login.propTypes = {
         }),
       ),
     }),
-    input_fields: PropTypes.shape({
+    inputFields: PropTypes.shape({
       username: PropTypes.shape({
         type: PropTypes.string.isRequired,
         pattern: PropTypes.string,
@@ -529,7 +533,7 @@ Login.propTypes = {
       password: PropTypes.shape({
         pattern: PropTypes.string.isRequired,
       }).isRequired,
-      phone_number: PropTypes.shape({
+      phoneNumber: PropTypes.shape({
         type: PropTypes.string,
         country: PropTypes.string,
         only_countries: PropTypes.array,
@@ -537,21 +541,21 @@ Login.propTypes = {
         exclude_countries: PropTypes.array,
         enable_search: PropTypes.bool,
       }),
-      remember_me: PropTypes.shape({
+      rememberMe: PropTypes.shape({
         value: PropTypes.bool.isRequired,
       }),
     }),
-    additional_info_text: PropTypes.bool,
+    additionalInfoText: PropTypes.bool,
     buttons: PropTypes.shape({
       register: PropTypes.bool,
     }),
     links: PropTypes.shape({
       forget_password: PropTypes.bool,
     }).isRequired,
-    pre_html: PropTypes.object,
-    intro_html: PropTypes.object,
-    help_html: PropTypes.object,
-    after_html: PropTypes.object,
+    preHtml: PropTypes.object,
+    introHtml: PropTypes.object,
+    helpHtml: PropTypes.object,
+    afterHtml: PropTypes.object,
   }).isRequired,
   language: PropTypes.string.isRequired,
   orgSlug: PropTypes.string.isRequired,
@@ -559,10 +563,10 @@ Login.propTypes = {
   authenticate: PropTypes.func.isRequired,
   setUserData: PropTypes.func.isRequired,
   settings: PropTypes.shape({
-    radius_realms: PropTypes.bool,
-    mobile_phone_verification: PropTypes.bool,
+    radiusRealms: PropTypes.bool,
+    mobilePhoneVerification: PropTypes.bool,
     subscriptions: PropTypes.bool,
-    passwordless_auth_token_name: PropTypes.string,
+    passwordless_authToken_name: PropTypes.string,
   }).isRequired,
   setTitle: PropTypes.func.isRequired,
   captivePortalLoginForm: PropTypes.shape({

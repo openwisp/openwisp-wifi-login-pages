@@ -6,7 +6,7 @@ import {logout, setTitle, setUserData} from "../../actions/dispatchers";
 const mapStateToProps = (state) => {
   const conf = state.organization.configuration;
   return {
-    mobile_phone_verification: conf.components.mobile_phone_verification_form,
+    mobilePhoneVerification: conf.components.mobilePhoneVerification_form,
     settings: conf.settings,
     orgSlug: conf.slug,
     orgName: conf.name,

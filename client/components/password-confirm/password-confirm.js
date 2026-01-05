@@ -46,7 +46,7 @@ export default class PasswordConfirm extends React.Component {
     const {setLoading} = this.context;
     event.preventDefault();
     const {passwordConfirm, orgSlug, params, language} = this.props;
-    const inputFields = passwordConfirm.input_fields;
+    const {inputFields} = passwordConfirm;
     const {newPassword1, newPassword2, errors} = this.state;
     if (inputFields.password_confirm) {
       if (newPassword1 !== newPassword2) {
@@ -106,8 +106,7 @@ export default class PasswordConfirm extends React.Component {
     const {newPassword1, newPassword2, errors, success, hidePassword} =
       this.state;
     const {passwordConfirm, orgSlug} = this.props;
-    const inputFields = passwordConfirm.input_fields;
-    const loginPageLink = passwordConfirm.login_page_link;
+    const {inputFields, login_page_link: loginPageLink} = passwordConfirm;
     return (
       <div className="container content" id="password-confirm">
         <div className="inner">
@@ -233,7 +232,7 @@ PasswordConfirm.contextType = LoadingContext;
 PasswordConfirm.propTypes = {
   passwordConfirm: PropTypes.shape({
     additional_text: PropTypes.bool,
-    input_fields: PropTypes.shape({
+    inputFields: PropTypes.shape({
       password: PropTypes.shape({
         pattern: PropTypes.string.isRequired,
       }),

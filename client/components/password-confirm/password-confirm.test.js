@@ -17,7 +17,7 @@ const mockConfig = {
   default_language: "en",
   components: {
     password_reset_confirm_form: {
-      input_fields: {
+      inputFields: {
         password: {
           pattern: ".{6,}",
         },
@@ -38,11 +38,11 @@ const mockConfig = {
     },
     contact_page: {},
   },
-  privacy_policy: {
+  privacyPolicy: {
     title: {en: "Privacy Policy"},
     content: {en: "Privacy content"},
   },
-  terms_and_conditions: {
+  termsAndConditions: {
     title: {en: "Terms and Conditions"},
     content: {en: "Terms content"},
   },
@@ -75,7 +75,6 @@ const getTranslationString = (msgid) => {
   try {
     return translation.translations[""][msgid].msgstr[0];
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.error(err, msgid);
     return msgid;
   }

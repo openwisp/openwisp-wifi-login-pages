@@ -1,4 +1,3 @@
-/* eslint-disable prefer-promise-reject-errors */
 import axios from "axios";
 import {render, screen, waitFor, fireEvent} from "@testing-library/react";
 import "@testing-library/jest-dom";
@@ -7,15 +6,20 @@ import {toast} from "react-toastify";
 import {MemoryRouter} from "react-router-dom";
 import {Provider} from "react-redux";
 
+import getConfig from "../../utils/get-config";
+import loadTranslation from "../../utils/load-translation";
+import PasswordReset from "./password-reset";
+import translation from "../../test-translation.json";
+import tick from "../../utils/tick";
+
 // Mock modules BEFORE importing
-/* eslint-disable import/first */
 jest.mock("axios");
 jest.mock("../../utils/get-config", () => ({
   __esModule: true,
   default: jest.fn(() => ({
     components: {
       password_reset_form: {
-        input_fields: {
+        inputFields: {
           email: {},
         },
       },
@@ -23,12 +27,6 @@ jest.mock("../../utils/get-config", () => ({
   })),
 }));
 jest.mock("../../utils/load-translation");
-
-import getConfig from "../../utils/get-config";
-import loadTranslation from "../../utils/load-translation";
-import PasswordReset from "./password-reset";
-import translation from "../../test-translation.json";
-import tick from "../../utils/tick";
 /* eslint-enable import/first */
 
 const defaultConfig = getConfig("default", true);
@@ -45,7 +43,6 @@ const getTranslationString = (msgid) => {
   try {
     return translation.translations[""][msgid].msgstr[0];
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.error(err, msgid);
     return msgid;
   }
@@ -62,7 +59,7 @@ const createMockStore = () => {
           contact_page: {
             email: "support@openwisp.org",
             helpdesk: "+1234567890",
-            social_links: [],
+            socialLinks: [],
           },
         },
       },
@@ -143,14 +140,14 @@ describe("<PasswordReset /> rendering", () => {
 
 describe("<PasswordReset /> interactions", () => {
   let props;
-  let lastConsoleOutuput;
+  let lastConsoleOutput;
 
   beforeEach(() => {
     jest.clearAllMocks();
     axios.mockReset();
-    lastConsoleOutuput = null;
+    lastConsoleOutput = null;
     jest.spyOn(global.console, "error").mockImplementation((data) => {
-      lastConsoleOutuput = data;
+      lastConsoleOutput = data;
     });
     props = createTestProps();
   });
@@ -173,15 +170,14 @@ describe("<PasswordReset /> interactions", () => {
   });
 
   it("should execute handleSubmit correctly when form is submitted", async () => {
+    const error1 = new Error("Request failed");
+    error1.response = {data: {detail: "errors"}};
+    const error2 = new Error("Request failed");
+    error2.response = {data: {non_field_errors: ["non field errors"]}};
+
     axios
-      .mockImplementationOnce(() =>
-        Promise.reject({response: {data: {detail: "errors"}}}),
-      )
-      .mockImplementationOnce(() =>
-        Promise.reject({
-          response: {data: {non_field_errors: ["non field errors"]}},
-        }),
-      )
+      .mockImplementationOnce(() => Promise.reject(error1))
+      .mockImplementationOnce(() => Promise.reject(error2))
       .mockImplementationOnce(() => Promise.resolve({data: {detail: true}}));
 
     renderWithProviders(<PasswordReset {...props} />);
@@ -199,9 +195,9 @@ describe("<PasswordReset /> interactions", () => {
       expect(emailInput).toHaveClass("error");
       expect(spyToastError).toHaveBeenCalledTimes(1);
     });
-    expect(lastConsoleOutuput).not.toBe(null);
+    expect(lastConsoleOutput).not.toBe(null);
     expect(spyToastSuccess).toHaveBeenCalledTimes(0);
-    lastConsoleOutuput = null;
+    lastConsoleOutput = null;
 
     // Test 2: Error with non_field_errors
     fireEvent.submit(form);
@@ -210,24 +206,22 @@ describe("<PasswordReset /> interactions", () => {
     await waitFor(() => {
       expect(spyToastError).toHaveBeenCalledTimes(2);
     });
-    expect(lastConsoleOutuput).not.toBe(null);
+    expect(lastConsoleOutput).not.toBe(null);
     expect(spyToastSuccess).toHaveBeenCalledTimes(0);
-    lastConsoleOutuput = null;
+    lastConsoleOutput = null;
 
     // Test 3: Success
     fireEvent.submit(form);
-    await tick();
 
     await waitFor(() => {
       expect(screen.queryByRole("form")).not.toBeInTheDocument();
       expect(spyToastSuccess).toHaveBeenCalledTimes(1);
     });
-    // Allow act() warnings for async state updates
-    const hasOnlyActWarnings =
-      lastConsoleOutuput === null ||
-      (typeof lastConsoleOutuput === "string" &&
-        lastConsoleOutuput.includes("act(...)"));
-    expect(hasOnlyActWarnings).toBe(true);
+
+    // Wait for any remaining async operations to complete
+    await tick();
+
+    expect(lastConsoleOutput).toBe(null);
     expect(spyToastError).toHaveBeenCalledTimes(2);
   });
 
@@ -263,9 +257,9 @@ describe("<PasswordReset /> interactions", () => {
   });
 
   it("should show error message for invalid email", async () => {
-    axios.mockImplementationOnce(() =>
-      Promise.reject({response: {data: {detail: "Invalid email"}}}),
-    );
+    const error = new Error("Request failed");
+    error.response = {data: {detail: "Invalid email"}};
+    axios.mockImplementationOnce(() => Promise.reject(error));
 
     renderWithProviders(<PasswordReset {...props} />);
 

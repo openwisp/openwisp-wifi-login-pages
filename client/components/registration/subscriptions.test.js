@@ -1,5 +1,3 @@
-/* eslint-disable prefer-promise-reject-errors */
-/* eslint-disable camelcase */
 import axios from "axios";
 import {render, screen, waitFor, fireEvent} from "@testing-library/react";
 import "@testing-library/jest-dom";
@@ -10,19 +8,22 @@ import {MemoryRouter} from "react-router-dom";
 import {Provider} from "react-redux";
 import tick from "../../utils/tick";
 
+import getConfig from "../../utils/get-config";
+import Registration from "./registration";
+import redirectToPayment from "../../utils/redirect-to-payment";
+
 // Mock modules BEFORE importing
-/* eslint-disable import/first */
 const mockConfig = {
   name: "default name",
   slug: "default",
   default_language: "en",
   settings: {
-    mobile_phone_verification: false,
+    mobilePhoneVerification: false,
     subscriptions: true,
   },
   components: {
     registration_form: {
-      input_fields: {
+      inputFields: {
         username: {
           pattern: "^[a-zA-Z0-9@.+\\-_\\s]+$",
         },
@@ -35,23 +36,23 @@ const mockConfig = {
         password_confirm: {
           pattern: "^.{8,}$",
         },
-        first_name: {
+        firstName: {
           setting: "disabled",
         },
-        last_name: {
+        lastName: {
           setting: "disabled",
         },
-        birth_date: {
+        birthDate: {
           setting: "disabled",
         },
         location: {
           pattern: "[a-zA-Z@.+\\-_\\d]{1,150}",
           setting: "disabled",
         },
-        phone_number: {
+        phoneNumber: {
           country: "in",
         },
-        tax_number: {
+        taxNumber: {
           pattern: "[a-zA-Z@.+\\-_\\d]{1,150}",
         },
         country: {
@@ -61,7 +62,7 @@ const mockConfig = {
         street: {},
         city: {},
       },
-      social_login: {
+      socialLogin: {
         links: [],
       },
     },
@@ -77,11 +78,11 @@ const mockConfig = {
       links: [],
     },
   },
-  privacy_policy: {
+  privacyPolicy: {
     title: {en: "Privacy Policy"},
     content: {en: "Privacy content"},
   },
-  terms_and_conditions: {
+  termsAndConditions: {
     title: {en: "Terms and Conditions"},
     content: {en: "Terms content"},
   },
@@ -94,10 +95,6 @@ jest.mock("../../utils/get-config", () => ({
 }));
 jest.mock("axios");
 jest.mock("../../utils/redirect-to-payment");
-
-import getConfig from "../../utils/get-config";
-import Registration from "./registration";
-import redirectToPayment from "../../utils/redirect-to-payment";
 /* eslint-enable import/first */
 
 const responseData = {
@@ -113,8 +110,8 @@ const createTestProps = (props, configName = "default") => {
     orgName: "test",
     settings: config.settings,
     registration: config.components.registration_form,
-    privacyPolicy: config.privacy_policy,
-    termsAndConditions: config.terms_and_conditions,
+    privacyPolicy: config.privacyPolicy,
+    termsAndConditions: config.termsAndConditions,
     authenticate: jest.fn(),
     verifyMobileNumber: jest.fn(),
     setTitle: jest.fn(),
@@ -142,7 +139,7 @@ const createMockStore = () => {
           contact_page: {
             email: "support.org",
             helpdesk: "+1234567890",
-            social_links: [],
+            socialLinks: [],
           },
         },
       },
@@ -230,15 +227,15 @@ const mountComponent = (passedProps) => {
 
 describe("test subscriptions", () => {
   let props;
-  let lastConsoleOutuput;
+  let lastConsoleOutput;
   const event = {preventDefault: jest.fn()};
 
   beforeEach(() => {
     jest.clearAllMocks();
     axios.mockReset();
-    lastConsoleOutuput = null;
+    lastConsoleOutput = null;
     jest.spyOn(global.console, "error").mockImplementation((data) => {
-      lastConsoleOutuput = data;
+      lastConsoleOutput = data;
     });
     props = createTestProps();
     props.settings.subscriptions = true;
@@ -266,7 +263,7 @@ describe("test subscriptions", () => {
     expect(screen.queryAllByTestId(/plan-radio-/)).toHaveLength(0);
   });
 
-  it("should auto select first plan when auto_select_first_plan is true", async () => {
+  it("should auto select first plan when autoSelectFirstPlan is true", async () => {
     axios.mockImplementationOnce(() =>
       Promise.resolve({
         status: 201,
@@ -276,8 +273,8 @@ describe("test subscriptions", () => {
     );
 
     const customProps = cloneDeep(createTestProps());
-    customProps.settings.mobile_phone_verification = true;
-    customProps.registration.auto_select_first_plan = true;
+    customProps.settings.mobilePhoneVerification = true;
+    customProps.registration.autoSelectFirstPlan = true;
 
     renderWithProviders(<Registration {...customProps} />);
 
@@ -316,9 +313,9 @@ describe("test subscriptions", () => {
 
     // RTL may produce act() warnings which are expected for async state updates
     const hasOnlyActWarnings =
-      lastConsoleOutuput === null ||
-      (typeof lastConsoleOutuput === "string" &&
-        lastConsoleOutuput.includes("act(...)"));
+      lastConsoleOutput === null ||
+      (typeof lastConsoleOutput === "string" &&
+        lastConsoleOutput.includes("act(...)"));
     expect(hasOnlyActWarnings).toBe(true);
 
     const radio0 = screen.queryByTestId("plan-radio-0");
@@ -348,7 +345,7 @@ describe("test subscriptions", () => {
       }),
     );
 
-    props.settings.mobile_phone_verification = true;
+    props.settings.mobilePhoneVerification = true;
     mountComponent(props);
 
     await tick();
@@ -483,7 +480,7 @@ describe("test subscriptions", () => {
       target: {name: "password2", value: "tester123"},
     });
     fireEvent.change(taxNumberInput, {
-      target: {name: "tax_number", value: "123456"},
+      target: {name: "taxNumber", value: "123456"},
     });
     fireEvent.change(cityInput, {
       target: {name: "city", value: "Rome"},
@@ -501,17 +498,15 @@ describe("test subscriptions", () => {
   });
 
   it("should show error if fetching plans fail", async () => {
-    axios.mockImplementationOnce(() =>
-      Promise.reject({
-        status: 500,
-        statusText: "Internal server error",
-        response: {
-          data: {
-            detail: "Internal server error",
-          },
-        },
-      }),
-    );
+    const error = new Error("Internal server error");
+    error.status = 500;
+    error.statusText = "Internal server error";
+    error.response = {
+      data: {
+        detail: "Internal server error",
+      },
+    };
+    axios.mockImplementationOnce(() => Promise.reject(error));
 
     const spyToast = jest.spyOn(toast, "error");
 
@@ -541,7 +536,7 @@ describe("test subscriptions", () => {
         }),
       );
 
-    props.settings.mobile_phone_verification = true;
+    props.settings.mobilePhoneVerification = true;
     renderWithProviders(<Registration {...props} />);
 
     await tick();
@@ -568,7 +563,7 @@ describe("test subscriptions", () => {
 
     // Fill required fields
     fireEvent.change(phoneInput, {
-      target: {name: "phone_number", value: "+393661223345"},
+      target: {name: "phoneNumber", value: "+393661223345"},
     });
     fireEvent.change(emailInput, {
       target: {name: "email", value: "tester@tester.com"},
@@ -587,7 +582,7 @@ describe("test subscriptions", () => {
 
     await waitFor(() => {
       expect(axios).toHaveBeenCalledTimes(2);
-      // Verify the second call (registration request) has phone_number as username
+      // Verify the second call (registration request) has phoneNumber as username
       const registrationCall = axios.mock.calls[1];
       const requestConfig = registrationCall[0];
       // The data is already an object in the mock, not a JSON string
@@ -616,7 +611,7 @@ describe("test subscriptions", () => {
         }),
       );
 
-    props.settings.mobile_phone_verification = true;
+    props.settings.mobilePhoneVerification = true;
     renderWithProviders(<Registration {...props} />);
 
     await tick();

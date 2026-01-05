@@ -1,4 +1,3 @@
-/* eslint-disable react/require-default-props */
 import {Cookies} from "react-cookie";
 import PropTypes from "prop-types";
 import React from "react";
@@ -67,7 +66,7 @@ export default class PaymentProcess extends React.Component {
             message.paymentId,
             {
               tokenType: "Bearer",
-              tokenValue: userData.auth_token,
+              tokenValue: userData.authToken,
             },
             setUserData,
             userData,
@@ -89,8 +88,7 @@ export default class PaymentProcess extends React.Component {
     }
   };
 
-  // eslint-disable-next-line class-methods-use-this
-  redirectToPaymentUrl(paymentUrl) {
+  static redirectToPaymentUrl(paymentUrl) {
     window.location.assign(paymentUrl);
   }
 
@@ -110,7 +108,7 @@ export default class PaymentProcess extends React.Component {
     }
 
     if (isTokenValid === true && !settings.payment_iframe) {
-      this.redirectToPaymentUrl(userData.payment_url);
+      PaymentProcess.redirectToPaymentUrl(userData.payment_url);
       return null;
     }
 
@@ -143,4 +141,8 @@ PaymentProcess.propTypes = {
     payment_iframe: PropTypes.bool,
   }).isRequired,
   navigate: PropTypes.func.isRequired,
+};
+PaymentProcess.defaultProps = {
+  orgSlug: undefined,
+  isAuthenticated: undefined,
 };

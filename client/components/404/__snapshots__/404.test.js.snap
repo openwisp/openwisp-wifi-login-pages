@@ -1,10 +1,11 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<DoesNotExist /> rendering should render correctly custom 404 page with props 1`] = `
 <div>
   <div
     class="container content"
-    id="not-foud-404"
+    data-testid="not-found-404"
+    id="not-found-404"
   >
     <div
       class="inner"
@@ -51,7 +52,8 @@ exports[`<DoesNotExist /> rendering should render correctly default 404 page wit
 <div>
   <div
     class="container content"
-    id="not-foud-404"
+    data-testid="not-found-404"
+    id="not-found-404"
   >
     <div
       class="inner"
@@ -88,7 +90,8 @@ exports[`<DoesNotExist /> rendering with placeholder translation tags should ren
 <div>
   <div
     class="container content"
-    id="not-foud-404"
+    data-testid="not-found-404"
+    id="not-found-404"
   >
     <div
       class="inner"

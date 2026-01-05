@@ -10,7 +10,6 @@ import {Route, BrowserRouter as Router, Routes} from "react-router-dom";
 import {ToastContainer} from "react-toastify";
 import OrganizationRoutes from "./routes";
 import organizations from "./organizations.json";
-import history from "./utils/history";
 import parseOrganizations from "./actions/parse-organizations";
 import store from "./store";
 import isOldBrowser from "./utils/is-old-browser";
@@ -46,7 +45,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const App = connect(null, mapDispatchToProps)(BaseApp);
 
-export default function app() {
+const app = () => {
   const container = document.getElementById("root");
   const root = createRoot(container);
 
@@ -59,7 +58,7 @@ export default function app() {
       </CookiesProvider>
     </HelmetProvider>,
   );
-}
+};
 
 if (module && module.hot) {
   module.hot.accept();
@@ -68,3 +67,5 @@ if (module && module.hot) {
 window.addEventListener("load", () => {
   document.getElementById("preload").remove();
 });
+
+export default app;

@@ -18,7 +18,7 @@ const validateToken = async (
 ) => {
   const url = validateApiUrl(orgSlug);
   // get auth token from redux state, otherwise try getting it from cookies
-  const authToken = userData.auth_token || cookies.get(`${orgSlug}_auth_token`);
+  const authToken = userData.authToken || cookies.get(`${orgSlug}_authToken`);
   const {token, session} = handleSession(orgSlug, authToken, cookies);
   // calling validate token API only if userData.radius_user_token is undefined
   // or payment_url of user is undefined
@@ -28,7 +28,7 @@ const validateToken = async (
       (userData.radius_user_token === undefined ||
         userData.password_expired === true)) ||
       (userData.method === "bank_card" &&
-        userData.is_verified !== true &&
+        userData.isVerified !== true &&
         !userData.payment_url))
   ) {
     try {
@@ -44,11 +44,11 @@ const validateToken = async (
           session,
         }),
       });
-      if (response.data.response_code !== "AUTH_TOKEN_VALIDATION_SUCCESSFUL") {
+      if (response.data.response_code !== "authToken_VALIDATION_SUCCESSFUL") {
         handleLogout(logout, cookies, orgSlug, setUserData, userData);
         logError(
           response,
-          '"response_code" !== "AUTH_TOKEN_VALIDATION_SUCCESSFUL"',
+          '"response_code" !== "authToken_VALIDATION_SUCCESSFUL"',
         );
         return false;
       }
@@ -65,7 +65,7 @@ const validateToken = async (
           cookies,
           orgSlug,
           setUserData,
-          {...userData, is_active: false},
+          {...userData, isActive: false},
           true,
         );
       } else {

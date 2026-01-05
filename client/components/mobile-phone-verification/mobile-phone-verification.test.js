@@ -1,5 +1,3 @@
-/* eslint-disable prefer-promise-reject-errors */
-/* eslint-disable camelcase */
 import axios from "axios";
 import {render, screen, waitFor, fireEvent} from "@testing-library/react";
 import "@testing-library/jest-dom";
@@ -24,8 +22,8 @@ jest.mock("../../utils/get-config", () => ({
     slug: "default",
     name: "default name",
     components: {
-      mobile_phone_verification_form: {
-        input_fields: {
+      mobilePhoneVerification_form: {
+        inputFields: {
           code: {
             type: "text",
             pattern: "^[0-9]{6}$",
@@ -34,7 +32,7 @@ jest.mock("../../utils/get-config", () => ({
       },
     },
     settings: {
-      mobile_phone_verification: true,
+      mobilePhoneVerification: true,
     },
   })),
 }));
@@ -47,7 +45,7 @@ jest.mock("axios");
 const createTestProps = (props, configName = "test-org-2") => {
   const config = getConfig(configName);
   return {
-    mobile_phone_verification: config.components.mobile_phone_verification_form,
+    mobilePhoneVerification: config.components.mobilePhoneVerification_form,
     settings: config.settings,
     language: "en",
     orgSlug: config.slug,
@@ -61,7 +59,7 @@ const createTestProps = (props, configName = "test-org-2") => {
   };
 };
 
-const defaultConfig = getConfig("default", true);
+const defaultConfig = getConfig("default");
 
 const createMockStore = () => {
   const state = {
@@ -74,7 +72,7 @@ const createMockStore = () => {
           contact_page: {
             email: "support.org",
             helpdesk: "+1234567890",
-            social_links: [],
+            socialLinks: [],
           },
         },
       },
@@ -97,12 +95,12 @@ const renderWithProviders = (component) =>
   );
 
 const userData = {
-  response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+  response_code: "authToken_VALIDATION_SUCCESSFUL",
   radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
   username: "tester@tester.com",
-  is_active: false,
-  is_verified: false,
-  phone_number: "+393660011222",
+  isActive: false,
+  isVerified: false,
+  phoneNumber: "+393660011222",
 };
 
 describe("<MobilePhoneVerification /> rendering with placeholder translation tags", () => {
@@ -211,18 +209,16 @@ describe("Mobile Phone Token verification: standard flow", () => {
     validateToken.mockReturnValue(true);
     jest.spyOn(toast, "error");
     axios.mockReset();
-    axios.mockImplementation(() =>
-      Promise.reject({
-        response: {
-          status: 400,
-          statusText: "BAD_REQUEST",
-          data: {
-            non_field_errors: ["Wait before requesting another SMS token."],
-            cooldown: 20,
-          },
-        },
-      }),
-    );
+    const error = new Error("Request failed with status code 400");
+    error.response = {
+      status: 400,
+      statusText: "BAD_REQUEST",
+      data: {
+        non_field_errors: ["Wait before requesting another SMS token."],
+        cooldown: 20,
+      },
+    };
+    axios.mockImplementation(() => Promise.reject(error));
     jest.spyOn(Date, "now").mockReturnValue(1690369255287);
     props.userData = userData;
 
@@ -262,15 +258,15 @@ describe("Mobile Phone Token verification: standard flow", () => {
 
       if (method === "GET") {
         // activePhoneToken - returns 404 (handled silently)
-        return Promise.reject({
-          response: {
-            status: 404,
-            statusText: "NOT FOUND",
-            data: {
-              non_field_errors: ["Not Found"],
-            },
+        const error = new Error("Request failed with status code 404");
+        error.response = {
+          status: 404,
+          statusText: "NOT FOUND",
+          data: {
+            non_field_errors: ["Not Found"],
           },
-        });
+        };
+        return Promise.reject(error);
       }
       if (method === "POST") {
         // createPhoneToken - succeeds
@@ -296,18 +292,17 @@ describe("Mobile Phone Token verification: standard flow", () => {
 
   it("should not execute createPhoneToken if invalid organization", async () => {
     axios.mockReset();
-    axios.mockImplementation(() =>
-      Promise.reject({
-        response: {
-          status: 404,
-          statusText: "NOT FOUND",
-          data: {
-            non_field_errors: ["Not Found"],
-            response_code: "INVALID_ORGANIZATION",
-          },
-        },
-      }),
-    );
+    const error = new Error("Request failed with status code 404");
+    error.response = {
+      status: 404,
+      statusText: "NOT FOUND",
+      data: {
+        non_field_errors: ["Not Found"],
+        response_code: "INVALID_ORGANIZATION",
+      },
+    };
+    axios.mockImplementation(() => Promise.reject(error));
+
     validateToken.mockResolvedValue(true);
     jest.spyOn(toast, "error");
 
@@ -323,17 +318,16 @@ describe("Mobile Phone Token verification: standard flow", () => {
   it("should show error on if active phone token check fails", async () => {
     // Set up axios to reject all calls with 400 error
     axios.mockReset();
-    axios.mockImplementation(() =>
-      Promise.reject({
-        response: {
-          status: 400,
-          statusText: "BAD REQUEST",
-          data: {
-            non_field_errors: ["Bad request"],
-          },
-        },
-      }),
-    );
+    const error = new Error("Request failed with status code 400");
+    error.response = {
+      status: 400,
+      statusText: "BAD REQUEST",
+      data: {
+        non_field_errors: ["Bad request"],
+      },
+    };
+    axios.mockImplementation(() => Promise.reject(error));
+
     validateToken.mockResolvedValue(true);
     jest.spyOn(toast, "error");
     props.userData = userData;
@@ -342,13 +336,14 @@ describe("Mobile Phone Token verification: standard flow", () => {
 
     await waitFor(() => {
       expect(logError).toHaveBeenCalledWith(
-        {
+        expect.objectContaining({
+          message: "Request failed with status code 400",
           response: {
             data: {non_field_errors: ["Bad request"]},
             status: 400,
             statusText: "BAD REQUEST",
           },
-        },
+        }),
         "Bad request",
       );
     });
@@ -472,10 +467,10 @@ describe("Mobile Phone Token verification: standard flow", () => {
 
     expect(props.setUserData).toHaveBeenCalledWith({
       ...userData,
-      is_active: true,
-      is_verified: true,
+      isActive: true,
+      isVerified: true,
       mustLogin: true,
-      username: userData.phone_number,
+      username: userData.phoneNumber,
     });
   });
 
@@ -511,15 +506,15 @@ describe("Mobile Phone Token verification: standard flow", () => {
           });
         }
         // Second POST: verifyToken fails
-        return Promise.reject({
-          response: {
-            status: 400,
-            statusText: "BAD REQUEST",
-            data: {
-              non_field_errors: ["Invalid code."],
-            },
+        const error = new Error("Request failed with status code 400");
+        error.response = {
+          status: 400,
+          statusText: "BAD REQUEST",
+          data: {
+            non_field_errors: ["Invalid code."],
           },
-        });
+        };
+        return Promise.reject(error);
       }
       return undefined;
     });
@@ -549,7 +544,8 @@ describe("Mobile Phone Token verification: standard flow", () => {
     expect(props.setUserData).not.toHaveBeenCalled();
 
     expect(logError).toHaveBeenCalledWith(
-      {
+      expect.objectContaining({
+        message: "Request failed with status code 400",
         response: {
           data: {
             non_field_errors: ["Invalid code."],
@@ -557,7 +553,7 @@ describe("Mobile Phone Token verification: standard flow", () => {
           status: 400,
           statusText: "BAD REQUEST",
         },
-      },
+      }),
       "Invalid code.",
     );
   });
@@ -600,7 +596,7 @@ describe("Mobile Phone Token verification: standard flow", () => {
 
   it("should not call API to resend token if one has already sent", async () => {
     axios.mockClear();
-    sessionStorage.setItem("owPhoneTokenSent", true);
+    sessionStorage.setItem("owPhoneTokenSent", "true");
 
     renderWithProviders(<MobilePhoneVerification {...props} />);
 
@@ -615,17 +611,18 @@ describe("Mobile Phone Token verification: standard flow", () => {
 
   it("should show error on rejection", async () => {
     axios.mockReset();
-    axios.mockImplementationOnce(() =>
-      Promise.reject({
-        response: {
-          status: 400,
-          statusText: "BAD REQUEST",
-          data: {
-            non_field_errors: ["Bad request"],
-          },
-        },
-      }),
-    );
+
+    const error = new Error("Request failed with status code 400");
+    error.response = {
+      status: 400,
+      statusText: "BAD REQUEST",
+      data: {
+        non_field_errors: ["Bad request"],
+      },
+    };
+
+    axios.mockImplementationOnce(() => Promise.reject(error));
+
     validateToken.mockReturnValue(true);
     jest.spyOn(toast, "error");
 
@@ -634,13 +631,14 @@ describe("Mobile Phone Token verification: standard flow", () => {
     await tick();
 
     expect(logError).toHaveBeenCalledWith(
-      {
+      expect.objectContaining({
+        message: "Request failed with status code 400",
         response: {
           data: {non_field_errors: ["Bad request"]},
           status: 400,
           statusText: "BAD REQUEST",
         },
-      },
+      }),
       "Bad request",
     );
     expect(toast.error).toHaveBeenCalledTimes(1);
@@ -666,7 +664,7 @@ describe("Mobile Phone Token verification: corner cases", () => {
   it("should not proceed if user is already verified", async () => {
     axios.mockClear();
     validateToken.mockReturnValue(true);
-    props.userData = {...userData, is_active: true, is_verified: true};
+    props.userData = {...userData, isActive: true, isVerified: true};
 
     renderWithProviders(<MobilePhoneVerification {...props} />);
 
@@ -679,7 +677,7 @@ describe("Mobile Phone Token verification: corner cases", () => {
   it("should not proceed if mobile verification is not enabled", async () => {
     axios.mockClear();
     validateToken.mockReturnValue(true);
-    props.settings.mobile_phone_verification = false;
+    props.settings.mobilePhoneVerification = false;
 
     renderWithProviders(<MobilePhoneVerification {...props} />);
 

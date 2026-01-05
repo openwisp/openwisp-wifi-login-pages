@@ -3,8 +3,17 @@ import "@testing-library/jest-dom";
 import React from "react";
 import {Cookies} from "react-cookie";
 
+import {MemoryRouter, Navigate} from "react-router-dom";
+import {Provider} from "react-redux";
+import getConfig from "../../utils/get-config";
+import PaymentProcess from "./payment-process";
+import tick from "../../utils/tick";
+import validateToken from "../../utils/validate-token";
+import loadTranslation from "../../utils/load-translation";
+import getPaymentStatusRedirectUrl from "../../utils/get-payment-status";
+import LoadingContext from "../../utils/loading-context";
+
 // Mock modules BEFORE importing
-/* eslint-disable import/first */
 jest.mock("axios");
 jest.mock("../../utils/get-config", () => ({
   __esModule: true,
@@ -30,16 +39,6 @@ jest.mock("react-router-dom", () => {
     MemoryRouter: actual.MemoryRouter,
   };
 });
-
-import {MemoryRouter, Navigate} from "react-router-dom";
-import {Provider} from "react-redux";
-import getConfig from "../../utils/get-config";
-import PaymentProcess from "./payment-process";
-import tick from "../../utils/tick";
-import validateToken from "../../utils/validate-token";
-import loadTranslation from "../../utils/load-translation";
-import getPaymentStatusRedirectUrl from "../../utils/get-payment-status";
-import LoadingContext from "../../utils/loading-context";
 /* eslint-enable import/first */
 
 const defaultConfig = getConfig("default", true);
@@ -69,7 +68,7 @@ const createMockStore = () => {
           contact_page: {
             email: "support.org",
             helpdesk: "+1234567890",
-            social_links: [],
+            socialLinks: [],
           },
         },
       },
@@ -119,18 +118,18 @@ const mockMessageEvents = () => {
 };
 
 const responseData = {
-  response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
-  is_active: true,
-  is_verified: false,
+  response_code: "authToken_VALIDATION_SUCCESSFUL",
+  isActive: true,
+  isVerified: false,
   method: "bank_card",
   email: "tester@test.com",
-  phone_number: null,
+  phoneNumber: null,
   username: "tester",
   key: "b72dad1cca4807dc21c00b0b2f171d29415ac541",
   radius_user_token: "jwyVSZYOze16ej6cc1AW5cxhRjahesLzh1Tm2y0d",
-  first_name: "",
-  last_name: "",
-  birth_date: null,
+  firstName: "",
+  lastName: "",
+  birthDate: null,
   location: "",
   payment_url: "https://account.openwisp.io/payment/123",
 };
@@ -167,7 +166,7 @@ describe("Test <PaymentProcess /> cases", () => {
     props = createTestProps({
       userData: {...responseData, payment_url: null},
     });
-    validateToken.mockReturnValue(true);
+    validateToken.mockResolvedValue(true);
 
     renderWithProviders(<PaymentProcess {...props} />);
 
@@ -189,7 +188,7 @@ describe("Test <PaymentProcess /> cases", () => {
       isAuthenticated: false,
       userData: responseData,
     });
-    validateToken.mockReturnValue(true);
+    validateToken.mockResolvedValue(true);
 
     renderWithProviders(<PaymentProcess {...props} />);
 
@@ -239,7 +238,7 @@ describe("Test <PaymentProcess /> cases", () => {
     props = createTestProps({
       userData: responseData,
     });
-    validateToken.mockReturnValue(true);
+    validateToken.mockResolvedValue(true);
 
     const {container} = renderWithProviders(<PaymentProcess {...props} />);
 
@@ -263,7 +262,7 @@ describe("Test <PaymentProcess /> cases", () => {
     props = createTestProps({
       userData: responseData,
     });
-    validateToken.mockReturnValue(true);
+    validateToken.mockResolvedValue(true);
 
     const eventMock = mockMessageEvents();
 
@@ -300,7 +299,7 @@ describe("Test <PaymentProcess /> cases", () => {
 
   it("should redirect to /payment/:status on completed transaction", async () => {
     props = createTestProps({userData: responseData});
-    validateToken.mockReturnValue(true);
+    validateToken.mockResolvedValue(true);
     getPaymentStatusRedirectUrl.mockReturnValue(
       `/${props.orgSlug}/payment/success/`,
     );
@@ -334,7 +333,7 @@ describe("Test <PaymentProcess /> cases", () => {
 
   it("should handle postMessage for showLoader", async () => {
     props = createTestProps({userData: responseData});
-    validateToken.mockReturnValue(true);
+    validateToken.mockResolvedValue(true);
 
     // Create a mock setLoading function to track loading state changes
     const mockSetLoading = jest.fn();
@@ -372,7 +371,7 @@ describe("Test <PaymentProcess /> cases", () => {
 
   it("should handle postMessage for setHeight", async () => {
     props = createTestProps({userData: responseData});
-    validateToken.mockReturnValue(true);
+    validateToken.mockResolvedValue(true);
 
     const events = {};
     const originalAddEventListener = window.addEventListener;
@@ -414,9 +413,9 @@ describe("Test <PaymentProcess /> cases", () => {
     });
     validateToken.mockResolvedValue(true);
 
-    // Spy on PaymentProcess.prototype.redirectToPaymentUrl
+    // Spy on PaymentProcess.redirectToPaymentUrl (static method)
     const redirectSpy = jest
-      .spyOn(PaymentProcess.prototype, "redirectToPaymentUrl")
+      .spyOn(PaymentProcess, "redirectToPaymentUrl")
       .mockImplementation(() => {});
 
     renderWithProviders(<PaymentProcess {...props} />);
@@ -438,7 +437,7 @@ describe("Test <PaymentProcess /> cases", () => {
     props = createTestProps({
       userData: responseData,
     });
-    validateToken.mockReturnValue(true);
+    validateToken.mockResolvedValue(true);
 
     renderWithProviders(<PaymentProcess {...props} />);
 

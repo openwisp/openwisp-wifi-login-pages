@@ -1,9 +1,10 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Header /> rendering should render sticky msg and close it on clicking close-btn 1`] = `
 <div>
   <div
     class="header-container header-desktop"
+    data-testid="header"
   >
     <div
       class="header-row-1"
@@ -30,6 +31,7 @@ exports[`<Header /> rendering should render sticky msg and close it on clicking 
         </div>
         <div
           class="header-right"
+          data-testid="desktop-language-selector"
         >
           <button
             class="active header-language-btn header-desktop-language-btn header-language-btn-en"
@@ -51,6 +53,7 @@ exports[`<Header /> rendering should render sticky msg and close it on clicking 
     >
       <div
         class="header-row-2-inner"
+        data-testid="desktop-navigation"
       >
         <a
           class="header-link header-desktop-link
@@ -75,6 +78,7 @@ exports[`<Header /> rendering should render sticky msg and close it on clicking 
   </div>
   <div
     class="header-mobile "
+    data-testid="header"
   >
     <div
       class="header-row-1"
@@ -123,6 +127,7 @@ exports[`<Header /> rendering should render sticky msg and close it on clicking 
     </div>
     <div
       class="display-none header-mobile-menu"
+      data-testid="mobile-menu"
     >
       <a
         class="header-link mobile-link
@@ -189,6 +194,7 @@ exports[`<Header /> rendering should render with links 1`] = `
 <div>
   <div
     class="header-container header-desktop"
+    data-testid="header"
   >
     <div
       class="header-row-1"
@@ -215,6 +221,7 @@ exports[`<Header /> rendering should render with links 1`] = `
         </div>
         <div
           class="header-right"
+          data-testid="desktop-language-selector"
         >
           <button
             class="active header-language-btn header-desktop-language-btn header-language-btn-en"
@@ -236,6 +243,7 @@ exports[`<Header /> rendering should render with links 1`] = `
     >
       <div
         class="header-row-2-inner"
+        data-testid="desktop-navigation"
       >
         <a
           class="header-link header-desktop-link
@@ -260,6 +268,7 @@ exports[`<Header /> rendering should render with links 1`] = `
   </div>
   <div
     class="header-mobile "
+    data-testid="header"
   >
     <div
       class="header-row-1"
@@ -308,6 +317,7 @@ exports[`<Header /> rendering should render with links 1`] = `
     </div>
     <div
       class="display-none header-mobile-menu"
+      data-testid="mobile-menu"
     >
       <a
         class="header-link mobile-link
@@ -352,6 +362,7 @@ exports[`<Header /> rendering should render without links 1`] = `
 <div>
   <div
     class="header-container header-desktop"
+    data-testid="header"
   >
     <div
       class="header-row-1"
@@ -378,6 +389,7 @@ exports[`<Header /> rendering should render without links 1`] = `
         </div>
         <div
           class="header-right"
+          data-testid="desktop-language-selector"
         >
           <button
             class="active header-language-btn header-desktop-language-btn header-language-btn-en"
@@ -399,11 +411,13 @@ exports[`<Header /> rendering should render without links 1`] = `
     >
       <div
         class="header-row-2-inner"
+        data-testid="desktop-navigation"
       />
     </div>
   </div>
   <div
     class="header-mobile "
+    data-testid="header"
   >
     <div
       class="header-row-1"
@@ -452,6 +466,7 @@ exports[`<Header /> rendering should render without links 1`] = `
     </div>
     <div
       class="display-none header-mobile-menu"
+      data-testid="mobile-menu"
     >
       <div
         class="mobile-languages-row"
@@ -478,6 +493,7 @@ exports[`<Header /> rendering with placeholder translation tags should render tr
 <div>
   <div
     class="header-container header-desktop"
+    data-testid="header"
   >
     <div
       class="header-row-1"
@@ -504,6 +520,7 @@ exports[`<Header /> rendering with placeholder translation tags should render tr
         </div>
         <div
           class="header-right"
+          data-testid="desktop-language-selector"
         >
           <button
             class="active header-language-btn header-desktop-language-btn header-language-btn-en"
@@ -525,11 +542,13 @@ exports[`<Header /> rendering with placeholder translation tags should render tr
     >
       <div
         class="header-row-2-inner"
+        data-testid="desktop-navigation"
       />
     </div>
   </div>
   <div
     class="header-mobile "
+    data-testid="header"
   >
     <div
       class="header-row-1"
@@ -578,6 +597,7 @@ exports[`<Header /> rendering with placeholder translation tags should render tr
     </div>
     <div
       class="display-none header-mobile-menu"
+      data-testid="mobile-menu"
     >
       <div
         class="mobile-languages-row"

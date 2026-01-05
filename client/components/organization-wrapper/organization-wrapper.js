@@ -1,6 +1,4 @@
-/* eslint-disable camelcase */
 /* eslint jsx-a11y/label-has-associated-control: 0 */
-/* eslint-disable react/no-unstable-nested-components */
 import "./index.css";
 
 import PropTypes from "prop-types";
@@ -45,6 +43,16 @@ export default class OrganizationWrapper extends React.Component {
     };
     this.loadLanguage = this.loadLanguage.bind(this);
   }
+
+  getLoading = () => {
+    const {loading} = this.state;
+    return loading;
+  };
+
+  getLoadingContextValue = () => ({
+    setLoading: this.setLoading,
+    getLoading: this.getLoading,
+  });
 
   async componentDidMount() {
     const {params, setOrganization, cookies} = this.props;
@@ -97,6 +105,88 @@ export default class OrganizationWrapper extends React.Component {
     );
   };
 
+  renderRegistrationRoute = () => {
+    const {organization, navigate} = this.props;
+    const {loading} = this.state;
+    const {userData, settings, slug: orgSlug} = organization.configuration;
+    const {isAuthenticated} = organization.configuration;
+    const needsVerifyPhone = needsVerify("mobile_phone", userData, settings);
+
+    if (isAuthenticated && !needsVerifyPhone) {
+      return <Navigate to={`/${orgSlug}/status`} />;
+    }
+    if (isAuthenticated && needsVerifyPhone) {
+      return <Navigate to={`/${orgSlug}/mobile-phone-verification`} />;
+    }
+    return (
+      <Suspense fallback={<Loader />}>
+        <Registration loading={loading} navigate={navigate} />
+      </Suspense>
+    );
+  };
+
+  renderMobilePhoneVerificationRoute = () => {
+    const {organization, cookies} = this.props;
+    const {userData, settings, slug: orgSlug} = organization.configuration;
+    const {isAuthenticated} = organization.configuration;
+    const {isActive} = userData;
+    const needsVerifyPhone = needsVerify("mobile_phone", userData, settings);
+
+    if (isAuthenticated && needsVerifyPhone === false && isActive) {
+      return <Navigate to={`/${orgSlug}/status`} />;
+    }
+    if (!isAuthenticated) {
+      return <Navigate to={`/${orgSlug}/login`} />;
+    }
+    return (
+      <Suspense fallback={<Loader />}>
+        <MobilePhoneVerification cookies={cookies} />
+      </Suspense>
+    );
+  };
+
+  renderStatusRoute = () => {
+    const {organization, cookies, location, navigate} = this.props;
+    const {userData, settings, slug: orgSlug} = organization.configuration;
+    const {isAuthenticated} = organization.configuration;
+    const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
+    const needsVerifyPhone = needsVerify("mobile_phone", userData, settings);
+
+    if (isAuthenticated && needsVerifyPhone) {
+      return <Navigate to={`/${orgSlug}/mobile-phone-verification`} />;
+    }
+    if (isAuthenticated) {
+      return (
+        <Suspense fallback={<Loader />}>
+          <Status cookies={cookies} location={location} navigate={navigate} />
+        </Suspense>
+      );
+    }
+    if (userAutoLogin) {
+      return <Navigate to={`/${orgSlug}/logout`} />;
+    }
+    return <Navigate to={`/${orgSlug}/login`} />;
+  };
+
+  renderLogoutRoute = () => {
+    const {organization} = this.props;
+    const {slug: orgSlug} = organization.configuration;
+    const {isAuthenticated} = organization.configuration;
+    const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
+
+    if (isAuthenticated) {
+      return <Navigate to={`/${orgSlug}/status`} />;
+    }
+    if (userAutoLogin) {
+      return (
+        <Suspense fallback={<Loader />}>
+          <Logout />
+        </Suspense>
+      );
+    }
+    return <Navigate to={`/${orgSlug}/login`} />;
+  };
+
   render() {
     const {organization, params, cookies, location, navigate} = this.props;
     const {loading, translationLoaded, configLoaded} = this.state;
@@ -104,32 +194,28 @@ export default class OrganizationWrapper extends React.Component {
       favicon,
       isAuthenticated,
       userData,
-      settings,
       pageTitle,
       slug: orgSlug,
       name: orgName,
       css_path: cssPath,
       js,
     } = organization.configuration;
-    const {is_active} = userData;
+    const {isActive} = userData;
     let {css} = organization.configuration;
     if (!css) css = [];
     if (cssPath) css.push(cssPath);
-    const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
-    const needsVerifyPhone = needsVerify("mobile_phone", userData, settings);
     if (organization.exists === true) {
-      const {setLoading} = this;
       let extraClasses = "";
       if (loading) extraClasses += " no-scroll";
       if (isOldBrowser()) extraClasses += " oldbrowser";
       return (
         <>
           {translationLoaded && configLoaded ? (
-            <LoadingContext.Provider
-              // eslint-disable-next-line react/jsx-no-constructed-context-values
-              value={{setLoading, getLoading: () => loading}}
-            >
-              <div className={`app-container ${extraClasses}`}>
+            <LoadingContext.Provider value={this.getLoadingContextValue()}>
+              <div
+                data-testid="app-container"
+                className={`app-container ${extraClasses}`}
+              >
                 <Routes>
                   <Route
                     path="*"
@@ -152,43 +238,11 @@ export default class OrganizationWrapper extends React.Component {
                   />
                   <Route
                     path="registration/*"
-                    element={(() => {
-                      if (isAuthenticated && !needsVerifyPhone) {
-                        return <Navigate to={`/${orgSlug}/status`} />;
-                      }
-                      if (isAuthenticated && needsVerifyPhone) {
-                        return (
-                          <Navigate
-                            to={`/${orgSlug}/mobile-phone-verification`}
-                          />
-                        );
-                      }
-                      return (
-                        <Suspense fallback={<Loader />}>
-                          <Registration loading={loading} navigate={navigate} />
-                        </Suspense>
-                      );
-                    })()}
+                    element={this.renderRegistrationRoute()}
                   />
                   <Route
                     path="mobile-phone-verification"
-                    element={(() => {
-                      if (
-                        isAuthenticated &&
-                        needsVerifyPhone === false &&
-                        is_active
-                      ) {
-                        return <Navigate to={`/${orgSlug}/status`} />;
-                      }
-                      if (!isAuthenticated) {
-                        return <Navigate to={`/${orgSlug}/login`} />;
-                      }
-                      return (
-                        <Suspense fallback={<Loader />}>
-                          <MobilePhoneVerification cookies={cookies} />
-                        </Suspense>
-                      );
-                    })()}
+                    element={this.renderMobilePhoneVerificationRoute()}
                   />
                   <Route
                     path="password/reset/confirm/:uid/:token"
@@ -218,7 +272,7 @@ export default class OrganizationWrapper extends React.Component {
                   <Route
                     path="login/*"
                     element={
-                      isAuthenticated && is_active ? (
+                      isAuthenticated && isActive ? (
                         <Navigate
                           to={`/${orgSlug}/status${location.search || ""}`}
                         />
@@ -227,45 +281,8 @@ export default class OrganizationWrapper extends React.Component {
                       )
                     }
                   />
-                  <Route
-                    path="status"
-                    element={(() => {
-                      if (isAuthenticated && needsVerifyPhone)
-                        return (
-                          <Navigate
-                            to={`/${orgSlug}/mobile-phone-verification`}
-                          />
-                        );
-                      if (isAuthenticated) {
-                        return (
-                          <Suspense fallback={<Loader />}>
-                            <Status
-                              cookies={cookies}
-                              location={location}
-                              navigate={navigate}
-                            />
-                          </Suspense>
-                        );
-                      }
-                      if (userAutoLogin)
-                        return <Navigate to={`/${orgSlug}/logout`} />;
-                      return <Navigate to={`/${orgSlug}/login`} />;
-                    })()}
-                  />
-                  <Route
-                    path="logout"
-                    element={(() => {
-                      if (isAuthenticated)
-                        return <Navigate to={`/${orgSlug}/status`} />;
-                      if (userAutoLogin)
-                        return (
-                          <Suspense fallback={<Loader />}>
-                            <Logout />
-                          </Suspense>
-                        );
-                      return <Navigate to={`/${orgSlug}/login`} />;
-                    })()}
-                  />
+                  <Route path="status" element={this.renderStatusRoute()} />
+                  <Route path="logout" element={this.renderLogoutRoute()} />
                   <Route
                     path="change-password"
                     element={
@@ -359,7 +376,10 @@ export default class OrganizationWrapper extends React.Component {
     }
     if (organization.exists === false) {
       return (
-        <div className="org-wrapper-not-found">
+        <div
+          data-testid="org-wrapper-not-found"
+          className="org-wrapper-not-found"
+        >
           <Suspense fallback={<Loader />}>
             <DoesNotExist />
           </Suspense>
@@ -394,7 +414,7 @@ OrganizationWrapper.propTypes = {
       needsVerifyPhone: PropTypes.bool,
       userData: PropTypes.object,
       settings: PropTypes.shape({
-        mobile_phone_verification: PropTypes.bool,
+        mobilePhoneVerification: PropTypes.bool,
       }),
       js: PropTypes.array,
     }),

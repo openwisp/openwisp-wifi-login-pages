@@ -114,18 +114,18 @@ const createConfig = (data, configDirPath, radiusSlug = null) => {
   try {
     const config = data;
     // convert markdown to html
-    if (config.client && config.client.privacy_policy) {
-      config.client.privacy_policy = getModalContent(
+    if (config.client && config.client.privacyPolicy) {
+      config.client.privacyPolicy = getModalContent(
         config,
-        "privacy_policy",
+        "privacyPolicy",
         "Privacy policy's",
         configDirPath,
       );
     }
-    if (config.client && config.client.terms_and_conditions) {
-      config.client.terms_and_conditions = getModalContent(
+    if (config.client && config.client.termsAndConditions) {
+      config.client.termsAndConditions = getModalContent(
         config,
-        "terms_and_conditions",
+        "termsAndConditions",
         "Terms and conditions",
         configDirPath,
       );

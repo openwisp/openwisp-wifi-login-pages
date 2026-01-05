@@ -3,22 +3,22 @@
  * account verification with the specified method
  */
 const needsVerify = (method, user, settings) => {
-  if (user.is_active === false || user.is_verified === true) {
+  if (user.isActive === false || user.isVerified === true) {
     return false;
   }
 
   if (method === "mobile_phone") {
     return (
       user.method === "mobile_phone" &&
-      user.is_verified === false &&
-      settings.mobile_phone_verification
+      user.isVerified === false &&
+      settings.mobilePhoneVerification
     );
   }
 
   if (method === "bank_card") {
     return Boolean(
       user.method === "bank_card" &&
-      user.is_verified === false &&
+      user.isVerified === false &&
       user.payment_url &&
       settings.subscriptions,
     );

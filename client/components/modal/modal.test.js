@@ -1,5 +1,3 @@
-/* eslint-disable prefer-promise-reject-errors */
-/* eslint-disable camelcase */
 import {render, screen, waitFor, fireEvent} from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
@@ -21,7 +19,7 @@ const createTestProps = (props) => ({
   orgSlug: "default",
   language: "en",
   privacyPolicy: defaultConfig.privacy_policy,
-  termsAndConditions: defaultConfig.terms_and_conditions,
+  termsAndConditions: defaultConfig.termsAndConditions,
   params: {
     name: "terms-and-conditions",
   },
@@ -125,12 +123,11 @@ describe("<Modal /> rendering", () => {
   });
 
   it("should render nothing when request is bad", async () => {
-    axios.mockImplementationOnce(() =>
-      Promise.reject({
-        status: 500,
-        data: {},
-      }),
-    );
+    const error = new Error("Request failed");
+    error.status = 500;
+    error.data = {};
+
+    axios.mockImplementationOnce(() => Promise.reject(error));
     props = createTestProps();
 
     const {container} = render(
@@ -140,10 +137,7 @@ describe("<Modal /> rendering", () => {
     );
 
     await waitFor(() => {
-      expect(logError).toHaveBeenCalledWith({
-        status: 500,
-        data: {},
-      });
+      expect(logError).toHaveBeenCalledWith(error);
     });
 
     expect(container).toMatchSnapshot();
@@ -232,8 +226,8 @@ describe("<Modal /> interactions", () => {
       {
         organization: {
           configuration: {
-            privacy_policy: "# Privacy Policy",
-            terms_and_conditions: "# Terms and Conditions",
+            privacyPolicy: "# Privacy Policy",
+            termsAndConditions: "# Terms and Conditions",
           },
         },
         language: "en",

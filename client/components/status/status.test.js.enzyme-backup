@@ -88,14 +88,14 @@ const createTestProps = (props) => ({
 
 // mocks response coming from validate token endpoint
 const responseData = {
-  response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+  response_code: "authToken_VALIDATION_SUCCESSFUL",
   radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
-  auth_token: "a5BDNY1cPjF3yuihJKNdwTn8krcQwuy2Av6MCsDC",
+  authToken: "a5BDNY1cPjF3yuihJKNdwTn8krcQwuy2Av6MCsDC",
   username: "tester",
   email: "tester@tester.com",
-  is_active: true,
-  is_verified: true,
-  phone_number: "+237672279436",
+  isActive: true,
+  isVerified: true,
+  phoneNumber: "+237672279436",
   method: "mobile_phone",
 };
 
@@ -413,7 +413,7 @@ describe("<Status /> interactions", () => {
   it("test user info with mobile verification on and different username", async () => {
     validateToken.mockReturnValue(true);
     props = createTestProps();
-    props.settings.mobile_phone_verification = true;
+    props.settings.mobilePhoneVerification = true;
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: false,
@@ -428,7 +428,7 @@ describe("<Status /> interactions", () => {
   it("test user info with mobile verification on and same username", async () => {
     validateToken.mockReturnValue(true);
     props = createTestProps();
-    props.settings.mobile_phone_verification = true;
+    props.settings.mobilePhoneVerification = true;
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: false,
@@ -444,7 +444,7 @@ describe("<Status /> interactions", () => {
   it("test user info with mobile verification off", async () => {
     validateToken.mockReturnValue(true);
     props = createTestProps();
-    props.settings.mobile_phone_verification = false;
+    props.settings.mobilePhoneVerification = false;
     const setLoadingMock = jest.fn();
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: setLoadingMock},
@@ -454,7 +454,7 @@ describe("<Status /> interactions", () => {
       userData: {
         ...responseData,
         mustLogin: true,
-        is_verified: false,
+        isVerified: false,
         method: "",
       },
     });
@@ -1125,7 +1125,7 @@ describe("<Status /> interactions", () => {
 
   it("should logout if user is not active", async () => {
     validateToken.mockReturnValue(true);
-    const data = {...responseData, is_active: false};
+    const data = {...responseData, isActive: false};
     props = createTestProps(data);
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
@@ -1218,7 +1218,7 @@ describe("<Status /> interactions", () => {
     props = createTestProps();
     props.userData = {
       ...responseData,
-      is_verified: false,
+      isVerified: false,
       password_expired: true,
       mustLogin: true,
     };
@@ -1260,13 +1260,13 @@ describe("<Status /> interactions", () => {
     props = createTestProps();
     props.userData = {
       ...responseData,
-      is_verified: false,
+      isVerified: false,
       method: "bank_card",
       payment_url: "https://account.openwisp.io/payment/123",
       mustLogin: true,
     };
     props.location.search = "";
-    props.settings.mobile_phone_verification = true;
+    props.settings.mobilePhoneVerification = true;
     props.settings.subscriptions = true;
     const setLoading = jest.fn();
     wrapper = shallow(<Status {...props} />, {
@@ -1314,13 +1314,13 @@ describe("<Status /> interactions", () => {
     props = createTestProps();
     props.userData = {
       ...responseData,
-      is_verified: false,
+      isVerified: false,
       method: "bank_card",
       payment_url: "https://account.openwisp.io/payment/123",
       mustLogin: true,
     };
     props.location.search = "";
-    props.settings.mobile_phone_verification = true;
+    props.settings.mobilePhoneVerification = true;
     props.settings.subscriptions = true;
     props.settings.payment_requires_internet = false;
     const setLoading = jest.fn();
@@ -1358,7 +1358,7 @@ describe("<Status /> interactions", () => {
     props = createTestProps();
     props.userData = {
       ...responseData,
-      is_verified: false,
+      isVerified: false,
       method: "bank_card",
       payment_url: "https://account.openwisp.io/payment/123",
       mustLogin: true,
@@ -1659,7 +1659,7 @@ describe("<Status /> interactions", () => {
     expect(setTitleMock.calls.pop()).toEqual(["Status", props.orgName]);
   });
 
-  it("should perform call saml_logout_url if logged in via SAML", async () => {
+  it("should perform call samlLogoutUrl if logged in via SAML", async () => {
     axios.mockImplementationOnce(() =>
       Promise.resolve({
         status: 200,
@@ -1678,7 +1678,7 @@ describe("<Status /> interactions", () => {
     );
 
     props = createTestProps();
-    props.statusPage.saml_logout_url = "http://test.com/saml/logout";
+    props.statusPage.samlLogoutUrl = "http://test.com/saml/logout";
     props.radius_user_token = undefined;
     localStorage.setItem("default_logout_method", "saml");
     validateToken.mockReturnValue(true);
@@ -1705,7 +1705,7 @@ describe("<Status /> interactions", () => {
     jest.runOnlyPendingTimers();
     expect(wrapper.instance().handleSamlLogout.mock.calls.length).toBe(1);
     expect(wrapper.instance().handleSamlLogout).toHaveBeenCalledWith(
-      props.statusPage.saml_logout_url,
+      props.statusPage.samlLogoutUrl,
     );
     expect(localStorage.getItem("default_logout_method")).toBe(null);
   });
@@ -1819,9 +1819,9 @@ describe("<Status /> interactions", () => {
   it("should not get account sessions if user needs verification", async () => {
     validateToken.mockReturnValue(true);
     const prop = createTestProps();
-    prop.userData.is_verified = false;
+    prop.userData.isVerified = false;
     prop.userData.method = "mobile_phone";
-    prop.settings = {mobile_phone_verification: true};
+    prop.settings = {mobilePhoneVerification: true};
     wrapper = shallow(<Status {...prop} />, {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: true,
@@ -2308,7 +2308,7 @@ describe("<Status /> interactions", () => {
           status: 400,
           statusText: "BAD_REQUEST",
           data: {
-            plan_pricing: ["This plan requires billing info."],
+            planPricing: ["This plan requires billing info."],
           },
         },
       }),
@@ -2807,7 +2807,7 @@ describe("<Status /> interactions", () => {
   });
 });
 
-describe("<Status /> accounting_swap_octets", () => {
+describe("<Status /> accountingSwapOctets", () => {
   let props;
   let wrapper;
   const sessionData = {
@@ -2830,8 +2830,8 @@ describe("<Status /> accounting_swap_octets", () => {
     props = createTestProps();
   });
 
-  it("should not swap download and upload when accounting_swap_octets is false", async () => {
-    props.statusPage.accounting_swap_octets = false;
+  it("should not swap download and upload when accountingSwapOctets is false", async () => {
+    props.statusPage.accountingSwapOctets = false;
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
     });
@@ -2859,8 +2859,8 @@ describe("<Status /> accounting_swap_octets", () => {
     expect(rows.at(4).find("td").text()).toBe("1 kB");
   });
 
-  it("should swap download and upload when accounting_swap_octets is true", async () => {
-    props.statusPage.accounting_swap_octets = true;
+  it("should swap download and upload when accountingSwapOctets is true", async () => {
+    props.statusPage.accountingSwapOctets = true;
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
     });

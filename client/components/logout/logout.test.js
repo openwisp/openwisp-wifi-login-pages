@@ -1,4 +1,3 @@
-/* eslint-disable prefer-promise-reject-errors */
 import {render, screen, fireEvent} from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
@@ -18,8 +17,8 @@ logError.mockImplementation(jest.fn());
 const userData = {
   username: "tester@tester.com",
   email: "tester@tester.com",
-  is_verified: true,
-  is_active: true,
+  isVerified: true,
+  isActive: true,
   mustLogin: false,
 };
 

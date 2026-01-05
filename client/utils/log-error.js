@@ -1,6 +1,5 @@
 const logError = (error, errorText = "") => {
   if (Object.prototype.hasOwnProperty.call(error, "response")) {
-    /* eslint-disable-next-line no-console */
     console.error(
       "Status",
       error.response.status,
@@ -9,7 +8,6 @@ const logError = (error, errorText = "") => {
       errorText,
     );
   } else {
-    /* eslint-disable-next-line no-console */
     console.log(error);
   }
 };

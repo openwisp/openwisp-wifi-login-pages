@@ -54,7 +54,7 @@ directory, e.g.:
 The ``client_assets`` directory shall contain static files like CSS,
 images, etc.. The ``server_assets`` directory is used for loading the
 content of :ref:`Terms of Service and Privacy Policy
-<wlp_tos_privacy_policy>`. You can copy the desired files to these
+<wlp_tos_privacyPolicy>`. You can copy the desired files to these
 directories.
 
 .. note::
@@ -90,7 +90,7 @@ For example, to remove social login links:
 .. code-block:: yaml
 
     login_form:
-      social_login:
+      socialLogin:
         links: null
 
 .. note::
@@ -225,7 +225,7 @@ You can take reference from `sentry-env.sample.json
 Supporting Realms (RADIUS Proxy)
 --------------------------------
 
-To enable support for realms, set ``radius_realms`` to ``true`` as in the
+To enable support for realms, set ``radiusRealms`` to ``true`` as in the
 example below:
 
 .. code-block:: yaml
@@ -235,9 +235,9 @@ example below:
     slug: "default"
 
     settings:
-      radius_realms: true
+      radiusRealms: true
 
-When support for ``radius_realms`` is ``true`` and the username inserted
+When support for ``radiusRealms`` is ``true`` and the username inserted
 in the username field by the user includes an ``@`` sign, the login page
 will submit the credentials directly to the URL specified in
 ``captive_portal_login_form``, hence bypassing this app altogether.

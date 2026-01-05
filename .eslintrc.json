@@ -1,5 +1,11 @@
 {
-  "extends": ["airbnb", "prettier", "plugin:jest/recommended"],
+  "extends": [
+    "airbnb",
+    "prettier",
+    "plugin:jest/recommended",
+    "plugin:testing-library/react",
+    "plugin:jest-dom/recommended"
+  ],
   "parser": "@babel/eslint-parser",
   "plugins": ["prettier", "jest", "testing-library", "jest-dom"],
   "parserOptions": {

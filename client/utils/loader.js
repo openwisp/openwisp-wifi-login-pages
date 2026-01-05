@@ -6,7 +6,7 @@ const loader = (props) => {
   if (full) css = `${css} full`;
   if (small) css += " small";
   return (
-    <div className={css}>
+    <div data-testid="loader-container" className={css}>
       <div className="loader" />
     </div>
   );

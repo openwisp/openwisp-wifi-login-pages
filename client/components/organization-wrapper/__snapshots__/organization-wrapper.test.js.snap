@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<OrganizationWrapper /> interactions should render main title if pageTitle is undefined 1`] = `<div />`;
 
@@ -6,9 +6,11 @@ exports[`<OrganizationWrapper /> interactions should render pageTitle if it is n
 <div>
   <div
     class="app-container "
+    data-testid="app-container"
   >
     <div
       class="header-container header-desktop"
+      data-testid="header"
     >
       <div
         class="header-row-1"
@@ -35,6 +37,7 @@ exports[`<OrganizationWrapper /> interactions should render pageTitle if it is n
           </div>
           <div
             class="header-right"
+            data-testid="desktop-language-selector"
           >
             <button
               class="active header-language-btn header-desktop-language-btn header-language-btn-en"
@@ -56,6 +59,7 @@ exports[`<OrganizationWrapper /> interactions should render pageTitle if it is n
       >
         <div
           class="header-row-2-inner"
+          data-testid="desktop-navigation"
         >
           <a
             class="header-link header-desktop-link
@@ -76,6 +80,7 @@ exports[`<OrganizationWrapper /> interactions should render pageTitle if it is n
     </div>
     <div
       class="header-mobile "
+      data-testid="header"
     >
       <div
         class="header-row-1"
@@ -124,6 +129,7 @@ exports[`<OrganizationWrapper /> interactions should render pageTitle if it is n
       </div>
       <div
         class="display-none header-mobile-menu"
+        data-testid="mobile-menu"
       >
         <a
           class="header-link mobile-link
@@ -159,7 +165,8 @@ exports[`<OrganizationWrapper /> interactions should render pageTitle if it is n
     </div>
     <div
       class="container content"
-      id="not-foud-404"
+      data-testid="not-found-404"
+      id="not-found-404"
     >
       <div
         class="inner"
@@ -191,6 +198,7 @@ exports[`<OrganizationWrapper /> interactions should render pageTitle if it is n
     </div>
     <div
       class="footer-container"
+      data-testid="footer"
     >
       <div
         class="footer-row-1"
@@ -210,9 +218,11 @@ exports[`Test <OrganizationWrapper /> routes should display status if authentica
 <div>
   <div
     class="app-container "
+    data-testid="app-container"
   >
     <div
       class="header-container header-desktop"
+      data-testid="header"
     >
       <div
         class="header-row-1"
@@ -239,6 +249,7 @@ exports[`Test <OrganizationWrapper /> routes should display status if authentica
           </div>
           <div
             class="header-right"
+            data-testid="desktop-language-selector"
           >
             <button
               class="active header-language-btn header-desktop-language-btn header-language-btn-en"
@@ -260,6 +271,7 @@ exports[`Test <OrganizationWrapper /> routes should display status if authentica
       >
         <div
           class="header-row-2-inner"
+          data-testid="desktop-navigation"
         >
           <a
             class="header-link header-desktop-link
@@ -280,6 +292,7 @@ exports[`Test <OrganizationWrapper /> routes should display status if authentica
     </div>
     <div
       class="header-mobile "
+      data-testid="header"
     >
       <div
         class="header-row-1"
@@ -328,6 +341,7 @@ exports[`Test <OrganizationWrapper /> routes should display status if authentica
       </div>
       <div
         class="display-none header-mobile-menu"
+        data-testid="mobile-menu"
       >
         <a
           class="header-link mobile-link
@@ -363,7 +377,8 @@ exports[`Test <OrganizationWrapper /> routes should display status if authentica
     </div>
     <div
       class="container content"
-      id="not-foud-404"
+      data-testid="not-found-404"
+      id="not-found-404"
     >
       <div
         class="inner"
@@ -395,6 +410,7 @@ exports[`Test <OrganizationWrapper /> routes should display status if authentica
     </div>
     <div
       class="footer-container"
+      data-testid="footer"
     >
       <div
         class="footer-row-1"
@@ -412,9 +428,11 @@ exports[`Test <OrganizationWrapper /> routes should redirect to login if not aut
 <div>
   <div
     class="app-container "
+    data-testid="app-container"
   >
     <div
       class="header-container header-desktop"
+      data-testid="header"
     >
       <div
         class="header-row-1"
@@ -441,6 +459,7 @@ exports[`Test <OrganizationWrapper /> routes should redirect to login if not aut
           </div>
           <div
             class="header-right"
+            data-testid="desktop-language-selector"
           >
             <button
               class="active header-language-btn header-desktop-language-btn header-language-btn-en"
@@ -462,6 +481,7 @@ exports[`Test <OrganizationWrapper /> routes should redirect to login if not aut
       >
         <div
           class="header-row-2-inner"
+          data-testid="desktop-navigation"
         >
           <a
             class="header-link header-desktop-link
@@ -482,6 +502,7 @@ exports[`Test <OrganizationWrapper /> routes should redirect to login if not aut
     </div>
     <div
       class="header-mobile "
+      data-testid="header"
     >
       <div
         class="header-row-1"
@@ -530,6 +551,7 @@ exports[`Test <OrganizationWrapper /> routes should redirect to login if not aut
       </div>
       <div
         class="display-none header-mobile-menu"
+        data-testid="mobile-menu"
       >
         <a
           class="header-link mobile-link
@@ -565,7 +587,8 @@ exports[`Test <OrganizationWrapper /> routes should redirect to login if not aut
     </div>
     <div
       class="container content"
-      id="not-foud-404"
+      data-testid="not-found-404"
+      id="not-found-404"
     >
       <div
         class="inner"
@@ -597,6 +620,7 @@ exports[`Test <OrganizationWrapper /> routes should redirect to login if not aut
     </div>
     <div
       class="footer-container"
+      data-testid="footer"
     >
       <div
         class="footer-row-1"

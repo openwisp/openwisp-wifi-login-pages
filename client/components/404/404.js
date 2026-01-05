@@ -1,4 +1,3 @@
-/* eslint-disable react/require-default-props */
 import "./index.css";
 
 import PropTypes from "prop-types";
@@ -16,7 +15,11 @@ export default class DoesNotExist extends React.Component {
   render() {
     const {orgSlug, page} = this.props;
     return (
-      <div className="container content" id="not-foud-404">
+      <div
+        className="container content"
+        id="not-found-404"
+        data-testid="not-found-404"
+      >
         <div className="inner">
           <div className="main-column">
             <div className="inner">
@@ -55,4 +58,11 @@ DoesNotExist.propTypes = {
   orgSlug: PropTypes.string,
   orgName: PropTypes.string,
   setTitle: PropTypes.func,
+};
+
+DoesNotExist.defaultProps = {
+  page: undefined,
+  orgSlug: "",
+  orgName: undefined,
+  setTitle: () => {},
 };

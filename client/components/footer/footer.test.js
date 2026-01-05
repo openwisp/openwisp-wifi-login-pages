@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import React from "react";
 import {render, screen} from "@testing-library/react";
 import "@testing-library/jest-dom";
@@ -39,12 +38,12 @@ const createTestProps = (props) => ({
   language: "en",
   footer: {
     links: defaultConfig.components.footer.links,
-    after_html: {
+    afterHtml: {
       en: "after html",
     },
   },
   orgSlug: "default",
-  userData: {is_verified: true},
+  userData: {isVerified: true},
   ...props,
 });
 
@@ -117,7 +116,7 @@ describe("<Footer /> rendering", () => {
     props = createTestProps();
     props.footer.links = footerLinks;
     props.isAuthenticated = true;
-    props.userData.is_verified = false;
+    props.userData.isVerified = false;
     render(<Footer {...props} />);
 
     // Check visible links

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Login /> interactions phone_number field should be present if mobile phone verification is on 1`] = `
+exports[`<Login /> interactions phoneNumber field should be present if mobile phone verification is on 1`] = `
 <div>
   <div
     class="container content"
@@ -10,6 +10,7 @@ exports[`<Login /> interactions phone_number field should be present if mobile p
       class="inner"
     >
       <form
+        aria-label="Login form"
         class="main-column"
       >
         <div
@@ -25,7 +26,7 @@ exports[`<Login /> interactions phone_number field should be present if mobile p
               class="row phone-number"
             >
               <label
-                for="phone-number"
+                for="username"
               >
                 Mobile phone number
               </label>
@@ -105,12 +106,12 @@ exports[`<Login /> interactions phone_number field should be present if mobile p
             >
               <input
                 checked=""
-                id="remember_me"
-                name="remember_me"
+                id="rememberMe"
+                name="rememberMe"
                 type="checkbox"
               />
               <label
-                for="remember_me"
+                for="rememberMe"
               >
                 remember me on this device
               </label>
@@ -152,7 +153,7 @@ exports[`<Login /> interactions phone_number field should be present if mobile p
 </div>
 `;
 
-exports[`<Login /> interactions should not show phone_number field if auto_switch_phone_input is false 1`] = `
+exports[`<Login /> interactions should not show phoneNumber field if auto_switch_phone_input is false 1`] = `
 <div>
   <div
     class="container content"
@@ -162,6 +163,7 @@ exports[`<Login /> interactions should not show phone_number field if auto_switc
       class="inner"
     >
       <form
+        aria-label="Login form"
         class="main-column"
       >
         <div
@@ -231,12 +233,12 @@ exports[`<Login /> interactions should not show phone_number field if auto_switc
             >
               <input
                 checked=""
-                id="remember_me"
-                name="remember_me"
+                id="rememberMe"
+                name="rememberMe"
                 type="checkbox"
               />
               <label
-                for="remember_me"
+                for="rememberMe"
               >
                 remember me on this device
               </label>
@@ -288,6 +290,7 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
       class="inner"
     >
       <form
+        aria-label="Login form"
         class="main-column"
       >
         <div
@@ -357,12 +360,12 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
             >
               <input
                 checked=""
-                id="remember_me"
-                name="remember_me"
+                id="rememberMe"
+                name="rememberMe"
                 type="checkbox"
               />
               <label
-                for="remember_me"
+                for="rememberMe"
               >
                 remember me on this device
               </label>
@@ -414,6 +417,7 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
       class="inner"
     >
       <form
+        aria-label="Login form"
         class="main-column"
       >
         <div
@@ -528,14 +532,14 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
             >
               <input
                 checked=""
-                id="remember_me"
-                name="remember_me"
+                id="rememberMe"
+                name="rememberMe"
                 type="checkbox"
               />
               <label
-                for="remember_me"
+                for="rememberMe"
               >
-                REMEMBER_ME
+                rememberMe
               </label>
             </div>
           </div>
@@ -585,6 +589,7 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
       class="inner"
     >
       <form
+        aria-label="Login form"
         class="main-column"
       >
         <div
@@ -654,14 +659,14 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
             >
               <input
                 checked=""
-                id="remember_me"
-                name="remember_me"
+                id="rememberMe"
+                name="rememberMe"
                 type="checkbox"
               />
               <label
-                for="remember_me"
+                for="rememberMe"
               >
-                REMEMBER_ME
+                rememberMe
               </label>
             </div>
           </div>
@@ -701,7 +706,7 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
 </div>
 `;
 
-exports[`<Login /> rendering should render radius realms form if radius_realms is true 1`] = `
+exports[`<Login /> rendering should render radius realms form if radiusRealms is true 1`] = `
 <div>
   <div
     class="container content"
@@ -711,6 +716,7 @@ exports[`<Login /> rendering should render radius realms form if radius_realms i
       class="inner"
     >
       <form
+        aria-label="Login form"
         class="main-column"
       >
         <div
@@ -780,12 +786,12 @@ exports[`<Login /> rendering should render radius realms form if radius_realms i
             >
               <input
                 checked=""
-                id="remember_me"
-                name="remember_me"
+                id="rememberMe"
+                name="rememberMe"
                 type="checkbox"
               />
               <label
-                for="remember_me"
+                for="rememberMe"
               >
                 remember me on this device
               </label>
@@ -817,6 +823,7 @@ exports[`<Login /> rendering should render radius realms form if radius_realms i
       </form>
       <form
         action="https://radius-proxy/login/"
+        aria-label="Captive portal login form"
         class="hidden"
         id="cp-login-form"
         method="POST"
@@ -855,6 +862,7 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
       class="inner"
     >
       <form
+        aria-label="Login form"
         class="main-column"
       >
         <div
@@ -924,14 +932,14 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
             >
               <input
                 checked=""
-                id="remember_me"
-                name="remember_me"
+                id="rememberMe"
+                name="rememberMe"
                 type="checkbox"
               />
               <label
-                for="remember_me"
+                for="rememberMe"
               >
-                REMEMBER_ME
+                rememberMe
               </label>
             </div>
           </div>

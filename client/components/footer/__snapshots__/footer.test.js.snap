@@ -1,9 +1,10 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Footer /> rendering should render correctly 1`] = `
 <div>
   <div
     class="footer-container"
+    data-testid="footer"
   >
     <div
       class="footer-row-1"
@@ -38,6 +39,7 @@ exports[`<Footer /> rendering with placeholder translation tags should render tr
 <div>
   <div
     class="footer-container"
+    data-testid="footer"
   >
     <div
       class="footer-row-1"

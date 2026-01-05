@@ -127,7 +127,7 @@ synchronously and trigger a full page reload upon authentication:
 Status Page Settings
 --------------------
 
-``accounting_swap_octets``
+``accountingSwapOctets``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Some RADIUS servers may report accounting octets (data usage) with
@@ -145,7 +145,7 @@ Example:
 .. code-block:: yaml
 
     status_page:
-      accounting_swap_octets: true
+      accountingSwapOctets: true
 
 ``radius_usage_enabled``
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -185,7 +185,7 @@ properties.
   users.
 - ``methods_only: ["mobile_phone"]`` means visible only to users
   registered with mobile phone verification.
-- ``methods_excluded: ["saml", "social_login"]`` means not visible to
+- ``methods_excluded: ["saml", "socialLogin"]`` means not visible to
   users which sign in using SAML and social login.
 - unspecified: link will be visible to any user (default behavior)
 
@@ -212,7 +212,7 @@ contact components:
             verified: true
             methods_excluded:
               - saml
-              - social_login
+              - socialLogin
           # if organization supports mobile verification
           - text:
               en: "change phone number"
@@ -230,7 +230,7 @@ contact components:
             url: "/status"
             authenticated: true
       contact_page:
-        social_links:
+        socialLinks:
           - text:
               en: "support"
             url: "/support"
@@ -262,8 +262,8 @@ With the configuration above:
 User Fields in Registration Form
 --------------------------------
 
-The ``setting`` attribute of the fields ``first_name``, ``last_name``,
-``location`` and ``birth_date`` can be used to indicate whether the fields
+The ``setting`` attribute of the fields ``firstName``, ``lastName``,
+``location`` and ``birthDate`` can be used to indicate whether the fields
 shall be disabled (the default setting), allowed but not required or
 required.
 
@@ -283,7 +283,7 @@ Username Field in Login Form
 
 The username field in the login form is automatically set to either a
 phone number input or an email text input depending on whether
-``mobile_phone_verification`` is enabled or not.
+``mobilePhoneVerification`` is enabled or not.
 
 However, it is possible to force the use of a standard text field if
 needed, for example, we may need to configure the username field to accept
@@ -294,20 +294,20 @@ phone number, an email or a username:
 .. code-block:: yaml
 
     login_form:
-      input_fields:
+      inputFields:
         username:
           auto_switch_phone_input: false
           type: "text"
           pattern: null
 
-.. _wlp_social_login:
+.. _wlp_socialLogin:
 
 Configuring Social Login
 ------------------------
 
 In order to enable users to log via third-party services like Google and
 Facebook, the :doc:`Social Login feature of OpenWISP Radius
-</radius/user/social_login>` must be configured and enabled.
+</radius/user/socialLogin>` must be configured and enabled.
 
 .. _wlp_custom_css:
 
@@ -366,23 +366,23 @@ Login Page
 .. code-block:: yaml
 
     login_form:
-      intro_html:
+      introHtml:
         en: >
           <div class="pre">
             Shown before the main content in the login page.
           </div>
-      pre_html:
+      preHtml:
         en: >
           <div class="intro">
             Shown at the beginning of the login content box.
           </div>
-      help_html:
+      helpHtml:
         en: >
           <div class="intro">
             Shown above the login form, after social login buttons.
             Can be used to write custom help labels.
           </div>
-      after_html:
+      afterHtml:
         en: >
           <div class="intro">
             Shown at the end of the login content box.
@@ -396,12 +396,12 @@ Contact Box
 .. code-block:: yaml
 
     contact_page:
-      pre_html:
+      preHtml:
         en: >
           <div class="contact">
             Shown at the beginning of the contact box.
           </div>
-      after_html:
+      afterHtml:
         en: >
           <div class="contact">
             Shown at the end of the contact box.
@@ -413,7 +413,7 @@ Footer
 .. code-block:: yaml
 
     footer:
-      after_html:
+      afterHtml:
         en: >
           <div class="contact">
             Shown at the bottom of the footer.
@@ -428,16 +428,16 @@ Configuring SAML Login & Logout
 To enable SAML login, the :doc:`SAML feature of OpenWISP RADIUS
 </radius/user/saml>` must be enabled.
 
-The only additional configuration needed is ``saml_logout_url``, which is
+The only additional configuration needed is ``samlLogoutUrl``, which is
 needed to perform SAML logout.
 
 .. code-block:: yaml
 
     status_page:
       # other conf
-      saml_logout_url: "https://openwisp.myservice.org/radius/saml2/logout/"
+      samlLogoutUrl: "https://openwisp.myservice.org/radius/saml2/logout/"
 
-.. _wlp_tos_privacy_policy:
+.. _wlp_tos_privacyPolicy:
 
 TOS & Privacy Policy
 --------------------

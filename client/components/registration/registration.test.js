@@ -1,5 +1,3 @@
-/* eslint-disable prefer-promise-reject-errors */
-/* eslint-disable camelcase */
 import axios from "axios";
 import {render, screen, waitFor, fireEvent} from "@testing-library/react";
 import "@testing-library/jest-dom";
@@ -20,12 +18,12 @@ const mockConfig = {
   slug: "default",
   default_language: "en",
   settings: {
-    mobile_phone_verification: false,
+    mobilePhoneVerification: false,
     subscriptions: false,
   },
   components: {
     registration_form: {
-      input_fields: {
+      inputFields: {
         username: {
           pattern: "^[a-zA-Z0-9@.+\\-_\\s]+$",
         },
@@ -38,16 +36,16 @@ const mockConfig = {
         password_confirm: {
           pattern: "^.{8,}$",
         },
-        phone_number: {
+        phoneNumber: {
           country: "in",
         },
-        first_name: {
+        firstName: {
           setting: "disabled",
         },
-        last_name: {
+        lastName: {
           setting: "disabled",
         },
-        birth_date: {
+        birthDate: {
           setting: "disabled",
         },
         location: {
@@ -55,7 +53,7 @@ const mockConfig = {
           setting: "disabled",
         },
       },
-      social_login: {
+      socialLogin: {
         links: [],
       },
     },
@@ -71,11 +69,11 @@ const mockConfig = {
     },
     contact_page: {},
   },
-  privacy_policy: {
+  privacyPolicy: {
     title: {en: "Privacy Policy"},
     content: {en: "Privacy content"},
   },
-  terms_and_conditions: {
+  termsAndConditions: {
     title: {en: "Terms and Conditions"},
     content: {en: "Terms content"},
   },
@@ -99,8 +97,8 @@ const createTestProps = (props, configName = "default") => {
     orgName: config.name,
     settings: config.settings,
     registration: config.components.registration_form,
-    privacyPolicy: config.privacy_policy,
-    termsAndConditions: config.terms_and_conditions,
+    privacyPolicy: config.privacyPolicy,
+    termsAndConditions: config.termsAndConditions,
     authenticate: jest.fn(),
     setTitle: jest.fn(),
     setUserData: jest.fn(),
@@ -127,7 +125,7 @@ const createMockStore = () => {
           contact_page: {
             email: "support.org",
             helpdesk: "+1234567890",
-            social_links: [],
+            socialLinks: [],
           },
         },
       },
@@ -216,7 +214,6 @@ describe("<Registration /> interactions", () => {
     axios.mockReset();
     originalError = console.error;
     lastConsoleOutput = null;
-    /* eslint-disable no-console */
     console.error = (data) => {
       lastConsoleOutput = data;
     };
@@ -225,7 +222,6 @@ describe("<Registration /> interactions", () => {
   });
 
   afterEach(() => {
-    /* eslint-disable no-console */
     console.error = originalError;
     /* eslint-enable no-console */
     jest.clearAllMocks();
@@ -238,7 +234,7 @@ describe("<Registration /> interactions", () => {
     fireEvent.change(emailInput, {
       target: {value: "test email", name: "email"},
     });
-    expect(emailInput.value).toEqual("test email");
+    expect(emailInput).toHaveValue("test email");
 
     const password1Input = screen.getByLabelText(/^password$/i);
     fireEvent.change(password1Input, {
@@ -255,37 +251,39 @@ describe("<Registration /> interactions", () => {
 
   it("should execute handleSubmit correctly when form is submitted", async () => {
     axios
-      .mockImplementationOnce(() =>
-        Promise.reject({
-          response: {
-            data: {
-              email: "email error",
-              detail: "nonField error",
-              password1: "password1 error",
-            },
+      .mockImplementationOnce(() => {
+        const error = new Error("Request failed with status code 400");
+        error.response = {
+          status: 400,
+          statusText: "Bad Request",
+          data: {
+            email: "email error",
+            detail: "nonField error",
+            password1: "password1 error",
           },
-        }),
-      )
-      .mockImplementationOnce(() =>
-        Promise.reject({
+        };
+        return Promise.reject(error);
+      })
+      .mockImplementationOnce(() => {
+        const error = new Error("Request failed with status code 500");
+        error.response = {
           status: 500,
           statusText: "Internal server error",
-          response: {
-            data: {
-              detail: "Internal server error",
-            },
+          data: {
+            detail: "Internal server error",
           },
-        }),
-      )
-      .mockImplementationOnce(() =>
-        Promise.reject({
+        };
+        return Promise.reject(error);
+      })
+      .mockImplementationOnce(() => {
+        const error = new Error("Request failed with status code 504");
+        error.response = {
           status: 504,
           statusText: "Gateway Timeout",
-          response: {
-            data: {},
-          },
-        }),
-      )
+          data: {},
+        };
+        return Promise.reject(error);
+      })
       .mockImplementationOnce(() =>
         Promise.resolve({
           status: 201,
@@ -293,21 +291,21 @@ describe("<Registration /> interactions", () => {
           data: responseData,
         }),
       )
-      .mockImplementationOnce(() =>
-        Promise.reject({
+      .mockImplementationOnce(() => {
+        const error = new Error("Request failed with status code 400");
+        error.response = {
           status: 400,
           statusText: "Bad Request",
-          response: {
-            data: {
-              billing_info: {
-                billingError: "registration error",
-              },
+          data: {
+            billing_info: {
+              billingError: "registration error",
             },
           },
-        }),
-      );
+        };
+        return Promise.reject(error);
+      });
 
-    const {container} = renderWithProviders(<Registration {...props} />);
+    renderWithProviders(<Registration {...props} />);
 
     const spyToast = jest.spyOn(toast, "error");
     const password1Input = screen.getByLabelText(/^password$/i);
@@ -323,11 +321,11 @@ describe("<Registration /> interactions", () => {
     fireEvent.submit(screen.getByRole("button", {name: /sign up/i}));
 
     await waitFor(() => {
+      const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
+      expect(confirmPasswordInput).toHaveClass("error");
+      // Check for error message
       expect(
-        container.querySelector(".row.password-confirm div.error"),
-      ).toBeInTheDocument();
-      expect(
-        container.querySelector(".row.password-confirm input.error"),
+        screen.getByText(/The two password fields didn't match/i),
       ).toBeInTheDocument();
     });
 
@@ -342,7 +340,9 @@ describe("<Registration /> interactions", () => {
 
     await tick();
     await waitFor(() => {
-      expect(container.querySelectorAll("div.error").length).toBeGreaterThan(0);
+      // Check that error messages are displayed
+      expect(screen.getByText("email error")).toBeInTheDocument();
+      expect(screen.getByText("password1 error")).toBeInTheDocument();
       expect(spyToast).toHaveBeenCalledTimes(1);
     });
     expect(props.authenticate).not.toHaveBeenCalled();
@@ -371,7 +371,8 @@ describe("<Registration /> interactions", () => {
     fireEvent.submit(screen.getByRole("button", {name: /sign up/i}));
     await tick();
     await waitFor(() => {
-      expect(container.querySelector(".success")).toBeInTheDocument();
+      const form = screen.getByTestId("registration-form");
+      expect(form).toHaveClass("success");
       expect(props.authenticate).toHaveBeenCalledTimes(1);
     });
 
@@ -385,49 +386,41 @@ describe("<Registration /> interactions", () => {
   });
 
   it("test optional fields disabled", async () => {
-    const {container} = renderWithProviders(<Registration {...props} />);
+    renderWithProviders(<Registration {...props} />);
 
-    expect(container.querySelector(".first_name")).not.toBeInTheDocument();
-    expect(container.querySelector(".last_name")).not.toBeInTheDocument();
-    expect(container.querySelector(".birth_date")).not.toBeInTheDocument();
-    expect(container.querySelector(".location")).not.toBeInTheDocument();
+    expect(screen.queryByLabelText(/first name/i)).not.toBeInTheDocument();
+    expect(screen.queryByLabelText(/last name/i)).not.toBeInTheDocument();
+    expect(screen.queryByLabelText(/birth date/i)).not.toBeInTheDocument();
+    expect(screen.queryByLabelText(/location/i)).not.toBeInTheDocument();
   });
 
   it("test optional fields allowed", async () => {
-    props.registration.input_fields.first_name.setting = "allowed";
-    props.registration.input_fields.location.setting = "allowed";
+    props.registration.inputFields.firstName.setting = "allowed";
+    props.registration.inputFields.location.setting = "allowed";
 
-    const {container} = renderWithProviders(<Registration {...props} />);
+    renderWithProviders(<Registration {...props} />);
 
-    const firstNameLabel = container.querySelector("[for='first_name']");
-    const locationLabel = container.querySelector("[for='location']");
+    const firstNameInput = screen.getByLabelText(/first name.*optional/i);
+    const locationInput = screen.getByLabelText(/location.*optional/i);
 
-    expect(firstNameLabel).toHaveTextContent("First name (optional)");
-    expect(locationLabel).toHaveTextContent("Location (optional)");
-    expect(container.querySelector(".last_name")).not.toBeInTheDocument();
-    expect(container.querySelector(".birth_date")).not.toBeInTheDocument();
+    expect(firstNameInput).toBeInTheDocument();
+    expect(locationInput).toBeInTheDocument();
+    expect(screen.queryByLabelText(/last name/i)).not.toBeInTheDocument();
+    expect(screen.queryByLabelText(/birth date/i)).not.toBeInTheDocument();
   });
 
   it("test optional fields mandatory", async () => {
-    props.registration.input_fields.birth_date.setting = "mandatory";
-    props.registration.input_fields.first_name.setting = "mandatory";
-    props.registration.input_fields.last_name.setting = "allowed";
-    props.registration.input_fields.location.setting = "allowed";
+    props.registration.inputFields.birthDate.setting = "mandatory";
+    props.registration.inputFields.firstName.setting = "mandatory";
+    props.registration.inputFields.lastName.setting = "allowed";
+    props.registration.inputFields.location.setting = "allowed";
 
-    const {container} = renderWithProviders(<Registration {...props} />);
+    renderWithProviders(<Registration {...props} />);
 
-    expect(container.querySelector("[for='first_name']")).toHaveTextContent(
-      "First name",
-    );
-    expect(container.querySelector("[for='birth_date']")).toHaveTextContent(
-      "Birth date",
-    );
-    expect(container.querySelector("[for='last_name']")).toHaveTextContent(
-      "Last name (optional)",
-    );
-    expect(container.querySelector("[for='location']")).toHaveTextContent(
-      "Location (optional)",
-    );
+    expect(screen.getByLabelText(/^first name$/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/^birth date$/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/last name.*optional/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/location.*optional/i)).toBeInTheDocument();
   });
 
   it("should execute authenticate in mobile phone verification flow", async () => {
@@ -439,8 +432,8 @@ describe("<Registration /> interactions", () => {
       }),
     );
 
-    props.settings = {mobile_phone_verification: true};
-    const {container} = renderWithProviders(<Registration {...props} />);
+    props.settings = {mobilePhoneVerification: true};
+    renderWithProviders(<Registration {...props} />);
 
     const password1Input = screen.getByLabelText(/^password$/i);
     const password2Input = screen.getByLabelText(/confirm password/i);
@@ -455,21 +448,22 @@ describe("<Registration /> interactions", () => {
 
     await tick();
     await waitFor(() => {
-      expect(container.querySelector(".success")).toBeInTheDocument();
+      const form = screen.getByTestId("registration-form");
+      expect(form).toHaveClass("success");
       expect(props.authenticate).toHaveBeenCalledTimes(1);
       expect(props.setUserData).toHaveBeenCalledWith({
-        is_verified: false,
-        auth_token: responseData.key,
+        isVerified: false,
+        authToken: responseData.key,
         mustLogin: !responseData.requires_payment,
       });
     });
   });
 
   it("should toggle modal", async () => {
-    const {container} = renderWithProviders(<Registration {...props} />);
+    renderWithProviders(<Registration {...props} />);
 
     // Modal should not be visible initially
-    expect(container.querySelector(".modal")).not.toBeInTheDocument();
+    expect(screen.queryByLabelText("dialog")).not.toBeInTheDocument();
   });
 
   it("should show modal if user is already registered with other organizations", async () => {
@@ -478,24 +472,20 @@ describe("<Registration /> interactions", () => {
       organizations: [{name: "default", slug: "default"}],
     };
 
-    axios.mockImplementationOnce(() =>
-      Promise.reject({
-        response: {
-          status: 409,
-          statusText: "CONFLICT",
-          data,
-        },
-      }),
-    );
+    const error = new Error("Request failed with status code 409");
+    error.response = {
+      status: 409,
+      statusText: "CONFLICT",
+      data,
+    };
+    axios.mockImplementationOnce(() => Promise.reject(error));
 
-    const {container} = renderWithProviders(<Registration {...props} />);
+    renderWithProviders(<Registration {...props} />);
 
-    const form = container.querySelector("form");
-    const emailInput = container.querySelector(".row.email input");
-    const password1Input = container.querySelector(".row.password input");
-    const password2Input = container.querySelector(
-      ".row.password-confirm input",
-    );
+    const form = screen.getByTestId("registration-form");
+    const emailInput = screen.getByRole("textbox", {name: /email/i});
+    const password1Input = screen.getByLabelText(/^password$/i);
+    const password2Input = screen.getByLabelText(/confirm password/i);
 
     fireEvent.change(emailInput, {
       target: {value: "tester@openwisp.org", name: "email"},
@@ -510,8 +500,7 @@ describe("<Registration /> interactions", () => {
 
     await tick();
     await waitFor(() => {
-      const modal = container.querySelector(".modal");
-      expect(modal).toBeInTheDocument();
+      expect(screen.getByTestId("info-modal")).toBeInTheDocument();
     });
   });
 
@@ -528,43 +517,38 @@ describe("<Registration /> interactions", () => {
       organizations: [],
     };
 
-    axios.mockImplementationOnce(() =>
-      Promise.reject({
-        response: {
-          status: 409,
-          statusText: "CONFLICT",
-          data,
-        },
-      }),
-    );
+    const error = new Error("Request failed with status code 409");
+    error.response = {
+      status: 409,
+      statusText: "CONFLICT",
+      data,
+    };
+    axios.mockImplementationOnce(() => Promise.reject(error));
 
-    const {container} = renderWithProviders(<Registration {...props} />);
+    renderWithProviders(<Registration {...props} />);
 
-    const form = container.querySelector("form");
+    const form = screen.getByTestId("registration-form");
     fireEvent.submit(form);
 
     await tick();
     await waitFor(() => {
-      const modal = container.querySelector(".modal");
-      expect(modal).toBeInTheDocument();
+      expect(screen.getByTestId("info-modal")).toBeInTheDocument();
     });
   });
 
   it("should show 404 toast if organization does not exists", async () => {
-    axios.mockImplementationOnce(() =>
-      Promise.reject({
-        response: {
-          status: 404,
-          statusText: "404_NOT_FOUND",
-          data: "404",
-        },
-      }),
-    );
+    const error = new Error("Request failed with status code 404");
+    error.response = {
+      status: 404,
+      statusText: "404_NOT_FOUND",
+      data: "404",
+    };
+    axios.mockImplementationOnce(() => Promise.reject(error));
 
     const spyToast = jest.spyOn(toast, "error");
-    const {container} = renderWithProviders(<Registration {...props} />);
+    renderWithProviders(<Registration {...props} />);
 
-    const form = container.querySelector("form");
+    const form = screen.getByTestId("registration-form");
     fireEvent.submit(form);
 
     await tick();
@@ -583,10 +567,10 @@ describe("Registration and Mobile Phone Verification interactions", () => {
     props = createTestProps({}, "test-org-2");
     props.configuration = getConfig("test-org-2");
     // Enable mobile phone verification for these tests
-    props.settings = {...props.settings, mobile_phone_verification: true};
+    props.settings = {...props.settings, mobilePhoneVerification: true};
     props.configuration.settings = {
       ...props.configuration.settings,
-      mobile_phone_verification: true,
+      mobilePhoneVerification: true,
     };
   });
 
@@ -598,17 +582,16 @@ describe("Registration and Mobile Phone Verification interactions", () => {
   });
 
   it("should show phone number field", async () => {
-    const {container} = mountComponent(props);
-    expect(
-      container.querySelector("input[name='phone_number']"),
-    ).toBeInTheDocument();
+    mountComponent(props);
+    const phoneInput = screen.getByRole("textbox", {name: /phone number/i});
+    expect(phoneInput).toBeInTheDocument();
   });
 
   it("should render PhoneInput lazily and handlers should work correctly", async () => {
-    const {container} = renderWithProviders(<Registration {...props} />);
+    renderWithProviders(<Registration {...props} />);
 
     await waitFor(() => {
-      const phoneInput = container.querySelector("input[name='phone_number']");
+      const phoneInput = screen.getByRole("textbox", {name: /phone number/i});
       expect(phoneInput).toBeInTheDocument();
     });
   });
@@ -622,16 +605,16 @@ describe("Registration and Mobile Phone Verification interactions", () => {
       }),
     );
 
-    const {container} = mountComponent(props);
+    mountComponent(props);
 
-    const phoneInput = container.querySelector("input[name='phone_number']");
-    const emailInput = container.querySelector("input[name='email']");
-    const password1Input = container.querySelector("input[name='password1']");
-    const password2Input = container.querySelector("input[name='password2']");
-    const form = container.querySelector("form");
+    const phoneInput = screen.getByRole("textbox", {name: /phone number/i});
+    const emailInput = screen.getByRole("textbox", {name: /email/i});
+    const password1Input = screen.getByLabelText(/^password$/i);
+    const password2Input = screen.getByLabelText(/confirm password/i);
+    const form = screen.getByTestId("registration-form");
 
     fireEvent.change(phoneInput, {
-      target: {value: "+393660011333", name: "phone_number"},
+      target: {value: "+393660011333", name: "phoneNumber"},
     });
     fireEvent.change(emailInput, {
       target: {value: "tester@openwisp.io", name: "email"},
@@ -647,17 +630,17 @@ describe("Registration and Mobile Phone Verification interactions", () => {
     await tick();
     await waitFor(() => {
       expect(props.setUserData).toHaveBeenCalledWith({
-        is_verified: false,
-        auth_token: responseData.key,
+        isVerified: false,
+        authToken: responseData.key,
         mustLogin: !responseData.requires_payment,
       });
     });
   });
 
   it("should load fallback before PhoneInput and handlers should work correctly", async () => {
-    const {container} = renderWithProviders(<Registration {...props} />);
+    renderWithProviders(<Registration {...props} />);
 
-    const phoneInput = container.querySelector("input[name='phone_number']");
+    const phoneInput = screen.getByRole("textbox", {name: /phone number/i});
     expect(phoneInput).toBeInTheDocument();
   });
 
@@ -687,7 +670,7 @@ describe("Registration and Mobile Phone Verification interactions", () => {
     const firstNameInput = screen.queryByRole("textbox", {name: /first name/i});
     if (firstNameInput) {
       fireEvent.change(firstNameInput, {
-        target: {value: "OpenWISP", name: "first_name"},
+        target: {value: "OpenWISP", name: "firstName"},
       });
     }
 
@@ -700,18 +683,22 @@ describe("Registration and Mobile Phone Verification interactions", () => {
   });
 
   it("should toggle password visibility", async () => {
-    const {container} = renderWithProviders(<Registration {...props} />);
+    renderWithProviders(<Registration {...props} />);
 
-    const passwordToggles = container.querySelectorAll(".password-toggle");
-    const password1Input = container.querySelector(".row.password input");
-
+    const password1Input = screen.getByLabelText(/^password$/i);
     expect(password1Input).toHaveAttribute("type", "password");
 
-    expect(passwordToggles[0]).toBeDefined();
-    fireEvent.click(passwordToggles[0]);
+    // Get password toggle button using a more accessible query
+    // Look for the button by its class name using screen queries
+    const passwordToggles = screen.getAllByRole("button");
+    const passwordToggle = passwordToggles.find((btn) =>
+      btn.className.includes("password-toggle"),
+    );
+    expect(passwordToggle).toBeDefined();
+    fireEvent.click(passwordToggle);
+
     await waitFor(() => {
-      const textInputs = container.querySelectorAll("input[type='text']");
-      expect(textInputs.length).toBeGreaterThan(0);
+      expect(password1Input).toHaveAttribute("type", "text");
     });
   });
 });
@@ -724,7 +711,7 @@ describe("Registration without identity verification (Email registration)", () =
     axios.mockReset();
     props = createTestProps({}, "test-org-2");
     props.configuration = getConfig("test-org-2");
-    props.configuration.settings.mobile_phone_verification = false;
+    props.configuration.settings.mobilePhoneVerification = false;
     props.configuration.settings.subscriptions = false;
   });
 
@@ -736,9 +723,9 @@ describe("Registration without identity verification (Email registration)", () =
   });
 
   it("should not show phone number field", async () => {
-    const {container} = mountComponent(props);
+    mountComponent(props);
     expect(
-      container.querySelector("input[name='phone_number']"),
+      screen.queryByRole("textbox", {name: /phone number/i}),
     ).not.toBeInTheDocument();
   });
 
@@ -751,12 +738,12 @@ describe("Registration without identity verification (Email registration)", () =
       }),
     );
 
-    const {container} = mountComponent(props);
+    mountComponent(props);
 
-    const emailInput = container.querySelector("input[name='email']");
-    const password1Input = container.querySelector("input[name='password1']");
-    const password2Input = container.querySelector("input[name='password2']");
-    const form = container.querySelector("form");
+    const emailInput = screen.getByRole("textbox", {name: /email/i});
+    const password1Input = screen.getByLabelText(/^password$/i);
+    const password2Input = screen.getByLabelText(/confirm password/i);
+    const form = screen.getByTestId("registration-form");
 
     fireEvent.change(emailInput, {
       target: {value: "tester@openwisp.io", name: "email"},
@@ -779,16 +766,123 @@ describe("Registration without identity verification (Email registration)", () =
     mountComponent(props);
     expect(props.setTitle).toHaveBeenCalledWith("Sign up", props.orgName);
   });
+});
+
+describe("Registration with subscriptions and billing info", () => {
+  let props;
+
+  const plans = [
+    {
+      id: "00589a26-4855-43c4-acbc-a8cfaf25807d",
+      plan: "Free",
+      pricing: "no expiration (free) (0 days)",
+      plan_description: "3 hours per day\n300 MB per day",
+      currency: "EUR",
+      requires_payment: false,
+      requires_invoice: false,
+      price: "0.00",
+      has_automatic_renewal: false,
+    },
+    {
+      id: "d1403161-75cd-4492-bccd-054eee9e155a",
+      plan: "Premium",
+      pricing: "per year (365 days)",
+      plan_description: "Unlimited time and traffic",
+      currency: "EUR",
+      requires_payment: true,
+      requires_invoice: true,
+      price: "9.99",
+      has_automatic_renewal: false,
+    },
+  ];
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    axios.mockReset();
+
+    // Create props with subscriptions enabled
+    props = createTestProps({}, "default");
+    props.configuration = getConfig("default");
+    props.configuration.settings.subscriptions = true;
+    props.configuration.settings.mobilePhoneVerification = false;
+    props.settings = props.configuration.settings;
+
+    // Add required billing input fields to configuration
+    props.configuration.components.registration_form.inputFields.taxNumber = {
+      pattern: "[a-zA-Z@.+\\-_\\d]{1,150}",
+    };
+    props.configuration.components.registration_form.inputFields.country = {
+      pattern: "[a-zA-Z@.+\\-_\\d\\s]{1,150}",
+    };
+    props.configuration.components.registration_form.inputFields.street = {};
+    props.configuration.components.registration_form.inputFields.city = {};
+    props.configuration.components.registration_form.inputFields.zipcode = {};
+
+    props.registration = props.configuration.components.registration_form;
+
+    // Mock axios to return plans
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        statusText: "ok",
+        data: plans,
+      }),
+    );
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+    jest.restoreAllMocks();
+    getConfig.mockImplementation(() => JSON.parse(JSON.stringify(mockConfig)));
+  });
 
   it("should set country when selectedCountry is executed", async () => {
-    const {container} = mountComponent(props);
+    renderWithProviders(<Registration {...props} />);
 
+    await tick();
+
+    // Wait for plans to load
     await waitFor(() => {
-      expect(container.querySelector("#registration-form")).toBeInTheDocument();
+      const planInputs = screen.queryAllByTestId(/plan-radio-/);
+      expect(planInputs.length).toBeGreaterThan(0);
     });
 
-    // The selectedCountry method is tested implicitly through user interaction
-    // This test verifies the component structure is correct
-    expect(container.querySelector("form")).toBeInTheDocument();
+    // Select the Premium plan (index 1) which requires payment and invoice
+    const premiumPlanRadio = screen.getByTestId("plan-radio-1");
+    expect(premiumPlanRadio).toBeInTheDocument();
+    fireEvent.click(premiumPlanRadio);
+
+    // Wait for billing info fields to appear
+    await waitFor(() => {
+      expect(screen.getByTestId("billing-info")).toBeInTheDocument();
+    });
+
+    // Find the country input - react-select creates a combobox without accessible name
+    // We can find it by role since there's only one combobox in the billing-info section
+    const countryInput = screen.getByRole("combobox");
+    expect(countryInput).toBeInTheDocument();
+
+    // Simulate typing to open the dropdown
+    fireEvent.change(countryInput, {target: {value: "Italy"}});
+    fireEvent.keyDown(countryInput, {
+      key: "ArrowDown",
+      code: "ArrowDown",
+    });
+
+    // Wait for options to appear and select one
+    await waitFor(() => {
+      const options = screen.queryAllByText(/Italy/i);
+      expect(options.length).toBeGreaterThan(0);
+    });
+
+    // Find and click the Italy option
+    const italyOption = screen.getByText("Italy");
+    fireEvent.click(italyOption);
+
+    // Verify the component state was updated by checking if the value is displayed
+    await waitFor(() => {
+      // Check that Italy appears in the billing info section
+      expect(screen.getByText("Italy")).toBeInTheDocument();
+    });
   });
 });

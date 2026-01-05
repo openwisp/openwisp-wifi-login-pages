@@ -1,25 +1,17 @@
-/* eslint-disable prefer-promise-reject-errors */
-/* eslint-disable camelcase */
 import axios from "axios";
 import {render, screen, waitFor, fireEvent} from "@testing-library/react";
 import "@testing-library/jest-dom";
-import React from "react";
 import {Cookies} from "react-cookie";
 import {toast} from "react-toastify";
 import {Provider} from "react-redux";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  MemoryRouter,
-} from "react-router-dom";
-import {createMemoryHistory} from "history";
+import {Routes, Route, MemoryRouter} from "react-router-dom";
+import React from "react";
 import loadTranslation from "../../utils/load-translation";
 import tick from "../../utils/tick";
-
 import getConfig from "../../utils/get-config";
 import MobilePhoneChange from "./mobile-phone-change";
 import validateToken from "../../utils/validate-token";
+import LoadingContext, {loadingContextValue} from "../../utils/loading-context";
 
 // Mock modules BEFORE importing
 const mockConfig = {
@@ -27,15 +19,15 @@ const mockConfig = {
   name: "default name",
   default_language: "en",
   components: {
-    phone_number_change_form: {
-      input_fields: {},
+    phoneNumberChange_form: {
+      inputFields: {},
       buttons: {
         cancel: true,
       },
     },
     registration_form: {
-      input_fields: {
-        phone_number: {
+      inputFields: {
+        phoneNumber: {
           country: "in",
         },
       },
@@ -53,13 +45,13 @@ const mockConfig = {
     contact_page: {},
   },
   settings: {
-    mobile_phone_verification: true,
+    mobilePhoneVerification: true,
   },
-  privacy_policy: {
+  privacyPolicy: {
     title: {en: "Privacy Policy"},
     content: {en: "Privacy content"},
   },
-  terms_and_conditions: {
+  termsAndConditions: {
     title: {en: "Terms and Conditions"},
     content: {en: "Terms content"},
   },
@@ -81,12 +73,12 @@ function StatusMock() {
 
 const createTestProps = (props, configName = "test-org-2") => {
   const conf = getConfig(configName);
-  const componentConf = conf.components.phone_number_change_form;
-  componentConf.input_fields = {
-    phone_number: conf.components.registration_form.input_fields.phone_number,
+  const componentConf = conf.components.phoneNumberChange_form;
+  componentConf.inputFields = {
+    phoneNumber: conf.components.registration_form.inputFields.phoneNumber,
   };
   return {
-    phone_number_change: componentConf,
+    phoneNumberChange: componentConf,
     settings: conf.settings,
     orgSlug: conf.slug,
     orgName: conf.name,
@@ -116,7 +108,7 @@ const createMockStore = () => {
           contact_page: {
             email: "support.org",
             helpdesk: "+1234567890",
-            social_links: [],
+            socialLinks: [],
           },
         },
       },
@@ -131,23 +123,10 @@ const createMockStore = () => {
   };
 };
 
-const createLoadingContextValue = () => ({
-  setLoading: jest.fn(),
-  isLoading: false,
-});
-
-const LoadingContext = React.createContext({
-  setLoading: () => {},
-  isLoading: false,
-});
-
-const renderWithProviders = (
-  component,
-  loadingContextValue = createLoadingContextValue(),
-) =>
+const renderWithProviders = (component, contextValue = loadingContextValue) =>
   render(
     <Provider store={createMockStore()}>
-      <LoadingContext.Provider value={loadingContextValue}>
+      <LoadingContext.Provider value={contextValue}>
         <MemoryRouter>{component}</MemoryRouter>
       </LoadingContext.Provider>
     </Provider>,
@@ -162,7 +141,6 @@ describe("<MobilePhoneChange /> rendering with placeholder translation tags", ()
 });
 
 const mountComponent = (props) => {
-  const historyMock = createMemoryHistory();
   const mockedStore = {
     subscribe: () => {},
     dispatch: () => {},
@@ -182,22 +160,22 @@ const mountComponent = (props) => {
 
   return render(
     <Provider store={mockedStore}>
-      <Router location={historyMock.location} navigator={historyMock}>
+      <MemoryRouter initialEntries={["/"]}>
         <Routes>
           <Route path="/test-org-2/status" element={<StatusMock />} />
           <Route path="*" element={<MobilePhoneChange {...props} />} />
         </Routes>
-      </Router>
+      </MemoryRouter>
     </Provider>,
   );
 };
 
 const userData = {
-  response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+  response_code: "authToken_VALIDATION_SUCCESSFUL",
   radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
   username: "tester@tester.com",
-  is_active: false,
-  phone_number: "+393660011222",
+  isActive: false,
+  phoneNumber: "+393660011222",
 };
 
 describe("Change Phone Number: standard flow", () => {
@@ -264,7 +242,7 @@ describe("Change Phone Number: standard flow", () => {
       name: /mobile phone number/i,
     });
     fireEvent.change(phoneInput, {
-      target: {value: "+393660011333", name: "phone_number"},
+      target: {value: "+393660011333", name: "phoneNumber"},
     });
 
     expect(phoneInput.value.replace(/[\s-]/g, "")).toContain("393660011333");
@@ -280,8 +258,8 @@ describe("Change Phone Number: standard flow", () => {
     );
     expect(props.setUserData).toHaveBeenCalledTimes(1);
     expect(props.setUserData).toHaveBeenCalledWith({
-      is_verified: false,
-      phone_number: expect.stringContaining("393660011333"),
+      isVerified: false,
+      phoneNumber: expect.stringContaining("393660011333"),
     });
   });
 
@@ -305,7 +283,7 @@ describe("Change Phone Number: standard flow", () => {
 
     // Test onChange
     fireEvent.change(phoneInput, {
-      target: {value: "+911234567890", name: "phone_number"},
+      target: {value: "+911234567890", name: "phoneNumber"},
     });
 
     expect(phoneInput.value.replace(/[\s-]/g, "")).toContain("911234567890");
@@ -325,7 +303,7 @@ describe("Change Phone Number: standard flow", () => {
 
     // Test onChange on fallback
     fireEvent.change(fallbackInput, {
-      target: {value: "+911234567890", name: "phone_number"},
+      target: {value: "+911234567890", name: "phoneNumber"},
     });
 
     // Phone input may format the value
@@ -334,19 +312,19 @@ describe("Change Phone Number: standard flow", () => {
 
   it("should render field error", async () => {
     jest.spyOn(toast, "success");
-    axios.mockImplementationOnce(() =>
-      Promise.reject({
-        response: {
-          status: 400,
-          statusText: "OK",
-          data: {
-            phone_number: [
-              "The new phone number must be different than the old one.",
-            ],
-          },
-        },
-      }),
-    );
+
+    const error = new Error("Request failed with status code 400");
+    error.response = {
+      status: 400,
+      statusText: "OK",
+      data: {
+        phoneNumber: [
+          "The new phone number must be different than the old one.",
+        ],
+      },
+    };
+
+    axios.mockImplementationOnce(() => Promise.reject(error));
 
     mountComponent(props);
 
@@ -369,17 +347,16 @@ describe("Change Phone Number: standard flow", () => {
 
   it("should render nonField error", async () => {
     jest.spyOn(toast, "success");
-    axios.mockImplementationOnce(() =>
-      Promise.reject({
-        response: {
-          status: 400,
-          statusText: "OK",
-          data: {
-            non_field_errors: ["Maximum daily limit reached."],
-          },
-        },
-      }),
-    );
+
+    const error = new Error("Request failed with status code 400");
+    error.response = {
+      status: 400,
+      statusText: "OK",
+      data: {
+        non_field_errors: ["Maximum daily limit reached."],
+      },
+    };
+    axios.mockImplementationOnce(() => Promise.reject(error));
 
     mountComponent(props);
 
@@ -438,11 +415,11 @@ describe("Change Phone Number: corner cases", () => {
         status: 200,
         statusText: "OK",
         data: {
-          response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+          response_code: "authToken_VALIDATION_SUCCESSFUL",
           radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
           username: "tester@tester.com",
-          is_active: false,
-          phone_number: "+393660011222",
+          isActive: false,
+          phoneNumber: "+393660011222",
           ...responseData,
         },
       }),
@@ -464,7 +441,7 @@ describe("Change Phone Number: corner cases", () => {
 
   it("should recognize if user is active", async () => {
     validateToken.mockReturnValue(true);
-    const activeUserData = {...userData, is_active: true};
+    const activeUserData = {...userData, isActive: true};
     props.userData = activeUserData;
 
     mountComponent(props);
@@ -480,9 +457,9 @@ describe("Change Phone Number: corner cases", () => {
     expect(props.setUserData).not.toHaveBeenCalled();
   });
 
-  it("should not redirect if mobile_phone_verification is enabled", async () => {
+  it("should not redirect if mobilePhoneVerification is enabled", async () => {
     mockAxios();
-    props.settings.mobile_phone_verification = true;
+    props.settings.mobilePhoneVerification = true;
 
     mountComponent(props);
 
@@ -491,8 +468,8 @@ describe("Change Phone Number: corner cases", () => {
 
   it("shouldn't redirect if user is active and mobile verificaton is true", async () => {
     validateToken.mockReturnValue(true);
-    props.userData = {...userData, is_active: true};
-    props.settings.mobile_phone_verification = true;
+    props.userData = {...userData, isActive: true};
+    props.settings.mobilePhoneVerification = true;
 
     mountComponent(props);
 
@@ -503,10 +480,10 @@ describe("Change Phone Number: corner cases", () => {
     validateToken.mockReturnValue(true);
     props.userData = {
       ...userData,
-      is_active: true,
+      isActive: true,
       method: "mobile_phone",
     };
-    props.settings.mobile_phone_verification = true;
+    props.settings.mobilePhoneVerification = true;
 
     mountComponent(props);
 
@@ -526,8 +503,8 @@ describe("Change Phone Number: corner cases", () => {
     );
   });
 
-  it("should redirect if mobile_phone_verification disabled", async () => {
-    props.settings.mobile_phone_verification = false;
+  it("should redirect if mobilePhoneVerification disabled", async () => {
+    props.settings.mobilePhoneVerification = false;
 
     mountComponent(props);
 
@@ -540,10 +517,10 @@ describe("Change Phone Number: corner cases", () => {
     validateToken.mockReturnValue(true);
     props.userData = {
       ...userData,
-      is_active: true,
+      isActive: true,
       method: "saml",
     };
-    props.settings.mobile_phone_verification = true;
+    props.settings.mobilePhoneVerification = true;
 
     mountComponent(props);
 

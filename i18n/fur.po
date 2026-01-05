@@ -126,7 +126,7 @@ msgid "USERNAME"
 msgstr "Non utent"
 
 #: client/components/status/status.js:1063
-msgid "PHONE_NUMBER"
+msgid "phoneNumber"
 msgstr "Numar di telefon"
 
 #: client/components/status/status.js:1370
@@ -216,7 +216,7 @@ msgstr "Dome letaris, numars e caratars speciâi @/./+/-/_"
 
 #: client/components/registration/registration.js:522
 #: client/components/registration/registration.js:523
-msgid "FIRST_NAME_LBL"
+msgid "firstName_LBL"
 msgstr "Non"
 
 #: client/components/registration/registration.js:523
@@ -227,21 +227,21 @@ msgid "OPTIONAL"
 msgstr "Opzionâl"
 
 #: client/components/registration/registration.js:540
-msgid "FIRST_NAME_PHOLD"
+msgid "firstName_PHOLD"
 msgstr "Non"
 
 #: client/components/registration/registration.js:550
 #: client/components/registration/registration.js:551
-msgid "LAST_NAME_LBL"
+msgid "lastName_LBL"
 msgstr "Cognon"
 
 #: client/components/registration/registration.js:568
-msgid "LAST_NAME_PHOLD"
+msgid "lastName_PHOLD"
 msgstr "Cognon"
 
 #: client/components/registration/registration.js:577
 #: client/components/registration/registration.js:578
-msgid "BIRTH_DATE_LBL"
+msgid "birthDate_LBL"
 msgstr "Date di nassite"
 
 #: client/components/registration/registration.js:602
@@ -315,22 +315,22 @@ msgid "ZIP_CODE_LBL"
 msgstr "Codiç di inviament postâl"
 
 #: client/components/registration/registration.js:746
-msgid "TAX_NUMBER_LBL"
+msgid "taxNumber_LBL"
 msgstr "Codiç fiscâl o partide IVZ"
 
 #: client/components/registration/registration.js:758
-msgid "TAX_NUMBER_PHOLD"
+msgid "taxNumber_PHOLD"
 msgstr "Inserìs il codiç fiscâl o la partide IVZ"
 
 #: client/components/registration/registration.js:760
-msgid "TAX_NUMBER_PTRN_DESC"
+msgid "taxNumber_PTRN_DESC"
 msgstr "Dome letaris e numars"
 
 #: client/components/registration/registration.js:775
 msgid "REGISTER_ADD_INFO_TXT"
 msgstr ""
 "Se si jemple e si invie chest modul di regjistrazion, si acetin i tiermins "
-"di ûs {terms_and_conditions} e il regolament pe privacy {privacy_policy} dal "
+"di ûs {termsAndConditions} e il regolament pe privacy {privacyPolicy} dal "
 "servizi WiFi."
 
 #: client/components/login/login.js:475
@@ -569,9 +569,9 @@ msgstr "Codiç di verifiche SMS inviât cun sucès"
 
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:251
 #, javascript-format
-msgid "PHONE_VERIFY (${ phone_number })"
+msgid "PHONE_VERIFY (${ phoneNumber })"
 msgstr ""
-"Par verificâ il numar di telefon (${ phone_number }), inserî il codiç che si "
+"Par verificâ il numar di telefon (${ phoneNumber }), inserî il codiç che si "
 "à ricevût vie SMS."
 
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:266
@@ -643,14 +643,14 @@ msgid "LOGIN_ERR"
 msgstr "Al è capitât un erôr inte autenticazion."
 
 #: client/components/login/login.js:446
-msgid "REMEMBER_ME"
+msgid "rememberMe"
 msgstr "Ricuarde l’acès su chest dispositîf"
 
 #: client/components/login/login.js:453
 msgid "LOGIN_ADD_INFO_TXT"
 msgstr ""
 "Fasint il login, tu declaris di acetâ i tiermins di ûs "
-"{terms_and_conditions} e il regolament de privacy {privacy_policy} dal "
+"{termsAndConditions} e il regolament de privacy {privacyPolicy} dal "
 "servizi WiFi."
 
 #: client/components/login/login.js:470

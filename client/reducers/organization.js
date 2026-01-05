@@ -18,17 +18,17 @@ export const organizations = (state = [], action = {}) => {
 
 export const initialState = {
   userData: {
-    is_active: true,
-    is_verified: null,
+    isActive: true,
+    isVerified: null,
     mustLogin: true,
     mustLogout: false,
     repeatLogin: false,
-    auth_token: undefined,
+    authToken: undefined,
     radius_user_token: undefined,
     payment_url: undefined,
   },
   settings: {
-    mobile_phone_verification: undefined,
+    mobilePhoneVerification: undefined,
     subscriptions: undefined,
   },
 };

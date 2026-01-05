@@ -16,10 +16,10 @@ const handleLogout = (
    * method is unspecified or bank_card or the user is verified.
    */
   if (
-    userData.is_active === true &&
+    userData.isActive === true &&
     (userData.method === "" ||
       userData.method === "bank_card" ||
-      userData.is_verified === true)
+      userData.isVerified === true)
   ) {
     setUserData({...userData, mustLogout: true, payment_url: null});
     redirectToStatus();

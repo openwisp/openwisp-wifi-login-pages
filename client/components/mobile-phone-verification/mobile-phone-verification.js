@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import "./index.css";
 import Countdown from "react-countdown";
 
@@ -34,7 +33,7 @@ export default class MobilePhoneVerification extends React.Component {
     super(props);
     this.state = {
       code: "",
-      phone_number: "",
+      phoneNumber: "",
       errors: {},
       success: false,
       resendButtonDisabledCooldown: 0,
@@ -71,10 +70,10 @@ export default class MobilePhoneVerification extends React.Component {
     );
     if (isValid && this.componentIsMounted) {
       ({userData} = this.props);
-      const {phone_number, is_verified} = userData;
-      this.setState({phone_number});
+      const {phoneNumber, isVerified} = userData;
+      this.setState({phoneNumber});
       // send token via SMS only if user needs to verify
-      if (!is_verified && settings.mobile_phone_verification) {
+      if (!isVerified && settings.mobilePhoneVerification) {
         if (!(await this.activePhoneToken())) {
           await this.createPhoneToken();
         }
@@ -104,7 +103,7 @@ export default class MobilePhoneVerification extends React.Component {
       headers: {
         "content-type": "application/x-www-form-urlencoded",
         "accept-language": getLanguageHeaders(language),
-        Authorization: `Bearer ${userData.auth_token}`,
+        Authorization: `Bearer ${userData.authToken}`,
       },
       url,
       data: qs.stringify({
@@ -117,10 +116,10 @@ export default class MobilePhoneVerification extends React.Component {
         });
         setUserData({
           ...userData,
-          is_active: true,
-          is_verified: true,
+          isActive: true,
+          isVerified: true,
           mustLogin: true,
-          username: userData.phone_number,
+          username: userData.phoneNumber,
         });
       })
       .catch((error) => {
@@ -149,7 +148,7 @@ export default class MobilePhoneVerification extends React.Component {
       return false;
     }
     const {orgSlug, language, userData} = this.props;
-    const {errors, phone_number} = this.state;
+    const {errors, phoneNumber} = this.state;
     const self = this;
     const url = createMobilePhoneTokenUrl(orgSlug);
     return axios({
@@ -157,11 +156,11 @@ export default class MobilePhoneVerification extends React.Component {
       headers: {
         "content-type": "application/x-www-form-urlencoded",
         "accept-language": getLanguageHeaders(language),
-        Authorization: `Bearer ${userData.auth_token}`,
+        Authorization: `Bearer ${userData.authToken}`,
       },
       url,
       data: qs.stringify({
-        phone_number,
+        phoneNumber,
       }),
     })
       .then((response) => {
@@ -197,7 +196,7 @@ export default class MobilePhoneVerification extends React.Component {
       headers: {
         "content-type": "application/x-www-form-urlencoded",
         "accept-language": getLanguageHeaders(language),
-        Authorization: `Bearer ${userData.auth_token}`,
+        Authorization: `Bearer ${userData.authToken}`,
       },
       url,
     })
@@ -233,17 +232,17 @@ export default class MobilePhoneVerification extends React.Component {
   }
 
   render() {
-    const {code, errors, success, phone_number, resendButtonDisabledCooldown} =
+    const {code, errors, success, phoneNumber, resendButtonDisabledCooldown} =
       this.state;
     const {
       orgSlug,
-      mobile_phone_verification,
+      mobilePhoneVerification,
       logout,
       cookies,
       setUserData,
       userData,
     } = this.props;
-    const {input_fields} = mobile_phone_verification;
+    const {inputFields} = mobilePhoneVerification;
     return (
       <div className="container content" id="mobile-phone-verification">
         <div className="inner">
@@ -254,7 +253,7 @@ export default class MobilePhoneVerification extends React.Component {
                 onSubmit={this.handleSubmit}
               >
                 <div className="row fieldset code">
-                  <p className="label">{t`PHONE_VERIFY (${phone_number})`}</p>
+                  <p className="label">{t`PHONE_VERIFY (${phoneNumber})`}</p>
                   {getError(errors)}
 
                   <div className="row">
@@ -270,7 +269,7 @@ export default class MobilePhoneVerification extends React.Component {
                       value={code}
                       onChange={this.handleChange}
                       placeholder={t`MOBILE_CODE_PHOLD`}
-                      pattern={input_fields.code.pattern}
+                      pattern={inputFields.code.pattern}
                       title={t`MOBILE_CODE_TITL`}
                     />
                   </div>
@@ -348,14 +347,14 @@ export default class MobilePhoneVerification extends React.Component {
 MobilePhoneVerification.contextType = LoadingContext;
 MobilePhoneVerification.propTypes = {
   settings: PropTypes.shape({
-    mobile_phone_verification: PropTypes.bool,
+    mobilePhoneVerification: PropTypes.bool,
   }).isRequired,
   orgSlug: PropTypes.string.isRequired,
   orgName: PropTypes.string.isRequired,
   cookies: PropTypes.instanceOf(Cookies).isRequired,
   logout: PropTypes.func.isRequired,
-  mobile_phone_verification: PropTypes.shape({
-    input_fields: PropTypes.shape({
+  mobilePhoneVerification: PropTypes.shape({
+    inputFields: PropTypes.shape({
       code: PropTypes.shape({
         pattern: PropTypes.string.isRequired,
       }).isRequired,

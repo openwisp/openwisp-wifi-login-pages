@@ -18,7 +18,7 @@ const sendCookies = (response, conf, res, user = null) => {
   return res
     .status(response.status)
     .type("application/json")
-    .cookie(`${conf.slug}_auth_token`, authTokenCookie, options)
+    .cookie(`${conf.slug}_authToken`, authTokenCookie, options)
     .cookie(`${conf.slug}_username`, usernameCookie, options)
     .send(response.data);
 };

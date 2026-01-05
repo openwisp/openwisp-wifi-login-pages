@@ -15,7 +15,10 @@ class InfoModal extends Component {
     } = this.props;
 
     return (
-      <div className={active ? "modal is-visible" : "modal"}>
+      <div
+        className={active ? "modal is-visible" : "modal"}
+        data-testid="info-modal"
+      >
         <div className="modal-container bg">
           <button
             type="button"

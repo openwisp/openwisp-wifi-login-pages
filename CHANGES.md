@@ -71,7 +71,7 @@ Work in progress.
 - Added support for password expiration.
 - Limited consecutive SMS sending to prevent abuse.
 - Allowed users to upgrade subscriptions plan from the status page.
-- Introduced `client.components.registration_form.auto_select_first_plan`
+- Introduced `client.components.registration_form.autoSelectFirstPlan`
   setting to auto-select the first plan during subscription.
 - Added missing Friulian translations.
 

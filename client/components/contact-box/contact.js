@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import "./index.css";
 
 import PropTypes from "prop-types";
@@ -14,11 +13,11 @@ export default class Contact extends React.Component {
   render() {
     const {contactPage, language, orgSlug, isAuthenticated, userData} =
       this.props;
-    const {email, helpdesk, social_links, pre_html, after_html} = contactPage;
+    const {email, helpdesk, socialLinks, preHtml, afterHtml} = contactPage;
     return (
       <div className="side-column contact">
         <div className="inner">
-          {getHtml(pre_html, language)}
+          {getHtml(preHtml, language)}
 
           {email && (
             <div className="row">
@@ -38,9 +37,9 @@ export default class Contact extends React.Component {
             </div>
           )}
 
-          {social_links && (
+          {socialLinks && (
             <div className="contact-links">
-              {social_links.map((link) => {
+              {socialLinks.map((link) => {
                 if (shouldLinkBeShown(link, isAuthenticated, userData)) {
                   const css = link.css || "";
                   return (
@@ -67,7 +66,7 @@ export default class Contact extends React.Component {
             </div>
           )}
 
-          {getHtml(after_html, language)}
+          {getHtml(afterHtml, language)}
         </div>
       </div>
     );
@@ -82,11 +81,11 @@ Contact.propTypes = {
   language: PropTypes.string.isRequired,
   orgSlug: PropTypes.string.isRequired,
   contactPage: PropTypes.shape({
-    social_links: PropTypes.array,
+    socialLinks: PropTypes.array,
     email: PropTypes.string,
     helpdesk: PropTypes.string,
-    pre_html: PropTypes.object,
-    after_html: PropTypes.object,
+    preHtml: PropTypes.object,
+    afterHtml: PropTypes.object,
   }).isRequired,
   isAuthenticated: PropTypes.bool,
   userData: PropTypes.object,
