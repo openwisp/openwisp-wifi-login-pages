@@ -225,10 +225,8 @@ describe("<Status /> rendering", () => {
       orgName: defaultConfig.name,
       settings: defaultConfig.settings,
       userData: defaultConfig.userData,
-      captivePortalLoginForm:
-        defaultConfig.components.captive_portal_login_form,
-      captivePortalLogoutForm:
-        defaultConfig.components.captive_portal_logout_form,
+      captivePortalLoginForm: defaultConfig.components.captive_portal_login_form,
+      captivePortalLogoutForm: defaultConfig.components.captive_portal_logout_form,
       captivePortalSyncAuth: defaultConfig.captive_portal_sync_auth,
       isAuthenticated: defaultConfig.isAuthenticated,
       cookies: ownProps.cookies,

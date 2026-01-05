@@ -37,7 +37,4 @@ OrganizationRoutes.propTypes = {
   ),
 };
 
-export default connect(
-  mapStateToProps,
-  null,
-)(withRouteProps(OrganizationRoutes));
+export default connect(mapStateToProps, null)(withRouteProps(OrganizationRoutes));

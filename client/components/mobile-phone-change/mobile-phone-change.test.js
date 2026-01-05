@@ -188,9 +188,7 @@ describe("Change Phone Number: standard flow", () => {
     props = createTestProps();
     validateToken.mockClear();
     // Spy on console.error to track calls
-    consoleErrorSpy = jest
-      .spyOn(global.console, "error")
-      .mockImplementation(() => {});
+    consoleErrorSpy = jest.spyOn(global.console, "error").mockImplementation(() => {});
   });
 
   afterEach(() => {
@@ -318,9 +316,7 @@ describe("Change Phone Number: standard flow", () => {
       status: 400,
       statusText: "OK",
       data: {
-        phoneNumber: [
-          "The new phone number must be different than the old one.",
-        ],
+        phoneNumber: ["The new phone number must be different than the old one."],
       },
     };
 
@@ -338,9 +334,7 @@ describe("Change Phone Number: standard flow", () => {
     // Check error message appears
     await waitFor(() => {
       expect(
-        screen.getByText(
-          /The new phone number must be different than the old one/i,
-        ),
+        screen.getByText(/The new phone number must be different than the old one/i),
       ).toBeInTheDocument();
     });
   });
@@ -369,9 +363,7 @@ describe("Change Phone Number: standard flow", () => {
 
     // Check error message appears
     await waitFor(() => {
-      expect(
-        screen.getByText(/Maximum daily limit reached/i),
-      ).toBeInTheDocument();
+      expect(screen.getByText(/Maximum daily limit reached/i)).toBeInTheDocument();
     });
 
     expect(consoleErrorSpy).toHaveBeenCalled();
@@ -400,10 +392,7 @@ describe("Change Phone Number: standard flow", () => {
   it("should set title", async () => {
     mountComponent(props);
 
-    expect(props.setTitle).toHaveBeenCalledWith(
-      "Change mobile number",
-      props.orgName,
-    );
+    expect(props.setTitle).toHaveBeenCalledWith("Change mobile number", props.orgName);
   });
 });
 

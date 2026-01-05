@@ -18,7 +18,7 @@ const defaultConfig = getConfig("default", true);
 const createTestProps = (props) => ({
   orgSlug: "default",
   language: "en",
-  privacyPolicy: defaultConfig.privacy_policy,
+  privacyPolicy: defaultConfig.privacyPolicy,
   termsAndConditions: defaultConfig.termsAndConditions,
   params: {
     name: "terms-and-conditions",
@@ -58,10 +58,7 @@ describe("<Modal /> rendering", () => {
     });
 
     expect(container).toMatchSnapshot();
-    expect(getText).toHaveBeenCalledWith(
-      props.termsAndConditions,
-      props.language,
-    );
+    expect(getText).toHaveBeenCalledWith(props.termsAndConditions, props.language);
   });
 
   it("should render privacy-policy correctly", async () => {

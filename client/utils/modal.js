@@ -15,16 +15,9 @@ class InfoModal extends Component {
     } = this.props;
 
     return (
-      <div
-        className={active ? "modal is-visible" : "modal"}
-        data-testid="info-modal"
-      >
+      <div className={active ? "modal is-visible" : "modal"} data-testid="info-modal">
         <div className="modal-container bg">
-          <button
-            type="button"
-            className="modal-close-btn"
-            onClick={toggleModal}
-          >
+          <button type="button" className="modal-close-btn" onClick={toggleModal}>
             &#10006;
           </button>
           <div className={isScrollable ? "message" : null}>{content}</div>

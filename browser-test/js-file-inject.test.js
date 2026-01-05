@@ -1,10 +1,4 @@
-import {
-  getDriver,
-  getElementsByCss,
-  urls,
-  tearDown,
-  initialData,
-} from "./utils";
+import {getDriver, getElementsByCss, urls, tearDown, initialData} from "./utils";
 
 describe("Selenium tests to check JS file injection in organization page", () => {
   let driver;
@@ -43,9 +37,7 @@ describe("Selenium tests to check JS file injection in organization page", () =>
     // Filter out null values from stale elements
     scriptSources = scriptSources.filter((src) => src !== null);
 
-    expect(scriptSources.includes(`http://127.0.0.1:8080/${jsFile}`)).toEqual(
-      true,
-    );
+    expect(scriptSources.includes(`http://127.0.0.1:8080/${jsFile}`)).toEqual(true);
 
     const data = initialData().mobileVerificationTestUser;
     await driver.get(urls.verificationLogin(data.organization));
@@ -72,8 +64,6 @@ describe("Selenium tests to check JS file injection in organization page", () =>
     // Filter out null values from stale elements
     scriptSources = scriptSources.filter((src) => src !== null);
 
-    expect(scriptSources.includes(`http://127.0.0.1:8080/${jsFile}`)).toEqual(
-      true,
-    );
+    expect(scriptSources.includes(`http://127.0.0.1:8080/${jsFile}`)).toEqual(true);
   });
 });

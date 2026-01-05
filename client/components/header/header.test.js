@@ -202,8 +202,7 @@ describe("<Header /> rendering", () => {
       </MemoryRouter>,
     );
     const languageSelector = screen.getByTestId("desktop-language-selector");
-    const desktopLanguageButtons =
-      within(languageSelector).getAllByRole("button");
+    const desktopLanguageButtons = within(languageSelector).getAllByRole("button");
     expect(desktopLanguageButtons).toHaveLength(2);
   });
 

@@ -170,9 +170,7 @@ class MobilePhoneChange extends React.Component {
                     preferredCountries={
                       inputFields.phoneNumber.preferred_countries || []
                     }
-                    excludeCountries={
-                      inputFields.phoneNumber.exclude_countries || []
-                    }
+                    excludeCountries={inputFields.phoneNumber.exclude_countries || []}
                     value={phoneNumber}
                     onChange={(value) =>
                       this.handleChange({
@@ -183,9 +181,7 @@ class MobilePhoneChange extends React.Component {
                       submitOnEnter(event, this, "mobile-phone-change-form");
                     }}
                     placeholder={t`PHONE_PHOLD`}
-                    enableSearch={Boolean(
-                      inputFields.phoneNumber.enable_search,
-                    )}
+                    enableSearch={Boolean(inputFields.phoneNumber.enable_search)}
                     inputProps={{
                       name: "phoneNumber",
                       id: "phone-number",

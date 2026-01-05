@@ -12,9 +12,7 @@ import {
 
 const fillPhoneField = async (driver, data) => {
   async function fillField() {
-    const username = await driver.wait(
-      until.elementLocated(By.css("input#username")),
-    );
+    const username = await driver.wait(until.elementLocated(By.css("input#username")));
     await driver.wait(until.elementIsVisible(username));
     await username.sendKeys(data.phoneNumber);
   }
@@ -74,20 +72,11 @@ describe("Selenium tests for <MobileVerification />", () => {
     await driver.wait(until.elementIsVisible(submitBtn));
     submitBtn.click();
     await getElementByCss(driver, "div#status");
-    const emailElement = await getElementByCss(
-      driver,
-      "div > p:nth-child(5) > span",
-    );
+    const emailElement = await getElementByCss(driver, "div > p:nth-child(5) > span");
     expect(await emailElement.getText()).toEqual(data.email);
-    const phoneElement = await getElementByCss(
-      driver,
-      "div > p:nth-child(6) > span",
-    );
+    const phoneElement = await getElementByCss(driver, "div > p:nth-child(6) > span");
     expect(await phoneElement.getText()).toEqual(data.phoneNumber);
-    const activeSessionTr = await getElementByCss(
-      driver,
-      "table tr.active-session",
-    );
+    const activeSessionTr = await getElementByCss(driver, "table tr.active-session");
     await driver.wait(until.elementIsVisible(activeSessionTr));
   });
 });

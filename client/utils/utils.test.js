@@ -120,9 +120,9 @@ describe("isInternalLink tests", () => {
 describe("getParameterByName tests", () => {
   it("should get parameter values", () => {
     expect(getParameterByName("username")).toBe(null);
-    expect(
-      getParameterByName("username", "/default/login?username=vivek"),
-    ).toBe("vivek");
+    expect(getParameterByName("username", "/default/login?username=vivek")).toBe(
+      "vivek",
+    );
   });
 });
 
@@ -211,8 +211,7 @@ describe("Validate Token tests", () => {
     language: "en",
   });
   it("should return false if token is not in the cookie", async () => {
-    const {orgSlug, cookies, setUserData, userData, logout, language} =
-      getArgs();
+    const {orgSlug, cookies, setUserData, userData, logout, language} = getArgs();
     const result = await validateToken(
       cookies,
       orgSlug,
@@ -241,8 +240,7 @@ describe("Validate Token tests", () => {
         },
       }),
     );
-    const {orgSlug, cookies, setUserData, userData, logout, language} =
-      getArgs();
+    const {orgSlug, cookies, setUserData, userData, logout, language} = getArgs();
     cookies.set(`${orgSlug}_authToken`, "token");
     const result = await validateToken(
       cookies,
@@ -258,8 +256,7 @@ describe("Validate Token tests", () => {
     expect(logout.mock.calls.length).toBe(0);
   });
   it("should return true without calling api if radius token is present", async () => {
-    const {orgSlug, cookies, setUserData, userData, logout, language} =
-      getArgs();
+    const {orgSlug, cookies, setUserData, userData, logout, language} = getArgs();
     userData.radius_user_token = "token";
     const result = await validateToken(
       cookies,
@@ -289,8 +286,7 @@ describe("Validate Token tests", () => {
         },
       }),
     );
-    const {orgSlug, cookies, setUserData, userData, logout, language} =
-      getArgs();
+    const {orgSlug, cookies, setUserData, userData, logout, language} = getArgs();
     cookies.set(`${orgSlug}_authToken`, "token");
     userData.password_expired = true;
     userData.radius_user_token = "token";
@@ -318,8 +314,7 @@ describe("Validate Token tests", () => {
     jest.spyOn(global.console, "log").mockImplementation();
     axios.mockImplementationOnce(() => Promise.resolve(response));
     const errorMethod = jest.spyOn(dependency.toast, "error");
-    const {orgSlug, cookies, setUserData, userData, logout, language} =
-      getArgs();
+    const {orgSlug, cookies, setUserData, userData, logout, language} = getArgs();
     const result = await validateToken(
       cookies,
       orgSlug,
@@ -348,8 +343,7 @@ describe("Validate Token tests", () => {
     axios.mockImplementationOnce(() => Promise.reject(response));
     jest.spyOn(global.console, "log").mockImplementation();
     const errorMethod = jest.spyOn(dependency.toast, "error");
-    const {orgSlug, cookies, setUserData, userData, logout, language} =
-      getArgs();
+    const {orgSlug, cookies, setUserData, userData, logout, language} = getArgs();
     const result = await validateToken(
       cookies,
       orgSlug,
@@ -380,20 +374,11 @@ describe("Validate Token tests", () => {
     const errorMethod = jest.spyOn(dependency.toast, "error");
     const {orgSlug, cookies, setUserData, userData, logout} = getArgs();
     cookies.set(`${orgSlug}_authToken`, "token");
-    const result = await validateToken(
-      cookies,
-      orgSlug,
-      setUserData,
-      userData,
-      logout,
-    );
+    const result = await validateToken(cookies, orgSlug, setUserData, userData, logout);
     expect(result).toEqual(false);
-    expect(errorMethod).toHaveBeenCalledWith(
-      responseError.response.data.detail,
-      {
-        toastId: "main_toast_id",
-      },
-    );
+    expect(errorMethod).toHaveBeenCalledWith(responseError.response.data.detail, {
+      toastId: "main_toast_id",
+    });
     expect(logout).toHaveBeenCalledWith(expect.any(Cookies), "default");
     const cookiesArg = logout.mock.calls[0][0];
     expect(cookiesArg.cookies).toEqual({default_authToken: "token"});
@@ -415,10 +400,7 @@ describe("password-toggle tests", () => {
       },
     };
     render(
-      <PasswordToggleIcon
-        inputRef={inputRef}
-        parentClassName="password-toggle"
-      />,
+      <PasswordToggleIcon inputRef={inputRef} parentClassName="password-toggle" />,
     );
 
     // Click the toggle icon
@@ -468,10 +450,7 @@ describe("password-toggle tests", () => {
     expect(getAttributeMock).toHaveBeenCalledWith("type");
     expect(secondInputRef.current.getAttribute).toHaveBeenCalledWith("type");
     expect(setAttributeMock).toHaveBeenCalledWith("type", "text");
-    expect(secondInputRef.current.setAttribute).toHaveBeenCalledWith(
-      "type",
-      "text",
-    );
+    expect(secondInputRef.current.setAttribute).toHaveBeenCalledWith("type", "text");
     expect(focusMock).toHaveBeenCalled();
     expect(secondInputRef.current.focus).not.toHaveBeenCalled();
     expect(toggler).toHaveBeenCalled();
@@ -614,9 +593,7 @@ describe("needs-verify tests", () => {
     expect(needsVerify("", {}, {})).toBe(false);
   });
   it("should return false if user is verified but not active", () => {
-    expect(needsVerify("", {isActive: false, isVerified: true}, {})).toBe(
-      false,
-    );
+    expect(needsVerify("", {isActive: false, isVerified: true}, {})).toBe(false);
   });
   it("should return true or false for mobile_phone method", () => {
     const method = "mobile_phone";
@@ -688,10 +665,7 @@ describe("handle-change tests", () => {
     const navigate = jest.fn();
     render(
       <MemoryRouter>
-        <button
-          type="submit"
-          onClick={() => redirectToPayment("default", navigate)}
-        >
+        <button type="submit" onClick={() => redirectToPayment("default", navigate)}>
           Test
         </button>
       </MemoryRouter>,
@@ -875,9 +849,7 @@ describe("withRouteProps test", () => {
         props: componentProps,
       };
       return (
-        <div data-testid="test-component">
-          {JSON.stringify(serializableProps)}
-        </div>
+        <div data-testid="test-component">{JSON.stringify(serializableProps)}</div>
       );
     }
     Component.propTypes = {

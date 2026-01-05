@@ -111,6 +111,22 @@
         "links": {
           "login": true
         }
+      },
+      "footer": {
+        "links": [
+          {
+            "text": {
+              "en": "link-1"
+            },
+            "url": "https://link-1.com"
+          }
+        ]
+      },
+      "404_page": {
+        "heading": true,
+        "sub_heading": true,
+        "message": true,
+        "homepage_link": true
       }
     },
     "privacyPolicy": {

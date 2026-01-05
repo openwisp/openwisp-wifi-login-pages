@@ -1,5 +1,6 @@
-Handling Captive Portal / RADIUS Errors
-=======================================
+#########################################
+ Handling Captive Portal / RADIUS Errors
+#########################################
 
 This app can handle errors that may encountered during the authentication
 process (e.g.: maximum available daily/monthly time or bandwidth have been

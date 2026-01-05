@@ -17,10 +17,7 @@ const loadDefaultTranslation = (language) =>
 
 const importTranslation = async (orgSlug, lang, setLanguage) => {
   try {
-    const {default: translationObj} = await loadCustomTranslation(
-      orgSlug,
-      lang,
-    );
+    const {default: translationObj} = await loadCustomTranslation(orgSlug, lang);
     setLocale(lang, translationObj, setLanguage);
   } catch (err) {
     const {default: translationObj} = await loadDefaultTranslation(lang);

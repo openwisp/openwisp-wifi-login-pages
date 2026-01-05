@@ -16,8 +16,7 @@ const rootDir = process.cwd();
 const i18nDir = path.join(rootDir, "i18n");
 const translationDir = path.join(path.join(rootDir, "client"), "translations");
 
-const deepMerge = (initialObject, customObject) =>
-  _.merge(initialObject, customObject);
+const deepMerge = (initialObject, customObject) => _.merge(initialObject, customObject);
 
 const getCustomFiles = (allFiles, translationFile) => {
   const customFile = `${path.basename(translationFile, ".po")}.custom.po`;
@@ -27,9 +26,7 @@ const getCustomFiles = (allFiles, translationFile) => {
 const poToObject = (file) => {
   let result = {};
   try {
-    result = childProcess.execSync(
-      `npx ttag po2json ${path.join(i18nDir, file)}`,
-    );
+    result = childProcess.execSync(`npx ttag po2json ${path.join(i18nDir, file)}`);
   } catch (err) {
     console.error(err);
     return result;
@@ -51,8 +48,7 @@ const writeTranslationFile = (fileName, object) => {
 if (fs.existsSync(translationDir)) {
   fs.rmSync(translationDir, {recursive: true});
 }
-if (!fs.existsSync(translationDir))
-  fs.mkdirSync(translationDir, {recursive: true});
+if (!fs.existsSync(translationDir)) fs.mkdirSync(translationDir, {recursive: true});
 const allFiles = fs.readdirSync(i18nDir);
 const translationFiles = allFiles.filter(
   (file) => file.indexOf("custom") === -1 && path.extname(file) === ".po",
@@ -64,10 +60,7 @@ translationFiles.forEach((file) => {
   const customFiles = getCustomFiles(allFiles, file);
   if (customFiles.includes(`${fileName}.custom.po`)) {
     customFiles.splice(customFiles.indexOf(`${fileName}.custom.po`), 1);
-    updatedTranslation = deepMerge(
-      translation,
-      poToObject(`${fileName}.custom.po`),
-    );
+    updatedTranslation = deepMerge(translation, poToObject(`${fileName}.custom.po`));
     writeTranslationFile(`${fileName}.json`, updatedTranslation);
     if (customFiles.length > 0) {
       customFiles.forEach((orgFile) => {

@@ -11,10 +11,7 @@ export const PasswordChange = React.lazy(
   () => import(/* webpackChunkName: 'PasswordChange' */ "../password-change"),
 );
 export const MobilePhoneChange = React.lazy(
-  () =>
-    import(
-      /* webpackChunkName: 'MobilePhoneChange' */ "../mobile-phone-change"
-    ),
+  () => import(/* webpackChunkName: 'MobilePhoneChange' */ "../mobile-phone-change"),
 );
 export const PasswordReset = React.lazy(
   () => import(/* webpackChunkName: 'PasswordReset' */ "../password-reset"),

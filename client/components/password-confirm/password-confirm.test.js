@@ -170,9 +170,7 @@ describe("<PasswordConfirm /> rendering", () => {
   it("should render password confirm field correctly", () => {
     renderWithProviders(props);
 
-    const confirmLabel = screen.getByText(
-      getTranslationString("CONFIRM_PWD_LBL"),
-    );
+    const confirmLabel = screen.getByText(getTranslationString("CONFIRM_PWD_LBL"));
     expect(confirmLabel).toBeInTheDocument();
 
     const confirmInput = screen.getByPlaceholderText(
@@ -400,10 +398,7 @@ describe("<PasswordConfirm /> interactions", () => {
 
   it("should set title", () => {
     renderWithProviders(props);
-    expect(props.setTitle).toHaveBeenCalledWith(
-      "Reset Password",
-      props.orgName,
-    );
+    expect(props.setTitle).toHaveBeenCalledWith("Reset Password", props.orgName);
   });
 
   it("should toggle password visibility for both fields", async () => {

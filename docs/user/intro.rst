@@ -1,5 +1,6 @@
-WiFi Login Pages: Features
-==========================
+############################
+ WiFi Login Pages: Features
+############################
 
 OpenWISP WiFi login pages offers the following features:
 
@@ -37,8 +38,9 @@ OpenWISP WiFi login pages offers the following features:
 - Support for :ref:`credit/debit card verification and paid subscription
   plans <wlp_signup_with_payment>`
 
-Screenshots
------------
+*************
+ Screenshots
+*************
 
 .. figure:: https://raw.githubusercontent.com/openwisp/openwisp-wifi-login-pages/media/docs/login-desktop.png
     :target: https://raw.githubusercontent.com/openwisp/openwisp-wifi-login-pages/media/docs/login-desktop.png

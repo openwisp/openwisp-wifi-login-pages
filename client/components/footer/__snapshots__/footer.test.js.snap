@@ -27,6 +27,7 @@ exports[`<Footer /> rendering should render correctly 1`] = `
     >
       <div
         class="footer-row-2-inner"
+        data-testid="footer-row-2-inner"
       >
         after html
       </div>
@@ -62,6 +63,7 @@ exports[`<Footer /> rendering with placeholder translation tags should render tr
     >
       <div
         class="footer-row-2-inner"
+        data-testid="footer-row-2-inner"
       >
         after html
       </div>

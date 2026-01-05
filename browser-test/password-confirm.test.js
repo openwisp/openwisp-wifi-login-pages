@@ -25,10 +25,7 @@ describe("Selenium tests for <PasswordReset />", () => {
     const data = initialData();
     const password = await getElementByCss(driver, "input#password");
     password.sendKeys(data.testuser.password);
-    const passwordConfirm = await getElementByCss(
-      driver,
-      "input#password-confirm",
-    );
+    const passwordConfirm = await getElementByCss(driver, "input#password-confirm");
     passwordConfirm.sendKeys(data.testuser.password);
     const submitBtn = await getElementByCss(driver, "input[type=submit]");
     submitBtn.click();

@@ -37,10 +37,7 @@ const getUserRadiusUsage = (req, res) => {
           if ("link" in response.headers) {
             res.setHeader("link", response.headers.link);
           }
-          res
-            .status(response.status)
-            .type("application/json")
-            .send(response.data);
+          res.status(response.status).type("application/json").send(response.data);
         })
         .catch((error) => {
           logResponseError(error);

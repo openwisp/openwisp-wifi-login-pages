@@ -18,7 +18,4 @@ const mapDispatchToProps = (dispatch) => ({
   setTitle: setTitle(dispatch),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withRouteProps(Component));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouteProps(Component));

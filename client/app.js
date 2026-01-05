@@ -45,9 +45,19 @@ const mapDispatchToProps = (dispatch) => ({
 
 const App = connect(null, mapDispatchToProps)(BaseApp);
 
+let root = null;
+
 const app = () => {
   const container = document.getElementById("root");
-  const root = createRoot(container);
+  if (!container) {
+    throw new Error(
+      "Root element not found. Ensure an element with id='root' exists in the HTML.",
+    );
+  }
+
+  if (root === null) {
+    root = createRoot(container);
+  }
 
   root.render(
     <HelmetProvider>

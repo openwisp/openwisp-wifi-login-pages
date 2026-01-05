@@ -825,6 +825,7 @@ exports[`<Login /> rendering should render radius realms form if radiusRealms is
         action="https://radius-proxy/login/"
         aria-label="Captive portal login form"
         class="hidden"
+        data-testid="cp-login-form"
         id="cp-login-form"
         method="POST"
       >

@@ -1,5 +1,6 @@
-openwisp-wifi-login-pages
-=========================
+###########################
+ openwisp-wifi-login-pages
+###########################
 
 .. image:: https://github.com/openwisp/openwisp-wifi-login-pages/actions/workflows/ci.yml/badge.svg
     :target: https://github.com/openwisp/openwisp-wifi-login-pages/actions/workflows/ci.yml
@@ -47,33 +48,38 @@ Refer to `WiFi Login Pages: Features
 <https://openwisp.io/docs/stable/wifi-login-pages/user/intro.html>`_ of
 OpenWISP documentation for a complete overview of features.
 
-Documentation
--------------
+***************
+ Documentation
+***************
 
 - `Usage documentation
   <https://openwisp.io/docs/stable/wifi-login-pages/>`_
 - `Developer documentation
   <https://openwisp.io/docs/stable/wifi-login-pages/developer/>`_
 
-Contributing
-------------
+**************
+ Contributing
+**************
 
 Please refer to the `OpenWISP contributing guidelines
 <http://openwisp.io/docs/developer/contributing.html>`_.
 
-Changelog
----------
+***********
+ Changelog
+***********
 
 See `Change log
 <https://github.com/openwisp/openwisp-wifi-login-pages/blob/master/CHANGES.md>`__.
 
-License
--------
+*********
+ License
+*********
 
 See `LICENSE
 <https://github.com/openwisp/openwisp-wifi-login-pages/blob/master/LICENSE>`__.
 
-Support
--------
+*********
+ Support
+*********
 
 See `OpenWISP Support Channels <http://openwisp.org/support.html>`_.

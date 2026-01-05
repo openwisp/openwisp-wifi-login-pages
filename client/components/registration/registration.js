@@ -190,10 +190,7 @@ export default class Registration extends React.Component {
     }
     // add phoneNumber if SMS verification is enabled
     // and no payment is required
-    if (
-      settings.mobilePhoneVerification &&
-      postData.requires_payment !== true
-    ) {
+    if (settings.mobilePhoneVerification && postData.requires_payment !== true) {
       postData.phoneNumber = phoneNumber;
       postData.username = phoneNumber;
     }
@@ -263,32 +260,22 @@ export default class Registration extends React.Component {
             ...errors,
             ...(data.phoneNumber ? {phoneNumber: data.phoneNumber} : null),
             ...(data.email ? {email: data.email.toString()} : {email: ""}),
-            ...(data.username
-              ? {username: data.username.toString()}
-              : {username: ""}),
+            ...(data.username ? {username: data.username.toString()} : {username: ""}),
             ...(data.firstName
               ? {firstName: data.firstName.toString()}
               : {firstName: ""}),
-            ...(data.lastName
-              ? {lastName: data.lastName.toString()}
-              : {lastName: ""}),
+            ...(data.lastName ? {lastName: data.lastName.toString()} : {lastName: ""}),
             ...(data.birthDate
               ? {birthDate: data.birthDate.toString()}
               : {birthDate: ""}),
-            ...(data.location
-              ? {location: data.location.toString()}
-              : {location: ""}),
+            ...(data.location ? {location: data.location.toString()} : {location: ""}),
             ...(data.taxNumber
               ? {taxNumber: data.taxNumber.toString()}
               : {taxNumber: ""}),
             ...(data.street ? {street: data.street.toString()} : {street: ""}),
             ...(data.city ? {city: data.city.toString()} : {city: ""}),
-            ...(data.zipcode
-              ? {zipcode: data.zipcode.toString()}
-              : {zipcode: ""}),
-            ...(data.country
-              ? {country: data.country.toString()}
-              : {country: ""}),
+            ...(data.zipcode ? {zipcode: data.zipcode.toString()} : {zipcode: ""}),
+            ...(data.country ? {country: data.country.toString()} : {country: ""}),
             ...(data.password1
               ? {password1: data.password1.toString()}
               : {password1: ""}),
@@ -318,9 +305,7 @@ export default class Registration extends React.Component {
   isPlanIdentityVerifier = () => {
     // If a payment is required, the plan is valid for identity verification
     const {selectedPlan, plans} = this.state;
-    return (
-      selectedPlan !== null && plans[selectedPlan].requires_payment === true
-    );
+    return selectedPlan !== null && plans[selectedPlan].requires_payment === true;
   };
 
   doesPlanRequireInvoice = () => {
@@ -344,8 +329,7 @@ export default class Registration extends React.Component {
 
   getForm = () => {
     const {registration, settings, orgSlug, defaultLanguage} = this.props;
-    const {additionalInfoText, inputFields, links, autoSelectFirstPlan} =
-      registration;
+    const {additionalInfoText, inputFields, links, autoSelectFirstPlan} = registration;
     const {
       success,
       phoneNumber,
@@ -414,11 +398,7 @@ export default class Registration extends React.Component {
                                     })
                                   }
                                   onKeyDown={(event) => {
-                                    submitOnEnter(
-                                      event,
-                                      this,
-                                      "registration-form",
-                                    );
+                                    submitOnEnter(event, this, "registration-form");
                                   }}
                                   placeholder={t`PHONE_PHOLD`}
                                 />
@@ -431,12 +411,10 @@ export default class Registration extends React.Component {
                                   inputFields.phoneNumber.only_countries || []
                                 }
                                 preferredCountries={
-                                  inputFields.phoneNumber.preferred_countries ||
-                                  []
+                                  inputFields.phoneNumber.preferred_countries || []
                                 }
                                 excludeCountries={
-                                  inputFields.phoneNumber.exclude_countries ||
-                                  []
+                                  inputFields.phoneNumber.exclude_countries || []
                                 }
                                 value={phoneNumber}
                                 onChange={(value) =>
@@ -448,11 +426,7 @@ export default class Registration extends React.Component {
                                   })
                                 }
                                 onKeyDown={(event) => {
-                                  submitOnEnter(
-                                    event,
-                                    this,
-                                    "registration-form",
-                                  );
+                                  submitOnEnter(event, this, "registration-form");
                                 }}
                                 placeholder={t`PHONE_PHOLD`}
                                 aria-label="Phone Number"
@@ -575,9 +549,7 @@ export default class Registration extends React.Component {
                             className={`input ${errors.birthDate ? "error" : ""}`}
                             type="date"
                             id="birthDate"
-                            required={
-                              inputFields.birthDate.setting === "mandatory"
-                            }
+                            required={inputFields.birthDate.setting === "mandatory"}
                             name="birthDate"
                             value={birthDate}
                             onChange={this.handleChange}
@@ -598,9 +570,7 @@ export default class Registration extends React.Component {
                             className={`input ${errors.location ? "error" : ""}`}
                             type="text"
                             id="location"
-                            required={
-                              inputFields.location.setting === "mandatory"
-                            }
+                            required={inputFields.location.setting === "mandatory"}
                             name="location"
                             value={location}
                             onChange={this.handleChange}
@@ -636,9 +606,7 @@ export default class Registration extends React.Component {
                           parentClassName="password-toggle"
                           hidePassword={hidePassword}
                           ariaLabel="Toggle password visibility"
-                          toggler={() =>
-                            this.setState({hidePassword: !hidePassword})
-                          }
+                          toggler={() => this.setState({hidePassword: !hidePassword})}
                         />
                       </div>
 
@@ -666,17 +634,12 @@ export default class Registration extends React.Component {
                           parentClassName="password-toggle"
                           hidePassword={hidePassword}
                           ariaLabel="Toggle confirm password visibility"
-                          toggler={() =>
-                            this.setState({hidePassword: !hidePassword})
-                          }
+                          toggler={() => this.setState({hidePassword: !hidePassword})}
                         />
                       </div>
 
                       {this.doesPlanRequireInvoice() && (
-                        <div
-                          className="billing-info"
-                          data-testid="billing-info"
-                        >
+                        <div className="billing-info" data-testid="billing-info">
                           <div className="row country">
                             <label htmlFor="country">{t`COUNTRY_LBL`}</label>
                             {getError(errors, "country")}
@@ -755,8 +718,7 @@ export default class Registration extends React.Component {
                   )}
                 </div>
 
-                {(plans.length === 0 ||
-                  (plans.length > 0 && selectedPlan !== null)) &&
+                {(plans.length === 0 || (plans.length > 0 && selectedPlan !== null)) &&
                   additionalInfoText && (
                     <div className="row add-info">
                       {renderAdditionalInfo(
@@ -782,10 +744,7 @@ export default class Registration extends React.Component {
                   <div className="row links">
                     {links.forget_password && (
                       <p>
-                        <Link
-                          to={`/${orgSlug}/password/reset`}
-                          className="link"
-                        >
+                        <Link to={`/${orgSlug}/password/reset`} className="link">
                           {t`FORGOT_PASSWORD`}
                         </Link>
                       </p>
@@ -833,9 +792,7 @@ export default class Registration extends React.Component {
             content={
               <div className="message">
                 <p>
-                  {errors.organizations.length === 0
-                    ? t`NO_ORGS`
-                    : t`CONFLICT_ORGS`}
+                  {errors.organizations.length === 0 ? t`NO_ORGS` : t`CONFLICT_ORGS`}
                 </p>
                 <ul>
                   {errors.organizations.map((org) => (

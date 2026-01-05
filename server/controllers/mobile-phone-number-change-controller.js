@@ -31,10 +31,7 @@ const mobilePhoneNumberChange = (req, res) => {
         data: qs.stringify({token, phoneNumber: req.body.phoneNumber}),
       })
         .then((response) => {
-          res
-            .status(response.status)
-            .type("application/json")
-            .send(response.data);
+          res.status(response.status).type("application/json").send(response.data);
         })
         .catch((error) => {
           logResponseError(error);

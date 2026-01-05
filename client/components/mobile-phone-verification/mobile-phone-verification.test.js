@@ -123,9 +123,7 @@ describe("<MobilePhoneVerification /> rendering with placeholder translation tag
 
   const props = createTestProps();
   it("should render translation placeholder correctly", () => {
-    const {container} = renderWithProviders(
-      <MobilePhoneVerification {...props} />,
-    );
+    const {container} = renderWithProviders(<MobilePhoneVerification {...props} />);
     expect(container).toMatchSnapshot();
   });
 });
@@ -588,10 +586,7 @@ describe("Mobile Phone Token verification: standard flow", () => {
 
     await tick();
 
-    expect(props.setTitle).toHaveBeenCalledWith(
-      "Verify mobile number",
-      props.orgName,
-    );
+    expect(props.setTitle).toHaveBeenCalledWith("Verify mobile number", props.orgName);
   });
 
   it("should not call API to resend token if one has already sent", async () => {

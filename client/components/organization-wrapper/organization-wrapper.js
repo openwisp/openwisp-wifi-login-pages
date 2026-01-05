@@ -273,9 +273,7 @@ export default class OrganizationWrapper extends React.Component {
                     path="login/*"
                     element={
                       isAuthenticated && isActive ? (
-                        <Navigate
-                          to={`/${orgSlug}/status${location.search || ""}`}
-                        />
+                        <Navigate to={`/${orgSlug}/status${location.search || ""}`} />
                       ) : (
                         <Login navigate={navigate} />
                       )
@@ -288,10 +286,7 @@ export default class OrganizationWrapper extends React.Component {
                     element={
                       isAuthenticated ? (
                         <Suspense fallback={<Loader />}>
-                          <PasswordChange
-                            cookies={cookies}
-                            navigate={navigate}
-                          />
+                          <PasswordChange cookies={cookies} navigate={navigate} />
                         </Suspense>
                       ) : (
                         <Navigate to={`/${orgSlug}/login`} />
@@ -303,10 +298,7 @@ export default class OrganizationWrapper extends React.Component {
                     element={
                       isAuthenticated ? (
                         <Suspense fallback={<Loader />}>
-                          <MobilePhoneChange
-                            cookies={cookies}
-                            navigate={navigate}
-                          />
+                          <MobilePhoneChange cookies={cookies} navigate={navigate} />
                         </Suspense>
                       ) : (
                         <Navigate to={`/${orgSlug}/login`} />
@@ -336,9 +328,7 @@ export default class OrganizationWrapper extends React.Component {
               </div>
               <Helmet>
                 <title>
-                  {pageTitle === undefined
-                    ? t`DEFAULT_TITL${orgName}`
-                    : pageTitle}
+                  {pageTitle === undefined ? t`DEFAULT_TITL${orgName}` : pageTitle}
                 </title>
               </Helmet>
               {loading && <Loader />}
@@ -376,10 +366,7 @@ export default class OrganizationWrapper extends React.Component {
     }
     if (organization.exists === false) {
       return (
-        <div
-          data-testid="org-wrapper-not-found"
-          className="org-wrapper-not-found"
-        >
+        <div data-testid="org-wrapper-not-found" className="org-wrapper-not-found">
           <Suspense fallback={<Loader />}>
             <DoesNotExist />
           </Suspense>

@@ -234,14 +234,8 @@ export default class MobilePhoneVerification extends React.Component {
   render() {
     const {code, errors, success, phoneNumber, resendButtonDisabledCooldown} =
       this.state;
-    const {
-      orgSlug,
-      mobilePhoneVerification,
-      logout,
-      cookies,
-      setUserData,
-      userData,
-    } = this.props;
+    const {orgSlug, mobilePhoneVerification, logout, cookies, setUserData, userData} =
+      this.props;
     const {inputFields} = mobilePhoneVerification;
     return (
       <div className="container content" id="mobile-phone-verification">
@@ -287,9 +281,7 @@ export default class MobilePhoneVerification extends React.Component {
                   ) : (
                     <Countdown
                       date={Date.now() + resendButtonDisabledCooldown * 1000}
-                      renderer={({seconds}) =>
-                        t`RESEND_TOKEN_WAIT_LBL${seconds}`
-                      }
+                      renderer={({seconds}) => t`RESEND_TOKEN_WAIT_LBL${seconds}`}
                       onComplete={() =>
                         this.setState({resendButtonDisabledCooldown: 0})
                       }
@@ -309,10 +301,7 @@ export default class MobilePhoneVerification extends React.Component {
 
               <div className="row fieldset change">
                 <p className="label">{t`PHONE_CHANGE_LBL`}</p>
-                <a
-                  href={`/${orgSlug}/change-phone-number`}
-                  className="button full"
-                >
+                <a href={`/${orgSlug}/change-phone-number`} className="button full">
                   {t`PHONE_CHANGE_BTN`}
                 </a>
               </div>
@@ -323,14 +312,7 @@ export default class MobilePhoneVerification extends React.Component {
                   type="button"
                   className="button full"
                   onClick={() =>
-                    handleLogout(
-                      logout,
-                      cookies,
-                      orgSlug,
-                      setUserData,
-                      userData,
-                      true,
-                    )
+                    handleLogout(logout, cookies, orgSlug, setUserData, userData, true)
                   }
                 >
                   {t`LOGOUT`}

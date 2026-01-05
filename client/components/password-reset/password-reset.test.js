@@ -228,10 +228,7 @@ describe("<PasswordReset /> interactions", () => {
   it("should set title", () => {
     renderWithProviders(<PasswordReset {...props} />);
 
-    expect(props.setTitle).toHaveBeenCalledWith(
-      "Reset Password",
-      props.orgName,
-    );
+    expect(props.setTitle).toHaveBeenCalledWith("Reset Password", props.orgName);
   });
 
   it("should clear errors on successful password reset", async () => {

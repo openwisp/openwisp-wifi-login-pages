@@ -1,5 +1,6 @@
-Developer Docs
-==============
+################
+ Developer Docs
+################
 
 .. include:: ../partials/developer-docs.rst
 

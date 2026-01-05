@@ -1,5 +1,6 @@
-WiFi Login Pages
-================
+##################
+ WiFi Login Pages
+##################
 
 .. seealso::
 

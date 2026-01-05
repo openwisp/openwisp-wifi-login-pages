@@ -246,9 +246,7 @@ describe("Test <PaymentProcess /> cases", () => {
 
     // Check for iframe element using title attribute
     await waitFor(() => {
-      const paymentProcess = within(document.body).getByTitle(
-        "owisp-payment-iframe",
-      );
+      const paymentProcess = within(document.body).getByTitle("owisp-payment-iframe");
       expect(paymentProcess).toBeInTheDocument();
     });
 
@@ -300,9 +298,7 @@ describe("Test <PaymentProcess /> cases", () => {
   it("should redirect to /payment/:status on completed transaction", async () => {
     props = createTestProps({userData: responseData});
     validateToken.mockResolvedValue(true);
-    getPaymentStatusRedirectUrl.mockReturnValue(
-      `/${props.orgSlug}/payment/success/`,
-    );
+    getPaymentStatusRedirectUrl.mockReturnValue(`/${props.orgSlug}/payment/success/`);
 
     const eventMock = mockMessageEvents();
 
@@ -324,9 +320,7 @@ describe("Test <PaymentProcess /> cases", () => {
 
     await tick();
 
-    expect(props.navigate).toHaveBeenCalledWith(
-      `/${props.orgSlug}/payment/success/`,
-    );
+    expect(props.navigate).toHaveBeenCalledWith(`/${props.orgSlug}/payment/success/`);
 
     eventMock.restore();
   });
@@ -426,9 +420,7 @@ describe("Test <PaymentProcess /> cases", () => {
     });
 
     // Component should return null (no content) when redirecting
-    expect(
-      within(document.body).queryByText(/payment/i),
-    ).not.toBeInTheDocument();
+    expect(within(document.body).queryByText(/payment/i)).not.toBeInTheDocument();
 
     redirectSpy.mockRestore();
   });

@@ -10,7 +10,7 @@ exports[`<OrganizationWrapper /> interactions should render pageTitle if it is n
   >
     <div
       class="header-container header-desktop"
-      data-testid="header"
+      data-testid="header-desktop"
     >
       <div
         class="header-row-1"
@@ -80,7 +80,7 @@ exports[`<OrganizationWrapper /> interactions should render pageTitle if it is n
     </div>
     <div
       class="header-mobile "
-      data-testid="header"
+      data-testid="header-mobile"
     >
       <div
         class="header-row-1"
@@ -222,7 +222,7 @@ exports[`Test <OrganizationWrapper /> routes should display status if authentica
   >
     <div
       class="header-container header-desktop"
-      data-testid="header"
+      data-testid="header-desktop"
     >
       <div
         class="header-row-1"
@@ -292,7 +292,7 @@ exports[`Test <OrganizationWrapper /> routes should display status if authentica
     </div>
     <div
       class="header-mobile "
-      data-testid="header"
+      data-testid="header-mobile"
     >
       <div
         class="header-row-1"
@@ -432,7 +432,7 @@ exports[`Test <OrganizationWrapper /> routes should redirect to login if not aut
   >
     <div
       class="header-container header-desktop"
-      data-testid="header"
+      data-testid="header-desktop"
     >
       <div
         class="header-row-1"
@@ -502,7 +502,7 @@ exports[`Test <OrganizationWrapper /> routes should redirect to login if not aut
     </div>
     <div
       class="header-mobile "
-      data-testid="header"
+      data-testid="header-mobile"
     >
       <div
         class="header-row-1"

@@ -1,5 +1,6 @@
-Settings
-========
+##########
+ Settings
+##########
 
 The main settings available in the organization YAML file are explained
 below.
@@ -8,13 +9,14 @@ below.
     :depth: 1
     :local:
 
-Captive Portal Settings
------------------------
+*************************
+ Captive Portal Settings
+*************************
 
 .. _wlp_captive_portal_login_form:
 
 ``captive_portal_login_form``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=============================
 
 This configuration section allows you to configure the hidden HTML form
 that submits the username, password, and any other required parameters to
@@ -71,7 +73,7 @@ empty array ``[]``, e.g.:
 .. _wlp_captive_portal_logout_form:
 
 ``captive_portal_logout_form``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+==============================
 
 This configuration section allows you to configure captive portal logout
 mechanism that allows users to close their browsing session.
@@ -115,7 +117,7 @@ although some may also accept ``GET``.
     additional_fields: []
 
 ``captive_portal_sync_auth``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+============================
 
 By default, captive portal authentication is performed asynchronously via
 an ``iframe`` to avoid reloading the page. However, some embedded or mini
@@ -124,11 +126,12 @@ browsers may fail to detect successful login when this method is used.
 Set ``captive_portal_sync_auth`` to ``true`` to submit the login form
 synchronously and trigger a full page reload upon authentication:
 
-Status Page Settings
---------------------
+**********************
+ Status Page Settings
+**********************
 
 ``accountingSwapOctets``
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+========================
 
 Some RADIUS servers may report accounting octets (data usage) with
 download and upload values swapped. This setting allows you to correct the
@@ -148,7 +151,7 @@ Example:
       accountingSwapOctets: true
 
 ``radius_usage_enabled``
-~~~~~~~~~~~~~~~~~~~~~~~~
+========================
 
 This setting controls whether RADIUS usage information (such as data
 usage, session time, etc.) is displayed on the status page.
@@ -168,8 +171,9 @@ Example:
 
 .. _wlp_menu_items:
 
-Menu Items
-----------
+************
+ Menu Items
+************
 
 By default, menu items are visible to any user, but it's possible to
 configure some items to be visible only to authenticated users,
@@ -185,8 +189,8 @@ properties.
   users.
 - ``methods_only: ["mobile_phone"]`` means visible only to users
   registered with mobile phone verification.
-- ``methods_excluded: ["saml", "socialLogin"]`` means not visible to
-  users which sign in using SAML and social login.
+- ``methods_excluded: ["saml", "socialLogin"]`` means not visible to users
+  which sign in using SAML and social login.
 - unspecified: link will be visible to any user (default behavior)
 
 Let us consider the following configuration for the header, footer and
@@ -259,8 +263,9 @@ With the configuration above:
 - using both ``methods_excluded`` and ``methods_only`` on the same link
   does not make sense
 
-User Fields in Registration Form
---------------------------------
+**********************************
+ User Fields in Registration Form
+**********************************
 
 The ``setting`` attribute of the fields ``firstName``, ``lastName``,
 ``location`` and ``birthDate`` can be used to indicate whether the fields
@@ -278,8 +283,9 @@ Keep in mind that this configuration must mirror the :ref:`configuration
 of openwisp-radius (OPENWISP_RADIUS_OPTIONAL_REGISTRATION_FIELDS)
 <openwisp_radius_optional_registration_fields>`.
 
-Username Field in Login Form
-----------------------------
+******************************
+ Username Field in Login Form
+******************************
 
 The username field in the login form is automatically set to either a
 phone number input or an email text input depending on whether
@@ -300,10 +306,11 @@ phone number, an email or a username:
           type: "text"
           pattern: null
 
-.. _wlp_socialLogin:
+.. _wlp_sociallogin:
 
-Configuring Social Login
-------------------------
+**************************
+ Configuring Social Login
+**************************
 
 In order to enable users to log via third-party services like Google and
 Facebook, the :doc:`Social Login feature of OpenWISP Radius
@@ -311,8 +318,9 @@ Facebook, the :doc:`Social Login feature of OpenWISP Radius
 
 .. _wlp_custom_css:
 
-Custom CSS Files
-----------------
+******************
+ Custom CSS Files
+******************
 
 It's possible to specify multiple CSS files if needed.
 
@@ -328,14 +336,15 @@ Adding multiple CSS files can be useful when working with :ref:`variants
 
 .. _wlp_custom_html:
 
-Custom HTML
------------
+*************
+ Custom HTML
+*************
 
 It is possible to inject custom HTML in different languages in several
 parts of the application if needed.
 
 Second Logo
-~~~~~~~~~~~
+===========
 
 .. code-block:: yaml
 
@@ -347,8 +356,9 @@ Second Logo
         url: "logo2.png"
         alternate_text: "logo2"
 
-Sticky Message
---------------
+****************
+ Sticky Message
+****************
 
 .. code-block:: yaml
 
@@ -361,7 +371,7 @@ Sticky Message
           </p>
 
 Login Page
-~~~~~~~~~~
+==========
 
 .. code-block:: yaml
 
@@ -391,7 +401,7 @@ Login Page
 .. _wlp_contact_box:
 
 Contact Box
-~~~~~~~~~~~
+===========
 
 .. code-block:: yaml
 
@@ -408,7 +418,7 @@ Contact Box
           </div>
 
 Footer
-~~~~~~
+======
 
 .. code-block:: yaml
 
@@ -422,8 +432,9 @@ Footer
 
 .. _wlp_saml:
 
-Configuring SAML Login & Logout
--------------------------------
+*********************************
+ Configuring SAML Login & Logout
+*********************************
 
 To enable SAML login, the :doc:`SAML feature of OpenWISP RADIUS
 </radius/user/saml>` must be enabled.
@@ -437,10 +448,11 @@ needed to perform SAML logout.
       # other conf
       samlLogoutUrl: "https://openwisp.myservice.org/radius/saml2/logout/"
 
-.. _wlp_tos_privacyPolicy:
+.. _wlp_tos_privacypolicy:
 
-TOS & Privacy Policy
---------------------
+**********************
+ TOS & Privacy Policy
+**********************
 
 The terms of services and privacy policy pages are generated from markdown
 files which are specified in the YAML configuration.
@@ -448,8 +460,9 @@ files which are specified in the YAML configuration.
 The markdown files specified in the YAML configuration should be placed
 in: ``/organizations/{orgSlug}/server_assets/``.
 
-Configuring Logging
--------------------
+*********************
+ Configuring Logging
+*********************
 
 There are certain environment variables used to configure server logging.
 The details of environment variables to configure logging are mentioned
@@ -477,8 +490,9 @@ Environment Variable Detail
                      http logs. The default path is ``logs/debug.log``
 ==================== ====================================================
 
-Mocking Captive Portal Login and Logout
----------------------------------------
+*****************************************
+ Mocking Captive Portal Login and Logout
+*****************************************
 
 During the development stage, the captive portal login and logout
 operations can be mocked by using the :ref:`OpenWISP RADIUS captive portal
@@ -491,8 +505,9 @@ organization.
 
 .. _wlp_signup_with_payment:
 
-Sign Up with Payment Flow
--------------------------
+***************************
+ Sign Up with Payment Flow
+***************************
 
 This application supports sign up with payment flows, either a one time
 payment, a free debit/credit card transaction for identity verification

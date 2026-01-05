@@ -31,9 +31,7 @@ class PasswordToggleIcon extends React.PureComponent {
       () => {
         inputRef.current.setAttribute(
           "type",
-          inputRef.current.getAttribute("type") === "password"
-            ? "text"
-            : "password",
+          inputRef.current.getAttribute("type") === "password" ? "text" : "password",
         );
         inputRef.current.focus();
         if (Object.keys(secondInputRef).length !== 0)
@@ -48,12 +46,9 @@ class PasswordToggleIcon extends React.PureComponent {
   }
 
   render() {
-    const {inputRef, secondInputRef, parentClassName, hidePassword} =
-      this.props;
+    const {inputRef, secondInputRef, parentClassName, hidePassword} = this.props;
     const showPasswordIcon = () => <i className="eye" title={t`PWD_REVEAL`} />;
-    const hidePasswordIcon = () => (
-      <i className="eye-slash" title={t`PWD_HIDE`} />
-    );
+    const hidePasswordIcon = () => <i className="eye-slash" title={t`PWD_HIDE`} />;
     const {isVisible} = this.state;
     const hideVal = showPasswordIcon();
     const showVal = hidePasswordIcon();

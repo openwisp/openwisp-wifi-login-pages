@@ -109,10 +109,7 @@ try {
       sentry: sentryConfig.sentryTransportLogger.sentry,
       level: sentryConfig.sentryTransportLogger.level,
       levelsMap: sentryConfig.sentryTransportLogger.levelsMap,
-      format: winston.format.combine(
-        format,
-        winston.format.uncolorize({raw: false}),
-      ),
+      format: winston.format.combine(format, winston.format.uncolorize({raw: false})),
     }),
   );
 } catch (error) {

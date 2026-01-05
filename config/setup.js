@@ -90,9 +90,7 @@ const getModalContent = (config, modalKey, modalName, configDirPath) => {
   const content = config.client[modalKey];
   if (content) {
     for (const key of Object.keys(content)) {
-      if (
-        path.extname(`${configDirPath}/server_assets/${content[key]}`) === ".md"
-      ) {
+      if (path.extname(`${configDirPath}/server_assets/${content[key]}`) === ".md") {
         if (!fs.existsSync(`${configDirPath}/server_assets/${content[key]}`)) {
           content[key] = "";
           console.warn(
@@ -189,19 +187,13 @@ const writeConfigurations = () => {
         createConfig(config, configDirPath);
         // variants configurations
         fs.readdirSync(configDirPath).forEach((customFile) => {
-          if (
-            path.extname(customFile) === ".yml" &&
-            customFile !== `${file}.yml`
-          ) {
+          if (path.extname(customFile) === ".yml" && customFile !== `${file}.yml`) {
             try {
               const customConfig = removeNullKeys(
                 merge(
                   getConfig(configPath),
                   yaml.load(
-                    fs.readFileSync(
-                      path.join(configDirPath, customFile),
-                      "utf-8",
-                    ),
+                    fs.readFileSync(path.join(configDirPath, customFile), "utf-8"),
                   ),
                 ),
               );
@@ -228,8 +220,7 @@ const writeConfigurations = () => {
     }
   });
 
-  if (fs.existsSync(clientConfigsDir))
-    fs.rmSync(clientConfigsDir, {recursive: true});
+  if (fs.existsSync(clientConfigsDir)) fs.rmSync(clientConfigsDir, {recursive: true});
   if (!fs.existsSync(clientConfigsDir))
     fs.mkdirSync(clientConfigsDir, {recursive: true});
 

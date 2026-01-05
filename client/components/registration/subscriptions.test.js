@@ -314,8 +314,7 @@ describe("test subscriptions", () => {
     // RTL may produce act() warnings which are expected for async state updates
     const hasOnlyActWarnings =
       lastConsoleOutput === null ||
-      (typeof lastConsoleOutput === "string" &&
-        lastConsoleOutput.includes("act(...)"));
+      (typeof lastConsoleOutput === "string" && lastConsoleOutput.includes("act(...)"));
     expect(hasOnlyActWarnings).toBe(true);
 
     const radio0 = screen.queryByTestId("plan-radio-0");
@@ -356,9 +355,7 @@ describe("test subscriptions", () => {
 
     expect(screen.getByTestId("registration-form")).toBeInTheDocument();
     expect(screen.queryByTestId("billing-info")).not.toBeInTheDocument();
-    expect(
-      screen.queryByRole("textbox", {name: /username/i}),
-    ).not.toBeInTheDocument();
+    expect(screen.queryByRole("textbox", {name: /username/i})).not.toBeInTheDocument();
   });
 
   it("should not show billing info when requires_payment is true but requires_invoice is false", async () => {

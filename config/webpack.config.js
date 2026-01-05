@@ -1,5 +1,4 @@
-const BundleAnalyzerPlugin =
-  require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const CompressionPlugin = require("compression-webpack-plugin");
 const BrotliPlugin = require("brotli-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
@@ -117,8 +116,7 @@ module.exports = (env, argv) => {
       main: "./index.js",
     },
     output: {
-      filename:
-        argv.mode === "development" ? "[name].js" : "[name].[contenthash].js",
+      filename: argv.mode === "development" ? "[name].js" : "[name].[contenthash].js",
       chunkFilename: "[name].[contenthash].chunk.js",
       path: path.resolve(CURRENT_WORKING_DIR, "dist"),
       publicPath: "/",
@@ -131,8 +129,7 @@ module.exports = (env, argv) => {
         module: false,
       },
     },
-    devtool:
-      argv.mode === "development" ? "cheap-module-source-map" : "source-map",
+    devtool: argv.mode === "development" ? "cheap-module-source-map" : "source-map",
     resolve: {
       extensions: ["*", ".js", ".jsx"],
     },

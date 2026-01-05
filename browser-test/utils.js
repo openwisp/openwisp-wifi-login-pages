@@ -87,8 +87,7 @@ export const urls = {
   verificationLogin: (slug) => `http://127.0.0.1:8080/${slug}/login`,
   mobileVerification: (slug) =>
     `http://127.0.0.1:8080/${slug}/mobile-phone-verification`,
-  mobilePhoneChange: (slug) =>
-    `http://127.0.0.1:8080/${slug}/change-phone-number`,
+  mobilePhoneChange: (slug) => `http://127.0.0.1:8080/${slug}/change-phone-number`,
 };
 
 export const successToastSelector = ".Toastify__toast--success div[role=alert]";
