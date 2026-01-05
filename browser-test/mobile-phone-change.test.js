@@ -12,7 +12,9 @@ import {
 
 const fillPhoneField = async (driver, data) => {
   async function fillField() {
-    const username = await driver.wait(until.elementLocated(By.css("input#username")));
+    const username = await driver.wait(
+      until.elementLocated(By.css("input#username")),
+    );
     await driver.wait(until.elementIsVisible(username));
     await username.sendKeys(data.phoneNumber);
   }
@@ -63,7 +65,10 @@ describe("Selenium tests for <MobilePhoneChange />", () => {
     await driver.wait(until.elementIsVisible(submitBtn));
     submitBtn.click();
     await getElementByCss(driver, "div#status");
-    let activeSessionTr = await getElementByCss(driver, "table tr.active-session");
+    let activeSessionTr = await getElementByCss(
+      driver,
+      "table tr.active-session",
+    );
     await driver.wait(until.elementIsVisible(activeSessionTr));
     await driver.get(urls.mobilePhoneChange(data.organization));
     // fixes ElementClickInterceptedError:
@@ -71,7 +76,10 @@ describe("Selenium tests for <MobilePhoneChange />", () => {
     // is not clickable at point (447,275) because another element
     // <div class="loader-container"> obscures it
     await driver.sleep(250);
-    const phoneField = await getElementByCss(driver, "input[name='phoneNumber']");
+    const phoneField = await getElementByCss(
+      driver,
+      "input[name='phoneNumber']",
+    );
     await driver.wait(until.elementIsVisible(phoneField));
     phoneField.click();
     await driver.executeScript((el) => el.select(), phoneField);
@@ -94,9 +102,15 @@ describe("Selenium tests for <MobilePhoneChange />", () => {
     submitBtn.click();
     await driver.wait(until.urlContains("status"), 5000);
     await getElementByCss(driver, "div#status");
-    const emailElement = await getElementByCss(driver, "div > p:nth-child(5) > span");
+    const emailElement = await getElementByCss(
+      driver,
+      "div > p:nth-child(5) > span",
+    );
     expect(await emailElement.getText()).toEqual(data.email);
-    const phoneElement = await getElementByCss(driver, "div > p:nth-child(6) > span");
+    const phoneElement = await getElementByCss(
+      driver,
+      "div > p:nth-child(6) > span",
+    );
     expect(await phoneElement.getText()).toEqual(data.changePhoneNumber);
     activeSessionTr = await getElementByCss(driver, "table tr.active-session");
     await driver.wait(until.elementIsVisible(activeSessionTr));

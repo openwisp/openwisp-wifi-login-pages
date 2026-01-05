@@ -47,7 +47,14 @@ export default class PasswordChange extends React.Component {
     setLoading(true);
     setTitle(t`PWD_CHANGE_TITL`, orgName);
     const {mustLogin, mustLogout, repeatLogin} = userData;
-    await validateToken(cookies, orgSlug, setUserData, userData, logout, language);
+    await validateToken(
+      cookies,
+      orgSlug,
+      setUserData,
+      userData,
+      logout,
+      language,
+    );
     ({userData} = this.props);
     setUserData({...userData, mustLogin, mustLogout, repeatLogin});
     setLoading(false);
@@ -155,7 +162,9 @@ export default class PasswordChange extends React.Component {
           ref={inputRef}
           autoComplete="password"
         />
-        <PasswordToggleIcon {...{inputRef, secondInputRef, hidePassword, toggler}} />
+        <PasswordToggleIcon
+          {...{inputRef, secondInputRef, hidePassword, toggler}}
+        />
       </div>
     );
   };

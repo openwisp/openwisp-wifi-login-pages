@@ -11,7 +11,8 @@ import shouldLinkBeShown from "../../utils/should-link-be-shown";
 
 export default class Contact extends React.Component {
   render() {
-    const {contactPage, language, orgSlug, isAuthenticated, userData} = this.props;
+    const {contactPage, language, orgSlug, isAuthenticated, userData} =
+      this.props;
     const {email, helpdesk, socialLinks, preHtml, afterHtml} = contactPage;
     return (
       <div className="side-column contact">

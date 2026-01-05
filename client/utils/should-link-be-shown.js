@@ -1,6 +1,10 @@
 const shouldLinkBeShown = (link, isAuthenticated, userData) => {
   const {isVerified, method} = userData;
-  if (method && link.methods_excluded && link.methods_excluded.includes(method)) {
+  if (
+    method &&
+    link.methods_excluded &&
+    link.methods_excluded.includes(method)
+  ) {
     return false;
   }
   if (
@@ -18,6 +22,8 @@ const shouldLinkBeShown = (link, isAuthenticated, userData) => {
   ) {
     return link.methods_only.includes(userData.method);
   }
-  return link.authenticated === undefined || link.authenticated === isAuthenticated;
+  return (
+    link.authenticated === undefined || link.authenticated === isAuthenticated
+  );
 };
 export default shouldLinkBeShown;

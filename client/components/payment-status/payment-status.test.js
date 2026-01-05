@@ -145,13 +145,17 @@ describe("Test <PaymentStatus /> cases", () => {
     // Check for failed payment page content
     expect(screen.getByText(/payment failed/i)).toBeInTheDocument();
     expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
-    expect(screen.getByText(/cannot complete the transaction/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/cannot complete the transaction/i),
+    ).toBeInTheDocument();
 
     const tryAgainLink = screen.getByRole("link", {name: /try again/i});
     expect(tryAgainLink).toBeInTheDocument();
     expect(tryAgainLink).toHaveAttribute("href", "/default/payment/draft");
 
-    expect(screen.getByRole("button", {name: /cancel operation/i})).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", {name: /cancel operation/i}),
+    ).toBeInTheDocument();
   });
 
   it("should call logout correctly when clicking on logout button", async () => {

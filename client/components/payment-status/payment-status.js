@@ -54,7 +54,11 @@ export default class PaymentStatus extends React.Component {
         mustLogout: settings.payment_requires_internet,
         repeatLogin: settings.payment_requires_internet,
       });
-    } else if (status === "draft" && method === "bank_card" && isVerified === false) {
+    } else if (
+      status === "draft" &&
+      method === "bank_card" &&
+      isVerified === false
+    ) {
       setUserData({
         ...userData,
         mustLogin: settings.payment_requires_internet ? true : undefined,
@@ -67,8 +71,10 @@ export default class PaymentStatus extends React.Component {
   }
 
   logout = () => {
-    const {logout, cookies, orgSlug, setUserData, userData, navigate} = this.props;
-    const redirectToStatus = (statusUrl = `/${orgSlug}/status`) => navigate(statusUrl);
+    const {logout, cookies, orgSlug, setUserData, userData, navigate} =
+      this.props;
+    const redirectToStatus = (statusUrl = `/${orgSlug}/status`) =>
+      navigate(statusUrl);
     handleLogout(
       logout,
       cookies,
@@ -89,7 +95,10 @@ export default class PaymentStatus extends React.Component {
     const {isTokenValid} = this.state;
 
     // not registered with bank card flow
-    if ((method && method !== "bank_card") || !acceptedValues.includes(status)) {
+    if (
+      (method && method !== "bank_card") ||
+      !acceptedValues.includes(status)
+    ) {
       return redirectToStatus();
     }
 
@@ -165,7 +174,11 @@ export default class PaymentStatus extends React.Component {
               </div>
 
               <div className="row">
-                <button type="button" className="button full" onClick={this.logout}>
+                <button
+                  type="button"
+                  className="button full"
+                  onClick={this.logout}
+                >
                   {t`PAY_GIVE_UP_BTN`}
                 </button>
               </div>
@@ -194,7 +207,11 @@ export default class PaymentStatus extends React.Component {
 
               <div className="row payment-status-row-4">
                 <p>{t`PAY_GIVE_UP_TXT`}</p>
-                <button type="button" className="button full" onClick={this.logout}>
+                <button
+                  type="button"
+                  className="button full"
+                  onClick={this.logout}
+                >
                   {t`PAY_GIVE_UP_BTN`}
                 </button>
               </div>

@@ -33,7 +33,10 @@ describe("Selenium tests for <Register />", () => {
     const password = await getElementByCss(driver, "input#password");
     password.sendKeys(data.testuser.password);
 
-    const confirmPassword = await getElementByCss(driver, "input#password-confirm");
+    const confirmPassword = await getElementByCss(
+      driver,
+      "input#password-confirm",
+    );
     confirmPassword.sendKeys(data.testuser.password);
 
     const submitBtn = await getElementByCss(driver, "input[type=submit]");
@@ -45,7 +48,10 @@ describe("Selenium tests for <Register />", () => {
     await driver.wait(until.urlContains("status"), 5000);
     expect(await successToastDiv.getText()).toEqual("Registration success");
 
-    const activeSessionTr = await getElementByCss(driver, "table tr.active-session");
+    const activeSessionTr = await getElementByCss(
+      driver,
+      "table tr.active-session",
+    );
     await driver.wait(until.elementIsVisible(activeSessionTr));
   });
 

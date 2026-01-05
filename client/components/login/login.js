@@ -51,7 +51,9 @@ export default class Login extends React.Component {
     const username = getParameterByName("username");
     const token = getParameterByName("token");
     const {loginForm, setTitle, orgName, orgSlug, settings} = this.props;
-    const sesameToken = getParameterByName(settings.passwordless_authToken_name);
+    const sesameToken = getParameterByName(
+      settings.passwordless_authToken_name,
+    );
     setTitle(t`LOGIN`, orgName);
     let rememberMe;
 
@@ -94,7 +96,9 @@ export default class Login extends React.Component {
     const {settings} = this.props;
     let usePhoneNumberField;
     if (typeof inputFields.username.auto_switch_phone_input !== "undefined") {
-      usePhoneNumberField = Boolean(inputFields.username.auto_switch_phone_input);
+      usePhoneNumberField = Boolean(
+        inputFields.username.auto_switch_phone_input,
+      );
     } else {
       usePhoneNumberField = settings.mobilePhoneVerification;
     }
@@ -167,7 +171,9 @@ export default class Login extends React.Component {
             name="username"
             country={inputFields.phoneNumber.country}
             onlyCountries={inputFields.phoneNumber.only_countries || []}
-            preferredCountries={inputFields.phoneNumber.preferred_countries || []}
+            preferredCountries={
+              inputFields.phoneNumber.preferred_countries || []
+            }
             excludeCountries={inputFields.phoneNumber.exclude_countries || []}
             value={username}
             onChange={(value) =>
@@ -261,7 +267,9 @@ export default class Login extends React.Component {
         this.setState({
           errors: {
             ...errors,
-            ...(data.username ? {username: data.username.toString()} : {username: ""}),
+            ...(data.username
+              ? {username: data.username.toString()}
+              : {username: ""}),
             ...(data.password ? {password: data.password} : {password: ""}),
           },
         });
@@ -281,7 +289,10 @@ export default class Login extends React.Component {
     const {rememberMe} = this.state;
     // useSessionStorage=true is passed from social login or SAML
     // user needs to repeat the login process each time
-    localStorage.setItem("rememberMe", String(rememberMe && !useSessionStorage));
+    localStorage.setItem(
+      "rememberMe",
+      String(rememberMe && !useSessionStorage),
+    );
     // if remember me checkbox is unchecked
     // store auth token in sessionStorage instead of cookie
     if (!rememberMe || useSessionStorage) {
@@ -362,7 +373,9 @@ export default class Login extends React.Component {
     return (
       <>
         {introHtml && (
-          <div className="container intro">{getHtml(introHtml, language, "inner")}</div>
+          <div className="container intro">
+            {getHtml(introHtml, language, "inner")}
+          </div>
         )}
         <div className="container content" id="login">
           <div className="inner">
@@ -389,7 +402,9 @@ export default class Login extends React.Component {
                               alt={getText(link.text, language)}
                               className="icon"
                             />
-                            <span className="text">{getText(link.text, language)}</span>
+                            <span className="text">
+                              {getText(link.text, language)}
+                            </span>
                           </span>
                         </a>
                       </p>
@@ -438,18 +453,29 @@ export default class Login extends React.Component {
 
                 {additionalInfoText && (
                   <div className="row add-info">
-                    {renderAdditionalInfo(t`LOGIN_ADD_INFO_TXT`, orgSlug, "login")}
+                    {renderAdditionalInfo(
+                      t`LOGIN_ADD_INFO_TXT`,
+                      orgSlug,
+                      "login",
+                    )}
                   </div>
                 )}
 
                 <div className="row login">
-                  <input type="submit" className="button full" value={t`LOGIN`} />
+                  <input
+                    type="submit"
+                    className="button full"
+                    value={t`LOGIN`}
+                  />
                 </div>
 
                 {buttons.register && (
                   <div className="row register">
                     <p>{t`REGISTER_BTN_LBL`}</p>
-                    <Link to={`/${orgSlug}/registration`} className="button full">
+                    <Link
+                      to={`/${orgSlug}/registration`}
+                      className="button full"
+                    >
                       {t`REGISTER_BTN_TXT`}
                     </Link>
                   </div>
@@ -473,7 +499,10 @@ export default class Login extends React.Component {
           </div>
         </div>
         <Routes>
-          <Route path=":name" element={<Modal prevPath={`/${orgSlug}/login`} />} />
+          <Route
+            path=":name"
+            element={<Modal prevPath={`/${orgSlug}/login`} />}
+          />
         </Routes>
       </>
     );

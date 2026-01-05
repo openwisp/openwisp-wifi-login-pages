@@ -174,7 +174,8 @@ describe("<PasswordChange /> interactions", () => {
     const form = screen.getByRole("form");
     const newPassword1Input = screen.getByPlaceholderText(/your new password/i);
     const newPassword2Input = screen.getByPlaceholderText(/confirm password/i);
-    const currentPasswordInput = screen.getByPlaceholderText(/current password/i);
+    const currentPasswordInput =
+      screen.getByPlaceholderText(/current password/i);
 
     // Test 1: Passwords don't match
     fireEvent.change(newPassword1Input, {
@@ -244,7 +245,10 @@ describe("<PasswordChange /> interactions", () => {
   it("should set title", () => {
     renderWithProviders(<PasswordChange {...props} />);
 
-    expect(props.setTitle).toHaveBeenCalledWith("Change your password", props.orgName);
+    expect(props.setTitle).toHaveBeenCalledWith(
+      "Change your password",
+      props.orgName,
+    );
   });
 
   it("should execute handleChange if field value changes", () => {
@@ -254,7 +258,10 @@ describe("<PasswordChange /> interactions", () => {
     expect(newPassword1Input).toBeInTheDocument();
     expect(newPassword1Input).toHaveAttribute("type", "password");
     expect(newPassword1Input).toHaveAttribute("id", "new-password");
-    expect(newPassword1Input).toHaveAttribute("placeholder", "Your new password");
+    expect(newPassword1Input).toHaveAttribute(
+      "placeholder",
+      "Your new password",
+    );
     expect(newPassword1Input).toHaveAttribute("autoComplete", "password");
     expect(newPassword1Input).toBeRequired();
 
@@ -267,7 +274,10 @@ describe("<PasswordChange /> interactions", () => {
     expect(newPassword2Input).toBeInTheDocument();
     expect(newPassword2Input).toHaveAttribute("type", "password");
     expect(newPassword2Input).toHaveAttribute("id", "password-confirm");
-    expect(newPassword2Input).toHaveAttribute("placeholder", "confirm password");
+    expect(newPassword2Input).toHaveAttribute(
+      "placeholder",
+      "confirm password",
+    );
     expect(newPassword2Input).toHaveAttribute("autoComplete", "password");
     expect(newPassword2Input).toBeRequired();
 
@@ -281,7 +291,8 @@ describe("<PasswordChange /> interactions", () => {
     renderWithProviders(<PasswordChange {...props} />);
 
     // Get the password input fields
-    const currentPasswordInput = screen.getByPlaceholderText(/current password/i);
+    const currentPasswordInput =
+      screen.getByPlaceholderText(/current password/i);
     const newPassword1Input = screen.getByPlaceholderText(/your new password/i);
     const newPassword2Input = screen.getByPlaceholderText(/confirm password/i);
 

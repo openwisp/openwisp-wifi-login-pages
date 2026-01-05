@@ -13,7 +13,10 @@ const getUserRadiusSessions = (req, res) => {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
       const {host} = conf;
-      const userRadiusSessionsUrl = reverse("user_radius_sessions", getSlug(conf));
+      const userRadiusSessionsUrl = reverse(
+        "user_radius_sessions",
+        getSlug(conf),
+      );
       const timeout = conf.timeout * 1000;
       // make AJAX request
       axios({
@@ -31,7 +34,10 @@ const getUserRadiusSessions = (req, res) => {
           if ("link" in response.headers) {
             res.setHeader("link", response.headers.link);
           }
-          res.status(response.status).type("application/json").send(response.data);
+          res
+            .status(response.status)
+            .type("application/json")
+            .send(response.data);
         })
         .catch((error) => {
           logResponseError(error);

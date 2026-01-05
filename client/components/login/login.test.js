@@ -4,7 +4,12 @@ import "@testing-library/jest-dom";
 import React from "react";
 import * as dependency from "react-toastify";
 import {Provider} from "react-redux";
-import {BrowserRouter as Router, Route, Routes, MemoryRouter} from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  MemoryRouter,
+} from "react-router-dom";
 import {createMemoryHistory} from "history";
 
 import getConfig from "../../utils/get-config";
@@ -313,7 +318,8 @@ describe("<Login /> interactions", () => {
             ...passedProps.configuration,
             components: {
               ...passedProps.configuration.components,
-              contact_page: passedProps.configuration.components.contact_page || {},
+              contact_page:
+                passedProps.configuration.components.contact_page || {},
             },
           },
         },
@@ -429,7 +435,9 @@ describe("<Login /> interactions", () => {
     fireEvent.submit(form);
     await waitFor(() => {
       expect(
-        screen.queryAllByText(/error/i).filter((el) => el.classList.contains("error")),
+        screen
+          .queryAllByText(/error/i)
+          .filter((el) => el.classList.contains("error")),
       ).toHaveLength(0);
       expect(props.authenticate).not.toHaveBeenCalled();
       expect(lastConsoleOutput).toBe(null);
@@ -665,7 +673,9 @@ describe("<Login /> interactions", () => {
 
       // Check no form errors are shown in the UI
       expect(
-        screen.queryAllByText(/error/i).filter((el) => el.classList?.contains("error")),
+        screen
+          .queryAllByText(/error/i)
+          .filter((el) => el.classList?.contains("error")),
       ).toHaveLength(0);
 
       expect(spyToast).toHaveBeenCalled();
@@ -719,7 +729,9 @@ describe("<Login /> interactions", () => {
 
     // Check no errors are shown in the UI
     expect(
-      screen.queryAllByText(/error/i).filter((el) => el.classList?.contains("error")),
+      screen
+        .queryAllByText(/error/i)
+        .filter((el) => el.classList?.contains("error")),
     ).toHaveLength(0);
   });
 
@@ -845,7 +857,9 @@ describe("<Login /> interactions", () => {
     mountComponent(props);
 
     expect(localStorage.getItem("rememberMe")).toEqual("false");
-    expect(sessionStorage.getItem("default_authToken")).toEqual(userData.authToken);
+    expect(sessionStorage.getItem("default_authToken")).toEqual(
+      userData.authToken,
+    );
     expect(spyToast).toHaveBeenCalledTimes(1);
     expect(props.setUserData).toHaveBeenCalledTimes(1);
     expect(props.setUserData).toHaveBeenCalledWith({

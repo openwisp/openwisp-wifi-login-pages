@@ -8,13 +8,18 @@ import {t} from "ttag";
 export default class DoesNotExist extends React.Component {
   componentDidMount() {
     const {orgName, setTitle, page} = this.props;
-    if (page !== undefined || orgName !== undefined) setTitle(t`404_PG_TITL`, orgName);
+    if (page !== undefined || orgName !== undefined)
+      setTitle(t`404_PG_TITL`, orgName);
   }
 
   render() {
     const {orgSlug, page} = this.props;
     return (
-      <div className="container content" id="not-found-404" data-testid="not-found-404">
+      <div
+        className="container content"
+        id="not-found-404"
+        data-testid="not-found-404"
+      >
         <div className="inner">
           <div className="main-column">
             <div className="inner">

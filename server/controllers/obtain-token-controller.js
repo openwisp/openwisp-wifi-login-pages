@@ -23,7 +23,8 @@ const obtainToken = (req, res) => {
         "content-type": "application/x-www-form-urlencoded",
         "accept-language": req.headers["accept-language"],
       };
-      if (req.headers.authorization) headers.Authorization = req.headers.authorization;
+      if (req.headers.authorization)
+        headers.Authorization = req.headers.authorization;
       // make AJAX request
       axios({
         method: "post",

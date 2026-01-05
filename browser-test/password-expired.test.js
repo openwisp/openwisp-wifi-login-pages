@@ -51,7 +51,10 @@ describe("Selenium tests for expired password flow />", () => {
 
     // changing password
     await getElementByCss(driver, "div#password-change");
-    const currPassword = await getElementByCss(driver, "input#current-password");
+    const currPassword = await getElementByCss(
+      driver,
+      "input#current-password",
+    );
     currPassword.sendKeys(data.expiredPasswordUser.password);
     const newPassword = "newPassword@";
     const changePassword = await getElementByCss(driver, "input#new-password");
@@ -66,7 +69,9 @@ describe("Selenium tests for expired password flow />", () => {
     await getElementByCss(driver, "div#status");
     successToastDiv = await getElementByCss(driver, successToastSelector);
     await driver.wait(until.elementIsVisible(successToastDiv));
-    expect(await successToastDiv.getText()).toEqual("Password updated successfully");
+    expect(await successToastDiv.getText()).toEqual(
+      "Password updated successfully",
+    );
 
     // login with new password
     await driver.manage().deleteAllCookies();

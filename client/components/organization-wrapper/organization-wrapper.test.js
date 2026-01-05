@@ -37,7 +37,9 @@ jest.mock("../../utils/get-config", () => ({
     ],
   })),
 }));
-jest.mock("../../utils/load-translation", () => jest.fn().mockResolvedValue(undefined));
+jest.mock("../../utils/load-translation", () =>
+  jest.fn().mockResolvedValue(undefined),
+);
 jest.mock("../../utils/needs-verify");
 /* eslint-enable import/first */
 
@@ -108,7 +110,8 @@ const renderWithRouter = (props) => {
           },
           userData: props.organization?.configuration?.userData || userData,
           languages:
-            props.organization?.configuration?.languages || defaultConfig.languages,
+            props.organization?.configuration?.languages ||
+            defaultConfig.languages,
         },
       },
       language: props.language || "en",
@@ -139,7 +142,9 @@ describe("<OrganizationWrapper /> rendering", () => {
     renderWithRouter(props);
 
     expect(screen.queryByTestId("app-container")).not.toBeInTheDocument();
-    expect(screen.queryByTestId("org-wrapper-not-found")).not.toBeInTheDocument();
+    expect(
+      screen.queryByTestId("org-wrapper-not-found"),
+    ).not.toBeInTheDocument();
     expect(screen.getByTestId("loader-container")).toBeInTheDocument();
   });
 
@@ -163,7 +168,9 @@ describe("<OrganizationWrapper /> rendering", () => {
     await waitFor(() => {
       expect(screen.getByTestId("app-container")).toBeInTheDocument();
     });
-    expect(screen.queryByTestId("org-wrapper-not-found")).not.toBeInTheDocument();
+    expect(
+      screen.queryByTestId("org-wrapper-not-found"),
+    ).not.toBeInTheDocument();
     // Note: There can be a loader-container if loading state is true,
     // but what matters is that the main content renders when org exists
   });
@@ -188,7 +195,10 @@ describe("<OrganizationWrapper /> rendering", () => {
     // CSS files are passed to Helmet which renders them in document.head
     // In testing environment with HelmetProvider, verify the component renders without errors
     // The actual CSS injection is handled by react-helmet-async
-    expect(props.organization.configuration.css).toEqual(["index.css", "custom.css"]);
+    expect(props.organization.configuration.css).toEqual([
+      "index.css",
+      "custom.css",
+    ]);
   });
 
   it("should load organization specific js files", async () => {
@@ -211,7 +221,10 @@ describe("<OrganizationWrapper /> rendering", () => {
     // JS files are passed to Helmet which renders them in document.head
     // In testing environment with HelmetProvider, verify the component renders without errors
     // The actual script injection is handled by react-helmet-async
-    expect(props.organization.configuration.js).toEqual(["index.js", "custom.js"]);
+    expect(props.organization.configuration.js).toEqual([
+      "index.js",
+      "custom.js",
+    ]);
   });
 });
 
@@ -224,9 +237,11 @@ describe("<OrganizationWrapper /> interactions", () => {
     jest.clearAllMocks();
     needsVerify.mockReturnValue(false);
     lastConsoleOutput = null;
-    consoleErrorSpy = jest.spyOn(global.console, "error").mockImplementation((data) => {
-      lastConsoleOutput = data;
-    });
+    consoleErrorSpy = jest
+      .spyOn(global.console, "error")
+      .mockImplementation((data) => {
+        lastConsoleOutput = data;
+      });
     props = createTestProps();
   });
 
@@ -339,7 +354,9 @@ describe("<OrganizationWrapper /> interactions", () => {
 
     // The pageTitle is passed to Helmet which updates document.title
     // In testing environment, we verify the prop is set correctly
-    expect(props.organization.configuration.pageTitle).toBe("Organization Wrapper");
+    expect(props.organization.configuration.pageTitle).toBe(
+      "Organization Wrapper",
+    );
   });
 
   it("should not use BrowserLang if userLangChoice is present", async () => {
@@ -355,7 +372,9 @@ describe("<OrganizationWrapper /> interactions", () => {
       expect(loadTranslation).toHaveBeenCalled();
     });
 
-    localStorage.removeItem(`${props.organization.configuration.slug}-userLangChoice`);
+    localStorage.removeItem(
+      `${props.organization.configuration.slug}-userLangChoice`,
+    );
   });
 
   it("should change language if different language is selected", async () => {
@@ -404,10 +423,14 @@ describe("<OrganizationWrapper /> interactions", () => {
 
     // Wait for language change to trigger another loadTranslation call
     await waitFor(() => {
-      expect(loadTranslation.mock.calls.length).toBeGreaterThan(initialCallCount);
+      expect(loadTranslation.mock.calls.length).toBeGreaterThan(
+        initialCallCount,
+      );
     });
 
-    localStorage.removeItem(`${props.organization.configuration.slug}-userLangChoice`);
+    localStorage.removeItem(
+      `${props.organization.configuration.slug}-userLangChoice`,
+    );
   });
 
   it("should load browser language choice if userLangChoice is null", async () => {
@@ -516,7 +539,8 @@ describe("Test Organization Wrapper for authenticated and unverified users", () 
 
 describe("Test <OrganizationWrapper /> routes", () => {
   let props;
-  const {components, languages, privacyPolicy, termsAndConditions} = defaultConfig;
+  const {components, languages, privacyPolicy, termsAndConditions} =
+    defaultConfig;
 
   const mountComponent = (passedProps, initialEntries) => {
     const mockedStore = {
@@ -533,10 +557,12 @@ describe("Test <OrganizationWrapper /> routes", () => {
               footer: components.footer || defaultConfig.components.footer,
             },
             isAuthenticated:
-              passedProps.organization?.configuration?.isAuthenticated !== undefined
+              passedProps.organization?.configuration?.isAuthenticated !==
+              undefined
                 ? passedProps.organization.configuration.isAuthenticated
                 : true,
-            userData: passedProps.organization?.configuration?.userData || userData,
+            userData:
+              passedProps.organization?.configuration?.userData || userData,
           },
         },
         language: "en",

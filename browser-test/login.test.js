@@ -37,7 +37,10 @@ describe("Selenium tests for <Login />", () => {
     submitBtn.click();
 
     await getElementByCss(driver, "div#status");
-    const emailElement = await getElementByCss(driver, "div > p:nth-child(5) > span");
+    const emailElement = await getElementByCss(
+      driver,
+      "div > p:nth-child(5) > span",
+    );
     expect(await emailElement.getText()).toEqual(data.testuser.email);
 
     const successToastDiv = await getElementByCss(driver, "div[role=alert]");
@@ -45,7 +48,10 @@ describe("Selenium tests for <Login />", () => {
     await driver.wait(until.urlContains("status"), 5000);
     expect(await successToastDiv.getText()).toEqual("Login successful");
 
-    const activeSessionTr = await getElementByCss(driver, "table tr.active-session");
+    const activeSessionTr = await getElementByCss(
+      driver,
+      "table tr.active-session",
+    );
     await driver.wait(until.elementIsVisible(activeSessionTr));
   });
 

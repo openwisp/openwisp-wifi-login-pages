@@ -277,7 +277,9 @@
       },
       "PWD_RESET_CNTC_TXT": {
         "msgid": "PWD_RESET_CNTC_TXT",
-        "msgstr": ["Please contact us if you have any trouble resetting your password."]
+        "msgstr": [
+          "Please contact us if you have any trouble resetting your password."
+        ]
       },
       "PWD_CONFIRM_TITL": {
         "msgid": "PWD_CONFIRM_TITL",

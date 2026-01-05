@@ -58,7 +58,10 @@ describe("<Modal /> rendering", () => {
     });
 
     expect(container).toMatchSnapshot();
-    expect(getText).toHaveBeenCalledWith(props.termsAndConditions, props.language);
+    expect(getText).toHaveBeenCalledWith(
+      props.termsAndConditions,
+      props.language,
+    );
   });
 
   it("should render privacy-policy correctly", async () => {

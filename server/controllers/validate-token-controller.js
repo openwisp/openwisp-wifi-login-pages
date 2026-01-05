@@ -37,7 +37,10 @@ const validateToken = (req, res) => {
         data: qs.stringify({token}),
       })
         .then((response) => {
-          res.status(response.status).type("application/json").send(response.data);
+          res
+            .status(response.status)
+            .type("application/json")
+            .send(response.data);
         })
         .catch((error) => {
           logResponseError(error);

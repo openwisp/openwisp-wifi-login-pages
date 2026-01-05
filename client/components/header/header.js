@@ -77,7 +77,10 @@ export default class Header extends React.Component {
     const internalLinks = [`/${orgSlug}/login`, `/${orgSlug}/registration`];
     return (
       <>
-        <div data-testid="header-desktop" className="header-container header-desktop">
+        <div
+          data-testid="header-desktop"
+          className="header-container header-desktop"
+        >
           <div className="header-row-1">
             <div className="header-row-1-inner">
               <div className="header-left">
@@ -104,7 +107,10 @@ export default class Header extends React.Component {
                 </div>
               )}
 
-              <div className="header-right" data-testid="desktop-language-selector">
+              <div
+                className="header-right"
+                data-testid="desktop-language-selector"
+              >
                 {languages.map((lang) => (
                   <button
                     type="button"
@@ -123,7 +129,10 @@ export default class Header extends React.Component {
             </div>
           </div>
           <div className="header-row-2">
-            <div className="header-row-2-inner" data-testid="desktop-navigation">
+            <div
+              className="header-row-2-inner"
+              data-testid="desktop-navigation"
+            >
               {links &&
                 links.map((link, index) => {
                   if (!shouldLinkBeShown(link, isAuthenticated, userData)) {
@@ -137,7 +146,9 @@ export default class Header extends React.Component {
                       <Link
                         className={`header-link header-desktop-link
                   header-link-${index + 1} ${
-                    pathname === link.url.replace("{orgSlug}", orgSlug) ? "active" : ""
+                    pathname === link.url.replace("{orgSlug}", orgSlug)
+                      ? "active"
+                      : ""
                   } button `}
                         to={link.url.replace("{orgSlug}", orgSlug)}
                         key={link.url}

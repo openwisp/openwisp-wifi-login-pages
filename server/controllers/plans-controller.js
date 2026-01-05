@@ -26,7 +26,10 @@ const plans = (req, res) => {
         timeout,
       })
         .then((response) => {
-          res.status(response.status).type("application/json").send(response.data);
+          res
+            .status(response.status)
+            .type("application/json")
+            .send(response.data);
         })
         .catch((error) => {
           logResponseError(error);

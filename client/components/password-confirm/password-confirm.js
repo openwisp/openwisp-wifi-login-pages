@@ -103,7 +103,8 @@ export default class PasswordConfirm extends React.Component {
   }
 
   render() {
-    const {newPassword1, newPassword2, errors, success, hidePassword} = this.state;
+    const {newPassword1, newPassword2, errors, success, hidePassword} =
+      this.state;
     const {passwordConfirm, orgSlug} = this.props;
     const {inputFields, login_page_link: loginPageLink} = passwordConfirm;
     return (
@@ -136,7 +137,9 @@ export default class PasswordConfirm extends React.Component {
               <div className="inner">
                 <h1>{t`PWD_CONFIRM_H`}</h1>
 
-                {passwordConfirm.additional_text && <p>{t`PWD_CONFIRM_ADD_TXT`}</p>}
+                {passwordConfirm.additional_text && (
+                  <p>{t`PWD_CONFIRM_ADD_TXT`}</p>
+                )}
 
                 <div className="fieldset">
                   {getError(errors)}
@@ -163,7 +166,9 @@ export default class PasswordConfirm extends React.Component {
                       inputRef={this.passwordToggleRef}
                       secondInputRef={this.confirmPasswordToggleRef}
                       hidePassword={hidePassword}
-                      toggler={() => this.setState({hidePassword: !hidePassword})}
+                      toggler={() =>
+                        this.setState({hidePassword: !hidePassword})
+                      }
                     />
                   </div>
 
@@ -189,13 +194,19 @@ export default class PasswordConfirm extends React.Component {
                       inputRef={this.confirmPasswordToggleRef}
                       secondInputRef={this.passwordToggleRef}
                       hidePassword={hidePassword}
-                      toggler={() => this.setState({hidePassword: !hidePassword})}
+                      toggler={() =>
+                        this.setState({hidePassword: !hidePassword})
+                      }
                     />
                   </div>
                 </div>
 
                 <div className="row submit">
-                  <input type="submit" className="button full" value={t`PWD_CONFIRM`} />
+                  <input
+                    type="submit"
+                    className="button full"
+                    value={t`PWD_CONFIRM`}
+                  />
                 </div>
 
                 {passwordConfirm.contact_text && (

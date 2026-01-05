@@ -46,7 +46,10 @@ const validateToken = async (
       });
       if (response.data.response_code !== "authToken_VALIDATION_SUCCESSFUL") {
         handleLogout(logout, cookies, orgSlug, setUserData, userData);
-        logError(response, '"response_code" !== "authToken_VALIDATION_SUCCESSFUL"');
+        logError(
+          response,
+          '"response_code" !== "authToken_VALIDATION_SUCCESSFUL"',
+        );
         return false;
       }
       setUserData(response.data);

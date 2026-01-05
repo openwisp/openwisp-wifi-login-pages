@@ -37,7 +37,10 @@ const passwordChange = (req, res) => {
         })
           .then((response) => {
             // forward response
-            res.status(response.status).type("application/json").send(response.data);
+            res
+              .status(response.status)
+              .type("application/json")
+              .send(response.data);
           })
           .catch((error) => {
             logResponseError(error);

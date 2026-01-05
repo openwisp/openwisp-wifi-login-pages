@@ -31,7 +31,10 @@ export const createMobilePhoneToken = (req, res) => {
       })
         .then((response) => {
           delete response.data.authToken;
-          res.status(response.status).type("application/json").send(response.data);
+          res
+            .status(response.status)
+            .type("application/json")
+            .send(response.data);
         })
         .catch((error) => {
           logResponseError(error);
@@ -79,7 +82,10 @@ export const mobilePhoneTokenStatus = (req, res) => {
         timeout,
       })
         .then((response) => {
-          res.status(response.status).type("application/json").send(response.data);
+          res
+            .status(response.status)
+            .type("application/json")
+            .send(response.data);
         })
         .catch((error) => {
           logResponseError(error);
@@ -136,7 +142,10 @@ export const verifyMobilePhoneToken = (req, res) => {
       })
         .then((response) => {
           delete response.data.authToken;
-          res.status(response.status).type("application/json").send(response.data);
+          res
+            .status(response.status)
+            .type("application/json")
+            .send(response.data);
         })
         .catch((error) => {
           logResponseError(error);

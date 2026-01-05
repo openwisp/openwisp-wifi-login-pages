@@ -33,7 +33,8 @@ export default class Modal extends React.Component {
   }
 
   renderContent = async () => {
-    const {privacyPolicy, termsAndConditions, language, params, orgSlug} = this.props;
+    const {privacyPolicy, termsAndConditions, language, params, orgSlug} =
+      this.props;
     const {name} = params;
     let file;
     let response = {};

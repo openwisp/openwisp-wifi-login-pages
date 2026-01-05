@@ -13,7 +13,10 @@ const userUpgradePlan = (req, res) => {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
       const {host} = conf;
-      const userUpgradePlanUrl = reverse("user_plan_radius_usage", getSlug(conf));
+      const userUpgradePlanUrl = reverse(
+        "user_plan_radius_usage",
+        getSlug(conf),
+      );
       const timeout = conf.timeout * 1000;
       // make AJAX request
       axios({
@@ -28,7 +31,10 @@ const userUpgradePlan = (req, res) => {
         timeout,
       })
         .then((response) => {
-          res.status(response.status).type("application/json").send(response.data);
+          res
+            .status(response.status)
+            .type("application/json")
+            .send(response.data);
         })
         .catch((error) => {
           logResponseError(error);

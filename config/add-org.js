@@ -131,7 +131,10 @@ const prompts = [
 
 const writeConfigFile = (filePath, object) => {
   try {
-    fs.writeFileSync(path.join(orgConfigurationDir, filePath), yaml.dump(object));
+    fs.writeFileSync(
+      path.join(orgConfigurationDir, filePath),
+      yaml.dump(object),
+    );
   } catch (err) {
     /* eslint-disable-next-line no-console */
     console.log(err);
@@ -185,19 +188,28 @@ const createConfiguration = async (response) => {
     const defaultConfig = yaml.load(fs.readFileSync(defaultConfigFile, "utf8"));
     const generatedConfig = yaml.load(
       fs.readFileSync(
-        path.resolve(orgConfigurationDir, response.slug, `${response.slug}.yml`),
+        path.resolve(
+          orgConfigurationDir,
+          response.slug,
+          `${response.slug}.yml`,
+        ),
         "utf-8",
       ),
     );
     const diffConfig = detailedDiff(defaultConfig, generatedConfig);
     let config = removeNullKeys(
-      _.merge(_.merge(diffConfig.updated, diffConfig.added), diffConfig.deleted),
+      _.merge(
+        _.merge(diffConfig.updated, diffConfig.added),
+        diffConfig.deleted,
+      ),
     );
     config = JSON.parse(
       JSON.stringify(config, (k, v) => {
         // to convert value with keys ["0", "1", ...] to array
         const value =
-          typeof v === "object" && isArray(Object.keys(v)) ? Object.values(v) : v;
+          typeof v === "object" && isArray(Object.keys(v))
+            ? Object.values(v)
+            : v;
         // to remove empty objects
         return _.isEqual(v, {}) ? undefined : value;
       }),
