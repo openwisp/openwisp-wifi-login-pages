@@ -42,16 +42,16 @@ describe("organization reducer", () => {
     exists: undefined,
     configuration: {
       userData: {
-        isActive: true,
-        isVerified: null,
+        is_active: true,
+        is_verified: null,
         mustLogin: true,
         mustLogout: false,
         repeatLogin: false,
-        authToken: undefined,
+        auth_token: undefined,
         radius_user_token: undefined,
       },
       settings: {
-        mobilePhoneVerification: undefined,
+        mobile_phone_verification: undefined,
         subscriptions: undefined,
       },
     },
@@ -106,17 +106,17 @@ describe("organization reducer", () => {
   });
   it("should handle SET_USER_DATA", () => {
     const userData = {
-      isActive: true,
-      isVerified: true,
+      is_active: true,
+      is_verified: true,
       method: "mobile_phone",
       email: "tester@test.com",
-      phoneNumber: "+393664050800",
+      phone_number: "+393664050800",
       username: "+393664050800",
       key: "b72dad1cca4807dc21c00b0b2f171d29415ac541",
       radius_user_token: "jwyVSZYOze16ej6cc1AW5cxhRjahesLzh1Tm2y0d",
-      firstName: "",
-      lastName: "",
-      birthDate: null,
+      first_name: "",
+      last_name: "",
+      birth_date: null,
       location: "",
     };
     const action = {

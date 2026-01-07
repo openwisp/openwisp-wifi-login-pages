@@ -133,7 +133,7 @@ msgid "USERNAME"
 msgstr "Имя пользователя"
 
 #: client/components/status/status.js:1063
-msgid "phoneNumber"
+msgid "PHONE_NUMBER"
 msgstr "Номер телефона"
 
 #: client/components/status/status.js:1370
@@ -222,7 +222,7 @@ msgstr "Только буквы, цифры и символы @/./+/-/_ "
 
 #: client/components/registration/registration.js:522
 #: client/components/registration/registration.js:523
-msgid "firstName_LBL"
+msgid "FIRST_NAME_LBL"
 msgstr "Имя"
 
 #: client/components/registration/registration.js:523
@@ -233,21 +233,21 @@ msgid "OPTIONAL"
 msgstr "Необязательно"
 
 #: client/components/registration/registration.js:540
-msgid "firstName_PHOLD"
+msgid "FIRST_NAME_PHOLD"
 msgstr "Имя"
 
 #: client/components/registration/registration.js:550
 #: client/components/registration/registration.js:551
-msgid "lastName_LBL"
+msgid "LAST_NAME_LBL"
 msgstr "Фамилия"
 
 #: client/components/registration/registration.js:568
-msgid "lastName_PHOLD"
+msgid "LAST_NAME_PHOLD"
 msgstr "Фамилия"
 
 #: client/components/registration/registration.js:577
 #: client/components/registration/registration.js:578
-msgid "birthDate_LBL"
+msgid "BIRTH_DATE_LBL"
 msgstr "Ваш дата рождения"
 
 #: client/components/registration/registration.js:602
@@ -321,22 +321,22 @@ msgid "ZIP_CODE_LBL"
 msgstr "Почтовый Код"
 
 #: client/components/registration/registration.js:746
-msgid "taxNumber_LBL"
+msgid "TAX_NUMBER_LBL"
 msgstr "Фискальный Код"
 
 #: client/components/registration/registration.js:758
-msgid "taxNumber_PHOLD"
+msgid "TAX_NUMBER_PHOLD"
 msgstr "Введите Фискальный Код"
 
 #: client/components/registration/registration.js:760
-msgid "taxNumber_PTRN_DESC"
+msgid "TAX_NUMBER_PTRN_DESC"
 msgstr "Только буквы и цифры"
 
 #: client/components/registration/registration.js:775
 msgid "REGISTER_ADD_INFO_TXT"
 msgstr ""
-"Заполнив и отправив эту форму, вы принимаете {termsAndConditions} и "
-"{privacyPolicy} этого Wi-Fi сервис"
+"Заполнив и отправив эту форму, вы принимаете {terms_and_conditions} и "
+"{privacy_policy} этого Wi-Fi сервис"
 
 #: client/components/login/login.js:475
 #: client/components/registration/registration.js:788
@@ -570,8 +570,8 @@ msgstr "SMS-код подтверждения отправлен"
 
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:251
 #, javascript-format
-msgid "PHONE_VERIFY (${ phoneNumber })"
-msgstr "Проверить номер телефона (${ phoneNumber }) введя СМС код"
+msgid "PHONE_VERIFY (${ phone_number })"
+msgstr "Проверить номер телефона (${ phone_number }) введя СМС код"
 
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:266
 msgid "MOBILE_CODE_PHOLD"
@@ -640,13 +640,13 @@ msgid "LOGIN_ERR"
 msgstr "При аутентификации произошла ошибка"
 
 #: client/components/login/login.js:446
-msgid "rememberMe"
+msgid "REMEMBER_ME"
 msgstr "Запомни меня на этом устройстве"
 
 #: client/components/login/login.js:453
 msgid "LOGIN_ADD_INFO_TXT"
 msgstr ""
-"Авторизуясь, вы принимаете {termsAndConditions} и {privacyPolicy} этого "
+"Авторизуясь, вы принимаете {terms_and_conditions} и {privacy_policy} этого "
 "сервис"
 
 #: client/components/login/login.js:470

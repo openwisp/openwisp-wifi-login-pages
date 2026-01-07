@@ -94,7 +94,7 @@ export default class PasswordChange extends React.Component {
       headers: {
         "content-type": "application/x-www-form-urlencoded",
         "accept-language": getLanguageHeaders(language),
-        Authorization: `Bearer ${userData.authToken}`,
+        Authorization: `Bearer ${userData.auth_token}`,
       },
       url,
       data: qs.stringify({
@@ -174,7 +174,7 @@ export default class PasswordChange extends React.Component {
     const {errors, newPassword1, newPassword2, hidePassword, currentPassword} =
       this.state;
     const toggler = () => this.setState({hidePassword: !hidePassword});
-    if (userData && ["saml", "socialLogin"].includes(userData.method))
+    if (userData && ["saml", "social_login"].includes(userData.method))
       return <Navigate to={`/${orgSlug}/status`} />;
     return (
       <div className="container content" id="password-change">
@@ -195,7 +195,7 @@ export default class PasswordChange extends React.Component {
                 name: "currentPassword",
                 value: currentPassword,
                 placeholder: t`CURR_PWD_PHOLD`,
-                pattern: passwordChange.inputFields.password1.pattern,
+                pattern: passwordChange.input_fields.password1.pattern,
                 inputRef: this.currentPasswordToggleRef,
               })}
 
@@ -205,7 +205,7 @@ export default class PasswordChange extends React.Component {
                 name: "newPassword1",
                 value: newPassword1,
                 placeholder: t`PWD1_PHOLD`,
-                pattern: passwordChange.inputFields.password1.pattern,
+                pattern: passwordChange.input_fields.password1.pattern,
                 inputRef: this.passwordToggleRef,
                 secondInputRef: this.confirmPasswordToggleRef,
                 hidePassword,
@@ -218,7 +218,7 @@ export default class PasswordChange extends React.Component {
                 name: "newPassword2",
                 value: newPassword2,
                 placeholder: t`CONFIRM_PWD_PHOLD`,
-                pattern: passwordChange.inputFields.password1.pattern,
+                pattern: passwordChange.input_fields.password1.pattern,
                 inputRef: this.confirmPasswordToggleRef,
                 secondInputRef: this.passwordToggleRef,
                 hidePassword,
@@ -255,7 +255,7 @@ PasswordChange.propTypes = {
   orgName: PropTypes.string.isRequired,
   cookies: PropTypes.instanceOf(Cookies).isRequired,
   passwordChange: PropTypes.shape({
-    inputFields: PropTypes.shape({
+    input_fields: PropTypes.shape({
       password1: PropTypes.shape({
         pattern: PropTypes.string.isRequired,
       }).isRequired,

@@ -180,7 +180,7 @@ describe("actions testing", () => {
   it("should dispatch logout action", () => {
     const action = logoutAction(dispatch);
     action(cookies, "default");
-    expect(cookies.remove).toHaveBeenCalledWith("default_authToken", {
+    expect(cookies.remove).toHaveBeenCalledWith("default_auth_token", {
       path: "/",
     });
     expect(cookies.remove).toHaveBeenCalledWith("default_username", {

@@ -3,12 +3,12 @@ name: "default name"
 slug: "default"
 
 settings:
-  radiusRealms: false
-  mobilePhoneVerification: false
+  radius_realms: false
+  mobile_phone_verification: false
   subscriptions: false
   payment_iframe: false
   payment_requires_internet: false
-  passwordless_authToken_name: "sesame"
+  passwordless_auth_token_name: "sesame"
 
 # configuration variables for the server app
 server:
@@ -48,9 +48,9 @@ client:
       secondary_text: false
 
     registration_form:
-      autoSelectFirstPlan: false
-      inputFields:
-        phoneNumber: {}
+      auto_select_first_plan: false
+      input_fields:
+        phone_number: {}
         username:
           pattern: '[a-zA-Z@.+\-_\d]{1,150}'
         email:
@@ -59,11 +59,11 @@ client:
           pattern: ".{6,}"
         password_confirm:
           pattern: ".{6,}"
-        firstName:
+        first_name:
           setting: "disabled"
-        lastName:
+        last_name:
           setting: "disabled"
-        birthDate:
+        birth_date:
           setting: "disabled"
         location:
           pattern: '[a-zA-Z@.+\-_\d]{1,150}'
@@ -73,9 +73,9 @@ client:
         zipcode: {}
         street: {}
         city: {}
-        taxNumber:
+        tax_number:
           pattern: '[a-zA-Z@.+\-_\d]{1,150}'
-      additionalInfoText: true
+      additional_info_text: true
       links:
         login: true
 
@@ -86,7 +86,7 @@ client:
 
     password_reset_confirm_form:
       additional_text: true
-      inputFields:
+      input_fields:
         password:
           pattern: ".{6,}"
         password_confirm:
@@ -97,32 +97,32 @@ client:
     contact_page:
       email: null
       helpdesk: null
-      socialLinks: []
+      social_links: []
 
     status_page:
-      accountingSwapOctets: false
+      accounting_swap_octets: false
       radius_usage_enabled: false
       links: []
 
     login_form:
-      socialLogin:
+      social_login:
         links: []
-      inputFields:
+      input_fields:
         username:
           type: "email"
           pattern: '.+@.+\..+'
         password:
           pattern: ".{6,}"
-        rememberMe:
+        remember_me:
           value: true
-      additionalInfoText: true
+      additional_info_text: true
       buttons:
         register: true
       links:
         forget_password: true
 
     password_change_form:
-      inputFields:
+      input_fields:
         password1:
           pattern: ".{6,}"
         password2:
@@ -158,19 +158,19 @@ client:
         id: logout_id
       additional_fields: []
       logout_by_session: true
-      waitAfter: 3000
+      wait_after: 3000
 
-    mobilePhoneVerification_form:
-      inputFields:
+    mobile_phone_verification_form:
+      input_fields:
         code:
           pattern: "[0-9]{6,}"
 
-    phoneNumberChange_form:
+    phone_number_change_form:
       buttons:
-        change_phoneNumber: true
+        change_phone_number: true
         cancel: true
 
-  privacyPolicy:
+  privacy_policy:
     en: "privacy-en.md"
-  termsAndConditions:
+  terms_and_conditions:
     en: "terms-en.md"

@@ -59,7 +59,7 @@ const createMockStore = () => {
           contact_page: {
             email: "support.org",
             helpdesk: "+1234567890",
-            socialLinks: [],
+            social_links: [],
           },
         },
       },
@@ -82,18 +82,18 @@ const renderWithProviders = (component) =>
   );
 
 const responseData = {
-  response_code: "authToken_VALIDATION_SUCCESSFUL",
-  isActive: true,
-  isVerified: false,
+  response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+  is_active: true,
+  is_verified: false,
   method: "bank_card",
   email: "tester@test.com",
-  phoneNumber: null,
+  phone_number: null,
   username: "tester",
   key: "b72dad1cca4807dc21c00b0b2f171d29415ac541",
   radius_user_token: "jwyVSZYOze16ej6cc1AW5cxhRjahesLzh1Tm2y0d",
-  firstName: "",
-  lastName: "",
-  birthDate: null,
+  first_name: "",
+  last_name: "",
+  birth_date: null,
   location: "",
 };
 
@@ -189,7 +189,7 @@ describe("Test <PaymentStatus /> cases", () => {
   it("should redirect to status page if user is already verified", async () => {
     const spyToast = jest.spyOn(toast, "success");
     props = createTestProps({
-      userData: {...responseData, isVerified: true},
+      userData: {...responseData, is_verified: true},
       params: {status: "failed"},
     });
     validateToken.mockResolvedValue(true);
@@ -208,7 +208,7 @@ describe("Test <PaymentStatus /> cases", () => {
   it("redirect to status + cp logout on success when payment requires internet", async () => {
     const spyToast = jest.spyOn(toast, "success");
     props = createTestProps({
-      userData: {...responseData, isVerified: true},
+      userData: {...responseData, is_verified: true},
       params: {status: "success"},
     });
     validateToken.mockResolvedValue(true);
@@ -233,7 +233,7 @@ describe("Test <PaymentStatus /> cases", () => {
   it("redirect to status + cp login on success when payment does not require internet", async () => {
     const spyToast = jest.spyOn(toast, "success");
     props = createTestProps({
-      userData: {...responseData, isVerified: true},
+      userData: {...responseData, is_verified: true},
       params: {status: "success"},
     });
     props.settings.payment_requires_internet = false;
@@ -260,7 +260,7 @@ describe("Test <PaymentStatus /> cases", () => {
     validateToken.mockResolvedValue(true);
 
     props = createTestProps({
-      userData: {...responseData, isVerified: false},
+      userData: {...responseData, is_verified: false},
       params: {status: "draft"},
     });
     props.settings.payment_requires_internet = false;
@@ -269,12 +269,12 @@ describe("Test <PaymentStatus /> cases", () => {
 
     await tick();
 
-    // When payment_requires_internet is false and status is draft with isVerified false,
+    // When payment_requires_internet is false and status is draft with is_verified false,
     // setUserData is called with mustLogin: undefined in componentDidMount
     await waitFor(() => {
       expect(props.setUserData).toHaveBeenCalledWith({
         ...responseData,
-        isVerified: false,
+        is_verified: false,
         mustLogin: undefined,
       });
     });
@@ -296,7 +296,7 @@ describe("Test <PaymentStatus /> cases", () => {
     validateToken.mockResolvedValue(true);
 
     props = createTestProps({
-      userData: {...responseData, isVerified: false},
+      userData: {...responseData, is_verified: false},
       params: {status: "draft"},
     });
     props.settings.payment_requires_internet = true;
@@ -315,7 +315,7 @@ describe("Test <PaymentStatus /> cases", () => {
     await waitFor(() => {
       expect(props.setUserData).toHaveBeenCalledWith({
         ...responseData,
-        isVerified: false,
+        is_verified: false,
         proceedToPayment: true,
       });
     });
@@ -324,7 +324,7 @@ describe("Test <PaymentStatus /> cases", () => {
   it("should redirect to status if success but unverified", async () => {
     const spyToast = jest.spyOn(toast, "success");
     props = createTestProps({
-      userData: {...responseData, isVerified: false},
+      userData: {...responseData, is_verified: false},
       params: {status: "success"},
     });
     validateToken.mockResolvedValue(true);
@@ -345,7 +345,7 @@ describe("Test <PaymentStatus /> cases", () => {
       params: {status: "success"},
       settings: {
         subscriptions: true,
-        mobilePhoneVerification: true,
+        mobile_phone_verification: true,
       },
       userData: {...responseData, method: "mobile_phone"},
     });
@@ -367,7 +367,7 @@ describe("Test <PaymentStatus /> cases", () => {
       params: {status: "failed"},
       settings: {
         subscriptions: true,
-        mobilePhoneVerification: true,
+        mobile_phone_verification: true,
       },
       userData: {...responseData, method: "mobile_phone"},
     });
@@ -389,7 +389,7 @@ describe("Test <PaymentStatus /> cases", () => {
       params: {status: "failed"},
       settings: {
         subscriptions: true,
-        mobilePhoneVerification: true,
+        mobile_phone_verification: true,
       },
       isAuthenticated: false,
     });
@@ -411,7 +411,7 @@ describe("Test <PaymentStatus /> cases", () => {
       params: {status: "unexpected"},
       settings: {
         subscriptions: true,
-        mobilePhoneVerification: true,
+        mobile_phone_verification: true,
       },
     });
     validateToken.mockResolvedValue(true);
@@ -429,7 +429,7 @@ describe("Test <PaymentStatus /> cases", () => {
   it("should redirect to status page if draft and not bank_card", async () => {
     const spyToast = jest.spyOn(toast, "success");
     props = createTestProps({
-      userData: {...responseData, isVerified: false, method: "mobile_phone"},
+      userData: {...responseData, is_verified: false, method: "mobile_phone"},
       params: {status: "draft"},
     });
     validateToken.mockResolvedValue(true);
@@ -447,7 +447,7 @@ describe("Test <PaymentStatus /> cases", () => {
   it("should redirect to status page if draft and verified", async () => {
     const spyToast = jest.spyOn(toast, "success");
     props = createTestProps({
-      userData: {...responseData, isVerified: true},
+      userData: {...responseData, is_verified: true},
       params: {status: "draft"},
     });
     validateToken.mockResolvedValue(true);
@@ -465,7 +465,7 @@ describe("Test <PaymentStatus /> cases", () => {
   it("should redirect to status page if token is not valid", async () => {
     const spyToast = jest.spyOn(toast, "success");
     props = createTestProps({
-      userData: {...responseData, isVerified: false},
+      userData: {...responseData, is_verified: false},
       params: {status: "draft"},
     });
     validateToken.mockResolvedValue(false);
@@ -483,7 +483,7 @@ describe("Test <PaymentStatus /> cases", () => {
 
   it("should call logout correctly when clicking on logout button from draft", async () => {
     props = createTestProps({
-      userData: {...responseData, isVerified: false},
+      userData: {...responseData, is_verified: false},
       params: {status: "draft"},
     });
     validateToken.mockResolvedValue(true);
@@ -509,7 +509,7 @@ describe("Test <PaymentStatus /> cases", () => {
 
   it("should render draft correctly", async () => {
     props = createTestProps({
-      userData: {...responseData, isVerified: false},
+      userData: {...responseData, is_verified: false},
       params: {status: "draft"},
     });
     validateToken.mockResolvedValue(true);

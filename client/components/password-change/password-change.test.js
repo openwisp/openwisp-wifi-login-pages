@@ -20,7 +20,7 @@ jest.mock("../../utils/get-config", () => ({
   default: jest.fn(() => ({
     components: {
       password_change_form: {
-        inputFields: {
+        input_fields: {
           password: {},
           password1: {
             type: "password",
@@ -352,7 +352,7 @@ describe("<PasswordChange /> interactions", () => {
 
   it("should redirect to status if login method is Social Login", async () => {
     props = createTestProps();
-    props.userData.method = "socialLogin";
+    props.userData.method = "social_login";
 
     renderWithProviders(<PasswordChange {...props} />);
 

@@ -126,7 +126,7 @@ msgid "USERNAME"
 msgstr "Nome utente"
 
 #: client/components/status/status.js:1063
-msgid "phoneNumber"
+msgid "PHONE_NUMBER"
 msgstr "Numero di telefono"
 
 #: client/components/status/status.js:1370
@@ -217,7 +217,7 @@ msgstr "Solo lettere, numeri e caratteri speciali @/./+/-/_"
 
 #: client/components/registration/registration.js:522
 #: client/components/registration/registration.js:523
-msgid "firstName_LBL"
+msgid "FIRST_NAME_LBL"
 msgstr "Nome"
 
 #: client/components/registration/registration.js:523
@@ -228,21 +228,21 @@ msgid "OPTIONAL"
 msgstr "Opzionale"
 
 #: client/components/registration/registration.js:540
-msgid "firstName_PHOLD"
+msgid "FIRST_NAME_PHOLD"
 msgstr "Nome"
 
 #: client/components/registration/registration.js:550
 #: client/components/registration/registration.js:551
-msgid "lastName_LBL"
+msgid "LAST_NAME_LBL"
 msgstr "Cognome"
 
 #: client/components/registration/registration.js:568
-msgid "lastName_PHOLD"
+msgid "LAST_NAME_PHOLD"
 msgstr "Cognome"
 
 #: client/components/registration/registration.js:577
 #: client/components/registration/registration.js:578
-msgid "birthDate_LBL"
+msgid "BIRTH_DATE_LBL"
 msgstr "Data di nascita"
 
 #: client/components/registration/registration.js:602
@@ -316,22 +316,22 @@ msgid "ZIP_CODE_LBL"
 msgstr "Codice Avviamento Postale"
 
 #: client/components/registration/registration.js:746
-msgid "taxNumber_LBL"
+msgid "TAX_NUMBER_LBL"
 msgstr "Codice fiscale o p.IVA"
 
 #: client/components/registration/registration.js:758
-msgid "taxNumber_PHOLD"
+msgid "TAX_NUMBER_PHOLD"
 msgstr "Inserisci il codice fiscale o la p.IVA"
 
 #: client/components/registration/registration.js:760
-msgid "taxNumber_PTRN_DESC"
+msgid "TAX_NUMBER_PTRN_DESC"
 msgstr "Solo lettere e numeri"
 
 #: client/components/registration/registration.js:775
 msgid "REGISTER_ADD_INFO_TXT"
 msgstr ""
 "Compilando ed inviando questo modulo di registrazione, si accettano i "
-"{termsAndConditions} e l'{privacyPolicy} del servizio WiFi."
+"{terms_and_conditions} e l'{privacy_policy} del servizio WiFi."
 
 #: client/components/login/login.js:475
 #: client/components/registration/registration.js:788
@@ -572,9 +572,9 @@ msgstr "Codice di verifica SMS inviato con successo"
 
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:251
 #, javascript-format
-msgid "PHONE_VERIFY (${ phoneNumber })"
+msgid "PHONE_VERIFY (${ phone_number })"
 msgstr ""
-"Verifica il numero di telefono (${ phoneNumber }) inserendo il codice che "
+"Verifica il numero di telefono (${ phone_number }) inserendo il codice che "
 "hai ricevuto via SMS."
 
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:266
@@ -648,14 +648,14 @@ msgid "LOGIN_ERR"
 msgstr "Si è verificato un errore durante l'autenticazione."
 
 #: client/components/login/login.js:446
-msgid "rememberMe"
+msgid "REMEMBER_ME"
 msgstr "Ricorda l'accesso su questo dispositivo"
 
 #: client/components/login/login.js:453
 msgid "LOGIN_ADD_INFO_TXT"
 msgstr ""
-"Effettuando il login, dichiari di accettare i {termsAndConditions} e "
-"l'{privacyPolicy} del servizio WiFi."
+"Effettuando il login, dichiari di accettare i {terms_and_conditions} e "
+"l'{privacy_policy} del servizio WiFi."
 
 #: client/components/login/login.js:470
 msgid "REGISTER_BTN_LBL"

@@ -18,12 +18,12 @@ const mockConfig = {
   slug: "default",
   default_language: "en",
   settings: {
-    mobilePhoneVerification: false,
+    mobile_phone_verification: false,
     subscriptions: false,
   },
   components: {
     registration_form: {
-      inputFields: {
+      input_fields: {
         username: {
           pattern: "^[a-zA-Z0-9@.+\\-_\\s]+$",
         },
@@ -36,16 +36,16 @@ const mockConfig = {
         password_confirm: {
           pattern: "^.{8,}$",
         },
-        phoneNumber: {
+        phone_number: {
           country: "in",
         },
-        firstName: {
+        first_name: {
           setting: "disabled",
         },
-        lastName: {
+        last_name: {
           setting: "disabled",
         },
-        birthDate: {
+        birth_date: {
           setting: "disabled",
         },
         location: {
@@ -53,7 +53,7 @@ const mockConfig = {
           setting: "disabled",
         },
       },
-      socialLogin: {
+      social_login: {
         links: [],
       },
     },
@@ -69,11 +69,11 @@ const mockConfig = {
     },
     contact_page: {},
   },
-  privacyPolicy: {
+  privacy_policy: {
     title: {en: "Privacy Policy"},
     content: {en: "Privacy content"},
   },
-  termsAndConditions: {
+  terms_and_conditions: {
     title: {en: "Terms and Conditions"},
     content: {en: "Terms content"},
   },
@@ -97,8 +97,8 @@ const createTestProps = (props, configName = "default") => {
     orgName: config.name,
     settings: config.settings,
     registration: config.components.registration_form,
-    privacyPolicy: config.privacyPolicy,
-    termsAndConditions: config.termsAndConditions,
+    privacyPolicy: config.privacy_policy,
+    termsAndConditions: config.terms_and_conditions,
     authenticate: jest.fn(),
     setTitle: jest.fn(),
     setUserData: jest.fn(),
@@ -125,7 +125,7 @@ const createMockStore = () => {
           contact_page: {
             email: "support.org",
             helpdesk: "+1234567890",
-            socialLinks: [],
+            social_links: [],
           },
         },
       },
@@ -395,8 +395,8 @@ describe("<Registration /> interactions", () => {
   });
 
   it("test optional fields allowed", async () => {
-    props.registration.inputFields.firstName.setting = "allowed";
-    props.registration.inputFields.location.setting = "allowed";
+    props.registration.input_fields.first_name.setting = "allowed";
+    props.registration.input_fields.location.setting = "allowed";
 
     renderWithProviders(<Registration {...props} />);
 
@@ -410,10 +410,10 @@ describe("<Registration /> interactions", () => {
   });
 
   it("test optional fields mandatory", async () => {
-    props.registration.inputFields.birthDate.setting = "mandatory";
-    props.registration.inputFields.firstName.setting = "mandatory";
-    props.registration.inputFields.lastName.setting = "allowed";
-    props.registration.inputFields.location.setting = "allowed";
+    props.registration.input_fields.birth_date.setting = "mandatory";
+    props.registration.input_fields.first_name.setting = "mandatory";
+    props.registration.input_fields.last_name.setting = "allowed";
+    props.registration.input_fields.location.setting = "allowed";
 
     renderWithProviders(<Registration {...props} />);
 
@@ -432,7 +432,7 @@ describe("<Registration /> interactions", () => {
       }),
     );
 
-    props.settings = {mobilePhoneVerification: true};
+    props.settings = {mobile_phone_verification: true};
     renderWithProviders(<Registration {...props} />);
 
     const password1Input = screen.getByLabelText(/^password$/i);
@@ -452,8 +452,8 @@ describe("<Registration /> interactions", () => {
       expect(form).toHaveClass("success");
       expect(props.authenticate).toHaveBeenCalledTimes(1);
       expect(props.setUserData).toHaveBeenCalledWith({
-        isVerified: false,
-        authToken: responseData.key,
+        is_verified: false,
+        auth_token: responseData.key,
         mustLogin: !responseData.requires_payment,
       });
     });
@@ -567,10 +567,10 @@ describe("Registration and Mobile Phone Verification interactions", () => {
     props = createTestProps({}, "test-org-2");
     props.configuration = getConfig("test-org-2");
     // Enable mobile phone verification for these tests
-    props.settings = {...props.settings, mobilePhoneVerification: true};
+    props.settings = {...props.settings, mobile_phone_verification: true};
     props.configuration.settings = {
       ...props.configuration.settings,
-      mobilePhoneVerification: true,
+      mobile_phone_verification: true,
     };
   });
 
@@ -614,7 +614,7 @@ describe("Registration and Mobile Phone Verification interactions", () => {
     const form = screen.getByTestId("registration-form");
 
     fireEvent.change(phoneInput, {
-      target: {value: "+393660011333", name: "phoneNumber"},
+      target: {value: "+393660011333", name: "phone_number"},
     });
     fireEvent.change(emailInput, {
       target: {value: "tester@openwisp.io", name: "email"},
@@ -630,8 +630,8 @@ describe("Registration and Mobile Phone Verification interactions", () => {
     await tick();
     await waitFor(() => {
       expect(props.setUserData).toHaveBeenCalledWith({
-        isVerified: false,
-        authToken: responseData.key,
+        is_verified: false,
+        auth_token: responseData.key,
         mustLogin: !responseData.requires_payment,
       });
     });
@@ -670,7 +670,7 @@ describe("Registration and Mobile Phone Verification interactions", () => {
     const firstNameInput = screen.queryByRole("textbox", {name: /first name/i});
     if (firstNameInput) {
       fireEvent.change(firstNameInput, {
-        target: {value: "OpenWISP", name: "firstName"},
+        target: {value: "OpenWISP", name: "first_name"},
       });
     }
 
@@ -711,7 +711,7 @@ describe("Registration without identity verification (Email registration)", () =
     axios.mockReset();
     props = createTestProps({}, "test-org-2");
     props.configuration = getConfig("test-org-2");
-    props.configuration.settings.mobilePhoneVerification = false;
+    props.configuration.settings.mobile_phone_verification = false;
     props.configuration.settings.subscriptions = false;
   });
 
@@ -804,19 +804,19 @@ describe("Registration with subscriptions and billing info", () => {
     props = createTestProps({}, "default");
     props.configuration = getConfig("default");
     props.configuration.settings.subscriptions = true;
-    props.configuration.settings.mobilePhoneVerification = false;
+    props.configuration.settings.mobile_phone_verification = false;
     props.settings = props.configuration.settings;
 
     // Add required billing input fields to configuration
-    props.configuration.components.registration_form.inputFields.taxNumber = {
+    props.configuration.components.registration_form.input_fields.tax_number = {
       pattern: "[a-zA-Z@.+\\-_\\d]{1,150}",
     };
-    props.configuration.components.registration_form.inputFields.country = {
+    props.configuration.components.registration_form.input_fields.country = {
       pattern: "[a-zA-Z@.+\\-_\\d\\s]{1,150}",
     };
-    props.configuration.components.registration_form.inputFields.street = {};
-    props.configuration.components.registration_form.inputFields.city = {};
-    props.configuration.components.registration_form.inputFields.zipcode = {};
+    props.configuration.components.registration_form.input_fields.street = {};
+    props.configuration.components.registration_form.input_fields.city = {};
+    props.configuration.components.registration_form.input_fields.zipcode = {};
 
     props.registration = props.configuration.components.registration_form;
 

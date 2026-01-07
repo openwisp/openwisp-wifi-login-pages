@@ -12,7 +12,7 @@ jest.mock("../../utils/get-config", () => ({
   default: jest.fn(() => ({
     components: {
       contact_page: {
-        socialLinks: [],
+        social_links: [],
       },
     },
   })),
@@ -47,7 +47,7 @@ const createTestProps = (props) => ({
   language: "en",
   orgSlug: "default",
   contactPage: defaultConfig.components.contact_page,
-  userData: {isVerified: true},
+  userData: {is_verified: true},
   ...props,
 });
 
@@ -72,7 +72,7 @@ describe("<Contact /> rendering", () => {
 
   it("should render without authenticated links when not authenticated", () => {
     props = createTestProps();
-    props.contactPage.socialLinks = links;
+    props.contactPage.social_links = links;
     props.isAuthenticated = false;
     render(<Contact {...props} />);
 
@@ -84,7 +84,7 @@ describe("<Contact /> rendering", () => {
 
   it("should render with authenticated links when authenticated", () => {
     props = createTestProps();
-    props.contactPage.socialLinks = links;
+    props.contactPage.social_links = links;
     props.isAuthenticated = true;
     render(<Contact {...props} />);
 

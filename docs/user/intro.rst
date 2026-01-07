@@ -1,6 +1,5 @@
-############################
- WiFi Login Pages: Features
-############################
+WiFi Login Pages: Features
+==========================
 
 OpenWISP WiFi login pages offers the following features:
 
@@ -16,7 +15,7 @@ OpenWISP WiFi login pages offers the following features:
   sending a POST to the captive portal logout URL behind the scenes)
 - Change password
 - Reset password (password forgot)
-- Support for :ref:`Social Login <wlp_socialLogin>` and :ref:`SAML
+- Support for :ref:`Social Login <wlp_social_login>` and :ref:`SAML
   <wlp_saml>`
 - Optional social login buttons (Facebook, Google, X/Twitter)
 - :ref:`Contact box <wlp_contact_box>` showing the support email and/or
@@ -31,16 +30,15 @@ OpenWISP WiFi login pages offers the following features:
 - Possibility to :ref:`change any text used in the pages
   <wlp_custom_html>`
 - Configurable :ref:`Terms of Services and Privacy Policy for each
-  organization <wlp_tos_privacyPolicy>`
+  organization <wlp_tos_privacy_policy>`
 - Possibility of :ref:`automatically logging in users who signed in
   previously <automatic_captive_portal_login>` (if the captive portal
   browser of their operating system supports cookies)
 - Support for :ref:`credit/debit card verification and paid subscription
   plans <wlp_signup_with_payment>`
 
-*************
- Screenshots
-*************
+Screenshots
+-----------
 
 .. figure:: https://raw.githubusercontent.com/openwisp/openwisp-wifi-login-pages/media/docs/login-desktop.png
     :target: https://raw.githubusercontent.com/openwisp/openwisp-wifi-login-pages/media/docs/login-desktop.png

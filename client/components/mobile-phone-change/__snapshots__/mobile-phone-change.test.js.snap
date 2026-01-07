@@ -28,7 +28,7 @@ exports[`<MobilePhoneChange /> rendering with placeholder translation tags shoul
             <input
               class="form-control input"
               id="phone-number"
-              name="phoneNumber"
+              name="phone_number"
               placeholder="PHONE_PHOLD"
               value=""
             />
@@ -92,9 +92,6 @@ exports[`<MobilePhoneChange /> rendering with placeholder translation tags shoul
               +1234567890
             </a>
           </div>
-          <div
-            class="contact-links"
-          />
         </div>
       </div>
     </div>

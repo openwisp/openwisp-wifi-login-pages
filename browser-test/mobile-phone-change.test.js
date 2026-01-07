@@ -72,13 +72,13 @@ describe("Selenium tests for <MobilePhoneChange />", () => {
     await driver.wait(until.elementIsVisible(activeSessionTr));
     await driver.get(urls.mobilePhoneChange(data.organization));
     // fixes ElementClickInterceptedError:
-    // Element <input id="phone-number" class="form-control input " name="phoneNumber" type="tel">
+    // Element <input id="phone-number" class="form-control input " name="phone_number" type="tel">
     // is not clickable at point (447,275) because another element
     // <div class="loader-container"> obscures it
     await driver.sleep(250);
     const phoneField = await getElementByCss(
       driver,
-      "input[name='phoneNumber']",
+      "input[name='phone_number']",
     );
     await driver.wait(until.elementIsVisible(phoneField));
     phoneField.click();

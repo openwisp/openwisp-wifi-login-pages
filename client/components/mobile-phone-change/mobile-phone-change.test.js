@@ -19,15 +19,15 @@ const mockConfig = {
   name: "default name",
   default_language: "en",
   components: {
-    phoneNumberChange_form: {
-      inputFields: {},
+    phone_number_change_form: {
+      input_fields: {},
       buttons: {
         cancel: true,
       },
     },
     registration_form: {
-      inputFields: {
-        phoneNumber: {
+      input_fields: {
+        phone_number: {
           country: "in",
         },
       },
@@ -45,13 +45,13 @@ const mockConfig = {
     contact_page: {},
   },
   settings: {
-    mobilePhoneVerification: true,
+    mobile_phone_verification: true,
   },
-  privacyPolicy: {
+  privacy_policy: {
     title: {en: "Privacy Policy"},
     content: {en: "Privacy content"},
   },
-  termsAndConditions: {
+  terms_and_conditions: {
     title: {en: "Terms and Conditions"},
     content: {en: "Terms content"},
   },
@@ -73,12 +73,12 @@ function StatusMock() {
 
 const createTestProps = (props, configName = "test-org-2") => {
   const conf = getConfig(configName);
-  const componentConf = conf.components.phoneNumberChange_form;
-  componentConf.inputFields = {
-    phoneNumber: conf.components.registration_form.inputFields.phoneNumber,
+  const componentConf = conf.components.phone_number_change_form;
+  componentConf.input_fields = {
+    phone_number: conf.components.registration_form.input_fields.phone_number,
   };
   return {
-    phoneNumberChange: componentConf,
+    phone_number_change: componentConf,
     settings: conf.settings,
     orgSlug: conf.slug,
     orgName: conf.name,
@@ -171,11 +171,11 @@ const mountComponent = (props) => {
 };
 
 const userData = {
-  response_code: "authToken_VALIDATION_SUCCESSFUL",
+  response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
   radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
   username: "tester@tester.com",
-  isActive: false,
-  phoneNumber: "+393660011222",
+  is_active: false,
+  phone_number: "+393660011222",
 };
 
 describe("Change Phone Number: standard flow", () => {
@@ -242,7 +242,7 @@ describe("Change Phone Number: standard flow", () => {
       name: /mobile phone number/i,
     });
     fireEvent.change(phoneInput, {
-      target: {value: "+393660011333", name: "phoneNumber"},
+      target: {value: "+393660011333", name: "phone_number"},
     });
 
     expect(phoneInput.value.replace(/[\s-]/g, "")).toContain("393660011333");
@@ -258,8 +258,8 @@ describe("Change Phone Number: standard flow", () => {
     );
     expect(props.setUserData).toHaveBeenCalledTimes(1);
     expect(props.setUserData).toHaveBeenCalledWith({
-      isVerified: false,
-      phoneNumber: expect.stringContaining("393660011333"),
+      is_verified: false,
+      phone_number: expect.stringContaining("393660011333"),
     });
   });
 
@@ -283,7 +283,7 @@ describe("Change Phone Number: standard flow", () => {
 
     // Test onChange
     fireEvent.change(phoneInput, {
-      target: {value: "+911234567890", name: "phoneNumber"},
+      target: {value: "+911234567890", name: "phone_number"},
     });
 
     expect(phoneInput.value.replace(/[\s-]/g, "")).toContain("911234567890");
@@ -303,7 +303,7 @@ describe("Change Phone Number: standard flow", () => {
 
     // Test onChange on fallback
     fireEvent.change(fallbackInput, {
-      target: {value: "+911234567890", name: "phoneNumber"},
+      target: {value: "+911234567890", name: "phone_number"},
     });
 
     // Phone input may format the value
@@ -318,7 +318,7 @@ describe("Change Phone Number: standard flow", () => {
       status: 400,
       statusText: "OK",
       data: {
-        phoneNumber: [
+        phone_number: [
           "The new phone number must be different than the old one.",
         ],
       },
@@ -415,11 +415,11 @@ describe("Change Phone Number: corner cases", () => {
         status: 200,
         statusText: "OK",
         data: {
-          response_code: "authToken_VALIDATION_SUCCESSFUL",
+          response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
           radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
           username: "tester@tester.com",
-          isActive: false,
-          phoneNumber: "+393660011222",
+          is_active: false,
+          phone_number: "+393660011222",
           ...responseData,
         },
       }),
@@ -441,7 +441,7 @@ describe("Change Phone Number: corner cases", () => {
 
   it("should recognize if user is active", async () => {
     validateToken.mockReturnValue(true);
-    const activeUserData = {...userData, isActive: true};
+    const activeUserData = {...userData, is_active: true};
     props.userData = activeUserData;
 
     mountComponent(props);
@@ -457,9 +457,9 @@ describe("Change Phone Number: corner cases", () => {
     expect(props.setUserData).not.toHaveBeenCalled();
   });
 
-  it("should not redirect if mobilePhoneVerification is enabled", async () => {
+  it("should not redirect if mobile_phone_verification is enabled", async () => {
     mockAxios();
-    props.settings.mobilePhoneVerification = true;
+    props.settings.mobile_phone_verification = true;
 
     mountComponent(props);
 
@@ -468,8 +468,8 @@ describe("Change Phone Number: corner cases", () => {
 
   it("shouldn't redirect if user is active and mobile verificaton is true", async () => {
     validateToken.mockReturnValue(true);
-    props.userData = {...userData, isActive: true};
-    props.settings.mobilePhoneVerification = true;
+    props.userData = {...userData, is_active: true};
+    props.settings.mobile_phone_verification = true;
 
     mountComponent(props);
 
@@ -480,10 +480,10 @@ describe("Change Phone Number: corner cases", () => {
     validateToken.mockReturnValue(true);
     props.userData = {
       ...userData,
-      isActive: true,
+      is_active: true,
       method: "mobile_phone",
     };
-    props.settings.mobilePhoneVerification = true;
+    props.settings.mobile_phone_verification = true;
 
     mountComponent(props);
 
@@ -503,8 +503,8 @@ describe("Change Phone Number: corner cases", () => {
     );
   });
 
-  it("should redirect if mobilePhoneVerification disabled", async () => {
-    props.settings.mobilePhoneVerification = false;
+  it("should redirect if mobile_phone_verification disabled", async () => {
+    props.settings.mobile_phone_verification = false;
 
     mountComponent(props);
 
@@ -517,10 +517,10 @@ describe("Change Phone Number: corner cases", () => {
     validateToken.mockReturnValue(true);
     props.userData = {
       ...userData,
-      isActive: true,
+      is_active: true,
       method: "saml",
     };
-    props.settings.mobilePhoneVerification = true;
+    props.settings.mobile_phone_verification = true;
 
     mountComponent(props);
 

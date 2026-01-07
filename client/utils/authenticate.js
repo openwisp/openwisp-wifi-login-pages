@@ -1,10 +1,10 @@
 import {sessionStorage} from "./storage";
 
 const authenticate = (cookies, orgSlug) => {
-  const token = cookies.get(`${orgSlug}_authToken`);
-  const sessionKey = sessionStorage.getItem(`${orgSlug}_authToken`);
+  const token = cookies.get(`${orgSlug}_auth_token`);
+  const sessionKey = sessionStorage.getItem(`${orgSlug}_auth_token`);
   if (sessionKey) {
-    cookies.remove(`${orgSlug}_authToken`, {path: "/"});
+    cookies.remove(`${orgSlug}_auth_token`, {path: "/"});
     cookies.remove(`${orgSlug}_username`, {path: "/"});
     return true;
   }

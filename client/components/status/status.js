@@ -173,23 +173,23 @@ export default class Status extends React.Component {
         radius_user_token: password,
         username,
         email,
-        phoneNumber,
-        isActive,
+        phone_number,
+        is_active,
         method,
-        isVerified,
+        is_verified: isVerified,
       } = userData;
       const userInfo = {};
       userInfo.status = "";
       userInfo.email = email;
-      if (username !== email && username !== phoneNumber) {
+      if (username !== email && username !== phone_number) {
         userInfo.username = username;
       }
-      if (settings.mobilePhoneVerification && phoneNumber) {
-        userInfo.phoneNumber = phoneNumber;
+      if (settings.mobile_phone_verification && phone_number) {
+        userInfo.phone_number = phone_number;
       }
 
       // stop here if user is banned
-      if (isActive === false) {
+      if (is_active === false) {
         if (this.componentIsMounted) {
           this.setState({username, password, userInfo}, () => {
             this.handleLogout(false);
@@ -286,7 +286,7 @@ export default class Status extends React.Component {
     // if the user is not verified, do not remove the
     // loading overlay unless verification is not needed
     if (
-      userData.isVerified ||
+      userData.is_verified ||
       !needsVerify("mobile_phone", userData, settings)
     ) {
       this.dismissCpLogin();
@@ -318,15 +318,15 @@ export default class Status extends React.Component {
   async getUserRadiusSessions(params) {
     const {cookies, orgSlug, logout, userData} = this.props;
     const url = getUserRadiusSessionsUrl(orgSlug);
-    const authToken = cookies.get(`${orgSlug}_authToken`);
-    handleSession(orgSlug, authToken, cookies);
+    const auth_token = cookies.get(`${orgSlug}_auth_token`);
+    handleSession(orgSlug, auth_token, cookies);
     const options = {};
     try {
       const response = await axios({
         method: "get",
         headers: {
           "content-type": "application/x-www-form-urlencoded",
-          Authorization: `Bearer ${userData.authToken}`,
+          Authorization: `Bearer ${userData.auth_token}`,
         },
         url,
         params,
@@ -374,8 +374,8 @@ export default class Status extends React.Component {
     } = this.props;
     const {warningMessage} = this.state;
     const url = getUserRadiusUsageUrl(orgSlug);
-    const authToken = cookies.get(`${orgSlug}_authToken`);
-    handleSession(orgSlug, authToken, cookies);
+    const auth_token = cookies.get(`${orgSlug}_auth_token`);
+    handleSession(orgSlug, auth_token, cookies);
     const options = {radiusUsageSpinner: false};
     let isPlanExhausted = false;
     try {
@@ -383,7 +383,7 @@ export default class Status extends React.Component {
         method: "get",
         headers: {
           "content-type": "application/x-www-form-urlencoded",
-          Authorization: `Bearer ${userData.authToken}`,
+          Authorization: `Bearer ${userData.auth_token}`,
         },
         url,
       });
@@ -463,19 +463,19 @@ export default class Status extends React.Component {
       captivePortalSyncAuth,
     } = this.props;
     const upgradePlanUrl = upgradePlanApiUrl.replace("{orgSlug}", orgSlug);
-    const authToken = cookies.get(`${orgSlug}_authToken`);
+    const auth_token = cookies.get(`${orgSlug}_auth_token`);
     const {upgradePlans} = this.state;
-    handleSession(orgSlug, authToken, cookies);
+    handleSession(orgSlug, auth_token, cookies);
     axios({
       method: "post",
       headers: {
         "content-type": "application/json",
         "accept-language": getLanguageHeaders(language),
-        Authorization: `Bearer ${userData.authToken}`,
+        Authorization: `Bearer ${userData.auth_token}`,
       },
       url: upgradePlanUrl,
       data: {
-        planPricing: upgradePlans[event.target.value].id,
+        plan_pricing: upgradePlans[event.target.value].id,
       },
     })
       .then((response) => {
@@ -656,8 +656,8 @@ export default class Status extends React.Component {
     }
   };
 
-  static handleSamlLogout = (samlLogoutUrl) => {
-    window.location.assign(samlLogoutUrl);
+  static handleSamlLogout = (saml_logout_url) => {
+    window.location.assign(saml_logout_url);
   };
 
   /*
@@ -678,11 +678,11 @@ export default class Status extends React.Component {
       captivePortalLogoutForm,
       captivePortalSyncAuth,
     } = this.props;
-    const {samlLogoutUrl} = statusPage;
+    const {saml_logout_url} = statusPage;
     const {loggedOut} = this.state;
     const {repeatLogin} = this;
     const {setLoading} = this.context;
-    const {waitAfter} = captivePortalLogoutForm;
+    const {wait_after} = captivePortalLogoutForm;
     const logoutMethodKey = `${orgSlug}_logout_method`;
     const logoutMethod = localStorage.getItem(logoutMethodKey);
     const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
@@ -698,12 +698,12 @@ export default class Status extends React.Component {
       logout(cookies, orgSlug, userAutoLogin);
       toast.success(t`LOGOUT_SUCCESS`);
 
-      if (samlLogoutUrl && logoutMethod === "saml") {
-        toast.info(t`PLEASE_WAIT`, {autoClose: waitAfter});
+      if (saml_logout_url && logoutMethod === "saml") {
+        toast.info(t`PLEASE_WAIT`, {autoClose: wait_after});
         setTimeout(async () => {
           localStorage.removeItem(logoutMethodKey);
-          Status.handleSamlLogout(samlLogoutUrl);
-        }, waitAfter);
+          Status.handleSamlLogout(saml_logout_url);
+        }, wait_after);
         return;
       }
       setUserData(initialState.userData);
@@ -714,13 +714,13 @@ export default class Status extends React.Component {
       this.repeatLogin = false;
       // wait to trigger login to avoid getting stuck
       // in captive portal firewall rule reloading
-      toast.info(t`PLEASE_WAIT`, {autoClose: waitAfter});
+      toast.info(t`PLEASE_WAIT`, {autoClose: wait_after});
       setTimeout(async () => {
         toast.info(t`PLEASE_LOGIN`, {autoClose: 10000});
         setUserData(initialState.userData);
         setLoading(false);
         logout(cookies, orgSlug, userAutoLogin);
-      }, waitAfter);
+      }, wait_after);
     }
   };
 
@@ -930,9 +930,9 @@ export default class Status extends React.Component {
     return hDisplay + mDisplay + sDisplay;
   };
 
-  static getDateTimeFormat = (language, timeOption, date) => {
+  static getDateTimeFormat = (language, time_option, date) => {
     if (typeof Intl !== "undefined") {
-      return new Intl.DateTimeFormat(language, timeOption).format(
+      return new Intl.DateTimeFormat(language, time_option).format(
         new Date(date),
       );
     }
@@ -941,15 +941,15 @@ export default class Status extends React.Component {
 
   getLargeTableRow = (session, sessionSettings, showLogoutButton = false) => {
     const {language, statusPage} = this.props;
-    const {accountingSwapOctets} = statusPage;
+    const {accounting_swap_octets} = statusPage;
     let downloadOctets = session.input_octets;
     let uploadOctets = session.output_octets;
 
-    if (accountingSwapOctets) {
+    if (accounting_swap_octets) {
       downloadOctets = session.output_octets;
       uploadOctets = session.input_octets;
     }
-    const timeOption = {
+    const time_option = {
       dateStyle: "medium",
       timeStyle: "short",
       hour12: false,
@@ -958,12 +958,16 @@ export default class Status extends React.Component {
     return (
       <>
         <td>
-          {Status.getDateTimeFormat(language, timeOption, session.start_time)}
+          {Status.getDateTimeFormat(language, time_option, session.start_time)}
         </td>
         <td>
           {session.stop_time === null
             ? activeSessionText
-            : Status.getDateTimeFormat(language, timeOption, session.stop_time)}
+            : Status.getDateTimeFormat(
+                language,
+                time_option,
+                session.stop_time,
+              )}
         </td>
         <td>{Status.getDuration(session.session_time)}</td>
         <td>
@@ -995,44 +999,48 @@ export default class Status extends React.Component {
     );
   };
 
-  getSmallTableRow = (session, sessionInfo) => {
+  getSmallTableRow = (session, session_info) => {
     const {captivePortalLogoutForm, language, statusPage} = this.props;
-    const {accountingSwapOctets} = statusPage;
+    const {accounting_swap_octets} = statusPage;
     let downloadOctets = session.input_octets;
     let uploadOctets = session.output_octets;
 
-    if (accountingSwapOctets) {
+    if (accounting_swap_octets) {
       downloadOctets = session.output_octets;
       uploadOctets = session.input_octets;
     }
-    const timeOption = {
+    const time_option = {
       dateStyle: "medium",
       timeStyle: "short",
       hour12: false,
     };
-    const activeSessionText = sessionInfo.settings.active_session;
+    const activeSessionText = session_info.settings.active_session;
     return (
       <tbody key={session.session_id}>
         <tr
           key={`${session.session_id}start_time`}
           className={session.stop_time === null ? "active-session" : ""}
         >
-          <th>{sessionInfo.header.start_time}:</th>
+          <th>{session_info.header.start_time}:</th>
           <td>
-            {Status.getDateTimeFormat(language, timeOption, session.start_time)}
+            {Status.getDateTimeFormat(
+              language,
+              time_option,
+              session.start_time,
+            )}
           </td>
         </tr>
         <tr
           key={`${session.session_id}stop_time`}
           className={session.stop_time === null ? "active-session" : ""}
         >
-          <th>{sessionInfo.header.stop_time}:</th>
+          <th>{session_info.header.stop_time}:</th>
           <td>
             {session.stop_time === null
               ? activeSessionText
               : Status.getDateTimeFormat(
                   language,
-                  timeOption,
+                  time_option,
                   session.stop_time,
                 )}
           </td>
@@ -1041,14 +1049,14 @@ export default class Status extends React.Component {
           key={`${session.session_id}duration`}
           className={session.stop_time === null ? "active-session" : ""}
         >
-          <th>{sessionInfo.header.duration}:</th>
+          <th>{session_info.header.duration}:</th>
           <td>{Status.getDuration(session.session_time)}</td>
         </tr>
         <tr
           key={`${session.session_id}download`}
           className={session.stop_time === null ? "active-session" : ""}
         >
-          <th>{sessionInfo.header.download}:</th>
+          <th>{session_info.header.download}:</th>
           <td>
             {prettyBytes(downloadOctets, {
               maximumFractionDigits: 0,
@@ -1060,7 +1068,7 @@ export default class Status extends React.Component {
           key={`${session.session_id}upload`}
           className={session.stop_time === null ? "active-session" : ""}
         >
-          <th>{sessionInfo.header.upload}:</th>
+          <th>{session_info.header.upload}:</th>
           <td>
             {prettyBytes(uploadOctets, {
               maximumFractionDigits: 0,
@@ -1072,7 +1080,7 @@ export default class Status extends React.Component {
           key={`${session.session_id}device_address`}
           className={session.stop_time === null ? "active-session" : ""}
         >
-          <th>{sessionInfo.header.device_address}:</th>
+          <th>{session_info.header.device_address}:</th>
           <td>{session.calling_station_id}</td>
         </tr>
         {session.stop_time == null &&
@@ -1095,7 +1103,7 @@ export default class Status extends React.Component {
     );
   };
 
-  getLargeTable = (sessionInfo) => {
+  getLargeTable = (session_info) => {
     const {activeSessions, pastSessions} = this.state;
     const {captivePortalLogoutForm} = this.props;
     const showLogoutButton =
@@ -1104,8 +1112,8 @@ export default class Status extends React.Component {
       <table className="large-table bg">
         <thead>
           <tr>
-            {Object.keys(sessionInfo.header).map((key) => (
-              <th key={key}>{sessionInfo.header[key]}</th>
+            {Object.keys(session_info.header).map((key) => (
+              <th key={key}>{session_info.header[key]}</th>
             ))}
           </tr>
         </thead>
@@ -1117,7 +1125,7 @@ export default class Status extends React.Component {
             >
               {this.getLargeTableRow(
                 session,
-                sessionInfo.settings,
+                session_info.settings,
                 showLogoutButton,
               )}
             </tr>
@@ -1127,7 +1135,7 @@ export default class Status extends React.Component {
               key={session.session_id}
               className={session.stop_time === null ? "active-session" : ""}
             >
-              {this.getLargeTableRow(session, sessionInfo.settings)}
+              {this.getLargeTableRow(session, session_info.settings)}
             </tr>
           ))}
         </tbody>
@@ -1135,26 +1143,26 @@ export default class Status extends React.Component {
     );
   };
 
-  getSmallTable = (sessionInfo) => {
+  getSmallTable = (session_info) => {
     const {activeSessions, pastSessions} = this.state;
     return (
       <table className="small-table bg">
         {activeSessions.map((session) =>
-          this.getSmallTableRow(session, sessionInfo),
+          this.getSmallTableRow(session, session_info),
         )}
         {pastSessions.map((session) =>
-          this.getSmallTableRow(session, sessionInfo),
+          this.getSmallTableRow(session, session_info),
         )}
       </table>
     );
   };
 
-  getTable = (sessionInfo) => {
+  getTable = (session_info) => {
     const {screenWidth} = this.state;
     if (screenWidth > 656) {
-      return this.getLargeTable(sessionInfo);
+      return this.getLargeTable(session_info);
     }
-    return this.getSmallTable(sessionInfo);
+    return this.getSmallTable(session_info);
   };
 
   static getSpinner = () => <Loader full={false} small />;
@@ -1184,8 +1192,8 @@ export default class Status extends React.Component {
     username: {
       text: t`USERNAME`,
     },
-    phoneNumber: {
-      text: t`phoneNumber`,
+    phone_number: {
+      text: t`PHONE_NUMBER`,
     },
   });
 
@@ -1239,12 +1247,12 @@ export default class Status extends React.Component {
       modalActive,
       rememberMe,
     } = this.state;
-    const userInfo2 = Status.getUserInfo();
+    const user_info = Status.getUserInfo();
     const contentArr = t`STATUS_CONTENT`.split("\n");
     if (planExhausted) {
-      userInfo2.status.value = t`TRAFFIC_EXHAUSTED`;
+      user_info.status.value = t`TRAFFIC_EXHAUSTED`;
     }
-    userInfo.status = userInfo2.status.value;
+    userInfo.status = user_info.status.value;
     return (
       <>
         <InfoModal
@@ -1349,7 +1357,7 @@ export default class Status extends React.Component {
                   })}
                 {Object.keys(userInfo).map((key) => (
                   <p key={key} className="status-content">
-                    <label>{userInfo2[key].text}:</label>
+                    <label>{user_info[key].text}:</label>
                     <span>{userInfo[key]}</span>
                   </p>
                 ))}
@@ -1500,7 +1508,7 @@ export default class Status extends React.Component {
 
   notifyCpLogin = (userData) => {
     // do not send notification if user is not verified yet
-    if (userData.isVerified === false) {
+    if (userData.is_verified === false) {
       return;
     }
     this.cpLoginToastId = toast.info(t`CP_LOGIN`, {autoClose: 10000});
@@ -1526,8 +1534,8 @@ Status.propTypes = {
       }),
     ),
     radius_usage_enabled: PropTypes.bool,
-    samlLogoutUrl: PropTypes.string,
-    accountingSwapOctets: PropTypes.bool,
+    saml_logout_url: PropTypes.string,
+    accounting_swap_octets: PropTypes.bool,
   }).isRequired,
   language: PropTypes.string.isRequired,
   defaultLanguage: PropTypes.string.isRequired,
@@ -1557,14 +1565,14 @@ Status.propTypes = {
     }),
     additional_fields: PropTypes.array,
     logout_by_session: PropTypes.bool.isRequired,
-    waitAfter: PropTypes.number.isRequired,
+    wait_after: PropTypes.number.isRequired,
   }).isRequired,
   location: PropTypes.shape({
     search: PropTypes.string,
   }).isRequired,
   isAuthenticated: PropTypes.bool,
   settings: PropTypes.shape({
-    mobilePhoneVerification: PropTypes.bool,
+    mobile_phone_verification: PropTypes.bool,
     subscriptions: PropTypes.bool,
     payment_requires_internet: PropTypes.bool,
   }).isRequired,

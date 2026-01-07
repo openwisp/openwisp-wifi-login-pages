@@ -129,10 +129,10 @@ export default class OrganizationWrapper extends React.Component {
     const {organization, cookies} = this.props;
     const {userData, settings, slug: orgSlug} = organization.configuration;
     const {isAuthenticated} = organization.configuration;
-    const {isActive} = userData;
+    const {is_active} = userData;
     const needsVerifyPhone = needsVerify("mobile_phone", userData, settings);
 
-    if (isAuthenticated && needsVerifyPhone === false && isActive) {
+    if (isAuthenticated && needsVerifyPhone === false && is_active) {
       return <Navigate to={`/${orgSlug}/status`} />;
     }
     if (!isAuthenticated) {
@@ -200,7 +200,7 @@ export default class OrganizationWrapper extends React.Component {
       css_path: cssPath,
       js,
     } = organization.configuration;
-    const {isActive} = userData;
+    const {is_active} = userData;
     let {css} = organization.configuration;
     if (!css) css = [];
     if (cssPath) css.push(cssPath);
@@ -272,7 +272,7 @@ export default class OrganizationWrapper extends React.Component {
                   <Route
                     path="login/*"
                     element={
-                      isAuthenticated && isActive ? (
+                      isAuthenticated && is_active ? (
                         <Navigate
                           to={`/${orgSlug}/status${location.search || ""}`}
                         />
@@ -414,7 +414,7 @@ OrganizationWrapper.propTypes = {
       needsVerifyPhone: PropTypes.bool,
       userData: PropTypes.object,
       settings: PropTypes.shape({
-        mobilePhoneVerification: PropTypes.bool,
+        mobile_phone_verification: PropTypes.bool,
       }),
       js: PropTypes.array,
     }),

@@ -1,6 +1,5 @@
-#######
- Setup
-#######
+Setup
+=====
 
 .. important::
 
@@ -12,9 +11,8 @@
     :depth: 2
     :local:
 
-********************************
- Add Organization configuration
-********************************
+Add Organization configuration
+------------------------------
 
 Before users can login and sign up, you need to create the configuration
 of the captive page for the related OpenWISP organization. You can get the
@@ -56,7 +54,7 @@ directory, e.g.:
 The ``client_assets`` directory shall contain static files like CSS,
 images, etc.. The ``server_assets`` directory is used for loading the
 content of :ref:`Terms of Service and Privacy Policy
-<wlp_tos_privacyPolicy>`. You can copy the desired files to these
+<wlp_tos_privacy_policy>`. You can copy the desired files to these
 directories.
 
 .. note::
@@ -81,7 +79,7 @@ edit the YAML file generated in the ``/organizations`` directory and
 rebuild the project.
 
 Removing Sections of Configuration
-==================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To remove a specific section of the configuration, the ``null`` keyword
 can be used, this way the specific section flagged as ``null`` will be
@@ -92,7 +90,7 @@ For example, to remove social login links:
 .. code-block:: yaml
 
     login_form:
-      socialLogin:
+      social_login:
         links: null
 
 .. note::
@@ -103,9 +101,8 @@ For example, to remove social login links:
 
 .. _wlp_org_variants:
 
-************************************
- Variants of the Same Configuration
-************************************
+Variants of the Same Configuration
+----------------------------------
 
 In some cases it may be needed to have different variants of the same
 design but with different logos, or slightly different colors, wording and
@@ -152,9 +149,8 @@ the example above has been kept short for brevity.
     the variant always overwrites fully what is defined in the parent
     configuration file.
 
-**********************************************************
- Variant with Different Organization Slug / UUID / Secret
-**********************************************************
+Variant with Different Organization Slug / UUID / Secret
+--------------------------------------------------------
 
 In some cases, different organizations may share an identical
 configuration, with very minor differences. Variants can be used also in
@@ -183,18 +179,16 @@ Example:
             url: "org-logo.svg"
             alternate_text: "..."
 
-**************************
- Support for Old Browsers
-**************************
+Support for Old Browsers
+------------------------
 
 Polyfills are used to support old browsers on different platforms. It is
 recommended to add **cdnjs.cloudflare.com** to the allowed hostnames
 (walled garden) of the captive portal, otherwise the application will not
 be able to load in old browsers.
 
-*************************************
- Configuring Sentry for Proxy Server
-*************************************
+Configuring Sentry for Proxy Server
+-----------------------------------
 
 You can enable sentry logging for the proxy server by adding
 ``sentry-env.json`` in the root folder. The ``sentry-env.json`` file
@@ -228,11 +222,10 @@ should contain configuration as following:
 You can take reference from `sentry-env.sample.json
 <https://github.com/openwisp/openwisp-wifi-login-pages/blob/master/sentry-env.sample.json>`__
 
-**********************************
- Supporting Realms (RADIUS Proxy)
-**********************************
+Supporting Realms (RADIUS Proxy)
+--------------------------------
 
-To enable support for realms, set ``radiusRealms`` to ``true`` as in the
+To enable support for realms, set ``radius_realms`` to ``true`` as in the
 example below:
 
 .. code-block:: yaml
@@ -242,11 +235,11 @@ example below:
     slug: "default"
 
     settings:
-      radiusRealms: true
+      radius_realms: true
 
-When support for ``radiusRealms`` is ``true`` and the username inserted in
-the username field by the user includes an ``@`` sign, the login page will
-submit the credentials directly to the URL specified in
+When support for ``radius_realms`` is ``true`` and the username inserted
+in the username field by the user includes an ``@`` sign, the login page
+will submit the credentials directly to the URL specified in
 ``captive_portal_login_form``, hence bypassing this app altogether.
 
 Keep in mind that in this use case, since users are basically

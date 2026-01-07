@@ -16,7 +16,7 @@ const obtainToken = (req, res) => {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
       const {host} = conf;
-      const obtainTokenUrl = reverse("user_authToken", getSlug(conf));
+      const obtainTokenUrl = reverse("user_auth_token", getSlug(conf));
       const timeout = conf.timeout * 1000;
       const {username, password} = req.body;
       const headers = {
@@ -38,7 +38,10 @@ const obtainToken = (req, res) => {
           logResponseError(error);
           try {
             // unverified user recognized
-            if (error.response.status === 401 && error.response.data.isActive) {
+            if (
+              error.response.status === 401 &&
+              error.response.data.is_active
+            ) {
               return sendCookies(error.response, conf, res);
             }
             // forward error

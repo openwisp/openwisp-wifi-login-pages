@@ -45,7 +45,7 @@ export default class PaymentStatus extends React.Component {
     }
 
     ({userData} = this.props);
-    const {method, isVerified} = userData;
+    const {method, is_verified: isVerified} = userData;
     // flag user to repeat login in order to restart session with new radius group
     if (status === "success" && method === "bank_card" && isVerified === true) {
       setUserData({
@@ -89,7 +89,7 @@ export default class PaymentStatus extends React.Component {
   render() {
     const {orgSlug, params, isAuthenticated, userData} = this.props;
     const {status} = params;
-    const {method, isVerified} = userData;
+    const {method, is_verified: isVerified} = userData;
     const redirectToStatus = () => <Navigate to={`/${orgSlug}/status`} />;
     const acceptedValues = ["success", "failed", "draft"];
     const {isTokenValid} = this.state;

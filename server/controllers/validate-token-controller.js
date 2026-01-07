@@ -16,7 +16,7 @@ const validateToken = (req, res) => {
       // merge default config and custom config
       const conf = merge(defaultConfig, org);
       const {host} = conf;
-      const validateTokenUrl = reverse("validate_authToken", getSlug(conf));
+      const validateTokenUrl = reverse("validate_auth_token", getSlug(conf));
       const timeout = conf.timeout * 1000;
       let {token} = req.body;
       // decrypt authToken in cookie unless:

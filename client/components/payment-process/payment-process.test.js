@@ -118,18 +118,18 @@ const mockMessageEvents = () => {
 };
 
 const responseData = {
-  response_code: "authToken_VALIDATION_SUCCESSFUL",
-  isActive: true,
-  isVerified: false,
+  response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+  is_active: true,
+  is_verified: false,
   method: "bank_card",
   email: "tester@test.com",
-  phoneNumber: null,
+  phone_number: null,
   username: "tester",
   key: "b72dad1cca4807dc21c00b0b2f171d29415ac541",
   radius_user_token: "jwyVSZYOze16ej6cc1AW5cxhRjahesLzh1Tm2y0d",
-  firstName: "",
-  lastName: "",
-  birthDate: null,
+  first_name: "",
+  last_name: "",
+  birth_date: null,
   location: "",
   payment_url: "https://account.openwisp.io/payment/123",
 };

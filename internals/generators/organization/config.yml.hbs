@@ -2,8 +2,8 @@
 name: "{{name}}"
 slug: "{{slug}}"
 settings:
-  radiusRealms: {{radiusRealms}}
-  mobilePhoneVerification: {{mobilePhoneVerification}}
+  radius_realms: {{radius_realms}}
+  mobile_phone_verification: {{mobile_phone_verification}}
   subscriptions: {{subscriptions}}
 
 # configuration variables for the server app
@@ -73,13 +73,13 @@ client:
             en: "Change password"
           url: "/{orgSlug}/change-password"
           authenticated: true
-          {{#if mobilePhoneVerification }}
+          {{#if mobile_phone_verification }}
           verified: true
           {{/if}}
           methods_excluded:
             - saml
-            - socialLogin
-      {{#if mobilePhoneVerification }}
+            - social_login
+      {{#if mobile_phone_verification }}
         - text:
             en: "Change phone number"
           url: "/{orgSlug}/change-phone-number"
@@ -108,8 +108,8 @@ client:
         en: "Copyright"
 
     registration_form:
-      inputFields:
-        phoneNumber: {}
+      input_fields:
+        phone_number: {}
           # default international prefix
           # country: "it"
           # restrict international prefixes shown
@@ -122,11 +122,11 @@ client:
           pattern: ".{6,}"
         password_confirm:
           pattern: ".{6,}"
-        firstName:
+        first_name:
           setting: "disabled"
-        lastName:
+        last_name:
           setting: "disabled"
-        birthDate:
+        birth_date:
           setting: "disabled"
         location:
           pattern: '[a-zA-Z@.+\-_\d]{1,150}'
@@ -136,21 +136,21 @@ client:
         zipcode: {}
         street: {}
         city: {}
-        taxNumber:
+        tax_number:
           pattern: '[a-zA-Z@.+\-_\d]{1,150}'
-      additionalInfoText: true
+      additional_info_text: true
       links:
         login: true
         forget_password: true
 
-    mobilePhoneVerification_form:
-      inputFields:
+    mobile_phone_verification_form:
+      input_fields:
         code:
           pattern: '[0-9]{6,}'
 
-    phoneNumberChange_form:
+    phone_number_change_form:
       buttons:
-        change_phoneNumber: true
+        change_phone_number: true
         cancel: true
 
     password_reset_form:
@@ -160,7 +160,7 @@ client:
 
     password_reset_confirm_form:
       additional_text: true
-      inputFields:
+      input_fields:
         password:
           pattern: ".{6,}"
         password_confirm:
@@ -172,7 +172,7 @@ client:
       email: "support@openwisp.co"
       helpdesk: "+789 948 564"
 {{#if assets_confirm}}
-      socialLinks:
+      social_links:
         - alt:
             en: "twitter"
           icon: "twitter.svg"
@@ -183,7 +183,7 @@ client:
           url: "https://facebook.com/openwisp"
 
 {{else}}
-      socialLinks: []
+      social_links: []
 {{/if}}
 
     status_page:
@@ -193,7 +193,7 @@ client:
           url: "/{orgSlug}/change-password/"
 
     login_form:
-      socialLogin:
+      social_login:
         links:
 {{#if assets_confirm}}
           - text:
@@ -222,22 +222,22 @@ client:
             icon: null
             url: "#twitter"
 {{/if}}
-      inputFields:
+      input_fields:
         username:
           type: "email"
           pattern: '.+@.+\..+'
         password:
           pattern: ".{6,}"
-        rememberMe:
-          value: {{rememberMe}}
-      additionalInfoText: true
+        remember_me:
+          value: {{remember_me}}
+      additional_info_text: true
       buttons:
         register: true
       links:
         forget_password: true
 
     password_change_form:
-      inputFields:
+      input_fields:
         password1:
           pattern: ".{6,}"
         password2:
@@ -271,16 +271,16 @@ client:
         id: logout_id
       additional_fields: []
       logout_by_session: {{logout_by_session_ID}}
-      waitAfter: 3000
+      wait_after: 3000
 
 {{#if assets_confirm}}
-  privacyPolicy:
+  privacy_policy:
     en: "privacy-en.md"
-  termsAndConditions:
+  terms_and_conditions:
     en: "terms-en.md"
 {{else}}
-  privacyPolicy:
+  privacy_policy:
     en: null
-  termsAndConditions:
+  terms_and_conditions:
     en: null
 {{/if}}

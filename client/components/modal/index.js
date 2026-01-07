@@ -5,8 +5,8 @@ import Component from "./modal";
 
 export const mapStateToProps = (state, ownProps) => ({
   orgSlug: state.organization.configuration.slug,
-  privacyPolicy: state.organization.configuration.privacyPolicy,
-  termsAndConditions: state.organization.configuration.termsAndConditions,
+  privacyPolicy: state.organization.configuration.privacy_policy,
+  termsAndConditions: state.organization.configuration.terms_and_conditions,
   language: state.language,
   prevPath: ownProps.prevPath,
 });

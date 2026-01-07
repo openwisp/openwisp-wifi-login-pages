@@ -126,7 +126,7 @@ msgid "USERNAME"
 msgstr "Uporabniško ime"
 
 #: client/components/status/status.js:1063
-msgid "phoneNumber"
+msgid "PHONE_NUMBER"
 msgstr "Telefonska številka"
 
 #: client/components/status/status.js:1370
@@ -214,7 +214,7 @@ msgstr "Samo črke, številke in posebni znaki @/./+/-/_"
 
 #: client/components/registration/registration.js:522
 #: client/components/registration/registration.js:523
-msgid "firstName_LBL"
+msgid "FIRST_NAME_LBL"
 msgstr "Ime"
 
 #: client/components/registration/registration.js:523
@@ -225,21 +225,21 @@ msgid "OPTIONAL"
 msgstr "neobvezno"
 
 #: client/components/registration/registration.js:540
-msgid "firstName_PHOLD"
+msgid "FIRST_NAME_PHOLD"
 msgstr "Ime"
 
 #: client/components/registration/registration.js:550
 #: client/components/registration/registration.js:551
-msgid "lastName_LBL"
+msgid "LAST_NAME_LBL"
 msgstr "Priimek"
 
 #: client/components/registration/registration.js:568
-msgid "lastName_PHOLD"
+msgid "LAST_NAME_PHOLD"
 msgstr "Priimek"
 
 #: client/components/registration/registration.js:577
 #: client/components/registration/registration.js:578
-msgid "birthDate_LBL"
+msgid "BIRTH_DATE_LBL"
 msgstr "Datum rojstva"
 
 #: client/components/registration/registration.js:602
@@ -313,22 +313,22 @@ msgid "ZIP_CODE_LBL"
 msgstr "Poštna številka"
 
 #: client/components/registration/registration.js:746
-msgid "taxNumber_LBL"
+msgid "TAX_NUMBER_LBL"
 msgstr "Davčna številka ali ID za DDV"
 
 #: client/components/registration/registration.js:758
-msgid "taxNumber_PHOLD"
+msgid "TAX_NUMBER_PHOLD"
 msgstr "Vpišite davčno številko ali ID za DDV"
 
 #: client/components/registration/registration.js:760
-msgid "taxNumber_PTRN_DESC"
+msgid "TAX_NUMBER_PTRN_DESC"
 msgstr "Samo črke in številke"
 
 #: client/components/registration/registration.js:775
 msgid "REGISTER_ADD_INFO_TXT"
 msgstr ""
 "S posredovanjem izpolnjenega obrazca za registracijo sprejmete "
-"{termsAndConditions} in {privacyPolicy} storitve WiFi."
+"{terms_and_conditions} in {privacy_policy} storitve WiFi."
 
 #: client/components/login/login.js:475
 #: client/components/registration/registration.js:788
@@ -556,9 +556,9 @@ msgstr "SMS sporočilo s potrditveno kodo je bilo uspešno poslano."
 
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:251
 #, javascript-format
-msgid "PHONE_VERIFY (${ phoneNumber })"
+msgid "PHONE_VERIFY (${ phone_number })"
 msgstr ""
-"Potrdite telefonsko številko (${ phoneNumber }) z vnosom kode, ki ste jo "
+"Potrdite telefonsko številko (${ phone_number }) z vnosom kode, ki ste jo "
 "prejeli s SMS sporočilom."
 
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:266
@@ -633,13 +633,13 @@ msgid "LOGIN_ERR"
 msgstr "Napaka med prijavo."
 
 #: client/components/login/login.js:446
-msgid "rememberMe"
+msgid "REMEMBER_ME"
 msgstr "Zapomni si me na tej napravi"
 
 #: client/components/login/login.js:453
 msgid "LOGIN_ADD_INFO_TXT"
 msgstr ""
-"S prijavo sprejmete {termsAndConditions} in {privacyPolicy} storitve WiFi."
+"S prijavo sprejmete {terms_and_conditions} in {privacy_policy} storitve WiFi."
 
 #: client/components/login/login.js:470
 msgid "REGISTER_BTN_LBL"

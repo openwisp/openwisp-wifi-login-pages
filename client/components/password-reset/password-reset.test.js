@@ -19,7 +19,7 @@ jest.mock("../../utils/get-config", () => ({
   default: jest.fn(() => ({
     components: {
       password_reset_form: {
-        inputFields: {
+        input_fields: {
           email: {},
         },
       },

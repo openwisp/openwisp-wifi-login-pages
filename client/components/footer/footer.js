@@ -11,7 +11,7 @@ import shouldLinkBeShown from "../../utils/should-link-be-shown";
 export default class Footer extends React.Component {
   render() {
     const {footer, language, isAuthenticated, userData, orgSlug} = this.props;
-    const {links, afterHtml} = footer;
+    const {links, after_html} = footer;
     return (
       <div data-testid="footer" className="footer-container">
         <div className="footer-row-1">
@@ -43,9 +43,9 @@ export default class Footer extends React.Component {
               })}
           </div>
         </div>
-        {afterHtml && (
+        {after_html && (
           <div className="footer-row-2">
-            {getHtml(afterHtml, language, "footer-row-2-inner")}
+            {getHtml(after_html, language, "footer-row-2-inner")}
           </div>
         )}
       </div>
@@ -61,7 +61,7 @@ Footer.propTypes = {
   orgSlug: PropTypes.string.isRequired,
   footer: PropTypes.shape({
     links: PropTypes.array,
-    afterHtml: PropTypes.object,
+    after_html: PropTypes.object,
   }).isRequired,
   isAuthenticated: PropTypes.bool,
   userData: PropTypes.object.isRequired,

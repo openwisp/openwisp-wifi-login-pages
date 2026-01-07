@@ -541,7 +541,7 @@ exports[`Registration and Mobile Phone Verification interactions should render m
                   autocomplete="tel"
                   class="form-control input "
                   id="phone-number"
-                  name="phoneNumber"
+                  name="phone_number"
                   placeholder="enter mobile phone number"
                   required=""
                   type="tel"

@@ -101,7 +101,7 @@ const createMockStore = (customConfig = {}) => {
           contact_page: {
             email: "support.org",
             helpdesk: "+1234567890",
-            socialLinks: [],
+            social_links: [],
           },
         },
         ...customConfig,
@@ -126,14 +126,14 @@ const renderWithProviders = (component, store = createMockStore()) =>
 
 // mocks response coming from validate token endpoint
 const responseData = {
-  response_code: "authToken_VALIDATION_SUCCESSFUL",
+  response_code: "Auth_TOKEN_VALIDATION_SUCCESSFUL",
   radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
-  authToken: "a5BDNY1cPjF3yuihJKNdwTn8krcQwuy2Av6MCsDC",
+  auth_token: "a5BDNY1cPjF3yuihJKNdwTn8krcQwuy2Av6MCsDC",
   username: "tester",
   email: "tester@tester.com",
-  isActive: true,
-  isVerified: true,
-  phoneNumber: "+237672279436",
+  is_active: true,
+  is_verified: true,
+  phone_number: "+237672279436",
   method: "mobile_phone",
 };
 
@@ -472,7 +472,7 @@ describe("<Status /> interactions", () => {
     props = createTestProps({
       userData: responseData,
     });
-    props.settings.mobilePhoneVerification = true;
+    props.settings.mobile_phone_verification = true;
 
     renderWithProviders(<Status {...props} />);
     await tick();
@@ -490,7 +490,7 @@ describe("<Status /> interactions", () => {
     props = createTestProps({
       userData: data,
     });
-    props.settings.mobilePhoneVerification = true;
+    props.settings.mobile_phone_verification = true;
 
     renderWithProviders(<Status {...props} />);
     await tick();
@@ -507,12 +507,11 @@ describe("<Status /> interactions", () => {
       userData: {
         ...responseData,
         mustLogin: false,
-        isVerified: true,
+        is_verified: true,
         method: "",
       },
     });
-    props.settings.mobilePhoneVerification = false;
-
+    props.settings.mobile_phone_verification = false;
     renderWithProviders(<Status {...props} />);
     await tick();
 
@@ -740,7 +739,7 @@ describe("<Status /> interactions", () => {
   });
 });
 
-describe("<Status /> accountingSwapOctets", () => {
+describe("<Status /> accounting_swap_octets", () => {
   let props;
   let originalTop;
   let originalLocalStorage;
@@ -782,7 +781,7 @@ describe("<Status /> accountingSwapOctets", () => {
     }
   });
 
-  it("should not swap download and upload when accountingSwapOctets is false", async () => {
+  it("should not swap download and upload when accounting_swap_octets is false", async () => {
     const sessions = [
       {
         session_id: 1,
@@ -821,7 +820,7 @@ describe("<Status /> accountingSwapOctets", () => {
     props = createTestProps({
       userData: {...responseData, mustLogin: false},
     });
-    props.statusPage.accountingSwapOctets = false;
+    props.statusPage.accounting_swap_octets = false;
     validateToken.mockReturnValue(true);
 
     renderWithProviders(<Status {...props} />);
@@ -833,7 +832,7 @@ describe("<Status /> accountingSwapOctets", () => {
     });
   });
 
-  it("should swap download and upload when accountingSwapOctets is true", async () => {
+  it("should swap download and upload when accounting_swap_octets is true", async () => {
     const sessions = [
       {
         session_id: 1,
@@ -872,7 +871,7 @@ describe("<Status /> accountingSwapOctets", () => {
     props = createTestProps({
       userData: {...responseData, mustLogin: false},
     });
-    props.statusPage.accountingSwapOctets = true;
+    props.statusPage.accounting_swap_octets = true;
     validateToken.mockReturnValue(true);
 
     renderWithProviders(<Status {...props} />);
@@ -1165,7 +1164,7 @@ describe("<Status /> additional tests", () => {
     );
 
     props = createTestProps({
-      userData: {...responseData, isActive: false},
+      userData: {...responseData, is_active: false},
     });
     validateToken.mockReturnValue(true);
 
@@ -1343,7 +1342,7 @@ describe("<Status /> additional tests", () => {
     props = createTestProps({
       userData: {
         ...responseData,
-        isVerified: false,
+        is_verified: false,
         method: "bank_card",
         mustLogin: false,
       },
@@ -1370,7 +1369,7 @@ describe("<Status /> additional tests", () => {
     props = createTestProps({
       userData: {
         ...responseData,
-        isVerified: false,
+        is_verified: false,
         method: "bank_card",
         mustLogin: true,
       },
@@ -1398,7 +1397,7 @@ describe("<Status /> additional tests", () => {
     props = createTestProps({
       userData: {
         ...responseData,
-        isVerified: false,
+        is_verified: false,
         method: "bank_card",
         mustLogin: true,
         proceedToPayment: true,
@@ -1675,12 +1674,12 @@ describe("<Status /> additional tests", () => {
     props = createTestProps({
       userData: {
         ...responseData,
-        isVerified: false,
+        is_verified: false,
         method: "mobile_phone",
         mustLogin: false,
       },
     });
-    props.settings.mobilePhoneVerification = true;
+    props.settings.mobile_phone_verification = true;
     validateToken.mockReturnValue(true);
 
     const {container} = renderWithProviders(<Status {...props} />);
@@ -1813,7 +1812,7 @@ describe("<Status /> additional tests", () => {
     expect(container).toBeInTheDocument();
   });
 
-  it("should perform call samlLogoutUrl if logged in via SAML", async () => {
+  it("should perform call saml_logout_url if logged in via SAML", async () => {
     axios.mockImplementation(() =>
       Promise.resolve({
         status: 200,
@@ -1840,7 +1839,7 @@ describe("<Status /> additional tests", () => {
     props = createTestProps({
       userData: {...responseData, mustLogin: false, mustLogout: true},
     });
-    props.statusPage.samlLogoutUrl = "https://example.com/saml/logout";
+    props.statusPage.saml_logout_url = "https://example.com/saml/logout";
     validateToken.mockReturnValue(true);
 
     renderWithProviders(<Status {...props} />);

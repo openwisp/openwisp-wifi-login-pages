@@ -18,12 +18,12 @@ const mockConfig = {
   slug: "default",
   default_language: "en",
   settings: {
-    mobilePhoneVerification: false,
+    mobile_phone_verification: false,
     subscriptions: true,
   },
   components: {
     registration_form: {
-      inputFields: {
+      input_fields: {
         username: {
           pattern: "^[a-zA-Z0-9@.+\\-_\\s]+$",
         },
@@ -36,23 +36,23 @@ const mockConfig = {
         password_confirm: {
           pattern: "^.{8,}$",
         },
-        firstName: {
+        first_name: {
           setting: "disabled",
         },
-        lastName: {
+        last_name: {
           setting: "disabled",
         },
-        birthDate: {
+        birth_date: {
           setting: "disabled",
         },
         location: {
           pattern: "[a-zA-Z@.+\\-_\\d]{1,150}",
           setting: "disabled",
         },
-        phoneNumber: {
+        phone_number: {
           country: "in",
         },
-        taxNumber: {
+        tax_number: {
           pattern: "[a-zA-Z@.+\\-_\\d]{1,150}",
         },
         country: {
@@ -62,7 +62,7 @@ const mockConfig = {
         street: {},
         city: {},
       },
-      socialLogin: {
+      social_login: {
         links: [],
       },
     },
@@ -78,11 +78,11 @@ const mockConfig = {
       links: [],
     },
   },
-  privacyPolicy: {
+  privacy_policy: {
     title: {en: "Privacy Policy"},
     content: {en: "Privacy content"},
   },
-  termsAndConditions: {
+  terms_and_conditions: {
     title: {en: "Terms and Conditions"},
     content: {en: "Terms content"},
   },
@@ -110,8 +110,8 @@ const createTestProps = (props, configName = "default") => {
     orgName: "test",
     settings: config.settings,
     registration: config.components.registration_form,
-    privacyPolicy: config.privacyPolicy,
-    termsAndConditions: config.termsAndConditions,
+    privacyPolicy: config.privacy_policy,
+    termsAndConditions: config.terms_and_conditions,
     authenticate: jest.fn(),
     verifyMobileNumber: jest.fn(),
     setTitle: jest.fn(),
@@ -139,7 +139,7 @@ const createMockStore = () => {
           contact_page: {
             email: "support.org",
             helpdesk: "+1234567890",
-            socialLinks: [],
+            social_links: [],
           },
         },
       },
@@ -263,7 +263,7 @@ describe("test subscriptions", () => {
     expect(screen.queryAllByTestId(/plan-radio-/)).toHaveLength(0);
   });
 
-  it("should auto select first plan when autoSelectFirstPlan is true", async () => {
+  it("should auto select first plan when auto_select_first_plan is true", async () => {
     axios.mockImplementationOnce(() =>
       Promise.resolve({
         status: 201,
@@ -273,8 +273,8 @@ describe("test subscriptions", () => {
     );
 
     const customProps = cloneDeep(createTestProps());
-    customProps.settings.mobilePhoneVerification = true;
-    customProps.registration.autoSelectFirstPlan = true;
+    customProps.settings.mobile_phone_verification = true;
+    customProps.registration.auto_select_first_plan = true;
 
     renderWithProviders(<Registration {...customProps} />);
 
@@ -345,7 +345,7 @@ describe("test subscriptions", () => {
       }),
     );
 
-    props.settings.mobilePhoneVerification = true;
+    props.settings.mobile_phone_verification = true;
     mountComponent(props);
 
     await tick();
@@ -480,7 +480,7 @@ describe("test subscriptions", () => {
       target: {name: "password2", value: "tester123"},
     });
     fireEvent.change(taxNumberInput, {
-      target: {name: "taxNumber", value: "123456"},
+      target: {name: "tax_number", value: "123456"},
     });
     fireEvent.change(cityInput, {
       target: {name: "city", value: "Rome"},
@@ -536,7 +536,7 @@ describe("test subscriptions", () => {
         }),
       );
 
-    props.settings.mobilePhoneVerification = true;
+    props.settings.mobile_phone_verification = true;
     renderWithProviders(<Registration {...props} />);
 
     await tick();
@@ -563,7 +563,7 @@ describe("test subscriptions", () => {
 
     // Fill required fields
     fireEvent.change(phoneInput, {
-      target: {name: "phoneNumber", value: "+393661223345"},
+      target: {name: "phone_number", value: "+393661223345"},
     });
     fireEvent.change(emailInput, {
       target: {name: "email", value: "tester@tester.com"},
@@ -582,7 +582,7 @@ describe("test subscriptions", () => {
 
     await waitFor(() => {
       expect(axios).toHaveBeenCalledTimes(2);
-      // Verify the second call (registration request) has phoneNumber as username
+      // Verify the second call (registration request) has phone_number as username
       const registrationCall = axios.mock.calls[1];
       const requestConfig = registrationCall[0];
       // The data is already an object in the mock, not a JSON string
@@ -611,7 +611,7 @@ describe("test subscriptions", () => {
         }),
       );
 
-    props.settings.mobilePhoneVerification = true;
+    props.settings.mobile_phone_verification = true;
     renderWithProviders(<Registration {...props} />);
 
     await tick();

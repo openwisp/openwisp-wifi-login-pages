@@ -13,11 +13,11 @@ export default class Contact extends React.Component {
   render() {
     const {contactPage, language, orgSlug, isAuthenticated, userData} =
       this.props;
-    const {email, helpdesk, socialLinks, preHtml, afterHtml} = contactPage;
+    const {email, helpdesk, social_links, pre_html, after_html} = contactPage;
     return (
       <div className="side-column contact">
         <div className="inner">
-          {getHtml(preHtml, language)}
+          {getHtml(pre_html, language)}
 
           {email && (
             <div className="row">
@@ -37,9 +37,9 @@ export default class Contact extends React.Component {
             </div>
           )}
 
-          {socialLinks && (
+          {social_links && (
             <div className="contact-links">
-              {socialLinks.map((link) => {
+              {social_links.map((link) => {
                 if (shouldLinkBeShown(link, isAuthenticated, userData)) {
                   const css = link.css || "";
                   return (
@@ -66,7 +66,7 @@ export default class Contact extends React.Component {
             </div>
           )}
 
-          {getHtml(afterHtml, language)}
+          {getHtml(after_html, language)}
         </div>
       </div>
     );
@@ -81,11 +81,11 @@ Contact.propTypes = {
   language: PropTypes.string.isRequired,
   orgSlug: PropTypes.string.isRequired,
   contactPage: PropTypes.shape({
-    socialLinks: PropTypes.array,
+    social_links: PropTypes.array,
     email: PropTypes.string,
     helpdesk: PropTypes.string,
-    preHtml: PropTypes.object,
-    afterHtml: PropTypes.object,
+    pre_html: PropTypes.object,
+    after_html: PropTypes.object,
   }).isRequired,
   isAuthenticated: PropTypes.bool,
   userData: PropTypes.object,

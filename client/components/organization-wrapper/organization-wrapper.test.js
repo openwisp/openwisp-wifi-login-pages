@@ -44,17 +44,17 @@ jest.mock("../../utils/needs-verify");
 /* eslint-enable import/first */
 
 const userData = {
-  isActive: true,
-  isVerified: true,
+  is_active: true,
+  is_verified: true,
   method: "mobile_phone",
   email: "tester@test.com",
-  phoneNumber: "+393664050800",
+  phone_number: "+393664050800",
   username: "+393664050800",
   key: "b72dad1cca4807dc21c00b0b2f171d29415ac541",
   radius_user_token: "jwyVSZYOze16ej6cc1AW5cxhRjahesLzh1Tm2y0d",
-  firstName: "",
-  lastName: "",
-  birthDate: null,
+  first_name: "",
+  last_name: "",
+  birth_date: null,
   location: "",
 };
 
@@ -71,9 +71,9 @@ const createTestProps = (props) => ({
       favicon: null,
       isAuthenticated: true,
       settings: {
-        mobilePhoneVerification: true,
+        mobile_phone_verification: true,
         subscriptions: true,
-        passwordless_authToken_name: "sesame",
+        passwordless_auth_token_name: "sesame",
       },
       default_language: "en",
       userData,
@@ -269,7 +269,7 @@ describe("<OrganizationWrapper /> interactions", () => {
           slug: "default",
           favicon: "favicon.png",
           default_language: "en",
-          userData: {isActive: true, isVerified: true},
+          userData: {is_active: true, is_verified: true},
           components: {
             ...defaultConfig.components,
             contact_page: {},
@@ -539,7 +539,7 @@ describe("Test Organization Wrapper for authenticated and unverified users", () 
 
 describe("Test <OrganizationWrapper /> routes", () => {
   let props;
-  const {components, languages, privacyPolicy, termsAndConditions} =
+  const {components, languages, privacy_policy, terms_and_conditions} =
     defaultConfig;
 
   const mountComponent = (passedProps, initialEntries) => {
@@ -589,8 +589,8 @@ describe("Test <OrganizationWrapper /> routes", () => {
       ...props.organization.configuration,
       components,
       languages,
-      privacyPolicy,
-      termsAndConditions,
+      privacy_policy,
+      terms_and_conditions,
     };
     jest.spyOn(global.console, "error").mockImplementation(() => {});
   });

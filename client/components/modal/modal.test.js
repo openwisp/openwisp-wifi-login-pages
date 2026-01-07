@@ -18,8 +18,8 @@ const defaultConfig = getConfig("default", true);
 const createTestProps = (props) => ({
   orgSlug: "default",
   language: "en",
-  privacyPolicy: defaultConfig.privacyPolicy,
-  termsAndConditions: defaultConfig.termsAndConditions,
+  privacyPolicy: defaultConfig.privacy_policy,
+  termsAndConditions: defaultConfig.terms_and_conditions,
   params: {
     name: "terms-and-conditions",
   },
@@ -226,8 +226,8 @@ describe("<Modal /> interactions", () => {
       {
         organization: {
           configuration: {
-            privacyPolicy: "# Privacy Policy",
-            termsAndConditions: "# Terms and Conditions",
+            privacy_policy: "# Privacy Policy",
+            terms_and_conditions: "# Terms and Conditions",
           },
         },
         language: "en",

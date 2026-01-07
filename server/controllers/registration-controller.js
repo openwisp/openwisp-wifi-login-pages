@@ -20,11 +20,11 @@ const registration = (req, res) => {
       const postData = req.body;
       const {username} = postData;
 
-      if (settings && settings.mobilePhoneVerification) {
-        postData.phoneNumber = req.body.phoneNumber;
+      if (settings && settings.mobile_phone_verification) {
+        postData.phone_number = req.body.phone_number;
         postData.method = "mobile_phone";
       } else {
-        delete postData.phoneNumber;
+        delete postData.phone_number;
         postData.method = "";
       }
       if (settings && settings.subscriptions && postData.requires_payment) {
@@ -33,10 +33,10 @@ const registration = (req, res) => {
       }
 
       const optionalFields = [
-        "firstName",
-        "lastName",
+        "first_name",
+        "last_name",
         "location",
-        "birthDate",
+        "birth_date",
         "method",
       ];
       optionalFields.forEach((value) => {

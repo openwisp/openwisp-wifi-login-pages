@@ -22,8 +22,8 @@ jest.mock("../../utils/get-config", () => ({
     slug: "default",
     name: "default name",
     components: {
-      mobilePhoneVerification_form: {
-        inputFields: {
+      mobile_phone_verification_form: {
+        input_fields: {
           code: {
             type: "text",
             pattern: "^[0-9]{6}$",
@@ -32,7 +32,7 @@ jest.mock("../../utils/get-config", () => ({
       },
     },
     settings: {
-      mobilePhoneVerification: true,
+      mobile_phone_verification: true,
     },
   })),
 }));
@@ -45,7 +45,7 @@ jest.mock("axios");
 const createTestProps = (props, configName = "test-org-2") => {
   const config = getConfig(configName);
   return {
-    mobilePhoneVerification: config.components.mobilePhoneVerification_form,
+    mobile_phone_verification: config.components.mobile_phone_verification_form,
     settings: config.settings,
     language: "en",
     orgSlug: config.slug,
@@ -95,12 +95,12 @@ const renderWithProviders = (component) =>
   );
 
 const userData = {
-  response_code: "authToken_VALIDATION_SUCCESSFUL",
+  response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
   radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
   username: "tester@tester.com",
-  isActive: false,
-  isVerified: false,
-  phoneNumber: "+393660011222",
+  is_active: false,
+  is_verified: false,
+  phone_number: "+393660011222",
 };
 
 describe("<MobilePhoneVerification /> rendering with placeholder translation tags", () => {
@@ -467,10 +467,10 @@ describe("Mobile Phone Token verification: standard flow", () => {
 
     expect(props.setUserData).toHaveBeenCalledWith({
       ...userData,
-      isActive: true,
-      isVerified: true,
+      is_active: true,
+      is_verified: true,
       mustLogin: true,
-      username: userData.phoneNumber,
+      username: userData.phone_number,
     });
   });
 
@@ -664,7 +664,7 @@ describe("Mobile Phone Token verification: corner cases", () => {
   it("should not proceed if user is already verified", async () => {
     axios.mockClear();
     validateToken.mockReturnValue(true);
-    props.userData = {...userData, isActive: true, isVerified: true};
+    props.userData = {...userData, is_active: true, is_verified: true};
 
     renderWithProviders(<MobilePhoneVerification {...props} />);
 
@@ -677,7 +677,7 @@ describe("Mobile Phone Token verification: corner cases", () => {
   it("should not proceed if mobile verification is not enabled", async () => {
     axios.mockClear();
     validateToken.mockReturnValue(true);
-    props.settings.mobilePhoneVerification = false;
+    props.settings.mobile_phone_verification = false;
 
     renderWithProviders(<MobilePhoneVerification {...props} />);
 

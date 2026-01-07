@@ -134,9 +134,6 @@ exports[`<MobilePhoneVerification /> rendering with placeholder translation tags
               +1234567890
             </a>
           </div>
-          <div
-            class="contact-links"
-          />
         </div>
       </div>
     </div>

@@ -5,7 +5,7 @@
     "default_language": "en",
     "auto_login": true,
     "settings": {
-      "mobilePhoneVerification": false
+      "mobile_phone_verification": false
     },
     "components": {
       "status_page": {
@@ -49,10 +49,10 @@
         },
         "additional_fields": [],
         "logout_by_session": true,
-        "waitAfter": 3000
+        "wait_after": 3000
       },
       "registration_form": {
-        "inputFields": {
+        "input_fields": {
           "username": {
             "type": "text",
             "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}"
@@ -68,15 +68,15 @@
           "password_confirm": {
             "type": "password"
           },
-          "phoneNumber": {
+          "phone_number": {
             "type": "tel"
           },
-          "firstName": {
+          "first_name": {
             "type": "text",
             "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}",
             "setting": "disabled"
           },
-          "lastName": {
+          "last_name": {
             "type": "text",
             "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}",
             "setting": "disabled"
@@ -86,7 +86,7 @@
             "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}",
             "setting": "disabled"
           },
-          "birthDate": {
+          "birth_date": {
             "type": "date",
             "setting": "disabled"
           },
@@ -96,7 +96,7 @@
           "street": {
             "type": "text"
           },
-          "taxNumber": {
+          "tax_number": {
             "type": "text",
             "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}"
           },
@@ -107,7 +107,7 @@
             "type": "number"
           }
         },
-        "additionalInfoText": true,
+        "additional_info_text": true,
         "links": {
           "login": true
         }
@@ -129,10 +129,10 @@
         "homepage_link": true
       }
     },
-    "privacyPolicy": {
+    "privacy_policy": {
       "en": "<h1 id=\"openwisp-wifi-login-pages-privacy-policy\">openwisp-wifi-login-pages Privacy Policy</h1>\n<ul>\n<li><p>Your privacy is important to us. It is Openwisp's policy to respect your privacy regarding any information we may collect from you across openwisp-wifi-login-pages.</p>\n</li>\n<li><p>We only ask for personal information when we truly need it to provide a service to you. We collect it by fair and lawful means, with your knowledge and consent. We also let you know why we’re collecting it and how it will be used.</p>\n</li>\n<li><p>We only retain collected information for as long as necessary to provide you with your requested service. What data we store, we’ll protect within commercially acceptable means to prevent loss and theft, as well as unauthorised access, disclosure, copying, use or modification.</p>\n</li>\n<li><p>We don’t share any personally identifying information publicly or with third-parties, except when required to by law.</p>\n</li>\n<li><p>Our website may link to external sites that are not operated by us. Please be aware that we have no control over the content and practices of these sites, and cannot accept responsibility or liability for their respective privacy policies.</p>\n</li>\n<li><p>You are free to refuse our request for your personal information, with the understanding that we may be unable to provide you with some of your desired services.</p>\n</li>\n<li><p>Your continued use of our website will be regarded as acceptance of our practices around privacy and personal information. If you have any questions about how we handle user data and personal information, feel free to contact us.</p>\n</li>\n</ul>\n"
     },
-    "termsAndConditions": {
+    "terms_and_conditions": {
       "en": "<h1 id=\"openwisp-wifi-login-pages-terms-and-conditions\">Openwisp-wifi-login-pages Terms and Conditions</h1>\n<ul>\n<li><p>By using or visiting the Openwisp-wifi-login-pages, you signify your agreement\nto these terms and conditions (the \"Terms of Service\") and the Privacy policy.</p>\n</li>\n<li><p>In order to access the wifi service, you need to be a registered user of the\ndefault organization.</p>\n</li>\n<li><p>Openwisp-wifi-login-pages is not liable for any unauthorized use of your account,\nyou may be liable for the losses of the services or others due to such unauthorized use.</p>\n</li>\n<li><p>Openwisp reserves the right to discontinue or disallow any user, group or any\nspecific IP (internal or external) from using its services without any prior notice.</p>\n</li>\n<li><p>Violating the above mentioned Terms and Conditions may result in the termination\nof the particular user account or the particular IP address from accessing\nOpenwisp-wifi-login-pages and using its services in the future.</p>\n</li>\n</ul>\n"
     }
   },
@@ -142,7 +142,7 @@
     "default_language": "it",
     "auto_login": false,
     "settings": {
-      "mobilePhoneVerification": false
+      "mobile_phone_verification": false
     }
   },
   {
@@ -151,27 +151,27 @@
     "default_language": "en",
     "auto_login": true,
     "settings": {
-      "mobilePhoneVerification": true
+      "mobile_phone_verification": true
     },
     "components": {
-      "mobilePhoneVerification_form": {
-        "inputFields": {
+      "mobile_phone_verification_form": {
+        "input_fields": {
           "code": {
             "type": "text",
             "pattern": "[0-9]{6,}"
           }
         }
       },
-      "phoneNumberChange_form": {
+      "phone_number_change_form": {
         "buttons": {
-          "change_phoneNumber": true,
+          "change_phone_number": true,
           "cancel": true
         }
       },
       "contact_page": {
         "email": "support@openwisp.co",
         "helpdesk": "+789 948 564",
-        "socialLinks": [
+        "social_links": [
           {
             "alt": "twitter",
             "icon": "twitter.svg",
@@ -185,8 +185,8 @@
         ]
       },
       "registration_form": {
-        "inputFields": {
-          "phoneNumber": {
+        "input_fields": {
+          "phone_number": {
             "type": "tel",
             "country": "it"
           },
@@ -206,12 +206,12 @@
             "type": "password",
             "pattern": null
           },
-          "firstName": {
+          "first_name": {
             "type": "text",
             "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}",
             "setting": "disabled"
           },
-          "lastName": {
+          "last_name": {
             "type": "text",
             "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}",
             "setting": "disabled"
@@ -221,7 +221,7 @@
             "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}",
             "setting": "disabled"
           },
-          "birthDate": {
+          "birth_date": {
             "type": "date",
             "setting": "disabled"
           },
@@ -231,7 +231,7 @@
           "street": {
             "type": "text"
           },
-          "taxNumber": {
+          "tax_number": {
             "type": "text",
             "pattern": "[a-zA-Z@.+\\-_\\d]{1,150}"
           },
@@ -242,16 +242,16 @@
             "type": "number"
           }
         },
-        "additionalInfoText": true,
+        "additional_info_text": true,
         "links": {
           "login": true
         }
       }
     },
-    "privacyPolicy": {
+    "privacy_policy": {
       "en": "<h1 id=\"openwisp-wifi-login-pages-privacy-policy\">openwisp-wifi-login-pages Privacy Policy</h1>\n<ul>\n<li><p>Your privacy is important to us. It is Openwisp's policy to respect your privacy regarding any information we may collect from you across openwisp-wifi-login-pages.</p>\n</li>\n<li><p>We only ask for personal information when we truly need it to provide a service to you. We collect it by fair and lawful means, with your knowledge and consent. We also let you know why we’re collecting it and how it will be used.</p>\n</li>\n<li><p>We only retain collected information for as long as necessary to provide you with your requested service. What data we store, we’ll protect within commercially acceptable means to prevent loss and theft, as well as unauthorised access, disclosure, copying, use or modification.</p>\n</li>\n<li><p>We don’t share any personally identifying information publicly or with third-parties, except when required to by law.</p>\n</li>\n<li><p>Our website may link to external sites that are not operated by us. Please be aware that we have no control over the content and practices of these sites, and cannot accept responsibility or liability for their respective privacy policies.</p>\n</li>\n<li><p>You are free to refuse our request for your personal information, with the understanding that we may be unable to provide you with some of your desired services.</p>\n</li>\n<li><p>Your continued use of our website will be regarded as acceptance of our practices around privacy and personal information. If you have any questions about how we handle user data and personal information, feel free to contact us.</p>\n</li>\n</ul>\n"
     },
-    "termsAndConditions": {
+    "terms_and_conditions": {
       "en": "<h1 id=\"openwisp-wifi-login-pages-terms-and-conditions\">Openwisp-wifi-login-pages Terms and Conditions</h1>\n<ul>\n<li><p>By using or visiting the Openwisp-wifi-login-pages, you signify your agreement\nto these terms and conditions (the \"Terms of Service\") and the Privacy policy.</p>\n</li>\n<li><p>In order to access the wifi service, you need to be a registered user of the\ndefault organization.</p>\n</li>\n<li><p>Openwisp-wifi-login-pages is not liable for any unauthorized use of your account,\nyou may be liable for the losses of the services or others due to such unauthorized use.</p>\n</li>\n<li><p>Openwisp reserves the right to discontinue or disallow any user, group or any\nspecific IP (internal or external) from using its services without any prior notice.</p>\n</li>\n<li><p>Violating the above mentioned Terms and Conditions may result in the termination\nof the particular user account or the particular IP address from accessing\nOpenwisp-wifi-login-pages and using its services in the future.</p>\n</li>\n</ul>\n"
     }
   }

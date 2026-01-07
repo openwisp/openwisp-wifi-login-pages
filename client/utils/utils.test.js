@@ -48,22 +48,22 @@ describe("renderAdditionalInfo tests", () => {
     let result;
     result = renderAdditionalInfo(text, orgSlug, component);
     expect(result[0]).toEqual("sample test");
-    text = "sample {termsAndConditions} test";
+    text = "sample {terms_and_conditions} test";
     result = renderAdditionalInfo(text, orgSlug, component);
     expect(result[1]).toHaveProperty("props");
     expect(result[1].props).toHaveProperty("children", "terms and conditions");
-    text = "sample {privacyPolicy} test";
+    text = "sample {privacy_policy} test";
     result = renderAdditionalInfo(text, orgSlug, component);
     expect(result[1]).toHaveProperty("props");
     expect(result[1].props).toHaveProperty("children", "privacy policy");
-    text = "sample {privacyPolicy} test {termsAndConditions}";
+    text = "sample {privacy_policy} test {terms_and_conditions}";
     result = renderAdditionalInfo(text, orgSlug, component);
     expect(result[1]).toHaveProperty("props");
     expect(result[1].props).toHaveProperty("children", "privacy policy");
     expect(result[3]).toHaveProperty("props");
     expect(result[3].props).toHaveProperty("children", "terms and conditions");
 
-    text = "{termsAndConditions} sample {privacyPolicy} test";
+    text = "{terms_and_conditions} sample {privacy_policy} test";
     result = renderAdditionalInfo(text, orgSlug, component);
     expect(result[1]).toHaveProperty("props");
     expect(result[1].props).toHaveProperty("children", "terms and conditions");
@@ -98,15 +98,15 @@ describe("authenticate tests", () => {
       get: jest.fn(),
     };
     const sessionKey = "sessionKey";
-    sessionStorage.setItem(`${orgSlug}_authToken`, sessionKey);
+    sessionStorage.setItem(`${orgSlug}_auth_token`, sessionKey);
     expect(authenticate(cookies, orgSlug)).toBe(true);
-    expect(cookies.remove).toHaveBeenCalledWith(`${orgSlug}_authToken`, {
+    expect(cookies.remove).toHaveBeenCalledWith(`${orgSlug}_auth_token`, {
       path: "/",
     });
     expect(cookies.remove).toHaveBeenCalledWith(`${orgSlug}_username`, {
       path: "/",
     });
-    expect(cookies.get).toHaveBeenCalledWith(`${orgSlug}_authToken`);
+    expect(cookies.get).toHaveBeenCalledWith(`${orgSlug}_auth_token`);
   });
 });
 
@@ -157,7 +157,7 @@ describe("shouldLinkBeShown tests", () => {
     const {link, isAuthenticated, userData} = createArgs(
       {authenticated: true, verified: true},
       true,
-      {isVerified: false},
+      {is_verified: false},
     );
     expect(shouldLinkBeShown(link, isAuthenticated, userData)).toBe(false);
   });
@@ -206,7 +206,7 @@ describe("Validate Token tests", () => {
     orgSlug: "default",
     cookies: new Cookies(),
     setUserData: jest.fn(),
-    userData: {isActive: true, isVerified: null, mustLogin: true},
+    userData: {is_active: true, is_verified: null, mustLogin: true},
     logout: jest.fn(),
     language: "en",
   });
@@ -232,18 +232,18 @@ describe("Validate Token tests", () => {
         status: 200,
         statusText: "OK",
         data: {
-          response_code: "authToken_VALIDATION_SUCCESSFUL",
+          response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
           radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
           username: "tester@tester.com",
-          isActive: true,
-          isVerified: true,
-          phoneNumber: "+393660011222",
+          is_active: true,
+          is_verified: true,
+          phone_number: "+393660011222",
         },
       }),
     );
     const {orgSlug, cookies, setUserData, userData, logout, language} =
       getArgs();
-    cookies.set(`${orgSlug}_authToken`, "token");
+    cookies.set(`${orgSlug}_auth_token`, "token");
     const result = await validateToken(
       cookies,
       orgSlug,
@@ -280,18 +280,18 @@ describe("Validate Token tests", () => {
         status: 200,
         statusText: "OK",
         data: {
-          response_code: "authToken_VALIDATION_SUCCESSFUL",
+          response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
           radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
           username: "tester@tester.com",
-          isActive: true,
-          isVerified: true,
-          phoneNumber: "+393660011222",
+          is_active: true,
+          is_verified: true,
+          phone_number: "+393660011222",
         },
       }),
     );
     const {orgSlug, cookies, setUserData, userData, logout, language} =
       getArgs();
-    cookies.set(`${orgSlug}_authToken`, "token");
+    cookies.set(`${orgSlug}_auth_token`, "token");
     userData.password_expired = true;
     userData.radius_user_token = "token";
     const result = await validateToken(
@@ -334,7 +334,7 @@ describe("Validate Token tests", () => {
     expect(errorMethod).toHaveBeenCalledWith("Error occurred!");
     expect(logout).toHaveBeenCalledWith(expect.any(Cookies), "default");
     const cookiesArg = logout.mock.calls[0][0];
-    expect(cookiesArg.cookies).toEqual({default_authToken: "token"});
+    expect(cookiesArg.cookies).toEqual({default_auth_token: "token"});
     expect(console.log).toHaveBeenCalledWith(response);
   });
   it("should show error toast on invalid token", async () => {
@@ -362,7 +362,7 @@ describe("Validate Token tests", () => {
     expect(errorMethod).toHaveBeenCalledWith("Error occurred!");
     expect(logout).toHaveBeenCalledWith(expect.any(Cookies), "default");
     const cookiesArg = logout.mock.calls[0][0];
-    expect(cookiesArg.cookies).toEqual({default_authToken: "token"});
+    expect(cookiesArg.cookies).toEqual({default_auth_token: "token"});
     expect(setUserData.mock.calls.length).toBe(1);
     expect(console.log).toHaveBeenCalledWith(response);
     expect(setUserData.mock.calls.pop()).toEqual([initialState.userData]);
@@ -379,7 +379,7 @@ describe("Validate Token tests", () => {
     axios.mockImplementationOnce(() => Promise.reject(responseError));
     const errorMethod = jest.spyOn(dependency.toast, "error");
     const {orgSlug, cookies, setUserData, userData, logout} = getArgs();
-    cookies.set(`${orgSlug}_authToken`, "token");
+    cookies.set(`${orgSlug}_auth_token`, "token");
     const result = await validateToken(
       cookies,
       orgSlug,
@@ -396,7 +396,7 @@ describe("Validate Token tests", () => {
     );
     expect(logout).toHaveBeenCalledWith(expect.any(Cookies), "default");
     const cookiesArg = logout.mock.calls[0][0];
-    expect(cookiesArg.cookies).toEqual({default_authToken: "token"});
+    expect(cookiesArg.cookies).toEqual({default_auth_token: "token"});
     expect(setUserData.mock.calls.length).toBe(1);
     expect(setUserData.mock.calls.pop()).toEqual([initialState.userData]);
   });
@@ -551,14 +551,14 @@ describe("submit-on-enter tests", () => {
 describe("handleSession tests", () => {
   const orgSlug = "default";
   const token = "token";
-  it("should clear authToken cookie if sessionKey is present", () => {
+  it("should clear auth_token cookie if sessionKey is present", () => {
     const spyFn = jest.fn();
     const cookies = {
       remove: spyFn,
     };
-    sessionStorage.setItem(`${orgSlug}_authToken`, token);
+    sessionStorage.setItem(`${orgSlug}_auth_token`, token);
     handleSession(orgSlug, token, cookies);
-    expect(spyFn).toHaveBeenCalledWith(`${orgSlug}_authToken`, {path: "/"});
+    expect(spyFn).toHaveBeenCalledWith(`${orgSlug}_auth_token`, {path: "/"});
   });
 });
 
@@ -607,14 +607,14 @@ describe("needs-verify tests", () => {
   let settings;
   let userData;
   beforeEach(() => {
-    settings = {mobilePhoneVerification: true, subscriptions: true};
-    userData = {isActive: true, isVerified: false};
+    settings = {mobile_phone_verification: true, subscriptions: true};
+    userData = {is_active: true, is_verified: false};
   });
   it("should return false if method is none", () => {
     expect(needsVerify("", {}, {})).toBe(false);
   });
   it("should return false if user is verified but not active", () => {
-    expect(needsVerify("", {isActive: false, isVerified: true}, {})).toBe(
+    expect(needsVerify("", {is_active: false, is_verified: true}, {})).toBe(
       false,
     );
   });
@@ -622,7 +622,7 @@ describe("needs-verify tests", () => {
     const method = "mobile_phone";
     userData.method = method;
     expect(needsVerify(method, userData, settings)).toBe(true);
-    userData.isVerified = true;
+    userData.is_verified = true;
     expect(needsVerify(method, userData, settings)).toBe(false);
   });
   it("should return true or false for bank_card method", () => {
@@ -787,7 +787,7 @@ describe("getPaymentStatusRedirectUrl tests", () => {
     expect(result).toBe(`/${orgSlug}/payment/success`);
     expect(setUserData).toHaveBeenCalledTimes(1);
     expect(setUserData).toHaveBeenCalledWith({
-      isVerified: true,
+      is_verified: true,
       mustLogin: true,
       payment_url: null,
     });

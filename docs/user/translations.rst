@@ -1,6 +1,5 @@
-##############
- Translations
-##############
+Translations
+============
 
 Translations are loaded at runtime from the JSON files that were compiled
 during the build process according to the available languages defined and
@@ -10,9 +9,8 @@ taking into account any customization of the translations.
     :depth: 2
     :local:
 
-******************************
- Defining Available Languages
-******************************
+Defining Available Languages
+----------------------------
 
 If there is more than one language in ``i18n/`` directory then update the
 organization configuration file by adding the support for that language
@@ -27,9 +25,8 @@ like this:
       - text: "Italian"
         slug: "it"
 
-******************
- Add Translations
-******************
+Add Translations
+----------------
 
 Translation file with content headers can be created by running:
 
@@ -51,9 +48,8 @@ message identifiers, see :ref:`update-translations
 
 .. _wlp_update_translations:
 
-*********************
- Update Translations
-*********************
+Update Translations
+-------------------
 
 To extract or update translations in the ``.po`` file, use the following
 command:
@@ -67,9 +63,8 @@ This will extract all the translations tags from the code and update
 
 .. _wlp_customizing_translations_specific_language:
 
-**************************************************
- Customizing Translations for a Specific Language
-**************************************************
+Customizing Translations for a Specific Language
+------------------------------------------------
 
 Create a translation file with name ``{language_code}.custom.po`` by
 running: ``yarn translations-add <language-code>
@@ -100,9 +95,8 @@ During the build process customized language files will override all the
     translations can be defined for custom strings (i.e. *msgid* and
     *msgstr*).
 
-*******************************************************************
- Customizing Translations for a Specific Organization and Language
-*******************************************************************
+Customizing Translations for a Specific Organization and Language
+-----------------------------------------------------------------
 
 Create a translation file with name
 ``{orgSlug}_{language_code}.custom.po`` by running: ``yarn

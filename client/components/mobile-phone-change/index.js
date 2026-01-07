@@ -5,12 +5,12 @@ import {logout, setTitle, setUserData} from "../../actions/dispatchers";
 
 const mapStateToProps = (state, ownProps) => {
   const conf = state.organization.configuration;
-  const componentConf = conf.components.phoneNumberChange_form;
-  componentConf.inputFields = {
-    phoneNumber: conf.components.registration_form.inputFields.phoneNumber,
+  const componentConf = conf.components.phone_number_change_form;
+  componentConf.input_fields = {
+    phone_number: conf.components.registration_form.input_fields.phone_number,
   };
   return {
-    phoneNumberChange: componentConf,
+    phone_number_change: componentConf,
     settings: conf.settings,
     orgSlug: conf.slug,
     orgName: conf.name,

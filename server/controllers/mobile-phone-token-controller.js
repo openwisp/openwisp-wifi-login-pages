@@ -27,10 +27,10 @@ export const createMobilePhoneToken = (req, res) => {
         },
         url: `${host}${url}/`,
         timeout,
-        data: qs.stringify({phoneNumber: req.body.phoneNumber}),
+        data: qs.stringify({phone_number: req.body.phone_number}),
       })
         .then((response) => {
-          delete response.data.authToken;
+          delete response.data.auth_token;
           res
             .status(response.status)
             .type("application/json")
@@ -141,7 +141,7 @@ export const verifyMobilePhoneToken = (req, res) => {
         data: qs.stringify({code: req.body.code}),
       })
         .then((response) => {
-          delete response.data.authToken;
+          delete response.data.auth_token;
           res
             .status(response.status)
             .type("application/json")

@@ -29,7 +29,7 @@ class MobilePhoneChange extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      phoneNumber: "",
+      phone_number: "",
       errors: {},
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -55,8 +55,8 @@ class MobilePhoneChange extends React.Component {
     );
     if (isValid && !this.abortController.signal.aborted) {
       ({userData} = this.props);
-      const {phoneNumber} = userData;
-      this.setState({phoneNumber});
+      const {phone_number} = userData;
+      this.setState({phone_number});
     }
     setLoading(false);
   }
@@ -71,20 +71,20 @@ class MobilePhoneChange extends React.Component {
     event.preventDefault();
     const {setLoading} = this.context;
     const {orgSlug, setUserData, userData, language, navigate} = this.props;
-    const {phoneNumber, errors} = this.state;
+    const {phone_number, errors} = this.state;
     const url = mobilePhoneChangeUrl(orgSlug);
-    this.setState({errors: {...errors, phoneNumber: ""}});
+    this.setState({errors: {...errors, phone_number: ""}});
     setLoading(true);
     return axios({
       method: "post",
       headers: {
         "content-type": "application/x-www-form-urlencoded",
         "accept-language": getLanguageHeaders(language),
-        Authorization: `Bearer ${userData.authToken}`,
+        Authorization: `Bearer ${userData.auth_token}`,
       },
       url,
       data: qs.stringify({
-        phoneNumber,
+        phone_number,
       }),
       signal: this.abortController.signal,
     })
@@ -92,7 +92,7 @@ class MobilePhoneChange extends React.Component {
         this.setState({
           errors: {},
         });
-        setUserData({...userData, isVerified: false, phoneNumber});
+        setUserData({...userData, is_verified: false, phone_number});
         setLoading(false);
         toast.success(t`TOKEN_SENT`);
         navigate(`/${orgSlug}/mobile-phone-verification`);
@@ -108,7 +108,7 @@ class MobilePhoneChange extends React.Component {
         this.setState({
           errors: {
             ...errors,
-            ...(data.phoneNumber ? {phoneNumber: data.phoneNumber} : null),
+            ...(data.phone_number ? {phone_number: data.phone_number} : null),
             ...(errorText ? {nonField: errorText} : {nonField: ""}),
           },
         });
@@ -120,12 +120,12 @@ class MobilePhoneChange extends React.Component {
   }
 
   render() {
-    const {phoneNumber, errors} = this.state;
-    const {orgSlug, phoneNumberChange, settings, userData} = this.props;
-    const {inputFields} = phoneNumberChange;
+    const {phone_number, errors} = this.state;
+    const {orgSlug, phone_number_change, settings, userData} = this.props;
+    const {input_fields} = phone_number_change;
 
     if (
-      !settings.mobilePhoneVerification ||
+      !settings.mobile_phone_verification ||
       (userData.method !== undefined && userData.method !== "mobile_phone")
     ) {
       return <Navigate push to={`/${orgSlug}/status`} />;
@@ -144,16 +144,16 @@ class MobilePhoneChange extends React.Component {
               {getError(errors)}
               <div className="row phone-number">
                 <label htmlFor="phone-number">{t`PHONE_LBL`}</label>
-                {getError(errors, "phoneNumber")}
+                {getError(errors, "phone_number")}
                 <Suspense
                   fallback={
                     <input
-                      name="phoneNumber"
+                      name="phone_number"
                       className="form-control input"
-                      value={phoneNumber}
+                      value={phone_number}
                       onChange={(value) =>
                         this.handleChange({
-                          target: {name: "phoneNumber", value: `+${value}`},
+                          target: {name: "phone_number", value: `+${value}`},
                         })
                       }
                       onKeyDown={(event) => {
@@ -165,18 +165,20 @@ class MobilePhoneChange extends React.Component {
                   }
                 >
                   <PhoneInput
-                    name="phoneNumber"
-                    onlyCountries={inputFields.phoneNumber.only_countries || []}
+                    name="phone_number"
+                    onlyCountries={
+                      input_fields.phone_number.only_countries || []
+                    }
                     preferredCountries={
-                      inputFields.phoneNumber.preferred_countries || []
+                      input_fields.phone_number.preferred_countries || []
                     }
                     excludeCountries={
-                      inputFields.phoneNumber.exclude_countries || []
+                      input_fields.phone_number.exclude_countries || []
                     }
-                    value={phoneNumber}
+                    value={phone_number}
                     onChange={(value) =>
                       this.handleChange({
-                        target: {name: "phoneNumber", value: `+${value}`},
+                        target: {name: "phone_number", value: `+${value}`},
                       })
                     }
                     onKeyDown={(event) => {
@@ -184,13 +186,13 @@ class MobilePhoneChange extends React.Component {
                     }}
                     placeholder={t`PHONE_PHOLD`}
                     enableSearch={Boolean(
-                      inputFields.phoneNumber.enable_search,
+                      input_fields.phone_number.enable_search,
                     )}
                     inputProps={{
-                      name: "phoneNumber",
+                      name: "phone_number",
                       id: "phone-number",
                       className: `form-control input ${
-                        errors.phoneNumber ? "error" : ""
+                        errors.phone_number ? "error" : ""
                       }`,
                       required: true,
                     }}
@@ -223,9 +225,9 @@ class MobilePhoneChange extends React.Component {
 export default MobilePhoneChange;
 MobilePhoneChange.contextType = LoadingContext;
 MobilePhoneChange.propTypes = {
-  phoneNumberChange: PropTypes.shape({
-    inputFields: PropTypes.shape({
-      phoneNumber: PropTypes.shape({
+  phone_number_change: PropTypes.shape({
+    input_fields: PropTypes.shape({
+      phone_number: PropTypes.shape({
         only_countries: PropTypes.array,
         preferred_countries: PropTypes.array,
         exclude_countries: PropTypes.array,
@@ -233,12 +235,12 @@ MobilePhoneChange.propTypes = {
       }),
     }).isRequired,
     buttons: PropTypes.shape({
-      change_phoneNumber: PropTypes.bool,
+      change_phone_number: PropTypes.bool,
       cancel: PropTypes.bool,
     }).isRequired,
   }).isRequired,
   settings: PropTypes.shape({
-    mobilePhoneVerification: PropTypes.bool,
+    mobile_phone_verification: PropTypes.bool,
   }).isRequired,
   orgSlug: PropTypes.string.isRequired,
   orgName: PropTypes.string.isRequired,

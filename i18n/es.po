@@ -132,7 +132,7 @@ msgid "USERNAME"
 msgstr "Nombre de usuario"
 
 #: client/components/status/status.js:1063
-msgid "phoneNumber"
+msgid "PHONE_NUMBER"
 msgstr "Número de teléfono"
 
 #: client/components/status/status.js:1370
@@ -221,7 +221,7 @@ msgstr "solo letras, números y caracteres @/./+/-/_"
 
 #: client/components/registration/registration.js:522
 #: client/components/registration/registration.js:523
-msgid "firstName_LBL"
+msgid "FIRST_NAME_LBL"
 msgstr "Nombre"
 
 #: client/components/registration/registration.js:523
@@ -232,21 +232,21 @@ msgid "OPTIONAL"
 msgstr "optional"
 
 #: client/components/registration/registration.js:540
-msgid "firstName_PHOLD"
+msgid "FIRST_NAME_PHOLD"
 msgstr "nombre"
 
 #: client/components/registration/registration.js:550
 #: client/components/registration/registration.js:551
-msgid "lastName_LBL"
+msgid "LAST_NAME_LBL"
 msgstr "Apellido"
 
 #: client/components/registration/registration.js:568
-msgid "lastName_PHOLD"
+msgid "LAST_NAME_PHOLD"
 msgstr "apellido"
 
 #: client/components/registration/registration.js:577
 #: client/components/registration/registration.js:578
-msgid "birthDate_LBL"
+msgid "BIRTH_DATE_LBL"
 msgstr "Fecha de nacimiento"
 
 #: client/components/registration/registration.js:602
@@ -320,21 +320,21 @@ msgid "ZIP_CODE_LBL"
 msgstr "Código Postal"
 
 #: client/components/registration/registration.js:746
-msgid "taxNumber_LBL"
+msgid "TAX_NUMBER_LBL"
 msgstr "Número de identificación fiscal"
 
 #: client/components/registration/registration.js:758
-msgid "taxNumber_PHOLD"
+msgid "TAX_NUMBER_PHOLD"
 msgstr "Ingrese su número de identificación fiscal (opcional)"
 
 #: client/components/registration/registration.js:760
-msgid "taxNumber_PTRN_DESC"
+msgid "TAX_NUMBER_PTRN_DESC"
 msgstr "solo números y letras"
 
 #: client/components/registration/registration.js:775
 msgid "REGISTER_ADD_INFO_TXT"
 msgstr ""
-"Al registrarte aceptas los {termsAndConditions} y la {privacyPolicy} de "
+"Al registrarte aceptas los {terms_and_conditions} y la {privacy_policy} de "
 "este servicio WiFi."
 
 #: client/components/login/login.js:475
@@ -576,9 +576,9 @@ msgstr "Código de verificación SMS enviado exitosamente."
 
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:251
 #, javascript-format
-msgid "PHONE_VERIFY (${ phoneNumber })"
+msgid "PHONE_VERIFY (${ phone_number })"
 msgstr ""
-"Verifica tu número de teléfono móvil (${ phoneNumber }) insertando el "
+"Verifica tu número de teléfono móvil (${ phone_number }) insertando el "
 "código que recibiste por SMS a continuación."
 
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:266
@@ -653,13 +653,13 @@ msgid "LOGIN_ERR"
 msgstr "Se produjo un error de inicio de sesión."
 
 #: client/components/login/login.js:446
-msgid "rememberMe"
+msgid "REMEMBER_ME"
 msgstr "recuérdame en este dispositivo"
 
 #: client/components/login/login.js:453
 msgid "LOGIN_ADD_INFO_TXT"
 msgstr ""
-"Al iniciar sesión, aceptas los {termsAndConditions} y la {privacyPolicy} "
+"Al iniciar sesión, aceptas los {terms_and_conditions} y la {privacy_policy} "
 "de este servicio WiFi. "
 
 #: client/components/login/login.js:470

@@ -1,6 +1,5 @@
-####################################################
- Allowing Users to Manage Account from the Internet
-####################################################
+Allowing Users to Manage Account from the Internet
+==================================================
 
 The authentication flow might hang if a user tries to access their account
 from the public internet (without connecting to the WiFi service). It

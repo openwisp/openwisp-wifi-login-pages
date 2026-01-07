@@ -1,5 +1,5 @@
 const shouldLinkBeShown = (link, isAuthenticated, userData) => {
-  const {isVerified, method} = userData;
+  const {is_verified, method} = userData;
   if (
     method &&
     link.methods_excluded &&
@@ -11,9 +11,9 @@ const shouldLinkBeShown = (link, isAuthenticated, userData) => {
     link.authenticated === isAuthenticated &&
     isAuthenticated === true &&
     link.verified !== undefined &&
-    isVerified !== undefined
+    is_verified !== undefined
   ) {
-    return link.verified === isVerified;
+    return link.verified === is_verified;
   }
   if (
     link.authenticated === isAuthenticated &&

@@ -25,12 +25,12 @@ const mockConfig = {
   slug: "default",
   default_language: "en",
   settings: {
-    mobilePhoneVerification: false,
+    mobile_phone_verification: false,
     subscriptions: false,
   },
   components: {
     login_form: {
-      inputFields: {
+      input_fields: {
         username: {
           type: "text",
           pattern: "^[a-zA-Z0-9@.+\\-_\\s]+$",
@@ -39,11 +39,11 @@ const mockConfig = {
           type: "password",
           pattern: ".{6,}",
         },
-        rememberMe: {
+        remember_me: {
           value: false,
         },
       },
-      socialLogin: {
+      social_login: {
         links: [],
       },
       buttons: {
@@ -52,8 +52,8 @@ const mockConfig = {
       },
     },
     registration_form: {
-      inputFields: {
-        phoneNumber: {
+      input_fields: {
+        phone_number: {
           country: "in",
         },
       },
@@ -70,11 +70,11 @@ const mockConfig = {
     },
     contact_page: {},
   },
-  privacyPolicy: {
+  privacy_policy: {
     title: {en: "Privacy Policy"},
     content: {en: "Privacy content"},
   },
-  termsAndConditions: {
+  terms_and_conditions: {
     title: {en: "Terms and Conditions"},
     content: {en: "Terms content"},
   },
@@ -93,19 +93,19 @@ jest.mock("../../utils/redirect-to-payment");
 
 const defaultConfig = getConfig("default", true);
 const loginForm = defaultConfig.components.login_form;
-loginForm.inputFields.phoneNumber =
-  defaultConfig.components.registration_form.inputFields.phoneNumber;
+loginForm.input_fields.phone_number =
+  defaultConfig.components.registration_form.input_fields.phone_number;
 const createTestProps = (props) => ({
   language: "en",
   orgSlug: "default",
   orgName: "default name",
   loginForm,
-  privacyPolicy: defaultConfig.privacyPolicy,
-  termsAndConditions: defaultConfig.termsAndConditions,
+  privacyPolicy: defaultConfig.privacy_policy,
+  termsAndConditions: defaultConfig.terms_and_conditions,
   settings: {
-    mobilePhoneVerification: false,
-    radiusRealms: false,
-    passwordless_authToken_name: "sesame",
+    mobile_phone_verification: false,
+    radius_realms: false,
+    passwordless_auth_token_name: "sesame",
   },
   authenticate: jest.fn(),
   setUserData: jest.fn(),
@@ -127,21 +127,21 @@ const createTestProps = (props) => ({
   ...props,
 });
 const userData = {
-  isActive: true,
-  isVerified: true,
+  is_active: true,
+  is_verified: true,
   method: "mobile_phone",
   email: "tester@test.com",
-  phoneNumber: "+393660011333",
+  phone_number: "+393660011333",
   username: "+393660011333",
-  authToken: "b72dad1cca4807dc21c00b0b2f171d29415ac541",
+  auth_token: "b72dad1cca4807dc21c00b0b2f171d29415ac541",
   radius_user_token: "jwyVSZYOze16ej6cc1AW5cxhRjahesLzh1Tm2y0d",
-  firstName: "",
-  lastName: "",
-  birthDate: null,
+  first_name: "",
+  last_name: "",
+  birth_date: null,
   location: "",
 };
-const responseData = {...userData, key: userData.authToken};
-delete responseData.authToken;
+const responseData = {...userData, key: userData.auth_token};
+delete responseData.auth_token;
 
 // Simple helper for rendering tests that need Provider but not full routing
 const renderWithProvider = (component) => {
@@ -192,7 +192,7 @@ describe("<Login /> rendering", () => {
     props = createTestProps({
       loginForm: {
         ...defaultConfig.components.login_form,
-        socialLogin: {
+        social_login: {
           ...defaultConfig.components.login_form,
           links: [
             {
@@ -219,7 +219,7 @@ describe("<Login /> rendering", () => {
 
   it("should render PhoneInput lazily and handlers should work correctly", async () => {
     props = createTestProps();
-    props.settings.mobilePhoneVerification = true;
+    props.settings.mobile_phone_verification = true;
     renderWithProvider(<Login {...props} />);
 
     // Wait for the lazy-loaded PhoneInput to appear
@@ -240,7 +240,7 @@ describe("<Login /> rendering", () => {
 
   it("should show fallback input before PhoneInput loads", async () => {
     props = createTestProps();
-    props.settings.mobilePhoneVerification = true;
+    props.settings.mobile_phone_verification = true;
     renderWithProvider(<Login {...props} />);
 
     // Check that an input exists immediately (the fallback)
@@ -266,9 +266,9 @@ describe("<Login /> rendering", () => {
     });
   });
 
-  it("should render radius realms form if radiusRealms is true", () => {
+  it("should render radius realms form if radius_realms is true", () => {
     props = createTestProps();
-    props.settings.radiusRealms = true;
+    props.settings.radius_realms = true;
     loadTranslation("en", "default");
     const {container} = renderWithProvider(<Login {...props} />);
     expect(container).toMatchSnapshot();
@@ -446,12 +446,11 @@ describe("<Login /> interactions", () => {
   });
 
   it("should execute setUserData if mobile phone verification needed", async () => {
-    props.settings = {mobilePhoneVerification: true};
+    props.settings = {mobile_phone_verification: true};
     mountComponent(props);
 
-    const testResponseData = {...responseData, isVerified: false};
-    const testUserData = {...userData, isVerified: false};
-
+    const testResponseData = {...responseData, is_verified: false};
+    const testUserData = {...userData, is_verified: false};
     const error = new Error("Unauthorized");
     error.response = {
       status: 401,
@@ -495,7 +494,7 @@ describe("<Login /> interactions", () => {
     expect(props.authenticate).toHaveBeenCalledWith(true);
     expect(props.setUserData).toHaveBeenCalledWith({
       ...testUserData,
-      key: testUserData.authToken,
+      key: testUserData.auth_token,
       mustLogin: true,
     });
   });
@@ -507,12 +506,12 @@ describe("<Login /> interactions", () => {
     const data = {
       ...userData,
       username: "tester",
-      isVerified: true,
+      is_verified: true,
       method: "bank_card",
       payment_url: "https://account.openwisp.io/payment/123",
     };
-    const testResponseData = {...data, key: data.authToken};
-    delete testResponseData.authToken;
+    const testResponseData = {...data, key: data.auth_token};
+    delete testResponseData.auth_token;
 
     axios.mockImplementationOnce(() =>
       Promise.resolve({
@@ -551,7 +550,7 @@ describe("<Login /> interactions", () => {
     expect(props.authenticate).toHaveBeenCalledWith(true);
     expect(props.setUserData).toHaveBeenCalledWith({
       ...data,
-      key: data.authToken,
+      key: data.auth_token,
       mustLogin: true,
     });
   });
@@ -562,7 +561,7 @@ describe("<Login /> interactions", () => {
 
     const data = {...userData};
     data.username = "tester";
-    data.isVerified = false;
+    data.is_verified = false;
     data.method = "bank_card";
     data.payment_url = "https://account.openwisp.io/payment/123";
 
@@ -596,8 +595,8 @@ describe("<Login /> interactions", () => {
     });
   });
 
-  it("phoneNumber field should be present if mobile phone verification is on", async () => {
-    props.settings = {mobilePhoneVerification: true};
+  it("phone_number field should be present if mobile phone verification is on", async () => {
+    props.settings = {mobile_phone_verification: true};
     const {container} = mountComponent(props);
     expect(container).toMatchSnapshot();
     const phoneInput = screen.getByRole("textbox", {
@@ -608,7 +607,7 @@ describe("<Login /> interactions", () => {
   });
 
   it("username should be text field if mobile phone verification is off", async () => {
-    props.settings = {mobilePhoneVerification: false};
+    props.settings = {mobile_phone_verification: false};
     const {container} = mountComponent(props);
     expect(container).toMatchSnapshot();
     const usernameInput = screen.getByRole("textbox", {
@@ -618,10 +617,10 @@ describe("<Login /> interactions", () => {
     expect(usernameInput).toHaveAttribute("id", "username");
   });
 
-  it("should not show phoneNumber field if auto_switch_phone_input is false", async () => {
-    props.settings = {mobilePhoneVerification: true};
+  it("should not show phone_number field if auto_switch_phone_input is false", async () => {
+    props.settings = {mobile_phone_verification: true};
     props.loginForm = {...loginForm};
-    props.loginForm.inputFields.username.auto_switch_phone_input = false;
+    props.loginForm.input_fields.username.auto_switch_phone_input = false;
     const {container} = mountComponent(props);
     expect(container).toMatchSnapshot();
     const usernameInput = screen.getByRole("textbox", {
@@ -632,11 +631,11 @@ describe("<Login /> interactions", () => {
   });
 
   it("should execute setUserData and must not show any form errors if user is inactive", async () => {
-    props.settings = {mobilePhoneVerification: true};
+    props.settings = {mobile_phone_verification: true};
     mountComponent(props);
 
     const data = {...userData};
-    data.isActive = false;
+    data.is_active = false;
 
     const error = new Error("Unauthorized");
     error.response = {
@@ -684,19 +683,19 @@ describe("<Login /> interactions", () => {
   });
 
   it("should store token in sessionStorage when remember me is unchecked and rememberMe in localstorage", async () => {
-    // Create fresh data without inheriting authToken from userData
+    // Create fresh data without inheriting auth_token from userData
     const data = {
-      isActive: true,
-      isVerified: true,
+      is_active: true,
+      is_verified: true,
       method: "mobile_phone",
       email: "tester@test.com",
-      phoneNumber: "+393660011333",
+      phone_number: "+393660011333",
       username: "+393660011333",
-      key: "test-token", // Use key instead of authToken for API response
+      key: "test-token", // Use key instead of auth_token for API response
       radius_user_token: "jwyVSZYOze16ej6cc1AW5cxhRjahesLzh1Tm2y0d",
-      firstName: "",
-      lastName: "",
-      birthDate: null,
+      first_name: "",
+      last_name: "",
+      birth_date: null,
       location: "",
     };
 
@@ -724,7 +723,7 @@ describe("<Login /> interactions", () => {
     });
 
     // Check storage after authentication
-    expect(sessionStorage.getItem("default_authToken")).toEqual("test-token");
+    expect(sessionStorage.getItem("default_auth_token")).toEqual("test-token");
     expect(localStorage.getItem("rememberMe")).toEqual("false");
 
     // Check no errors are shown in the UI
@@ -792,7 +791,7 @@ describe("<Login /> interactions", () => {
   });
 
   it("should set mustLogin on login success", async () => {
-    props.settings = {mobilePhoneVerification: true};
+    props.settings = {mobile_phone_verification: true};
     mountComponent(props);
 
     const error = new Error("Unauthorized");
@@ -824,7 +823,7 @@ describe("<Login /> interactions", () => {
     });
     expect(props.setUserData).toHaveBeenCalledWith({
       ...userData,
-      key: userData.authToken,
+      key: userData.auth_token,
       mustLogin: true,
     });
   });
@@ -849,7 +848,7 @@ describe("<Login /> interactions", () => {
 
     getParameterByName
       .mockImplementationOnce(() => userData.username)
-      .mockImplementationOnce(() => userData.authToken)
+      .mockImplementationOnce(() => userData.auth_token)
       .mockImplementationOnce(() => "")
       .mockImplementationOnce(() => "saml");
 
@@ -857,16 +856,16 @@ describe("<Login /> interactions", () => {
     mountComponent(props);
 
     expect(localStorage.getItem("rememberMe")).toEqual("false");
-    expect(sessionStorage.getItem("default_authToken")).toEqual(
-      userData.authToken,
+    expect(sessionStorage.getItem("default_auth_token")).toEqual(
+      userData.auth_token,
     );
     expect(spyToast).toHaveBeenCalledTimes(1);
     expect(props.setUserData).toHaveBeenCalledTimes(1);
     expect(props.setUserData).toHaveBeenCalledWith({
       username: userData.username,
-      authToken: userData.authToken,
-      key: userData.authToken,
-      isActive: true,
+      auth_token: userData.auth_token,
+      key: userData.auth_token,
+      is_active: true,
       radius_user_token: undefined,
       mustLogin: true,
     });
@@ -876,19 +875,19 @@ describe("<Login /> interactions", () => {
   });
 
   it("should authenticate if sesame link is in url", async () => {
-    // Create response data as it comes from API (with key, not authToken)
+    // Create response data as it comes from API (with key, not auth_token)
     const responseWithKey = {
-      isActive: true,
-      isVerified: true,
+      is_active: true,
+      is_verified: true,
       method: "mobile_phone",
       email: "tester@test.com",
-      phoneNumber: "+393660011333",
+      phone_number: "+393660011333",
       username: "+393660011333",
       key: "b72dad1cca4807dc21c00b0b2f171d29415ac541",
       radius_user_token: "jwyVSZYOze16ej6cc1AW5cxhRjahesLzh1Tm2y0d",
-      firstName: "",
-      lastName: "",
-      birthDate: null,
+      first_name: "",
+      last_name: "",
+      birth_date: null,
       location: "",
     };
 
@@ -913,10 +912,10 @@ describe("<Login /> interactions", () => {
     // Wait for the automatic authentication to happen
     await waitFor(() => {
       expect(props.authenticate).toHaveBeenCalled();
-      // Component transforms key -> authToken
+      // Component transforms key -> auth_token
       expect(props.setUserData).toHaveBeenCalledWith({
         ...userData,
-        key: userData.authToken,
+        key: userData.auth_token,
         mustLogin: true,
       });
     });
@@ -932,9 +931,9 @@ describe("<Login /> interactions", () => {
     const htmlProps = {...props};
     htmlProps.loginForm = {
       ...htmlProps.loginForm,
-      preHtml: {en: "<div class='pre-html'></div>"},
-      helpHtml: {en: "<div class='help-html'></div>"},
-      afterHtml: {en: "<div class='after-html'></div>"},
+      pre_html: {en: "<div class='pre-html'></div>"},
+      help_html: {en: "<div class='help-html'></div>"},
+      after_html: {en: "<div class='after-html'></div>"},
     };
     mountComponent(htmlProps);
     // Custom HTML is rendered with data-testid matching the className
@@ -953,16 +952,16 @@ describe("<Login /> interactions", () => {
           userData: {},
           components: {
             login_form: {
-              inputFields: {},
+              input_fields: {},
             },
             registration_form: {
-              inputFields: {
-                phoneNumber: {},
+              input_fields: {
+                phone_number: {},
               },
             },
           },
-          privacyPolicy: "Privacy policy",
-          termsAndConditions: "Terms and conditions",
+          privacy_policy: "Privacy policy",
+          terms_and_conditions: "Terms and conditions",
         },
         language: "en",
       },
@@ -970,7 +969,7 @@ describe("<Login /> interactions", () => {
     let result = mapStateToProps(state);
     expect(result).toEqual({
       language: undefined,
-      loginForm: {inputFields: {phoneNumber: {}}},
+      loginForm: {input_fields: {phone_number: {}}},
       orgName: "test",
       orgSlug: "test",
       privacyPolicy: "Privacy policy",
@@ -987,14 +986,14 @@ describe("<Login /> interactions", () => {
     });
   });
 
-  it("should submit form if radiusRealms is true", async () => {
+  it("should submit form if radius_realms is true", async () => {
     // First render - no captive portal form
     const view = mountComponent(props);
     expect(screen.queryByTestId("cp-login-form")).not.toBeInTheDocument();
     view.unmount();
 
-    // Re-render with radiusRealms enabled
-    props.settings.radiusRealms = true;
+    // Re-render with radius_realms enabled
+    props.settings.radius_realms = true;
     props.captivePortalLoginForm.additional_fields = [
       {name: "zone", value: "zone_value"},
     ];

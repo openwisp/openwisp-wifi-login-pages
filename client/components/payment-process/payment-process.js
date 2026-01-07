@@ -66,7 +66,7 @@ export default class PaymentProcess extends React.Component {
             message.paymentId,
             {
               tokenType: "Bearer",
-              tokenValue: userData.authToken,
+              tokenValue: userData.auth_token,
             },
             setUserData,
             userData,

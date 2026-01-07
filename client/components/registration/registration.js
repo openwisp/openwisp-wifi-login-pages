@@ -35,21 +35,21 @@ export default class Registration extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      phoneNumber: "",
+      phone_number: "",
       email: "",
       username: "",
       password1: "",
       password2: "",
-      firstName: "",
-      lastName: "",
+      first_name: "",
+      last_name: "",
       location: "",
-      birthDate: "",
+      birth_date: "",
       errors: {},
       success: false,
       plans: [],
       plansFetched: false,
       selectedPlan: null,
-      taxNumber: "",
+      tax_number: "",
       street: "",
       city: "",
       zipcode: "",
@@ -115,19 +115,19 @@ export default class Registration extends React.Component {
     const {orgSlug, authenticate, settings, language, setUserData, navigate} =
       this.props;
     const {
-      phoneNumber,
+      phone_number,
       email,
       username,
-      firstName,
-      lastName,
-      birthDate,
+      first_name,
+      last_name,
+      birth_date,
       location,
       password1,
       password2,
       errors,
       selectedPlan,
       plans,
-      taxNumber,
+      tax_number,
       street,
       city,
       zipcode,
@@ -149,53 +149,53 @@ export default class Registration extends React.Component {
     const postData = {
       email,
       username: email,
-      firstName,
-      lastName,
-      birthDate,
+      first_name,
+      last_name,
+      birth_date,
       location,
       password1,
       password2,
     };
-    const optionalFields = {
-      firstName,
-      lastName,
-      birthDate,
+    const optional_fields = {
+      first_name,
+      last_name,
+      birth_date,
       location,
     };
-    Object.keys(optionalFields).forEach((key) => {
-      if (optionalFields[key].length > 0) {
-        postData[key] = optionalFields[key];
+    Object.keys(optional_fields).forEach((key) => {
+      if (optional_fields[key].length > 0) {
+        postData[key] = optional_fields[key];
       }
     });
-    let planPricing;
+    let plan_pricing;
     if (selectedPlan !== null) {
-      planPricing = plans[selectedPlan];
-      postData.planPricing = planPricing.id;
-      postData.requires_payment = planPricing.requires_payment;
+      plan_pricing = plans[selectedPlan];
+      postData.planPricing = plan_pricing.id;
+      postData.requires_payment = plan_pricing.requires_payment;
     }
-    if (selectedPlan !== null && planPricing) {
+    if (selectedPlan !== null && plan_pricing) {
       postData.username = username;
-      if (planPricing.requires_invoice === true) {
+      if (plan_pricing.requires_invoice === true) {
         postData.billing_info = JSON.parse(
           JSON.stringify({
-            taxNumber,
+            tax_number,
             street,
             city,
             zipcode,
             country,
-            name: `${firstName} ${lastName}`,
+            name: `${first_name} ${last_name}`,
           }),
         );
       }
     }
-    // add phoneNumber if SMS verification is enabled
+    // add phone_number if SMS verification is enabled
     // and no payment is required
     if (
-      settings.mobilePhoneVerification &&
+      settings.mobile_phone_verification &&
       postData.requires_payment !== true
     ) {
-      postData.phoneNumber = phoneNumber;
-      postData.username = phoneNumber;
+      postData.phone_number = phone_number;
+      postData.username = phone_number;
     }
     const body = JSON.parse(JSON.stringify(postData));
     setLoading(true);
@@ -210,15 +210,15 @@ export default class Registration extends React.Component {
     })
       .then((res = {}) => {
         if (!res && !res.data) throw new Error();
-        const {key: authToken} = res.data;
+        const {key: auth_token} = res.data;
         setUserData({
-          isVerified: false,
-          authToken,
+          is_verified: false,
+          auth_token,
           mustLogin: !postData.requires_payment,
         });
         this.setState({
           errors: {},
-          phoneNumber: "",
+          phone_number: "",
           email: "",
           password1: "",
           password2: "",
@@ -261,26 +261,26 @@ export default class Registration extends React.Component {
         this.setState({
           errors: {
             ...errors,
-            ...(data.phoneNumber ? {phoneNumber: data.phoneNumber} : null),
+            ...(data.phone_number ? {phone_number: data.phone_number} : null),
             ...(data.email ? {email: data.email.toString()} : {email: ""}),
             ...(data.username
               ? {username: data.username.toString()}
               : {username: ""}),
-            ...(data.firstName
-              ? {firstName: data.firstName.toString()}
-              : {firstName: ""}),
-            ...(data.lastName
-              ? {lastName: data.lastName.toString()}
-              : {lastName: ""}),
-            ...(data.birthDate
-              ? {birthDate: data.birthDate.toString()}
-              : {birthDate: ""}),
+            ...(data.first_name
+              ? {first_name: data.first_name.toString()}
+              : {first_name: ""}),
+            ...(data.last_name
+              ? {last_name: data.last_name.toString()}
+              : {last_name: ""}),
+            ...(data.birth_date
+              ? {birth_date: data.birth_date.toString()}
+              : {birth_date: ""}),
             ...(data.location
               ? {location: data.location.toString()}
               : {location: ""}),
-            ...(data.taxNumber
-              ? {taxNumber: data.taxNumber.toString()}
-              : {taxNumber: ""}),
+            ...(data.tax_number
+              ? {tax_number: data.tax_number.toString()}
+              : {tax_number: ""}),
             ...(data.street ? {street: data.street.toString()} : {street: ""}),
             ...(data.city ? {city: data.city.toString()} : {city: ""}),
             ...(data.zipcode
@@ -310,7 +310,7 @@ export default class Registration extends React.Component {
 
   autoSelectFirstPlan = () => {
     const {registration} = this.props;
-    if (registration.autoSelectFirstPlan) {
+    if (registration.auto_select_first_plan) {
       this.changePlan({target: {value: 0}});
     }
   };
@@ -344,23 +344,23 @@ export default class Registration extends React.Component {
 
   getForm = () => {
     const {registration, settings, orgSlug, defaultLanguage} = this.props;
-    const {additionalInfoText, inputFields, links, autoSelectFirstPlan} =
+    const {additional_info_text, input_fields, links, auto_select_first_plan} =
       registration;
     const {
       success,
-      phoneNumber,
+      phone_number,
       email,
       username,
-      firstName,
-      lastName,
-      birthDate,
+      first_name,
+      last_name,
+      birth_date,
       location,
       password1,
       password2,
       errors,
       selectedPlan,
       plans,
-      taxNumber,
+      tax_number,
       street,
       city,
       zipcode,
@@ -387,28 +387,28 @@ export default class Registration extends React.Component {
                       selectedPlan,
                       this.changePlan,
                       this.changePlan,
-                      autoSelectFirstPlan,
+                      auto_select_first_plan,
                     )}
                   {(plans.length === 0 ||
                     (plans.length > 0 && selectedPlan !== null)) && (
                     <>
                       {!this.isPlanIdentityVerifier() &&
-                        settings.mobilePhoneVerification &&
-                        inputFields.phoneNumber && (
+                        settings.mobile_phone_verification &&
+                        input_fields.phone_number && (
                           <div className="row phone-number">
                             <label htmlFor="phone-number">{t`PHONE_LBL`}</label>
-                            {getError(errors, "phoneNumber")}
+                            {getError(errors, "phone_number")}
                             <Suspense
                               fallback={
                                 <input
                                   type="tel"
                                   className="input"
-                                  name="phoneNumber"
-                                  value={phoneNumber}
+                                  name="phone_number"
+                                  value={phone_number}
                                   onChange={(value) =>
                                     this.handleChange({
                                       target: {
-                                        name: "phoneNumber",
+                                        name: "phone_number",
                                         value: `+${value}`,
                                       },
                                     })
@@ -425,24 +425,24 @@ export default class Registration extends React.Component {
                               }
                             >
                               <PhoneInput
-                                name="phoneNumber"
-                                country={inputFields.phoneNumber.country}
+                                name="phone_number"
+                                country={input_fields.phone_number.country}
                                 onlyCountries={
-                                  inputFields.phoneNumber.only_countries || []
+                                  input_fields.phone_number.only_countries || []
                                 }
                                 preferredCountries={
-                                  inputFields.phoneNumber.preferred_countries ||
-                                  []
+                                  input_fields.phone_number
+                                    .preferred_countries || []
                                 }
                                 excludeCountries={
-                                  inputFields.phoneNumber.exclude_countries ||
+                                  input_fields.phone_number.exclude_countries ||
                                   []
                                 }
-                                value={phoneNumber}
+                                value={phone_number}
                                 onChange={(value) =>
                                   this.handleChange({
                                     target: {
-                                      name: "phoneNumber",
+                                      name: "phone_number",
                                       value: `+${value}`,
                                     },
                                   })
@@ -457,13 +457,13 @@ export default class Registration extends React.Component {
                                 placeholder={t`PHONE_PHOLD`}
                                 aria-label="Phone Number"
                                 enableSearch={Boolean(
-                                  inputFields.phoneNumber.enable_search,
+                                  input_fields.phone_number.enable_search,
                                 )}
                                 inputProps={{
-                                  name: "phoneNumber",
+                                  name: "phone_number",
                                   id: "phone-number",
                                   className: `form-control input ${
-                                    errors.phoneNumber ? "error" : ""
+                                    errors.phone_number ? "error" : ""
                                   }`,
                                   required: true,
                                   autoComplete: "tel",
@@ -485,7 +485,7 @@ export default class Registration extends React.Component {
                           value={email}
                           onChange={this.handleChange}
                           placeholder={t`EMAIL_PHOLD`}
-                          pattern={inputFields.email.pattern}
+                          pattern={input_fields.email.pattern}
                           autoComplete="email"
                           title={t`EMAIL_PTRN_DESC`}
                         />
@@ -504,92 +504,92 @@ export default class Registration extends React.Component {
                             value={username}
                             onChange={this.handleChange}
                             placeholder={t`USERNAME_REG_PHOLD`}
-                            pattern={inputFields.username.pattern}
+                            pattern={input_fields.username.pattern}
                             autoComplete="username"
                             title={t`USERNAME_PTRN_DESC`}
                           />
                         </div>
                       )}
 
-                      {(inputFields.firstName.setting !== "disabled" ||
+                      {(input_fields.first_name.setting !== "disabled" ||
                         this.doesPlanRequireInvoice()) && (
-                        <div className="row firstName">
-                          <label htmlFor="firstName">
-                            {inputFields.firstName.setting === "mandatory"
-                              ? t`firstName_LBL`
-                              : `${t`firstName_LBL`} (${t`OPTIONAL`})`}
+                        <div className="row first_name">
+                          <label htmlFor="first_name">
+                            {input_fields.first_name.setting === "mandatory"
+                              ? t`FIRST_NAME_LBL`
+                              : `${t`FIRST_NAME_LBL`} (${t`OPTIONAL`})`}
                           </label>
-                          {getError(errors, "firstName")}
+                          {getError(errors, "first_name")}
                           <input
-                            className={`input ${errors.firstName ? "error" : ""}`}
+                            className={`input ${errors.first_name ? "error" : ""}`}
                             type="text"
-                            id="firstName"
+                            id="first_name"
                             required={
-                              inputFields.firstName.setting === "mandatory" ||
+                              input_fields.first_name.setting === "mandatory" ||
                               settings.subscriptions
                             }
-                            name="firstName"
-                            value={firstName}
+                            name="first_name"
+                            value={first_name}
                             onChange={this.handleChange}
                             autoComplete="given-name"
-                            placeholder={t`firstName_PHOLD`}
+                            placeholder={t`FIRST_NAME_PHOLD`}
                           />
                         </div>
                       )}
 
-                      {(inputFields.lastName.setting !== "disabled" ||
+                      {(input_fields.last_name.setting !== "disabled" ||
                         this.doesPlanRequireInvoice()) && (
-                        <div className="row lastName">
-                          <label htmlFor="lastName">
-                            {inputFields.lastName.setting === "mandatory"
-                              ? t`lastName_LBL`
-                              : `${t`lastName_LBL`} (${t`OPTIONAL`})`}
+                        <div className="row last_name">
+                          <label htmlFor="last_name">
+                            {input_fields.last_name.setting === "mandatory"
+                              ? t`LAST_NAME_LBL`
+                              : `${t`LAST_NAME_LBL`} (${t`OPTIONAL`})`}
                           </label>
-                          {getError(errors, "lastName")}
+                          {getError(errors, "last_name")}
                           <input
-                            className={`input ${errors.lastName ? "error" : ""}`}
+                            className={`input ${errors.last_name ? "error" : ""}`}
                             type="text"
-                            id="lastName"
+                            id="last_name"
                             required={
-                              inputFields.lastName.setting === "mandatory" ||
+                              input_fields.last_name.setting === "mandatory" ||
                               settings.subscriptions
                             }
-                            name="lastName"
-                            value={lastName}
+                            name="last_name"
+                            value={last_name}
                             onChange={this.handleChange}
                             autoComplete="family-name"
-                            placeholder={t`lastName_PHOLD`}
+                            placeholder={t`LAST_NAME_PHOLD`}
                           />
                         </div>
                       )}
 
-                      {inputFields.birthDate.setting !== "disabled" && (
-                        <div className="row birthDate">
-                          <label htmlFor="birthDate">
-                            {inputFields.birthDate.setting === "mandatory"
-                              ? t`birthDate_LBL`
-                              : `${t`birthDate_LBL`} (${t`OPTIONAL`})`}
+                      {input_fields.birth_date.setting !== "disabled" && (
+                        <div className="row birth_date">
+                          <label htmlFor="birth_date">
+                            {input_fields.birth_date.setting === "mandatory"
+                              ? t`BIRTH_DATE_LBL`
+                              : `${t`BIRTH_DATE_LBL`} (${t`OPTIONAL`})`}
                           </label>
-                          {getError(errors, "birthDate")}
+                          {getError(errors, "birth_date")}
                           <input
-                            className={`input ${errors.birthDate ? "error" : ""}`}
+                            className={`input ${errors.birth_date ? "error" : ""}`}
                             type="date"
-                            id="birthDate"
+                            id="birth_date"
                             required={
-                              inputFields.birthDate.setting === "mandatory"
+                              input_fields.birth_date.setting === "mandatory"
                             }
-                            name="birthDate"
-                            value={birthDate}
+                            name="birth_date"
+                            value={birth_date}
                             onChange={this.handleChange}
                             autoComplete="bday"
                           />
                         </div>
                       )}
 
-                      {inputFields.location.setting !== "disabled" && (
+                      {input_fields.location.setting !== "disabled" && (
                         <div className="row location">
                           <label htmlFor="location">
-                            {inputFields.location.setting === "mandatory"
+                            {input_fields.location.setting === "mandatory"
                               ? t`LOCATION_LBL`
                               : `${t`LOCATION_LBL`} (${t`OPTIONAL`})`}
                           </label>
@@ -599,13 +599,13 @@ export default class Registration extends React.Component {
                             type="text"
                             id="location"
                             required={
-                              inputFields.location.setting === "mandatory"
+                              input_fields.location.setting === "mandatory"
                             }
                             name="location"
                             value={location}
                             onChange={this.handleChange}
                             placeholder={t`LOCATION_PHOLD`}
-                            pattern={inputFields.location.pattern}
+                            pattern={input_fields.location.pattern}
                             autoComplete="street-address"
                             title={t`LOCATION_PTRN_DESC`}
                           />
@@ -624,7 +624,7 @@ export default class Registration extends React.Component {
                           value={password1}
                           onChange={this.handleChange}
                           placeholder={t`PWD_PHOLD`}
-                          pattern={inputFields.password.pattern}
+                          pattern={input_fields.password.pattern}
                           title={t`PWD_PTRN_DESC`}
                           ref={this.passwordToggleRef}
                           autoComplete="new-password"
@@ -654,7 +654,7 @@ export default class Registration extends React.Component {
                           value={password2}
                           onChange={this.handleChange}
                           placeholder={t`CONFIRM_PWD_PHOLD`}
-                          pattern={inputFields.password.pattern}
+                          pattern={input_fields.password.pattern}
                           title={t`PWD_PTRN_DESC`}
                           ref={this.confirmPasswordToggleRef}
                           autoComplete="new-password"
@@ -733,19 +733,19 @@ export default class Registration extends React.Component {
                               aria-label="Zip Code"
                             />
                           </div>
-                          <div className="row taxNumber">
-                            <label htmlFor="taxNumber">{t`taxNumber_LBL`}</label>
-                            {getError(errors, "taxNumber")}
+                          <div className="row tax_number">
+                            <label htmlFor="tax_number">{t`taxNumber_LBL`}</label>
+                            {getError(errors, "tax_number")}
                             <input
-                              className={`input ${errors.taxNumber ? "error" : ""}`}
+                              className={`input ${errors.tax_number ? "error" : ""}`}
                               type="text"
-                              id="taxNumber"
-                              name="taxNumber"
-                              value={taxNumber}
+                              id="tax_number"
+                              name="tax_number"
+                              value={tax_number}
                               onChange={this.handleChange}
-                              placeholder={t`taxNumber_PHOLD`}
-                              pattern={inputFields.taxNumber.pattern}
-                              title={t`taxNumber_PTRN_DESC`}
+                              placeholder={t`TAX_NUMBER_PHOLD`}
+                              pattern={input_fields.tax_number.pattern}
+                              title={t`TAX_NUMBER_PTRN_DESC`}
                               aria-label="Tax Number"
                             />
                           </div>
@@ -757,7 +757,7 @@ export default class Registration extends React.Component {
 
                 {(plans.length === 0 ||
                   (plans.length > 0 && selectedPlan !== null)) &&
-                  additionalInfoText && (
+                  additional_info_text && (
                     <div className="row add-info">
                       {renderAdditionalInfo(
                         t`REGISTER_ADD_INFO_TXT`,
@@ -857,11 +857,11 @@ export default class Registration extends React.Component {
 Registration.contextType = LoadingContext;
 Registration.propTypes = {
   settings: PropTypes.shape({
-    mobilePhoneVerification: PropTypes.bool,
+    mobile_phone_verification: PropTypes.bool,
     subscriptions: PropTypes.bool,
   }).isRequired,
   registration: PropTypes.shape({
-    inputFields: PropTypes.shape({
+    input_fields: PropTypes.shape({
       email: PropTypes.shape({
         pattern: PropTypes.string.isRequired,
       }).isRequired,
@@ -876,24 +876,24 @@ Registration.propTypes = {
       password_confirm: PropTypes.shape({
         pattern: PropTypes.string,
       }).isRequired,
-      phoneNumber: PropTypes.shape({
+      phone_number: PropTypes.shape({
         country: PropTypes.string,
         only_countries: PropTypes.array,
         preferred_countries: PropTypes.array,
         exclude_countries: PropTypes.array,
         enable_search: PropTypes.bool,
       }),
-      firstName: PropTypes.shape({
+      first_name: PropTypes.shape({
         setting: PropTypes.string.isRequired,
       }),
-      lastName: PropTypes.shape({
+      last_name: PropTypes.shape({
         setting: PropTypes.string.isRequired,
       }),
       location: PropTypes.shape({
         setting: PropTypes.string.isRequired,
         pattern: PropTypes.string.isRequired,
       }),
-      birthDate: PropTypes.shape({
+      birth_date: PropTypes.shape({
         setting: PropTypes.string.isRequired,
       }),
       country: PropTypes.shape({
@@ -902,13 +902,13 @@ Registration.propTypes = {
       zipcode: PropTypes.shape({}),
       city: PropTypes.shape({}),
       street: PropTypes.shape({}),
-      taxNumber: PropTypes.shape({
+      tax_number: PropTypes.shape({
         pattern: PropTypes.string.isRequired,
       }),
     }),
-    additionalInfoText: PropTypes.bool,
+    additional_info_text: PropTypes.bool,
     links: PropTypes.object,
-    autoSelectFirstPlan: PropTypes.bool,
+    auto_select_first_plan: PropTypes.bool,
   }).isRequired,
   language: PropTypes.string.isRequired,
   defaultLanguage: PropTypes.string.isRequired,

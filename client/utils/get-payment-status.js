@@ -49,7 +49,7 @@ const getPaymentStatusRedirectUrl = async (
       if (setUserData && userData) {
         setUserData({
           ...userData,
-          isVerified: true,
+          is_verified: true,
           payment_url: null,
           mustLogin: true,
           // For refreshing of radius_user_token which is required

@@ -1,6 +1,5 @@
-#####################################
- Developer Installation Instructions
-#####################################
+Developer Installation Instructions
+===================================
 
 .. include:: ../partials/developer-docs.rst
 
@@ -8,20 +7,18 @@
     :depth: 1
     :local:
 
-**************
- Dependencies
-**************
+Dependencies
+------------
 
 - `NodeJs <https://nodejs.org/en/>`__ >= 20.9.0
 - `NPM <https://npmjs.org/>`__ - Node package manager >= 10.1.0
 - `yarn <https://yarnpkg.com/>`__ - Yarn package manager >= 1.19.1
 
-***************
- Prerequisites
-***************
+Prerequisites
+-------------
 
 OpenWISP RADIUS
-===============
+~~~~~~~~~~~~~~~
 
 OpenWISP WiFi Login Pages is a frontend for :doc:`OpenWISP RADIUS
 </radius/index>`. In order to use it, this app needs a running instance of
@@ -38,9 +35,8 @@ this by following these steps:
   and note down the following parameters: ``name``, ``slug``, ``uuid`` and
   ``token`` (from the Organization RADIUS Settings).
 
-****************************
- Installing for Development
-****************************
+Installing for Development
+--------------------------
 
 Fork and clone the forked repository:
 
@@ -78,9 +74,8 @@ Run tests with:
     # run tests
     yarn test
 
-*********************
- ESM Support in Jest
-*********************
+ESM Support in Jest
+-------------------
 
 Some modern Node.js packages use ESM format which can cause Jest tests to
 fail with ``SyntaxError: Unexpected token 'export'``. This happens because
@@ -99,9 +94,8 @@ To fix this, add ESM packages to Jest's ``transformIgnorePatterns`` in the
       }
     }
 
-*********************************
- Running Automated Browser Tests
-*********************************
+Running Automated Browser Tests
+-------------------------------
 
 Prerequisites for running browser tests:
 

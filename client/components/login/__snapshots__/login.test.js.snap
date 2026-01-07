@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Login /> interactions phoneNumber field should be present if mobile phone verification is on 1`] = `
+exports[`<Login /> interactions phone_number field should be present if mobile phone verification is on 1`] = `
 <div>
   <div
     class="container content"
@@ -106,12 +106,12 @@ exports[`<Login /> interactions phoneNumber field should be present if mobile ph
             >
               <input
                 checked=""
-                id="rememberMe"
-                name="rememberMe"
+                id="remember_me"
+                name="remember_me"
                 type="checkbox"
               />
               <label
-                for="rememberMe"
+                for="remember_me"
               >
                 remember me on this device
               </label>
@@ -153,7 +153,7 @@ exports[`<Login /> interactions phoneNumber field should be present if mobile ph
 </div>
 `;
 
-exports[`<Login /> interactions should not show phoneNumber field if auto_switch_phone_input is false 1`] = `
+exports[`<Login /> interactions should not show phone_number field if auto_switch_phone_input is false 1`] = `
 <div>
   <div
     class="container content"
@@ -233,12 +233,12 @@ exports[`<Login /> interactions should not show phoneNumber field if auto_switch
             >
               <input
                 checked=""
-                id="rememberMe"
-                name="rememberMe"
+                id="remember_me"
+                name="remember_me"
                 type="checkbox"
               />
               <label
-                for="rememberMe"
+                for="remember_me"
               >
                 remember me on this device
               </label>
@@ -360,12 +360,12 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
             >
               <input
                 checked=""
-                id="rememberMe"
-                name="rememberMe"
+                id="remember_me"
+                name="remember_me"
                 type="checkbox"
               />
               <label
-                for="rememberMe"
+                for="remember_me"
               >
                 remember me on this device
               </label>
@@ -532,14 +532,14 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
             >
               <input
                 checked=""
-                id="rememberMe"
-                name="rememberMe"
+                id="remember_me"
+                name="remember_me"
                 type="checkbox"
               />
               <label
-                for="rememberMe"
+                for="remember_me"
               >
-                rememberMe
+                REMEMBER_ME
               </label>
             </div>
           </div>
@@ -659,14 +659,14 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
             >
               <input
                 checked=""
-                id="rememberMe"
-                name="rememberMe"
+                id="remember_me"
+                name="remember_me"
                 type="checkbox"
               />
               <label
-                for="rememberMe"
+                for="remember_me"
               >
-                rememberMe
+                REMEMBER_ME
               </label>
             </div>
           </div>
@@ -706,7 +706,7 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
 </div>
 `;
 
-exports[`<Login /> rendering should render radius realms form if radiusRealms is true 1`] = `
+exports[`<Login /> rendering should render radius realms form if radius_realms is true 1`] = `
 <div>
   <div
     class="container content"
@@ -786,12 +786,12 @@ exports[`<Login /> rendering should render radius realms form if radiusRealms is
             >
               <input
                 checked=""
-                id="rememberMe"
-                name="rememberMe"
+                id="remember_me"
+                name="remember_me"
                 type="checkbox"
               />
               <label
-                for="rememberMe"
+                for="remember_me"
               >
                 remember me on this device
               </label>
@@ -933,14 +933,14 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
             >
               <input
                 checked=""
-                id="rememberMe"
-                name="rememberMe"
+                id="remember_me"
+                name="remember_me"
                 type="checkbox"
               />
               <label
-                for="rememberMe"
+                for="remember_me"
               >
-                rememberMe
+                REMEMBER_ME
               </label>
             </div>
           </div>

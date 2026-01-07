@@ -17,8 +17,8 @@ logError.mockImplementation(jest.fn());
 const userData = {
   username: "tester@tester.com",
   email: "tester@tester.com",
-  isVerified: true,
-  isActive: true,
+  is_verified: true,
+  is_active: true,
   mustLogin: false,
 };
 

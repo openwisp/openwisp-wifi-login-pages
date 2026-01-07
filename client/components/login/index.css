@@ -50,7 +50,7 @@ div.remember-me {
   margin-right: 7px;
 }
 @media screen and (min-width: 0px) and (max-width: 767px) {
-  #rememberMe {
+  #remember_me {
     width: 25px;
     height: 25px;
     bottom: -6px;

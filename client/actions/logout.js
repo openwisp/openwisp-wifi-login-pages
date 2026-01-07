@@ -3,7 +3,7 @@ import {sessionStorage, localStorage} from "../utils/storage";
 
 const logout = (cookies, orgSlug, userAutoLogin = false) => {
   if (!userAutoLogin) {
-    cookies.remove(`${orgSlug}_authToken`, {path: "/"});
+    cookies.remove(`${orgSlug}_auth_token`, {path: "/"});
     cookies.remove(`${orgSlug}_username`, {path: "/"});
     cookies.remove(`${orgSlug}_macaddr`, {path: "/"});
     sessionStorage.clear();

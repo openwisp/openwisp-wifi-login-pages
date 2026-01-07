@@ -64,7 +64,7 @@ const createTestProps = (props) => ({
   location: {
     pathname: "/default/login",
   },
-  userData: {isVerified: true},
+  userData: {is_verified: true},
   ...props,
 });
 
@@ -169,7 +169,7 @@ describe("<Header /> rendering", () => {
   it("should not render with verified links if not verified", () => {
     props = createTestProps();
     props.isAuthenticated = true;
-    props.userData.isVerified = false;
+    props.userData.is_verified = false;
     props.header.links = headerLinks;
     render(
       <MemoryRouter>
@@ -284,7 +284,7 @@ describe("<Header /> rendering", () => {
         text: {en: "Change Password"},
         url: "/{orgSlug}/change-password",
         authenticated: true,
-        methods_excluded: ["saml", "socialLogin"],
+        methods_excluded: ["saml", "social_login"],
       },
     ];
     props.isAuthenticated = true;
@@ -297,7 +297,7 @@ describe("<Header /> rendering", () => {
     let changePasswordLinks = screen.queryAllByText("Change Password");
     expect(changePasswordLinks).toHaveLength(0);
 
-    props.userData.method = "socialLogin";
+    props.userData.method = "social_login";
     rerender(
       <MemoryRouter>
         <Header {...props} />

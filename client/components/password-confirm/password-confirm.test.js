@@ -17,7 +17,7 @@ const mockConfig = {
   default_language: "en",
   components: {
     password_reset_confirm_form: {
-      inputFields: {
+      input_fields: {
         password: {
           pattern: ".{6,}",
         },
@@ -38,11 +38,11 @@ const mockConfig = {
     },
     contact_page: {},
   },
-  privacyPolicy: {
+  privacy_policy: {
     title: {en: "Privacy Policy"},
     content: {en: "Privacy content"},
   },
-  termsAndConditions: {
+  terms_and_conditions: {
     title: {en: "Terms and Conditions"},
     content: {en: "Terms content"},
   },

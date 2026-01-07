@@ -38,12 +38,12 @@ const createTestProps = (props) => ({
   language: "en",
   footer: {
     links: defaultConfig.components.footer.links,
-    afterHtml: {
+    after_html: {
       en: "after html",
     },
   },
   orgSlug: "default",
-  userData: {isVerified: true},
+  userData: {is_verified: true},
   ...props,
 });
 
@@ -116,7 +116,7 @@ describe("<Footer /> rendering", () => {
     props = createTestProps();
     props.footer.links = footerLinks;
     props.isAuthenticated = true;
-    props.userData.isVerified = false;
+    props.userData.is_verified = false;
     render(<Footer {...props} />);
 
     // Check visible links
