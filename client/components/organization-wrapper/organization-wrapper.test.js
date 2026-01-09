@@ -466,7 +466,7 @@ describe("Test Organization Wrapper for unauthenticated users", () => {
     jest.spyOn(global.console, "error").mockImplementation(() => {});
     props = createTestProps();
     props.organization.configuration.isAuthenticated = false;
-    localStorage.setItem("userAutoLogin", true);
+    localStorage.setItem("userAutoLogin", "true");
   });
 
   afterEach(() => {

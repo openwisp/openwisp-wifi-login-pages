@@ -19,6 +19,8 @@ jest.mock("../../utils/get-config", () => ({
   default: jest.fn(() => ({
     components: {
       payment_status_page: {
+        timeout: 5,
+        max_attempts: 3,
         content: {
           en: {
             pending: "Payment pending",

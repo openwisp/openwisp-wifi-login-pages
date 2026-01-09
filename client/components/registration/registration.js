@@ -170,7 +170,7 @@ export default class Registration extends React.Component {
     let plan_pricing;
     if (selectedPlan !== null) {
       plan_pricing = plans[selectedPlan];
-      postData.planPricing = plan_pricing.id;
+      postData.plan_pricing = plan_pricing.id;
       postData.requires_payment = plan_pricing.requires_payment;
     }
     if (selectedPlan !== null && plan_pricing) {
@@ -734,7 +734,7 @@ export default class Registration extends React.Component {
                             />
                           </div>
                           <div className="row tax_number">
-                            <label htmlFor="tax_number">{t`taxNumber_LBL`}</label>
+                            <label htmlFor="tax_number">{t`TAX_NUMBER_LBL`}</label>
                             {getError(errors, "tax_number")}
                             <input
                               className={`input ${errors.tax_number ? "error" : ""}`}
