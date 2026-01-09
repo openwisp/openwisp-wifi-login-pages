@@ -13,4 +13,4 @@ openwisp-qa-check --skip-checkmigrations \
                   --skip-isort \
                   --skip-checkendline
 
-node scripts/ci-depcheck.js           
+node scripts/ci-knip.js           
