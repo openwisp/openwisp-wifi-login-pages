@@ -127,7 +127,14 @@ const renderWithProviders = (component, contextValue = loadingContextValue) =>
   render(
     <Provider store={createMockStore()}>
       <LoadingContext.Provider value={contextValue}>
-        <MemoryRouter>{component}</MemoryRouter>
+        <MemoryRouter
+          future={{
+            v7_startTransition: true,
+            v7_relativeSplatPath: true,
+          }}
+        >
+          {component}
+        </MemoryRouter>
       </LoadingContext.Provider>
     </Provider>,
   );
@@ -160,7 +167,13 @@ const mountComponent = (props) => {
 
   return render(
     <Provider store={mockedStore}>
-      <MemoryRouter initialEntries={["/"]}>
+      <MemoryRouter
+        initialEntries={["/"]}
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Routes>
           <Route path="/test-org-2/status" element={<StatusMock />} />
           <Route path="*" element={<MobilePhoneChange {...props} />} />

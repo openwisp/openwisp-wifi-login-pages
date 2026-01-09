@@ -1,7 +1,6 @@
 import axios from "axios";
 import {render, screen, waitFor, fireEvent} from "@testing-library/react";
 import "@testing-library/jest-dom";
-import PropTypes from "prop-types";
 import React from "react";
 import {Cookies} from "react-cookie";
 import ShallowRenderer from "react-test-renderer/shallow";
@@ -120,7 +119,14 @@ const createMockStore = (customConfig = {}) => {
 const renderWithProviders = (component, store = createMockStore()) =>
   render(
     <Provider store={store}>
-      <MemoryRouter>{component}</MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
+        {component}
+      </MemoryRouter>
     </Provider>,
   );
 
@@ -253,10 +259,6 @@ describe("<Status /> interactions", () => {
   let originalLocalStorage;
 
   beforeEach(() => {
-    Status.contextTypes = {
-      setLoading: PropTypes.func,
-      getLoading: PropTypes.func,
-    };
     validateToken.mockClear();
     loadTranslation("en", "default");
 
@@ -745,10 +747,6 @@ describe("<Status /> accounting_swap_octets", () => {
   let originalLocalStorage;
 
   beforeEach(() => {
-    Status.contextTypes = {
-      setLoading: PropTypes.func,
-      getLoading: PropTypes.func,
-    };
     validateToken.mockClear();
     loadTranslation("en", "default");
 
@@ -890,10 +888,6 @@ describe("<Status /> additional tests", () => {
   let originalLocalStorage;
 
   beforeEach(() => {
-    Status.contextTypes = {
-      setLoading: PropTypes.func,
-      getLoading: PropTypes.func,
-    };
     validateToken.mockClear();
     loadTranslation("en", "default");
 

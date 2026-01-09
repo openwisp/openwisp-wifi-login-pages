@@ -687,7 +687,12 @@ describe("handle-change tests", () => {
   it("should redirectToPayment", () => {
     const navigate = jest.fn();
     render(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <button
           type="submit"
           onClick={() => redirectToPayment("default", navigate)}
@@ -888,7 +893,12 @@ describe("withRouteProps test", () => {
     };
     const ComponentWithRouteProps = withRouteProps(Component);
     render(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <ComponentWithRouteProps props={{extra: true}} />
       </MemoryRouter>,
     );

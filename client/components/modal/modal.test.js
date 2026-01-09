@@ -48,7 +48,12 @@ describe("<Modal /> rendering", () => {
     props = createTestProps();
 
     const {container} = render(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Modal {...props} />
       </MemoryRouter>,
     );
@@ -80,7 +85,12 @@ describe("<Modal /> rendering", () => {
     });
 
     const {container} = render(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Modal {...props} />
       </MemoryRouter>,
     );
@@ -109,7 +119,12 @@ describe("<Modal /> rendering", () => {
     });
 
     const {container} = render(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Modal {...props} />
       </MemoryRouter>,
     );
@@ -131,7 +146,12 @@ describe("<Modal /> rendering", () => {
     props = createTestProps();
 
     const {container} = render(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Modal {...props} />
       </MemoryRouter>,
     );
@@ -176,7 +196,12 @@ describe("<Modal /> interactions", () => {
     props = createTestProps();
 
     render(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Modal {...props} />
       </MemoryRouter>,
     );
@@ -205,7 +230,12 @@ describe("<Modal /> interactions", () => {
     props = createTestProps();
 
     render(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Modal {...props} />
       </MemoryRouter>,
     );
@@ -254,7 +284,12 @@ describe("<Modal /> interactions", () => {
     props = createTestProps();
 
     const {unmount} = render(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Modal {...props} />
       </MemoryRouter>,
     );
@@ -285,7 +320,12 @@ describe("<Modal /> interactions", () => {
     props = createTestProps();
 
     render(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Modal {...props} />
       </MemoryRouter>,
     );
@@ -314,7 +354,12 @@ describe("<Modal /> interactions", () => {
     props = createTestProps();
 
     const {unmount} = render(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Modal {...props} />
       </MemoryRouter>,
     );

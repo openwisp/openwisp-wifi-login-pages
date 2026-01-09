@@ -72,7 +72,12 @@ describe("<Header /> rendering with placeholder translation tags", () => {
   const props = createTestProps();
   it("should render translation placeholder correctly", () => {
     const {container} = render(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Header {...props} />
       </MemoryRouter>,
     );
@@ -98,7 +103,12 @@ describe("<Header /> rendering", () => {
     };
     props = createTestProps(links);
     const {container} = render(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Header {...props} />
       </MemoryRouter>,
     );
@@ -117,7 +127,12 @@ describe("<Header /> rendering", () => {
       },
     ];
     render(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Header {...props} />
       </MemoryRouter>,
     );
@@ -130,7 +145,12 @@ describe("<Header /> rendering", () => {
     props.isAuthenticated = false;
     props.header.links = headerLinks;
     render(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Header {...props} />
       </MemoryRouter>,
     );
@@ -146,7 +166,12 @@ describe("<Header /> rendering", () => {
     props.isAuthenticated = true;
     props.header.links = headerLinks;
     render(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Header {...props} />
       </MemoryRouter>,
     );
@@ -159,7 +184,12 @@ describe("<Header /> rendering", () => {
 
   it("should render with links", () => {
     const {container} = render(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Header {...props} />
       </MemoryRouter>,
     );
@@ -172,7 +202,12 @@ describe("<Header /> rendering", () => {
     props.userData.is_verified = false;
     props.header.links = headerLinks;
     render(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Header {...props} />
       </MemoryRouter>,
     );
@@ -186,7 +221,12 @@ describe("<Header /> rendering", () => {
 
   it("should render 2 links", () => {
     render(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Header {...props} />
       </MemoryRouter>,
     );
@@ -197,7 +237,12 @@ describe("<Header /> rendering", () => {
 
   it("should render 2 languages", () => {
     render(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Header {...props} />
       </MemoryRouter>,
     );
@@ -209,7 +254,12 @@ describe("<Header /> rendering", () => {
 
   it("should render english as default language", () => {
     render(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Header {...props} />
       </MemoryRouter>,
     );
@@ -226,7 +276,12 @@ describe("<Header /> rendering", () => {
 
   it("should render logo", () => {
     render(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Header {...props} />
       </MemoryRouter>,
     );
@@ -244,7 +299,12 @@ describe("<Header /> rendering", () => {
     };
     props = createTestProps(logo);
     render(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Header {...props} />
       </MemoryRouter>,
     );
@@ -262,7 +322,12 @@ describe("<Header /> rendering", () => {
       },
     });
     const {container} = render(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Header {...props} />
       </MemoryRouter>,
     );
@@ -290,7 +355,12 @@ describe("<Header /> rendering", () => {
     props.isAuthenticated = true;
     props.userData.method = "saml";
     const {rerender} = render(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Header {...props} />
       </MemoryRouter>,
     );
@@ -299,7 +369,12 @@ describe("<Header /> rendering", () => {
 
     props.userData.method = "social_login";
     rerender(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Header {...props} />
       </MemoryRouter>,
     );
@@ -308,7 +383,12 @@ describe("<Header /> rendering", () => {
 
     props.userData.method = "mobile_phone";
     rerender(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Header {...props} />
       </MemoryRouter>,
     );
@@ -326,7 +406,12 @@ describe("<Header /> interactions", () => {
 
   it("should call setLanguage function when 'language button' is clicked", () => {
     render(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Header {...props} />
       </MemoryRouter>,
     );
@@ -343,7 +428,12 @@ describe("<Header /> interactions", () => {
 
   it("should call handleHamburger function when 'hamburger button' is clicked", () => {
     render(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Header {...props} />
       </MemoryRouter>,
     );
@@ -362,7 +452,12 @@ describe("<Header /> interactions", () => {
 
   it("should call handleHamburger function on Enter key press", () => {
     render(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Header {...props} />
       </MemoryRouter>,
     );

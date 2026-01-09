@@ -139,6 +139,16 @@ exports[`<Login /> interactions phone_number field should be present if mobile p
               Sign up
             </a>
           </div>
+          <div
+            class="row links"
+          >
+            <a
+              class="link"
+              href="/default/password/reset"
+            >
+              Forgot your password?
+            </a>
+          </div>
         </div>
       </form>
       <div
@@ -266,6 +276,16 @@ exports[`<Login /> interactions should not show phone_number field if auto_switc
               Sign up
             </a>
           </div>
+          <div
+            class="row links"
+          >
+            <a
+              class="link"
+              href="/default/password/reset"
+            >
+              Forgot your password?
+            </a>
+          </div>
         </div>
       </form>
       <div
@@ -391,6 +411,16 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
               href="/default/registration"
             >
               Sign up
+            </a>
+          </div>
+          <div
+            class="row links"
+          >
+            <a
+              class="link"
+              href="/default/password/reset"
+            >
+              Forgot your password?
             </a>
           </div>
         </div>
@@ -565,6 +595,16 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
               REGISTER_BTN_TXT
             </a>
           </div>
+          <div
+            class="row links"
+          >
+            <a
+              class="link"
+              href="/default/password/reset"
+            >
+              FORGOT_PASSWORD
+            </a>
+          </div>
         </div>
       </form>
       <div
@@ -692,6 +732,16 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
               REGISTER_BTN_TXT
             </a>
           </div>
+          <div
+            class="row links"
+          >
+            <a
+              class="link"
+              href="/default/password/reset"
+            >
+              FORGOT_PASSWORD
+            </a>
+          </div>
         </div>
       </form>
       <div
@@ -817,6 +867,16 @@ exports[`<Login /> rendering should render radius realms form if radius_realms i
               href="/default/registration"
             >
               Sign up
+            </a>
+          </div>
+          <div
+            class="row links"
+          >
+            <a
+              class="link"
+              href="/default/password/reset"
+            >
+              Forgot your password?
             </a>
           </div>
         </div>
@@ -964,6 +1024,16 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
               href="/default/registration"
             >
               REGISTER_BTN_TXT
+            </a>
+          </div>
+          <div
+            class="row links"
+          >
+            <a
+              class="link"
+              href="/default/password/reset"
+            >
+              FORGOT_PASSWORD
             </a>
           </div>
         </div>

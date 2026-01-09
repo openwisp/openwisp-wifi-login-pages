@@ -102,7 +102,12 @@ const renderWithProviders = (props) => {
 
   return render(
     <Provider store={mockedStore}>
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <PasswordConfirm {...props} />
       </MemoryRouter>
     </Provider>,

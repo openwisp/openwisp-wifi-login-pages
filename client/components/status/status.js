@@ -170,8 +170,8 @@ export default class Status extends React.Component {
         return;
       }
       const {
-        radius_user_token: password,
-        username,
+        radius_user_token: password = "",
+        username = "",
         email,
         phone_number,
         is_active,
@@ -1490,6 +1490,7 @@ export default class Status extends React.Component {
                     type="text"
                     name={field.name}
                     value={field.value}
+                    key={`logout-input-${field.name}`}
                   />
                 ))}
             </form>

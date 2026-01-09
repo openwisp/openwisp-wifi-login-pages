@@ -19,7 +19,16 @@ const createTestProps = (props) => ({
 });
 
 const renderWithRouter = (component) =>
-  render(<MemoryRouter>{component}</MemoryRouter>);
+  render(
+    <MemoryRouter
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true,
+      }}
+    >
+      {component}
+    </MemoryRouter>,
+  );
 
 describe("<DoesNotExist /> rendering with placeholder translation tags", () => {
   const props = createTestProps();

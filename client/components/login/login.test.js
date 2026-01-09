@@ -50,6 +50,9 @@ const mockConfig = {
         register: true,
         forgot_password: true,
       },
+      links: {
+        forget_password: true,
+      },
     },
     registration_form: {
       input_fields: {
@@ -166,7 +169,14 @@ const renderWithProvider = (component) => {
 
   return render(
     <Provider store={mockedStore}>
-      <MemoryRouter>{component}</MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
+        {component}
+      </MemoryRouter>
     </Provider>,
   );
 };
@@ -331,7 +341,14 @@ describe("<Login /> interactions", () => {
 
     return render(
       <Provider store={mockedStore}>
-        <Router location={historyMock.location} navigator={historyMock}>
+        <Router
+          location={historyMock.location}
+          navigator={historyMock}
+          future={{
+            v7_startTransition: true,
+            v7_relativeSplatPath: true,
+          }}
+        >
           <Routes>
             <Route path="/*" element={<Login {...passedProps} />} />
           </Routes>

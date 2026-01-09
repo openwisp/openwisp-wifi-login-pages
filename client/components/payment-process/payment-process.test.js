@@ -89,7 +89,14 @@ const renderWithProviders = (component, mockSetLoading = null) => {
   return render(
     <Provider store={createMockStore()}>
       <LoadingContext.Provider value={{setLoading}}>
-        <MemoryRouter>{component}</MemoryRouter>
+        <MemoryRouter
+          future={{
+            v7_startTransition: true,
+            v7_relativeSplatPath: true,
+          }}
+        >
+          {component}
+        </MemoryRouter>
       </LoadingContext.Provider>
     </Provider>,
   );

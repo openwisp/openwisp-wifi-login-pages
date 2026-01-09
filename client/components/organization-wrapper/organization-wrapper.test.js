@@ -41,7 +41,6 @@ jest.mock("../../utils/load-translation", () =>
   jest.fn().mockResolvedValue(undefined),
 );
 jest.mock("../../utils/needs-verify");
-/* eslint-enable import/first */
 
 const userData = {
   is_active: true,
@@ -121,7 +120,13 @@ const renderWithRouter = (props) => {
   return render(
     <HelmetProvider>
       <Provider store={mockedStore}>
-        <MemoryRouter initialEntries={[props.location?.pathname || "/"]}>
+        <MemoryRouter
+          initialEntries={[props.location?.pathname || "/"]}
+          future={{
+            v7_startTransition: true,
+            v7_relativeSplatPath: true,
+          }}
+        >
           <OrganizationWrapper {...props} />
         </MemoryRouter>
       </Provider>
@@ -294,7 +299,13 @@ describe("<OrganizationWrapper /> interactions", () => {
     rerender(
       <HelmetProvider>
         <Provider store={mockedStore}>
-          <MemoryRouter initialEntries={[newProps.location?.pathname || "/"]}>
+          <MemoryRouter
+            initialEntries={[newProps.location?.pathname || "/"]}
+            future={{
+              v7_startTransition: true,
+              v7_relativeSplatPath: true,
+            }}
+          >
             <OrganizationWrapper {...newProps} />
           </MemoryRouter>
         </Provider>
@@ -323,7 +334,12 @@ describe("<OrganizationWrapper /> interactions", () => {
     rerender(
       <HelmetProvider>
         <Provider store={invalidMockedStore}>
-          <MemoryRouter>
+          <MemoryRouter
+            future={{
+              v7_startTransition: true,
+              v7_relativeSplatPath: true,
+            }}
+          >
             <OrganizationWrapper {...invalidProps} />
           </MemoryRouter>
         </Provider>
@@ -415,7 +431,13 @@ describe("<OrganizationWrapper /> interactions", () => {
     rerender(
       <HelmetProvider>
         <Provider store={mockedStore}>
-          <MemoryRouter initialEntries={[newProps.location?.pathname || "/"]}>
+          <MemoryRouter
+            initialEntries={[newProps.location?.pathname || "/"]}
+            future={{
+              v7_startTransition: true,
+              v7_relativeSplatPath: true,
+            }}
+          >
             <OrganizationWrapper {...newProps} />
           </MemoryRouter>
         </Provider>
@@ -574,7 +596,13 @@ describe("Test <OrganizationWrapper /> routes", () => {
     return render(
       <HelmetProvider>
         <Provider store={mockedStore}>
-          <MemoryRouter initialEntries={initialEntries}>
+          <MemoryRouter
+            initialEntries={initialEntries}
+            future={{
+              v7_startTransition: true,
+              v7_relativeSplatPath: true,
+            }}
+          >
             <OrganizationWrapper {...passedProps} />
           </MemoryRouter>
         </Provider>

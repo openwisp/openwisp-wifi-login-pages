@@ -36,7 +36,12 @@ describe("<Logout /> rendering with placeholder translation tags", () => {
   const props = createTestProps();
   it("should render translation placeholder correctly", () => {
     const {container} = render(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Logout {...props} />
       </MemoryRouter>,
     );
@@ -51,7 +56,12 @@ describe("<Logout /> rendering", () => {
     props = createTestProps();
     loadTranslation("en", "default");
     const {container} = render(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Logout {...props} />
       </MemoryRouter>,
     );
@@ -74,7 +84,12 @@ describe("<Logout /> interactions", () => {
   it("should set user authenticated when log in again is clicked", () => {
     props = createTestProps();
     render(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Logout {...props} />
       </MemoryRouter>,
     );
@@ -95,7 +110,12 @@ describe("<Logout /> interactions", () => {
   it("should call setTitle to set the title", () => {
     props = createTestProps();
     render(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Logout {...props} />
       </MemoryRouter>,
     );
@@ -109,7 +129,12 @@ describe("<Logout /> interactions", () => {
     props.isAuthenticated = true;
 
     render(
-      <MemoryRouter>
+      <MemoryRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Logout {...props} />
       </MemoryRouter>,
     );
