@@ -34,7 +34,12 @@ jest.mock("../../utils/get-config", () => ({
 }));
 jest.mock("../../utils/validate-token");
 jest.mock("../../utils/load-translation");
-/* eslint-enable import/first */
+
+// Capture original console methods before any mocking
+/* eslint-disable no-underscore-dangle */
+global.__ORIGINAL_CONSOLE_ERROR__ = console.error;
+global.__ORIGINAL_CONSOLE_LOG__ = console.log;
+/* eslint-enable no-underscore-dangle */
 
 const defaultConfig = getConfig("default", true);
 const createTestProps = (props) => ({
@@ -70,8 +75,8 @@ const createMockStore = () => {
   };
 
   return {
-    subscribe: () => {},
-    dispatch: () => {},
+    subscribe: jest.fn(() => () => {}),
+    dispatch: jest.fn(),
     getState: () => state,
   };
 };
@@ -118,7 +123,16 @@ describe("Test <PaymentStatus /> cases", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.spyOn(global.console, "log").mockImplementation(() => {});
-    jest.spyOn(global.console, "error").mockImplementation(() => {});
+    jest.spyOn(global.console, "error").mockImplementation((...args) => {
+      const msg = String(args[0] ?? "");
+      // Allowlist only *expected* noise; keep this list small and explicit.
+      if (msg.includes("Warning: An update to") && msg.includes("act(...)")) {
+        return;
+      }
+      // Re-emit unexpected errors so tests fail loudly (or change to `throw`).
+      // eslint-disable-next-line no-console, no-underscore-dangle
+      global.__ORIGINAL_CONSOLE_ERROR__?.(...args);
+    });
     props = createTestProps();
     loadTranslation("en", "default");
     validateToken.mockClear();
@@ -126,7 +140,6 @@ describe("Test <PaymentStatus /> cases", () => {
 
   afterEach(() => {
     jest.clearAllMocks();
-    // Only restore console mocks
     global.console.log.mockRestore?.();
     global.console.error.mockRestore?.();
   });
@@ -282,14 +295,18 @@ describe("Test <PaymentStatus /> cases", () => {
     });
 
     props.setUserData.mockClear();
+    props.authenticate.mockClear();
 
     const payProcButton = screen.getByRole("link", {
       name: /proceed with the payment/i,
     });
     expect(payProcButton).toBeInTheDocument();
+    expect(payProcButton).toHaveAttribute("href", "/default/payment/process");
 
     fireEvent.click(payProcButton);
 
+    // Verify authenticate is called with true
+    expect(props.authenticate).toHaveBeenCalledWith(true);
     // Verify proceedToPayment is NOT set when payment_requires_internet is false
     expect(props.setUserData).not.toHaveBeenCalled();
   });
@@ -311,8 +328,12 @@ describe("Test <PaymentStatus /> cases", () => {
       name: /proceed with the payment/i,
     });
     expect(payProcButton).toBeInTheDocument();
+    expect(payProcButton).toHaveAttribute("href", "/default/status");
 
     fireEvent.click(payProcButton);
+
+    // Verify authenticate is called with true
+    expect(props.authenticate).toHaveBeenCalledWith(true);
 
     await waitFor(() => {
       expect(props.setUserData).toHaveBeenCalledWith({

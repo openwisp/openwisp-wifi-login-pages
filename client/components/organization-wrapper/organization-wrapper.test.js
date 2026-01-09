@@ -91,7 +91,7 @@ const defaultConfig = getConfig("default", true);
 
 const renderWithRouter = (props) => {
   const mockedStore = {
-    subscribe: () => {},
+    subscribe: () => () => {},
     dispatch: () => {},
     getState: () => ({
       organization: {
@@ -239,8 +239,8 @@ describe("<OrganizationWrapper /> interactions", () => {
     lastConsoleOutput = null;
     consoleErrorSpy = jest
       .spyOn(global.console, "error")
-      .mockImplementation((data) => {
-        lastConsoleOutput = data;
+      .mockImplementation((...args) => {
+        lastConsoleOutput = args;
       });
     props = createTestProps();
   });
@@ -281,7 +281,7 @@ describe("<OrganizationWrapper /> interactions", () => {
     };
 
     const mockedStore = {
-      subscribe: () => {},
+      subscribe: () => () => {},
       dispatch: () => {},
       getState: () => ({
         organization: {
@@ -310,7 +310,7 @@ describe("<OrganizationWrapper /> interactions", () => {
     };
 
     const invalidMockedStore = {
-      subscribe: () => {},
+      subscribe: () => () => {},
       dispatch: () => {},
       getState: () => ({
         organization: {
@@ -331,6 +331,7 @@ describe("<OrganizationWrapper /> interactions", () => {
     );
 
     expect(lastConsoleOutput).not.toBe(null);
+    expect(Array.isArray(lastConsoleOutput)).toBe(true);
     expect(consoleErrorSpy).toHaveBeenCalledTimes(1);
   });
 
@@ -392,7 +393,7 @@ describe("<OrganizationWrapper /> interactions", () => {
     const newProps = {...props, language: "it"};
 
     const mockedStore = {
-      subscribe: () => {},
+      subscribe: () => () => {},
       dispatch: () => {},
       getState: () => ({
         organization: {
@@ -544,7 +545,7 @@ describe("Test <OrganizationWrapper /> routes", () => {
 
   const mountComponent = (passedProps, initialEntries) => {
     const mockedStore = {
-      subscribe: () => {},
+      subscribe: () => () => {},
       dispatch: () => {},
       getState: () => ({
         organization: {
