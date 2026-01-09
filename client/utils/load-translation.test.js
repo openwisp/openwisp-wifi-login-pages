@@ -1,13 +1,16 @@
-/* eslint-disable global-require */
 import {useLocale, addLocale} from "ttag";
 import loadTranslation from "./load-translation";
 
-let translation = {};
+// Try to load the actual translation file, fall back to test translation
+let translation;
 try {
+  // eslint-disable-next-line import/no-unresolved, global-require
   translation = require("../translations/en.json");
 } catch (err) {
+  // eslint-disable-next-line global-require
   translation = require("../test-translation.json");
 }
+
 jest.mock("ttag");
 
 describe("Translations tests", () => {
@@ -20,6 +23,7 @@ describe("Translations tests", () => {
     consoleLog = jest.fn();
     console.error = consoleError;
     console.log = consoleLog;
+    /* eslint-enable no-console */
     languages = jest.spyOn(navigator, "languages", "get");
     setLanguage = jest.fn();
   });

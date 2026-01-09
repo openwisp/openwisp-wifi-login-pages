@@ -106,8 +106,8 @@ export default class PasswordConfirm extends React.Component {
     const {newPassword1, newPassword2, errors, success, hidePassword} =
       this.state;
     const {passwordConfirm, orgSlug} = this.props;
-    const inputFields = passwordConfirm.input_fields;
-    const loginPageLink = passwordConfirm.login_page_link;
+    const {input_fields: inputFields, login_page_link: loginPageLink} =
+      passwordConfirm;
     return (
       <div className="container content" id="password-confirm">
         <div className="inner">
@@ -130,7 +130,11 @@ export default class PasswordConfirm extends React.Component {
               </div>
             </div>
           ) : (
-            <form className="main-column" onSubmit={this.handleSubmit}>
+            <form
+              className="main-column"
+              onSubmit={this.handleSubmit}
+              aria-label="password confirm form"
+            >
               <div className="inner">
                 <h1>{t`PWD_CONFIRM_H`}</h1>
 

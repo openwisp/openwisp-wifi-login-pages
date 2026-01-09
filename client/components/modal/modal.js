@@ -84,11 +84,7 @@ export default class Modal extends React.Component {
           {loading ? (
             <Loader full={false} />
           ) : (
-            <div
-              className="message"
-              // eslint-disable-next-line react/no-danger
-              dangerouslySetInnerHTML={content}
-            />
+            <div className="message" dangerouslySetInnerHTML={content} />
           )}
         </div>
       </div>

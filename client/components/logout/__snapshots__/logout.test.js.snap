@@ -1,32 +1,33 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`<Logout /> rendering should render correctly 1`] = `
-<div
-  className="container content"
-  id="logout"
->
+<div>
   <div
-    className="inner"
+    class="container content"
+    id="logout"
   >
     <div
-      className="main-column w-100"
+      class="inner"
     >
       <div
-        className="inner"
+        class="main-column w-100"
       >
-        <h2>
-          Logout successful
-        </h2>
         <div
-          className="links row"
+          class="inner"
         >
-          <Link
-            className="button partial"
-            onClick={[Function]}
-            to="/default/status"
+          <h2>
+            Logout successful
+          </h2>
+          <div
+            class="links row"
           >
-            Login again
-          </Link>
+            <a
+              class="button partial"
+              href="/default/status"
+            >
+              Login again
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -35,32 +36,33 @@ exports[`<Logout /> rendering should render correctly 1`] = `
 `;
 
 exports[`<Logout /> rendering with placeholder translation tags should render translation placeholder correctly 1`] = `
-<div
-  className="container content"
-  id="logout"
->
+<div>
   <div
-    className="inner"
+    class="container content"
+    id="logout"
   >
     <div
-      className="main-column w-100"
+      class="inner"
     >
       <div
-        className="inner"
+        class="main-column w-100"
       >
-        <h2>
-          LOGOUT_CONTENT
-        </h2>
         <div
-          className="links row"
+          class="inner"
         >
-          <Link
-            className="button partial"
-            onClick={[Function]}
-            to="/default/status"
+          <h2>
+            LOGOUT_CONTENT
+          </h2>
+          <div
+            class="links row"
           >
-            LOGIN_AGAIN
-          </Link>
+            <a
+              class="button partial"
+              href="/default/status"
+            >
+              LOGIN_AGAIN
+            </a>
+          </div>
         </div>
       </div>
     </div>

@@ -1,4 +1,3 @@
-/* eslint-disable react/require-default-props */
 import {Cookies} from "react-cookie";
 import PropTypes from "prop-types";
 import React from "react";
@@ -17,9 +16,11 @@ export default class PaymentStatus extends React.Component {
       isTokenValid: null,
     };
     this.paymentProceedHandler = this.paymentProceedHandler.bind(this);
+    this.componentIsMounted = false;
   }
 
   async componentDidMount() {
+    this.componentIsMounted = true;
     const {cookies, orgSlug, setUserData, logout, params, settings, language} =
       this.props;
     const {status} = params;
@@ -36,7 +37,9 @@ export default class PaymentStatus extends React.Component {
       language,
     );
     setLoading(false);
-    this.setState({isTokenValid});
+    if (this.componentIsMounted) {
+      this.setState({isTokenValid});
+    }
     if (isTokenValid === false) {
       return;
     }
@@ -61,6 +64,10 @@ export default class PaymentStatus extends React.Component {
         mustLogin: settings.payment_requires_internet ? true : undefined,
       });
     }
+  }
+
+  componentWillUnmount() {
+    this.componentIsMounted = false;
   }
 
   logout = () => {
@@ -235,4 +242,11 @@ PaymentStatus.propTypes = {
     status: PropTypes.string,
   }).isRequired,
   navigate: PropTypes.func.isRequired,
+};
+
+PaymentStatus.defaultProps = {
+  language: undefined,
+  orgSlug: undefined,
+  isAuthenticated: undefined,
+  page: undefined,
 };

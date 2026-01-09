@@ -1,11 +1,13 @@
-/* eslint-disable global-require */
 import config from "../../test-config.json";
 
 let defaultConfig = {};
 try {
+  // eslint-disable-next-line global-require
   defaultConfig = require("../../configs/default.json");
 } catch (err) {
-  console.error("Forget to run yarn setup before tests?");
+  // In test environment, configs/default.json doesn't exist
+  // Fallback to the "default" org from test-config.json
+  defaultConfig = config.find((org) => org.slug === "default") || {};
 }
 const getConfig = (slug, loadDefault = false) => {
   if (loadDefault) {

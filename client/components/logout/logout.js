@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 /* eslint jsx-a11y/label-has-associated-control: 0 */
 import "./index.css";
 

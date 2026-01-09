@@ -2,7 +2,7 @@ import React from "react";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
 
 function withRouteProps(Component) {
-  return function (props) {
+  return function WithRouteProps(props) {
     return (
       <Component
         {...props}
