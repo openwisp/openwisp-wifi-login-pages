@@ -131,7 +131,7 @@
   "author": "",
   "license": "GPL-3.0-only",
   "engines": {
-    "node": ">=18.20.0"
+    "node": "^20.19.0 || ^22.12.0 || >=24.0.0"
   },
   "bugs": {
     "url": "https://github.com/openwisp/openwisp-wifi-login-pages/issues"
