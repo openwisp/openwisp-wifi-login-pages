@@ -55,14 +55,14 @@ function parseAndReportKnipResults(result) {
       console.error("Unused dependencies:");
       Array.from(issues.dependencies)
         .sort()
-        .forEach((d) => console.error(`  - ${d}`));
+        .forEach((d) => console.error(`  - ${d.name}`));
       console.error("");
     }
     if (issues.devDependencies.size > 0) {
       console.error("Unused devDependencies:");
       Array.from(issues.devDependencies)
         .sort()
-        .forEach((d) => console.error(`  - ${d}`));
+        .forEach((d) => console.error(`  - ${d.name}`));
       console.error("");
     }
     if (issues.unresolved.size > 0) {
