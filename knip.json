@@ -1,6 +1,11 @@
 {
   "$schema": "https://unpkg.com/knip@5/schema.json",
-  "entry": ["client/index.js", "server/index.js", "server/start.js", "config/**/*.js"],
+  "entry": [
+    "client/index.js",
+    "server/index.js",
+    "server/start.js",
+    "config/**/*.js"
+  ],
   "project": [
     "client/**/*.{js,jsx}",
     "server/**/*.js",
