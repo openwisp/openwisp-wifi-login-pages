@@ -1,15 +1,4 @@
-import {render, fireEvent, screen, within} from "@testing-library/react";
-import "@testing-library/jest-dom";
-import React from "react";
-import {MemoryRouter} from "react-router-dom";
-
-import getConfig from "../../utils/get-config";
-import loadTranslation from "../../utils/load-translation";
-import isInternalLink from "../../utils/check-internal-links";
-import Header from "./header";
-import {mapDispatchToProps} from "./index";
-
-// Mock modules BEFORE importing - jest.mock must be before imports
+// Mock modules BEFORE importing
 jest.mock("../../utils/get-config", () => ({
   __esModule: true,
   default: jest.fn(() => ({
@@ -26,6 +15,18 @@ jest.mock("../../utils/get-config", () => ({
 }));
 jest.mock("../../utils/load-translation");
 jest.mock("../../utils/check-internal-links");
+
+/* eslint-disable import/first */
+import {render, fireEvent, screen, within} from "@testing-library/react";
+import "@testing-library/jest-dom";
+import React from "react";
+import {TestRouter} from "../../test-utils";
+
+import getConfig from "../../utils/get-config";
+import loadTranslation from "../../utils/load-translation";
+import isInternalLink from "../../utils/check-internal-links";
+import Header from "./header";
+import {mapDispatchToProps} from "./index";
 /* eslint-enable import/first */
 
 const defaultConfig = getConfig("default", true);
@@ -72,14 +73,9 @@ describe("<Header /> rendering with placeholder translation tags", () => {
   const props = createTestProps();
   it("should render translation placeholder correctly", () => {
     const {container} = render(
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Header {...props} />
-      </MemoryRouter>,
+      </TestRouter>,
     );
     expect(container).toMatchSnapshot();
   });
@@ -103,14 +99,9 @@ describe("<Header /> rendering", () => {
     };
     props = createTestProps(links);
     const {container} = render(
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Header {...props} />
-      </MemoryRouter>,
+      </TestRouter>,
     );
     expect(container).toMatchSnapshot();
   });
@@ -127,14 +118,9 @@ describe("<Header /> rendering", () => {
       },
     ];
     render(
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Header {...props} />
-      </MemoryRouter>,
+      </TestRouter>,
     );
     expect(isInternalLink).toHaveBeenCalledTimes(2);
     expect(isInternalLink).toHaveBeenCalledWith("/default/login");
@@ -145,14 +131,9 @@ describe("<Header /> rendering", () => {
     props.isAuthenticated = false;
     props.header.links = headerLinks;
     render(
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Header {...props} />
-      </MemoryRouter>,
+      </TestRouter>,
     );
     const link1Elements = screen.getAllByText("link-1");
     const link2Elements = screen.getAllByText("link-2");
@@ -166,14 +147,9 @@ describe("<Header /> rendering", () => {
     props.isAuthenticated = true;
     props.header.links = headerLinks;
     render(
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Header {...props} />
-      </MemoryRouter>,
+      </TestRouter>,
     );
     const link1Elements = screen.getAllByText("link-1");
     const link3Elements = screen.getAllByText("link-3");
@@ -184,14 +160,9 @@ describe("<Header /> rendering", () => {
 
   it("should render with links", () => {
     const {container} = render(
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Header {...props} />
-      </MemoryRouter>,
+      </TestRouter>,
     );
     expect(container).toMatchSnapshot();
   });
@@ -202,14 +173,9 @@ describe("<Header /> rendering", () => {
     props.userData.is_verified = false;
     props.header.links = headerLinks;
     render(
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Header {...props} />
-      </MemoryRouter>,
+      </TestRouter>,
     );
     const link1Elements = screen.getAllByText("link-1");
     const link3Elements = screen.getAllByText("link-3");
@@ -220,15 +186,12 @@ describe("<Header /> rendering", () => {
   });
 
   it("should render 2 links", () => {
+    props.isAuthenticated = false;
+    props.header = {...props.header, links: headerLinks};
     render(
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Header {...props} />
-      </MemoryRouter>,
+      </TestRouter>,
     );
     const desktopNav = screen.getByTestId("desktop-navigation");
     const desktopLinks = within(desktopNav).getAllByRole("link");
@@ -237,14 +200,9 @@ describe("<Header /> rendering", () => {
 
   it("should render 2 languages", () => {
     render(
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Header {...props} />
-      </MemoryRouter>,
+      </TestRouter>,
     );
     const languageSelector = screen.getByTestId("desktop-language-selector");
     const desktopLanguageButtons =
@@ -254,14 +212,9 @@ describe("<Header /> rendering", () => {
 
   it("should render english as default language", () => {
     render(
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Header {...props} />
-      </MemoryRouter>,
+      </TestRouter>,
     );
     const languageSelector = screen.getByTestId("desktop-language-selector");
     const englishBtn = within(languageSelector).getByRole("button", {
@@ -276,14 +229,9 @@ describe("<Header /> rendering", () => {
 
   it("should render logo", () => {
     render(
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Header {...props} />
-      </MemoryRouter>,
+      </TestRouter>,
     );
     const desktopLogo = screen.getAllByAltText("openwisp")[0];
     expect(desktopLogo).toBeInTheDocument();
@@ -299,14 +247,9 @@ describe("<Header /> rendering", () => {
     };
     props = createTestProps(logo);
     render(
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Header {...props} />
-      </MemoryRouter>,
+      </TestRouter>,
     );
     const desktopLogo = screen.queryByAltText("openwisp");
     expect(desktopLogo).not.toBeInTheDocument();
@@ -322,14 +265,9 @@ describe("<Header /> rendering", () => {
       },
     });
     const {container} = render(
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Header {...props} />
-      </MemoryRouter>,
+      </TestRouter>,
     );
     expect(screen.getByText("announcement")).toBeInTheDocument();
     expect(container).toMatchSnapshot();
@@ -355,42 +293,27 @@ describe("<Header /> rendering", () => {
     props.isAuthenticated = true;
     props.userData.method = "saml";
     const {rerender} = render(
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Header {...props} />
-      </MemoryRouter>,
+      </TestRouter>,
     );
     let changePasswordLinks = screen.queryAllByText("Change Password");
     expect(changePasswordLinks).toHaveLength(0);
 
     props.userData.method = "social_login";
     rerender(
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Header {...props} />
-      </MemoryRouter>,
+      </TestRouter>,
     );
     changePasswordLinks = screen.queryAllByText("Change Password");
     expect(changePasswordLinks).toHaveLength(0);
 
     props.userData.method = "mobile_phone";
     rerender(
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Header {...props} />
-      </MemoryRouter>,
+      </TestRouter>,
     );
     changePasswordLinks = screen.getAllByText("Change Password");
     expect(changePasswordLinks.length).toBeGreaterThan(0);
@@ -406,14 +329,9 @@ describe("<Header /> interactions", () => {
 
   it("should call setLanguage function when 'language button' is clicked", () => {
     render(
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Header {...props} />
-      </MemoryRouter>,
+      </TestRouter>,
     );
 
     const italianButtons = screen.getAllByRole("button", {name: /italian/i});
@@ -428,14 +346,9 @@ describe("<Header /> interactions", () => {
 
   it("should call handleHamburger function when 'hamburger button' is clicked", () => {
     render(
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Header {...props} />
-      </MemoryRouter>,
+      </TestRouter>,
     );
 
     const hamburger = screen.getByRole("button", {name: /menu/i});
@@ -452,14 +365,9 @@ describe("<Header /> interactions", () => {
 
   it("should call handleHamburger function on Enter key press", () => {
     render(
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Header {...props} />
-      </MemoryRouter>,
+      </TestRouter>,
     );
 
     const hamburger = screen.getByRole("button", {name: /menu/i});

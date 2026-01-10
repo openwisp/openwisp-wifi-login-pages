@@ -1,7 +1,7 @@
 import {render, screen, waitFor} from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
-import {MemoryRouter} from "react-router-dom";
+import {TestRouter} from "../../test-utils";
 import {Cookies} from "react-cookie";
 import {Provider} from "react-redux";
 import {HelmetProvider} from "react-helmet-async";
@@ -120,15 +120,9 @@ const renderWithRouter = (props) => {
   return render(
     <HelmetProvider>
       <Provider store={mockedStore}>
-        <MemoryRouter
-          initialEntries={[props.location?.pathname || "/"]}
-          future={{
-            v7_startTransition: true,
-            v7_relativeSplatPath: true,
-          }}
-        >
+        <TestRouter initialEntries={[props.location?.pathname || "/"]}>
           <OrganizationWrapper {...props} />
-        </MemoryRouter>
+        </TestRouter>
       </Provider>
     </HelmetProvider>,
   );
@@ -299,15 +293,9 @@ describe("<OrganizationWrapper /> interactions", () => {
     rerender(
       <HelmetProvider>
         <Provider store={mockedStore}>
-          <MemoryRouter
-            initialEntries={[newProps.location?.pathname || "/"]}
-            future={{
-              v7_startTransition: true,
-              v7_relativeSplatPath: true,
-            }}
-          >
+          <TestRouter initialEntries={[newProps.location?.pathname || "/"]}>
             <OrganizationWrapper {...newProps} />
-          </MemoryRouter>
+          </TestRouter>
         </Provider>
       </HelmetProvider>,
     );
@@ -334,14 +322,9 @@ describe("<OrganizationWrapper /> interactions", () => {
     rerender(
       <HelmetProvider>
         <Provider store={invalidMockedStore}>
-          <MemoryRouter
-            future={{
-              v7_startTransition: true,
-              v7_relativeSplatPath: true,
-            }}
-          >
+          <TestRouter>
             <OrganizationWrapper {...invalidProps} />
-          </MemoryRouter>
+          </TestRouter>
         </Provider>
       </HelmetProvider>,
     );
@@ -431,15 +414,9 @@ describe("<OrganizationWrapper /> interactions", () => {
     rerender(
       <HelmetProvider>
         <Provider store={mockedStore}>
-          <MemoryRouter
-            initialEntries={[newProps.location?.pathname || "/"]}
-            future={{
-              v7_startTransition: true,
-              v7_relativeSplatPath: true,
-            }}
-          >
+          <TestRouter initialEntries={[newProps.location?.pathname || "/"]}>
             <OrganizationWrapper {...newProps} />
-          </MemoryRouter>
+          </TestRouter>
         </Provider>
       </HelmetProvider>,
     );
@@ -596,15 +573,9 @@ describe("Test <OrganizationWrapper /> routes", () => {
     return render(
       <HelmetProvider>
         <Provider store={mockedStore}>
-          <MemoryRouter
-            initialEntries={initialEntries}
-            future={{
-              v7_startTransition: true,
-              v7_relativeSplatPath: true,
-            }}
-          >
+          <TestRouter initialEntries={initialEntries}>
             <OrganizationWrapper {...passedProps} />
-          </MemoryRouter>
+          </TestRouter>
         </Provider>
       </HelmetProvider>,
     );

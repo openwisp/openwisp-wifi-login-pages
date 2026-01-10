@@ -1,7 +1,7 @@
 import {render, screen, fireEvent} from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
-import {MemoryRouter} from "react-router-dom";
+import {TestRouter} from "../../test-utils";
 import * as toastify from "react-toastify";
 import logError from "../../utils/log-error";
 import loadTranslation from "../../utils/load-translation";
@@ -36,14 +36,9 @@ describe("<Logout /> rendering with placeholder translation tags", () => {
   const props = createTestProps();
   it("should render translation placeholder correctly", () => {
     const {container} = render(
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Logout {...props} />
-      </MemoryRouter>,
+      </TestRouter>,
     );
     expect(container).toMatchSnapshot();
   });
@@ -56,14 +51,9 @@ describe("<Logout /> rendering", () => {
     props = createTestProps();
     loadTranslation("en", "default");
     const {container} = render(
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Logout {...props} />
-      </MemoryRouter>,
+      </TestRouter>,
     );
     expect(container).toMatchSnapshot();
   });
@@ -84,14 +74,9 @@ describe("<Logout /> interactions", () => {
   it("should set user authenticated when log in again is clicked", () => {
     props = createTestProps();
     render(
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Logout {...props} />
-      </MemoryRouter>,
+      </TestRouter>,
     );
 
     const loginButton = screen.getByRole("link", {name: /login again/i});
@@ -110,14 +95,9 @@ describe("<Logout /> interactions", () => {
   it("should call setTitle to set the title", () => {
     props = createTestProps();
     render(
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Logout {...props} />
-      </MemoryRouter>,
+      </TestRouter>,
     );
 
     expect(props.setTitle).toHaveBeenCalledWith("Logout", props.orgName);
@@ -129,14 +109,9 @@ describe("<Logout /> interactions", () => {
     props.isAuthenticated = true;
 
     render(
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Logout {...props} />
-      </MemoryRouter>,
+      </TestRouter>,
     );
 
     const loginButton = screen.getByRole("link", {name: /login again/i});

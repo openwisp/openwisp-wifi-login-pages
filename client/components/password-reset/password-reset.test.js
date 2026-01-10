@@ -3,7 +3,7 @@ import {render, screen, waitFor, fireEvent} from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
 import {toast} from "react-toastify";
-import {MemoryRouter} from "react-router-dom";
+import {TestRouter} from "../../test-utils";
 import {Provider} from "react-redux";
 
 import getConfig from "../../utils/get-config";
@@ -77,14 +77,9 @@ const createMockStore = () => {
 const renderWithProviders = (component) =>
   render(
     <Provider store={createMockStore()}>
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         {component}
-      </MemoryRouter>
+      </TestRouter>
     </Provider>,
   );
 

@@ -1,7 +1,7 @@
 import React from "react";
 import {render} from "@testing-library/react";
 import "@testing-library/jest-dom";
-import {MemoryRouter} from "react-router-dom";
+import {TestRouter} from "../../test-utils";
 import getConfig from "../../utils/get-config";
 import loadTranslation from "../../utils/load-translation";
 import DoesNotExist from "./404";
@@ -19,16 +19,7 @@ const createTestProps = (props) => ({
 });
 
 const renderWithRouter = (component) =>
-  render(
-    <MemoryRouter
-      future={{
-        v7_startTransition: true,
-        v7_relativeSplatPath: true,
-      }}
-    >
-      {component}
-    </MemoryRouter>,
-  );
+  render(<TestRouter>{component}</TestRouter>);
 
 describe("<DoesNotExist /> rendering with placeholder translation tags", () => {
   const props = createTestProps();

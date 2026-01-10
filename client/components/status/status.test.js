@@ -5,7 +5,7 @@ import React from "react";
 import {Cookies} from "react-cookie";
 import ShallowRenderer from "react-test-renderer/shallow";
 import {toast} from "react-toastify";
-import {MemoryRouter} from "react-router-dom";
+import {TestRouter} from "../../test-utils";
 import {Provider} from "react-redux";
 import getConfig from "../../utils/get-config";
 import loadTranslation from "../../utils/load-translation";
@@ -119,14 +119,9 @@ const createMockStore = (customConfig = {}) => {
 const renderWithProviders = (component, store = createMockStore()) =>
   render(
     <Provider store={store}>
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         {component}
-      </MemoryRouter>
+      </TestRouter>
     </Provider>,
   );
 

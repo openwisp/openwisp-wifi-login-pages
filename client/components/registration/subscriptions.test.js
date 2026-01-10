@@ -4,7 +4,7 @@ import "@testing-library/jest-dom";
 import React from "react";
 import {toast} from "react-toastify";
 import {cloneDeep} from "lodash";
-import {MemoryRouter} from "react-router-dom";
+import {TestRouter} from "../../test-utils";
 import {Provider} from "react-redux";
 import tick from "../../utils/tick";
 
@@ -157,14 +157,9 @@ const createMockStore = () => {
 const renderWithProviders = (component) =>
   render(
     <Provider store={createMockStore()}>
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         {component}
-      </MemoryRouter>
+      </TestRouter>
     </Provider>,
   );
 
@@ -225,14 +220,9 @@ const mountComponent = (passedProps) => {
 
   return render(
     <Provider store={mockedStore}>
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Registration {...passedProps} />
-      </MemoryRouter>
+      </TestRouter>
     </Provider>,
   );
 };
@@ -691,14 +681,9 @@ describe("test subscriptions", () => {
 
     rerender(
       <Provider store={createMockStore()}>
-        <MemoryRouter
-          future={{
-            v7_startTransition: true,
-            v7_relativeSplatPath: true,
-          }}
-        >
+        <TestRouter>
           <Registration {...props} loading={false} />
-        </MemoryRouter>
+        </TestRouter>
       </Provider>,
     );
 

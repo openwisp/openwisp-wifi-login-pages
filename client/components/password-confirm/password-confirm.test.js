@@ -2,7 +2,7 @@ import axios from "axios";
 import {render, screen, waitFor, fireEvent} from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
-import {MemoryRouter} from "react-router-dom";
+import {TestRouter} from "../../test-utils";
 import {Provider} from "react-redux";
 import {toast} from "react-toastify";
 import getConfig from "../../utils/get-config";
@@ -102,14 +102,9 @@ const renderWithProviders = (props) => {
 
   return render(
     <Provider store={mockedStore}>
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <PasswordConfirm {...props} />
-      </MemoryRouter>
+      </TestRouter>
     </Provider>,
   );
 };

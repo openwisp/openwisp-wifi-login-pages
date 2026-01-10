@@ -2,7 +2,7 @@ import {render, screen, waitFor, fireEvent} from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
 import axios from "axios";
-import {MemoryRouter} from "react-router-dom";
+import {TestRouter} from "../../test-utils";
 import getConfig from "../../utils/get-config";
 import getText from "../../utils/get-text";
 import Modal from "./modal";
@@ -48,14 +48,9 @@ describe("<Modal /> rendering", () => {
     props = createTestProps();
 
     const {container} = render(
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Modal {...props} />
-      </MemoryRouter>,
+      </TestRouter>,
     );
 
     await waitFor(() => {
@@ -85,14 +80,9 @@ describe("<Modal /> rendering", () => {
     });
 
     const {container} = render(
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Modal {...props} />
-      </MemoryRouter>,
+      </TestRouter>,
     );
 
     await waitFor(() => {
@@ -119,14 +109,9 @@ describe("<Modal /> rendering", () => {
     });
 
     const {container} = render(
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Modal {...props} />
-      </MemoryRouter>,
+      </TestRouter>,
     );
 
     await waitFor(() => {
@@ -146,14 +131,9 @@ describe("<Modal /> rendering", () => {
     props = createTestProps();
 
     const {container} = render(
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Modal {...props} />
-      </MemoryRouter>,
+      </TestRouter>,
     );
 
     await waitFor(() => {
@@ -196,14 +176,9 @@ describe("<Modal /> interactions", () => {
     props = createTestProps();
 
     render(
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Modal {...props} />
-      </MemoryRouter>,
+      </TestRouter>,
     );
 
     await waitFor(() => {
@@ -230,14 +205,9 @@ describe("<Modal /> interactions", () => {
     props = createTestProps();
 
     render(
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Modal {...props} />
-      </MemoryRouter>,
+      </TestRouter>,
     );
 
     await waitFor(() => {
@@ -284,14 +254,9 @@ describe("<Modal /> interactions", () => {
     props = createTestProps();
 
     const {unmount} = render(
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Modal {...props} />
-      </MemoryRouter>,
+      </TestRouter>,
     );
 
     await waitFor(() => {
@@ -320,14 +285,9 @@ describe("<Modal /> interactions", () => {
     props = createTestProps();
 
     render(
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Modal {...props} />
-      </MemoryRouter>,
+      </TestRouter>,
     );
 
     await waitFor(() => {
@@ -354,14 +314,9 @@ describe("<Modal /> interactions", () => {
     props = createTestProps();
 
     const {unmount} = render(
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter>
         <Modal {...props} />
-      </MemoryRouter>,
+      </TestRouter>,
     );
 
     // Wait for component to mount

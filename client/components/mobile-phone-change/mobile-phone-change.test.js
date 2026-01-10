@@ -4,8 +4,9 @@ import "@testing-library/jest-dom";
 import {Cookies} from "react-cookie";
 import {toast} from "react-toastify";
 import {Provider} from "react-redux";
-import {Routes, Route, MemoryRouter} from "react-router-dom";
+import {Routes, Route} from "react-router-dom";
 import React from "react";
+import {TestRouter} from "../../test-utils";
 import loadTranslation from "../../utils/load-translation";
 import tick from "../../utils/tick";
 import getConfig from "../../utils/get-config";
@@ -127,14 +128,9 @@ const renderWithProviders = (component, contextValue = loadingContextValue) =>
   render(
     <Provider store={createMockStore()}>
       <LoadingContext.Provider value={contextValue}>
-        <MemoryRouter
-          future={{
-            v7_startTransition: true,
-            v7_relativeSplatPath: true,
-          }}
-        >
+        <TestRouter>
           {component}
-        </MemoryRouter>
+        </TestRouter>
       </LoadingContext.Provider>
     </Provider>,
   );
@@ -167,18 +163,12 @@ const mountComponent = (props) => {
 
   return render(
     <Provider store={mockedStore}>
-      <MemoryRouter
-        initialEntries={["/"]}
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <TestRouter initialEntries={["/"]}>
         <Routes>
           <Route path="/test-org-2/status" element={<StatusMock />} />
           <Route path="*" element={<MobilePhoneChange {...props} />} />
         </Routes>
-      </MemoryRouter>
+      </TestRouter>
     </Provider>,
   );
 };

@@ -3,7 +3,8 @@ import "@testing-library/jest-dom";
 import React from "react";
 import {Cookies} from "react-cookie";
 
-import {MemoryRouter, Navigate} from "react-router-dom";
+import {Navigate} from "react-router-dom";
+import {TestRouter} from "../../test-utils";
 import {Provider} from "react-redux";
 import getConfig from "../../utils/get-config";
 import PaymentProcess from "./payment-process";
@@ -36,7 +37,6 @@ jest.mock("react-router-dom", () => {
   return {
     ...actual,
     Navigate: jest.fn(({to}) => <div data-testid="navigate" data-to={to} />),
-    MemoryRouter: actual.MemoryRouter,
   };
 });
 /* eslint-enable import/first */
@@ -89,14 +89,9 @@ const renderWithProviders = (component, mockSetLoading = null) => {
   return render(
     <Provider store={createMockStore()}>
       <LoadingContext.Provider value={{setLoading}}>
-        <MemoryRouter
-          future={{
-            v7_startTransition: true,
-            v7_relativeSplatPath: true,
-          }}
-        >
+        <TestRouter>
           {component}
-        </MemoryRouter>
+        </TestRouter>
       </LoadingContext.Provider>
     </Provider>,
   );

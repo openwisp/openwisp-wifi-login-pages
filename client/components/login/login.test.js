@@ -4,14 +4,9 @@ import "@testing-library/jest-dom";
 import React from "react";
 import * as dependency from "react-toastify";
 import {Provider} from "react-redux";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  MemoryRouter,
-} from "react-router-dom";
-import {createMemoryHistory} from "history";
+import {Route, Routes} from "react-router-dom";
 
+import {TestRouter} from "../../test-utils";
 import getConfig from "../../utils/get-config";
 import loadTranslation from "../../utils/load-translation";
 import Login from "./login";
@@ -95,7 +90,7 @@ jest.mock("../../utils/redirect-to-payment");
 /* eslint-enable import/first */
 
 const defaultConfig = getConfig("default", true);
-const loginForm = defaultConfig.components.login_form;
+const loginForm = JSON.parse(JSON.stringify(defaultConfig.components.login_form));
 loginForm.input_fields.phone_number =
   defaultConfig.components.registration_form.input_fields.phone_number;
 const createTestProps = (props) => ({
@@ -169,14 +164,7 @@ const renderWithProvider = (component) => {
 
   return render(
     <Provider store={mockedStore}>
-      <MemoryRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
-        {component}
-      </MemoryRouter>
+      <TestRouter>{component}</TestRouter>
     </Provider>,
   );
 };
@@ -337,22 +325,13 @@ describe("<Login /> interactions", () => {
       }),
     };
 
-    const historyMock = createMemoryHistory();
-
     return render(
       <Provider store={mockedStore}>
-        <Router
-          location={historyMock.location}
-          navigator={historyMock}
-          future={{
-            v7_startTransition: true,
-            v7_relativeSplatPath: true,
-          }}
-        >
+        <TestRouter initialEntries={["/"]}>
           <Routes>
             <Route path="/*" element={<Login {...passedProps} />} />
           </Routes>
-        </Router>
+        </TestRouter>
       </Provider>,
     );
   };
