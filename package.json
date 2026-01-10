@@ -65,7 +65,7 @@
     "@babel/plugin-transform-runtime": "^7.10.5",
     "@babel/plugin-transform-spread": "^7.15.8",
     "@babel/polyfill": "^7.10.1",
-    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-env": "^7.28.5",
     "@babel/preset-react": "^7.10.1",
     "@babel/runtime": "^7.12.5",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.8.0",
@@ -167,5 +167,10 @@
   "resolutions": {
     "cheerio": "0.22.0",
     "pretty-bytes": "5.6.0"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "client/*"
+    ]
   }
 }
