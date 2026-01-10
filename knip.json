@@ -6,21 +6,7 @@
     "server/**/*.js",
     "config/**/*.js",
     "src/**/*.{js,jsx}"
-  ],
-  "ignoreDependencies": [
-    "css-loader",
-    "style-loader",
-    "jest-environment-jsdom",
-    "webpack-dev-server",
-    "depcheck",
-    "babel-loader"
-  ],
+  ],  
   "ignore": ["client/assets/default/index.js", "client/assets/mobile/index.js"],
-  "ignoreExportsUsedInFile": true,
-  "webpack": {
-    "config": ["config/webpack.config.js"]
-  },
-  "jest": {
-    "config": ["package.json"]
-  }
+  "ignoreExportsUsedInFile": true
 }

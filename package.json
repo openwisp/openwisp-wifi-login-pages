@@ -104,8 +104,6 @@
     "webpack-dev-server": "^5.2.2"
   },
   "scripts": {
-    "knip": "knip",
-    "knip:production": "knip --production",
     "build": "export NODE_OPTIONS=--openssl-legacy-provider && npm run setup && webpack --mode production --progress --config config/webpack.config.js",
     "build-dev": "export NODE_OPTIONS=--openssl-legacy-provider && npm run setup && webpack --mode development --progress --config config/webpack.config.js",
     "client": "export NODE_OPTIONS=--openssl-legacy-provider && npm run setup && webpack serve --host 0.0.0.0 --mode development --config config/webpack.config.js",
