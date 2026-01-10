@@ -50,7 +50,6 @@ function parseAndReportKnipResults(result) {
 
   if (hasIssues) {
     console.error("❌ Knip found issues:\n");
-
     if (issues.dependencies.size > 0) {
       console.error("Unused dependencies:");
       Array.from(issues.dependencies)
@@ -72,7 +71,6 @@ function parseAndReportKnipResults(result) {
         .forEach((d) => console.error(`  - ${d}`));
       console.error("");
     }
-
     if (issues.unusedFiles.size > 0) {
       console.error("Unused files:");
       Array.from(issues.unusedFiles)
@@ -80,7 +78,6 @@ function parseAndReportKnipResults(result) {
         .forEach((f) => console.error(`  - ${f}`));
       console.error("");
     }
-
     if (issues.unusedExports.length > 0) {
       console.error("Unused exports:");
       issues.unusedExports
@@ -88,10 +85,8 @@ function parseAndReportKnipResults(result) {
         .forEach((exp) => console.error(`  - ${exp.name} (${exp.file})`));
       console.error("");
     }
-
     return true; // has issues
   }
-
   return false; // no issues
 }
 
@@ -101,12 +96,10 @@ try {
     stdio: ["pipe", "pipe", "pipe"],
   });
   const result = JSON.parse(output);
-
   const hasIssues = parseAndReportKnipResults(result);
   if (hasIssues) {
     process.exit(1);
   }
-
   console.log("✅ Knip passed: no issues found");
 } catch (error) {
   if (error.stdout) {
