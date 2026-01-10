@@ -6,7 +6,7 @@
     "server/**/*.js",
     "config/**/*.js",
     "src/**/*.{js,jsx}"
-  ],  
+  ],
   "ignore": ["client/assets/default/index.js", "client/assets/mobile/index.js"],
   "ignoreExportsUsedInFile": true
 }
