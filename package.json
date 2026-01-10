@@ -166,8 +166,7 @@
   },
   "resolutions": {
     "cheerio": "0.22.0",
-    "pretty-bytes": "5.6.0",
-    "marked": "^15.0.12"
+    "pretty-bytes": "5.6.0"
   },
   "nodemonConfig": {
     "ignore": [
