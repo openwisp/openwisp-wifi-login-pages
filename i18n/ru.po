@@ -176,6 +176,22 @@ msgstr "Вы хотите в следующий раз пройти автома
 msgid "CURRENT_SUBSCRIPTION_TXT"
 msgstr "Текущая подписка:"
 
+#: client/components/status/status.js:1175
+msgid "TIME_FORMAT_LABEL"
+msgstr "чч:мм:сс"
+
+#: client/components/status/status.js:1170
+msgid "USAGE_OF"
+msgstr "из"
+
+#: client/components/status/status.js:1171
+msgid "USAGE_USED"
+msgstr "использовано"
+
+#: client/components/status/status.js:1172
+msgid "USAGE_REMAINING"
+msgstr "осталось"
+
 #: client/components/status/status.js:1179
 msgid "USAGE_LIMIT_EXHAUSTED_TXT"
 msgstr ""

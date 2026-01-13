@@ -41,11 +41,20 @@ exports[`<Status /> interactions should hide check if check.value is zero 1`] = 
               00:00:00
             </strong>
              
-            of
+            USAGE_OF
              
-            03:00:00
+            03:00:00 (TIME_FORMAT_LABEL)
              
-            used
+            USAGE_USED
+          </p>
+          <p
+            className="progress remaining"
+          >
+            <strong>
+              03:00:00 (TIME_FORMAT_LABEL)
+            </strong>
+             
+            USAGE_REMAINING
           </p>
         </div>
       </div>
@@ -386,11 +395,20 @@ exports[`<Status /> interactions should show user's radius usage 1`] = `
               00:00:00
             </strong>
              
-            of
+            USAGE_OF
              
-            03:00:00
+            03:00:00 (TIME_FORMAT_LABEL)
              
-            used
+            USAGE_USED
+          </p>
+          <p
+            className="progress remaining"
+          >
+            <strong>
+              03:00:00 (TIME_FORMAT_LABEL)
+            </strong>
+             
+            USAGE_REMAINING
           </p>
         </div>
         <div
@@ -408,11 +426,20 @@ exports[`<Status /> interactions should show user's radius usage 1`] = `
               0
             </strong>
              
-            of
+            USAGE_OF
              
             3 GB
              
-            used
+            USAGE_USED
+          </p>
+          <p
+            className="progress remaining"
+          >
+            <strong>
+              3 GB
+            </strong>
+             
+            USAGE_REMAINING
           </p>
         </div>
       </div>
@@ -799,11 +826,20 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
               02:58:20
             </strong>
              
-            of
+            USAGE_OF
              
-            03:00:00
+            03:00:00 (TIME_FORMAT_LABEL)
              
-            used
+            USAGE_USED
+          </p>
+          <p
+            className="progress remaining"
+          >
+            <strong>
+              00:01:40 (TIME_FORMAT_LABEL)
+            </strong>
+             
+            USAGE_REMAINING
           </p>
         </div>
         <div
@@ -821,11 +857,20 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
               3 GB
             </strong>
              
-            of
+            USAGE_OF
              
             3 GB
              
-            used
+            USAGE_USED
+          </p>
+          <p
+            className="progress remaining"
+          >
+            <strong>
+              0
+            </strong>
+             
+            USAGE_REMAINING
           </p>
         </div>
         <p
@@ -1109,11 +1154,20 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
               02:58:20
             </strong>
              
-            of
+            USAGE_OF
              
-            03:00:00
+            03:00:00 (TIME_FORMAT_LABEL)
              
-            used
+            USAGE_USED
+          </p>
+          <p
+            className="progress remaining"
+          >
+            <strong>
+              00:01:40 (TIME_FORMAT_LABEL)
+            </strong>
+             
+            USAGE_REMAINING
           </p>
         </div>
         <div
@@ -1131,11 +1185,20 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
               3 GB
             </strong>
              
-            of
+            USAGE_OF
              
             3 GB
              
-            used
+            USAGE_USED
+          </p>
+          <p
+            className="progress remaining"
+          >
+            <strong>
+              0
+            </strong>
+             
+            USAGE_REMAINING
           </p>
         </div>
         <p
@@ -1337,11 +1400,20 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
               02:58:20
             </strong>
              
-            of
+            USAGE_OF
              
-            03:00:00
+            03:00:00 (TIME_FORMAT_LABEL)
              
-            used
+            USAGE_USED
+          </p>
+          <p
+            className="progress remaining"
+          >
+            <strong>
+              00:01:40 (TIME_FORMAT_LABEL)
+            </strong>
+             
+            USAGE_REMAINING
           </p>
         </div>
         <div
@@ -1359,11 +1431,20 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
               3 GB
             </strong>
              
-            of
+            USAGE_OF
              
             3 GB
              
-            used
+            USAGE_USED
+          </p>
+          <p
+            className="progress remaining"
+          >
+            <strong>
+              0
+            </strong>
+             
+            USAGE_REMAINING
           </p>
         </div>
         <p
@@ -1647,11 +1728,20 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
               02:58:20
             </strong>
              
-            of
+            USAGE_OF
              
-            03:00:00
+            03:00:00 (TIME_FORMAT_LABEL)
              
-            used
+            USAGE_USED
+          </p>
+          <p
+            className="progress remaining"
+          >
+            <strong>
+              00:01:40 (TIME_FORMAT_LABEL)
+            </strong>
+             
+            USAGE_REMAINING
           </p>
         </div>
         <div
@@ -1669,11 +1759,20 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
               3 GB
             </strong>
              
-            of
+            USAGE_OF
              
             3 GB
              
-            used
+            USAGE_USED
+          </p>
+          <p
+            className="progress remaining"
+          >
+            <strong>
+              0
+            </strong>
+             
+            USAGE_REMAINING
           </p>
         </div>
         <p

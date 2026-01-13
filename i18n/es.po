@@ -176,6 +176,22 @@ msgstr "¿Quieres iniciar sesión automáticamente la próxima vez?"
 msgid "CURRENT_SUBSCRIPTION_TXT"
 msgstr "Suscripción actual:"
 
+#: client/components/status/status.js:1175
+msgid "TIME_FORMAT_LABEL"
+msgstr "hh:mm:ss"
+
+#: client/components/status/status.js:1170
+msgid "USAGE_OF"
+msgstr "de"
+
+#: client/components/status/status.js:1171
+msgid "USAGE_USED"
+msgstr "utilizado"
+
+#: client/components/status/status.js:1172
+msgid "USAGE_REMAINING"
+msgstr "restante"
+
 #: client/components/status/status.js:1179
 msgid "USAGE_LIMIT_EXHAUSTED_TXT"
 msgstr ""

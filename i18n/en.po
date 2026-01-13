@@ -170,6 +170,22 @@ msgstr "Do you want to automatically log in the next time?"
 msgid "CURRENT_SUBSCRIPTION_TXT"
 msgstr "Current subscription:"
 
+#: client/components/status/status.js:1175
+msgid "TIME_FORMAT_LABEL"
+msgstr "hh:mm:ss"
+
+#: client/components/status/status.js:1170
+msgid "USAGE_OF"
+msgstr "of"
+
+#: client/components/status/status.js:1171
+msgid "USAGE_USED"
+msgstr "used"
+
+#: client/components/status/status.js:1172
+msgid "USAGE_REMAINING"
+msgstr "remaining"
+
 #: client/components/status/status.js:1179
 msgid "USAGE_LIMIT_EXHAUSTED_TXT"
 msgstr ""

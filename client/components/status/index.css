@@ -104,6 +104,11 @@ progress + p.progress {
 .limit-info p.progress {
   font-size: 20px;
 }
+.limit-info p.progress.remaining {
+  font-size: 18px;
+  color: #2e7d32;
+  margin-top: 5px;
+}
 .limit-info p:last-child {
   margin-bottom: 0;
 }

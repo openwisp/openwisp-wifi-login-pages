@@ -170,6 +170,22 @@ msgstr "Autenticâsi in maniere automatiche la prossime volte?"
 msgid "CURRENT_SUBSCRIPTION_TXT"
 msgstr "Sotons abonament:"
 
+#: client/components/status/status.js:1175
+msgid "TIME_FORMAT_LABEL"
+msgstr "hh:mm:ss"
+
+#: client/components/status/status.js:1170
+msgid "USAGE_OF"
+msgstr "di"
+
+#: client/components/status/status.js:1171
+msgid "USAGE_USED"
+msgstr "doprât"
+
+#: client/components/status/status.js:1172
+msgid "USAGE_REMAINING"
+msgstr "restant"
+
 #: client/components/status/status.js:1179
 msgid "USAGE_LIMIT_EXHAUSTED_TXT"
 msgstr ""

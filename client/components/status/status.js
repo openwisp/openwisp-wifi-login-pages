@@ -1163,15 +1163,20 @@ export default class Status extends React.Component {
   });
 
   // eslint-disable-next-line class-methods-use-this
-  getUserCheckFormattedValue = (value, type) => {
+  getUserCheckFormattedValue = (value, type, includeLabel = false) => {
     const intValue = parseInt(value, 10);
     switch (type) {
       case "bytes":
         return intValue === 0
           ? 0
           : prettyBytes(intValue, {space: true, maximumFractionDigits: 2});
-      case "seconds":
-        return timeFromSeconds(intValue);
+      case "seconds": {
+        const timeStr = timeFromSeconds(intValue);
+        if (includeLabel) {
+          return `${timeStr} (${t`TIME_FORMAT_LABEL`})`;
+        }
+        return timeStr;
+      }
       default:
         return value;
     }
@@ -1259,32 +1264,45 @@ export default class Status extends React.Component {
                     </h3>
                   )}
                   {userChecks &&
-                    userChecks.map(
-                      (check) =>
-                        check.value !== "0" && (
-                          <div key={check.attribute}>
-                            <progress
-                              id={check.attribute}
-                              max={check.value}
-                              value={check.result}
-                            />
-                            <p className="progress">
-                              <strong>
-                                {this.getUserCheckFormattedValue(
-                                  check.result,
-                                  check.type,
-                                )}
-                              </strong>{" "}
-                              of{" "}
+                    userChecks.map((check) => {
+                      if (check.value === "0") return null;
+                      const remaining =
+                        parseInt(check.value, 10) - parseInt(check.result, 10);
+                      return (
+                        <div key={check.attribute}>
+                          <progress
+                            id={check.attribute}
+                            max={check.value}
+                            value={check.result}
+                          />
+                          <p className="progress">
+                            <strong>
                               {this.getUserCheckFormattedValue(
-                                check.value,
+                                check.result,
                                 check.type,
-                              )}{" "}
-                              used
-                            </p>
-                          </div>
-                        ),
-                    )}
+                              )}
+                            </strong>{" "}
+                            {t`USAGE_OF`}{" "}
+                            {this.getUserCheckFormattedValue(
+                              check.value,
+                              check.type,
+                              true,
+                            )}{" "}
+                            {t`USAGE_USED`}
+                          </p>
+                          <p className="progress remaining">
+                            <strong>
+                              {this.getUserCheckFormattedValue(
+                                remaining,
+                                check.type,
+                                true,
+                              )}
+                            </strong>{" "}
+                            {t`USAGE_REMAINING`}
+                          </p>
+                        </div>
+                      );
+                    })}
                   {warningMessage && (
                     <p className="important">
                       <strong>{gettext(warningMessage)}</strong>

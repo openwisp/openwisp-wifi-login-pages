@@ -168,6 +168,22 @@ msgstr "Se želite naslednjič samodejno prijaviti?"
 msgid "CURRENT_SUBSCRIPTION_TXT"
 msgstr "Aktuálne predplatné:"
 
+#: client/components/status/status.js:1175
+msgid "TIME_FORMAT_LABEL"
+msgstr "hh:mm:ss"
+
+#: client/components/status/status.js:1170
+msgid "USAGE_OF"
+msgstr "od"
+
+#: client/components/status/status.js:1171
+msgid "USAGE_USED"
+msgstr "uporabljeno"
+
+#: client/components/status/status.js:1172
+msgid "USAGE_REMAINING"
+msgstr "preostalo"
+
 #: client/components/status/status.js:1179
 msgid "USAGE_LIMIT_EXHAUSTED_TXT"
 msgstr ""
