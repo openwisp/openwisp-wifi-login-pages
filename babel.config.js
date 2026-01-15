@@ -16,7 +16,6 @@ module.exports = {
     ["@babel/plugin-transform-arrow-functions"],
     ["@babel/plugin-syntax-dynamic-import"],
     ["@babel/plugin-transform-private-methods", {loose: true}],
-    ["@babel/plugin-transform-private-property-in-object", {loose: true}],
     ["@babel/plugin-transform-spread"],
     "transform-remove-strict-mode",
   ],

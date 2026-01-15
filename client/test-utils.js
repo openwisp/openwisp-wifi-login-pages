@@ -1,8 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {render} from "@testing-library/react";
 import {MemoryRouter} from "react-router-dom";
-import {Provider} from "react-redux";
 
 /**
  * Shared MemoryRouter configuration with React Router v7 future flags
@@ -23,19 +21,6 @@ const routerFutureFlags = {
  * @param {Object} options.routerProps - Additional props for MemoryRouter
  * @returns {Object} - Render result from @testing-library/react
  */
-export function renderWithRouter(component, options = {}) {
-  const {initialEntries = ["/"], routerProps = {}} = options;
-
-  return render(
-    <MemoryRouter
-      initialEntries={initialEntries}
-      future={routerFutureFlags}
-      {...routerProps}
-    >
-      {component}
-    </MemoryRouter>,
-  );
-}
 
 /**
  * Renders a component wrapped with Redux Provider and MemoryRouter with v7 future flags
@@ -46,25 +31,6 @@ export function renderWithRouter(component, options = {}) {
  * @param {Object} options.routerProps - Additional props for MemoryRouter
  * @returns {Object} - Render result from @testing-library/react
  */
-export function renderWithRouterAndStore(component, options = {}) {
-  const {store, initialEntries = ["/"], routerProps = {}} = options;
-
-  if (!store) {
-    throw new Error("store is required for renderWithRouterAndStore");
-  }
-
-  return render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={initialEntries}
-        future={routerFutureFlags}
-        {...routerProps}
-      >
-        {component}
-      </MemoryRouter>
-    </Provider>,
-  );
-}
 
 /**
  * TestRouter component that wraps children with MemoryRouter and v7 future flags
