@@ -12,3 +12,5 @@ openwisp-qa-check --skip-checkmigrations \
                   --skip-flake8 \
                   --skip-isort \
                   --skip-checkendline
+
+node scripts/ci-knip.js           
