@@ -1,8 +1,8 @@
 import {render, screen, fireEvent} from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
-import {TestRouter} from "../../test-utils";
 import * as toastify from "react-toastify";
+import {TestRouter} from "../../test-utils";
 import logError from "../../utils/log-error";
 import loadTranslation from "../../utils/load-translation";
 import Logout from "./logout";
@@ -69,6 +69,7 @@ describe("<Logout /> interactions", () => {
 
   afterEach(() => {
     jest.clearAllMocks();
+    jest.restoreAllMocks();
   });
 
   it("should set user authenticated when log in again is clicked", () => {

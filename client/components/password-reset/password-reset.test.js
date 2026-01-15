@@ -3,8 +3,8 @@ import {render, screen, waitFor, fireEvent} from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
 import {toast} from "react-toastify";
-import {TestRouter} from "../../test-utils";
 import {Provider} from "react-redux";
+import {TestRouter} from "../../test-utils";
 
 import getConfig from "../../utils/get-config";
 import loadTranslation from "../../utils/load-translation";
@@ -77,9 +77,7 @@ const createMockStore = () => {
 const renderWithProviders = (component) =>
   render(
     <Provider store={createMockStore()}>
-      <TestRouter>
-        {component}
-      </TestRouter>
+      <TestRouter>{component}</TestRouter>
     </Provider>,
   );
 

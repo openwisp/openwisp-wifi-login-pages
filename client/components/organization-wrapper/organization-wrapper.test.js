@@ -1,10 +1,10 @@
 import {render, screen, waitFor} from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
-import {TestRouter} from "../../test-utils";
 import {Cookies} from "react-cookie";
 import {Provider} from "react-redux";
 import {HelmetProvider} from "react-helmet-async";
+import {TestRouter} from "../../test-utils";
 
 import getConfig from "../../utils/get-config";
 import loadTranslation from "../../utils/load-translation";

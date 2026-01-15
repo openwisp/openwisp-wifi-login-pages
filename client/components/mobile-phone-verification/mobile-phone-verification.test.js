@@ -4,9 +4,8 @@ import "@testing-library/jest-dom";
 import {toast} from "react-toastify";
 import React from "react";
 import {Cookies} from "react-cookie";
-import {TestRouter} from "../../test-utils";
 import {Provider} from "react-redux";
-import tick from "../../utils/tick";
+import {TestRouter} from "../../test-utils";
 
 import getConfig from "../../utils/get-config";
 import MobilePhoneVerification from "./mobile-phone-verification";
@@ -90,9 +89,7 @@ const createMockStore = () => {
 const renderWithProviders = (component) =>
   render(
     <Provider store={createMockStore()}>
-      <TestRouter>
-        {component}
-      </TestRouter>
+      <TestRouter>{component}</TestRouter>
     </Provider>,
   );
 
@@ -226,10 +223,10 @@ describe("Mobile Phone Token verification: standard flow", () => {
 
     renderWithProviders(<MobilePhoneVerification {...props} />);
 
-    await tick();
-
-    expect(axios).toHaveBeenCalled();
-    expect(toast.error).toHaveBeenCalledTimes(1);
+    await waitFor(() => {
+      expect(axios).toHaveBeenCalled();
+      expect(toast.error).toHaveBeenCalledTimes(1);
+    });
   });
 
   it("should check if active token is present", async () => {
@@ -245,10 +242,9 @@ describe("Mobile Phone Token verification: standard flow", () => {
 
     renderWithProviders(<MobilePhoneVerification {...props} />);
 
-    await tick();
-
-    // Component should check for active token
-    expect(axios).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(axios).toHaveBeenCalled();
+    });
   });
 
   it("should not show error if active phone token returns 404", async () => {
@@ -286,10 +282,10 @@ describe("Mobile Phone Token verification: standard flow", () => {
 
     renderWithProviders(<MobilePhoneVerification {...props} />);
 
-    await tick();
-
-    expect(logError).not.toHaveBeenCalled();
-    expect(toast.error).not.toHaveBeenCalled();
+    await waitFor(() => {
+      expect(logError).not.toHaveBeenCalled();
+      expect(toast.error).not.toHaveBeenCalled();
+    });
   });
 
   it("should not execute createPhoneToken if invalid organization", async () => {
@@ -463,9 +459,9 @@ describe("Mobile Phone Token verification: standard flow", () => {
     const submitButton = screen.getByRole("button", {name: /submit/i});
     fireEvent.click(submitButton);
 
-    await tick();
-
-    expect(props.setUserData).toHaveBeenCalledTimes(1);
+    await waitFor(() => {
+      expect(props.setUserData).toHaveBeenCalledTimes(1);
+    });
 
     expect(props.setUserData).toHaveBeenCalledWith({
       ...userData,
@@ -537,8 +533,6 @@ describe("Mobile Phone Token verification: standard flow", () => {
     const submitButton = screen.getByRole("button", {name: /submit/i});
     fireEvent.click(submitButton);
 
-    await tick();
-
     await waitFor(() => {
       expect(screen.getByText(/invalid code/i)).toBeInTheDocument();
     });
@@ -567,14 +561,17 @@ describe("Mobile Phone Token verification: standard flow", () => {
 
     renderWithProviders(<MobilePhoneVerification {...props} />);
 
-    await tick();
+    await waitFor(() => {
+      expect(screen.getByRole("button", {name: /logout/i})).toBeInTheDocument();
+    });
 
     const logoutButton = screen.getByRole("button", {name: /logout/i});
     fireEvent.click(logoutButton);
 
-    await tick();
+    await waitFor(() => {
+      expect(handleLogout).toHaveBeenCalledTimes(1);
+    });
 
-    expect(handleLogout).toHaveBeenCalledTimes(1);
     expect(handleLogout).toHaveBeenCalledWith(
       props.logout,
       props.cookies,
@@ -588,12 +585,12 @@ describe("Mobile Phone Token verification: standard flow", () => {
   it("should set title", async () => {
     renderWithProviders(<MobilePhoneVerification {...props} />);
 
-    await tick();
-
-    expect(props.setTitle).toHaveBeenCalledWith(
-      "Verify mobile number",
-      props.orgName,
-    );
+    await waitFor(() => {
+      expect(props.setTitle).toHaveBeenCalledWith(
+        "Verify mobile number",
+        props.orgName,
+      );
+    });
   });
 
   it("should not call API to resend token if one has already sent", async () => {
@@ -602,11 +599,11 @@ describe("Mobile Phone Token verification: standard flow", () => {
 
     renderWithProviders(<MobilePhoneVerification {...props} />);
 
-    await tick();
-
-    // Since token was already sent, createPhoneToken API shouldn't be called
-    // axios is still called once for activePhoneToken check
-    expect(axios).toHaveBeenCalledTimes(1);
+    await waitFor(() => {
+      // Since token was already sent, createPhoneToken API shouldn't be called
+      // axios is still called once for activePhoneToken check
+      expect(axios).toHaveBeenCalledTimes(1);
+    });
 
     sessionStorage.removeItem("owPhoneTokenSent");
   });
@@ -630,20 +627,20 @@ describe("Mobile Phone Token verification: standard flow", () => {
 
     renderWithProviders(<MobilePhoneVerification {...props} />);
 
-    await tick();
-
-    expect(logError).toHaveBeenCalledWith(
-      expect.objectContaining({
-        message: "Request failed with status code 400",
-        response: {
-          data: {non_field_errors: ["Bad request"]},
-          status: 400,
-          statusText: "BAD REQUEST",
-        },
-      }),
-      "Bad request",
-    );
-    expect(toast.error).toHaveBeenCalledTimes(1);
+    await waitFor(() => {
+      expect(logError).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: "Request failed with status code 400",
+          response: {
+            data: {non_field_errors: ["Bad request"]},
+            status: 400,
+            statusText: "BAD REQUEST",
+          },
+        }),
+        "Bad request",
+      );
+      expect(toast.error).toHaveBeenCalledTimes(1);
+    });
   });
 });
 
@@ -670,10 +667,10 @@ describe("Mobile Phone Token verification: corner cases", () => {
 
     renderWithProviders(<MobilePhoneVerification {...props} />);
 
-    await tick();
-
-    // Should not create phone token for already verified user
-    expect(axios).not.toHaveBeenCalled();
+    await waitFor(() => {
+      // Should not create phone token for already verified user
+      expect(axios).not.toHaveBeenCalled();
+    });
   });
 
   it("should not proceed if mobile verification is not enabled", async () => {
@@ -683,9 +680,9 @@ describe("Mobile Phone Token verification: corner cases", () => {
 
     renderWithProviders(<MobilePhoneVerification {...props} />);
 
-    await tick();
-
-    // Should not proceed with verification if feature is disabled
-    expect(axios).not.toHaveBeenCalled();
+    await waitFor(() => {
+      // Should not proceed with verification if feature is disabled
+      expect(axios).not.toHaveBeenCalled();
+    });
   });
 });

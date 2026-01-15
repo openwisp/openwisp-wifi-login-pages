@@ -4,8 +4,8 @@ import "@testing-library/jest-dom";
 import React from "react";
 import {toast} from "react-toastify";
 import {cloneDeep} from "lodash";
-import {TestRouter} from "../../test-utils";
 import {Provider} from "react-redux";
+import {TestRouter} from "../../test-utils";
 import tick from "../../utils/tick";
 
 import getConfig from "../../utils/get-config";
@@ -157,9 +157,7 @@ const createMockStore = () => {
 const renderWithProviders = (component) =>
   render(
     <Provider store={createMockStore()}>
-      <TestRouter>
-        {component}
-      </TestRouter>
+      <TestRouter>{component}</TestRouter>
     </Provider>,
   );
 

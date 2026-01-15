@@ -5,8 +5,8 @@ import React from "react";
 import {Cookies} from "react-cookie";
 import ShallowRenderer from "react-test-renderer/shallow";
 import {toast} from "react-toastify";
-import {TestRouter} from "../../test-utils";
 import {Provider} from "react-redux";
+import {TestRouter} from "../../test-utils";
 import getConfig from "../../utils/get-config";
 import loadTranslation from "../../utils/load-translation";
 import logError from "../../utils/log-error";
@@ -119,9 +119,7 @@ const createMockStore = (customConfig = {}) => {
 const renderWithProviders = (component, store = createMockStore()) =>
   render(
     <Provider store={store}>
-      <TestRouter>
-        {component}
-      </TestRouter>
+      <TestRouter>{component}</TestRouter>
     </Provider>,
   );
 

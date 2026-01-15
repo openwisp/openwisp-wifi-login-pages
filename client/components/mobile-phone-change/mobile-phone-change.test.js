@@ -61,7 +61,7 @@ const mockConfig = {
 
 jest.mock("../../utils/get-config", () => ({
   __esModule: true,
-  default: jest.fn(() => mockConfig),
+  default: jest.fn(() => JSON.parse(JSON.stringify(mockConfig))),
 }));
 jest.mock("../../utils/validate-token");
 jest.mock("../../utils/load-translation");
@@ -118,7 +118,7 @@ const createMockStore = () => {
   };
 
   return {
-    subscribe: () => {},
+    subscribe: () => () => {},
     dispatch: () => {},
     getState: () => state,
   };
@@ -128,9 +128,7 @@ const renderWithProviders = (component, contextValue = loadingContextValue) =>
   render(
     <Provider store={createMockStore()}>
       <LoadingContext.Provider value={contextValue}>
-        <TestRouter>
-          {component}
-        </TestRouter>
+        <TestRouter>{component}</TestRouter>
       </LoadingContext.Provider>
     </Provider>,
   );
@@ -145,7 +143,7 @@ describe("<MobilePhoneChange /> rendering with placeholder translation tags", ()
 
 const mountComponent = (props) => {
   const mockedStore = {
-    subscribe: () => {},
+    subscribe: () => () => {},
     dispatch: () => {},
     getState: () => ({
       organization: {
@@ -165,7 +163,7 @@ const mountComponent = (props) => {
     <Provider store={mockedStore}>
       <TestRouter initialEntries={["/"]}>
         <Routes>
-          <Route path="/test-org-2/status" element={<StatusMock />} />
+          <Route path={`/${props.orgSlug}/status`} element={<StatusMock />} />
           <Route path="*" element={<MobilePhoneChange {...props} />} />
         </Routes>
       </TestRouter>

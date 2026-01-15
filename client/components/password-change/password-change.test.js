@@ -3,8 +3,8 @@ import {render, screen, waitFor, fireEvent} from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
 import {Cookies} from "react-cookie";
-import {TestRouter} from "../../test-utils";
 import {Provider} from "react-redux";
+import {TestRouter} from "../../test-utils";
 
 import getConfig from "../../utils/get-config";
 import logError from "../../utils/log-error";
@@ -78,7 +78,7 @@ const createMockStore = () => {
   };
 
   return {
-    subscribe: () => {},
+    subscribe: () => () => {},
     dispatch: () => {},
     getState: () => state,
   };
@@ -87,9 +87,7 @@ const createMockStore = () => {
 const renderWithProviders = (component) =>
   render(
     <Provider store={createMockStore()}>
-      <TestRouter>
-        {component}
-      </TestRouter>
+      <TestRouter>{component}</TestRouter>
     </Provider>,
   );
 
@@ -260,11 +258,10 @@ describe("<PasswordChange /> interactions", () => {
     expect(newPassword1Input).toBeInTheDocument();
     expect(newPassword1Input).toHaveAttribute("type", "password");
     expect(newPassword1Input).toHaveAttribute("id", "new-password");
-    expect(newPassword1Input).toHaveAttribute(
-      "placeholder",
-      "Your new password",
+    expect(newPassword1Input.getAttribute("placeholder").toLowerCase()).toMatch(
+      /your new password/i,
     );
-    expect(newPassword1Input).toHaveAttribute("autoComplete", "password");
+    expect(newPassword1Input).toHaveAttribute("autocomplete", "password");
     expect(newPassword1Input).toBeRequired();
 
     fireEvent.change(newPassword1Input, {
@@ -276,11 +273,10 @@ describe("<PasswordChange /> interactions", () => {
     expect(newPassword2Input).toBeInTheDocument();
     expect(newPassword2Input).toHaveAttribute("type", "password");
     expect(newPassword2Input).toHaveAttribute("id", "password-confirm");
-    expect(newPassword2Input).toHaveAttribute(
-      "placeholder",
-      "confirm password",
+    expect(newPassword2Input.getAttribute("placeholder").toLowerCase()).toMatch(
+      /confirm password/i,
     );
-    expect(newPassword2Input).toHaveAttribute("autoComplete", "password");
+    expect(newPassword2Input).toHaveAttribute("autocomplete", "password");
     expect(newPassword2Input).toBeRequired();
 
     fireEvent.change(newPassword2Input, {

@@ -2,10 +2,9 @@ import {render, waitFor, act, within} from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
 import {Cookies} from "react-cookie";
-
 import {Navigate} from "react-router-dom";
-import {TestRouter} from "../../test-utils";
 import {Provider} from "react-redux";
+import {TestRouter} from "../../test-utils";
 import getConfig from "../../utils/get-config";
 import PaymentProcess from "./payment-process";
 import tick from "../../utils/tick";
@@ -89,9 +88,7 @@ const renderWithProviders = (component, mockSetLoading = null) => {
   return render(
     <Provider store={createMockStore()}>
       <LoadingContext.Provider value={{setLoading}}>
-        <TestRouter>
-          {component}
-        </TestRouter>
+        <TestRouter>{component}</TestRouter>
       </LoadingContext.Provider>
     </Provider>,
   );

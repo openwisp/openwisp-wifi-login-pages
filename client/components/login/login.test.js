@@ -90,7 +90,9 @@ jest.mock("../../utils/redirect-to-payment");
 /* eslint-enable import/first */
 
 const defaultConfig = getConfig("default", true);
-const loginForm = JSON.parse(JSON.stringify(defaultConfig.components.login_form));
+const loginForm = JSON.parse(
+  JSON.stringify(defaultConfig.components.login_form),
+);
 loginForm.input_fields.phone_number =
   defaultConfig.components.registration_form.input_fields.phone_number;
 const createTestProps = (props) => ({

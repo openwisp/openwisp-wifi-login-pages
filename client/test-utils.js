@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import {render} from "@testing-library/react";
 import {MemoryRouter} from "react-router-dom";
 import {Provider} from "react-redux";
@@ -80,6 +81,16 @@ export function TestRouter({children, initialEntries = ["/"], ...props}) {
     </MemoryRouter>
   );
 }
+
+TestRouter.propTypes = {
+  children: PropTypes.node,
+  initialEntries: PropTypes.arrayOf(PropTypes.string),
+};
+
+TestRouter.defaultProps = {
+  children: null,
+  initialEntries: ["/"],
+};
 
 /**
  * Export the router future flags for tests that need direct access
