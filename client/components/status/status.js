@@ -69,6 +69,7 @@ export default class Status extends React.Component {
       showUpgradeBtn: true,
     };
     this.repeatLogin = false;
+    this.isComponentMounted = true;
     this.getUserRadiusSessions = this.getUserRadiusSessions.bind(this);
     this.getUserRadiusUsage = this.getUserRadiusUsage.bind(this);
     this.getPlansSuccessCallback = this.getPlansSuccessCallback.bind(this);
@@ -131,8 +132,8 @@ export default class Status extends React.Component {
         language,
       );
 
-      // stop here if token is invalid
-      if (isValid === false) {
+      // stop here if token is invalid or component unmounted
+      if (isValid === false || !this.isComponentMounted) {
         setLoading(false);
         return;
       }
@@ -236,12 +237,14 @@ export default class Status extends React.Component {
   }
 
   componentWillUnmount() {
+    this.isComponentMounted = false;
     const {statusPage} = this.props;
     clearInterval(this.intervalId);
     if (statusPage.radius_usage_enabled) {
       clearInterval(this.usageIntervalId);
     }
     window.removeEventListener("resize", this.updateScreenWidth);
+    window.removeEventListener("message", this.handlePostMessage);
   }
 
   async finalOperations() {
@@ -334,8 +337,13 @@ export default class Status extends React.Component {
       }
       options.hasMoreSessions =
         "link" in headers && headers.link.includes("next");
-      this.setState(options);
+      if (this.isComponentMounted) {
+        this.setState(options);
+      }
     } catch (error) {
+      if (!this.isComponentMounted) {
+        return;
+      }
       // logout only if unauthorized or forbidden
       if (
         error.response &&
@@ -404,8 +412,13 @@ export default class Status extends React.Component {
           }
         }
       }
-      this.setState(options);
+      if (this.isComponentMounted) {
+        this.setState(options);
+      }
     } catch (error) {
+      if (!this.isComponentMounted) {
+        return;
+      }
       if (error.response) {
         // Do not retry for client side errors
         if (error.response.status >= 400 && error.response.status < 500) {
