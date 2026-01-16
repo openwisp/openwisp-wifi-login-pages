@@ -22,11 +22,7 @@
     "js-yaml": "^4.1.0",
     "jsdom": "^27.3.0",
     "lodash": "^4.17.21",
-<<<<<<< HEAD
-    "marked": "^15.0.12",
-=======
     "marked": "^17.0.1",
->>>>>>> e524a89 ([deps] Upgraded marked to ^17.0.1 #986)
     "morgan": "^1.10.0",
     "node-plop": "^0.32.3",
     "nodemon": "^3.1.11",
@@ -168,6 +164,7 @@
     ]
   },
   "resolutions": {
-    "marked": "^15.0.12"
+    "marked": "^17.0.1",
+    "cheerio": "0.22.0"
   }
 }
