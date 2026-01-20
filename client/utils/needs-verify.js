@@ -18,9 +18,9 @@ const needsVerify = (method, user, settings) => {
   if (method === "bank_card") {
     return Boolean(
       user.method === "bank_card" &&
-        user.is_verified === false &&
-        user.payment_url &&
-        settings.subscriptions,
+      user.is_verified === false &&
+      user.payment_url &&
+      settings.subscriptions,
     );
   }
 
