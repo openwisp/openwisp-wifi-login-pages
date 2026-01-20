@@ -21,32 +21,84 @@ exports[`<Status /> interactions should hide check if check.value is zero 1`] = 
     id="status"
   >
     <div
-      className="inner flex-row limit-info"
+      className="usage-overview bg row"
     >
       <div
-        className="bg row"
+        className="usage-overview-title"
       >
+        Daily usage overview
+      </div>
+      <p>
+        Track how much time and data you've used today
+      </p>
+      <div>
         <div
-          key="Max-Daily-Session"
+          className="usage-checks-container"
         >
-          <progress
-            id="Max-Daily-Session"
-            max="10800"
-            value={0}
-          />
-          <p
-            className="progress"
+          <div
+            className="usage-box usage-box-inner"
+            key="Max-Daily-Session"
           >
-            <strong>
-              00:00:00
-            </strong>
-             
-            of
-             
-            03:00:00
-             
-            used
-          </p>
+            <div
+              className="usage-check-content"
+            >
+              <div
+                className="usage-check-header"
+              >
+                <img
+                  alt="Timer Icon"
+                  src="/assets/default/timerIconGreen.svg"
+                />
+                <div>
+                  Time
+                </div>
+              </div>
+              <div
+                className="usage-progress-wrapper"
+              >
+                <CircularProgressbarWithChildren
+                  id="Max-Daily-Session"
+                  maxValue="10800"
+                  strokeWidth={12}
+                  styles={
+                    {
+                      "background": {},
+                      "path": {
+                        "stroke": "#1AAA55",
+                        "strokeLinecap": "butt",
+                        "transitionDuration": "0.5s",
+                      },
+                      "root": {},
+                      "text": {},
+                      "trail": {
+                        "stroke": "#EAECF0",
+                        "strokeLinecap": "butt",
+                      },
+                    }
+                  }
+                  value={0}
+                >
+                  <div
+                    className="usage-progress-text"
+                  >
+                    <strong>
+                      3h
+                    </strong>
+                    <div
+                      className="usage-progress-remaining"
+                    >
+                      remaining
+                    </div>
+                  </div>
+                </CircularProgressbarWithChildren>
+              </div>
+              <div
+                className="usage-check-used"
+              >
+                0 used of 3h
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -366,54 +418,148 @@ exports[`<Status /> interactions should show user's radius usage 1`] = `
     id="status"
   >
     <div
-      className="inner flex-row limit-info"
+      className="usage-overview bg row"
     >
       <div
-        className="bg row"
+        className="usage-overview-title"
       >
+        Daily usage overview
+      </div>
+      <p>
+        Track how much time and data you've used today
+      </p>
+      <div>
         <div
-          key="Max-Daily-Session"
+          className="usage-checks-container"
         >
-          <progress
-            id="Max-Daily-Session"
-            max="10800"
-            value={0}
-          />
-          <p
-            className="progress"
+          <div
+            className="usage-box usage-box-inner"
+            key="Max-Daily-Session"
           >
-            <strong>
-              00:00:00
-            </strong>
-             
-            of
-             
-            03:00:00
-             
-            used
-          </p>
-        </div>
-        <div
-          key="Max-Daily-Session-Traffic"
-        >
-          <progress
-            id="Max-Daily-Session-Traffic"
-            max="3000000000"
-            value={0}
-          />
-          <p
-            className="progress"
+            <div
+              className="usage-check-content"
+            >
+              <div
+                className="usage-check-header"
+              >
+                <img
+                  alt="Timer Icon"
+                  src="/assets/default/timerIconGreen.svg"
+                />
+                <div>
+                  Time
+                </div>
+              </div>
+              <div
+                className="usage-progress-wrapper"
+              >
+                <CircularProgressbarWithChildren
+                  id="Max-Daily-Session"
+                  maxValue="10800"
+                  strokeWidth={12}
+                  styles={
+                    {
+                      "background": {},
+                      "path": {
+                        "stroke": "#1AAA55",
+                        "strokeLinecap": "butt",
+                        "transitionDuration": "0.5s",
+                      },
+                      "root": {},
+                      "text": {},
+                      "trail": {
+                        "stroke": "#EAECF0",
+                        "strokeLinecap": "butt",
+                      },
+                    }
+                  }
+                  value={0}
+                >
+                  <div
+                    className="usage-progress-text"
+                  >
+                    <strong>
+                      3h
+                    </strong>
+                    <div
+                      className="usage-progress-remaining"
+                    >
+                      remaining
+                    </div>
+                  </div>
+                </CircularProgressbarWithChildren>
+              </div>
+              <div
+                className="usage-check-used"
+              >
+                0 used of 3h
+              </div>
+            </div>
+          </div>
+          <div
+            className="usage-box usage-box-inner"
+            key="Max-Daily-Session-Traffic"
           >
-            <strong>
-              0
-            </strong>
-             
-            of
-             
-            3 GB
-             
-            used
-          </p>
+            <div
+              className="usage-check-content"
+            >
+              <div
+                className="usage-check-header"
+              >
+                <img
+                  alt="Data Icon"
+                  src="/assets/default/dataIconGreen.svg"
+                />
+                <div>
+                  Data
+                </div>
+              </div>
+              <div
+                className="usage-progress-wrapper"
+              >
+                <CircularProgressbarWithChildren
+                  id="Max-Daily-Session-Traffic"
+                  maxValue="3000000000"
+                  strokeWidth={12}
+                  styles={
+                    {
+                      "background": {},
+                      "path": {
+                        "stroke": "#1AAA55",
+                        "strokeLinecap": "butt",
+                        "transitionDuration": "0.5s",
+                      },
+                      "root": {},
+                      "text": {},
+                      "trail": {
+                        "stroke": "#EAECF0",
+                        "strokeLinecap": "butt",
+                      },
+                    }
+                  }
+                  value={0}
+                >
+                  <div
+                    className="usage-progress-text"
+                  >
+                    <strong>
+                      3 GB
+                    </strong>
+                    <div
+                      className="usage-progress-remaining"
+                    >
+                      remaining
+                    </div>
+                  </div>
+                </CircularProgressbarWithChildren>
+              </div>
+              <div
+                className="usage-check-used"
+              >
+                0 used of 3 GB
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -590,34 +736,43 @@ exports[`<Status /> interactions subscriptions: should hide checks and show upgr
     id="status"
   >
     <div
-      className="inner flex-row limit-info"
+      className="usage-overview bg row"
     >
       <div
-        className="bg row"
+        className="usage-overview-title"
       >
-        <h3>
-          CURRENT_SUBSCRIPTION_TXT
-           
-          Premium
-        </h3>
-        <p
-          className="important"
-        >
-          <strong>
-            USAGE_LIMIT_EXHAUSTED_TXT
-          </strong>
-        </p>
-        <p>
-          <button
-            className="button partial"
-            id="plan-upgrade-btn"
-            onClick={[Function]}
-            type="button"
-          >
-            PLAN_UPGRADE_BTN_TXT
-          </button>
-        </p>
+        Daily usage overview
       </div>
+      <p>
+        Track how much time and data you've used today
+      </p>
+      <h3>
+        CURRENT_SUBSCRIPTION_TXT
+         
+        Premium
+      </h3>
+      <div>
+        <div
+          className="usage-checks-container"
+        />
+      </div>
+      <p
+        className="important"
+      >
+        <strong>
+          USAGE_LIMIT_EXHAUSTED_TXT
+        </strong>
+      </p>
+      <p>
+        <button
+          className="button partial"
+          id="plan-upgrade-btn"
+          onClick={[Function]}
+          type="button"
+        >
+          PLAN_UPGRADE_BTN_TXT
+        </button>
+      </p>
     </div>
     <div
       className="inner"
@@ -774,78 +929,172 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
     id="status"
   >
     <div
-      className="inner flex-row limit-info"
+      className="usage-overview bg row"
     >
       <div
-        className="bg row"
+        className="usage-overview-title"
       >
-        <h3>
-          CURRENT_SUBSCRIPTION_TXT
-           
-          Premium
-        </h3>
-        <div
-          key="Max-Daily-Session"
-        >
-          <progress
-            id="Max-Daily-Session"
-            max="10800"
-            value={10700}
-          />
-          <p
-            className="progress"
-          >
-            <strong>
-              02:58:20
-            </strong>
-             
-            of
-             
-            03:00:00
-             
-            used
-          </p>
-        </div>
-        <div
-          key="Max-Daily-Session-Traffic"
-        >
-          <progress
-            id="Max-Daily-Session-Traffic"
-            max="3000000000"
-            value={3000000000}
-          />
-          <p
-            className="progress"
-          >
-            <strong>
-              3 GB
-            </strong>
-             
-            of
-             
-            3 GB
-             
-            used
-          </p>
-        </div>
-        <p
-          className="important"
-        >
-          <strong>
-            USAGE_LIMIT_EXHAUSTED_TXT
-          </strong>
-        </p>
-        <p>
-          <button
-            className="button partial"
-            id="plan-upgrade-btn"
-            onClick={[Function]}
-            type="button"
-          >
-            PLAN_UPGRADE_BTN_TXT
-          </button>
-        </p>
+        Daily usage overview
       </div>
+      <p>
+        Track how much time and data you've used today
+      </p>
+      <h3>
+        CURRENT_SUBSCRIPTION_TXT
+         
+        Premium
+      </h3>
+      <div>
+        <div
+          className="usage-checks-container"
+        >
+          <div
+            className="usage-box usage-box-inner"
+            key="Max-Daily-Session"
+          >
+            <div
+              className="usage-check-content"
+            >
+              <div
+                className="usage-check-header"
+              >
+                <img
+                  alt="Timer Icon"
+                  src="/assets/default/timerIconRed.svg"
+                />
+                <div>
+                  Time
+                </div>
+              </div>
+              <div
+                className="usage-progress-wrapper"
+              >
+                <CircularProgressbarWithChildren
+                  id="Max-Daily-Session"
+                  maxValue="10800"
+                  strokeWidth={12}
+                  styles={
+                    {
+                      "background": {},
+                      "path": {
+                        "stroke": "#DB3B21",
+                        "strokeLinecap": "butt",
+                        "transitionDuration": "0.5s",
+                      },
+                      "root": {},
+                      "text": {},
+                      "trail": {
+                        "stroke": "#EAECF0",
+                        "strokeLinecap": "butt",
+                      },
+                    }
+                  }
+                  value={10700}
+                >
+                  <div
+                    className="usage-progress-text"
+                  >
+                    <strong>
+                      1m
+                    </strong>
+                    <div
+                      className="usage-progress-remaining"
+                    >
+                      remaining
+                    </div>
+                  </div>
+                </CircularProgressbarWithChildren>
+              </div>
+              <div
+                className="usage-check-used"
+              >
+                2h 58m used of 3h
+              </div>
+            </div>
+          </div>
+          <div
+            className="usage-box usage-box-inner"
+            key="Max-Daily-Session-Traffic"
+          >
+            <div
+              className="usage-check-content"
+            >
+              <div
+                className="usage-check-header"
+              >
+                <img
+                  alt="Data Icon"
+                  src="/assets/default/dataIconRed.svg"
+                />
+                <div>
+                  Data
+                </div>
+              </div>
+              <div
+                className="usage-progress-wrapper"
+              >
+                <CircularProgressbarWithChildren
+                  id="Max-Daily-Session-Traffic"
+                  maxValue="3000000000"
+                  strokeWidth={12}
+                  styles={
+                    {
+                      "background": {},
+                      "path": {
+                        "stroke": "#DB3B21",
+                        "strokeLinecap": "butt",
+                        "transitionDuration": "0.5s",
+                      },
+                      "root": {},
+                      "text": {},
+                      "trail": {
+                        "stroke": "#EAECF0",
+                        "strokeLinecap": "butt",
+                      },
+                    }
+                  }
+                  value={3000000000}
+                >
+                  <div
+                    className="usage-progress-text"
+                  >
+                    <strong>
+                      0
+                    </strong>
+                    <div
+                      className="usage-progress-remaining"
+                    >
+                      remaining
+                    </div>
+                  </div>
+                </CircularProgressbarWithChildren>
+              </div>
+              <div
+                className="usage-check-used"
+              >
+                3 GB used of 3 GB
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p
+        className="important"
+      >
+        <strong>
+          USAGE_LIMIT_EXHAUSTED_TXT
+        </strong>
+      </p>
+      <p>
+        <button
+          className="button partial"
+          id="plan-upgrade-btn"
+          onClick={[Function]}
+          type="button"
+        >
+          PLAN_UPGRADE_BTN_TXT
+        </button>
+      </p>
     </div>
     <div
       className="inner"
@@ -1084,78 +1333,172 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
       toggleModal={[Function]}
     />
     <div
-      className="inner flex-row limit-info"
+      className="usage-overview bg row"
     >
       <div
-        className="bg row"
+        className="usage-overview-title"
       >
-        <h3>
-          CURRENT_SUBSCRIPTION_TXT
-           
-          Premium
-        </h3>
-        <div
-          key="Max-Daily-Session"
-        >
-          <progress
-            id="Max-Daily-Session"
-            max="10800"
-            value={10700}
-          />
-          <p
-            className="progress"
-          >
-            <strong>
-              02:58:20
-            </strong>
-             
-            of
-             
-            03:00:00
-             
-            used
-          </p>
-        </div>
-        <div
-          key="Max-Daily-Session-Traffic"
-        >
-          <progress
-            id="Max-Daily-Session-Traffic"
-            max="3000000000"
-            value={3000000000}
-          />
-          <p
-            className="progress"
-          >
-            <strong>
-              3 GB
-            </strong>
-             
-            of
-             
-            3 GB
-             
-            used
-          </p>
-        </div>
-        <p
-          className="important"
-        >
-          <strong>
-            USAGE_LIMIT_EXHAUSTED_TXT
-          </strong>
-        </p>
-        <p>
-          <button
-            className="button partial"
-            id="plan-upgrade-btn"
-            onClick={[Function]}
-            type="button"
-          >
-            PLAN_UPGRADE_BTN_TXT
-          </button>
-        </p>
+        Daily usage overview
       </div>
+      <p>
+        Track how much time and data you've used today
+      </p>
+      <h3>
+        CURRENT_SUBSCRIPTION_TXT
+         
+        Premium
+      </h3>
+      <div>
+        <div
+          className="usage-checks-container"
+        >
+          <div
+            className="usage-box usage-box-inner"
+            key="Max-Daily-Session"
+          >
+            <div
+              className="usage-check-content"
+            >
+              <div
+                className="usage-check-header"
+              >
+                <img
+                  alt="Timer Icon"
+                  src="/assets/default/timerIconRed.svg"
+                />
+                <div>
+                  Time
+                </div>
+              </div>
+              <div
+                className="usage-progress-wrapper"
+              >
+                <CircularProgressbarWithChildren
+                  id="Max-Daily-Session"
+                  maxValue="10800"
+                  strokeWidth={12}
+                  styles={
+                    {
+                      "background": {},
+                      "path": {
+                        "stroke": "#DB3B21",
+                        "strokeLinecap": "butt",
+                        "transitionDuration": "0.5s",
+                      },
+                      "root": {},
+                      "text": {},
+                      "trail": {
+                        "stroke": "#EAECF0",
+                        "strokeLinecap": "butt",
+                      },
+                    }
+                  }
+                  value={10700}
+                >
+                  <div
+                    className="usage-progress-text"
+                  >
+                    <strong>
+                      1m
+                    </strong>
+                    <div
+                      className="usage-progress-remaining"
+                    >
+                      remaining
+                    </div>
+                  </div>
+                </CircularProgressbarWithChildren>
+              </div>
+              <div
+                className="usage-check-used"
+              >
+                2h 58m used of 3h
+              </div>
+            </div>
+          </div>
+          <div
+            className="usage-box usage-box-inner"
+            key="Max-Daily-Session-Traffic"
+          >
+            <div
+              className="usage-check-content"
+            >
+              <div
+                className="usage-check-header"
+              >
+                <img
+                  alt="Data Icon"
+                  src="/assets/default/dataIconRed.svg"
+                />
+                <div>
+                  Data
+                </div>
+              </div>
+              <div
+                className="usage-progress-wrapper"
+              >
+                <CircularProgressbarWithChildren
+                  id="Max-Daily-Session-Traffic"
+                  maxValue="3000000000"
+                  strokeWidth={12}
+                  styles={
+                    {
+                      "background": {},
+                      "path": {
+                        "stroke": "#DB3B21",
+                        "strokeLinecap": "butt",
+                        "transitionDuration": "0.5s",
+                      },
+                      "root": {},
+                      "text": {},
+                      "trail": {
+                        "stroke": "#EAECF0",
+                        "strokeLinecap": "butt",
+                      },
+                    }
+                  }
+                  value={3000000000}
+                >
+                  <div
+                    className="usage-progress-text"
+                  >
+                    <strong>
+                      0
+                    </strong>
+                    <div
+                      className="usage-progress-remaining"
+                    >
+                      remaining
+                    </div>
+                  </div>
+                </CircularProgressbarWithChildren>
+              </div>
+              <div
+                className="usage-check-used"
+              >
+                3 GB used of 3 GB
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p
+        className="important"
+      >
+        <strong>
+          USAGE_LIMIT_EXHAUSTED_TXT
+        </strong>
+      </p>
+      <p>
+        <button
+          className="button partial"
+          id="plan-upgrade-btn"
+          onClick={[Function]}
+          type="button"
+        >
+          PLAN_UPGRADE_BTN_TXT
+        </button>
+      </p>
     </div>
     <div
       className="inner"
@@ -1312,78 +1655,172 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
     id="status"
   >
     <div
-      className="inner flex-row limit-info"
+      className="usage-overview bg row"
     >
       <div
-        className="bg row"
+        className="usage-overview-title"
       >
-        <h3>
-          CURRENT_SUBSCRIPTION_TXT
-           
-          Free
-        </h3>
-        <div
-          key="Max-Daily-Session"
-        >
-          <progress
-            id="Max-Daily-Session"
-            max="10800"
-            value={10700}
-          />
-          <p
-            className="progress"
-          >
-            <strong>
-              02:58:20
-            </strong>
-             
-            of
-             
-            03:00:00
-             
-            used
-          </p>
-        </div>
-        <div
-          key="Max-Daily-Session-Traffic"
-        >
-          <progress
-            id="Max-Daily-Session-Traffic"
-            max="3000000000"
-            value={3000000000}
-          />
-          <p
-            className="progress"
-          >
-            <strong>
-              3 GB
-            </strong>
-             
-            of
-             
-            3 GB
-             
-            used
-          </p>
-        </div>
-        <p
-          className="important"
-        >
-          <strong>
-            USAGE_LIMIT_EXHAUSTED_TXT
-          </strong>
-        </p>
-        <p>
-          <button
-            className="button partial"
-            id="plan-upgrade-btn"
-            onClick={[Function]}
-            type="button"
-          >
-            PLAN_UPGRADE_BTN_TXT
-          </button>
-        </p>
+        Daily usage overview
       </div>
+      <p>
+        Track how much time and data you've used today
+      </p>
+      <h3>
+        CURRENT_SUBSCRIPTION_TXT
+         
+        Free
+      </h3>
+      <div>
+        <div
+          className="usage-checks-container"
+        >
+          <div
+            className="usage-box usage-box-inner"
+            key="Max-Daily-Session"
+          >
+            <div
+              className="usage-check-content"
+            >
+              <div
+                className="usage-check-header"
+              >
+                <img
+                  alt="Timer Icon"
+                  src="/assets/default/timerIconRed.svg"
+                />
+                <div>
+                  Time
+                </div>
+              </div>
+              <div
+                className="usage-progress-wrapper"
+              >
+                <CircularProgressbarWithChildren
+                  id="Max-Daily-Session"
+                  maxValue="10800"
+                  strokeWidth={12}
+                  styles={
+                    {
+                      "background": {},
+                      "path": {
+                        "stroke": "#DB3B21",
+                        "strokeLinecap": "butt",
+                        "transitionDuration": "0.5s",
+                      },
+                      "root": {},
+                      "text": {},
+                      "trail": {
+                        "stroke": "#EAECF0",
+                        "strokeLinecap": "butt",
+                      },
+                    }
+                  }
+                  value={10700}
+                >
+                  <div
+                    className="usage-progress-text"
+                  >
+                    <strong>
+                      1m
+                    </strong>
+                    <div
+                      className="usage-progress-remaining"
+                    >
+                      remaining
+                    </div>
+                  </div>
+                </CircularProgressbarWithChildren>
+              </div>
+              <div
+                className="usage-check-used"
+              >
+                2h 58m used of 3h
+              </div>
+            </div>
+          </div>
+          <div
+            className="usage-box usage-box-inner"
+            key="Max-Daily-Session-Traffic"
+          >
+            <div
+              className="usage-check-content"
+            >
+              <div
+                className="usage-check-header"
+              >
+                <img
+                  alt="Data Icon"
+                  src="/assets/default/dataIconRed.svg"
+                />
+                <div>
+                  Data
+                </div>
+              </div>
+              <div
+                className="usage-progress-wrapper"
+              >
+                <CircularProgressbarWithChildren
+                  id="Max-Daily-Session-Traffic"
+                  maxValue="3000000000"
+                  strokeWidth={12}
+                  styles={
+                    {
+                      "background": {},
+                      "path": {
+                        "stroke": "#DB3B21",
+                        "strokeLinecap": "butt",
+                        "transitionDuration": "0.5s",
+                      },
+                      "root": {},
+                      "text": {},
+                      "trail": {
+                        "stroke": "#EAECF0",
+                        "strokeLinecap": "butt",
+                      },
+                    }
+                  }
+                  value={3000000000}
+                >
+                  <div
+                    className="usage-progress-text"
+                  >
+                    <strong>
+                      0
+                    </strong>
+                    <div
+                      className="usage-progress-remaining"
+                    >
+                      remaining
+                    </div>
+                  </div>
+                </CircularProgressbarWithChildren>
+              </div>
+              <div
+                className="usage-check-used"
+              >
+                3 GB used of 3 GB
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p
+        className="important"
+      >
+        <strong>
+          USAGE_LIMIT_EXHAUSTED_TXT
+        </strong>
+      </p>
+      <p>
+        <button
+          className="button partial"
+          id="plan-upgrade-btn"
+          onClick={[Function]}
+          type="button"
+        >
+          PLAN_UPGRADE_BTN_TXT
+        </button>
+      </p>
     </div>
     <div
       className="inner"
@@ -1622,78 +2059,172 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
       toggleModal={[Function]}
     />
     <div
-      className="inner flex-row limit-info"
+      className="usage-overview bg row"
     >
       <div
-        className="bg row"
+        className="usage-overview-title"
       >
-        <h3>
-          CURRENT_SUBSCRIPTION_TXT
-           
-          Free
-        </h3>
-        <div
-          key="Max-Daily-Session"
-        >
-          <progress
-            id="Max-Daily-Session"
-            max="10800"
-            value={10700}
-          />
-          <p
-            className="progress"
-          >
-            <strong>
-              02:58:20
-            </strong>
-             
-            of
-             
-            03:00:00
-             
-            used
-          </p>
-        </div>
-        <div
-          key="Max-Daily-Session-Traffic"
-        >
-          <progress
-            id="Max-Daily-Session-Traffic"
-            max="3000000000"
-            value={3000000000}
-          />
-          <p
-            className="progress"
-          >
-            <strong>
-              3 GB
-            </strong>
-             
-            of
-             
-            3 GB
-             
-            used
-          </p>
-        </div>
-        <p
-          className="important"
-        >
-          <strong>
-            USAGE_LIMIT_EXHAUSTED_TXT
-          </strong>
-        </p>
-        <p>
-          <button
-            className="button partial"
-            id="plan-upgrade-btn"
-            onClick={[Function]}
-            type="button"
-          >
-            PLAN_UPGRADE_BTN_TXT
-          </button>
-        </p>
+        Daily usage overview
       </div>
+      <p>
+        Track how much time and data you've used today
+      </p>
+      <h3>
+        CURRENT_SUBSCRIPTION_TXT
+         
+        Free
+      </h3>
+      <div>
+        <div
+          className="usage-checks-container"
+        >
+          <div
+            className="usage-box usage-box-inner"
+            key="Max-Daily-Session"
+          >
+            <div
+              className="usage-check-content"
+            >
+              <div
+                className="usage-check-header"
+              >
+                <img
+                  alt="Timer Icon"
+                  src="/assets/default/timerIconRed.svg"
+                />
+                <div>
+                  Time
+                </div>
+              </div>
+              <div
+                className="usage-progress-wrapper"
+              >
+                <CircularProgressbarWithChildren
+                  id="Max-Daily-Session"
+                  maxValue="10800"
+                  strokeWidth={12}
+                  styles={
+                    {
+                      "background": {},
+                      "path": {
+                        "stroke": "#DB3B21",
+                        "strokeLinecap": "butt",
+                        "transitionDuration": "0.5s",
+                      },
+                      "root": {},
+                      "text": {},
+                      "trail": {
+                        "stroke": "#EAECF0",
+                        "strokeLinecap": "butt",
+                      },
+                    }
+                  }
+                  value={10700}
+                >
+                  <div
+                    className="usage-progress-text"
+                  >
+                    <strong>
+                      1m
+                    </strong>
+                    <div
+                      className="usage-progress-remaining"
+                    >
+                      remaining
+                    </div>
+                  </div>
+                </CircularProgressbarWithChildren>
+              </div>
+              <div
+                className="usage-check-used"
+              >
+                2h 58m used of 3h
+              </div>
+            </div>
+          </div>
+          <div
+            className="usage-box usage-box-inner"
+            key="Max-Daily-Session-Traffic"
+          >
+            <div
+              className="usage-check-content"
+            >
+              <div
+                className="usage-check-header"
+              >
+                <img
+                  alt="Data Icon"
+                  src="/assets/default/dataIconRed.svg"
+                />
+                <div>
+                  Data
+                </div>
+              </div>
+              <div
+                className="usage-progress-wrapper"
+              >
+                <CircularProgressbarWithChildren
+                  id="Max-Daily-Session-Traffic"
+                  maxValue="3000000000"
+                  strokeWidth={12}
+                  styles={
+                    {
+                      "background": {},
+                      "path": {
+                        "stroke": "#DB3B21",
+                        "strokeLinecap": "butt",
+                        "transitionDuration": "0.5s",
+                      },
+                      "root": {},
+                      "text": {},
+                      "trail": {
+                        "stroke": "#EAECF0",
+                        "strokeLinecap": "butt",
+                      },
+                    }
+                  }
+                  value={3000000000}
+                >
+                  <div
+                    className="usage-progress-text"
+                  >
+                    <strong>
+                      0
+                    </strong>
+                    <div
+                      className="usage-progress-remaining"
+                    >
+                      remaining
+                    </div>
+                  </div>
+                </CircularProgressbarWithChildren>
+              </div>
+              <div
+                className="usage-check-used"
+              >
+                3 GB used of 3 GB
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p
+        className="important"
+      >
+        <strong>
+          USAGE_LIMIT_EXHAUSTED_TXT
+        </strong>
+      </p>
+      <p>
+        <button
+          className="button partial"
+          id="plan-upgrade-btn"
+          onClick={[Function]}
+          type="button"
+        >
+          PLAN_UPGRADE_BTN_TXT
+        </button>
+      </p>
     </div>
     <div
       className="inner"
@@ -1850,14 +2381,23 @@ exports[`<Status /> rendering should render correctly 1`] = `
     id="status"
   >
     <div
-      className="inner flex-row limit-info"
+      className="usage-overview bg row"
     >
       <div
-        className="bg row"
+        className="usage-overview-title"
       >
-        <loader
-          full={false}
-          small={true}
+        Daily usage overview
+      </div>
+      <p>
+        Track how much time and data you've used today
+      </p>
+      <loader
+        full={false}
+        small={true}
+      />
+      <div>
+        <div
+          className="usage-checks-container"
         />
       </div>
     </div>
@@ -2016,14 +2556,23 @@ exports[`<Status /> rendering with placeholder translation tags should render tr
     id="status"
   >
     <div
-      className="inner flex-row limit-info"
+      className="usage-overview bg row"
     >
       <div
-        className="bg row"
+        className="usage-overview-title"
       >
-        <loader
-          full={false}
-          small={true}
+        Daily usage overview
+      </div>
+      <p>
+        Track how much time and data you've used today
+      </p>
+      <loader
+        full={false}
+        small={true}
+      />
+      <div>
+        <div
+          className="usage-checks-container"
         />
       </div>
     </div>

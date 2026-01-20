@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 /* eslint jsx-a11y/label-has-associated-control: 0 */
 import "./index.css";
-
+import "react-circular-progressbar/dist/styles.css";
 import "react-toastify/dist/ReactToastify.css";
 
 import axios from "axios";
@@ -13,8 +13,11 @@ import {toast} from "react-toastify";
 import InfinteScroll from "react-infinite-scroll-component";
 import {t, gettext} from "ttag";
 import prettyBytes from "pretty-bytes";
-import {timeFromSeconds} from "duration-formatter";
 import getLanguageHeaders from "../../utils/get-language-headers";
+import {
+  CircularProgressbarWithChildren,
+  buildStyles,
+} from "react-circular-progressbar";
 
 import {
   getUserRadiusSessionsUrl,
@@ -37,7 +40,6 @@ import {localStorage} from "../../utils/storage";
 import handleSession from "../../utils/session";
 import getPlanSelection from "../../utils/get-plan-selection";
 import getPlans from "../../utils/get-plans";
-
 export default class Status extends React.Component {
   constructor(props) {
     super(props);
@@ -1163,18 +1165,121 @@ export default class Status extends React.Component {
   });
 
   // eslint-disable-next-line class-methods-use-this
-  getUserCheckFormattedValue = (value, type) => {
+  getUserCheckFormattedValue = (value, type, result) => {
     const intValue = parseInt(value, 10);
+    const intResult = parseInt(result, 10);
+    const remaining = Math.max(0, intValue - intResult);
     switch (type) {
       case "bytes":
-        return intValue === 0
-          ? 0
-          : prettyBytes(intValue, {space: true, maximumFractionDigits: 2});
-      case "seconds":
-        return timeFromSeconds(intValue);
+        return remaining === 0
+          ? t`0`
+          : `${prettyBytes(remaining, {space: true, maximumFractionDigits: 2})}`;
+      case "seconds": {
+        if (remaining === 0) {
+          return t`0`;
+        }
+        const hours = Math.floor(remaining / 3600);
+        const minutes = Math.floor((remaining % 3600) / 60);
+        if (hours > 0 && minutes > 0) {
+          return t`${hours}h ${minutes}m`;
+        }
+        if (hours > 0) {
+          return t`${hours}h`;
+        }
+        if (minutes > 0) {
+          return t`${minutes}m`;
+        }
+        return t`<1m`;
+      }
       default:
-        return value;
+        return `${remaining}`;
     }
+  };
+
+  // eslint-disable-next-line class-methods-use-this
+  getUserCheckUsedValue = (value, type, result) => {
+    const intValue = parseInt(value, 10);
+    const intResult = parseInt(result, 10);
+    const used = Math.min(intResult, intValue);
+
+    const formatTime = (seconds) => {
+      const hours = Math.floor(seconds / 3600);
+      const minutes = Math.floor((seconds % 3600) / 60);
+      if (hours > 0 && minutes > 0) {
+        return t`${hours}h ${minutes}m`;
+      }
+      if (hours > 0) {
+        return t`${hours}h`;
+      }
+      if (minutes > 0) {
+        return t`${minutes}m`;
+      }
+      return t`<1m`;
+    };
+
+    switch (type) {
+      case "bytes": {
+        const usedFormatted =
+          used === 0
+            ? "0"
+            : prettyBytes(used, {space: true, maximumFractionDigits: 2});
+        const totalFormatted = prettyBytes(intValue, {
+          space: true,
+          maximumFractionDigits: 2,
+        });
+        return t`${usedFormatted} used of ${totalFormatted}`;
+      }
+      case "seconds": {
+        const usedFormatted = used === 0 ? "0" : formatTime(used);
+        const totalFormatted = formatTime(intValue);
+        return t`${usedFormatted} used of ${totalFormatted}`;
+      }
+      default:
+        return t`${used} used of ${intValue}`;
+    }
+  };
+
+  // eslint-disable-next-line class-methods-use-this
+  getResetTimeRemaining = (resetTimestamp) => {
+    if (!resetTimestamp) {
+      return null;
+    }
+    const now = Math.floor(Date.now() / 1000);
+    const secondsRemaining = resetTimestamp - now;
+    if (secondsRemaining <= 0) {
+      return null;
+    }
+    const hours = Math.floor(secondsRemaining / 3600);
+    const minutes = Math.floor((secondsRemaining % 3600) / 60);
+    if (hours > 0) {
+      return t`${hours}h ${minutes}m`;
+    }
+    return t`${minutes}m`;
+  };
+
+  // eslint-disable-next-line class-methods-use-this
+  getUsageColorAndIcons = (value, result) => {
+    const usagePercentage = (result / value) * 100;
+
+    if (usagePercentage <= 50) {
+      return {
+        color: "#1AAA55",
+        timerIcon: "/assets/default/timerIconGreen.svg",
+        dataIcon: "/assets/default/dataIconGreen.svg",
+      };
+    }
+    if (usagePercentage <= 80) {
+      return {
+        color: "#FBBF24",
+        timerIcon: "/assets/default/timerIconYellow.svg",
+        dataIcon: "/assets/default/dataIconYellow.svg",
+      };
+    }
+    return {
+      color: "#DB3B21",
+      timerIcon: "/assets/default/timerIconRed.svg",
+      dataIcon: "/assets/default/dataIconRed.svg",
+    };
   };
 
   render() {
@@ -1250,61 +1355,144 @@ export default class Status extends React.Component {
           {statusPage.radius_usage_enabled &&
             showRadiusUsage &&
             !internetMode && (
-              <div className="inner flex-row limit-info">
-                <div className="bg row">
-                  {radiusUsageSpinner ? this.getSpinner() : null}
-                  {settings.subscriptions && userPlan.name && (
-                    <h3>
-                      {t`CURRENT_SUBSCRIPTION_TXT`} {userPlan.name}
-                    </h3>
-                  )}
-                  {userChecks &&
-                    userChecks.map(
-                      (check) =>
-                        check.value !== "0" && (
-                          <div key={check.attribute}>
-                            <progress
-                              id={check.attribute}
-                              max={check.value}
-                              value={check.result}
-                            />
-                            <p className="progress">
-                              <strong>
-                                {this.getUserCheckFormattedValue(
-                                  check.result,
-                                  check.type,
-                                )}
-                              </strong>{" "}
-                              of{" "}
-                              {this.getUserCheckFormattedValue(
-                                check.value,
-                                check.type,
-                              )}{" "}
-                              used
-                            </p>
-                          </div>
-                        ),
-                    )}
-                  {warningMessage && (
-                    <p className="important">
-                      <strong>{gettext(warningMessage)}</strong>
+              <div className="usage-overview bg row">
+                <div className="usage-overview-title">
+                  Daily usage overview
+                </div>
+                <p>Track how much time and data you've used today</p>
+                {radiusUsageSpinner ? this.getSpinner() : null}
+                {settings.subscriptions && userPlan.name && (
+                  <h3>
+                    {t`CURRENT_SUBSCRIPTION_TXT`} {userPlan.name}
+                  </h3>
+                )}
+                {userChecks && (
+                  <div>
+                    <div className="usage-checks-container">
+                      {userChecks.map((check) => {
+                        const {color, timerIcon, dataIcon} =
+                          this.getUsageColorAndIcons(check.value, check.result);
+                        return (
+                          check.value !== "0" && (
+                            <div
+                              className="usage-box usage-box-inner"
+                              key={check.attribute}
+                            >
+                              {check.type === "seconds" ? (
+                                <div className="usage-check-content">
+                                  <div className="usage-check-header">
+                                    <img src={timerIcon} alt="Timer Icon" />
+                                    <div>Time</div>
+                                  </div>
+                                  <div className="usage-progress-wrapper">
+                                    <CircularProgressbarWithChildren
+                                      id={check.attribute}
+                                      strokeWidth={12}
+                                      value={check.result}
+                                      maxValue={check.value}
+                                      styles={buildStyles({
+                                        pathColor: color,
+                                        trailColor: "#EAECF0",
+                                        strokeLinecap: "butt",
+                                        pathTransitionDuration: 0.5,
+                                      })}
+                                    >
+                                      <div className="usage-progress-text">
+                                        <strong>
+                                          {this.getUserCheckFormattedValue(
+                                            check.value,
+                                            check.type,
+                                            check.result,
+                                          )}
+                                        </strong>
+                                        <div className="usage-progress-remaining">
+                                          remaining
+                                        </div>
+                                      </div>
+                                    </CircularProgressbarWithChildren>
+                                  </div>
+                                  <div className="usage-check-used">
+                                    {this.getUserCheckUsedValue(
+                                      check.value,
+                                      check.type,
+                                      check.result,
+                                    )}
+                                  </div>
+                                </div>
+                              ) : check.type === "bytes" ? (
+                                <div className="usage-check-content">
+                                  <div className="usage-check-header">
+                                    <img src={dataIcon} alt="Data Icon" />
+                                    <div>Data</div>
+                                  </div>
+                                  <div className="usage-progress-wrapper">
+                                    <CircularProgressbarWithChildren
+                                      id={check.attribute}
+                                      strokeWidth={12}
+                                      value={check.result}
+                                      maxValue={check.value}
+                                      styles={buildStyles({
+                                        pathColor: color,
+                                        trailColor: "#EAECF0",
+                                        strokeLinecap: "butt",
+                                        pathTransitionDuration: 0.5,
+                                      })}
+                                    >
+                                      <div className="usage-progress-text">
+                                        <strong>
+                                          {this.getUserCheckFormattedValue(
+                                            check.value,
+                                            check.type,
+                                            check.result,
+                                          )}
+                                        </strong>
+                                        <div className="usage-progress-remaining">
+                                          remaining
+                                        </div>
+                                      </div>
+                                    </CircularProgressbarWithChildren>
+                                  </div>
+                                  <div className="usage-check-used">
+                                    {this.getUserCheckUsedValue(
+                                      check.value,
+                                      check.type,
+                                      check.result,
+                                    )}
+                                  </div>
+                                </div>
+                              ) : null}
+                            </div>
+                          )
+                        );
+                      })}
+                    </div>
+                    {userChecks[0]?.reset &&
+                      this.getResetTimeRemaining(userChecks[0].reset) && (
+                        <div className="usage-reset-info">
+                          {t`*Daily limits reset in ${this.getResetTimeRemaining(userChecks[0].reset)}`}
+                        </div>
+                      )}
+                  </div>
+                )}
+                {warningMessage && (
+                  <p className="important">
+                    <strong>{gettext(warningMessage)}</strong>
+                  </p>
+                )}
+                {settings.subscriptions &&
+                  (userPlan.is_free || planExhausted) &&
+                  showUpgradeBtn && (
+                    <p>
+                      <button
+                        id="plan-upgrade-btn"
+                        type="button"
+                        className="button partial"
+                        onClick={this.toggleUpgradePlanModal}
+                      >
+                        {t`PLAN_UPGRADE_BTN_TXT`}
+                      </button>
                     </p>
                   )}
-                  {settings.subscriptions &&
-                    (userPlan.is_free || planExhausted) &&
-                    showUpgradeBtn && (
-                      <p>
-                        <button
-                          id="plan-upgrade-btn"
-                          type="button"
-                          className="button partial"
-                          onClick={this.toggleUpgradePlanModal}
-                        >
-                          {t`PLAN_UPGRADE_BTN_TXT`}
-                        </button>
-                      </p>
-                    )}
-                </div>
               </div>
             )}
           <div className="inner">
