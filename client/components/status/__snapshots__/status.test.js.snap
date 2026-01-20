@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`<Status /> rendering should render correctly 1`] = `
 <React.Fragment>
@@ -140,7 +140,6 @@ exports[`<Status /> rendering should render correctly 1`] = `
         value="accept"
       />
     </form>
-    
   </React.Fragment>
   <React.Fragment>
     <form
@@ -297,7 +296,6 @@ exports[`<Status /> rendering with placeholder translation tags should render tr
         value="accept"
       />
     </form>
-    
   </React.Fragment>
   <React.Fragment>
     <form
