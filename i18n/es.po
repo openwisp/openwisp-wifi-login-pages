@@ -205,6 +205,17 @@ msgstr "Datos"
 msgid "USAGE_REMAINING"
 msgstr "restante"
 
+#: client/components/status/status.js:1229
+#: client/components/status/status.js:1234
+#, javascript-format
+msgid "${ usedFormatted } used of ${ totalFormatted }"
+msgstr "${ usedFormatted } usado de ${ totalFormatted }"
+
+#: client/components/status/status.js:1237
+#, javascript-format
+msgid "${ used } used of ${ intValue }"
+msgstr "${ used } usado de ${ intValue }"
+
 #: client/components/login/login.js:152
 #: client/components/mobile-phone-change/mobile-phone-change.js:137
 #: client/components/registration/registration.js:399
