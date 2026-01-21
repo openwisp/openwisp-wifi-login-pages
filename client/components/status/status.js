@@ -1226,15 +1226,15 @@ export default class Status extends React.Component {
           space: true,
           maximumFractionDigits: 2,
         });
-        return t`${usedFormatted} used of ${totalFormatted}`;
+        return `${usedFormatted} ${t`USAGE_USED_OF`} ${totalFormatted}`;
       }
       case "seconds": {
         const usedFormatted = used === 0 ? "0" : formatTime(used);
         const totalFormatted = formatTime(intValue);
-        return t`${usedFormatted} used of ${totalFormatted}`;
+        return `${usedFormatted} ${t`USAGE_USED_OF`} ${totalFormatted}`;
       }
       default:
-        return t`${used} used of ${intValue}`;
+        return `${used} ${t`USAGE_USED_OF`} ${intValue}`;
     }
   };
 

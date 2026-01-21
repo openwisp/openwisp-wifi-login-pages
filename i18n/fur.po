@@ -202,14 +202,9 @@ msgstr "restant"
 
 #: client/components/status/status.js:1229
 #: client/components/status/status.js:1234
-#, javascript-format
-msgid "${ usedFormatted } used of ${ totalFormatted }"
-msgstr "${ usedFormatted } doprât di ${ totalFormatted }"
-
 #: client/components/status/status.js:1237
-#, javascript-format
-msgid "${ used } used of ${ intValue }"
-msgstr "${ used } doprât di ${ intValue }"
+msgid "USAGE_USED_OF"
+msgstr "doprât di"
 
 #: client/components/login/login.js:152
 #: client/components/mobile-phone-change/mobile-phone-change.js:137
