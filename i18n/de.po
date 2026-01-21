@@ -180,6 +180,26 @@ msgstr ""
 msgid "PLAN_UPGRADE_BTN_TXT"
 msgstr "Aktualisierung"
 
+#: client/components/status/status.js:1359
+msgid "DAILY_USAGE_OVERVIEW"
+msgstr "Tägliche Nutzungsübersicht"
+
+#: client/components/status/status.js:1360
+msgid "DAILY_USAGE_OVERVIEW_DESCRIPTION"
+msgstr "Verfolgen Sie, wie viel Zeit und Daten Sie heute genutzt haben"
+
+#: client/components/status/status.js:1380
+msgid "USAGE_TIME"
+msgstr "Zeit"
+
+#: client/components/status/status.js:1383
+msgid "USAGE_DATA"
+msgstr "Daten"
+
+#: client/components/status/status.js:1312
+msgid "USAGE_REMAINING"
+msgstr "verbleibend"
+
 #: client/components/login/login.js:152
 #: client/components/mobile-phone-change/mobile-phone-change.js:137
 #: client/components/registration/registration.js:399

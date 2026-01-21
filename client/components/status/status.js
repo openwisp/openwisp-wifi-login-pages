@@ -3,22 +3,20 @@
 import "./index.css";
 import "react-circular-progressbar/dist/styles.css";
 import "react-toastify/dist/ReactToastify.css";
-
 import axios from "axios";
 import PropTypes from "prop-types";
 import React from "react";
-import {Cookies} from "react-cookie";
-import {Link} from "react-router-dom";
-import {toast} from "react-toastify";
-import InfinteScroll from "react-infinite-scroll-component";
-import {t, gettext} from "ttag";
-import prettyBytes from "pretty-bytes";
-import getLanguageHeaders from "../../utils/get-language-headers";
 import {
   CircularProgressbarWithChildren,
   buildStyles,
 } from "react-circular-progressbar";
-
+import {Cookies} from "react-cookie";
+import {Link} from "react-router-dom";
+import {toast} from "react-toastify";
+import InfinteScroll from "react-infinite-scroll-component";
+import prettyBytes from "pretty-bytes";
+import {t, gettext} from "ttag";
+import getLanguageHeaders from "../../utils/get-language-headers";
 import {
   getUserRadiusSessionsUrl,
   getUserRadiusUsageUrl,
@@ -40,6 +38,7 @@ import {localStorage} from "../../utils/storage";
 import handleSession from "../../utils/session";
 import getPlanSelection from "../../utils/get-plan-selection";
 import getPlans from "../../utils/get-plans";
+
 export default class Status extends React.Component {
   constructor(props) {
     super(props);
@@ -1259,7 +1258,19 @@ export default class Status extends React.Component {
 
   // eslint-disable-next-line class-methods-use-this
   getUsageColorAndIcons = (value, result) => {
-    const usagePercentage = (result / value) * 100;
+    const numValue = Number(value);
+    const numResult = Number(result);
+
+    // Default to green (low usage) if value is 0 or non-numeric
+    if (!numValue || Number.isNaN(numValue)) {
+      return {
+        color: "#1AAA55",
+        timerIcon: "/assets/default/timerIconGreen.svg",
+        dataIcon: "/assets/default/dataIconGreen.svg",
+      };
+    }
+
+    const usagePercentage = (numResult / numValue) * 100;
 
     if (usagePercentage <= 50) {
       return {
@@ -1281,6 +1292,43 @@ export default class Status extends React.Component {
       dataIcon: "/assets/default/dataIconRed.svg",
     };
   };
+
+  renderUsageCheckContent = (check, color, icon, label) => (
+    <div className="usage-check-content">
+      <div className="usage-check-header">
+        <img src={icon} alt={`${label} Icon`} />
+        <div>{label}</div>
+      </div>
+      <div className="usage-progress-wrapper">
+        <CircularProgressbarWithChildren
+          id={check.attribute}
+          strokeWidth={12}
+          value={check.result}
+          maxValue={check.value}
+          styles={buildStyles({
+            pathColor: color,
+            trailColor: "#EAECF0",
+            strokeLinecap: "butt",
+            pathTransitionDuration: 0.5,
+          })}
+        >
+          <div className="usage-progress-text">
+            <strong>
+              {this.getUserCheckFormattedValue(
+                check.value,
+                check.type,
+                check.result,
+              )}
+            </strong>
+            <div className="usage-progress-remaining">{t`USAGE_REMAINING`}</div>
+          </div>
+        </CircularProgressbarWithChildren>
+      </div>
+      <div className="usage-check-used">
+        {this.getUserCheckUsedValue(check.value, check.type, check.result)}
+      </div>
+    </div>
+  );
 
   render() {
     const {
@@ -1356,10 +1404,8 @@ export default class Status extends React.Component {
             showRadiusUsage &&
             !internetMode && (
               <div className="usage-overview bg row">
-                <div className="usage-overview-title">
-                  Daily usage overview
-                </div>
-                <p>Track how much time and data you've used today</p>
+                <div className="usage-overview-title">{t`DAILY_USAGE_OVERVIEW`}</div>
+                <p>{t`DAILY_USAGE_OVERVIEW_DESCRIPTION`}</p>
                 {radiusUsageSpinner ? this.getSpinner() : null}
                 {settings.subscriptions && userPlan.name && (
                   <h3>
@@ -1372,97 +1418,33 @@ export default class Status extends React.Component {
                       {userChecks.map((check) => {
                         const {color, timerIcon, dataIcon} =
                           this.getUsageColorAndIcons(check.value, check.result);
+                        if (check.value === "0") {
+                          return null;
+                        }
+                        let icon = null;
+                        let label = null;
+                        if (check.type === "seconds") {
+                          icon = timerIcon;
+                          label = t`USAGE_TIME`;
+                        } else if (check.type === "bytes") {
+                          icon = dataIcon;
+                          label = t`USAGE_DATA`;
+                        }
+                        if (!icon) {
+                          return null;
+                        }
                         return (
-                          check.value !== "0" && (
-                            <div
-                              className="usage-box usage-box-inner"
-                              key={check.attribute}
-                            >
-                              {check.type === "seconds" ? (
-                                <div className="usage-check-content">
-                                  <div className="usage-check-header">
-                                    <img src={timerIcon} alt="Timer Icon" />
-                                    <div>Time</div>
-                                  </div>
-                                  <div className="usage-progress-wrapper">
-                                    <CircularProgressbarWithChildren
-                                      id={check.attribute}
-                                      strokeWidth={12}
-                                      value={check.result}
-                                      maxValue={check.value}
-                                      styles={buildStyles({
-                                        pathColor: color,
-                                        trailColor: "#EAECF0",
-                                        strokeLinecap: "butt",
-                                        pathTransitionDuration: 0.5,
-                                      })}
-                                    >
-                                      <div className="usage-progress-text">
-                                        <strong>
-                                          {this.getUserCheckFormattedValue(
-                                            check.value,
-                                            check.type,
-                                            check.result,
-                                          )}
-                                        </strong>
-                                        <div className="usage-progress-remaining">
-                                          remaining
-                                        </div>
-                                      </div>
-                                    </CircularProgressbarWithChildren>
-                                  </div>
-                                  <div className="usage-check-used">
-                                    {this.getUserCheckUsedValue(
-                                      check.value,
-                                      check.type,
-                                      check.result,
-                                    )}
-                                  </div>
-                                </div>
-                              ) : check.type === "bytes" ? (
-                                <div className="usage-check-content">
-                                  <div className="usage-check-header">
-                                    <img src={dataIcon} alt="Data Icon" />
-                                    <div>Data</div>
-                                  </div>
-                                  <div className="usage-progress-wrapper">
-                                    <CircularProgressbarWithChildren
-                                      id={check.attribute}
-                                      strokeWidth={12}
-                                      value={check.result}
-                                      maxValue={check.value}
-                                      styles={buildStyles({
-                                        pathColor: color,
-                                        trailColor: "#EAECF0",
-                                        strokeLinecap: "butt",
-                                        pathTransitionDuration: 0.5,
-                                      })}
-                                    >
-                                      <div className="usage-progress-text">
-                                        <strong>
-                                          {this.getUserCheckFormattedValue(
-                                            check.value,
-                                            check.type,
-                                            check.result,
-                                          )}
-                                        </strong>
-                                        <div className="usage-progress-remaining">
-                                          remaining
-                                        </div>
-                                      </div>
-                                    </CircularProgressbarWithChildren>
-                                  </div>
-                                  <div className="usage-check-used">
-                                    {this.getUserCheckUsedValue(
-                                      check.value,
-                                      check.type,
-                                      check.result,
-                                    )}
-                                  </div>
-                                </div>
-                              ) : null}
-                            </div>
-                          )
+                          <div
+                            className="usage-box usage-box-inner"
+                            key={check.attribute}
+                          >
+                            {this.renderUsageCheckContent(
+                              check,
+                              color,
+                              icon,
+                              label,
+                            )}
+                          </div>
                         );
                       })}
                     </div>
