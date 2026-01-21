@@ -58,7 +58,7 @@ exports[`<Status /> interactions should hide check if check.value is zero 1`] = 
               >
                 <CircularProgressbarWithChildren
                   id="Max-Daily-Session"
-                  maxValue="10800"
+                  maxValue={10800}
                   strokeWidth={12}
                   styles={
                     {
@@ -95,7 +95,7 @@ exports[`<Status /> interactions should hide check if check.value is zero 1`] = 
               <div
                 className="usage-check-used"
               >
-                0 used of 3h
+                0 USAGE_USED_OF 3h
               </div>
             </div>
           </div>
@@ -455,7 +455,7 @@ exports[`<Status /> interactions should show user's radius usage 1`] = `
               >
                 <CircularProgressbarWithChildren
                   id="Max-Daily-Session"
-                  maxValue="10800"
+                  maxValue={10800}
                   strokeWidth={12}
                   styles={
                     {
@@ -492,7 +492,7 @@ exports[`<Status /> interactions should show user's radius usage 1`] = `
               <div
                 className="usage-check-used"
               >
-                0 used of 3h
+                0 USAGE_USED_OF 3h
               </div>
             </div>
           </div>
@@ -519,7 +519,7 @@ exports[`<Status /> interactions should show user's radius usage 1`] = `
               >
                 <CircularProgressbarWithChildren
                   id="Max-Daily-Session-Traffic"
-                  maxValue="3000000000"
+                  maxValue={3000000000}
                   strokeWidth={12}
                   styles={
                     {
@@ -556,7 +556,7 @@ exports[`<Status /> interactions should show user's radius usage 1`] = `
               <div
                 className="usage-check-used"
               >
-                0 used of 3 GB
+                0 USAGE_USED_OF 3 GB
               </div>
             </div>
           </div>
@@ -971,7 +971,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
               >
                 <CircularProgressbarWithChildren
                   id="Max-Daily-Session"
-                  maxValue="10800"
+                  maxValue={10800}
                   strokeWidth={12}
                   styles={
                     {
@@ -1008,7 +1008,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
               <div
                 className="usage-check-used"
               >
-                2h 58m used of 3h
+                2h 58m USAGE_USED_OF 3h
               </div>
             </div>
           </div>
@@ -1035,7 +1035,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
               >
                 <CircularProgressbarWithChildren
                   id="Max-Daily-Session-Traffic"
-                  maxValue="3000000000"
+                  maxValue={3000000000}
                   strokeWidth={12}
                   styles={
                     {
@@ -1072,7 +1072,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
               <div
                 className="usage-check-used"
               >
-                3 GB used of 3 GB
+                3 GB USAGE_USED_OF 3 GB
               </div>
             </div>
           </div>
@@ -1375,7 +1375,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
               >
                 <CircularProgressbarWithChildren
                   id="Max-Daily-Session"
-                  maxValue="10800"
+                  maxValue={10800}
                   strokeWidth={12}
                   styles={
                     {
@@ -1412,7 +1412,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
               <div
                 className="usage-check-used"
               >
-                2h 58m used of 3h
+                2h 58m USAGE_USED_OF 3h
               </div>
             </div>
           </div>
@@ -1439,7 +1439,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
               >
                 <CircularProgressbarWithChildren
                   id="Max-Daily-Session-Traffic"
-                  maxValue="3000000000"
+                  maxValue={3000000000}
                   strokeWidth={12}
                   styles={
                     {
@@ -1476,7 +1476,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
               <div
                 className="usage-check-used"
               >
-                3 GB used of 3 GB
+                3 GB USAGE_USED_OF 3 GB
               </div>
             </div>
           </div>
@@ -1697,7 +1697,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
               >
                 <CircularProgressbarWithChildren
                   id="Max-Daily-Session"
-                  maxValue="10800"
+                  maxValue={10800}
                   strokeWidth={12}
                   styles={
                     {
@@ -1734,7 +1734,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
               <div
                 className="usage-check-used"
               >
-                2h 58m used of 3h
+                2h 58m USAGE_USED_OF 3h
               </div>
             </div>
           </div>
@@ -1761,7 +1761,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
               >
                 <CircularProgressbarWithChildren
                   id="Max-Daily-Session-Traffic"
-                  maxValue="3000000000"
+                  maxValue={3000000000}
                   strokeWidth={12}
                   styles={
                     {
@@ -1798,7 +1798,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
               <div
                 className="usage-check-used"
               >
-                3 GB used of 3 GB
+                3 GB USAGE_USED_OF 3 GB
               </div>
             </div>
           </div>
@@ -2101,7 +2101,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
               >
                 <CircularProgressbarWithChildren
                   id="Max-Daily-Session"
-                  maxValue="10800"
+                  maxValue={10800}
                   strokeWidth={12}
                   styles={
                     {
@@ -2138,7 +2138,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
               <div
                 className="usage-check-used"
               >
-                2h 58m used of 3h
+                2h 58m USAGE_USED_OF 3h
               </div>
             </div>
           </div>
@@ -2165,7 +2165,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
               >
                 <CircularProgressbarWithChildren
                   id="Max-Daily-Session-Traffic"
-                  maxValue="3000000000"
+                  maxValue={3000000000}
                   strokeWidth={12}
                   styles={
                     {
@@ -2202,7 +2202,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
               <div
                 className="usage-check-used"
               >
-                3 GB used of 3 GB
+                3 GB USAGE_USED_OF 3 GB
               </div>
             </div>
           </div>

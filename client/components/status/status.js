@@ -1165,8 +1165,13 @@ export default class Status extends React.Component {
 
   // eslint-disable-next-line class-methods-use-this
   getUserCheckFormattedValue = (value, type, result) => {
-    const intValue = parseInt(value, 10);
-    const intResult = parseInt(result, 10);
+    const intValue = Number(value);
+    const intResult = Number(result);
+
+    if (!Number.isFinite(intValue) || !Number.isFinite(intResult)) {
+      return t`N/A`;
+    }
+
     const remaining = Math.max(0, intValue - intResult);
     switch (type) {
       case "bytes":
@@ -1197,8 +1202,13 @@ export default class Status extends React.Component {
 
   // eslint-disable-next-line class-methods-use-this
   getUserCheckUsedValue = (value, type, result) => {
-    const intValue = parseInt(value, 10);
-    const intResult = parseInt(result, 10);
+    const intValue = Number(value);
+    const intResult = Number(result);
+
+    if (!Number.isFinite(intValue) || !Number.isFinite(intResult)) {
+      return t`N/A`;
+    }
+
     const used = Math.min(intResult, intValue);
 
     const formatTime = (seconds) => {
@@ -1416,11 +1426,22 @@ export default class Status extends React.Component {
                   <div>
                     <div className="usage-checks-container">
                       {userChecks.map((check) => {
-                        const {color, timerIcon, dataIcon} =
-                          this.getUsageColorAndIcons(check.value, check.result);
-                        if (check.value === "0") {
+                        const valueNum = Number(check.value);
+                        const resultNum = Number(check.result);
+                        if (
+                          !Number.isFinite(valueNum) ||
+                          valueNum <= 0 ||
+                          !Number.isFinite(resultNum)
+                        ) {
                           return null;
                         }
+                        const normalizedCheck = {
+                          ...check,
+                          value: valueNum,
+                          result: resultNum,
+                        };
+                        const {color, timerIcon, dataIcon} =
+                          this.getUsageColorAndIcons(valueNum, resultNum);
                         let icon = null;
                         let label = null;
                         if (check.type === "seconds") {
@@ -1439,7 +1460,7 @@ export default class Status extends React.Component {
                             key={check.attribute}
                           >
                             {this.renderUsageCheckContent(
-                              check,
+                              normalizedCheck,
                               color,
                               icon,
                               label,

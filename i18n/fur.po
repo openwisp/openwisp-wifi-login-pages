@@ -206,6 +206,11 @@ msgstr "restant"
 msgid "USAGE_USED_OF"
 msgstr "doprât di"
 
+#: client/components/status/status.js:1172
+#: client/components/status/status.js:1209
+msgid "N/A"
+msgstr "N/D"
+
 #: client/components/login/login.js:152
 #: client/components/mobile-phone-change/mobile-phone-change.js:137
 #: client/components/registration/registration.js:399
