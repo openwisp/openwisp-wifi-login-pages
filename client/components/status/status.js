@@ -1185,15 +1185,15 @@ export default class Status extends React.Component {
         const hours = Math.floor(remaining / 3600);
         const minutes = Math.floor((remaining % 3600) / 60);
         if (hours > 0 && minutes > 0) {
-          return t`${hours}h ${minutes}m`;
+          return `${hours}${t`TIME_HOUR_ABBR`} ${minutes}${t`TIME_MINUTE_ABBR`}`;
         }
         if (hours > 0) {
-          return t`${hours}h`;
+          return `${hours}${t`TIME_HOUR_ABBR`}`;
         }
         if (minutes > 0) {
-          return t`${minutes}m`;
+          return `${minutes}${t`TIME_MINUTE_ABBR`}`;
         }
-        return t`<1m`;
+        return t`TIME_LESS_THAN_MINUTE`;
       }
       default:
         return `${remaining}`;
@@ -1215,15 +1215,15 @@ export default class Status extends React.Component {
       const hours = Math.floor(seconds / 3600);
       const minutes = Math.floor((seconds % 3600) / 60);
       if (hours > 0 && minutes > 0) {
-        return t`${hours}h ${minutes}m`;
+        return `${hours}${t`TIME_HOUR_ABBR`} ${minutes}${t`TIME_MINUTE_ABBR`}`;
       }
       if (hours > 0) {
-        return t`${hours}h`;
+        return `${hours}${t`TIME_HOUR_ABBR`}`;
       }
       if (minutes > 0) {
-        return t`${minutes}m`;
+        return `${minutes}${t`TIME_MINUTE_ABBR`}`;
       }
-      return t`<1m`;
+      return t`TIME_LESS_THAN_MINUTE`;
     };
 
     switch (type) {
@@ -1261,9 +1261,9 @@ export default class Status extends React.Component {
     const hours = Math.floor(secondsRemaining / 3600);
     const minutes = Math.floor((secondsRemaining % 3600) / 60);
     if (hours > 0) {
-      return t`${hours}h ${minutes}m`;
+      return `${hours}${t`TIME_HOUR_ABBR`} ${minutes}${t`TIME_MINUTE_ABBR`}`;
     }
-    return t`${minutes}m`;
+    return `${minutes}${t`TIME_MINUTE_ABBR`}`;
   };
 
   // eslint-disable-next-line class-methods-use-this
@@ -1472,7 +1472,7 @@ export default class Status extends React.Component {
                     {userChecks[0]?.reset &&
                       this.getResetTimeRemaining(userChecks[0].reset) && (
                         <div className="usage-reset-info">
-                          {t`*Daily limits reset in ${this.getResetTimeRemaining(userChecks[0].reset)}`}
+                          {`*${t`DAILY_LIMITS_RESET_IN`} ${this.getResetTimeRemaining(userChecks[0].reset)}`}
                         </div>
                       )}
                   </div>

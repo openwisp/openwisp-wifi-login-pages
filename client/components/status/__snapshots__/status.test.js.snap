@@ -82,7 +82,7 @@ exports[`<Status /> interactions should hide check if check.value is zero 1`] = 
                     className="usage-progress-text"
                   >
                     <strong>
-                      3h
+                      3TIME_HOUR_ABBR
                     </strong>
                     <div
                       className="usage-progress-remaining"
@@ -95,7 +95,7 @@ exports[`<Status /> interactions should hide check if check.value is zero 1`] = 
               <div
                 className="usage-check-used"
               >
-                0 USAGE_USED_OF 3h
+                0 USAGE_USED_OF 3TIME_HOUR_ABBR
               </div>
             </div>
           </div>
@@ -479,7 +479,7 @@ exports[`<Status /> interactions should show user's radius usage 1`] = `
                     className="usage-progress-text"
                   >
                     <strong>
-                      3h
+                      3TIME_HOUR_ABBR
                     </strong>
                     <div
                       className="usage-progress-remaining"
@@ -492,7 +492,7 @@ exports[`<Status /> interactions should show user's radius usage 1`] = `
               <div
                 className="usage-check-used"
               >
-                0 USAGE_USED_OF 3h
+                0 USAGE_USED_OF 3TIME_HOUR_ABBR
               </div>
             </div>
           </div>
@@ -995,7 +995,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
                     className="usage-progress-text"
                   >
                     <strong>
-                      1m
+                      1TIME_MINUTE_ABBR
                     </strong>
                     <div
                       className="usage-progress-remaining"
@@ -1008,7 +1008,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
               <div
                 className="usage-check-used"
               >
-                2h 58m USAGE_USED_OF 3h
+                2TIME_HOUR_ABBR 58TIME_MINUTE_ABBR USAGE_USED_OF 3TIME_HOUR_ABBR
               </div>
             </div>
           </div>
@@ -1399,7 +1399,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
                     className="usage-progress-text"
                   >
                     <strong>
-                      1m
+                      1TIME_MINUTE_ABBR
                     </strong>
                     <div
                       className="usage-progress-remaining"
@@ -1412,7 +1412,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
               <div
                 className="usage-check-used"
               >
-                2h 58m USAGE_USED_OF 3h
+                2TIME_HOUR_ABBR 58TIME_MINUTE_ABBR USAGE_USED_OF 3TIME_HOUR_ABBR
               </div>
             </div>
           </div>
@@ -1721,7 +1721,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
                     className="usage-progress-text"
                   >
                     <strong>
-                      1m
+                      1TIME_MINUTE_ABBR
                     </strong>
                     <div
                       className="usage-progress-remaining"
@@ -1734,7 +1734,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
               <div
                 className="usage-check-used"
               >
-                2h 58m USAGE_USED_OF 3h
+                2TIME_HOUR_ABBR 58TIME_MINUTE_ABBR USAGE_USED_OF 3TIME_HOUR_ABBR
               </div>
             </div>
           </div>
@@ -2125,7 +2125,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
                     className="usage-progress-text"
                   >
                     <strong>
-                      1m
+                      1TIME_MINUTE_ABBR
                     </strong>
                     <div
                       className="usage-progress-remaining"
@@ -2138,7 +2138,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
               <div
                 className="usage-check-used"
               >
-                2h 58m USAGE_USED_OF 3h
+                2TIME_HOUR_ABBR 58TIME_MINUTE_ABBR USAGE_USED_OF 3TIME_HOUR_ABBR
               </div>
             </div>
           </div>
