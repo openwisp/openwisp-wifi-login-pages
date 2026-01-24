@@ -178,6 +178,63 @@ msgstr ""
 msgid "PLAN_UPGRADE_BTN_TXT"
 msgstr "Inovovať"
 
+#: client/components/status/status.js:1359
+msgid "DAILY_USAGE_OVERVIEW"
+msgstr "Dnevni pregled porabe"
+
+#: client/components/status/status.js:1360
+msgid "DAILY_USAGE_OVERVIEW_DESCRIPTION"
+msgstr "Spremljajte, koliko časa in podatkov ste danes porabili"
+
+#: client/components/status/status.js:1380
+msgid "USAGE_TIME"
+msgstr "Čas"
+
+#: client/components/status/status.js:1383
+msgid "USAGE_DATA"
+msgstr "Podatki"
+
+#: client/components/status/status.js:1312
+msgid "USAGE_REMAINING"
+msgstr "preostalo"
+
+#: client/components/status/status.js:1229
+#: client/components/status/status.js:1234
+#: client/components/status/status.js:1237
+msgid "USAGE_USED_OF"
+msgstr "porabljeno od"
+
+#: client/components/status/status.js:1172
+#: client/components/status/status.js:1209
+msgid "N/A"
+msgstr "N/A"
+
+#: client/components/status/status.js:1475
+msgid "DAILY_LIMITS_RESET_IN"
+msgstr "Dnevne omejitve se ponastavijo čez"
+
+#: client/components/status/status.js:1188
+#: client/components/status/status.js:1191
+#: client/components/status/status.js:1218
+#: client/components/status/status.js:1221
+#: client/components/status/status.js:1264
+msgid "TIME_HOUR_ABBR"
+msgstr "h"
+
+#: client/components/status/status.js:1188
+#: client/components/status/status.js:1194
+#: client/components/status/status.js:1218
+#: client/components/status/status.js:1224
+#: client/components/status/status.js:1264
+#: client/components/status/status.js:1266
+msgid "TIME_MINUTE_ABBR"
+msgstr "m"
+
+#: client/components/status/status.js:1196
+#: client/components/status/status.js:1226
+msgid "TIME_LESS_THAN_MINUTE"
+msgstr "<1m"
+
 #: client/components/login/login.js:152
 #: client/components/mobile-phone-change/mobile-phone-change.js:137
 #: client/components/registration/registration.js:399
