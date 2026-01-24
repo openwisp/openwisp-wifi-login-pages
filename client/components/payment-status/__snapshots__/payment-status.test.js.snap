@@ -1,106 +1,158 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`<PaymentStatus /> rendering with placeholder translation tags should render translation placeholder correctly 1`] = `
-<div
-  className="container content"
->
+<div>
   <div
-    className="inner"
+    class="container content"
   >
     <div
-      className="main-column"
+      class="inner"
     >
       <div
-        className="inner"
+        class="main-column"
       >
-        <h2
-          className="row payment-status-row-1"
-        >
-          PAY_FAIL
-        </h2>
         <div
-          className="row payment-status-row-2"
+          class="inner"
         >
-          PAY_SUB_H
-        </div>
-        <div
-          className="row payment-status-row-3"
-        >
-          <Link
-            className="button full"
-            to="/default/payment/draft"
+          <h2
+            class="row payment-status-row-1"
           >
-            PAY_TRY_AGAIN_BTN
-          </Link>
-        </div>
-        <div
-          className="row payment-status-row-4"
-        >
-          <p>
-            PAY_GIVE_UP_TXT
-          </p>
-          <button
-            className="button full"
-            onClick={[Function]}
-            type="button"
+            PAY_FAIL
+          </h2>
+          <div
+            class="row payment-status-row-2"
           >
-            PAY_GIVE_UP_BTN
-          </button>
+            PAY_SUB_H
+          </div>
+          <div
+            class="row payment-status-row-3"
+          >
+            <a
+              class="button full"
+              href="/default/payment/draft"
+            >
+              PAY_TRY_AGAIN_BTN
+            </a>
+          </div>
+          <div
+            class="row payment-status-row-4"
+          >
+            <p>
+              PAY_GIVE_UP_TXT
+            </p>
+            <button
+              class="button full"
+              type="button"
+            >
+              PAY_GIVE_UP_BTN
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        class="side-column contact"
+      >
+        <div
+          class="inner"
+        >
+          <div
+            class="row"
+          >
+            <span
+              class="label"
+            >
+              EMAIL
+              :
+            </span>
+            <a
+              class="link"
+              href="mailto:support.org"
+            >
+              support.org
+            </a>
+          </div>
+          <div
+            class="row"
+          >
+            <span
+              class="label"
+            >
+              HELPDESK
+              :
+            </span>
+            <a
+              class="link"
+              href="tel:+1234567890"
+            >
+              +1234567890
+            </a>
+          </div>
+          <div
+            class="contact-links"
+          />
         </div>
       </div>
     </div>
-    <Memo(Connect(Contact)) />
   </div>
 </div>
 `;
 
 exports[`Test <PaymentStatus /> cases should render draft correctly 1`] = `
-<div
-  className="container content"
->
+<div>
   <div
-    className="inner"
+    class="container content"
   >
     <div
-      className="main-column single"
+      class="inner"
     >
       <div
-        className="inner"
+        class="main-column single"
       >
-        <h2
-          className="row"
-        >
-          Payment required to proceed
-        </h2>
         <div
-          className="row"
-          dangerouslySetInnerHTML={
-            {
-              "__html": "<p>By clicking on the button below you will be redirected to our payment gateway service where you can safely use your credit/debit card. From there you will be redirected to the website of your bank to confirm the transaction.</p><p>You will have 5 minutes to complete the process.<br /><strong>For this reason we recommend preparing your debit/credit card before initiating the payment process.</strong></p><p>If for any reason the process is not completed within the available time, the internet connection which allows you to reach the website of your bank will be closed, if this happens you can just log in again with the credentials you just registered and repeat the process up a maximum of 3 times.</p>",
-            }
-          }
-        />
-        <div
-          className="row"
+          class="inner"
         >
-          <Link
-            className="button full"
-            onClick={[Function]}
-            to="/default/status"
+          <h2
+            class="row"
           >
-            Proceed with the payment
-          </Link>
-        </div>
-        <div
-          className="row"
-        >
-          <button
-            className="button full"
-            onClick={[Function]}
-            type="button"
+            Payment required to proceed
+          </h2>
+          <div
+            class="row"
           >
-            Cancel operation and log out
-          </button>
+            <p>
+              By clicking on the button below you will be redirected to our payment gateway service where you can safely use your credit/debit card. From there you will be redirected to the website of your bank to confirm the transaction.
+            </p>
+            <p>
+              You will have 5 minutes to complete the process.
+              <br />
+              <strong>
+                For this reason we recommend preparing your debit/credit card before initiating the payment process.
+              </strong>
+            </p>
+            <p>
+              If for any reason the process is not completed within the available time, the internet connection which allows you to reach the website of your bank will be closed, if this happens you can just log in again with the credentials you just registered and repeat the process up a maximum of 3 times.
+            </p>
+          </div>
+          <div
+            class="row"
+          >
+            <a
+              class="button full"
+              href="/default/status"
+            >
+              Proceed with the payment
+            </a>
+          </div>
+          <div
+            class="row"
+          >
+            <button
+              class="button full"
+              type="button"
+            >
+              Cancel operation and log out
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -109,55 +161,98 @@ exports[`Test <PaymentStatus /> cases should render draft correctly 1`] = `
 `;
 
 exports[`Test <PaymentStatus /> cases should render failed state 1`] = `
-<div
-  className="container content"
->
+<div>
   <div
-    className="inner"
+    class="container content"
   >
     <div
-      className="main-column"
+      class="inner"
     >
       <div
-        className="inner"
+        class="main-column"
       >
-        <h2
-          className="row payment-status-row-1"
-        >
-          Payment Failed
-        </h2>
         <div
-          className="row payment-status-row-2"
+          class="inner"
         >
-          Something went wrong with the payment.
-        </div>
-        <div
-          className="row payment-status-row-3"
-        >
-          <Link
-            className="button full"
-            to="/default/payment/draft"
+          <h2
+            class="row payment-status-row-1"
           >
-            Try again
-          </Link>
-        </div>
-        <div
-          className="row payment-status-row-4"
-        >
-          <p>
-            If you cannot complete the transaction you can either try to get in touch with your bank or cancel the operation.
-          </p>
-          <button
-            className="button full"
-            onClick={[Function]}
-            type="button"
+            Payment Failed
+          </h2>
+          <div
+            class="row payment-status-row-2"
           >
-            Cancel operation and log out
-          </button>
+            Something went wrong with the payment.
+          </div>
+          <div
+            class="row payment-status-row-3"
+          >
+            <a
+              class="button full"
+              href="/default/payment/draft"
+            >
+              Try again
+            </a>
+          </div>
+          <div
+            class="row payment-status-row-4"
+          >
+            <p>
+              If you cannot complete the transaction you can either try to get in touch with your bank or cancel the operation.
+            </p>
+            <button
+              class="button full"
+              type="button"
+            >
+              Cancel operation and log out
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        class="side-column contact"
+      >
+        <div
+          class="inner"
+        >
+          <div
+            class="row"
+          >
+            <span
+              class="label"
+            >
+              Email
+              :
+            </span>
+            <a
+              class="link"
+              href="mailto:support.org"
+            >
+              support.org
+            </a>
+          </div>
+          <div
+            class="row"
+          >
+            <span
+              class="label"
+            >
+              Helpdesk
+              :
+            </span>
+            <a
+              class="link"
+              href="tel:+1234567890"
+            >
+              +1234567890
+            </a>
+          </div>
+          <div
+            class="contact-links"
+          />
         </div>
       </div>
     </div>
-    <Connect(Contact) />
   </div>
 </div>
 `;

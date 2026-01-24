@@ -1,6 +1,7 @@
 import React from "react";
-import ShallowRenderer from "react-test-renderer/shallow";
-import {shallow} from "enzyme";
+import {render} from "@testing-library/react";
+import "@testing-library/jest-dom";
+import {TestRouter} from "../../test-utils";
 import getConfig from "../../utils/get-config";
 import loadTranslation from "../../utils/load-translation";
 import DoesNotExist from "./404";
@@ -17,12 +18,14 @@ const createTestProps = (props) => ({
   ...props,
 });
 
+const renderWithRouter = (component) =>
+  render(<TestRouter>{component}</TestRouter>);
+
 describe("<DoesNotExist /> rendering with placeholder translation tags", () => {
   const props = createTestProps();
   it("should render translation placeholder correctly", () => {
-    const renderer = new ShallowRenderer();
-    const wrapper = renderer.render(<DoesNotExist {...props} />);
-    expect(wrapper).toMatchSnapshot();
+    const {container} = renderWithRouter(<DoesNotExist {...props} />);
+    expect(container).toMatchSnapshot();
   });
 });
 
@@ -32,22 +35,20 @@ describe("<DoesNotExist /> rendering", () => {
   });
 
   it("should render correctly default 404 page without props", () => {
-    const renderer = new ShallowRenderer();
-    const component = renderer.render(<DoesNotExist />);
-    expect(component).toMatchSnapshot();
+    const {container} = renderWithRouter(<DoesNotExist />);
+    expect(container).toMatchSnapshot();
   });
 
   it("should render correctly custom 404 page with props", () => {
     const props = createTestProps();
-    const renderer = new ShallowRenderer();
-    const component = renderer.render(<DoesNotExist {...props} />);
-    expect(component).toMatchSnapshot();
+    const {container} = renderWithRouter(<DoesNotExist {...props} />);
+    expect(container).toMatchSnapshot();
   });
 
   it("should set title with organisation name", () => {
     const props = createTestProps();
-    const wrapper = shallow(<DoesNotExist {...props} />);
-    const setTitleMock = wrapper.instance().props.setTitle.mock;
+    renderWithRouter(<DoesNotExist {...props} />);
+    const setTitleMock = props.setTitle.mock;
     expect(setTitleMock.calls.pop()).toEqual(["404 Not found", props.orgName]);
   });
 
@@ -55,8 +56,8 @@ describe("<DoesNotExist /> rendering", () => {
     const props = createTestProps();
     props.page = undefined;
     props.orgName = undefined;
-    const wrapper = shallow(<DoesNotExist {...props} />);
-    const setTitleMock = wrapper.instance().props.setTitle.mock;
+    renderWithRouter(<DoesNotExist {...props} />);
+    const setTitleMock = props.setTitle.mock;
     expect(setTitleMock.calls.length).toBe(0);
   });
 });

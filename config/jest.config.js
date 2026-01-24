@@ -1,4 +1,23 @@
-import {configure} from "enzyme";
-import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
+import "@testing-library/jest-dom";
 
-configure({adapter: new Adapter()});
+// Mock window.matchMedia
+if (typeof window !== "undefined") {
+  Object.defineProperty(window, "matchMedia", {
+    writable: true,
+    value: jest.fn().mockImplementation((query) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: jest.fn(),
+      removeListener: jest.fn(),
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    })),
+  });
+}
+
+// Mock scrollTo
+if (typeof global.scrollTo === "undefined") {
+  global.scrollTo = jest.fn();
+}

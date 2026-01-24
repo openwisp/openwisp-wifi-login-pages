@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import "./index.css";
 
 import axios from "axios";
@@ -149,7 +148,7 @@ export default class Login extends React.Component {
     const {username, errors} = this.state;
     return (
       <div className="row phone-number">
-        <label htmlFor="phone-number">{t`PHONE_LBL`}</label>
+        <label htmlFor="username">{t`PHONE_LBL`}</label>
         {getError(errors, "username")}
         <Suspense
           fallback={
@@ -304,7 +303,6 @@ export default class Login extends React.Component {
       toastId: mainToastId,
     });
     const {key: auth_token} = data;
-    delete data.key; // eslint-disable-line no-param-reassign
     setUserData({...data, auth_token, mustLogin: true});
     // if requires payment redirect to payment status component
     if (data.method === "bank_card" && data.is_verified === false) {
@@ -329,8 +327,10 @@ export default class Login extends React.Component {
           ref={this.realmsRadiusLoginForm}
           method={captivePortalLoginForm.method || "post"}
           id="cp-login-form"
+          data-testid="cp-login-form"
           action={captivePortalLoginForm.action || ""}
           className="hidden"
+          aria-label="Captive portal login form"
         >
           <input
             type="hidden"
@@ -379,7 +379,11 @@ export default class Login extends React.Component {
         )}
         <div className="container content" id="login">
           <div className="inner">
-            <form className="main-column" onSubmit={this.handleSubmit}>
+            <form
+              className="main-column"
+              onSubmit={this.handleSubmit}
+              aria-label="Login form"
+            >
               <div className="inner">
                 {getHtml(pre_html, language, "pre-html")}
 

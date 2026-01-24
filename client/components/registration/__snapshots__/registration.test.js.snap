@@ -1,502 +1,716 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
-exports[`<Registration /> interactions should show modal if user is already registered with other organizations 1`] = `
-<div
-  className="modal is-visible"
->
+exports[`<Registration /> interactions should execute handleResponse correctly 1`] = `
+<div>
   <div
-    className="modal-container bg"
-  >
-    <button
-      className="modal-close-btn"
-      onClick={
-        [MockFunction] {
-          "calls": [
-            [],
-          ],
-          "results": [
-            {
-              "type": "return",
-              "value": undefined,
-            },
-          ],
-        }
-      }
-      type="button"
-    >
-      ✖
-    </button>
-    <div
-      className={null}
-    >
-      <div
-        className="message"
-      >
-        <p>
-          A user with credentials like the one being entered already exists in other organizations:
-        </p>
-        <ul>
-          <li
-            className="org-list"
-            key="default"
-          >
-            default
-          </li>
-        </ul>
-        <p>
-          Do you own the account mentioned above and want to sign in with this organization?
-        </p>
-      </div>
-    </div>
-    <p
-      className="modal-buttons"
-    >
-      <button
-        className="button partial"
-        onClick={[Function]}
-        type="button"
-      >
-        Yes
-      </button>
-      <button
-        className="button partial"
-        onClick={[Function]}
-        type="button"
-      >
-        No
-      </button>
-    </p>
-  </div>
-</div>
-`;
-
-exports[`<Registration /> interactions should show modal if user is registered but not associated with any org 1`] = `
-<div
-  className="modal is-visible"
->
-  <div
-    className="modal-container bg"
-  >
-    <button
-      className="modal-close-btn"
-      onClick={[Function]}
-      type="button"
-    >
-      ✖
-    </button>
-    <div
-      className={null}
-    >
-      <div
-        className="message"
-      >
-        <p>
-          A user with these credentials already exists.
-        </p>
-        <ul />
-        <p>
-          Do you own the account mentioned above and want to sign in with this organization?
-        </p>
-      </div>
-    </div>
-    <p
-      className="modal-buttons"
-    >
-      <button
-        className="button partial"
-        onClick={[Function]}
-        type="button"
-      >
-        Yes
-      </button>
-      <button
-        className="button partial"
-        onClick={[Function]}
-        type="button"
-      >
-        No
-      </button>
-    </p>
-  </div>
-</div>
-`;
-
-exports[`<Registration /> rendering should render correctly 1`] = `
-<Fragment>
-  <div
-    className="container content"
+    class="container content"
     id="registration"
   >
     <div
-      className="inner"
+      class="inner"
     >
       <form
-        className="main-column "
+        class="main-column "
+        data-testid="registration-form"
         id="registration-form"
-        onSubmit={[Function]}
       >
         <div
-          className="inner"
+          class="inner"
         >
           <div
-            className="fieldset"
+            class="fieldset"
           >
             <div
-              className="row email"
+              class="row email"
             >
               <label
-                htmlFor="email"
+                for="email"
               >
                 Email
               </label>
               <input
-                autoComplete="email"
-                className="input "
+                autocomplete="email"
+                class="input "
                 id="email"
                 name="email"
-                onChange={[Function]}
-                pattern=".+@.+\\..+"
+                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
                 placeholder="email address"
-                required={true}
+                required=""
                 title="enter valid email address"
                 type="email"
                 value=""
               />
             </div>
             <div
-              className="row password"
+              class="row password"
             >
               <label
-                htmlFor="password"
+                for="password"
               >
                 Password
               </label>
               <input
-                autoComplete="new-password"
-                className="input "
+                aria-label="Password"
+                autocomplete="new-password"
+                class="input "
                 id="password"
                 name="password1"
-                onChange={[Function]}
-                pattern=".{6,}"
+                pattern="^.{8,}$"
                 placeholder="password"
-                required={true}
+                required=""
                 title="password must be a minimum of 6 characters"
                 type="password"
                 value=""
               />
-              <PasswordToggleIcon
-                hidePassword={true}
-                inputRef={
-                  {
-                    "current": null,
-                  }
-                }
-                isVisible={false}
-                parentClassName=""
-                secondInputRef={
-                  {
-                    "current": null,
-                  }
-                }
-                toggler={[Function]}
-              />
+              <div
+                class="password-toggle"
+                data-testid="password-toggle-icon"
+                role="button"
+                tabindex="0"
+              >
+                <i
+                  class="eye"
+                  title="reveal password"
+                />
+              </div>
             </div>
             <div
-              className="row password-confirm"
+              class="row password-confirm"
             >
               <label
-                htmlFor="password-confirm"
+                for="password-confirm"
               >
                 Confirm password
               </label>
               <input
-                autoComplete="new-password"
-                className="input "
+                aria-label="Confirm Password"
+                autocomplete="new-password"
+                class="input "
                 id="password-confirm"
                 name="password2"
-                onChange={[Function]}
-                pattern=".{6,}"
+                pattern="^.{8,}$"
                 placeholder="confirm password"
-                required={true}
+                required=""
                 title="password must be a minimum of 6 characters"
                 type="password"
                 value=""
               />
-              <PasswordToggleIcon
-                hidePassword={true}
-                inputRef={
-                  {
-                    "current": null,
-                  }
-                }
-                isVisible={false}
-                parentClassName=""
-                secondInputRef={
-                  {
-                    "current": null,
-                  }
-                }
-                toggler={[Function]}
-              />
+              <div
+                class="password-toggle"
+                data-testid="password-toggle-icon"
+                role="button"
+                tabindex="0"
+              >
+                <i
+                  class="eye"
+                  title="reveal password"
+                />
+              </div>
             </div>
           </div>
           <div
-            className="row add-info"
-          >
-            By signing up, you accept the 
-            <Link
-              className="link additional registration"
-              key="terms-and-conditions"
-              to="/default/registration/terms-and-conditions"
-            >
-              terms and conditions
-            </Link>
-             and the 
-            <Link
-              className="link additional registration"
-              key="privacy-policy"
-              to="/default/registration/privacy-policy"
-            >
-              privacy policy
-            </Link>
-             of this WiFi service.
-          </div>
-          <div
-            className="row register"
+            class="row register"
           >
             <input
-              className="button full"
+              class="button full"
               type="submit"
               value="Sign up"
             />
           </div>
-          <div
-            className="row links"
-          >
-            <p>
-              <Link
-                className="link"
-                to="/default/login"
-              >
-                Already have an account? Log in
-              </Link>
-            </p>
-          </div>
         </div>
       </form>
-      <Connect(Contact) />
+      <div
+        class="side-column contact"
+      >
+        <div
+          class="inner"
+        >
+          <div
+            class="row"
+          >
+            <span
+              class="label"
+            >
+              Email
+              :
+            </span>
+            <a
+              class="link"
+              href="mailto:support.org"
+            >
+              support.org
+            </a>
+          </div>
+          <div
+            class="row"
+          >
+            <span
+              class="label"
+            >
+              Helpdesk
+              :
+            </span>
+            <a
+              class="link"
+              href="tel:+1234567890"
+            >
+              +1234567890
+            </a>
+          </div>
+          <div
+            class="contact-links"
+          />
+        </div>
+      </div>
     </div>
   </div>
-  <Routes>
-    <Route
-      element={
-        <Memo(Connect(Component))
-          prevPath="/default/registration"
-        />
-      }
-      path=":name"
-    />
-  </Routes>
-</Fragment>
+</div>
 `;
 
-exports[`<Registration /> rendering with placeholder translation tags should render translation placeholder correctly 1`] = `
-<Fragment>
+exports[`<Registration /> rendering should render correctly 1`] = `
+<div>
   <div
-    className="container content"
+    class="container content"
     id="registration"
   >
     <div
-      className="inner"
+      class="inner"
     >
       <form
-        className="main-column "
+        class="main-column "
+        data-testid="registration-form"
         id="registration-form"
-        onSubmit={[Function]}
       >
         <div
-          className="inner"
+          class="inner"
         >
           <div
-            className="fieldset"
+            class="fieldset"
           >
             <div
-              className="row email"
+              class="row email"
             >
               <label
-                htmlFor="email"
+                for="email"
+              >
+                Email
+              </label>
+              <input
+                autocomplete="email"
+                class="input "
+                id="email"
+                name="email"
+                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+                placeholder="email address"
+                required=""
+                title="enter valid email address"
+                type="email"
+                value=""
+              />
+            </div>
+            <div
+              class="row password"
+            >
+              <label
+                for="password"
+              >
+                Password
+              </label>
+              <input
+                aria-label="Password"
+                autocomplete="new-password"
+                class="input "
+                id="password"
+                name="password1"
+                pattern="^.{8,}$"
+                placeholder="password"
+                required=""
+                title="password must be a minimum of 6 characters"
+                type="password"
+                value=""
+              />
+              <div
+                class="password-toggle"
+                data-testid="password-toggle-icon"
+                role="button"
+                tabindex="0"
+              >
+                <i
+                  class="eye"
+                  title="reveal password"
+                />
+              </div>
+            </div>
+            <div
+              class="row password-confirm"
+            >
+              <label
+                for="password-confirm"
+              >
+                Confirm password
+              </label>
+              <input
+                aria-label="Confirm Password"
+                autocomplete="new-password"
+                class="input "
+                id="password-confirm"
+                name="password2"
+                pattern="^.{8,}$"
+                placeholder="confirm password"
+                required=""
+                title="password must be a minimum of 6 characters"
+                type="password"
+                value=""
+              />
+              <div
+                class="password-toggle"
+                data-testid="password-toggle-icon"
+                role="button"
+                tabindex="0"
+              >
+                <i
+                  class="eye"
+                  title="reveal password"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            class="row register"
+          >
+            <input
+              class="button full"
+              type="submit"
+              value="Sign up"
+            />
+          </div>
+        </div>
+      </form>
+      <div
+        class="side-column contact"
+      >
+        <div
+          class="inner"
+        >
+          <div
+            class="row"
+          >
+            <span
+              class="label"
+            >
+              Email
+              :
+            </span>
+            <a
+              class="link"
+              href="mailto:support.org"
+            >
+              support.org
+            </a>
+          </div>
+          <div
+            class="row"
+          >
+            <span
+              class="label"
+            >
+              Helpdesk
+              :
+            </span>
+            <a
+              class="link"
+              href="tel:+1234567890"
+            >
+              +1234567890
+            </a>
+          </div>
+          <div
+            class="contact-links"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Registration /> rendering with placeholder translation tags should render translation placeholder correctly 1`] = `
+<div>
+  <div
+    class="container content"
+    id="registration"
+  >
+    <div
+      class="inner"
+    >
+      <form
+        class="main-column "
+        data-testid="registration-form"
+        id="registration-form"
+      >
+        <div
+          class="inner"
+        >
+          <div
+            class="fieldset"
+          >
+            <div
+              class="row email"
+            >
+              <label
+                for="email"
               >
                 EMAIL
               </label>
               <input
-                autoComplete="email"
-                className="input "
+                autocomplete="email"
+                class="input "
                 id="email"
                 name="email"
-                onChange={[Function]}
-                pattern=".+@.+\\..+"
+                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
                 placeholder="EMAIL_PHOLD"
-                required={true}
+                required=""
                 title="EMAIL_PTRN_DESC"
                 type="email"
                 value=""
               />
             </div>
             <div
-              className="row password"
+              class="row password"
             >
               <label
-                htmlFor="password"
+                for="password"
               >
                 PWD_LBL
               </label>
               <input
-                autoComplete="new-password"
-                className="input "
+                aria-label="Password"
+                autocomplete="new-password"
+                class="input "
                 id="password"
                 name="password1"
-                onChange={[Function]}
-                pattern=".{6,}"
+                pattern="^.{8,}$"
                 placeholder="PWD_PHOLD"
-                required={true}
+                required=""
                 title="PWD_PTRN_DESC"
                 type="password"
                 value=""
               />
-              <PasswordToggleIcon
-                hidePassword={true}
-                inputRef={
-                  {
-                    "current": null,
-                  }
-                }
-                isVisible={false}
-                parentClassName=""
-                secondInputRef={
-                  {
-                    "current": null,
-                  }
-                }
-                toggler={[Function]}
-              />
+              <div
+                class="password-toggle"
+                data-testid="password-toggle-icon"
+                role="button"
+                tabindex="0"
+              >
+                <i
+                  class="eye"
+                  title="PWD_REVEAL"
+                />
+              </div>
             </div>
             <div
-              className="row password-confirm"
+              class="row password-confirm"
             >
               <label
-                htmlFor="password-confirm"
+                for="password-confirm"
               >
                 CONFIRM_PWD_LBL
               </label>
               <input
-                autoComplete="new-password"
-                className="input "
+                aria-label="Confirm Password"
+                autocomplete="new-password"
+                class="input "
                 id="password-confirm"
                 name="password2"
-                onChange={[Function]}
-                pattern=".{6,}"
+                pattern="^.{8,}$"
                 placeholder="CONFIRM_PWD_PHOLD"
-                required={true}
+                required=""
                 title="PWD_PTRN_DESC"
                 type="password"
                 value=""
               />
-              <PasswordToggleIcon
-                hidePassword={true}
-                inputRef={
-                  {
-                    "current": null,
-                  }
-                }
-                isVisible={false}
-                parentClassName=""
-                secondInputRef={
-                  {
-                    "current": null,
-                  }
-                }
-                toggler={[Function]}
-              />
+              <div
+                class="password-toggle"
+                data-testid="password-toggle-icon"
+                role="button"
+                tabindex="0"
+              >
+                <i
+                  class="eye"
+                  title="PWD_REVEAL"
+                />
+              </div>
             </div>
           </div>
           <div
-            className="row add-info"
-          >
-            REGISTER_ADD_INFO_TXT
-          </div>
-          <div
-            className="row register"
+            class="row register"
           >
             <input
-              className="button full"
+              class="button full"
               type="submit"
               value="REGISTER_BTN_TXT"
             />
           </div>
+        </div>
+      </form>
+      <div
+        class="side-column contact"
+      >
+        <div
+          class="inner"
+        >
           <div
-            className="row links"
+            class="row"
           >
-            <p>
-              <Link
-                className="link"
-                to="/default/login"
+            <span
+              class="label"
+            >
+              EMAIL
+              :
+            </span>
+            <a
+              class="link"
+              href="mailto:support.org"
+            >
+              support.org
+            </a>
+          </div>
+          <div
+            class="row"
+          >
+            <span
+              class="label"
+            >
+              HELPDESK
+              :
+            </span>
+            <a
+              class="link"
+              href="tel:+1234567890"
+            >
+              +1234567890
+            </a>
+          </div>
+          <div
+            class="contact-links"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Registration and Mobile Phone Verification interactions should render modal 1`] = `
+<div>
+  <div
+    class="container content"
+    id="registration"
+  >
+    <div
+      class="inner"
+    >
+      <form
+        class="main-column "
+        data-testid="registration-form"
+        id="registration-form"
+      >
+        <div
+          class="inner"
+        >
+          <div
+            class="fieldset"
+          >
+            <div
+              class="row phone-number"
+            >
+              <label
+                for="phone-number"
               >
-                LINKS_LOGIN_TXT
-              </Link>
-            </p>
+                Mobile phone number
+              </label>
+              <div
+                class=" react-tel-input "
+              >
+                <div
+                  class="special-label"
+                >
+                  Phone
+                </div>
+                <input
+                  autocomplete="tel"
+                  class="form-control input "
+                  id="phone-number"
+                  name="phone_number"
+                  placeholder="enter mobile phone number"
+                  required=""
+                  type="tel"
+                  value="+91"
+                />
+                <div
+                  class="flag-dropdown "
+                >
+                  <div
+                    aria-haspopup="listbox"
+                    class="selected-flag"
+                    role="button"
+                    tabindex="0"
+                    title="India: + 91"
+                  >
+                    <div
+                      class="flag in"
+                    >
+                      <div
+                        class="arrow"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="row email"
+            >
+              <label
+                for="email"
+              >
+                Email
+              </label>
+              <input
+                autocomplete="email"
+                class="input "
+                id="email"
+                name="email"
+                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+                placeholder="email address"
+                required=""
+                title="enter valid email address"
+                type="email"
+                value=""
+              />
+            </div>
+            <div
+              class="row password"
+            >
+              <label
+                for="password"
+              >
+                Password
+              </label>
+              <input
+                aria-label="Password"
+                autocomplete="new-password"
+                class="input "
+                id="password"
+                name="password1"
+                pattern="^.{8,}$"
+                placeholder="password"
+                required=""
+                title="password must be a minimum of 6 characters"
+                type="password"
+                value=""
+              />
+              <div
+                class="password-toggle"
+                data-testid="password-toggle-icon"
+                role="button"
+                tabindex="0"
+              >
+                <i
+                  class="eye"
+                  title="reveal password"
+                />
+              </div>
+            </div>
+            <div
+              class="row password-confirm"
+            >
+              <label
+                for="password-confirm"
+              >
+                Confirm password
+              </label>
+              <input
+                aria-label="Confirm Password"
+                autocomplete="new-password"
+                class="input "
+                id="password-confirm"
+                name="password2"
+                pattern="^.{8,}$"
+                placeholder="confirm password"
+                required=""
+                title="password must be a minimum of 6 characters"
+                type="password"
+                value=""
+              />
+              <div
+                class="password-toggle"
+                data-testid="password-toggle-icon"
+                role="button"
+                tabindex="0"
+              >
+                <i
+                  class="eye"
+                  title="reveal password"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            class="row register"
+          >
+            <input
+              class="button full"
+              type="submit"
+              value="Sign up"
+            />
           </div>
         </div>
       </form>
-      <Connect(Contact) />
+      <div
+        class="side-column contact"
+      >
+        <div
+          class="inner"
+        >
+          <div
+            class="row"
+          >
+            <span
+              class="label"
+            >
+              Email
+              :
+            </span>
+            <a
+              class="link"
+              href="mailto:support.org"
+            >
+              support.org
+            </a>
+          </div>
+          <div
+            class="row"
+          >
+            <span
+              class="label"
+            >
+              Helpdesk
+              :
+            </span>
+            <a
+              class="link"
+              href="tel:+1234567890"
+            >
+              +1234567890
+            </a>
+          </div>
+          <div
+            class="contact-links"
+          />
+        </div>
+      </div>
     </div>
   </div>
-  <Routes>
-    <Route
-      element={
-        <Memo(Connect(Component))
-          prevPath="/default/registration"
-        />
-      }
-      path=":name"
-    />
-  </Routes>
-</Fragment>
-`;
-
-exports[`Registration and Mobile Phone Verification interactions should render PhoneInput lazily and handlers should work correctly 1`] = `
-<Suspense
-  fallback={
-    <input
-      className="input"
-      name="phone_number"
-      onChange={[Function]}
-      onKeyDown={[Function]}
-      placeholder="enter mobile phone number"
-      type="tel"
-      value=""
-    />
-  }
->
-  <lazy
-    country="it"
-    enableSearch={false}
-    excludeCountries={[]}
-    inputProps={
-      {
-        "autoComplete": "tel",
-        "className": "form-control input ",
-        "id": "phone-number",
-        "name": "phone_number",
-        "required": true,
-      }
-    }
-    name="phone_number"
-    onChange={[Function]}
-    onKeyDown={[Function]}
-    onlyCountries={[]}
-    placeholder="enter mobile phone number"
-    preferredCountries={[]}
-    value=""
-  />
-</Suspense>
+</div>
 `;

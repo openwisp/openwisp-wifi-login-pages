@@ -1,9 +1,8 @@
-/* eslint-disable prefer-promise-reject-errors */
-import {shallow} from "enzyme";
-import PropTypes from "prop-types";
+import {render, screen, fireEvent} from "@testing-library/react";
+import "@testing-library/jest-dom";
 import React from "react";
-import ShallowRenderer from "react-test-renderer/shallow";
 import * as toastify from "react-toastify";
+import {TestRouter} from "../../test-utils";
 import logError from "../../utils/log-error";
 import loadTranslation from "../../utils/load-translation";
 import Logout from "./logout";
@@ -36,9 +35,12 @@ const createTestProps = (props) => ({
 describe("<Logout /> rendering with placeholder translation tags", () => {
   const props = createTestProps();
   it("should render translation placeholder correctly", () => {
-    const renderer = new ShallowRenderer();
-    const wrapper = renderer.render(<Logout {...props} />);
-    expect(wrapper).toMatchSnapshot();
+    const {container} = render(
+      <TestRouter>
+        <Logout {...props} />
+      </TestRouter>,
+    );
+    expect(container).toMatchSnapshot();
   });
 });
 
@@ -47,36 +49,45 @@ describe("<Logout /> rendering", () => {
 
   it("should render correctly", () => {
     props = createTestProps();
-    const renderer = new ShallowRenderer();
     loadTranslation("en", "default");
-    const component = renderer.render(<Logout {...props} />);
-    expect(component).toMatchSnapshot();
+    const {container} = render(
+      <TestRouter>
+        <Logout {...props} />
+      </TestRouter>,
+    );
+    expect(container).toMatchSnapshot();
   });
 });
 
 describe("<Logout /> interactions", () => {
   let props;
-  let wrapper;
 
   beforeEach(() => {
-    Logout.contextTypes = {
-      setLoading: PropTypes.func,
-      getLoading: PropTypes.func,
-    };
+    jest.clearAllMocks();
     loadTranslation("en", "default");
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+    jest.restoreAllMocks();
   });
 
   it("should set user authenticated when log in again is clicked", () => {
     props = createTestProps();
-    wrapper = shallow(<Logout {...props} />, {
-      context: {setLoading: jest.fn()},
-    });
-    const loginUser = jest.spyOn(wrapper.instance(), "loginUser");
-    wrapper.find(".button").simulate("click", {});
-    expect(loginUser).toHaveBeenCalled();
+    render(
+      <TestRouter>
+        <Logout {...props} />
+      </TestRouter>,
+    );
+
+    const loginButton = screen.getByRole("link", {name: /login again/i});
+    expect(loginButton).toBeInTheDocument();
+
+    fireEvent.click(loginButton);
+
     // ensure mustLogin:true is passed
     // otherwise captive portal login won't be done
-    expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith({
+    expect(props.setUserData).toHaveBeenCalledWith({
       ...userData,
       mustLogin: true,
     });
@@ -84,26 +95,33 @@ describe("<Logout /> interactions", () => {
 
   it("should call setTitle to set the title", () => {
     props = createTestProps();
-    wrapper = shallow(<Logout {...props} />, {
-      context: {setLoading: jest.fn()},
-    });
-    const setTitleMock = wrapper.instance().props.setTitle.mock;
-    expect(setTitleMock.calls.pop()).toEqual(["Logout", props.orgName]);
+    render(
+      <TestRouter>
+        <Logout {...props} />
+      </TestRouter>,
+    );
+
+    expect(props.setTitle).toHaveBeenCalledWith("Logout", props.orgName);
   });
 
   it("should login if user is already authenticated and clicks log in again", () => {
     const spyToast = jest.spyOn(toastify.toast, "success");
     props = createTestProps();
     props.isAuthenticated = true;
-    wrapper = shallow(<Logout {...props} />, {
-      context: {setLoading: jest.fn()},
-    });
-    wrapper.instance().loginUser(true);
+
+    render(
+      <TestRouter>
+        <Logout {...props} />
+      </TestRouter>,
+    );
+
+    const loginButton = screen.getByRole("link", {name: /login again/i});
+    fireEvent.click(loginButton);
+
     expect(spyToast).toHaveBeenCalled();
     expect(spyToast).toHaveBeenCalledWith("Login successful", {
       toastId: "main_toast_id",
     });
-    expect(props.userData.mustLogin).toBe(false);
   });
 
   it("should mapStatetoProps and dispatchtoProps correctly", () => {

@@ -1,1112 +1,639 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
-exports[`<OrganizationWrapper /> interactions should render main title if pageTitle is undefined 1`] = `
-<Fragment>
-  <ContextProvider
-    value={
-      {
-        "getLoading": [Function],
-        "setLoading": [Function],
-      }
-    }
-  >
-    <div
-      className="app-container "
-    >
-      <Routes>
-        <Route
-          element={
-            <Memo(Connect(Header))
-              location={
-                {
-                  "pathname": "",
-                }
-              }
-              params={
-                {
-                  "organization": "default",
-                }
-              }
-            />
-          }
-          path="*"
-        />
-      </Routes>
-      <Routes>
-        <Route
-          element={
-            <Navigate
-              to="/default/login"
-            />
-          }
-          exact={true}
-          path=""
-        />
-        <Route
-          element={
-            <React.Suspense
-              fallback={<loader />}
-            >
-              <UNDEFINED />
-            </React.Suspense>
-          }
-          path="*"
-        />
-        <Route
-          element={
-            <Navigate
-              to="/default/status"
-            />
-          }
-          path="registration/*"
-        />
-        <Route
-          element={
-            <Navigate
-              to="/default/status"
-            />
-          }
-          path="mobile-phone-verification"
-        />
-        <Route
-          element={
-            <Navigate
-              to="/default/status"
-            />
-          }
-          path="password/reset/confirm/:uid/:token"
-        />
-        <Route
-          element={
-            <Navigate
-              to="/default/status"
-            />
-          }
-          exact={true}
-          path="password/reset"
-        />
-        <Route
-          element={
-            <Navigate
-              to="/default/status"
-            />
-          }
-          path="login/*"
-        />
-        <Route
-          element={
-            <React.Suspense
-              fallback={<loader />}
-            >
-              <UNDEFINED
-                cookies={
-                  Cookies {
-                    "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": [],
-                    "cookies": {},
-                    "defaultSetOptions": {},
-                    "update": [Function],
-                  }
-                }
-                location={
-                  {
-                    "pathname": "",
-                  }
-                }
-                navigate={[MockFunction]}
-              />
-            </React.Suspense>
-          }
-          path="status"
-        />
-        <Route
-          element={
-            <Navigate
-              to="/default/status"
-            />
-          }
-          path="logout"
-        />
-        <Route
-          element={
-            <React.Suspense
-              fallback={<loader />}
-            >
-              <UNDEFINED
-                cookies={
-                  Cookies {
-                    "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": [],
-                    "cookies": {},
-                    "defaultSetOptions": {},
-                    "update": [Function],
-                  }
-                }
-                navigate={[MockFunction]}
-              />
-            </React.Suspense>
-          }
-          path="change-password"
-        />
-        <Route
-          element={
-            <React.Suspense
-              fallback={<loader />}
-            >
-              <UNDEFINED
-                cookies={
-                  Cookies {
-                    "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": [],
-                    "cookies": {},
-                    "defaultSetOptions": {},
-                    "update": [Function],
-                  }
-                }
-                navigate={[MockFunction]}
-              />
-            </React.Suspense>
-          }
-          path="change-phone-number"
-        />
-        <Route
-          element={
-            <React.Suspense
-              fallback={<loader />}
-            >
-              <UNDEFINED
-                cookies={
-                  Cookies {
-                    "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": [],
-                    "cookies": {},
-                    "defaultSetOptions": {},
-                    "update": [Function],
-                  }
-                }
-                navigate={[MockFunction]}
-              />
-            </React.Suspense>
-          }
-          path="payment/process/"
-        />
-        <Route
-          element={
-            <React.Suspense
-              fallback={<loader />}
-            >
-              <UNDEFINED
-                cookies={
-                  Cookies {
-                    "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": [],
-                    "cookies": {},
-                    "defaultSetOptions": {},
-                    "update": [Function],
-                  }
-                }
-              />
-            </React.Suspense>
-          }
-          path="payment/:status"
-        />
-      </Routes>
-      <Routes>
-        <Route
-          element={<Memo(Connect(Footer)) />}
-          path="*"
-        />
-      </Routes>
-    </div>
-    <HelmetWrapper
-      defer={true}
-      encodeSpecialCharacters={true}
-    >
-      <title>
-        Login to default name
-      </title>
-    </HelmetWrapper>
-  </ContextProvider>
-</Fragment>
-`;
+exports[`<OrganizationWrapper /> interactions should render main title if pageTitle is undefined 1`] = `<div />`;
 
 exports[`<OrganizationWrapper /> interactions should render pageTitle if it is not undefined 1`] = `
-<Fragment>
-  <ContextProvider
-    value={
-      {
-        "getLoading": [Function],
-        "setLoading": [Function],
-      }
-    }
+<div>
+  <div
+    class="app-container "
+    data-testid="app-container"
   >
     <div
-      className="app-container "
+      class="header-container header-desktop"
+      data-testid="header-desktop"
     >
-      <Routes>
-        <Route
-          element={
-            <Memo(Connect(Header))
-              location={
-                {
-                  "pathname": "",
-                }
-              }
-              params={
-                {
-                  "organization": "default",
-                }
-              }
-            />
-          }
-          path="*"
-        />
-      </Routes>
-      <Routes>
-        <Route
-          element={
-            <Navigate
-              to="/default/login"
-            />
-          }
-          exact={true}
-          path=""
-        />
-        <Route
-          element={
-            <React.Suspense
-              fallback={<loader />}
+      <div
+        class="header-row-1"
+      >
+        <div
+          class="header-row-1-inner"
+        >
+          <div
+            class="header-left"
+          >
+            <div
+              class="header-logo-div"
             >
-              <UNDEFINED />
-            </React.Suspense>
-          }
-          path="*"
-        />
-        <Route
-          element={
-            <Navigate
-              to="/default/status"
-            />
-          }
-          path="registration/*"
-        />
-        <Route
-          element={
-            <Navigate
-              to="/default/status"
-            />
-          }
-          path="mobile-phone-verification"
-        />
-        <Route
-          element={
-            <Navigate
-              to="/default/status"
-            />
-          }
-          path="password/reset/confirm/:uid/:token"
-        />
-        <Route
-          element={
-            <Navigate
-              to="/default/status"
-            />
-          }
-          exact={true}
-          path="password/reset"
-        />
-        <Route
-          element={
-            <Navigate
-              to="/default/status"
-            />
-          }
-          path="login/*"
-        />
-        <Route
-          element={
-            <React.Suspense
-              fallback={<loader />}
+              <a
+                href="/default"
+              >
+                <img
+                  alt="openwisp"
+                  class="header-logo-image header-desktop-logo-image"
+                  src="/assets/default//assets/default/openwisp-logo-black.svg"
+                />
+              </a>
+            </div>
+          </div>
+          <div
+            class="header-right"
+            data-testid="desktop-language-selector"
+          >
+            <button
+              class="active header-language-btn header-desktop-language-btn header-language-btn-en"
+              type="button"
             >
-              <UNDEFINED
-                cookies={
-                  Cookies {
-                    "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": [],
-                    "cookies": {},
-                    "defaultSetOptions": {},
-                    "update": [Function],
-                  }
-                }
-                location={
-                  {
-                    "pathname": "",
-                  }
-                }
-                navigate={[MockFunction]}
-              />
-            </React.Suspense>
-          }
-          path="status"
-        />
-        <Route
-          element={
-            <Navigate
-              to="/default/status"
-            />
-          }
-          path="logout"
-        />
-        <Route
-          element={
-            <React.Suspense
-              fallback={<loader />}
+              english
+            </button>
+            <button
+              class="header-language-btn header-desktop-language-btn header-language-btn-it"
+              type="button"
             >
-              <UNDEFINED
-                cookies={
-                  Cookies {
-                    "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": [],
-                    "cookies": {},
-                    "defaultSetOptions": {},
-                    "update": [Function],
-                  }
-                }
-                navigate={[MockFunction]}
-              />
-            </React.Suspense>
-          }
-          path="change-password"
-        />
-        <Route
-          element={
-            <React.Suspense
-              fallback={<loader />}
-            >
-              <UNDEFINED
-                cookies={
-                  Cookies {
-                    "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": [],
-                    "cookies": {},
-                    "defaultSetOptions": {},
-                    "update": [Function],
-                  }
-                }
-                navigate={[MockFunction]}
-              />
-            </React.Suspense>
-          }
-          path="change-phone-number"
-        />
-        <Route
-          element={
-            <React.Suspense
-              fallback={<loader />}
-            >
-              <UNDEFINED
-                cookies={
-                  Cookies {
-                    "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": [],
-                    "cookies": {},
-                    "defaultSetOptions": {},
-                    "update": [Function],
-                  }
-                }
-                navigate={[MockFunction]}
-              />
-            </React.Suspense>
-          }
-          path="payment/process/"
-        />
-        <Route
-          element={
-            <React.Suspense
-              fallback={<loader />}
-            >
-              <UNDEFINED
-                cookies={
-                  Cookies {
-                    "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": [],
-                    "cookies": {},
-                    "defaultSetOptions": {},
-                    "update": [Function],
-                  }
-                }
-              />
-            </React.Suspense>
-          }
-          path="payment/:status"
-        />
-      </Routes>
-      <Routes>
-        <Route
-          element={<Memo(Connect(Footer)) />}
-          path="*"
-        />
-      </Routes>
+              italian
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        class="header-row-2"
+      >
+        <div
+          class="header-row-2-inner"
+          data-testid="desktop-navigation"
+        >
+          <a
+            class="header-link header-desktop-link
+                  header-link-1  button "
+            href="/default/login"
+          >
+            Sign In
+          </a>
+          <a
+            class="header-link header-desktop-link
+                  header-link-2  button "
+            href="/default/registration"
+          >
+            Sign Up
+          </a>
+        </div>
+      </div>
     </div>
-    <HelmetWrapper
-      defer={true}
-      encodeSpecialCharacters={true}
+    <div
+      class="header-mobile "
+      data-testid="header-mobile"
     >
-      <title>
-        Organization Wrapper
-      </title>
-    </HelmetWrapper>
-  </ContextProvider>
-</Fragment>
+      <div
+        class="header-row-1"
+      >
+        <div
+          class="header-row-1-inner"
+        >
+          <div
+            class="header-left"
+          >
+            <div
+              class="header-logo-div"
+            >
+              <a
+                href="/default"
+              >
+                <img
+                  alt="openwisp"
+                  class="header-logo-image header-mobile-logo-image"
+                  src="/assets/default//assets/default/openwisp-logo-black.svg"
+                />
+              </a>
+            </div>
+          </div>
+          <div
+            class="header-right"
+          >
+            <div
+              aria-label="Menu Button"
+              class="header-hamburger"
+              role="button"
+              tabindex="0"
+            >
+              <div
+                class=""
+              />
+              <div
+                class=""
+              />
+              <div
+                class=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="display-none header-mobile-menu"
+        data-testid="mobile-menu"
+      >
+        <a
+          class="header-link mobile-link
+                    header-link-1  button"
+          href="/default/login"
+        >
+          Sign In
+        </a>
+        <a
+          class="header-link mobile-link
+                    header-link-2  button"
+          href="/default/registration"
+        >
+          Sign Up
+        </a>
+        <div
+          class="mobile-languages-row"
+        >
+          <button
+            class="active header-language-btn header-mobile-language-btn header-language-btn-en"
+            type="button"
+          >
+            english
+          </button>
+          <button
+            class="header-language-btn header-mobile-language-btn header-language-btn-it"
+            type="button"
+          >
+            italian
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="container content"
+      data-testid="not-found-404"
+      id="not-found-404"
+    >
+      <div
+        class="inner"
+      >
+        <div
+          class="main-column"
+        >
+          <div
+            class="inner"
+          >
+            <div
+              class="row owisp-404-row-1"
+            >
+              Oops!
+            </div>
+            <div
+              class="row owisp-404-row-2"
+            >
+              404 Not Found
+            </div>
+            <div
+              class="row owisp-404-row-3"
+            >
+              Sorry, an error has occurred, Requested page not found!
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="footer-container"
+      data-testid="footer"
+    >
+      <div
+        class="footer-row-1"
+      >
+        <div
+          class="footer-row-1-inner"
+        />
+      </div>
+    </div>
+  </div>
+</div>
 `;
 
-exports[`<OrganizationWrapper /> interactions should show route for authenticated users 1`] = `
-<Fragment>
-  <ContextProvider
-    value={
-      {
-        "getLoading": [Function],
-        "setLoading": [Function],
-      }
-    }
+exports[`<OrganizationWrapper /> interactions should show route for authenticated users 1`] = `<div />`;
+
+exports[`Test <OrganizationWrapper /> routes should display status if authenticated 1`] = `
+<div>
+  <div
+    class="app-container "
+    data-testid="app-container"
   >
     <div
-      className="app-container "
+      class="header-container header-desktop"
+      data-testid="header-desktop"
     >
-      <Routes>
-        <Route
-          element={
-            <Memo(Connect(Header))
-              location={
-                {
-                  "pathname": "",
-                }
-              }
-              params={
-                {
-                  "organization": "default",
-                }
-              }
-            />
-          }
-          path="*"
-        />
-      </Routes>
-      <Routes>
-        <Route
-          element={
-            <Navigate
-              to="/default/login"
-            />
-          }
-          exact={true}
-          path=""
-        />
-        <Route
-          element={
-            <React.Suspense
-              fallback={<loader />}
+      <div
+        class="header-row-1"
+      >
+        <div
+          class="header-row-1-inner"
+        >
+          <div
+            class="header-left"
+          >
+            <div
+              class="header-logo-div"
             >
-              <UNDEFINED />
-            </React.Suspense>
-          }
-          path="*"
-        />
-        <Route
-          element={
-            <Navigate
-              to="/default/status"
-            />
-          }
-          path="registration/*"
-        />
-        <Route
-          element={
-            <Navigate
-              to="/default/status"
-            />
-          }
-          path="mobile-phone-verification"
-        />
-        <Route
-          element={
-            <Navigate
-              to="/default/status"
-            />
-          }
-          path="password/reset/confirm/:uid/:token"
-        />
-        <Route
-          element={
-            <Navigate
-              to="/default/status"
-            />
-          }
-          exact={true}
-          path="password/reset"
-        />
-        <Route
-          element={
-            <Navigate
-              to="/default/status"
-            />
-          }
-          path="login/*"
-        />
-        <Route
-          element={
-            <React.Suspense
-              fallback={<loader />}
+              <a
+                href="/undefined"
+              >
+                <img
+                  alt="openwisp"
+                  class="header-logo-image header-desktop-logo-image"
+                  src="/assets/undefined//assets/default/openwisp-logo-black.svg"
+                />
+              </a>
+            </div>
+          </div>
+          <div
+            class="header-right"
+            data-testid="desktop-language-selector"
+          >
+            <button
+              class="active header-language-btn header-desktop-language-btn header-language-btn-en"
+              type="button"
             >
-              <UNDEFINED
-                cookies={
-                  Cookies {
-                    "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": [],
-                    "cookies": {},
-                    "defaultSetOptions": {},
-                    "update": [Function],
-                  }
-                }
-                location={
-                  {
-                    "pathname": "",
-                  }
-                }
-                navigate={[MockFunction]}
-              />
-            </React.Suspense>
-          }
-          path="status"
-        />
-        <Route
-          element={
-            <Navigate
-              to="/default/status"
-            />
-          }
-          path="logout"
-        />
-        <Route
-          element={
-            <React.Suspense
-              fallback={<loader />}
+              english
+            </button>
+            <button
+              class="header-language-btn header-desktop-language-btn header-language-btn-it"
+              type="button"
             >
-              <UNDEFINED
-                cookies={
-                  Cookies {
-                    "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": [],
-                    "cookies": {},
-                    "defaultSetOptions": {},
-                    "update": [Function],
-                  }
-                }
-                navigate={[MockFunction]}
-              />
-            </React.Suspense>
-          }
-          path="change-password"
-        />
-        <Route
-          element={
-            <React.Suspense
-              fallback={<loader />}
-            >
-              <UNDEFINED
-                cookies={
-                  Cookies {
-                    "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": [],
-                    "cookies": {},
-                    "defaultSetOptions": {},
-                    "update": [Function],
-                  }
-                }
-                navigate={[MockFunction]}
-              />
-            </React.Suspense>
-          }
-          path="change-phone-number"
-        />
-        <Route
-          element={
-            <React.Suspense
-              fallback={<loader />}
-            >
-              <UNDEFINED
-                cookies={
-                  Cookies {
-                    "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": [],
-                    "cookies": {},
-                    "defaultSetOptions": {},
-                    "update": [Function],
-                  }
-                }
-                navigate={[MockFunction]}
-              />
-            </React.Suspense>
-          }
-          path="payment/process/"
-        />
-        <Route
-          element={
-            <React.Suspense
-              fallback={<loader />}
-            >
-              <UNDEFINED
-                cookies={
-                  Cookies {
-                    "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": [],
-                    "cookies": {},
-                    "defaultSetOptions": {},
-                    "update": [Function],
-                  }
-                }
-              />
-            </React.Suspense>
-          }
-          path="payment/:status"
-        />
-      </Routes>
-      <Routes>
-        <Route
-          element={<Memo(Connect(Footer)) />}
-          path="*"
-        />
-      </Routes>
+              italian
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        class="header-row-2"
+      >
+        <div
+          class="header-row-2-inner"
+          data-testid="desktop-navigation"
+        >
+          <a
+            class="header-link header-desktop-link
+                  header-link-1  button "
+            href="/undefined/login"
+          >
+            Sign In
+          </a>
+          <a
+            class="header-link header-desktop-link
+                  header-link-2  button "
+            href="/undefined/registration"
+          >
+            Sign Up
+          </a>
+        </div>
+      </div>
     </div>
-    <HelmetWrapper
-      defer={true}
-      encodeSpecialCharacters={true}
+    <div
+      class="header-mobile "
+      data-testid="header-mobile"
     >
-      <title>
-        Login to default name
-      </title>
-    </HelmetWrapper>
-  </ContextProvider>
-</Fragment>
+      <div
+        class="header-row-1"
+      >
+        <div
+          class="header-row-1-inner"
+        >
+          <div
+            class="header-left"
+          >
+            <div
+              class="header-logo-div"
+            >
+              <a
+                href="/undefined"
+              >
+                <img
+                  alt="openwisp"
+                  class="header-logo-image header-mobile-logo-image"
+                  src="/assets/undefined//assets/default/openwisp-logo-black.svg"
+                />
+              </a>
+            </div>
+          </div>
+          <div
+            class="header-right"
+          >
+            <div
+              aria-label="Menu Button"
+              class="header-hamburger"
+              role="button"
+              tabindex="0"
+            >
+              <div
+                class=""
+              />
+              <div
+                class=""
+              />
+              <div
+                class=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="display-none header-mobile-menu"
+        data-testid="mobile-menu"
+      >
+        <a
+          class="header-link mobile-link
+                    header-link-1  button"
+          href="/undefined/login"
+        >
+          Sign In
+        </a>
+        <a
+          class="header-link mobile-link
+                    header-link-2  button"
+          href="/undefined/registration"
+        >
+          Sign Up
+        </a>
+        <div
+          class="mobile-languages-row"
+        >
+          <button
+            class="active header-language-btn header-mobile-language-btn header-language-btn-en"
+            type="button"
+          >
+            english
+          </button>
+          <button
+            class="header-language-btn header-mobile-language-btn header-language-btn-it"
+            type="button"
+          >
+            italian
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="container content"
+      data-testid="not-found-404"
+      id="not-found-404"
+    >
+      <div
+        class="inner"
+      >
+        <div
+          class="main-column"
+        >
+          <div
+            class="inner"
+          >
+            <div
+              class="row owisp-404-row-1"
+            >
+              Oops!
+            </div>
+            <div
+              class="row owisp-404-row-2"
+            >
+              404 Not Found
+            </div>
+            <div
+              class="row owisp-404-row-3"
+            >
+              Sorry, an error has occurred, Requested page not found!
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="footer-container"
+      data-testid="footer"
+    >
+      <div
+        class="footer-row-1"
+      >
+        <div
+          class="footer-row-1-inner"
+        />
+      </div>
+    </div>
+  </div>
+</div>
 `;
 
-exports[`Test Organization Wrapper for authenticated and unverified users should show route for unverified users 1`] = `
-<Fragment>
-  <ContextProvider
-    value={
-      {
-        "getLoading": [Function],
-        "setLoading": [Function],
-      }
-    }
+exports[`Test <OrganizationWrapper /> routes should redirect to login if not authenticated 1`] = `
+<div>
+  <div
+    class="app-container "
+    data-testid="app-container"
   >
     <div
-      className="app-container "
+      class="header-container header-desktop"
+      data-testid="header-desktop"
     >
-      <Routes>
-        <Route
-          element={
-            <Memo(Connect(Header))
-              location={
-                {
-                  "pathname": "",
-                }
-              }
-              params={
-                {
-                  "organization": "default",
-                }
-              }
-            />
-          }
-          path="*"
-        />
-      </Routes>
-      <Routes>
-        <Route
-          element={
-            <Navigate
-              to="/default/login"
-            />
-          }
-          exact={true}
-          path=""
-        />
-        <Route
-          element={
-            <React.Suspense
-              fallback={<loader />}
+      <div
+        class="header-row-1"
+      >
+        <div
+          class="header-row-1-inner"
+        >
+          <div
+            class="header-left"
+          >
+            <div
+              class="header-logo-div"
             >
-              <UNDEFINED />
-            </React.Suspense>
-          }
-          path="*"
-        />
-        <Route
-          element={
-            <Navigate
-              to="/default/mobile-phone-verification"
-            />
-          }
-          path="registration/*"
-        />
-        <Route
-          element={
-            <React.Suspense
-              fallback={<loader />}
+              <a
+                href="/undefined"
+              >
+                <img
+                  alt="openwisp"
+                  class="header-logo-image header-desktop-logo-image"
+                  src="/assets/undefined//assets/default/openwisp-logo-black.svg"
+                />
+              </a>
+            </div>
+          </div>
+          <div
+            class="header-right"
+            data-testid="desktop-language-selector"
+          >
+            <button
+              class="active header-language-btn header-desktop-language-btn header-language-btn-en"
+              type="button"
             >
-              <UNDEFINED
-                cookies={
-                  Cookies {
-                    "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": [],
-                    "cookies": {},
-                    "defaultSetOptions": {},
-                    "update": [Function],
-                  }
-                }
-              />
-            </React.Suspense>
-          }
-          path="mobile-phone-verification"
-        />
-        <Route
-          element={
-            <Navigate
-              to="/default/status"
-            />
-          }
-          path="password/reset/confirm/:uid/:token"
-        />
-        <Route
-          element={
-            <Navigate
-              to="/default/status"
-            />
-          }
-          exact={true}
-          path="password/reset"
-        />
-        <Route
-          element={
-            <Navigate
-              to="/default/status"
-            />
-          }
-          path="login/*"
-        />
-        <Route
-          element={
-            <Navigate
-              to="/default/mobile-phone-verification"
-            />
-          }
-          path="status"
-        />
-        <Route
-          element={
-            <Navigate
-              to="/default/status"
-            />
-          }
-          path="logout"
-        />
-        <Route
-          element={
-            <React.Suspense
-              fallback={<loader />}
+              english
+            </button>
+            <button
+              class="header-language-btn header-desktop-language-btn header-language-btn-it"
+              type="button"
             >
-              <UNDEFINED
-                cookies={
-                  Cookies {
-                    "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": [],
-                    "cookies": {},
-                    "defaultSetOptions": {},
-                    "update": [Function],
-                  }
-                }
-                navigate={[MockFunction]}
-              />
-            </React.Suspense>
-          }
-          path="change-password"
-        />
-        <Route
-          element={
-            <React.Suspense
-              fallback={<loader />}
-            >
-              <UNDEFINED
-                cookies={
-                  Cookies {
-                    "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": [],
-                    "cookies": {},
-                    "defaultSetOptions": {},
-                    "update": [Function],
-                  }
-                }
-                navigate={[MockFunction]}
-              />
-            </React.Suspense>
-          }
-          path="change-phone-number"
-        />
-        <Route
-          element={
-            <React.Suspense
-              fallback={<loader />}
-            >
-              <UNDEFINED
-                cookies={
-                  Cookies {
-                    "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": [],
-                    "cookies": {},
-                    "defaultSetOptions": {},
-                    "update": [Function],
-                  }
-                }
-                navigate={[MockFunction]}
-              />
-            </React.Suspense>
-          }
-          path="payment/process/"
-        />
-        <Route
-          element={
-            <React.Suspense
-              fallback={<loader />}
-            >
-              <UNDEFINED
-                cookies={
-                  Cookies {
-                    "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": [],
-                    "cookies": {},
-                    "defaultSetOptions": {},
-                    "update": [Function],
-                  }
-                }
-              />
-            </React.Suspense>
-          }
-          path="payment/:status"
-        />
-      </Routes>
-      <Routes>
-        <Route
-          element={<Memo(Connect(Footer)) />}
-          path="*"
-        />
-      </Routes>
+              italian
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        class="header-row-2"
+      >
+        <div
+          class="header-row-2-inner"
+          data-testid="desktop-navigation"
+        >
+          <a
+            class="header-link header-desktop-link
+                  header-link-1  button "
+            href="/undefined/login"
+          >
+            Sign In
+          </a>
+          <a
+            class="header-link header-desktop-link
+                  header-link-2  button "
+            href="/undefined/registration"
+          >
+            Sign Up
+          </a>
+        </div>
+      </div>
     </div>
-    <HelmetWrapper
-      defer={true}
-      encodeSpecialCharacters={true}
+    <div
+      class="header-mobile "
+      data-testid="header-mobile"
     >
-      <title>
-        Login to default name
-      </title>
-    </HelmetWrapper>
-  </ContextProvider>
-</Fragment>
+      <div
+        class="header-row-1"
+      >
+        <div
+          class="header-row-1-inner"
+        >
+          <div
+            class="header-left"
+          >
+            <div
+              class="header-logo-div"
+            >
+              <a
+                href="/undefined"
+              >
+                <img
+                  alt="openwisp"
+                  class="header-logo-image header-mobile-logo-image"
+                  src="/assets/undefined//assets/default/openwisp-logo-black.svg"
+                />
+              </a>
+            </div>
+          </div>
+          <div
+            class="header-right"
+          >
+            <div
+              aria-label="Menu Button"
+              class="header-hamburger"
+              role="button"
+              tabindex="0"
+            >
+              <div
+                class=""
+              />
+              <div
+                class=""
+              />
+              <div
+                class=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="display-none header-mobile-menu"
+        data-testid="mobile-menu"
+      >
+        <a
+          class="header-link mobile-link
+                    header-link-1  button"
+          href="/undefined/login"
+        >
+          Sign In
+        </a>
+        <a
+          class="header-link mobile-link
+                    header-link-2  button"
+          href="/undefined/registration"
+        >
+          Sign Up
+        </a>
+        <div
+          class="mobile-languages-row"
+        >
+          <button
+            class="active header-language-btn header-mobile-language-btn header-language-btn-en"
+            type="button"
+          >
+            english
+          </button>
+          <button
+            class="header-language-btn header-mobile-language-btn header-language-btn-it"
+            type="button"
+          >
+            italian
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="container content"
+      data-testid="not-found-404"
+      id="not-found-404"
+    >
+      <div
+        class="inner"
+      >
+        <div
+          class="main-column"
+        >
+          <div
+            class="inner"
+          >
+            <div
+              class="row owisp-404-row-1"
+            >
+              Oops!
+            </div>
+            <div
+              class="row owisp-404-row-2"
+            >
+              404 Not Found
+            </div>
+            <div
+              class="row owisp-404-row-3"
+            >
+              Sorry, an error has occurred, Requested page not found!
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="footer-container"
+      data-testid="footer"
+    >
+      <div
+        class="footer-row-1"
+      >
+        <div
+          class="footer-row-1-inner"
+        />
+      </div>
+    </div>
+  </div>
+</div>
 `;
 
-exports[`Test Organization Wrapper for unauthenticated users should show route for unauthenticated users 1`] = `
-<Fragment>
-  <ContextProvider
-    value={
-      {
-        "getLoading": [Function],
-        "setLoading": [Function],
-      }
-    }
-  >
-    <div
-      className="app-container "
-    >
-      <Routes>
-        <Route
-          element={
-            <Memo(Connect(Header))
-              location={
-                {
-                  "pathname": "",
-                }
-              }
-              params={
-                {
-                  "organization": "default",
-                }
-              }
-            />
-          }
-          path="*"
-        />
-      </Routes>
-      <Routes>
-        <Route
-          element={
-            <Navigate
-              to="/default/login"
-            />
-          }
-          exact={true}
-          path=""
-        />
-        <Route
-          element={
-            <React.Suspense
-              fallback={<loader />}
-            >
-              <UNDEFINED />
-            </React.Suspense>
-          }
-          path="*"
-        />
-        <Route
-          element={
-            <React.Suspense
-              fallback={<loader />}
-            >
-              <UNDEFINED
-                loading={false}
-                navigate={[MockFunction]}
-              />
-            </React.Suspense>
-          }
-          path="registration/*"
-        />
-        <Route
-          element={
-            <Navigate
-              to="/default/login"
-            />
-          }
-          path="mobile-phone-verification"
-        />
-        <Route
-          element={
-            <React.Suspense
-              fallback={<loader />}
-            >
-              <UNDEFINED />
-            </React.Suspense>
-          }
-          path="password/reset/confirm/:uid/:token"
-        />
-        <Route
-          element={
-            <React.Suspense
-              fallback={<loader />}
-            >
-              <UNDEFINED />
-            </React.Suspense>
-          }
-          exact={true}
-          path="password/reset"
-        />
-        <Route
-          element={
-            <Memo(Connect(Login))
-              navigate={[MockFunction]}
-            />
-          }
-          path="login/*"
-        />
-        <Route
-          element={
-            <Navigate
-              to="/default/logout"
-            />
-          }
-          path="status"
-        />
-        <Route
-          element={
-            <React.Suspense
-              fallback={<loader />}
-            >
-              <UNDEFINED />
-            </React.Suspense>
-          }
-          path="logout"
-        />
-        <Route
-          element={
-            <Navigate
-              to="/default/login"
-            />
-          }
-          path="change-password"
-        />
-        <Route
-          element={
-            <Navigate
-              to="/default/login"
-            />
-          }
-          path="change-phone-number"
-        />
-        <Route
-          element={
-            <React.Suspense
-              fallback={<loader />}
-            >
-              <UNDEFINED
-                cookies={
-                  Cookies {
-                    "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": [],
-                    "cookies": {},
-                    "defaultSetOptions": {},
-                    "update": [Function],
-                  }
-                }
-                navigate={[MockFunction]}
-              />
-            </React.Suspense>
-          }
-          path="payment/process/"
-        />
-        <Route
-          element={
-            <React.Suspense
-              fallback={<loader />}
-            >
-              <UNDEFINED
-                cookies={
-                  Cookies {
-                    "HAS_DOCUMENT_COOKIE": true,
-                    "changeListeners": [],
-                    "cookies": {},
-                    "defaultSetOptions": {},
-                    "update": [Function],
-                  }
-                }
-              />
-            </React.Suspense>
-          }
-          path="payment/:status"
-        />
-      </Routes>
-      <Routes>
-        <Route
-          element={<Memo(Connect(Footer)) />}
-          path="*"
-        />
-      </Routes>
-    </div>
-    <HelmetWrapper
-      defer={true}
-      encodeSpecialCharacters={true}
-    >
-      <title>
-        Login to default name
-      </title>
-    </HelmetWrapper>
-  </ContextProvider>
-</Fragment>
-`;
+exports[`Test Organization Wrapper for authenticated and unverified users should show route for unverified users 1`] = `<div />`;
+
+exports[`Test Organization Wrapper for unauthenticated users should show route for unauthenticated users 1`] = `<div />`;

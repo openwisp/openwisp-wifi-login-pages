@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 const shouldLinkBeShown = (link, isAuthenticated, userData) => {
   const {is_verified, method} = userData;
   if (

@@ -1,4 +1,3 @@
-/* eslint-disable react/no-array-index-key */
 import "./index.css";
 
 import PropTypes from "prop-types";
@@ -78,7 +77,10 @@ export default class Header extends React.Component {
     const internalLinks = [`/${orgSlug}/login`, `/${orgSlug}/registration`];
     return (
       <>
-        <div className="header-container header-desktop">
+        <div
+          data-testid="header-desktop"
+          className="header-container header-desktop"
+        >
           <div className="header-row-1">
             <div className="header-row-1-inner">
               <div className="header-left">
@@ -105,7 +107,10 @@ export default class Header extends React.Component {
                 </div>
               )}
 
-              <div className="header-right">
+              <div
+                className="header-right"
+                data-testid="desktop-language-selector"
+              >
                 {languages.map((lang) => (
                   <button
                     type="button"
@@ -124,7 +129,10 @@ export default class Header extends React.Component {
             </div>
           </div>
           <div className="header-row-2">
-            <div className="header-row-2-inner">
+            <div
+              className="header-row-2-inner"
+              data-testid="desktop-navigation"
+            >
               {links &&
                 links.map((link, index) => {
                   if (!shouldLinkBeShown(link, isAuthenticated, userData)) {
@@ -143,7 +151,7 @@ export default class Header extends React.Component {
                       : ""
                   } button `}
                         to={link.url.replace("{orgSlug}", orgSlug)}
-                        key={index}
+                        key={link.url}
                       >
                         {getText(link.text, language)}
                       </Link>
@@ -165,7 +173,7 @@ export default class Header extends React.Component {
             </div>
           </div>
         </div>
-        <div className="header-mobile ">
+        <div data-testid="header-mobile" className="header-mobile ">
           <div className="header-row-1">
             <div className="header-row-1-inner">
               <div className="header-left">
@@ -208,6 +216,7 @@ export default class Header extends React.Component {
           </div>
           <div
             className={`${menu ? "display-flex" : "display-none"} header-mobile-menu`}
+            data-testid="mobile-menu"
           >
             {links &&
               links.map((link, index) => {
@@ -222,7 +231,7 @@ export default class Header extends React.Component {
                         : ""
                     } button`}
                         to={link.url.replace("{orgSlug}", orgSlug)}
-                        key={index}
+                        key={link.url}
                       >
                         {getText(link.text, language)}
                       </Link>

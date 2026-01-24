@@ -2,12 +2,12 @@
   "extends": [
     "airbnb",
     "prettier",
-    "prettier",
-    "jest-enzyme",
-    "plugin:jest/recommended"
+    "plugin:jest/recommended",
+    "plugin:testing-library/react",
+    "plugin:jest-dom/recommended"
   ],
   "parser": "@babel/eslint-parser",
-  "plugins": ["prettier", "jest"],
+  "plugins": ["prettier", "jest", "testing-library", "jest-dom"],
   "parserOptions": {
     "ecmaVersion": 2020,
     "sourceType": "module",
@@ -19,7 +19,8 @@
   "env": {
     "es6": true,
     "browser": true,
-    "node": true
+    "node": true,
+    "jest": true
   },
   "rules": {
     "array-bracket-spacing": [2, "never"],
@@ -46,6 +47,7 @@
           "browser-test/utils.js"
         ]
       }
-    ]
+    ],
+    "camelcase": "off"
   }
 }

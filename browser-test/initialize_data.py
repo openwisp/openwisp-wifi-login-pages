@@ -73,7 +73,7 @@ if create_mobile_verification_org:
     )
     RegisteredUser.objects.create(user=user, method=data["method"])
     OrganizationUser.objects.create(organization=org, user=user)
-
+    sys.exit(0)
 
 try:
     org = Organization.objects.get(slug=test_user_organization)

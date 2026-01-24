@@ -88,7 +88,7 @@ jobs:
           yarn install
           yarn setup
           sudo apt update -qq
-          sudo apt install -qq -y libssl-dev libffi-dev
+          sudo apt install -qq -y libssl-dev libffi-dev expect
 
       - name: Set up Python
         uses: actions/setup-python@v6

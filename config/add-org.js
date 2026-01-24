@@ -136,6 +136,7 @@ const writeConfigFile = (filePath, object) => {
       yaml.dump(object),
     );
   } catch (err) {
+    /* eslint-disable-next-line no-console */
     console.log(err);
   }
 };
@@ -249,6 +250,7 @@ const createConfigurationWithoutPrompts = (passedData) => {
       throw new Error(`Require key(s) missing: ${missingKeys.join(", ")}`);
     }
   } catch (err) {
+    /* eslint-disable-next-line no-console */
     console.error(err);
     process.exit(1);
   }

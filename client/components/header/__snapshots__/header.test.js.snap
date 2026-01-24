@@ -1,48 +1,46 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`<Header /> rendering should render sticky msg and close it on clicking close-btn 1`] = `
-<Fragment>
+<div>
   <div
-    className="header-container header-desktop"
+    class="header-container header-desktop"
+    data-testid="header-desktop"
   >
     <div
-      className="header-row-1"
+      class="header-row-1"
     >
       <div
-        className="header-row-1-inner"
+        class="header-row-1-inner"
       >
         <div
-          className="header-left"
+          class="header-left"
         >
           <div
-            className="header-logo-div"
+            class="header-logo-div"
           >
-            <Link
-              to="/default"
+            <a
+              href="/default"
             >
               <img
                 alt="openwisp"
-                className="header-logo-image header-desktop-logo-image"
-                src="/assets/default/openwisp-logo-black.svg"
+                class="header-logo-image header-desktop-logo-image"
+                src="/assets/default//assets/default/openwisp-logo-black.svg"
               />
-            </Link>
+            </a>
           </div>
         </div>
         <div
-          className="header-right"
+          class="header-right"
+          data-testid="desktop-language-selector"
         >
           <button
-            className="active header-language-btn header-desktop-language-btn header-language-btn-en"
-            key="en"
-            onClick={[Function]}
+            class="active header-language-btn header-desktop-language-btn header-language-btn-en"
             type="button"
           >
             english
           </button>
           <button
-            className="header-language-btn header-desktop-language-btn header-language-btn-it"
-            key="it"
-            onClick={[Function]}
+            class="header-language-btn header-desktop-language-btn header-language-btn-it"
             type="button"
           >
             italian
@@ -51,26 +49,25 @@ exports[`<Header /> rendering should render sticky msg and close it on clicking 
       </div>
     </div>
     <div
-      className="header-row-2"
+      class="header-row-2"
     >
       <div
-        className="header-row-2-inner"
+        class="header-row-2-inner"
+        data-testid="desktop-navigation"
       >
         <a
-          className="header-link header-desktop-link
+          class="header-link header-desktop-link
                     header-link-1 button"
           href="link-1/"
-          key="link-1/"
           rel="noreferrer noopener"
           target="_blank"
         >
           link-1
         </a>
         <a
-          className="header-link header-desktop-link
+          class="header-link header-desktop-link
                     header-link-2 button"
           href="link-2/"
-          key="link-2/"
           rel="noreferrer noopener"
           target="_blank"
         >
@@ -80,93 +77,87 @@ exports[`<Header /> rendering should render sticky msg and close it on clicking 
     </div>
   </div>
   <div
-    className="header-mobile "
+    class="header-mobile "
+    data-testid="header-mobile"
   >
     <div
-      className="header-row-1"
+      class="header-row-1"
     >
       <div
-        className="header-row-1-inner"
+        class="header-row-1-inner"
       >
         <div
-          className="header-left"
+          class="header-left"
         >
           <div
-            className="header-logo-div"
+            class="header-logo-div"
           >
-            <Link
-              to="/default"
+            <a
+              href="/default"
             >
               <img
                 alt="openwisp"
-                className="header-logo-image header-mobile-logo-image"
-                src="/assets/default/openwisp-logo-black.svg"
+                class="header-logo-image header-mobile-logo-image"
+                src="/assets/default//assets/default/openwisp-logo-black.svg"
               />
-            </Link>
+            </a>
           </div>
         </div>
         <div
-          className="header-right"
+          class="header-right"
         >
           <div
             aria-label="Menu Button"
-            className="header-hamburger"
-            onClick={[Function]}
-            onKeyUp={[Function]}
+            class="header-hamburger"
             role="button"
-            tabIndex={0}
+            tabindex="0"
           >
             <div
-              className=""
+              class=""
             />
             <div
-              className=""
+              class=""
             />
             <div
-              className=""
+              class=""
             />
           </div>
         </div>
       </div>
     </div>
     <div
-      className="display-none header-mobile-menu"
+      class="display-none header-mobile-menu"
+      data-testid="mobile-menu"
     >
       <a
-        className="header-link mobile-link
+        class="header-link mobile-link
                       header-link-1 button"
         href="link-1/"
-        key="link-1/"
         rel="noreferrer noopener"
         target="_blank"
       >
         link-1
       </a>
       <a
-        className="header-link mobile-link
+        class="header-link mobile-link
                       header-link-2 button"
         href="link-2/"
-        key="link-2/"
         rel="noreferrer noopener"
         target="_blank"
       >
         link-2
       </a>
       <div
-        className="mobile-languages-row"
+        class="mobile-languages-row"
       >
         <button
-          className="active header-language-btn header-mobile-language-btn header-language-btn-en"
-          key="en"
-          onClick={[Function]}
+          class="active header-language-btn header-mobile-language-btn header-language-btn-en"
           type="button"
         >
           english
         </button>
         <button
-          className="header-language-btn header-mobile-language-btn header-language-btn-it"
-          key="it"
-          onClick={[Function]}
+          class="header-language-btn header-mobile-language-btn header-language-btn-it"
           type="button"
         >
           italian
@@ -175,76 +166,72 @@ exports[`<Header /> rendering should render sticky msg and close it on clicking 
     </div>
   </div>
   <div
-    className="sticky-container"
+    class="sticky-container"
     role="banner"
   >
     <div
-      className="inner"
+      class="inner"
     >
       <div
-        className="sticky-msg"
-        dangerouslySetInnerHTML={
-          {
-            "__html": <p>
-              announcement
-            </p>,
-          }
-        }
-      />
+        class="sticky-msg"
+        data-testid="sticky-msg"
+      >
+        <p>
+          announcement
+        </p>
+      </div>
       <button
-        className="close-sticky-btn"
-        onClick={[Function]}
+        class="close-sticky-btn"
         type="button"
       >
         ✖
       </button>
     </div>
   </div>
-</Fragment>
+</div>
 `;
 
 exports[`<Header /> rendering should render with links 1`] = `
-[
+<div>
   <div
-    className="header-container header-desktop"
+    class="header-container header-desktop"
+    data-testid="header-desktop"
   >
     <div
-      className="header-row-1"
+      class="header-row-1"
     >
       <div
-        className="header-row-1-inner"
+        class="header-row-1-inner"
       >
         <div
-          className="header-left"
+          class="header-left"
         >
           <div
-            className="header-logo-div"
+            class="header-logo-div"
           >
             <a
               href="/default"
-              onClick={[Function]}
             >
               <img
                 alt="openwisp"
-                className="header-logo-image header-desktop-logo-image"
-                src="/assets/default/openwisp-logo-black.svg"
+                class="header-logo-image header-desktop-logo-image"
+                src="/assets/default//assets/default/openwisp-logo-black.svg"
               />
             </a>
           </div>
         </div>
         <div
-          className="header-right"
+          class="header-right"
+          data-testid="desktop-language-selector"
         >
           <button
-            className="active header-language-btn header-desktop-language-btn header-language-btn-en"
-            onClick={[Function]}
+            class="active header-language-btn header-desktop-language-btn header-language-btn-en"
             type="button"
           >
             english
           </button>
           <button
-            className="header-language-btn header-desktop-language-btn header-language-btn-it"
-            onClick={[Function]}
+            class="header-language-btn header-desktop-language-btn header-language-btn-it"
             type="button"
           >
             italian
@@ -253,13 +240,14 @@ exports[`<Header /> rendering should render with links 1`] = `
       </div>
     </div>
     <div
-      className="header-row-2"
+      class="header-row-2"
     >
       <div
-        className="header-row-2-inner"
+        class="header-row-2-inner"
+        data-testid="desktop-navigation"
       >
         <a
-          className="header-link header-desktop-link
+          class="header-link header-desktop-link
                     header-link-1 button"
           href="link-1/"
           rel="noreferrer noopener"
@@ -268,7 +256,7 @@ exports[`<Header /> rendering should render with links 1`] = `
           link-1
         </a>
         <a
-          className="header-link header-desktop-link
+          class="header-link header-desktop-link
                     header-link-2 button"
           href="link-2/"
           rel="noreferrer noopener"
@@ -278,63 +266,62 @@ exports[`<Header /> rendering should render with links 1`] = `
         </a>
       </div>
     </div>
-  </div>,
+  </div>
   <div
-    className="header-mobile "
+    class="header-mobile "
+    data-testid="header-mobile"
   >
     <div
-      className="header-row-1"
+      class="header-row-1"
     >
       <div
-        className="header-row-1-inner"
+        class="header-row-1-inner"
       >
         <div
-          className="header-left"
+          class="header-left"
         >
           <div
-            className="header-logo-div"
+            class="header-logo-div"
           >
             <a
               href="/default"
-              onClick={[Function]}
             >
               <img
                 alt="openwisp"
-                className="header-logo-image header-mobile-logo-image"
-                src="/assets/default/openwisp-logo-black.svg"
+                class="header-logo-image header-mobile-logo-image"
+                src="/assets/default//assets/default/openwisp-logo-black.svg"
               />
             </a>
           </div>
         </div>
         <div
-          className="header-right"
+          class="header-right"
         >
           <div
             aria-label="Menu Button"
-            className="header-hamburger"
-            onClick={[Function]}
-            onKeyUp={[Function]}
+            class="header-hamburger"
             role="button"
-            tabIndex={0}
+            tabindex="0"
           >
             <div
-              className=""
+              class=""
             />
             <div
-              className=""
+              class=""
             />
             <div
-              className=""
+              class=""
             />
           </div>
         </div>
       </div>
     </div>
     <div
-      className="display-none header-mobile-menu"
+      class="display-none header-mobile-menu"
+      data-testid="mobile-menu"
     >
       <a
-        className="header-link mobile-link
+        class="header-link mobile-link
                       header-link-1 button"
         href="link-1/"
         rel="noreferrer noopener"
@@ -343,7 +330,7 @@ exports[`<Header /> rendering should render with links 1`] = `
         link-1
       </a>
       <a
-        className="header-link mobile-link
+        class="header-link mobile-link
                       header-link-2 button"
         href="link-2/"
         rel="noreferrer noopener"
@@ -352,70 +339,67 @@ exports[`<Header /> rendering should render with links 1`] = `
         link-2
       </a>
       <div
-        className="mobile-languages-row"
+        class="mobile-languages-row"
       >
         <button
-          className="active header-language-btn header-mobile-language-btn header-language-btn-en"
-          onClick={[Function]}
+          class="active header-language-btn header-mobile-language-btn header-language-btn-en"
           type="button"
         >
           english
         </button>
         <button
-          className="header-language-btn header-mobile-language-btn header-language-btn-it"
-          onClick={[Function]}
+          class="header-language-btn header-mobile-language-btn header-language-btn-it"
           type="button"
         >
           italian
         </button>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</div>
 `;
 
 exports[`<Header /> rendering should render without links 1`] = `
-[
+<div>
   <div
-    className="header-container header-desktop"
+    class="header-container header-desktop"
+    data-testid="header-desktop"
   >
     <div
-      className="header-row-1"
+      class="header-row-1"
     >
       <div
-        className="header-row-1-inner"
+        class="header-row-1-inner"
       >
         <div
-          className="header-left"
+          class="header-left"
         >
           <div
-            className="header-logo-div"
+            class="header-logo-div"
           >
             <a
               href="/default"
-              onClick={[Function]}
             >
               <img
                 alt="openwisp"
-                className="header-logo-image header-desktop-logo-image"
-                src="/assets/default/openwisp-logo-black.svg"
+                class="header-logo-image header-desktop-logo-image"
+                src="/assets/default//assets/default/openwisp-logo-black.svg"
               />
             </a>
           </div>
         </div>
         <div
-          className="header-right"
+          class="header-right"
+          data-testid="desktop-language-selector"
         >
           <button
-            className="active header-language-btn header-desktop-language-btn header-language-btn-en"
-            onClick={[Function]}
+            class="active header-language-btn header-desktop-language-btn header-language-btn-en"
             type="button"
           >
             english
           </button>
           <button
-            className="header-language-btn header-desktop-language-btn header-language-btn-it"
-            onClick={[Function]}
+            class="header-language-btn header-desktop-language-btn header-language-btn-it"
             type="button"
           >
             italian
@@ -424,133 +408,129 @@ exports[`<Header /> rendering should render without links 1`] = `
       </div>
     </div>
     <div
-      className="header-row-2"
+      class="header-row-2"
     >
       <div
-        className="header-row-2-inner"
+        class="header-row-2-inner"
+        data-testid="desktop-navigation"
       />
     </div>
-  </div>,
+  </div>
   <div
-    className="header-mobile "
+    class="header-mobile "
+    data-testid="header-mobile"
   >
     <div
-      className="header-row-1"
+      class="header-row-1"
     >
       <div
-        className="header-row-1-inner"
+        class="header-row-1-inner"
       >
         <div
-          className="header-left"
+          class="header-left"
         >
           <div
-            className="header-logo-div"
+            class="header-logo-div"
           >
             <a
               href="/default"
-              onClick={[Function]}
             >
               <img
                 alt="openwisp"
-                className="header-logo-image header-mobile-logo-image"
-                src="/assets/default/openwisp-logo-black.svg"
+                class="header-logo-image header-mobile-logo-image"
+                src="/assets/default//assets/default/openwisp-logo-black.svg"
               />
             </a>
           </div>
         </div>
         <div
-          className="header-right"
+          class="header-right"
         >
           <div
             aria-label="Menu Button"
-            className="header-hamburger"
-            onClick={[Function]}
-            onKeyUp={[Function]}
+            class="header-hamburger"
             role="button"
-            tabIndex={0}
+            tabindex="0"
           >
             <div
-              className=""
+              class=""
             />
             <div
-              className=""
+              class=""
             />
             <div
-              className=""
+              class=""
             />
           </div>
         </div>
       </div>
     </div>
     <div
-      className="display-none header-mobile-menu"
+      class="display-none header-mobile-menu"
+      data-testid="mobile-menu"
     >
       <div
-        className="mobile-languages-row"
+        class="mobile-languages-row"
       >
         <button
-          className="active header-language-btn header-mobile-language-btn header-language-btn-en"
-          onClick={[Function]}
+          class="active header-language-btn header-mobile-language-btn header-language-btn-en"
           type="button"
         >
           english
         </button>
         <button
-          className="header-language-btn header-mobile-language-btn header-language-btn-it"
-          onClick={[Function]}
+          class="header-language-btn header-mobile-language-btn header-language-btn-it"
           type="button"
         >
           italian
         </button>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</div>
 `;
 
 exports[`<Header /> rendering with placeholder translation tags should render translation placeholder correctly 1`] = `
-<Fragment>
+<div>
   <div
-    className="header-container header-desktop"
+    class="header-container header-desktop"
+    data-testid="header-desktop"
   >
     <div
-      className="header-row-1"
+      class="header-row-1"
     >
       <div
-        className="header-row-1-inner"
+        class="header-row-1-inner"
       >
         <div
-          className="header-left"
+          class="header-left"
         >
           <div
-            className="header-logo-div"
+            class="header-logo-div"
           >
-            <Link
-              to="/default"
+            <a
+              href="/default"
             >
               <img
                 alt="openwisp"
-                className="header-logo-image header-desktop-logo-image"
-                src="/assets/default/openwisp-logo-black.svg"
+                class="header-logo-image header-desktop-logo-image"
+                src="/assets/default//assets/default/openwisp-logo-black.svg"
               />
-            </Link>
+            </a>
           </div>
         </div>
         <div
-          className="header-right"
+          class="header-right"
+          data-testid="desktop-language-selector"
         >
           <button
-            className="active header-language-btn header-desktop-language-btn header-language-btn-en"
-            key="en"
-            onClick={[Function]}
+            class="active header-language-btn header-desktop-language-btn header-language-btn-en"
             type="button"
           >
             english
           </button>
           <button
-            className="header-language-btn header-desktop-language-btn header-language-btn-it"
-            key="it"
-            onClick={[Function]}
+            class="header-language-btn header-desktop-language-btn header-language-btn-it"
             type="button"
           >
             italian
@@ -559,122 +539,78 @@ exports[`<Header /> rendering with placeholder translation tags should render tr
       </div>
     </div>
     <div
-      className="header-row-2"
+      class="header-row-2"
     >
       <div
-        className="header-row-2-inner"
-      >
-        <a
-          className="header-link header-desktop-link
-                    header-link-1 button"
-          href="/{orgSlug}/login"
-          key="/{orgSlug}/login"
-          rel="noreferrer noopener"
-          target="_blank"
-        >
-          Sign In
-        </a>
-        <a
-          className="header-link header-desktop-link
-                    header-link-2 button"
-          href="/{orgSlug}/registration"
-          key="/{orgSlug}/registration"
-          rel="noreferrer noopener"
-          target="_blank"
-        >
-          Sign Up
-        </a>
-      </div>
+        class="header-row-2-inner"
+        data-testid="desktop-navigation"
+      />
     </div>
   </div>
   <div
-    className="header-mobile "
+    class="header-mobile "
+    data-testid="header-mobile"
   >
     <div
-      className="header-row-1"
+      class="header-row-1"
     >
       <div
-        className="header-row-1-inner"
+        class="header-row-1-inner"
       >
         <div
-          className="header-left"
+          class="header-left"
         >
           <div
-            className="header-logo-div"
+            class="header-logo-div"
           >
-            <Link
-              to="/default"
+            <a
+              href="/default"
             >
               <img
                 alt="openwisp"
-                className="header-logo-image header-mobile-logo-image"
-                src="/assets/default/openwisp-logo-black.svg"
+                class="header-logo-image header-mobile-logo-image"
+                src="/assets/default//assets/default/openwisp-logo-black.svg"
               />
-            </Link>
+            </a>
           </div>
         </div>
         <div
-          className="header-right"
+          class="header-right"
         >
           <div
             aria-label="Menu Button"
-            className="header-hamburger"
-            onClick={[Function]}
-            onKeyUp={[Function]}
+            class="header-hamburger"
             role="button"
-            tabIndex={0}
+            tabindex="0"
           >
             <div
-              className=""
+              class=""
             />
             <div
-              className=""
+              class=""
             />
             <div
-              className=""
+              class=""
             />
           </div>
         </div>
       </div>
     </div>
     <div
-      className="display-none header-mobile-menu"
+      class="display-none header-mobile-menu"
+      data-testid="mobile-menu"
     >
-      <a
-        className="header-link mobile-link
-                      header-link-1 button"
-        href="/{orgSlug}/login"
-        key="/{orgSlug}/login"
-        rel="noreferrer noopener"
-        target="_blank"
-      >
-        Sign In
-      </a>
-      <a
-        className="header-link mobile-link
-                      header-link-2 button"
-        href="/{orgSlug}/registration"
-        key="/{orgSlug}/registration"
-        rel="noreferrer noopener"
-        target="_blank"
-      >
-        Sign Up
-      </a>
       <div
-        className="mobile-languages-row"
+        class="mobile-languages-row"
       >
         <button
-          className="active header-language-btn header-mobile-language-btn header-language-btn-en"
-          key="en"
-          onClick={[Function]}
+          class="active header-language-btn header-mobile-language-btn header-language-btn-en"
           type="button"
         >
           english
         </button>
         <button
-          className="header-language-btn header-mobile-language-btn header-language-btn-it"
-          key="it"
-          onClick={[Function]}
+          class="header-language-btn header-mobile-language-btn header-language-btn-it"
           type="button"
         >
           italian
@@ -682,5 +618,5 @@ exports[`<Header /> rendering with placeholder translation tags should render tr
       </div>
     </div>
   </div>
-</Fragment>
+</div>
 `;

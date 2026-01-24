@@ -1,72 +1,73 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`<Footer /> rendering should render correctly 1`] = `
-<div
-  className="footer-container"
->
+<div>
   <div
-    className="footer-row-1"
+    class="footer-container"
+    data-testid="footer"
   >
     <div
-      className="footer-row-1-inner"
+      class="footer-row-1"
     >
-      <a
-        className="footer-link "
-        href="https://link-1.com"
-        rel="noopener noreferrer"
-        target="_blank"
+      <div
+        class="footer-row-1-inner"
       >
-        link-1
-      </a>
+        <a
+          class="footer-link "
+          href="https://link-1.com"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          link-1
+        </a>
+      </div>
     </div>
-  </div>
-  <div
-    className="footer-row-2"
-  >
     <div
-      className="footer-row-2-inner"
-      dangerouslySetInnerHTML={
-        {
-          "__html": "after html",
-        }
-      }
-    />
+      class="footer-row-2"
+    >
+      <div
+        class="footer-row-2-inner"
+        data-testid="footer-row-2-inner"
+      >
+        after html
+      </div>
+    </div>
   </div>
 </div>
 `;
 
 exports[`<Footer /> rendering with placeholder translation tags should render translation placeholder correctly 1`] = `
-<div
-  className="footer-container"
->
+<div>
   <div
-    className="footer-row-1"
+    class="footer-container"
+    data-testid="footer"
   >
     <div
-      className="footer-row-1-inner"
+      class="footer-row-1"
     >
-      <a
-        className="footer-link "
-        href="https://link-1.com"
-        key="https://link-1.com"
-        rel="noopener noreferrer"
-        target="_blank"
+      <div
+        class="footer-row-1-inner"
       >
-        link-1
-      </a>
+        <a
+          class="footer-link "
+          href="https://link-1.com"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          link-1
+        </a>
+      </div>
     </div>
-  </div>
-  <div
-    className="footer-row-2"
-  >
     <div
-      className="footer-row-2-inner"
-      dangerouslySetInnerHTML={
-        {
-          "__html": "after html",
-        }
-      }
-    />
+      class="footer-row-2"
+    >
+      <div
+        class="footer-row-2-inner"
+        data-testid="footer-row-2-inner"
+      >
+        after html
+      </div>
+    </div>
   </div>
 </div>
 `;

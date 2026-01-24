@@ -1,18 +1,33 @@
-/* eslint-disable prefer-promise-reject-errors */
 import axios from "axios";
-import {shallow} from "enzyme";
+import {render, screen, waitFor, fireEvent} from "@testing-library/react";
+import "@testing-library/jest-dom";
 import React from "react";
 import {toast} from "react-toastify";
-import PropTypes from "prop-types";
+import {Provider} from "react-redux";
+import {TestRouter} from "../../test-utils";
+
 import getConfig from "../../utils/get-config";
-import {loadingContextValue} from "../../utils/loading-context";
 import loadTranslation from "../../utils/load-translation";
 import PasswordReset from "./password-reset";
 import translation from "../../test-translation.json";
+import tick from "../../utils/tick";
 
+// Mock modules BEFORE importing
 jest.mock("axios");
-jest.mock("../../utils/get-config");
+jest.mock("../../utils/get-config", () => ({
+  __esModule: true,
+  default: jest.fn(() => ({
+    components: {
+      password_reset_form: {
+        input_fields: {
+          email: {},
+        },
+      },
+    },
+  })),
+}));
 jest.mock("../../utils/load-translation");
+/* eslint-enable import/first */
 
 const defaultConfig = getConfig("default", true);
 const createTestProps = (props) => ({
@@ -28,145 +43,240 @@ const getTranslationString = (msgid) => {
   try {
     return translation.translations[""][msgid].msgstr[0];
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.error(err, msgid);
     return msgid;
   }
 };
 
+const createMockStore = () => {
+  const state = {
+    organization: {
+      configuration: {
+        ...defaultConfig,
+        slug: "default",
+        components: {
+          ...defaultConfig.components,
+          contact_page: {
+            email: "support@openwisp.org",
+            helpdesk: "+1234567890",
+            socialLinks: [],
+          },
+        },
+      },
+    },
+    language: "en",
+  };
+
+  return {
+    subscribe: () => {},
+    dispatch: () => {},
+    getState: () => state,
+  };
+};
+
+const renderWithProviders = (component) =>
+  render(
+    <Provider store={createMockStore()}>
+      <TestRouter>{component}</TestRouter>
+    </Provider>,
+  );
+
 describe("<PasswordReset /> rendering with placeholder translation tags", () => {
   const props = createTestProps();
   it("should render translation placeholder correctly", () => {
-    const wrapper = shallow(<PasswordReset {...props} />);
-    expect(wrapper).toMatchSnapshot();
+    const {container} = renderWithProviders(<PasswordReset {...props} />);
+    expect(container).toMatchSnapshot();
   });
 });
 
 describe("<PasswordReset /> rendering", () => {
   let props;
-  let wrapper;
 
   beforeEach(() => {
+    jest.clearAllMocks();
     props = createTestProps();
     loadTranslation("en", "default");
-    wrapper = shallow(<PasswordReset {...props} />);
   });
 
   it("should render correctly", () => {
-    expect(wrapper).toMatchSnapshot();
+    const {container} = renderWithProviders(<PasswordReset {...props} />);
+    expect(container).toMatchSnapshot();
   });
 
   it("should render 2 inputs", () => {
-    expect(wrapper.find("input")).toHaveLength(2);
-    expect(wrapper.find("input[type='text']")).toHaveLength(1);
-    expect(wrapper.find("input[type='submit']")).toHaveLength(1);
+    renderWithProviders(<PasswordReset {...props} />);
+
+    const emailInput = screen.getByPlaceholderText(
+      getTranslationString("USERNAME_LOG_PHOLD"),
+    );
+    const submitButton = screen.getByRole("button", {
+      name: /reset my password/i,
+    });
+
+    expect(emailInput).toBeInTheDocument();
+    expect(submitButton).toBeInTheDocument();
   });
 
   it("should render input field correctly", () => {
-    const emailInput = wrapper.find("input[type='text']");
-    expect(wrapper.find(".row label").text()).toBe(
-      getTranslationString("USERNAME_LOG_LBL"),
-    );
-    expect(emailInput.prop("placeholder")).toBe(
+    renderWithProviders(<PasswordReset {...props} />);
+
+    const emailInput = screen.getByPlaceholderText(
       getTranslationString("USERNAME_LOG_PHOLD"),
     );
-    expect(emailInput.prop("title")).toBe(
+    const label = screen.getByText(getTranslationString("USERNAME_LOG_LBL"));
+
+    expect(label).toBeInTheDocument();
+    expect(emailInput).toHaveAttribute(
+      "placeholder",
+      getTranslationString("USERNAME_LOG_PHOLD"),
+    );
+    expect(emailInput).toHaveAttribute(
+      "title",
       getTranslationString("USERNAME_LOG_TITL"),
     );
-    expect(emailInput.prop("type")).toBe("text");
+    expect(emailInput).toHaveAttribute("type", "text");
   });
 });
 
 describe("<PasswordReset /> interactions", () => {
   let props;
-  let wrapper;
-  let originalError;
-  let lastConsoleOutuput;
+  let lastConsoleOutput;
 
   beforeEach(() => {
-    originalError = console.error;
-    lastConsoleOutuput = null;
-    console.error = (data) => {
-      lastConsoleOutuput = data;
-    };
-    props = createTestProps();
-    PasswordReset.contextTypes = {
-      setLoading: PropTypes.func,
-      getLoading: PropTypes.func,
-    };
-    wrapper = shallow(<PasswordReset {...props} />, {
-      context: loadingContextValue,
+    jest.clearAllMocks();
+    axios.mockReset();
+    lastConsoleOutput = null;
+    jest.spyOn(global.console, "error").mockImplementation((data) => {
+      lastConsoleOutput = data;
     });
+    props = createTestProps();
   });
 
   afterEach(() => {
-    console.error = originalError;
+    jest.restoreAllMocks();
   });
 
   it("should change state values when handleChange function is invoked", () => {
-    wrapper
-      .find("input[type='text']")
-      .simulate("change", {target: {value: "test@test.com", name: "input"}});
-    expect(wrapper.state("input")).toEqual("test@test.com");
+    renderWithProviders(<PasswordReset {...props} />);
+
+    const emailInput = screen.getByPlaceholderText(
+      getTranslationString("USERNAME_LOG_PHOLD"),
+    );
+    fireEvent.change(emailInput, {
+      target: {value: "test@test.com", name: "input"},
+    });
+
+    expect(emailInput.value).toEqual("test@test.com");
   });
 
-  it("should execute handleSubmit correctly when form is submitted", () => {
+  it("should execute handleSubmit correctly when form is submitted", async () => {
+    const error1 = new Error("Request failed");
+    error1.response = {data: {detail: "errors"}};
+    const error2 = new Error("Request failed");
+    error2.response = {data: {non_field_errors: ["non field errors"]}};
+
     axios
-      .mockImplementationOnce(() =>
-        Promise.reject({response: {data: {detail: "errors"}}}),
-      )
-      .mockImplementationOnce(() =>
-        Promise.reject({
-          response: {data: {non_field_errors: ["non field errors"]}},
-        }),
-      )
+      .mockImplementationOnce(() => Promise.reject(error1))
+      .mockImplementationOnce(() => Promise.reject(error2))
       .mockImplementationOnce(() => Promise.resolve({data: {detail: true}}));
+
+    renderWithProviders(<PasswordReset {...props} />);
+
     const spyToastError = jest.spyOn(toast, "error");
     const spyToastSuccess = jest.spyOn(toast, "success");
-    return wrapper
-      .instance()
-      .handleSubmit({preventDefault: () => {}})
-      .then(() => {
-        expect(wrapper.instance().state.errors.input).toEqual("errors");
-        expect(wrapper.find("div.error")).toHaveLength(1);
-        expect(wrapper.find("input.error")).toHaveLength(1);
-        expect(lastConsoleOutuput).not.toBe(null);
-        expect(spyToastError.mock.calls.length).toBe(1);
-        expect(spyToastSuccess.mock.calls.length).toBe(0);
-        lastConsoleOutuput = null;
-      })
-      .then(() =>
-        wrapper
-          .instance()
-          .handleSubmit({preventDefault: () => {}})
-          .then(() => {
-            expect(wrapper.instance().state.errors.input).toEqual(
-              "non field errors",
-            );
-            expect(lastConsoleOutuput).not.toBe(null);
-            expect(spyToastError.mock.calls.length).toBe(2);
-            expect(spyToastSuccess.mock.calls.length).toBe(0);
-            lastConsoleOutuput = null;
-          }),
-      )
-      .then(() =>
-        wrapper
-          .instance()
-          .handleSubmit({preventDefault: () => {}})
-          .then(() => {
-            expect(wrapper.instance().state.errors).toEqual({});
-            expect(wrapper.instance().state.success).toBe(true);
-            expect(wrapper.find(".error")).toHaveLength(0);
-            expect(wrapper.find(".success")).toHaveLength(1);
-            expect(lastConsoleOutuput).toBe(null);
-            expect(spyToastError.mock.calls.length).toBe(2);
-            expect(spyToastSuccess.mock.calls.length).toBe(1);
-            lastConsoleOutuput = null;
-          }),
-      );
+    const form = screen.getByRole("form");
+    const emailInput = screen.getByPlaceholderText(
+      getTranslationString("USERNAME_LOG_PHOLD"),
+    );
+
+    // Test 1: Error with detail
+    fireEvent.submit(form);
+    await waitFor(() => {
+      expect(emailInput).toHaveClass("error");
+      expect(spyToastError).toHaveBeenCalledTimes(1);
+    });
+    expect(lastConsoleOutput).not.toBe(null);
+    expect(spyToastSuccess).toHaveBeenCalledTimes(0);
+    lastConsoleOutput = null;
+
+    // Test 2: Error with non_field_errors
+    fireEvent.submit(form);
+    await tick();
+
+    await waitFor(() => {
+      expect(spyToastError).toHaveBeenCalledTimes(2);
+    });
+    expect(lastConsoleOutput).not.toBe(null);
+    expect(spyToastSuccess).toHaveBeenCalledTimes(0);
+    lastConsoleOutput = null;
+
+    // Test 3: Success
+    fireEvent.submit(form);
+
+    await waitFor(() => {
+      expect(screen.queryByRole("form")).not.toBeInTheDocument();
+      expect(spyToastSuccess).toHaveBeenCalledTimes(1);
+    });
+
+    // Wait for any remaining async operations to complete
+    await tick();
+
+    expect(lastConsoleOutput).toBe(null);
+    expect(spyToastError).toHaveBeenCalledTimes(2);
   });
+
   it("should set title", () => {
-    const setTitleMock = wrapper.instance().props.setTitle.mock;
-    expect(setTitleMock.calls.pop()).toEqual(["Reset Password", props.orgName]);
+    renderWithProviders(<PasswordReset {...props} />);
+
+    expect(props.setTitle).toHaveBeenCalledWith(
+      "Reset Password",
+      props.orgName,
+    );
+  });
+
+  it("should clear errors on successful password reset", async () => {
+    axios.mockImplementationOnce(() => Promise.resolve({data: {detail: true}}));
+
+    renderWithProviders(<PasswordReset {...props} />);
+
+    const emailInput = screen.getByPlaceholderText(
+      getTranslationString("USERNAME_LOG_PHOLD"),
+    );
+    const form = screen.getByRole("form");
+
+    fireEvent.change(emailInput, {
+      target: {value: "test@test.com", name: "input"},
+    });
+
+    fireEvent.submit(form);
+    await tick();
+
+    await waitFor(() => {
+      expect(emailInput).not.toHaveClass("error");
+    });
+  });
+
+  it("should show error message for invalid email", async () => {
+    const error = new Error("Request failed");
+    error.response = {data: {detail: "Invalid email"}};
+    axios.mockImplementationOnce(() => Promise.reject(error));
+
+    renderWithProviders(<PasswordReset {...props} />);
+
+    const emailInput = screen.getByPlaceholderText(
+      getTranslationString("USERNAME_LOG_PHOLD"),
+    );
+    const form = screen.getByRole("form");
+
+    fireEvent.change(emailInput, {
+      target: {value: "invalid-email", name: "input"},
+    });
+
+    fireEvent.submit(form);
+    await tick();
+
+    await waitFor(() => {
+      expect(emailInput).toHaveClass("error");
+    });
   });
 });

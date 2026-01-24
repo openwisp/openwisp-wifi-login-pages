@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import "./index.css";
 
 import PropTypes from "prop-types";
@@ -14,7 +13,7 @@ export default class Footer extends React.Component {
     const {footer, language, isAuthenticated, userData, orgSlug} = this.props;
     const {links, after_html} = footer;
     return (
-      <div className="footer-container">
+      <div data-testid="footer" className="footer-container">
         <div className="footer-row-1">
           <div className="footer-row-1-inner">
             {links &&

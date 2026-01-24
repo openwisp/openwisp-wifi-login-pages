@@ -35,7 +35,10 @@ const getPlanSelection = (
 ) => {
   let index = 0;
   return (
-    <div className={`plans ${hideSelection ? "hidden" : ""}`}>
+    <div
+      className={`plans ${hideSelection ? "hidden" : ""}`}
+      data-testid="plans-container"
+    >
       <p className="intro">{t`PLAN_SETTING_TXT`}.</p>
       {plans.map((plan) => {
         const currentIndex = String(index);
@@ -47,7 +50,11 @@ const getPlanSelection = (
         }
         index += 1;
         return (
-          <div key={currentIndex} className={planClass}>
+          <div
+            key={currentIndex}
+            className={planClass}
+            data-testid={`plan-${currentIndex}`}
+          >
             <input
               id={`radio${currentIndex}`}
               type="radio"
@@ -56,6 +63,8 @@ const getPlanSelection = (
               onChange={onChange}
               onFocus={onFocus}
               tabIndex={currentIndex}
+              data-testid={`plan-radio-${currentIndex}`}
+              aria-label={`Select plan ${plan.plan}`}
             />
             {getPlan(plan, currentIndex, language)}
           </div>

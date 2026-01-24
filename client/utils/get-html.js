@@ -1,4 +1,3 @@
-/* eslint-disable react/no-danger */
 import React from "react";
 import getText from "./get-text";
 
@@ -7,6 +6,7 @@ const getHtml = (html, language, className = null) => {
   return (
     <div
       className={className}
+      data-testid={className}
       dangerouslySetInnerHTML={{__html: getText(html, language)}}
     />
   );

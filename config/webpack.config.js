@@ -7,6 +7,7 @@ const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 const TerserPlugin = require("terser-webpack-plugin");
+const ESLintPlugin = require("eslint-webpack-plugin");
 const setup = require("./setup");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
@@ -26,6 +27,12 @@ module.exports = (env, argv) => {
       filename: "index.html",
       custom: setup.getExtraJsScripts(),
       template: path.resolve(CURRENT_WORKING_DIR, "public/index.html"),
+    }),
+    new ESLintPlugin({
+      extensions: ["js", "jsx"],
+      exclude: ["node_modules"],
+      failOnError: false,
+      failOnWarning: false,
     }),
     new CopyPlugin({
       patterns: [

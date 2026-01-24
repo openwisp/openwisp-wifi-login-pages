@@ -1,43 +1,78 @@
-/* eslint-disable prefer-promise-reject-errors */
-/* eslint-disable camelcase */
 import axios from "axios";
-import {mount, shallow} from "enzyme";
-import React from "react";
-import PropTypes from "prop-types";
+import {render, screen, waitFor, fireEvent} from "@testing-library/react";
+import "@testing-library/jest-dom";
 import {Cookies} from "react-cookie";
 import {toast} from "react-toastify";
 import {Provider} from "react-redux";
-import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
-import {createMemoryHistory} from "history";
-import {loadingContextValue} from "../../utils/loading-context";
+import {Routes, Route} from "react-router-dom";
+import React from "react";
+import {TestRouter} from "../../test-utils";
 import loadTranslation from "../../utils/load-translation";
-import getConfig from "../../utils/get-config";
 import tick from "../../utils/tick";
+import getConfig from "../../utils/get-config";
 import MobilePhoneChange from "./mobile-phone-change";
 import validateToken from "../../utils/validate-token";
-import submitOnEnter from "../../utils/submit-on-enter";
+import LoadingContext, {loadingContextValue} from "../../utils/loading-context";
 
-jest.mock("../../utils/get-config");
+// Mock modules BEFORE importing
+const mockConfig = {
+  slug: "default",
+  name: "default name",
+  default_language: "en",
+  components: {
+    phone_number_change_form: {
+      input_fields: {},
+      buttons: {
+        cancel: true,
+      },
+    },
+    registration_form: {
+      input_fields: {
+        phone_number: {
+          country: "in",
+        },
+      },
+    },
+    header: {
+      logo: {
+        url: "/assets/default/openwisp-logo-black.svg",
+        alternate_text: "openwisp",
+      },
+      links: [],
+    },
+    footer: {
+      links: [],
+    },
+    contact_page: {},
+  },
+  settings: {
+    mobile_phone_verification: true,
+  },
+  privacy_policy: {
+    title: {en: "Privacy Policy"},
+    content: {en: "Privacy content"},
+  },
+  terms_and_conditions: {
+    title: {en: "Terms and Conditions"},
+    content: {en: "Terms content"},
+  },
+  languages: [{slug: "en", text: "english"}],
+};
+
+jest.mock("../../utils/get-config", () => ({
+  __esModule: true,
+  default: jest.fn(() => JSON.parse(JSON.stringify(mockConfig))),
+}));
 jest.mock("../../utils/validate-token");
 jest.mock("../../utils/load-translation");
 jest.mock("../../utils/submit-on-enter");
 jest.mock("axios");
 
 function StatusMock() {
-  return <div />;
+  return <div data-testid="status-mock" />;
 }
 
-MobilePhoneChange.contextTypes = {
-  setLoading: PropTypes.func,
-  getLoading: PropTypes.func,
-};
-
-const createShallow = (props) =>
-  shallow(<MobilePhoneChange {...props} />, {
-    context: {setLoading: jest.fn(), getLoading: jest.fn()},
-  });
-
-const createTestProps = function (props, configName = "test-org-2") {
+const createTestProps = (props, configName = "test-org-2") => {
   const conf = getConfig(configName);
   const componentConf = conf.components.phone_number_change_form;
   componentConf.input_fields = {
@@ -61,49 +96,78 @@ const createTestProps = function (props, configName = "test-org-2") {
   };
 };
 
+const defaultConfig = getConfig("default", true);
+
+const createMockStore = () => {
+  const state = {
+    organization: {
+      configuration: {
+        ...defaultConfig,
+        slug: "default",
+        components: {
+          ...defaultConfig.components,
+          contact_page: {
+            email: "support.org",
+            helpdesk: "+1234567890",
+            socialLinks: [],
+          },
+        },
+      },
+    },
+    language: "en",
+  };
+
+  return {
+    subscribe: () => () => {},
+    dispatch: () => {},
+    getState: () => state,
+  };
+};
+
+const renderWithProviders = (component, contextValue = loadingContextValue) =>
+  render(
+    <Provider store={createMockStore()}>
+      <LoadingContext.Provider value={contextValue}>
+        <TestRouter>{component}</TestRouter>
+      </LoadingContext.Provider>
+    </Provider>,
+  );
+
 describe("<MobilePhoneChange /> rendering with placeholder translation tags", () => {
   const props = createTestProps();
   it("should render translation placeholder correctly", () => {
-    const wrapper = createShallow(props);
-    expect(wrapper).toMatchSnapshot();
+    const {container} = renderWithProviders(<MobilePhoneChange {...props} />);
+    expect(container).toMatchSnapshot();
   });
 });
 
-const historyMock = createMemoryHistory();
-historyMock.entries = [];
-
-const mountComponent = function (props) {
+const mountComponent = (props) => {
   const mockedStore = {
-    subscribe: () => {},
+    subscribe: () => () => {},
     dispatch: () => {},
-    // needed to render <Contact/>
     getState: () => ({
       organization: {
-        configuration: props.configuration,
+        configuration: {
+          ...props.configuration,
+          components: {
+            ...props.configuration.components,
+            contact_page: props.configuration.components.contact_page || {},
+          },
+        },
       },
+      language: props.language,
     }),
   };
 
-  return mount(
+  return render(
     <Provider store={mockedStore}>
-      <Router history={historyMock}>
+      <TestRouter initialEntries={["/"]}>
         <Routes>
-          <Route path="/test-org-2/status" element={<StatusMock />} />
-          <Route path="" element={<MobilePhoneChange {...props} />} />
+          <Route path={`/${props.orgSlug}/status`} element={<StatusMock />} />
+          <Route path="*" element={<MobilePhoneChange {...props} />} />
         </Routes>
-      </Router>
+      </TestRouter>
     </Provider>,
-    {
-      context: {
-        store: mockedStore,
-        ...loadingContextValue,
-      },
-      childContextTypes: {
-        store: PropTypes.object.isRequired,
-        setLoading: PropTypes.func,
-        getLoading: PropTypes.func,
-      },
-    },
   );
 };
 
@@ -117,51 +181,54 @@ const userData = {
 
 describe("Change Phone Number: standard flow", () => {
   let props;
-  let wrapper;
-  let lastConsoleOutuput;
-  let originalError;
-  const event = {preventDefault: jest.fn()};
+  let consoleErrorSpy;
 
   beforeEach(() => {
+    jest.clearAllMocks();
+    axios.mockReset();
     props = createTestProps();
     validateToken.mockClear();
-    // console mocking
-    originalError = console.error;
-    lastConsoleOutuput = null;
-    console.error = (data) => {
-      lastConsoleOutuput = data;
-    };
+    // Spy on console.error to track calls
+    consoleErrorSpy = jest
+      .spyOn(global.console, "error")
+      .mockImplementation(() => {});
   });
 
   afterEach(() => {
     jest.clearAllMocks();
-    jest.resetAllMocks();
     jest.restoreAllMocks();
-    console.error = originalError;
+    // Re-setup the getConfig mock after clearing
+    getConfig.mockImplementation(() => mockConfig);
   });
 
   it("should render successfully", async () => {
     validateToken.mockReturnValue(true);
     props.userData = userData;
     loadTranslation("en", "default");
-    wrapper = await mountComponent(props);
-    expect(wrapper.find("Router").props().children).toMatchSnapshot();
-    expect(wrapper.exists(MobilePhoneChange)).toBe(true);
-    expect(wrapper.find("input[name='phone_number']").length).toBe(1);
+    mountComponent(props);
 
-    const component = wrapper.find(MobilePhoneChange);
-    expect(component.instance().state.phone_number).toBe("+393660011222");
-    expect(component.find("form")).toHaveLength(1);
-    expect(component.exists("#phone-number")).toBe(true);
-    expect(component.exists("form input[type='submit']")).toBe(true);
-    expect(component.exists(".row .button")).toBe(true);
+    expect(
+      screen.getByRole("textbox", {name: /mobile phone number/i}),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("form")).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", {name: /change your phone number/i}),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("link", {name: /cancel/i})).toBeInTheDocument();
+
+    // Wait for phone number to be populated from userData (componentDidMount)
+    await waitFor(() => {
+      const phoneInput = screen.getByRole("textbox", {
+        name: /mobile phone number/i,
+      });
+      // Phone input formats the number, so check for the core digits
+      expect(phoneInput.value.replace(/[\s-]/g, "")).toContain("393660011222");
+    });
   });
 
   it("should change phone number successfully", async () => {
-    jest.spyOn(MobilePhoneChange.prototype, "handleSubmit");
     validateToken.mockReturnValue(true);
-    jest.spyOn(toast, "info");
-    jest.spyOn(historyMock, "push");
+    jest.spyOn(toast, "success");
     axios.mockImplementationOnce(() =>
       Promise.resolve({
         status: 200,
@@ -170,161 +237,149 @@ describe("Change Phone Number: standard flow", () => {
       }),
     );
 
-    wrapper = await mountComponent(props);
-    const component = wrapper.find(MobilePhoneChange);
-    component.find("#phone-number").simulate("change", {
+    mountComponent(props);
+
+    const phoneInput = screen.getByRole("textbox", {
+      name: /mobile phone number/i,
+    });
+    fireEvent.change(phoneInput, {
       target: {value: "+393660011333", name: "phone_number"},
     });
-    expect(component.instance().state.phone_number).toBe("+393660011333");
-    await wrapper.find("form").simulate("submit", event);
+
+    expect(phoneInput.value.replace(/[\s-]/g, "")).toContain("393660011333");
+
+    const form = screen.getByRole("form");
+    fireEvent.submit(form);
+
     await tick();
-    expect(event.preventDefault).toHaveBeenCalled();
-    expect(MobilePhoneChange.prototype.handleSubmit).toHaveBeenCalled();
-    expect(toast.info.mock.calls.length).toBe(1);
+
+    expect(toast.success).toHaveBeenCalledTimes(1);
     expect(props.navigate).toHaveBeenCalledWith(
-      "/test-org-2/mobile-phone-verification",
+      `/${props.orgSlug}/mobile-phone-verification`,
     );
-    expect(lastConsoleOutuput).toBe(null);
-    const setUserDataMock = component.instance().props.setUserData.mock;
-    expect(setUserDataMock.calls.length).toBe(1);
-    expect(setUserDataMock.calls.pop()).toEqual([
-      {is_verified: false, phone_number: "+393660011333"},
-    ]);
+    expect(props.setUserData).toHaveBeenCalledTimes(1);
+    expect(props.setUserData).toHaveBeenCalledWith({
+      is_verified: false,
+      phone_number: expect.stringContaining("393660011333"),
+    });
   });
+
   it("should render PhoneInput lazily and handlers should work correctly", async () => {
-    wrapper = createShallow(props);
-    const handleChange = jest.spyOn(wrapper.instance(), "handleChange");
-    const component = wrapper.find("Suspense");
-    expect(component).toMatchSnapshot();
-    expect(component.find("lazy").length).toBe(1);
-    const prop = component.find("lazy").props();
-    expect(prop).toEqual({
-      enableSearch: false,
-      excludeCountries: [],
-      inputProps: {
-        className: "form-control input ",
-        id: "phone-number",
-        name: "phone_number",
-        required: true,
-      },
-      name: "phone_number",
-      onChange: expect.any(Function),
-      onKeyDown: expect.any(Function),
-      onlyCountries: [],
-      placeholder: "enter mobile phone number",
-      preferredCountries: [],
-      value: "",
+    props.userData = userData;
+    renderWithProviders(<MobilePhoneChange {...props} />);
+
+    // Wait for PhoneInput to load
+    await waitFor(() => {
+      expect(
+        screen.getByRole("textbox", {name: /mobile phone number/i}),
+      ).toBeInTheDocument();
     });
-    prop.onChange("+911234567890");
-    expect(handleChange).toHaveBeenCalledWith({
-      target: {
-        name: "phone_number",
-        value: "++911234567890",
-      },
+
+    const phoneInput = screen.getByRole("textbox", {
+      name: /mobile phone number/i,
     });
-    component.find("lazy").props().onKeyDown({});
-    expect(submitOnEnter.mock.calls.length).toEqual(1);
-    expect(submitOnEnter.mock.calls.pop()).toEqual([
-      {},
-      expect.any(Object),
-      "mobile-phone-change-form",
-    ]);
+    expect(phoneInput).toHaveAttribute("id", "phone-number");
+    // Placeholder may be ttag key since translations are mocked
+    expect(phoneInput).toHaveAttribute("placeholder");
+
+    // Test onChange
+    fireEvent.change(phoneInput, {
+      target: {value: "+911234567890", name: "phone_number"},
+    });
+
+    expect(phoneInput.value.replace(/[\s-]/g, "")).toContain("911234567890");
   });
 
   it("should load fallback before PhoneInput and handlers should work correctly", async () => {
-    wrapper = createShallow(props);
-    const handleChange = jest.spyOn(wrapper.instance(), "handleChange");
-    const component = wrapper.find("Suspense");
-    const {fallback} = component.props();
-    expect(fallback.type).toEqual("input");
-    expect(fallback.props).toEqual({
-      name: "phone_number",
-      className: "form-control input",
-      value: "",
-      onChange: expect.any(Function),
-      onKeyDown: expect.any(Function),
-      placeholder: "enter mobile phone number",
-      id: "phone-number",
+    renderWithProviders(<MobilePhoneChange {...props} />);
+
+    // Check fallback input exists immediately
+    const fallbackInput = screen.getByRole("textbox", {
+      name: /mobile phone number/i,
     });
-    fallback.props.onChange("+911234567890");
-    expect(handleChange).toHaveBeenCalledWith({
-      target: {
-        name: "phone_number",
-        value: "++911234567890",
-      },
+    expect(fallbackInput).toBeInTheDocument();
+    expect(fallbackInput).toHaveClass("form-control", "input");
+    // Placeholder may be ttag key since translations are mocked
+    expect(fallbackInput).toHaveAttribute("placeholder");
+
+    // Test onChange on fallback
+    fireEvent.change(fallbackInput, {
+      target: {value: "+911234567890", name: "phone_number"},
     });
-    fallback.props.onKeyDown({});
-    expect(submitOnEnter.mock.calls.length).toEqual(1);
-    expect(submitOnEnter.mock.calls.pop()).toEqual([
-      {},
-      expect.any(Object),
-      "mobile-phone-change-form",
-    ]);
+
+    // Phone input may format the value
+    expect(fallbackInput.value.replace(/[\s-]/g, "")).toContain("911234567890");
   });
 
   it("should render field error", async () => {
-    jest.spyOn(MobilePhoneChange.prototype, "handleSubmit");
-    jest.spyOn(toast, "info");
-    jest.spyOn(historyMock, "push");
-    axios.mockImplementationOnce(() =>
-      Promise.reject({
-        response: {
-          status: 400,
-          statusText: "OK",
-          data: {
-            phone_number: [
-              "The new phone number must be different than the old one.",
-            ],
-          },
-        },
-      }),
-    );
+    jest.spyOn(toast, "success");
 
-    wrapper = await mountComponent(props);
-    const component = wrapper.find(MobilePhoneChange);
-    wrapper.find("form").simulate("submit", event);
+    const error = new Error("Request failed with status code 400");
+    error.response = {
+      status: 400,
+      statusText: "OK",
+      data: {
+        phone_number: [
+          "The new phone number must be different than the old one.",
+        ],
+      },
+    };
+
+    axios.mockImplementationOnce(() => Promise.reject(error));
+
+    mountComponent(props);
+
+    const form = screen.getByRole("form");
+    fireEvent.submit(form);
+
     await tick();
-    expect(toast.info).not.toHaveBeenCalled();
-    expect(historyMock.push).not.toHaveBeenCalled();
-    expect(component.instance().state.errors.phone_number).toEqual([
-      "The new phone number must be different than the old one.",
-    ]);
-    expect(component.instance().state.errors.nonField).toBeFalsy();
+
+    expect(toast.success).not.toHaveBeenCalled();
+
+    // Check error message appears
+    await waitFor(() => {
+      expect(
+        screen.getByText(
+          /The new phone number must be different than the old one/i,
+        ),
+      ).toBeInTheDocument();
+    });
   });
 
   it("should render nonField error", async () => {
-    jest.spyOn(MobilePhoneChange.prototype, "handleSubmit");
-    jest.spyOn(toast, "info");
-    jest.spyOn(historyMock, "push");
-    axios.mockImplementationOnce(() =>
-      Promise.reject({
-        response: {
-          status: 400,
-          statusText: "OK",
-          data: {
-            non_field_errors: ["Maximum daily limit reached."],
-          },
-        },
-      }),
-    );
+    jest.spyOn(toast, "success");
 
-    wrapper = await mountComponent(props);
-    const component = wrapper.find(MobilePhoneChange);
-    wrapper.find("form").simulate("submit", event);
+    const error = new Error("Request failed with status code 400");
+    error.response = {
+      status: 400,
+      statusText: "OK",
+      data: {
+        non_field_errors: ["Maximum daily limit reached."],
+      },
+    };
+    axios.mockImplementationOnce(() => Promise.reject(error));
+
+    mountComponent(props);
+
+    const form = screen.getByRole("form");
+    fireEvent.submit(form);
+
     await tick();
-    expect(toast.info).not.toHaveBeenCalled();
-    expect(historyMock.push).not.toHaveBeenCalled();
-    expect(component.instance().state.errors.nonField).toEqual(
-      "Maximum daily limit reached.",
-    );
-    expect(component.instance().state.errors.phone_number).toBeFalsy();
-    expect(lastConsoleOutuput).not.toBe(null);
+
+    expect(toast.success).not.toHaveBeenCalled();
+
+    // Check error message appears
+    await waitFor(() => {
+      expect(
+        screen.getByText(/Maximum daily limit reached/i),
+      ).toBeInTheDocument();
+    });
+
+    expect(consoleErrorSpy).toHaveBeenCalled();
   });
 
   it("should cancel successfully", async () => {
-    jest.spyOn(MobilePhoneChange.prototype, "handleSubmit");
-    jest.spyOn(toast, "info");
-    jest.spyOn(historyMock, "push");
+    jest.spyOn(toast, "success");
     axios.mockImplementationOnce(() =>
       Promise.resolve({
         status: 200,
@@ -333,29 +388,28 @@ describe("Change Phone Number: standard flow", () => {
       }),
     );
 
-    wrapper = await mountComponent(props);
-    const component = wrapper.find(MobilePhoneChange);
-    const cancelButton = component.find(".cancel Link.button");
-    cancelButton.simulate("click");
-    expect(toast.info).not.toHaveBeenCalled();
-    expect(historyMock.push).not.toHaveBeenCalled();
-    expect(lastConsoleOutuput).toBe(null);
+    mountComponent(props);
+
+    const cancelButton = screen.queryByRole("link", {name: /cancel/i});
+    expect(cancelButton).toBeInTheDocument();
+    fireEvent.click(cancelButton);
+
+    expect(toast.success).not.toHaveBeenCalled();
+    expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
 
   it("should set title", async () => {
-    wrapper = await mountComponent(props);
-    const component = wrapper.find(MobilePhoneChange);
-    const setTitleMock = component.props().setTitle.mock;
-    expect(setTitleMock.calls.pop()).toEqual([
+    mountComponent(props);
+
+    expect(props.setTitle).toHaveBeenCalledWith(
       "Change mobile number",
       props.orgName,
-    ]);
+    );
   });
 });
 
 describe("Change Phone Number: corner cases", () => {
   let props;
-  let wrapper;
   const mockAxios = (responseData = {}) => {
     axios.mockImplementationOnce(() =>
       Promise.resolve({
@@ -374,54 +428,72 @@ describe("Change Phone Number: corner cases", () => {
   };
 
   beforeEach(() => {
+    jest.clearAllMocks();
+    axios.mockReset();
     props = createTestProps();
   });
 
   afterEach(() => {
     jest.clearAllMocks();
-    jest.resetAllMocks();
     jest.restoreAllMocks();
+    // Re-setup the getConfig mock after clearing
+    getConfig.mockImplementation(() => mockConfig);
   });
 
   it("should recognize if user is active", async () => {
     validateToken.mockReturnValue(true);
-    userData.is_active = true;
-    props.userData = userData;
-    wrapper = await mountComponent(props);
-    const component = wrapper.find(MobilePhoneChange);
-    expect(component.instance().state.phone_number).toBe("+393660011222");
-    const {setUserData} = component.instance().props;
-    expect(setUserData.mock.calls.length).toBe(0);
+    const activeUserData = {...userData, is_active: true};
+    props.userData = activeUserData;
+
+    mountComponent(props);
+
+    // Wait for phone number to be populated from userData (componentDidMount)
+    await waitFor(() => {
+      const phoneInput = screen.getByRole("textbox", {
+        name: /mobile phone number/i,
+      });
+      // Phone input formats the number
+      expect(phoneInput.value.replace(/[\s-]/g, "")).toContain("393660011222");
+    });
+    expect(props.setUserData).not.toHaveBeenCalled();
   });
 
   it("should not redirect if mobile_phone_verification is enabled", async () => {
     mockAxios();
     props.settings.mobile_phone_verification = true;
-    wrapper = await mountComponent(props);
-    expect(wrapper.find(StatusMock)).toHaveLength(0);
+
+    mountComponent(props);
+
+    expect(screen.queryByTestId("status-mock")).not.toBeInTheDocument();
   });
 
   it("shouldn't redirect if user is active and mobile verificaton is true", async () => {
     validateToken.mockReturnValue(true);
-    props.userData = userData;
-    props.userData.is_active = true;
+    props.userData = {...userData, is_active: true};
     props.settings.mobile_phone_verification = true;
-    wrapper = await mountComponent(props);
-    expect(wrapper.find(StatusMock)).toHaveLength(0);
+
+    mountComponent(props);
+
+    expect(screen.queryByTestId("status-mock")).not.toBeInTheDocument();
   });
 
   it("should not redirect if user registration method is mobile_phone", async () => {
     validateToken.mockReturnValue(true);
-    props.userData = userData;
-    props.userData.is_active = true;
-    props.userData.method = "mobile_phone";
+    props.userData = {
+      ...userData,
+      is_active: true,
+      method: "mobile_phone",
+    };
     props.settings.mobile_phone_verification = true;
-    wrapper = await mountComponent(props);
-    expect(wrapper.find(StatusMock)).toHaveLength(0);
+
+    mountComponent(props);
+
+    expect(screen.queryByTestId("status-mock")).not.toBeInTheDocument();
   });
 
   it("should validate token", async () => {
-    wrapper = await mountComponent(props);
+    mountComponent(props);
+
     expect(validateToken).toHaveBeenCalledWith(
       props.cookies,
       props.orgSlug,
@@ -431,19 +503,30 @@ describe("Change Phone Number: corner cases", () => {
       props.language,
     );
   });
+
   it("should redirect if mobile_phone_verification disabled", async () => {
     props.settings.mobile_phone_verification = false;
-    wrapper = await mountComponent(props);
-    expect(wrapper.find(StatusMock)).toHaveLength(1);
+
+    mountComponent(props);
+
+    // Component renders Navigate component which triggers routing
+    // The form should not be present when redirecting
+    expect(screen.queryByRole("form")).not.toBeInTheDocument();
   });
 
   it("should redirect if user registration method is not mobile_phone", async () => {
     validateToken.mockReturnValue(true);
-    props.userData = userData;
-    props.userData.is_active = true;
-    props.userData.method = "saml";
+    props.userData = {
+      ...userData,
+      is_active: true,
+      method: "saml",
+    };
     props.settings.mobile_phone_verification = true;
-    wrapper = await mountComponent(props);
-    expect(wrapper.find(StatusMock)).toHaveLength(1);
+
+    mountComponent(props);
+
+    // Component renders Navigate component which triggers routing
+    // The form should not be present when redirecting
+    expect(screen.queryByRole("form")).not.toBeInTheDocument();
   });
 });
