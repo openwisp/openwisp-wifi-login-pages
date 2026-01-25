@@ -1505,7 +1505,9 @@ describe("<Status /> interactions", () => {
       "The WiFi session ended. You can log in again to start a new session.",
     );
     expect(successToast).not.toHaveBeenCalled();
-    expect(errorToast).toHaveBeenCalledWith("The WiFi session ended. You can log in again to start a new session.");
+    expect(errorToast).toHaveBeenCalledWith(
+      "The WiFi session ended. You can log in again to start a new session.",
+    );
     // This allows user to perform quick login.
     expect(localStorage).toEqual({userAutoLogin: "true"});
   });
