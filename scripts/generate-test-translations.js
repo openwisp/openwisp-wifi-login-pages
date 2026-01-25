@@ -23,15 +23,14 @@ let currentMsgid = null;
 let currentMsgstr = null;
 let isCollectingMsgstr = false;
 
-for (let i = 0; i < lines.length; i++) {
+for (let i = 0; i < lines.length; i += 1) {
   const line = lines[i];
   const trimmedLine = line.trim();
 
-  // Skip comments
-  if (trimmedLine.startsWith("#")) continue;
-
-  // Empty line - save current pair if complete
-  if (!trimmedLine) {
+  if (trimmedLine.startsWith("#")) {
+    // Skip comments
+  } else if (!trimmedLine) {
+    // Empty line → save pair
     if (currentMsgid && currentMsgstr !== null) {
       translations.translations[""][currentMsgid] = {
         msgid: currentMsgid,
@@ -41,35 +40,20 @@ for (let i = 0; i < lines.length; i++) {
     currentMsgid = null;
     currentMsgstr = null;
     isCollectingMsgstr = false;
-    continue;
-  }
-
-  // Extract msgid
-  if (trimmedLine.startsWith('msgid "')) {
+  } else if (trimmedLine.startsWith('msgid "')) {
     currentMsgid = trimmedLine.substring(7, trimmedLine.length - 1);
     isCollectingMsgstr = false;
-    continue;
-  }
-
-  // Start of msgstr (could be empty multi-line)
-  if (trimmedLine.startsWith('msgstr "')) {
+  } else if (trimmedLine.startsWith('msgstr "')) {
     isCollectingMsgstr = true;
-    // Check if it's single line or multi-line
+
     if (trimmedLine.endsWith('"') && trimmedLine.length > 8) {
-      // Single line
       currentMsgstr = trimmedLine.substring(8, trimmedLine.length - 1);
     } else {
-      // Multi-line starting
       currentMsgstr = "";
     }
-    continue;
-  }
-
-  // Continue collecting multi-line msgstr
-  if (isCollectingMsgstr && line.trim().startsWith('"')) {
-    const content = line.trim().substring(1, line.trim().length - 1);
+  } else if (isCollectingMsgstr && trimmedLine.startsWith('"')) {
+    const content = trimmedLine.substring(1, trimmedLine.length - 1);
     currentMsgstr += content;
-    continue;
   }
 }
 
@@ -92,7 +76,7 @@ console.log(
 );
 
 // Verify LOGIN_ADD_INFO is included
-if (translations.translations[""]["LOGIN_ADD_INFO_TXT"]) {
+if (translations.translations[""].LOGIN_ADD_INFO_TXT) {
   console.log("✓ LOGIN_ADD_INFO_TXT found");
 } else {
   console.log("✗ LOGIN_ADD_INFO_TXT missing");
