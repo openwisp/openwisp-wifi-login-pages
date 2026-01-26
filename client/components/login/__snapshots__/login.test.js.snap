@@ -407,7 +407,7 @@ exports[`<Login /> interactions should not show phone_number field if auto_switc
               pattern=".+@.+\\..+"
               placeholder="enter email, phone number or username"
               required=""
-              title="enter valid email address, an username or a phone number"
+              title="enter valid email address, a username or a phone number"
               type="email"
               value=""
             />
@@ -685,7 +685,7 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
               pattern=".+@.+\\..+"
               placeholder="enter email, phone number or username"
               required=""
-              title="enter valid email address, an username or a phone number"
+              title="enter valid email address, a username or a phone number"
               type="email"
               value=""
             />
@@ -980,7 +980,7 @@ exports[`<Login /> rendering should render correctly with social links 1`] = `
                 pattern=".+@.+\\..+"
                 placeholder="enter email, phone number or username"
                 required={true}
-                title="enter valid email address, an username or a phone number"
+                title="enter valid email address, a username or a phone number"
                 type="email"
                 value=""
               />
@@ -1211,7 +1211,7 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
                 pattern=".+@.+\\..+"
                 placeholder="enter email, phone number or username"
                 required={true}
-                title="enter valid email address, an username or a phone number"
+                title="enter valid email address, a username or a phone number"
                 type="email"
                 value=""
               />
