@@ -22,7 +22,7 @@ const validData = {
   logout_action_url: "http://localhost:8000/logout/",
   logout_by_session_ID: false,
   remember_me: true,
-  openwisp_radius_url: "http://127.0.0.1:8000",
+  openwisp_radius_url: "http://127.0.0.1:8000 ",
   assets_confirm: false,
 };
 
@@ -69,6 +69,7 @@ describe("add-org command", () => {
       {encoding: "utf-8"},
     );
     expect(result.status).toBe(0);
+    expect(fs.existsSync(testOrgConfig)).toBe(true);
     // Second creation with same slug should fail
     result = spawnSync(
       "yarn",

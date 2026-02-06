@@ -254,6 +254,15 @@ const createConfigurationWithoutPrompts = (passedData) => {
   }
 };
 
-if (process.argv.includes("--noprompt"))
-  createConfigurationWithoutPrompts(process.argv[process.argv.length - 1]);
-else createConfigurationWithPrompts();
+if (require.main === module) {
+  if (process.argv.includes("--noprompt"))
+    createConfigurationWithoutPrompts(process.argv[process.argv.length - 1]);
+  else createConfigurationWithPrompts();
+}
+
+module.exports = {
+  createConfiguration,
+  createConfigurationWithPrompts,
+  createConfigurationWithoutPrompts,
+  prompts,
+};
