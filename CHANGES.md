@@ -4,6 +4,26 @@
 
 Work in progress.
 
+## Version 1.2.2 [2026-02-06]
+
+# Changes
+
+## Dependencies
+
+- Removed autoprefixer
+- Updated webpack-bundle-analyzer from ^4.4.0 to ^5.1.0
+- Updated dependencies (minor versions only)
+- Bump @babel/plugin-transform-runtime from 7.28.3 to 7.28.5
+- Bump min-document from 2.19.0 to 2.19.2
+- Bump js-yaml from 4.1.0 to 4.1.1
+- Bump express from 5.1.0 to 5.2.0
+- Bump node-forge from 1.3.1 to 1.3.2
+
+# Bugfixes
+
+- Transpile JS for old browsers
+- Fixed webpack CSS hashes
+
 ## Version 1.2.1 [2025-12-22]
 
 # Bugfixes
