@@ -81,4 +81,14 @@ describe("add-org command", () => {
     expect(result.status).not.toBe(0);
     expect(result.stderr).toMatch(/already exists/);
   });
+
+  it("runs interactively and shows prompts (smoke test)", () => {
+    const proc = spawnSync("yarn", ["add-org"], {
+      input: "\n",
+      encoding: "utf-8",
+      timeout: 5000,
+    });
+    expect(proc.stdout).toMatch(/What is the name of the organization/);
+    expect(fs.existsSync(testOrgConfig)).toBe(false);
+  });
 });
