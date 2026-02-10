@@ -204,12 +204,10 @@ const createConfiguration = async (response) => {
     );
     config = JSON.parse(
       JSON.stringify(config, (k, v) => {
-        // to convert value with keys ["0", "1", ...] to array
         const value =
           typeof v === "object" && isArray(Object.keys(v))
             ? Object.values(v)
             : v;
-        // to remove empty objects
         return _.isEqual(v, {}) ? undefined : value;
       }),
     );
@@ -219,10 +217,10 @@ const createConfiguration = async (response) => {
 
 const createConfigurationWithPrompts = async () => {
   const response = await prompt(prompts);
-  createConfiguration(response);
+  await createConfiguration(response);
 };
 
-const createConfigurationWithoutPrompts = (passedData) => {
+const createConfigurationWithoutPrompts = async (passedData) => {
   const requiredKeys = [
     "name",
     "slug",
@@ -240,11 +238,10 @@ const createConfigurationWithoutPrompts = (passedData) => {
   try {
     const response = JSON.parse(passedData);
     const missingKeys = requiredKeys.filter(
-      // eslint-disable-next-line no-prototype-builtins
-      (key) => !response.hasOwnProperty(key),
+      (key) => !Object.prototype.hasOwnProperty.call(response, key),
     );
     if (missingKeys.length === 0) {
-      createConfiguration(response);
+      await createConfiguration(response);
     } else {
       throw new Error(`Require key(s) missing: ${missingKeys.join(", ")}`);
     }
@@ -255,9 +252,13 @@ const createConfigurationWithoutPrompts = (passedData) => {
 };
 
 if (require.main === module) {
-  if (process.argv.includes("--noprompt"))
-    createConfigurationWithoutPrompts(process.argv[process.argv.length - 1]);
-  else createConfigurationWithPrompts();
+  (async () => {
+    if (process.argv.includes("--noprompt"))
+      await createConfigurationWithoutPrompts(
+        process.argv[process.argv.length - 1],
+      );
+    else await createConfigurationWithPrompts();
+  })();
 }
 
 module.exports = {
