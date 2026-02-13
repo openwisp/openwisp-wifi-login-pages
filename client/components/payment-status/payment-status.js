@@ -121,7 +121,15 @@ export default class PaymentStatus extends React.Component {
   }
 
   paymentProceedHandler() {
-    const {authenticate, setUserData, userData, settings} = this.props;
+    const {
+      authenticate,
+      setUserData,
+      userData,
+      settings,
+      captivePortalSyncAuth,
+      cookies,
+      orgSlug,
+    } = this.props;
     // Payment gateway may require internet access.
     // Since, captive portal login is handled by the Status component,
     // the user is navigated to the "/status" for captive portal login
@@ -131,6 +139,13 @@ export default class PaymentStatus extends React.Component {
         ...userData,
         proceedToPayment: true,
       });
+      // Store proceedToPayment in cookie/localStorage for synchronous
+      // captive portal authentication where page reloads after form submission
+      if (captivePortalSyncAuth) {
+        const key = `${orgSlug}_proceedToPayment`;
+        localStorage.setItem(key, true);
+        cookies.set(key, true, {path: "/", maxAge: 60});
+      }
     }
     authenticate(true);
   }
@@ -228,6 +243,7 @@ PaymentStatus.propTypes = {
   page: PropTypes.object,
   logout: PropTypes.func.isRequired,
   cookies: PropTypes.instanceOf(Cookies).isRequired,
+  captivePortalSyncAuth: PropTypes.bool,
   settings: PropTypes.shape({
     payment_requires_internet: PropTypes.bool,
   }).isRequired,
