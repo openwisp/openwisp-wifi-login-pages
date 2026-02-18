@@ -1,21 +1,22 @@
 /* eslint-disable camelcase */
 /* eslint jsx-a11y/label-has-associated-control: 0 */
 import "./index.css";
-
+import "react-circular-progressbar/dist/styles.css";
 import "react-toastify/dist/ReactToastify.css";
-
 import axios from "axios";
 import PropTypes from "prop-types";
 import React from "react";
+import {
+  CircularProgressbarWithChildren,
+  buildStyles,
+} from "react-circular-progressbar";
 import {Cookies} from "react-cookie";
 import {Link} from "react-router-dom";
 import {toast} from "react-toastify";
 import InfinteScroll from "react-infinite-scroll-component";
-import {t, gettext} from "ttag";
 import prettyBytes from "pretty-bytes";
-import {timeFromSeconds} from "duration-formatter";
+import {t, gettext} from "ttag";
 import getLanguageHeaders from "../../utils/get-language-headers";
-
 import {
   getUserRadiusSessionsUrl,
   getUserRadiusUsageUrl,
@@ -1163,19 +1164,181 @@ export default class Status extends React.Component {
   });
 
   // eslint-disable-next-line class-methods-use-this
-  getUserCheckFormattedValue = (value, type) => {
-    const intValue = parseInt(value, 10);
+  getUserCheckFormattedValue = (value, type, result) => {
+    const intValue = Number(value);
+    const intResult = Number(result);
+
+    if (!Number.isFinite(intValue) || !Number.isFinite(intResult)) {
+      return t`N/A`;
+    }
+
+    const remaining = Math.max(0, intValue - intResult);
     switch (type) {
       case "bytes":
-        return intValue === 0
-          ? 0
-          : prettyBytes(intValue, {space: true, maximumFractionDigits: 2});
-      case "seconds":
-        return timeFromSeconds(intValue);
+        return remaining === 0
+          ? t`0`
+          : `${prettyBytes(remaining, {space: true, maximumFractionDigits: 2})}`;
+      case "seconds": {
+        if (remaining === 0) {
+          return t`0`;
+        }
+        const hours = Math.floor(remaining / 3600);
+        const minutes = Math.floor((remaining % 3600) / 60);
+        if (hours > 0 && minutes > 0) {
+          return `${hours}${t`TIME_HOUR_ABBR`} ${minutes}${t`TIME_MINUTE_ABBR`}`;
+        }
+        if (hours > 0) {
+          return `${hours}${t`TIME_HOUR_ABBR`}`;
+        }
+        if (minutes > 0) {
+          return `${minutes}${t`TIME_MINUTE_ABBR`}`;
+        }
+        return t`TIME_LESS_THAN_MINUTE`;
+      }
       default:
-        return value;
+        return `${remaining}`;
     }
   };
+
+  // eslint-disable-next-line class-methods-use-this
+  getUserCheckUsedValue = (value, type, result) => {
+    const intValue = Number(value);
+    const intResult = Number(result);
+
+    if (!Number.isFinite(intValue) || !Number.isFinite(intResult)) {
+      return t`N/A`;
+    }
+
+    const used = Math.min(intResult, intValue);
+
+    const formatTime = (seconds) => {
+      const hours = Math.floor(seconds / 3600);
+      const minutes = Math.floor((seconds % 3600) / 60);
+      if (hours > 0 && minutes > 0) {
+        return `${hours}${t`TIME_HOUR_ABBR`} ${minutes}${t`TIME_MINUTE_ABBR`}`;
+      }
+      if (hours > 0) {
+        return `${hours}${t`TIME_HOUR_ABBR`}`;
+      }
+      if (minutes > 0) {
+        return `${minutes}${t`TIME_MINUTE_ABBR`}`;
+      }
+      return t`TIME_LESS_THAN_MINUTE`;
+    };
+
+    switch (type) {
+      case "bytes": {
+        const usedFormatted =
+          used === 0
+            ? "0"
+            : prettyBytes(used, {space: true, maximumFractionDigits: 2});
+        const totalFormatted = prettyBytes(intValue, {
+          space: true,
+          maximumFractionDigits: 2,
+        });
+        return `${usedFormatted} ${t`USAGE_USED_OF`} ${totalFormatted}`;
+      }
+      case "seconds": {
+        const usedFormatted = used === 0 ? "0" : formatTime(used);
+        const totalFormatted = formatTime(intValue);
+        return `${usedFormatted} ${t`USAGE_USED_OF`} ${totalFormatted}`;
+      }
+      default:
+        return `${used} ${t`USAGE_USED_OF`} ${intValue}`;
+    }
+  };
+
+  // eslint-disable-next-line class-methods-use-this
+  getResetTimeRemaining = (resetTimestamp) => {
+    if (!resetTimestamp) {
+      return null;
+    }
+    const now = Math.floor(Date.now() / 1000);
+    const secondsRemaining = resetTimestamp - now;
+    if (secondsRemaining <= 0) {
+      return null;
+    }
+    const hours = Math.floor(secondsRemaining / 3600);
+    const minutes = Math.floor((secondsRemaining % 3600) / 60);
+    if (hours > 0) {
+      return `${hours}${t`TIME_HOUR_ABBR`} ${minutes}${t`TIME_MINUTE_ABBR`}`;
+    }
+    return `${minutes}${t`TIME_MINUTE_ABBR`}`;
+  };
+
+  // eslint-disable-next-line class-methods-use-this
+  getUsageColorAndIcons = (value, result) => {
+    const numValue = Number(value);
+    const numResult = Number(result);
+
+    // Default to green (low usage) if value is 0 or non-numeric
+    if (!numValue || Number.isNaN(numValue)) {
+      return {
+        color: "#1AAA55",
+        timerIcon: "/assets/default/timerIconGreen.svg",
+        dataIcon: "/assets/default/dataIconGreen.svg",
+      };
+    }
+
+    const usagePercentage = (numResult / numValue) * 100;
+
+    if (usagePercentage <= 50) {
+      return {
+        color: "#1AAA55",
+        timerIcon: "/assets/default/timerIconGreen.svg",
+        dataIcon: "/assets/default/dataIconGreen.svg",
+      };
+    }
+    if (usagePercentage <= 80) {
+      return {
+        color: "#FBBF24",
+        timerIcon: "/assets/default/timerIconYellow.svg",
+        dataIcon: "/assets/default/dataIconYellow.svg",
+      };
+    }
+    return {
+      color: "#DB3B21",
+      timerIcon: "/assets/default/timerIconRed.svg",
+      dataIcon: "/assets/default/dataIconRed.svg",
+    };
+  };
+
+  renderUsageCheckContent = (check, color, icon, label) => (
+    <div className="usage-check-content">
+      <div className="usage-check-header">
+        <img src={icon} alt={`${label} Icon`} />
+        <div>{label}</div>
+      </div>
+      <div className="usage-progress-wrapper">
+        <CircularProgressbarWithChildren
+          id={check.attribute}
+          strokeWidth={12}
+          value={check.result}
+          maxValue={check.value}
+          styles={buildStyles({
+            pathColor: color,
+            trailColor: "#EAECF0",
+            strokeLinecap: "butt",
+            pathTransitionDuration: 0.5,
+          })}
+        >
+          <div className="usage-progress-text">
+            <strong>
+              {this.getUserCheckFormattedValue(
+                check.value,
+                check.type,
+                check.result,
+              )}
+            </strong>
+            <div className="usage-progress-remaining">{t`USAGE_REMAINING`}</div>
+          </div>
+        </CircularProgressbarWithChildren>
+      </div>
+      <div className="usage-check-used">
+        {this.getUserCheckUsedValue(check.value, check.type, check.result)}
+      </div>
+    </div>
+  );
 
   render() {
     const {
@@ -1250,61 +1413,89 @@ export default class Status extends React.Component {
           {statusPage.radius_usage_enabled &&
             showRadiusUsage &&
             !internetMode && (
-              <div className="inner flex-row limit-info">
-                <div className="bg row">
-                  {radiusUsageSpinner ? this.getSpinner() : null}
-                  {settings.subscriptions && userPlan.name && (
-                    <h3>
-                      {t`CURRENT_SUBSCRIPTION_TXT`} {userPlan.name}
-                    </h3>
-                  )}
-                  {userChecks &&
-                    userChecks.map(
-                      (check) =>
-                        check.value !== "0" && (
-                          <div key={check.attribute}>
-                            <progress
-                              id={check.attribute}
-                              max={check.value}
-                              value={check.result}
-                            />
-                            <p className="progress">
-                              <strong>
-                                {this.getUserCheckFormattedValue(
-                                  check.result,
-                                  check.type,
-                                )}
-                              </strong>{" "}
-                              of{" "}
-                              {this.getUserCheckFormattedValue(
-                                check.value,
-                                check.type,
-                              )}{" "}
-                              used
-                            </p>
+              <div className="usage-overview bg row">
+                <div className="usage-overview-title">{t`DAILY_USAGE_OVERVIEW`}</div>
+                <p>{t`DAILY_USAGE_OVERVIEW_DESCRIPTION`}</p>
+                {radiusUsageSpinner ? this.getSpinner() : null}
+                {settings.subscriptions && userPlan.name && (
+                  <h3>
+                    {t`CURRENT_SUBSCRIPTION_TXT`} {userPlan.name}
+                  </h3>
+                )}
+                {userChecks && (
+                  <div>
+                    <div className="usage-checks-container">
+                      {userChecks.map((check) => {
+                        const valueNum = Number(check.value);
+                        const resultNum = Number(check.result);
+                        if (
+                          !Number.isFinite(valueNum) ||
+                          valueNum <= 0 ||
+                          !Number.isFinite(resultNum)
+                        ) {
+                          return null;
+                        }
+                        const normalizedCheck = {
+                          ...check,
+                          value: valueNum,
+                          result: resultNum,
+                        };
+                        const {color, timerIcon, dataIcon} =
+                          this.getUsageColorAndIcons(valueNum, resultNum);
+                        let icon = null;
+                        let label = null;
+                        if (check.type === "seconds") {
+                          icon = timerIcon;
+                          label = t`USAGE_TIME`;
+                        } else if (check.type === "bytes") {
+                          icon = dataIcon;
+                          label = t`USAGE_DATA`;
+                        }
+                        if (!icon) {
+                          return null;
+                        }
+                        return (
+                          <div
+                            className="usage-box usage-box-inner"
+                            key={check.attribute}
+                          >
+                            {this.renderUsageCheckContent(
+                              normalizedCheck,
+                              color,
+                              icon,
+                              label,
+                            )}
                           </div>
-                        ),
-                    )}
-                  {warningMessage && (
-                    <p className="important">
-                      <strong>{gettext(warningMessage)}</strong>
+                        );
+                      })}
+                    </div>
+                    {userChecks[0]?.reset &&
+                      this.getResetTimeRemaining(userChecks[0].reset) && (
+                        <div className="usage-reset-info">
+                          {`*${t`DAILY_LIMITS_RESET_IN`} ${this.getResetTimeRemaining(userChecks[0].reset)}`}
+                        </div>
+                      )}
+                  </div>
+                )}
+                {warningMessage && (
+                  <p className="important">
+                    <strong>{gettext(warningMessage)}</strong>
+                  </p>
+                )}
+                {settings.subscriptions &&
+                  (userPlan.is_free || planExhausted) &&
+                  showUpgradeBtn && (
+                    <p>
+                      <button
+                        id="plan-upgrade-btn"
+                        type="button"
+                        className="button partial"
+                        onClick={this.toggleUpgradePlanModal}
+                      >
+                        {t`PLAN_UPGRADE_BTN_TXT`}
+                      </button>
                     </p>
                   )}
-                  {settings.subscriptions &&
-                    (userPlan.is_free || planExhausted) &&
-                    showUpgradeBtn && (
-                      <p>
-                        <button
-                          id="plan-upgrade-btn"
-                          type="button"
-                          className="button partial"
-                          onClick={this.toggleUpgradePlanModal}
-                        >
-                          {t`PLAN_UPGRADE_BTN_TXT`}
-                        </button>
-                      </p>
-                    )}
-                </div>
               </div>
             )}
           <div className="inner">

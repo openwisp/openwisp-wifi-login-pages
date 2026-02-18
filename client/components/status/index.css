@@ -133,6 +133,79 @@ progress + p.progress {
   border: 1px solid #464646 !important;
 }
 
+.usage-box {
+  border: 1px solid #e4e4e7;
+  height: 236px;
+  width: 174px;
+  border-radius: 16px;
+  margin-bottom: 20px;
+}
+
+.usage-overview {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.usage-overview-title {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.usage-checks-container {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.usage-box-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.usage-check-content {
+  display: flex;
+  gap: 16px;
+  flex-direction: column;
+}
+
+.usage-check-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.usage-progress-wrapper {
+  width: 120px;
+  height: 120px;
+}
+
+.usage-progress-text {
+  text-align: center;
+}
+
+.usage-progress-remaining {
+  font-size: 12px;
+}
+
+.usage-check-used {
+  font-size: 12px;
+  text-align: center;
+}
+
+.usage-reset-info {
+  font-size: 12px;
+}
+
 @media screen and (min-width: 0px) and (max-width: 500px) {
   .logout-modal-container p.message {
     margin: 0 6%;
