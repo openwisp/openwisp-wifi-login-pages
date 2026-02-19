@@ -244,6 +244,37 @@ describe("Test <PaymentStatus /> cases", () => {
     });
   });
 
+  it("should store proceedToPayment in cookie when captivePortalSyncAuth is enabled", async () => {
+    // When both payment_requires_internet and captivePortalSyncAuth are enabled,
+    // proceedToPayment should be stored in cookies/localStorage to persist across page reload
+    validateToken.mockReturnValue(true);
+
+    const cookies = new Cookies();
+    props = createTestProps({
+      userData: {...responseData, is_verified: false},
+      params: {status: "draft"},
+      cookies,
+      captivePortalSyncAuth: true,
+    });
+    props.settings.payment_requires_internet = true;
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    const payProcButton = wrapper
+      .find("Link.button.full")
+      .findWhere((node) => node.text() === t`PAY_PROC_BTN`)
+      .first();
+    payProcButton.simulate("click");
+    expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith({
+      ...responseData,
+      is_verified: false,
+      proceedToPayment: true,
+    });
+    expect(cookies.get("default_proceedToPayment")).toBe(true);
+    expect(localStorage.getItem("default_proceedToPayment")).toBe("true");
+    localStorage.removeItem("default_proceedToPayment");
+  });
+
   it("should redirect to status if success but unverified", async () => {
     const spyToast = jest.spyOn(toast, "success");
     props = createTestProps({

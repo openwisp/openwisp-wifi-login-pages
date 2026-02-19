@@ -253,13 +253,23 @@ export default class Status extends React.Component {
       setUserData,
       statusPage,
       internetMode,
+      captivePortalSyncAuth,
+      cookies,
     } = this.props;
     const {setLoading} = this.context;
     // if the user needs bank card verification,
     // redirect to payment page and stop here
     if (needsVerify("bank_card", userData, settings)) {
       // avoid redirect loop from proceed to payment
-      if (settings.payment_requires_internet && userData.proceedToPayment) {
+      // resolve proceedToPayment from cookies/localStorage for synchronous
+      // captive portal authentication where page reloads after form submission
+      const proceedToPayment = this.resolveStoredValue(
+        captivePortalSyncAuth,
+        `${orgSlug}_proceedToPayment`,
+        userData.proceedToPayment,
+        cookies,
+      );
+      if (settings.payment_requires_internet && proceedToPayment) {
         // reset proceedToPayment
         setUserData({
           ...userData,
