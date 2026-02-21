@@ -9,11 +9,31 @@
   },
   "translations": {
     "": {
-      "": {
-        "msgid": "",
+      "ERR_OCCUR": {
+        "msgid": "ERR_OCCUR",
+        "msgstr": ["Error occurred!"]
+      },
+      "PLAN_SETTING_TXT": {
+        "msgid": "PLAN_SETTING_TXT",
+        "msgstr": ["Please select the preferred subscription plan"]
+      },
+      "INACTIVE_SESSION_LOGOUT": {
+        "msgid": "INACTIVE_SESSION_LOGOUT",
         "msgstr": [
-          "Content-Type: text/plain; charset=utf-8\nPlural-Forms: nplurals = 2; plural = (n != 1);\nLanguage: en\nmime-version: 1.0\nContent-Transfer-Encoding: 8bit\n"
+          "The WiFi session ended. You can log in again to start a new session."
         ]
+      },
+      "LOGOUT_SUCCESS": {
+        "msgid": "LOGOUT_SUCCESS",
+        "msgstr": ["Logout successful"]
+      },
+      "YES": {
+        "msgid": "YES",
+        "msgstr": ["Yes"]
+      },
+      "NO": {
+        "msgid": "NO",
+        "msgstr": ["No"]
       },
       "PWD_REVEAL": {
         "msgid": "PWD_REVEAL",
@@ -31,6 +51,14 @@
         "msgid": "TOS_TITL",
         "msgstr": ["terms and conditions"]
       },
+      "PLEASE_WAIT": {
+        "msgid": "PLEASE_WAIT",
+        "msgstr": ["Please wait..."]
+      },
+      "PLEASE_LOGIN": {
+        "msgid": "PLEASE_LOGIN",
+        "msgstr": ["Please log in"]
+      },
       "ACCT_ACTIVE": {
         "msgid": "ACCT_ACTIVE",
         "msgstr": ["session is active"]
@@ -38,10 +66,6 @@
       "LOGOUT": {
         "msgid": "LOGOUT",
         "msgstr": ["Logout"]
-      },
-      "STATUS_TITL": {
-        "msgid": "STATUS_TITL",
-        "msgstr": ["Status"]
       },
       "ACCT_START_TIME": {
         "msgid": "ACCT_START_TIME",
@@ -75,6 +99,10 @@
         "msgid": "LOGGED_IN",
         "msgstr": ["Logged in"]
       },
+      "EMAIL": {
+        "msgid": "EMAIL",
+        "msgstr": ["Email"]
+      },
       "USERNAME": {
         "msgid": "USERNAME",
         "msgstr": ["Username"]
@@ -83,27 +111,55 @@
         "msgid": "PHONE_NUMBER",
         "msgstr": ["Phone number"]
       },
+      "CP_LOGIN": {
+        "msgid": "CP_LOGIN",
+        "msgstr": [
+          "We are initializing your session in the WiFi service, it may take a few seconds, please wait ..."
+        ]
+      },
+      "STATUS_TITL": {
+        "msgid": "STATUS_TITL",
+        "msgstr": ["Status"]
+      },
+      "PASSWORD_EXPIRED": {
+        "msgid": "PASSWORD_EXPIRED",
+        "msgstr": ["Your password has expired, please update it."]
+      },
+      "PLAN_EXHAUSTED_TOAST": {
+        "msgid": "PLAN_EXHAUSTED_TOAST",
+        "msgstr": ["You have used all the data in your plan."]
+      },
+      "SUCCESS_UPGRADE_PLAN": {
+        "msgid": "SUCCESS_UPGRADE_PLAN",
+        "msgstr": ["Plan upgrade in progress"]
+      },
       "STATUS_CONTENT": {
         "msgid": "STATUS_CONTENT",
         "msgstr": [
-          "WiFi Login Successful!\n        You can now use the internet.\n        You may leave this page open in case you want to log out."
+          "WiFi Login Successful!\\n        You can now use the internet.\\n        You may leave this page open in case you want to log out."
         ]
+      },
+      "TRAFFIC_EXHAUSTED": {
+        "msgid": "TRAFFIC_EXHAUSTED",
+        "msgstr": ["Data limit reached"]
       },
       "LOGOUT_MODAL_CONTENT": {
         "msgid": "LOGOUT_MODAL_CONTENT",
         "msgstr": ["Do you want to automatically log in the next time?"]
       },
-      "YES": {
-        "msgid": "YES",
-        "msgstr": ["Yes"]
+      "CURRENT_SUBSCRIPTION_TXT": {
+        "msgid": "CURRENT_SUBSCRIPTION_TXT",
+        "msgstr": ["Current subscription:"]
       },
-      "NO": {
-        "msgid": "NO",
-        "msgstr": ["No"]
+      "USAGE_LIMIT_EXHAUSTED_TXT": {
+        "msgid": "USAGE_LIMIT_EXHAUSTED_TXT",
+        "msgstr": [
+          "You have reached your data limit. Please top up your account to continue."
+        ]
       },
-      "PLAN_SETTING_TXT": {
-        "msgid": "PLAN_SETTING_TXT",
-        "msgstr": ["Please select the preferred subscription plan"]
+      "PLAN_UPGRADE_BTN_TXT": {
+        "msgid": "PLAN_UPGRADE_BTN_TXT",
+        "msgstr": ["Top up"]
       },
       "PHONE_LBL": {
         "msgid": "PHONE_LBL",
@@ -121,13 +177,13 @@
         "msgid": "EMAIL_PTRN_DESC",
         "msgstr": ["enter valid email address"]
       },
-      "USERNAME_LOG_LBL": {
-        "msgid": "USERNAME_LOG_LBL",
-        "msgstr": ["Email, phone number or username"]
+      "USERNAME_REG_LBL": {
+        "msgid": "USERNAME_REG_LBL",
+        "msgstr": ["Username"]
       },
-      "USERNAME_LOG_PHOLD": {
-        "msgid": "USERNAME_LOG_PHOLD",
-        "msgstr": ["enter email, phone number or username"]
+      "USERNAME_REG_PHOLD": {
+        "msgid": "USERNAME_REG_PHOLD",
+        "msgstr": ["Username"]
       },
       "USERNAME_PTRN_DESC": {
         "msgid": "USERNAME_PTRN_DESC",
@@ -136,6 +192,10 @@
       "FIRST_NAME_LBL": {
         "msgid": "FIRST_NAME_LBL",
         "msgstr": ["First name"]
+      },
+      "OPTIONAL": {
+        "msgid": "OPTIONAL",
+        "msgstr": ["optional"]
       },
       "FIRST_NAME_PHOLD": {
         "msgid": "FIRST_NAME_PHOLD",
@@ -176,6 +236,14 @@
       "PWD_PTRN_DESC": {
         "msgid": "PWD_PTRN_DESC",
         "msgstr": ["password must be a minimum of 6 characters"]
+      },
+      "CONFIRM_PWD_LBL": {
+        "msgid": "CONFIRM_PWD_LBL",
+        "msgstr": ["Confirm password"]
+      },
+      "CONFIRM_PWD_PHOLD": {
+        "msgid": "CONFIRM_PWD_PHOLD",
+        "msgstr": ["confirm password"]
       },
       "COUNTRY_LBL": {
         "msgid": "COUNTRY_LBL",
@@ -219,6 +287,10 @@
           "By signing up, you accept the {terms_and_conditions} and the {privacy_policy} of this WiFi service."
         ]
       },
+      "REGISTER_BTN_TXT": {
+        "msgid": "REGISTER_BTN_TXT",
+        "msgstr": ["Sign up"]
+      },
       "FORGOT_PASSWORD": {
         "msgid": "FORGOT_PASSWORD",
         "msgstr": ["Forgot your password?"]
@@ -231,9 +303,59 @@
         "msgid": "REGISTRATION_TITL",
         "msgstr": ["Sign up"]
       },
+      "PWD_CNF_ERR": {
+        "msgid": "PWD_CNF_ERR",
+        "msgstr": ["The two password fields didn't match."]
+      },
+      "REGISTER_SUCCESS": {
+        "msgid": "REGISTER_SUCCESS",
+        "msgstr": ["Registration success"]
+      },
+      "404_PG_TITL": {
+        "msgid": "404_PG_TITL",
+        "msgstr": ["404 Not found"]
+      },
+      "REGISTER_ERR": {
+        "msgid": "REGISTER_ERR",
+        "msgstr": ["Registration error."]
+      },
+      "NO_ORGS": {
+        "msgid": "NO_ORGS",
+        "msgstr": ["A user with similar credentials already exists."]
+      },
+      "CONFLICT_ORGS": {
+        "msgid": "CONFLICT_ORGS",
+        "msgstr": [
+          "A user with credentials like the one being entered already exists in other organizations:"
+        ]
+      },
+      "CONFLICT_SIGNIN": {
+        "msgid": "CONFLICT_SIGNIN",
+        "msgstr": [
+          "Do you own the account mentioned above and want to sign in and associate your existing account to this WiFi service?"
+        ]
+      },
       "PAY_SUCCESS": {
         "msgid": "PAY_SUCCESS",
         "msgstr": ["Payment received successfully."]
+      },
+      "PAY_REQ": {
+        "msgid": "PAY_REQ",
+        "msgstr": ["Payment required to proceed"]
+      },
+      "PAY_WARN${ timeout }${ maxAttempts }": {
+        "msgid": "PAY_WARN${ timeout }${ maxAttempts }",
+        "msgstr": [
+          "<p>By clicking on the button below you will be redirected to our payment gateway service where you can safely use your credit/debit card. From there you will be redirected to the website of your bank to confirm the transaction.</p><p>You will have ${ timeout } minutes to complete the process.<br /><strong>For this reason we recommend preparing your debit/credit card before initiating the payment process.</strong></p><p>If for any reason the process is not completed within the available time, the internet connection which allows you to reach the website of your bank will be closed, if this happens you can just log in again with the credentials you just registered and repeat the process up a maximum of ${ maxAttempts } times.</p>"
+        ]
+      },
+      "PAY_PROC_BTN": {
+        "msgid": "PAY_PROC_BTN",
+        "msgstr": ["Proceed with the payment"]
+      },
+      "PAY_GIVE_UP_BTN": {
+        "msgid": "PAY_GIVE_UP_BTN",
+        "msgstr": ["Cancel operation and log out"]
       },
       "PAY_FAIL": {
         "msgid": "PAY_FAIL",
@@ -253,10 +375,6 @@
           "If you cannot complete the transaction you can either try to get in touch with your bank or cancel the operation."
         ]
       },
-      "PAY_GIVE_UP_BTN": {
-        "msgid": "PAY_GIVE_UP_BTN",
-        "msgstr": ["Cancel operation and log out"]
-      },
       "PWD_RESET_TITL": {
         "msgid": "PWD_RESET_TITL",
         "msgstr": ["Reset Password"]
@@ -268,12 +386,24 @@
       "PWD_RESET_ADD_TXT": {
         "msgid": "PWD_RESET_ADD_TXT",
         "msgstr": [
-          "Have you forgot your password? Enter your email address, phone number or username below and we'll  send you the instructions to reset it."
+          "Have you forgotten your password? Enter your email address, phone number or username below and we'll send you the instructions to reset it."
         ]
+      },
+      "USERNAME_LOG_LBL": {
+        "msgid": "USERNAME_LOG_LBL",
+        "msgstr": ["Email, phone number or username"]
+      },
+      "USERNAME_LOG_PHOLD": {
+        "msgid": "USERNAME_LOG_PHOLD",
+        "msgstr": ["enter email, phone number or username"]
+      },
+      "USERNAME_LOG_TITL": {
+        "msgid": "USERNAME_LOG_TITL",
+        "msgstr": ["enter valid email address, a username or a phone number"]
       },
       "PWD_RESET_BTN": {
         "msgid": "PWD_RESET_BTN",
-        "msgstr": ["Reset My Password"]
+        "msgstr": ["Reset password"]
       },
       "PWD_RESET_CNTC_TXT": {
         "msgid": "PWD_RESET_CNTC_TXT",
@@ -293,14 +423,6 @@
         "msgid": "PWD_CONFIRM_ADD_TXT",
         "msgstr": ["Please enter your new password below."]
       },
-      "CONFIRM_PWD_LBL": {
-        "msgid": "CONFIRM_PWD_LBL",
-        "msgstr": ["Confirm password"]
-      },
-      "CONFIRM_PWD_PHOLD": {
-        "msgid": "CONFIRM_PWD_PHOLD",
-        "msgstr": ["confirm password"]
-      },
       "PWD_CONFIRM": {
         "msgid": "PWD_CONFIRM",
         "msgstr": ["Change password"]
@@ -309,17 +431,43 @@
         "msgid": "PWD_CHANGE_TITL",
         "msgstr": ["Change your password"]
       },
+      "PWD_CURR_ERR": {
+        "msgid": "PWD_CURR_ERR",
+        "msgstr": [
+          "The new password cannot be the same as the current password."
+        ]
+      },
+      "PWD_CHNG_ERR": {
+        "msgid": "PWD_CHNG_ERR",
+        "msgstr": ["An error occurred, the password has not been changed."]
+      },
       "PWD_CHANGE_HELP_TXT": {
         "msgid": "PWD_CHANGE_HELP_TXT",
         "msgstr": ["Use the form below to change your password."]
+      },
+      "CURR_PWD_LBL": {
+        "msgid": "CURR_PWD_LBL",
+        "msgstr": ["Current password"]
+      },
+      "CURR_PWD_PHOLD": {
+        "msgid": "CURR_PWD_PHOLD",
+        "msgstr": ["Your current password"]
       },
       "PWD1_LBL": {
         "msgid": "PWD1_LBL",
         "msgstr": ["New Password"]
       },
+      "PWD1_PHOLD": {
+        "msgid": "PWD1_PHOLD",
+        "msgstr": ["Your new password"]
+      },
       "PASSWORD_CHANGE": {
         "msgid": "PASSWORD_CHANGE",
         "msgstr": ["Change Password"]
+      },
+      "CANCEL": {
+        "msgid": "CANCEL",
+        "msgstr": ["Cancel"]
       },
       "DEFAULT_TITL${ orgName }": {
         "msgid": "DEFAULT_TITL${ orgName }",
@@ -347,13 +495,17 @@
         "msgid": "MOBILE_CODE_TITL",
         "msgstr": ["this field must be a 6 digit numeric code"]
       },
+      "MOBILE_PHONE_VERIFY": {
+        "msgid": "MOBILE_PHONE_VERIFY",
+        "msgstr": ["Submit"]
+      },
       "RESEND_TOKEN_LBL": {
         "msgid": "RESEND_TOKEN_LBL",
         "msgstr": [
           "If you did not receive the verification SMS code, you can try sending it again by clicking below."
         ]
       },
-      "RESEND_TOKEN_WAIT_LBL": {
+      "RESEND_TOKEN_WAIT_LBL${ seconds }": {
         "msgid": "RESEND_TOKEN_WAIT_LBL${ seconds }",
         "msgstr": ["A new SMS can be requested in ${ seconds } seconds."]
       },
@@ -365,6 +517,10 @@
         "msgid": "PHONE_CHANGE_LBL",
         "msgstr": ["Wrong phone number?"]
       },
+      "PHONE_CHANGE_BTN": {
+        "msgid": "PHONE_CHANGE_BTN",
+        "msgstr": ["Change your phone number"]
+      },
       "LOGOUT_LBL": {
         "msgid": "LOGOUT_LBL",
         "msgstr": ["If you need to cancel the process you can log out below."]
@@ -372,6 +528,10 @@
       "PHONE_CHANGE_TITL": {
         "msgid": "PHONE_CHANGE_TITL",
         "msgstr": ["Change mobile number"]
+      },
+      "LOGIN_SUCCESS": {
+        "msgid": "LOGIN_SUCCESS",
+        "msgstr": ["Login successful"]
       },
       "LOGOUT_CONTENT": {
         "msgid": "LOGOUT_CONTENT",
@@ -381,9 +541,19 @@
         "msgid": "LOGIN_AGAIN",
         "msgstr": ["Login again"]
       },
-      "USERNAME_LOG_TITL": {
-        "msgid": "USERNAME_LOG_TITL",
-        "msgstr": ["enter valid email address, an username or a phone number"]
+      "LOGIN": {
+        "msgid": "LOGIN",
+        "msgstr": ["Log in"]
+      },
+      "USER_INACTIVE": {
+        "msgid": "USER_INACTIVE",
+        "msgstr": [
+          "Your account has been deactivated. Please contact customer support for more information."
+        ]
+      },
+      "LOGIN_ERR": {
+        "msgid": "LOGIN_ERR",
+        "msgstr": ["Login error occurred."]
       },
       "REMEMBER_ME": {
         "msgid": "REMEMBER_ME",
@@ -395,29 +565,13 @@
           "By logging in, you accept the {terms_and_conditions} and the {privacy_policy} of this WiFi service. "
         ]
       },
-      "LOGIN": {
-        "msgid": "LOGIN",
-        "msgstr": ["Log in"]
-      },
       "REGISTER_BTN_LBL": {
         "msgid": "REGISTER_BTN_LBL",
         "msgstr": ["Not registered yet?"]
       },
-      "REGISTER_BTN_TXT": {
-        "msgid": "REGISTER_BTN_TXT",
-        "msgstr": ["Sign up"]
-      },
-      "EMAIL": {
-        "msgid": "EMAIL",
-        "msgstr": ["Email"]
-      },
       "HELPDESK": {
         "msgid": "HELPDESK",
         "msgstr": ["Helpdesk"]
-      },
-      "404_PG_TITL": {
-        "msgid": "404_PG_TITL",
-        "msgstr": ["404 Not found"]
       },
       "404_H": {
         "msgid": "404_H",
@@ -431,131 +585,9 @@
         "msgid": "404_MESSAGE",
         "msgstr": ["Sorry, we couldn't find the page you were looking for."]
       },
-      "PHONE_CHANGE_BTN": {
-        "msgid": "PHONE_CHANGE_BTN",
-        "msgstr": ["Change your phone number"]
-      },
-      "CANCEL": {
-        "msgid": "CANCEL",
-        "msgstr": ["Cancel"]
-      },
-      "OPTIONAL": {
-        "msgid": "OPTIONAL",
-        "msgstr": ["optional"]
-      },
-      "MOBILE_PHONE_VERIFY": {
-        "msgid": "MOBILE_PHONE_VERIFY",
-        "msgstr": ["Submit"]
-      },
       "HOME_PG_LINK_TXT": {
         "msgid": "HOME_PG_LINK_TXT",
         "msgstr": ["Go back to homepage"]
-      },
-      "ERR_OCCUR": {
-        "msgid": "ERR_OCCUR",
-        "msgstr": ["Error occurred!"]
-      },
-      "LOGIN_ERR": {
-        "msgid": "LOGIN_ERR",
-        "msgstr": ["Login error occurred."]
-      },
-      "LOGIN_SUCCESS": {
-        "msgid": "LOGIN_SUCCESS",
-        "msgstr": ["Login successful"]
-      },
-      "LOGOUT_SUCCESS": {
-        "msgid": "LOGOUT_SUCCESS",
-        "msgstr": ["Logout successful"]
-      },
-      "PWD_CHNG_ERR": {
-        "msgid": "PWD_CHNG_ERR",
-        "msgstr": ["An error occurred, the password has not been changed."]
-      },
-      "PWD_CNF_ERR": {
-        "msgid": "PWD_CNF_ERR",
-        "msgstr": ["The two password fields didn't match."]
-      },
-      "REGISTER_ERR": {
-        "msgid": "REGISTER_ERR",
-        "msgstr": ["Registration error."]
-      },
-      "REGISTER_SUCCESS": {
-        "msgid": "REGISTER_SUCCESS",
-        "msgstr": ["Registration success"]
-      },
-      "USER_INACTIVE": {
-        "msgid": "USER_INACTIVE",
-        "msgstr": [
-          "Your account has been deactivated. Please contact customer support for more information."
-        ]
-      },
-      "USERNAME_REG_LBL": {
-        "msgid": "USERNAME_REG_LBL",
-        "msgstr": ["Username"]
-      },
-      "USERNAME_REG_PHOLD": {
-        "msgid": "USERNAME_REG_PHOLD",
-        "msgstr": ["Username"]
-      },
-      "CP_LOGIN": {
-        "msgid": "CP_LOGIN",
-        "msgstr": [
-          "We are initializing your session in the WiFi service, it may take a few seconds, please wait ..."
-        ]
-      },
-      "PAY_REQ": {
-        "msgid": "PAY_REQ",
-        "msgstr": ["Payment required to proceed"]
-      },
-      "PAY_PROC_BTN": {
-        "msgid": "PAY_PROC_BTN",
-        "msgstr": ["Proceed with the payment"]
-      },
-      "PAY_WARN${ timeout }${ maxAttempts }": {
-        "msgid": "PAY_WARN${ timeout }${ maxAttempts }",
-        "msgstr": [
-          "<p>By clicking on the button below you will be redirected to our payment gateway service where you can safely use your credit/debit card. From there you will be redirected to the website of your bank to confirm the transaction.</p><p>You will have ${ timeout } minutes to complete the process.<br /><strong>For this reason we recommend preparing your debit/credit card before initiating the payment process.</strong></p><p>If for any reason the process is not completed within the available time, the internet connection which allows you to reach the website of your bank will be closed, if this happens you can just log in again with the credentials you just registered and repeat the process up a maximum of ${ maxAttempts } times.</p>"
-        ]
-      },
-      "PLEASE_WAIT": {
-        "msgid": "PLEASE_WAIT",
-        "msgstr": ["Please wait..."]
-      },
-      "PLEASE_LOGIN": {
-        "msgid": "PLEASE_LOGIN",
-        "msgstr": [""]
-      },
-      "CONFLICT_ORGS": {
-        "msgid": "CONFLICT_ORGS",
-        "msgstr": [
-          "A user with credentials like the one being entered already exists in other organizations:"
-        ]
-      },
-      "NO_ORGS": {
-        "msgid": "NO_ORGS",
-        "msgstr": ["A user with these credentials already exists."]
-      },
-      "CONFLICT_SIGNIN": {
-        "msgid": "CONFLICT_SIGNIN",
-        "msgstr": [
-          "Do you own the account mentioned above and want to sign in with this organization?"
-        ]
-      },
-      "PWD_CURR_ERR": {
-        "msgid": "PWD_CURR_ERR",
-        "msgstr": ["The password is the same as the current password."]
-      },
-      "CURR_PWD_LBL": {
-        "msgid": "CURR_PWD_LBL",
-        "msgstr": ["Current password"]
-      },
-      "CURR_PWD_PHOLD": {
-        "msgid": "CURR_PWD_PHOLD",
-        "msgstr": ["Your current password"]
-      },
-      "PWD1_PHOLD": {
-        "msgid": "PWD1_PHOLD",
-        "msgstr": ["Your new password"]
       }
     }
   }

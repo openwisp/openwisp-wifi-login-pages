@@ -44,7 +44,7 @@ exports[`<Registration /> interactions should show modal if user is already regi
           </li>
         </ul>
         <p>
-          Do you own the account mentioned above and want to sign in with this organization?
+          Do you own the account mentioned above and want to sign in and associate your existing account to this WiFi service?
         </p>
       </div>
     </div>
@@ -91,11 +91,11 @@ exports[`<Registration /> interactions should show modal if user is registered b
         className="message"
       >
         <p>
-          A user with these credentials already exists.
+          A user with similar credentials already exists.
         </p>
         <ul />
         <p>
-          Do you own the account mentioned above and want to sign in with this organization?
+          Do you own the account mentioned above and want to sign in and associate your existing account to this WiFi service?
         </p>
       </div>
     </div>
