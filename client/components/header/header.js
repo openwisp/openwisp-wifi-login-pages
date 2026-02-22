@@ -109,12 +109,12 @@ export default class Header extends React.Component {
   };
 
   renderNavLinks = (isMobile = false) => {
-    const { header, orgSlug, isAuthenticated, userData, language, location } = this.props;
-    const { links } = header;
-    const { pathname } = location;
-    const internalLinks = [`/${orgSlug}/login`, `/${orgSlug}/registration`];
-
-    return links?.map((link, index) => {
+  const { header, orgSlug, isAuthenticated, userData, language, location } = this.props;
+  const { links } = header;
+  const { pathname } = location;
+  const internalLinks = ["/login", "/registration"].map(p => `/${orgSlug}${p}`);
+  
+  return links?.map((link, index) => {
       if (!shouldLinkBeShown(link, isAuthenticated, userData)) return null;
 
       const isInternal = isInternalLink(link.url);
@@ -147,12 +147,10 @@ export default class Header extends React.Component {
           <div className="header-row-1">
             <div className="header-row-1-inner">
               <div className="header-left">{this.renderLogos()}</div>
-              
               {/* Desktop Languages */}
               <div className="header-right header-desktop-only">
                 {this.renderLanguageButtons()}
               </div>
-
               {/* Mobile Hamburger */}
               <div className="header-right header-mobile-only">
                 <div 
@@ -170,16 +168,15 @@ export default class Header extends React.Component {
               </div>
             </div>
           </div>
-
           {/* Row 2: Desktop Navigation */}
           <div className="header-row-2 header-desktop-only">
             <div className="header-row-2-inner">
               {this.renderNavLinks()}
             </div>
           </div>
-
           {/* Mobile Menu Overlay */}
           <div className={`${menu ? "display-flex" : "display-none"} header-mobile-menu header-mobile-only`}>
+            {this.renderLogos(true)}
             {this.renderNavLinks(true)}
             <div className="mobile-languages-row">
               {this.renderLanguageButtons(true)}
