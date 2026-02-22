@@ -79,7 +79,7 @@ export default class Header extends React.Component {
           </Link>
         )}
       </div>
-      {secondLogo && (
+      {secondLogo?.url && (
         <div className="header-logo-2">
           <img
             src={getAssetPath(orgSlug, secondLogo.url)}
@@ -92,96 +92,104 @@ export default class Header extends React.Component {
   );
 };
 
-renderLanguageButtons = (isMobile = false) => {
-  const { languages, language, setLanguage } = this.props;
-  const deviceClass = isMobile ? "mobile" : "desktop";
+  renderLanguageButtons = (isMobile = false) => {
+    const { languages, language, setLanguage } = this.props;
+    const deviceClass = isMobile ? "mobile" : "desktop";
 
-  return languages.map((lang) => (
-    <button
-      type="button"
-      key={lang.slug}
-      className={`${language === lang.slug ? "active " : ""}header-language-btn header-${deviceClass}-language-btn header-language-btn-${lang.slug}`}
-      onClick={() => setLanguage(lang.slug)}
-    >
-      {lang.text}
-    </button>
-  ));
-};
-renderNavLinks = (isMobile = false) => {
-  const { header, orgSlug, isAuthenticated, userData, language, location } = this.props;
-  const { links } = header;
-  const { pathname } = location;
-  const internalLinks = [`/${orgSlug}/login`, `/${orgSlug}/registration`];
+    return languages.map((lang) => (
+      <button
+        type="button"
+        key={lang.slug}
+        className={`${language === lang.slug ? "active " : ""}header-language-btn header-${deviceClass}-language-btn header-language-btn-${lang.slug}`}
+        onClick={() => setLanguage(lang.slug)}
+      >
+        {lang.text}
+      </button>
+    ));
+  };
 
-  return links?.map((link, index) => {
-    if (!shouldLinkBeShown(link, isAuthenticated, userData)) return null;
+  renderNavLinks = (isMobile = false) => {
+    const { header, orgSlug, isAuthenticated, userData, language, location } = this.props;
+    const { links } = header;
+    const { pathname } = location;
+    const internalLinks = [`/${orgSlug}/login`, `/${orgSlug}/registration`];
 
-    const isInternal = isInternalLink(link.url);
-    const resolvedUrl = link.url.replace("{orgSlug}", orgSlug);
-    const isActive = pathname === resolvedUrl;
-    const className = `header-link ${isMobile ? "mobile-link" : "header-desktop-link"} header-link-${index + 1} ${isActive ? "active" : ""} button`;
+    return links?.map((link, index) => {
+      if (!shouldLinkBeShown(link, isAuthenticated, userData)) return null;
 
-    if (isInternal && (internalLinks.indexOf(link.url) < 0 || !isAuthenticated)) {
+      const isInternal = isInternalLink(link.url);
+      const resolvedUrl = link.url.replace("{orgSlug}", orgSlug);
+      const isActive = pathname === resolvedUrl;
+      const className = `header-link ${isMobile ? "mobile-link" : "header-desktop-link"} header-link-${index + 1} ${isActive ? "active" : ""} button`;
+
+      if (isInternal && (internalLinks.indexOf(link.url) < 0 || !isAuthenticated)) {
+        return (
+          <Link className={className} to={resolvedUrl} key={index}>
+            {getText(link.text, language)}
+          </Link>
+        );
+      }
       return (
-        <Link className={className} to={resolvedUrl} key={index}>
+        <a href={resolvedUrl} className={className} target="_blank" rel="noreferrer noopener" key={resolvedUrl}>
           {getText(link.text, language)}
-        </Link>
+        </a>
       );
-    }
+    });
+  };
+
+    render() {
+    const { menu } = this.state;
+
     return (
-      <a href={link.url} className={className} target="_blank" rel="noreferrer noopener" key={link.url}>
-        {getText(link.text, language)}
-      </a>
-    );
-  });
-};
-  render() {
-  const { menu } = this.state;
-  const { language } = this.props;
+      <>
+        <header className="main-header">
+          {/* Row 1: Logo and Languages */}
+          <div className="header-row-1">
+            <div className="header-row-1-inner">
+              <div className="header-left">{this.renderLogos()}</div>
+              
+              {/* Desktop Languages */}
+              <div className="header-right header-desktop-only">
+                {this.renderLanguageButtons()}
+              </div>
 
-  return (
-    <>
-      <header className="main-header">
-        {/* Row 1: Logo and Languages */}
-        <div className="header-row-1">
-          <div className="header-row-1-inner">
-            <div className="header-left">{this.renderLogos()}</div>
-            
-            {/* Desktop Languages */}
-            <div className="header-right header-desktop-only">
-              {this.renderLanguageButtons()}
-            </div>
-
-            {/* Mobile Hamburger */}
-            <div className="header-right header-mobile-only">
-              <div role="button" className="header-hamburger" onClick={this.handleHamburger}>
-                <div className={`${menu ? "rot45" : ""}`} />
-                <div className={`${menu ? "rot-45" : ""}`} />
-                <div className={`${menu ? "opacity-hidden" : ""}`} />
+              {/* Mobile Hamburger */}
+              <div className="header-right header-mobile-only">
+                <div 
+                  role="button" 
+                  className="header-hamburger" 
+                  tabIndex={0} 
+                  aria-label="Toggle menu" 
+                  onClick={this.handleHamburger} 
+                  onKeyUp={this.handleKeyUp}
+                >
+                  <div className={`${menu ? "rot45" : ""}`} />
+                  <div className={`${menu ? "rot-45" : ""}`} />
+                  <div className={`${menu ? "opacity-hidden" : ""}`} />
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Row 2: Desktop Navigation */}
-        <div className="header-row-2 header-desktop-only">
-          <div className="header-row-2-inner">
-            {this.renderNavLinks()}
+          {/* Row 2: Desktop Navigation */}
+          <div className="header-row-2 header-desktop-only">
+            <div className="header-row-2-inner">
+              {this.renderNavLinks()}
+            </div>
           </div>
-        </div>
 
-        {/* Mobile Menu Overlay */}
-        <div className={`${menu ? "display-flex" : "display-none"} header-mobile-menu header-mobile-only`}>
-          {this.renderNavLinks(true)}
-          <div className="mobile-languages-row">
-            {this.renderLanguageButtons(true)}
+          {/* Mobile Menu Overlay */}
+          <div className={`${menu ? "display-flex" : "display-none"} header-mobile-menu header-mobile-only`}>
+            {this.renderNavLinks(true)}
+            <div className="mobile-languages-row">
+              {this.renderLanguageButtons(true)}
+            </div>
           </div>
-        </div>
-      </header>
-      {this.getStickyMsg()}
-    </>
-  );
-}
+        </header>
+        {this.getStickyMsg()}
+      </>
+    );
+  }
 }
 Header.defaultProps = {
   isAuthenticated: false,
