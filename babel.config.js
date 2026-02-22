@@ -11,12 +11,12 @@ module.exports = {
     "@babel/preset-react",
   ],
   plugins: [
-    ["@babel/plugin-transform-runtime"],
+    ["@babel/plugin-transform-runtime", {loose: true}],
     ["@babel/plugin-proposal-class-properties", {loose: true}],
-    ["@babel/plugin-transform-arrow-functions"],
-    ["@babel/plugin-syntax-dynamic-import"],
+    ["@babel/plugin-transform-arrow-functions", {loose: true}],
+    ["@babel/plugin-syntax-dynamic-import", {loose: true}],
     ["@babel/plugin-proposal-private-property-in-object", {loose: true}],
-    ["@babel/plugin-transform-spread"],
+    ["@babel/plugin-transform-spread", {loose: true}],
     "transform-remove-strict-mode",
   ],
 };
