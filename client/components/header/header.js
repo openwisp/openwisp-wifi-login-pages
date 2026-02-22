@@ -62,38 +62,38 @@ export default class Header extends React.Component {
   };
 
   renderLogos = (isMobile = false) => {
-  const { header, orgSlug } = this.props;
-  const { logo, second_logo: secondLogo } = header;
-  const deviceClass = isMobile ? "mobile" : "desktop";
+    const {header, orgSlug} = this.props;
+    const {logo, second_logo: secondLogo} = header;
+    const deviceClass = isMobile ? "mobile" : "desktop";
 
-  return (
-    <>
-      <div className="header-logo-div">
-        {logo?.url && (
-          <Link to={`/${orgSlug}`}>
+    return (
+      <>
+        <div className="header-logo-div">
+          {logo?.url && (
+            <Link to={`/${orgSlug}`}>
+              <img
+                src={getAssetPath(orgSlug, logo.url)}
+                alt={logo.alternate_text}
+                className={`header-logo-image header-${deviceClass}-logo-image`}
+              />
+            </Link>
+          )}
+        </div>
+        {secondLogo?.url && (
+          <div className="header-logo-2">
             <img
-              src={getAssetPath(orgSlug, logo.url)}
-              alt={logo.alternate_text}
+              src={getAssetPath(orgSlug, secondLogo.url)}
+              alt={secondLogo.alternate_text}
               className={`header-logo-image header-${deviceClass}-logo-image`}
             />
-          </Link>
+          </div>
         )}
-      </div>
-      {secondLogo?.url && (
-        <div className="header-logo-2">
-          <img
-            src={getAssetPath(orgSlug, secondLogo.url)}
-            alt={secondLogo.alternate_text}
-            className={`header-logo-image header-${deviceClass}-logo-image`}
-          />
-        </div>
-      )}
-    </>
-  );
-};
+      </>
+    );
+  };
 
   renderLanguageButtons = (isMobile = false) => {
-    const { languages, language, setLanguage } = this.props;
+    const {languages, language, setLanguage} = this.props;
     const deviceClass = isMobile ? "mobile" : "desktop";
 
     return languages.map((lang) => (
@@ -109,12 +109,15 @@ export default class Header extends React.Component {
   };
 
   renderNavLinks = (isMobile = false) => {
-  const { header, orgSlug, isAuthenticated, userData, language, location } = this.props;
-  const { links } = header;
-  const { pathname } = location;
-  const internalLinks = ["/login", "/registration"].map(p => `/${orgSlug}${p}`);
-  
-  return links?.map((link, index) => {
+    const {header, orgSlug, isAuthenticated, userData, language, location} =
+      this.props;
+    const {links} = header;
+    const {pathname} = location;
+    const internalLinks = ["/login", "/registration"].map(
+      (p) => `/${orgSlug}${p}`,
+    );
+
+    return links?.map((link, index) => {
       if (!shouldLinkBeShown(link, isAuthenticated, userData)) return null;
 
       const isInternal = isInternalLink(link.url);
@@ -122,23 +125,32 @@ export default class Header extends React.Component {
       const isActive = pathname === resolvedUrl;
       const className = `header-link ${isMobile ? "mobile-link" : "header-desktop-link"} header-link-${index + 1} ${isActive ? "active" : ""} button`;
 
-      if (isInternal && (internalLinks.indexOf(link.url) < 0 || !isAuthenticated)) {
+      if (
+        isInternal &&
+        (internalLinks.indexOf(resolvedUrl) < 0 || !isAuthenticated)
+      ) {
         return (
-          <Link className={className} to={resolvedUrl} key={index}>
+          <Link className={className} to={resolvedUrl} key={resolvedUrl}>
             {getText(link.text, language)}
           </Link>
         );
       }
       return (
-        <a href={resolvedUrl} className={className} target="_blank" rel="noreferrer noopener" key={resolvedUrl}>
+        <a
+          href={resolvedUrl}
+          className={className}
+          target="_blank"
+          rel="noreferrer noopener"
+          key={resolvedUrl}
+        >
           {getText(link.text, language)}
         </a>
       );
     });
   };
 
-    render() {
-    const { menu } = this.state;
+  render() {
+    const {menu} = this.state;
 
     return (
       <>
@@ -153,12 +165,12 @@ export default class Header extends React.Component {
               </div>
               {/* Mobile Hamburger */}
               <div className="header-right header-mobile-only">
-                <div 
-                  role="button" 
-                  className="header-hamburger" 
-                  tabIndex={0} 
-                  aria-label="Toggle menu" 
-                  onClick={this.handleHamburger} 
+                <div
+                  role="button"
+                  className="header-hamburger"
+                  tabIndex={0}
+                  aria-label="Toggle menu"
+                  onClick={this.handleHamburger}
                   onKeyUp={this.handleKeyUp}
                 >
                   <div className={`${menu ? "rot45" : ""}`} />
@@ -170,12 +182,12 @@ export default class Header extends React.Component {
           </div>
           {/* Row 2: Desktop Navigation */}
           <div className="header-row-2 header-desktop-only">
-            <div className="header-row-2-inner">
-              {this.renderNavLinks()}
-            </div>
+            <div className="header-row-2-inner">{this.renderNavLinks()}</div>
           </div>
           {/* Mobile Menu Overlay */}
-          <div className={`${menu ? "display-flex" : "display-none"} header-mobile-menu header-mobile-only`}>
+          <div
+            className={`${menu ? "display-flex" : "display-none"} header-mobile-menu header-mobile-only`}
+          >
             {this.renderLogos(true)}
             {this.renderNavLinks(true)}
             <div className="mobile-languages-row">
