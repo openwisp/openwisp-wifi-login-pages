@@ -598,7 +598,7 @@ msgstr ""
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:286
 #, fuzzy, javascript-format
 msgid "RESEND_TOKEN_WAIT_LBL${ seconds }"
-msgstr "Eine neue SMS kann in ${ cooldown } Sekunden angefordert werden."
+msgstr "Eine neue SMS kann in ${ seconds } Sekunden angefordert werden."
 
 #: client/components/mobile-phone-verification/mobile-phone-verification.js:301
 msgid "RESEND_TOKEN"

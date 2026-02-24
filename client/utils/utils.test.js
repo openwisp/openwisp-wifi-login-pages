@@ -316,7 +316,7 @@ describe("Validate Token tests", () => {
     expect(axios.mock.calls.length).toBe(1);
     expect(result).toBe(false);
     expect(setUserData.mock.calls.length).toBe(1);
-    expect(errorMethod).toBeCalledWith("Error occurred!");
+    expect(errorMethod).toHaveBeenCalledWith("Error occurred!");
     expect(logout).toHaveBeenCalledWith(expect.any(Cookies), "default");
     const cookiesArg = logout.mock.calls[0][0];
     expect(cookiesArg.cookies).toEqual({default_auth_token: "token"});
@@ -344,7 +344,7 @@ describe("Validate Token tests", () => {
       language,
     );
     expect(result).toEqual(false);
-    expect(errorMethod).toBeCalledWith("Error occurred!");
+    expect(errorMethod).toHaveBeenCalledWith("Error occurred!");
     expect(logout).toHaveBeenCalledWith(expect.any(Cookies), "default");
     const cookiesArg = logout.mock.calls[0][0];
     expect(cookiesArg.cookies).toEqual({default_auth_token: "token"});
@@ -373,9 +373,12 @@ describe("Validate Token tests", () => {
       logout,
     );
     expect(result).toEqual(false);
-    expect(errorMethod).toBeCalledWith(responseError.response.data.detail, {
-      toastId: "main_toast_id",
-    });
+    expect(errorMethod).toHaveBeenCalledWith(
+      responseError.response.data.detail,
+      {
+        toastId: "main_toast_id",
+      },
+    );
     expect(logout).toHaveBeenCalledWith(expect.any(Cookies), "default");
     const cookiesArg = logout.mock.calls[0][0];
     expect(cookiesArg.cookies).toEqual({default_auth_token: "token"});

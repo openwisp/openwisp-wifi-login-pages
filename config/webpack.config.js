@@ -61,12 +61,22 @@ module.exports = (env, argv) => {
     cssLoaders = [MiniCssExtractPlugin.loader, "css-loader"];
     minimizers = [
       new CssMinimizerPlugin(),
-      new TerserPlugin({minify: TerserPlugin.uglifyJsMinify}),
+      new TerserPlugin({
+        terserOptions: {
+          ecma: 5,
+          compress: {
+            ecma: 5,
+          },
+          format: {
+            ecma: 5,
+          },
+        },
+      }),
     ];
     setup.removeDefaultConfig();
     plugins.push(
       new MiniCssExtractPlugin({
-        filename: "[name].[contentHash].css",
+        filename: "[name].[contenthash].css",
         ignoreOrder: true,
       }),
     );
@@ -91,6 +101,7 @@ module.exports = (env, argv) => {
   }
 
   return {
+    target: ["web", "es5"],
     cache: {
       type: "filesystem",
     },
@@ -105,6 +116,13 @@ module.exports = (env, argv) => {
       path: path.resolve(CURRENT_WORKING_DIR, "dist"),
       publicPath: "/",
       pathinfo: false,
+      environment: {
+        arrowFunction: false,
+        const: false,
+        destructuring: false,
+        forOf: false,
+        module: false,
+      },
     },
     devtool:
       argv.mode === "development" ? "cheap-module-source-map" : "source-map",

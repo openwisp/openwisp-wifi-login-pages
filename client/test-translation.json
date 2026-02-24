@@ -354,8 +354,8 @@
         ]
       },
       "RESEND_TOKEN_WAIT_LBL": {
-        "msgid": "RESEND_TOKEN_WAIT_LBL${ cooldown }",
-        "msgstr": ["A new SMS can be requested in ${ cooldown } seconds."]
+        "msgid": "RESEND_TOKEN_WAIT_LBL${ seconds }",
+        "msgstr": ["A new SMS can be requested in ${ seconds } seconds."]
       },
       "RESEND_TOKEN": {
         "msgid": "RESEND_TOKEN",
