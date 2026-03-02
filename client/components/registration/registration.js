@@ -27,6 +27,7 @@ import redirectToPayment from "../../utils/redirect-to-payment";
 import InfoModal from "../../utils/modal";
 import getPlanSelection from "../../utils/get-plan-selection";
 import getPlans from "../../utils/get-plans";
+import {validateEmail, validatePassword} from "../../utils/validation";
 
 const PhoneInput = React.lazy(
   () => import(/* webpackChunkName: 'PhoneInput' */ "react-phone-input-2"),
@@ -141,6 +142,36 @@ export default class Registration extends React.Component {
           password2: t`PWD_CNF_ERR`,
         },
       });
+      return false;
+    }
+
+    const {isValid, suggestion} = validateEmail(email);
+    if (!isValid) {
+      this.setState({
+        errors: {
+          email: t`EMAIL_PTRN_DESC`,
+        },
+      });
+      return false;
+    }
+
+    if (suggestion) {
+      const confirmTypo = window.confirm(`${t`EMAIL_TYPO_ERR`} ${suggestion}?`);
+      if (confirmTypo) {
+        this.setState({email: suggestion});
+        setLoading(false);
+        return false;
+      }
+    }
+
+    const passwordValidation = validatePassword(password1);
+    if (!passwordValidation.isValid) {
+      this.setState({
+        errors: {
+          password1: passwordValidation.errors[0],
+        },
+      });
+      setLoading(false);
       return false;
     }
 
