@@ -136,7 +136,7 @@
 }
 
 .header-link.active {
-  color: #d23c22; 
+  color: #d23c22;
   border-color: #d23c22;
   background-color: rgba(210, 60, 34, 0.05);
   transition: all 0.3s ease-in-out;
@@ -151,7 +151,7 @@
     border-radius: 5px;
   }
 
-  .header-hamburger>div {
+  .header-hamburger > div {
     height: 5px;
     content: "";
     position: relative;
@@ -241,9 +241,7 @@
   .header-language-btn.active {
     cursor: auto;
   }
-
 }
-
 
 .mobile-only {
   display: none;
@@ -289,4 +287,3 @@
     z-index: 1000;
   }
 }
-

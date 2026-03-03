@@ -279,16 +279,20 @@ describe("<Header /> interactions", () => {
   it("should apply the 'active' class to the link matching the current pathname", () => {
     props = createTestProps();
     props.header.links = [
-      { text: { en: "Login" }, url: "/{orgSlug}/login" },
-      { text: { en: "Sign Up" }, url: "/{orgSlug}/registration" }
+      {text: {en: "Login"}, url: "/{orgSlug}/login"},
+      {text: {en: "Sign Up"}, url: "/{orgSlug}/registration"},
     ];
     wrapper = shallow(<Header {...props} />);
-    
-    const loginLink = wrapper.find('.header-link').filterWhere(n => n.prop('to') === '/default/login');
-    const signupLink = wrapper.find('.header-link').filterWhere(n => n.prop('to') === '/default/registration');
 
-    expect(loginLink.first().hasClass('active')).toBe(true);
-    expect(signupLink.first().hasClass('active')).toBe(false);
+    const loginLink = wrapper
+      .find(".header-link")
+      .filterWhere((n) => n.prop("to") === "/default/login");
+    const signupLink = wrapper
+      .find(".header-link")
+      .filterWhere((n) => n.prop("to") === "/default/registration");
+
+    expect(loginLink.first().hasClass("active")).toBe(true);
+    expect(signupLink.first().hasClass("active")).toBe(false);
   });
 
   it("should render logo in unified containers", () => {
@@ -296,7 +300,7 @@ describe("<Header /> interactions", () => {
   });
 
   it("should render correct number of links in unified layout", () => {
-    expect(wrapper.find(".header-link")).toHaveLength(4); 
+    expect(wrapper.find(".header-link")).toHaveLength(4);
   });
 
   it("should render correct number of languages in unified layout", () => {
@@ -304,11 +308,15 @@ describe("<Header /> interactions", () => {
   });
 
   it("should toggle mobile menu classes when hamburger is clicked", () => {
-    expect(wrapper.find(".header-mobile-menu").hasClass("display-none")).toBe(true);
-    
+    expect(wrapper.find(".header-mobile-menu").hasClass("display-none")).toBe(
+      true,
+    );
+
     wrapper.find(".header-hamburger").simulate("click");
-    
+
     expect(wrapper.state().menu).toBe(true);
-    expect(wrapper.find(".header-mobile-menu").hasClass("display-flex")).toBe(true);
+    expect(wrapper.find(".header-mobile-menu").hasClass("display-flex")).toBe(
+      true,
+    );
   });
 });
