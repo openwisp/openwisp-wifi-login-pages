@@ -154,7 +154,7 @@
       "^.+\\.(js|jsx)$": "babel-jest"
     },
     "transformIgnorePatterns": [
-      "node_modules/(?!(pretty-bytes|.*\\.mjs$))"
+      "node_modules/(?!(pretty-bytes|cheerio|.*\\.mjs$))"
     ]
   },
   "nodemonConfig": {
