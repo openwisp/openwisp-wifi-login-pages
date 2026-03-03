@@ -178,6 +178,11 @@ const createConfig = (data, configDirPath, radiusSlug = null) => {
 };
 
 const writeConfigurations = () => {
+  const organizationsFile = path.join(clientDir, "organizations.json");
+  const previousSlugs = fs.existsSync(organizationsFile)
+    ? JSON.parse(fs.readFileSync(organizationsFile, "utf-8")).map((o) => o.slug)
+    : [];
+
   // Reset arrays so re-running this function (e.g. on file-watch re-run) does
   // not accumulate duplicate entries from previous invocations.
   clientConfigs.length = 0;
@@ -233,6 +238,20 @@ const writeConfigurations = () => {
       }
     }
   });
+
+  const currentSlugs = new Set(organizations.map((o) => o.slug));
+  previousSlugs
+    .filter((slug) => !currentSlugs.has(slug))
+    .forEach((slug) => {
+      fs.rmSync(path.resolve(clientDir, "assets", slug), {
+        recursive: true,
+        force: true,
+      });
+      fs.rmSync(path.resolve(serverDir, "assets", slug), {
+        recursive: true,
+        force: true,
+      });
+    });
 
   if (fs.existsSync(clientConfigsDir))
     fs.rmSync(clientConfigsDir, {recursive: true});

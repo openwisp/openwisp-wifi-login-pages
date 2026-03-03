@@ -22,10 +22,14 @@ const getAllFiles = (dirPath, results = []) => {
   if (!fs.existsSync(dirPath)) return results;
   fs.readdirSync(dirPath).forEach((entry) => {
     const fullPath = path.join(dirPath, entry);
-    if (fs.statSync(fullPath).isDirectory()) {
-      getAllFiles(fullPath, results);
-    } else {
-      results.push(fullPath);
+    try {
+      if (fs.statSync(fullPath).isDirectory()) {
+        getAllFiles(fullPath, results);
+      } else {
+        results.push(fullPath);
+      }
+    } catch (err) {
+      if (err.code !== "ENOENT") throw err;
     }
   });
   return results;
@@ -43,14 +47,17 @@ class OrganizationsWatchPlugin {
 
     // After each compilation, register all org files as dependencies so webpack
     // watches them even though they are outside the normal module graph.
-    compiler.hooks.afterCompile.tap("OrganizationsWatchPlugin", (compilation) => {
-      // Watch the directory itself (catches new files / deleted files)
-      compilation.contextDependencies.add(organizationsDir);
-      // Watch every individual file (catches content changes)
-      getAllFiles(organizationsDir).forEach((filePath) => {
-        compilation.fileDependencies.add(filePath);
-      });
-    });
+    compiler.hooks.afterCompile.tap(
+      "OrganizationsWatchPlugin",
+      (compilation) => {
+        // Watch the directory itself (catches new files / deleted files)
+        compilation.contextDependencies.add(organizationsDir);
+        // Watch every individual file (catches content changes)
+        getAllFiles(organizationsDir).forEach((filePath) => {
+          compilation.fileDependencies.add(filePath);
+        });
+      },
+    );
 
     // Before each re-compilation triggered by a watch event, re-run setup so
     // that the copied configs/assets are up-to-date before the bundle is built.
@@ -58,8 +65,12 @@ class OrganizationsWatchPlugin {
       "OrganizationsWatchPlugin",
       (comp, callback) => {
         const changedFiles = comp.modifiedFiles || new Set();
-        const anyOrgFileChanged = [...changedFiles].some((f) =>
-          f.startsWith(organizationsDir),
+        const removedFiles = comp.removedFiles || new Set();
+        const anyOrgFileChanged = [...changedFiles, ...removedFiles].some(
+          (f) => {
+            const rel = path.relative(organizationsDir, f);
+            return rel && !rel.startsWith("..") && !path.isAbsolute(rel);
+          },
         );
         if (anyOrgFileChanged) {
           console.log(
@@ -68,11 +79,14 @@ class OrganizationsWatchPlugin {
           try {
             setup.writeConfigurations();
             console.log("[OrganizationsWatchPlugin] Setup completed.");
+            return callback();
           } catch (err) {
             console.error("[OrganizationsWatchPlugin] Setup error:", err);
+            return callback(err);
           }
         }
         callback();
+        return callback();
       },
     );
   }
