@@ -178,6 +178,12 @@ const createConfig = (data, configDirPath, radiusSlug = null) => {
 };
 
 const writeConfigurations = () => {
+  // Reset arrays so re-running this function (e.g. on file-watch re-run) does
+  // not accumulate duplicate entries from previous invocations.
+  clientConfigs.length = 0;
+  serverConfigs.length = 0;
+  organizations.length = 0;
+
   // loop through all the config files
   fs.readdirSync(organizationsDir).forEach((file) => {
     const configDirPath = path.join(organizationsDir, file);
