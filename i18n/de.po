@@ -209,7 +209,7 @@ msgstr "verbraucht von"
 #: client/components/status/status.js:1172
 #: client/components/status/status.js:1209
 msgid "N/A"
-msgstr "N/V"
+msgstr "k. A."
 
 #: client/components/status/status.js:1475
 msgid "DAILY_LIMITS_RESET_IN"
@@ -221,7 +221,7 @@ msgstr "Tageslimits werden zurückgesetzt in"
 #: client/components/status/status.js:1221
 #: client/components/status/status.js:1264
 msgid "TIME_HOUR_ABBR"
-msgstr "Std"
+msgstr "Std."
 
 #: client/components/status/status.js:1188
 #: client/components/status/status.js:1194
@@ -230,12 +230,12 @@ msgstr "Std"
 #: client/components/status/status.js:1264
 #: client/components/status/status.js:1266
 msgid "TIME_MINUTE_ABBR"
-msgstr "Min"
+msgstr "Min."
 
 #: client/components/status/status.js:1196
 #: client/components/status/status.js:1226
 msgid "TIME_LESS_THAN_MINUTE"
-msgstr "<1Min"
+msgstr "<1 Min."
 
 #: client/components/login/login.js:152
 #: client/components/mobile-phone-change/mobile-phone-change.js:137

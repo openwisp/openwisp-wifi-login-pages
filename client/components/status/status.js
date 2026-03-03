@@ -1260,10 +1260,16 @@ export default class Status extends React.Component {
     }
     const hours = Math.floor(secondsRemaining / 3600);
     const minutes = Math.floor((secondsRemaining % 3600) / 60);
-    if (hours > 0) {
+    if (hours > 0 && minutes > 0) {
       return `${hours}${t`TIME_HOUR_ABBR`} ${minutes}${t`TIME_MINUTE_ABBR`}`;
     }
-    return `${minutes}${t`TIME_MINUTE_ABBR`}`;
+    if (hours > 0) {
+      return `${hours}${t`TIME_HOUR_ABBR`}`;
+    }
+    if (minutes > 0) {
+      return `${minutes}${t`TIME_MINUTE_ABBR`}`;
+    }
+    return t`TIME_LESS_THAN_MINUTE`;
   };
 
   // eslint-disable-next-line class-methods-use-this
