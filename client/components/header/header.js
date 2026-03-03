@@ -1,4 +1,4 @@
-﻿/* eslint-disable react/no-array-index-key */
+/* eslint-disable react/no-array-index-key */
 import "./index.css";
 
 import PropTypes from "prop-types";
