@@ -104,9 +104,9 @@
     "webpack-dev-server": "^5.2.2"
   },
   "scripts": {
-    "build": "export NODE_OPTIONS=--openssl-legacy-provider && npm run setup && webpack --mode production --progress --config config/webpack.config.js",
-    "build-dev": "export NODE_OPTIONS=--openssl-legacy-provider && npm run setup && webpack --mode development --progress --config config/webpack.config.js",
-    "client": "export NODE_OPTIONS=--openssl-legacy-provider && npm run setup && webpack serve --host 0.0.0.0 --mode development --config config/webpack.config.js",
+    "build": "cross-env NODE_OPTIONS=--openssl-legacy-provider && npm run setup && webpack --mode production --progress --config config/webpack.config.js",
+    "build-dev": "cross-env NODE_OPTIONS=--openssl-legacy-provider && npm run setup && webpack --mode development --progress --config config/webpack.config.js",
+    "client": "cross-env NODE_OPTIONS=--openssl-legacy-provider && npm run setup && webpack serve --host 0.0.0.0 --mode development --config config/webpack.config.js",
     "coverage": "jest --coverage --testPathIgnorePatterns=/browser-test/",
     "coveralls": "test -f ./coverage/lcov.info && cat ./coverage/lcov.info | coveralls || echo 'no coverage file found'",
     "add-org": "node config/add-org.js",
