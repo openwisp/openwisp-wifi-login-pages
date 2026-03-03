@@ -276,4 +276,39 @@ describe("<Header /> interactions", () => {
       type: "SET_LANGUAGE",
     });
   });
+  it("should apply the 'active' class to the link matching the current pathname", () => {
+    props = createTestProps();
+    props.header.links = [
+      { text: { en: "Login" }, url: "/{orgSlug}/login" },
+      { text: { en: "Sign Up" }, url: "/{orgSlug}/registration" }
+    ];
+    wrapper = shallow(<Header {...props} />);
+    
+    const loginLink = wrapper.find('.header-link').filterWhere(n => n.prop('to') === '/default/login');
+    const signupLink = wrapper.find('.header-link').filterWhere(n => n.prop('to') === '/default/registration');
+
+    expect(loginLink.first().hasClass('active')).toBe(true);
+    expect(signupLink.first().hasClass('active')).toBe(false);
+  });
+
+  it("should render logo in unified containers", () => {
+    expect(wrapper.find(".header-logo-image")).toHaveLength(1);
+  });
+
+  it("should render correct number of links in unified layout", () => {
+    expect(wrapper.find(".header-link")).toHaveLength(4); 
+  });
+
+  it("should render correct number of languages in unified layout", () => {
+    expect(wrapper.find(".header-language-btn")).toHaveLength(4);
+  });
+
+  it("should toggle mobile menu classes when hamburger is clicked", () => {
+    expect(wrapper.find(".header-mobile-menu").hasClass("display-none")).toBe(true);
+    
+    wrapper.find(".header-hamburger").simulate("click");
+    
+    expect(wrapper.state().menu).toBe(true);
+    expect(wrapper.find(".header-mobile-menu").hasClass("display-flex")).toBe(true);
+  });
 });
