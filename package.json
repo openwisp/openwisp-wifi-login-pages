@@ -103,6 +103,9 @@
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.2"
   },
+  "resolutions": {
+    "cheerio": "1.0.0-rc.10"
+  },
   "scripts": {
     "build": "export NODE_OPTIONS=--openssl-legacy-provider && npm run setup && webpack --mode production --progress --config config/webpack.config.js",
     "build-dev": "export NODE_OPTIONS=--openssl-legacy-provider && npm run setup && webpack --mode development --progress --config config/webpack.config.js",
