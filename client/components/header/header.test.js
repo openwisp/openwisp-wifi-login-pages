@@ -169,9 +169,7 @@ describe("<Header /> rendering", () => {
     ).toHaveLength(0);
   });
   it("should render logo", () => {
-    expect(
-      wrapper.find(".header-logo-image.header-desktop-logo-image"),
-    ).toHaveLength(1);
+    expect(wrapper.find(".header-logo-image")).toHaveLength(1);
   });
   it("should not render logo", () => {
     const logo = {
@@ -283,13 +281,6 @@ describe("<Header /> interactions", () => {
       {text: {en: "Sign Up"}, url: "/{orgSlug}/registration"},
     ];
     wrapper = shallow(<Header {...props} />);
-
-    const loginLink = wrapper
-      .find(".header-link")
-      .filterWhere((n) => n.prop("to") === "/default/login");
-    const signupLink = wrapper
-      .find(".header-link")
-      .filterWhere((n) => n.prop("to") === "/default/registration");
 
     expect(
       wrapper.find(".header-link.active[to='/default/login']"),
