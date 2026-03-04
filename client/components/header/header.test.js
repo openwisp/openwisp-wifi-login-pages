@@ -291,8 +291,12 @@ describe("<Header /> interactions", () => {
       .find(".header-link")
       .filterWhere((n) => n.prop("to") === "/default/registration");
 
-    expect(loginLink.first().hasClass("active")).toBe(true);
-    expect(signupLink.first().hasClass("active")).toBe(false);
+    expect(
+  wrapper.find(".header-link.active[to='/default/login']")
+).toHaveLength(1);
+expect(
+  wrapper.find(".header-link.active[to='/default/registration']")
+).toHaveLength(0);
   });
 
   it("should render logo in unified containers", () => {
@@ -308,9 +312,9 @@ describe("<Header /> interactions", () => {
   });
 
   it("should toggle mobile menu classes when hamburger is clicked", () => {
-    expect(wrapper.find(".header-mobile-menu").hasClass("display-none")).toBe(
-      true,
-    );
+    expect(
+     wrapper.find(".header-mobile-menu.display-none")
+     ).toHaveLength(1);
 
     wrapper.find(".header-hamburger").simulate("click");
 
