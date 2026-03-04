@@ -61,208 +61,143 @@ export default class Header extends React.Component {
     ) : null;
   };
 
-  render() {
-    const {menu} = this.state;
-    const {
-      header,
-      languages,
-      language,
-      orgSlug,
-      setLanguage,
-      location,
-      isAuthenticated,
-      userData,
-    } = this.props;
-    const {logo, links, second_logo: secondLogo} = header;
-    const {pathname} = location;
-    const internalLinks = [`/${orgSlug}/login`, `/${orgSlug}/registration`];
+  // Logos
+  renderLogos = (deviceClass) => {
+    const {header, orgSlug} = this.props;
+    const {logo, second_logo: secondLogo} = header;
     return (
       <>
-        <div className="header-container header-desktop">
-          <div className="header-row-1">
-            <div className="header-row-1-inner">
-              <div className="header-left">
-                <div className="header-logo-div">
-                  {logo && logo.url ? (
-                    <Link to={`/${orgSlug}`}>
-                      <img
-                        src={getAssetPath(orgSlug, logo.url)}
-                        alt={logo.alternate_text}
-                        className="header-logo-image header-desktop-logo-image"
-                      />
-                    </Link>
-                  ) : null}
-                </div>
-              </div>
-
-              {secondLogo && (
-                <div className="header-logo-2">
-                  <img
-                    src={getAssetPath(orgSlug, secondLogo.url)}
-                    alt={secondLogo.alternate_text}
-                    className="header-logo-image header-desktop-logo-image"
-                  />
-                </div>
-              )}
-
-              <div className="header-right">
-                {languages.map((lang) => (
-                  <button
-                    type="button"
-                    className={`${
-                      language === lang.slug ? "active " : ""
-                    }header-language-btn header-desktop-language-btn header-language-btn-${
-                      lang.slug
-                    }`}
-                    key={lang.slug}
-                    onClick={() => setLanguage(lang.slug)}
-                  >
-                    {lang.text}
-                  </button>
-                ))}
-              </div>
-            </div>
+        {logo?.url && (
+          <div className="header-logo-div">
+            <Link to={`/${orgSlug}`}>
+              <img
+                src={getAssetPath(orgSlug, logo.url)}
+                alt={logo.alternate_text}
+                className={`header-logo-image ${deviceClass}-logo-image`}
+              />
+            </Link>
           </div>
-          <div className="header-row-2">
-            <div className="header-row-2-inner">
-              {links &&
-                links.map((link, index) => {
-                  if (!shouldLinkBeShown(link, isAuthenticated, userData)) {
-                    return null;
-                  }
-                  if (
-                    isInternalLink(link.url) &&
-                    (internalLinks.indexOf(link.url) < 0 || !isAuthenticated)
-                  ) {
-                    return (
-                      <Link
-                        className={`header-link header-desktop-link
-                  header-link-${index + 1} ${
-                    pathname === link.url.replace("{orgSlug}", orgSlug)
-                      ? "active"
-                      : ""
-                  } button `}
-                        to={link.url.replace("{orgSlug}", orgSlug)}
-                        key={index}
-                      >
-                        {getText(link.text, language)}
-                      </Link>
-                    );
-                  }
-                  return (
-                    <a
-                      href={link.url}
-                      className={`header-link header-desktop-link
-                    header-link-${index + 1} button`}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      key={link.url}
-                    >
-                      {getText(link.text, language)}
-                    </a>
-                  );
-                })}
-            </div>
+        )}
+        {secondLogo && (
+          <div className="header-logo-2">
+            <img
+              src={getAssetPath(orgSlug, secondLogo.url)}
+              alt={secondLogo.alternate_text}
+              className={`header-logo-image ${deviceClass}-logo-image`}
+            />
           </div>
-        </div>
-        <div className="header-mobile ">
-          <div className="header-row-1">
-            <div className="header-row-1-inner">
-              <div className="header-left">
-                <div className="header-logo-div">
-                  {logo && logo.url ? (
-                    <Link to={`/${orgSlug}`}>
-                      <img
-                        src={getAssetPath(orgSlug, logo.url)}
-                        alt={logo.alternate_text}
-                        className="header-logo-image header-mobile-logo-image"
-                      />
-                    </Link>
-                  ) : null}
-                </div>
-              </div>
-              {secondLogo && (
-                <div className="header-logo-2">
-                  <img
-                    src={getAssetPath(orgSlug, secondLogo.url)}
-                    alt={secondLogo.alternate_text}
-                    className="header-logo-image header-mobile-logo-image"
-                  />
-                </div>
-              )}
-              <div className="header-right">
-                <div
-                  role="button"
-                  tabIndex={0}
-                  className="header-hamburger"
-                  onClick={this.handleHamburger}
-                  onKeyUp={this.handleKeyUp}
-                  aria-label={getText({en: "Menu Button"}, language)}
-                >
-                  <div className={`${menu ? "rot45" : ""}`} />
-                  <div className={`${menu ? "rot-45" : ""}`} />
-                  <div className={`${menu ? "opacity-hidden" : ""}`} />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            className={`${menu ? "display-flex" : "display-none"} header-mobile-menu`}
-          >
-            {links &&
-              links.map((link, index) => {
-                if (shouldLinkBeShown(link, isAuthenticated, userData)) {
-                  if (isInternalLink(link.url)) {
-                    return (
-                      <Link
-                        className={`header-link mobile-link
-                    header-link-${index + 1} ${
-                      pathname === link.url.replace("{orgSlug}", orgSlug)
-                        ? "active"
-                        : ""
-                    } button`}
-                        to={link.url.replace("{orgSlug}", orgSlug)}
-                        key={index}
-                      >
-                        {getText(link.text, language)}
-                      </Link>
-                    );
-                  }
-                  return (
-                    <a
-                      href={link.url}
-                      className={`header-link mobile-link
-                      header-link-${index + 1} button`}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      key={link.url}
-                    >
-                      {getText(link.text, language)}
-                    </a>
-                  );
-                }
-                return null;
-              })}
-            <div className="mobile-languages-row">
-              {languages.map((lang) => (
-                <button
-                  type="button"
-                  className={`${
-                    language === lang.slug ? "active " : ""
-                  }header-language-btn header-mobile-language-btn header-language-btn-${
-                    lang.slug
-                  }`}
-                  key={lang.slug}
-                  onClick={() => setLanguage(lang.slug)}
-                >
-                  {lang.text}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-        {this.getStickyMsg()}
+        )}
       </>
+    );
+  };
+
+  //  Language Switcher
+  renderLanguageSwitcher = (deviceClass) => {
+    const {languages, language, setLanguage} = this.props;
+    return (
+      <div className={`header-languages ${deviceClass}-languages`}>
+        {languages.map((lang) => (
+          <button
+            type="button"
+            key={lang.slug}
+            className={`${language === lang.slug ? "active " : ""}header-language-btn ${deviceClass}-language-btn header-language-btn-${lang.slug}`}
+            onClick={() => setLanguage(lang.slug)}
+          >
+            {lang.text}
+          </button>
+        ))}
+      </div>
+    );
+  };
+
+  //  Navigation Links
+  renderNavLinks = (deviceClass) => {
+    const {header, language, orgSlug, location, isAuthenticated, userData} =
+      this.props;
+    const {links} = header;
+    const {pathname} = location;
+    const internalLinks = [`/${orgSlug}/login`, `/${orgSlug}/registration`];
+
+    return (
+      <nav className={`header-nav ${deviceClass}-nav`}>
+        {links?.map((link, index) => {
+          if (!shouldLinkBeShown(link, isAuthenticated, userData)) return null;
+
+          const isInternal =
+            isInternalLink(link.url) &&
+            (internalLinks.indexOf(link.url) < 0 || !isAuthenticated);
+          const activeClass =
+            pathname === link.url.replace("{orgSlug}", orgSlug) ? "active" : "";
+          const commonProps = {
+            className: `header-link ${deviceClass}-link header-link-${index + 1} ${activeClass} button`,
+            key: link.url + index,
+          };
+
+          return isInternal ? (
+            <Link {...commonProps} to={link.url.replace("{orgSlug}", orgSlug)}>
+              {getText(link.text, language)}
+            </Link>
+          ) : (
+            <a
+              {...commonProps}
+              href={link.url}
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              {getText(link.text, language)}
+            </a>
+          );
+        })}
+      </nav>
+    );
+  };
+
+  render() {
+    const {menu} = this.state;
+    const {language} = this.props;
+
+    return (
+      <header className="unified-header">
+        <div className="header-row-1">
+          <div className="header-row-1-inner">
+            <div className="header-left">{this.renderLogos("responsive")}</div>
+
+            <div className="header-right desktop-only">
+              {this.renderLanguageSwitcher("header-desktop")}
+            </div>
+
+            <div className="header-right mobile-only">
+              <div
+                role="button"
+                tabIndex={0}
+                className="header-hamburger"
+                onClick={this.handleHamburger}
+                onKeyUp={this.handleKeyUp}
+                aria-label={getText({en: "Menu Button"}, language)}
+              >
+                <div className={`${menu ? "rot45" : ""}`} />
+                <div className={`${menu ? "rot-45" : ""}`} />
+                <div className={`${menu ? "opacity-hidden" : ""}`} />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="header-row-2 desktop-only">
+          <div className="header-row-2-inner">
+            {this.renderNavLinks("header-desktop")}
+          </div>
+        </div>
+
+        <div
+          className={`header-mobile-menu ${menu ? "display-flex" : "display-none"} mobile-only`}
+        >
+          {this.renderNavLinks("mobile")}
+          {this.renderLanguageSwitcher("header-mobile")}
+        </div>
+
+        {this.getStickyMsg()}
+      </header>
     );
   }
 }
