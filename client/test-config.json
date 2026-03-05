@@ -59,11 +59,11 @@
           },
           "email": {
             "type": "email",
-            "pattern": ".+@.+\\..+"
+            "pattern": "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}$"
           },
           "password": {
             "type": "password",
-            "pattern": ".{6,}"
+            "pattern": "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+={}\\[\\]:;\"'<>,.?/\\\\|~`]).{8,}$"
           },
           "password_confirm": {
             "type": "password"
@@ -176,7 +176,7 @@
           },
           "email": {
             "type": "email",
-            "pattern": ".+@.+\\..+"
+            "pattern": "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}$"
           },
           "username": {
             "type": "text",
@@ -184,7 +184,7 @@
           },
           "password": {
             "type": "password",
-            "pattern": ".{6,}"
+            "pattern": "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+={}\\[\\]:;\"'<>,.?/\\\\|~`]).{8,}$"
           },
           "password_confirm": {
             "type": "password",

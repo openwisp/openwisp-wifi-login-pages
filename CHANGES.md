@@ -2,7 +2,15 @@
 
 ## Version 1.3.0 [unreleased]
 
-Work in progress.
+### Features
+
+- Implemented enhanced email validation with common domain typo detection.
+- Strengthened password security (8-character minimum, mandatory complexity).
+- Centralized validation logic into `client/utils/validation.js`.
+
+### Bugfixes
+
+- Fixed Webpack 5 deprecation warning by replacing `brotli-webpack-plugin` with `compression-webpack-plugin`.
 
 ## Version 1.2.2 [2026-02-06]
 

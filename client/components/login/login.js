@@ -29,6 +29,7 @@ import getError from "../../utils/get-error";
 import getLanguageHeaders from "../../utils/get-language-headers";
 import redirectToPayment from "../../utils/redirect-to-payment";
 import {localStorage, sessionStorage} from "../../utils/storage";
+import {validateEmail} from "../../utils/validation";
 
 const PhoneInput = React.lazy(
   () => import(/* webpackChunkName: 'PhoneInput' */ "react-phone-input-2"),
@@ -204,13 +205,37 @@ export default class Login extends React.Component {
   handleSubmit(event, sesame_token = null) {
     const {setLoading} = this.context;
     if (event) event.preventDefault();
-    const {orgSlug, setUserData, language, settings} = this.props;
+    const {orgSlug, setUserData, language, settings, loginForm} = this.props;
     const {radius_realms} = settings;
     const {username, password, errors} = this.state;
     const url = loginApiUrl(orgSlug);
     this.setState({
       errors: {},
     });
+
+    const {input_fields} = loginForm;
+    if (input_fields.username.type === "email") {
+      const {isValid, suggestion} = validateEmail(username);
+      if (!isValid) {
+        this.setState({
+          errors: {
+            username: t`USERNAME_LOG_TITL`,
+          },
+        });
+        setLoading(false);
+        return false;
+      }
+      if (suggestion) {
+        const confirmTypo = window.confirm(
+          `${t`EMAIL_TYPO_ERR`} ${suggestion}?`,
+        );
+        if (confirmTypo) {
+          this.setState({username: suggestion});
+          setLoading(false);
+          return false;
+        }
+      }
+    }
     setLoading(true);
     if (!sesame_token) {
       this.waitToast = toast.info(t`PLEASE_WAIT`, {autoClose: 20000});

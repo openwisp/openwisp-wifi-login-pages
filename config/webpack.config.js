@@ -1,7 +1,6 @@
 const BundleAnalyzerPlugin =
   require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const CompressionPlugin = require("compression-webpack-plugin");
-const BrotliPlugin = require("brotli-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -19,7 +18,7 @@ module.exports = (env, argv) => {
   // Use user-specified port; if none was given, fall back to the default
   // If the default port is already in use, webpack will automatically use
   // the next available port
-  let clientP = process.env.CLIENT;
+  let clientP = process.env.CLIENT || DEFAULT_PORT;
   let plugins = [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
@@ -81,10 +80,14 @@ module.exports = (env, argv) => {
       }),
     );
     plugins.push(
-      new BrotliPlugin({
-        asset: "[path].br[query]",
+      new CompressionPlugin({
+        filename: "[path][base].br",
+        algorithm: "brotliCompress",
         test: /\.(js|css|html|svg|json)$/,
-        minRatio: 0.7,
+        compressionOptions: {level: 11},
+        threshold: 10240,
+        minRatio: 0.8,
+        deleteOriginalAssets: false,
       }),
     );
   }
