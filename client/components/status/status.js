@@ -871,7 +871,9 @@ export default class Status extends React.Component {
 
   updateSpinner = () => {
     const {activeSessions, pastSessions} = this.state;
-    this.setStateSafe({loadSpinner: activeSessions.length || pastSessions.length});
+    this.setStateSafe({
+      loadSpinner: activeSessions.length || pastSessions.length,
+    });
   };
 
   toggleModal = () => {
