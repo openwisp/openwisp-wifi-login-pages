@@ -84,7 +84,7 @@ export default class Status extends React.Component {
    * Safely sets state only if component is still mounted.
    * Prevents "setState on unmounted component" warnings.
    */
-  safeSetState(state, callback) {
+  setStateSafe(state, callback) {
     if (this.isComponentMounted) {
       this.setState(state, callback);
     }
@@ -352,7 +352,7 @@ export default class Status extends React.Component {
       }
       options.hasMoreSessions =
         "link" in headers && headers.link.includes("next");
-      this.safeSetState(options);
+      this.setStateSafe(options);
     } catch (error) {
       if (!this.isComponentMounted) {
         return;
@@ -425,7 +425,7 @@ export default class Status extends React.Component {
           }
         }
       }
-      this.safeSetState(options);
+      this.setStateSafe(options);
     } catch (error) {
       if (!this.isComponentMounted) {
         return;
@@ -434,7 +434,7 @@ export default class Status extends React.Component {
         // Do not retry for client side errors
         if (error.response.status >= 400 && error.response.status < 500) {
           // Logout only if unauthorized or forbidden
-          this.setSafeState({showRadiusUsage: false});
+          this.setStateSafe({showRadiusUsage: false});
           if (error.response.status === 401 || error.response.status === 403) {
             logout(cookies, orgSlug);
             toast.error(t`ERR_OCCUR`, {
@@ -452,7 +452,7 @@ export default class Status extends React.Component {
   }
 
   getPlansSuccessCallback(plans) {
-    this.safeSetState({
+    this.setStateSafe({
       upgradePlans: plans.filter((plan) => plan.price !== "0.00"),
     });
   }
@@ -577,7 +577,7 @@ export default class Status extends React.Component {
     if (sessionsToLogout.length > 0) {
       if (this.logoutFormRef && this.logoutFormRef.current) {
         if (!repeatLogin) {
-          this.setSafeState({loggedOut: true});
+          this.setStateSafe({loggedOut: true});
         } else {
           this.repeatLogin = true;
         }
@@ -770,7 +770,7 @@ export default class Status extends React.Component {
         /* disable ttag */
         toast.info(gettext(message), {toastId: mainToastId});
         /* enable ttag */
-        this.safeSetState(
+        this.setStateSafe(
           {
             warningMessage: warningMessage || "USAGE_LIMIT_EXHAUSTED_TXT",
             ...(showUpgradeBtn !== undefined && {showUpgradeBtn}),
@@ -791,7 +791,7 @@ export default class Status extends React.Component {
           toastId: mainToastId,
         });
         /* enable ttag */
-        this.safeSetState({loggedOut: true}, () => {
+        this.setStateSafe({loggedOut: true}, () => {
           // Logout after state update and a small delay
           // The delay ensures the component has sufficient time to unmount
           // and complete any ongoing XHR requests. Without this, erroring
@@ -866,32 +866,30 @@ export default class Status extends React.Component {
   };
 
   updateScreenWidth = () => {
-    this.setSafeState({screenWidth: window.innerWidth});
+    this.setStateSafe({screenWidth: window.innerWidth});
   };
 
   updateSpinner = () => {
     const {activeSessions, pastSessions} = this.state;
-    this.setSafeState({
-      loadSpinner: activeSessions.length || pastSessions.length,
-    });
+    this.setStateSafe({loadSpinner: activeSessions.length || pastSessions.length});
   };
 
   toggleModal = () => {
     const {modalActive} = this.state;
-    this.setSafeState({modalActive: !modalActive});
+    this.setStateSafe({modalActive: !modalActive});
   };
 
   toggleUpgradePlanModal = async () => {
     const {orgSlug, language} = this.props;
     const {upgradePlanModalActive, upgradePlans} = this.state;
-    this.setSafeState({upgradePlanModalActive: !upgradePlanModalActive});
+    this.setStateSafe({upgradePlanModalActive: !upgradePlanModalActive});
     if (!upgradePlans.length) {
       await getPlans(orgSlug, language, this.getPlansSuccessCallback);
     }
   };
 
   async handleSessionLogout(session) {
-    this.setSafeState({
+    this.setStateSafe({
       sessionsToLogout: [session],
       pastSessions: [],
       activeSessions: [],
