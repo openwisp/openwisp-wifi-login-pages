@@ -354,6 +354,9 @@ export default class Status extends React.Component {
         "link" in headers && headers.link.includes("next");
       this.safeSetState(options);
     } catch (error) {
+      if (!this.isComponentMounted) {
+        return;
+      }
       // logout only if unauthorized or forbidden
       if (
         error.response &&
