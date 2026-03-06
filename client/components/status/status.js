@@ -69,7 +69,6 @@ export default class Status extends React.Component {
       showUpgradeBtn: true,
     };
     this.repeatLogin = false;
-    this.isComponentMounted = true;
     this.getUserRadiusSessions = this.getUserRadiusSessions.bind(this);
     this.getUserRadiusUsage = this.getUserRadiusUsage.bind(this);
     this.getPlansSuccessCallback = this.getPlansSuccessCallback.bind(this);
@@ -91,6 +90,7 @@ export default class Status extends React.Component {
   }
 
   async componentDidMount() {
+    this.isComponentMounted = true;
     const {
       cookies,
       orgSlug,
