@@ -80,6 +80,16 @@ export default class Status extends React.Component {
     this.updateSpinner = this.updateSpinner.bind(this);
   }
 
+  /**
+   * Safely sets state only if component is still mounted.
+   * Prevents "setState on unmounted component" warnings.
+   */
+  safeSetState(state, callback) {
+    if (this.isComponentMounted) {
+      this.setState(state, callback);
+    }
+  }
+
   async componentDidMount() {
     const {
       cookies,
@@ -243,6 +253,7 @@ export default class Status extends React.Component {
     if (statusPage.radius_usage_enabled) {
       clearInterval(this.usageIntervalId);
     }
+    clearTimeout(this.usageRetryTimeoutId);
     window.removeEventListener("resize", this.updateScreenWidth);
     window.removeEventListener("message", this.handlePostMessage);
   }
@@ -285,6 +296,10 @@ export default class Status extends React.Component {
       setLoading(false);
       // if verification is needed, stop here
     } else {
+      return;
+    }
+
+    if (!this.isComponentMounted) {
       return;
     }
 
@@ -337,13 +352,8 @@ export default class Status extends React.Component {
       }
       options.hasMoreSessions =
         "link" in headers && headers.link.includes("next");
-      if (this.isComponentMounted) {
-        this.setState(options);
-      }
+      this.safeSetState(options);
     } catch (error) {
-      if (!this.isComponentMounted) {
-        return;
-      }
       // logout only if unauthorized or forbidden
       if (
         error.response &&
@@ -412,9 +422,7 @@ export default class Status extends React.Component {
           }
         }
       }
-      if (this.isComponentMounted) {
-        this.setState(options);
-      }
+      this.safeSetState(options);
     } catch (error) {
       if (!this.isComponentMounted) {
         return;
@@ -436,12 +444,12 @@ export default class Status extends React.Component {
         }
       }
       logError(error, t`ERR_OCCUR`);
-      setTimeout(this.getUserRadiusUsage, 10000);
+      this.usageRetryTimeoutId = setTimeout(this.getUserRadiusUsage, 10000);
     }
   }
 
   getPlansSuccessCallback(plans) {
-    this.setState({
+    this.safeSetState({
       upgradePlans: plans.filter((plan) => plan.price !== "0.00"),
     });
   }
@@ -759,7 +767,7 @@ export default class Status extends React.Component {
         /* disable ttag */
         toast.info(gettext(message), {toastId: mainToastId});
         /* enable ttag */
-        this.setState(
+        this.safeSetState(
           {
             warningMessage: warningMessage || "USAGE_LIMIT_EXHAUSTED_TXT",
             ...(showUpgradeBtn !== undefined && {showUpgradeBtn}),
@@ -780,7 +788,7 @@ export default class Status extends React.Component {
           toastId: mainToastId,
         });
         /* enable ttag */
-        this.setState({loggedOut: true}, () => {
+        this.safeSetState({loggedOut: true}, () => {
           // Logout after state update and a small delay
           // The delay ensures the component has sufficient time to unmount
           // and complete any ongoing XHR requests. Without this, erroring
