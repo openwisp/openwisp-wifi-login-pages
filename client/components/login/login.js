@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import "./index.css";
-import { checkDomainTypo } from "../../utils/check-domain-typo";
+
 import axios from "axios";
 import PropTypes from "prop-types";
 import qs from "qs";
@@ -208,21 +208,7 @@ export default class Login extends React.Component {
     const {radius_realms} = settings;
     const {username, password, errors} = this.state;
 
-    // Check email domain typo
-    if (username && username.includes("@")) {
-    const suggestion = checkDomainTypo(username);
-
-    if (suggestion) {
-    this.setState({
-      errors: {
-        ...errors,
-        username: t`Please recheck your email. Did you mean ${suggestion}?`,
-      },
-     });
-     setLoading(false);
-     return;
-    }
-    }
+    
 
     const url = loginApiUrl(orgSlug);
     this.setState({

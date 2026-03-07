@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import "./index.css";
-import { checkDomainTypo } from "../../utils/check-domain-typo";
+
 
 import axios from "axios";
 import PropTypes from "prop-types";
@@ -136,20 +136,7 @@ export default class Registration extends React.Component {
       country,
     } = this.state;
 
-    // Check email domain typo
-if (email && email.includes("@")) {
-  const suggestion = checkDomainTypo(email);
-
-  if (suggestion) {
-    this.setState({
-      errors: {
-        ...errors,
-        email: t`Please recheck your email. Did you mean ${suggestion}?`,
-      },
-    });
-    return false;
-  }
-}
+    
 
     if (password1 !== password2) {
       this.setState({
