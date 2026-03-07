@@ -32,6 +32,42 @@ const PhoneInput = React.lazy(
   () => import(/* webpackChunkName: 'PhoneInput' */ "react-phone-input-2"),
 );
 
+// Detect email domain typos and suggest correct domain
+function checkDomainTypo(email) {
+  const parts = email.split("@");
+  if (parts.length !== 2) return null;
+
+  const name = parts[0];
+  const domain = parts[1].toLowerCase();
+
+  const validDomains = [
+    "gmail.com",
+    "yahoo.com",
+    "hotmail.com",
+    "outlook.com",
+    "icloud.com",
+  ];
+
+  // If domain is correct, allow it
+  if (validDomains.includes(domain)) {
+    return null;
+  }
+
+  // Otherwise suggest the closest domain
+  let suggestion = null;
+
+  validDomains.forEach((d) => {
+    if (!suggestion && domain.startsWith(d[0])) {
+      suggestion = d;
+    }
+  });
+
+  if (suggestion) {
+    return `${name}@${suggestion}`;
+  }
+
+  return `${name}@gmail.com`; // fallback suggestion
+}
 export default class Registration extends React.Component {
   constructor(props) {
     super(props);
@@ -134,6 +170,21 @@ export default class Registration extends React.Component {
       zipcode,
       country,
     } = this.state;
+
+    // Check for common email domain typos before submitting
+    if (email.includes("@")) {
+      const suggestion = checkDomainTypo(email);
+
+      if (suggestion) {
+        this.setState({
+          errors: {
+            ...errors,
+            email: `Please recheck your email. Did you mean ${suggestion}?`,
+          },
+        });
+        return false;
+      }
+    }
 
     if (password1 !== password2) {
       this.setState({
@@ -484,7 +535,7 @@ export default class Registration extends React.Component {
                           value={email}
                           onChange={this.handleChange}
                           placeholder={t`EMAIL_PHOLD`}
-                          pattern={input_fields.email.pattern}
+                          pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
                           autoComplete="email"
                           title={t`EMAIL_PTRN_DESC`}
                         />
