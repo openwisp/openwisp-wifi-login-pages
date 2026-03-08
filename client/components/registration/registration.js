@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import "./index.css";
 
+
 import axios from "axios";
 import PropTypes from "prop-types";
 import React, {Suspense} from "react";
@@ -134,6 +135,8 @@ export default class Registration extends React.Component {
       zipcode,
       country,
     } = this.state;
+
+    
 
     if (password1 !== password2) {
       this.setState({
