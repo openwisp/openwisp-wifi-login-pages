@@ -64,7 +64,7 @@ exports[`<Login /> interactions phone_number field should be present if mobile p
           <p>
             <a
               class="social-link button full"
-              href="#twitter"
+              href="#X"
               rel="noopener noreferrer"
             >
               <span
@@ -73,7 +73,7 @@ exports[`<Login /> interactions phone_number field should be present if mobile p
                 <img
                   alt="Login with X"
                   class="icon"
-                  src="/assets/default/twitter.svg"
+                  src="/assets/default/X.svg"
                 />
                 <span
                   class="text"
@@ -275,14 +275,14 @@ exports[`<Login /> interactions phone_number field should be present if mobile p
         >
           <a
             class="link "
-            href="https://twitter.com/openwisp"
+            href="https://X.com/openwisp"
             rel="noopener noreferrer"
             target="_blank"
           >
             <img
-              alt="twitter"
+              alt="X"
               class="contact-image "
-              src="/assets/default/twitter.svg"
+              src="/assets/default/X.svg"
             />
           </a>
           <a
@@ -368,7 +368,7 @@ exports[`<Login /> interactions should not show phone_number field if auto_switc
           <p>
             <a
               class="social-link button full"
-              href="#twitter"
+              href="#X"
               rel="noopener noreferrer"
             >
               <span
@@ -377,7 +377,7 @@ exports[`<Login /> interactions should not show phone_number field if auto_switc
                 <img
                   alt="Login with X"
                   class="icon"
-                  src="/assets/default/twitter.svg"
+                  src="/assets/default/X.svg"
                 />
                 <span
                   class="text"
@@ -553,14 +553,14 @@ exports[`<Login /> interactions should not show phone_number field if auto_switc
         >
           <a
             class="link "
-            href="https://twitter.com/openwisp"
+            href="https://X.com/openwisp"
             rel="noopener noreferrer"
             target="_blank"
           >
             <img
-              alt="twitter"
+              alt="X"
               class="contact-image "
-              src="/assets/default/twitter.svg"
+              src="/assets/default/X.svg"
             />
           </a>
           <a
@@ -646,7 +646,7 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
           <p>
             <a
               class="social-link button full"
-              href="#twitter"
+              href="#X"
               rel="noopener noreferrer"
             >
               <span
@@ -655,7 +655,7 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
                 <img
                   alt="Login with X"
                   class="icon"
-                  src="/assets/default/twitter.svg"
+                  src="/assets/default/X.svg"
                 />
                 <span
                   class="text"
@@ -831,14 +831,14 @@ exports[`<Login /> interactions username should be text field if mobile phone ve
         >
           <a
             class="link "
-            href="https://twitter.com/openwisp"
+            href="https://X.com/openwisp"
             rel="noopener noreferrer"
             target="_blank"
           >
             <img
-              alt="twitter"
+              alt="X"
               class="contact-image "
-              src="/assets/default/twitter.svg"
+              src="/assets/default/X.svg"
             />
           </a>
           <a
@@ -1171,7 +1171,7 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
             <p>
               <a
                 className="social-link button full"
-                href="#twitter"
+                href="#X"
                 rel="noopener noreferrer"
               >
                 <span
@@ -1180,7 +1180,7 @@ exports[`<Login /> rendering should render correctly without social links 1`] = 
                   <img
                     alt="Login with X"
                     className="icon"
-                    src="/assets/default/twitter.svg"
+                    src="/assets/default/X.svg"
                   />
                   <span
                     className="text"
@@ -1423,7 +1423,7 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
             <p>
               <a
                 className="social-link button full"
-                href="#twitter"
+                href="#X"
                 rel="noopener noreferrer"
               >
                 <span
@@ -1432,7 +1432,7 @@ exports[`<Login /> rendering with placeholder translation tags should render tra
                   <img
                     alt="Login with X"
                     className="icon"
-                    src="/assets/default/twitter.svg"
+                    src="/assets/default/X.svg"
                   />
                   <span
                     className="text"
