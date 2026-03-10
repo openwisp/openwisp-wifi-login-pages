@@ -85,7 +85,6 @@ class OrganizationsWatchPlugin {
             return callback(err);
           }
         }
-        callback();
         return callback();
       },
     );
