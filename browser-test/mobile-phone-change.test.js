@@ -34,10 +34,10 @@ describe("Selenium tests for <MobilePhoneChange />", () => {
 
   beforeAll(async () => {
     // long test in CI
-    jest.setTimeout(30000);
+    jest.setTimeout(35000);
     await initializeData("mobileVerification");
     driver = await getDriver();
-  }, 30000);
+  }, 35000);
 
   afterAll(async () => {
     await tearDown(driver);
