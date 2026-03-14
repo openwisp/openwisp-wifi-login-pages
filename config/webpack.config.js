@@ -6,6 +6,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
+const fs = require("fs");
 const TerserPlugin = require("terser-webpack-plugin");
 const setup = require("./setup");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -13,6 +14,83 @@ const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const CURRENT_WORKING_DIR = process.cwd();
 const DEFAULT_PORT = 8080;
 const DEFAULT_SERVER_URL = "http://localhost:3030";
+
+/**
+ * Recursively collect all file paths under a directory.
+ */
+const getAllFiles = (dirPath, results = []) => {
+  if (!fs.existsSync(dirPath)) return results;
+  fs.readdirSync(dirPath).forEach((entry) => {
+    const fullPath = path.join(dirPath, entry);
+    try {
+      if (fs.statSync(fullPath).isDirectory()) {
+        getAllFiles(fullPath, results);
+      } else {
+        results.push(fullPath);
+      }
+    } catch (err) {
+      if (err.code !== "ENOENT") throw err;
+    }
+  });
+  return results;
+};
+
+/**
+ * Webpack plugin that watches every file inside the `organizations/` directory.
+ * When any of those files change, it re-runs setup (copying configs/assets)
+ * so the bundle always reflects the latest org configuration without a manual
+ * server restart.
+ */
+class OrganizationsWatchPlugin {
+  apply(compiler) {
+    const organizationsDir = path.resolve(CURRENT_WORKING_DIR, "organizations");
+
+    // After each compilation, register all org files as dependencies so webpack
+    // watches them even though they are outside the normal module graph.
+    compiler.hooks.afterCompile.tap(
+      "OrganizationsWatchPlugin",
+      (compilation) => {
+        // Watch the directory itself (catches new files / deleted files)
+        compilation.contextDependencies.add(organizationsDir);
+        // Watch every individual file (catches content changes)
+        getAllFiles(organizationsDir).forEach((filePath) => {
+          compilation.fileDependencies.add(filePath);
+        });
+      },
+    );
+
+    // Before each re-compilation triggered by a watch event, re-run setup so
+    // that the copied configs/assets are up-to-date before the bundle is built.
+    compiler.hooks.watchRun.tapAsync(
+      "OrganizationsWatchPlugin",
+      (comp, callback) => {
+        const changedFiles = comp.modifiedFiles || new Set();
+        const removedFiles = comp.removedFiles || new Set();
+        const anyOrgFileChanged = [...changedFiles, ...removedFiles].some(
+          (f) => {
+            const rel = path.relative(organizationsDir, f);
+            return rel && !rel.startsWith("..") && !path.isAbsolute(rel);
+          },
+        );
+        if (anyOrgFileChanged) {
+          console.log(
+            "[OrganizationsWatchPlugin] Change detected in organizations/. Re-running setup…",
+          );
+          try {
+            setup.writeConfigurations();
+            console.log("[OrganizationsWatchPlugin] Setup completed.");
+            return callback();
+          } catch (err) {
+            console.error("[OrganizationsWatchPlugin] Setup error:", err);
+            return callback(err);
+          }
+        }
+        return callback();
+      },
+    );
+  }
+}
+
 let minimizers = [];
 
 module.exports = (env, argv) => {
@@ -46,6 +124,12 @@ module.exports = (env, argv) => {
       minRatio: 0.9,
     }),
   ];
+
+  // In development (watch) mode, automatically re-run setup when any file
+  // inside organizations/ changes so developers edit source files, not copies.
+  if (argv.mode === "development") {
+    plugins.push(new OrganizationsWatchPlugin());
+  }
 
   let cssLoaders = ["style-loader", "css-loader"];
 
