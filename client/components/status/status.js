@@ -102,7 +102,7 @@ export default class Status extends React.Component {
     Logout.preload();
   }
 
-  async setupCaptivePortal() {
+  setupCaptivePortal() {
     const {location, cookies, orgSlug, captivePortalLoginForm} = this.props;
 
     try {
@@ -128,7 +128,6 @@ export default class Status extends React.Component {
     const {
       cookies,
       orgSlug,
-      settings,
       setUserData,
       logout,
       language,
@@ -206,7 +205,7 @@ export default class Status extends React.Component {
     await this.handleLoginFlow(mustLogin);
   }
 
-  async prepareUserInfo() {
+  prepareUserInfo() {
     const {userData, settings} = this.props;
 
     const {
@@ -237,7 +236,7 @@ export default class Status extends React.Component {
     });
   }
 
-  async handleLoginFlow(mustLogin) {
+  handleLoginFlow(mustLogin) {
     const {settings, userData, captivePortalSyncAuth, cookies, orgSlug} =
       this.props;
 
@@ -606,30 +605,28 @@ export default class Status extends React.Component {
     const {sessionsToLogout} = this.state;
 
     if (sessionsToLogout.length > 0) {
-      {
-        if (!repeatLogin) {
-          this.setStateSafe({loggedOut: true});
-        } else {
-          this.repeatLogin = true;
-        }
+      if (!repeatLogin) {
+        this.setStateSafe({loggedOut: true});
+      } else {
+        this.repeatLogin = true;
+      }
 
+      if (!internetMode) {
+        this.storeValue(
+          captivePortalSyncAuth,
+          `${orgSlug}_mustLogout`,
+          true,
+          cookies,
+        );
         if (typeof this.logoutFormRef === "function") {
           this.logoutFormRef();
+        } else if (this.logoutFormRef?.current?.submit) {
+          this.logoutFormRef.current.submit();
+        } else if (this.logoutFormRef?.submit) {
+          this.logoutFormRef.submit();
         }
-
-        if (!internetMode) {
-          this.storeValue(
-            captivePortalSyncAuth,
-            `${orgSlug}_mustLogout`,
-            true,
-            cookies,
-          );
-          if (this.logoutFormRef && this.logoutFormRef.current) {
-            this.logoutFormRef.current.submit();
-          }
-        }
-        return;
       }
+      return;
     }
 
     if (repeatLogin) {
@@ -773,7 +770,7 @@ export default class Status extends React.Component {
     }
   };
 
-  handlePostMessage = async (event) => {
+  handlePostMessage = (event) => {
     const {
       captivePortalLoginForm,
       logout,
@@ -808,17 +805,15 @@ export default class Status extends React.Component {
         /* disable ttag */
         toast.info(gettext(message), {toastId: mainToastId});
         /* enable ttag */
-        this.setStateSafe(
-          {
-            warningMessage: warningMessage || "USAGE_LIMIT_EXHAUSTED_TXT",
-            ...(showUpgradeBtn !== undefined && {showUpgradeBtn}),
-          },
-          () => {
-            // Change the message on the status page to reflect plan exhaustion
-            setPlanExhausted(true);
-            setLoading(false);
-          },
-        );
+        this.setStateSafe({
+          warningMessage: warningMessage || "USAGE_LIMIT_EXHAUSTED_TXT",
+          ...(showUpgradeBtn !== undefined && {showUpgradeBtn}),
+        });
+
+        // Change the message on the status page to reflect plan exhaustion
+        setPlanExhausted(true);
+        setLoading(false);
+
         break;
       case "authError":
         setLoading(true);
@@ -830,6 +825,7 @@ export default class Status extends React.Component {
         });
 
         setLoading(false);
+
         /* enable ttag */
         this.setStateSafe({loggedOut: true}, () => {
           // Logout after state update and a small delay
