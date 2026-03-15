@@ -19,6 +19,10 @@ jest.mock("dompurify", () =>
   })),
 );
 
+jest.mock("../config.json", () => [
+  {slug: "default", name: "Default Organization"},
+]);
+
 const modalContent = require("./modal-content-controller").default;
 
 const createResponse = () => {
