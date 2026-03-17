@@ -38,6 +38,19 @@ import handleSession from "../../utils/session";
 import getPlanSelection from "../../utils/get-plan-selection";
 import getPlans from "../../utils/get-plans";
 
+const checkMixedContent = (actionUrl) => {
+  if (
+    window.location.protocol === "https:" &&
+    actionUrl &&
+    typeof actionUrl === "string" &&
+    actionUrl.startsWith("http:")
+  ) {
+    throw new Error(
+      "Mixed Content: Cannot submit insecure HTTP form from a secure HTTPS page.",
+    );
+  }
+};
+
 export default class Status extends React.Component {
   constructor(props) {
     super(props);
@@ -235,18 +248,10 @@ export default class Status extends React.Component {
         );
         this.notifyCpLogin(userData);
         try {
-          const formAction = new URL(this.loginFormRef.current.action);
-          if (
-            window.location.protocol === "https:" &&
-            formAction.protocol === "http:"
-          ) {
-            throw new Error(
-              "Mixed Content: Cannot submit insecure HTTP form from a secure HTTPS page.",
-            );
-          }
+          checkMixedContent(this.loginFormRef.current.action);
           this.loginFormRef.current.submit();
         } catch (error) {
-          this.context.setLoading(false);
+          setLoading(false);
           toast.error(`Security/Network Error: ${error.message}`);
           console.error("Mixed Content Exception:", error);
         }
@@ -604,18 +609,10 @@ export default class Status extends React.Component {
             cookies,
           );
           try {
-            const formAction = new URL(this.logoutFormRef.current.action);
-            if (
-              window.location.protocol === "https:" &&
-              formAction.protocol === "http:"
-            ) {
-              throw new Error(
-                "Mixed Content: Cannot submit insecure HTTP form from a secure HTTPS page.",
-              );
-            }
+            checkMixedContent(this.logoutFormRef.current.action);
             this.logoutFormRef.current.submit();
           } catch (error) {
-            this.context.setLoading(false);
+            setLoading(false);
             toast.error(`Security/Network Error: ${error.message}`);
             console.error("Mixed Content Exception:", error);
           }
@@ -931,19 +928,13 @@ export default class Status extends React.Component {
     const {setLoading} = this.context;
     if (this.logoutFormRef && this.logoutFormRef.current) {
       try {
-        const formAction = new URL(this.logoutFormRef.current.action);
-        if (
-          window.location.protocol === "https:" &&
-          formAction.protocol === "http:"
-        ) {
-          throw new Error(
-            "Mixed Content: Cannot submit insecure HTTP form from a secure HTTPS page.",
-          );
-        }
+        checkMixedContent(this.logoutFormRef.current.action);
         this.logoutFormRef.current.submit();
       } catch (error) {
         setLoading(false);
-        toast.error(error.message);
+        toast.error(`Security/Network Error: ${error.message}`);
+        console.error("Mixed Content Exception:", error);
+        return;
       }
     }
     setLoading(true);
