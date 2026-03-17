@@ -234,7 +234,22 @@ export default class Status extends React.Component {
           cookies,
         );
         this.notifyCpLogin(userData);
-        this.loginFormRef.current.submit();
+        try {
+          const formAction = new URL(this.loginFormRef.current.action);
+          if (
+            window.location.protocol === "https:" &&
+            formAction.protocol === "http:"
+          ) {
+            throw new Error(
+              "Mixed Content: Cannot submit insecure HTTP form from a secure HTTPS page.",
+            );
+          }
+          this.loginFormRef.current.submit();
+        } catch (error) {
+          this.context.setLoading(false);
+          toast.error(`Security/Network Error: ${error.message}`);
+          console.error("Mixed Content Exception:", error);
+        }
       } else if (!shouldLogin) {
         // If the user is already logged in, we need to handle the
         // the response from the captive portal.
@@ -588,7 +603,22 @@ export default class Status extends React.Component {
             true,
             cookies,
           );
-          this.logoutFormRef.current.submit();
+          try {
+            const formAction = new URL(this.logoutFormRef.current.action);
+            if (
+              window.location.protocol === "https:" &&
+              formAction.protocol === "http:"
+            ) {
+              throw new Error(
+                "Mixed Content: Cannot submit insecure HTTP form from a secure HTTPS page.",
+              );
+            }
+            this.logoutFormRef.current.submit();
+          } catch (error) {
+            this.context.setLoading(false);
+            toast.error(`Security/Network Error: ${error.message}`);
+            console.error("Mixed Content Exception:", error);
+          }
         }
         return;
       }
@@ -900,7 +930,21 @@ export default class Status extends React.Component {
     });
     const {setLoading} = this.context;
     if (this.logoutFormRef && this.logoutFormRef.current) {
-      this.logoutFormRef.current.submit();
+      try {
+        const formAction = new URL(this.logoutFormRef.current.action);
+        if (
+          window.location.protocol === "https:" &&
+          formAction.protocol === "http:"
+        ) {
+          throw new Error(
+            "Mixed Content: Cannot submit insecure HTTP form from a secure HTTPS page.",
+          );
+        }
+        this.logoutFormRef.current.submit();
+      } catch (error) {
+        setLoading(false);
+        toast.error(error.message);
+      }
     }
     setLoading(true);
     await this.getUserPastRadiusSessions();
