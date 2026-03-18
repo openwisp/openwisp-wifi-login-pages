@@ -29,6 +29,7 @@ import getError from "../../utils/get-error";
 import getLanguageHeaders from "../../utils/get-language-headers";
 import redirectToPayment from "../../utils/redirect-to-payment";
 import {localStorage, sessionStorage} from "../../utils/storage";
+import checkMixedContent from "../../utils/check-mixed-content";
 
 const PhoneInput = React.lazy(
   () => import(/* webpackChunkName: 'PhoneInput' */ "react-phone-input-2"),
@@ -216,7 +217,16 @@ export default class Login extends React.Component {
       this.waitToast = toast.info(t`PLEASE_WAIT`, {autoClose: 20000});
     }
     if (radius_realms && username.includes("@")) {
-      return this.realmsRadiusLoginForm.current.submit();
+      try {
+        checkMixedContent(this.realmsRadiusLoginForm.current.action);
+        return this.realmsRadiusLoginForm.current.submit();
+      } catch (e) {
+        this.dismissWait();
+        setLoading(false);
+        toast.error(`Security/Network Error: ${e.message}`);
+        console.error("Mixed Content Exception:", e);
+        return false;
+      }
     }
     const headers = {
       "content-type": "application/x-www-form-urlencoded",
