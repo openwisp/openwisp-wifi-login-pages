@@ -76,7 +76,6 @@ describe("modal-content-controller", () => {
   it("returns 404 when the modal file is missing for a valid organization", () => {
     const readFileSyncSpy = jest.spyOn(fs, "readFileSync");
     jest.spyOn(fs, "readdirSync").mockReturnValue(["other.md"]);
-
     const res = createResponse();
 
     modalContent(
@@ -99,7 +98,6 @@ describe("modal-content-controller", () => {
 
   it("returns 404 for an invalid organization slug", () => {
     const readdirSyncSpy = jest.spyOn(fs, "readdirSync");
-
     const res = createResponse();
 
     modalContent(
