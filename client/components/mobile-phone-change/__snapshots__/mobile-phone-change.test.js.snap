@@ -138,9 +138,9 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
                 "helpdesk": "+789 948 564",
                 "social_links": [
                   {
-                    "alt": "twitter",
+                    "alt": "X",
                     "icon": "twitter.svg",
-                    "url": "https://twitter.com/openwisp",
+                    "url": "https://x.com/openwisp",
                   },
                   {
                     "alt": "facebook",
