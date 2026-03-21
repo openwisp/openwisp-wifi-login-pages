@@ -60,6 +60,7 @@ export default class Header extends React.Component {
       </div>
     ) : null;
   };
+
   renderLinkItem = (link, index, isMobile = false) => {
     const {language, orgSlug, location, isAuthenticated, userData} = this.props;
 
@@ -68,14 +69,17 @@ export default class Header extends React.Component {
 
     if (!shouldLinkBeShown(link, isAuthenticated, userData)) return null;
 
+    const resolvedUrl = link.url.replace("{orgSlug}", orgSlug);
+    const isActive = pathname === resolvedUrl;
+
     if (
       isInternalLink(link.url) &&
       (internalLinks.indexOf(link.url) < 0 || !isAuthenticated)
     ) {
       return (
         <Link
-          className={`header-link ${isMobile ? "mobile-link" : "header-desktop-link"} header-link-${index + 1} button`}
-          to={link.url.replace("{orgSlug}", orgSlug)}
+          className={`header-link ${isMobile ? "mobile-link" : "header-desktop-link"} header-link-${index + 1}${isActive ? " active" : ""} button`}
+          to={resolvedUrl}
           key={index}
         >
           {getText(link.text, language)}
@@ -95,6 +99,7 @@ export default class Header extends React.Component {
       </a>
     );
   };
+
   render() {
     const {menu} = this.state;
     const {
