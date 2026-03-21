@@ -102,13 +102,7 @@ export default class Header extends React.Component {
 
   render() {
     const {menu} = this.state;
-    const {
-      header,
-      languages,
-      language,
-      orgSlug,
-      setLanguage,
-    } = this.props;
+    const {header, languages, language, orgSlug, setLanguage} = this.props;
     const {logo, links, second_logo: secondLogo} = header;
     return (
       <>
