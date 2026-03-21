@@ -60,7 +60,41 @@ export default class Header extends React.Component {
       </div>
     ) : null;
   };
+  renderLinkItem = (link, index, isMobile = false) => {
+    const {language, orgSlug, location, isAuthenticated, userData} = this.props;
 
+    const {pathname} = location;
+    const internalLinks = [`/${orgSlug}/login`, `/${orgSlug}/registration`];
+
+    if (!shouldLinkBeShown(link, isAuthenticated, userData)) return null;
+
+    if (
+      isInternalLink(link.url) &&
+      (internalLinks.indexOf(link.url) < 0 || !isAuthenticated)
+    ) {
+      return (
+        <Link
+          className={`header-link ${isMobile ? "mobile-link" : "header-desktop-link"} header-link-${index + 1} button`}
+          to={link.url.replace("{orgSlug}", orgSlug)}
+          key={index}
+        >
+          {getText(link.text, language)}
+        </Link>
+      );
+    }
+
+    return (
+      <a
+        href={link.url}
+        className={`header-link ${isMobile ? "mobile-link" : "header-desktop-link"} header-link-${index + 1} button`}
+        target="_blank"
+        rel="noreferrer noopener"
+        key={link.url}
+      >
+        {getText(link.text, language)}
+      </a>
+    );
+  };
   render() {
     const {menu} = this.state;
     const {
@@ -136,12 +170,7 @@ export default class Header extends React.Component {
                   ) {
                     return (
                       <Link
-                        className={`header-link header-desktop-link
-                  header-link-${index + 1} ${
-                    pathname === link.url.replace("{orgSlug}", orgSlug)
-                      ? "active"
-                      : ""
-                  } button `}
+                        className={`header-link header-desktop-link header-link-${index + 1} ${pathname === link.url.replace("{orgSlug}", orgSlug) ? "active" : ""} button`}
                         to={link.url.replace("{orgSlug}", orgSlug)}
                         key={index}
                       >
@@ -152,8 +181,7 @@ export default class Header extends React.Component {
                   return (
                     <a
                       href={link.url}
-                      className={`header-link header-desktop-link
-                    header-link-${index + 1} button`}
+                      className={`header-link header-desktop-link header-link-${index + 1} button`}
                       target="_blank"
                       rel="noreferrer noopener"
                       key={link.url}
@@ -210,39 +238,9 @@ export default class Header extends React.Component {
             className={`${menu ? "display-flex" : "display-none"} header-mobile-menu`}
           >
             {links &&
-              links.map((link, index) => {
-                if (shouldLinkBeShown(link, isAuthenticated, userData)) {
-                  if (isInternalLink(link.url)) {
-                    return (
-                      <Link
-                        className={`header-link mobile-link
-                    header-link-${index + 1} ${
-                      pathname === link.url.replace("{orgSlug}", orgSlug)
-                        ? "active"
-                        : ""
-                    } button`}
-                        to={link.url.replace("{orgSlug}", orgSlug)}
-                        key={index}
-                      >
-                        {getText(link.text, language)}
-                      </Link>
-                    );
-                  }
-                  return (
-                    <a
-                      href={link.url}
-                      className={`header-link mobile-link
-                      header-link-${index + 1} button`}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      key={link.url}
-                    >
-                      {getText(link.text, language)}
-                    </a>
-                  );
-                }
-                return null;
-              })}
+              links.map((link, index) =>
+                this.renderLinkItem(link, index, true),
+              )}
             <div className="mobile-languages-row">
               {languages.map((lang) => (
                 <button

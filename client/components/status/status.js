@@ -601,8 +601,14 @@ export default class Status extends React.Component {
     const params = {calling_station_id: macaddr};
     localStorage.setItem("userAutoLogin", String(userAutoLogin));
     setLoading(true);
+
     await this.getUserActiveRadiusSessions(params);
-    const {sessionsToLogout} = this.state;
+
+    let {sessionsToLogout} = this.state;
+
+    if (!sessionsToLogout || sessionsToLogout.length === 0) {
+      sessionsToLogout = this.state.activeSessions || [];
+    }
 
     if (sessionsToLogout.length > 0) {
       if (!repeatLogin) {
@@ -618,14 +624,12 @@ export default class Status extends React.Component {
           true,
           cookies,
         );
-        if (typeof this.logoutFormRef === "function") {
-          this.logoutFormRef();
-        } else if (this.logoutFormRef?.current?.submit) {
+
+        if (this.logoutFormRef?.current?.submit) {
           this.logoutFormRef.current.submit();
-        } else if (this.logoutFormRef?.submit) {
-          this.logoutFormRef.submit();
         }
       }
+
       return;
     }
 

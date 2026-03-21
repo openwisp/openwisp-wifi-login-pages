@@ -57,8 +57,7 @@ exports[`<Header /> rendering should render sticky msg and close it on clicking 
         className="header-row-2-inner"
       >
         <a
-          className="header-link header-desktop-link
-                    header-link-1 button"
+          className="header-link header-desktop-link header-link-1 button"
           href="link-1/"
           key="link-1/"
           rel="noreferrer noopener"
@@ -67,8 +66,7 @@ exports[`<Header /> rendering should render sticky msg and close it on clicking 
           link-1
         </a>
         <a
-          className="header-link header-desktop-link
-                    header-link-2 button"
+          className="header-link header-desktop-link header-link-2 button"
           href="link-2/"
           key="link-2/"
           rel="noreferrer noopener"
@@ -133,8 +131,7 @@ exports[`<Header /> rendering should render sticky msg and close it on clicking 
       className="display-none header-mobile-menu"
     >
       <a
-        className="header-link mobile-link
-                      header-link-1 button"
+        className="header-link mobile-link header-link-1 button"
         href="link-1/"
         key="link-1/"
         rel="noreferrer noopener"
@@ -143,8 +140,7 @@ exports[`<Header /> rendering should render sticky msg and close it on clicking 
         link-1
       </a>
       <a
-        className="header-link mobile-link
-                      header-link-2 button"
+        className="header-link mobile-link header-link-2 button"
         href="link-2/"
         key="link-2/"
         rel="noreferrer noopener"
@@ -259,8 +255,7 @@ exports[`<Header /> rendering should render with links 1`] = `
         className="header-row-2-inner"
       >
         <a
-          className="header-link header-desktop-link
-                    header-link-1 button"
+          className="header-link header-desktop-link header-link-1 button"
           href="link-1/"
           rel="noreferrer noopener"
           target="_blank"
@@ -268,8 +263,7 @@ exports[`<Header /> rendering should render with links 1`] = `
           link-1
         </a>
         <a
-          className="header-link header-desktop-link
-                    header-link-2 button"
+          className="header-link header-desktop-link header-link-2 button"
           href="link-2/"
           rel="noreferrer noopener"
           target="_blank"
@@ -334,8 +328,7 @@ exports[`<Header /> rendering should render with links 1`] = `
       className="display-none header-mobile-menu"
     >
       <a
-        className="header-link mobile-link
-                      header-link-1 button"
+        className="header-link mobile-link header-link-1 button"
         href="link-1/"
         rel="noreferrer noopener"
         target="_blank"
@@ -343,8 +336,7 @@ exports[`<Header /> rendering should render with links 1`] = `
         link-1
       </a>
       <a
-        className="header-link mobile-link
-                      header-link-2 button"
+        className="header-link mobile-link header-link-2 button"
         href="link-2/"
         rel="noreferrer noopener"
         target="_blank"
@@ -565,8 +557,7 @@ exports[`<Header /> rendering with placeholder translation tags should render tr
         className="header-row-2-inner"
       >
         <a
-          className="header-link header-desktop-link
-                    header-link-1 button"
+          className="header-link header-desktop-link header-link-1 button"
           href="/{orgSlug}/login"
           key="/{orgSlug}/login"
           rel="noreferrer noopener"
@@ -575,8 +566,7 @@ exports[`<Header /> rendering with placeholder translation tags should render tr
           Sign In
         </a>
         <a
-          className="header-link header-desktop-link
-                    header-link-2 button"
+          className="header-link header-desktop-link header-link-2 button"
           href="/{orgSlug}/registration"
           key="/{orgSlug}/registration"
           rel="noreferrer noopener"
@@ -641,8 +631,7 @@ exports[`<Header /> rendering with placeholder translation tags should render tr
       className="display-none header-mobile-menu"
     >
       <a
-        className="header-link mobile-link
-                      header-link-1 button"
+        className="header-link mobile-link header-link-1 button"
         href="/{orgSlug}/login"
         key="/{orgSlug}/login"
         rel="noreferrer noopener"
@@ -651,8 +640,7 @@ exports[`<Header /> rendering with placeholder translation tags should render tr
         Sign In
       </a>
       <a
-        className="header-link mobile-link
-                      header-link-2 button"
+        className="header-link mobile-link header-link-2 button"
         href="/{orgSlug}/registration"
         key="/{orgSlug}/registration"
         rel="noreferrer noopener"
