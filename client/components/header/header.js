@@ -113,8 +113,6 @@ export default class Header extends React.Component {
       userData,
     } = this.props;
     const {logo, links, second_logo: secondLogo} = header;
-    const {pathname} = location;
-    const internalLinks = [`/${orgSlug}/login`, `/${orgSlug}/registration`];
     return (
       <>
         <div className="header-container header-desktop">
@@ -165,36 +163,9 @@ export default class Header extends React.Component {
           <div className="header-row-2">
             <div className="header-row-2-inner">
               {links &&
-                links.map((link, index) => {
-                  if (!shouldLinkBeShown(link, isAuthenticated, userData)) {
-                    return null;
-                  }
-                  if (
-                    isInternalLink(link.url) &&
-                    (internalLinks.indexOf(link.url) < 0 || !isAuthenticated)
-                  ) {
-                    return (
-                      <Link
-                        className={`header-link header-desktop-link header-link-${index + 1} ${pathname === link.url.replace("{orgSlug}", orgSlug) ? "active" : ""} button`}
-                        to={link.url.replace("{orgSlug}", orgSlug)}
-                        key={index}
-                      >
-                        {getText(link.text, language)}
-                      </Link>
-                    );
-                  }
-                  return (
-                    <a
-                      href={link.url}
-                      className={`header-link header-desktop-link header-link-${index + 1} button`}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      key={link.url}
-                    >
-                      {getText(link.text, language)}
-                    </a>
-                  );
-                })}
+                links.map((link, index) =>
+                  this.renderLinkItem(link, index, false),
+                )}
             </div>
           </div>
         </div>
