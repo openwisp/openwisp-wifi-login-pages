@@ -108,9 +108,6 @@ export default class Header extends React.Component {
       language,
       orgSlug,
       setLanguage,
-      location,
-      isAuthenticated,
-      userData,
     } = this.props;
     const {logo, links, second_logo: secondLogo} = header;
     return (
