@@ -13,6 +13,8 @@ const os = require("os");
 const webpack = require("webpack");
 const acorn = require("acorn");
 const {execSync} = require("child_process");
+// eslint-disable-next-line import/no-dynamic-require
+const webpackConfigFn = require("../webpack.config");
 
 const CURRENT_WORKING_DIR = path.resolve(__dirname, "../..");
 
@@ -34,69 +36,75 @@ describe("ES5 compliance", () => {
     }
   });
 
-  it("production build output contains only ES5-compatible syntax", (done) => {
-    // Load the webpack config with production mode.
-    // Suppress expected warnings: setup.js warns about missing markdown
-    // files in the default org config, and webpack.config.js warns when
-    // SERVER env var is not set. Both are harmless in a test context.
-    const warn = console.warn;
-    console.warn = () => {};
-    let config;
-    try {
-      const configFn = require("../webpack.config.js");
-      config = configFn({}, {mode: "production"});
-    } finally {
-      console.warn = warn;
-    }
-    // Override output path to use temp directory
-    config.output.path = tmpDir;
-    // Disable persistent cache for isolated test builds
-    config.cache = false;
-    // Disable compression plugins to speed up the test
-    config.plugins = config.plugins.filter(
-      (p) =>
-        p.constructor.name !== "CompressionPlugin" &&
-        p.constructor.name !== "BrotliPlugin",
-    );
-
-    webpack(config, (err, stats) => {
-      if (err) {
-        done(err);
-        return;
-      }
-      if (stats.hasErrors()) {
-        done(new Error(stats.compilation.errors.join("\n")));
-        return;
-      }
-      // Find all .js files in the output directory
-      const jsFiles = fs.readdirSync(tmpDir).filter((f) => f.endsWith(".js"));
-      expect(jsFiles.length).toBeGreaterThan(0);
-      const failures = [];
-      for (const file of jsFiles) {
-        const filePath = path.join(tmpDir, file);
-        const code = fs.readFileSync(filePath, "utf-8");
+  it(
+    "production build output contains only ES5-compatible syntax",
+    () =>
+      new Promise((resolve, reject) => {
+        // Load the webpack config with production mode.
+        // Suppress expected warnings: setup.js warns about missing markdown
+        // files in the default org config, and webpack.config.js warns when
+        // SERVER env var is not set. Both are harmless in a test context.
+        const {warn} = console;
+        console.warn = () => {};
+        let config;
         try {
-          acorn.parse(code, {ecmaVersion: 5, sourceType: "script"});
-        } catch (parseErr) {
-          const pos = parseErr.pos || 0;
-          const context = code.substring(
-            Math.max(0, pos - 100),
-            Math.min(code.length, pos + 100),
-          );
-          failures.push(
-            `${file}: ${parseErr.message}\n  context: ...${context}...`,
-          );
+          config = webpackConfigFn({}, {mode: "production"});
+        } finally {
+          console.warn = warn;
         }
-      }
-      if (failures.length > 0) {
-        done(
-          new Error(
-            `The following files contain syntax newer than ES5:\n${failures.join("\n")}`,
-          ),
+        // Override output path to use temp directory
+        config.output.path = tmpDir;
+        // Disable persistent cache for isolated test builds
+        config.cache = false;
+        // Disable compression plugins to speed up the test
+        config.plugins = config.plugins.filter(
+          (p) =>
+            p.constructor.name !== "CompressionPlugin" &&
+            p.constructor.name !== "BrotliPlugin",
         );
-        return;
-      }
-      done();
-    });
-  }, 120000);
+
+        webpack(config, (err, stats) => {
+          if (err) {
+            reject(err);
+            return;
+          }
+          if (stats.hasErrors()) {
+            reject(new Error(stats.compilation.errors.join("\n")));
+            return;
+          }
+          // Find all .js files in the output directory
+          const jsFiles = fs
+            .readdirSync(tmpDir)
+            .filter((f) => f.endsWith(".js"));
+          expect(jsFiles.length).toBeGreaterThan(0);
+          const failures = [];
+          jsFiles.forEach((file) => {
+            const filePath = path.join(tmpDir, file);
+            const code = fs.readFileSync(filePath, "utf-8");
+            try {
+              acorn.parse(code, {ecmaVersion: 5, sourceType: "script"});
+            } catch (parseErr) {
+              const pos = parseErr.pos || 0;
+              const context = code.substring(
+                Math.max(0, pos - 100),
+                Math.min(code.length, pos + 100),
+              );
+              failures.push(
+                `${file}: ${parseErr.message}\n  context: ...${context}...`,
+              );
+            }
+          });
+          if (failures.length > 0) {
+            reject(
+              new Error(
+                `The following files contain syntax newer than ES5:\n${failures.join("\n")}`,
+              ),
+            );
+            return;
+          }
+          resolve();
+        });
+      }),
+    120000,
+  );
 });
