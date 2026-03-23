@@ -1,3 +1,5 @@
+const browserTargets = require("./config/babel-browsers");
+
 module.exports = (api) => {
   // When called by webpack's babel-loader, api.caller() returns
   // { name: "babel-loader", ... }. Jest uses babel-jest which
@@ -9,7 +11,7 @@ module.exports = (api) => {
     presets: [
       [
         "@babel/preset-env",
-        isWebpack ? {targets: {ie: "11"}} : {targets: {node: "current"}},
+        isWebpack ? {targets: browserTargets} : {targets: {node: "current"}},
       ],
       "@babel/preset-react",
     ],
