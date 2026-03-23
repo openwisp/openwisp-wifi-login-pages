@@ -40,18 +40,9 @@ describe("ES5 compliance", () => {
     "production build output contains only ES5-compatible syntax",
     () =>
       new Promise((resolve, reject) => {
-        // Load the webpack config with production mode.
-        // Suppress expected warnings: setup.js warns about missing markdown
-        // files in the default org config, and webpack.config.js warns when
-        // SERVER env var is not set. Both are harmless in a test context.
-        const {warn} = console;
-        console.warn = () => {};
-        let config;
-        try {
-          config = webpackConfigFn({}, {mode: "production"});
-        } finally {
-          console.warn = warn;
-        }
+        // Set SERVER to avoid "No server url specified" warning from webpack.config.js
+        process.env.SERVER = process.env.SERVER || "3030";
+        const config = webpackConfigFn({}, {mode: "production"});
         // Override output path to use temp directory
         config.output.path = tmpDir;
         // Disable persistent cache for isolated test builds
@@ -74,7 +65,7 @@ describe("ES5 compliance", () => {
           }
           // Find all .js files in the output directory
           const jsFiles = fs
-            .readdirSync(tmpDir)
+            .readdirSync(tmpDir, {recursive: true})
             .filter((f) => f.endsWith(".js"));
           expect(jsFiles.length).toBeGreaterThan(0);
           const failures = [];
