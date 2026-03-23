@@ -137,6 +137,21 @@ module.exports = (env, argv) => {
           use: ["babel-loader"],
         },
         {
+          test: /\.m?jsx?$/,
+          include: /node_modules/,
+          use: [
+            {
+              loader: "babel-loader",
+              options: {
+                configFile: false,
+                presets: [
+                  ["@babel/preset-env", {targets: {ie: "11"}, modules: false}],
+                ],
+              },
+            },
+          ],
+        },
+        {
           test: /\.css$/,
           use: cssLoaders,
         },
