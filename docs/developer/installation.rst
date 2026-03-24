@@ -147,4 +147,6 @@ can finally run the browser based tests:
 
     export OPENWISP_RADIUS_PATH=<PATH_TO_OPENWISP_RADIUS_DIRECTORY>
     # enable python virtual environment if needed
+    SELENIUM_HEADLESS=1 yarn browser-test
+    # run in GUI mode, useful for debugging test failures
     yarn browser-test

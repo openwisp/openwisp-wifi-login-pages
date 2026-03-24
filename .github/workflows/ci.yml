@@ -147,6 +147,8 @@ jobs:
           yarn coverage
 
       - name: Browser Tests
+        env:
+          SELENIUM_HEADLESS: "1"
         run: |
           export OPENWISP_RADIUS_PATH=$(pwd)/openwisp-radius
           yarn browser-test

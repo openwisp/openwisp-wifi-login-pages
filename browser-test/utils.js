@@ -21,11 +21,17 @@ export const executeCommand = (command, argv) => {
   }
 };
 
-export const getDriver = async () =>
-  new Builder()
+export const getDriver = async () => {
+  const options = new firefox.Options();
+  return new Builder()
     .forBrowser("firefox")
-    .setFirefoxOptions(new firefox.Options().addArguments("-headless"))
+    .setFirefoxOptions(
+      process.env.SELENIUM_HEADLESS === "0"
+        ? options
+        : options.addArguments("-headless"),
+    )
     .build();
+};
 
 export const getElementByCss = async (driver, css) => {
   let el;
