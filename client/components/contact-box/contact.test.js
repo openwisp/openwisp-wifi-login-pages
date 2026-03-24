@@ -14,7 +14,7 @@ const links = [
   {
     alt: {en: "X"},
     icon: "X.svg",
-    url: "https://X.com/openwisp",
+    url: "https://x.com/openwisp",
     authenticated: true,
     css: "X",
   },
