@@ -45,6 +45,7 @@ User = get_user_model()
 Organization = load_model("openwisp_users", "Organization")
 OrganizationUser = load_model("openwisp_users", "OrganizationUser")
 OrganizationRadiusSettings = load_model("openwisp_radius", "OrganizationRadiusSettings")
+RadiusAccounting = load_model("openwisp_radius", "RadiusAccounting")
 RegisteredUser = load_model("openwisp_radius", "RegisteredUser")
 
 test_data = load_test_data()
@@ -52,8 +53,17 @@ test_user_email = test_data["testuser"]["email"]
 test_user_password = test_data["testuser"]["password"]
 test_user_organization = test_data["testuser"]["organization"]
 
+# Clean up any leftover data from previously interrupted test runs
+# to prevent UNIQUE constraint errors on subsequent runs.
+mobile_data = test_data["mobileVerificationTestUser"]
+User.objects.filter(username=test_user_email).delete()
+User.objects.filter(username=test_data["expiredPasswordUser"]["email"]).delete()
+User.objects.filter(username=mobile_data["phoneNumber"]).delete()
+User.objects.filter(username=mobile_data["changePhoneNumber"]).delete()
+Organization.objects.filter(name=mobile_data["organization"]).delete()
+RadiusAccounting.objects.filter(username=test_user_email).delete()
+
 if registration_tests:
-    User.objects.filter(username=test_user_email).delete()
     sys.exit(0)
 
 if create_mobile_verification_org:
