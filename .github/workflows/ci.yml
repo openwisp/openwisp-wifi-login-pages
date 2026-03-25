@@ -93,6 +93,9 @@ jobs:
       - name: Tests
         run: yarn coverage
 
+      - name: ES5 Compliance Test
+        run: yarn test-es5
+
       # all the steps below are needed to run selenium browser tests
 
       - name: Set up Python
