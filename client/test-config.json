@@ -51,6 +51,11 @@
         "logout_by_session": true,
         "wait_after": 3000
       },
+      "captive_portal_api": {
+        "enabled": false,
+        "url": null,
+        "timeout": 2
+      },
       "registration_form": {
         "input_fields": {
           "username": {

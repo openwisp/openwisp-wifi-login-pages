@@ -111,6 +111,32 @@ const prompts = [
   },
   {
     type: "confirm",
+    name: "captive_portal_api_enabled",
+    message:
+      "Do you want to enable optional captive portal API support (RFC 8908 compatible)?",
+    default: false,
+  },
+  {
+    type: "input",
+    name: "captive_portal_api_url",
+    default: "",
+    message:
+      "What is the captive portal API URL? Leave empty to keep it disabled.",
+  },
+  {
+    type: "input",
+    name: "captive_portal_api_timeout",
+    default: "2",
+    message: "Captive portal API timeout in seconds?",
+    validate: (value) => {
+      if (/^\d+(\.\d+)?$/.test(value) && Number(value) > 0) {
+        return true;
+      }
+      return "Timeout must be a positive number";
+    },
+  },
+  {
+    type: "confirm",
     name: "remember_me",
     message: "Do you want to support automatic logins (remember me checkbox)?",
     default: true,
@@ -233,6 +259,9 @@ const createConfigurationWithoutPrompts = (passedData) => {
     "login_action_url",
     "logout_action_url",
     "logout_by_session_ID",
+    "captive_portal_api_enabled",
+    "captive_portal_api_url",
+    "captive_portal_api_timeout",
     "remember_me",
     "openwisp_radius_url",
     "assets_confirm",

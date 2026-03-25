@@ -8,6 +8,11 @@ the captive portal, which is usually inaccessible from the public
 internet. If your infrastructure has such a configuration then, follow the
 below instructions to avoid hanging of authentication flow.
 
+If your captive portal exposes an API compatible with :rfc:`8908`, you can
+also enable :ref:`wlp_captive_portal_api` to detect captive status directly.
+When this optional API is disabled, unavailable, or unsupported, WiFi Login
+Pages will keep using the postMessage-based method documented below.
+
 Create a small web application which can serve the endpoints entered in
 ``captive_portal_login_form.action`` and
 ``captive_portal_logout_form.action`` of organization configuration.

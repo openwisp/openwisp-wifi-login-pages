@@ -70,6 +70,7 @@ export default class Status extends React.Component {
     };
     this.repeatLogin = false;
     this.isComponentMounted = true;
+    this.internetModeByCaptivePortalApi = false;
     this.getUserRadiusSessions = this.getUserRadiusSessions.bind(this);
     this.getUserRadiusUsage = this.getUserRadiusUsage.bind(this);
     this.getPlansSuccessCallback = this.getPlansSuccessCallback.bind(this);
@@ -96,6 +97,7 @@ export default class Status extends React.Component {
       orgSlug,
       settings,
       setUserData,
+      setInternetMode,
       logout,
       setTitle,
       orgName,
@@ -209,6 +211,13 @@ export default class Status extends React.Component {
         return;
       }
 
+      const captivePortalLoginRequired =
+        await this.getCaptivePortalLoginRequired();
+      if (captivePortalLoginRequired === false) {
+        this.internetModeByCaptivePortalApi = true;
+        setInternetMode(true);
+      }
+
       if (mustLogout) {
         if (captivePortalSyncAuth) {
           // In synchronous captive portal authentication, the page reloads
@@ -226,7 +235,14 @@ export default class Status extends React.Component {
       if (method === "bank_card" && isVerified === false) {
         shouldLogin = shouldLogin && settings.payment_requires_internet;
       }
-      if (this.loginFormRef && this.loginFormRef.current && shouldLogin) {
+      if (shouldLogin && captivePortalLoginRequired === false) {
+        this.finalOperations();
+      } else if (
+        this.loginFormRef &&
+        this.loginFormRef.current &&
+        shouldLogin &&
+        captivePortalLoginRequired !== false
+      ) {
         this.storeValue(
           captivePortalSyncAuth,
           `${orgSlug}_mustLogin`,
@@ -238,7 +254,7 @@ export default class Status extends React.Component {
       } else if (!shouldLogin) {
         // If the user is already logged in, we need to handle the
         // the response from the captive portal.
-        if (captivePortalSyncAuth) {
+        if (captivePortalSyncAuth && captivePortalLoginRequired !== false) {
           this.handleLogin();
         }
         this.finalOperations();
@@ -268,6 +284,8 @@ export default class Status extends React.Component {
       statusPage,
       internetMode,
     } = this.props;
+    const effectiveInternetMode =
+      internetMode || this.internetModeByCaptivePortalApi;
     const {setLoading} = this.context;
     // if the user needs bank card verification,
     // redirect to payment page and stop here
@@ -311,7 +329,7 @@ export default class Status extends React.Component {
       this.logoutIfCurrentRadiusSessionIsInactive();
     }, 60000);
     // We don't show radius usage in the internet mode.
-    if (statusPage.radius_usage_enabled && !internetMode) {
+    if (statusPage.radius_usage_enabled && !effectiveInternetMode) {
       await this.getUserRadiusUsage();
       this.usageIntervalId = setInterval(() => {
         this.getUserRadiusUsage();
@@ -567,6 +585,8 @@ export default class Status extends React.Component {
       internetMode,
       captivePortalSyncAuth,
     } = this.props;
+    const effectiveInternetMode =
+      internetMode || this.internetModeByCaptivePortalApi;
     const macaddr = cookies.get(`${orgSlug}_macaddr`);
     const params = {calling_station_id: macaddr};
     localStorage.setItem("userAutoLogin", String(userAutoLogin));
@@ -581,7 +601,7 @@ export default class Status extends React.Component {
         } else {
           this.repeatLogin = true;
         }
-        if (!internetMode) {
+        if (!effectiveInternetMode) {
           this.storeValue(
             captivePortalSyncAuth,
             `${orgSlug}_mustLogout`,
@@ -601,6 +621,53 @@ export default class Status extends React.Component {
     logout(cookies, orgSlug, userAutoLogin);
     setLoading(false);
     toast[toastLevel](toastMessage);
+  };
+
+  getCaptivePortalLoginRequired = async () => {
+    const {captivePortalApi} = this.props;
+    if (!captivePortalApi?.enabled || !captivePortalApi.url) {
+      return null;
+    }
+
+    if (typeof fetch === "undefined") {
+      return null;
+    }
+
+    let timeoutId;
+    let controller;
+    const timeout = Number(captivePortalApi.timeout) || 2;
+    const timeoutMs = Math.max(timeout * 1000, 100);
+
+    try {
+      const options = {
+        method: "GET",
+        headers: {
+          Accept: "application/captive+json, application/json",
+        },
+      };
+      if (typeof AbortController !== "undefined") {
+        controller = new AbortController();
+        options.signal = controller.signal;
+        timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+      }
+
+      const response = await fetch(captivePortalApi.url, options);
+      if (!response.ok) {
+        return null;
+      }
+
+      const payload = await response.json();
+      if (typeof payload.captive === "boolean") {
+        return payload.captive;
+      }
+
+      return null;
+    } catch (error) {
+      logError(error, "Captive portal API detection failed");
+      return null;
+    } finally {
+      clearTimeout(timeoutId);
+    }
   };
 
   /*
@@ -1539,6 +1606,11 @@ Status.propTypes = {
   cookies: PropTypes.instanceOf(Cookies).isRequired,
   logout: PropTypes.func.isRequired,
   captivePortalSyncAuth: PropTypes.bool.isRequired,
+  captivePortalApi: PropTypes.shape({
+    enabled: PropTypes.bool,
+    url: PropTypes.string,
+    timeout: PropTypes.number,
+  }).isRequired,
   captivePortalLoginForm: PropTypes.shape({
     method: PropTypes.string,
     action: PropTypes.string,
