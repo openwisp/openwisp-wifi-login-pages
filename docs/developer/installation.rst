@@ -149,4 +149,4 @@ can finally run the browser based tests:
     # enable python virtual environment if needed
     SELENIUM_HEADLESS=1 yarn browser-test
     # run in GUI mode, useful for debugging test failures
-    yarn browser-test
+    SELENIUM_HEADLESS=0 yarn browser-test

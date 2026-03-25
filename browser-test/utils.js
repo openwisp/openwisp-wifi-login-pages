@@ -26,9 +26,9 @@ export const getDriver = async () => {
   return new Builder()
     .forBrowser("firefox")
     .setFirefoxOptions(
-      process.env.SELENIUM_HEADLESS === "0"
-        ? options
-        : options.addArguments("-headless"),
+      process.env.SELENIUM_HEADLESS === "1"
+        ? options.addArguments("-headless")
+        : options,
     )
     .build();
 };
