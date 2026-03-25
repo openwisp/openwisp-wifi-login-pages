@@ -124,6 +124,38 @@ browsers may fail to detect successful login when this method is used.
 Set ``captive_portal_sync_auth`` to ``true`` to submit the login form
 synchronously and trigger a full page reload upon authentication:
 
+.. _wlp_captive_portal_api:
+
+``captive_portal_api``
+~~~~~~~~~~~~~~~~~~~~~~
+
+This optional configuration enables support for captive portal APIs
+compatible with :rfc:`8908`. The feature is disabled by default and must
+be enabled per organization.
+
+When enabled, WiFi Login Pages will query the configured API endpoint to
+determine whether captive portal login is still required.
+
+- If the API returns ``{"captive": false}``, WiFi Login Pages enables
+  internet-mode behavior and skips captive portal form submission.
+- If the API is unavailable, unsupported, or times out, WiFi Login Pages
+  automatically falls back to the existing internet-mode detection flow.
+
+Example:
+
+.. code-block:: yaml
+
+    captive_portal_api:
+      enabled: true
+      url: https://captive.example.com/.well-known/captive-portal
+      timeout: 2
+
+Field reference:
+
+- ``enabled``: boolean, default ``false``.
+- ``url``: API endpoint URL (per organization).
+- ``timeout``: request timeout in seconds, default ``2``.
+
 Status Page Settings
 --------------------
 

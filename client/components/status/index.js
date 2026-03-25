@@ -20,6 +20,11 @@ export const mapStateToProps = (state, ownProps) => {
     captivePortalLoginForm: conf.components.captive_portal_login_form,
     captivePortalLogoutForm: conf.components.captive_portal_logout_form,
     captivePortalSyncAuth: conf.components.captive_portal_sync_auth,
+    captivePortalApi: conf.components.captive_portal_api || {
+      enabled: false,
+      url: null,
+      timeout: 2,
+    },
     isAuthenticated: conf.isAuthenticated,
     cookies: ownProps.cookies,
     language: state.language,

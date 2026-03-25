@@ -70,6 +70,11 @@ const createTestProps = (props) => ({
     ...defaultConfig.components.captive_portal_logout_form,
   },
   captivePortalSyncAuth: false,
+  captivePortalApi: {
+    enabled: false,
+    url: null,
+    timeout: 2,
+  },
   location: {
     search: "?macaddr=4e:ed:11:2b:17:ae",
   },
@@ -153,6 +158,9 @@ describe("<Status /> rendering", () => {
 
   it("should mapStateToProps and mapDispatchToProps on rendering", () => {
     const state = {
+      language: "en",
+      internetMode: false,
+      planExhausted: false,
       organization: {
         configuration: defaultConfig,
       },
@@ -171,10 +179,17 @@ describe("<Status /> rendering", () => {
         defaultConfig.components.captive_portal_login_form,
       captivePortalLogoutForm:
         defaultConfig.components.captive_portal_logout_form,
-      captivePortalSyncAuth: defaultConfig.captive_portal_sync_auth,
+      captivePortalSyncAuth: defaultConfig.components.captive_portal_sync_auth,
+      captivePortalApi: defaultConfig.components.captive_portal_api || {
+        enabled: false,
+        url: null,
+        timeout: 2,
+      },
       isAuthenticated: defaultConfig.isAuthenticated,
       cookies: ownProps.cookies,
-      language: defaultConfig.language,
+      language: state.language,
+      internetMode: state.internetMode,
+      planExhausted: state.planExhausted,
       defaultLanguage: defaultConfig.default_language,
     });
     const dispatch = jest.fn();
@@ -260,6 +275,43 @@ describe("<Status /> interactions", () => {
     expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith(
       initialState.userData,
     );
+  });
+
+  it("should skip captive portal API detection when feature is disabled", async () => {
+    props = createTestProps();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+
+    const result = await wrapper.instance().getCaptivePortalLoginRequired();
+
+    expect(result).toBe(null);
+  });
+
+  it("should return captive portal status from captive portal API", async () => {
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({captive: false}),
+      }),
+    );
+    props = createTestProps({
+      captivePortalApi: {
+        enabled: true,
+        url: "https://portal.example.com/.well-known/captive-portal",
+        timeout: 2,
+      },
+    });
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+
+    const result = await wrapper.instance().getCaptivePortalLoginRequired();
+
+    expect(result).toBe(false);
+    expect(global.fetch).toHaveBeenCalledTimes(1);
   });
 
   it("test componentDidMount lifecycle method", async () => {
