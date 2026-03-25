@@ -124,15 +124,9 @@
     "coverage": "jest --coverage --testPathIgnorePatterns=/browser-test/",
     "coveralls": "test -f ./coverage/lcov.info && cat ./coverage/lcov.info | coveralls || echo 'no coverage file found'",
     "add-org": "node config/add-org.js",
-<<<<<<< HEAD
-    "server": "npm run setup && nodemon server/start.js",
-    "setup": "node config/setup.js && node config/build-translations.js && node config/build-test-translation.js",
-    "start": "concurrently \"npm run server\" \"npm run client\"",
-=======
     "server": "yarn setup && nodemon server/start.js",
     "setup": "node config/setup.js && node config/build-translations.js",
     "start": "concurrently \"yarn server\" \"yarn client\"",
->>>>>>> 6719314 ([chores] Switched from npm to yarn in package.json scripts)
     "lint": "eslint '**/*.{js,jsx}' --quiet",
     "lint:fix": "eslint '**/*.{js,jsx}' --fix",
     "format": "prettier --write \"**/*.+(js|jsx|json|css|md)\"",
