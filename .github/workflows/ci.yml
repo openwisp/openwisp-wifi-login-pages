@@ -86,12 +86,13 @@ jobs:
       - name: Installing dependencies
         run: |
           yarn install
-          yarn setup
           sudo apt update -qq
           sudo apt install -qq -y libssl-dev libffi-dev
 
       - name: Tests
-        run: yarn coverage
+        run: |
+          yarn build-dev
+          yarn coverage
 
       - name: ES5 Compliance Test
         run: yarn test-es5
@@ -135,9 +136,6 @@ jobs:
 
       - name: Creating configuration of organization (supports mobile verification)
         run: node browser-test/create-mobile-configuration.js
-
-      - name: Build OpenWISP WiFi Login Pages
-        run: yarn build-dev
 
       - name: Run OpenWISP WiFi Login Pages dev server
         run: yarn start &
