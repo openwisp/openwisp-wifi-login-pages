@@ -73,10 +73,10 @@ Run tests with:
 ES5 Compliance Test
 -------------------
 
-Verifies the production webpack build outputs only ES5-compatible JavaScript
-for compatibility with old browsers. Not included in ``yarn test`` because it
-is slow (runs a full production build). It runs automatically in CI. To run
-it locally:
+Verifies the production webpack build outputs only ES5-compatible
+JavaScript for compatibility with old browsers. Not included in ``yarn
+test`` because it is slow (runs a full production build). It runs
+automatically in CI. To run it locally:
 
 .. code-block:: shell
 
