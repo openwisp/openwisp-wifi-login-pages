@@ -695,7 +695,10 @@ describe("handle-change tests", () => {
     const historyMock = createMemoryHistory();
     const navigate = jest.fn();
     const wrapper = shallow(
-      <Router history={historyMock}>
+      <Router
+        history={historyMock}
+        future={{v7_startTransition: true, v7_relativeSplatPath: true}}
+      >
         <button
           type="submit"
           onClick={() => redirectToPayment("default", navigate)}
