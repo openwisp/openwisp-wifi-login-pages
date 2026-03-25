@@ -54,7 +54,7 @@ Install the dependencies:
 
 .. code-block:: shell
 
-    yarn
+    yarn install
 
 Launch development server:
 
@@ -68,10 +68,6 @@ Run tests with:
 
 .. code-block::
 
-    # ensure dev server is started, eg:
-    yarn start &
-
-    # run tests
     yarn test
 
 ESM Support in Jest

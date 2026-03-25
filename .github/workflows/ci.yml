@@ -90,6 +90,11 @@ jobs:
           sudo apt update -qq
           sudo apt install -qq -y libssl-dev libffi-dev
 
+      - name: Tests
+        run: yarn coverage
+
+      # all the steps below are needed to run selenium browser tests
+
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -116,7 +121,7 @@ jobs:
           cd openwisp-radius
           docker compose up -d redis
 
-      - name: Installing OpenWISP Radius
+      - name: Installing OpenWISP RADIUS
         run: |
           cd openwisp-radius
           pip install -U pip setuptools wheel
@@ -131,26 +136,22 @@ jobs:
       - name: Build OpenWISP WiFi Login Pages
         run: yarn build-dev
 
-      - name: Running OpenWISP WiFi Login Pages
+      - name: Run OpenWISP WiFi Login Pages dev server
         run: yarn start &
 
-      - name: Running OpenWISP Radius
+      - name: Run OpenWISP RADIUS dev server
         run: |
           cp browser-test/local_settings.py \
              openwisp-radius/tests/openwisp2/local_settings.py
           cd openwisp-radius
           ./tests/manage.py runserver &
 
-      - name: Tests
-        run: |
-          ./browser-test/wait_for_url.sh http://0.0.0.0:8080
-          yarn coverage
-
       - name: Browser Tests
         env:
           SELENIUM_HEADLESS: "1"
         run: |
           export OPENWISP_RADIUS_PATH=$(pwd)/openwisp-radius
+          ./browser-test/wait_for_url.sh http://0.0.0.0:8080
           yarn browser-test
 
       - name: Coveralls
