@@ -14,17 +14,18 @@ languages.forEach((lang) => {
 
   lines.forEach((line) => {
     if (line.startsWith("msgid")) {
-      currentId = line.replace(/^msgid\s+"|"$|/g, '').trim();
+      currentId = line.replace(/^msgid\s+"/, '').replace(/"$/, '').trim();
     }
 
     if (line.startsWith("msgstr")) {
-        const value = line.replace(/^msgstr\s+"|"$|/g, '').trim();
+        const value = line.replace(/^msgstr\s+"/, '').replace(/"$/, '').trim();
 
       if (currentId) {
         translations[currentId] = {
           msgid: currentId,
           msgstr: [value],
         };
+        currentId = "";
       }
     }
   });
