@@ -12,9 +12,9 @@ export const getDuration = (seconds) => {
   return hDisplay + mDisplay + sDisplay;
 };
 
-export const getDateTimeFormat = (language, time_option, date) => {
+export const getDateTimeFormat = (language, timeOption, date) => {
   if (typeof Intl !== "undefined") {
-    return new Intl.DateTimeFormat(language, time_option).format(
+    return new Intl.DateTimeFormat(language, timeOption).format(
       new Date(date),
     );
   }
