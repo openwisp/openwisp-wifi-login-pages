@@ -672,3 +672,7 @@ msgstr "404 Страница не найдена.."
 #: client/components/404/404.js:37
 msgid "HOME_PG_LINK_TXT"
 msgstr "Вернись на первую страницу"
+
+#: testing
+msgid "TEST_MESSAGE"
+msgstr "Это тестовое сообщение"

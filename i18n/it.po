@@ -680,3 +680,7 @@ msgstr "Ci scusiamo, la pagina cercata non è stata trovata."
 #: client/components/404/404.js:37
 msgid "HOME_PG_LINK_TXT"
 msgstr "Torna alla prima pagina"
+
+#:testing
+msgid "TEST_MESSAGE"
+msgstr "Questo è un messaggio di prova"

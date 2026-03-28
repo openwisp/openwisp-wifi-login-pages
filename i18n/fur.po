@@ -676,3 +676,7 @@ msgstr "O domandìn scuse, la pagjine cirude no je stade cjatade."
 #: client/components/404/404.js:37
 msgid "HOME_PG_LINK_TXT"
 msgstr "Torne ae prime pagjine"
+
+#:testing
+msgid "TEST_MESSAGE"
+msgstr "This is a test message"

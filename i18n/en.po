@@ -673,3 +673,7 @@ msgstr "Sorry, we couldn't find the page you were looking for."
 #: client/components/404/404.js:37
 msgid "HOME_PG_LINK_TXT"
 msgstr "Go back to homepage"
+
+#:testing
+msgid "TEST_MESSAGE"
+msgstr "This is a test message"

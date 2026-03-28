@@ -664,3 +664,7 @@ msgstr "Oprostite, iskane strani ni bilo mogoče najti."
 #: client/components/404/404.js:37
 msgid "HOME_PG_LINK_TXT"
 msgstr "Nazaj na domačo stran"
+
+#: testing
+msgid "TEST_MESSAGE"
+msgstr "To je testno sporočilo"
