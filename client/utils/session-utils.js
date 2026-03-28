@@ -14,7 +14,9 @@ export const getDuration = (seconds) => {
 
 export const getDateTimeFormat = (language, time_option, date) => {
   if (typeof Intl !== "undefined") {
-    return new Intl.DateTimeFormat(language, time_option).format(new Date(date));
+    return new Intl.DateTimeFormat(language, time_option).format(
+      new Date(date),
+    );
   }
   return String(new Date(date));
 };
