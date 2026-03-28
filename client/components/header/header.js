@@ -77,6 +77,9 @@ export default class Header extends React.Component {
     const {pathname} = location;
     const internalLinks = [`/${orgSlug}/login`, `/${orgSlug}/registration`];
 
+    // Note: The 'header-desktop-language-btn' class is intentionally preserved here
+    // across all viewports to maintain backward compatibility with existing
+    // Selenium browser test selectors that specifically target this class name.
     const languageButtons = languages.map((lang) => (
       <button
         type="button"
@@ -106,7 +109,7 @@ export default class Header extends React.Component {
                 pathname === link.url.replace("{orgSlug}", orgSlug)
                   ? "active"
                   : ""
-              } button `}
+              } button`}
               to={link.url.replace("{orgSlug}", orgSlug)}
               key={index}
             >
