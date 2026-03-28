@@ -54,7 +54,7 @@ languages.forEach((lang) => {
 // ✅ write only once
 fs.writeFileSync(
   "client/test-translation.json",
-  JSON.stringify(allTranslations, null, 2),
+  JSON.stringify(allTranslations["en"], null, 2),
 );
 
 console.log("✅ All languages JSON generated!");
