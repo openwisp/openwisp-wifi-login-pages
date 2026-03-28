@@ -12,15 +12,11 @@
       "": {
         "ERR_OCCUR": {
           "msgid": "ERR_OCCUR",
-          "msgstr": [
-            "Error occurred!"
-          ]
+          "msgstr": ["Error occurred!"]
         },
         "PLAN_SETTING_TXT": {
           "msgid": "PLAN_SETTING_TXT",
-          "msgstr": [
-            "Please select the preferred subscription plan"
-          ]
+          "msgstr": ["Please select the preferred subscription plan"]
         },
         "INACTIVE_SESSION_LOGOUT": {
           "msgid": "INACTIVE_SESSION_LOGOUT",
@@ -30,549 +26,367 @@
         },
         "LOGOUT_SUCCESS": {
           "msgid": "LOGOUT_SUCCESS",
-          "msgstr": [
-            "Logout successful"
-          ]
+          "msgstr": ["Logout successful"]
         },
         "YES": {
           "msgid": "YES",
-          "msgstr": [
-            "Yes"
-          ]
+          "msgstr": ["Yes"]
         },
         "NO": {
           "msgid": "NO",
-          "msgstr": [
-            "No"
-          ]
+          "msgstr": ["No"]
         },
         "PWD_REVEAL": {
           "msgid": "PWD_REVEAL",
-          "msgstr": [
-            "reveal password"
-          ]
+          "msgstr": ["reveal password"]
         },
         "PWD_HIDE": {
           "msgid": "PWD_HIDE",
-          "msgstr": [
-            "hide password"
-          ]
+          "msgstr": ["hide password"]
         },
         "PRIV_POL_TITL": {
           "msgid": "PRIV_POL_TITL",
-          "msgstr": [
-            "privacy policy"
-          ]
+          "msgstr": ["privacy policy"]
         },
         "TOS_TITL": {
           "msgid": "TOS_TITL",
-          "msgstr": [
-            "terms and conditions"
-          ]
+          "msgstr": ["terms and conditions"]
         },
         "PLEASE_WAIT": {
           "msgid": "PLEASE_WAIT",
-          "msgstr": [
-            "Please wait..."
-          ]
+          "msgstr": ["Please wait..."]
         },
         "PLEASE_LOGIN": {
           "msgid": "PLEASE_LOGIN",
-          "msgstr": [
-            "Please log in"
-          ]
+          "msgstr": ["Please log in"]
         },
         "ACCT_ACTIVE": {
           "msgid": "ACCT_ACTIVE",
-          "msgstr": [
-            "session is active"
-          ]
+          "msgstr": ["session is active"]
         },
         "LOGOUT": {
           "msgid": "LOGOUT",
-          "msgstr": [
-            "Logout"
-          ]
+          "msgstr": ["Logout"]
         },
         "ACCT_START_TIME": {
           "msgid": "ACCT_START_TIME",
-          "msgstr": [
-            "Start time"
-          ]
+          "msgstr": ["Start time"]
         },
         "ACCT_STOP_TIME": {
           "msgid": "ACCT_STOP_TIME",
-          "msgstr": [
-            "Stop time"
-          ]
+          "msgstr": ["Stop time"]
         },
         "ACCT_DURATION": {
           "msgid": "ACCT_DURATION",
-          "msgstr": [
-            "Duration"
-          ]
+          "msgstr": ["Duration"]
         },
         "ACCT_DOWNLOAD": {
           "msgid": "ACCT_DOWNLOAD",
-          "msgstr": [
-            "Download"
-          ]
+          "msgstr": ["Download"]
         },
         "ACCT_UPLOAD": {
           "msgid": "ACCT_UPLOAD",
-          "msgstr": [
-            "Upload"
-          ]
+          "msgstr": ["Upload"]
         },
         "ACCT_DEVICE_ADDRESS": {
           "msgid": "ACCT_DEVICE_ADDRESS",
-          "msgstr": [
-            "Device address"
-          ]
+          "msgstr": ["Device address"]
         },
         "STATUS": {
           "msgid": "STATUS",
-          "msgstr": [
-            "Status"
-          ]
+          "msgstr": ["Status"]
         },
         "LOGGED_IN": {
           "msgid": "LOGGED_IN",
-          "msgstr": [
-            "Logged in"
-          ]
+          "msgstr": ["Logged in"]
         },
         "EMAIL": {
           "msgid": "EMAIL",
-          "msgstr": [
-            "Email"
-          ]
+          "msgstr": ["Email"]
         },
         "USERNAME": {
           "msgid": "USERNAME",
-          "msgstr": [
-            "Username"
-          ]
+          "msgstr": ["Username"]
         },
         "PHONE_NUMBER": {
           "msgid": "PHONE_NUMBER",
-          "msgstr": [
-            "Phone number"
-          ]
+          "msgstr": ["Phone number"]
         },
         "CP_LOGIN": {
           "msgid": "CP_LOGIN",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "STATUS_TITL": {
           "msgid": "STATUS_TITL",
-          "msgstr": [
-            "Status"
-          ]
+          "msgstr": ["Status"]
         },
         "PASSWORD_EXPIRED": {
           "msgid": "PASSWORD_EXPIRED",
-          "msgstr": [
-            "Your password has expired, please update it."
-          ]
+          "msgstr": ["Your password has expired, please update it."]
         },
         "PLAN_EXHAUSTED_TOAST": {
           "msgid": "PLAN_EXHAUSTED_TOAST",
-          "msgstr": [
-            "You have used all the data in your plan."
-          ]
+          "msgstr": ["You have used all the data in your plan."]
         },
         "SUCCESS_UPGRADE_PLAN": {
           "msgid": "SUCCESS_UPGRADE_PLAN",
-          "msgstr": [
-            "Plan upgrade in progress"
-          ]
+          "msgstr": ["Plan upgrade in progress"]
         },
         "STATUS_CONTENT": {
           "msgid": "STATUS_CONTENT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "TRAFFIC_EXHAUSTED": {
           "msgid": "TRAFFIC_EXHAUSTED",
-          "msgstr": [
-            "Data limit reached"
-          ]
+          "msgstr": ["Data limit reached"]
         },
         "LOGOUT_MODAL_CONTENT": {
           "msgid": "LOGOUT_MODAL_CONTENT",
-          "msgstr": [
-            "Do you want to automatically log in the next time?"
-          ]
+          "msgstr": ["Do you want to automatically log in the next time?"]
         },
         "CURRENT_SUBSCRIPTION_TXT": {
           "msgid": "CURRENT_SUBSCRIPTION_TXT",
-          "msgstr": [
-            "Current subscription:"
-          ]
+          "msgstr": ["Current subscription:"]
         },
         "USAGE_LIMIT_EXHAUSTED_TXT": {
           "msgid": "USAGE_LIMIT_EXHAUSTED_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PLAN_UPGRADE_BTN_TXT": {
           "msgid": "PLAN_UPGRADE_BTN_TXT",
-          "msgstr": [
-            "Top up"
-          ]
+          "msgstr": ["Top up"]
         },
         "PHONE_LBL": {
           "msgid": "PHONE_LBL",
-          "msgstr": [
-            "Mobile phone number"
-          ]
+          "msgstr": ["Mobile phone number"]
         },
         "PHONE_PHOLD": {
           "msgid": "PHONE_PHOLD",
-          "msgstr": [
-            "enter mobile phone number"
-          ]
+          "msgstr": ["enter mobile phone number"]
         },
         "EMAIL_PHOLD": {
           "msgid": "EMAIL_PHOLD",
-          "msgstr": [
-            "email address"
-          ]
+          "msgstr": ["email address"]
         },
         "EMAIL_PTRN_DESC": {
           "msgid": "EMAIL_PTRN_DESC",
-          "msgstr": [
-            "enter valid email address"
-          ]
+          "msgstr": ["enter valid email address"]
         },
         "USERNAME_REG_LBL": {
           "msgid": "USERNAME_REG_LBL",
-          "msgstr": [
-            "Username"
-          ]
+          "msgstr": ["Username"]
         },
         "USERNAME_REG_PHOLD": {
           "msgid": "USERNAME_REG_PHOLD",
-          "msgstr": [
-            "Username"
-          ]
+          "msgstr": ["Username"]
         },
         "USERNAME_PTRN_DESC": {
           "msgid": "USERNAME_PTRN_DESC",
-          "msgstr": [
-            "only letters, numbers and @/./+/-/_ characters"
-          ]
+          "msgstr": ["only letters, numbers and @/./+/-/_ characters"]
         },
         "FIRST_NAME_LBL": {
           "msgid": "FIRST_NAME_LBL",
-          "msgstr": [
-            "First name"
-          ]
+          "msgstr": ["First name"]
         },
         "OPTIONAL": {
           "msgid": "OPTIONAL",
-          "msgstr": [
-            "optional"
-          ]
+          "msgstr": ["optional"]
         },
         "FIRST_NAME_PHOLD": {
           "msgid": "FIRST_NAME_PHOLD",
-          "msgstr": [
-            "first name"
-          ]
+          "msgstr": ["first name"]
         },
         "LAST_NAME_LBL": {
           "msgid": "LAST_NAME_LBL",
-          "msgstr": [
-            "Last name"
-          ]
+          "msgstr": ["Last name"]
         },
         "LAST_NAME_PHOLD": {
           "msgid": "LAST_NAME_PHOLD",
-          "msgstr": [
-            "last name"
-          ]
+          "msgstr": ["last name"]
         },
         "BIRTH_DATE_LBL": {
           "msgid": "BIRTH_DATE_LBL",
-          "msgstr": [
-            "Birth date"
-          ]
+          "msgstr": ["Birth date"]
         },
         "LOCATION_LBL": {
           "msgid": "LOCATION_LBL",
-          "msgstr": [
-            "Location"
-          ]
+          "msgstr": ["Location"]
         },
         "LOCATION_PHOLD": {
           "msgid": "LOCATION_PHOLD",
-          "msgstr": [
-            "location"
-          ]
+          "msgstr": ["location"]
         },
         "LOCATION_PTRN_DESC": {
           "msgid": "LOCATION_PTRN_DESC",
-          "msgstr": [
-            "only letters, numbers, spaces, punctuation"
-          ]
+          "msgstr": ["only letters, numbers, spaces, punctuation"]
         },
         "PWD_LBL": {
           "msgid": "PWD_LBL",
-          "msgstr": [
-            "Password"
-          ]
+          "msgstr": ["Password"]
         },
         "PWD_PHOLD": {
           "msgid": "PWD_PHOLD",
-          "msgstr": [
-            "password"
-          ]
+          "msgstr": ["password"]
         },
         "PWD_PTRN_DESC": {
           "msgid": "PWD_PTRN_DESC",
-          "msgstr": [
-            "password must be a minimum of 6 characters"
-          ]
+          "msgstr": ["password must be a minimum of 6 characters"]
         },
         "CONFIRM_PWD_LBL": {
           "msgid": "CONFIRM_PWD_LBL",
-          "msgstr": [
-            "Confirm password"
-          ]
+          "msgstr": ["Confirm password"]
         },
         "CONFIRM_PWD_PHOLD": {
           "msgid": "CONFIRM_PWD_PHOLD",
-          "msgstr": [
-            "confirm password"
-          ]
+          "msgstr": ["confirm password"]
         },
         "COUNTRY_LBL": {
           "msgid": "COUNTRY_LBL",
-          "msgstr": [
-            "Country"
-          ]
+          "msgstr": ["Country"]
         },
         "CITY_LBL": {
           "msgid": "CITY_LBL",
-          "msgstr": [
-            "City"
-          ]
+          "msgstr": ["City"]
         },
         "CITY_PHOLD": {
           "msgid": "CITY_PHOLD",
-          "msgstr": [
-            "enter city"
-          ]
+          "msgstr": ["enter city"]
         },
         "STREET_LBL": {
           "msgid": "STREET_LBL",
-          "msgstr": [
-            "Street"
-          ]
+          "msgstr": ["Street"]
         },
         "STREET_PHOLD": {
           "msgid": "STREET_PHOLD",
-          "msgstr": [
-            "enter street"
-          ]
+          "msgstr": ["enter street"]
         },
         "ZIP_CODE_LBL": {
           "msgid": "ZIP_CODE_LBL",
-          "msgstr": [
-            "Postal code"
-          ]
+          "msgstr": ["Postal code"]
         },
         "TAX_NUMBER_LBL": {
           "msgid": "TAX_NUMBER_LBL",
-          "msgstr": [
-            "Tax number"
-          ]
+          "msgstr": ["Tax number"]
         },
         "TAX_NUMBER_PHOLD": {
           "msgid": "TAX_NUMBER_PHOLD",
-          "msgstr": [
-            "enter your tax identification number (optional)"
-          ]
+          "msgstr": ["enter your tax identification number (optional)"]
         },
         "TAX_NUMBER_PTRN_DESC": {
           "msgid": "TAX_NUMBER_PTRN_DESC",
-          "msgstr": [
-            "only numbers and letters"
-          ]
+          "msgstr": ["only numbers and letters"]
         },
         "REGISTER_ADD_INFO_TXT": {
           "msgid": "REGISTER_ADD_INFO_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "REGISTER_BTN_TXT": {
           "msgid": "REGISTER_BTN_TXT",
-          "msgstr": [
-            "Sign up"
-          ]
+          "msgstr": ["Sign up"]
         },
         "FORGOT_PASSWORD": {
           "msgid": "FORGOT_PASSWORD",
-          "msgstr": [
-            "Forgot your password?"
-          ]
+          "msgstr": ["Forgot your password?"]
         },
         "LINKS_LOGIN_TXT": {
           "msgid": "LINKS_LOGIN_TXT",
-          "msgstr": [
-            "Already have an account? Log in"
-          ]
+          "msgstr": ["Already have an account? Log in"]
         },
         "REGISTRATION_TITL": {
           "msgid": "REGISTRATION_TITL",
-          "msgstr": [
-            "Sign up"
-          ]
+          "msgstr": ["Sign up"]
         },
         "PWD_CNF_ERR": {
           "msgid": "PWD_CNF_ERR",
-          "msgstr": [
-            "The two password fields didn't match."
-          ]
+          "msgstr": ["The two password fields didn't match."]
         },
         "REGISTER_SUCCESS": {
           "msgid": "REGISTER_SUCCESS",
-          "msgstr": [
-            "Registration success"
-          ]
+          "msgstr": ["Registration success"]
         },
         "404_PG_TITL": {
           "msgid": "404_PG_TITL",
-          "msgstr": [
-            "404 Not found"
-          ]
+          "msgstr": ["404 Not found"]
         },
         "REGISTER_ERR": {
           "msgid": "REGISTER_ERR",
-          "msgstr": [
-            "Registration error."
-          ]
+          "msgstr": ["Registration error."]
         },
         "NO_ORGS": {
           "msgid": "NO_ORGS",
-          "msgstr": [
-            "A user with similar credentials already exists."
-          ]
+          "msgstr": ["A user with similar credentials already exists."]
         },
         "CONFLICT_ORGS": {
           "msgid": "CONFLICT_ORGS",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "CONFLICT_SIGNIN": {
           "msgid": "CONFLICT_SIGNIN",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PAY_SUCCESS": {
           "msgid": "PAY_SUCCESS",
-          "msgstr": [
-            "Payment received successfully."
-          ]
+          "msgstr": ["Payment received successfully."]
         },
         "PAY_REQ": {
           "msgid": "PAY_REQ",
-          "msgstr": [
-            "Payment required to proceed"
-          ]
+          "msgstr": ["Payment required to proceed"]
         },
         "PAY_WARN${ timeout }${ maxAttempts }": {
           "msgid": "PAY_WARN${ timeout }${ maxAttempts }",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PAY_PROC_BTN": {
           "msgid": "PAY_PROC_BTN",
-          "msgstr": [
-            "Proceed with the payment"
-          ]
+          "msgstr": ["Proceed with the payment"]
         },
         "PAY_GIVE_UP_BTN": {
           "msgid": "PAY_GIVE_UP_BTN",
-          "msgstr": [
-            "Cancel operation and log out"
-          ]
+          "msgstr": ["Cancel operation and log out"]
         },
         "PAY_FAIL": {
           "msgid": "PAY_FAIL",
-          "msgstr": [
-            "Payment Failed"
-          ]
+          "msgstr": ["Payment Failed"]
         },
         "PAY_SUB_H": {
           "msgid": "PAY_SUB_H",
-          "msgstr": [
-            "Something went wrong with the payment."
-          ]
+          "msgstr": ["Something went wrong with the payment."]
         },
         "PAY_TRY_AGAIN_BTN": {
           "msgid": "PAY_TRY_AGAIN_BTN",
-          "msgstr": [
-            "Try again"
-          ]
+          "msgstr": ["Try again"]
         },
         "PAY_GIVE_UP_TXT": {
           "msgid": "PAY_GIVE_UP_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PWD_RESET_TITL": {
           "msgid": "PWD_RESET_TITL",
-          "msgstr": [
-            "Reset Password"
-          ]
+          "msgstr": ["Reset Password"]
         },
         "LOGIN_PG_LNK": {
           "msgid": "LOGIN_PG_LNK",
-          "msgstr": [
-            "Go back to sign in"
-          ]
+          "msgstr": ["Go back to sign in"]
         },
         "PWD_RESET_ADD_TXT": {
           "msgid": "PWD_RESET_ADD_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "USERNAME_LOG_LBL": {
           "msgid": "USERNAME_LOG_LBL",
-          "msgstr": [
-            "Email, phone number or username"
-          ]
+          "msgstr": ["Email, phone number or username"]
         },
         "USERNAME_LOG_PHOLD": {
           "msgid": "USERNAME_LOG_PHOLD",
-          "msgstr": [
-            "enter email, phone number or username"
-          ]
+          "msgstr": ["enter email, phone number or username"]
         },
         "USERNAME_LOG_TITL": {
           "msgid": "USERNAME_LOG_TITL",
-          "msgstr": [
-            "enter valid email address, an username or a phone number"
-          ]
+          "msgstr": ["enter valid email address, an username or a phone number"]
         },
         "PWD_RESET_BTN": {
           "msgid": "PWD_RESET_BTN",
-          "msgstr": [
-            "Reset password"
-          ]
+          "msgstr": ["Reset password"]
         },
         "PWD_RESET_CNTC_TXT": {
           "msgid": "PWD_RESET_CNTC_TXT",
@@ -582,33 +396,23 @@
         },
         "PWD_CONFIRM_TITL": {
           "msgid": "PWD_CONFIRM_TITL",
-          "msgstr": [
-            "Reset Password"
-          ]
+          "msgstr": ["Reset Password"]
         },
         "PWD_CONFIRM_H": {
           "msgid": "PWD_CONFIRM_H",
-          "msgstr": [
-            "Reset your password"
-          ]
+          "msgstr": ["Reset your password"]
         },
         "PWD_CONFIRM_ADD_TXT": {
           "msgid": "PWD_CONFIRM_ADD_TXT",
-          "msgstr": [
-            "Please enter your new password below."
-          ]
+          "msgstr": ["Please enter your new password below."]
         },
         "PWD_CONFIRM": {
           "msgid": "PWD_CONFIRM",
-          "msgstr": [
-            "Change password"
-          ]
+          "msgstr": ["Change password"]
         },
         "PWD_CHANGE_TITL": {
           "msgid": "PWD_CHANGE_TITL",
-          "msgstr": [
-            "Change your password"
-          ]
+          "msgstr": ["Change your password"]
         },
         "PWD_CURR_ERR": {
           "msgid": "PWD_CURR_ERR",
@@ -618,225 +422,151 @@
         },
         "PWD_CHNG_ERR": {
           "msgid": "PWD_CHNG_ERR",
-          "msgstr": [
-            "An error occurred, the password has not been changed."
-          ]
+          "msgstr": ["An error occurred, the password has not been changed."]
         },
         "PWD_CHANGE_HELP_TXT": {
           "msgid": "PWD_CHANGE_HELP_TXT",
-          "msgstr": [
-            "Use the form below to change your password."
-          ]
+          "msgstr": ["Use the form below to change your password."]
         },
         "CURR_PWD_LBL": {
           "msgid": "CURR_PWD_LBL",
-          "msgstr": [
-            "Current password"
-          ]
+          "msgstr": ["Current password"]
         },
         "CURR_PWD_PHOLD": {
           "msgid": "CURR_PWD_PHOLD",
-          "msgstr": [
-            "Your current password"
-          ]
+          "msgstr": ["Your current password"]
         },
         "PWD1_LBL": {
           "msgid": "PWD1_LBL",
-          "msgstr": [
-            "New Password"
-          ]
+          "msgstr": ["New Password"]
         },
         "PWD1_PHOLD": {
           "msgid": "PWD1_PHOLD",
-          "msgstr": [
-            "Your new password"
-          ]
+          "msgstr": ["Your new password"]
         },
         "PASSWORD_CHANGE": {
           "msgid": "PASSWORD_CHANGE",
-          "msgstr": [
-            "Change Password"
-          ]
+          "msgstr": ["Change Password"]
         },
         "CANCEL": {
           "msgid": "CANCEL",
-          "msgstr": [
-            "Cancel"
-          ]
+          "msgstr": ["Cancel"]
         },
         "DEFAULT_TITL${ orgName }": {
           "msgid": "DEFAULT_TITL${ orgName }",
-          "msgstr": [
-            "Login to ${ orgName }"
-          ]
+          "msgstr": ["Login to ${ orgName }"]
         },
         "PHONE_VERIF_TITL": {
           "msgid": "PHONE_VERIF_TITL",
-          "msgstr": [
-            "Verify mobile number"
-          ]
+          "msgstr": ["Verify mobile number"]
         },
         "TOKEN_SENT": {
           "msgid": "TOKEN_SENT",
-          "msgstr": [
-            "SMS verification code sent successfully."
-          ]
+          "msgstr": ["SMS verification code sent successfully."]
         },
         "PHONE_VERIFY (${ phone_number })": {
           "msgid": "PHONE_VERIFY (${ phone_number })",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "MOBILE_CODE_PHOLD": {
           "msgid": "MOBILE_CODE_PHOLD",
-          "msgstr": [
-            "enter SMS verification code"
-          ]
+          "msgstr": ["enter SMS verification code"]
         },
         "MOBILE_CODE_TITL": {
           "msgid": "MOBILE_CODE_TITL",
-          "msgstr": [
-            "this field must be a 6 digit numeric code"
-          ]
+          "msgstr": ["this field must be a 6 digit numeric code"]
         },
         "MOBILE_PHONE_VERIFY": {
           "msgid": "MOBILE_PHONE_VERIFY",
-          "msgstr": [
-            "Submit"
-          ]
+          "msgstr": ["Submit"]
         },
         "RESEND_TOKEN_LBL": {
           "msgid": "RESEND_TOKEN_LBL",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "RESEND_TOKEN_WAIT_LBL${ seconds }": {
           "msgid": "RESEND_TOKEN_WAIT_LBL${ seconds }",
-          "msgstr": [
-            "A new SMS can be requested in ${ seconds } seconds."
-          ]
+          "msgstr": ["A new SMS can be requested in ${ seconds } seconds."]
         },
         "RESEND_TOKEN": {
           "msgid": "RESEND_TOKEN",
-          "msgstr": [
-            "Send a new verification code"
-          ]
+          "msgstr": ["Send a new verification code"]
         },
         "PHONE_CHANGE_LBL": {
           "msgid": "PHONE_CHANGE_LBL",
-          "msgstr": [
-            "Wrong phone number?"
-          ]
+          "msgstr": ["Wrong phone number?"]
         },
         "PHONE_CHANGE_BTN": {
           "msgid": "PHONE_CHANGE_BTN",
-          "msgstr": [
-            "Change your phone number"
-          ]
+          "msgstr": ["Change your phone number"]
         },
         "LOGOUT_LBL": {
           "msgid": "LOGOUT_LBL",
-          "msgstr": [
-            "If you need to cancel the process you can log out below."
-          ]
+          "msgstr": ["If you need to cancel the process you can log out below."]
         },
         "PHONE_CHANGE_TITL": {
           "msgid": "PHONE_CHANGE_TITL",
-          "msgstr": [
-            "Change mobile number"
-          ]
+          "msgstr": ["Change mobile number"]
         },
         "LOGIN_SUCCESS": {
           "msgid": "LOGIN_SUCCESS",
-          "msgstr": [
-            "Login successful"
-          ]
+          "msgstr": ["Login successful"]
         },
         "LOGOUT_CONTENT": {
           "msgid": "LOGOUT_CONTENT",
-          "msgstr": [
-            "Logout successful"
-          ]
+          "msgstr": ["Logout successful"]
         },
         "LOGIN_AGAIN": {
           "msgid": "LOGIN_AGAIN",
-          "msgstr": [
-            "Login again"
-          ]
+          "msgstr": ["Login again"]
         },
         "LOGIN": {
           "msgid": "LOGIN",
-          "msgstr": [
-            "Log in"
-          ]
+          "msgstr": ["Log in"]
         },
         "USER_INACTIVE": {
           "msgid": "USER_INACTIVE",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "LOGIN_ERR": {
           "msgid": "LOGIN_ERR",
-          "msgstr": [
-            "Login error occurred."
-          ]
+          "msgstr": ["Login error occurred."]
         },
         "REMEMBER_ME": {
           "msgid": "REMEMBER_ME",
-          "msgstr": [
-            "remember me on this device"
-          ]
+          "msgstr": ["remember me on this device"]
         },
         "LOGIN_ADD_INFO_TXT": {
           "msgid": "LOGIN_ADD_INFO_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "REGISTER_BTN_LBL": {
           "msgid": "REGISTER_BTN_LBL",
-          "msgstr": [
-            "Not registered yet?"
-          ]
+          "msgstr": ["Not registered yet?"]
         },
         "HELPDESK": {
           "msgid": "HELPDESK",
-          "msgstr": [
-            "Helpdesk"
-          ]
+          "msgstr": ["Helpdesk"]
         },
         "404_H": {
           "msgid": "404_H",
-          "msgstr": [
-            "404"
-          ]
+          "msgstr": ["404"]
         },
         "404_SUBH": {
           "msgid": "404_SUBH",
-          "msgstr": [
-            "Not Found"
-          ]
+          "msgstr": ["Not Found"]
         },
         "404_MESSAGE": {
           "msgid": "404_MESSAGE",
-          "msgstr": [
-            "Sorry, we couldn't find the page you were looking for."
-          ]
+          "msgstr": ["Sorry, we couldn't find the page you were looking for."]
         },
         "HOME_PG_LINK_TXT": {
           "msgid": "HOME_PG_LINK_TXT",
-          "msgstr": [
-            "Go back to homepage"
-          ]
+          "msgstr": ["Go back to homepage"]
         },
         "TEST_MESSAGE": {
           "msgid": "TEST_MESSAGE",
-          "msgstr": [
-            "This is a test message"
-          ]
+          "msgstr": ["This is a test message"]
         }
       }
     }
@@ -854,15 +584,11 @@
       "": {
         "ERR_OCCUR": {
           "msgid": "ERR_OCCUR",
-          "msgstr": [
-            "Es ist ein Fehler aufgetreten!"
-          ]
+          "msgstr": ["Es ist ein Fehler aufgetreten!"]
         },
         "PLAN_SETTING_TXT": {
           "msgid": "PLAN_SETTING_TXT",
-          "msgstr": [
-            "Wählen Sie die Art des Abonnements aus"
-          ]
+          "msgstr": ["Wählen Sie die Art des Abonnements aus"]
         },
         "INACTIVE_SESSION_LOGOUT": {
           "msgid": "INACTIVE_SESSION_LOGOUT",
@@ -872,153 +598,103 @@
         },
         "LOGOUT_SUCCESS": {
           "msgid": "LOGOUT_SUCCESS",
-          "msgstr": [
-            "Logout war erfolgreich"
-          ]
+          "msgstr": ["Logout war erfolgreich"]
         },
         "YES": {
           "msgid": "YES",
-          "msgstr": [
-            "Ja"
-          ]
+          "msgstr": ["Ja"]
         },
         "NO": {
           "msgid": "NO",
-          "msgstr": [
-            "Nein"
-          ]
+          "msgstr": ["Nein"]
         },
         "PWD_REVEAL": {
           "msgid": "PWD_REVEAL",
-          "msgstr": [
-            "Passwort anzeigen"
-          ]
+          "msgstr": ["Passwort anzeigen"]
         },
         "PWD_HIDE": {
           "msgid": "PWD_HIDE",
-          "msgstr": [
-            "Passwort verbergen"
-          ]
+          "msgstr": ["Passwort verbergen"]
         },
         "PRIV_POL_TITL": {
           "msgid": "PRIV_POL_TITL",
-          "msgstr": [
-            "Datenschutzbestimmungen"
-          ]
+          "msgstr": ["Datenschutzbestimmungen"]
         },
         "TOS_TITL": {
           "msgid": "TOS_TITL",
-          "msgstr": [
-            "Nutzungsbedingungen"
-          ]
+          "msgstr": ["Nutzungsbedingungen"]
         },
         "PLEASE_WAIT": {
           "msgid": "PLEASE_WAIT",
-          "msgstr": [
-            "Bitte warten..."
-          ]
+          "msgstr": ["Bitte warten..."]
         },
         "PLEASE_LOGIN": {
           "msgid": "PLEASE_LOGIN",
-          "msgstr": [
-            "Bitte loggen Sie sich ein"
-          ]
+          "msgstr": ["Bitte loggen Sie sich ein"]
         },
         "ACCT_ACTIVE": {
           "msgid": "ACCT_ACTIVE",
-          "msgstr": [
-            "Aktive Session"
-          ]
+          "msgstr": ["Aktive Session"]
         },
         "LOGOUT": {
           "msgid": "LOGOUT",
-          "msgstr": [
-            "Abmeldung"
-          ]
+          "msgstr": ["Abmeldung"]
         },
         "ACCT_START_TIME": {
           "msgid": "ACCT_START_TIME",
-          "msgstr": [
-            "Startdatum/-Uhrzeit"
-          ]
+          "msgstr": ["Startdatum/-Uhrzeit"]
         },
         "ACCT_STOP_TIME": {
           "msgid": "ACCT_STOP_TIME",
-          "msgstr": [
-            "Enddatum/-uhrzeit"
-          ]
+          "msgstr": ["Enddatum/-uhrzeit"]
         },
         "ACCT_DURATION": {
           "msgid": "ACCT_DURATION",
-          "msgstr": [
-            "Dauer"
-          ]
+          "msgstr": ["Dauer"]
         },
         "ACCT_DOWNLOAD": {
           "msgid": "ACCT_DOWNLOAD",
-          "msgstr": [
-            "Download-Verkehr"
-          ]
+          "msgstr": ["Download-Verkehr"]
         },
         "ACCT_UPLOAD": {
           "msgid": "ACCT_UPLOAD",
-          "msgstr": [
-            "Upload-Verkehr"
-          ]
+          "msgstr": ["Upload-Verkehr"]
         },
         "ACCT_DEVICE_ADDRESS": {
           "msgid": "ACCT_DEVICE_ADDRESS",
-          "msgstr": [
-            "Adresse des Geräts"
-          ]
+          "msgstr": ["Adresse des Geräts"]
         },
         "STATUS": {
           "msgid": "STATUS",
-          "msgstr": [
-            "Status"
-          ]
+          "msgstr": ["Status"]
         },
         "LOGGED_IN": {
           "msgid": "LOGGED_IN",
-          "msgstr": [
-            "Eingeloggt"
-          ]
+          "msgstr": ["Eingeloggt"]
         },
         "EMAIL": {
           "msgid": "EMAIL",
-          "msgstr": [
-            "Email"
-          ]
+          "msgstr": ["Email"]
         },
         "USERNAME": {
           "msgid": "USERNAME",
-          "msgstr": [
-            "Nutzername"
-          ]
+          "msgstr": ["Nutzername"]
         },
         "PHONE_NUMBER": {
           "msgid": "PHONE_NUMBER",
-          "msgstr": [
-            "Telefonnummer"
-          ]
+          "msgstr": ["Telefonnummer"]
         },
         "CP_LOGIN": {
           "msgid": "CP_LOGIN",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "STATUS_TITL": {
           "msgid": "STATUS_TITL",
-          "msgstr": [
-            "Status"
-          ]
+          "msgstr": ["Status"]
         },
         "PASSWORD_EXPIRED": {
           "msgid": "PASSWORD_EXPIRED",
-          "msgstr": [
-            "Ihr Passwort ist abgelaufen. Bitte aktualisieren Sie es."
-          ]
+          "msgstr": ["Ihr Passwort ist abgelaufen. Bitte aktualisieren Sie es."]
         },
         "PLAN_EXHAUSTED_TOAST": {
           "msgid": "PLAN_EXHAUSTED_TOAST",
@@ -1028,279 +704,187 @@
         },
         "SUCCESS_UPGRADE_PLAN": {
           "msgid": "SUCCESS_UPGRADE_PLAN",
-          "msgstr": [
-            "Plan-Upgrade läuft"
-          ]
+          "msgstr": ["Plan-Upgrade läuft"]
         },
         "STATUS_CONTENT": {
           "msgid": "STATUS_CONTENT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "TRAFFIC_EXHAUSTED": {
           "msgid": "TRAFFIC_EXHAUSTED",
-          "msgstr": [
-            "Der Verkehr ist erschöpft"
-          ]
+          "msgstr": ["Der Verkehr ist erschöpft"]
         },
         "LOGOUT_MODAL_CONTENT": {
           "msgid": "LOGOUT_MODAL_CONTENT",
-          "msgstr": [
-            "Automatische Authentifizierung beim nächsten Mal?"
-          ]
+          "msgstr": ["Automatische Authentifizierung beim nächsten Mal?"]
         },
         "CURRENT_SUBSCRIPTION_TXT": {
           "msgid": "CURRENT_SUBSCRIPTION_TXT",
-          "msgstr": [
-            "Aktuelles Abonnement:"
-          ]
+          "msgstr": ["Aktuelles Abonnement:"]
         },
         "USAGE_LIMIT_EXHAUSTED_TXT": {
           "msgid": "USAGE_LIMIT_EXHAUSTED_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PLAN_UPGRADE_BTN_TXT": {
           "msgid": "PLAN_UPGRADE_BTN_TXT",
-          "msgstr": [
-            "Aktualisierung"
-          ]
+          "msgstr": ["Aktualisierung"]
         },
         "PHONE_LBL": {
           "msgid": "PHONE_LBL",
-          "msgstr": [
-            "Mobilnummer"
-          ]
+          "msgstr": ["Mobilnummer"]
         },
         "PHONE_PHOLD": {
           "msgid": "PHONE_PHOLD",
-          "msgstr": [
-            "Mobiltelefonnummer"
-          ]
+          "msgstr": ["Mobiltelefonnummer"]
         },
         "EMAIL_PHOLD": {
           "msgid": "EMAIL_PHOLD",
-          "msgstr": [
-            "E-Mail-Adresse"
-          ]
+          "msgstr": ["E-Mail-Adresse"]
         },
         "EMAIL_PTRN_DESC": {
           "msgid": "EMAIL_PTRN_DESC",
-          "msgstr": [
-            "Gültige E-Mail-Adresse"
-          ]
+          "msgstr": ["Gültige E-Mail-Adresse"]
         },
         "USERNAME_REG_LBL": {
           "msgid": "USERNAME_REG_LBL",
-          "msgstr": [
-            "Nutzername"
-          ]
+          "msgstr": ["Nutzername"]
         },
         "USERNAME_REG_PHOLD": {
           "msgid": "USERNAME_REG_PHOLD",
-          "msgstr": [
-            "Nutzername"
-          ]
+          "msgstr": ["Nutzername"]
         },
         "USERNAME_PTRN_DESC": {
           "msgid": "USERNAME_PTRN_DESC",
-          "msgstr": [
-            "Nur Buchstaben, Zahlen oder Sonderzeichen @/./+/-/_"
-          ]
+          "msgstr": ["Nur Buchstaben, Zahlen oder Sonderzeichen @/./+/-/_"]
         },
         "FIRST_NAME_LBL": {
           "msgid": "FIRST_NAME_LBL",
-          "msgstr": [
-            "Name"
-          ]
+          "msgstr": ["Name"]
         },
         "OPTIONAL": {
           "msgid": "OPTIONAL",
-          "msgstr": [
-            "Optional"
-          ]
+          "msgstr": ["Optional"]
         },
         "FIRST_NAME_PHOLD": {
           "msgid": "FIRST_NAME_PHOLD",
-          "msgstr": [
-            "Name"
-          ]
+          "msgstr": ["Name"]
         },
         "LAST_NAME_LBL": {
           "msgid": "LAST_NAME_LBL",
-          "msgstr": [
-            "Familienname"
-          ]
+          "msgstr": ["Familienname"]
         },
         "LAST_NAME_PHOLD": {
           "msgid": "LAST_NAME_PHOLD",
-          "msgstr": [
-            "Familienname"
-          ]
+          "msgstr": ["Familienname"]
         },
         "BIRTH_DATE_LBL": {
           "msgid": "BIRTH_DATE_LBL",
-          "msgstr": [
-            "Geburtsdatum"
-          ]
+          "msgstr": ["Geburtsdatum"]
         },
         "LOCATION_LBL": {
           "msgid": "LOCATION_LBL",
-          "msgstr": [
-            "Adresse"
-          ]
+          "msgstr": ["Adresse"]
         },
         "LOCATION_PHOLD": {
           "msgid": "LOCATION_PHOLD",
-          "msgstr": [
-            "Adresse"
-          ]
+          "msgstr": ["Adresse"]
         },
         "LOCATION_PTRN_DESC": {
           "msgid": "LOCATION_PTRN_DESC",
-          "msgstr": [
-            "Nur Buchstaben, Zahlen, Leerzeichen und Interpunktion"
-          ]
+          "msgstr": ["Nur Buchstaben, Zahlen, Leerzeichen und Interpunktion"]
         },
         "PWD_LBL": {
           "msgid": "PWD_LBL",
-          "msgstr": [
-            "Passwort"
-          ]
+          "msgstr": ["Passwort"]
         },
         "PWD_PHOLD": {
           "msgid": "PWD_PHOLD",
-          "msgstr": [
-            "Passwort eingeben"
-          ]
+          "msgstr": ["Passwort eingeben"]
         },
         "PWD_PTRN_DESC": {
           "msgid": "PWD_PTRN_DESC",
-          "msgstr": [
-            "Das Passwort muss mindestens 6 Zeichen lang sein"
-          ]
+          "msgstr": ["Das Passwort muss mindestens 6 Zeichen lang sein"]
         },
         "CONFIRM_PWD_LBL": {
           "msgid": "CONFIRM_PWD_LBL",
-          "msgstr": [
-            "Passwort bestätigen"
-          ]
+          "msgstr": ["Passwort bestätigen"]
         },
         "CONFIRM_PWD_PHOLD": {
           "msgid": "CONFIRM_PWD_PHOLD",
-          "msgstr": [
-            "Passwort bestätigen"
-          ]
+          "msgstr": ["Passwort bestätigen"]
         },
         "COUNTRY_LBL": {
           "msgid": "COUNTRY_LBL",
-          "msgstr": [
-            "Land"
-          ]
+          "msgstr": ["Land"]
         },
         "CITY_LBL": {
           "msgid": "CITY_LBL",
-          "msgstr": [
-            "Stadt"
-          ]
+          "msgstr": ["Stadt"]
         },
         "CITY_PHOLD": {
           "msgid": "CITY_PHOLD",
-          "msgstr": [
-            "Stadt eingeben"
-          ]
+          "msgstr": ["Stadt eingeben"]
         },
         "STREET_LBL": {
           "msgid": "STREET_LBL",
-          "msgstr": [
-            "Adresse"
-          ]
+          "msgstr": ["Adresse"]
         },
         "STREET_PHOLD": {
           "msgid": "STREET_PHOLD",
-          "msgstr": [
-            "Adresse eingeben"
-          ]
+          "msgstr": ["Adresse eingeben"]
         },
         "ZIP_CODE_LBL": {
           "msgid": "ZIP_CODE_LBL",
-          "msgstr": [
-            "Postleitzahl"
-          ]
+          "msgstr": ["Postleitzahl"]
         },
         "TAX_NUMBER_LBL": {
           "msgid": "TAX_NUMBER_LBL",
-          "msgstr": [
-            "Steuernummer oder MwSt.-Nummer"
-          ]
+          "msgstr": ["Steuernummer oder MwSt.-Nummer"]
         },
         "TAX_NUMBER_PHOLD": {
           "msgid": "TAX_NUMBER_PHOLD",
-          "msgstr": [
-            "Steuernummer oder MwSt.-Nummer eingeben"
-          ]
+          "msgstr": ["Steuernummer oder MwSt.-Nummer eingeben"]
         },
         "TAX_NUMBER_PTRN_DESC": {
           "msgid": "TAX_NUMBER_PTRN_DESC",
-          "msgstr": [
-            "Nur Buchstaben und Zahlen"
-          ]
+          "msgstr": ["Nur Buchstaben und Zahlen"]
         },
         "REGISTER_ADD_INFO_TXT": {
           "msgid": "REGISTER_ADD_INFO_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "REGISTER_BTN_TXT": {
           "msgid": "REGISTER_BTN_TXT",
-          "msgstr": [
-            "Registrieren"
-          ]
+          "msgstr": ["Registrieren"]
         },
         "FORGOT_PASSWORD": {
           "msgid": "FORGOT_PASSWORD",
-          "msgstr": [
-            "Passwort vergessen?"
-          ]
+          "msgstr": ["Passwort vergessen?"]
         },
         "LINKS_LOGIN_TXT": {
           "msgid": "LINKS_LOGIN_TXT",
-          "msgstr": [
-            "Haben Sie bereits einen Account? Loggen Sie sich ein"
-          ]
+          "msgstr": ["Haben Sie bereits einen Account? Loggen Sie sich ein"]
         },
         "REGISTRATION_TITL": {
           "msgid": "REGISTRATION_TITL",
-          "msgstr": [
-            "Anmelden"
-          ]
+          "msgstr": ["Anmelden"]
         },
         "PWD_CNF_ERR": {
           "msgid": "PWD_CNF_ERR",
-          "msgstr": [
-            "Die Passwörter stimmen nicht überein"
-          ]
+          "msgstr": ["Die Passwörter stimmen nicht überein"]
         },
         "REGISTER_SUCCESS": {
           "msgid": "REGISTER_SUCCESS",
-          "msgstr": [
-            "Registrierung war erfolgreich"
-          ]
+          "msgstr": ["Registrierung war erfolgreich"]
         },
         "404_PG_TITL": {
           "msgid": "404_PG_TITL",
-          "msgstr": [
-            "404 Nicht gefunden"
-          ]
+          "msgstr": ["404 Nicht gefunden"]
         },
         "REGISTER_ERR": {
           "msgid": "REGISTER_ERR",
-          "msgstr": [
-            "Fehler bei der Registrierung."
-          ]
+          "msgstr": ["Fehler bei der Registrierung."]
         },
         "NO_ORGS": {
           "msgid": "NO_ORGS",
@@ -1310,153 +894,103 @@
         },
         "CONFLICT_ORGS": {
           "msgid": "CONFLICT_ORGS",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "CONFLICT_SIGNIN": {
           "msgid": "CONFLICT_SIGNIN",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PAY_SUCCESS": {
           "msgid": "PAY_SUCCESS",
-          "msgstr": [
-            "Die Zahlung wurde erfolgreich übermittelt."
-          ]
+          "msgstr": ["Die Zahlung wurde erfolgreich übermittelt."]
         },
         "PAY_REQ": {
           "msgid": "PAY_REQ",
-          "msgstr": [
-            "Zahlung erforderlich, um fortzufahren"
-          ]
+          "msgstr": ["Zahlung erforderlich, um fortzufahren"]
         },
         "PAY_WARN${ timeout }${ maxAttempts }": {
           "msgid": "PAY_WARN${ timeout }${ maxAttempts }",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PAY_PROC_BTN": {
           "msgid": "PAY_PROC_BTN",
-          "msgstr": [
-            "Fahren Sie mit der Zahlung fort"
-          ]
+          "msgstr": ["Fahren Sie mit der Zahlung fort"]
         },
         "PAY_GIVE_UP_BTN": {
           "msgid": "PAY_GIVE_UP_BTN",
-          "msgstr": [
-            "Abbrechen und beenden"
-          ]
+          "msgstr": ["Abbrechen und beenden"]
         },
         "PAY_FAIL": {
           "msgid": "PAY_FAIL",
-          "msgstr": [
-            "Bezahlung fehlgeschlagen"
-          ]
+          "msgstr": ["Bezahlung fehlgeschlagen"]
         },
         "PAY_SUB_H": {
           "msgid": "PAY_SUB_H",
-          "msgstr": [
-            "Die Zahlung war nicht erfolgreich"
-          ]
+          "msgstr": ["Die Zahlung war nicht erfolgreich"]
         },
         "PAY_TRY_AGAIN_BTN": {
           "msgid": "PAY_TRY_AGAIN_BTN",
-          "msgstr": [
-            "Erneut versuchen"
-          ]
+          "msgstr": ["Erneut versuchen"]
         },
         "PAY_GIVE_UP_TXT": {
           "msgid": "PAY_GIVE_UP_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PWD_RESET_TITL": {
           "msgid": "PWD_RESET_TITL",
-          "msgstr": [
-            "Passwort zurücksetzen"
-          ]
+          "msgstr": ["Passwort zurücksetzen"]
         },
         "LOGIN_PG_LNK": {
           "msgid": "LOGIN_PG_LNK",
-          "msgstr": [
-            "Zurück zur Login-Seite"
-          ]
+          "msgstr": ["Zurück zur Login-Seite"]
         },
         "PWD_RESET_ADD_TXT": {
           "msgid": "PWD_RESET_ADD_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "USERNAME_LOG_LBL": {
           "msgid": "USERNAME_LOG_LBL",
-          "msgstr": [
-            "E-Mail, Telefonnummer oder Nutzername"
-          ]
+          "msgstr": ["E-Mail, Telefonnummer oder Nutzername"]
         },
         "USERNAME_LOG_PHOLD": {
           "msgid": "USERNAME_LOG_PHOLD",
-          "msgstr": [
-            "E-Mail, Telefonnummer oder Nutzername"
-          ]
+          "msgstr": ["E-Mail, Telefonnummer oder Nutzername"]
         },
         "USERNAME_LOG_TITL": {
           "msgid": "USERNAME_LOG_TITL",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PWD_RESET_BTN": {
           "msgid": "PWD_RESET_BTN",
-          "msgstr": [
-            "Passwort zurücksetzen"
-          ]
+          "msgstr": ["Passwort zurücksetzen"]
         },
         "PWD_RESET_CNTC_TXT": {
           "msgid": "PWD_RESET_CNTC_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PWD_CONFIRM_TITL": {
           "msgid": "PWD_CONFIRM_TITL",
-          "msgstr": [
-            "Passwort zurücksetzen"
-          ]
+          "msgstr": ["Passwort zurücksetzen"]
         },
         "PWD_CONFIRM_H": {
           "msgid": "PWD_CONFIRM_H",
-          "msgstr": [
-            "Passwort zurücksetzen"
-          ]
+          "msgstr": ["Passwort zurücksetzen"]
         },
         "PWD_CONFIRM_ADD_TXT": {
           "msgid": "PWD_CONFIRM_ADD_TXT",
-          "msgstr": [
-            "Bitte geben Sie Ihr neues Passwort nachfolgend ein"
-          ]
+          "msgstr": ["Bitte geben Sie Ihr neues Passwort nachfolgend ein"]
         },
         "PWD_CONFIRM": {
           "msgid": "PWD_CONFIRM",
-          "msgstr": [
-            "Bestätigen Sie die Passwortänderung"
-          ]
+          "msgstr": ["Bestätigen Sie die Passwortänderung"]
         },
         "PWD_CHANGE_TITL": {
           "msgid": "PWD_CHANGE_TITL",
-          "msgstr": [
-            "Passwort ändern"
-          ]
+          "msgstr": ["Passwort ändern"]
         },
         "PWD_CURR_ERR": {
           "msgid": "PWD_CURR_ERR",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PWD_CHNG_ERR": {
           "msgid": "PWD_CHNG_ERR",
@@ -1472,87 +1006,59 @@
         },
         "CURR_PWD_LBL": {
           "msgid": "CURR_PWD_LBL",
-          "msgstr": [
-            "Aktuelles Passwort"
-          ]
+          "msgstr": ["Aktuelles Passwort"]
         },
         "CURR_PWD_PHOLD": {
           "msgid": "CURR_PWD_PHOLD",
-          "msgstr": [
-            "dein aktuelles Passwort"
-          ]
+          "msgstr": ["dein aktuelles Passwort"]
         },
         "PWD1_LBL": {
           "msgid": "PWD1_LBL",
-          "msgstr": [
-            "Neues Passwort"
-          ]
+          "msgstr": ["Neues Passwort"]
         },
         "PWD1_PHOLD": {
           "msgid": "PWD1_PHOLD",
-          "msgstr": [
-            "Neues Passwort eingeben"
-          ]
+          "msgstr": ["Neues Passwort eingeben"]
         },
         "PASSWORD_CHANGE": {
           "msgid": "PASSWORD_CHANGE",
-          "msgstr": [
-            "Passwort ändern"
-          ]
+          "msgstr": ["Passwort ändern"]
         },
         "CANCEL": {
           "msgid": "CANCEL",
-          "msgstr": [
-            "Abbrechen"
-          ]
+          "msgstr": ["Abbrechen"]
         },
         "DEFAULT_TITL${ orgName }": {
           "msgid": "DEFAULT_TITL${ orgName }",
-          "msgstr": [
-            "Einloggen in ${ orgName }"
-          ]
+          "msgstr": ["Einloggen in ${ orgName }"]
         },
         "PHONE_VERIF_TITL": {
           "msgid": "PHONE_VERIF_TITL",
-          "msgstr": [
-            "Telefonnummer verifizieren"
-          ]
+          "msgstr": ["Telefonnummer verifizieren"]
         },
         "TOKEN_SENT": {
           "msgid": "TOKEN_SENT",
-          "msgstr": [
-            "SMS Verifizierungscode gesendet."
-          ]
+          "msgstr": ["SMS Verifizierungscode gesendet."]
         },
         "PHONE_VERIFY (${ phone_number })": {
           "msgid": "PHONE_VERIFY (${ phone_number })",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "MOBILE_CODE_PHOLD": {
           "msgid": "MOBILE_CODE_PHOLD",
-          "msgstr": [
-            "SMS-bestätigungscode eingeben"
-          ]
+          "msgstr": ["SMS-bestätigungscode eingeben"]
         },
         "MOBILE_CODE_TITL": {
           "msgid": "MOBILE_CODE_TITL",
-          "msgstr": [
-            "Das Feld muss ein Zahlcode mit 6-Ziffern sein"
-          ]
+          "msgstr": ["Das Feld muss ein Zahlcode mit 6-Ziffern sein"]
         },
         "MOBILE_PHONE_VERIFY": {
           "msgid": "MOBILE_PHONE_VERIFY",
-          "msgstr": [
-            "Einreichen"
-          ]
+          "msgstr": ["Einreichen"]
         },
         "RESEND_TOKEN_LBL": {
           "msgid": "RESEND_TOKEN_LBL",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "RESEND_TOKEN_WAIT_LBL${ seconds }": {
           "msgid": "RESEND_TOKEN_WAIT_LBL${ seconds }",
@@ -1562,57 +1068,39 @@
         },
         "RESEND_TOKEN": {
           "msgid": "RESEND_TOKEN",
-          "msgstr": [
-            "Einen neuen Verifizierungscode senden"
-          ]
+          "msgstr": ["Einen neuen Verifizierungscode senden"]
         },
         "PHONE_CHANGE_LBL": {
           "msgid": "PHONE_CHANGE_LBL",
-          "msgstr": [
-            "Falsche Telefonnummer?"
-          ]
+          "msgstr": ["Falsche Telefonnummer?"]
         },
         "PHONE_CHANGE_BTN": {
           "msgid": "PHONE_CHANGE_BTN",
-          "msgstr": [
-            "Telefonnummer ändern"
-          ]
+          "msgstr": ["Telefonnummer ändern"]
         },
         "LOGOUT_LBL": {
           "msgid": "LOGOUT_LBL",
-          "msgstr": [
-            "Um den Vorgang abzubrechen, loggen Sie sich unten aus."
-          ]
+          "msgstr": ["Um den Vorgang abzubrechen, loggen Sie sich unten aus."]
         },
         "PHONE_CHANGE_TITL": {
           "msgid": "PHONE_CHANGE_TITL",
-          "msgstr": [
-            "Telefonnummer ändern"
-          ]
+          "msgstr": ["Telefonnummer ändern"]
         },
         "LOGIN_SUCCESS": {
           "msgid": "LOGIN_SUCCESS",
-          "msgstr": [
-            "Authentifizierung war erfolgreich"
-          ]
+          "msgstr": ["Authentifizierung war erfolgreich"]
         },
         "LOGOUT_CONTENT": {
           "msgid": "LOGOUT_CONTENT",
-          "msgstr": [
-            "Logout war erfolgreich"
-          ]
+          "msgstr": ["Logout war erfolgreich"]
         },
         "LOGIN_AGAIN": {
           "msgid": "LOGIN_AGAIN",
-          "msgstr": [
-            "Erneut einloggen"
-          ]
+          "msgstr": ["Erneut einloggen"]
         },
         "LOGIN": {
           "msgid": "LOGIN",
-          "msgstr": [
-            "Einloggen"
-          ]
+          "msgstr": ["Einloggen"]
         },
         "USER_INACTIVE": {
           "msgid": "USER_INACTIVE",
@@ -1622,63 +1110,43 @@
         },
         "LOGIN_ERR": {
           "msgid": "LOGIN_ERR",
-          "msgstr": [
-            "Fehler bei der Authentifizierung."
-          ]
+          "msgstr": ["Fehler bei der Authentifizierung."]
         },
         "REMEMBER_ME": {
           "msgid": "REMEMBER_ME",
-          "msgstr": [
-            "Auf diesem Gerät merken"
-          ]
+          "msgstr": ["Auf diesem Gerät merken"]
         },
         "LOGIN_ADD_INFO_TXT": {
           "msgid": "LOGIN_ADD_INFO_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "REGISTER_BTN_LBL": {
           "msgid": "REGISTER_BTN_LBL",
-          "msgstr": [
-            "Haben Sie keinen Account?"
-          ]
+          "msgstr": ["Haben Sie keinen Account?"]
         },
         "HELPDESK": {
           "msgid": "HELPDESK",
-          "msgstr": [
-            "Support"
-          ]
+          "msgstr": ["Support"]
         },
         "404_H": {
           "msgid": "404_H",
-          "msgstr": [
-            "404"
-          ]
+          "msgstr": ["404"]
         },
         "404_SUBH": {
           "msgid": "404_SUBH",
-          "msgstr": [
-            "Nicht gefunden"
-          ]
+          "msgstr": ["Nicht gefunden"]
         },
         "404_MESSAGE": {
           "msgid": "404_MESSAGE",
-          "msgstr": [
-            "Die gesuchte Seite konnte leider nicht gefunden werden."
-          ]
+          "msgstr": ["Die gesuchte Seite konnte leider nicht gefunden werden."]
         },
         "HOME_PG_LINK_TXT": {
           "msgid": "HOME_PG_LINK_TXT",
-          "msgstr": [
-            "Zurück zur ersten Seite"
-          ]
+          "msgstr": ["Zurück zur ersten Seite"]
         },
         "TEST_MESSAGE": {
           "msgid": "TEST_MESSAGE",
-          "msgstr": [
-            "Dies ist eine Testnachricht"
-          ]
+          "msgstr": ["Dies ist eine Testnachricht"]
         }
       }
     }
@@ -1696,15 +1164,11 @@
       "": {
         "ERR_OCCUR": {
           "msgid": "ERR_OCCUR",
-          "msgstr": [
-            "¡Ocurrió un error!"
-          ]
+          "msgstr": ["¡Ocurrió un error!"]
         },
         "PLAN_SETTING_TXT": {
           "msgid": "PLAN_SETTING_TXT",
-          "msgstr": [
-            "Por favor seleccione el plan de suscripción preferido"
-          ]
+          "msgstr": ["Por favor seleccione el plan de suscripción preferido"]
         },
         "INACTIVE_SESSION_LOGOUT": {
           "msgid": "INACTIVE_SESSION_LOGOUT",
@@ -1714,225 +1178,151 @@
         },
         "LOGOUT_SUCCESS": {
           "msgid": "LOGOUT_SUCCESS",
-          "msgstr": [
-            "Cierre de sesión exitoso"
-          ]
+          "msgstr": ["Cierre de sesión exitoso"]
         },
         "YES": {
           "msgid": "YES",
-          "msgstr": [
-            "Sí"
-          ]
+          "msgstr": ["Sí"]
         },
         "NO": {
           "msgid": "NO",
-          "msgstr": [
-            "No"
-          ]
+          "msgstr": ["No"]
         },
         "PWD_REVEAL": {
           "msgid": "PWD_REVEAL",
-          "msgstr": [
-            "revelar contraseña"
-          ]
+          "msgstr": ["revelar contraseña"]
         },
         "PWD_HIDE": {
           "msgid": "PWD_HIDE",
-          "msgstr": [
-            "ocultar contraseña"
-          ]
+          "msgstr": ["ocultar contraseña"]
         },
         "PRIV_POL_TITL": {
           "msgid": "PRIV_POL_TITL",
-          "msgstr": [
-            "política de privacidad"
-          ]
+          "msgstr": ["política de privacidad"]
         },
         "TOS_TITL": {
           "msgid": "TOS_TITL",
-          "msgstr": [
-            "Términos y condiciones"
-          ]
+          "msgstr": ["Términos y condiciones"]
         },
         "PLEASE_WAIT": {
           "msgid": "PLEASE_WAIT",
-          "msgstr": [
-            "Espere por favor..."
-          ]
+          "msgstr": ["Espere por favor..."]
         },
         "PLEASE_LOGIN": {
           "msgid": "PLEASE_LOGIN",
-          "msgstr": [
-            "Por favor inicia sesión"
-          ]
+          "msgstr": ["Por favor inicia sesión"]
         },
         "ACCT_ACTIVE": {
           "msgid": "ACCT_ACTIVE",
-          "msgstr": [
-            "la sesión está activa"
-          ]
+          "msgstr": ["la sesión está activa"]
         },
         "LOGOUT": {
           "msgid": "LOGOUT",
-          "msgstr": [
-            "Cerrar sesión"
-          ]
+          "msgstr": ["Cerrar sesión"]
         },
         "ACCT_START_TIME": {
           "msgid": "ACCT_START_TIME",
-          "msgstr": [
-            "Hora de inicio"
-          ]
+          "msgstr": ["Hora de inicio"]
         },
         "ACCT_STOP_TIME": {
           "msgid": "ACCT_STOP_TIME",
-          "msgstr": [
-            "Hora de cierre"
-          ]
+          "msgstr": ["Hora de cierre"]
         },
         "ACCT_DURATION": {
           "msgid": "ACCT_DURATION",
-          "msgstr": [
-            "Duración"
-          ]
+          "msgstr": ["Duración"]
         },
         "ACCT_DOWNLOAD": {
           "msgid": "ACCT_DOWNLOAD",
-          "msgstr": [
-            "Descargado"
-          ]
+          "msgstr": ["Descargado"]
         },
         "ACCT_UPLOAD": {
           "msgid": "ACCT_UPLOAD",
-          "msgstr": [
-            "Subido"
-          ]
+          "msgstr": ["Subido"]
         },
         "ACCT_DEVICE_ADDRESS": {
           "msgid": "ACCT_DEVICE_ADDRESS",
-          "msgstr": [
-            "Dirección del dispositivo"
-          ]
+          "msgstr": ["Dirección del dispositivo"]
         },
         "STATUS": {
           "msgid": "STATUS",
-          "msgstr": [
-            "Estado"
-          ]
+          "msgstr": ["Estado"]
         },
         "LOGGED_IN": {
           "msgid": "LOGGED_IN",
-          "msgstr": [
-            "Sesión Iniciada"
-          ]
+          "msgstr": ["Sesión Iniciada"]
         },
         "EMAIL": {
           "msgid": "EMAIL",
-          "msgstr": [
-            "Correo electrónico"
-          ]
+          "msgstr": ["Correo electrónico"]
         },
         "USERNAME": {
           "msgid": "USERNAME",
-          "msgstr": [
-            "Nombre de usuario"
-          ]
+          "msgstr": ["Nombre de usuario"]
         },
         "PHONE_NUMBER": {
           "msgid": "PHONE_NUMBER",
-          "msgstr": [
-            "Número de teléfono"
-          ]
+          "msgstr": ["Número de teléfono"]
         },
         "CP_LOGIN": {
           "msgid": "CP_LOGIN",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "STATUS_TITL": {
           "msgid": "STATUS_TITL",
-          "msgstr": [
-            "Estado"
-          ]
+          "msgstr": ["Estado"]
         },
         "PASSWORD_EXPIRED": {
           "msgid": "PASSWORD_EXPIRED",
-          "msgstr": [
-            "Su contraseña ha expirado, por favor actualícela."
-          ]
+          "msgstr": ["Su contraseña ha expirado, por favor actualícela."]
         },
         "PLAN_EXHAUSTED_TOAST": {
           "msgid": "PLAN_EXHAUSTED_TOAST",
-          "msgstr": [
-            "Has agotado el tráfico disponible en tu paquete."
-          ]
+          "msgstr": ["Has agotado el tráfico disponible en tu paquete."]
         },
         "SUCCESS_UPGRADE_PLAN": {
           "msgid": "SUCCESS_UPGRADE_PLAN",
-          "msgstr": [
-            "Actualización del plan en curso"
-          ]
+          "msgstr": ["Actualización del plan en curso"]
         },
         "STATUS_CONTENT": {
           "msgid": "STATUS_CONTENT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "TRAFFIC_EXHAUSTED": {
           "msgid": "TRAFFIC_EXHAUSTED",
-          "msgstr": [
-            "Tráfico agotado"
-          ]
+          "msgstr": ["Tráfico agotado"]
         },
         "LOGOUT_MODAL_CONTENT": {
           "msgid": "LOGOUT_MODAL_CONTENT",
-          "msgstr": [
-            "¿Quieres iniciar sesión automáticamente la próxima vez?"
-          ]
+          "msgstr": ["¿Quieres iniciar sesión automáticamente la próxima vez?"]
         },
         "CURRENT_SUBSCRIPTION_TXT": {
           "msgid": "CURRENT_SUBSCRIPTION_TXT",
-          "msgstr": [
-            "Suscripción actual:"
-          ]
+          "msgstr": ["Suscripción actual:"]
         },
         "USAGE_LIMIT_EXHAUSTED_TXT": {
           "msgid": "USAGE_LIMIT_EXHAUSTED_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PLAN_UPGRADE_BTN_TXT": {
           "msgid": "PLAN_UPGRADE_BTN_TXT",
-          "msgstr": [
-            "Actualizar"
-          ]
+          "msgstr": ["Actualizar"]
         },
         "PHONE_LBL": {
           "msgid": "PHONE_LBL",
-          "msgstr": [
-            "Número de teléfono móvil"
-          ]
+          "msgstr": ["Número de teléfono móvil"]
         },
         "PHONE_PHOLD": {
           "msgid": "PHONE_PHOLD",
-          "msgstr": [
-            "Ingrese el número de teléfono móvil"
-          ]
+          "msgstr": ["Ingrese el número de teléfono móvil"]
         },
         "EMAIL_PHOLD": {
           "msgid": "EMAIL_PHOLD",
-          "msgstr": [
-            "dirección de correo electrónico"
-          ]
+          "msgstr": ["dirección de correo electrónico"]
         },
         "EMAIL_PTRN_DESC": {
           "msgid": "EMAIL_PTRN_DESC",
-          "msgstr": [
-            "Ingrese una dirección de correo electrónico válida"
-          ]
+          "msgstr": ["Ingrese una dirección de correo electrónico válida"]
         },
         "USERNAME_REG_LBL": {
           "msgid": "USERNAME_REG_LBL",
@@ -1942,297 +1332,199 @@
         },
         "USERNAME_REG_PHOLD": {
           "msgid": "USERNAME_REG_PHOLD",
-          "msgstr": [
-            "Ingrese un email, número de teléfono o nombre de usuario"
-          ]
+          "msgstr": ["Ingrese un email, número de teléfono o nombre de usuario"]
         },
         "USERNAME_PTRN_DESC": {
           "msgid": "USERNAME_PTRN_DESC",
-          "msgstr": [
-            "solo letras, números y caracteres @/./+/-/_"
-          ]
+          "msgstr": ["solo letras, números y caracteres @/./+/-/_"]
         },
         "FIRST_NAME_LBL": {
           "msgid": "FIRST_NAME_LBL",
-          "msgstr": [
-            "Nombre"
-          ]
+          "msgstr": ["Nombre"]
         },
         "OPTIONAL": {
           "msgid": "OPTIONAL",
-          "msgstr": [
-            "optional"
-          ]
+          "msgstr": ["optional"]
         },
         "FIRST_NAME_PHOLD": {
           "msgid": "FIRST_NAME_PHOLD",
-          "msgstr": [
-            "nombre"
-          ]
+          "msgstr": ["nombre"]
         },
         "LAST_NAME_LBL": {
           "msgid": "LAST_NAME_LBL",
-          "msgstr": [
-            "Apellido"
-          ]
+          "msgstr": ["Apellido"]
         },
         "LAST_NAME_PHOLD": {
           "msgid": "LAST_NAME_PHOLD",
-          "msgstr": [
-            "apellido"
-          ]
+          "msgstr": ["apellido"]
         },
         "BIRTH_DATE_LBL": {
           "msgid": "BIRTH_DATE_LBL",
-          "msgstr": [
-            "Fecha de nacimiento"
-          ]
+          "msgstr": ["Fecha de nacimiento"]
         },
         "LOCATION_LBL": {
           "msgid": "LOCATION_LBL",
-          "msgstr": [
-            "Ubicación"
-          ]
+          "msgstr": ["Ubicación"]
         },
         "LOCATION_PHOLD": {
           "msgid": "LOCATION_PHOLD",
-          "msgstr": [
-            "ubicación"
-          ]
+          "msgstr": ["ubicación"]
         },
         "LOCATION_PTRN_DESC": {
           "msgid": "LOCATION_PTRN_DESC",
-          "msgstr": [
-            "solo letras, números, espacios, puntuación"
-          ]
+          "msgstr": ["solo letras, números, espacios, puntuación"]
         },
         "PWD_LBL": {
           "msgid": "PWD_LBL",
-          "msgstr": [
-            "Contraseña"
-          ]
+          "msgstr": ["Contraseña"]
         },
         "PWD_PHOLD": {
           "msgid": "PWD_PHOLD",
-          "msgstr": [
-            "contraseña"
-          ]
+          "msgstr": ["contraseña"]
         },
         "PWD_PTRN_DESC": {
           "msgid": "PWD_PTRN_DESC",
-          "msgstr": [
-            "La contraseña debe tener un mínimo de 6 caracteres"
-          ]
+          "msgstr": ["La contraseña debe tener un mínimo de 6 caracteres"]
         },
         "CONFIRM_PWD_LBL": {
           "msgid": "CONFIRM_PWD_LBL",
-          "msgstr": [
-            "Confirmar contraseña"
-          ]
+          "msgstr": ["Confirmar contraseña"]
         },
         "CONFIRM_PWD_PHOLD": {
           "msgid": "CONFIRM_PWD_PHOLD",
-          "msgstr": [
-            "confirmar contraseña"
-          ]
+          "msgstr": ["confirmar contraseña"]
         },
         "COUNTRY_LBL": {
           "msgid": "COUNTRY_LBL",
-          "msgstr": [
-            "País"
-          ]
+          "msgstr": ["País"]
         },
         "CITY_LBL": {
           "msgid": "CITY_LBL",
-          "msgstr": [
-            "Ciudad"
-          ]
+          "msgstr": ["Ciudad"]
         },
         "CITY_PHOLD": {
           "msgid": "CITY_PHOLD",
-          "msgstr": [
-            "ingrese la ciudad"
-          ]
+          "msgstr": ["ingrese la ciudad"]
         },
         "STREET_LBL": {
           "msgid": "STREET_LBL",
-          "msgstr": [
-            "Calle"
-          ]
+          "msgstr": ["Calle"]
         },
         "STREET_PHOLD": {
           "msgid": "STREET_PHOLD",
-          "msgstr": [
-            "ingrese la calle"
-          ]
+          "msgstr": ["ingrese la calle"]
         },
         "ZIP_CODE_LBL": {
           "msgid": "ZIP_CODE_LBL",
-          "msgstr": [
-            "Código Postal"
-          ]
+          "msgstr": ["Código Postal"]
         },
         "TAX_NUMBER_LBL": {
           "msgid": "TAX_NUMBER_LBL",
-          "msgstr": [
-            "Número de identificación fiscal"
-          ]
+          "msgstr": ["Número de identificación fiscal"]
         },
         "TAX_NUMBER_PHOLD": {
           "msgid": "TAX_NUMBER_PHOLD",
-          "msgstr": [
-            "Ingrese su número de identificación fiscal (opcional)"
-          ]
+          "msgstr": ["Ingrese su número de identificación fiscal (opcional)"]
         },
         "TAX_NUMBER_PTRN_DESC": {
           "msgid": "TAX_NUMBER_PTRN_DESC",
-          "msgstr": [
-            "solo números y letras"
-          ]
+          "msgstr": ["solo números y letras"]
         },
         "REGISTER_ADD_INFO_TXT": {
           "msgid": "REGISTER_ADD_INFO_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "REGISTER_BTN_TXT": {
           "msgid": "REGISTER_BTN_TXT",
-          "msgstr": [
-            "Inscribirse"
-          ]
+          "msgstr": ["Inscribirse"]
         },
         "FORGOT_PASSWORD": {
           "msgid": "FORGOT_PASSWORD",
-          "msgstr": [
-            "¿Olvidaste tu contraseña?"
-          ]
+          "msgstr": ["¿Olvidaste tu contraseña?"]
         },
         "LINKS_LOGIN_TXT": {
           "msgid": "LINKS_LOGIN_TXT",
-          "msgstr": [
-            "¿Ya tienes una cuenta? Iniciar sesión"
-          ]
+          "msgstr": ["¿Ya tienes una cuenta? Iniciar sesión"]
         },
         "REGISTRATION_TITL": {
           "msgid": "REGISTRATION_TITL",
-          "msgstr": [
-            "Inscribirse"
-          ]
+          "msgstr": ["Inscribirse"]
         },
         "PWD_CNF_ERR": {
           "msgid": "PWD_CNF_ERR",
-          "msgstr": [
-            "Los dos campos de contraseña no coincidieron."
-          ]
+          "msgstr": ["Los dos campos de contraseña no coincidieron."]
         },
         "REGISTER_SUCCESS": {
           "msgid": "REGISTER_SUCCESS",
-          "msgstr": [
-            "Registro exitoso"
-          ]
+          "msgstr": ["Registro exitoso"]
         },
         "404_PG_TITL": {
           "msgid": "404_PG_TITL",
-          "msgstr": [
-            "404 No encontrado"
-          ]
+          "msgstr": ["404 No encontrado"]
         },
         "REGISTER_ERR": {
           "msgid": "REGISTER_ERR",
-          "msgstr": [
-            "Error de registro."
-          ]
+          "msgstr": ["Error de registro."]
         },
         "NO_ORGS": {
           "msgid": "NO_ORGS",
-          "msgstr": [
-            "Ya existe un usuario con credenciales similares."
-          ]
+          "msgstr": ["Ya existe un usuario con credenciales similares."]
         },
         "CONFLICT_ORGS": {
           "msgid": "CONFLICT_ORGS",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "CONFLICT_SIGNIN": {
           "msgid": "CONFLICT_SIGNIN",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PAY_SUCCESS": {
           "msgid": "PAY_SUCCESS",
-          "msgstr": [
-            "Pago recibido exitosamente."
-          ]
+          "msgstr": ["Pago recibido exitosamente."]
         },
         "PAY_REQ": {
           "msgid": "PAY_REQ",
-          "msgstr": [
-            "Se requiere pago para continuar"
-          ]
+          "msgstr": ["Se requiere pago para continuar"]
         },
         "PAY_WARN${ timeout }${ maxAttempts }": {
           "msgid": "PAY_WARN${ timeout }${ maxAttempts }",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PAY_PROC_BTN": {
           "msgid": "PAY_PROC_BTN",
-          "msgstr": [
-            "Proceder con el pago"
-          ]
+          "msgstr": ["Proceder con el pago"]
         },
         "PAY_GIVE_UP_BTN": {
           "msgid": "PAY_GIVE_UP_BTN",
-          "msgstr": [
-            "Cancelar operación y cerrar sesión"
-          ]
+          "msgstr": ["Cancelar operación y cerrar sesión"]
         },
         "PAY_FAIL": {
           "msgid": "PAY_FAIL",
-          "msgstr": [
-            "Pago fallido"
-          ]
+          "msgstr": ["Pago fallido"]
         },
         "PAY_SUB_H": {
           "msgid": "PAY_SUB_H",
-          "msgstr": [
-            "Algo salió mal con el pago."
-          ]
+          "msgstr": ["Algo salió mal con el pago."]
         },
         "PAY_TRY_AGAIN_BTN": {
           "msgid": "PAY_TRY_AGAIN_BTN",
-          "msgstr": [
-            "Intentar otra vez"
-          ]
+          "msgstr": ["Intentar otra vez"]
         },
         "PAY_GIVE_UP_TXT": {
           "msgid": "PAY_GIVE_UP_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PWD_RESET_TITL": {
           "msgid": "PWD_RESET_TITL",
-          "msgstr": [
-            "Restablecer contraseña"
-          ]
+          "msgstr": ["Restablecer contraseña"]
         },
         "LOGIN_PG_LNK": {
           "msgid": "LOGIN_PG_LNK",
-          "msgstr": [
-            "Regresar a iniciar sesión"
-          ]
+          "msgstr": ["Regresar a iniciar sesión"]
         },
         "PWD_RESET_ADD_TXT": {
           "msgid": "PWD_RESET_ADD_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "USERNAME_LOG_LBL": {
           "msgid": "USERNAME_LOG_LBL",
@@ -2248,33 +1540,23 @@
         },
         "USERNAME_LOG_TITL": {
           "msgid": "USERNAME_LOG_TITL",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PWD_RESET_BTN": {
           "msgid": "PWD_RESET_BTN",
-          "msgstr": [
-            "Restablecer contraseña"
-          ]
+          "msgstr": ["Restablecer contraseña"]
         },
         "PWD_RESET_CNTC_TXT": {
           "msgid": "PWD_RESET_CNTC_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PWD_CONFIRM_TITL": {
           "msgid": "PWD_CONFIRM_TITL",
-          "msgstr": [
-            "Restablecer contraseña"
-          ]
+          "msgstr": ["Restablecer contraseña"]
         },
         "PWD_CONFIRM_H": {
           "msgid": "PWD_CONFIRM_H",
-          "msgstr": [
-            "Restablecer su contraseña"
-          ]
+          "msgstr": ["Restablecer su contraseña"]
         },
         "PWD_CONFIRM_ADD_TXT": {
           "msgid": "PWD_CONFIRM_ADD_TXT",
@@ -2284,15 +1566,11 @@
         },
         "PWD_CONFIRM": {
           "msgid": "PWD_CONFIRM",
-          "msgstr": [
-            "Cambiar la contraseña"
-          ]
+          "msgstr": ["Cambiar la contraseña"]
         },
         "PWD_CHANGE_TITL": {
           "msgid": "PWD_CHANGE_TITL",
-          "msgstr": [
-            "Cambiar tu contraseña"
-          ]
+          "msgstr": ["Cambiar tu contraseña"]
         },
         "PWD_CURR_ERR": {
           "msgid": "PWD_CURR_ERR",
@@ -2302,9 +1580,7 @@
         },
         "PWD_CHNG_ERR": {
           "msgid": "PWD_CHNG_ERR",
-          "msgstr": [
-            "Ocurrió un error, la contraseña no ha sido cambiada."
-          ]
+          "msgstr": ["Ocurrió un error, la contraseña no ha sido cambiada."]
         },
         "PWD_CHANGE_HELP_TXT": {
           "msgid": "PWD_CHANGE_HELP_TXT",
@@ -2314,87 +1590,59 @@
         },
         "CURR_PWD_LBL": {
           "msgid": "CURR_PWD_LBL",
-          "msgstr": [
-            "Contraseña actual"
-          ]
+          "msgstr": ["Contraseña actual"]
         },
         "CURR_PWD_PHOLD": {
           "msgid": "CURR_PWD_PHOLD",
-          "msgstr": [
-            "Su contraseña actual"
-          ]
+          "msgstr": ["Su contraseña actual"]
         },
         "PWD1_LBL": {
           "msgid": "PWD1_LBL",
-          "msgstr": [
-            "Nueva contraseña"
-          ]
+          "msgstr": ["Nueva contraseña"]
         },
         "PWD1_PHOLD": {
           "msgid": "PWD1_PHOLD",
-          "msgstr": [
-            "Su nueva contraseña"
-          ]
+          "msgstr": ["Su nueva contraseña"]
         },
         "PASSWORD_CHANGE": {
           "msgid": "PASSWORD_CHANGE",
-          "msgstr": [
-            "Cambiar la contraseña"
-          ]
+          "msgstr": ["Cambiar la contraseña"]
         },
         "CANCEL": {
           "msgid": "CANCEL",
-          "msgstr": [
-            "Cancelar"
-          ]
+          "msgstr": ["Cancelar"]
         },
         "DEFAULT_TITL${ orgName }": {
           "msgid": "DEFAULT_TITL${ orgName }",
-          "msgstr": [
-            "Iniciar sesión en ${ orgName }"
-          ]
+          "msgstr": ["Iniciar sesión en ${ orgName }"]
         },
         "PHONE_VERIF_TITL": {
           "msgid": "PHONE_VERIF_TITL",
-          "msgstr": [
-            "Verificar número de móvil"
-          ]
+          "msgstr": ["Verificar número de móvil"]
         },
         "TOKEN_SENT": {
           "msgid": "TOKEN_SENT",
-          "msgstr": [
-            "Código de verificación SMS enviado exitosamente."
-          ]
+          "msgstr": ["Código de verificación SMS enviado exitosamente."]
         },
         "PHONE_VERIFY (${ phone_number })": {
           "msgid": "PHONE_VERIFY (${ phone_number })",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "MOBILE_CODE_PHOLD": {
           "msgid": "MOBILE_CODE_PHOLD",
-          "msgstr": [
-            "Introduzca el código de verificación por SMS"
-          ]
+          "msgstr": ["Introduzca el código de verificación por SMS"]
         },
         "MOBILE_CODE_TITL": {
           "msgid": "MOBILE_CODE_TITL",
-          "msgstr": [
-            "Este campo debe ser un código numérico de 6 dígitos"
-          ]
+          "msgstr": ["Este campo debe ser un código numérico de 6 dígitos"]
         },
         "MOBILE_PHONE_VERIFY": {
           "msgid": "MOBILE_PHONE_VERIFY",
-          "msgstr": [
-            "Enviar"
-          ]
+          "msgstr": ["Enviar"]
         },
         "RESEND_TOKEN_LBL": {
           "msgid": "RESEND_TOKEN_LBL",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "RESEND_TOKEN_WAIT_LBL${ seconds }": {
           "msgid": "RESEND_TOKEN_WAIT_LBL${ seconds }",
@@ -2404,105 +1652,71 @@
         },
         "RESEND_TOKEN": {
           "msgid": "RESEND_TOKEN",
-          "msgstr": [
-            "Enviar un nuevo código de verificación"
-          ]
+          "msgstr": ["Enviar un nuevo código de verificación"]
         },
         "PHONE_CHANGE_LBL": {
           "msgid": "PHONE_CHANGE_LBL",
-          "msgstr": [
-            "¿Número de teléfono equivocado?"
-          ]
+          "msgstr": ["¿Número de teléfono equivocado?"]
         },
         "PHONE_CHANGE_BTN": {
           "msgid": "PHONE_CHANGE_BTN",
-          "msgstr": [
-            "Cambia tu número de teléfono"
-          ]
+          "msgstr": ["Cambia tu número de teléfono"]
         },
         "LOGOUT_LBL": {
           "msgid": "LOGOUT_LBL",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PHONE_CHANGE_TITL": {
           "msgid": "PHONE_CHANGE_TITL",
-          "msgstr": [
-            "Cambiar número de móvil"
-          ]
+          "msgstr": ["Cambiar número de móvil"]
         },
         "LOGIN_SUCCESS": {
           "msgid": "LOGIN_SUCCESS",
-          "msgstr": [
-            "Inicio de sesión exitosa"
-          ]
+          "msgstr": ["Inicio de sesión exitosa"]
         },
         "LOGOUT_CONTENT": {
           "msgid": "LOGOUT_CONTENT",
-          "msgstr": [
-            "Cierre de sesión exitoso"
-          ]
+          "msgstr": ["Cierre de sesión exitoso"]
         },
         "LOGIN_AGAIN": {
           "msgid": "LOGIN_AGAIN",
-          "msgstr": [
-            "Iniciar sesión nuevamente"
-          ]
+          "msgstr": ["Iniciar sesión nuevamente"]
         },
         "LOGIN": {
           "msgid": "LOGIN",
-          "msgstr": [
-            "Acceder"
-          ]
+          "msgstr": ["Acceder"]
         },
         "USER_INACTIVE": {
           "msgid": "USER_INACTIVE",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "LOGIN_ERR": {
           "msgid": "LOGIN_ERR",
-          "msgstr": [
-            "Se produjo un error de inicio de sesión."
-          ]
+          "msgstr": ["Se produjo un error de inicio de sesión."]
         },
         "REMEMBER_ME": {
           "msgid": "REMEMBER_ME",
-          "msgstr": [
-            "recuérdame en este dispositivo"
-          ]
+          "msgstr": ["recuérdame en este dispositivo"]
         },
         "LOGIN_ADD_INFO_TXT": {
           "msgid": "LOGIN_ADD_INFO_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "REGISTER_BTN_LBL": {
           "msgid": "REGISTER_BTN_LBL",
-          "msgstr": [
-            "¿Aún no estás registrado?"
-          ]
+          "msgstr": ["¿Aún no estás registrado?"]
         },
         "HELPDESK": {
           "msgid": "HELPDESK",
-          "msgstr": [
-            "Soporte"
-          ]
+          "msgstr": ["Soporte"]
         },
         "404_H": {
           "msgid": "404_H",
-          "msgstr": [
-            "404"
-          ]
+          "msgstr": ["404"]
         },
         "404_SUBH": {
           "msgid": "404_SUBH",
-          "msgstr": [
-            "No encontrado"
-          ]
+          "msgstr": ["No encontrado"]
         },
         "404_MESSAGE": {
           "msgid": "404_MESSAGE",
@@ -2512,15 +1726,11 @@
         },
         "HOME_PG_LINK_TXT": {
           "msgid": "HOME_PG_LINK_TXT",
-          "msgstr": [
-            "Volver a la página de inicio"
-          ]
+          "msgstr": ["Volver a la página de inicio"]
         },
         "TEST_MESSAGE": {
           "msgid": "TEST_MESSAGE",
-          "msgstr": [
-            "Este es un mensaje de prueba"
-          ]
+          "msgstr": ["Este es un mensaje de prueba"]
         }
       }
     }
@@ -2538,15 +1748,11 @@
       "": {
         "ERR_OCCUR": {
           "msgid": "ERR_OCCUR",
-          "msgstr": [
-            "Al è capitât un erôr!"
-          ]
+          "msgstr": ["Al è capitât un erôr!"]
         },
         "PLAN_SETTING_TXT": {
           "msgid": "PLAN_SETTING_TXT",
-          "msgstr": [
-            "Selezione la tipologjie di sotscrizion"
-          ]
+          "msgstr": ["Selezione la tipologjie di sotscrizion"]
         },
         "INACTIVE_SESSION_LOGOUT": {
           "msgid": "INACTIVE_SESSION_LOGOUT",
@@ -2556,585 +1762,391 @@
         },
         "LOGOUT_SUCCESS": {
           "msgid": "LOGOUT_SUCCESS",
-          "msgstr": [
-            "Logout fat cun sucès"
-          ]
+          "msgstr": ["Logout fat cun sucès"]
         },
         "YES": {
           "msgid": "YES",
-          "msgstr": [
-            "Sì"
-          ]
+          "msgstr": ["Sì"]
         },
         "NO": {
           "msgid": "NO",
-          "msgstr": [
-            "No"
-          ]
+          "msgstr": ["No"]
         },
         "PWD_REVEAL": {
           "msgid": "PWD_REVEAL",
-          "msgstr": [
-            "Mostre la password"
-          ]
+          "msgstr": ["Mostre la password"]
         },
         "PWD_HIDE": {
           "msgid": "PWD_HIDE",
-          "msgstr": [
-            "Plate la password"
-          ]
+          "msgstr": ["Plate la password"]
         },
         "PRIV_POL_TITL": {
           "msgid": "PRIV_POL_TITL",
-          "msgstr": [
-            "regolament de privacy"
-          ]
+          "msgstr": ["regolament de privacy"]
         },
         "TOS_TITL": {
           "msgid": "TOS_TITL",
-          "msgstr": [
-            "tiermins e cundizions di ûs"
-          ]
+          "msgstr": ["tiermins e cundizions di ûs"]
         },
         "PLEASE_WAIT": {
           "msgid": "PLEASE_WAIT",
-          "msgstr": [
-            "Spietâ, par plasê..."
-          ]
+          "msgstr": ["Spietâ, par plasê..."]
         },
         "PLEASE_LOGIN": {
           "msgid": "PLEASE_LOGIN",
-          "msgstr": [
-            "Ti domandìn di jentrâ"
-          ]
+          "msgstr": ["Ti domandìn di jentrâ"]
         },
         "ACCT_ACTIVE": {
           "msgid": "ACCT_ACTIVE",
-          "msgstr": [
-            "Session ative"
-          ]
+          "msgstr": ["Session ative"]
         },
         "LOGOUT": {
           "msgid": "LOGOUT",
-          "msgstr": [
-            "Jessî"
-          ]
+          "msgstr": ["Jessî"]
         },
         "ACCT_START_TIME": {
           "msgid": "ACCT_START_TIME",
-          "msgstr": [
-            "Date/ore di inizi"
-          ]
+          "msgstr": ["Date/ore di inizi"]
         },
         "ACCT_STOP_TIME": {
           "msgid": "ACCT_STOP_TIME",
-          "msgstr": [
-            "Date/ore di fin"
-          ]
+          "msgstr": ["Date/ore di fin"]
         },
         "ACCT_DURATION": {
           "msgid": "ACCT_DURATION",
-          "msgstr": [
-            "Durade"
-          ]
+          "msgstr": ["Durade"]
         },
         "ACCT_DOWNLOAD": {
           "msgid": "ACCT_DOWNLOAD",
-          "msgstr": [
-            "Trafic download"
-          ]
+          "msgstr": ["Trafic download"]
         },
         "ACCT_UPLOAD": {
           "msgid": "ACCT_UPLOAD",
-          "msgstr": [
-            "Trafic upload"
-          ]
+          "msgstr": ["Trafic upload"]
         },
         "ACCT_DEVICE_ADDRESS": {
           "msgid": "ACCT_DEVICE_ADDRESS",
-          "msgstr": [
-            "Direzion dal dispositîf"
-          ]
+          "msgstr": ["Direzion dal dispositîf"]
         },
         "STATUS": {
           "msgid": "STATUS",
-          "msgstr": [
-            "Stât"
-          ]
+          "msgstr": ["Stât"]
         },
         "LOGGED_IN": {
           "msgid": "LOGGED_IN",
-          "msgstr": [
-            "Autenticât"
-          ]
+          "msgstr": ["Autenticât"]
         },
         "EMAIL": {
           "msgid": "EMAIL",
-          "msgstr": [
-            "Email"
-          ]
+          "msgstr": ["Email"]
         },
         "USERNAME": {
           "msgid": "USERNAME",
-          "msgstr": [
-            "Non utent"
-          ]
+          "msgstr": ["Non utent"]
         },
         "PHONE_NUMBER": {
           "msgid": "PHONE_NUMBER",
-          "msgstr": [
-            "Numar di telefon"
-          ]
+          "msgstr": ["Numar di telefon"]
         },
         "CP_LOGIN": {
           "msgid": "CP_LOGIN",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "STATUS_TITL": {
           "msgid": "STATUS_TITL",
-          "msgstr": [
-            "Stât"
-          ]
+          "msgstr": ["Stât"]
         },
         "PASSWORD_EXPIRED": {
           "msgid": "PASSWORD_EXPIRED",
-          "msgstr": [
-            "La tô password al è scjadude, ti prei di aggiornâle."
-          ]
+          "msgstr": ["La tô password al è scjadude, ti prei di aggiornâle."]
         },
         "PLAN_EXHAUSTED_TOAST": {
           "msgid": "PLAN_EXHAUSTED_TOAST",
-          "msgstr": [
-            "Tu âs esaurît il trafegn dispunibil sul to bundle."
-          ]
+          "msgstr": ["Tu âs esaurît il trafegn dispunibil sul to bundle."]
         },
         "SUCCESS_UPGRADE_PLAN": {
           "msgid": "SUCCESS_UPGRADE_PLAN",
-          "msgstr": [
-            "Aggiornament dal paniere in corse"
-          ]
+          "msgstr": ["Aggiornament dal paniere in corse"]
         },
         "STATUS_CONTENT": {
           "msgid": "STATUS_CONTENT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "TRAFFIC_EXHAUSTED": {
           "msgid": "TRAFFIC_EXHAUSTED",
-          "msgstr": [
-            "Trafeg consumât"
-          ]
+          "msgstr": ["Trafeg consumât"]
         },
         "LOGOUT_MODAL_CONTENT": {
           "msgid": "LOGOUT_MODAL_CONTENT",
-          "msgstr": [
-            "Autenticâsi in maniere automatiche la prossime volte?"
-          ]
+          "msgstr": ["Autenticâsi in maniere automatiche la prossime volte?"]
         },
         "CURRENT_SUBSCRIPTION_TXT": {
           "msgid": "CURRENT_SUBSCRIPTION_TXT",
-          "msgstr": [
-            "Sotons abonament:"
-          ]
+          "msgstr": ["Sotons abonament:"]
         },
         "USAGE_LIMIT_EXHAUSTED_TXT": {
           "msgid": "USAGE_LIMIT_EXHAUSTED_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PLAN_UPGRADE_BTN_TXT": {
           "msgid": "PLAN_UPGRADE_BTN_TXT",
-          "msgstr": [
-            "Potenziament"
-          ]
+          "msgstr": ["Potenziament"]
         },
         "PHONE_LBL": {
           "msgid": "PHONE_LBL",
-          "msgstr": [
-            "Numar di celulâr"
-          ]
+          "msgstr": ["Numar di celulâr"]
         },
         "PHONE_PHOLD": {
           "msgid": "PHONE_PHOLD",
-          "msgstr": [
-            "Numar di telefon celulâr"
-          ]
+          "msgstr": ["Numar di telefon celulâr"]
         },
         "EMAIL_PHOLD": {
           "msgid": "EMAIL_PHOLD",
-          "msgstr": [
-            "Direzion email"
-          ]
+          "msgstr": ["Direzion email"]
         },
         "EMAIL_PTRN_DESC": {
           "msgid": "EMAIL_PTRN_DESC",
-          "msgstr": [
-            "Direzion email valide"
-          ]
+          "msgstr": ["Direzion email valide"]
         },
         "USERNAME_REG_LBL": {
           "msgid": "USERNAME_REG_LBL",
-          "msgstr": [
-            "Non utent"
-          ]
+          "msgstr": ["Non utent"]
         },
         "USERNAME_REG_PHOLD": {
           "msgid": "USERNAME_REG_PHOLD",
-          "msgstr": [
-            "Non utent"
-          ]
+          "msgstr": ["Non utent"]
         },
         "USERNAME_PTRN_DESC": {
           "msgid": "USERNAME_PTRN_DESC",
-          "msgstr": [
-            "Dome letaris, numars e caratars speciâi @/./+/-/_"
-          ]
+          "msgstr": ["Dome letaris, numars e caratars speciâi @/./+/-/_"]
         },
         "FIRST_NAME_LBL": {
           "msgid": "FIRST_NAME_LBL",
-          "msgstr": [
-            "Non"
-          ]
+          "msgstr": ["Non"]
         },
         "OPTIONAL": {
           "msgid": "OPTIONAL",
-          "msgstr": [
-            "Opzionâl"
-          ]
+          "msgstr": ["Opzionâl"]
         },
         "FIRST_NAME_PHOLD": {
           "msgid": "FIRST_NAME_PHOLD",
-          "msgstr": [
-            "Non"
-          ]
+          "msgstr": ["Non"]
         },
         "LAST_NAME_LBL": {
           "msgid": "LAST_NAME_LBL",
-          "msgstr": [
-            "Cognon"
-          ]
+          "msgstr": ["Cognon"]
         },
         "LAST_NAME_PHOLD": {
           "msgid": "LAST_NAME_PHOLD",
-          "msgstr": [
-            "Cognon"
-          ]
+          "msgstr": ["Cognon"]
         },
         "BIRTH_DATE_LBL": {
           "msgid": "BIRTH_DATE_LBL",
-          "msgstr": [
-            "Date di nassite"
-          ]
+          "msgstr": ["Date di nassite"]
         },
         "LOCATION_LBL": {
           "msgid": "LOCATION_LBL",
-          "msgstr": [
-            "Direzion"
-          ]
+          "msgstr": ["Direzion"]
         },
         "LOCATION_PHOLD": {
           "msgid": "LOCATION_PHOLD",
-          "msgstr": [
-            "Lûc di residence"
-          ]
+          "msgstr": ["Lûc di residence"]
         },
         "LOCATION_PTRN_DESC": {
           "msgid": "LOCATION_PTRN_DESC",
-          "msgstr": [
-            "Dome caratars, numars, spazis e segns di puntuazion"
-          ]
+          "msgstr": ["Dome caratars, numars, spazis e segns di puntuazion"]
         },
         "PWD_LBL": {
           "msgid": "PWD_LBL",
-          "msgstr": [
-            "Password"
-          ]
+          "msgstr": ["Password"]
         },
         "PWD_PHOLD": {
           "msgid": "PWD_PHOLD",
-          "msgstr": [
-            "Inserìs la password"
-          ]
+          "msgstr": ["Inserìs la password"]
         },
         "PWD_PTRN_DESC": {
           "msgid": "PWD_PTRN_DESC",
-          "msgstr": [
-            "La password e à di vê almancul 6 caratars"
-          ]
+          "msgstr": ["La password e à di vê almancul 6 caratars"]
         },
         "CONFIRM_PWD_LBL": {
           "msgid": "CONFIRM_PWD_LBL",
-          "msgstr": [
-            "Conferme la password"
-          ]
+          "msgstr": ["Conferme la password"]
         },
         "CONFIRM_PWD_PHOLD": {
           "msgid": "CONFIRM_PWD_PHOLD",
-          "msgstr": [
-            "Conferme la password"
-          ]
+          "msgstr": ["Conferme la password"]
         },
         "COUNTRY_LBL": {
           "msgid": "COUNTRY_LBL",
-          "msgstr": [
-            "Stât di residence"
-          ]
+          "msgstr": ["Stât di residence"]
         },
         "CITY_LBL": {
           "msgid": "CITY_LBL",
-          "msgstr": [
-            "Citât"
-          ]
+          "msgstr": ["Citât"]
         },
         "CITY_PHOLD": {
           "msgid": "CITY_PHOLD",
-          "msgstr": [
-            "Inserìs la citât"
-          ]
+          "msgstr": ["Inserìs la citât"]
         },
         "STREET_LBL": {
           "msgid": "STREET_LBL",
-          "msgstr": [
-            "Direzion"
-          ]
+          "msgstr": ["Direzion"]
         },
         "STREET_PHOLD": {
           "msgid": "STREET_PHOLD",
-          "msgstr": [
-            "Inserìs la direzion"
-          ]
+          "msgstr": ["Inserìs la direzion"]
         },
         "ZIP_CODE_LBL": {
           "msgid": "ZIP_CODE_LBL",
-          "msgstr": [
-            "Codiç di inviament postâl"
-          ]
+          "msgstr": ["Codiç di inviament postâl"]
         },
         "TAX_NUMBER_LBL": {
           "msgid": "TAX_NUMBER_LBL",
-          "msgstr": [
-            "Codiç fiscâl o partide IVZ"
-          ]
+          "msgstr": ["Codiç fiscâl o partide IVZ"]
         },
         "TAX_NUMBER_PHOLD": {
           "msgid": "TAX_NUMBER_PHOLD",
-          "msgstr": [
-            "Inserìs il codiç fiscâl o la partide IVZ"
-          ]
+          "msgstr": ["Inserìs il codiç fiscâl o la partide IVZ"]
         },
         "TAX_NUMBER_PTRN_DESC": {
           "msgid": "TAX_NUMBER_PTRN_DESC",
-          "msgstr": [
-            "Dome letaris e numars"
-          ]
+          "msgstr": ["Dome letaris e numars"]
         },
         "REGISTER_ADD_INFO_TXT": {
           "msgid": "REGISTER_ADD_INFO_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "REGISTER_BTN_TXT": {
           "msgid": "REGISTER_BTN_TXT",
-          "msgstr": [
-            "Regjistrazion"
-          ]
+          "msgstr": ["Regjistrazion"]
         },
         "FORGOT_PASSWORD": {
           "msgid": "FORGOT_PASSWORD",
-          "msgstr": [
-            "Dismenteade la password?"
-          ]
+          "msgstr": ["Dismenteade la password?"]
         },
         "LINKS_LOGIN_TXT": {
           "msgid": "LINKS_LOGIN_TXT",
-          "msgstr": [
-            "Âstu za un account? Fâs l’acès"
-          ]
+          "msgstr": ["Âstu za un account? Fâs l’acès"]
         },
         "REGISTRATION_TITL": {
           "msgid": "REGISTRATION_TITL",
-          "msgstr": [
-            "Regjistrazion"
-          ]
+          "msgstr": ["Regjistrazion"]
         },
         "PWD_CNF_ERR": {
           "msgid": "PWD_CNF_ERR",
-          "msgstr": [
-            "Lis passwords no son compagnis."
-          ]
+          "msgstr": ["Lis passwords no son compagnis."]
         },
         "REGISTER_SUCCESS": {
           "msgid": "REGISTER_SUCCESS",
-          "msgstr": [
-            "Regjistrazion fate cun sucès"
-          ]
+          "msgstr": ["Regjistrazion fate cun sucès"]
         },
         "404_PG_TITL": {
           "msgid": "404_PG_TITL",
-          "msgstr": [
-            "404 No cjatât"
-          ]
+          "msgstr": ["404 No cjatât"]
         },
         "REGISTER_ERR": {
           "msgid": "REGISTER_ERR",
-          "msgstr": [
-            "Al è capitât un erôr inte fase di regjistrazion."
-          ]
+          "msgstr": ["Al è capitât un erôr inte fase di regjistrazion."]
         },
         "NO_ORGS": {
           "msgid": "NO_ORGS",
-          "msgstr": [
-            "Al esist za un utent cun credenziâls similis."
-          ]
+          "msgstr": ["Al esist za un utent cun credenziâls similis."]
         },
         "CONFLICT_ORGS": {
           "msgid": "CONFLICT_ORGS",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "CONFLICT_SIGNIN": {
           "msgid": "CONFLICT_SIGNIN",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PAY_SUCCESS": {
           "msgid": "PAY_SUCCESS",
-          "msgstr": [
-            "Il paiament al è stât ricevût cun sucès."
-          ]
+          "msgstr": ["Il paiament al è stât ricevût cun sucès."]
         },
         "PAY_REQ": {
           "msgid": "PAY_REQ",
-          "msgstr": [
-            "Si domande il paiament par lâ indevant"
-          ]
+          "msgstr": ["Si domande il paiament par lâ indevant"]
         },
         "PAY_WARN${ timeout }${ maxAttempts }": {
           "msgid": "PAY_WARN${ timeout }${ maxAttempts }",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PAY_PROC_BTN": {
           "msgid": "PAY_PROC_BTN",
-          "msgstr": [
-            "Va indevant cul paiament"
-          ]
+          "msgstr": ["Va indevant cul paiament"]
         },
         "PAY_GIVE_UP_BTN": {
           "msgid": "PAY_GIVE_UP_BTN",
-          "msgstr": [
-            "Anule e jes"
-          ]
+          "msgstr": ["Anule e jes"]
         },
         "PAY_FAIL": {
           "msgid": "PAY_FAIL",
-          "msgstr": [
-            "Pagamento fallito"
-          ]
+          "msgstr": ["Pagamento fallito"]
         },
         "PAY_SUB_H": {
           "msgid": "PAY_SUB_H",
-          "msgstr": [
-            "Il paiament nol è lât a bon fin."
-          ]
+          "msgstr": ["Il paiament nol è lât a bon fin."]
         },
         "PAY_TRY_AGAIN_BTN": {
           "msgid": "PAY_TRY_AGAIN_BTN",
-          "msgstr": [
-            "Torne a provâ"
-          ]
+          "msgstr": ["Torne a provâ"]
         },
         "PAY_GIVE_UP_TXT": {
           "msgid": "PAY_GIVE_UP_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PWD_RESET_TITL": {
           "msgid": "PWD_RESET_TITL",
-          "msgstr": [
-            "Torne a impuestâ la password"
-          ]
+          "msgstr": ["Torne a impuestâ la password"]
         },
         "LOGIN_PG_LNK": {
           "msgid": "LOGIN_PG_LNK",
-          "msgstr": [
-            "Torne ae pagjine di acès"
-          ]
+          "msgstr": ["Torne ae pagjine di acès"]
         },
         "PWD_RESET_ADD_TXT": {
           "msgid": "PWD_RESET_ADD_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "USERNAME_LOG_LBL": {
           "msgid": "USERNAME_LOG_LBL",
-          "msgstr": [
-            "Email, numar di telefon o non utent"
-          ]
+          "msgstr": ["Email, numar di telefon o non utent"]
         },
         "USERNAME_LOG_PHOLD": {
           "msgid": "USERNAME_LOG_PHOLD",
-          "msgstr": [
-            "Email, numar di telefon o non utent"
-          ]
+          "msgstr": ["Email, numar di telefon o non utent"]
         },
         "USERNAME_LOG_TITL": {
           "msgid": "USERNAME_LOG_TITL",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PWD_RESET_BTN": {
           "msgid": "PWD_RESET_BTN",
-          "msgstr": [
-            "Torne a impuestâ la password"
-          ]
+          "msgstr": ["Torne a impuestâ la password"]
         },
         "PWD_RESET_CNTC_TXT": {
           "msgid": "PWD_RESET_CNTC_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PWD_CONFIRM_TITL": {
           "msgid": "PWD_CONFIRM_TITL",
-          "msgstr": [
-            "Torne a impuestâ la password"
-          ]
+          "msgstr": ["Torne a impuestâ la password"]
         },
         "PWD_CONFIRM_H": {
           "msgid": "PWD_CONFIRM_H",
-          "msgstr": [
-            "Torne a impuestâ la password"
-          ]
+          "msgstr": ["Torne a impuestâ la password"]
         },
         "PWD_CONFIRM_ADD_TXT": {
           "msgid": "PWD_CONFIRM_ADD_TXT",
-          "msgstr": [
-            "Inserìs la password gnove achì."
-          ]
+          "msgstr": ["Inserìs la password gnove achì."]
         },
         "PWD_CONFIRM": {
           "msgid": "PWD_CONFIRM",
-          "msgstr": [
-            "Conferme il cambi de password"
-          ]
+          "msgstr": ["Conferme il cambi de password"]
         },
         "PWD_CHANGE_TITL": {
           "msgid": "PWD_CHANGE_TITL",
-          "msgstr": [
-            "Cambi de password"
-          ]
+          "msgstr": ["Cambi de password"]
         },
         "PWD_CURR_ERR": {
           "msgid": "PWD_CURR_ERR",
@@ -3144,99 +2156,67 @@
         },
         "PWD_CHNG_ERR": {
           "msgid": "PWD_CHNG_ERR",
-          "msgstr": [
-            "Al è capitât un erôr, la password no je stade cambiade."
-          ]
+          "msgstr": ["Al è capitât un erôr, la password no je stade cambiade."]
         },
         "PWD_CHANGE_HELP_TXT": {
           "msgid": "PWD_CHANGE_HELP_TXT",
-          "msgstr": [
-            "Use the form below to change your password."
-          ]
+          "msgstr": ["Use the form below to change your password."]
         },
         "CURR_PWD_LBL": {
           "msgid": "CURR_PWD_LBL",
-          "msgstr": [
-            "Password atuâl"
-          ]
+          "msgstr": ["Password atuâl"]
         },
         "CURR_PWD_PHOLD": {
           "msgid": "CURR_PWD_PHOLD",
-          "msgstr": [
-            "La tô password atuâl"
-          ]
+          "msgstr": ["La tô password atuâl"]
         },
         "PWD1_LBL": {
           "msgid": "PWD1_LBL",
-          "msgstr": [
-            "Gnove password"
-          ]
+          "msgstr": ["Gnove password"]
         },
         "PWD1_PHOLD": {
           "msgid": "PWD1_PHOLD",
-          "msgstr": [
-            "Inserìs la password gnove"
-          ]
+          "msgstr": ["Inserìs la password gnove"]
         },
         "PASSWORD_CHANGE": {
           "msgid": "PASSWORD_CHANGE",
-          "msgstr": [
-            "Cambie la password"
-          ]
+          "msgstr": ["Cambie la password"]
         },
         "CANCEL": {
           "msgid": "CANCEL",
-          "msgstr": [
-            "Anule"
-          ]
+          "msgstr": ["Anule"]
         },
         "DEFAULT_TITL${ orgName }": {
           "msgid": "DEFAULT_TITL${ orgName }",
-          "msgstr": [
-            "Jentre - ${ orgName }"
-          ]
+          "msgstr": ["Jentre - ${ orgName }"]
         },
         "PHONE_VERIF_TITL": {
           "msgid": "PHONE_VERIF_TITL",
-          "msgstr": [
-            "Verifiche numar di telefon"
-          ]
+          "msgstr": ["Verifiche numar di telefon"]
         },
         "TOKEN_SENT": {
           "msgid": "TOKEN_SENT",
-          "msgstr": [
-            "Codiç di verifiche SMS inviât cun sucès"
-          ]
+          "msgstr": ["Codiç di verifiche SMS inviât cun sucès"]
         },
         "PHONE_VERIFY (${ phone_number })": {
           "msgid": "PHONE_VERIFY (${ phone_number })",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "MOBILE_CODE_PHOLD": {
           "msgid": "MOBILE_CODE_PHOLD",
-          "msgstr": [
-            "Inserìs il codiç di verifiche ricevût vie SMS"
-          ]
+          "msgstr": ["Inserìs il codiç di verifiche ricevût vie SMS"]
         },
         "MOBILE_CODE_TITL": {
           "msgid": "MOBILE_CODE_TITL",
-          "msgstr": [
-            "Il cjamp al à di jessi un codiç numeric di 6 cifris"
-          ]
+          "msgstr": ["Il cjamp al à di jessi un codiç numeric di 6 cifris"]
         },
         "MOBILE_PHONE_VERIFY": {
           "msgid": "MOBILE_PHONE_VERIFY",
-          "msgstr": [
-            "Inviament"
-          ]
+          "msgstr": ["Inviament"]
         },
         "RESEND_TOKEN_LBL": {
           "msgid": "RESEND_TOKEN_LBL",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "RESEND_TOKEN_WAIT_LBL${ seconds }": {
           "msgid": "RESEND_TOKEN_WAIT_LBL${ seconds }",
@@ -3246,21 +2226,15 @@
         },
         "RESEND_TOKEN": {
           "msgid": "RESEND_TOKEN",
-          "msgstr": [
-            "Invie un gnûf codiç di verifiche"
-          ]
+          "msgstr": ["Invie un gnûf codiç di verifiche"]
         },
         "PHONE_CHANGE_LBL": {
           "msgid": "PHONE_CHANGE_LBL",
-          "msgstr": [
-            "Numar di telefon falât?"
-          ]
+          "msgstr": ["Numar di telefon falât?"]
         },
         "PHONE_CHANGE_BTN": {
           "msgid": "PHONE_CHANGE_BTN",
-          "msgstr": [
-            "Cambie il numar di telefon"
-          ]
+          "msgstr": ["Cambie il numar di telefon"]
         },
         "LOGOUT_LBL": {
           "msgid": "LOGOUT_LBL",
@@ -3270,33 +2244,23 @@
         },
         "PHONE_CHANGE_TITL": {
           "msgid": "PHONE_CHANGE_TITL",
-          "msgstr": [
-            "Cambie il numar di telefon"
-          ]
+          "msgstr": ["Cambie il numar di telefon"]
         },
         "LOGIN_SUCCESS": {
           "msgid": "LOGIN_SUCCESS",
-          "msgstr": [
-            "Autenticazion fate cun sucès"
-          ]
+          "msgstr": ["Autenticazion fate cun sucès"]
         },
         "LOGOUT_CONTENT": {
           "msgid": "LOGOUT_CONTENT",
-          "msgstr": [
-            "Logout fat cun sucès"
-          ]
+          "msgstr": ["Logout fat cun sucès"]
         },
         "LOGIN_AGAIN": {
           "msgid": "LOGIN_AGAIN",
-          "msgstr": [
-            "Torne a jentrâ"
-          ]
+          "msgstr": ["Torne a jentrâ"]
         },
         "LOGIN": {
           "msgid": "LOGIN",
-          "msgstr": [
-            "Jentre"
-          ]
+          "msgstr": ["Jentre"]
         },
         "USER_INACTIVE": {
           "msgid": "USER_INACTIVE",
@@ -3306,63 +2270,43 @@
         },
         "LOGIN_ERR": {
           "msgid": "LOGIN_ERR",
-          "msgstr": [
-            "Al è capitât un erôr inte autenticazion."
-          ]
+          "msgstr": ["Al è capitât un erôr inte autenticazion."]
         },
         "REMEMBER_ME": {
           "msgid": "REMEMBER_ME",
-          "msgstr": [
-            "Ricuarde l’acès su chest dispositîf"
-          ]
+          "msgstr": ["Ricuarde l’acès su chest dispositîf"]
         },
         "LOGIN_ADD_INFO_TXT": {
           "msgid": "LOGIN_ADD_INFO_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "REGISTER_BTN_LBL": {
           "msgid": "REGISTER_BTN_LBL",
-          "msgstr": [
-            "No âstu un account?"
-          ]
+          "msgstr": ["No âstu un account?"]
         },
         "HELPDESK": {
           "msgid": "HELPDESK",
-          "msgstr": [
-            "Supuart"
-          ]
+          "msgstr": ["Supuart"]
         },
         "404_H": {
           "msgid": "404_H",
-          "msgstr": [
-            "404"
-          ]
+          "msgstr": ["404"]
         },
         "404_SUBH": {
           "msgid": "404_SUBH",
-          "msgstr": [
-            "No cjatât"
-          ]
+          "msgstr": ["No cjatât"]
         },
         "404_MESSAGE": {
           "msgid": "404_MESSAGE",
-          "msgstr": [
-            "O domandìn scuse, la pagjine cirude no je stade cjatade."
-          ]
+          "msgstr": ["O domandìn scuse, la pagjine cirude no je stade cjatade."]
         },
         "HOME_PG_LINK_TXT": {
           "msgid": "HOME_PG_LINK_TXT",
-          "msgstr": [
-            "Torne ae prime pagjine"
-          ]
+          "msgstr": ["Torne ae prime pagjine"]
         },
         "TEST_MESSAGE": {
           "msgid": "TEST_MESSAGE",
-          "msgstr": [
-            "This is a test message"
-          ]
+          "msgstr": ["This is a test message"]
         }
       }
     }
@@ -3380,15 +2324,11 @@
       "": {
         "ERR_OCCUR": {
           "msgid": "ERR_OCCUR",
-          "msgstr": [
-            "Si è verificato un errore!"
-          ]
+          "msgstr": ["Si è verificato un errore!"]
         },
         "PLAN_SETTING_TXT": {
           "msgid": "PLAN_SETTING_TXT",
-          "msgstr": [
-            "Seleziona il piano che preferisci"
-          ]
+          "msgstr": ["Seleziona il piano che preferisci"]
         },
         "INACTIVE_SESSION_LOGOUT": {
           "msgid": "INACTIVE_SESSION_LOGOUT",
@@ -3398,153 +2338,103 @@
         },
         "LOGOUT_SUCCESS": {
           "msgid": "LOGOUT_SUCCESS",
-          "msgstr": [
-            "Log out effettuato con successo"
-          ]
+          "msgstr": ["Log out effettuato con successo"]
         },
         "YES": {
           "msgid": "YES",
-          "msgstr": [
-            "Sì"
-          ]
+          "msgstr": ["Sì"]
         },
         "NO": {
           "msgid": "NO",
-          "msgstr": [
-            "No"
-          ]
+          "msgstr": ["No"]
         },
         "PWD_REVEAL": {
           "msgid": "PWD_REVEAL",
-          "msgstr": [
-            "Mostra password"
-          ]
+          "msgstr": ["Mostra password"]
         },
         "PWD_HIDE": {
           "msgid": "PWD_HIDE",
-          "msgstr": [
-            "Nascondi password"
-          ]
+          "msgstr": ["Nascondi password"]
         },
         "PRIV_POL_TITL": {
           "msgid": "PRIV_POL_TITL",
-          "msgstr": [
-            "informativa sul trattamento dei dati personali"
-          ]
+          "msgstr": ["informativa sul trattamento dei dati personali"]
         },
         "TOS_TITL": {
           "msgid": "TOS_TITL",
-          "msgstr": [
-            "termini e le condizioni di utilizzo"
-          ]
+          "msgstr": ["termini e le condizioni di utilizzo"]
         },
         "PLEASE_WAIT": {
           "msgid": "PLEASE_WAIT",
-          "msgstr": [
-            "Attendere prego..."
-          ]
+          "msgstr": ["Attendere prego..."]
         },
         "PLEASE_LOGIN": {
           "msgid": "PLEASE_LOGIN",
-          "msgstr": [
-            "Ti preghiamo di accedere"
-          ]
+          "msgstr": ["Ti preghiamo di accedere"]
         },
         "ACCT_ACTIVE": {
           "msgid": "ACCT_ACTIVE",
-          "msgstr": [
-            "Sessione attiva"
-          ]
+          "msgstr": ["Sessione attiva"]
         },
         "LOGOUT": {
           "msgid": "LOGOUT",
-          "msgstr": [
-            "Esci"
-          ]
+          "msgstr": ["Esci"]
         },
         "ACCT_START_TIME": {
           "msgid": "ACCT_START_TIME",
-          "msgstr": [
-            "Data/ora inizio"
-          ]
+          "msgstr": ["Data/ora inizio"]
         },
         "ACCT_STOP_TIME": {
           "msgid": "ACCT_STOP_TIME",
-          "msgstr": [
-            "Data/ora fine"
-          ]
+          "msgstr": ["Data/ora fine"]
         },
         "ACCT_DURATION": {
           "msgid": "ACCT_DURATION",
-          "msgstr": [
-            "Durata"
-          ]
+          "msgstr": ["Durata"]
         },
         "ACCT_DOWNLOAD": {
           "msgid": "ACCT_DOWNLOAD",
-          "msgstr": [
-            "Traffico download"
-          ]
+          "msgstr": ["Traffico download"]
         },
         "ACCT_UPLOAD": {
           "msgid": "ACCT_UPLOAD",
-          "msgstr": [
-            "Traffico Upload"
-          ]
+          "msgstr": ["Traffico Upload"]
         },
         "ACCT_DEVICE_ADDRESS": {
           "msgid": "ACCT_DEVICE_ADDRESS",
-          "msgstr": [
-            "Indirizzo dispositivo"
-          ]
+          "msgstr": ["Indirizzo dispositivo"]
         },
         "STATUS": {
           "msgid": "STATUS",
-          "msgstr": [
-            "Stato"
-          ]
+          "msgstr": ["Stato"]
         },
         "LOGGED_IN": {
           "msgid": "LOGGED_IN",
-          "msgstr": [
-            "Autenticato"
-          ]
+          "msgstr": ["Autenticato"]
         },
         "EMAIL": {
           "msgid": "EMAIL",
-          "msgstr": [
-            "Email"
-          ]
+          "msgstr": ["Email"]
         },
         "USERNAME": {
           "msgid": "USERNAME",
-          "msgstr": [
-            "Nome utente"
-          ]
+          "msgstr": ["Nome utente"]
         },
         "PHONE_NUMBER": {
           "msgid": "PHONE_NUMBER",
-          "msgstr": [
-            "Numero di telefono"
-          ]
+          "msgstr": ["Numero di telefono"]
         },
         "CP_LOGIN": {
           "msgid": "CP_LOGIN",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "STATUS_TITL": {
           "msgid": "STATUS_TITL",
-          "msgstr": [
-            "Stato"
-          ]
+          "msgstr": ["Stato"]
         },
         "PASSWORD_EXPIRED": {
           "msgid": "PASSWORD_EXPIRED",
-          "msgstr": [
-            "La tua password è scaduta, aggiornala."
-          ]
+          "msgstr": ["La tua password è scaduta, aggiornala."]
         },
         "PLAN_EXHAUSTED_TOAST": {
           "msgid": "PLAN_EXHAUSTED_TOAST",
@@ -3554,429 +2444,287 @@
         },
         "SUCCESS_UPGRADE_PLAN": {
           "msgid": "SUCCESS_UPGRADE_PLAN",
-          "msgstr": [
-            "Ricarica in corso"
-          ]
+          "msgstr": ["Ricarica in corso"]
         },
         "STATUS_CONTENT": {
           "msgid": "STATUS_CONTENT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "TRAFFIC_EXHAUSTED": {
           "msgid": "TRAFFIC_EXHAUSTED",
-          "msgstr": [
-            "Traffico esaurito"
-          ]
+          "msgstr": ["Traffico esaurito"]
         },
         "LOGOUT_MODAL_CONTENT": {
           "msgid": "LOGOUT_MODAL_CONTENT",
-          "msgstr": [
-            "Autenticarsi automaticamente la prossima volta?"
-          ]
+          "msgstr": ["Autenticarsi automaticamente la prossima volta?"]
         },
         "CURRENT_SUBSCRIPTION_TXT": {
           "msgid": "CURRENT_SUBSCRIPTION_TXT",
-          "msgstr": [
-            "Abbonamento attuale:"
-          ]
+          "msgstr": ["Abbonamento attuale:"]
         },
         "USAGE_LIMIT_EXHAUSTED_TXT": {
           "msgid": "USAGE_LIMIT_EXHAUSTED_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PLAN_UPGRADE_BTN_TXT": {
           "msgid": "PLAN_UPGRADE_BTN_TXT",
-          "msgstr": [
-            "Ricarica"
-          ]
+          "msgstr": ["Ricarica"]
         },
         "PHONE_LBL": {
           "msgid": "PHONE_LBL",
-          "msgstr": [
-            "Numero di cellulare"
-          ]
+          "msgstr": ["Numero di cellulare"]
         },
         "PHONE_PHOLD": {
           "msgid": "PHONE_PHOLD",
-          "msgstr": [
-            "Numero di telefono cellulare"
-          ]
+          "msgstr": ["Numero di telefono cellulare"]
         },
         "EMAIL_PHOLD": {
           "msgid": "EMAIL_PHOLD",
-          "msgstr": [
-            "Indirizzo email"
-          ]
+          "msgstr": ["Indirizzo email"]
         },
         "EMAIL_PTRN_DESC": {
           "msgid": "EMAIL_PTRN_DESC",
-          "msgstr": [
-            "Indirizzo email valido"
-          ]
+          "msgstr": ["Indirizzo email valido"]
         },
         "USERNAME_REG_LBL": {
           "msgid": "USERNAME_REG_LBL",
-          "msgstr": [
-            "Nome utente"
-          ]
+          "msgstr": ["Nome utente"]
         },
         "USERNAME_REG_PHOLD": {
           "msgid": "USERNAME_REG_PHOLD",
-          "msgstr": [
-            "Nome utente"
-          ]
+          "msgstr": ["Nome utente"]
         },
         "USERNAME_PTRN_DESC": {
           "msgid": "USERNAME_PTRN_DESC",
-          "msgstr": [
-            "Solo lettere, numeri e caratteri speciali @/./+/-/_"
-          ]
+          "msgstr": ["Solo lettere, numeri e caratteri speciali @/./+/-/_"]
         },
         "FIRST_NAME_LBL": {
           "msgid": "FIRST_NAME_LBL",
-          "msgstr": [
-            "Nome"
-          ]
+          "msgstr": ["Nome"]
         },
         "OPTIONAL": {
           "msgid": "OPTIONAL",
-          "msgstr": [
-            "Opzionale"
-          ]
+          "msgstr": ["Opzionale"]
         },
         "FIRST_NAME_PHOLD": {
           "msgid": "FIRST_NAME_PHOLD",
-          "msgstr": [
-            "Nome"
-          ]
+          "msgstr": ["Nome"]
         },
         "LAST_NAME_LBL": {
           "msgid": "LAST_NAME_LBL",
-          "msgstr": [
-            "Cognome"
-          ]
+          "msgstr": ["Cognome"]
         },
         "LAST_NAME_PHOLD": {
           "msgid": "LAST_NAME_PHOLD",
-          "msgstr": [
-            "Cognome"
-          ]
+          "msgstr": ["Cognome"]
         },
         "BIRTH_DATE_LBL": {
           "msgid": "BIRTH_DATE_LBL",
-          "msgstr": [
-            "Data di nascita"
-          ]
+          "msgstr": ["Data di nascita"]
         },
         "LOCATION_LBL": {
           "msgid": "LOCATION_LBL",
-          "msgstr": [
-            "Indirizzo"
-          ]
+          "msgstr": ["Indirizzo"]
         },
         "LOCATION_PHOLD": {
           "msgid": "LOCATION_PHOLD",
-          "msgstr": [
-            "Luogo di residenza"
-          ]
+          "msgstr": ["Luogo di residenza"]
         },
         "LOCATION_PTRN_DESC": {
           "msgid": "LOCATION_PTRN_DESC",
-          "msgstr": [
-            "Solo caratteri, numeri, spazi e punteggiatura"
-          ]
+          "msgstr": ["Solo caratteri, numeri, spazi e punteggiatura"]
         },
         "PWD_LBL": {
           "msgid": "PWD_LBL",
-          "msgstr": [
-            "Password"
-          ]
+          "msgstr": ["Password"]
         },
         "PWD_PHOLD": {
           "msgid": "PWD_PHOLD",
-          "msgstr": [
-            "Inserisci la password"
-          ]
+          "msgstr": ["Inserisci la password"]
         },
         "PWD_PTRN_DESC": {
           "msgid": "PWD_PTRN_DESC",
-          "msgstr": [
-            "La password deve essere di almeno 6 caratteri"
-          ]
+          "msgstr": ["La password deve essere di almeno 6 caratteri"]
         },
         "CONFIRM_PWD_LBL": {
           "msgid": "CONFIRM_PWD_LBL",
-          "msgstr": [
-            "Conferma password"
-          ]
+          "msgstr": ["Conferma password"]
         },
         "CONFIRM_PWD_PHOLD": {
           "msgid": "CONFIRM_PWD_PHOLD",
-          "msgstr": [
-            "Conferma password"
-          ]
+          "msgstr": ["Conferma password"]
         },
         "COUNTRY_LBL": {
           "msgid": "COUNTRY_LBL",
-          "msgstr": [
-            "Stato"
-          ]
+          "msgstr": ["Stato"]
         },
         "CITY_LBL": {
           "msgid": "CITY_LBL",
-          "msgstr": [
-            "Cittá"
-          ]
+          "msgstr": ["Cittá"]
         },
         "CITY_PHOLD": {
           "msgid": "CITY_PHOLD",
-          "msgstr": [
-            "Inserisci la città"
-          ]
+          "msgstr": ["Inserisci la città"]
         },
         "STREET_LBL": {
           "msgid": "STREET_LBL",
-          "msgstr": [
-            "Indirizzo"
-          ]
+          "msgstr": ["Indirizzo"]
         },
         "STREET_PHOLD": {
           "msgid": "STREET_PHOLD",
-          "msgstr": [
-            "Inserisci l'indirizzo"
-          ]
+          "msgstr": ["Inserisci l'indirizzo"]
         },
         "ZIP_CODE_LBL": {
           "msgid": "ZIP_CODE_LBL",
-          "msgstr": [
-            "Codice Avviamento Postale"
-          ]
+          "msgstr": ["Codice Avviamento Postale"]
         },
         "TAX_NUMBER_LBL": {
           "msgid": "TAX_NUMBER_LBL",
-          "msgstr": [
-            "Codice fiscale o p.IVA"
-          ]
+          "msgstr": ["Codice fiscale o p.IVA"]
         },
         "TAX_NUMBER_PHOLD": {
           "msgid": "TAX_NUMBER_PHOLD",
-          "msgstr": [
-            "Inserisci il codice fiscale o la p.IVA"
-          ]
+          "msgstr": ["Inserisci il codice fiscale o la p.IVA"]
         },
         "TAX_NUMBER_PTRN_DESC": {
           "msgid": "TAX_NUMBER_PTRN_DESC",
-          "msgstr": [
-            "Solo lettere e numeri"
-          ]
+          "msgstr": ["Solo lettere e numeri"]
         },
         "REGISTER_ADD_INFO_TXT": {
           "msgid": "REGISTER_ADD_INFO_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "REGISTER_BTN_TXT": {
           "msgid": "REGISTER_BTN_TXT",
-          "msgstr": [
-            "Registrati"
-          ]
+          "msgstr": ["Registrati"]
         },
         "FORGOT_PASSWORD": {
           "msgid": "FORGOT_PASSWORD",
-          "msgstr": [
-            "Password dimenticata?"
-          ]
+          "msgstr": ["Password dimenticata?"]
         },
         "LINKS_LOGIN_TXT": {
           "msgid": "LINKS_LOGIN_TXT",
-          "msgstr": [
-            "Hai già un account? Effettua l'accesso"
-          ]
+          "msgstr": ["Hai già un account? Effettua l'accesso"]
         },
         "REGISTRATION_TITL": {
           "msgid": "REGISTRATION_TITL",
-          "msgstr": [
-            "Registrazione"
-          ]
+          "msgstr": ["Registrazione"]
         },
         "PWD_CNF_ERR": {
           "msgid": "PWD_CNF_ERR",
-          "msgstr": [
-            "le password non coincidono."
-          ]
+          "msgstr": ["le password non coincidono."]
         },
         "REGISTER_SUCCESS": {
           "msgid": "REGISTER_SUCCESS",
-          "msgstr": [
-            "Registrazione avvenuta con successo"
-          ]
+          "msgstr": ["Registrazione avvenuta con successo"]
         },
         "404_PG_TITL": {
           "msgid": "404_PG_TITL",
-          "msgstr": [
-            "404 Non trovato"
-          ]
+          "msgstr": ["404 Non trovato"]
         },
         "REGISTER_ERR": {
           "msgid": "REGISTER_ERR",
-          "msgstr": [
-            "Si è verificato un errore durante la registrazione."
-          ]
+          "msgstr": ["Si è verificato un errore durante la registrazione."]
         },
         "NO_ORGS": {
           "msgid": "NO_ORGS",
-          "msgstr": [
-            "Esiste già un utente con credenziali simili."
-          ]
+          "msgstr": ["Esiste già un utente con credenziali simili."]
         },
         "CONFLICT_ORGS": {
           "msgid": "CONFLICT_ORGS",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "CONFLICT_SIGNIN": {
           "msgid": "CONFLICT_SIGNIN",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PAY_SUCCESS": {
           "msgid": "PAY_SUCCESS",
-          "msgstr": [
-            "Il pagamento è stato ricevuto con successo."
-          ]
+          "msgstr": ["Il pagamento è stato ricevuto con successo."]
         },
         "PAY_REQ": {
           "msgid": "PAY_REQ",
-          "msgstr": [
-            "Pagamento richiesto per procedere"
-          ]
+          "msgstr": ["Pagamento richiesto per procedere"]
         },
         "PAY_WARN${ timeout }${ maxAttempts }": {
           "msgid": "PAY_WARN${ timeout }${ maxAttempts }",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PAY_PROC_BTN": {
           "msgid": "PAY_PROC_BTN",
-          "msgstr": [
-            "Procedi con il pagamento"
-          ]
+          "msgstr": ["Procedi con il pagamento"]
         },
         "PAY_GIVE_UP_BTN": {
           "msgid": "PAY_GIVE_UP_BTN",
-          "msgstr": [
-            "Annulla ed esci"
-          ]
+          "msgstr": ["Annulla ed esci"]
         },
         "PAY_FAIL": {
           "msgid": "PAY_FAIL",
-          "msgstr": [
-            "Pagamento fallito"
-          ]
+          "msgstr": ["Pagamento fallito"]
         },
         "PAY_SUB_H": {
           "msgid": "PAY_SUB_H",
-          "msgstr": [
-            "Il pagamento non è andato a buon fine."
-          ]
+          "msgstr": ["Il pagamento non è andato a buon fine."]
         },
         "PAY_TRY_AGAIN_BTN": {
           "msgid": "PAY_TRY_AGAIN_BTN",
-          "msgstr": [
-            "Riprova"
-          ]
+          "msgstr": ["Riprova"]
         },
         "PAY_GIVE_UP_TXT": {
           "msgid": "PAY_GIVE_UP_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PWD_RESET_TITL": {
           "msgid": "PWD_RESET_TITL",
-          "msgstr": [
-            "Reimposta password"
-          ]
+          "msgstr": ["Reimposta password"]
         },
         "LOGIN_PG_LNK": {
           "msgid": "LOGIN_PG_LNK",
-          "msgstr": [
-            "Torna alla pagina di accesso"
-          ]
+          "msgstr": ["Torna alla pagina di accesso"]
         },
         "PWD_RESET_ADD_TXT": {
           "msgid": "PWD_RESET_ADD_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "USERNAME_LOG_LBL": {
           "msgid": "USERNAME_LOG_LBL",
-          "msgstr": [
-            "Email, numero di telefono o nome utente"
-          ]
+          "msgstr": ["Email, numero di telefono o nome utente"]
         },
         "USERNAME_LOG_PHOLD": {
           "msgid": "USERNAME_LOG_PHOLD",
-          "msgstr": [
-            "Email, numero di telefono o nome utente"
-          ]
+          "msgstr": ["Email, numero di telefono o nome utente"]
         },
         "USERNAME_LOG_TITL": {
           "msgid": "USERNAME_LOG_TITL",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PWD_RESET_BTN": {
           "msgid": "PWD_RESET_BTN",
-          "msgstr": [
-            "Reimposta password"
-          ]
+          "msgstr": ["Reimposta password"]
         },
         "PWD_RESET_CNTC_TXT": {
           "msgid": "PWD_RESET_CNTC_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PWD_CONFIRM_TITL": {
           "msgid": "PWD_CONFIRM_TITL",
-          "msgstr": [
-            "Reimposta Password"
-          ]
+          "msgstr": ["Reimposta Password"]
         },
         "PWD_CONFIRM_H": {
           "msgid": "PWD_CONFIRM_H",
-          "msgstr": [
-            "Reimposta password"
-          ]
+          "msgstr": ["Reimposta password"]
         },
         "PWD_CONFIRM_ADD_TXT": {
           "msgid": "PWD_CONFIRM_ADD_TXT",
-          "msgstr": [
-            "Inserisci la nuova password di seguito."
-          ]
+          "msgstr": ["Inserisci la nuova password di seguito."]
         },
         "PWD_CONFIRM": {
           "msgid": "PWD_CONFIRM",
-          "msgstr": [
-            "Conferma cambio password"
-          ]
+          "msgstr": ["Conferma cambio password"]
         },
         "PWD_CHANGE_TITL": {
           "msgid": "PWD_CHANGE_TITL",
-          "msgstr": [
-            "Cambia password"
-          ]
+          "msgstr": ["Cambia password"]
         },
         "PWD_CURR_ERR": {
           "msgid": "PWD_CURR_ERR",
@@ -3998,87 +2746,59 @@
         },
         "CURR_PWD_LBL": {
           "msgid": "CURR_PWD_LBL",
-          "msgstr": [
-            "Password attuale"
-          ]
+          "msgstr": ["Password attuale"]
         },
         "CURR_PWD_PHOLD": {
           "msgid": "CURR_PWD_PHOLD",
-          "msgstr": [
-            "La tua password attuale"
-          ]
+          "msgstr": ["La tua password attuale"]
         },
         "PWD1_LBL": {
           "msgid": "PWD1_LBL",
-          "msgstr": [
-            "Nuova password"
-          ]
+          "msgstr": ["Nuova password"]
         },
         "PWD1_PHOLD": {
           "msgid": "PWD1_PHOLD",
-          "msgstr": [
-            "inserisci la nuova password"
-          ]
+          "msgstr": ["inserisci la nuova password"]
         },
         "PASSWORD_CHANGE": {
           "msgid": "PASSWORD_CHANGE",
-          "msgstr": [
-            "Cambia password"
-          ]
+          "msgstr": ["Cambia password"]
         },
         "CANCEL": {
           "msgid": "CANCEL",
-          "msgstr": [
-            "Annulla"
-          ]
+          "msgstr": ["Annulla"]
         },
         "DEFAULT_TITL${ orgName }": {
           "msgid": "DEFAULT_TITL${ orgName }",
-          "msgstr": [
-            "Accedi a ${ orgName }"
-          ]
+          "msgstr": ["Accedi a ${ orgName }"]
         },
         "PHONE_VERIF_TITL": {
           "msgid": "PHONE_VERIF_TITL",
-          "msgstr": [
-            "Verifica numero di telefono"
-          ]
+          "msgstr": ["Verifica numero di telefono"]
         },
         "TOKEN_SENT": {
           "msgid": "TOKEN_SENT",
-          "msgstr": [
-            "Codice di verifica SMS inviato con successo"
-          ]
+          "msgstr": ["Codice di verifica SMS inviato con successo"]
         },
         "PHONE_VERIFY (${ phone_number })": {
           "msgid": "PHONE_VERIFY (${ phone_number })",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "MOBILE_CODE_PHOLD": {
           "msgid": "MOBILE_CODE_PHOLD",
-          "msgstr": [
-            "Inserisci il codice di verifica ricevuto via SMS"
-          ]
+          "msgstr": ["Inserisci il codice di verifica ricevuto via SMS"]
         },
         "MOBILE_CODE_TITL": {
           "msgid": "MOBILE_CODE_TITL",
-          "msgstr": [
-            "Il campo deve essere un codice numerico di 6 cifre"
-          ]
+          "msgstr": ["Il campo deve essere un codice numerico di 6 cifre"]
         },
         "MOBILE_PHONE_VERIFY": {
           "msgid": "MOBILE_PHONE_VERIFY",
-          "msgstr": [
-            "Invio"
-          ]
+          "msgstr": ["Invio"]
         },
         "RESEND_TOKEN_LBL": {
           "msgid": "RESEND_TOKEN_LBL",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "RESEND_TOKEN_WAIT_LBL${ seconds }": {
           "msgid": "RESEND_TOKEN_WAIT_LBL${ seconds }",
@@ -4088,123 +2808,83 @@
         },
         "RESEND_TOKEN": {
           "msgid": "RESEND_TOKEN",
-          "msgstr": [
-            "Invia un nuovo codice di verifica"
-          ]
+          "msgstr": ["Invia un nuovo codice di verifica"]
         },
         "PHONE_CHANGE_LBL": {
           "msgid": "PHONE_CHANGE_LBL",
-          "msgstr": [
-            "Numero di telefono errato?"
-          ]
+          "msgstr": ["Numero di telefono errato?"]
         },
         "PHONE_CHANGE_BTN": {
           "msgid": "PHONE_CHANGE_BTN",
-          "msgstr": [
-            "Cambia il numero di telefono"
-          ]
+          "msgstr": ["Cambia il numero di telefono"]
         },
         "LOGOUT_LBL": {
           "msgid": "LOGOUT_LBL",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PHONE_CHANGE_TITL": {
           "msgid": "PHONE_CHANGE_TITL",
-          "msgstr": [
-            "Cambia numero di telefono"
-          ]
+          "msgstr": ["Cambia numero di telefono"]
         },
         "LOGIN_SUCCESS": {
           "msgid": "LOGIN_SUCCESS",
-          "msgstr": [
-            "Autenticazione avvenuta con successo"
-          ]
+          "msgstr": ["Autenticazione avvenuta con successo"]
         },
         "LOGOUT_CONTENT": {
           "msgid": "LOGOUT_CONTENT",
-          "msgstr": [
-            "Logout effettuato con successo"
-          ]
+          "msgstr": ["Logout effettuato con successo"]
         },
         "LOGIN_AGAIN": {
           "msgid": "LOGIN_AGAIN",
-          "msgstr": [
-            "Accedi nuovamente"
-          ]
+          "msgstr": ["Accedi nuovamente"]
         },
         "LOGIN": {
           "msgid": "LOGIN",
-          "msgstr": [
-            "Accedi"
-          ]
+          "msgstr": ["Accedi"]
         },
         "USER_INACTIVE": {
           "msgid": "USER_INACTIVE",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "LOGIN_ERR": {
           "msgid": "LOGIN_ERR",
-          "msgstr": [
-            "Si è verificato un errore durante l'autenticazione."
-          ]
+          "msgstr": ["Si è verificato un errore durante l'autenticazione."]
         },
         "REMEMBER_ME": {
           "msgid": "REMEMBER_ME",
-          "msgstr": [
-            "Ricorda l'accesso su questo dispositivo"
-          ]
+          "msgstr": ["Ricorda l'accesso su questo dispositivo"]
         },
         "LOGIN_ADD_INFO_TXT": {
           "msgid": "LOGIN_ADD_INFO_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "REGISTER_BTN_LBL": {
           "msgid": "REGISTER_BTN_LBL",
-          "msgstr": [
-            "Non hai un account?"
-          ]
+          "msgstr": ["Non hai un account?"]
         },
         "HELPDESK": {
           "msgid": "HELPDESK",
-          "msgstr": [
-            "Supporto"
-          ]
+          "msgstr": ["Supporto"]
         },
         "404_H": {
           "msgid": "404_H",
-          "msgstr": [
-            "404"
-          ]
+          "msgstr": ["404"]
         },
         "404_SUBH": {
           "msgid": "404_SUBH",
-          "msgstr": [
-            "Non trovato"
-          ]
+          "msgstr": ["Non trovato"]
         },
         "404_MESSAGE": {
           "msgid": "404_MESSAGE",
-          "msgstr": [
-            "Ci scusiamo, la pagina cercata non è stata trovata."
-          ]
+          "msgstr": ["Ci scusiamo, la pagina cercata non è stata trovata."]
         },
         "HOME_PG_LINK_TXT": {
           "msgid": "HOME_PG_LINK_TXT",
-          "msgstr": [
-            "Torna alla prima pagina"
-          ]
+          "msgstr": ["Torna alla prima pagina"]
         },
         "TEST_MESSAGE": {
           "msgid": "TEST_MESSAGE",
-          "msgstr": [
-            "Questo è un messaggio di prova"
-          ]
+          "msgstr": ["Questo è un messaggio di prova"]
         }
       }
     }
@@ -4222,15 +2902,11 @@
       "": {
         "ERR_OCCUR": {
           "msgid": "ERR_OCCUR",
-          "msgstr": [
-            "Была ошибка!"
-          ]
+          "msgstr": ["Была ошибка!"]
         },
         "PLAN_SETTING_TXT": {
           "msgid": "PLAN_SETTING_TXT",
-          "msgstr": [
-            "Выберите предпочитаемый тип подписки"
-          ]
+          "msgstr": ["Выберите предпочитаемый тип подписки"]
         },
         "INACTIVE_SESSION_LOGOUT": {
           "msgid": "INACTIVE_SESSION_LOGOUT",
@@ -4240,177 +2916,119 @@
         },
         "LOGOUT_SUCCESS": {
           "msgid": "LOGOUT_SUCCESS",
-          "msgstr": [
-            "Успешный выход"
-          ]
+          "msgstr": ["Успешный выход"]
         },
         "YES": {
           "msgid": "YES",
-          "msgstr": [
-            "Да"
-          ]
+          "msgstr": ["Да"]
         },
         "NO": {
           "msgid": "NO",
-          "msgstr": [
-            "Нет"
-          ]
+          "msgstr": ["Нет"]
         },
         "PWD_REVEAL": {
           "msgid": "PWD_REVEAL",
-          "msgstr": [
-            "Показать пароль"
-          ]
+          "msgstr": ["Показать пароль"]
         },
         "PWD_HIDE": {
           "msgid": "PWD_HIDE",
-          "msgstr": [
-            "Скрыть пароль"
-          ]
+          "msgstr": ["Скрыть пароль"]
         },
         "PRIV_POL_TITL": {
           "msgid": "PRIV_POL_TITL",
-          "msgstr": [
-            "политика конфиденциальности"
-          ]
+          "msgstr": ["политика конфиденциальности"]
         },
         "TOS_TITL": {
           "msgid": "TOS_TITL",
-          "msgstr": [
-            "условия использования"
-          ]
+          "msgstr": ["условия использования"]
         },
         "PLEASE_WAIT": {
           "msgid": "PLEASE_WAIT",
-          "msgstr": [
-            "Подождите пожалуйста..."
-          ]
+          "msgstr": ["Подождите пожалуйста..."]
         },
         "PLEASE_LOGIN": {
           "msgid": "PLEASE_LOGIN",
-          "msgstr": [
-            "Пожалуйста, войдите"
-          ]
+          "msgstr": ["Пожалуйста, войдите"]
         },
         "ACCT_ACTIVE": {
           "msgid": "ACCT_ACTIVE",
-          "msgstr": [
-            "Активная сессия"
-          ]
+          "msgstr": ["Активная сессия"]
         },
         "LOGOUT": {
           "msgid": "LOGOUT",
-          "msgstr": [
-            "Выйди"
-          ]
+          "msgstr": ["Выйди"]
         },
         "ACCT_START_TIME": {
           "msgid": "ACCT_START_TIME",
-          "msgstr": [
-            "Дата / время начало"
-          ]
+          "msgstr": ["Дата / время начало"]
         },
         "ACCT_STOP_TIME": {
           "msgid": "ACCT_STOP_TIME",
-          "msgstr": [
-            "Дата / время закончено"
-          ]
+          "msgstr": ["Дата / время закончено"]
         },
         "ACCT_DURATION": {
           "msgid": "ACCT_DURATION",
-          "msgstr": [
-            "Продолжительность"
-          ]
+          "msgstr": ["Продолжительность"]
         },
         "ACCT_DOWNLOAD": {
           "msgid": "ACCT_DOWNLOAD",
-          "msgstr": [
-            "Трафик данных довнлоад"
-          ]
+          "msgstr": ["Трафик данных довнлоад"]
         },
         "ACCT_UPLOAD": {
           "msgid": "ACCT_UPLOAD",
-          "msgstr": [
-            "Трафик данных аплоад"
-          ]
+          "msgstr": ["Трафик данных аплоад"]
         },
         "ACCT_DEVICE_ADDRESS": {
           "msgid": "ACCT_DEVICE_ADDRESS",
-          "msgstr": [
-            "Адрес устройства"
-          ]
+          "msgstr": ["Адрес устройства"]
         },
         "STATUS": {
           "msgid": "STATUS",
-          "msgstr": [
-            "Режим"
-          ]
+          "msgstr": ["Режим"]
         },
         "LOGGED_IN": {
           "msgid": "LOGGED_IN",
-          "msgstr": [
-            "Аутентифицирован"
-          ]
+          "msgstr": ["Аутентифицирован"]
         },
         "EMAIL": {
           "msgid": "EMAIL",
-          "msgstr": [
-            "Емейл"
-          ]
+          "msgstr": ["Емейл"]
         },
         "USERNAME": {
           "msgid": "USERNAME",
-          "msgstr": [
-            "Имя пользователя"
-          ]
+          "msgstr": ["Имя пользователя"]
         },
         "PHONE_NUMBER": {
           "msgid": "PHONE_NUMBER",
-          "msgstr": [
-            "Номер телефона"
-          ]
+          "msgstr": ["Номер телефона"]
         },
         "CP_LOGIN": {
           "msgid": "CP_LOGIN",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "STATUS_TITL": {
           "msgid": "STATUS_TITL",
-          "msgstr": [
-            "Режим"
-          ]
+          "msgstr": ["Режим"]
         },
         "PASSWORD_EXPIRED": {
           "msgid": "PASSWORD_EXPIRED",
-          "msgstr": [
-            "Срок действия вашего пароля истек, обновите его."
-          ]
+          "msgstr": ["Срок действия вашего пароля истек, обновите его."]
         },
         "PLAN_EXHAUSTED_TOAST": {
           "msgid": "PLAN_EXHAUSTED_TOAST",
-          "msgstr": [
-            "Вы исчерпали трафик, доступный в вашем пакете."
-          ]
+          "msgstr": ["Вы исчерпали трафик, доступный в вашем пакете."]
         },
         "SUCCESS_UPGRADE_PLAN": {
           "msgid": "SUCCESS_UPGRADE_PLAN",
-          "msgstr": [
-            "Обновление плана выполняется"
-          ]
+          "msgstr": ["Обновление плана выполняется"]
         },
         "STATUS_CONTENT": {
           "msgid": "STATUS_CONTENT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "TRAFFIC_EXHAUSTED": {
           "msgid": "TRAFFIC_EXHAUSTED",
-          "msgstr": [
-            "Трафик исчерпан"
-          ]
+          "msgstr": ["Трафик исчерпан"]
         },
         "LOGOUT_MODAL_CONTENT": {
           "msgid": "LOGOUT_MODAL_CONTENT",
@@ -4420,255 +3038,171 @@
         },
         "CURRENT_SUBSCRIPTION_TXT": {
           "msgid": "CURRENT_SUBSCRIPTION_TXT",
-          "msgstr": [
-            "Текущая подписка:"
-          ]
+          "msgstr": ["Текущая подписка:"]
         },
         "USAGE_LIMIT_EXHAUSTED_TXT": {
           "msgid": "USAGE_LIMIT_EXHAUSTED_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PLAN_UPGRADE_BTN_TXT": {
           "msgid": "PLAN_UPGRADE_BTN_TXT",
-          "msgstr": [
-            "Обновление"
-          ]
+          "msgstr": ["Обновление"]
         },
         "PHONE_LBL": {
           "msgid": "PHONE_LBL",
-          "msgstr": [
-            "Номер мобильного телефона"
-          ]
+          "msgstr": ["Номер мобильного телефона"]
         },
         "PHONE_PHOLD": {
           "msgid": "PHONE_PHOLD",
-          "msgstr": [
-            "Номер телефона"
-          ]
+          "msgstr": ["Номер телефона"]
         },
         "EMAIL_PHOLD": {
           "msgid": "EMAIL_PHOLD",
-          "msgstr": [
-            "емайл адрес"
-          ]
+          "msgstr": ["емайл адрес"]
         },
         "EMAIL_PTRN_DESC": {
           "msgid": "EMAIL_PTRN_DESC",
-          "msgstr": [
-            "Действующий емейл адрес"
-          ]
+          "msgstr": ["Действующий емейл адрес"]
         },
         "USERNAME_REG_LBL": {
           "msgid": "USERNAME_REG_LBL",
-          "msgstr": [
-            "Имя пользователя"
-          ]
+          "msgstr": ["Имя пользователя"]
         },
         "USERNAME_REG_PHOLD": {
           "msgid": "USERNAME_REG_PHOLD",
-          "msgstr": [
-            "Имя пользователя"
-          ]
+          "msgstr": ["Имя пользователя"]
         },
         "USERNAME_PTRN_DESC": {
           "msgid": "USERNAME_PTRN_DESC",
-          "msgstr": [
-            "Только буквы, цифры и символы @/./+/-/_"
-          ]
+          "msgstr": ["Только буквы, цифры и символы @/./+/-/_"]
         },
         "FIRST_NAME_LBL": {
           "msgid": "FIRST_NAME_LBL",
-          "msgstr": [
-            "Имя"
-          ]
+          "msgstr": ["Имя"]
         },
         "OPTIONAL": {
           "msgid": "OPTIONAL",
-          "msgstr": [
-            "Необязательно"
-          ]
+          "msgstr": ["Необязательно"]
         },
         "FIRST_NAME_PHOLD": {
           "msgid": "FIRST_NAME_PHOLD",
-          "msgstr": [
-            "Имя"
-          ]
+          "msgstr": ["Имя"]
         },
         "LAST_NAME_LBL": {
           "msgid": "LAST_NAME_LBL",
-          "msgstr": [
-            "Фамилия"
-          ]
+          "msgstr": ["Фамилия"]
         },
         "LAST_NAME_PHOLD": {
           "msgid": "LAST_NAME_PHOLD",
-          "msgstr": [
-            "Фамилия"
-          ]
+          "msgstr": ["Фамилия"]
         },
         "BIRTH_DATE_LBL": {
           "msgid": "BIRTH_DATE_LBL",
-          "msgstr": [
-            "Ваш дата рождения"
-          ]
+          "msgstr": ["Ваш дата рождения"]
         },
         "LOCATION_LBL": {
           "msgid": "LOCATION_LBL",
-          "msgstr": [
-            "Адрес"
-          ]
+          "msgstr": ["Адрес"]
         },
         "LOCATION_PHOLD": {
           "msgid": "LOCATION_PHOLD",
-          "msgstr": [
-            "Место жительства"
-          ]
+          "msgstr": ["Место жительства"]
         },
         "LOCATION_PTRN_DESC": {
           "msgid": "LOCATION_PTRN_DESC",
-          "msgstr": [
-            "Только буквы, цифры, пробелы, знаки препинания"
-          ]
+          "msgstr": ["Только буквы, цифры, пробелы, знаки препинания"]
         },
         "PWD_LBL": {
           "msgid": "PWD_LBL",
-          "msgstr": [
-            "Пароль"
-          ]
+          "msgstr": ["Пароль"]
         },
         "PWD_PHOLD": {
           "msgid": "PWD_PHOLD",
-          "msgstr": [
-            "Введите пароль"
-          ]
+          "msgstr": ["Введите пароль"]
         },
         "PWD_PTRN_DESC": {
           "msgid": "PWD_PTRN_DESC",
-          "msgstr": [
-            "Пароль не менее 6 символов"
-          ]
+          "msgstr": ["Пароль не менее 6 символов"]
         },
         "CONFIRM_PWD_LBL": {
           "msgid": "CONFIRM_PWD_LBL",
-          "msgstr": [
-            "Подтвердите пароль"
-          ]
+          "msgstr": ["Подтвердите пароль"]
         },
         "CONFIRM_PWD_PHOLD": {
           "msgid": "CONFIRM_PWD_PHOLD",
-          "msgstr": [
-            "Подтвердите пароль"
-          ]
+          "msgstr": ["Подтвердите пароль"]
         },
         "COUNTRY_LBL": {
           "msgid": "COUNTRY_LBL",
-          "msgstr": [
-            "Страна"
-          ]
+          "msgstr": ["Страна"]
         },
         "CITY_LBL": {
           "msgid": "CITY_LBL",
-          "msgstr": [
-            "Город"
-          ]
+          "msgstr": ["Город"]
         },
         "CITY_PHOLD": {
           "msgid": "CITY_PHOLD",
-          "msgstr": [
-            "Введите город"
-          ]
+          "msgstr": ["Введите город"]
         },
         "STREET_LBL": {
           "msgid": "STREET_LBL",
-          "msgstr": [
-            "Улица"
-          ]
+          "msgstr": ["Улица"]
         },
         "STREET_PHOLD": {
           "msgid": "STREET_PHOLD",
-          "msgstr": [
-            "Введите адрес"
-          ]
+          "msgstr": ["Введите адрес"]
         },
         "ZIP_CODE_LBL": {
           "msgid": "ZIP_CODE_LBL",
-          "msgstr": [
-            "Почтовый Код"
-          ]
+          "msgstr": ["Почтовый Код"]
         },
         "TAX_NUMBER_LBL": {
           "msgid": "TAX_NUMBER_LBL",
-          "msgstr": [
-            "Фискальный Код"
-          ]
+          "msgstr": ["Фискальный Код"]
         },
         "TAX_NUMBER_PHOLD": {
           "msgid": "TAX_NUMBER_PHOLD",
-          "msgstr": [
-            "Введите Фискальный Код"
-          ]
+          "msgstr": ["Введите Фискальный Код"]
         },
         "TAX_NUMBER_PTRN_DESC": {
           "msgid": "TAX_NUMBER_PTRN_DESC",
-          "msgstr": [
-            "Только буквы и цифры"
-          ]
+          "msgstr": ["Только буквы и цифры"]
         },
         "REGISTER_ADD_INFO_TXT": {
           "msgid": "REGISTER_ADD_INFO_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "REGISTER_BTN_TXT": {
           "msgid": "REGISTER_BTN_TXT",
-          "msgstr": [
-            "Регистрация"
-          ]
+          "msgstr": ["Регистрация"]
         },
         "FORGOT_PASSWORD": {
           "msgid": "FORGOT_PASSWORD",
-          "msgstr": [
-            "Забыл пароль?"
-          ]
+          "msgstr": ["Забыл пароль?"]
         },
         "LINKS_LOGIN_TXT": {
           "msgid": "LINKS_LOGIN_TXT",
-          "msgstr": [
-            "У вас уже есть аккаунт? Войдите"
-          ]
+          "msgstr": ["У вас уже есть аккаунт? Войдите"]
         },
         "REGISTRATION_TITL": {
           "msgid": "REGISTRATION_TITL",
-          "msgstr": [
-            "Регистрация"
-          ]
+          "msgstr": ["Регистрация"]
         },
         "PWD_CNF_ERR": {
           "msgid": "PWD_CNF_ERR",
-          "msgstr": [
-            "Два пароля не совпадают"
-          ]
+          "msgstr": ["Два пароля не совпадают"]
         },
         "REGISTER_SUCCESS": {
           "msgid": "REGISTER_SUCCESS",
-          "msgstr": [
-            "Успешная регистрация"
-          ]
+          "msgstr": ["Успешная регистрация"]
         },
         "404_PG_TITL": {
           "msgid": "404_PG_TITL",
-          "msgstr": [
-            "404 Не найдено"
-          ]
+          "msgstr": ["404 Не найдено"]
         },
         "REGISTER_ERR": {
           "msgid": "REGISTER_ERR",
-          "msgstr": [
-            "При регистрации произошла ошибка"
-          ]
+          "msgstr": ["При регистрации произошла ошибка"]
         },
         "NO_ORGS": {
           "msgid": "NO_ORGS",
@@ -4678,99 +3212,67 @@
         },
         "CONFLICT_ORGS": {
           "msgid": "CONFLICT_ORGS",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "CONFLICT_SIGNIN": {
           "msgid": "CONFLICT_SIGNIN",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PAY_SUCCESS": {
           "msgid": "PAY_SUCCESS",
-          "msgstr": [
-            "Оплачено"
-          ]
+          "msgstr": ["Оплачено"]
         },
         "PAY_REQ": {
           "msgid": "PAY_REQ",
-          "msgstr": [
-            "Требуется платёж"
-          ]
+          "msgstr": ["Требуется платёж"]
         },
         "PAY_WARN${ timeout }${ maxAttempts }": {
           "msgid": "PAY_WARN${ timeout }${ maxAttempts }",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PAY_PROC_BTN": {
           "msgid": "PAY_PROC_BTN",
-          "msgstr": [
-            "Подтвердите платёж"
-          ]
+          "msgstr": ["Подтвердите платёж"]
         },
         "PAY_GIVE_UP_BTN": {
           "msgid": "PAY_GIVE_UP_BTN",
-          "msgstr": [
-            "Отменить и выйти"
-          ]
+          "msgstr": ["Отменить и выйти"]
         },
         "PAY_FAIL": {
           "msgid": "PAY_FAIL",
-          "msgstr": [
-            "Платёж не прошёл"
-          ]
+          "msgstr": ["Платёж не прошёл"]
         },
         "PAY_SUB_H": {
           "msgid": "PAY_SUB_H",
-          "msgstr": [
-            "Платеж не прошёл"
-          ]
+          "msgstr": ["Платеж не прошёл"]
         },
         "PAY_TRY_AGAIN_BTN": {
           "msgid": "PAY_TRY_AGAIN_BTN",
-          "msgstr": [
-            "Попробуйте снова"
-          ]
+          "msgstr": ["Попробуйте снова"]
         },
         "PAY_GIVE_UP_TXT": {
           "msgid": "PAY_GIVE_UP_TXT",
-          "msgstr": [
-            "В случае возникновения проблем обращайтесь в сервис"
-          ]
+          "msgstr": ["В случае возникновения проблем обращайтесь в сервис"]
         },
         "PWD_RESET_TITL": {
           "msgid": "PWD_RESET_TITL",
-          "msgstr": [
-            "Изменить пароль"
-          ]
+          "msgstr": ["Изменить пароль"]
         },
         "LOGIN_PG_LNK": {
           "msgid": "LOGIN_PG_LNK",
-          "msgstr": [
-            "Вернутся на страницу входa"
-          ]
+          "msgstr": ["Вернутся на страницу входa"]
         },
         "PWD_RESET_ADD_TXT": {
           "msgid": "PWD_RESET_ADD_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "USERNAME_LOG_LBL": {
           "msgid": "USERNAME_LOG_LBL",
-          "msgstr": [
-            "Емейл, номер телефона или имя пользователя"
-          ]
+          "msgstr": ["Емейл, номер телефона или имя пользователя"]
         },
         "USERNAME_LOG_PHOLD": {
           "msgid": "USERNAME_LOG_PHOLD",
-          "msgstr": [
-            "Емейл, номер телефона или имя пользователя"
-          ]
+          "msgstr": ["Емейл, номер телефона или имя пользователя"]
         },
         "USERNAME_LOG_TITL": {
           "msgid": "USERNAME_LOG_TITL",
@@ -4780,117 +3282,79 @@
         },
         "PWD_RESET_BTN": {
           "msgid": "PWD_RESET_BTN",
-          "msgstr": [
-            "Изменить пароль"
-          ]
+          "msgstr": ["Изменить пароль"]
         },
         "PWD_RESET_CNTC_TXT": {
           "msgid": "PWD_RESET_CNTC_TXT",
-          "msgstr": [
-            "В случае проблем с паролем обратитесь в сервис"
-          ]
+          "msgstr": ["В случае проблем с паролем обратитесь в сервис"]
         },
         "PWD_CONFIRM_TITL": {
           "msgid": "PWD_CONFIRM_TITL",
-          "msgstr": [
-            "Подтвердите пароль"
-          ]
+          "msgstr": ["Подтвердите пароль"]
         },
         "PWD_CONFIRM_H": {
           "msgid": "PWD_CONFIRM_H",
-          "msgstr": [
-            "Подтвердите пароль"
-          ]
+          "msgstr": ["Подтвердите пароль"]
         },
         "PWD_CONFIRM_ADD_TXT": {
           "msgid": "PWD_CONFIRM_ADD_TXT",
-          "msgstr": [
-            "Введите новый пароль ещё раз"
-          ]
+          "msgstr": ["Введите новый пароль ещё раз"]
         },
         "PWD_CONFIRM": {
           "msgid": "PWD_CONFIRM",
-          "msgstr": [
-            "Подтвердите смену пароля"
-          ]
+          "msgstr": ["Подтвердите смену пароля"]
         },
         "PWD_CHANGE_TITL": {
           "msgid": "PWD_CHANGE_TITL",
-          "msgstr": [
-            "Изменить пароль"
-          ]
+          "msgstr": ["Изменить пароль"]
         },
         "PWD_CURR_ERR": {
           "msgid": "PWD_CURR_ERR",
-          "msgstr": [
-            "Новый пароль не может совпадать с текущим паролем."
-          ]
+          "msgstr": ["Новый пароль не может совпадать с текущим паролем."]
         },
         "PWD_CHNG_ERR": {
           "msgid": "PWD_CHNG_ERR",
-          "msgstr": [
-            "Произошла ошибка, пароль не было изменен"
-          ]
+          "msgstr": ["Произошла ошибка, пароль не было изменен"]
         },
         "PWD_CHANGE_HELP_TXT": {
           "msgid": "PWD_CHANGE_HELP_TXT",
-          "msgstr": [
-            "Используйте форму ниже, чтобы изменить свой пароль."
-          ]
+          "msgstr": ["Используйте форму ниже, чтобы изменить свой пароль."]
         },
         "CURR_PWD_LBL": {
           "msgid": "CURR_PWD_LBL",
-          "msgstr": [
-            "Текущий пароль"
-          ]
+          "msgstr": ["Текущий пароль"]
         },
         "CURR_PWD_PHOLD": {
           "msgid": "CURR_PWD_PHOLD",
-          "msgstr": [
-            "ваш текущий пароль"
-          ]
+          "msgstr": ["ваш текущий пароль"]
         },
         "PWD1_LBL": {
           "msgid": "PWD1_LBL",
-          "msgstr": [
-            "Новый пароль"
-          ]
+          "msgstr": ["Новый пароль"]
         },
         "PWD1_PHOLD": {
           "msgid": "PWD1_PHOLD",
-          "msgstr": [
-            "Введите свой новый пароль"
-          ]
+          "msgstr": ["Введите свой новый пароль"]
         },
         "PASSWORD_CHANGE": {
           "msgid": "PASSWORD_CHANGE",
-          "msgstr": [
-            "Изменить пароль"
-          ]
+          "msgstr": ["Изменить пароль"]
         },
         "CANCEL": {
           "msgid": "CANCEL",
-          "msgstr": [
-            "Отмена"
-          ]
+          "msgstr": ["Отмена"]
         },
         "DEFAULT_TITL${ orgName }": {
           "msgid": "DEFAULT_TITL${ orgName }",
-          "msgstr": [
-            "Доступ к Wi-Fi - ${ orgName }"
-          ]
+          "msgstr": ["Доступ к Wi-Fi - ${ orgName }"]
         },
         "PHONE_VERIF_TITL": {
           "msgid": "PHONE_VERIF_TITL",
-          "msgstr": [
-            "Поверка номер телефона"
-          ]
+          "msgstr": ["Поверка номер телефона"]
         },
         "TOKEN_SENT": {
           "msgid": "TOKEN_SENT",
-          "msgstr": [
-            "SMS-код подтверждения отправлен"
-          ]
+          "msgstr": ["SMS-код подтверждения отправлен"]
         },
         "PHONE_VERIFY (${ phone_number })": {
           "msgid": "PHONE_VERIFY (${ phone_number })",
@@ -4900,21 +3364,15 @@
         },
         "MOBILE_CODE_PHOLD": {
           "msgid": "MOBILE_CODE_PHOLD",
-          "msgstr": [
-            "Введите полученный SMS-код"
-          ]
+          "msgstr": ["Введите полученный SMS-код"]
         },
         "MOBILE_CODE_TITL": {
           "msgid": "MOBILE_CODE_TITL",
-          "msgstr": [
-            "Только 6-значный цифровой код"
-          ]
+          "msgstr": ["Только 6-значный цифровой код"]
         },
         "MOBILE_PHONE_VERIFY": {
           "msgid": "MOBILE_PHONE_VERIFY",
-          "msgstr": [
-            "Отправить"
-          ]
+          "msgstr": ["Отправить"]
         },
         "RESEND_TOKEN_LBL": {
           "msgid": "RESEND_TOKEN_LBL",
@@ -4924,27 +3382,19 @@
         },
         "RESEND_TOKEN_WAIT_LBL${ seconds }": {
           "msgid": "RESEND_TOKEN_WAIT_LBL${ seconds }",
-          "msgstr": [
-            "Новое SMS может быть запрошено за ${ seconds } секунд."
-          ]
+          "msgstr": ["Новое SMS может быть запрошено за ${ seconds } секунд."]
         },
         "RESEND_TOKEN": {
           "msgid": "RESEND_TOKEN",
-          "msgstr": [
-            "Запросить новый проверочный SMS-код"
-          ]
+          "msgstr": ["Запросить новый проверочный SMS-код"]
         },
         "PHONE_CHANGE_LBL": {
           "msgid": "PHONE_CHANGE_LBL",
-          "msgstr": [
-            "Неправильный номер телефона?"
-          ]
+          "msgstr": ["Неправильный номер телефона?"]
         },
         "PHONE_CHANGE_BTN": {
           "msgid": "PHONE_CHANGE_BTN",
-          "msgstr": [
-            "Изменить номер телефона"
-          ]
+          "msgstr": ["Изменить номер телефона"]
         },
         "LOGOUT_LBL": {
           "msgid": "LOGOUT_LBL",
@@ -4954,99 +3404,67 @@
         },
         "PHONE_CHANGE_TITL": {
           "msgid": "PHONE_CHANGE_TITL",
-          "msgstr": [
-            "Изменить номер телефона"
-          ]
+          "msgstr": ["Изменить номер телефона"]
         },
         "LOGIN_SUCCESS": {
           "msgid": "LOGIN_SUCCESS",
-          "msgstr": [
-            "Аутентификация прошла успешно"
-          ]
+          "msgstr": ["Аутентификация прошла успешно"]
         },
         "LOGOUT_CONTENT": {
           "msgid": "LOGOUT_CONTENT",
-          "msgstr": [
-            "Успешный выход"
-          ]
+          "msgstr": ["Успешный выход"]
         },
         "LOGIN_AGAIN": {
           "msgid": "LOGIN_AGAIN",
-          "msgstr": [
-            "Войти снова"
-          ]
+          "msgstr": ["Войти снова"]
         },
         "LOGIN": {
           "msgid": "LOGIN",
-          "msgstr": [
-            "Войти"
-          ]
+          "msgstr": ["Войти"]
         },
         "USER_INACTIVE": {
           "msgid": "USER_INACTIVE",
-          "msgstr": [
-            "Ваш аккаунт было деактивирован"
-          ]
+          "msgstr": ["Ваш аккаунт было деактивирован"]
         },
         "LOGIN_ERR": {
           "msgid": "LOGIN_ERR",
-          "msgstr": [
-            "При аутентификации произошла ошибка"
-          ]
+          "msgstr": ["При аутентификации произошла ошибка"]
         },
         "REMEMBER_ME": {
           "msgid": "REMEMBER_ME",
-          "msgstr": [
-            "Запомни меня на этом устройстве"
-          ]
+          "msgstr": ["Запомни меня на этом устройстве"]
         },
         "LOGIN_ADD_INFO_TXT": {
           "msgid": "LOGIN_ADD_INFO_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "REGISTER_BTN_LBL": {
           "msgid": "REGISTER_BTN_LBL",
-          "msgstr": [
-            "Нет аккаунта?"
-          ]
+          "msgstr": ["Нет аккаунта?"]
         },
         "HELPDESK": {
           "msgid": "HELPDESK",
-          "msgstr": [
-            "Служба поддержки"
-          ]
+          "msgstr": ["Служба поддержки"]
         },
         "404_H": {
           "msgid": "404_H",
-          "msgstr": [
-            "404 ошибка"
-          ]
+          "msgstr": ["404 ошибка"]
         },
         "404_SUBH": {
           "msgid": "404_SUBH",
-          "msgstr": [
-            "404 Не найдено"
-          ]
+          "msgstr": ["404 Не найдено"]
         },
         "404_MESSAGE": {
           "msgid": "404_MESSAGE",
-          "msgstr": [
-            "404 Страница не найдена.."
-          ]
+          "msgstr": ["404 Страница не найдена.."]
         },
         "HOME_PG_LINK_TXT": {
           "msgid": "HOME_PG_LINK_TXT",
-          "msgstr": [
-            "Вернись на первую страницу"
-          ]
+          "msgstr": ["Вернись на первую страницу"]
         },
         "TEST_MESSAGE": {
           "msgid": "TEST_MESSAGE",
-          "msgstr": [
-            "Это тестовое сообщение"
-          ]
+          "msgstr": ["Это тестовое сообщение"]
         }
       }
     }
@@ -5064,15 +3482,11 @@
       "": {
         "ERR_OCCUR": {
           "msgid": "ERR_OCCUR",
-          "msgstr": [
-            "Pojavila se je napaka!"
-          ]
+          "msgstr": ["Pojavila se je napaka!"]
         },
         "PLAN_SETTING_TXT": {
           "msgid": "PLAN_SETTING_TXT",
-          "msgstr": [
-            "Izberite vrsto naročnine"
-          ]
+          "msgstr": ["Izberite vrsto naročnine"]
         },
         "INACTIVE_SESSION_LOGOUT": {
           "msgid": "INACTIVE_SESSION_LOGOUT",
@@ -5082,651 +3496,435 @@
         },
         "LOGOUT_SUCCESS": {
           "msgid": "LOGOUT_SUCCESS",
-          "msgstr": [
-            "Odjava je bila uspešna"
-          ]
+          "msgstr": ["Odjava je bila uspešna"]
         },
         "YES": {
           "msgid": "YES",
-          "msgstr": [
-            "Da"
-          ]
+          "msgstr": ["Da"]
         },
         "NO": {
           "msgid": "NO",
-          "msgstr": [
-            "Ne"
-          ]
+          "msgstr": ["Ne"]
         },
         "PWD_REVEAL": {
           "msgid": "PWD_REVEAL",
-          "msgstr": [
-            "Pokaži geslo"
-          ]
+          "msgstr": ["Pokaži geslo"]
         },
         "PWD_HIDE": {
           "msgid": "PWD_HIDE",
-          "msgstr": [
-            "Skrij geslo"
-          ]
+          "msgstr": ["Skrij geslo"]
         },
         "PRIV_POL_TITL": {
           "msgid": "PRIV_POL_TITL",
-          "msgstr": [
-            "varstvo osebnih podatkov"
-          ]
+          "msgstr": ["varstvo osebnih podatkov"]
         },
         "TOS_TITL": {
           "msgid": "TOS_TITL",
-          "msgstr": [
-            "pogoje uporabe storitve"
-          ]
+          "msgstr": ["pogoje uporabe storitve"]
         },
         "PLEASE_WAIT": {
           "msgid": "PLEASE_WAIT",
-          "msgstr": [
-            "Prosim počakaj..."
-          ]
+          "msgstr": ["Prosim počakaj..."]
         },
         "PLEASE_LOGIN": {
           "msgid": "PLEASE_LOGIN",
-          "msgstr": [
-            "Prosim prijavite se"
-          ]
+          "msgstr": ["Prosim prijavite se"]
         },
         "ACCT_ACTIVE": {
           "msgid": "ACCT_ACTIVE",
-          "msgstr": [
-            "aktivna seja"
-          ]
+          "msgstr": ["aktivna seja"]
         },
         "LOGOUT": {
           "msgid": "LOGOUT",
-          "msgstr": [
-            "Odjava"
-          ]
+          "msgstr": ["Odjava"]
         },
         "ACCT_START_TIME": {
           "msgid": "ACCT_START_TIME",
-          "msgstr": [
-            "Začetek povezave"
-          ]
+          "msgstr": ["Začetek povezave"]
         },
         "ACCT_STOP_TIME": {
           "msgid": "ACCT_STOP_TIME",
-          "msgstr": [
-            "Konec povezave"
-          ]
+          "msgstr": ["Konec povezave"]
         },
         "ACCT_DURATION": {
           "msgid": "ACCT_DURATION",
-          "msgstr": [
-            "Trajanje"
-          ]
+          "msgstr": ["Trajanje"]
         },
         "ACCT_DOWNLOAD": {
           "msgid": "ACCT_DOWNLOAD",
-          "msgstr": [
-            "Prenos podatkov"
-          ]
+          "msgstr": ["Prenos podatkov"]
         },
         "ACCT_UPLOAD": {
           "msgid": "ACCT_UPLOAD",
-          "msgstr": [
-            "Nalaganje podatkov"
-          ]
+          "msgstr": ["Nalaganje podatkov"]
         },
         "ACCT_DEVICE_ADDRESS": {
           "msgid": "ACCT_DEVICE_ADDRESS",
-          "msgstr": [
-            "Naslov naprave"
-          ]
+          "msgstr": ["Naslov naprave"]
         },
         "STATUS": {
           "msgid": "STATUS",
-          "msgstr": [
-            "Status"
-          ]
+          "msgstr": ["Status"]
         },
         "LOGGED_IN": {
           "msgid": "LOGGED_IN",
-          "msgstr": [
-            "Prijavljeni"
-          ]
+          "msgstr": ["Prijavljeni"]
         },
         "EMAIL": {
           "msgid": "EMAIL",
-          "msgstr": [
-            "E-naslov"
-          ]
+          "msgstr": ["E-naslov"]
         },
         "USERNAME": {
           "msgid": "USERNAME",
-          "msgstr": [
-            "Uporabniško ime"
-          ]
+          "msgstr": ["Uporabniško ime"]
         },
         "PHONE_NUMBER": {
           "msgid": "PHONE_NUMBER",
-          "msgstr": [
-            "Telefonska številka"
-          ]
+          "msgstr": ["Telefonska številka"]
         },
         "CP_LOGIN": {
           "msgid": "CP_LOGIN",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "STATUS_TITL": {
           "msgid": "STATUS_TITL",
-          "msgstr": [
-            "Status"
-          ]
+          "msgstr": ["Status"]
         },
         "PASSWORD_EXPIRED": {
           "msgid": "PASSWORD_EXPIRED",
-          "msgstr": [
-            "Vaše geslo je poteklo, posodobite ga."
-          ]
+          "msgstr": ["Vaše geslo je poteklo, posodobite ga."]
         },
         "PLAN_EXHAUSTED_TOAST": {
           "msgid": "PLAN_EXHAUSTED_TOAST",
-          "msgstr": [
-            "Vyčerpali ste návštevnosť dostupnú pre váš balík."
-          ]
+          "msgstr": ["Vyčerpali ste návštevnosť dostupnú pre váš balík."]
         },
         "SUCCESS_UPGRADE_PLAN": {
           "msgid": "SUCCESS_UPGRADE_PLAN",
-          "msgstr": [
-            "Prebieha aktualizácia plánu"
-          ]
+          "msgstr": ["Prebieha aktualizácia plánu"]
         },
         "STATUS_CONTENT": {
           "msgid": "STATUS_CONTENT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "TRAFFIC_EXHAUSTED": {
           "msgid": "TRAFFIC_EXHAUSTED",
-          "msgstr": [
-            "Doprava vyčerpaná"
-          ]
+          "msgstr": ["Doprava vyčerpaná"]
         },
         "LOGOUT_MODAL_CONTENT": {
           "msgid": "LOGOUT_MODAL_CONTENT",
-          "msgstr": [
-            "Se želite naslednjič samodejno prijaviti?"
-          ]
+          "msgstr": ["Se želite naslednjič samodejno prijaviti?"]
         },
         "CURRENT_SUBSCRIPTION_TXT": {
           "msgid": "CURRENT_SUBSCRIPTION_TXT",
-          "msgstr": [
-            "Aktuálne predplatné:"
-          ]
+          "msgstr": ["Aktuálne predplatné:"]
         },
         "USAGE_LIMIT_EXHAUSTED_TXT": {
           "msgid": "USAGE_LIMIT_EXHAUSTED_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PLAN_UPGRADE_BTN_TXT": {
           "msgid": "PLAN_UPGRADE_BTN_TXT",
-          "msgstr": [
-            "Inovovať"
-          ]
+          "msgstr": ["Inovovať"]
         },
         "PHONE_LBL": {
           "msgid": "PHONE_LBL",
-          "msgstr": [
-            "Mobilna številka"
-          ]
+          "msgstr": ["Mobilna številka"]
         },
         "PHONE_PHOLD": {
           "msgid": "PHONE_PHOLD",
-          "msgstr": [
-            "Mobilna številka"
-          ]
+          "msgstr": ["Mobilna številka"]
         },
         "EMAIL_PHOLD": {
           "msgid": "EMAIL_PHOLD",
-          "msgstr": [
-            "Naslov e-pošte"
-          ]
+          "msgstr": ["Naslov e-pošte"]
         },
         "EMAIL_PTRN_DESC": {
           "msgid": "EMAIL_PTRN_DESC",
-          "msgstr": [
-            "Naslov veljavne e-pošte"
-          ]
+          "msgstr": ["Naslov veljavne e-pošte"]
         },
         "USERNAME_REG_LBL": {
           "msgid": "USERNAME_REG_LBL",
-          "msgstr": [
-            "Uporabniško ime"
-          ]
+          "msgstr": ["Uporabniško ime"]
         },
         "USERNAME_REG_PHOLD": {
           "msgid": "USERNAME_REG_PHOLD",
-          "msgstr": [
-            "Uporabniško ime"
-          ]
+          "msgstr": ["Uporabniško ime"]
         },
         "USERNAME_PTRN_DESC": {
           "msgid": "USERNAME_PTRN_DESC",
-          "msgstr": [
-            "Samo črke, številke in posebni znaki @/./+/-/_"
-          ]
+          "msgstr": ["Samo črke, številke in posebni znaki @/./+/-/_"]
         },
         "FIRST_NAME_LBL": {
           "msgid": "FIRST_NAME_LBL",
-          "msgstr": [
-            "Ime"
-          ]
+          "msgstr": ["Ime"]
         },
         "OPTIONAL": {
           "msgid": "OPTIONAL",
-          "msgstr": [
-            "neobvezno"
-          ]
+          "msgstr": ["neobvezno"]
         },
         "FIRST_NAME_PHOLD": {
           "msgid": "FIRST_NAME_PHOLD",
-          "msgstr": [
-            "Ime"
-          ]
+          "msgstr": ["Ime"]
         },
         "LAST_NAME_LBL": {
           "msgid": "LAST_NAME_LBL",
-          "msgstr": [
-            "Priimek"
-          ]
+          "msgstr": ["Priimek"]
         },
         "LAST_NAME_PHOLD": {
           "msgid": "LAST_NAME_PHOLD",
-          "msgstr": [
-            "Priimek"
-          ]
+          "msgstr": ["Priimek"]
         },
         "BIRTH_DATE_LBL": {
           "msgid": "BIRTH_DATE_LBL",
-          "msgstr": [
-            "Datum rojstva"
-          ]
+          "msgstr": ["Datum rojstva"]
         },
         "LOCATION_LBL": {
           "msgid": "LOCATION_LBL",
-          "msgstr": [
-            "Naslov"
-          ]
+          "msgstr": ["Naslov"]
         },
         "LOCATION_PHOLD": {
           "msgid": "LOCATION_PHOLD",
-          "msgstr": [
-            "Kraj stalnega prebivališča"
-          ]
+          "msgstr": ["Kraj stalnega prebivališča"]
         },
         "LOCATION_PTRN_DESC": {
           "msgid": "LOCATION_PTRN_DESC",
-          "msgstr": [
-            "Samo znaki, številke, presledki in ločila"
-          ]
+          "msgstr": ["Samo znaki, številke, presledki in ločila"]
         },
         "PWD_LBL": {
           "msgid": "PWD_LBL",
-          "msgstr": [
-            "Geslo"
-          ]
+          "msgstr": ["Geslo"]
         },
         "PWD_PHOLD": {
           "msgid": "PWD_PHOLD",
-          "msgstr": [
-            "Vpišite geslo"
-          ]
+          "msgstr": ["Vpišite geslo"]
         },
         "PWD_PTRN_DESC": {
           "msgid": "PWD_PTRN_DESC",
-          "msgstr": [
-            "Geslo mora imeti najmanj 6 znakov"
-          ]
+          "msgstr": ["Geslo mora imeti najmanj 6 znakov"]
         },
         "CONFIRM_PWD_LBL": {
           "msgid": "CONFIRM_PWD_LBL",
-          "msgstr": [
-            "Potrdite geslo"
-          ]
+          "msgstr": ["Potrdite geslo"]
         },
         "CONFIRM_PWD_PHOLD": {
           "msgid": "CONFIRM_PWD_PHOLD",
-          "msgstr": [
-            "Potrdite geslo"
-          ]
+          "msgstr": ["Potrdite geslo"]
         },
         "COUNTRY_LBL": {
           "msgid": "COUNTRY_LBL",
-          "msgstr": [
-            "Država"
-          ]
+          "msgstr": ["Država"]
         },
         "CITY_LBL": {
           "msgid": "CITY_LBL",
-          "msgstr": [
-            "Kraj"
-          ]
+          "msgstr": ["Kraj"]
         },
         "CITY_PHOLD": {
           "msgid": "CITY_PHOLD",
-          "msgstr": [
-            "Vpišite kraj"
-          ]
+          "msgstr": ["Vpišite kraj"]
         },
         "STREET_LBL": {
           "msgid": "STREET_LBL",
-          "msgstr": [
-            "Naslov"
-          ]
+          "msgstr": ["Naslov"]
         },
         "STREET_PHOLD": {
           "msgid": "STREET_PHOLD",
-          "msgstr": [
-            "Vpišite naslov"
-          ]
+          "msgstr": ["Vpišite naslov"]
         },
         "ZIP_CODE_LBL": {
           "msgid": "ZIP_CODE_LBL",
-          "msgstr": [
-            "Poštna številka"
-          ]
+          "msgstr": ["Poštna številka"]
         },
         "TAX_NUMBER_LBL": {
           "msgid": "TAX_NUMBER_LBL",
-          "msgstr": [
-            "Davčna številka ali ID za DDV"
-          ]
+          "msgstr": ["Davčna številka ali ID za DDV"]
         },
         "TAX_NUMBER_PHOLD": {
           "msgid": "TAX_NUMBER_PHOLD",
-          "msgstr": [
-            "Vpišite davčno številko ali ID za DDV"
-          ]
+          "msgstr": ["Vpišite davčno številko ali ID za DDV"]
         },
         "TAX_NUMBER_PTRN_DESC": {
           "msgid": "TAX_NUMBER_PTRN_DESC",
-          "msgstr": [
-            "Samo črke in številke"
-          ]
+          "msgstr": ["Samo črke in številke"]
         },
         "REGISTER_ADD_INFO_TXT": {
           "msgid": "REGISTER_ADD_INFO_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "REGISTER_BTN_TXT": {
           "msgid": "REGISTER_BTN_TXT",
-          "msgstr": [
-            "Registracija"
-          ]
+          "msgstr": ["Registracija"]
         },
         "FORGOT_PASSWORD": {
           "msgid": "FORGOT_PASSWORD",
-          "msgstr": [
-            "Pozabljeno geslo?"
-          ]
+          "msgstr": ["Pozabljeno geslo?"]
         },
         "LINKS_LOGIN_TXT": {
           "msgid": "LINKS_LOGIN_TXT",
-          "msgstr": [
-            "Registrirani uporabnik? Prijava"
-          ]
+          "msgstr": ["Registrirani uporabnik? Prijava"]
         },
         "REGISTRATION_TITL": {
           "msgid": "REGISTRATION_TITL",
-          "msgstr": [
-            "Registracija"
-          ]
+          "msgstr": ["Registracija"]
         },
         "PWD_CNF_ERR": {
           "msgid": "PWD_CNF_ERR",
-          "msgstr": [
-            "Gesli se ne ujemata."
-          ]
+          "msgstr": ["Gesli se ne ujemata."]
         },
         "REGISTER_SUCCESS": {
           "msgid": "REGISTER_SUCCESS",
-          "msgstr": [
-            "Registracija je bila uspešna"
-          ]
+          "msgstr": ["Registracija je bila uspešna"]
         },
         "404_PG_TITL": {
           "msgid": "404_PG_TITL",
-          "msgstr": [
-            "404 Ni mogoče najti"
-          ]
+          "msgstr": ["404 Ni mogoče najti"]
         },
         "REGISTER_ERR": {
           "msgid": "REGISTER_ERR",
-          "msgstr": [
-            "Napaka med registracijo."
-          ]
+          "msgstr": ["Napaka med registracijo."]
         },
         "NO_ORGS": {
           "msgid": "NO_ORGS",
-          "msgstr": [
-            "Uporabnik s podobnimi poverilnicami že obstaja."
-          ]
+          "msgstr": ["Uporabnik s podobnimi poverilnicami že obstaja."]
         },
         "CONFLICT_ORGS": {
           "msgid": "CONFLICT_ORGS",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "CONFLICT_SIGNIN": {
           "msgid": "CONFLICT_SIGNIN",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PAY_SUCCESS": {
           "msgid": "PAY_SUCCESS",
-          "msgstr": [
-            "Plačilo je bilo prejeto."
-          ]
+          "msgstr": ["Plačilo je bilo prejeto."]
         },
         "PAY_REQ": {
           "msgid": "PAY_REQ",
-          "msgstr": [
-            "Plačilo je potrebno za nadaljevanje"
-          ]
+          "msgstr": ["Plačilo je potrebno za nadaljevanje"]
         },
         "PAY_WARN${ timeout }${ maxAttempts }": {
           "msgid": "PAY_WARN${ timeout }${ maxAttempts }",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PAY_PROC_BTN": {
           "msgid": "PAY_PROC_BTN",
-          "msgstr": [
-            "Nadaljujte s plačilom"
-          ]
+          "msgstr": ["Nadaljujte s plačilom"]
         },
         "PAY_GIVE_UP_BTN": {
           "msgid": "PAY_GIVE_UP_BTN",
-          "msgstr": [
-            "Preklic in odjava"
-          ]
+          "msgstr": ["Preklic in odjava"]
         },
         "PAY_FAIL": {
           "msgid": "PAY_FAIL",
-          "msgstr": [
-            "Plačilo ni uspelo"
-          ]
+          "msgstr": ["Plačilo ni uspelo"]
         },
         "PAY_SUB_H": {
           "msgid": "PAY_SUB_H",
-          "msgstr": [
-            "Plačilo ni bilo uspešno."
-          ]
+          "msgstr": ["Plačilo ni bilo uspešno."]
         },
         "PAY_TRY_AGAIN_BTN": {
           "msgid": "PAY_TRY_AGAIN_BTN",
-          "msgstr": [
-            "Poskusite znova"
-          ]
+          "msgstr": ["Poskusite znova"]
         },
         "PAY_GIVE_UP_TXT": {
           "msgid": "PAY_GIVE_UP_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PWD_RESET_TITL": {
           "msgid": "PWD_RESET_TITL",
-          "msgstr": [
-            "Ponastavite geslo"
-          ]
+          "msgstr": ["Ponastavite geslo"]
         },
         "LOGIN_PG_LNK": {
           "msgid": "LOGIN_PG_LNK",
-          "msgstr": [
-            "Vrnite se na vstopno stran"
-          ]
+          "msgstr": ["Vrnite se na vstopno stran"]
         },
         "PWD_RESET_ADD_TXT": {
           "msgid": "PWD_RESET_ADD_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "USERNAME_LOG_LBL": {
           "msgid": "USERNAME_LOG_LBL",
-          "msgstr": [
-            "E-naslov, telefonska številka ali uporabniško ime"
-          ]
+          "msgstr": ["E-naslov, telefonska številka ali uporabniško ime"]
         },
         "USERNAME_LOG_PHOLD": {
           "msgid": "USERNAME_LOG_PHOLD",
-          "msgstr": [
-            "E-naslov, telefonska številka ali uporabniško ime"
-          ]
+          "msgstr": ["E-naslov, telefonska številka ali uporabniško ime"]
         },
         "USERNAME_LOG_TITL": {
           "msgid": "USERNAME_LOG_TITL",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PWD_RESET_BTN": {
           "msgid": "PWD_RESET_BTN",
-          "msgstr": [
-            "Ponastavite geslo"
-          ]
+          "msgstr": ["Ponastavite geslo"]
         },
         "PWD_RESET_CNTC_TXT": {
           "msgid": "PWD_RESET_CNTC_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PWD_CONFIRM_TITL": {
           "msgid": "PWD_CONFIRM_TITL",
-          "msgstr": [
-            "Ponastavite geslo"
-          ]
+          "msgstr": ["Ponastavite geslo"]
         },
         "PWD_CONFIRM_H": {
           "msgid": "PWD_CONFIRM_H",
-          "msgstr": [
-            "Ponastavite geslo"
-          ]
+          "msgstr": ["Ponastavite geslo"]
         },
         "PWD_CONFIRM_ADD_TXT": {
           "msgid": "PWD_CONFIRM_ADD_TXT",
-          "msgstr": [
-            "Vpišite novo geslos."
-          ]
+          "msgstr": ["Vpišite novo geslos."]
         },
         "PWD_CONFIRM": {
           "msgid": "PWD_CONFIRM",
-          "msgstr": [
-            "Potrdite spremembo gesla"
-          ]
+          "msgstr": ["Potrdite spremembo gesla"]
         },
         "PWD_CHANGE_TITL": {
           "msgid": "PWD_CHANGE_TITL",
-          "msgstr": [
-            "Sprememba gesla"
-          ]
+          "msgstr": ["Sprememba gesla"]
         },
         "PWD_CURR_ERR": {
           "msgid": "PWD_CURR_ERR",
-          "msgstr": [
-            "Novo geslo ne more biti enako trenutnemu geslu."
-          ]
+          "msgstr": ["Novo geslo ne more biti enako trenutnemu geslu."]
         },
         "PWD_CHNG_ERR": {
           "msgid": "PWD_CHNG_ERR",
-          "msgstr": [
-            "Pojavila se je napaka, geslo ni bilo spremenjeno."
-          ]
+          "msgstr": ["Pojavila se je napaka, geslo ni bilo spremenjeno."]
         },
         "PWD_CHANGE_HELP_TXT": {
           "msgid": "PWD_CHANGE_HELP_TXT",
-          "msgstr": [
-            "Utilize il formulari par cambiâ la tô password."
-          ]
+          "msgstr": ["Utilize il formulari par cambiâ la tô password."]
         },
         "CURR_PWD_LBL": {
           "msgid": "CURR_PWD_LBL",
-          "msgstr": [
-            "Trenutno geslo"
-          ]
+          "msgstr": ["Trenutno geslo"]
         },
         "CURR_PWD_PHOLD": {
           "msgid": "CURR_PWD_PHOLD",
-          "msgstr": [
-            "Vaše trenutno geslo"
-          ]
+          "msgstr": ["Vaše trenutno geslo"]
         },
         "PWD1_LBL": {
           "msgid": "PWD1_LBL",
-          "msgstr": [
-            "Novo geslo"
-          ]
+          "msgstr": ["Novo geslo"]
         },
         "PWD1_PHOLD": {
           "msgid": "PWD1_PHOLD",
-          "msgstr": [
-            "Vpišite novo geslo"
-          ]
+          "msgstr": ["Vpišite novo geslo"]
         },
         "PASSWORD_CHANGE": {
           "msgid": "PASSWORD_CHANGE",
-          "msgstr": [
-            "Spremenite geslo"
-          ]
+          "msgstr": ["Spremenite geslo"]
         },
         "CANCEL": {
           "msgid": "CANCEL",
-          "msgstr": [
-            "Prekličite"
-          ]
+          "msgstr": ["Prekličite"]
         },
         "DEFAULT_TITL${ orgName }": {
           "msgid": "DEFAULT_TITL${ orgName }",
-          "msgstr": [
-            "Prijavi se na - ${ orgName }"
-          ]
+          "msgstr": ["Prijavi se na - ${ orgName }"]
         },
         "PHONE_VERIF_TITL": {
           "msgid": "PHONE_VERIF_TITL",
-          "msgstr": [
-            "Preverite telefonsko številko"
-          ]
+          "msgstr": ["Preverite telefonsko številko"]
         },
         "TOKEN_SENT": {
           "msgid": "TOKEN_SENT",
@@ -5736,159 +3934,107 @@
         },
         "PHONE_VERIFY (${ phone_number })": {
           "msgid": "PHONE_VERIFY (${ phone_number })",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "MOBILE_CODE_PHOLD": {
           "msgid": "MOBILE_CODE_PHOLD",
-          "msgstr": [
-            "Vnesite kodo za preverjanje SMS"
-          ]
+          "msgstr": ["Vnesite kodo za preverjanje SMS"]
         },
         "MOBILE_CODE_TITL": {
           "msgid": "MOBILE_CODE_TITL",
-          "msgstr": [
-            "V polje vpišite 6-mestno številčno kodo"
-          ]
+          "msgstr": ["V polje vpišite 6-mestno številčno kodo"]
         },
         "MOBILE_PHONE_VERIFY": {
           "msgid": "MOBILE_PHONE_VERIFY",
-          "msgstr": [
-            "Pošlji"
-          ]
+          "msgstr": ["Pošlji"]
         },
         "RESEND_TOKEN_LBL": {
           "msgid": "RESEND_TOKEN_LBL",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "RESEND_TOKEN_WAIT_LBL${ seconds }": {
           "msgid": "RESEND_TOKEN_WAIT_LBL${ seconds }",
-          "msgstr": [
-            "Nov SMS lahko zahtevate v ${ seconds } sekundah."
-          ]
+          "msgstr": ["Nov SMS lahko zahtevate v ${ seconds } sekundah."]
         },
         "RESEND_TOKEN": {
           "msgid": "RESEND_TOKEN",
-          "msgstr": [
-            "Pošljite novo potrditveno kodo"
-          ]
+          "msgstr": ["Pošljite novo potrditveno kodo"]
         },
         "PHONE_CHANGE_LBL": {
           "msgid": "PHONE_CHANGE_LBL",
-          "msgstr": [
-            "Napačna telefonska številka?"
-          ]
+          "msgstr": ["Napačna telefonska številka?"]
         },
         "PHONE_CHANGE_BTN": {
           "msgid": "PHONE_CHANGE_BTN",
-          "msgstr": [
-            "Spremenite telefonsko številko"
-          ]
+          "msgstr": ["Spremenite telefonsko številko"]
         },
         "LOGOUT_LBL": {
           "msgid": "LOGOUT_LBL",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "PHONE_CHANGE_TITL": {
           "msgid": "PHONE_CHANGE_TITL",
-          "msgstr": [
-            "Spremenite telefonsko številko"
-          ]
+          "msgstr": ["Spremenite telefonsko številko"]
         },
         "LOGIN_SUCCESS": {
           "msgid": "LOGIN_SUCCESS",
-          "msgstr": [
-            "Prijava je bila uspešna"
-          ]
+          "msgstr": ["Prijava je bila uspešna"]
         },
         "LOGOUT_CONTENT": {
           "msgid": "LOGOUT_CONTENT",
-          "msgstr": [
-            "Odjava je bila uspešna"
-          ]
+          "msgstr": ["Odjava je bila uspešna"]
         },
         "LOGIN_AGAIN": {
           "msgid": "LOGIN_AGAIN",
-          "msgstr": [
-            "Ponovna prijava"
-          ]
+          "msgstr": ["Ponovna prijava"]
         },
         "LOGIN": {
           "msgid": "LOGIN",
-          "msgstr": [
-            "Prijava"
-          ]
+          "msgstr": ["Prijava"]
         },
         "USER_INACTIVE": {
           "msgid": "USER_INACTIVE",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "LOGIN_ERR": {
           "msgid": "LOGIN_ERR",
-          "msgstr": [
-            "Napaka med prijavo."
-          ]
+          "msgstr": ["Napaka med prijavo."]
         },
         "REMEMBER_ME": {
           "msgid": "REMEMBER_ME",
-          "msgstr": [
-            "Zapomni si me na tej napravi"
-          ]
+          "msgstr": ["Zapomni si me na tej napravi"]
         },
         "LOGIN_ADD_INFO_TXT": {
           "msgid": "LOGIN_ADD_INFO_TXT",
-          "msgstr": [
-            ""
-          ]
+          "msgstr": [""]
         },
         "REGISTER_BTN_LBL": {
           "msgid": "REGISTER_BTN_LBL",
-          "msgstr": [
-            "Nimate uporabniškega računa?"
-          ]
+          "msgstr": ["Nimate uporabniškega računa?"]
         },
         "HELPDESK": {
           "msgid": "HELPDESK",
-          "msgstr": [
-            "Podpora uporabnikom"
-          ]
+          "msgstr": ["Podpora uporabnikom"]
         },
         "404_H": {
           "msgid": "404_H",
-          "msgstr": [
-            "404"
-          ]
+          "msgstr": ["404"]
         },
         "404_SUBH": {
           "msgid": "404_SUBH",
-          "msgstr": [
-            "Ni mogoče najti"
-          ]
+          "msgstr": ["Ni mogoče najti"]
         },
         "404_MESSAGE": {
           "msgid": "404_MESSAGE",
-          "msgstr": [
-            "Oprostite, iskane strani ni bilo mogoče najti."
-          ]
+          "msgstr": ["Oprostite, iskane strani ni bilo mogoče najti."]
         },
         "HOME_PG_LINK_TXT": {
           "msgid": "HOME_PG_LINK_TXT",
-          "msgstr": [
-            "Nazaj na domačo stran"
-          ]
+          "msgstr": ["Nazaj na domačo stran"]
         },
         "TEST_MESSAGE": {
           "msgid": "TEST_MESSAGE",
-          "msgstr": [
-            "To je testno sporočilo"
-          ]
+          "msgstr": ["To je testno sporočilo"]
         }
       }
     }

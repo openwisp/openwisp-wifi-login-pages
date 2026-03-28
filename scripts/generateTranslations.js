@@ -12,18 +12,18 @@ languages.forEach((lang) => {
   let translations = {};
   let currentId = "";
 
-  lines.forEach(line => {
+  lines.forEach((line) => {
     if (line.startsWith("msgid")) {
-      currentId = line.replace('msgid "', '').replace('"', '').trim();
+      currentId = line.replace('msgid "', "").replace('"', "").trim();
     }
 
     if (line.startsWith("msgstr")) {
-      const value = line.replace('msgstr "', '').replace('"', '').trim();
+      const value = line.replace('msgstr "', "").replace('"', "").trim();
 
       if (currentId) {
         translations[currentId] = {
           msgid: currentId,
-          msgstr: [value]
+          msgstr: [value],
         };
       }
     }
@@ -36,18 +36,18 @@ languages.forEach((lang) => {
       "plural-forms": "nplurals = 2; plural = (n != 1);",
       language: lang, // ✅ dynamic
       "mime-version": "1.0",
-      "content-transfer-encoding": "8bit"
+      "content-transfer-encoding": "8bit",
     },
     translations: {
-      "": translations
-    }
+      "": translations,
+    },
   };
 });
 
 // ✅ write only once
 fs.writeFileSync(
   "client/test-translation.json",
-  JSON.stringify(allTranslations, null, 2)
+  JSON.stringify(allTranslations, null, 2),
 );
 
 console.log("✅ All languages JSON generated!");
