@@ -2,23 +2,23 @@ const fs = require("fs");
 
 const languages = ["en", "de", "es", "fur", "it", "ru", "sl"];
 
-let allTranslations = {};
+const allTranslations = {};
 
 languages.forEach((lang) => {
   const poData = fs.readFileSync(`i18n/${lang}.po`, "utf-8");
 
-  let lines = poData.split("\n");
+   const lines = poData.split("\n");
 
-  let translations = {};
+  const translations = {};
   let currentId = "";
 
   lines.forEach((line) => {
     if (line.startsWith("msgid")) {
-      currentId = line.replace('msgid "', "").replace('"', "").trim();
+      currentId = line.replace(/^msgid\s+"|"$|/g, '').trim();
     }
 
     if (line.startsWith("msgstr")) {
-      const value = line.replace('msgstr "', "").replace('"', "").trim();
+        const value = line.replace(/^msgstr\s+"|"$|/g, '').trim();
 
       if (currentId) {
         translations[currentId] = {
