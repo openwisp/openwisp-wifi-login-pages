@@ -7,18 +7,24 @@ const allTranslations = {};
 languages.forEach((lang) => {
   const poData = fs.readFileSync(`i18n/${lang}.po`, "utf-8");
 
-   const lines = poData.split("\n");
+  const lines = poData.split("\n");
 
   const translations = {};
   let currentId = "";
 
   lines.forEach((line) => {
     if (line.startsWith("msgid")) {
-      currentId = line.replace(/^msgid\s+"/, '').replace(/"$/, '').trim();
+      currentId = line
+        .replace(/^msgid\s+"/, "")
+        .replace(/"$/, "")
+        .trim();
     }
 
     if (line.startsWith("msgstr")) {
-        const value = line.replace(/^msgstr\s+"/, '').replace(/"$/, '').trim();
+      const value = line
+        .replace(/^msgstr\s+"/, "")
+        .replace(/"$/, "")
+        .trim();
 
       if (currentId) {
         translations[currentId] = {
