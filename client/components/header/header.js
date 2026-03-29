@@ -61,8 +61,8 @@ export default class Header extends React.Component {
     ) : null;
   };
 
-  getLogoMarkup = (logo, orgSlug, imageClassName) =>
-    logo && logo.url ? (
+  static getLogoMarkup(logo, orgSlug, imageClassName) {
+    return logo && logo.url ? (
       <Link to={`/${orgSlug}`}>
         <img
           src={getAssetPath(orgSlug, logo.url)}
@@ -71,6 +71,7 @@ export default class Header extends React.Component {
         />
       </Link>
     ) : null;
+  }
 
   getLanguageButtons = (className) => {
     const {languages, language, setLanguage} = this.props;
@@ -116,22 +117,15 @@ export default class Header extends React.Component {
         .join(" ");
 
       if (isInternalLink(link.url)) {
-        const shouldUseRouterLink =
-          variant === "mobile" ||
-          internalLinks.indexOf(link.url) < 0 ||
-          !isAuthenticated;
-
-        if (shouldUseRouterLink) {
-          return (
-            <Link
-              className={className}
-              to={link.url.replace("{orgSlug}", orgSlug)}
-              key={index}
-            >
-              {getText(link.text, language)}
-            </Link>
-          );
-        }
+        return (
+          <Link
+            className={className}
+            to={link.url.replace("{orgSlug}", orgSlug)}
+            key={index}
+          >
+            {getText(link.text, language)}
+          </Link>
+        );
       }
 
       return (
@@ -160,7 +154,7 @@ export default class Header extends React.Component {
             <div className="header-row-1-inner">
               <div className="header-left">
                 <div className="header-logo-div">
-                  {this.getLogoMarkup(
+                  {Header.getLogoMarkup(
                     logo,
                     orgSlug,
                     "header-desktop-logo-image header-mobile-logo-image",
