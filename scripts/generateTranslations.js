@@ -35,11 +35,18 @@ const parseQuoted = (raw, lineNum) => {
 
 const flushEntry = () => {
   if (currentId) {
+    // ✅ FIX: fallback to msgid if msgstr empty
+    const finalMsgstr =
+      currentMsgstr.length && currentMsgstr.some((s) => s && s.trim() !== "")
+        ? currentMsgstr
+        : [currentId];
+
     translations[currentId] = {
       msgid: currentId,
-      msgstr: currentMsgstr.length ? currentMsgstr : [""],
+      msgstr: finalMsgstr,
     };
   }
+
   currentId = null;
   currentMsgstr = [];
   activeField = null;
