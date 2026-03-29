@@ -13,28 +13,65 @@ const outputFilePath = path.join(
 const poData = fs.readFileSync(poFilePath, "utf-8");
 
 // Split lines
-const lines = poData.split("\n");
+const lines = poData.split(/\r?\n/);
 
 // Parse translations
 const translations = {};
-let currentId = "";
 
-lines.forEach((line) => {
-  if (line.startsWith("msgid")) {
-    currentId = line.replace('msgid "', "").replace('"', "").trim();
+let currentId = null;
+let currentMsgstr = [];
+let activeField = null; // "msgid" | "msgstr" | null
+let activeIndex = 0;
+
+const parseQuoted = (raw) => JSON.parse(raw);
+
+const flushEntry = () => {
+  if (currentId) {
+    translations[currentId] = {
+      msgid: currentId,
+      msgstr: currentMsgstr.length ? currentMsgstr : [""],
+    };
+  }
+  currentId = null;
+  currentMsgstr = [];
+  activeField = null;
+  activeIndex = 0;
+};
+
+for (const rawLine of lines) {
+  const line = rawLine.trim();
+
+  if (!line) {
+    flushEntry();
+    continue;
   }
 
-  if (line.startsWith("msgstr")) {
-    const value = line.replace('msgstr "', "").replace('"', "").trim();
+  if (/^msgid\s+/.test(line)) {
+    flushEntry();
+    currentId = parseQuoted(line.replace(/^msgid\s+/, ""));
+    activeField = "msgid";
+    continue;
+  }
 
-    if (currentId) {
-      translations[currentId] = {
-        msgid: currentId,
-        msgstr: [value],
-      };
+  const msgstrMatch = line.match(/^msgstr(?:\[(\d+)\])?\s+(.*)$/);
+  if (msgstrMatch) {
+    activeField = "msgstr";
+    activeIndex = msgstrMatch[1] ? Number(msgstrMatch[1]) : 0;
+    currentMsgstr[activeIndex] = parseQuoted(msgstrMatch[2]);
+    continue;
+  }
+
+  if (line.startsWith('"')) {
+    const chunk = parseQuoted(line);
+    if (activeField === "msgid" && currentId !== null) {
+      currentId += chunk;
+    } else if (activeField === "msgstr") {
+      currentMsgstr[activeIndex] = (currentMsgstr[activeIndex] || "") + chunk;
     }
   }
-});
+}
+
+flushEntry();
 
 // Prepare final JSON
 const finalJSON = {
@@ -53,5 +90,6 @@ const finalJSON = {
 
 // Write output file with trailing newline
 fs.writeFileSync(outputFilePath, `${JSON.stringify(finalJSON, null, 2)}\n`);
+
 // eslint-disable-next-line no-console
 console.log("✅ JSON generated!");
