@@ -52,6 +52,6 @@ const finalJSON = {
 };
 
 // Write output file with trailing newline
-fs.writeFileSync(outputFilePath, `${JSON.stringify(finalJSON, null, 2)  }\n`);
-
+fs.writeFileSync(outputFilePath, `${JSON.stringify(finalJSON, null, 2)}\n`);
+// eslint-disable-next-line no-console
 console.log("✅ JSON generated!");
