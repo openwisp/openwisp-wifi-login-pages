@@ -23,16 +23,20 @@ let currentMsgstr = [];
 let activeField = null; // "msgid" | "msgstr" | null
 let activeIndex = 0;
 
+// Parse quoted string with error context
 const parseQuoted = (raw, lineNum) => {
   try {
     return JSON.parse(raw);
   } catch (err) {
-    throw new Error(`Failed to parse quoted string at line ${lineNum}: ${raw}\nOriginal error: ${err.message}`);
+    throw new Error(
+      `Failed to parse quoted string at line ${lineNum}: ${raw}\nOriginal error: ${err.message}`,
+    );
   }
 };
 
+// Flush current entry to translations
 const flushEntry = () => {
-  if (currentId) {
+  if (currentId !== null) {
     translations[currentId] = {
       msgid: currentId,
       msgstr: currentMsgstr.length ? currentMsgstr : [""],
@@ -44,13 +48,14 @@ const flushEntry = () => {
   activeIndex = 0;
 };
 
+// Process each line
 lines.forEach((rawLine, idx) => {
   const line = rawLine.trim();
-  const lineNum = idx + 1; // for parseQuoted
+  const lineNum = idx + 1; // for error messages
 
   if (!line) {
     flushEntry();
-    return; // replaces continue
+    return;
   }
 
   if (/^msgid\s+/.test(line)) {
@@ -78,6 +83,7 @@ lines.forEach((rawLine, idx) => {
   }
 });
 
+// Flush any remaining entry
 flushEntry();
 
 // Prepare final JSON
