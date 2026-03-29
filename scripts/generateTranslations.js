@@ -2,9 +2,9 @@ const fs = require("fs");
 
 const poData = fs.readFileSync("i18n/en.po", "utf-8");
 
-let lines = poData.split("\n");
+const lines = poData.split("\n");
 
-let translations = {};
+const translations = {};
 let currentId = "";
 
 lines.forEach((line) => {
