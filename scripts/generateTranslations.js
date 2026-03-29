@@ -23,7 +23,13 @@ let currentMsgstr = [];
 let activeField = null; // "msgid" | "msgstr" | null
 let activeIndex = 0;
 
-const parseQuoted = (raw) => JSON.parse(raw);
+const parseQuoted = (raw, lineNum) => {
+  try {
+    return JSON.parse(raw);
+  } catch (err) {
+    throw new Error(`Failed to parse quoted string at line ${lineNum}: ${raw}\nOriginal error: ${err.message}`);
+  }
+};
 
 const flushEntry = () => {
   if (currentId) {
@@ -38,38 +44,39 @@ const flushEntry = () => {
   activeIndex = 0;
 };
 
-for (const rawLine of lines) {
+lines.forEach((rawLine, idx) => {
   const line = rawLine.trim();
+  const lineNum = idx + 1; // for parseQuoted
 
   if (!line) {
     flushEntry();
-    continue;
+    return; // replaces continue
   }
 
   if (/^msgid\s+/.test(line)) {
     flushEntry();
-    currentId = parseQuoted(line.replace(/^msgid\s+/, ""));
+    currentId = parseQuoted(line.replace(/^msgid\s+/, ""), lineNum);
     activeField = "msgid";
-    continue;
+    return;
   }
 
   const msgstrMatch = line.match(/^msgstr(?:\[(\d+)\])?\s+(.*)$/);
   if (msgstrMatch) {
     activeField = "msgstr";
     activeIndex = msgstrMatch[1] ? Number(msgstrMatch[1]) : 0;
-    currentMsgstr[activeIndex] = parseQuoted(msgstrMatch[2]);
-    continue;
+    currentMsgstr[activeIndex] = parseQuoted(msgstrMatch[2], lineNum);
+    return;
   }
 
   if (line.startsWith('"')) {
-    const chunk = parseQuoted(line);
+    const chunk = parseQuoted(line, lineNum);
     if (activeField === "msgid" && currentId !== null) {
       currentId += chunk;
     } else if (activeField === "msgstr") {
       currentMsgstr[activeIndex] = (currentMsgstr[activeIndex] || "") + chunk;
     }
   }
-}
+});
 
 flushEntry();
 
