@@ -95,7 +95,6 @@ export default class Header extends React.Component {
       this.props;
     const {links} = header;
     const {pathname} = location;
-    const internalLinks = [`/${orgSlug}/login`, `/${orgSlug}/registration`];
 
     if (!links) {
       return null;
