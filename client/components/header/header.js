@@ -198,9 +198,7 @@ export default class Header extends React.Component {
             </div>
           </div>
           <div className="header-row-2 header-desktop-nav">
-            <div className="header-row-2-inner">
-              {this.getLinks("desktop")}
-            </div>
+            <div className="header-row-2-inner">{this.getLinks("desktop")}</div>
           </div>
           <div
             className={`${menu ? "display-flex" : "display-none"} header-mobile-menu`}
