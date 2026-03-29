@@ -104,8 +104,9 @@ describe("<Header /> rendering", () => {
         authenticated: true,
       },
     ];
+    isInternalLink.mockClear();
     wrapper = shallow(<Header {...props} />);
-    expect(isInternalLink).toHaveBeenCalledTimes(6);
+    expect(isInternalLink).toHaveBeenCalledTimes(2);
     expect(isInternalLink).toHaveBeenCalledWith("/default/login");
   });
   it("should render without authenticated links when not authenticated", () => {
