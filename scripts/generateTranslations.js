@@ -91,16 +91,18 @@ flushEntry();
 
 // Prepare final JSON
 const finalJSON = {
-  charset: "utf-8",
-  headers: {
-    "content-type": "text/plain; charset=utf-8",
-    "plural-forms": "nplurals = 2; plural = (n != 1);",
-    language: "en",
-    "mime-version": "1.0",
-    "content-transfer-encoding": "8bit",
-  },
-  translations: {
-    "": translations,
+  en: {
+    charset: "utf-8",
+    headers: {
+      "content-type": "text/plain; charset=utf-8",
+      "plural-forms": "nplurals = 2; plural = (n != 1);",
+      language: "en",
+      "mime-version": "1.0",
+      "content-transfer-encoding": "8bit",
+    },
+    translations: {
+      "": translations,
+    },
   },
 };
 
