@@ -27,7 +27,9 @@ const parseQuoted = (raw, lineNum) => {
   try {
     return JSON.parse(raw);
   } catch (err) {
-    throw new Error(`Failed to parse quoted string at line ${lineNum}: ${raw}\nOriginal error: ${err.message}`);
+    throw new Error(
+      `Failed to parse quoted string at line ${lineNum}: ${raw}\nOriginal error: ${err.message}`,
+    );
   }
 };
 
