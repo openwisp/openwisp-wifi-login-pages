@@ -1,9 +1,21 @@
 const fs = require("fs");
+const path = require("path");
 
-const poData = fs.readFileSync("i18n/en.po", "utf-8");
+// Use project-root-relative paths for cross-platform safety
+const poFilePath = path.join(process.cwd(), "i18n", "en.po");
+const outputFilePath = path.join(
+  process.cwd(),
+  "client",
+  "test-translation.json",
+);
 
+// Read the PO file
+const poData = fs.readFileSync(poFilePath, "utf-8");
+
+// Split lines
 const lines = poData.split("\n");
 
+// Parse translations
 const translations = {};
 let currentId = "";
 
@@ -24,6 +36,7 @@ lines.forEach((line) => {
   }
 });
 
+// Prepare final JSON
 const finalJSON = {
   charset: "utf-8",
   headers: {
@@ -38,9 +51,7 @@ const finalJSON = {
   },
 };
 
-fs.writeFileSync(
-  "client/test-translation.json",
-  JSON.stringify(finalJSON, null, 2),
-);
+// Write output file with trailing newline
+fs.writeFileSync(outputFilePath, `${JSON.stringify(finalJSON, null, 2)  }\n`);
 
 console.log("✅ JSON generated!");
