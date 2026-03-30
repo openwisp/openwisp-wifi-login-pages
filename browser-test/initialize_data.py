@@ -25,6 +25,7 @@ registration_tests = "register" in sys.argv
 create_mobile_verification_org = "mobileVerification" in sys.argv
 expired_password_tests = "expiredPassword" in sys.argv
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(OPENWISP_RADIUS_PATH, "tests"))
 sys.argv.insert(1, "browser-test")
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "openwisp2.settings")
@@ -37,6 +38,7 @@ except ImportError:
     )
     sys.exit(1)
 
+from browser_test_utils import cleanup_test_data  # relative import
 from django.contrib.auth import get_user_model
 from django.utils.timezone import now, timedelta
 from swapper import load_model
@@ -52,8 +54,11 @@ test_user_email = test_data["testuser"]["email"]
 test_user_password = test_data["testuser"]["password"]
 test_user_organization = test_data["testuser"]["organization"]
 
+# Clean up any leftover data from previously interrupted test runs
+# to prevent UNIQUE constraint errors on subsequent runs.
+cleanup_test_data(test_data)
+
 if registration_tests:
-    User.objects.filter(username=test_user_email).delete()
     sys.exit(0)
 
 if create_mobile_verification_org:
