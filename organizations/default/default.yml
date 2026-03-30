@@ -132,9 +132,9 @@ client:
       helpdesk: "+789 948 564"
       social_links:
         - alt:
-            en: "X"
-          icon: "X.svg"
-          url: "https://X.com/openwisp"
+            en: "x"
+          icon: "x.svg"
+          url: "https://x.com/openwisp"
         - alt:
             en: "facebook"
           icon: "facebook.svg"
@@ -161,8 +161,8 @@ client:
             url: "#google"
           - text:
               en: "Login with X"
-            icon: "X.svg"
-            url: "#X"
+            icon: "x.svg"
+            url: "#x"
       input_fields:
         username:
           type: "email"
