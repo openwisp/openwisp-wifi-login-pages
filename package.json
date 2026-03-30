@@ -39,7 +39,7 @@
     "morgan": "^1.10.0",
     "node-plop": "^0.32.3",
     "nodemon": "^3.1.11",
-    "pretty-bytes": "^7.0.0",
+    "filesize": "^11.0.13",
     "prop-types": "^15.7.2",
     "qs": "^6.14.0",
     "raf": "^3.4.1",
@@ -64,6 +64,7 @@
     "winston-transport-sentry-node": "^2.0.0"
   },
   "devDependencies": {
+    "acorn": "^8.0.0",
     "@babel/core": "^7.28.5",
     "@babel/eslint-parser": "^7.28.5",
     "@babel/plugin-proposal-class-properties": "^7.14.5",
@@ -121,7 +122,7 @@
     "build": "export NODE_OPTIONS=--openssl-legacy-provider && yarn setup && webpack --mode production --progress --config config/webpack.config.js",
     "build-dev": "export NODE_OPTIONS=--openssl-legacy-provider && yarn setup && webpack --mode development --progress --config config/webpack.config.js",
     "client": "export NODE_OPTIONS=--openssl-legacy-provider && yarn setup && webpack serve --host 0.0.0.0 --mode development --config config/webpack.config.js",
-    "coverage": "jest --coverage --testPathIgnorePatterns=/browser-test/",
+    "coverage": "jest --coverage --testPathIgnorePatterns=/browser-test/ --testPathIgnorePatterns=/es5-compliance/",
     "coveralls": "test -f ./coverage/lcov.info && cat ./coverage/lcov.info | coveralls || echo 'no coverage file found'",
     "add-org": "node config/add-org.js",
     "server": "yarn setup && nodemon server/start.js",
@@ -131,7 +132,8 @@
     "lint:fix": "eslint '**/*.{js,jsx}' --fix",
     "format": "prettier --write \"**/*.+(js|jsx|json|css|md)\"",
     "format:check": "prettier -c \"**/*.+(js|jsx|json|css|md)\"",
-    "test": "jest --testPathIgnorePatterns=/browser-test/",
+    "test": "jest --testPathIgnorePatterns=/browser-test/ --testPathIgnorePatterns=/es5-compliance/",
+    "test-es5": "jest config/__tests__/es5-compliance.test.js",
     "browser-test": "./browser-test/wait_for_url.sh http://localhost:8080 http://localhost:8000/admin && jest browser-test --runInBand",
     "test-inspect": "node inspect ./node_modules/.bin/jest --runInBand",
     "stats": "STATS=true webpack-cli --profile --json --mode production --config config/webpack.config.js > compilation-stats.json && webpack-bundle-analyzer dist/stats.json",
@@ -168,7 +170,7 @@
       "^.+\\.(js|jsx)$": "babel-jest"
     },
     "transformIgnorePatterns": [
-      "node_modules/(?!(pretty-bytes|.*\\.mjs$))"
+      "node_modules/(?!(filesize|.*\\.mjs$))"
     ]
   },
   "nodemonConfig": {
