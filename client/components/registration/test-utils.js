@@ -26,7 +26,10 @@ const mountComponent = async (passedProps) => {
 
   return mount(
     <Provider store={mockedStore}>
-      <Router history={historyMock}>
+      <Router
+        history={historyMock}
+        future={{v7_startTransition: true, v7_relativeSplatPath: true}}
+      >
         <Routes>
           <Route path="/*" element={<Registration {...props} />} />
         </Routes>
