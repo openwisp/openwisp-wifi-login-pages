@@ -1,5907 +1,841 @@
 {
-  "de": {
-    "charset": "utf-8",
-    "headers": {
-      "Language": "de",
-      "MIME-Version": "1.0",
-      "Content-Type": "text/plain; charset=UTF-8",
-      "Content-Transfer-Encoding": "8bit",
-      "Plural-Forms": "nplurals = 2; plural = (n != 1);"
-    },
-    "translations": {
-      "": {
-        "": {
-          "msgid": "",
-          "msgstr": [
-            "Language: de\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals = 2; plural = (n != 1);\n"
-          ]
-        },
-        "ERR_OCCUR": {
-          "msgid": "ERR_OCCUR",
-          "msgstr": [
-            "Es ist ein Fehler aufgetreten!"
-          ]
-        },
-        "PLAN_SETTING_TXT": {
-          "msgid": "PLAN_SETTING_TXT",
-          "msgstr": [
-            "Wählen Sie die Art des Abonnements aus"
-          ]
-        },
-        "INACTIVE_SESSION_LOGOUT": {
-          "msgid": "INACTIVE_SESSION_LOGOUT",
-          "msgstr": [
-            "Die WLAN-Sitzung wurde beendet. Sie können sich erneut anmelden, um eine neue Sitzung zu starten."
-          ]
-        },
-        "LOGOUT_SUCCESS": {
-          "msgid": "LOGOUT_SUCCESS",
-          "msgstr": [
-            "Logout war erfolgreich"
-          ]
-        },
-        "YES": {
-          "msgid": "YES",
-          "msgstr": [
-            "Ja"
-          ]
-        },
-        "NO": {
-          "msgid": "NO",
-          "msgstr": [
-            "Nein"
-          ]
-        },
-        "PWD_REVEAL": {
-          "msgid": "PWD_REVEAL",
-          "msgstr": [
-            "Passwort anzeigen"
-          ]
-        },
-        "PWD_HIDE": {
-          "msgid": "PWD_HIDE",
-          "msgstr": [
-            "Passwort verbergen"
-          ]
-        },
-        "PRIV_POL_TITL": {
-          "msgid": "PRIV_POL_TITL",
-          "msgstr": [
-            "Datenschutzbestimmungen"
-          ]
-        },
-        "TOS_TITL": {
-          "msgid": "TOS_TITL",
-          "msgstr": [
-            "Nutzungsbedingungen"
-          ]
-        },
-        "PLEASE_WAIT": {
-          "msgid": "PLEASE_WAIT",
-          "msgstr": [
-            "Bitte warten..."
-          ]
-        },
-        "PLEASE_LOGIN": {
-          "msgid": "PLEASE_LOGIN",
-          "msgstr": [
-            "Bitte loggen Sie sich ein"
-          ]
-        },
-        "ACCT_ACTIVE": {
-          "msgid": "ACCT_ACTIVE",
-          "msgstr": [
-            "Aktive Session"
-          ]
-        },
-        "LOGOUT": {
-          "msgid": "LOGOUT",
-          "msgstr": [
-            "Abmeldung"
-          ]
-        },
-        "ACCT_START_TIME": {
-          "msgid": "ACCT_START_TIME",
-          "msgstr": [
-            "Startdatum/-Uhrzeit"
-          ]
-        },
-        "ACCT_STOP_TIME": {
-          "msgid": "ACCT_STOP_TIME",
-          "msgstr": [
-            "Enddatum/-uhrzeit"
-          ]
-        },
-        "ACCT_DURATION": {
-          "msgid": "ACCT_DURATION",
-          "msgstr": [
-            "Dauer"
-          ]
-        },
-        "ACCT_DOWNLOAD": {
-          "msgid": "ACCT_DOWNLOAD",
-          "msgstr": [
-            "Download-Verkehr"
-          ]
-        },
-        "ACCT_UPLOAD": {
-          "msgid": "ACCT_UPLOAD",
-          "msgstr": [
-            "Upload-Verkehr"
-          ]
-        },
-        "ACCT_DEVICE_ADDRESS": {
-          "msgid": "ACCT_DEVICE_ADDRESS",
-          "msgstr": [
-            "Adresse des Geräts"
-          ]
-        },
-        "STATUS": {
-          "msgid": "STATUS",
-          "msgstr": [
-            "Status"
-          ]
-        },
-        "LOGGED_IN": {
-          "msgid": "LOGGED_IN",
-          "msgstr": [
-            "Eingeloggt"
-          ]
-        },
-        "EMAIL": {
-          "msgid": "EMAIL",
-          "msgstr": [
-            "Email"
-          ]
-        },
-        "USERNAME": {
-          "msgid": "USERNAME",
-          "msgstr": [
-            "Nutzername"
-          ]
-        },
-        "PHONE_NUMBER": {
-          "msgid": "PHONE_NUMBER",
-          "msgstr": [
-            "Telefonnummer"
-          ]
-        },
-        "CP_LOGIN": {
-          "msgid": "CP_LOGIN",
-          "msgstr": [
-            "Wir initialisieren Ihre Sitzung im WiFi-Dienst, es kann einige Sekunden dauern, bitte warten Sie ..."
-          ]
-        },
-        "STATUS_TITL": {
-          "msgid": "STATUS_TITL",
-          "msgstr": [
-            "Status"
-          ]
-        },
-        "PASSWORD_EXPIRED": {
-          "msgid": "PASSWORD_EXPIRED",
-          "msgstr": [
-            "Ihr Passwort ist abgelaufen. Bitte aktualisieren Sie es."
-          ]
-        },
-        "PLAN_EXHAUSTED_TOAST": {
-          "msgid": "PLAN_EXHAUSTED_TOAST",
-          "msgstr": [
-            "Sie haben den für Ihr Paket verfügbaren Datenverkehr ausgeschöpft."
-          ]
-        },
-        "SUCCESS_UPGRADE_PLAN": {
-          "msgid": "SUCCESS_UPGRADE_PLAN",
-          "msgstr": [
-            "Plan-Upgrade läuft"
-          ]
-        },
-        "STATUS_CONTENT": {
-          "msgid": "STATUS_CONTENT",
-          "msgstr": [
-            "Sie haben sich erfolgreich in den WiFi Dienst eingeloggt! Jetzt haben sie Zugang zum Internet. Lassen Sie diese Seite offen, um die bestehende Session zu schließen."
-          ]
-        },
-        "TRAFFIC_EXHAUSTED": {
-          "msgid": "TRAFFIC_EXHAUSTED",
-          "msgstr": [
-            "Der Verkehr ist erschöpft"
-          ]
-        },
-        "LOGOUT_MODAL_CONTENT": {
-          "msgid": "LOGOUT_MODAL_CONTENT",
-          "msgstr": [
-            "Automatische Authentifizierung beim nächsten Mal?"
-          ]
-        },
-        "CURRENT_SUBSCRIPTION_TXT": {
-          "msgid": "CURRENT_SUBSCRIPTION_TXT",
-          "msgstr": [
-            "Aktuelles Abonnement:"
-          ]
-        },
-        "USAGE_LIMIT_EXHAUSTED_TXT": {
-          "msgid": "USAGE_LIMIT_EXHAUSTED_TXT",
-          "msgstr": [
-            "Sie haben den verfügbaren Datenverkehr ausgeschöpft. Führen Sie ein Upgrade durch, um den Dienst weiterhin nutzen zu können."
-          ]
-        },
-        "PLAN_UPGRADE_BTN_TXT": {
-          "msgid": "PLAN_UPGRADE_BTN_TXT",
-          "msgstr": [
-            "Aktualisierung"
-          ]
-        },
-        "PHONE_LBL": {
-          "msgid": "PHONE_LBL",
-          "msgstr": [
-            "Mobilnummer"
-          ]
-        },
-        "PHONE_PHOLD": {
-          "msgid": "PHONE_PHOLD",
-          "msgstr": [
-            "Mobiltelefonnummer"
-          ]
-        },
-        "EMAIL_PHOLD": {
-          "msgid": "EMAIL_PHOLD",
-          "msgstr": [
-            "E-Mail-Adresse"
-          ]
-        },
-        "EMAIL_PTRN_DESC": {
-          "msgid": "EMAIL_PTRN_DESC",
-          "msgstr": [
-            "Gültige E-Mail-Adresse"
-          ]
-        },
-        "USERNAME_REG_LBL": {
-          "msgid": "USERNAME_REG_LBL",
-          "msgstr": [
-            "Nutzername"
-          ]
-        },
-        "USERNAME_REG_PHOLD": {
-          "msgid": "USERNAME_REG_PHOLD",
-          "msgstr": [
-            "Nutzername"
-          ]
-        },
-        "USERNAME_PTRN_DESC": {
-          "msgid": "USERNAME_PTRN_DESC",
-          "msgstr": [
-            "Nur Buchstaben, Zahlen oder Sonderzeichen @/./+/-/_"
-          ]
-        },
-        "FIRST_NAME_LBL": {
-          "msgid": "FIRST_NAME_LBL",
-          "msgstr": [
-            "Name"
-          ]
-        },
-        "OPTIONAL": {
-          "msgid": "OPTIONAL",
-          "msgstr": [
-            "Optional"
-          ]
-        },
-        "FIRST_NAME_PHOLD": {
-          "msgid": "FIRST_NAME_PHOLD",
-          "msgstr": [
-            "Name"
-          ]
-        },
-        "LAST_NAME_LBL": {
-          "msgid": "LAST_NAME_LBL",
-          "msgstr": [
-            "Familienname"
-          ]
-        },
-        "LAST_NAME_PHOLD": {
-          "msgid": "LAST_NAME_PHOLD",
-          "msgstr": [
-            "Familienname"
-          ]
-        },
-        "BIRTH_DATE_LBL": {
-          "msgid": "BIRTH_DATE_LBL",
-          "msgstr": [
-            "Geburtsdatum"
-          ]
-        },
-        "LOCATION_LBL": {
-          "msgid": "LOCATION_LBL",
-          "msgstr": [
-            "Adresse"
-          ]
-        },
-        "LOCATION_PHOLD": {
-          "msgid": "LOCATION_PHOLD",
-          "msgstr": [
-            "Adresse"
-          ]
-        },
-        "LOCATION_PTRN_DESC": {
-          "msgid": "LOCATION_PTRN_DESC",
-          "msgstr": [
-            "Nur Buchstaben, Zahlen, Leerzeichen und Interpunktion"
-          ]
-        },
-        "PWD_LBL": {
-          "msgid": "PWD_LBL",
-          "msgstr": [
-            "Passwort"
-          ]
-        },
-        "PWD_PHOLD": {
-          "msgid": "PWD_PHOLD",
-          "msgstr": [
-            "Passwort eingeben"
-          ]
-        },
-        "PWD_PTRN_DESC": {
-          "msgid": "PWD_PTRN_DESC",
-          "msgstr": [
-            "Das Passwort muss mindestens 6 Zeichen lang sein"
-          ]
-        },
-        "CONFIRM_PWD_LBL": {
-          "msgid": "CONFIRM_PWD_LBL",
-          "msgstr": [
-            "Passwort bestätigen"
-          ]
-        },
-        "CONFIRM_PWD_PHOLD": {
-          "msgid": "CONFIRM_PWD_PHOLD",
-          "msgstr": [
-            "Passwort bestätigen"
-          ]
-        },
-        "COUNTRY_LBL": {
-          "msgid": "COUNTRY_LBL",
-          "msgstr": [
-            "Land"
-          ]
-        },
-        "CITY_LBL": {
-          "msgid": "CITY_LBL",
-          "msgstr": [
-            "Stadt"
-          ]
-        },
-        "CITY_PHOLD": {
-          "msgid": "CITY_PHOLD",
-          "msgstr": [
-            "Stadt eingeben"
-          ]
-        },
-        "STREET_LBL": {
-          "msgid": "STREET_LBL",
-          "msgstr": [
-            "Adresse"
-          ]
-        },
-        "STREET_PHOLD": {
-          "msgid": "STREET_PHOLD",
-          "msgstr": [
-            "Adresse eingeben"
-          ]
-        },
-        "ZIP_CODE_LBL": {
-          "msgid": "ZIP_CODE_LBL",
-          "msgstr": [
-            "Postleitzahl"
-          ]
-        },
-        "TAX_NUMBER_LBL": {
-          "msgid": "TAX_NUMBER_LBL",
-          "msgstr": [
-            "Steuernummer oder MwSt.-Nummer"
-          ]
-        },
-        "TAX_NUMBER_PHOLD": {
-          "msgid": "TAX_NUMBER_PHOLD",
-          "msgstr": [
-            "Steuernummer oder MwSt.-Nummer eingeben"
-          ]
-        },
-        "TAX_NUMBER_PTRN_DESC": {
-          "msgid": "TAX_NUMBER_PTRN_DESC",
-          "msgstr": [
-            "Nur Buchstaben und Zahlen"
-          ]
-        },
-        "REGISTER_ADD_INFO_TXT": {
-          "msgid": "REGISTER_ADD_INFO_TXT",
-          "msgstr": [
-            "Wenn Sie dieses Registrierungsformular ausfüllen und zusenden, stimmen Sie den {terms_and_conditions} und {privacy_policy} des WLAN-Dienstes."
-          ]
-        },
-        "REGISTER_BTN_TXT": {
-          "msgid": "REGISTER_BTN_TXT",
-          "msgstr": [
-            "Registrieren"
-          ]
-        },
-        "FORGOT_PASSWORD": {
-          "msgid": "FORGOT_PASSWORD",
-          "msgstr": [
-            "Passwort vergessen?"
-          ]
-        },
-        "LINKS_LOGIN_TXT": {
-          "msgid": "LINKS_LOGIN_TXT",
-          "msgstr": [
-            "Haben Sie bereits einen Account? Loggen Sie sich ein"
-          ]
-        },
-        "REGISTRATION_TITL": {
-          "msgid": "REGISTRATION_TITL",
-          "msgstr": [
-            "Anmelden"
-          ]
-        },
-        "PWD_CNF_ERR": {
-          "msgid": "PWD_CNF_ERR",
-          "msgstr": [
-            "Die Passwörter stimmen nicht überein"
-          ]
-        },
-        "REGISTER_SUCCESS": {
-          "msgid": "REGISTER_SUCCESS",
-          "msgstr": [
-            "Registrierung war erfolgreich"
-          ]
-        },
-        "404_PG_TITL": {
-          "msgid": "404_PG_TITL",
-          "msgstr": [
-            "404 Nicht gefunden"
-          ]
-        },
-        "REGISTER_ERR": {
-          "msgid": "REGISTER_ERR",
-          "msgstr": [
-            "Fehler bei der Registrierung."
-          ]
-        },
-        "NO_ORGS": {
-          "msgid": "NO_ORGS",
-          "msgstr": [
-            "Ein Benutzer mit ähnlichen Anmeldeinformationen existiert bereits."
-          ]
-        },
-        "CONFLICT_ORGS": {
-          "msgid": "CONFLICT_ORGS",
-          "msgstr": [
-            "Ein Benutzer mit Anmeldeinformationen wie dem, der eingegeben wird, existiert bereits in anderen Organisationen:"
-          ]
-        },
-        "CONFLICT_SIGNIN": {
-          "msgid": "CONFLICT_SIGNIN",
-          "msgstr": [
-            "Besitzen Sie das oben genannte Konto und möchten sich anmelden und Ihr bestehendes Konto mit diesem WLAN-Dienst verknüpfen?"
-          ]
-        },
-        "PAY_SUCCESS": {
-          "msgid": "PAY_SUCCESS",
-          "msgstr": [
-            "Die Zahlung wurde erfolgreich übermittelt."
-          ]
-        },
-        "PAY_REQ": {
-          "msgid": "PAY_REQ",
-          "msgstr": [
-            "Zahlung erforderlich, um fortzufahren"
-          ]
-        },
-        "PAY_WARN${ timeout }${ maxAttempts }": {
-          "msgid": "PAY_WARN${ timeout }${ maxAttempts }",
-          "msgstr": [
-            "<p>Durch Klicken auf die Schaltfläche unten werden Sie zu unserem Payment Gateway Service, bei dem Sie Ihre Kredit-/Debitkarte sicher verwenden können. Von dort werden Sie auf die Website Ihrer Bank weitergeleitet zu Bestätigen Sie die Transaktion.</p><p>Sie haben ${ timeout } Minuten Zeit, um den Vorgang abzuschließen.<br /><strong>Aus diesem Grund empfehlen wir Ihnen, Ihre Lastschrift/Gutschrift vorzubereiten Karte, bevor Sie den Zahlungsvorgang einleiten.</strong></p><p>Wenn der Vorgang aus irgendeinem Grund nicht innerhalb der verfügbare Zeit, die Internetverbindung, mit der Sie Wenn dies passiert, wird die Website Ihrer Bank geschlossen. Sie können sich einfach mit den soeben registrierten Zugangsdaten erneut einloggen und Wiederholen Sie den Vorgang maximal ${ maxAttempts } Mal.</p>"
-          ]
-        },
-        "PAY_PROC_BTN": {
-          "msgid": "PAY_PROC_BTN",
-          "msgstr": [
-            "Fahren Sie mit der Zahlung fort"
-          ]
-        },
-        "PAY_GIVE_UP_BTN": {
-          "msgid": "PAY_GIVE_UP_BTN",
-          "msgstr": [
-            "Abbrechen und beenden"
-          ]
-        },
-        "PAY_FAIL": {
-          "msgid": "PAY_FAIL",
-          "msgstr": [
-            "Bezahlung fehlgeschlagen"
-          ]
-        },
-        "PAY_SUB_H": {
-          "msgid": "PAY_SUB_H",
-          "msgstr": [
-            "Die Zahlung war nicht erfolgreich"
-          ]
-        },
-        "PAY_TRY_AGAIN_BTN": {
-          "msgid": "PAY_TRY_AGAIN_BTN",
-          "msgstr": [
-            "Erneut versuchen"
-          ]
-        },
-        "PAY_GIVE_UP_TXT": {
-          "msgid": "PAY_GIVE_UP_TXT",
-          "msgstr": [
-            "Wenn ihre Transaktion nicht erfolgreich war, wenden Sie sich bitte an den Support an"
-          ]
-        },
-        "PWD_RESET_TITL": {
-          "msgid": "PWD_RESET_TITL",
-          "msgstr": [
-            "Passwort zurücksetzen"
-          ]
-        },
-        "LOGIN_PG_LNK": {
-          "msgid": "LOGIN_PG_LNK",
-          "msgstr": [
-            "Zurück zur Login-Seite"
-          ]
-        },
-        "PWD_RESET_ADD_TXT": {
-          "msgid": "PWD_RESET_ADD_TXT",
-          "msgstr": [
-            "Haben Sie Ihr Passwort vergessen? Geben Sie Ihre E-Mail-Adresse, Telefonnummer oder Nutzername ein und wir senden Ihnen die Anweisungen zum Zurücksetzen."
-          ]
-        },
-        "USERNAME_LOG_LBL": {
-          "msgid": "USERNAME_LOG_LBL",
-          "msgstr": [
-            "E-Mail, Telefonnummer oder Nutzername"
-          ]
-        },
-        "USERNAME_LOG_PHOLD": {
-          "msgid": "USERNAME_LOG_PHOLD",
-          "msgstr": [
-            "E-Mail, Telefonnummer oder Nutzername"
-          ]
-        },
-        "USERNAME_LOG_TITL": {
-          "msgid": "USERNAME_LOG_TITL",
-          "msgstr": [
-            "Bitten eine gültige E-Mail-Adresse, Nutzername oder Mobiltelefonnummer eingeben"
-          ]
-        },
-        "PWD_RESET_BTN": {
-          "msgid": "PWD_RESET_BTN",
-          "msgstr": [
-            "Passwort zurücksetzen"
-          ]
-        },
-        "PWD_RESET_CNTC_TXT": {
-          "msgid": "PWD_RESET_CNTC_TXT",
-          "msgstr": [
-            "Falls Sie Schwierigkeiten bei der Passwortzurücksetzung haben, wenden Sie sich bitte an den Support an"
-          ]
-        },
-        "PWD_CONFIRM_TITL": {
-          "msgid": "PWD_CONFIRM_TITL",
-          "msgstr": [
-            "Passwort zurücksetzen"
-          ]
-        },
-        "PWD_CONFIRM_H": {
-          "msgid": "PWD_CONFIRM_H",
-          "msgstr": [
-            "Passwort zurücksetzen"
-          ]
-        },
-        "PWD_CONFIRM_ADD_TXT": {
-          "msgid": "PWD_CONFIRM_ADD_TXT",
-          "msgstr": [
-            "Bitte geben Sie Ihr neues Passwort nachfolgend ein"
-          ]
-        },
-        "PWD_CONFIRM": {
-          "msgid": "PWD_CONFIRM",
-          "msgstr": [
-            "Bestätigen Sie die Passwortänderung"
-          ]
-        },
-        "PWD_CHANGE_TITL": {
-          "msgid": "PWD_CHANGE_TITL",
-          "msgstr": [
-            "Passwort ändern"
-          ]
-        },
-        "PWD_CURR_ERR": {
-          "msgid": "PWD_CURR_ERR",
-          "msgstr": [
-            "Das neue Passwort darf nicht mit dem aktuellen Passwort identisch sein."
-          ]
-        },
-        "PWD_CHNG_ERR": {
-          "msgid": "PWD_CHNG_ERR",
-          "msgstr": [
-            "Ein Fehler ist aufgetreten, das Passwort wurde nicht geändert."
-          ]
-        },
-        "PWD_CHANGE_HELP_TXT": {
-          "msgid": "PWD_CHANGE_HELP_TXT",
-          "msgstr": [
-            "Verwenden Sie das untenstehende Formular, um Ihr Passwort zu ändern."
-          ]
-        },
-        "CURR_PWD_LBL": {
-          "msgid": "CURR_PWD_LBL",
-          "msgstr": [
-            "Aktuelles Passwort"
-          ]
-        },
-        "CURR_PWD_PHOLD": {
-          "msgid": "CURR_PWD_PHOLD",
-          "msgstr": [
-            "dein aktuelles Passwort"
-          ]
-        },
-        "PWD1_LBL": {
-          "msgid": "PWD1_LBL",
-          "msgstr": [
-            "Neues Passwort"
-          ]
-        },
-        "PWD1_PHOLD": {
-          "msgid": "PWD1_PHOLD",
-          "msgstr": [
-            "Neues Passwort eingeben"
-          ]
-        },
-        "PASSWORD_CHANGE": {
-          "msgid": "PASSWORD_CHANGE",
-          "msgstr": [
-            "Passwort ändern"
-          ]
-        },
-        "CANCEL": {
-          "msgid": "CANCEL",
-          "msgstr": [
-            "Abbrechen"
-          ]
-        },
-        "DEFAULT_TITL${ orgName }": {
-          "msgid": "DEFAULT_TITL${ orgName }",
-          "msgstr": [
-            "Einloggen in ${ orgName }"
-          ]
-        },
-        "PHONE_VERIF_TITL": {
-          "msgid": "PHONE_VERIF_TITL",
-          "msgstr": [
-            "Telefonnummer verifizieren"
-          ]
-        },
-        "TOKEN_SENT": {
-          "msgid": "TOKEN_SENT",
-          "msgstr": [
-            "SMS Verifizierungscode gesendet."
-          ]
-        },
-        "PHONE_VERIFY (${ phone_number })": {
-          "msgid": "PHONE_VERIFY (${ phone_number })",
-          "msgstr": [
-            "Bitte verifizieren Sie die Telefonnummer (${ phone_number }), indem Sie den Code eingeben, den Sie per SMS erhalten haben."
-          ]
-        },
-        "MOBILE_CODE_PHOLD": {
-          "msgid": "MOBILE_CODE_PHOLD",
-          "msgstr": [
-            "SMS-bestätigungscode eingeben"
-          ]
-        },
-        "MOBILE_CODE_TITL": {
-          "msgid": "MOBILE_CODE_TITL",
-          "msgstr": [
-            "Das Feld muss ein Zahlcode mit 6-Ziffern sein"
-          ]
-        },
-        "MOBILE_PHONE_VERIFY": {
-          "msgid": "MOBILE_PHONE_VERIFY",
-          "msgstr": [
-            "Einreichen"
-          ]
-        },
-        "RESEND_TOKEN_LBL": {
-          "msgid": "RESEND_TOKEN_LBL",
-          "msgstr": [
-            "Wenn Sie kein SMS-Verifizierungscode erhalten haben, klicken Sie auf dieser Taste, um einen neuen Code zu beantragen."
-          ]
-        },
-        "RESEND_TOKEN_WAIT_LBL${ seconds }": {
-          "msgid": "RESEND_TOKEN_WAIT_LBL${ seconds }",
-          "msgstr": [
-            "Eine neue SMS kann in ${ seconds } Sekunden angefordert werden."
-          ]
-        },
-        "RESEND_TOKEN": {
-          "msgid": "RESEND_TOKEN",
-          "msgstr": [
-            "Einen neuen Verifizierungscode senden"
-          ]
-        },
-        "PHONE_CHANGE_LBL": {
-          "msgid": "PHONE_CHANGE_LBL",
-          "msgstr": [
-            "Falsche Telefonnummer?"
-          ]
-        },
-        "PHONE_CHANGE_BTN": {
-          "msgid": "PHONE_CHANGE_BTN",
-          "msgstr": [
-            "Telefonnummer ändern"
-          ]
-        },
-        "LOGOUT_LBL": {
-          "msgid": "LOGOUT_LBL",
-          "msgstr": [
-            "Um den Vorgang abzubrechen, loggen Sie sich unten aus."
-          ]
-        },
-        "PHONE_CHANGE_TITL": {
-          "msgid": "PHONE_CHANGE_TITL",
-          "msgstr": [
-            "Telefonnummer ändern"
-          ]
-        },
-        "LOGIN_SUCCESS": {
-          "msgid": "LOGIN_SUCCESS",
-          "msgstr": [
-            "Authentifizierung war erfolgreich"
-          ]
-        },
-        "LOGOUT_CONTENT": {
-          "msgid": "LOGOUT_CONTENT",
-          "msgstr": [
-            "Logout war erfolgreich"
-          ]
-        },
-        "LOGIN_AGAIN": {
-          "msgid": "LOGIN_AGAIN",
-          "msgstr": [
-            "Erneut einloggen"
-          ]
-        },
-        "LOGIN": {
-          "msgid": "LOGIN",
-          "msgstr": [
-            "Einloggen"
-          ]
-        },
-        "USER_INACTIVE": {
-          "msgid": "USER_INACTIVE",
-          "msgstr": [
-            "Ihr Account wurde deaktiviert. Bitte wenden Sie sich an den Support."
-          ]
-        },
-        "LOGIN_ERR": {
-          "msgid": "LOGIN_ERR",
-          "msgstr": [
-            "Fehler bei der Authentifizierung."
-          ]
-        },
-        "REMEMBER_ME": {
-          "msgid": "REMEMBER_ME",
-          "msgstr": [
-            "Auf diesem Gerät merken"
-          ]
-        },
-        "LOGIN_ADD_INFO_TXT": {
-          "msgid": "LOGIN_ADD_INFO_TXT",
-          "msgstr": [
-            "Durch die Anmeldung akzeptieren Sie die {terms_and_conditions} und die {privacy_policy} dieses WLAN-Dienstes."
-          ]
-        },
-        "REGISTER_BTN_LBL": {
-          "msgid": "REGISTER_BTN_LBL",
-          "msgstr": [
-            "Haben Sie keinen Account?"
-          ]
-        },
-        "HELPDESK": {
-          "msgid": "HELPDESK",
-          "msgstr": [
-            "Support"
-          ]
-        },
-        "404_H": {
-          "msgid": "404_H",
-          "msgstr": [
-            "404"
-          ]
-        },
-        "404_SUBH": {
-          "msgid": "404_SUBH",
-          "msgstr": [
-            "Nicht gefunden"
-          ]
-        },
-        "404_MESSAGE": {
-          "msgid": "404_MESSAGE",
-          "msgstr": [
-            "Die gesuchte Seite konnte leider nicht gefunden werden."
-          ]
-        },
-        "HOME_PG_LINK_TXT": {
-          "msgid": "HOME_PG_LINK_TXT",
-          "msgstr": [
-            "Zurück zur ersten Seite"
-          ]
-        }
-      }
-    }
+  "charset": "utf-8",
+  "headers": {
+    "Language": "en",
+    "MIME-Version": "1.0",
+    "Content-Type": "text/plain; charset=UTF-8",
+    "Content-Transfer-Encoding": "8bit",
+    "Plural-Forms": "nplurals = 2; plural = (n != 1);"
   },
-  "en": {
-    "charset": "utf-8",
-    "headers": {
-      "Language": "en",
-      "MIME-Version": "1.0",
-      "Content-Type": "text/plain; charset=UTF-8",
-      "Content-Transfer-Encoding": "8bit",
-      "Plural-Forms": "nplurals = 2; plural = (n != 1);"
-    },
-    "translations": {
+  "translations": {
+    "": {
       "": {
-        "": {
-          "msgid": "",
-          "msgstr": [
-            "Language: en\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals = 2; plural = (n != 1);\n"
-          ]
-        },
-        "ERR_OCCUR": {
-          "msgid": "ERR_OCCUR",
-          "msgstr": [
-            "Error occurred!"
-          ]
-        },
-        "PLAN_SETTING_TXT": {
-          "msgid": "PLAN_SETTING_TXT",
-          "msgstr": [
-            "Please select the preferred subscription plan"
-          ]
-        },
-        "INACTIVE_SESSION_LOGOUT": {
-          "msgid": "INACTIVE_SESSION_LOGOUT",
-          "msgstr": [
-            "The WiFi session ended. You can log in again to start a new session."
-          ]
-        },
-        "LOGOUT_SUCCESS": {
-          "msgid": "LOGOUT_SUCCESS",
-          "msgstr": [
-            "Logout successful"
-          ]
-        },
-        "YES": {
-          "msgid": "YES",
-          "msgstr": [
-            "Yes"
-          ]
-        },
-        "NO": {
-          "msgid": "NO",
-          "msgstr": [
-            "No"
-          ]
-        },
-        "PWD_REVEAL": {
-          "msgid": "PWD_REVEAL",
-          "msgstr": [
-            "reveal password"
-          ]
-        },
-        "PWD_HIDE": {
-          "msgid": "PWD_HIDE",
-          "msgstr": [
-            "hide password"
-          ]
-        },
-        "PRIV_POL_TITL": {
-          "msgid": "PRIV_POL_TITL",
-          "msgstr": [
-            "privacy policy"
-          ]
-        },
-        "TOS_TITL": {
-          "msgid": "TOS_TITL",
-          "msgstr": [
-            "terms and conditions"
-          ]
-        },
-        "PLEASE_WAIT": {
-          "msgid": "PLEASE_WAIT",
-          "msgstr": [
-            "Please wait..."
-          ]
-        },
-        "PLEASE_LOGIN": {
-          "msgid": "PLEASE_LOGIN",
-          "msgstr": [
-            "Please log in"
-          ]
-        },
-        "ACCT_ACTIVE": {
-          "msgid": "ACCT_ACTIVE",
-          "msgstr": [
-            "session is active"
-          ]
-        },
-        "LOGOUT": {
-          "msgid": "LOGOUT",
-          "msgstr": [
-            "Logout"
-          ]
-        },
-        "ACCT_START_TIME": {
-          "msgid": "ACCT_START_TIME",
-          "msgstr": [
-            "Start time"
-          ]
-        },
-        "ACCT_STOP_TIME": {
-          "msgid": "ACCT_STOP_TIME",
-          "msgstr": [
-            "Stop time"
-          ]
-        },
-        "ACCT_DURATION": {
-          "msgid": "ACCT_DURATION",
-          "msgstr": [
-            "Duration"
-          ]
-        },
-        "ACCT_DOWNLOAD": {
-          "msgid": "ACCT_DOWNLOAD",
-          "msgstr": [
-            "Download"
-          ]
-        },
-        "ACCT_UPLOAD": {
-          "msgid": "ACCT_UPLOAD",
-          "msgstr": [
-            "Upload"
-          ]
-        },
-        "ACCT_DEVICE_ADDRESS": {
-          "msgid": "ACCT_DEVICE_ADDRESS",
-          "msgstr": [
-            "Device address"
-          ]
-        },
-        "STATUS": {
-          "msgid": "STATUS",
-          "msgstr": [
-            "Status"
-          ]
-        },
-        "LOGGED_IN": {
-          "msgid": "LOGGED_IN",
-          "msgstr": [
-            "Logged in"
-          ]
-        },
-        "EMAIL": {
-          "msgid": "EMAIL",
-          "msgstr": [
-            "Email"
-          ]
-        },
-        "USERNAME": {
-          "msgid": "USERNAME",
-          "msgstr": [
-            "Username"
-          ]
-        },
-        "PHONE_NUMBER": {
-          "msgid": "PHONE_NUMBER",
-          "msgstr": [
-            "Phone number"
-          ]
-        },
-        "CP_LOGIN": {
-          "msgid": "CP_LOGIN",
-          "msgstr": [
-            "We are initializing your session in the WiFi service, it may take a few seconds, please wait ..."
-          ]
-        },
-        "STATUS_TITL": {
-          "msgid": "STATUS_TITL",
-          "msgstr": [
-            "Status"
-          ]
-        },
-        "PASSWORD_EXPIRED": {
-          "msgid": "PASSWORD_EXPIRED",
-          "msgstr": [
-            "Your password has expired, please update it."
-          ]
-        },
-        "PLAN_EXHAUSTED_TOAST": {
-          "msgid": "PLAN_EXHAUSTED_TOAST",
-          "msgstr": [
-            "You have used all the data in your plan."
-          ]
-        },
-        "SUCCESS_UPGRADE_PLAN": {
-          "msgid": "SUCCESS_UPGRADE_PLAN",
-          "msgstr": [
-            "Plan upgrade in progress"
-          ]
-        },
-        "STATUS_CONTENT": {
-          "msgid": "STATUS_CONTENT",
-          "msgstr": [
-            "WiFi Login Successful!\n        You can now use the internet.\n        You may leave this page open in case you want to log out."
-          ]
-        },
-        "TRAFFIC_EXHAUSTED": {
-          "msgid": "TRAFFIC_EXHAUSTED",
-          "msgstr": [
-            "Data limit reached"
-          ]
-        },
-        "LOGOUT_MODAL_CONTENT": {
-          "msgid": "LOGOUT_MODAL_CONTENT",
-          "msgstr": [
-            "Do you want to automatically log in the next time?"
-          ]
-        },
-        "CURRENT_SUBSCRIPTION_TXT": {
-          "msgid": "CURRENT_SUBSCRIPTION_TXT",
-          "msgstr": [
-            "Current subscription:"
-          ]
-        },
-        "USAGE_LIMIT_EXHAUSTED_TXT": {
-          "msgid": "USAGE_LIMIT_EXHAUSTED_TXT",
-          "msgstr": [
-            "You have reached your data limit. Please top up your account to continue."
-          ]
-        },
-        "PLAN_UPGRADE_BTN_TXT": {
-          "msgid": "PLAN_UPGRADE_BTN_TXT",
-          "msgstr": [
-            "Top up"
-          ]
-        },
-        "PHONE_LBL": {
-          "msgid": "PHONE_LBL",
-          "msgstr": [
-            "Mobile phone number"
-          ]
-        },
-        "PHONE_PHOLD": {
-          "msgid": "PHONE_PHOLD",
-          "msgstr": [
-            "enter mobile phone number"
-          ]
-        },
-        "EMAIL_PHOLD": {
-          "msgid": "EMAIL_PHOLD",
-          "msgstr": [
-            "email address"
-          ]
-        },
-        "EMAIL_PTRN_DESC": {
-          "msgid": "EMAIL_PTRN_DESC",
-          "msgstr": [
-            "enter valid email address"
-          ]
-        },
-        "USERNAME_REG_LBL": {
-          "msgid": "USERNAME_REG_LBL",
-          "msgstr": [
-            "Username"
-          ]
-        },
-        "USERNAME_REG_PHOLD": {
-          "msgid": "USERNAME_REG_PHOLD",
-          "msgstr": [
-            "Username"
-          ]
-        },
-        "USERNAME_PTRN_DESC": {
-          "msgid": "USERNAME_PTRN_DESC",
-          "msgstr": [
-            "only letters, numbers and @/./+/-/_ characters"
-          ]
-        },
-        "FIRST_NAME_LBL": {
-          "msgid": "FIRST_NAME_LBL",
-          "msgstr": [
-            "First name"
-          ]
-        },
-        "OPTIONAL": {
-          "msgid": "OPTIONAL",
-          "msgstr": [
-            "optional"
-          ]
-        },
-        "FIRST_NAME_PHOLD": {
-          "msgid": "FIRST_NAME_PHOLD",
-          "msgstr": [
-            "first name"
-          ]
-        },
-        "LAST_NAME_LBL": {
-          "msgid": "LAST_NAME_LBL",
-          "msgstr": [
-            "Last name"
-          ]
-        },
-        "LAST_NAME_PHOLD": {
-          "msgid": "LAST_NAME_PHOLD",
-          "msgstr": [
-            "last name"
-          ]
-        },
-        "BIRTH_DATE_LBL": {
-          "msgid": "BIRTH_DATE_LBL",
-          "msgstr": [
-            "Birth date"
-          ]
-        },
-        "LOCATION_LBL": {
-          "msgid": "LOCATION_LBL",
-          "msgstr": [
-            "Location"
-          ]
-        },
-        "LOCATION_PHOLD": {
-          "msgid": "LOCATION_PHOLD",
-          "msgstr": [
-            "location"
-          ]
-        },
-        "LOCATION_PTRN_DESC": {
-          "msgid": "LOCATION_PTRN_DESC",
-          "msgstr": [
-            "only letters, numbers, spaces, punctuation"
-          ]
-        },
-        "PWD_LBL": {
-          "msgid": "PWD_LBL",
-          "msgstr": [
-            "Password"
-          ]
-        },
-        "PWD_PHOLD": {
-          "msgid": "PWD_PHOLD",
-          "msgstr": [
-            "password"
-          ]
-        },
-        "PWD_PTRN_DESC": {
-          "msgid": "PWD_PTRN_DESC",
-          "msgstr": [
-            "password must be a minimum of 6 characters"
-          ]
-        },
-        "CONFIRM_PWD_LBL": {
-          "msgid": "CONFIRM_PWD_LBL",
-          "msgstr": [
-            "Confirm password"
-          ]
-        },
-        "CONFIRM_PWD_PHOLD": {
-          "msgid": "CONFIRM_PWD_PHOLD",
-          "msgstr": [
-            "confirm password"
-          ]
-        },
-        "COUNTRY_LBL": {
-          "msgid": "COUNTRY_LBL",
-          "msgstr": [
-            "Country"
-          ]
-        },
-        "CITY_LBL": {
-          "msgid": "CITY_LBL",
-          "msgstr": [
-            "City"
-          ]
-        },
-        "CITY_PHOLD": {
-          "msgid": "CITY_PHOLD",
-          "msgstr": [
-            "enter city"
-          ]
-        },
-        "STREET_LBL": {
-          "msgid": "STREET_LBL",
-          "msgstr": [
-            "Street"
-          ]
-        },
-        "STREET_PHOLD": {
-          "msgid": "STREET_PHOLD",
-          "msgstr": [
-            "enter street"
-          ]
-        },
-        "ZIP_CODE_LBL": {
-          "msgid": "ZIP_CODE_LBL",
-          "msgstr": [
-            "Postal code"
-          ]
-        },
-        "TAX_NUMBER_LBL": {
-          "msgid": "TAX_NUMBER_LBL",
-          "msgstr": [
-            "Tax number"
-          ]
-        },
-        "TAX_NUMBER_PHOLD": {
-          "msgid": "TAX_NUMBER_PHOLD",
-          "msgstr": [
-            "enter your tax identification number (optional)"
-          ]
-        },
-        "TAX_NUMBER_PTRN_DESC": {
-          "msgid": "TAX_NUMBER_PTRN_DESC",
-          "msgstr": [
-            "only numbers and letters"
-          ]
-        },
-        "REGISTER_ADD_INFO_TXT": {
-          "msgid": "REGISTER_ADD_INFO_TXT",
-          "msgstr": [
-            "By signing up, you accept the {terms_and_conditions} and the {privacy_policy} of this WiFi service."
-          ]
-        },
-        "REGISTER_BTN_TXT": {
-          "msgid": "REGISTER_BTN_TXT",
-          "msgstr": [
-            "Sign up"
-          ]
-        },
-        "FORGOT_PASSWORD": {
-          "msgid": "FORGOT_PASSWORD",
-          "msgstr": [
-            "Forgot your password?"
-          ]
-        },
-        "LINKS_LOGIN_TXT": {
-          "msgid": "LINKS_LOGIN_TXT",
-          "msgstr": [
-            "Already have an account? Log in"
-          ]
-        },
-        "REGISTRATION_TITL": {
-          "msgid": "REGISTRATION_TITL",
-          "msgstr": [
-            "Sign up"
-          ]
-        },
-        "PWD_CNF_ERR": {
-          "msgid": "PWD_CNF_ERR",
-          "msgstr": [
-            "The two password fields didn't match."
-          ]
-        },
-        "REGISTER_SUCCESS": {
-          "msgid": "REGISTER_SUCCESS",
-          "msgstr": [
-            "Registration success"
-          ]
-        },
-        "404_PG_TITL": {
-          "msgid": "404_PG_TITL",
-          "msgstr": [
-            "404 Not found"
-          ]
-        },
-        "REGISTER_ERR": {
-          "msgid": "REGISTER_ERR",
-          "msgstr": [
-            "Registration error."
-          ]
-        },
-        "NO_ORGS": {
-          "msgid": "NO_ORGS",
-          "msgstr": [
-            "A user with similar credentials already exists."
-          ]
-        },
-        "CONFLICT_ORGS": {
-          "msgid": "CONFLICT_ORGS",
-          "msgstr": [
-            "A user with credentials like the one being entered already exists in other organizations:"
-          ]
-        },
-        "CONFLICT_SIGNIN": {
-          "msgid": "CONFLICT_SIGNIN",
-          "msgstr": [
-            "Do you own the account mentioned above and want to sign in and associate your existing account to this WiFi service?"
-          ]
-        },
-        "PAY_SUCCESS": {
-          "msgid": "PAY_SUCCESS",
-          "msgstr": [
-            "Payment received successfully."
-          ]
-        },
-        "PAY_REQ": {
-          "msgid": "PAY_REQ",
-          "msgstr": [
-            "Payment required to proceed"
-          ]
-        },
-        "PAY_WARN${ timeout }${ maxAttempts }": {
-          "msgid": "PAY_WARN${ timeout }${ maxAttempts }",
-          "msgstr": [
-            "<p>By clicking on the button below you will be redirected to our payment gateway service where you can safely use your credit/debit card. From there you will be redirected to the website of your bank to confirm the transaction.</p><p>You will have ${ timeout } minutes to complete the process.<br /><strong>For this reason we recommend preparing your debit/credit card before initiating the payment process.</strong></p><p>If for any reason the process is not completed within the available time, the internet connection which allows you to reach the website of your bank will be closed, if this happens you can just log in again with the credentials you just registered and repeat the process up a maximum of ${ maxAttempts } times.</p>"
-          ]
-        },
-        "PAY_PROC_BTN": {
-          "msgid": "PAY_PROC_BTN",
-          "msgstr": [
-            "Proceed with the payment"
-          ]
-        },
-        "PAY_GIVE_UP_BTN": {
-          "msgid": "PAY_GIVE_UP_BTN",
-          "msgstr": [
-            "Cancel operation and log out"
-          ]
-        },
-        "PAY_FAIL": {
-          "msgid": "PAY_FAIL",
-          "msgstr": [
-            "Payment Failed"
-          ]
-        },
-        "PAY_SUB_H": {
-          "msgid": "PAY_SUB_H",
-          "msgstr": [
-            "Something went wrong with the payment."
-          ]
-        },
-        "PAY_TRY_AGAIN_BTN": {
-          "msgid": "PAY_TRY_AGAIN_BTN",
-          "msgstr": [
-            "Try again"
-          ]
-        },
-        "PAY_GIVE_UP_TXT": {
-          "msgid": "PAY_GIVE_UP_TXT",
-          "msgstr": [
-            "If you cannot complete the transaction you can either try to get in touch with your bank or cancel the operation."
-          ]
-        },
-        "PWD_RESET_TITL": {
-          "msgid": "PWD_RESET_TITL",
-          "msgstr": [
-            "Reset Password"
-          ]
-        },
-        "LOGIN_PG_LNK": {
-          "msgid": "LOGIN_PG_LNK",
-          "msgstr": [
-            "Go back to sign in"
-          ]
-        },
-        "PWD_RESET_ADD_TXT": {
-          "msgid": "PWD_RESET_ADD_TXT",
-          "msgstr": [
-            "Have you forgot your password? Enter your email address, phone number or username below and we'll send you the instructions to reset it."
-          ]
-        },
-        "USERNAME_LOG_LBL": {
-          "msgid": "USERNAME_LOG_LBL",
-          "msgstr": [
-            "Email, phone number or username"
-          ]
-        },
-        "USERNAME_LOG_PHOLD": {
-          "msgid": "USERNAME_LOG_PHOLD",
-          "msgstr": [
-            "enter email, phone number or username"
-          ]
-        },
-        "USERNAME_LOG_TITL": {
-          "msgid": "USERNAME_LOG_TITL",
-          "msgstr": [
-            "enter valid email address, an username or a phone number"
-          ]
-        },
-        "PWD_RESET_BTN": {
-          "msgid": "PWD_RESET_BTN",
-          "msgstr": [
-            "Reset password"
-          ]
-        },
-        "PWD_RESET_CNTC_TXT": {
-          "msgid": "PWD_RESET_CNTC_TXT",
-          "msgstr": [
-            "Please contact us if you have any trouble resetting your password."
-          ]
-        },
-        "PWD_CONFIRM_TITL": {
-          "msgid": "PWD_CONFIRM_TITL",
-          "msgstr": [
-            "Reset Password"
-          ]
-        },
-        "PWD_CONFIRM_H": {
-          "msgid": "PWD_CONFIRM_H",
-          "msgstr": [
-            "Reset your password"
-          ]
-        },
-        "PWD_CONFIRM_ADD_TXT": {
-          "msgid": "PWD_CONFIRM_ADD_TXT",
-          "msgstr": [
-            "Please enter your new password below."
-          ]
-        },
-        "PWD_CONFIRM": {
-          "msgid": "PWD_CONFIRM",
-          "msgstr": [
-            "Change password"
-          ]
-        },
-        "PWD_CHANGE_TITL": {
-          "msgid": "PWD_CHANGE_TITL",
-          "msgstr": [
-            "Change your password"
-          ]
-        },
-        "PWD_CURR_ERR": {
-          "msgid": "PWD_CURR_ERR",
-          "msgstr": [
-            "The new password cannot be the same as the current password."
-          ]
-        },
-        "PWD_CHNG_ERR": {
-          "msgid": "PWD_CHNG_ERR",
-          "msgstr": [
-            "An error occurred, the password has not been changed."
-          ]
-        },
-        "PWD_CHANGE_HELP_TXT": {
-          "msgid": "PWD_CHANGE_HELP_TXT",
-          "msgstr": [
-            "Use the form below to change your password."
-          ]
-        },
-        "CURR_PWD_LBL": {
-          "msgid": "CURR_PWD_LBL",
-          "msgstr": [
-            "Current password"
-          ]
-        },
-        "CURR_PWD_PHOLD": {
-          "msgid": "CURR_PWD_PHOLD",
-          "msgstr": [
-            "Your current password"
-          ]
-        },
-        "PWD1_LBL": {
-          "msgid": "PWD1_LBL",
-          "msgstr": [
-            "New Password"
-          ]
-        },
-        "PWD1_PHOLD": {
-          "msgid": "PWD1_PHOLD",
-          "msgstr": [
-            "Your new password"
-          ]
-        },
-        "PASSWORD_CHANGE": {
-          "msgid": "PASSWORD_CHANGE",
-          "msgstr": [
-            "Change Password"
-          ]
-        },
-        "CANCEL": {
-          "msgid": "CANCEL",
-          "msgstr": [
-            "Cancel"
-          ]
-        },
-        "DEFAULT_TITL${ orgName }": {
-          "msgid": "DEFAULT_TITL${ orgName }",
-          "msgstr": [
-            "Login to ${ orgName }"
-          ]
-        },
-        "PHONE_VERIF_TITL": {
-          "msgid": "PHONE_VERIF_TITL",
-          "msgstr": [
-            "Verify mobile number"
-          ]
-        },
-        "TOKEN_SENT": {
-          "msgid": "TOKEN_SENT",
-          "msgstr": [
-            "SMS verification code sent successfully."
-          ]
-        },
-        "PHONE_VERIFY (${ phone_number })": {
-          "msgid": "PHONE_VERIFY (${ phone_number })",
-          "msgstr": [
-            "Verify your mobile phone number (${ phone_number }) by inserting the code you received via SMS below."
-          ]
-        },
-        "MOBILE_CODE_PHOLD": {
-          "msgid": "MOBILE_CODE_PHOLD",
-          "msgstr": [
-            "enter SMS verification code"
-          ]
-        },
-        "MOBILE_CODE_TITL": {
-          "msgid": "MOBILE_CODE_TITL",
-          "msgstr": [
-            "this field must be a 6 digit numeric code"
-          ]
-        },
-        "MOBILE_PHONE_VERIFY": {
-          "msgid": "MOBILE_PHONE_VERIFY",
-          "msgstr": [
-            "Submit"
-          ]
-        },
-        "RESEND_TOKEN_LBL": {
-          "msgid": "RESEND_TOKEN_LBL",
-          "msgstr": [
-            "If you did not receive the verification SMS code, you can try sending it again by clicking below."
-          ]
-        },
-        "RESEND_TOKEN_WAIT_LBL${ seconds }": {
-          "msgid": "RESEND_TOKEN_WAIT_LBL${ seconds }",
-          "msgstr": [
-            "A new SMS can be requested in ${ seconds } seconds."
-          ]
-        },
-        "RESEND_TOKEN": {
-          "msgid": "RESEND_TOKEN",
-          "msgstr": [
-            "Send a new verification code"
-          ]
-        },
-        "PHONE_CHANGE_LBL": {
-          "msgid": "PHONE_CHANGE_LBL",
-          "msgstr": [
-            "Wrong phone number?"
-          ]
-        },
-        "PHONE_CHANGE_BTN": {
-          "msgid": "PHONE_CHANGE_BTN",
-          "msgstr": [
-            "Change your phone number"
-          ]
-        },
-        "LOGOUT_LBL": {
-          "msgid": "LOGOUT_LBL",
-          "msgstr": [
-            "If you need to cancel the process you can log out below."
-          ]
-        },
-        "PHONE_CHANGE_TITL": {
-          "msgid": "PHONE_CHANGE_TITL",
-          "msgstr": [
-            "Change mobile number"
-          ]
-        },
-        "LOGIN_SUCCESS": {
-          "msgid": "LOGIN_SUCCESS",
-          "msgstr": [
-            "Login successful"
-          ]
-        },
-        "LOGOUT_CONTENT": {
-          "msgid": "LOGOUT_CONTENT",
-          "msgstr": [
-            "Logout successful"
-          ]
-        },
-        "LOGIN_AGAIN": {
-          "msgid": "LOGIN_AGAIN",
-          "msgstr": [
-            "Login again"
-          ]
-        },
-        "LOGIN": {
-          "msgid": "LOGIN",
-          "msgstr": [
-            "Log in"
-          ]
-        },
-        "USER_INACTIVE": {
-          "msgid": "USER_INACTIVE",
-          "msgstr": [
-            "Your account has been deactivated. Please contact customer support for more information."
-          ]
-        },
-        "LOGIN_ERR": {
-          "msgid": "LOGIN_ERR",
-          "msgstr": [
-            "Login error occurred."
-          ]
-        },
-        "REMEMBER_ME": {
-          "msgid": "REMEMBER_ME",
-          "msgstr": [
-            "remember me on this device"
-          ]
-        },
-        "LOGIN_ADD_INFO_TXT": {
-          "msgid": "LOGIN_ADD_INFO_TXT",
-          "msgstr": [
-            "By logging in, you accept the {terms_and_conditions} and the {privacy_policy} of this WiFi service. "
-          ]
-        },
-        "REGISTER_BTN_LBL": {
-          "msgid": "REGISTER_BTN_LBL",
-          "msgstr": [
-            "Not registered yet?"
-          ]
-        },
-        "HELPDESK": {
-          "msgid": "HELPDESK",
-          "msgstr": [
-            "Helpdesk"
-          ]
-        },
-        "404_H": {
-          "msgid": "404_H",
-          "msgstr": [
-            "404"
-          ]
-        },
-        "404_SUBH": {
-          "msgid": "404_SUBH",
-          "msgstr": [
-            "Not Found"
-          ]
-        },
-        "404_MESSAGE": {
-          "msgid": "404_MESSAGE",
-          "msgstr": [
-            "Sorry, we couldn't find the page you were looking for."
-          ]
-        },
-        "HOME_PG_LINK_TXT": {
-          "msgid": "HOME_PG_LINK_TXT",
-          "msgstr": [
-            "Go back to homepage"
-          ]
-        }
-      }
-    }
-  },
-  "es": {
-    "charset": "utf-8",
-    "headers": {
-      "Project-Id-Version": "",
-      "POT-Creation-Date": "",
-      "PO-Revision-Date": "",
-      "Last-Translator": "",
-      "Language-Team": "",
-      "Language": "es",
-      "MIME-Version": "1.0",
-      "Content-Type": "text/plain; charset=UTF-8",
-      "Content-Transfer-Encoding": "8bit",
-      "Plural-Forms": "nplurals=2; plural=(n != 1);",
-      "X-Generator": "Poedit 3.6"
-    },
-    "translations": {
-      "": {
-        "": {
-          "msgid": "",
-          "msgstr": [
-            "Project-Id-Version: \nPOT-Creation-Date: \nPO-Revision-Date: \nLast-Translator: \nLanguage-Team: \nLanguage: es\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=(n != 1);\nX-Generator: Poedit 3.6\n"
-          ]
-        },
-        "ERR_OCCUR": {
-          "msgid": "ERR_OCCUR",
-          "msgstr": [
-            "¡Ocurrió un error!"
-          ]
-        },
-        "PLAN_SETTING_TXT": {
-          "msgid": "PLAN_SETTING_TXT",
-          "msgstr": [
-            "Por favor seleccione el plan de suscripción preferido"
-          ]
-        },
-        "INACTIVE_SESSION_LOGOUT": {
-          "msgid": "INACTIVE_SESSION_LOGOUT",
-          "msgstr": [
-            "La sesión de WiFi ha finalizado. Puedes iniciar sesión de nuevo para comenzar una nueva sesión."
-          ]
-        },
-        "LOGOUT_SUCCESS": {
-          "msgid": "LOGOUT_SUCCESS",
-          "msgstr": [
-            "Cierre de sesión exitoso"
-          ]
-        },
-        "YES": {
-          "msgid": "YES",
-          "msgstr": [
-            "Sí"
-          ]
-        },
-        "NO": {
-          "msgid": "NO",
-          "msgstr": [
-            "No"
-          ]
-        },
-        "PWD_REVEAL": {
-          "msgid": "PWD_REVEAL",
-          "msgstr": [
-            "revelar contraseña"
-          ]
-        },
-        "PWD_HIDE": {
-          "msgid": "PWD_HIDE",
-          "msgstr": [
-            "ocultar contraseña"
-          ]
-        },
-        "PRIV_POL_TITL": {
-          "msgid": "PRIV_POL_TITL",
-          "msgstr": [
-            "política de privacidad"
-          ]
-        },
-        "TOS_TITL": {
-          "msgid": "TOS_TITL",
-          "msgstr": [
-            "Términos y condiciones"
-          ]
-        },
-        "PLEASE_WAIT": {
-          "msgid": "PLEASE_WAIT",
-          "msgstr": [
-            "Espere por favor..."
-          ]
-        },
-        "PLEASE_LOGIN": {
-          "msgid": "PLEASE_LOGIN",
-          "msgstr": [
-            "Por favor inicia sesión"
-          ]
-        },
-        "ACCT_ACTIVE": {
-          "msgid": "ACCT_ACTIVE",
-          "msgstr": [
-            "la sesión está activa"
-          ]
-        },
-        "LOGOUT": {
-          "msgid": "LOGOUT",
-          "msgstr": [
-            "Cerrar sesión"
-          ]
-        },
-        "ACCT_START_TIME": {
-          "msgid": "ACCT_START_TIME",
-          "msgstr": [
-            "Hora de inicio"
-          ]
-        },
-        "ACCT_STOP_TIME": {
-          "msgid": "ACCT_STOP_TIME",
-          "msgstr": [
-            "Hora de cierre"
-          ]
-        },
-        "ACCT_DURATION": {
-          "msgid": "ACCT_DURATION",
-          "msgstr": [
-            "Duración"
-          ]
-        },
-        "ACCT_DOWNLOAD": {
-          "msgid": "ACCT_DOWNLOAD",
-          "msgstr": [
-            "Descargado"
-          ]
-        },
-        "ACCT_UPLOAD": {
-          "msgid": "ACCT_UPLOAD",
-          "msgstr": [
-            "Subido"
-          ]
-        },
-        "ACCT_DEVICE_ADDRESS": {
-          "msgid": "ACCT_DEVICE_ADDRESS",
-          "msgstr": [
-            "Dirección del dispositivo"
-          ]
-        },
-        "STATUS": {
-          "msgid": "STATUS",
-          "msgstr": [
-            "Estado"
-          ]
-        },
-        "LOGGED_IN": {
-          "msgid": "LOGGED_IN",
-          "msgstr": [
-            "Sesión Iniciada"
-          ]
-        },
-        "EMAIL": {
-          "msgid": "EMAIL",
-          "msgstr": [
-            "Correo electrónico"
-          ]
-        },
-        "USERNAME": {
-          "msgid": "USERNAME",
-          "msgstr": [
-            "Nombre de usuario"
-          ]
-        },
-        "PHONE_NUMBER": {
-          "msgid": "PHONE_NUMBER",
-          "msgstr": [
-            "Número de teléfono"
-          ]
-        },
-        "CP_LOGIN": {
-          "msgid": "CP_LOGIN",
-          "msgstr": [
-            "Estamos inicializando tu sesión en el servicio WiFi, puede tardar unos segundos, por favor espera..."
-          ]
-        },
-        "STATUS_TITL": {
-          "msgid": "STATUS_TITL",
-          "msgstr": [
-            "Estado"
-          ]
-        },
-        "PASSWORD_EXPIRED": {
-          "msgid": "PASSWORD_EXPIRED",
-          "msgstr": [
-            "Su contraseña ha expirado, por favor actualícela."
-          ]
-        },
-        "PLAN_EXHAUSTED_TOAST": {
-          "msgid": "PLAN_EXHAUSTED_TOAST",
-          "msgstr": [
-            "Has agotado el tráfico disponible en tu paquete."
-          ]
-        },
-        "SUCCESS_UPGRADE_PLAN": {
-          "msgid": "SUCCESS_UPGRADE_PLAN",
-          "msgstr": [
-            "Actualización del plan en curso"
-          ]
-        },
-        "STATUS_CONTENT": {
-          "msgid": "STATUS_CONTENT",
-          "msgstr": [
-            "¡Inicio de sesión de WiFi exitoso!\n        Ya puedes usar internet.\n        Puedes dejar esta página abierta si quieres cerrar sesión."
-          ]
-        },
-        "TRAFFIC_EXHAUSTED": {
-          "msgid": "TRAFFIC_EXHAUSTED",
-          "msgstr": [
-            "Tráfico agotado"
-          ]
-        },
-        "LOGOUT_MODAL_CONTENT": {
-          "msgid": "LOGOUT_MODAL_CONTENT",
-          "msgstr": [
-            "¿Quieres iniciar sesión automáticamente la próxima vez?"
-          ]
-        },
-        "CURRENT_SUBSCRIPTION_TXT": {
-          "msgid": "CURRENT_SUBSCRIPTION_TXT",
-          "msgstr": [
-            "Suscripción actual:"
-          ]
-        },
-        "USAGE_LIMIT_EXHAUSTED_TXT": {
-          "msgid": "USAGE_LIMIT_EXHAUSTED_TXT",
-          "msgstr": [
-            "Has agotado el tráfico disponible. Actualiza para seguir usando el servicio."
-          ]
-        },
-        "PLAN_UPGRADE_BTN_TXT": {
-          "msgid": "PLAN_UPGRADE_BTN_TXT",
-          "msgstr": [
-            "Actualizar"
-          ]
-        },
-        "PHONE_LBL": {
-          "msgid": "PHONE_LBL",
-          "msgstr": [
-            "Número de teléfono móvil"
-          ]
-        },
-        "PHONE_PHOLD": {
-          "msgid": "PHONE_PHOLD",
-          "msgstr": [
-            "Ingrese el número de teléfono móvil"
-          ]
-        },
-        "EMAIL_PHOLD": {
-          "msgid": "EMAIL_PHOLD",
-          "msgstr": [
-            "dirección de correo electrónico"
-          ]
-        },
-        "EMAIL_PTRN_DESC": {
-          "msgid": "EMAIL_PTRN_DESC",
-          "msgstr": [
-            "Ingrese una dirección de correo electrónico válida"
-          ]
-        },
-        "USERNAME_REG_LBL": {
-          "msgid": "USERNAME_REG_LBL",
-          "msgstr": [
-            "Correo electrónico, número de teléfono o nombre de usuario"
-          ]
-        },
-        "USERNAME_REG_PHOLD": {
-          "msgid": "USERNAME_REG_PHOLD",
-          "msgstr": [
-            "Ingrese un email, número de teléfono o nombre de usuario"
-          ]
-        },
-        "USERNAME_PTRN_DESC": {
-          "msgid": "USERNAME_PTRN_DESC",
-          "msgstr": [
-            "solo letras, números y caracteres @/./+/-/_"
-          ]
-        },
-        "FIRST_NAME_LBL": {
-          "msgid": "FIRST_NAME_LBL",
-          "msgstr": [
-            "Nombre"
-          ]
-        },
-        "OPTIONAL": {
-          "msgid": "OPTIONAL",
-          "msgstr": [
-            "optional"
-          ]
-        },
-        "FIRST_NAME_PHOLD": {
-          "msgid": "FIRST_NAME_PHOLD",
-          "msgstr": [
-            "nombre"
-          ]
-        },
-        "LAST_NAME_LBL": {
-          "msgid": "LAST_NAME_LBL",
-          "msgstr": [
-            "Apellido"
-          ]
-        },
-        "LAST_NAME_PHOLD": {
-          "msgid": "LAST_NAME_PHOLD",
-          "msgstr": [
-            "apellido"
-          ]
-        },
-        "BIRTH_DATE_LBL": {
-          "msgid": "BIRTH_DATE_LBL",
-          "msgstr": [
-            "Fecha de nacimiento"
-          ]
-        },
-        "LOCATION_LBL": {
-          "msgid": "LOCATION_LBL",
-          "msgstr": [
-            "Ubicación"
-          ]
-        },
-        "LOCATION_PHOLD": {
-          "msgid": "LOCATION_PHOLD",
-          "msgstr": [
-            "ubicación"
-          ]
-        },
-        "LOCATION_PTRN_DESC": {
-          "msgid": "LOCATION_PTRN_DESC",
-          "msgstr": [
-            "solo letras, números, espacios, puntuación"
-          ]
-        },
-        "PWD_LBL": {
-          "msgid": "PWD_LBL",
-          "msgstr": [
-            "Contraseña"
-          ]
-        },
-        "PWD_PHOLD": {
-          "msgid": "PWD_PHOLD",
-          "msgstr": [
-            "contraseña"
-          ]
-        },
-        "PWD_PTRN_DESC": {
-          "msgid": "PWD_PTRN_DESC",
-          "msgstr": [
-            "La contraseña debe tener un mínimo de 6 caracteres"
-          ]
-        },
-        "CONFIRM_PWD_LBL": {
-          "msgid": "CONFIRM_PWD_LBL",
-          "msgstr": [
-            "Confirmar contraseña"
-          ]
-        },
-        "CONFIRM_PWD_PHOLD": {
-          "msgid": "CONFIRM_PWD_PHOLD",
-          "msgstr": [
-            "confirmar contraseña"
-          ]
-        },
-        "COUNTRY_LBL": {
-          "msgid": "COUNTRY_LBL",
-          "msgstr": [
-            "País"
-          ]
-        },
-        "CITY_LBL": {
-          "msgid": "CITY_LBL",
-          "msgstr": [
-            "Ciudad"
-          ]
-        },
-        "CITY_PHOLD": {
-          "msgid": "CITY_PHOLD",
-          "msgstr": [
-            "ingrese la ciudad"
-          ]
-        },
-        "STREET_LBL": {
-          "msgid": "STREET_LBL",
-          "msgstr": [
-            "Calle"
-          ]
-        },
-        "STREET_PHOLD": {
-          "msgid": "STREET_PHOLD",
-          "msgstr": [
-            "ingrese la calle"
-          ]
-        },
-        "ZIP_CODE_LBL": {
-          "msgid": "ZIP_CODE_LBL",
-          "msgstr": [
-            "Código Postal"
-          ]
-        },
-        "TAX_NUMBER_LBL": {
-          "msgid": "TAX_NUMBER_LBL",
-          "msgstr": [
-            "Número de identificación fiscal"
-          ]
-        },
-        "TAX_NUMBER_PHOLD": {
-          "msgid": "TAX_NUMBER_PHOLD",
-          "msgstr": [
-            "Ingrese su número de identificación fiscal (opcional)"
-          ]
-        },
-        "TAX_NUMBER_PTRN_DESC": {
-          "msgid": "TAX_NUMBER_PTRN_DESC",
-          "msgstr": [
-            "solo números y letras"
-          ]
-        },
-        "REGISTER_ADD_INFO_TXT": {
-          "msgid": "REGISTER_ADD_INFO_TXT",
-          "msgstr": [
-            "Al registrarte aceptas los {terms_and_conditions} y la {privacy_policy} de este servicio WiFi."
-          ]
-        },
-        "REGISTER_BTN_TXT": {
-          "msgid": "REGISTER_BTN_TXT",
-          "msgstr": [
-            "Inscribirse"
-          ]
-        },
-        "FORGOT_PASSWORD": {
-          "msgid": "FORGOT_PASSWORD",
-          "msgstr": [
-            "¿Olvidaste tu contraseña?"
-          ]
-        },
-        "LINKS_LOGIN_TXT": {
-          "msgid": "LINKS_LOGIN_TXT",
-          "msgstr": [
-            "¿Ya tienes una cuenta? Iniciar sesión"
-          ]
-        },
-        "REGISTRATION_TITL": {
-          "msgid": "REGISTRATION_TITL",
-          "msgstr": [
-            "Inscribirse"
-          ]
-        },
-        "PWD_CNF_ERR": {
-          "msgid": "PWD_CNF_ERR",
-          "msgstr": [
-            "Los dos campos de contraseña no coincidieron."
-          ]
-        },
-        "REGISTER_SUCCESS": {
-          "msgid": "REGISTER_SUCCESS",
-          "msgstr": [
-            "Registro exitoso"
-          ]
-        },
-        "404_PG_TITL": {
-          "msgid": "404_PG_TITL",
-          "msgstr": [
-            "404 No encontrado"
-          ]
-        },
-        "REGISTER_ERR": {
-          "msgid": "REGISTER_ERR",
-          "msgstr": [
-            "Error de registro."
-          ]
-        },
-        "NO_ORGS": {
-          "msgid": "NO_ORGS",
-          "msgstr": [
-            "Ya existe un usuario con credenciales similares."
-          ]
-        },
-        "CONFLICT_ORGS": {
-          "msgid": "CONFLICT_ORGS",
-          "msgstr": [
-            "Un usuario con credenciales como las que se están ingresando ya existe en otras organizaciones:"
-          ]
-        },
-        "CONFLICT_SIGNIN": {
-          "msgid": "CONFLICT_SIGNIN",
-          "msgstr": [
-            "¿Es usted propietario de la cuenta mencionada anteriormente y desea iniciar sesión y asociar su cuenta existente a este servicio WiFi?"
-          ]
-        },
-        "PAY_SUCCESS": {
-          "msgid": "PAY_SUCCESS",
-          "msgstr": [
-            "Pago recibido exitosamente."
-          ]
-        },
-        "PAY_REQ": {
-          "msgid": "PAY_REQ",
-          "msgstr": [
-            "Se requiere pago para continuar"
-          ]
-        },
-        "PAY_WARN${ timeout }${ maxAttempts }": {
-          "msgid": "PAY_WARN${ timeout }${ maxAttempts }",
-          "msgstr": [
-            "<p>Al hacer clic en el botón de abajo, será redirigido a nuestra pasarela de pagos, donde podrá usar su tarjeta de crédito/débito de forma segura. Desde allí, será redirigido al sitio web de su banco para confirmar la transacción.</p><p>Tendrás ${ timeout } minutos para completar el proceso.<br /><strong>Por este motivo le recomendamos preparar su tarjeta de débito/crédito antes de iniciar el proceso de pago.</strong></p><p>Si por alguna razón el proceso no se completa en el tiempo disponible, la conexión a internet que te permite llegar al sitio web de tu banco se cerrará, si esto sucede simplemente puedes iniciar sesión nuevamente con las credenciales que acabas de registrar y repetir el proceso hasta un máximo de ${ maxAttempts } veces.</p>"
-          ]
-        },
-        "PAY_PROC_BTN": {
-          "msgid": "PAY_PROC_BTN",
-          "msgstr": [
-            "Proceder con el pago"
-          ]
-        },
-        "PAY_GIVE_UP_BTN": {
-          "msgid": "PAY_GIVE_UP_BTN",
-          "msgstr": [
-            "Cancelar operación y cerrar sesión"
-          ]
-        },
-        "PAY_FAIL": {
-          "msgid": "PAY_FAIL",
-          "msgstr": [
-            "Pago fallido"
-          ]
-        },
-        "PAY_SUB_H": {
-          "msgid": "PAY_SUB_H",
-          "msgstr": [
-            "Algo salió mal con el pago."
-          ]
-        },
-        "PAY_TRY_AGAIN_BTN": {
-          "msgid": "PAY_TRY_AGAIN_BTN",
-          "msgstr": [
-            "Intentar otra vez"
-          ]
-        },
-        "PAY_GIVE_UP_TXT": {
-          "msgid": "PAY_GIVE_UP_TXT",
-          "msgstr": [
-            "Si no puede completar la transacción puede intentar ponerse en contacto con su banco o cancelar la operación."
-          ]
-        },
-        "PWD_RESET_TITL": {
-          "msgid": "PWD_RESET_TITL",
-          "msgstr": [
-            "Restablecer contraseña"
-          ]
-        },
-        "LOGIN_PG_LNK": {
-          "msgid": "LOGIN_PG_LNK",
-          "msgstr": [
-            "Regresar a iniciar sesión"
-          ]
-        },
-        "PWD_RESET_ADD_TXT": {
-          "msgid": "PWD_RESET_ADD_TXT",
-          "msgstr": [
-            "¿Olvidaste tu contraseña? Introduce tu correo electrónico, número de teléfono o nombre de usuario a continuación y te enviaremos las instrucciones para restablecerla."
-          ]
-        },
-        "USERNAME_LOG_LBL": {
-          "msgid": "USERNAME_LOG_LBL",
-          "msgstr": [
-            "Correo electrónico, número de teléfono o nombre de usuario"
-          ]
-        },
-        "USERNAME_LOG_PHOLD": {
-          "msgid": "USERNAME_LOG_PHOLD",
-          "msgstr": [
-            "ingrese correo electrónico, número de teléfono o nombre de usuario"
-          ]
-        },
-        "USERNAME_LOG_TITL": {
-          "msgid": "USERNAME_LOG_TITL",
-          "msgstr": [
-            "introduzca una dirección de correo electrónico válida, un nombre de usuario o un número de teléfono"
-          ]
-        },
-        "PWD_RESET_BTN": {
-          "msgid": "PWD_RESET_BTN",
-          "msgstr": [
-            "Restablecer contraseña"
-          ]
-        },
-        "PWD_RESET_CNTC_TXT": {
-          "msgid": "PWD_RESET_CNTC_TXT",
-          "msgstr": [
-            "Comuníquese con nosotros si tiene algún problema para restablecer su contraseña."
-          ]
-        },
-        "PWD_CONFIRM_TITL": {
-          "msgid": "PWD_CONFIRM_TITL",
-          "msgstr": [
-            "Restablecer contraseña"
-          ]
-        },
-        "PWD_CONFIRM_H": {
-          "msgid": "PWD_CONFIRM_H",
-          "msgstr": [
-            "Restablecer su contraseña"
-          ]
-        },
-        "PWD_CONFIRM_ADD_TXT": {
-          "msgid": "PWD_CONFIRM_ADD_TXT",
-          "msgstr": [
-            "Por favor, introduzca su nueva contraseña a continuación."
-          ]
-        },
-        "PWD_CONFIRM": {
-          "msgid": "PWD_CONFIRM",
-          "msgstr": [
-            "Cambiar la contraseña"
-          ]
-        },
-        "PWD_CHANGE_TITL": {
-          "msgid": "PWD_CHANGE_TITL",
-          "msgstr": [
-            "Cambiar tu contraseña"
-          ]
-        },
-        "PWD_CURR_ERR": {
-          "msgid": "PWD_CURR_ERR",
-          "msgstr": [
-            "La nueva contraseña no puede ser la misma que la contraseña actual."
-          ]
-        },
-        "PWD_CHNG_ERR": {
-          "msgid": "PWD_CHNG_ERR",
-          "msgstr": [
-            "Ocurrió un error, la contraseña no ha sido cambiada."
-          ]
-        },
-        "PWD_CHANGE_HELP_TXT": {
-          "msgid": "PWD_CHANGE_HELP_TXT",
-          "msgstr": [
-            "Utilice el formulario a continuación para cambiar su contraseña."
-          ]
-        },
-        "CURR_PWD_LBL": {
-          "msgid": "CURR_PWD_LBL",
-          "msgstr": [
-            "Contraseña actual"
-          ]
-        },
-        "CURR_PWD_PHOLD": {
-          "msgid": "CURR_PWD_PHOLD",
-          "msgstr": [
-            "Su contraseña actual"
-          ]
-        },
-        "PWD1_LBL": {
-          "msgid": "PWD1_LBL",
-          "msgstr": [
-            "Nueva contraseña"
-          ]
-        },
-        "PWD1_PHOLD": {
-          "msgid": "PWD1_PHOLD",
-          "msgstr": [
-            "Su nueva contraseña"
-          ]
-        },
-        "PASSWORD_CHANGE": {
-          "msgid": "PASSWORD_CHANGE",
-          "msgstr": [
-            "Cambiar la contraseña"
-          ]
-        },
-        "CANCEL": {
-          "msgid": "CANCEL",
-          "msgstr": [
-            "Cancelar"
-          ]
-        },
-        "DEFAULT_TITL${ orgName }": {
-          "msgid": "DEFAULT_TITL${ orgName }",
-          "msgstr": [
-            "Iniciar sesión en ${ orgName }"
-          ]
-        },
-        "PHONE_VERIF_TITL": {
-          "msgid": "PHONE_VERIF_TITL",
-          "msgstr": [
-            "Verificar número de móvil"
-          ]
-        },
-        "TOKEN_SENT": {
-          "msgid": "TOKEN_SENT",
-          "msgstr": [
-            "Código de verificación SMS enviado exitosamente."
-          ]
-        },
-        "PHONE_VERIFY (${ phone_number })": {
-          "msgid": "PHONE_VERIFY (${ phone_number })",
-          "msgstr": [
-            "Verifica tu número de teléfono móvil (${ phone_number }) insertando el código que recibiste por SMS a continuación."
-          ]
-        },
-        "MOBILE_CODE_PHOLD": {
-          "msgid": "MOBILE_CODE_PHOLD",
-          "msgstr": [
-            "Introduzca el código de verificación por SMS"
-          ]
-        },
-        "MOBILE_CODE_TITL": {
-          "msgid": "MOBILE_CODE_TITL",
-          "msgstr": [
-            "Este campo debe ser un código numérico de 6 dígitos"
-          ]
-        },
-        "MOBILE_PHONE_VERIFY": {
-          "msgid": "MOBILE_PHONE_VERIFY",
-          "msgstr": [
-            "Enviar"
-          ]
-        },
-        "RESEND_TOKEN_LBL": {
-          "msgid": "RESEND_TOKEN_LBL",
-          "msgstr": [
-            "Si no recibiste el código SMS de verificación, puedes intentar enviarlo nuevamente haciendo click a continuación."
-          ]
-        },
-        "RESEND_TOKEN_WAIT_LBL${ seconds }": {
-          "msgid": "RESEND_TOKEN_WAIT_LBL${ seconds }",
-          "msgstr": [
-            "Se puede solicitar un nuevo SMS en ${ seconds } segundos."
-          ]
-        },
-        "RESEND_TOKEN": {
-          "msgid": "RESEND_TOKEN",
-          "msgstr": [
-            "Enviar un nuevo código de verificación"
-          ]
-        },
-        "PHONE_CHANGE_LBL": {
-          "msgid": "PHONE_CHANGE_LBL",
-          "msgstr": [
-            "¿Número de teléfono equivocado?"
-          ]
-        },
-        "PHONE_CHANGE_BTN": {
-          "msgid": "PHONE_CHANGE_BTN",
-          "msgstr": [
-            "Cambia tu número de teléfono"
-          ]
-        },
-        "LOGOUT_LBL": {
-          "msgid": "LOGOUT_LBL",
-          "msgstr": [
-            "Si necesita cancelar el proceso, puede cerrar la sesión a continuación."
-          ]
-        },
-        "PHONE_CHANGE_TITL": {
-          "msgid": "PHONE_CHANGE_TITL",
-          "msgstr": [
-            "Cambiar número de móvil"
-          ]
-        },
-        "LOGIN_SUCCESS": {
-          "msgid": "LOGIN_SUCCESS",
-          "msgstr": [
-            "Inicio de sesión exitosa"
-          ]
-        },
-        "LOGOUT_CONTENT": {
-          "msgid": "LOGOUT_CONTENT",
-          "msgstr": [
-            "Cierre de sesión exitoso"
-          ]
-        },
-        "LOGIN_AGAIN": {
-          "msgid": "LOGIN_AGAIN",
-          "msgstr": [
-            "Iniciar sesión nuevamente"
-          ]
-        },
-        "LOGIN": {
-          "msgid": "LOGIN",
-          "msgstr": [
-            "Acceder"
-          ]
-        },
-        "USER_INACTIVE": {
-          "msgid": "USER_INACTIVE",
-          "msgstr": [
-            "Su cuenta ha sido desactivada. Para más información, contacte con atención al cliente."
-          ]
-        },
-        "LOGIN_ERR": {
-          "msgid": "LOGIN_ERR",
-          "msgstr": [
-            "Se produjo un error de inicio de sesión."
-          ]
-        },
-        "REMEMBER_ME": {
-          "msgid": "REMEMBER_ME",
-          "msgstr": [
-            "recuérdame en este dispositivo"
-          ]
-        },
-        "LOGIN_ADD_INFO_TXT": {
-          "msgid": "LOGIN_ADD_INFO_TXT",
-          "msgstr": [
-            "Al iniciar sesión, aceptas los {terms_and_conditions} y la {privacy_policy} de este servicio WiFi. "
-          ]
-        },
-        "REGISTER_BTN_LBL": {
-          "msgid": "REGISTER_BTN_LBL",
-          "msgstr": [
-            "¿Aún no estás registrado?"
-          ]
-        },
-        "HELPDESK": {
-          "msgid": "HELPDESK",
-          "msgstr": [
-            "Soporte"
-          ]
-        },
-        "404_H": {
-          "msgid": "404_H",
-          "msgstr": [
-            "404"
-          ]
-        },
-        "404_SUBH": {
-          "msgid": "404_SUBH",
-          "msgstr": [
-            "No encontrado"
-          ]
-        },
-        "404_MESSAGE": {
-          "msgid": "404_MESSAGE",
-          "msgstr": [
-            "Lo sentimos, no pudimos encontrar la página que estabas buscando."
-          ]
-        },
-        "HOME_PG_LINK_TXT": {
-          "msgid": "HOME_PG_LINK_TXT",
-          "msgstr": [
-            "Volver a la página de inicio"
-          ]
-        }
-      }
-    }
-  },
-  "fur": {
-    "charset": "utf-8",
-    "headers": {
-      "Language": "fur",
-      "MIME-Version": "1.0",
-      "Content-Type": "text/plain; charset=UTF-8",
-      "Content-Transfer-Encoding": "8bit",
-      "Plural-Forms": "nplurals = 2; plural = (n != 1);"
-    },
-    "translations": {
-      "": {
-        "": {
-          "msgid": "",
-          "msgstr": [
-            "Language: fur\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals = 2; plural = (n != 1);\n"
-          ]
-        },
-        "ERR_OCCUR": {
-          "msgid": "ERR_OCCUR",
-          "msgstr": [
-            "Al è capitât un erôr!"
-          ]
-        },
-        "PLAN_SETTING_TXT": {
-          "msgid": "PLAN_SETTING_TXT",
-          "msgstr": [
-            "Selezione la tipologjie di sotscrizion"
-          ]
-        },
-        "INACTIVE_SESSION_LOGOUT": {
-          "msgid": "INACTIVE_SESSION_LOGOUT",
-          "msgstr": [
-            "La session WiFi e je finide. Tu puedis tornâ a jentrâ par tacâ une gnove session."
-          ]
-        },
-        "LOGOUT_SUCCESS": {
-          "msgid": "LOGOUT_SUCCESS",
-          "msgstr": [
-            "Logout fat cun sucès"
-          ]
-        },
-        "YES": {
-          "msgid": "YES",
-          "msgstr": [
-            "Sì"
-          ]
-        },
-        "NO": {
-          "msgid": "NO",
-          "msgstr": [
-            "No"
-          ]
-        },
-        "PWD_REVEAL": {
-          "msgid": "PWD_REVEAL",
-          "msgstr": [
-            "Mostre la password"
-          ]
-        },
-        "PWD_HIDE": {
-          "msgid": "PWD_HIDE",
-          "msgstr": [
-            "Plate la password"
-          ]
-        },
-        "PRIV_POL_TITL": {
-          "msgid": "PRIV_POL_TITL",
-          "msgstr": [
-            "regolament de privacy"
-          ]
-        },
-        "TOS_TITL": {
-          "msgid": "TOS_TITL",
-          "msgstr": [
-            "tiermins e cundizions di ûs"
-          ]
-        },
-        "PLEASE_WAIT": {
-          "msgid": "PLEASE_WAIT",
-          "msgstr": [
-            "Spietâ, par plasê..."
-          ]
-        },
-        "PLEASE_LOGIN": {
-          "msgid": "PLEASE_LOGIN",
-          "msgstr": [
-            "Ti domandìn di jentrâ"
-          ]
-        },
-        "ACCT_ACTIVE": {
-          "msgid": "ACCT_ACTIVE",
-          "msgstr": [
-            "Session ative"
-          ]
-        },
-        "LOGOUT": {
-          "msgid": "LOGOUT",
-          "msgstr": [
-            "Jessî"
-          ]
-        },
-        "ACCT_START_TIME": {
-          "msgid": "ACCT_START_TIME",
-          "msgstr": [
-            "Date/ore di inizi"
-          ]
-        },
-        "ACCT_STOP_TIME": {
-          "msgid": "ACCT_STOP_TIME",
-          "msgstr": [
-            "Date/ore di fin"
-          ]
-        },
-        "ACCT_DURATION": {
-          "msgid": "ACCT_DURATION",
-          "msgstr": [
-            "Durade"
-          ]
-        },
-        "ACCT_DOWNLOAD": {
-          "msgid": "ACCT_DOWNLOAD",
-          "msgstr": [
-            "Trafic download"
-          ]
-        },
-        "ACCT_UPLOAD": {
-          "msgid": "ACCT_UPLOAD",
-          "msgstr": [
-            "Trafic upload"
-          ]
-        },
-        "ACCT_DEVICE_ADDRESS": {
-          "msgid": "ACCT_DEVICE_ADDRESS",
-          "msgstr": [
-            "Direzion dal dispositîf"
-          ]
-        },
-        "STATUS": {
-          "msgid": "STATUS",
-          "msgstr": [
-            "Stât"
-          ]
-        },
-        "LOGGED_IN": {
-          "msgid": "LOGGED_IN",
-          "msgstr": [
-            "Autenticât"
-          ]
-        },
-        "EMAIL": {
-          "msgid": "EMAIL",
-          "msgstr": [
-            "Email"
-          ]
-        },
-        "USERNAME": {
-          "msgid": "USERNAME",
-          "msgstr": [
-            "Non utent"
-          ]
-        },
-        "PHONE_NUMBER": {
-          "msgid": "PHONE_NUMBER",
-          "msgstr": [
-            "Numar di telefon"
-          ]
-        },
-        "CP_LOGIN": {
-          "msgid": "CP_LOGIN",
-          "msgstr": [
-            "O sin daûr a inviâ la tô session sul servizi Wifi, al podarès passâ cualchi secont. Ti domandìn di spietâ."
-          ]
-        },
-        "STATUS_TITL": {
-          "msgid": "STATUS_TITL",
-          "msgstr": [
-            "Stât"
-          ]
-        },
-        "PASSWORD_EXPIRED": {
-          "msgid": "PASSWORD_EXPIRED",
-          "msgstr": [
-            "La tô password al è scjadude, ti prei di aggiornâle."
-          ]
-        },
-        "PLAN_EXHAUSTED_TOAST": {
-          "msgid": "PLAN_EXHAUSTED_TOAST",
-          "msgstr": [
-            "Tu âs esaurît il trafegn dispunibil sul to bundle."
-          ]
-        },
-        "SUCCESS_UPGRADE_PLAN": {
-          "msgid": "SUCCESS_UPGRADE_PLAN",
-          "msgstr": [
-            "Aggiornament dal paniere in corse"
-          ]
-        },
-        "STATUS_CONTENT": {
-          "msgid": "STATUS_CONTENT",
-          "msgstr": [
-            "Login al servizi FVG WiFi eseguît cun sucès!\nCumò si pues acedi a internet\nTen vierte cheste pagjine par podê sierâ la session ative."
-          ]
-        },
-        "TRAFFIC_EXHAUSTED": {
-          "msgid": "TRAFFIC_EXHAUSTED",
-          "msgstr": [
-            "Trafeg consumât"
-          ]
-        },
-        "LOGOUT_MODAL_CONTENT": {
-          "msgid": "LOGOUT_MODAL_CONTENT",
-          "msgstr": [
-            "Autenticâsi in maniere automatiche la prossime volte?"
-          ]
-        },
-        "CURRENT_SUBSCRIPTION_TXT": {
-          "msgid": "CURRENT_SUBSCRIPTION_TXT",
-          "msgstr": [
-            "Sotons abonament:"
-          ]
-        },
-        "USAGE_LIMIT_EXHAUSTED_TXT": {
-          "msgid": "USAGE_LIMIT_EXHAUSTED_TXT",
-          "msgstr": [
-            "Tu âs consumât il trafic disponibil. Fâ l'aggiornament par continuâ a doprâ il servizi."
-          ]
-        },
-        "PLAN_UPGRADE_BTN_TXT": {
-          "msgid": "PLAN_UPGRADE_BTN_TXT",
-          "msgstr": [
-            "Potenziament"
-          ]
-        },
-        "PHONE_LBL": {
-          "msgid": "PHONE_LBL",
-          "msgstr": [
-            "Numar di celulâr"
-          ]
-        },
-        "PHONE_PHOLD": {
-          "msgid": "PHONE_PHOLD",
-          "msgstr": [
-            "Numar di telefon celulâr"
-          ]
-        },
-        "EMAIL_PHOLD": {
-          "msgid": "EMAIL_PHOLD",
-          "msgstr": [
-            "Direzion email"
-          ]
-        },
-        "EMAIL_PTRN_DESC": {
-          "msgid": "EMAIL_PTRN_DESC",
-          "msgstr": [
-            "Direzion email valide"
-          ]
-        },
-        "USERNAME_REG_LBL": {
-          "msgid": "USERNAME_REG_LBL",
-          "msgstr": [
-            "Non utent"
-          ]
-        },
-        "USERNAME_REG_PHOLD": {
-          "msgid": "USERNAME_REG_PHOLD",
-          "msgstr": [
-            "Non utent"
-          ]
-        },
-        "USERNAME_PTRN_DESC": {
-          "msgid": "USERNAME_PTRN_DESC",
-          "msgstr": [
-            "Dome letaris, numars e caratars speciâi @/./+/-/_"
-          ]
-        },
-        "FIRST_NAME_LBL": {
-          "msgid": "FIRST_NAME_LBL",
-          "msgstr": [
-            "Non"
-          ]
-        },
-        "OPTIONAL": {
-          "msgid": "OPTIONAL",
-          "msgstr": [
-            "Opzionâl"
-          ]
-        },
-        "FIRST_NAME_PHOLD": {
-          "msgid": "FIRST_NAME_PHOLD",
-          "msgstr": [
-            "Non"
-          ]
-        },
-        "LAST_NAME_LBL": {
-          "msgid": "LAST_NAME_LBL",
-          "msgstr": [
-            "Cognon"
-          ]
-        },
-        "LAST_NAME_PHOLD": {
-          "msgid": "LAST_NAME_PHOLD",
-          "msgstr": [
-            "Cognon"
-          ]
-        },
-        "BIRTH_DATE_LBL": {
-          "msgid": "BIRTH_DATE_LBL",
-          "msgstr": [
-            "Date di nassite"
-          ]
-        },
-        "LOCATION_LBL": {
-          "msgid": "LOCATION_LBL",
-          "msgstr": [
-            "Direzion"
-          ]
-        },
-        "LOCATION_PHOLD": {
-          "msgid": "LOCATION_PHOLD",
-          "msgstr": [
-            "Lûc di residence"
-          ]
-        },
-        "LOCATION_PTRN_DESC": {
-          "msgid": "LOCATION_PTRN_DESC",
-          "msgstr": [
-            "Dome caratars, numars, spazis e segns di puntuazion"
-          ]
-        },
-        "PWD_LBL": {
-          "msgid": "PWD_LBL",
-          "msgstr": [
-            "Password"
-          ]
-        },
-        "PWD_PHOLD": {
-          "msgid": "PWD_PHOLD",
-          "msgstr": [
-            "Inserìs la password"
-          ]
-        },
-        "PWD_PTRN_DESC": {
-          "msgid": "PWD_PTRN_DESC",
-          "msgstr": [
-            "La password e à di vê almancul 6 caratars"
-          ]
-        },
-        "CONFIRM_PWD_LBL": {
-          "msgid": "CONFIRM_PWD_LBL",
-          "msgstr": [
-            "Conferme la password"
-          ]
-        },
-        "CONFIRM_PWD_PHOLD": {
-          "msgid": "CONFIRM_PWD_PHOLD",
-          "msgstr": [
-            "Conferme la password"
-          ]
-        },
-        "COUNTRY_LBL": {
-          "msgid": "COUNTRY_LBL",
-          "msgstr": [
-            "Stât di residence"
-          ]
-        },
-        "CITY_LBL": {
-          "msgid": "CITY_LBL",
-          "msgstr": [
-            "Citât"
-          ]
-        },
-        "CITY_PHOLD": {
-          "msgid": "CITY_PHOLD",
-          "msgstr": [
-            "Inserìs la citât"
-          ]
-        },
-        "STREET_LBL": {
-          "msgid": "STREET_LBL",
-          "msgstr": [
-            "Direzion"
-          ]
-        },
-        "STREET_PHOLD": {
-          "msgid": "STREET_PHOLD",
-          "msgstr": [
-            "Inserìs la direzion"
-          ]
-        },
-        "ZIP_CODE_LBL": {
-          "msgid": "ZIP_CODE_LBL",
-          "msgstr": [
-            "Codiç di inviament postâl"
-          ]
-        },
-        "TAX_NUMBER_LBL": {
-          "msgid": "TAX_NUMBER_LBL",
-          "msgstr": [
-            "Codiç fiscâl o partide IVZ"
-          ]
-        },
-        "TAX_NUMBER_PHOLD": {
-          "msgid": "TAX_NUMBER_PHOLD",
-          "msgstr": [
-            "Inserìs il codiç fiscâl o la partide IVZ"
-          ]
-        },
-        "TAX_NUMBER_PTRN_DESC": {
-          "msgid": "TAX_NUMBER_PTRN_DESC",
-          "msgstr": [
-            "Dome letaris e numars"
-          ]
-        },
-        "REGISTER_ADD_INFO_TXT": {
-          "msgid": "REGISTER_ADD_INFO_TXT",
-          "msgstr": [
-            "Se si jemple e si invie chest modul di regjistrazion, si acetin i tiermins di ûs {terms_and_conditions} e il regolament pe privacy {privacy_policy} dal servizi WiFi."
-          ]
-        },
-        "REGISTER_BTN_TXT": {
-          "msgid": "REGISTER_BTN_TXT",
-          "msgstr": [
-            "Regjistrazion"
-          ]
-        },
-        "FORGOT_PASSWORD": {
-          "msgid": "FORGOT_PASSWORD",
-          "msgstr": [
-            "Dismenteade la password?"
-          ]
-        },
-        "LINKS_LOGIN_TXT": {
-          "msgid": "LINKS_LOGIN_TXT",
-          "msgstr": [
-            "Âstu za un account? Fâs l’acès"
-          ]
-        },
-        "REGISTRATION_TITL": {
-          "msgid": "REGISTRATION_TITL",
-          "msgstr": [
-            "Regjistrazion"
-          ]
-        },
-        "PWD_CNF_ERR": {
-          "msgid": "PWD_CNF_ERR",
-          "msgstr": [
-            "Lis passwords no son compagnis."
-          ]
-        },
-        "REGISTER_SUCCESS": {
-          "msgid": "REGISTER_SUCCESS",
-          "msgstr": [
-            "Regjistrazion fate cun sucès"
-          ]
-        },
-        "404_PG_TITL": {
-          "msgid": "404_PG_TITL",
-          "msgstr": [
-            "404 No cjatât"
-          ]
-        },
-        "REGISTER_ERR": {
-          "msgid": "REGISTER_ERR",
-          "msgstr": [
-            "Al è capitât un erôr inte fase di regjistrazion."
-          ]
-        },
-        "NO_ORGS": {
-          "msgid": "NO_ORGS",
-          "msgstr": [
-            "Al esist za un utent cun credenziâls similis."
-          ]
-        },
-        "CONFLICT_ORGS": {
-          "msgid": "CONFLICT_ORGS",
-          "msgstr": [
-            "Un utent cun credenziâls similis a chês inseridis al esist za in altris organizazions:"
-          ]
-        },
-        "CONFLICT_SIGNIN": {
-          "msgid": "CONFLICT_SIGNIN",
-          "msgstr": [
-            "Sêstu il proprietari dal account a pene nomenât e vuelistu associâ il to account esistent a chest servizi WiFi?"
-          ]
-        },
-        "PAY_SUCCESS": {
-          "msgid": "PAY_SUCCESS",
-          "msgstr": [
-            "Il paiament al è stât ricevût cun sucès."
-          ]
-        },
-        "PAY_REQ": {
-          "msgid": "PAY_REQ",
-          "msgstr": [
-            "Si domande il paiament par lâ indevant"
-          ]
-        },
-        "PAY_WARN${ timeout }${ maxAttempts }": {
-          "msgid": "PAY_WARN${ timeout }${ maxAttempts }",
-          "msgstr": [
-            "<p>Clicant sul boton chi sot tu rivarâs al servizi di paiament, dulà che tu podarâs inserî i dâts de tô cjarte di credit/debit in sigurece. Po dopo tu rivarâs al sît web de tô bancje par confermâ la transazion.</p><p>Tu varâs a disposizion ${ timeout } minûts par completâ il procès.<br /><strong>Par chest ti conseìn di preparâ la tô cjarte di debit/credit prime di inviâ il procès di paiament.</strong></p><p>Se par cualsisedi motîf il procès nol ven completât dentri dal timp a disposizion, la conession internet che ti permet di rivâ al sît web de tô bancje e sarà sierade; se chest al ves di capitâ, tu puedis jentrâ di gnûf cu lis credenziâls a pene regjistradis e ripeti il procès fin a un massim di ${ maxAttempts } voltis.</p>"
-          ]
-        },
-        "PAY_PROC_BTN": {
-          "msgid": "PAY_PROC_BTN",
-          "msgstr": [
-            "Va indevant cul paiament"
-          ]
-        },
-        "PAY_GIVE_UP_BTN": {
-          "msgid": "PAY_GIVE_UP_BTN",
-          "msgstr": [
-            "Anule e jes"
-          ]
-        },
-        "PAY_FAIL": {
-          "msgid": "PAY_FAIL",
-          "msgstr": [
-            "Pagamento fallito"
-          ]
-        },
-        "PAY_SUB_H": {
-          "msgid": "PAY_SUB_H",
-          "msgstr": [
-            "Il paiament nol è lât a bon fin."
-          ]
-        },
-        "PAY_TRY_AGAIN_BTN": {
-          "msgid": "PAY_TRY_AGAIN_BTN",
-          "msgstr": [
-            "Torne a provâ"
-          ]
-        },
-        "PAY_GIVE_UP_TXT": {
-          "msgid": "PAY_GIVE_UP_TXT",
-          "msgstr": [
-            "Se non riesci a completare la transazione puoi provare a metterti in contatto con la tua banca o annullare l'operazione."
-          ]
-        },
-        "PWD_RESET_TITL": {
-          "msgid": "PWD_RESET_TITL",
-          "msgstr": [
-            "Torne a impuestâ la password"
-          ]
-        },
-        "LOGIN_PG_LNK": {
-          "msgid": "LOGIN_PG_LNK",
-          "msgstr": [
-            "Torne ae pagjine di acès"
-          ]
-        },
-        "PWD_RESET_ADD_TXT": {
-          "msgid": "PWD_RESET_ADD_TXT",
-          "msgstr": [
-            "Âstu dismenteade la password? Inserìs la direzion email, numar di telefon celulâr o non utent e tu ricevarâs lis istruzion par tornâ a impuestâle."
-          ]
-        },
-        "USERNAME_LOG_LBL": {
-          "msgid": "USERNAME_LOG_LBL",
-          "msgstr": [
-            "Email, numar di telefon o non utent"
-          ]
-        },
-        "USERNAME_LOG_PHOLD": {
-          "msgid": "USERNAME_LOG_PHOLD",
-          "msgstr": [
-            "Email, numar di telefon o non utent"
-          ]
-        },
-        "USERNAME_LOG_TITL": {
-          "msgid": "USERNAME_LOG_TITL",
-          "msgstr": [
-            "Inserìs une direzion email valide, un non utent o un numar di telefon celulâr"
-          ]
-        },
-        "PWD_RESET_BTN": {
-          "msgid": "PWD_RESET_BTN",
-          "msgstr": [
-            "Torne a impuestâ la password"
-          ]
-        },
-        "PWD_RESET_CNTC_TXT": {
-          "msgid": "PWD_RESET_CNTC_TXT",
-          "msgstr": [
-            "Par plasê, contatâ il supuart in câs di problemis tal tornâ a impuestâ la password."
-          ]
-        },
-        "PWD_CONFIRM_TITL": {
-          "msgid": "PWD_CONFIRM_TITL",
-          "msgstr": [
-            "Torne a impuestâ la password"
-          ]
-        },
-        "PWD_CONFIRM_H": {
-          "msgid": "PWD_CONFIRM_H",
-          "msgstr": [
-            "Torne a impuestâ la password"
-          ]
-        },
-        "PWD_CONFIRM_ADD_TXT": {
-          "msgid": "PWD_CONFIRM_ADD_TXT",
-          "msgstr": [
-            "Inserìs la password gnove achì."
-          ]
-        },
-        "PWD_CONFIRM": {
-          "msgid": "PWD_CONFIRM",
-          "msgstr": [
-            "Conferme il cambi de password"
-          ]
-        },
-        "PWD_CHANGE_TITL": {
-          "msgid": "PWD_CHANGE_TITL",
-          "msgstr": [
-            "Cambi de password"
-          ]
-        },
-        "PWD_CURR_ERR": {
-          "msgid": "PWD_CURR_ERR",
-          "msgstr": [
-            "La gnove password no pues jessi compagne de password di cumò."
-          ]
-        },
-        "PWD_CHNG_ERR": {
-          "msgid": "PWD_CHNG_ERR",
-          "msgstr": [
-            "Al è capitât un erôr, la password no je stade cambiade."
-          ]
-        },
-        "PWD_CHANGE_HELP_TXT": {
-          "msgid": "PWD_CHANGE_HELP_TXT",
-          "msgstr": [
-            "Use the form below to change your password."
-          ]
-        },
-        "CURR_PWD_LBL": {
-          "msgid": "CURR_PWD_LBL",
-          "msgstr": [
-            "Password atuâl"
-          ]
-        },
-        "CURR_PWD_PHOLD": {
-          "msgid": "CURR_PWD_PHOLD",
-          "msgstr": [
-            "La tô password atuâl"
-          ]
-        },
-        "PWD1_LBL": {
-          "msgid": "PWD1_LBL",
-          "msgstr": [
-            "Gnove password"
-          ]
-        },
-        "PWD1_PHOLD": {
-          "msgid": "PWD1_PHOLD",
-          "msgstr": [
-            "Inserìs la password gnove"
-          ]
-        },
-        "PASSWORD_CHANGE": {
-          "msgid": "PASSWORD_CHANGE",
-          "msgstr": [
-            "Cambie la password"
-          ]
-        },
-        "CANCEL": {
-          "msgid": "CANCEL",
-          "msgstr": [
-            "Anule"
-          ]
-        },
-        "DEFAULT_TITL${ orgName }": {
-          "msgid": "DEFAULT_TITL${ orgName }",
-          "msgstr": [
-            "Jentre - ${ orgName }"
-          ]
-        },
-        "PHONE_VERIF_TITL": {
-          "msgid": "PHONE_VERIF_TITL",
-          "msgstr": [
-            "Verifiche numar di telefon"
-          ]
-        },
-        "TOKEN_SENT": {
-          "msgid": "TOKEN_SENT",
-          "msgstr": [
-            "Codiç di verifiche SMS inviât cun sucès"
-          ]
-        },
-        "PHONE_VERIFY (${ phone_number })": {
-          "msgid": "PHONE_VERIFY (${ phone_number })",
-          "msgstr": [
-            "Par verificâ il numar di telefon (${ phone_number }), inserî il codiç che si à ricevût vie SMS."
-          ]
-        },
-        "MOBILE_CODE_PHOLD": {
-          "msgid": "MOBILE_CODE_PHOLD",
-          "msgstr": [
-            "Inserìs il codiç di verifiche ricevût vie SMS"
-          ]
-        },
-        "MOBILE_CODE_TITL": {
-          "msgid": "MOBILE_CODE_TITL",
-          "msgstr": [
-            "Il cjamp al à di jessi un codiç numeric di 6 cifris"
-          ]
-        },
-        "MOBILE_PHONE_VERIFY": {
-          "msgid": "MOBILE_PHONE_VERIFY",
-          "msgstr": [
-            "Inviament"
-          ]
-        },
-        "RESEND_TOKEN_LBL": {
-          "msgid": "RESEND_TOKEN_LBL",
-          "msgstr": [
-            "Se no tu âs ricevût un SMS cul codiç di verifiche, domande un altri fasint un clic su chest boton."
-          ]
-        },
-        "RESEND_TOKEN_WAIT_LBL${ seconds }": {
-          "msgid": "RESEND_TOKEN_WAIT_LBL${ seconds }",
-          "msgstr": [
-            "Un nuovo SMS può essere richiesto in ${ seconds } secondi."
-          ]
-        },
-        "RESEND_TOKEN": {
-          "msgid": "RESEND_TOKEN",
-          "msgstr": [
-            "Invie un gnûf codiç di verifiche"
-          ]
-        },
-        "PHONE_CHANGE_LBL": {
-          "msgid": "PHONE_CHANGE_LBL",
-          "msgstr": [
-            "Numar di telefon falât? "
-          ]
-        },
-        "PHONE_CHANGE_BTN": {
-          "msgid": "PHONE_CHANGE_BTN",
-          "msgstr": [
-            "Cambie il numar di telefon"
-          ]
-        },
-        "LOGOUT_LBL": {
-          "msgid": "LOGOUT_LBL",
-          "msgstr": [
-            "Se no tu rivis a fâ la verifiche, la session si pues terminâ."
-          ]
-        },
-        "PHONE_CHANGE_TITL": {
-          "msgid": "PHONE_CHANGE_TITL",
-          "msgstr": [
-            "Cambie il numar di telefon"
-          ]
-        },
-        "LOGIN_SUCCESS": {
-          "msgid": "LOGIN_SUCCESS",
-          "msgstr": [
-            "Autenticazion fate cun sucès"
-          ]
-        },
-        "LOGOUT_CONTENT": {
-          "msgid": "LOGOUT_CONTENT",
-          "msgstr": [
-            "Logout fat cun sucès"
-          ]
-        },
-        "LOGIN_AGAIN": {
-          "msgid": "LOGIN_AGAIN",
-          "msgstr": [
-            "Torne a jentrâ"
-          ]
-        },
-        "LOGIN": {
-          "msgid": "LOGIN",
-          "msgstr": [
-            "Jentre"
-          ]
-        },
-        "USER_INACTIVE": {
-          "msgid": "USER_INACTIVE",
-          "msgstr": [
-            "Il so account al è stât disativât. Par plasê, contatâ il supuart."
-          ]
-        },
-        "LOGIN_ERR": {
-          "msgid": "LOGIN_ERR",
-          "msgstr": [
-            "Al è capitât un erôr inte autenticazion."
-          ]
-        },
-        "REMEMBER_ME": {
-          "msgid": "REMEMBER_ME",
-          "msgstr": [
-            "Ricuarde l’acès su chest dispositîf"
-          ]
-        },
-        "LOGIN_ADD_INFO_TXT": {
-          "msgid": "LOGIN_ADD_INFO_TXT",
-          "msgstr": [
-            "Fasint il login, tu declaris di acetâ i tiermins di ûs {terms_and_conditions} e il regolament de privacy {privacy_policy} dal servizi WiFi."
-          ]
-        },
-        "REGISTER_BTN_LBL": {
-          "msgid": "REGISTER_BTN_LBL",
-          "msgstr": [
-            "No âstu un account?"
-          ]
-        },
-        "HELPDESK": {
-          "msgid": "HELPDESK",
-          "msgstr": [
-            "Supuart"
-          ]
-        },
-        "404_H": {
-          "msgid": "404_H",
-          "msgstr": [
-            "404"
-          ]
-        },
-        "404_SUBH": {
-          "msgid": "404_SUBH",
-          "msgstr": [
-            "No cjatât"
-          ]
-        },
-        "404_MESSAGE": {
-          "msgid": "404_MESSAGE",
-          "msgstr": [
-            "O domandìn scuse, la pagjine cirude no je stade cjatade."
-          ]
-        },
-        "HOME_PG_LINK_TXT": {
-          "msgid": "HOME_PG_LINK_TXT",
-          "msgstr": [
-            "Torne ae prime pagjine"
-          ]
-        }
-      }
-    }
-  },
-  "it": {
-    "charset": "utf-8",
-    "headers": {
-      "Language": "it",
-      "MIME-Version": "1.0",
-      "Content-Type": "text/plain; charset=UTF-8",
-      "Content-Transfer-Encoding": "8bit",
-      "Plural-Forms": "nplurals = 2; plural = (n != 1);"
-    },
-    "translations": {
-      "": {
-        "": {
-          "msgid": "",
-          "msgstr": [
-            "Language: it\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals = 2; plural = (n != 1);\n"
-          ]
-        },
-        "ERR_OCCUR": {
-          "msgid": "ERR_OCCUR",
-          "msgstr": [
-            "Si è verificato un errore!"
-          ]
-        },
-        "PLAN_SETTING_TXT": {
-          "msgid": "PLAN_SETTING_TXT",
-          "msgstr": [
-            "Seleziona il piano che preferisci"
-          ]
-        },
-        "INACTIVE_SESSION_LOGOUT": {
-          "msgid": "INACTIVE_SESSION_LOGOUT",
-          "msgstr": [
-            "La sessione WiFi è terminata. Puoi effettuare nuovamente l'accesso per avviare una nuova sessione."
-          ]
-        },
-        "LOGOUT_SUCCESS": {
-          "msgid": "LOGOUT_SUCCESS",
-          "msgstr": [
-            "Log out effettuato con successo"
-          ]
-        },
-        "YES": {
-          "msgid": "YES",
-          "msgstr": [
-            "Sì"
-          ]
-        },
-        "NO": {
-          "msgid": "NO",
-          "msgstr": [
-            "No"
-          ]
-        },
-        "PWD_REVEAL": {
-          "msgid": "PWD_REVEAL",
-          "msgstr": [
-            "Mostra password"
-          ]
-        },
-        "PWD_HIDE": {
-          "msgid": "PWD_HIDE",
-          "msgstr": [
-            "Nascondi password"
-          ]
-        },
-        "PRIV_POL_TITL": {
-          "msgid": "PRIV_POL_TITL",
-          "msgstr": [
-            "informativa sul trattamento dei dati personali"
-          ]
-        },
-        "TOS_TITL": {
-          "msgid": "TOS_TITL",
-          "msgstr": [
-            "termini e le condizioni di utilizzo"
-          ]
-        },
-        "PLEASE_WAIT": {
-          "msgid": "PLEASE_WAIT",
-          "msgstr": [
-            "Attendere prego..."
-          ]
-        },
-        "PLEASE_LOGIN": {
-          "msgid": "PLEASE_LOGIN",
-          "msgstr": [
-            "Ti preghiamo di accedere"
-          ]
-        },
-        "ACCT_ACTIVE": {
-          "msgid": "ACCT_ACTIVE",
-          "msgstr": [
-            "Sessione attiva"
-          ]
-        },
-        "LOGOUT": {
-          "msgid": "LOGOUT",
-          "msgstr": [
-            "Esci"
-          ]
-        },
-        "ACCT_START_TIME": {
-          "msgid": "ACCT_START_TIME",
-          "msgstr": [
-            "Data/ora inizio"
-          ]
-        },
-        "ACCT_STOP_TIME": {
-          "msgid": "ACCT_STOP_TIME",
-          "msgstr": [
-            "Data/ora fine"
-          ]
-        },
-        "ACCT_DURATION": {
-          "msgid": "ACCT_DURATION",
-          "msgstr": [
-            "Durata"
-          ]
-        },
-        "ACCT_DOWNLOAD": {
-          "msgid": "ACCT_DOWNLOAD",
-          "msgstr": [
-            "Traffico download"
-          ]
-        },
-        "ACCT_UPLOAD": {
-          "msgid": "ACCT_UPLOAD",
-          "msgstr": [
-            "Traffico Upload"
-          ]
-        },
-        "ACCT_DEVICE_ADDRESS": {
-          "msgid": "ACCT_DEVICE_ADDRESS",
-          "msgstr": [
-            "Indirizzo dispositivo"
-          ]
-        },
-        "STATUS": {
-          "msgid": "STATUS",
-          "msgstr": [
-            "Stato"
-          ]
-        },
-        "LOGGED_IN": {
-          "msgid": "LOGGED_IN",
-          "msgstr": [
-            "Autenticato"
-          ]
-        },
-        "EMAIL": {
-          "msgid": "EMAIL",
-          "msgstr": [
-            "Email"
-          ]
-        },
-        "USERNAME": {
-          "msgid": "USERNAME",
-          "msgstr": [
-            "Nome utente"
-          ]
-        },
-        "PHONE_NUMBER": {
-          "msgid": "PHONE_NUMBER",
-          "msgstr": [
-            "Numero di telefono"
-          ]
-        },
-        "CP_LOGIN": {
-          "msgid": "CP_LOGIN",
-          "msgstr": [
-            "Stiamo inizializzando la tua sessione sul servizio WiFi, potrebbero essere necessari alcuni secondi, attendere prego..."
-          ]
-        },
-        "STATUS_TITL": {
-          "msgid": "STATUS_TITL",
-          "msgstr": [
-            "Stato"
-          ]
-        },
-        "PASSWORD_EXPIRED": {
-          "msgid": "PASSWORD_EXPIRED",
-          "msgstr": [
-            "La tua password è scaduta, aggiornala."
-          ]
-        },
-        "PLAN_EXHAUSTED_TOAST": {
-          "msgid": "PLAN_EXHAUSTED_TOAST",
-          "msgstr": [
-            "Hai esaurito il traffico disponibile nel tuo abbonamento."
-          ]
-        },
-        "SUCCESS_UPGRADE_PLAN": {
-          "msgid": "SUCCESS_UPGRADE_PLAN",
-          "msgstr": [
-            "Ricarica in corso"
-          ]
-        },
-        "STATUS_CONTENT": {
-          "msgid": "STATUS_CONTENT",
-          "msgstr": [
-            "Login al servizio WiFi effettuato con successo!\n        Ora è possibile accedere ad internet.\n        Puoi lasciare questa pagina aperta per poter chiudere la sessione attiva."
-          ]
-        },
-        "TRAFFIC_EXHAUSTED": {
-          "msgid": "TRAFFIC_EXHAUSTED",
-          "msgstr": [
-            "Traffico esaurito"
-          ]
-        },
-        "LOGOUT_MODAL_CONTENT": {
-          "msgid": "LOGOUT_MODAL_CONTENT",
-          "msgstr": [
-            "Autenticarsi automaticamente la prossima volta?"
-          ]
-        },
-        "CURRENT_SUBSCRIPTION_TXT": {
-          "msgid": "CURRENT_SUBSCRIPTION_TXT",
-          "msgstr": [
-            "Abbonamento attuale:"
-          ]
-        },
-        "USAGE_LIMIT_EXHAUSTED_TXT": {
-          "msgid": "USAGE_LIMIT_EXHAUSTED_TXT",
-          "msgstr": [
-            "Hai esaurito il traffico disponibile. Effettua una ricarica per continuare a utilizzare il servizio."
-          ]
-        },
-        "PLAN_UPGRADE_BTN_TXT": {
-          "msgid": "PLAN_UPGRADE_BTN_TXT",
-          "msgstr": [
-            "Ricarica"
-          ]
-        },
-        "PHONE_LBL": {
-          "msgid": "PHONE_LBL",
-          "msgstr": [
-            "Numero di cellulare"
-          ]
-        },
-        "PHONE_PHOLD": {
-          "msgid": "PHONE_PHOLD",
-          "msgstr": [
-            "Numero di telefono cellulare"
-          ]
-        },
-        "EMAIL_PHOLD": {
-          "msgid": "EMAIL_PHOLD",
-          "msgstr": [
-            "Indirizzo email"
-          ]
-        },
-        "EMAIL_PTRN_DESC": {
-          "msgid": "EMAIL_PTRN_DESC",
-          "msgstr": [
-            "Indirizzo email valido"
-          ]
-        },
-        "USERNAME_REG_LBL": {
-          "msgid": "USERNAME_REG_LBL",
-          "msgstr": [
-            "Nome utente"
-          ]
-        },
-        "USERNAME_REG_PHOLD": {
-          "msgid": "USERNAME_REG_PHOLD",
-          "msgstr": [
-            "Nome utente"
-          ]
-        },
-        "USERNAME_PTRN_DESC": {
-          "msgid": "USERNAME_PTRN_DESC",
-          "msgstr": [
-            "Solo lettere, numeri e caratteri speciali @/./+/-/_"
-          ]
-        },
-        "FIRST_NAME_LBL": {
-          "msgid": "FIRST_NAME_LBL",
-          "msgstr": [
-            "Nome"
-          ]
-        },
-        "OPTIONAL": {
-          "msgid": "OPTIONAL",
-          "msgstr": [
-            "Opzionale"
-          ]
-        },
-        "FIRST_NAME_PHOLD": {
-          "msgid": "FIRST_NAME_PHOLD",
-          "msgstr": [
-            "Nome"
-          ]
-        },
-        "LAST_NAME_LBL": {
-          "msgid": "LAST_NAME_LBL",
-          "msgstr": [
-            "Cognome"
-          ]
-        },
-        "LAST_NAME_PHOLD": {
-          "msgid": "LAST_NAME_PHOLD",
-          "msgstr": [
-            "Cognome"
-          ]
-        },
-        "BIRTH_DATE_LBL": {
-          "msgid": "BIRTH_DATE_LBL",
-          "msgstr": [
-            "Data di nascita"
-          ]
-        },
-        "LOCATION_LBL": {
-          "msgid": "LOCATION_LBL",
-          "msgstr": [
-            "Indirizzo"
-          ]
-        },
-        "LOCATION_PHOLD": {
-          "msgid": "LOCATION_PHOLD",
-          "msgstr": [
-            "Luogo di residenza"
-          ]
-        },
-        "LOCATION_PTRN_DESC": {
-          "msgid": "LOCATION_PTRN_DESC",
-          "msgstr": [
-            "Solo caratteri, numeri, spazi e punteggiatura"
-          ]
-        },
-        "PWD_LBL": {
-          "msgid": "PWD_LBL",
-          "msgstr": [
-            "Password"
-          ]
-        },
-        "PWD_PHOLD": {
-          "msgid": "PWD_PHOLD",
-          "msgstr": [
-            "Inserisci la password"
-          ]
-        },
-        "PWD_PTRN_DESC": {
-          "msgid": "PWD_PTRN_DESC",
-          "msgstr": [
-            "La password deve essere di almeno 6 caratteri"
-          ]
-        },
-        "CONFIRM_PWD_LBL": {
-          "msgid": "CONFIRM_PWD_LBL",
-          "msgstr": [
-            "Conferma password"
-          ]
-        },
-        "CONFIRM_PWD_PHOLD": {
-          "msgid": "CONFIRM_PWD_PHOLD",
-          "msgstr": [
-            "Conferma password"
-          ]
-        },
-        "COUNTRY_LBL": {
-          "msgid": "COUNTRY_LBL",
-          "msgstr": [
-            "Stato"
-          ]
-        },
-        "CITY_LBL": {
-          "msgid": "CITY_LBL",
-          "msgstr": [
-            "Cittá"
-          ]
-        },
-        "CITY_PHOLD": {
-          "msgid": "CITY_PHOLD",
-          "msgstr": [
-            "Inserisci la città"
-          ]
-        },
-        "STREET_LBL": {
-          "msgid": "STREET_LBL",
-          "msgstr": [
-            "Indirizzo"
-          ]
-        },
-        "STREET_PHOLD": {
-          "msgid": "STREET_PHOLD",
-          "msgstr": [
-            "Inserisci l'indirizzo"
-          ]
-        },
-        "ZIP_CODE_LBL": {
-          "msgid": "ZIP_CODE_LBL",
-          "msgstr": [
-            "Codice Avviamento Postale"
-          ]
-        },
-        "TAX_NUMBER_LBL": {
-          "msgid": "TAX_NUMBER_LBL",
-          "msgstr": [
-            "Codice fiscale o p.IVA"
-          ]
-        },
-        "TAX_NUMBER_PHOLD": {
-          "msgid": "TAX_NUMBER_PHOLD",
-          "msgstr": [
-            "Inserisci il codice fiscale o la p.IVA"
-          ]
-        },
-        "TAX_NUMBER_PTRN_DESC": {
-          "msgid": "TAX_NUMBER_PTRN_DESC",
-          "msgstr": [
-            "Solo lettere e numeri"
-          ]
-        },
-        "REGISTER_ADD_INFO_TXT": {
-          "msgid": "REGISTER_ADD_INFO_TXT",
-          "msgstr": [
-            "Compilando ed inviando questo modulo di registrazione, si accettano i {terms_and_conditions} e l'{privacy_policy} del servizio WiFi."
-          ]
-        },
-        "REGISTER_BTN_TXT": {
-          "msgid": "REGISTER_BTN_TXT",
-          "msgstr": [
-            "Registrati"
-          ]
-        },
-        "FORGOT_PASSWORD": {
-          "msgid": "FORGOT_PASSWORD",
-          "msgstr": [
-            "Password dimenticata?"
-          ]
-        },
-        "LINKS_LOGIN_TXT": {
-          "msgid": "LINKS_LOGIN_TXT",
-          "msgstr": [
-            "Hai già un account? Effettua l'accesso"
-          ]
-        },
-        "REGISTRATION_TITL": {
-          "msgid": "REGISTRATION_TITL",
-          "msgstr": [
-            "Registrazione"
-          ]
-        },
-        "PWD_CNF_ERR": {
-          "msgid": "PWD_CNF_ERR",
-          "msgstr": [
-            "le password non coincidono."
-          ]
-        },
-        "REGISTER_SUCCESS": {
-          "msgid": "REGISTER_SUCCESS",
-          "msgstr": [
-            "Registrazione avvenuta con successo"
-          ]
-        },
-        "404_PG_TITL": {
-          "msgid": "404_PG_TITL",
-          "msgstr": [
-            "404 Non trovato"
-          ]
-        },
-        "REGISTER_ERR": {
-          "msgid": "REGISTER_ERR",
-          "msgstr": [
-            "Si è verificato un errore durante la registrazione."
-          ]
-        },
-        "NO_ORGS": {
-          "msgid": "NO_ORGS",
-          "msgstr": [
-            "Esiste già un utente con credenziali simili."
-          ]
-        },
-        "CONFLICT_ORGS": {
-          "msgid": "CONFLICT_ORGS",
-          "msgstr": [
-            "Un utente con credenziali simili a quelle inserite esiste già in altre organizzazioni:"
-          ]
-        },
-        "CONFLICT_SIGNIN": {
-          "msgid": "CONFLICT_SIGNIN",
-          "msgstr": [
-            "Sei il proprietario dell'account appena menzionato e vuoi associare il tuo account esistente a questo servizio WiFI?"
-          ]
-        },
-        "PAY_SUCCESS": {
-          "msgid": "PAY_SUCCESS",
-          "msgstr": [
-            "Il pagamento è stato ricevuto con successo."
-          ]
-        },
-        "PAY_REQ": {
-          "msgid": "PAY_REQ",
-          "msgstr": [
-            "Pagamento richiesto per procedere"
-          ]
-        },
-        "PAY_WARN${ timeout }${ maxAttempts }": {
-          "msgid": "PAY_WARN${ timeout }${ maxAttempts }",
-          "msgstr": [
-            "<p>Cliccando sul pulsante sottostante raggiungerai il servizio di pagamento dove potrai inserire i dati della tua carta di credito/debito in totale sicurezza. Dopodichè raggiungerai il sito web della tua banca per confermare la transazione.</p><p>Avrai a disposizione ${ timeout } minuti per completare il processo.<br /><strong>Per questo motivo ti consigliamo di preparare la tua carta debito/credito prima di avviare il processo di pagamento.</strong></p><p>Se per qualsiasi motivo il processo non viene completato entro il tempo disponibile, la connessione internet che ti permette di raggiungere il sito web della tua banca verrà chiusa, se ciò accade puoi accedere nuovamente con le credenziali appena registrate e ripetere il processo fino ad un massimo di ${ maxAttempts } volte.</p>"
-          ]
-        },
-        "PAY_PROC_BTN": {
-          "msgid": "PAY_PROC_BTN",
-          "msgstr": [
-            "Procedi con il pagamento"
-          ]
-        },
-        "PAY_GIVE_UP_BTN": {
-          "msgid": "PAY_GIVE_UP_BTN",
-          "msgstr": [
-            "Annulla ed esci"
-          ]
-        },
-        "PAY_FAIL": {
-          "msgid": "PAY_FAIL",
-          "msgstr": [
-            "Pagamento fallito"
-          ]
-        },
-        "PAY_SUB_H": {
-          "msgid": "PAY_SUB_H",
-          "msgstr": [
-            "Il pagamento non è andato a buon fine."
-          ]
-        },
-        "PAY_TRY_AGAIN_BTN": {
-          "msgid": "PAY_TRY_AGAIN_BTN",
-          "msgstr": [
-            "Riprova"
-          ]
-        },
-        "PAY_GIVE_UP_TXT": {
-          "msgid": "PAY_GIVE_UP_TXT",
-          "msgstr": [
-            "Se non riesci a completare la transazione puoi provare a metterti in contatto con la tua banca o annullare l'operazione."
-          ]
-        },
-        "PWD_RESET_TITL": {
-          "msgid": "PWD_RESET_TITL",
-          "msgstr": [
-            "Reimposta password"
-          ]
-        },
-        "LOGIN_PG_LNK": {
-          "msgid": "LOGIN_PG_LNK",
-          "msgstr": [
-            "Torna alla pagina di accesso"
-          ]
-        },
-        "PWD_RESET_ADD_TXT": {
-          "msgid": "PWD_RESET_ADD_TXT",
-          "msgstr": [
-            "Hai dimenticato la password? Inserisci il tuo indirizzo email, numero di telefono o nome utente di seguito e ti invieremo le istruzioni per reimpostarlo."
-          ]
-        },
-        "USERNAME_LOG_LBL": {
-          "msgid": "USERNAME_LOG_LBL",
-          "msgstr": [
-            "Email, numero di telefono o nome utente"
-          ]
-        },
-        "USERNAME_LOG_PHOLD": {
-          "msgid": "USERNAME_LOG_PHOLD",
-          "msgstr": [
-            "Email, numero di telefono o nome utente"
-          ]
-        },
-        "USERNAME_LOG_TITL": {
-          "msgid": "USERNAME_LOG_TITL",
-          "msgstr": [
-            "Inserisci un indirizzo email valido, un nome utente o un numero di telefono cellulare"
-          ]
-        },
-        "PWD_RESET_BTN": {
-          "msgid": "PWD_RESET_BTN",
-          "msgstr": [
-            "Reimposta password"
-          ]
-        },
-        "PWD_RESET_CNTC_TXT": {
-          "msgid": "PWD_RESET_CNTC_TXT",
-          "msgstr": [
-            "Si prega di contattare il supporto in caso di problemi nella reimpostazione della password."
-          ]
-        },
-        "PWD_CONFIRM_TITL": {
-          "msgid": "PWD_CONFIRM_TITL",
-          "msgstr": [
-            "Reimposta Password"
-          ]
-        },
-        "PWD_CONFIRM_H": {
-          "msgid": "PWD_CONFIRM_H",
-          "msgstr": [
-            "Reimposta password"
-          ]
-        },
-        "PWD_CONFIRM_ADD_TXT": {
-          "msgid": "PWD_CONFIRM_ADD_TXT",
-          "msgstr": [
-            "Inserisci la nuova password di seguito."
-          ]
-        },
-        "PWD_CONFIRM": {
-          "msgid": "PWD_CONFIRM",
-          "msgstr": [
-            "Conferma cambio password"
-          ]
-        },
-        "PWD_CHANGE_TITL": {
-          "msgid": "PWD_CHANGE_TITL",
-          "msgstr": [
-            "Cambia password"
-          ]
-        },
-        "PWD_CURR_ERR": {
-          "msgid": "PWD_CURR_ERR",
-          "msgstr": [
-            "La nuova password non puó essere uguale alla password attuale."
-          ]
-        },
-        "PWD_CHNG_ERR": {
-          "msgid": "PWD_CHNG_ERR",
-          "msgstr": [
-            "Si è verificato un errore, la password non è stata cambiata."
-          ]
-        },
-        "PWD_CHANGE_HELP_TXT": {
-          "msgid": "PWD_CHANGE_HELP_TXT",
-          "msgstr": [
-            "Utilizza il modulo sottostante per modificare la tua password."
-          ]
-        },
-        "CURR_PWD_LBL": {
-          "msgid": "CURR_PWD_LBL",
-          "msgstr": [
-            "Password attuale"
-          ]
-        },
-        "CURR_PWD_PHOLD": {
-          "msgid": "CURR_PWD_PHOLD",
-          "msgstr": [
-            "La tua password attuale"
-          ]
-        },
-        "PWD1_LBL": {
-          "msgid": "PWD1_LBL",
-          "msgstr": [
-            "Nuova password"
-          ]
-        },
-        "PWD1_PHOLD": {
-          "msgid": "PWD1_PHOLD",
-          "msgstr": [
-            "inserisci la nuova password"
-          ]
-        },
-        "PASSWORD_CHANGE": {
-          "msgid": "PASSWORD_CHANGE",
-          "msgstr": [
-            "Cambia password"
-          ]
-        },
-        "CANCEL": {
-          "msgid": "CANCEL",
-          "msgstr": [
-            "Annulla"
-          ]
-        },
-        "DEFAULT_TITL${ orgName }": {
-          "msgid": "DEFAULT_TITL${ orgName }",
-          "msgstr": [
-            "Accedi a ${ orgName }"
-          ]
-        },
-        "PHONE_VERIF_TITL": {
-          "msgid": "PHONE_VERIF_TITL",
-          "msgstr": [
-            "Verifica numero di telefono"
-          ]
-        },
-        "TOKEN_SENT": {
-          "msgid": "TOKEN_SENT",
-          "msgstr": [
-            "Codice di verifica SMS inviato con successo"
-          ]
-        },
-        "PHONE_VERIFY (${ phone_number })": {
-          "msgid": "PHONE_VERIFY (${ phone_number })",
-          "msgstr": [
-            "Verifica il numero di telefono (${ phone_number }) inserendo il codice che hai ricevuto via SMS."
-          ]
-        },
-        "MOBILE_CODE_PHOLD": {
-          "msgid": "MOBILE_CODE_PHOLD",
-          "msgstr": [
-            "Inserisci il codice di verifica ricevuto via SMS"
-          ]
-        },
-        "MOBILE_CODE_TITL": {
-          "msgid": "MOBILE_CODE_TITL",
-          "msgstr": [
-            "Il campo deve essere un codice numerico di 6 cifre"
-          ]
-        },
-        "MOBILE_PHONE_VERIFY": {
-          "msgid": "MOBILE_PHONE_VERIFY",
-          "msgstr": [
-            "Invio"
-          ]
-        },
-        "RESEND_TOKEN_LBL": {
-          "msgid": "RESEND_TOKEN_LBL",
-          "msgstr": [
-            "Se non hai ricevuto un SMS con il codice di verifica, richiedine uno nuovo cliccando sul pulsante seguente."
-          ]
-        },
-        "RESEND_TOKEN_WAIT_LBL${ seconds }": {
-          "msgid": "RESEND_TOKEN_WAIT_LBL${ seconds }",
-          "msgstr": [
-            "Un nuovo SMS può essere richiesto in ${ seconds } secondi."
-          ]
-        },
-        "RESEND_TOKEN": {
-          "msgid": "RESEND_TOKEN",
-          "msgstr": [
-            "Invia un nuovo codice di verifica"
-          ]
-        },
-        "PHONE_CHANGE_LBL": {
-          "msgid": "PHONE_CHANGE_LBL",
-          "msgstr": [
-            "Numero di telefono errato? "
-          ]
-        },
-        "PHONE_CHANGE_BTN": {
-          "msgid": "PHONE_CHANGE_BTN",
-          "msgstr": [
-            "Cambia il numero di telefono"
-          ]
-        },
-        "LOGOUT_LBL": {
-          "msgid": "LOGOUT_LBL",
-          "msgstr": [
-            "Se non riesci a completare la verifica la sessione può essere terminata."
-          ]
-        },
-        "PHONE_CHANGE_TITL": {
-          "msgid": "PHONE_CHANGE_TITL",
-          "msgstr": [
-            "Cambia numero di telefono"
-          ]
-        },
-        "LOGIN_SUCCESS": {
-          "msgid": "LOGIN_SUCCESS",
-          "msgstr": [
-            "Autenticazione avvenuta con successo"
-          ]
-        },
-        "LOGOUT_CONTENT": {
-          "msgid": "LOGOUT_CONTENT",
-          "msgstr": [
-            "Logout effettuato con successo"
-          ]
-        },
-        "LOGIN_AGAIN": {
-          "msgid": "LOGIN_AGAIN",
-          "msgstr": [
-            "Accedi nuovamente"
-          ]
-        },
-        "LOGIN": {
-          "msgid": "LOGIN",
-          "msgstr": [
-            "Accedi"
-          ]
-        },
-        "USER_INACTIVE": {
-          "msgid": "USER_INACTIVE",
-          "msgstr": [
-            "Il tuo account è stato disattivato. Ti preghiamo di contattare il supporto."
-          ]
-        },
-        "LOGIN_ERR": {
-          "msgid": "LOGIN_ERR",
-          "msgstr": [
-            "Si è verificato un errore durante l'autenticazione."
-          ]
-        },
-        "REMEMBER_ME": {
-          "msgid": "REMEMBER_ME",
-          "msgstr": [
-            "Ricorda l'accesso su questo dispositivo"
-          ]
-        },
-        "LOGIN_ADD_INFO_TXT": {
-          "msgid": "LOGIN_ADD_INFO_TXT",
-          "msgstr": [
-            "Effettuando il login, dichiari di accettare i {terms_and_conditions} e l'{privacy_policy} del servizio WiFi."
-          ]
-        },
-        "REGISTER_BTN_LBL": {
-          "msgid": "REGISTER_BTN_LBL",
-          "msgstr": [
-            "Non hai un account?"
-          ]
-        },
-        "HELPDESK": {
-          "msgid": "HELPDESK",
-          "msgstr": [
-            "Supporto"
-          ]
-        },
-        "404_H": {
-          "msgid": "404_H",
-          "msgstr": [
-            "404"
-          ]
-        },
-        "404_SUBH": {
-          "msgid": "404_SUBH",
-          "msgstr": [
-            "Non trovato"
-          ]
-        },
-        "404_MESSAGE": {
-          "msgid": "404_MESSAGE",
-          "msgstr": [
-            "Ci scusiamo, la pagina cercata non è stata trovata."
-          ]
-        },
-        "HOME_PG_LINK_TXT": {
-          "msgid": "HOME_PG_LINK_TXT",
-          "msgstr": [
-            "Torna alla prima pagina"
-          ]
-        }
-      }
-    }
-  },
-  "ru": {
-    "charset": "utf-8",
-    "headers": {
-      "Project-Id-Version": "",
-      "POT-Creation-Date": "",
-      "PO-Revision-Date": "",
-      "Last-Translator": "",
-      "Language-Team": "",
-      "Language": "ru_RU",
-      "MIME-Version": "1.0",
-      "Content-Type": "text/plain; charset=UTF-8",
-      "Content-Transfer-Encoding": "8bit",
-      "Plural-Forms": "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);",
-      "x-generator": "Poedit 3.0"
-    },
-    "translations": {
-      "": {
-        "": {
-          "msgid": "",
-          "msgstr": [
-            "Project-Id-Version: \nPOT-Creation-Date: \nPO-Revision-Date: \nLast-Translator: \nLanguage-Team: \nLanguage: ru_RU\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\nx-generator: Poedit 3.0\n"
-          ]
-        },
-        "ERR_OCCUR": {
-          "msgid": "ERR_OCCUR",
-          "msgstr": [
-            "Была ошибка!"
-          ]
-        },
-        "PLAN_SETTING_TXT": {
-          "msgid": "PLAN_SETTING_TXT",
-          "msgstr": [
-            "Выберите предпочитаемый тип подписки"
-          ]
-        },
-        "INACTIVE_SESSION_LOGOUT": {
-          "msgid": "INACTIVE_SESSION_LOGOUT",
-          "msgstr": [
-            "Wi-Fi сессия завершена. Вы можете войти снова, чтобы начать новую сессию."
-          ]
-        },
-        "LOGOUT_SUCCESS": {
-          "msgid": "LOGOUT_SUCCESS",
-          "msgstr": [
-            "Успешный выход"
-          ]
-        },
-        "YES": {
-          "msgid": "YES",
-          "msgstr": [
-            "Да"
-          ]
-        },
-        "NO": {
-          "msgid": "NO",
-          "msgstr": [
-            "Нет"
-          ]
-        },
-        "PWD_REVEAL": {
-          "msgid": "PWD_REVEAL",
-          "msgstr": [
-            "Показать пароль"
-          ]
-        },
-        "PWD_HIDE": {
-          "msgid": "PWD_HIDE",
-          "msgstr": [
-            "Скрыть пароль"
-          ]
-        },
-        "PRIV_POL_TITL": {
-          "msgid": "PRIV_POL_TITL",
-          "msgstr": [
-            "политика конфиденциальности"
-          ]
-        },
-        "TOS_TITL": {
-          "msgid": "TOS_TITL",
-          "msgstr": [
-            "условия использования"
-          ]
-        },
-        "PLEASE_WAIT": {
-          "msgid": "PLEASE_WAIT",
-          "msgstr": [
-            "Подождите пожалуйста..."
-          ]
-        },
-        "PLEASE_LOGIN": {
-          "msgid": "PLEASE_LOGIN",
-          "msgstr": [
-            "Пожалуйста, войдите"
-          ]
-        },
-        "ACCT_ACTIVE": {
-          "msgid": "ACCT_ACTIVE",
-          "msgstr": [
-            "Активная сессия"
-          ]
-        },
-        "LOGOUT": {
-          "msgid": "LOGOUT",
-          "msgstr": [
-            "Выйди"
-          ]
-        },
-        "ACCT_START_TIME": {
-          "msgid": "ACCT_START_TIME",
-          "msgstr": [
-            "Дата / время начало"
-          ]
-        },
-        "ACCT_STOP_TIME": {
-          "msgid": "ACCT_STOP_TIME",
-          "msgstr": [
-            "Дата / время закончено"
-          ]
-        },
-        "ACCT_DURATION": {
-          "msgid": "ACCT_DURATION",
-          "msgstr": [
-            "Продолжительность"
-          ]
-        },
-        "ACCT_DOWNLOAD": {
-          "msgid": "ACCT_DOWNLOAD",
-          "msgstr": [
-            "Трафик данных довнлоад"
-          ]
-        },
-        "ACCT_UPLOAD": {
-          "msgid": "ACCT_UPLOAD",
-          "msgstr": [
-            "Трафик данных аплоад"
-          ]
-        },
-        "ACCT_DEVICE_ADDRESS": {
-          "msgid": "ACCT_DEVICE_ADDRESS",
-          "msgstr": [
-            "Адрес устройства"
-          ]
-        },
-        "STATUS": {
-          "msgid": "STATUS",
-          "msgstr": [
-            "Режим"
-          ]
-        },
-        "LOGGED_IN": {
-          "msgid": "LOGGED_IN",
-          "msgstr": [
-            "Аутентифицирован"
-          ]
-        },
-        "EMAIL": {
-          "msgid": "EMAIL",
-          "msgstr": [
-            "Емейл"
-          ]
-        },
-        "USERNAME": {
-          "msgid": "USERNAME",
-          "msgstr": [
-            "Имя пользователя"
-          ]
-        },
-        "PHONE_NUMBER": {
-          "msgid": "PHONE_NUMBER",
-          "msgstr": [
-            "Номер телефона"
-          ]
-        },
-        "CP_LOGIN": {
-          "msgid": "CP_LOGIN",
-          "msgstr": [
-            "Мы инициализируем ваш сеанс в службе Wi-Fi, это может занять несколько секунд, подождите..."
-          ]
-        },
-        "STATUS_TITL": {
-          "msgid": "STATUS_TITL",
-          "msgstr": [
-            "Режим"
-          ]
-        },
-        "PASSWORD_EXPIRED": {
-          "msgid": "PASSWORD_EXPIRED",
-          "msgstr": [
-            "Срок действия вашего пароля истек, обновите его."
-          ]
-        },
-        "PLAN_EXHAUSTED_TOAST": {
-          "msgid": "PLAN_EXHAUSTED_TOAST",
-          "msgstr": [
-            "Вы исчерпали трафик, доступный в вашем пакете."
-          ]
-        },
-        "SUCCESS_UPGRADE_PLAN": {
-          "msgid": "SUCCESS_UPGRADE_PLAN",
-          "msgstr": [
-            "Обновление плана выполняется"
-          ]
-        },
-        "STATUS_CONTENT": {
-          "msgid": "STATUS_CONTENT",
-          "msgstr": [
-            "Вход выполнен успешно\n        Теперь вы можете путешествовать по Интернету"
-          ]
-        },
-        "TRAFFIC_EXHAUSTED": {
-          "msgid": "TRAFFIC_EXHAUSTED",
-          "msgstr": [
-            "Трафик исчерпан"
-          ]
-        },
-        "LOGOUT_MODAL_CONTENT": {
-          "msgid": "LOGOUT_MODAL_CONTENT",
-          "msgstr": [
-            "Вы хотите в следующий раз пройти автоматическую аутентификацию?"
-          ]
-        },
-        "CURRENT_SUBSCRIPTION_TXT": {
-          "msgid": "CURRENT_SUBSCRIPTION_TXT",
-          "msgstr": [
-            "Текущая подписка:"
-          ]
-        },
-        "USAGE_LIMIT_EXHAUSTED_TXT": {
-          "msgid": "USAGE_LIMIT_EXHAUSTED_TXT",
-          "msgstr": [
-            "Вы исчерпали доступный трафик. Обновите версию, чтобы продолжить пользоваться услугой."
-          ]
-        },
-        "PLAN_UPGRADE_BTN_TXT": {
-          "msgid": "PLAN_UPGRADE_BTN_TXT",
-          "msgstr": [
-            "Обновление"
-          ]
-        },
-        "PHONE_LBL": {
-          "msgid": "PHONE_LBL",
-          "msgstr": [
-            "Номер мобильного телефона"
-          ]
-        },
-        "PHONE_PHOLD": {
-          "msgid": "PHONE_PHOLD",
-          "msgstr": [
-            "Номер телефона"
-          ]
-        },
-        "EMAIL_PHOLD": {
-          "msgid": "EMAIL_PHOLD",
-          "msgstr": [
-            "емайл адрес"
-          ]
-        },
-        "EMAIL_PTRN_DESC": {
-          "msgid": "EMAIL_PTRN_DESC",
-          "msgstr": [
-            "Действующий емейл адрес"
-          ]
-        },
-        "USERNAME_REG_LBL": {
-          "msgid": "USERNAME_REG_LBL",
-          "msgstr": [
-            "Имя пользователя"
-          ]
-        },
-        "USERNAME_REG_PHOLD": {
-          "msgid": "USERNAME_REG_PHOLD",
-          "msgstr": [
-            "Имя пользователя"
-          ]
-        },
-        "USERNAME_PTRN_DESC": {
-          "msgid": "USERNAME_PTRN_DESC",
-          "msgstr": [
-            "Только буквы, цифры и символы @/./+/-/_ "
-          ]
-        },
-        "FIRST_NAME_LBL": {
-          "msgid": "FIRST_NAME_LBL",
-          "msgstr": [
-            "Имя"
-          ]
-        },
-        "OPTIONAL": {
-          "msgid": "OPTIONAL",
-          "msgstr": [
-            "Необязательно"
-          ]
-        },
-        "FIRST_NAME_PHOLD": {
-          "msgid": "FIRST_NAME_PHOLD",
-          "msgstr": [
-            "Имя"
-          ]
-        },
-        "LAST_NAME_LBL": {
-          "msgid": "LAST_NAME_LBL",
-          "msgstr": [
-            "Фамилия"
-          ]
-        },
-        "LAST_NAME_PHOLD": {
-          "msgid": "LAST_NAME_PHOLD",
-          "msgstr": [
-            "Фамилия"
-          ]
-        },
-        "BIRTH_DATE_LBL": {
-          "msgid": "BIRTH_DATE_LBL",
-          "msgstr": [
-            "Ваш дата рождения"
-          ]
-        },
-        "LOCATION_LBL": {
-          "msgid": "LOCATION_LBL",
-          "msgstr": [
-            "Адрес"
-          ]
-        },
-        "LOCATION_PHOLD": {
-          "msgid": "LOCATION_PHOLD",
-          "msgstr": [
-            "Место жительства"
-          ]
-        },
-        "LOCATION_PTRN_DESC": {
-          "msgid": "LOCATION_PTRN_DESC",
-          "msgstr": [
-            "Только буквы, цифры, пробелы, знаки препинания"
-          ]
-        },
-        "PWD_LBL": {
-          "msgid": "PWD_LBL",
-          "msgstr": [
-            "Пароль"
-          ]
-        },
-        "PWD_PHOLD": {
-          "msgid": "PWD_PHOLD",
-          "msgstr": [
-            "Введите пароль"
-          ]
-        },
-        "PWD_PTRN_DESC": {
-          "msgid": "PWD_PTRN_DESC",
-          "msgstr": [
-            "Пароль не менее 6 символов"
-          ]
-        },
-        "CONFIRM_PWD_LBL": {
-          "msgid": "CONFIRM_PWD_LBL",
-          "msgstr": [
-            "Подтвердите пароль"
-          ]
-        },
-        "CONFIRM_PWD_PHOLD": {
-          "msgid": "CONFIRM_PWD_PHOLD",
-          "msgstr": [
-            "Подтвердите пароль"
-          ]
-        },
-        "COUNTRY_LBL": {
-          "msgid": "COUNTRY_LBL",
-          "msgstr": [
-            "Страна"
-          ]
-        },
-        "CITY_LBL": {
-          "msgid": "CITY_LBL",
-          "msgstr": [
-            "Город"
-          ]
-        },
-        "CITY_PHOLD": {
-          "msgid": "CITY_PHOLD",
-          "msgstr": [
-            "Введите город"
-          ]
-        },
-        "STREET_LBL": {
-          "msgid": "STREET_LBL",
-          "msgstr": [
-            "Улица"
-          ]
-        },
-        "STREET_PHOLD": {
-          "msgid": "STREET_PHOLD",
-          "msgstr": [
-            "Введите адрес"
-          ]
-        },
-        "ZIP_CODE_LBL": {
-          "msgid": "ZIP_CODE_LBL",
-          "msgstr": [
-            "Почтовый Код"
-          ]
-        },
-        "TAX_NUMBER_LBL": {
-          "msgid": "TAX_NUMBER_LBL",
-          "msgstr": [
-            "Фискальный Код"
-          ]
-        },
-        "TAX_NUMBER_PHOLD": {
-          "msgid": "TAX_NUMBER_PHOLD",
-          "msgstr": [
-            "Введите Фискальный Код"
-          ]
-        },
-        "TAX_NUMBER_PTRN_DESC": {
-          "msgid": "TAX_NUMBER_PTRN_DESC",
-          "msgstr": [
-            "Только буквы и цифры"
-          ]
-        },
-        "REGISTER_ADD_INFO_TXT": {
-          "msgid": "REGISTER_ADD_INFO_TXT",
-          "msgstr": [
-            "Заполнив и отправив эту форму, вы принимаете {terms_and_conditions} и {privacy_policy} этого Wi-Fi сервис"
-          ]
-        },
-        "REGISTER_BTN_TXT": {
-          "msgid": "REGISTER_BTN_TXT",
-          "msgstr": [
-            "Регистрация"
-          ]
-        },
-        "FORGOT_PASSWORD": {
-          "msgid": "FORGOT_PASSWORD",
-          "msgstr": [
-            "Забыл пароль?"
-          ]
-        },
-        "LINKS_LOGIN_TXT": {
-          "msgid": "LINKS_LOGIN_TXT",
-          "msgstr": [
-            "У вас уже есть аккаунт? Войдите"
-          ]
-        },
-        "REGISTRATION_TITL": {
-          "msgid": "REGISTRATION_TITL",
-          "msgstr": [
-            "Регистрация"
-          ]
-        },
-        "PWD_CNF_ERR": {
-          "msgid": "PWD_CNF_ERR",
-          "msgstr": [
-            "Два пароля не совпадают"
-          ]
-        },
-        "REGISTER_SUCCESS": {
-          "msgid": "REGISTER_SUCCESS",
-          "msgstr": [
-            "Успешная регистрация"
-          ]
-        },
-        "404_PG_TITL": {
-          "msgid": "404_PG_TITL",
-          "msgstr": [
-            " 404 Не найдено"
-          ]
-        },
-        "REGISTER_ERR": {
-          "msgid": "REGISTER_ERR",
-          "msgstr": [
-            "При регистрации произошла ошибка"
-          ]
-        },
-        "NO_ORGS": {
-          "msgid": "NO_ORGS",
-          "msgstr": [
-            "Пользователь с подобными учетными данными уже существует."
-          ]
-        },
-        "CONFLICT_ORGS": {
-          "msgid": "CONFLICT_ORGS",
-          "msgstr": [
-            "Пользователь с такими учетными данными, как введенный, уже существует в других организациях:"
-          ]
-        },
-        "CONFLICT_SIGNIN": {
-          "msgid": "CONFLICT_SIGNIN",
-          "msgstr": [
-            "У вас есть учетная запись, упомянутая выше, и вы хотите войти в систему и связать существующую учетную запись с этой службой Wi-Fi?"
-          ]
-        },
-        "PAY_SUCCESS": {
-          "msgid": "PAY_SUCCESS",
-          "msgstr": [
-            "Оплачено"
-          ]
-        },
-        "PAY_REQ": {
-          "msgid": "PAY_REQ",
-          "msgstr": [
-            "Требуется платёж"
-          ]
-        },
-        "PAY_WARN${ timeout }${ maxAttempts }": {
-          "msgid": "PAY_WARN${ timeout }${ maxAttempts }",
-          "msgstr": [
-            "<p>Нажав на кнопку ниже, вы будете перенаправлены на наш платежный шлюз, где сможете безопасно использовать свою кредитную карту. Оттуда вы будете перенаправлены на сайт вашего банка для подтверждения транзакции.</p><p>У вас еще ${ timeout } минут на выполнение<br /><strong>Пожалуйста, держите под рукой свою кредитную карту перед тем, как начать платёж.</strong></p><p>Если по какой-либо причине процедура не будет завершена в течение доступного времени, подключение к Интернету, которое позволяет вам получить доступ к веб-сайту вашего банка, будет закрыто, и в этом случае вы можете просто снова войти в систему с учетными данными, которые вы только зарегистрировали, и повторить процедуру. Максимум ${ maxAttempts } попытки.</p>"
-          ]
-        },
-        "PAY_PROC_BTN": {
-          "msgid": "PAY_PROC_BTN",
-          "msgstr": [
-            "Подтвердите платёж"
-          ]
-        },
-        "PAY_GIVE_UP_BTN": {
-          "msgid": "PAY_GIVE_UP_BTN",
-          "msgstr": [
-            "Отменить и выйти"
-          ]
-        },
-        "PAY_FAIL": {
-          "msgid": "PAY_FAIL",
-          "msgstr": [
-            "Платёж не прошёл"
-          ]
-        },
-        "PAY_SUB_H": {
-          "msgid": "PAY_SUB_H",
-          "msgstr": [
-            "Платеж не прошёл"
-          ]
-        },
-        "PAY_TRY_AGAIN_BTN": {
-          "msgid": "PAY_TRY_AGAIN_BTN",
-          "msgstr": [
-            "Попробуйте снова"
-          ]
-        },
-        "PAY_GIVE_UP_TXT": {
-          "msgid": "PAY_GIVE_UP_TXT",
-          "msgstr": [
-            "В случае возникновения проблем обращайтесь в сервис"
-          ]
-        },
-        "PWD_RESET_TITL": {
-          "msgid": "PWD_RESET_TITL",
-          "msgstr": [
-            "Изменить пароль"
-          ]
-        },
-        "LOGIN_PG_LNK": {
-          "msgid": "LOGIN_PG_LNK",
-          "msgstr": [
-            "Вернутся на страницу входa"
-          ]
-        },
-        "PWD_RESET_ADD_TXT": {
-          "msgid": "PWD_RESET_ADD_TXT",
-          "msgstr": [
-            "Вы забыли пароль? Введите адрес электронной почты, номер телефонаили имя пользователя ниже, и мы вышлем вам инструкции по его сбросу."
-          ]
-        },
-        "USERNAME_LOG_LBL": {
-          "msgid": "USERNAME_LOG_LBL",
-          "msgstr": [
-            "Емейл, номер телефона или имя пользователя"
-          ]
-        },
-        "USERNAME_LOG_PHOLD": {
-          "msgid": "USERNAME_LOG_PHOLD",
-          "msgstr": [
-            "Емейл, номер телефона или имя пользователя"
-          ]
-        },
-        "USERNAME_LOG_TITL": {
-          "msgid": "USERNAME_LOG_TITL",
-          "msgstr": [
-            "Введите действующий адрес емейл, имя пользователя или номер телефона"
-          ]
-        },
-        "PWD_RESET_BTN": {
-          "msgid": "PWD_RESET_BTN",
-          "msgstr": [
-            "Изменить пароль"
-          ]
-        },
-        "PWD_RESET_CNTC_TXT": {
-          "msgid": "PWD_RESET_CNTC_TXT",
-          "msgstr": [
-            "В случае проблем с паролем обратитесь в сервис"
-          ]
-        },
-        "PWD_CONFIRM_TITL": {
-          "msgid": "PWD_CONFIRM_TITL",
-          "msgstr": [
-            "Подтвердите пароль"
-          ]
-        },
-        "PWD_CONFIRM_H": {
-          "msgid": "PWD_CONFIRM_H",
-          "msgstr": [
-            "Подтвердите пароль"
-          ]
-        },
-        "PWD_CONFIRM_ADD_TXT": {
-          "msgid": "PWD_CONFIRM_ADD_TXT",
-          "msgstr": [
-            "Введите новый пароль ещё раз"
-          ]
-        },
-        "PWD_CONFIRM": {
-          "msgid": "PWD_CONFIRM",
-          "msgstr": [
-            "Подтвердите смену пароля"
-          ]
-        },
-        "PWD_CHANGE_TITL": {
-          "msgid": "PWD_CHANGE_TITL",
-          "msgstr": [
-            "Изменить пароль"
-          ]
-        },
-        "PWD_CURR_ERR": {
-          "msgid": "PWD_CURR_ERR",
-          "msgstr": [
-            "Новый пароль не может совпадать с текущим паролем."
-          ]
-        },
-        "PWD_CHNG_ERR": {
-          "msgid": "PWD_CHNG_ERR",
-          "msgstr": [
-            "Произошла ошибка, пароль не было изменен"
-          ]
-        },
-        "PWD_CHANGE_HELP_TXT": {
-          "msgid": "PWD_CHANGE_HELP_TXT",
-          "msgstr": [
-            "Используйте форму ниже, чтобы изменить свой пароль."
-          ]
-        },
-        "CURR_PWD_LBL": {
-          "msgid": "CURR_PWD_LBL",
-          "msgstr": [
-            "Текущий пароль"
-          ]
-        },
-        "CURR_PWD_PHOLD": {
-          "msgid": "CURR_PWD_PHOLD",
-          "msgstr": [
-            "ваш текущий пароль"
-          ]
-        },
-        "PWD1_LBL": {
-          "msgid": "PWD1_LBL",
-          "msgstr": [
-            "Новый пароль"
-          ]
-        },
-        "PWD1_PHOLD": {
-          "msgid": "PWD1_PHOLD",
-          "msgstr": [
-            "Введите свой новый пароль"
-          ]
-        },
-        "PASSWORD_CHANGE": {
-          "msgid": "PASSWORD_CHANGE",
-          "msgstr": [
-            "Изменить пароль"
-          ]
-        },
-        "CANCEL": {
-          "msgid": "CANCEL",
-          "msgstr": [
-            "Отмена"
-          ]
-        },
-        "DEFAULT_TITL${ orgName }": {
-          "msgid": "DEFAULT_TITL${ orgName }",
-          "msgstr": [
-            "Доступ к Wi-Fi - ${ orgName }"
-          ]
-        },
-        "PHONE_VERIF_TITL": {
-          "msgid": "PHONE_VERIF_TITL",
-          "msgstr": [
-            "Поверка номер телефона"
-          ]
-        },
-        "TOKEN_SENT": {
-          "msgid": "TOKEN_SENT",
-          "msgstr": [
-            "SMS-код подтверждения отправлен"
-          ]
-        },
-        "PHONE_VERIFY (${ phone_number })": {
-          "msgid": "PHONE_VERIFY (${ phone_number })",
-          "msgstr": [
-            "Проверить номер телефона (${ phone_number }) введя СМС код"
-          ]
-        },
-        "MOBILE_CODE_PHOLD": {
-          "msgid": "MOBILE_CODE_PHOLD",
-          "msgstr": [
-            "Введите полученный SMS-код"
-          ]
-        },
-        "MOBILE_CODE_TITL": {
-          "msgid": "MOBILE_CODE_TITL",
-          "msgstr": [
-            "Только 6-значный цифровой код"
-          ]
-        },
-        "MOBILE_PHONE_VERIFY": {
-          "msgid": "MOBILE_PHONE_VERIFY",
-          "msgstr": [
-            "Отправить"
-          ]
-        },
-        "RESEND_TOKEN_LBL": {
-          "msgid": "RESEND_TOKEN_LBL",
-          "msgstr": [
-            "Если вы не получили SMS-код, попробуйте запросить новый, нажав кнопк"
-          ]
-        },
-        "RESEND_TOKEN_WAIT_LBL${ seconds }": {
-          "msgid": "RESEND_TOKEN_WAIT_LBL${ seconds }",
-          "msgstr": [
-            "Новое SMS может быть запрошено за ${ seconds } секунд."
-          ]
-        },
-        "RESEND_TOKEN": {
-          "msgid": "RESEND_TOKEN",
-          "msgstr": [
-            "Запросить новый проверочный SMS-код"
-          ]
-        },
-        "PHONE_CHANGE_LBL": {
-          "msgid": "PHONE_CHANGE_LBL",
-          "msgstr": [
-            "Неправильный номер телефона?"
-          ]
-        },
-        "PHONE_CHANGE_BTN": {
-          "msgid": "PHONE_CHANGE_BTN",
-          "msgstr": [
-            "Изменить номер телефона"
-          ]
-        },
-        "LOGOUT_LBL": {
-          "msgid": "LOGOUT_LBL",
-          "msgstr": [
-            "Если Вы не можете завершить проверку, Вы можете завершить сессию"
-          ]
-        },
-        "PHONE_CHANGE_TITL": {
-          "msgid": "PHONE_CHANGE_TITL",
-          "msgstr": [
-            "Изменить номер телефона"
-          ]
-        },
-        "LOGIN_SUCCESS": {
-          "msgid": "LOGIN_SUCCESS",
-          "msgstr": [
-            "Аутентификация прошла успешно"
-          ]
-        },
-        "LOGOUT_CONTENT": {
-          "msgid": "LOGOUT_CONTENT",
-          "msgstr": [
-            "Успешный выход"
-          ]
-        },
-        "LOGIN_AGAIN": {
-          "msgid": "LOGIN_AGAIN",
-          "msgstr": [
-            "Войти снова "
-          ]
-        },
-        "LOGIN": {
-          "msgid": "LOGIN",
-          "msgstr": [
-            "Войти"
-          ]
-        },
-        "USER_INACTIVE": {
-          "msgid": "USER_INACTIVE",
-          "msgstr": [
-            "Ваш аккаунт было деактивирован"
-          ]
-        },
-        "LOGIN_ERR": {
-          "msgid": "LOGIN_ERR",
-          "msgstr": [
-            "При аутентификации произошла ошибка"
-          ]
-        },
-        "REMEMBER_ME": {
-          "msgid": "REMEMBER_ME",
-          "msgstr": [
-            "Запомни меня на этом устройстве"
-          ]
-        },
-        "LOGIN_ADD_INFO_TXT": {
-          "msgid": "LOGIN_ADD_INFO_TXT",
-          "msgstr": [
-            "Авторизуясь, вы принимаете {terms_and_conditions} и {privacy_policy} этого сервис"
-          ]
-        },
-        "REGISTER_BTN_LBL": {
-          "msgid": "REGISTER_BTN_LBL",
-          "msgstr": [
-            "Нет аккаунта? "
-          ]
-        },
-        "HELPDESK": {
-          "msgid": "HELPDESK",
-          "msgstr": [
-            "Служба поддержки"
-          ]
-        },
-        "404_H": {
-          "msgid": "404_H",
-          "msgstr": [
-            "404 ошибка "
-          ]
-        },
-        "404_SUBH": {
-          "msgid": "404_SUBH",
-          "msgstr": [
-            " 404 Не найдено"
-          ]
-        },
-        "404_MESSAGE": {
-          "msgid": "404_MESSAGE",
-          "msgstr": [
-            "404 Страница не найдена.."
-          ]
-        },
-        "HOME_PG_LINK_TXT": {
-          "msgid": "HOME_PG_LINK_TXT",
-          "msgstr": [
-            "Вернись на первую страницу"
-          ]
-        }
-      }
-    }
-  },
-  "sl": {
-    "charset": "utf-8",
-    "headers": {
-      "Language": "en",
-      "MIME-Version": "1.0",
-      "Content-Type": "text/plain; charset=UTF-8",
-      "Content-Transfer-Encoding": "8bit",
-      "Plural-Forms": "nplurals = 2; plural = (n != 1);"
-    },
-    "translations": {
-      "": {
-        "": {
-          "msgid": "",
-          "msgstr": [
-            "Language: en\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals = 2; plural = (n != 1);\n"
-          ]
-        },
-        "ERR_OCCUR": {
-          "msgid": "ERR_OCCUR",
-          "msgstr": [
-            "Pojavila se je napaka!"
-          ]
-        },
-        "PLAN_SETTING_TXT": {
-          "msgid": "PLAN_SETTING_TXT",
-          "msgstr": [
-            "Izberite vrsto naročnine"
-          ]
-        },
-        "INACTIVE_SESSION_LOGOUT": {
-          "msgid": "INACTIVE_SESSION_LOGOUT",
-          "msgstr": [
-            "Seja Wi-Fi je bila končana. Znova se lahko prijavite in začnete novo sejo."
-          ]
-        },
-        "LOGOUT_SUCCESS": {
-          "msgid": "LOGOUT_SUCCESS",
-          "msgstr": [
-            "Odjava je bila uspešna"
-          ]
-        },
-        "YES": {
-          "msgid": "YES",
-          "msgstr": [
-            "Da"
-          ]
-        },
-        "NO": {
-          "msgid": "NO",
-          "msgstr": [
-            "Ne"
-          ]
-        },
-        "PWD_REVEAL": {
-          "msgid": "PWD_REVEAL",
-          "msgstr": [
-            "Pokaži geslo"
-          ]
-        },
-        "PWD_HIDE": {
-          "msgid": "PWD_HIDE",
-          "msgstr": [
-            "Skrij geslo"
-          ]
-        },
-        "PRIV_POL_TITL": {
-          "msgid": "PRIV_POL_TITL",
-          "msgstr": [
-            "varstvo osebnih podatkov"
-          ]
-        },
-        "TOS_TITL": {
-          "msgid": "TOS_TITL",
-          "msgstr": [
-            "pogoje uporabe storitve"
-          ]
-        },
-        "PLEASE_WAIT": {
-          "msgid": "PLEASE_WAIT",
-          "msgstr": [
-            "Prosim počakaj..."
-          ]
-        },
-        "PLEASE_LOGIN": {
-          "msgid": "PLEASE_LOGIN",
-          "msgstr": [
-            "Prosim prijavite se"
-          ]
-        },
-        "ACCT_ACTIVE": {
-          "msgid": "ACCT_ACTIVE",
-          "msgstr": [
-            "aktivna seja"
-          ]
-        },
-        "LOGOUT": {
-          "msgid": "LOGOUT",
-          "msgstr": [
-            "Odjava"
-          ]
-        },
-        "ACCT_START_TIME": {
-          "msgid": "ACCT_START_TIME",
-          "msgstr": [
-            "Začetek povezave"
-          ]
-        },
-        "ACCT_STOP_TIME": {
-          "msgid": "ACCT_STOP_TIME",
-          "msgstr": [
-            "Konec povezave"
-          ]
-        },
-        "ACCT_DURATION": {
-          "msgid": "ACCT_DURATION",
-          "msgstr": [
-            "Trajanje"
-          ]
-        },
-        "ACCT_DOWNLOAD": {
-          "msgid": "ACCT_DOWNLOAD",
-          "msgstr": [
-            "Prenos podatkov"
-          ]
-        },
-        "ACCT_UPLOAD": {
-          "msgid": "ACCT_UPLOAD",
-          "msgstr": [
-            "Nalaganje podatkov"
-          ]
-        },
-        "ACCT_DEVICE_ADDRESS": {
-          "msgid": "ACCT_DEVICE_ADDRESS",
-          "msgstr": [
-            "Naslov naprave"
-          ]
-        },
-        "STATUS": {
-          "msgid": "STATUS",
-          "msgstr": [
-            "Status"
-          ]
-        },
-        "LOGGED_IN": {
-          "msgid": "LOGGED_IN",
-          "msgstr": [
-            "Prijavljeni"
-          ]
-        },
-        "EMAIL": {
-          "msgid": "EMAIL",
-          "msgstr": [
-            "E-naslov"
-          ]
-        },
-        "USERNAME": {
-          "msgid": "USERNAME",
-          "msgstr": [
-            "Uporabniško ime"
-          ]
-        },
-        "PHONE_NUMBER": {
-          "msgid": "PHONE_NUMBER",
-          "msgstr": [
-            "Telefonska številka"
-          ]
-        },
-        "CP_LOGIN": {
-          "msgid": "CP_LOGIN",
-          "msgstr": [
-            "Začenjamo vašo sejo v storitvi WiFi, lahko traja nekaj sekund, počakajte ..."
-          ]
-        },
-        "STATUS_TITL": {
-          "msgid": "STATUS_TITL",
-          "msgstr": [
-            "Status"
-          ]
-        },
-        "PASSWORD_EXPIRED": {
-          "msgid": "PASSWORD_EXPIRED",
-          "msgstr": [
-            "Vaše geslo je poteklo, posodobite ga."
-          ]
-        },
-        "PLAN_EXHAUSTED_TOAST": {
-          "msgid": "PLAN_EXHAUSTED_TOAST",
-          "msgstr": [
-            "Vyčerpali ste návštevnosť dostupnú pre váš balík."
-          ]
-        },
-        "SUCCESS_UPGRADE_PLAN": {
-          "msgid": "SUCCESS_UPGRADE_PLAN",
-          "msgstr": [
-            "Prebieha aktualizácia plánu"
-          ]
-        },
-        "STATUS_CONTENT": {
-          "msgid": "STATUS_CONTENT",
-          "msgstr": [
-            "Prijava v WiFi je uspela!  NZdaj lahko uporabljate internet.  NTo stran lahko pustite odprto, če se želite odjaviti."
-          ]
-        },
-        "TRAFFIC_EXHAUSTED": {
-          "msgid": "TRAFFIC_EXHAUSTED",
-          "msgstr": [
-            "Doprava vyčerpaná"
-          ]
-        },
-        "LOGOUT_MODAL_CONTENT": {
-          "msgid": "LOGOUT_MODAL_CONTENT",
-          "msgstr": [
-            "Se želite naslednjič samodejno prijaviti?"
-          ]
-        },
-        "CURRENT_SUBSCRIPTION_TXT": {
-          "msgid": "CURRENT_SUBSCRIPTION_TXT",
-          "msgstr": [
-            "Aktuálne predplatné:"
-          ]
-        },
-        "USAGE_LIMIT_EXHAUSTED_TXT": {
-          "msgid": "USAGE_LIMIT_EXHAUSTED_TXT",
-          "msgstr": [
-            "Vyčerpali ste dostupnú premávku. Ak chcete službu naďalej používať, inovujte ju."
-          ]
-        },
-        "PLAN_UPGRADE_BTN_TXT": {
-          "msgid": "PLAN_UPGRADE_BTN_TXT",
-          "msgstr": [
-            "Inovovať"
-          ]
-        },
-        "PHONE_LBL": {
-          "msgid": "PHONE_LBL",
-          "msgstr": [
-            "Mobilna številka"
-          ]
-        },
-        "PHONE_PHOLD": {
-          "msgid": "PHONE_PHOLD",
-          "msgstr": [
-            "Mobilna številka"
-          ]
-        },
-        "EMAIL_PHOLD": {
-          "msgid": "EMAIL_PHOLD",
-          "msgstr": [
-            "Naslov e-pošte"
-          ]
-        },
-        "EMAIL_PTRN_DESC": {
-          "msgid": "EMAIL_PTRN_DESC",
-          "msgstr": [
-            "Naslov veljavne e-pošte"
-          ]
-        },
-        "USERNAME_REG_LBL": {
-          "msgid": "USERNAME_REG_LBL",
-          "msgstr": [
-            "Uporabniško ime"
-          ]
-        },
-        "USERNAME_REG_PHOLD": {
-          "msgid": "USERNAME_REG_PHOLD",
-          "msgstr": [
-            "Uporabniško ime"
-          ]
-        },
-        "USERNAME_PTRN_DESC": {
-          "msgid": "USERNAME_PTRN_DESC",
-          "msgstr": [
-            "Samo črke, številke in posebni znaki @/./+/-/_"
-          ]
-        },
-        "FIRST_NAME_LBL": {
-          "msgid": "FIRST_NAME_LBL",
-          "msgstr": [
-            "Ime"
-          ]
-        },
-        "OPTIONAL": {
-          "msgid": "OPTIONAL",
-          "msgstr": [
-            "neobvezno"
-          ]
-        },
-        "FIRST_NAME_PHOLD": {
-          "msgid": "FIRST_NAME_PHOLD",
-          "msgstr": [
-            "Ime"
-          ]
-        },
-        "LAST_NAME_LBL": {
-          "msgid": "LAST_NAME_LBL",
-          "msgstr": [
-            "Priimek"
-          ]
-        },
-        "LAST_NAME_PHOLD": {
-          "msgid": "LAST_NAME_PHOLD",
-          "msgstr": [
-            "Priimek"
-          ]
-        },
-        "BIRTH_DATE_LBL": {
-          "msgid": "BIRTH_DATE_LBL",
-          "msgstr": [
-            "Datum rojstva"
-          ]
-        },
-        "LOCATION_LBL": {
-          "msgid": "LOCATION_LBL",
-          "msgstr": [
-            "Naslov"
-          ]
-        },
-        "LOCATION_PHOLD": {
-          "msgid": "LOCATION_PHOLD",
-          "msgstr": [
-            "Kraj stalnega prebivališča"
-          ]
-        },
-        "LOCATION_PTRN_DESC": {
-          "msgid": "LOCATION_PTRN_DESC",
-          "msgstr": [
-            "Samo znaki, številke, presledki in ločila"
-          ]
-        },
-        "PWD_LBL": {
-          "msgid": "PWD_LBL",
-          "msgstr": [
-            "Geslo"
-          ]
-        },
-        "PWD_PHOLD": {
-          "msgid": "PWD_PHOLD",
-          "msgstr": [
-            "Vpišite geslo"
-          ]
-        },
-        "PWD_PTRN_DESC": {
-          "msgid": "PWD_PTRN_DESC",
-          "msgstr": [
-            "Geslo mora imeti najmanj 6 znakov"
-          ]
-        },
-        "CONFIRM_PWD_LBL": {
-          "msgid": "CONFIRM_PWD_LBL",
-          "msgstr": [
-            "Potrdite geslo"
-          ]
-        },
-        "CONFIRM_PWD_PHOLD": {
-          "msgid": "CONFIRM_PWD_PHOLD",
-          "msgstr": [
-            "Potrdite geslo"
-          ]
-        },
-        "COUNTRY_LBL": {
-          "msgid": "COUNTRY_LBL",
-          "msgstr": [
-            "Država"
-          ]
-        },
-        "CITY_LBL": {
-          "msgid": "CITY_LBL",
-          "msgstr": [
-            "Kraj"
-          ]
-        },
-        "CITY_PHOLD": {
-          "msgid": "CITY_PHOLD",
-          "msgstr": [
-            "Vpišite kraj"
-          ]
-        },
-        "STREET_LBL": {
-          "msgid": "STREET_LBL",
-          "msgstr": [
-            "Naslov"
-          ]
-        },
-        "STREET_PHOLD": {
-          "msgid": "STREET_PHOLD",
-          "msgstr": [
-            "Vpišite naslov"
-          ]
-        },
-        "ZIP_CODE_LBL": {
-          "msgid": "ZIP_CODE_LBL",
-          "msgstr": [
-            "Poštna številka"
-          ]
-        },
-        "TAX_NUMBER_LBL": {
-          "msgid": "TAX_NUMBER_LBL",
-          "msgstr": [
-            "Davčna številka ali ID za DDV"
-          ]
-        },
-        "TAX_NUMBER_PHOLD": {
-          "msgid": "TAX_NUMBER_PHOLD",
-          "msgstr": [
-            "Vpišite davčno številko ali ID za DDV"
-          ]
-        },
-        "TAX_NUMBER_PTRN_DESC": {
-          "msgid": "TAX_NUMBER_PTRN_DESC",
-          "msgstr": [
-            "Samo črke in številke"
-          ]
-        },
-        "REGISTER_ADD_INFO_TXT": {
-          "msgid": "REGISTER_ADD_INFO_TXT",
-          "msgstr": [
-            "S posredovanjem izpolnjenega obrazca za registracijo sprejmete {terms_and_conditions} in {privacy_policy} storitve WiFi."
-          ]
-        },
-        "REGISTER_BTN_TXT": {
-          "msgid": "REGISTER_BTN_TXT",
-          "msgstr": [
-            "Registracija"
-          ]
-        },
-        "FORGOT_PASSWORD": {
-          "msgid": "FORGOT_PASSWORD",
-          "msgstr": [
-            "Pozabljeno geslo?"
-          ]
-        },
-        "LINKS_LOGIN_TXT": {
-          "msgid": "LINKS_LOGIN_TXT",
-          "msgstr": [
-            "Registrirani uporabnik? Prijava"
-          ]
-        },
-        "REGISTRATION_TITL": {
-          "msgid": "REGISTRATION_TITL",
-          "msgstr": [
-            "Registracija"
-          ]
-        },
-        "PWD_CNF_ERR": {
-          "msgid": "PWD_CNF_ERR",
-          "msgstr": [
-            "Gesli se ne ujemata."
-          ]
-        },
-        "REGISTER_SUCCESS": {
-          "msgid": "REGISTER_SUCCESS",
-          "msgstr": [
-            "Registracija je bila uspešna"
-          ]
-        },
-        "404_PG_TITL": {
-          "msgid": "404_PG_TITL",
-          "msgstr": [
-            "404 Ni mogoče najti"
-          ]
-        },
-        "REGISTER_ERR": {
-          "msgid": "REGISTER_ERR",
-          "msgstr": [
-            "Napaka med registracijo."
-          ]
-        },
-        "NO_ORGS": {
-          "msgid": "NO_ORGS",
-          "msgstr": [
-            "Uporabnik s podobnimi poverilnicami že obstaja."
-          ]
-        },
-        "CONFLICT_ORGS": {
-          "msgid": "CONFLICT_ORGS",
-          "msgstr": [
-            "Uporabnik s poverilnicami, kakršen je vnesen, že obstaja v drugih organizacijah:"
-          ]
-        },
-        "CONFLICT_SIGNIN": {
-          "msgid": "CONFLICT_SIGNIN",
-          "msgstr": [
-            "Ali ste lastnik zgoraj omenjenega računa in se želite prijaviti in svoj obstoječi račun povezati s to storitvijo WiFi?"
-          ]
-        },
-        "PAY_SUCCESS": {
-          "msgid": "PAY_SUCCESS",
-          "msgstr": [
-            "Plačilo je bilo prejeto."
-          ]
-        },
-        "PAY_REQ": {
-          "msgid": "PAY_REQ",
-          "msgstr": [
-            "Plačilo je potrebno za nadaljevanje"
-          ]
-        },
-        "PAY_WARN${ timeout }${ maxAttempts }": {
-          "msgid": "PAY_WARN${ timeout }${ maxAttempts }",
-          "msgstr": [
-            ""
-          ]
-        },
-        "PAY_PROC_BTN": {
-          "msgid": "PAY_PROC_BTN",
-          "msgstr": [
-            "Nadaljujte s plačilom"
-          ]
-        },
-        "PAY_GIVE_UP_BTN": {
-          "msgid": "PAY_GIVE_UP_BTN",
-          "msgstr": [
-            "Preklic in odjava"
-          ]
-        },
-        "PAY_FAIL": {
-          "msgid": "PAY_FAIL",
-          "msgstr": [
-            "Plačilo ni uspelo"
-          ]
-        },
-        "PAY_SUB_H": {
-          "msgid": "PAY_SUB_H",
-          "msgstr": [
-            "Plačilo ni bilo uspešno."
-          ]
-        },
-        "PAY_TRY_AGAIN_BTN": {
-          "msgid": "PAY_TRY_AGAIN_BTN",
-          "msgstr": [
-            "Poskusite znova"
-          ]
-        },
-        "PAY_GIVE_UP_TXT": {
-          "msgid": "PAY_GIVE_UP_TXT",
-          "msgstr": [
-            "Če transakcija ni bila uspešna, se obrite na službo za podporo uporabnikom."
-          ]
-        },
-        "PWD_RESET_TITL": {
-          "msgid": "PWD_RESET_TITL",
-          "msgstr": [
-            "Ponastavite geslo"
-          ]
-        },
-        "LOGIN_PG_LNK": {
-          "msgid": "LOGIN_PG_LNK",
-          "msgstr": [
-            "Vrnite se na vstopno stran"
-          ]
-        },
-        "PWD_RESET_ADD_TXT": {
-          "msgid": "PWD_RESET_ADD_TXT",
-          "msgstr": [
-            "Ste pozabili geslo? Vnesite svoj elektronski naslov, telefonsko številko ali uporabniško ime spodaj in poslali vam bomo navodila za ponastavitev."
-          ]
-        },
-        "USERNAME_LOG_LBL": {
-          "msgid": "USERNAME_LOG_LBL",
-          "msgstr": [
-            "E-naslov, telefonska številka ali uporabniško ime"
-          ]
-        },
-        "USERNAME_LOG_PHOLD": {
-          "msgid": "USERNAME_LOG_PHOLD",
-          "msgstr": [
-            "E-naslov, telefonska številka ali uporabniško ime"
-          ]
-        },
-        "USERNAME_LOG_TITL": {
-          "msgid": "USERNAME_LOG_TITL",
-          "msgstr": [
-            "Vpišite naslov veljavne e-pošte, uporabniško ime ali številko mobilnega telefona"
-          ]
-        },
-        "PWD_RESET_BTN": {
-          "msgid": "PWD_RESET_BTN",
-          "msgstr": [
-            "Ponastavite geslo"
-          ]
-        },
-        "PWD_RESET_CNTC_TXT": {
-          "msgid": "PWD_RESET_CNTC_TXT",
-          "msgstr": [
-            "Če imate težave s ponastavitvijo gesla, se obrnite na službo za podporo uporabnikom."
-          ]
-        },
-        "PWD_CONFIRM_TITL": {
-          "msgid": "PWD_CONFIRM_TITL",
-          "msgstr": [
-            "Ponastavite geslo"
-          ]
-        },
-        "PWD_CONFIRM_H": {
-          "msgid": "PWD_CONFIRM_H",
-          "msgstr": [
-            "Ponastavite geslo"
-          ]
-        },
-        "PWD_CONFIRM_ADD_TXT": {
-          "msgid": "PWD_CONFIRM_ADD_TXT",
-          "msgstr": [
-            "Vpišite novo geslos."
-          ]
-        },
-        "PWD_CONFIRM": {
-          "msgid": "PWD_CONFIRM",
-          "msgstr": [
-            "Potrdite spremembo gesla"
-          ]
-        },
-        "PWD_CHANGE_TITL": {
-          "msgid": "PWD_CHANGE_TITL",
-          "msgstr": [
-            "Sprememba gesla"
-          ]
-        },
-        "PWD_CURR_ERR": {
-          "msgid": "PWD_CURR_ERR",
-          "msgstr": [
-            "Novo geslo ne more biti enako trenutnemu geslu."
-          ]
-        },
-        "PWD_CHNG_ERR": {
-          "msgid": "PWD_CHNG_ERR",
-          "msgstr": [
-            "Pojavila se je napaka, geslo ni bilo spremenjeno."
-          ]
-        },
-        "PWD_CHANGE_HELP_TXT": {
-          "msgid": "PWD_CHANGE_HELP_TXT",
-          "msgstr": [
-            "Utilize il formulari par cambiâ la tô password."
-          ]
-        },
-        "CURR_PWD_LBL": {
-          "msgid": "CURR_PWD_LBL",
-          "msgstr": [
-            "Trenutno geslo"
-          ]
-        },
-        "CURR_PWD_PHOLD": {
-          "msgid": "CURR_PWD_PHOLD",
-          "msgstr": [
-            "Vaše trenutno geslo"
-          ]
-        },
-        "PWD1_LBL": {
-          "msgid": "PWD1_LBL",
-          "msgstr": [
-            "Novo geslo"
-          ]
-        },
-        "PWD1_PHOLD": {
-          "msgid": "PWD1_PHOLD",
-          "msgstr": [
-            "Vpišite novo geslo"
-          ]
-        },
-        "PASSWORD_CHANGE": {
-          "msgid": "PASSWORD_CHANGE",
-          "msgstr": [
-            "Spremenite geslo"
-          ]
-        },
-        "CANCEL": {
-          "msgid": "CANCEL",
-          "msgstr": [
-            "Prekličite"
-          ]
-        },
-        "DEFAULT_TITL${ orgName }": {
-          "msgid": "DEFAULT_TITL${ orgName }",
-          "msgstr": [
-            "Prijavi se na - ${ orgName }"
-          ]
-        },
-        "PHONE_VERIF_TITL": {
-          "msgid": "PHONE_VERIF_TITL",
-          "msgstr": [
-            "Preverite telefonsko številko"
-          ]
-        },
-        "TOKEN_SENT": {
-          "msgid": "TOKEN_SENT",
-          "msgstr": [
-            "SMS sporočilo s potrditveno kodo je bilo uspešno poslano."
-          ]
-        },
-        "PHONE_VERIFY (${ phone_number })": {
-          "msgid": "PHONE_VERIFY (${ phone_number })",
-          "msgstr": [
-            "Potrdite telefonsko številko (${ phone_number }) z vnosom kode, ki ste jo prejeli s SMS sporočilom."
-          ]
-        },
-        "MOBILE_CODE_PHOLD": {
-          "msgid": "MOBILE_CODE_PHOLD",
-          "msgstr": [
-            "Vnesite kodo za preverjanje SMS"
-          ]
-        },
-        "MOBILE_CODE_TITL": {
-          "msgid": "MOBILE_CODE_TITL",
-          "msgstr": [
-            "V polje vpišite 6-mestno številčno kodo"
-          ]
-        },
-        "MOBILE_PHONE_VERIFY": {
-          "msgid": "MOBILE_PHONE_VERIFY",
-          "msgstr": [
-            "Pošlji"
-          ]
-        },
-        "RESEND_TOKEN_LBL": {
-          "msgid": "RESEND_TOKEN_LBL",
-          "msgstr": [
-            "Če niste prejeli SMS sporočila s potrditveno kodo, jo ponovno zahtevajte s klikom na gumb."
-          ]
-        },
-        "RESEND_TOKEN_WAIT_LBL${ seconds }": {
-          "msgid": "RESEND_TOKEN_WAIT_LBL${ seconds }",
-          "msgstr": [
-            "Nov SMS lahko zahtevate v ${ seconds } sekundah."
-          ]
-        },
-        "RESEND_TOKEN": {
-          "msgid": "RESEND_TOKEN",
-          "msgstr": [
-            "Pošljite novo potrditveno kodo"
-          ]
-        },
-        "PHONE_CHANGE_LBL": {
-          "msgid": "PHONE_CHANGE_LBL",
-          "msgstr": [
-            "Napačna telefonska številka?"
-          ]
-        },
-        "PHONE_CHANGE_BTN": {
-          "msgid": "PHONE_CHANGE_BTN",
-          "msgstr": [
-            "Spremenite telefonsko številko"
-          ]
-        },
-        "LOGOUT_LBL": {
-          "msgid": "LOGOUT_LBL",
-          "msgstr": [
-            "Če postopka preverjanja ne uspete uspešno zaključiti, lahko zaprete sejo."
-          ]
-        },
-        "PHONE_CHANGE_TITL": {
-          "msgid": "PHONE_CHANGE_TITL",
-          "msgstr": [
-            "Spremenite telefonsko številko"
-          ]
-        },
-        "LOGIN_SUCCESS": {
-          "msgid": "LOGIN_SUCCESS",
-          "msgstr": [
-            "Prijava je bila uspešna"
-          ]
-        },
-        "LOGOUT_CONTENT": {
-          "msgid": "LOGOUT_CONTENT",
-          "msgstr": [
-            "Odjava je bila uspešna"
-          ]
-        },
-        "LOGIN_AGAIN": {
-          "msgid": "LOGIN_AGAIN",
-          "msgstr": [
-            "Ponovna prijava"
-          ]
-        },
-        "LOGIN": {
-          "msgid": "LOGIN",
-          "msgstr": [
-            "Prijava"
-          ]
-        },
-        "USER_INACTIVE": {
-          "msgid": "USER_INACTIVE",
-          "msgstr": [
-            "Vaš račun je onemogočen. Prosimo, da se obrnete na službo za pomoč uporabnikom."
-          ]
-        },
-        "LOGIN_ERR": {
-          "msgid": "LOGIN_ERR",
-          "msgstr": [
-            "Napaka med prijavo."
-          ]
-        },
-        "REMEMBER_ME": {
-          "msgid": "REMEMBER_ME",
-          "msgstr": [
-            "Zapomni si me na tej napravi"
-          ]
-        },
-        "LOGIN_ADD_INFO_TXT": {
-          "msgid": "LOGIN_ADD_INFO_TXT",
-          "msgstr": [
-            "S prijavo sprejmete {terms_and_conditions} in {privacy_policy} storitve WiFi."
-          ]
-        },
-        "REGISTER_BTN_LBL": {
-          "msgid": "REGISTER_BTN_LBL",
-          "msgstr": [
-            "Nimate uporabniškega računa?"
-          ]
-        },
-        "HELPDESK": {
-          "msgid": "HELPDESK",
-          "msgstr": [
-            "Podpora uporabnikom"
-          ]
-        },
-        "404_H": {
-          "msgid": "404_H",
-          "msgstr": [
-            "404"
-          ]
-        },
-        "404_SUBH": {
-          "msgid": "404_SUBH",
-          "msgstr": [
-            "Ni mogoče najti"
-          ]
-        },
-        "404_MESSAGE": {
-          "msgid": "404_MESSAGE",
-          "msgstr": [
-            "Oprostite, iskane strani ni bilo mogoče najti."
-          ]
-        },
-        "HOME_PG_LINK_TXT": {
-          "msgid": "HOME_PG_LINK_TXT",
-          "msgstr": [
-            "Nazaj na domačo stran"
-          ]
-        }
+        "msgid": "",
+        "msgstr": [
+          "Language: en\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals = 2; plural = (n != 1);\n"
+        ]
+      },
+      "ERR_OCCUR": {
+        "msgid": "ERR_OCCUR",
+        "msgstr": [
+          "Error occurred!"
+        ]
+      },
+      "PLAN_SETTING_TXT": {
+        "msgid": "PLAN_SETTING_TXT",
+        "msgstr": [
+          "Please select the preferred subscription plan"
+        ]
+      },
+      "INACTIVE_SESSION_LOGOUT": {
+        "msgid": "INACTIVE_SESSION_LOGOUT",
+        "msgstr": [
+          "The WiFi session ended. You can log in again to start a new session."
+        ]
+      },
+      "LOGOUT_SUCCESS": {
+        "msgid": "LOGOUT_SUCCESS",
+        "msgstr": [
+          "Logout successful"
+        ]
+      },
+      "YES": {
+        "msgid": "YES",
+        "msgstr": [
+          "Yes"
+        ]
+      },
+      "NO": {
+        "msgid": "NO",
+        "msgstr": [
+          "No"
+        ]
+      },
+      "PWD_REVEAL": {
+        "msgid": "PWD_REVEAL",
+        "msgstr": [
+          "reveal password"
+        ]
+      },
+      "PWD_HIDE": {
+        "msgid": "PWD_HIDE",
+        "msgstr": [
+          "hide password"
+        ]
+      },
+      "PRIV_POL_TITL": {
+        "msgid": "PRIV_POL_TITL",
+        "msgstr": [
+          "privacy policy"
+        ]
+      },
+      "TOS_TITL": {
+        "msgid": "TOS_TITL",
+        "msgstr": [
+          "terms and conditions"
+        ]
+      },
+      "PLEASE_WAIT": {
+        "msgid": "PLEASE_WAIT",
+        "msgstr": [
+          "Please wait..."
+        ]
+      },
+      "PLEASE_LOGIN": {
+        "msgid": "PLEASE_LOGIN",
+        "msgstr": [
+          "Please log in"
+        ]
+      },
+      "ACCT_ACTIVE": {
+        "msgid": "ACCT_ACTIVE",
+        "msgstr": [
+          "session is active"
+        ]
+      },
+      "LOGOUT": {
+        "msgid": "LOGOUT",
+        "msgstr": [
+          "Logout"
+        ]
+      },
+      "ACCT_START_TIME": {
+        "msgid": "ACCT_START_TIME",
+        "msgstr": [
+          "Start time"
+        ]
+      },
+      "ACCT_STOP_TIME": {
+        "msgid": "ACCT_STOP_TIME",
+        "msgstr": [
+          "Stop time"
+        ]
+      },
+      "ACCT_DURATION": {
+        "msgid": "ACCT_DURATION",
+        "msgstr": [
+          "Duration"
+        ]
+      },
+      "ACCT_DOWNLOAD": {
+        "msgid": "ACCT_DOWNLOAD",
+        "msgstr": [
+          "Download"
+        ]
+      },
+      "ACCT_UPLOAD": {
+        "msgid": "ACCT_UPLOAD",
+        "msgstr": [
+          "Upload"
+        ]
+      },
+      "ACCT_DEVICE_ADDRESS": {
+        "msgid": "ACCT_DEVICE_ADDRESS",
+        "msgstr": [
+          "Device address"
+        ]
+      },
+      "STATUS": {
+        "msgid": "STATUS",
+        "msgstr": [
+          "Status"
+        ]
+      },
+      "LOGGED_IN": {
+        "msgid": "LOGGED_IN",
+        "msgstr": [
+          "Logged in"
+        ]
+      },
+      "EMAIL": {
+        "msgid": "EMAIL",
+        "msgstr": [
+          "Email"
+        ]
+      },
+      "USERNAME": {
+        "msgid": "USERNAME",
+        "msgstr": [
+          "Username"
+        ]
+      },
+      "PHONE_NUMBER": {
+        "msgid": "PHONE_NUMBER",
+        "msgstr": [
+          "Phone number"
+        ]
+      },
+      "CP_LOGIN": {
+        "msgid": "CP_LOGIN",
+        "msgstr": [
+          "We are initializing your session in the WiFi service, it may take a few seconds, please wait ..."
+        ]
+      },
+      "STATUS_TITL": {
+        "msgid": "STATUS_TITL",
+        "msgstr": [
+          "Status"
+        ]
+      },
+      "PASSWORD_EXPIRED": {
+        "msgid": "PASSWORD_EXPIRED",
+        "msgstr": [
+          "Your password has expired, please update it."
+        ]
+      },
+      "PLAN_EXHAUSTED_TOAST": {
+        "msgid": "PLAN_EXHAUSTED_TOAST",
+        "msgstr": [
+          "You have used all the data in your plan."
+        ]
+      },
+      "SUCCESS_UPGRADE_PLAN": {
+        "msgid": "SUCCESS_UPGRADE_PLAN",
+        "msgstr": [
+          "Plan upgrade in progress"
+        ]
+      },
+      "STATUS_CONTENT": {
+        "msgid": "STATUS_CONTENT",
+        "msgstr": [
+          "WiFi Login Successful!\n        You can now use the internet.\n        You may leave this page open in case you want to log out."
+        ]
+      },
+      "TRAFFIC_EXHAUSTED": {
+        "msgid": "TRAFFIC_EXHAUSTED",
+        "msgstr": [
+          "Data limit reached"
+        ]
+      },
+      "LOGOUT_MODAL_CONTENT": {
+        "msgid": "LOGOUT_MODAL_CONTENT",
+        "msgstr": [
+          "Do you want to automatically log in the next time?"
+        ]
+      },
+      "CURRENT_SUBSCRIPTION_TXT": {
+        "msgid": "CURRENT_SUBSCRIPTION_TXT",
+        "msgstr": [
+          "Current subscription:"
+        ]
+      },
+      "USAGE_LIMIT_EXHAUSTED_TXT": {
+        "msgid": "USAGE_LIMIT_EXHAUSTED_TXT",
+        "msgstr": [
+          "You have reached your data limit. Please top up your account to continue."
+        ]
+      },
+      "PLAN_UPGRADE_BTN_TXT": {
+        "msgid": "PLAN_UPGRADE_BTN_TXT",
+        "msgstr": [
+          "Top up"
+        ]
+      },
+      "PHONE_LBL": {
+        "msgid": "PHONE_LBL",
+        "msgstr": [
+          "Mobile phone number"
+        ]
+      },
+      "PHONE_PHOLD": {
+        "msgid": "PHONE_PHOLD",
+        "msgstr": [
+          "enter mobile phone number"
+        ]
+      },
+      "EMAIL_PHOLD": {
+        "msgid": "EMAIL_PHOLD",
+        "msgstr": [
+          "email address"
+        ]
+      },
+      "EMAIL_PTRN_DESC": {
+        "msgid": "EMAIL_PTRN_DESC",
+        "msgstr": [
+          "enter valid email address"
+        ]
+      },
+      "USERNAME_REG_LBL": {
+        "msgid": "USERNAME_REG_LBL",
+        "msgstr": [
+          "Username"
+        ]
+      },
+      "USERNAME_REG_PHOLD": {
+        "msgid": "USERNAME_REG_PHOLD",
+        "msgstr": [
+          "Username"
+        ]
+      },
+      "USERNAME_PTRN_DESC": {
+        "msgid": "USERNAME_PTRN_DESC",
+        "msgstr": [
+          "only letters, numbers and @/./+/-/_ characters"
+        ]
+      },
+      "FIRST_NAME_LBL": {
+        "msgid": "FIRST_NAME_LBL",
+        "msgstr": [
+          "First name"
+        ]
+      },
+      "OPTIONAL": {
+        "msgid": "OPTIONAL",
+        "msgstr": [
+          "optional"
+        ]
+      },
+      "FIRST_NAME_PHOLD": {
+        "msgid": "FIRST_NAME_PHOLD",
+        "msgstr": [
+          "first name"
+        ]
+      },
+      "LAST_NAME_LBL": {
+        "msgid": "LAST_NAME_LBL",
+        "msgstr": [
+          "Last name"
+        ]
+      },
+      "LAST_NAME_PHOLD": {
+        "msgid": "LAST_NAME_PHOLD",
+        "msgstr": [
+          "last name"
+        ]
+      },
+      "BIRTH_DATE_LBL": {
+        "msgid": "BIRTH_DATE_LBL",
+        "msgstr": [
+          "Birth date"
+        ]
+      },
+      "LOCATION_LBL": {
+        "msgid": "LOCATION_LBL",
+        "msgstr": [
+          "Location"
+        ]
+      },
+      "LOCATION_PHOLD": {
+        "msgid": "LOCATION_PHOLD",
+        "msgstr": [
+          "location"
+        ]
+      },
+      "LOCATION_PTRN_DESC": {
+        "msgid": "LOCATION_PTRN_DESC",
+        "msgstr": [
+          "only letters, numbers, spaces, punctuation"
+        ]
+      },
+      "PWD_LBL": {
+        "msgid": "PWD_LBL",
+        "msgstr": [
+          "Password"
+        ]
+      },
+      "PWD_PHOLD": {
+        "msgid": "PWD_PHOLD",
+        "msgstr": [
+          "password"
+        ]
+      },
+      "PWD_PTRN_DESC": {
+        "msgid": "PWD_PTRN_DESC",
+        "msgstr": [
+          "password must be a minimum of 6 characters"
+        ]
+      },
+      "CONFIRM_PWD_LBL": {
+        "msgid": "CONFIRM_PWD_LBL",
+        "msgstr": [
+          "Confirm password"
+        ]
+      },
+      "CONFIRM_PWD_PHOLD": {
+        "msgid": "CONFIRM_PWD_PHOLD",
+        "msgstr": [
+          "confirm password"
+        ]
+      },
+      "COUNTRY_LBL": {
+        "msgid": "COUNTRY_LBL",
+        "msgstr": [
+          "Country"
+        ]
+      },
+      "CITY_LBL": {
+        "msgid": "CITY_LBL",
+        "msgstr": [
+          "City"
+        ]
+      },
+      "CITY_PHOLD": {
+        "msgid": "CITY_PHOLD",
+        "msgstr": [
+          "enter city"
+        ]
+      },
+      "STREET_LBL": {
+        "msgid": "STREET_LBL",
+        "msgstr": [
+          "Street"
+        ]
+      },
+      "STREET_PHOLD": {
+        "msgid": "STREET_PHOLD",
+        "msgstr": [
+          "enter street"
+        ]
+      },
+      "ZIP_CODE_LBL": {
+        "msgid": "ZIP_CODE_LBL",
+        "msgstr": [
+          "Postal code"
+        ]
+      },
+      "TAX_NUMBER_LBL": {
+        "msgid": "TAX_NUMBER_LBL",
+        "msgstr": [
+          "Tax number"
+        ]
+      },
+      "TAX_NUMBER_PHOLD": {
+        "msgid": "TAX_NUMBER_PHOLD",
+        "msgstr": [
+          "enter your tax identification number (optional)"
+        ]
+      },
+      "TAX_NUMBER_PTRN_DESC": {
+        "msgid": "TAX_NUMBER_PTRN_DESC",
+        "msgstr": [
+          "only numbers and letters"
+        ]
+      },
+      "REGISTER_ADD_INFO_TXT": {
+        "msgid": "REGISTER_ADD_INFO_TXT",
+        "msgstr": [
+          "By signing up, you accept the {terms_and_conditions} and the {privacy_policy} of this WiFi service."
+        ]
+      },
+      "REGISTER_BTN_TXT": {
+        "msgid": "REGISTER_BTN_TXT",
+        "msgstr": [
+          "Sign up"
+        ]
+      },
+      "FORGOT_PASSWORD": {
+        "msgid": "FORGOT_PASSWORD",
+        "msgstr": [
+          "Forgot your password?"
+        ]
+      },
+      "LINKS_LOGIN_TXT": {
+        "msgid": "LINKS_LOGIN_TXT",
+        "msgstr": [
+          "Already have an account? Log in"
+        ]
+      },
+      "REGISTRATION_TITL": {
+        "msgid": "REGISTRATION_TITL",
+        "msgstr": [
+          "Sign up"
+        ]
+      },
+      "PWD_CNF_ERR": {
+        "msgid": "PWD_CNF_ERR",
+        "msgstr": [
+          "The two password fields didn't match."
+        ]
+      },
+      "REGISTER_SUCCESS": {
+        "msgid": "REGISTER_SUCCESS",
+        "msgstr": [
+          "Registration success"
+        ]
+      },
+      "404_PG_TITL": {
+        "msgid": "404_PG_TITL",
+        "msgstr": [
+          "404 Not found"
+        ]
+      },
+      "REGISTER_ERR": {
+        "msgid": "REGISTER_ERR",
+        "msgstr": [
+          "Registration error."
+        ]
+      },
+      "NO_ORGS": {
+        "msgid": "NO_ORGS",
+        "msgstr": [
+          "A user with similar credentials already exists."
+        ]
+      },
+      "CONFLICT_ORGS": {
+        "msgid": "CONFLICT_ORGS",
+        "msgstr": [
+          "A user with credentials like the one being entered already exists in other organizations:"
+        ]
+      },
+      "CONFLICT_SIGNIN": {
+        "msgid": "CONFLICT_SIGNIN",
+        "msgstr": [
+          "Do you own the account mentioned above and want to sign in and associate your existing account to this WiFi service?"
+        ]
+      },
+      "PAY_SUCCESS": {
+        "msgid": "PAY_SUCCESS",
+        "msgstr": [
+          "Payment received successfully."
+        ]
+      },
+      "PAY_REQ": {
+        "msgid": "PAY_REQ",
+        "msgstr": [
+          "Payment required to proceed"
+        ]
+      },
+      "PAY_WARN${ timeout }${ maxAttempts }": {
+        "msgid": "PAY_WARN${ timeout }${ maxAttempts }",
+        "msgstr": [
+          "<p>By clicking on the button below you will be redirected to our payment gateway service where you can safely use your credit/debit card. From there you will be redirected to the website of your bank to confirm the transaction.</p><p>You will have ${ timeout } minutes to complete the process.<br /><strong>For this reason we recommend preparing your debit/credit card before initiating the payment process.</strong></p><p>If for any reason the process is not completed within the available time, the internet connection which allows you to reach the website of your bank will be closed, if this happens you can just log in again with the credentials you just registered and repeat the process up a maximum of ${ maxAttempts } times.</p>"
+        ]
+      },
+      "PAY_PROC_BTN": {
+        "msgid": "PAY_PROC_BTN",
+        "msgstr": [
+          "Proceed with the payment"
+        ]
+      },
+      "PAY_GIVE_UP_BTN": {
+        "msgid": "PAY_GIVE_UP_BTN",
+        "msgstr": [
+          "Cancel operation and log out"
+        ]
+      },
+      "PAY_FAIL": {
+        "msgid": "PAY_FAIL",
+        "msgstr": [
+          "Payment Failed"
+        ]
+      },
+      "PAY_SUB_H": {
+        "msgid": "PAY_SUB_H",
+        "msgstr": [
+          "Something went wrong with the payment."
+        ]
+      },
+      "PAY_TRY_AGAIN_BTN": {
+        "msgid": "PAY_TRY_AGAIN_BTN",
+        "msgstr": [
+          "Try again"
+        ]
+      },
+      "PAY_GIVE_UP_TXT": {
+        "msgid": "PAY_GIVE_UP_TXT",
+        "msgstr": [
+          "If you cannot complete the transaction you can either try to get in touch with your bank or cancel the operation."
+        ]
+      },
+      "PWD_RESET_TITL": {
+        "msgid": "PWD_RESET_TITL",
+        "msgstr": [
+          "Reset Password"
+        ]
+      },
+      "LOGIN_PG_LNK": {
+        "msgid": "LOGIN_PG_LNK",
+        "msgstr": [
+          "Go back to sign in"
+        ]
+      },
+      "PWD_RESET_ADD_TXT": {
+        "msgid": "PWD_RESET_ADD_TXT",
+        "msgstr": [
+          "Have you forgot your password? Enter your email address, phone number or username below and we'll send you the instructions to reset it."
+        ]
+      },
+      "USERNAME_LOG_LBL": {
+        "msgid": "USERNAME_LOG_LBL",
+        "msgstr": [
+          "Email, phone number or username"
+        ]
+      },
+      "USERNAME_LOG_PHOLD": {
+        "msgid": "USERNAME_LOG_PHOLD",
+        "msgstr": [
+          "enter email, phone number or username"
+        ]
+      },
+      "USERNAME_LOG_TITL": {
+        "msgid": "USERNAME_LOG_TITL",
+        "msgstr": [
+          "enter valid email address, an username or a phone number"
+        ]
+      },
+      "PWD_RESET_BTN": {
+        "msgid": "PWD_RESET_BTN",
+        "msgstr": [
+          "Reset password"
+        ]
+      },
+      "PWD_RESET_CNTC_TXT": {
+        "msgid": "PWD_RESET_CNTC_TXT",
+        "msgstr": [
+          "Please contact us if you have any trouble resetting your password."
+        ]
+      },
+      "PWD_CONFIRM_TITL": {
+        "msgid": "PWD_CONFIRM_TITL",
+        "msgstr": [
+          "Reset Password"
+        ]
+      },
+      "PWD_CONFIRM_H": {
+        "msgid": "PWD_CONFIRM_H",
+        "msgstr": [
+          "Reset your password"
+        ]
+      },
+      "PWD_CONFIRM_ADD_TXT": {
+        "msgid": "PWD_CONFIRM_ADD_TXT",
+        "msgstr": [
+          "Please enter your new password below."
+        ]
+      },
+      "PWD_CONFIRM": {
+        "msgid": "PWD_CONFIRM",
+        "msgstr": [
+          "Change password"
+        ]
+      },
+      "PWD_CHANGE_TITL": {
+        "msgid": "PWD_CHANGE_TITL",
+        "msgstr": [
+          "Change your password"
+        ]
+      },
+      "PWD_CURR_ERR": {
+        "msgid": "PWD_CURR_ERR",
+        "msgstr": [
+          "The new password cannot be the same as the current password."
+        ]
+      },
+      "PWD_CHNG_ERR": {
+        "msgid": "PWD_CHNG_ERR",
+        "msgstr": [
+          "An error occurred, the password has not been changed."
+        ]
+      },
+      "PWD_CHANGE_HELP_TXT": {
+        "msgid": "PWD_CHANGE_HELP_TXT",
+        "msgstr": [
+          "Use the form below to change your password."
+        ]
+      },
+      "CURR_PWD_LBL": {
+        "msgid": "CURR_PWD_LBL",
+        "msgstr": [
+          "Current password"
+        ]
+      },
+      "CURR_PWD_PHOLD": {
+        "msgid": "CURR_PWD_PHOLD",
+        "msgstr": [
+          "Your current password"
+        ]
+      },
+      "PWD1_LBL": {
+        "msgid": "PWD1_LBL",
+        "msgstr": [
+          "New Password"
+        ]
+      },
+      "PWD1_PHOLD": {
+        "msgid": "PWD1_PHOLD",
+        "msgstr": [
+          "Your new password"
+        ]
+      },
+      "PASSWORD_CHANGE": {
+        "msgid": "PASSWORD_CHANGE",
+        "msgstr": [
+          "Change Password"
+        ]
+      },
+      "CANCEL": {
+        "msgid": "CANCEL",
+        "msgstr": [
+          "Cancel"
+        ]
+      },
+      "DEFAULT_TITL${ orgName }": {
+        "msgid": "DEFAULT_TITL${ orgName }",
+        "msgstr": [
+          "Login to ${ orgName }"
+        ]
+      },
+      "PHONE_VERIF_TITL": {
+        "msgid": "PHONE_VERIF_TITL",
+        "msgstr": [
+          "Verify mobile number"
+        ]
+      },
+      "TOKEN_SENT": {
+        "msgid": "TOKEN_SENT",
+        "msgstr": [
+          "SMS verification code sent successfully."
+        ]
+      },
+      "PHONE_VERIFY (${ phone_number })": {
+        "msgid": "PHONE_VERIFY (${ phone_number })",
+        "msgstr": [
+          "Verify your mobile phone number (${ phone_number }) by inserting the code you received via SMS below."
+        ]
+      },
+      "MOBILE_CODE_PHOLD": {
+        "msgid": "MOBILE_CODE_PHOLD",
+        "msgstr": [
+          "enter SMS verification code"
+        ]
+      },
+      "MOBILE_CODE_TITL": {
+        "msgid": "MOBILE_CODE_TITL",
+        "msgstr": [
+          "this field must be a 6 digit numeric code"
+        ]
+      },
+      "MOBILE_PHONE_VERIFY": {
+        "msgid": "MOBILE_PHONE_VERIFY",
+        "msgstr": [
+          "Submit"
+        ]
+      },
+      "RESEND_TOKEN_LBL": {
+        "msgid": "RESEND_TOKEN_LBL",
+        "msgstr": [
+          "If you did not receive the verification SMS code, you can try sending it again by clicking below."
+        ]
+      },
+      "RESEND_TOKEN_WAIT_LBL${ seconds }": {
+        "msgid": "RESEND_TOKEN_WAIT_LBL${ seconds }",
+        "msgstr": [
+          "A new SMS can be requested in ${ seconds } seconds."
+        ]
+      },
+      "RESEND_TOKEN": {
+        "msgid": "RESEND_TOKEN",
+        "msgstr": [
+          "Send a new verification code"
+        ]
+      },
+      "PHONE_CHANGE_LBL": {
+        "msgid": "PHONE_CHANGE_LBL",
+        "msgstr": [
+          "Wrong phone number?"
+        ]
+      },
+      "PHONE_CHANGE_BTN": {
+        "msgid": "PHONE_CHANGE_BTN",
+        "msgstr": [
+          "Change your phone number"
+        ]
+      },
+      "LOGOUT_LBL": {
+        "msgid": "LOGOUT_LBL",
+        "msgstr": [
+          "If you need to cancel the process you can log out below."
+        ]
+      },
+      "PHONE_CHANGE_TITL": {
+        "msgid": "PHONE_CHANGE_TITL",
+        "msgstr": [
+          "Change mobile number"
+        ]
+      },
+      "LOGIN_SUCCESS": {
+        "msgid": "LOGIN_SUCCESS",
+        "msgstr": [
+          "Login successful"
+        ]
+      },
+      "LOGOUT_CONTENT": {
+        "msgid": "LOGOUT_CONTENT",
+        "msgstr": [
+          "Logout successful"
+        ]
+      },
+      "LOGIN_AGAIN": {
+        "msgid": "LOGIN_AGAIN",
+        "msgstr": [
+          "Login again"
+        ]
+      },
+      "LOGIN": {
+        "msgid": "LOGIN",
+        "msgstr": [
+          "Log in"
+        ]
+      },
+      "USER_INACTIVE": {
+        "msgid": "USER_INACTIVE",
+        "msgstr": [
+          "Your account has been deactivated. Please contact customer support for more information."
+        ]
+      },
+      "LOGIN_ERR": {
+        "msgid": "LOGIN_ERR",
+        "msgstr": [
+          "Login error occurred."
+        ]
+      },
+      "REMEMBER_ME": {
+        "msgid": "REMEMBER_ME",
+        "msgstr": [
+          "remember me on this device"
+        ]
+      },
+      "LOGIN_ADD_INFO_TXT": {
+        "msgid": "LOGIN_ADD_INFO_TXT",
+        "msgstr": [
+          "By logging in, you accept the {terms_and_conditions} and the {privacy_policy} of this WiFi service. "
+        ]
+      },
+      "REGISTER_BTN_LBL": {
+        "msgid": "REGISTER_BTN_LBL",
+        "msgstr": [
+          "Not registered yet?"
+        ]
+      },
+      "HELPDESK": {
+        "msgid": "HELPDESK",
+        "msgstr": [
+          "Helpdesk"
+        ]
+      },
+      "404_H": {
+        "msgid": "404_H",
+        "msgstr": [
+          "404"
+        ]
+      },
+      "404_SUBH": {
+        "msgid": "404_SUBH",
+        "msgstr": [
+          "Not Found"
+        ]
+      },
+      "404_MESSAGE": {
+        "msgid": "404_MESSAGE",
+        "msgstr": [
+          "Sorry, we couldn't find the page you were looking for."
+        ]
+      },
+      "HOME_PG_LINK_TXT": {
+        "msgid": "HOME_PG_LINK_TXT",
+        "msgstr": [
+          "Go back to homepage"
+        ]
       }
     }
   }
