@@ -552,7 +552,7 @@ export default class Status extends React.Component {
         true,
         false,
         "error",
-        t`the wifi session ended. log in againto start a new session`,
+        t`INACTIVE_SESSION_LOGOUT`,
       );
     }
   }
