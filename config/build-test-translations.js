@@ -6,9 +6,7 @@ const childProcess = require("child_process");
 const rootDir = process.cwd();
 const i18nDir = path.join(rootDir, "i18n");
 const outputFile = path.join(rootDir, "client", "test-translation.json");
-
 // eslint-disable-next-line consistent-return
-
 function poToObject(file) {
   const ttagBinary = path.join(
     rootDir,
@@ -37,14 +35,13 @@ function buildTestTranslations() {
   const poFiles = allFiles.filter(isBasePoFile);
 
   const enFile = poFiles.find((file) => path.basename(file, ".po") === "en");
-  const selectedFile = enFile || poFiles[0];
 
-  if (!selectedFile) {
-    console.error("Error: no .po files found in i18n directory");
+  if (!enFile) {
+    console.error("Error: en.po not found in i18dirn ectory");
     process.exit(1);
   }
 
-  const output = poToObject(selectedFile);
+  const output = poToObject(enFile);
 
   fs.writeFileSync(outputFile, `${JSON.stringify(output, null, 2)}\n`);
   console.log(`Generated ${outputFile}`);
