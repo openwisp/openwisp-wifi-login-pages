@@ -11,6 +11,7 @@ import loadTranslation from "../../utils/load-translation";
 import logError from "../../utils/log-error";
 import tick from "../../utils/tick";
 import Status from "./status";
+import SessionsTable from "./sessions-table";
 import validateToken from "../../utils/validate-token";
 import {initialState} from "../../reducers/organization";
 import Modal from "../../utils/modal";
@@ -984,10 +985,19 @@ describe("<Status /> interactions", () => {
       context: {setLoading: jest.fn()},
     });
     await tick();
-    expect(wrapper.contains(<th>Start time</th>)).toBe(true);
-    expect(wrapper.contains(<th>Stop time</th>)).toBe(true);
-    expect(wrapper.contains(<th>Duration</th>)).toBe(true);
-    expect(wrapper.contains(<th>Device address</th>)).toBe(true);
+    const sessionsTable = wrapper.find(SessionsTable);
+    expect(sessionsTable.exists()).toBe(true);
+    expect(sessionsTable.prop("activeSessions").length).toBe(1);
+    expect(sessionsTable.prop("screenWidth")).toBe(
+      wrapper.instance().state.screenWidth,
+    );
+    expect(sessionsTable.prop("statusPage")).toBe(props.statusPage);
+    expect(sessionsTable.prop("captivePortalLogoutForm")).toBe(
+      props.captivePortalLogoutForm,
+    );
+    expect(sessionsTable.prop("handleSessionLogout")).toBe(
+      wrapper.instance().handleSessionLogout,
+    );
   });
 
   it("test passed session table", async () => {
@@ -1021,10 +1031,9 @@ describe("<Status /> interactions", () => {
       context: {setLoading: jest.fn()},
     });
     await tick();
-    expect(wrapper.contains(<th>Start time</th>)).toBe(true);
-    expect(wrapper.contains(<th>Stop time</th>)).toBe(true);
-    expect(wrapper.contains(<th>Duration</th>)).toBe(true);
-    expect(wrapper.contains(<th>Device address</th>)).toBe(true);
+    const sessionsTable = wrapper.find(SessionsTable);
+    expect(sessionsTable.exists()).toBe(true);
+    expect(sessionsTable.prop("pastSessions").length).toBe(1);
   });
 
   it("test empty session table", async () => {
@@ -1052,10 +1061,7 @@ describe("<Status /> interactions", () => {
     });
     wrapper.instance().getUserPastRadiusSessions();
     await tick();
-    expect(wrapper.contains(<th>Start time</th>)).toBe(false);
-    expect(wrapper.contains(<th>Stop time</th>)).toBe(false);
-    expect(wrapper.contains(<th>Duration</th>)).toBe(false);
-    expect(wrapper.contains(<th>Device address</th>)).toBe(false);
+    expect(wrapper.find(SessionsTable).exists()).toBe(false);
   });
 
   it("test interval cleared on componentUnmount", async () => {
@@ -1709,86 +1715,7 @@ describe("<Status /> interactions", () => {
     );
     expect(localStorage.getItem("default_logout_method")).toBe(null);
   });
-  it("should render small table row and it should contain logout if logout_by_session is enabled", () => {
-    const prop = createTestProps();
-    prop.captivePortalLogoutForm.logout_by_session = true;
-    wrapper = shallow(<Status {...prop} />, {
-      context: {setLoading: jest.fn()},
-      disableLifecycleMethods: false,
-    });
-    const handleSessionLogout = jest.spyOn(
-      wrapper.instance(),
-      "handleSessionLogout",
-    );
-    const TableRowWrapper = shallow(
-      wrapper.instance().getSmallTableRow(
-        {
-          session_id: 1,
-          start_time: new Date(),
-          stop_time: null, // needed for logout button
-          input_octets: 100000,
-          output_octets: 100000,
-        },
-        wrapper.instance().getSessionInfo(),
-      ),
-    );
-    expect(TableRowWrapper.contains(<th>Start time:</th>)).toBe(true);
-    expect(TableRowWrapper.contains(<th>Stop time:</th>)).toBe(true);
-    expect(TableRowWrapper.contains(<td>session is active</td>)).toBe(true);
-    expect(TableRowWrapper.contains(<th>Duration:</th>)).toBe(true);
-    expect(TableRowWrapper.contains(<th>Download:</th>)).toBe(true);
-    expect(TableRowWrapper.contains(<th>Upload:</th>)).toBe(true);
-    expect(TableRowWrapper.contains(<th>Device address:</th>)).toBe(true);
-    TableRowWrapper.find(".button").simulate("click");
-    expect(handleSessionLogout.mock.calls.length).toBe(1);
-  });
 
-  it("should execute getSmallTable correctly", () => {
-    const prop = createTestProps();
-    const activeSession = {
-      session_id: 1,
-      start_time: "2021-07-08T00:22:28-04:00",
-      stop_time: null,
-      input_octets: 0,
-      output_octets: 0,
-    };
-    const pastSession = {
-      session_id: 2,
-      start_time: "2021-07-08T00:22:28-04:00",
-      stop_time: "2021-07-08T00:22:29-04:00",
-      input_octets: 10000,
-      output_octets: 100000,
-    };
-    wrapper = shallow(<Status {...prop} />, {
-      context: {setLoading: jest.fn()},
-      disableLifecycleMethods: false,
-    });
-    wrapper.setState({
-      activeSessions: [activeSession],
-      pastSessions: [pastSession],
-    });
-    const getSmallTableRow = jest.spyOn(wrapper.instance(), "getSmallTableRow");
-    const getSmallTableWrapper = shallow(
-      wrapper.instance().getSmallTable(wrapper.instance().getSessionInfo()),
-    );
-    expect(getSmallTableRow.mock.calls.length).toBe(2);
-    expect(getSmallTableRow.mock.calls.pop()).toEqual([
-      pastSession,
-      wrapper.instance().getSessionInfo(),
-    ]);
-    expect(getSmallTableRow.mock.calls.pop()).toEqual([
-      activeSession,
-      wrapper.instance().getSessionInfo(),
-    ]);
-    expect(
-      getSmallTableWrapper.contains(
-        <tr className="active-session" key="1stop_time">
-          <th>Stop time:</th>
-          <td>session is active</td>
-        </tr>,
-      ),
-    ).toBe(true);
-  });
   it("should call finalOperations once after loading userData", async () => {
     validateToken.mockReturnValue(true);
     const prop = createTestProps();
@@ -1826,10 +1753,13 @@ describe("<Status /> interactions", () => {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: true,
     });
-    const getSessionInfo = jest.spyOn(wrapper.instance(), "getSessionInfo");
+    const getUserActiveRadiusSessions = jest.spyOn(
+      wrapper.instance(),
+      "getUserActiveRadiusSessions",
+    );
     const result = await wrapper.instance().finalOperations();
     expect(result).toEqual();
-    expect(getSessionInfo).not.toHaveBeenCalled();
+    expect(getUserActiveRadiusSessions).not.toHaveBeenCalled();
   });
   it("should call logout if getUserRadiusSessions is rejected (unauthorized or forbidden)", async () => {
     axios.mockImplementationOnce(() =>
@@ -2012,55 +1942,7 @@ describe("<Status /> interactions", () => {
     expect(wrapper.instance().state.hasMoreSessions).toEqual(true);
     expect(mockRef.submit).toHaveBeenCalledWith();
   });
-  it("should call handleSessionLogout if clicked on session row of large table", async () => {
-    validateToken.mockReturnValue(true);
-    const prop = createTestProps();
-    wrapper = shallow(<Status {...prop} />, {
-      context: {setLoading: jest.fn()},
-      disableLifecycleMethods: true,
-    });
-    const handleSessionLogout = jest.spyOn(
-      wrapper.instance(),
-      "handleSessionLogout",
-    );
-    const session = {
-      start_time: "2021-07-08T00:22:28-04:00",
-      stop_time: null,
-      input_octets: 100000,
-      output_octets: 100000,
-    };
-    const row = wrapper.instance().getLargeTableRow(session, {}, true);
-    const inputBtn =
-      row.props.children[row.props.children.length - 1].props.children[1];
-    expect(inputBtn.props).toEqual({
-      type: "button",
-      className: "button small session-logout",
-      value: "Logout",
-      onClick: expect.any(Function),
-    });
-    inputBtn.props.onClick();
-    expect(handleSessionLogout).toHaveBeenCalledWith(session);
-  });
-  it("should call getSmallTable if screenWidth is less than or equal to 656", () => {
-    validateToken.mockReturnValue(true);
-    const prop = createTestProps();
-    wrapper = shallow(<Status {...prop} />, {
-      context: {setLoading: jest.fn()},
-      disableLifecycleMethods: true,
-    });
-    const session = wrapper.instance().getSessionInfo();
-    const getLargeTable = jest.spyOn(wrapper.instance(), "getLargeTable");
-    const getSmallTable = jest.spyOn(wrapper.instance(), "getSmallTable");
-    wrapper.instance().setState({screenWidth: 656});
-    wrapper.instance().getTable(session);
-    expect(getSmallTable).toHaveBeenCalledWith(session);
-    wrapper.instance().setState({screenWidth: 450});
-    wrapper.instance().getTable(session);
-    expect(getSmallTable).toHaveBeenCalledWith(session);
-    wrapper.instance().setState({screenWidth: 720});
-    wrapper.instance().getTable(session);
-    expect(getLargeTable).toHaveBeenCalledWith(session);
-  });
+
   it("should render additional fields in captivePortalLogoutForm", async () => {
     validateToken.mockReturnValue(true);
     const prop = createTestProps();
@@ -2804,86 +2686,5 @@ describe("<Status /> interactions", () => {
       ...prop.userData,
       payment_url: "https://account.openwisp.io/payment/123",
     });
-  });
-});
-
-describe("<Status /> accounting_swap_octets", () => {
-  let props;
-  let wrapper;
-  const sessionData = {
-    session_id: 1,
-    start_time: "2020-09-08T00:22:28-04:00",
-    stop_time: null,
-    input_octets: 2000, // Download: 2 kB
-    output_octets: 1000, // Upload: 1 kB
-  };
-
-  beforeEach(() => {
-    axios.mockImplementationOnce(() =>
-      Promise.resolve({
-        status: 200,
-        statusText: "OK",
-        data: [sessionData],
-        headers: {},
-      }),
-    );
-    props = createTestProps();
-  });
-
-  it("should not swap download and upload when accounting_swap_octets is false", async () => {
-    props.statusPage.accounting_swap_octets = false;
-    wrapper = shallow(<Status {...props} />, {
-      context: {setLoading: jest.fn()},
-    });
-    await wrapper.instance().getUserActiveRadiusSessions();
-
-    const largeTableRow = wrapper
-      .instance()
-      .getLargeTableRow(
-        sessionData,
-        wrapper.instance().getSessionInfo().settings,
-      );
-    const largeTableWrapper = shallow(<div>{largeTableRow}</div>);
-    // download is input_octets (2000 => '2 kB'), upload is output_octets (1000 => '1 kB')
-    // download is the 4th td (index 3), upload is the 5th (index 4)
-    expect(largeTableWrapper.find("td").at(3).text()).toBe("2 kB");
-    expect(largeTableWrapper.find("td").at(4).text()).toBe("1 kB");
-
-    const smallTableRow = wrapper
-      .instance()
-      .getSmallTableRow(sessionData, wrapper.instance().getSessionInfo());
-    const smallTableWrapper = shallow(<table>{smallTableRow}</table>);
-    const rows = smallTableWrapper.find("tr");
-    // download is the 4th row (index 3), upload is the 5th (index 4)
-    expect(rows.at(3).find("td").text()).toBe("2 kB");
-    expect(rows.at(4).find("td").text()).toBe("1 kB");
-  });
-
-  it("should swap download and upload when accounting_swap_octets is true", async () => {
-    props.statusPage.accounting_swap_octets = true;
-    wrapper = shallow(<Status {...props} />, {
-      context: {setLoading: jest.fn()},
-    });
-    await wrapper.instance().getUserActiveRadiusSessions();
-
-    const largeTableRow = wrapper
-      .instance()
-      .getLargeTableRow(
-        sessionData,
-        wrapper.instance().getSessionInfo().settings,
-      );
-    const largeTableWrapper = shallow(<div>{largeTableRow}</div>);
-    // download is output_octets (1000 => '1 kB'), upload is input_octets (2000 => '2 kB')
-    expect(largeTableWrapper.find("td").at(3).text()).toBe("1 kB");
-    expect(largeTableWrapper.find("td").at(4).text()).toBe("2 kB");
-
-    const smallTableRow = wrapper
-      .instance()
-      .getSmallTableRow(sessionData, wrapper.instance().getSessionInfo());
-    const smallTableWrapper = shallow(<table>{smallTableRow}</table>);
-    const rows = smallTableWrapper.find("tr");
-    // download is the 4th row, upload is the 5th
-    expect(rows.at(3).find("td").text()).toBe("1 kB");
-    expect(rows.at(4).find("td").text()).toBe("2 kB");
   });
 });
