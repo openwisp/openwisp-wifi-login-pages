@@ -548,7 +548,12 @@ export default class Status extends React.Component {
     if (!isCurrentSessionActive) {
       // Session for this MAC is no longer active on the NAS — log out from WLP.
       // The "true" argument ensures the user can quickly sign in again.
-      await this.handleLogout(true, false, "error", t`INACTIVE_SESSION_LOGOUT`);
+      await this.handleLogout(
+        true,
+        false,
+        "error",
+        t`the wifi session ended. log in againto start a new session`,
+      );
     }
   }
 

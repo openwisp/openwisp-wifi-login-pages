@@ -7,7 +7,8 @@ const rootDir = process.cwd();
 const i18nDir = path.join(rootDir, "i18n");
 const outputFile = path.join(rootDir, "client", "test-translation.json");
 
-//eslint-disable-next-line consistent-return
+// eslint-disable-next-line consistent-return
+
 function poToObject(file) {
   const ttagBinary = path.join(
     rootDir,
