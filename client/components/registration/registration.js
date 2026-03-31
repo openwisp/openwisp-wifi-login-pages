@@ -499,7 +499,9 @@ export default class Registration extends React.Component {
                           value={email}
                           onChange={this.handleChange}
                           placeholder={t`EMAIL_PHOLD`}
-                          pattern={getSafeEmailPattern(input_fields.email.pattern)}
+                          pattern={getSafeEmailPattern(
+                            input_fields.email.pattern,
+                          )}
                           autoComplete="email"
                           title={t`EMAIL_PTRN_DESC`}
                         />
