@@ -8,6 +8,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 const TerserPlugin = require("terser-webpack-plugin");
 const setup = require("./setup");
+const browserTargets = require("./babel-browsers");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const CURRENT_WORKING_DIR = process.cwd();
@@ -135,6 +136,24 @@ module.exports = (env, argv) => {
           test: /\.(js|jsx)$/,
           exclude: /node_modules/,
           use: ["babel-loader"],
+        },
+        {
+          test: /\.m?jsx?$/,
+          include: /node_modules/,
+          use: [
+            {
+              loader: "babel-loader",
+              options: {
+                configFile: false,
+                presets: [
+                  [
+                    "@babel/preset-env",
+                    {targets: browserTargets, modules: false},
+                  ],
+                ],
+              },
+            },
+          ],
         },
         {
           test: /\.css$/,
