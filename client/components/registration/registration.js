@@ -27,6 +27,10 @@ import redirectToPayment from "../../utils/redirect-to-payment";
 import InfoModal from "../../utils/modal";
 import getPlanSelection from "../../utils/get-plan-selection";
 import getPlans from "../../utils/get-plans";
+import {
+  getEmailTypoSuggestion,
+  getSafeEmailPattern,
+} from "../../utils/email-validation";
 
 const PhoneInput = React.lazy(
   () => import(/* webpackChunkName: 'PhoneInput' */ "react-phone-input-2"),
@@ -134,6 +138,17 @@ export default class Registration extends React.Component {
       zipcode,
       country,
     } = this.state;
+    const suggestedEmail = getEmailTypoSuggestion(email);
+
+    if (suggestedEmail) {
+      this.setState({
+        errors: {
+          ...errors,
+          email: `Did you mean ${suggestedEmail}?`,
+        },
+      });
+      return false;
+    }
 
     if (password1 !== password2) {
       this.setState({
@@ -484,7 +499,9 @@ export default class Registration extends React.Component {
                           value={email}
                           onChange={this.handleChange}
                           placeholder={t`EMAIL_PHOLD`}
-                          pattern={input_fields.email.pattern}
+                          pattern={getSafeEmailPattern(
+                            input_fields.email.pattern,
+                          )}
                           autoComplete="email"
                           title={t`EMAIL_PTRN_DESC`}
                         />
