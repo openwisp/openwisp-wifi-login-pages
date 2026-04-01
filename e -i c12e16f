@@ -1,0 +1,807 @@
+[33me8c16b1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeat/auto-generate-test-translation[m[33m, [m[1;31morigin/feat/auto-generate-test-translation[m[33m)[m [translations] Fix code style issues #902
+[33mfd0e5a0[m [status] Update test to use translated string instead of key #902
+[33m1cfb80a[m [translations] Update snapshots after auto-generating test-translation.json #902
+[33mb027400[m fix formatting in build-test-translation.js
+[33mf589975[m [translations] Auto-generate test-translation.json from en.po #902
+[33mc12e16f[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m, [m[1;32missues/1043-replace-twitter-icon-with-x-icon[m[33m)[m [deps] Upgraded dompurify to ^3.3.3 #986
+[33mc2813c5[m [deps] Bump undici from 7.22.0 to 7.24.1
+[33m04ebfc8[m [deps] Bump devalue from 5.6.3 to 5.6.4
+[33m6fbdc13[m [deps] Rebuilt yarn.lock to resolve false positive vulnerabilities #986
+[33m290b2dd[m [fix] Fixed react state update warning in phone number verification #668
+[33m9708146[m [ci] Enabled CI failure bot
+[33mf9db4d7[m [deps] Bump dompurify from 3.3.1 to 3.3.2
+[33mcd6e5cd[m [deps] Bump @babel/eslint-parser from 7.28.5 to 7.28.6
+[33m5d8460b[m [deps] Bump html-webpack-plugin from 4.5.2 to 5.6.6
+[33m0a6fa18[m [deps] Bump react-router-dom from 6.24.0 to 6.30.3
+[33m93b8c9d[m [deps] Bump jsdom from 27.3.0 to 28.1.0
+[33m6fdbfc3[m [deps] Bump axios from 1.13.5 to 1.13.6
+[33mf00390e[m [deps] Bump selenium-webdriver from 4.39.0 to 4.41.0
+[33mbb36d03[m [deps] Bump svgo from 3.3.2 to 3.3.3
+[33m25eec21[m [ci] Added automated backport workflow
+[33m71c1db2[m [deps] Bump qs from 6.14.1 to 6.14.2
+[33m6cb15e6[m [deps] Bump axios from 1.13.2 to 1.13.5
+[33m1e8811e[m [deps] Bump webpack from 5.101.3 to 5.104.1
+[33mc34dc5c[m [deps] Bump @babel/preset-env from 7.18.2 to 7.29.0
+[33m8256f2a[m [deps] Bump copy-webpack-plugin from 6.4.1 to 13.0.1
+[33mf0e7e6e[m [docs] Port changelog for 1.2.2
+[33mb32a065[m [deps] Bump @babel/preset-react from 7.18.6 to 7.28.5
+[33me9bf257[m [deps] Bump core-js from 3.47.0 to 3.48.0
+[33m5ab1afc[m [deps] Bump webpack-dev-server from 5.2.2 to 5.2.3
+[33md5f2d05[m [deps] Bump css-loader from 7.1.2 to 7.1.3
+[33m1393643[m [deps] Bump lodash from 4.17.21 to 4.17.23
+[33m1eb25ed[m [fix] Removed unused dependencies, added knip to CI QA checks #1007
+[33mbd65eb5[m [deps] Bump qs from 6.14.0 to 6.14.1
+[33m18de7e4[m [ci] Bump actions/cache from 4 to 5
+[33mf030dce[m [deps] Upgraded dompurify to ^3.3.1 #986
+[33mc5a4bc1[m [deps] Upgraded lodash to ^4.17.21 #986
+[33m39fe24a[m [deps] Upgraded concurrently to ^9.2.1 #986
+[33mb30936a[m [deps] Upgraded typescript to ^5.9.3 #986
+[33mc476339[m [deps] Upgraded core-js to 3.47.0 #986
+[33m3807279[m [deps] Upgraded node-plop to ^0.32.3 #986
+[33md204e21[m [deps] Upgraded duration-formatter to ^1.1.1 #986
+[33m0a3ec72[m [deps] Upgraded qs to ^6.14.0 #986
+[33me0c847d[m [deps] Upgraded jsdom to ^27.3.0 #986
+[33mb3a98d7[m [deps] Upgraded deepmerge to ^4.3.1 #986
+[33m5a2a2df[m [deps] Upgraded fs-extra to ^11.3.3 #986
+[33me524a89[m [deps] Upgraded marked to ^17.0.1 #986
+[33m0f21a81[m [deps] Upgrade terser-webpack-plugin to 5.x and fix compatibility issues #936
+[33mce5b394[m [deps] Upgraded selenium-webdriver to 4.39.0 #986
+[33mca79386[m [deps] Upgraded axios from ^1.10.0 to ^1.13.2 #986
+[33m71debbf[m [deps] Update jest and jest-environment-jsdom to 30.2.0 and
+[33mc90538a[m [deps] Updated ttag
+[33mbe3b4f2[m [deps] Updated jest
+[33mcbc857b[m [change] Removed Captive Portal API (unused)
+[33mee4592d[m [deps] Migrated to coveralls-next
+[33m4b4c54d[m [deps] Removed autoprefixer
+[33md90f0c8[m [deps] Updated webpack-bundle-analyzer from ^4.4.0 to ^5.1.0
+[33mfc07133[m [deps] Updated dependencies (minor versions only)
+[33ma337171[m [fix] Transpile JS for old browsers
+[33m504198f[m [fix] Fixed webpack CSS hashes
+[33m72d0e6a[m [docs] Port changelog for 1.2.1
+[33m426d906[m [fix] Fixed SMS cooldown translation texts
+[33m8a045a5[m [deps] Bump winston from 3.17.0 to 3.18.3
+[33me7fde3c[m [fix] Keep supporting old browsers
+[33m82d0b87[m [deps] Bump @babel/plugin-transform-runtime from 7.28.3 to 7.28.5
+[33mf06b96f[m [deps] Bump min-document from 2.19.0 to 2.19.2
+[33m07ee5da[m [deps] Bump js-yaml from 4.1.0 to 4.1.1
+[33m8021fa4[m [deps] Bump express from 5.1.0 to 5.2.0
+[33m0521c51[m [ci] Bump actions/checkout from 5 to 6
+[33m6cbb37c[m [ci] Use openwisp-utils dev (1.3.0a)
+[33m4f601dc[m [deps] Bump node-forge from 1.3.1 to 1.3.2
+[33mf5ebba4[m [feature] Logout user from WLP if RADIUS session is terminated #933
+[33mdd84757[m [chores] Bumped version to 1.3.0-dev
+[33mbaa77d2[m [tests] Use 127.0.0.1:8080 instead of 0.0.0.0:8080 in browser tests
+[33me0d85ec[m 1.2.0 release
+[33m7858637[m [tests/deps] Bumped openwisp-utils~=1.2.0
+[33m78caeb6[m [docs] Add radius_usage_enabled to status_page settings #916
+[33mc15bd75[m [fix] Hide radius usage container in internet mode
+[33m8eb57bd[m [fix] Removed check for active session for performing captive portal login #918
+[33m34ebfc5[m [fix] Use calling_station_id instead of macaddr for MAC filtering #914
+[33ma0bb337[m [chores] Status: corrected naming of getUserPastRadiusSessions
+[33m2e24aca[m [ci] Start redis before startin openwisp-radius
+[33ma2b6398[m [tests] Made CI tests more robust (wait for server, max 5 mins)
+[33m003060a[m [qa] Updated code formatting
+[33mc23f15c[m [feature] Added basic support for RFC 8908 Captive Portal API
+[33m1242953[m [fix] Server: consistently return NOT_FOUND message on 404
+[33m61da465[m [ci] Bump actions/setup-python from 5 to 6
+[33m47d03d9[m [deps] Bump eslint-plugin-import from 2.31.0 to 2.32.0
+[33mc65d6fb[m [deps] Bump marked from 12.0.0 to 16.3.0
+[33ma94c801[m [change] Made warning message in status page customizable
+[33m21198a3[m [deps] Bump @babel/register from 7.27.1 to 7.28.3
+[33m3bcf3d4[m [deps] Bump mini-css-extract-plugin from 2.9.2 to 2.9.4
+[33mcf8c717[m [deps] Bump tar-fs from 2.1.3 to 2.1.4
+[33mb7c548b[m [deps] Bump @babel/runtime from 7.27.6 to 7.28.4
+[33m1b0da64[m [deps] Bump @babel/plugin-transform-runtime from 7.24.3 to 7.28.3
+[33m070ef39[m [deps] Bump regenerator-runtime from 0.13.11 to 0.14.1
+[33m838338b[m [deps] Bump terser-webpack-plugin from 4.2.3 to 5.3.14
+[33mfba15ca[m [deps] Bump morgan and @types/morgan
+[33m2ef6f11[m [deps] Bump @babel/core from 7.25.2 to 7.28.4
+[33mf2a4fea[m [deps] Bump webpack from 5.99.6 to 5.101.3
+[33mda53694[m [deps] Bump redux-mock-store from 1.5.4 to 1.5.5
+[33mfbe25b7[m [deps] Bump @babel/eslint-parser from 7.28.0 to 7.28.4
+[33m752adac[m [deps] Bump selenium-webdriver from 4.31.0 to 4.35.0
+[33m2908869[m [deps] Bump axios from 1.10.0 to 1.12.0
+[33m937f4d2[m [feature] Allow to swap RADIUS accounting octets in status page #900
+[33mb57c6c6[m [fix] Relay querystring in sync auth mode #904
+[33m574f1ae[m [docs] Updated FUNDING.yml
+[33ma191ec2[m [ci] Bump actions/checkout from 4 to 5
+[33me1ef7e0[m [fix] Jest config to support esm packages #911
+[33m33499cb[m [fix] Display RADIUS usage in MB/GB (base 10) instead of MiB/GiB (base 2)
+[33m36c6958[m [fix] Make plans modal in status scrollable
+[33m35775b8[m [chores:ui] Minor adjustment to modal close button
+[33m7ed2ef4[m [feature] Hide progress bar in RADIUS usage component if check value is zero
+[33m3827cd7[m [chores:ui] Fixed lateral padding in Privacy/ToS modals
+[33m8a55883[m [docs] Added link to WLP demo
+[33mbee360d[m [chores:ui] Minor style improvements to modals
+[33m2d2302b[m [qa] Added /log to .prettierignore
+[33mb70267b[m [chores:i18n] Minor improvement to TRAFFIC_EXHAUSTED
+[33macacaba[m [chores] Updated yarn.loc
+[33m980ed3a[m [deps] Upgrade dependencies and react to v17 #854
+[33m9de8ee9[m [chores:i18n] Updated translation references again
+[33m2781d58[m [chores:i18n] Fixed HELPDESK in Spanish
+[33mc6a0114[m [chores:i18n] Improved english translations for plan upgrades
+[33mde0c8e4[m [feature:i18n] Add Spanish translations for WiFi login pages
+[33m62070a8[m [chores] Updated translation references
+[33m9b138e8[m [fix] Fixed upgrade button and limit exceeded message not rendering
+[33m2fb437e[m [feature] Added daily log rotation #46
+[33m9018a32[m [deps/chores] Bump eslint-plugin-jsx-a11y from 6.7.1 to 6.10.2
+[33mb181c6a[m [deps] Bump compression-webpack-plugin from 6.1.1 to 11.1.0
+[33mc2a8914[m [deps] Bump eslint-plugin-react from 7.37.2 to 7.37.5
+[33m4884924[m [deps] Bump @babel/runtime from 7.27.4 to 7.27.6
+[33m8fb418d[m [deps] Bump brace-expansion from 1.1.11 to 1.1.12
+[33m2b8212b[m [qa] Switched python code to double quotes
+[33m35acbca[m [docs] Minor fix for spellcheck (iframe)
+[33m5368ad5[m [feature] Allowed synchronous captive portal authentication #864
+[33m019e921[m [deps] Bump @babel/runtime from 7.26.10 to 7.27.4
+[33m6c6355e[m [deps] Bump @babel/register from 7.24.6 to 7.27.1
+[33mbac2fca[m [deps] Bump braces from 3.0.2 to 3.0.3
+[33m851760a[m [deps] Bump tar-fs from 2.1.2 to 2.1.3
+[33mecb51b1[m [deps] Bump eslint-plugin-import from 2.27.5 to 2.31.0
+[33m7fd0cd7[m [deps] Bump winston from 3.3.3 to 3.17.0
+[33mc0d91d6[m [deps] Bump deepmerge from 4.2.2 to 4.3.1
+[33mb9af9e5[m [test] Added test for add-org command #808 (#871)
+[33m49fce49[m [deps] Bump react-select from 5.7.4 to 5.10.1
+[33mb445e8f[m [deps] Bump mini-css-extract-plugin from 1.6.2 to 2.9.2
+[33m7a6fdb4[m [deps] Bump universal-cookie-express from 6.1.1 to 8.0.1
+[33m3297877[m [deps] Pinned react-toastify to 9.1.3
+[33m1d8dcc8[m [deps] Bump @babel/plugin-transform-classes from 7.19.0 to 7.25.9
+[33m8f6bce1[m [deps] Bump react-cookie from 4.1.1 to 8.0.1
+[33m8b05c2f[m [deps] Bump css-loader from 5.2.7 to 7.1.2
+[33m8bedec1[m [deps] Bump micromatch from 4.0.4 to 4.0.8
+[33m33cf3a3[m [deps] Upgraded webpack 5.99.6
+[33m9d86199[m [deps] Bump axios from 0.28.0 to 1.8.2
+[33me22c873[m [qa] Formatted code
+[33m36cb0f5[m [deps] Bump prettier from 2.6.2 to 3.5.3
+[33md0c1ab8[m [tests] Fix selenium tests
+[33mf8b303d[m [deps] Bump selenium-webdriver from 4.10.0 to 4.31.0
+[33m4e139bb[m [deps] Bump tar-fs from 2.1.1 to 2.1.2
+[33m6cc0c7c[m [deps] Bump @babel/runtime from 7.23.1 to 7.26.10
+[33m2b61c1c[m [deps] Bump koa from 2.15.4 to 2.16.1
+[33m0a5575c[m [fix] Don't show "limit-info" div if API does not return any check #819
+[33m4911b49[m [ci] Minor formatting YAML change
+[33m1e0d78c[m [ci] Updated pip cache directive
+[33mf19e0f3[m [docs] Updated CI badge
+[33m2f2d4ab[m [ci] Run latest version of Python avaialble on the system
+[33mb61387b[m [ci] Run on ubuntu-latest
+[33m9472d0e[m [deps] Bump elliptic from 6.6.0 to 6.6.1
+[33m501e05e[m [deps] Bump koa from 2.13.1 to 2.15.4
+[33mc1b9cae[m [deps] Bump dompurify from 3.1.3 to 3.2.4
+[33m811e414[m [deps] Bump nanoid from 3.2.0 to 3.3.8
+[33mc30d303[m [ci] Cache python env: use OpenWISP RADIUS commit hash #849
+[33mafb7622[m [docs/qa] Reformatted README
+[33me2c6b71[m [ci] Updated commit message prefix of dependabot
+[33m5e8b8c5[m [docs] Updated links to docs [skip ci]
+[33m5b6feae[m 1.1.0 release
+[33m418ea91[m Bump webpack-bundle-analyzer from 4.9.1 to 4.10.2
+[33mc705d33[m Bump http-proxy-middleware from 2.0.6 to 2.0.7
+[33m47b500b[m Bump elliptic from 6.5.7 to 6.6.0
+[33mcd4cd16[m Bump eslint-plugin-react from 7.31.8 to 7.37.2
+[33m7549bf9[m Bump dompurify from 3.0.6 to 3.1.3
+[33m647b482[m [docs] Added FUNDING.yml
+[33mc9cba8e[m Bump express from 4.19.2 to 4.20.0
+[33m3789415[m Bump node-plop from 0.31.0 to 0.32.0
+[33mc7cbc0d[m Bump redux-thunk from 2.4.1 to 2.4.2
+[33m8fc0221[m [docs] QA fixes
+[33m635c80e[m [docs] Updated links to RADIUS docs
+[33mb866a8e[m Bump elliptic from 6.5.4 to 6.5.7
+[33m80313c2[m [ci] Fixed build: pin Django to 4.2.15
+[33m21ca02c[m [fix:security] Updated polyfill URL to cloudflare's CDN
+[33mcb473d0[m [docs] Spell check
+[33mb9492a3[m [docs] Fixed link to features in README
+[33m5b82ab6[m [qa] Updated CI, caching of pip deps, minor QA improvements
+[33mc7d1911[m [fix] Reverted "Bump inquirer from 8.2.4 to 10.1.6"
+[33mda035ad[m Bump inquirer from 8.2.4 to 10.1.6
+[33m61d7aa0[m Bump nodemon from 3.0.3 to 3.1.4
+[33mff8c71c[m Bump @babel/plugin-transform-arrow-functions from 7.23.3 to 7.24.7
+[33m53ff07a[m Bump @babel/core from 7.23.9 to 7.25.2
+[33ma999822[m [ci] Bump actions/setup-python from 2 to 5
+[33ma0f0383[m [deps] Added github actions monitoring
+[33m6479278[m [docs] Updated links to docs in README
+[33me4c11c3[m [docs] Restructured Documentation
+[33m9c5cbbf[m [docs] Added PR and Issue template
+[33m09037d5[m [feature] Added data usage progress bar to status page, allow to upgrade #736 #735
+[33m93a0702[m Bump @babel/register from 7.22.15 to 7.24.6
+[33md288ae3[m Bump eslint-config-prettier from 8.5.0 to 9.1.0
+[33med24dc6[m Bump react-router-dom from 6.14.1 to 6.24.0
+[33m11327ba[m [fix] Fixed error when captivePortalLoginForm.additional_fields is empty
+[33m0577548[m [docs] Improved captive portal login & logout settings docs #782
+[33m7c4834a[m [change] Clarified captive_portal_login_form and captive_portal_logout_form #782
+[33m66f742b[m Bump webpack-dev-middleware from 5.3.1 to 5.3.4
+[33m33c9a60[m Bump @types/morgan from 1.9.4 to 1.9.9
+[33m9a1e52d[m Bump express from 4.18.1 to 4.19.2
+[33m5e44687[m Bump qs from 6.11.2 to 6.12.1
+[33m69f79c1[m Bump typescript from 4.8.2 to 5.4.5
+[33m7239846[m Bump qs from 6.5.2 to 6.12.0
+[33m6bcf605[m Bump tar from 6.1.11 to 6.2.1
+[33m8b66c29[m Bump enzyme-adapter-react-16 from 1.15.7 to 1.15.8
+[33m189a337[m Bump axios from 0.24.0 to 0.28.0
+[33m3a3228a[m Bump history from 5.2.0 to 5.3.0
+[33m3c2007e[m Bump @babel/plugin-transform-runtime from 7.19.6 to 7.24.3
+[33m5d43b1c[m Bump follow-redirects from 1.15.4 to 1.15.6
+[33md5a5ad8[m [ci] Replace set-output with GITHUB_OUTPUT in CI workflow #669
+[33m558e9f8[m [docs] Improved browser tests instructions
+[33m239987b[m [change] Updated X logo #743
+[33m1434313[m [fix] Fixed QA formatting in default organization's index.css
+[33m0c2ad58[m Bump @babel/plugin-transform-arrow-functions from 7.17.12 to 7.23.3
+[33m4c45e5f[m Bump marked from 11.2.0 to 12.0.0
+[33m442e5fc[m Bump @babel/core from 7.15.0 to 7.23.9
+[33ma0f9ad5[m Bump marked from 4.0.10 to 11.2.0
+[33mf43e507[m Bump eslint-plugin-react-hooks from 4.5.0 to 4.6.0
+[33m56b4dc9[m Bump nodemon from 2.0.22 to 3.0.3
+[33md1513c5[m Bump follow-redirects from 1.14.8 to 1.15.4
+[33m754a9ba[m [fix] FIxed package.json to ensure setup script is executed on build and client
+[33m851e2c6[m [feature] Added setting to auto select the first plan
+[33md6698f3[m [chores:ui] Added help text to password change form
+[33mc892b5d[m [docs] Updated recommended node, npm and yarn versions in README
+[33m14ec154[m [change] Select toast level based on payment status
+[33m4507596[m [feature] Added support for password expiration feature #713
+[33mcd481ec[m [tests] Added NODE_OPTIONS=--openssl-legacy-provider to package.json
+[33mda928c1[m Bump dompurify from 2.3.4 to 3.0.6
+[33mfd5310f[m Bump webpack-dev-server from 4.10.1 to 4.15.1
+[33m6280346[m Bump webpack from 4.46.0 to 4.47.0
+[33m737aef5[m [deps] Bump browserify-sign from 4.2.1 to 4.2.2
+[33m705cb71[m Bump @babel/traverse from 7.15.0 to 7.23.2
+[33me0ca710[m Bump universal-cookie-express from 4.0.3 to 6.1.1
+[33m0c7f028[m Bump webpack-bundle-analyzer from 4.5.0 to 4.9.1
+[33mc96cd99[m Bump eslint-plugin-prettier from 4.0.0 to 4.2.1
+[33md08f7e6[m Bump ttag from 1.7.24 to 1.7.25 (#706)
+[33m20e8427[m Bump react-redux from 7.2.6 to 8.1.3
+[33m56d867f[m Bump @babel/register from 7.22.5 to 7.22.15
+[33m9dc1108[m Bump core-js from 3.31.0 to 3.32.2
+[33m1a0aac1[m Bump concurrently from 7.0.0 to 8.2.1
+[33m06de987[m Bump react-select from 5.7.3 to 5.7.4
+[33m70d7b25[m Bump jsdom from 19.0.0 to 22.1.0
+[33mad9728f[m Bump deep-object-diff from 1.1.0 to 1.1.9 (#691)
+[33m81d82ca[m Bump react-phone-input-2 from 2.15.0 to 2.15.1 (#689)
+[33m25247cd[m Bump @babel/plugin-transform-spread from 7.18.9 to 7.22.5 (#688)
+[33m7c56ed1[m Bump word-wrap from 1.2.3 to 1.2.4 (#685)
+[33m0bbd426[m [feature] Limit consecutive SMS sending #683
+[33m85d88e6[m Bump semver from 5.7.1 to 5.7.2
+[33m89d9519[m [fix] Fixed payment flow redirect loop when payment requires internet #629
+[33m36346b4[m [fix] Fixed circular import issue detected by eslint
+[33mb31b066[m Bump eslint-plugin-import from 2.24.2 to 2.27.5
+[33m8c68083[m Bump react-select from 5.3.2 to 5.7.3 (#679)
+[33maeacc0a[m Bump enzyme-adapter-react-16 from 1.15.6 to 1.15.7 (#674)
+[33ma40aaa5[m Bump react-router-dom from 6.8.0 to 6.14.1 (#675)
+[33md8abfde[m Bump fs-extra from 11.1.0 to 11.1.1 (#676)
+[33madeed22[m Bump @babel/runtime from 7.20.13 to 7.22.5 (#677)
+[33me959d18[m Bump selenium-webdriver from 4.6.1 to 4.10.0 (#680)
+[33m13d123d[m Bump qs from 6.11.0 to 6.11.2 (#681)
+[33m51d2711[m [change] Do not send new SMS unless needed #656
+[33mebcbf52[m Bump webpack-cli from 4.9.2 to 4.10.0 (#592)
+[33m5f54ecc[m Bump nodemon from 2.0.16 to 2.0.22 (#660)
+[33mfb546bd[m Bump redux from 4.2.0 to 4.2.1 (#654)
+[33m0db350e[m Bump dns-packet from 5.3.1 to 5.6.0 (#672)
+[33mc9d5131[m [fix] Fixed internetMode text disappearing when browsing different pages #611
+[33mf7e856b[m Bump @types/morgan from 1.9.3 to 1.9.4 (#651)
+[33m9d318fb[m Bump mock-local-storage from 1.1.21 to 1.1.24 (#670)
+[33m88360d2[m Bump @babel/register from 7.18.9 to 7.22.5 (#671)
+[33mf36c252[m [chores] Fixed React warning in status component
+[33m1344480[m [ci] Bumped Python version to 3.10
+[33mca11342[m [docs] Added link to auto-login explanation/video
+[33mca8dad6[m [docs] Added demo and support sections
+[33mda1aa6b[m [fix] Fixed CSS quirks in default theme
+[33mb309289[m [docs] Updated tos & privacy path
+[33m13b35a1[m Bump http-cache-semantics from 4.1.0 to 4.1.1 (#649)
+[33m02d6289[m Bump json5 from 1.0.1 to 1.0.2 (#641)
+[33ma93f87b[m Bump qs from 6.10.3 to 6.11.0 (#638)
+[33m236e328[m Bump eslint-plugin-jsx-a11y from 6.5.1 to 6.7.1 (#647)
+[33m2e2e4e5[m Bump react-router-dom from 6.2.1 to 6.8.0 (#648)
+[33ma917394[m [chores] Removed flex-grow from intro div
+[33ma093899[m [fix] Fixed status CSS quirks
+[33m3b61759[m Bump cookie-parser from 1.4.5 to 1.4.6 (#637)
+[33mf671f7e[m Bump loader-utils from 1.4.0 to 1.4.2 (#630)
+[33m036d2c6[m Bump fs-extra from 10.0.0 to 11.1.0 (#631)
+[33mde50e73[m Bump selenium-webdriver from 4.0.0-beta.4 to 4.6.1 (#635)
+[33m4cba14c[m Bump @babel/plugin-transform-runtime from 7.15.0 to 7.19.6 (#626)
+[33meb038ea[m Bump decode-uri-component from 0.2.0 to 0.2.2 (#636)
+[33m7c7d805[m Bump babel-loader from 8.2.2 to 8.3.0 (#633)
+[33m3aa77cb[m Bump eslint-plugin-react from 7.25.1 to 7.31.8 (#621)
+[33m8f4d700[m Bump @babel/plugin-transform-classes from 7.18.4 to 7.19.0 (#617)
+[33m7bb20ac[m Bump @babel/plugin-transform-spread from 7.17.12 to 7.18.9 (#608)
+[33md5360d9[m Bump @babel/preset-react from 7.16.7 to 7.18.6 (#616)
+[33m9c45182[m Bump svelte from 3.38.3 to 3.49.0 (#603)
+[33m4ec55e9[m Bump typescript from 4.7.3 to 4.8.2 (#613)
+[33m5c5b61f[m Bump terser from 4.8.0 to 4.8.1 (#607)
+[33m21642fa[m Bump @babel/register from 7.17.7 to 7.18.9 (#609)
+[33m82254d4[m Bump webpack-dev-server from 4.9.1 to 4.10.1 (#612)
+[33m1795fc4[m [fix] Fixed captive portal login after registration #605
+[33m9ea89f3[m [fix] Fixed minor style issue in contact box
+[33me69768b[m Bump react-phone-input-2 from 2.14.0 to 2.15.0 (#584)
+[33m57e984d[m [fix] Simplify default org login form to use mail only #589
+[33m4f1825e[m Bump react-select from 5.2.2 to 5.3.2 (#588)
+[33m6dcace0[m Bump typescript from 4.5.4 to 4.7.3 (#590)
+[33m0e4a754[m Bump eslint-plugin-react-hooks from 4.2.0 to 4.5.0 (#582)
+[33m01ffa4c[m Bump prettier from 2.5.1 to 2.6.2 (#579)
+[33md9a95a4[m Bump @babel/preset-env from 7.15.6 to 7.18.2 (#586)
+[33m167b02b[m [chores] Minor improvements to error text
+[33ma69cbff[m Bump webpack-dev-server from 4.9.0 to 4.9.1 (#581)
+[33m89a4953[m Bump autoprefixer from 9.8.6 to 9.8.8 (#583)
+[33m9d15176[m Bump nodemon from 2.0.15 to 2.0.16 (#585)
+[33m3a179d5[m [i18n] Fixed de translations regarding registrations
+[33m6a257d4[m [chores] Renamed withRouteProps to with-route-props
+[33m392ae3e[m Bump @babel/plugin-transform-classes from 7.15.4 to 7.17.12 (#571)
+[33m389aa95[m Bump @babel/plugin-proposal-class-properties from 7.14.5 to 7.17.12 (#572)
+[33md74b7ed[m Bump @babel/cli from 7.16.8 to 7.17.10 (#573)
+[33mcb30c24[m Bump node-plop from 0.30.0 to 0.31.0 (#574)
+[33m8ac681d[m Bump redux from 4.1.0 to 4.2.0 (#575)
+[33m9a2fe91[m Bump @babel/plugin-transform-arrow-functions from 7.14.5 to 7.17.12 (#578)
+[33mb326719[m Bump webpack-dev-server from 4.7.4 to 4.9.0 (#577)
+[33m888df58[m Bump eslint-plugin-jsx-a11y from 6.4.1 to 6.5.1 (#570)
+[33mf20294e[m Bump minimist from 1.2.5 to 1.2.6 (#569)
+[33m2b7528b[m [change] Fixed payment flow
+[33m15d1dc9[m Bump node-forge from 1.2.1 to 1.3.1 (#566)
+[33mcc07229[m Bump ttag-cli from 1.9.2 to 1.9.3 (#561)
+[33mb3422a3[m Bump @babel/plugin-proposal-class-properties from 7.14.5 to 7.16.7 (#560)
+[33m0927d77[m Bump @babel/plugin-transform-classes from 7.15.4 to 7.16.7 (#559)
+[33m268313f[m Bump @babel/register from 7.15.3 to 7.17.7 (#558)
+[33mc31b33f[m Bump winston-transport-sentry-node from 2.0.0 to 2.3.0 (#557)
+[33m7bb5bbc[m Bump minimist from 1.2.5 to 1.2.6 (#556)
+[33mab04b23[m Bump mock-local-storage from 1.1.17 to 1.1.21 (#563)
+[33m2610c31[m Bump webpack-cli from 4.8.0 to 4.9.2 (#564)
+[33m16f0d89[m Bump inquirer from 8.2.0 to 8.2.4 (#567)
+[33m37ee740[m Bump eslint-plugin-jsx-a11y from 6.4.1 to 6.5.1 (#548)
+[33mc36175a[m Bump react-router-dom from 5.3.0 to 6.2.1 (#522)
+[33mb1aa499[m Bump follow-redirects from 1.14.7 to 1.14.8 (#543)
+[33me94d737[m Bump jsdom from 17.0.0 to 19.0.0 (#546)
+[33m2f2b61e[m Bump react-select from 4.3.1 to 5.2.2 (#547)
+[33m3632d5c[m Bump eslint-plugin-jest from 26.0.0 to 26.1.1 (#549)
+[33mda66044[m Bump @babel/plugin-proposal-class-properties from 7.14.5 to 7.16.7 (#550)
+[33m4238592[m Bump cookie-signature from 1.1.0 to 1.2.0 (#551)
+[33m8cb37b5[m Bump @babel/runtime from 7.16.7 to 7.17.2 (#552)
+[33me48cca5[m Bump eslint-config-prettier from 8.3.0 to 8.5.0 (#553)
+[33mc595ed6[m [tests] Fixed browser-tests and wait for services to build
+[33mc50a3fd[m [i18n] DE minor adjustments
+[33m5fcdb03[m [i18n] Added missing fur translations
+[33md15d195[m 1.0.0 release
+[33m77c753b[m Bump async from 2.6.3 to 2.6.4 (#565)
+[33m8ab654f[m [i18n] Italian: fixed PWD_RESET_ADD_TXT
+[33m7c4fcf5[m [i18n] Improvements to German translations
+[33mf21657c[m [i18n] Updated Furlan translations
+[33ma81de60[m Bump webpack-dev-server from 4.7.3 to 4.7.4 (#544)
+[33m60dfad6[m [i18n] Fixed terms of service slovenian
+[33m7a40190[m [change] Removed Logger.error from controller files #540
+[33m8d8508c[m [change] Rename chunks of build #538
+[33m7ba8463[m Bump node-plop from 0.26.2 to 0.30.0 (#482)
+[33m96a3438[m [change] Do no generate exception on 400 bad request #536
+[33m0a7f34f[m Bump simple-get from 3.1.0 to 3.1.1 (#535)
+[33m3dd4f65[m Bump @babel/preset-react from 7.14.5 to 7.16.7 (#503)
+[33m4be1acf[m Bump nanoid from 3.1.23 to 3.2.0 (#513)
+[33m2f2e377[m [fix] Show 404 if organization is not present #516
+[33m766aa56[m [docs] Updated node version to 16x in README #530
+[33ma037470[m [change] Allow username and phone number in password reset #531
+[33m8f0382a[m Bump react-redux from 7.2.4 to 7.2.6 (#464)
+[33m9a5b40c[m Bump node-fetch from 2.6.1 to 2.6.7 (#526)
+[33m0c85379[m Bump webpack-bundle-analyzer from 4.4.2 to 4.5.0 (#527)
+[33m9d8fbe7[m Bump react-toastify from 8.0.3 to 8.1.1 (#528)
+[33m634f31d[m Bump webpack-dev-server from 3.11.2 to 4.7.3
+[33mcfca12f[m Bump @babel/cli from 7.14.8 to 7.16.8 (#521)
+[33m828d5cf[m Bump concurrently from 6.2.0 to 7.0.0 (#523)
+[33m7f31c66[m Bump eslint-plugin-jest from 24.5.0 to 26.0.0 (#524)
+[33me7bfcb1[m [change] Use secure cookies when in production #515
+[33m2e3ace6[m [fix] Fixed "bank_card" redirects from status page #494
+[33m818f601[m [test] Increased jest test timeout for browser tests
+[33md67d3bd[m [fix] Fixed mobile phone token verification URL
+[33me4a8dec[m [change] Change default theme colors to match new OpenWISP admin theme #362
+[33me0ea1bb[m [fix] Fixed modal
+[33m284770d[m Bump clean-webpack-plugin from 3.0.0 to 4.0.0 (#462)
+[33mf089fb3[m Bump qs from 6.10.1 to 6.10.3 (#512)
+[33m32732ee[m Bump prettier from 2.3.2 to 2.5.1 (#504)
+[33m3c360f6[m Bump express from 4.17.1 to 4.17.2 (#506)
+[33m0ad8ca0[m Bump follow-redirects from 1.14.6 to 1.14.7 (#510)
+[33m3a820c6[m Bump marked from 2.0.6 to 4.0.10 (#511)
+[33mb89ac0d[m [feature] Added support for django-sesame links #478
+[33m4cafd7d[m Bump typescript from 4.4.2 to 4.5.4 (#507)
+[33mc033703[m Bump axios from 0.21.1 to 0.24.0 (#500)
+[33mc62c135[m Bump jest from 27.2.4 to 27.4.5 (#499)
+[33mdee5d16[m Bump dompurify from 2.2.9 to 2.3.4 (#498)
+[33m64f3c89[m Bump jszip from 3.6.0 to 3.7.1 (#496)
+[33mbed8136[m Bump nodemon from 2.0.12 to 2.0.15 (#486)
+[33mc1ec557[m Bump redux-thunk from 2.3.0 to 2.4.1 (#483)
+[33mc85ef23[m [i18n] Minor improvements and fixes of translations
+[33me375a41[m [i18n] Updated translations
+[33mb867bfd[m [change] Use authorization header instead of cookies #487
+[33m173369e[m [fix] Added errorHandler to all controller routes
+[33ma06b5d1[m [feature] Added option to upload logs to sentry #490
+[33m5bc66c1[m [deps] Updated caniuse-lite
+[33md8be2ee[m [fix] Made cookies optional for token validation purposes #487
+[33mb506593[m [fix] Fixed CP login bug caused by mustLogin = false
+[33m5d5892a[m [fix] Fixed CP login in payment flow
+[33md762b17[m [change] Send user preferred language in validate token #476
+[33m522e375[m [chores:i18n] Improved/added missing current password translations
+[33md2522de[m [chores:ux] Minor fixes to TOS and privacy modals width/text alignment
+[33mfe08b00[m [feature] Added iframe payment flow
+[33m5dc5544[m [chores:ux] Fixed to different modal styles conflicting one another
+[33mfc154aa[m [fix] Fixed modal position for old browsers
+[33m2e8f6f9[m [fix:i18n] Fixed broken PAY_GIVE_UP_TXT translations (it/fur)
+[33m60d3ad4[m [chores] Ensure <input> fields use same font
+[33m10e8b20[m [chores] Changed PWD_RESET_BTN text
+[33m86b2d64[m [docs] Switched to libraries.io for dependency monitoring
+[33m6c82a25[m [chores:ux] Hide main scrollbar when modals are open #459
+[33mf0aa72d[m [change] Added way to change cache manually if setup.py is not updated
+[33m30af7ab[m [chore] Used reverse in plans-controller
+[33md077492[m [change] Improved change password component to include old password field #366
+[33m372eb54[m [fix] Fixed issues on old browsers
+[33mfcd340c[m [feature] Load extra JS files using webpack #452
+[33m8c22dc0[m [change] Added wait time before SAML logout #451
+[33mb931caf[m [chores:ux] Added toast message after cross organization registration #448
+[33mece2c2f[m [feature] Handle REALMs / Radius proxy #446
+[33m023c8a7[m Bump url-parse from 1.5.1 to 1.5.3 (#445)
+[33m2cc03a0[m Bump @babel/preset-env from 7.14.7 to 7.15.6 (#440)
+[33m457af54[m Bump jest from 27.1.0 to 27.2.4 (#439)
+[33m2811c4d[m Bump eslint-plugin-import from 2.23.4 to 2.24.2 (#438)
+[33m5dfba47[m Bump react-toastify from 7.0.4 to 8.0.3 (#436)
+[33m811b5c5[m Bump react-router-dom from 5.2.0 to 5.3.0 (#435)
+[33m809e8db[m Bump react-cookie from 4.0.3 to 4.1.1 (#434)
+[33mf4584f1[m Bump eslint-plugin-jest from 24.4.0 to 24.5.0 (#433)
+[33m5f0ef82[m Bump @babel/register from 7.14.5 to 7.15.3 (#432)
+[33mf1ef865[m [docs] added ansible-role link #364
+[33m3a7af80[m [docs] Removed update dependencies section from README
+[33m3765acc[m [change] Added support using variants with different orgs #429
+[33mf915f89[m [i18n] Fixed PAY_GIVE_UP_TXT it
+[33m149a165[m [i18n] Updated translations for changes in #419
+[33m5450567[m [feature] User can signup to multiple organizations #419
+[33mbe04c2f[m [i18n] Fixed minor typo in italian translation of status page
+[33me9a5c72[m [docs] Added note regarding merging of lists/arrays #424
+[33mb824864[m [fix] Variants: fixed merging of arrays #424
+[33m1ac9ae8[m Bump tmpl from 1.0.4 to 1.0.5 (#426)
+[33mc1783a7[m [fix] Fixed children with same key error when past sessions load #420
+[33m7f9b8e7[m [feature] Added concept of public mode #399
+[33m8599315[m [fix] Fixed race condition when setLoading is called #421
+[33ma26758b[m [chores] Ignore client/config.json
+[33m811843e[m [fix] Added log dir by default
+[33m10cf83c[m [refactor] Removed intervalId from state in status component #406
+[33m92f7ca3[m [ci] Cache python dependencies to run openwisp-radius #407
+[33m417b3e8[m [fix] Bold font added #408
+[33mf7054ec[m [fix/change] Fixed hanging logout + force logout after payment #410
+[33m442728b[m [refactor] Renamed justAuthenticated to mustLogin for clarity
+[33mc25d8db[m [fix] Ensure cp login is done when payment is required
+[33m0d9e70f[m [feature] Added capability to read messages from iframe #370
+[33m58a48da[m [chores] Show single column full width
+[33mfff297d[m [fix] Fixed logout from payment failed
+[33mbeebd0d[m [i18n] Added russian translations
+[33mc8805c8[m [i18n] Improved italian translations (and furlan placeholders)
+[33macb0140[m [i18n] Changed default title
+[33mda930a9[m [feature] Added pre-payment page
+[33me23089f[m [fix] Avoid logging user out on occasional session fetching issues #394
+[33mdb2c078[m [feature] Added support for multiple CSS files #372
+[33mcc1b214[m [change] Fixed flaky browser tests #379
+[33m78d8fc5[m Bump webpack-cli from 3.3.12 to 4.8.0 (#384)
+[33m2a83959[m [fix] Minor fixes SL translations
+[33m5577ae1[m [fix] Fixed glitch which reloaded theme CSS on language change
+[33m7a0dbd5[m [chores] Clear code value and error if SMS token is resent
+[33mee9090c[m [chores] Minor improvements to error style
+[33m19ca5d7[m [fix] Registration: fixed username field showing email errors
+[33m19abde2[m [change] Added warning icon for errors #358
+[33m38e2e00[m [bug] Fixed unique key props error when no links #169
+[33mbabe295[m [refactor] Avoid duplicated send-cookie logic in server
+[33ma722558[m [change] Changed log directory from logs/ to log/
+[33ma5f155d[m [change] Removed <title> contents
+[33md2c5b56[m [change] Centralized loading indicator HTML & CSS
+[33m35e189c[m [chores] Removed untranslated not found <title>
+[33me68d0c8[m [fix] Used default loader while loading PP or T&C #374
+[33m19c1d32[m [chores] Show loading indicator after submitting phone token
+[33m2208a0f[m [fix] Logout success toast when logging out from verification page #375
+[33mb81ea87[m Bump typescript from 4.3.2 to 4.4.2 (#392)
+[33ma376c2c[m [chores] Fixed PhoneInput glitch in login and change phone number
+[33mb4ef425[m [chores] Add captive portal login toast info
+[33mdfe1ba9[m [chores] Fixed cancel buttons in change password and phone components
+[33m234bd29[m [fix] Fix handleLogout in payment status
+[33m4f0a32b[m Bump @babel/plugin-transform-runtime from 7.14.5 to 7.15.0 (#391)
+[33m10b7981[m Bump @types/morgan from 1.9.2 to 1.9.3 (#390)
+[33me495f3e[m Bump eslint-plugin-prettier from 3.4.0 to 4.0.0 (#389)
+[33me048156[m Bump jsdom from 16.6.0 to 17.0.0 (#388)
+[33m697399e[m Bump @babel/core from 7.14.6 to 7.15.0 (#387)
+[33me2fc0b8[m Bump jest from 27.0.6 to 27.1.0 (#386)
+[33mfd2f555[m Bump eslint-plugin-react from 7.24.0 to 7.25.1 (#385)
+[33m00ea476[m Bump css-loader from 5.2.6 to 5.2.7 (#383)
+[33md602dd6[m Bump tar from 6.1.5 to 6.1.11 (#381)
+[33m730e293[m [tests] Added tearDown function to browser tests #379
+[33m8169046[m [tests] Changed test command in package.json
+[33mf3293b2[m [change!] Centralized organization settings + added support for variants #367
+[33m63fc6a1[m [fix] Fixed PhoneInput loading glitch #373
+[33m8b387df[m [feature] Added browser based tests using selenium #237
+[33m68d1e3e[m [fix] Modal controller should serve only files from assets directory
+[33m5b3564c[m [fix] Fixed username/phone number when plans are used
+[33m90aa39d[m [chores] Change password: SAML/Social login minor improvement #338
+[33m412e0e5[m [fix] Fixed change phone number component redirect condition #368
+[33m9e6fe4b[m [chores] Renamed methods to methods_only and improved docs
+[33ma6e9a4f[m [change] Change phone number component is disabled for mobile_phone method #368
+[33ma4632a5[m [change] Redirect to status if method is saml or social_login
+[33mf54b739[m [feature] Added support for methods and methods_excluded in links #339
+[33mb53a459[m [change] Disabled password-change for SAML / Social Login #338
+[33m4a353f1[m [change!] Updated openwisp-radius API URLs
+[33m837f8e1[m [chores] Preloader: set background opacity to 100%
+[33m6c93efd[m [fix] Fixed getHtml call in Contact component
+[33mede04f6[m [fix] Fixed hidden vertical scrollbar in prod
+[33mb5016c3[m [chores] Improved modal CSS and TOS/Privacy docs
+[33m56757f4[m [fix] Do not split "login again" string #351
+[33m8a6df70[m [fix] Made two different username strings (1 for login and 1 for registation)
+[33mf62b123[m [fix] Added accept-language to verifyMobilePhoneToken controller
+[33mfa2ef4d[m [i18n] Added more langs
+[33m4baedcf[m [chores] Improved styling of multi-line field errors
+[33me264022[m [fix] Added selected language in language headers while calling API #359
+[33mdacfd35[m [change] Added reusable getError function #357
+[33ma7bf82f[m [change] Made handleLogout resusable for captive portal logout #306
+[33ma634afb[m [fix] Added setUserData to called after logout #343
+[33mf3aeca8[m [feature] Added sticky message #347
+[33md5a9172[m [fix] Change username when phone number is changed and verified #353
+[33m2e77f09[m [fix] Browserlang selection bug fixed #350
+[33md00eeef[m  [change] Reduced size of main chunk #321
+[33m4afc5ac[m [refactor] Registration: refactored tests + minor improvements
+[33mb2fb912[m [change] Skip billing info for zero sum payments #336
+[33mf5f07b0[m [misc/feature] Various improvements to allow customization
+[33m5dcf0ef[m [chores] UX: improved reveal password feature #323
+[33mfc664ba[m [ci] Fixed CI to install openwisp-radius #345
+[33m25592a3[m [change] Replace safeLoad with load (yaml)
+[33m00ceea8[m Bump js-yaml from 3.14.1 to 4.1.0
+[33mac4ef48[m [change] Fixed merge of prettier and linting errors
+[33m26fb298[m Bump eslint-config-prettier from 6.15.0 to 8.3.0
+[33mb18056b[m [change] Used jsdom in jestenv and legacy fake timer
+[33mdc0e70e[m Bump jest from 26.6.3 to 27.0.6
+[33me1b35a0[m [change] Made TOS and PP modal like logout modal #322
+[33mf04910e[m [tests] Added tests for password-change, confirm and reducers
+[33m1eeca8d[m [tests] Added tests for status component
+[33mf444a74[m [tests] Added tests for mobile-phone-verification
+[33md921b1c[m [tests] Added tests for mobile-phone-change
+[33ma02a1b5[m [tests] Added tests for registration component
+[33m0dc2243[m [tests] Added tests for organization wrapper
+[33ma5cff33[m [tests] Complete coverage of modal component
+[33md401791[m [tests] Added tests for login component
+[33m097bbb4[m [tests] Header component coverage completed
+[33mdd4766e[m [tests] Completed coverage for 404
+[33md079e37[m [tests] Logout component tests
+[33m72430d5[m [tests] Added tests for actions
+[33mdbe23bf[m [tests] Added test for validateToken
+[33m16b1fb8[m [tests] Added test for handleChange
+[33mb0ba741[m [tests] Added test for authenticate.js
+[33m3789abb[m [tests] Added loader tests
+[33m82c905f[m [tests] Tests for needsVerify added
+[33mebab4c5[m [tests] Added test for log-error
+[33m3971875[m [tests] Added test for sort-organization and handleSession
+[33mdc10008[m [tests] Increased test coverage #58
+[33ma086371[m Bump tar from 6.1.0 to 6.1.5
+[33m4e6d34c[m Bump @babel/cli from 7.14.3 to 7.14.8
+[33md09efde[m Bump eslint-plugin-jest from 24.3.6 to 24.4.0
+[33m3f28277[m Bump nodemon from 2.0.9 to 2.0.12
+[33m1d0175e[m Bump eslint-plugin-react-hooks from 2.5.1 to 4.2.0
+[33m6f5940e[m Bump @babel/runtime from 7.14.6 to 7.14.8
+[33m9559415[m Bump eslint from 7.27.0 to 7.32.0
+[33m3ea2cd5[m Bump @babel/preset-react from 7.13.13 to 7.14.5
+[33me697cb6[m Bump coveralls from 3.1.0 to 3.1.1
+[33m76f3d53[m [change] Refactored org-configurations boilerplate #313
+[33ma0a16d9[m [change] Removed proxy_urls from the configuration files #59
+[33m4b54ac3[m [feature] Added support for default organization and reduce boilerplate #236
+[33m3f3c3d3[m [change] Call getUserRadiusSession when userData is loaded #288
+[33mc775c89[m [change] Changed typo fame to frame
+[33m606817d[m [change] Avoided loading config of all organizations #238
+[33mbfc9ed8[m [ci] Run jasmine headless tests before browser based tests #316
+[33mb4cfb15[m [i18n] Italian translations
+[33m5efa65c[m [change] Reimplemented translations: use ttag (gettext) #235 #304 #308
+[33ma5fca8a[m [change] Removed automatic opening of browser window on server start #310
+[33m2871ed3[m [chores] Minor HTML/CSS improvements to sessions table
+[33m0de45a2[m [feature] Implemented SAML logout
+[33m1019642[m [docs] Added openwisp-subscriptions to feature list
+[33m1c0896e[m [fix] Fixed social login / SAML login #301
+[33mb6b2823[m [fix] Removed default favicon causing 404
+[33mbe07da8[m [chores] Minor CSS adjustments
+[33m3d2b6df[m [change] Removed target_blank from social login buttons
+[33ma2d6ebe[m [change] Allow support email and helpdesk to be null
+[33m0dace16[m [change] Allow contact links to have their own css class
+[33m14177d3[m [chores] Added explicit autocomplete attribute to input fields #275
+[33m1eb75f5[m [fix] Ensure logout from captive portal on PaymentStatus logout
+[33m7f72bf4[m [fix] Added wait to repeatLogin
+[33m985aa61[m [fix] Trigger validation endpoint again after logout
+[33m9f411c3[m [change] Changed payment status to trigger repeatLogin on success
+[33mdb45598[m [feature] Added mustLogout and repeatLogin to status
+[33m6e4cdea[m Bump react-infinite-scroll-component from 5.1.0 to 6.1.0 (#292)
+[33m1f30fbc[m Bump html-webpack-plugin from 3.2.0 to 4.5.2 (#298)
+[33m4cb955b[m Bump @babel/runtime from 7.14.0 to 7.14.6 (#297)
+[33m1d2160e[m Bump prettier from 2.3.0 to 2.3.2 (#296)
+[33m28bcd7d[m Bump @babel/register from 7.13.16 to 7.14.5 (#294)
+[33m65ac564[m Bump @babel/preset-env from 7.14.4 to 7.14.7 (#293)
+[33m926ac8c[m Bump nodemon from 2.0.7 to 2.0.9 (#290)
+[33m1463fc9[m Bump css-loader from 3.6.0 to 5.2.6 (#289)
+[33mb2519db[m [change/fix] Wait until captive portal login response #265
+[33m8e4942a[m [fix] Perform captive portal login on "log me in again"
+[33m89dd5d3[m [test] Used css instead of xpath
+[33m5c33322[m [tests] Further improvements to browser tests
+[33m5f34cf5[m Bump ws from 6.2.1 to 6.2.2 (#262)
+[33m894ec90[m Bump dompurify from 2.2.8 to 2.2.9 (#283)
+[33ma140e7e[m Bump react-toastify from 6.2.0 to 7.0.4 (#204)
+[33ma3745b5[m Bump concurrently from 5.3.0 to 6.2.0 (#253)
+[33me645966[m Bump @babel/core from 7.14.3 to 7.14.6 (#278)
+[33m30312bc[m Bump postcss from 7.0.35 to 7.0.36 (#273)
+[33m8e85997[m [tests] Fixed browser tests #280
+[33md785461[m Bump @babel/plugin-transform-runtime from 7.14.3 to 7.14.5 (#279)
+[33m672c5ea[m [feature] Added selenium tests for login and signup #213 #229
+[33m9171bc7[m [feature] Set page title in each page component #155
+[33m7b7a6a6[m [feature] Added ways to show links only to specific type of users #107
+[33mcc5fd6f[m [chores] Minor QA check fix
+[33mf437701[m [tests] Added basic tests for status route
+[33mb6ef54a[m [feature] Added support for paid subscriptions and payment flow
+[33mfe06699[m [fix] Changed is_verified to default to null #270
+[33m1ab989b[m [fix] Log error stack traces + updated format #258
+[33m402f915[m [feature] Added password reveal feature #263
+[33m8deafc7[m [fix] Fixed incorect logout when sessions do not paginate #257
+[33m000c33b[m [tests] Added OpenWISP RADIUS captive portal login and logout mock views #250
+[33m0caf7dd[m [fix] Captive portal login on just authentication
+[33m86f1c5c[m [fix] Removed username error for inactive user #251
+[33m7e66fdc[m [fix] Do not trigger phone number validation when loading status page #222
+[33m92fc106[m [fix] Fixed unnecessarily calling of validateToken #217
+[33m0f0121d[m [feature] Reusable auth token validation #100
+[33m8eec6f6[m [chores] Fixed minor confusion in status links HTML and indentation
+[33m2caafed[m [fix] Fix login error when connection refused #241
+[33mb0b96e6[m [change] Removed send cookies when user is inactive
+[33m157cf72[m [feature] Added server side logging #82
+[33m1e15d4a[m [change] Status: show logout button as first
+[33m4a6808f[m [feature] Logout without breaking auto login #171
+[33mcff12c3[m [change] Updated to the latest openwisp-radius code
+[33mc93dc07[m [chores] Added comments in handleSession utils function
+[33m5fd9bb7[m [chores] Avoid using TerserPlugin in development
+[33m825fed4[m [chores] Status: added comments to handleLoginIframe/handleLogoutIframe
+[33mf2e5a80[m [chores] Added error.message to server logging
+[33m4ee3909[m [fix] Change phone number invalid token fixed #231
+[33mceba2a7[m [feature] Add support for is_verified field in openwisp-radius 0.3
+[33m042a5dd[m [feature] Allow forcing text input for username field in login form #89
+[33mca4a8ae[m [chores] Mobile phone change: no need to specify country
+[33m1487679[m [fix] Mobile phone change: always import CSS
+[33md4103d0[m [chores] Show placeholder for mobile phone field in login
+[33m29ea6a2[m [fix] Fixed loading indicator which was broken recently
+[33me137c2b[m [chores] Remove preloader on JS onload event
+[33ma6aa7d0[m [change] Increase size of inputs
+[33m8e32db4[m [change] Separated webpack analyzer plugin from main plugins #223
+[33m9133c58[m [fix] Removed strange O character in status page #218
+[33md21d7bc[m [chores] Changed wording of "go back" action in password reset
+[33m2ddaa4b[m [qa] Minor prettier formatting fixes
+[33m5e6526e[m [chores] Updated yarn.lock
+[33ma7d4041[m [chores] Minor improvements to remember me checkbox #63
+[33m54bbfbf[m [feature] Added remember me checkbox #63
+[33mba50a21[m [QA] Fixed coveralls to upload coverage #188
+[33mf6ebe20[m [ci] Upgraded to GitHub-native Dependabot (#202)
+[33m9ce1f09[m [misc] Added webpack bundle analyser to the codebase #167 #191
+[33m3934656[m [qa] Added automatic code formatter #197
+[33m6b1649d[m Bump eslint-plugin-jest from 23.20.0 to 24.3.4
+[33mad2dd0c[m Bump eslint from 7.22.0 to 7.23.0
+[33ma3b0b09[m [Security] Bump marked from 1.2.5 to 2.0.0
+[33m3ce816b[m [Security] Bump y18n from 4.0.0 to 4.0.1 (#192)
+[33mafb5b9f[m [deps] Updated dependencies #125
+[33md10d207[m [changed] Switched to terser minifier #167
+[33mb71dcea[m [fix] Fixes unique key props error #182
+[33mddc1ed3[m [docs] Added "Configuring Social Login" to README #185
+[33mc27bf4d[m [change] Moved CI to GitHub actions #153
+[33m950cc85[m [feature] Ensured something is shown while page loads #156
+[33md967e98[m [change] Implementeded lazy loading to speed up first load #154
+[33m27e6beb[m [fix] Minor spacing fix in links of status page
+[33m0f4c112[m [fix] Fix 404 to favicon.ico, replaced favicon.png with lighter version
+[33m203cdd4[m [Security] Bump ini from 1.3.5 to 1.3.7 (#140)
+[33m724a2b0[m [fix] Updated webpack CopyPlugin syntax
+[33m15afd12[m Bump copy-webpack-plugin from 5.1.2 to 6.4.1 (#146)
+[33m68932e3[m Bump @babel/preset-react from 7.12.1 to 7.12.10 (#147)
+[33m2689497[m Bump eslint from 7.13.0 to 7.16.0 (#148)
+[33mc426943[m [Security] Bump axios from 0.19.2 to 0.21.1 (#150)
+[33m87f497b[m [Security] Bump node-notifier from 8.0.0 to 8.0.1 (#143)
+[33m4553a31[m Bump @babel/core from 7.12.3 to 7.12.10 (#149)
+[33m8e6def6[m [feature] Added more user fields #151
+[33m50c2885[m [feature] Added current and past sessions to status page #80
+[33mec951bd[m [feature] Added phone number to register and login #144
+[33mf4fee4b[m [feature] Added user info to status page #104
+[33mcfe3e3c[m [qa] Fixed camel case variables in phone number server controller
+[33mc6872db[m [fix] Added phone_number to POST data of resend phone token #126
+[33mdca6881[m [feature] Added possibility to change phone number for active users #106
+[33mbd51d91[m Revert "Bump compression-webpack-plugin from 3.1.0 to 6.1.1 (#124)"
+[33m8f61ab2[m Revert "Bump webpack-cli from 3.3.12 to 4.2.0 (#122)"
+[33me80fba7[m Bump react-toastify from 5.5.0 to 6.1.0 (#121)
+[33m5e262a0[m Bump prettier from 1.19.1 to 2.2.0 (#123)
+[33m3a0f9cb[m Bump webpack-cli from 3.3.12 to 4.2.0 (#122)
+[33mc4b3504[m Bump marked from 0.8.2 to 1.2.5 (#120)
+[33m1ee4182[m Bump @babel/runtime from 7.12.1 to 7.12.5 (#116)
+[33m0268e9d[m Bump eslint-loader from 3.0.4 to 4.0.2 (#115)
+[33m146e144[m Bump eslint from 7.12.1 to 7.13.0 (#114)
+[33m0a3b573[m Bump react-helmet from 5.2.1 to 6.1.0 (#113)
+[33md60a7b4[m Bump compression-webpack-plugin from 3.1.0 to 6.1.1 (#124)
+[33md30aadc[m Bump jest from 26.6.1 to 26.6.3 (#111)
+[33ma9f9413[m Bump dompurify from 2.2.0 to 2.2.2 (#110)
+[33m9e0d362[m Bump typescript from 3.9.7 to 4.1.2 (#119)
+[33ma9e3886[m Bump jsdom from 15.2.1 to 16.4.0 (#109)
+[33ma806c54[m Bump style-loader from 1.3.0 to 2.0.0 (#108)
+[33m44fe6d5[m [docs] Minor image spacing improvement
+[33m407f369[m [docs] Renamed readme.md to README.md for consistency
+[33mfb322fb[m [docs] Added screenshots, improved description and instructions
+[33m4f63eb0[m [chores] Added default values for captive portal login and logout URLs
+[33m6256358[m [docs] Added option to specify host url #102
+[33mc863c29[m [qa] Install openwisp-utils QA dependencies
+[33maaa2b4d[m [fix] Clean up HTML & CSS #94 #91 #90
+[33m432ed92[m [docs] Added basic configuration instructions #57
+[33m2b9de9e[m [feature] Added mobile phone verification #83
+[33m2bb0123[m [qa] Added run-qa-checks script with openwisp-utils commit check
+[33mf411857[m [tests] Fixed warnings and broken tests on some node versions
+[33m5e9636b[m [tests] Switch to yarn only to avoid mismatches
+[33m00eb35b[m [docs] Added minimum required node & npm versions 78
+[33m5375fcf[m [feature] Allow to target links for authenticated/unauthenticated users #93
+[33m6490fe0[m [chores] Changed main <title>
+[33m6e9d079[m [fix] Added missing fonts #87
+[33m5a98e4a[m [bug] Added file-loader #79
+[33m5179a70[m [feature] Perform captive portal login and logout #60 #61 #66 #67 #68
+[33m29ea2ba[m [qa] Added travisbuddy
+[33m611f51f[m Bump elliptic from 6.5.2 to 6.5.3
+[33m27abf28[m [change] Switch to Bearer token
+[33m11e4753[m [chores] Made one css class for all buttons #55
+[33m8bd2ecc[m Bump lodash from 4.17.14 to 4.17.19
+[33me80d605[m [UI] Add loading indicator #64
+[33ma183ce1[m [npm] Add npm command to generate organization configuration file #54
+[33mf9c486f[m [component] add a Redirect Route #56
+[33m30180f1[m [npm] Update dependencies #53
+[33mabeb289[m [config] Added explanatory comment for "host"
+[33mc040373[m [style] More minor improvements
+[33m4c89cb8[m [style] Minor style improvements for default theme
+[33mb7eb9c5[m [assets] Changed logo
+[33m2cbe4ed[m Bump websocket-extensions from 0.1.3 to 0.1.4 (#52)
+[33m5127d55[m Merge pull request #51 from openwisp/dependabot/npm_and_yarn/acorn-5.7.4
+[33m9871e17[m Bump acorn from 5.7.3 to 5.7.4
+[33m193228a[m Merge pull request #50 from nikitaermishin/compression-webpack-plugin
+[33m0e86bb6[m [config] add compression-webpack-plugin to webpack production config #49
+[33md20b514[m [ux] User notification #40 #45
+[33m8dd5901[m Merge pull request #38 from someshkar/password-change-component
+[33me8eb458[m Update password change component
+[33mac5bd2e[m Make the password change component
+[33mcd83ac1[m Merge pull request #46 from nikitaermishin/badge-fix
+[33mec9654f[m [Dependency] Fix badge #42
+[33m6d7f338[m Merge pull request #44 from nikitaermishin/issue#41
+[33m9ffd2d7[m [Enchancement] Switch from username to email in sign-up and login #41
+[33m3402215[m Merge pull request #43 from nikitaermishin/dependency_update
+[33m809f61c[m [Dependency] Update dependencies #42
+[33m226d80e[m Merge pull request #37 from koenigscode/custom-ports
+[33m299460e[m Merge pull request #36 from atevin187/issues/33
+[33m8ab79e9[m Add custom port documentation for Windows
+[33m52c2f04[m Support custom ports with npm start command
+[33md4c98aa[m Allow custom ports #34
+[33mf441ec7[m [config] Add hot-module-replacement to the webpack configuration
+[33maa2e247[m Merge pull request #35 from someshkar/password-component
+[33m5b92fdb[m fix 5/7 vulnerabilities with npm audit fix
+[33m647ef47[m [bug] fix location undefined bug
+[33md873db7[m Merge pull request #31 from anaghamittal/patch-1
+[33m9f61f54[m Update Readme.md
+[33md73fd8d[m Remove code splitting
+[33m3f823b1[m Merge pull request #29 from openwisp/restyle
+[33ma735e08[m Merge pull request #30 from openwisp/dependabot/npm_and_yarn/eslint-utils-1.4.2
+[33m99966bb[m Update package.json
+[33m3cdacfb[m Bump eslint-utils from 1.3.1 to 1.4.2
+[33m3801500[m [CSS] restyle components
+[33mb4c5199[m Merge pull request #27 from openwisp/issue#26
+[33ma69e351[m [config] Add code splitting to optimize production bundles #26
+[33mc5baf48[m [config] write config to serve prodution build from node server
+[33mf85fcf0[m [tests] write tests and increase code coverage
+[33mbf40d21[m [component] restyle components
+[33m9563a1f[m [component] Add privacy policy and terms and conditions
+[33m167e567[m Merge pull request #25 from openwisp/issue#19
+[33m86a370a[m [component] Implement auth and write status page component #25 closes #25
+[33mef803ed[m Merge pull request #24 from openwisp/issue#18
+[33m1058dbd[m [component] Add login component and write tests #18
+[33mb1349da[m [tests] Write tests for password reset and confirm component
+[33mb8e1909[m [config] Update Dependencies
+[33m2fa351e[m [readme] Update Readme
+[33m4d574c7[m Merge pull request #20 from openwisp/issue#17
+[33m6303410[m [component] Add Password reset component #17
+[33md1dc857[m Merge pull request #21 from openwisp/dependabot/npm_and_yarn/lodash-4.17.14
+[33m2f32f5b[m Bump lodash from 4.17.11 to 4.17.14
+[33mc2fca2e[m Merge pull request #16 from openwisp/frontend
+[33m92c1a67[m Write tests for header, footer, registration components
+[33m6f43f02[m [frontend] Add Header, Footer, Registration, 404 components
+[33m6501050[m [config] Configure frontend app
+[33mbc3bce6[m fix indentation
+[33mb9b42e4[m [config] Change editorconfig and prettier config
+[33me781a9d[m Merge pull request #15 from openwisp/backendServer
+[33mc9de644[m [travis] Change travis config
+[33mb7a685c[m [config] Update Dependencies
+[33m0aacd95[m [api] Write proxy api endpoints
+[33m630ca6d[m [api] Write password reset proxy api
+[33m8f10890[m  [config] write default config for organisations #12
+[33m56e979c[m [config] Write setup.js to discover org configs #4
+[33m94b03e9[m [tests] Setup Jest with Enzyme for testing react components #5
+[33m58ea8f3[m [config] Make changes to eslint config
+[33m456ab8b[m [readme] Add readme #3
+[33m7ea0e72[m [config] write travis.yml #6
+[33meae4914[m [config] Setup ESLint and Editorconfig #2
+[33m6ca487d[m [config] Setup Express + React boilerplate #1
+[33m8448f08[m Initial commit
