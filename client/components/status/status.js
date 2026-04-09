@@ -139,13 +139,8 @@ export default class Status extends React.Component {
 
   handleAuthFlow = async () => {
     const {cookies, orgSlug, setUserData, logout, language} = this.props;
-
-    if (isValid === false || !this.isComponentMounted) {
-      setLoading(false);
-      return;
-    }
     const {setLoading} = this.context;
-    let {userData} = this.props;
+    const {userData} = this.props;
 
     setLoading(true);
 
@@ -194,10 +189,11 @@ export default class Status extends React.Component {
 
     ({userData} = this.props);
 
-    //fallback for expired password
+    // fallback for expired password
     if (userData.password_expired === true) {
       toast.warning(t`PASSWORD_EXPIRED`);
-      this.props.setUserData({
+      const {setUserData} = this.props;
+      setUserData({
         ...userData,
         mustLogin,
         mustLogout,
@@ -237,7 +233,7 @@ export default class Status extends React.Component {
 
     if (is_active === false) return;
 
-    //must logout logic
+    // must logout logic
     if (mustLogout) {
       if (captivePortalSyncAuth) {
         this.setState({loggedOut: mustLogout});
