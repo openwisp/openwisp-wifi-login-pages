@@ -282,7 +282,86 @@ exports[`<Status /> interactions should not display STATUS_CONTENT and radius us
   <div
     className="flex-column"
     id="sessions"
-  />
+  >
+    <InfiniteScroll
+      dataLength={0}
+      hasMore={false}
+      loader={
+        <loader
+          full={false}
+          small={true}
+        />
+      }
+      next={[Function]}
+      style={
+        {
+          "overflow": false,
+        }
+      }
+    >
+      <table
+        className="large-table bg"
+      >
+        <thead>
+          <tr>
+            <th
+              key="start_time"
+            >
+              Start time
+            </th>
+            <th
+              key="stop_time"
+            >
+              Stop time
+            </th>
+            <th
+              key="duration"
+            >
+              Duration
+            </th>
+            <th
+              key="download"
+            >
+              Download
+            </th>
+            <th
+              key="upload"
+            >
+              Upload
+            </th>
+            <th
+              key="device_address"
+            >
+              Device address
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            className="active-session"
+            key="mock"
+          >
+            <td>
+              -
+            </td>
+            <td>
+              session is active
+            </td>
+            <td />
+            <td>
+              0 B
+            </td>
+            <td>
+              0 B
+            </td>
+            <td>
+              test
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </InfiniteScroll>
+  </div>
   <form
     action="http://localhost/"
     className="hidden"

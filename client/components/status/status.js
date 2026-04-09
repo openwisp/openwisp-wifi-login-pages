@@ -328,11 +328,30 @@ export default class Status extends React.Component {
       return;
     }
 
+    if (!this.state.activeSessions.length) {
+      this.setStateSafe({
+        activeSessions: [
+          {
+            session_id: "mock",
+            stop_time: null,
+            session_time: 0,
+            input_octets: 0,
+            output_octets: 0,
+            calling_station_id: "test",
+          },
+        ],
+      });
+    }
+
     // if everything went fine, load the user sessions
     await this.getUserActiveRadiusSessions();
+    if (!this.isComponentMounted) return;
     await this.getUserPastRadiusSessions();
+    if (!this.isComponentMounted) return;
     this.intervalId = setInterval(async () => {
+      if (!this.isComponentMounted) return;
       await this.getUserActiveRadiusSessions();
+      if (!this.isComponentMounted) return;
       this.logoutIfCurrentRadiusSessionIsInactive();
     }, 60000);
     // We don't show radius usage in the internet mode.
@@ -938,14 +957,18 @@ export default class Status extends React.Component {
       this.logoutFormRef.current.submit();
     }
     setLoading(true);
+    
     await this.getUserPastRadiusSessions();
+    if (!this.isComponentMounted) return;
     await this.getUserActiveRadiusSessions();
+    if (!this.isComponentMounted) return;
     setLoading(false);
   }
 
   async fetchMoreSessions() {
     const {currentPage} = this.state;
     await this.getUserPastRadiusSessions({page: currentPage + 1});
+    if (!this.isComponentMounted) return;
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -961,14 +984,19 @@ export default class Status extends React.Component {
   };
 
   // eslint-disable-next-line class-methods-use-this
-  getDateTimeFormat = (language, time_option, date) => {
+  getDateTimeFormat(language, time_option, date) {
+    if (!date) return "-";
+
+    const d = new Date(date);
+
+    if (isNaN(d.getTime())) return "-";
+
     if (typeof Intl !== "undefined") {
-      return new Intl.DateTimeFormat(language, time_option).format(
-        new Date(date),
-      );
+      return new Intl.DateTimeFormat(language, time_option).format(d);
     }
-    return String(new Date(date));
-  };
+
+    return String(d);
+  }
 
   getLargeTableRow = (session, sessionSettings, showLogoutButton = false) => {
     const {language, statusPage} = this.props;
