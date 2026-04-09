@@ -266,7 +266,8 @@ export default class Status extends React.Component {
       this.finalOperations();
     }
   };
-  async componentDidMount() {
+
+  componentDidMount() {
     this.initPage();
   }
 
