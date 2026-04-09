@@ -957,7 +957,7 @@ export default class Status extends React.Component {
       this.logoutFormRef.current.submit();
     }
     setLoading(true);
-    
+
     await this.getUserPastRadiusSessions();
     if (!this.isComponentMounted) return;
     await this.getUserActiveRadiusSessions();
