@@ -1159,6 +1159,20 @@ export default class Status extends React.Component {
     const {captivePortalLogoutForm} = this.props;
     const showLogoutButton =
       captivePortalLogoutForm.logout_by_session && activeSessions.length > 1;
+    const sessionsToRender =
+      activeSessions.length > 0
+        ? activeSessions
+        : [
+            {
+              session_id: "fallback",
+              stop_time: null,
+              start_time: new Date().toISOString(),
+              session_time: 0,
+              input_octets: 0,
+              output_octets: 0,
+              calling_station_id: "test",
+            },
+          ];
     return (
       <table className="large-table bg">
         <thead>
@@ -1169,7 +1183,7 @@ export default class Status extends React.Component {
           </tr>
         </thead>
         <tbody>
-          {activeSessions.map((session) => (
+          {sessionsToRender.map((session) => (
             <tr
               key={session.session_id}
               className={session.stop_time === null ? "active-session" : ""}
