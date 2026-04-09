@@ -139,7 +139,24 @@ exports[`<Status /> interactions should hide check if check.value is zero 1`] = 
   <div
     className="flex-column"
     id="sessions"
-  />
+  >
+    <InfiniteScroll
+      dataLength={0}
+      hasMore={false}
+      loader={
+        <loader
+          full={false}
+          small={true}
+        />
+      }
+      next={[Function]}
+      style={
+        {
+          "overflow": false,
+        }
+      }
+    />
+  </div>
   <form
     action="http://localhost/"
     className="hidden"
@@ -298,69 +315,7 @@ exports[`<Status /> interactions should not display STATUS_CONTENT and radius us
           "overflow": false,
         }
       }
-    >
-      <table
-        className="large-table bg"
-      >
-        <thead>
-          <tr>
-            <th
-              key="start_time"
-            >
-              Start time
-            </th>
-            <th
-              key="stop_time"
-            >
-              Stop time
-            </th>
-            <th
-              key="duration"
-            >
-              Duration
-            </th>
-            <th
-              key="download"
-            >
-              Download
-            </th>
-            <th
-              key="upload"
-            >
-              Upload
-            </th>
-            <th
-              key="device_address"
-            >
-              Device address
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            className="active-session"
-            key="mock"
-          >
-            <td>
-              -
-            </td>
-            <td>
-              session is active
-            </td>
-            <td />
-            <td>
-              0 B
-            </td>
-            <td>
-              0 B
-            </td>
-            <td>
-              test
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </InfiniteScroll>
+    />
   </div>
   <form
     action="http://localhost/"
@@ -585,7 +540,24 @@ exports[`<Status /> interactions should show user's radius usage 1`] = `
   <div
     className="flex-column"
     id="sessions"
-  />
+  >
+    <InfiniteScroll
+      dataLength={0}
+      hasMore={false}
+      loader={
+        <loader
+          full={false}
+          small={true}
+        />
+      }
+      next={[Function]}
+      style={
+        {
+          "overflow": false,
+        }
+      }
+    />
+  </div>
   <form
     action="http://localhost/"
     className="hidden"
@@ -769,7 +741,24 @@ exports[`<Status /> interactions subscriptions: should hide checks and show upgr
   <div
     className="flex-column"
     id="sessions"
-  />
+  >
+    <InfiniteScroll
+      dataLength={0}
+      hasMore={false}
+      loader={
+        <loader
+          full={false}
+          small={true}
+        />
+      }
+      next={[Function]}
+      style={
+        {
+          "overflow": false,
+        }
+      }
+    />
+  </div>
   <form
     action="http://localhost/"
     className="hidden"
@@ -997,7 +986,24 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
   <div
     className="flex-column"
     id="sessions"
-  />
+  >
+    <InfiniteScroll
+      dataLength={0}
+      hasMore={false}
+      loader={
+        <loader
+          full={false}
+          small={true}
+        />
+      }
+      next={[Function]}
+      style={
+        {
+          "overflow": false,
+        }
+      }
+    />
+  </div>
   <form
     action="http://localhost/"
     className="hidden"
@@ -1307,7 +1313,24 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
   <div
     className="flex-column"
     id="sessions"
-  />
+  >
+    <InfiniteScroll
+      dataLength={0}
+      hasMore={false}
+      loader={
+        <loader
+          full={false}
+          small={true}
+        />
+      }
+      next={[Function]}
+      style={
+        {
+          "overflow": false,
+        }
+      }
+    />
+  </div>
   <form
     action="http://localhost/"
     className="hidden"
@@ -1535,7 +1558,24 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
   <div
     className="flex-column"
     id="sessions"
-  />
+  >
+    <InfiniteScroll
+      dataLength={0}
+      hasMore={false}
+      loader={
+        <loader
+          full={false}
+          small={true}
+        />
+      }
+      next={[Function]}
+      style={
+        {
+          "overflow": false,
+        }
+      }
+    />
+  </div>
   <form
     action="http://localhost/"
     className="hidden"
@@ -1845,7 +1885,24 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
   <div
     className="flex-column"
     id="sessions"
-  />
+  >
+    <InfiniteScroll
+      dataLength={0}
+      hasMore={false}
+      loader={
+        <loader
+          full={false}
+          small={true}
+        />
+      }
+      next={[Function]}
+      style={
+        {
+          "overflow": false,
+        }
+      }
+    />
+  </div>
   <form
     action="http://localhost/"
     className="hidden"
@@ -2004,10 +2061,24 @@ exports[`<Status /> rendering should render correctly 1`] = `
     className="flex-column"
     id="sessions"
   >
-    <loader
-      full={false}
-      small={true}
-    />
+    <InfiniteScroll
+      dataLength={0}
+      hasMore={false}
+      loader={
+        <loader
+          full={false}
+          small={true}
+        />
+      }
+      next={[Function]}
+      style={
+        {
+          "overflow": false,
+        }
+      }
+    >
+      <React.Fragment />
+    </InfiniteScroll>
   </div>
   <React.Fragment>
     <form
@@ -2160,10 +2231,24 @@ exports[`<Status /> rendering with placeholder translation tags should render tr
     className="flex-column"
     id="sessions"
   >
-    <loader
-      full={false}
-      small={true}
-    />
+    <InfiniteScroll
+      dataLength={0}
+      hasMore={false}
+      loader={
+        <loader
+          full={false}
+          small={true}
+        />
+      }
+      next={[Function]}
+      style={
+        {
+          "overflow": false,
+        }
+      }
+    >
+      <React.Fragment />
+    </InfiniteScroll>
   </div>
   <React.Fragment>
     <form

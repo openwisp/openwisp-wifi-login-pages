@@ -110,7 +110,7 @@ export default class Status extends React.Component {
       rememberMe: localStorage.getItem("rememberMe") === "true",
     });
   };
-
+  // eslint-disable-next-line class-methods-use-this
   preloadDependencies = () => {
     Logout.preload();
   };
@@ -327,21 +327,7 @@ export default class Status extends React.Component {
     if (!this.isComponentMounted) {
       return;
     }
-
-    if (!this.state.activeSessions.length) {
-      this.setStateSafe({
-        activeSessions: [
-          {
-            session_id: "mock",
-            stop_time: null,
-            session_time: 0,
-            input_octets: 0,
-            output_octets: 0,
-            calling_station_id: "test",
-          },
-        ],
-      });
-    }
+    const {activeSessions} = this.state;
 
     // if everything went fine, load the user sessions
     await this.getUserActiveRadiusSessions();
@@ -989,7 +975,7 @@ export default class Status extends React.Component {
 
     const d = new Date(date);
 
-    if (isNaN(d.getTime())) return "-";
+    if (Number.isNaN(d.getTime())) return "-";
 
     if (typeof Intl !== "undefined") {
       return new Intl.DateTimeFormat(language, time_option).format(d);
@@ -1001,6 +987,7 @@ export default class Status extends React.Component {
   getLargeTableRow = (session, sessionSettings, showLogoutButton = false) => {
     const {language, statusPage} = this.props;
     const {accounting_swap_octets} = statusPage;
+
     let downloadOctets = session.input_octets;
     let uploadOctets = session.output_octets;
 
@@ -1008,37 +995,50 @@ export default class Status extends React.Component {
       downloadOctets = session.output_octets;
       uploadOctets = session.input_octets;
     }
+
     const time_option = {
       dateStyle: "medium",
       timeStyle: "short",
       hour12: false,
     };
+
     const activeSessionText = t`ACCT_ACTIVE`;
+
+    const hasDevice =
+      sessionSettings?.header?.device_address ||
+      sessionSettings?.device_address;
+
     return (
       <>
         <td>
           {this.getDateTimeFormat(language, time_option, session.start_time)}
         </td>
+
         <td>
           {session.stop_time === null
             ? activeSessionText
             : this.getDateTimeFormat(language, time_option, session.stop_time)}
         </td>
+
         <td>{this.getDuration(session.session_time)}</td>
+
         <td>
           {prettyBytes(downloadOctets, {
             maximumFractionDigits: 0,
             space: true,
           })}
         </td>
+
         <td>
           {prettyBytes(uploadOctets, {
             maximumFractionDigits: 0,
             space: true,
           })}
         </td>
+
         <td>
-          {session.calling_station_id}
+          {hasDevice ? session.calling_station_id : null}
+
           {session.stop_time == null && showLogoutButton && (
             <input
               type="button"
@@ -1127,13 +1127,11 @@ export default class Status extends React.Component {
             })}
           </td>
         </tr>
-        <tr
-          key={`${session.session_id}device_address`}
-          className={session.stop_time === null ? "active-session" : ""}
-        >
-          <th>{session_info.header.device_address}:</th>
-          <td>{session.calling_station_id}</td>
-        </tr>
+        {session_info.header.device_address && (
+          <tr key={`${session.session_id}device_address`}>
+            <th>{session_info.header.device_address}:</th>
+          </tr>
+        )}
         {session.stop_time == null &&
           captivePortalLogoutForm.logout_by_session && (
             <tr key={`${session.session_id}logout`} className="active-session">
@@ -1156,23 +1154,13 @@ export default class Status extends React.Component {
 
   getLargeTable = (session_info) => {
     const {activeSessions, pastSessions} = this.state;
+    if (!activeSessions.length && !pastSessions.length) {
+      return null;
+    }
     const {captivePortalLogoutForm} = this.props;
     const showLogoutButton =
       captivePortalLogoutForm.logout_by_session && activeSessions.length > 1;
-    const sessionsToRender =
-      activeSessions.length > 0
-        ? activeSessions
-        : [
-            {
-              session_id: "fallback",
-              stop_time: null,
-              start_time: new Date().toISOString(),
-              session_time: 0,
-              input_octets: 0,
-              output_octets: 0,
-              calling_station_id: "test",
-            },
-          ];
+    const sessionsToRender = activeSessions;
     return (
       <table className="large-table bg">
         <thead>
@@ -1188,11 +1176,7 @@ export default class Status extends React.Component {
               key={session.session_id}
               className={session.stop_time === null ? "active-session" : ""}
             >
-              {this.getLargeTableRow(
-                session,
-                session_info.settings,
-                showLogoutButton,
-              )}
+              {this.getLargeTableRow(session, session_info, showLogoutButton)}
             </tr>
           ))}
           {pastSessions.map((session) => (
@@ -1200,7 +1184,7 @@ export default class Status extends React.Component {
               key={session.session_id}
               className={session.stop_time === null ? "active-session" : ""}
             >
-              {this.getLargeTableRow(session, session_info.settings)}
+              {this.getLargeTableRow(session, session_info, showLogoutButton)}
             </tr>
           ))}
         </tbody>
@@ -1234,19 +1218,28 @@ export default class Status extends React.Component {
   getSpinner = () => <Loader full={false} small />;
 
   // eslint-disable-next-line class-methods-use-this
-  getSessionInfo = () => ({
-    header: {
+  getSessionInfo = () => {
+    const {captivePortalLogoutForm} = this.props;
+
+    const header = {
       start_time: t`ACCT_START_TIME`,
       stop_time: t`ACCT_STOP_TIME`,
       duration: t`ACCT_DURATION`,
       download: t`ACCT_DOWNLOAD`,
       upload: t`ACCT_UPLOAD`,
-      device_address: t`ACCT_DEVICE_ADDRESS`,
-    },
-    settings: {
-      active_session: t`ACCT_ACTIVE`,
-    },
-  });
+    };
+
+    if (captivePortalLogoutForm.logout_by_session) {
+      header.device_address = t`ACCT_DEVICE_ADDRESS`;
+    }
+
+    return {
+      header,
+      settings: {
+        active_session: t`ACCT_ACTIVE`,
+      },
+    };
+  };
 
   // eslint-disable-next-line class-methods-use-this
   getUserInfo = () => ({
@@ -1468,18 +1461,15 @@ export default class Status extends React.Component {
         </div>
 
         <div id="sessions" className="flex-column">
-          {((activeSessions.length > 0 || pastSessions.length > 0) && (
-            <InfinteScroll
-              dataLength={pastSessions.length}
-              next={this.fetchMoreSessions}
-              hasMore={hasMoreSessions}
-              loader={this.getSpinner()}
-              style={{overflow: false}}
-            >
-              <>{this.getTable(this.getSessionInfo())}</>
-            </InfinteScroll>
-          )) ||
-            (loadSpinner ? this.getSpinner() : null)}
+          <InfinteScroll
+            dataLength={pastSessions.length}
+            next={this.fetchMoreSessions}
+            hasMore={hasMoreSessions}
+            loader={this.getSpinner()}
+            style={{overflow: false}}
+          >
+            <>{this.getTable(this.getSessionInfo())}</>
+          </InfinteScroll>
         </div>
 
         {/* check to ensure this block of code is executed in root document and not in Iframe */}
