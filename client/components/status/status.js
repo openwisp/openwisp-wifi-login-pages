@@ -90,160 +90,188 @@ export default class Status extends React.Component {
     }
   }
 
-  async componentDidMount() {
-    const {
-      cookies,
-      orgSlug,
-      settings,
-      setUserData,
-      logout,
-      setTitle,
-      orgName,
-      language,
-      navigate,
-      captivePortalSyncAuth,
-    } = this.props;
+  initPage = async () => {
+    const {setTitle, orgName} = this.props;
+
     setTitle(t`STATUS_TITL`, orgName);
-    const {setLoading} = this.context;
-    let {userData} = this.props;
+
+    this.setRememberMe();
+    this.preloadDependencies();
+
+    if (window.top !== window.self) return;
+
+    this.setupCaptivePortal();
+
+    await this.handleAuthFlow();
+  };
+
+  setRememberMe = () => {
     this.setState({
       rememberMe: localStorage.getItem("rememberMe") === "true",
     });
+  };
+
+  preloadDependencies = () => {
     Logout.preload();
+  };
 
-    // to prevent recursive call in case redirect url is status page
-    if (window.top === window.self) {
-      try {
-        const {location, captivePortalLoginForm} = this.props;
-        const searchParams = new URLSearchParams(location.search);
-        const macaddr = searchParams.get(
-          captivePortalLoginForm.macaddr_param_name,
-        );
+  setupCaptivePortal = () => {
+    const {cookies, orgSlug, location, captivePortalLoginForm} = this.props;
 
-        window.addEventListener("message", this.handlePostMessage);
-        window.postMessage({type: "owlp-ready"}, window.location.origin);
-
-        if (macaddr) {
-          cookies.set(`${orgSlug}_macaddr`, macaddr, {path: "/"});
-        } else {
-          cookies.remove(`${orgSlug}_macaddr`, {path: "/"});
-        }
-      } catch {
-        //
-      }
-
-      setLoading(true);
-      const isValid = await validateToken(
-        cookies,
-        orgSlug,
-        setUserData,
-        userData,
-        logout,
-        language,
+    try {
+      const searchParams = new URLSearchParams(location.search);
+      const macaddr = searchParams.get(
+        captivePortalLoginForm.macaddr_param_name,
       );
 
-      // stop here if token is invalid or component unmounted
-      if (isValid === false || !this.isComponentMounted) {
-        setLoading(false);
-        return;
-      }
+      window.addEventListener("message", this.handlePostMessage);
+      window.postMessage({type: "owlp-ready"}, window.location.origin);
 
-      const {
-        mustLogin: userMustLogin,
-        mustLogout: userMustLogout,
+      if (macaddr) {
+        cookies.set(`${orgSlug}_macaddr`, macaddr, {path: "/"});
+      } else {
+        cookies.remove(`${orgSlug}_macaddr`, {path: "/"});
+      }
+    } catch {
+      // ignore this
+    }
+  };
+
+  handleAuthFlow = async () => {
+    const {cookies, orgSlug, setUserData, logout, language} = this.props;
+
+    if (isValid === false || !this.isComponentMounted) {
+      setLoading(false);
+      return;
+    }
+    const {setLoading} = this.context;
+    let {userData} = this.props;
+
+    setLoading(true);
+
+    const isValid = await validateToken(
+      cookies,
+      orgSlug,
+      setUserData,
+      userData,
+      logout,
+      language,
+    );
+
+    if (isValid === false || !this.isComponentMounted) {
+      setLoading(false);
+      return;
+    }
+
+    await this.handlePostValidationFlow();
+  };
+
+  handlePostValidationFlow = async () => {
+    const {captivePortalSyncAuth, cookies, orgSlug, settings, navigate} =
+      this.props;
+
+    let {userData} = this.props;
+
+    const {
+      mustLogin: userMustLogin,
+      mustLogout: userMustLogout,
+      repeatLogin,
+    } = userData;
+
+    const mustLogin = this.resolveStoredValue(
+      captivePortalSyncAuth,
+      `${orgSlug}_mustLogin`,
+      userMustLogin,
+      cookies,
+    );
+
+    const mustLogout = this.resolveStoredValue(
+      captivePortalSyncAuth,
+      `${orgSlug}_mustLogout`,
+      userMustLogout,
+      cookies,
+    );
+
+    ({userData} = this.props);
+
+    //fallback for expired password
+    if (userData.password_expired === true) {
+      toast.warning(t`PASSWORD_EXPIRED`);
+      this.props.setUserData({
+        ...userData,
+        mustLogin,
+        mustLogout,
         repeatLogin,
-      } = userData;
-      const mustLogin = this.resolveStoredValue(
+      });
+      navigate(`/${orgSlug}/change-password`);
+      return;
+    }
+
+    const {
+      radius_user_token: password,
+      username,
+      email,
+      phone_number,
+      is_active,
+      method,
+      is_verified: isVerified,
+    } = userData;
+
+    const userInfo = {};
+    userInfo.status = "";
+    userInfo.email = email;
+
+    if (username !== email && username !== phone_number) {
+      userInfo.username = username;
+    }
+
+    if (settings.mobile_phone_verification && phone_number) {
+      userInfo.phone_number = phone_number;
+    }
+
+    this.setState({username, password, userInfo}, () => {
+      if (is_active === false) {
+        this.handleLogout(false);
+      }
+    });
+
+    if (is_active === false) return;
+
+    //must logout logic
+    if (mustLogout) {
+      if (captivePortalSyncAuth) {
+        this.setState({loggedOut: mustLogout});
+        this.handleLogoutIframe();
+      } else {
+        await this.handleLogout(false, repeatLogin);
+      }
+      return;
+    }
+
+    let shouldLogin = mustLogin;
+
+    if (method === "bank_card" && isVerified === false) {
+      shouldLogin = shouldLogin && settings.payment_requires_internet;
+    }
+
+    if (this.loginFormRef?.current && shouldLogin) {
+      this.storeValue(
         captivePortalSyncAuth,
         `${orgSlug}_mustLogin`,
-        userMustLogin,
+        false,
         cookies,
       );
-      const mustLogout = this.resolveStoredValue(
-        captivePortalSyncAuth,
-        `${orgSlug}_mustLogout`,
-        userMustLogout,
-        cookies,
-      );
-      ({userData} = this.props);
-      if (userData.password_expired === true) {
-        toast.warning(t`PASSWORD_EXPIRED`);
-        setUserData({
-          ...userData,
-          mustLogin,
-          mustLogout,
-          repeatLogin,
-        });
-        navigate(`/${orgSlug}/change-password`);
-        return;
+      this.notifyCpLogin(userData);
+      this.loginFormRef.current.submit();
+    } else if (!shouldLogin) {
+      if (captivePortalSyncAuth) {
+        this.handleLogin();
       }
-      const {
-        radius_user_token: password,
-        username,
-        email,
-        phone_number,
-        is_active,
-        method,
-        is_verified: isVerified,
-      } = userData;
-      const userInfo = {};
-      userInfo.status = "";
-      userInfo.email = email;
-      if (username !== email && username !== phone_number) {
-        userInfo.username = username;
-      }
-      if (settings.mobile_phone_verification && phone_number) {
-        userInfo.phone_number = phone_number;
-      }
-      this.setState({username, password, userInfo}, () => {
-        // if the user is being automatically logged in but it's not
-        // active anymore (eg: has been banned)
-        // automatically perform log out
-        if (is_active === false) {
-          this.handleLogout(false);
-        }
-      });
-
-      // stop here if user is banned
-      if (is_active === false) {
-        return;
-      }
-
-      if (mustLogout) {
-        if (captivePortalSyncAuth) {
-          // In synchronous captive portal authentication, the page reloads
-          // after form submission, so handleLogoutIframe() must be called manually here.
-          // (handleLogout() is already triggered when the user clicks the "Logout" button.)
-          this.setState({loggedOut: mustLogout});
-          this.handleLogoutIframe();
-        } else {
-          await this.handleLogout(false, repeatLogin);
-        }
-        return;
-      }
-
-      let shouldLogin = mustLogin;
-      if (method === "bank_card" && isVerified === false) {
-        shouldLogin = shouldLogin && settings.payment_requires_internet;
-      }
-      if (this.loginFormRef && this.loginFormRef.current && shouldLogin) {
-        this.storeValue(
-          captivePortalSyncAuth,
-          `${orgSlug}_mustLogin`,
-          false,
-          cookies,
-        );
-        this.notifyCpLogin(userData);
-        this.loginFormRef.current.submit();
-      } else if (!shouldLogin) {
-        // If the user is already logged in, we need to handle the
-        // the response from the captive portal.
-        if (captivePortalSyncAuth) {
-          this.handleLogin();
-        }
-        this.finalOperations();
-      }
+      this.finalOperations();
     }
+  };
+  async componentDidMount() {
+    this.initPage();
   }
 
   componentWillUnmount() {
