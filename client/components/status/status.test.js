@@ -1020,7 +1020,10 @@ describe("<Status /> interactions", () => {
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
     });
+    await wrapper.instance().getUserPastRadiusSessions();
     await tick();
+    wrapper.update();
+
     expect(wrapper.contains(<th>Start time</th>)).toBe(true);
     expect(wrapper.contains(<th>Stop time</th>)).toBe(true);
     expect(wrapper.contains(<th>Duration</th>)).toBe(true);
@@ -1119,7 +1122,10 @@ describe("<Status /> interactions", () => {
       disableLifecycleMethods: true,
     });
     // spinner should not load if no sessions are available
-    wrapper.instance().updateSpinner();
+    wrapper.setState({
+      radiusUsageSpinner: false,
+    });
+    wrapper.update();
     expect(wrapper.find(".loading").length).toEqual(0);
   });
 
@@ -2015,6 +2021,7 @@ describe("<Status /> interactions", () => {
   it("should call handleSessionLogout if clicked on session row of large table", async () => {
     validateToken.mockReturnValue(true);
     const prop = createTestProps();
+    props.captivePortalLogoutForm.logout_by_session = true;
     wrapper = shallow(<Status {...prop} />, {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: true,
@@ -2024,6 +2031,7 @@ describe("<Status /> interactions", () => {
       "handleSessionLogout",
     );
     const session = {
+      session_id: 1,
       start_time: "2021-07-08T00:22:28-04:00",
       stop_time: null,
       input_octets: 100000,

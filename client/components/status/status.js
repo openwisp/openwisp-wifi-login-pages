@@ -38,6 +38,8 @@ import handleSession from "../../utils/session";
 import getPlanSelection from "../../utils/get-plan-selection";
 import getPlans from "../../utils/get-plans";
 
+const prettyBytes = prettyBytesLib || ((v) => v);
+
 export default class Status extends React.Component {
   constructor(props) {
     super(props);
@@ -56,7 +58,6 @@ export default class Status extends React.Component {
       currentPage: 1,
       hasMoreSessions: false,
       screenWidth: window.innerWidth,
-      loadSpinner: true,
       showRadiusUsage: true,
       radiusUsageSpinner: true,
       modalActive: false,
@@ -77,7 +78,6 @@ export default class Status extends React.Component {
     this.handleSessionLogout = this.handleSessionLogout.bind(this);
     this.fetchMoreSessions = this.fetchMoreSessions.bind(this);
     this.updateScreenWidth = this.updateScreenWidth.bind(this);
-    this.updateSpinner = this.updateSpinner.bind(this);
   }
 
   /**
@@ -90,160 +90,186 @@ export default class Status extends React.Component {
     }
   }
 
-  async componentDidMount() {
-    const {
-      cookies,
-      orgSlug,
-      settings,
-      setUserData,
-      logout,
-      setTitle,
-      orgName,
-      language,
-      navigate,
-      captivePortalSyncAuth,
-    } = this.props;
+  initPage = async () => {
+    const {setTitle, orgName} = this.props;
+
     setTitle(t`STATUS_TITL`, orgName);
-    const {setLoading} = this.context;
-    let {userData} = this.props;
+
+    this.setRememberMe();
+    this.preloadDependencies();
+
+    if (window.top !== window.self) return;
+
+    this.setupCaptivePortal();
+
+    await this.handleAuthFlow();
+  };
+
+  setRememberMe = () => {
     this.setState({
       rememberMe: localStorage.getItem("rememberMe") === "true",
     });
+  };
+
+  // eslint-disable-next-line class-methods-use-this
+  preloadDependencies = () => {
     Logout.preload();
+  };
 
-    // to prevent recursive call in case redirect url is status page
-    if (window.top === window.self) {
-      try {
-        const {location, captivePortalLoginForm} = this.props;
-        const searchParams = new URLSearchParams(location.search);
-        const macaddr = searchParams.get(
-          captivePortalLoginForm.macaddr_param_name,
-        );
+  setupCaptivePortal = () => {
+    const {cookies, orgSlug, location, captivePortalLoginForm} = this.props;
 
-        window.addEventListener("message", this.handlePostMessage);
-        window.postMessage({type: "owlp-ready"}, window.location.origin);
-
-        if (macaddr) {
-          cookies.set(`${orgSlug}_macaddr`, macaddr, {path: "/"});
-        } else {
-          cookies.remove(`${orgSlug}_macaddr`, {path: "/"});
-        }
-      } catch {
-        //
-      }
-
-      setLoading(true);
-      const isValid = await validateToken(
-        cookies,
-        orgSlug,
-        setUserData,
-        userData,
-        logout,
-        language,
+    try {
+      const searchParams = new URLSearchParams(location.search);
+      const macaddr = searchParams.get(
+        captivePortalLoginForm.macaddr_param_name,
       );
 
-      // stop here if token is invalid or component unmounted
-      if (isValid === false || !this.isComponentMounted) {
-        setLoading(false);
-        return;
-      }
+      window.addEventListener("message", this.handlePostMessage);
+      window.postMessage({type: "owlp-ready"}, window.location.origin);
 
-      const {
-        mustLogin: userMustLogin,
-        mustLogout: userMustLogout,
+      if (macaddr) {
+        cookies.set(`${orgSlug}_macaddr`, macaddr, {path: "/"});
+      } else {
+        cookies.remove(`${orgSlug}_macaddr`, {path: "/"});
+      }
+    } catch {
+      // ignore this
+    }
+  };
+
+  handleAuthFlow = async () => {
+    const {cookies, orgSlug, setUserData, logout, language} = this.props;
+    const {setLoading} = this.context;
+    const {userData} = this.props;
+
+    setLoading(true);
+
+    const isValid = await validateToken(
+      cookies,
+      orgSlug,
+      setUserData,
+      userData,
+      logout,
+      language,
+    );
+
+    if (isValid === false || !this.isComponentMounted) {
+      setLoading(false);
+      return;
+    }
+
+    await this.handlePostValidationFlow();
+  };
+
+  handlePostValidationFlow = async () => {
+    const {captivePortalSyncAuth, cookies, orgSlug, settings, navigate} =
+      this.props;
+
+    let {userData} = this.props;
+
+    const {
+      mustLogin: userMustLogin,
+      mustLogout: userMustLogout,
+      repeatLogin,
+    } = userData;
+
+    const mustLogin = this.resolveStoredValue(
+      captivePortalSyncAuth,
+      `${orgSlug}_mustLogin`,
+      userMustLogin,
+      cookies,
+    );
+
+    const mustLogout = this.resolveStoredValue(
+      captivePortalSyncAuth,
+      `${orgSlug}_mustLogout`,
+      userMustLogout,
+      cookies,
+    );
+
+    ({userData} = this.props);
+
+    // fallback for expired password
+    if (userData.password_expired === true) {
+      toast.warning(t`PASSWORD_EXPIRED`);
+      const {setUserData} = this.props;
+      setUserData({
+        ...userData,
+        mustLogin,
+        mustLogout,
         repeatLogin,
-      } = userData;
-      const mustLogin = this.resolveStoredValue(
+      });
+      navigate(`/${orgSlug}/change-password`);
+      return;
+    }
+
+    const {
+      radius_user_token: password,
+      username,
+      email,
+      phone_number,
+      is_active,
+      method,
+      is_verified: isVerified,
+    } = userData;
+
+    const userInfo = {};
+    userInfo.status = "";
+    userInfo.email = email;
+
+    if (username !== email && username !== phone_number) {
+      userInfo.username = username;
+    }
+
+    if (settings.mobile_phone_verification && phone_number) {
+      userInfo.phone_number = phone_number;
+    }
+
+    this.setState({username, password, userInfo}, () => {
+      if (is_active === false) {
+        this.handleLogout(false);
+      }
+    });
+
+    if (is_active === false) return;
+
+    // must logout logic
+    if (mustLogout) {
+      if (captivePortalSyncAuth) {
+        this.setState({loggedOut: mustLogout});
+        this.handleLogoutIframe();
+      } else {
+        await this.handleLogout(false, repeatLogin);
+      }
+      return;
+    }
+
+    let shouldLogin = mustLogin;
+
+    if (method === "bank_card" && isVerified === false) {
+      shouldLogin = shouldLogin && settings.payment_requires_internet;
+    }
+
+    if (this.loginFormRef?.current && shouldLogin) {
+      this.storeValue(
         captivePortalSyncAuth,
         `${orgSlug}_mustLogin`,
-        userMustLogin,
+        false,
         cookies,
       );
-      const mustLogout = this.resolveStoredValue(
-        captivePortalSyncAuth,
-        `${orgSlug}_mustLogout`,
-        userMustLogout,
-        cookies,
-      );
-      ({userData} = this.props);
-      if (userData.password_expired === true) {
-        toast.warning(t`PASSWORD_EXPIRED`);
-        setUserData({
-          ...userData,
-          mustLogin,
-          mustLogout,
-          repeatLogin,
-        });
-        navigate(`/${orgSlug}/change-password`);
-        return;
+      this.notifyCpLogin(userData);
+      this.loginFormRef.current.submit();
+    } else if (!shouldLogin) {
+      if (captivePortalSyncAuth) {
+        this.handleLogin();
       }
-      const {
-        radius_user_token: password,
-        username,
-        email,
-        phone_number,
-        is_active,
-        method,
-        is_verified: isVerified,
-      } = userData;
-      const userInfo = {};
-      userInfo.status = "";
-      userInfo.email = email;
-      if (username !== email && username !== phone_number) {
-        userInfo.username = username;
-      }
-      if (settings.mobile_phone_verification && phone_number) {
-        userInfo.phone_number = phone_number;
-      }
-      this.setState({username, password, userInfo}, () => {
-        // if the user is being automatically logged in but it's not
-        // active anymore (eg: has been banned)
-        // automatically perform log out
-        if (is_active === false) {
-          this.handleLogout(false);
-        }
-      });
-
-      // stop here if user is banned
-      if (is_active === false) {
-        return;
-      }
-
-      if (mustLogout) {
-        if (captivePortalSyncAuth) {
-          // In synchronous captive portal authentication, the page reloads
-          // after form submission, so handleLogoutIframe() must be called manually here.
-          // (handleLogout() is already triggered when the user clicks the "Logout" button.)
-          this.setState({loggedOut: mustLogout});
-          this.handleLogoutIframe();
-        } else {
-          await this.handleLogout(false, repeatLogin);
-        }
-        return;
-      }
-
-      let shouldLogin = mustLogin;
-      if (method === "bank_card" && isVerified === false) {
-        shouldLogin = shouldLogin && settings.payment_requires_internet;
-      }
-      if (this.loginFormRef && this.loginFormRef.current && shouldLogin) {
-        this.storeValue(
-          captivePortalSyncAuth,
-          `${orgSlug}_mustLogin`,
-          false,
-          cookies,
-        );
-        this.notifyCpLogin(userData);
-        this.loginFormRef.current.submit();
-      } else if (!shouldLogin) {
-        // If the user is already logged in, we need to handle the
-        // the response from the captive portal.
-        if (captivePortalSyncAuth) {
-          this.handleLogin();
-        }
-        this.finalOperations();
-      }
+      this.finalOperations();
     }
+  };
+
+  componentDidMount() {
+    this.initPage();
   }
 
   componentWillUnmount() {
@@ -299,15 +325,15 @@ export default class Status extends React.Component {
       return;
     }
 
-    if (!this.isComponentMounted) {
-      return;
-    }
-
     // if everything went fine, load the user sessions
     await this.getUserActiveRadiusSessions();
+    if (!this.isComponentMounted) return;
     await this.getUserPastRadiusSessions();
+    if (!this.isComponentMounted) return;
     this.intervalId = setInterval(async () => {
+      if (!this.isComponentMounted) return;
       await this.getUserActiveRadiusSessions();
+      if (!this.isComponentMounted) return;
       this.logoutIfCurrentRadiusSessionIsInactive();
     }, 60000);
     // We don't show radius usage in the internet mode.
@@ -319,7 +345,6 @@ export default class Status extends React.Component {
     }
 
     window.addEventListener("resize", this.updateScreenWidth);
-    this.updateSpinner();
   }
 
   async getUserRadiusSessions(params) {
@@ -676,6 +701,7 @@ export default class Status extends React.Component {
    * so that the request is transparent for the user, which does not need
    * to be redirected to a different URL and then come back again.
    */
+
   handleLogoutIframe = async () => {
     if (!this.logoutIframeRef || !this.logoutIframeRef.current) {
       return;
@@ -745,16 +771,26 @@ export default class Status extends React.Component {
       setPlanExhausted,
     } = this.props;
     const {setLoading} = this.context;
-    const {message, type, warningMessage, showUpgradeBtn} = event.data;
+    const {message, type, warningMessage, showUpgradeBtn} = event.data || {};
 
     // Only accept messages from trusted origins,
     // For more info read: https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage#security_concern
-    const trustedOrigin =
-      event.origin === new URL(captivePortalLoginForm.action).origin ||
-      event.origin === window.location.origin;
+
+    let actionOrigin = null;
+
+    try {
+      if (captivePortalLoginForm.action?.trim()) {
+        actionOrigin = new URL(captivePortalLoginForm.action).origin;
+      }
+    } catch {
+      // invalid URL, ignore
+    }
+
+    const isTrustedOrigin =
+      event.origin === actionOrigin || event.origin === window.location.origin;
 
     if (
-      !trustedOrigin ||
+      !isTrustedOrigin ||
       !type ||
       // internet-mode will not contain message, but message
       // is required for authError and authMessage type
@@ -869,13 +905,6 @@ export default class Status extends React.Component {
     this.setStateSafe({screenWidth: window.innerWidth});
   };
 
-  updateSpinner = () => {
-    const {activeSessions, pastSessions} = this.state;
-    this.setStateSafe({
-      loadSpinner: activeSessions.length || pastSessions.length,
-    });
-  };
-
   toggleModal = () => {
     const {modalActive} = this.state;
     this.setStateSafe({modalActive: !modalActive});
@@ -903,8 +932,11 @@ export default class Status extends React.Component {
       this.logoutFormRef.current.submit();
     }
     setLoading(true);
+
     await this.getUserPastRadiusSessions();
+    if (!this.isComponentMounted) return;
     await this.getUserActiveRadiusSessions();
+    if (!this.isComponentMounted) return;
     setLoading(false);
   }
 
@@ -926,18 +958,24 @@ export default class Status extends React.Component {
   };
 
   // eslint-disable-next-line class-methods-use-this
-  getDateTimeFormat = (language, time_option, date) => {
+  getDateTimeFormat(language, time_option, date) {
+    if (!date) return "-";
+
+    const d = new Date(date);
+
+    if (Number.isNaN(d.getTime())) return "-";
+
     if (typeof Intl !== "undefined") {
-      return new Intl.DateTimeFormat(language, time_option).format(
-        new Date(date),
-      );
+      return new Intl.DateTimeFormat(language, time_option).format(d);
     }
-    return String(new Date(date));
-  };
+
+    return String(d);
+  }
 
   getLargeTableRow = (session, sessionSettings, showLogoutButton = false) => {
     const {language, statusPage} = this.props;
     const {accounting_swap_octets} = statusPage;
+
     let downloadOctets = session.input_octets;
     let uploadOctets = session.output_octets;
 
@@ -945,27 +983,52 @@ export default class Status extends React.Component {
       downloadOctets = session.output_octets;
       uploadOctets = session.input_octets;
     }
+
     const time_option = {
       dateStyle: "medium",
       timeStyle: "short",
       hour12: false,
     };
+
     const activeSessionText = t`ACCT_ACTIVE`;
+
+    const hasDevice =
+      sessionSettings?.header?.device_address ||
+      sessionSettings?.device_address;
+
     return (
       <>
         <td>
           {this.getDateTimeFormat(language, time_option, session.start_time)}
         </td>
+
         <td>
           {session.stop_time === null
             ? activeSessionText
             : this.getDateTimeFormat(language, time_option, session.stop_time)}
         </td>
+
         <td>{this.getDuration(session.session_time)}</td>
+
+        <td>
+          {prettyBytes(downloadOctets, {
+            maximumFractionDigits: 0,
+            space: true,
+          })}
+        </td>
+
+        <td>
+          {prettyBytes(uploadOctets, {
+            maximumFractionDigits: 0,
+            space: true,
+          })}
+        </td>
+
         <td>{filesize(downloadOctets, {round: 0})}</td>
         <td>{filesize(uploadOctets, {round: 0})}</td>
         <td>
-          {session.calling_station_id}
+          {hasDevice ? session.calling_station_id : null}
+
           {session.stop_time == null && showLogoutButton && (
             <input
               type="button"
@@ -1044,13 +1107,11 @@ export default class Status extends React.Component {
           <th>{session_info.header.upload}:</th>
           <td>{filesize(uploadOctets, {round: 0})}</td>
         </tr>
-        <tr
-          key={`${session.session_id}device_address`}
-          className={session.stop_time === null ? "active-session" : ""}
-        >
-          <th>{session_info.header.device_address}:</th>
-          <td>{session.calling_station_id}</td>
-        </tr>
+        {session_info.header.device_address && (
+          <tr key={`${session.session_id}device_address`}>
+            <th>{session_info.header.device_address}:</th>
+          </tr>
+        )}
         {session.stop_time == null &&
           captivePortalLogoutForm.logout_by_session && (
             <tr key={`${session.session_id}logout`} className="active-session">
@@ -1073,9 +1134,13 @@ export default class Status extends React.Component {
 
   getLargeTable = (session_info) => {
     const {activeSessions, pastSessions} = this.state;
+    if (!activeSessions.length && !pastSessions.length) {
+      return null;
+    }
     const {captivePortalLogoutForm} = this.props;
     const showLogoutButton =
       captivePortalLogoutForm.logout_by_session && activeSessions.length > 1;
+    const sessionsToRender = activeSessions;
     return (
       <table className="large-table bg">
         <thead>
@@ -1086,16 +1151,12 @@ export default class Status extends React.Component {
           </tr>
         </thead>
         <tbody>
-          {activeSessions.map((session) => (
+          {sessionsToRender.map((session) => (
             <tr
               key={session.session_id}
               className={session.stop_time === null ? "active-session" : ""}
             >
-              {this.getLargeTableRow(
-                session,
-                session_info.settings,
-                showLogoutButton,
-              )}
+              {this.getLargeTableRow(session, session_info, showLogoutButton)}
             </tr>
           ))}
           {pastSessions.map((session) => (
@@ -1103,7 +1164,7 @@ export default class Status extends React.Component {
               key={session.session_id}
               className={session.stop_time === null ? "active-session" : ""}
             >
-              {this.getLargeTableRow(session, session_info.settings)}
+              {this.getLargeTableRow(session, session_info, showLogoutButton)}
             </tr>
           ))}
         </tbody>
@@ -1137,19 +1198,28 @@ export default class Status extends React.Component {
   getSpinner = () => <Loader full={false} small />;
 
   // eslint-disable-next-line class-methods-use-this
-  getSessionInfo = () => ({
-    header: {
+  getSessionInfo = () => {
+    const {captivePortalLogoutForm} = this.props;
+
+    const header = {
       start_time: t`ACCT_START_TIME`,
       stop_time: t`ACCT_STOP_TIME`,
       duration: t`ACCT_DURATION`,
       download: t`ACCT_DOWNLOAD`,
       upload: t`ACCT_UPLOAD`,
-      device_address: t`ACCT_DEVICE_ADDRESS`,
-    },
-    settings: {
-      active_session: t`ACCT_ACTIVE`,
-    },
-  });
+    };
+
+    if (captivePortalLogoutForm.logout_by_session) {
+      header.device_address = t`ACCT_DEVICE_ADDRESS`;
+    }
+
+    return {
+      header,
+      settings: {
+        active_session: t`ACCT_ACTIVE`,
+      },
+    };
+  };
 
   // eslint-disable-next-line class-methods-use-this
   getUserInfo = () => ({
@@ -1201,13 +1271,11 @@ export default class Status extends React.Component {
       username,
       password,
       userInfo,
-      activeSessions,
       userChecks,
       userPlan,
       pastSessions,
       sessionsToLogout,
       hasMoreSessions,
-      loadSpinner,
       showRadiusUsage,
       radiusUsageSpinner,
       upgradePlanModalActive,
@@ -1369,18 +1437,15 @@ export default class Status extends React.Component {
         </div>
 
         <div id="sessions" className="flex-column">
-          {((activeSessions.length > 0 || pastSessions.length > 0) && (
-            <InfinteScroll
-              dataLength={pastSessions.length}
-              next={this.fetchMoreSessions}
-              hasMore={hasMoreSessions}
-              loader={this.getSpinner()}
-              style={{overflow: false}}
-            >
-              <>{this.getTable(this.getSessionInfo())}</>
-            </InfinteScroll>
-          )) ||
-            (loadSpinner ? this.getSpinner() : null)}
+          <InfinteScroll
+            dataLength={pastSessions.length}
+            next={this.fetchMoreSessions}
+            hasMore={hasMoreSessions}
+            loader={this.getSpinner()}
+            style={{overflow: false}}
+          >
+            <>{this.getTable(this.getSessionInfo())}</>
+          </InfinteScroll>
         </div>
 
         {/* check to ensure this block of code is executed in root document and not in Iframe */}
