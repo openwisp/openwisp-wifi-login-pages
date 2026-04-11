@@ -12,7 +12,7 @@ import {Link} from "react-router-dom";
 import {toast} from "react-toastify";
 import InfinteScroll from "react-infinite-scroll-component";
 import {t, gettext} from "ttag";
-import prettyBytes from "pretty-bytes";
+import prettyBytesLib from "pretty-bytes";
 import {timeFromSeconds} from "duration-formatter";
 import getLanguageHeaders from "../../utils/get-language-headers";
 
@@ -38,6 +38,8 @@ import handleSession from "../../utils/session";
 import getPlanSelection from "../../utils/get-plan-selection";
 import getPlans from "../../utils/get-plans";
 
+const prettyBytes = prettyBytesLib || ((v) => v);
+
 export default class Status extends React.Component {
   constructor(props) {
     super(props);
@@ -56,7 +58,6 @@ export default class Status extends React.Component {
       currentPage: 1,
       hasMoreSessions: false,
       screenWidth: window.innerWidth,
-      loadSpinner: true,
       showRadiusUsage: true,
       radiusUsageSpinner: true,
       modalActive: false,
@@ -77,7 +78,6 @@ export default class Status extends React.Component {
     this.handleSessionLogout = this.handleSessionLogout.bind(this);
     this.fetchMoreSessions = this.fetchMoreSessions.bind(this);
     this.updateScreenWidth = this.updateScreenWidth.bind(this);
-    this.updateSpinner = this.updateSpinner.bind(this);
   }
 
   /**
@@ -345,7 +345,6 @@ export default class Status extends React.Component {
     }
 
     window.addEventListener("resize", this.updateScreenWidth);
-    this.updateSpinner();
   }
 
   async getUserRadiusSessions(params) {
@@ -906,13 +905,6 @@ export default class Status extends React.Component {
     this.setStateSafe({screenWidth: window.innerWidth});
   };
 
-  updateSpinner = () => {
-    const {activeSessions, pastSessions} = this.state;
-    this.setStateSafe({
-      loadSpinner: activeSessions.length > 0 || pastSessions.length > 0,
-    });
-  };
-
   toggleModal = () => {
     const {modalActive} = this.state;
     this.setStateSafe({modalActive: !modalActive});
@@ -951,7 +943,6 @@ export default class Status extends React.Component {
   async fetchMoreSessions() {
     const {currentPage} = this.state;
     await this.getUserPastRadiusSessions({page: currentPage + 1});
-    if (!this.isComponentMounted) return;
   }
 
   // eslint-disable-next-line class-methods-use-this
