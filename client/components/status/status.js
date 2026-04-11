@@ -110,6 +110,7 @@ export default class Status extends React.Component {
       rememberMe: localStorage.getItem("rememberMe") === "true",
     });
   };
+
   // eslint-disable-next-line class-methods-use-this
   preloadDependencies = () => {
     Logout.preload();
@@ -323,11 +324,6 @@ export default class Status extends React.Component {
     } else {
       return;
     }
-
-    if (!this.isComponentMounted) {
-      return;
-    }
-    const {activeSessions} = this.state;
 
     // if everything went fine, load the user sessions
     await this.getUserActiveRadiusSessions();
@@ -706,6 +702,7 @@ export default class Status extends React.Component {
    * so that the request is transparent for the user, which does not need
    * to be redirected to a different URL and then come back again.
    */
+
   handleLogoutIframe = async () => {
     if (!this.logoutIframeRef || !this.logoutIframeRef.current) {
       return;
@@ -912,7 +909,7 @@ export default class Status extends React.Component {
   updateSpinner = () => {
     const {activeSessions, pastSessions} = this.state;
     this.setStateSafe({
-      loadSpinner: activeSessions.length || pastSessions.length,
+      loadSpinner: activeSessions.length > 0 || pastSessions.length > 0,
     });
   };
 
@@ -1293,13 +1290,11 @@ export default class Status extends React.Component {
       username,
       password,
       userInfo,
-      activeSessions,
       userChecks,
       userPlan,
       pastSessions,
       sessionsToLogout,
       hasMoreSessions,
-      loadSpinner,
       showRadiusUsage,
       radiusUsageSpinner,
       upgradePlanModalActive,
