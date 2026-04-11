@@ -54,7 +54,7 @@ Install the dependencies:
 
 .. code-block:: shell
 
-    yarn
+    yarn install
 
 Launch development server:
 
@@ -68,11 +68,19 @@ Run tests with:
 
 .. code-block::
 
-    # ensure dev server is started, eg:
-    yarn start &
-
-    # run tests
     yarn test
+
+ES5 Compliance Test
+-------------------
+
+Verifies the production webpack build outputs only ES5-compatible
+JavaScript for compatibility with old browsers. Not included in ``yarn
+test`` because it is slow (runs a full production build). It runs
+automatically in CI. To run it locally:
+
+.. code-block:: shell
+
+    yarn test-es5
 
 ESM Support in Jest
 -------------------
@@ -147,4 +155,6 @@ can finally run the browser based tests:
 
     export OPENWISP_RADIUS_PATH=<PATH_TO_OPENWISP_RADIUS_DIRECTORY>
     # enable python virtual environment if needed
-    yarn browser-test
+    SELENIUM_HEADLESS=1 yarn browser-test
+    # run in GUI mode, useful for debugging test failures
+    SELENIUM_HEADLESS=0 yarn browser-test

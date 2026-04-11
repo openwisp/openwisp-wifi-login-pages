@@ -12,7 +12,7 @@ import {Link} from "react-router-dom";
 import {toast} from "react-toastify";
 import InfinteScroll from "react-infinite-scroll-component";
 import {t, gettext} from "ttag";
-import prettyBytesLib from "pretty-bytes";
+import {filesize} from "filesize";
 import {timeFromSeconds} from "duration-formatter";
 import getLanguageHeaders from "../../utils/get-language-headers";
 
@@ -1024,6 +1024,8 @@ export default class Status extends React.Component {
           })}
         </td>
 
+        <td>{filesize(downloadOctets, {round: 0})}</td>
+        <td>{filesize(uploadOctets, {round: 0})}</td>
         <td>
           {hasDevice ? session.calling_station_id : null}
 
@@ -1096,24 +1098,14 @@ export default class Status extends React.Component {
           className={session.stop_time === null ? "active-session" : ""}
         >
           <th>{session_info.header.download}:</th>
-          <td>
-            {prettyBytes(downloadOctets, {
-              maximumFractionDigits: 0,
-              space: true,
-            })}
-          </td>
+          <td>{filesize(downloadOctets, {round: 0})}</td>
         </tr>
         <tr
           key={`${session.session_id}upload`}
           className={session.stop_time === null ? "active-session" : ""}
         >
           <th>{session_info.header.upload}:</th>
-          <td>
-            {prettyBytes(uploadOctets, {
-              maximumFractionDigits: 0,
-              space: true,
-            })}
-          </td>
+          <td>{filesize(uploadOctets, {round: 0})}</td>
         </tr>
         {session_info.header.device_address && (
           <tr key={`${session.session_id}device_address`}>
@@ -1251,9 +1243,7 @@ export default class Status extends React.Component {
     const intValue = parseInt(value, 10);
     switch (type) {
       case "bytes":
-        return intValue === 0
-          ? 0
-          : prettyBytes(intValue, {space: true, maximumFractionDigits: 2});
+        return intValue === 0 ? 0 : filesize(intValue, {round: 2});
       case "seconds":
         return timeFromSeconds(intValue);
       default:

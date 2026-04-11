@@ -26,11 +26,11 @@ describe("Selenium tests for expired password flow />", () => {
     await driver.get(urls.login);
     const data = initialData();
     let username = await getElementByCss(driver, "input#username");
-    username.sendKeys(data.expiredPasswordUser.email);
+    await username.sendKeys(data.expiredPasswordUser.email);
     let password = await getElementByCss(driver, "input#password");
-    password.sendKeys(data.expiredPasswordUser.password);
+    await password.sendKeys(data.expiredPasswordUser.password);
     let submitBtn = await getElementByCss(driver, "input[type=submit]");
-    submitBtn.click();
+    await submitBtn.click();
     await driver.wait(until.urlContains("change-password"), 5000);
     let successToastDiv = await getElementByCss(driver, "div[role=alert]");
     await driver.wait(until.elementIsVisible(successToastDiv));
@@ -55,17 +55,17 @@ describe("Selenium tests for expired password flow />", () => {
       driver,
       "input#current-password",
     );
-    currPassword.sendKeys(data.expiredPasswordUser.password);
+    await currPassword.sendKeys(data.expiredPasswordUser.password);
     const newPassword = "newPassword@";
     const changePassword = await getElementByCss(driver, "input#new-password");
-    changePassword.sendKeys(newPassword);
+    await changePassword.sendKeys(newPassword);
     const changePasswordConfirm = await getElementByCss(
       driver,
       "input#password-confirm",
     );
-    changePasswordConfirm.sendKeys(newPassword);
+    await changePasswordConfirm.sendKeys(newPassword);
     submitBtn = await getElementByCss(driver, "input[type=submit]");
-    submitBtn.click();
+    await submitBtn.click();
     await getElementByCss(driver, "div#status");
     successToastDiv = await getElementByCss(driver, successToastSelector);
     await driver.wait(until.elementIsVisible(successToastDiv));
@@ -78,11 +78,11 @@ describe("Selenium tests for expired password flow />", () => {
     await driver.get(urls.login);
     await driver.wait(until.urlContains("login"), 5000);
     username = await getElementByCss(driver, "input#username");
-    username.sendKeys(data.expiredPasswordUser.email);
+    await username.sendKeys(data.expiredPasswordUser.email);
     password = await getElementByCss(driver, "input#password");
-    password.sendKeys(newPassword);
+    await password.sendKeys(newPassword);
     submitBtn = await getElementByCss(driver, "input[type=submit]");
-    submitBtn.click();
+    await submitBtn.click();
     await getElementByCss(driver, "div#status");
     successToastDiv = await getElementByCss(driver, "div[role=alert]");
     await driver.wait(until.elementIsVisible(successToastDiv));
