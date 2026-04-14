@@ -43,4 +43,10 @@ describe("Selenium tests to check JS file injection in organization page", () =>
       true,
     );
   });
+
+  it("should serve the extra js file without 404", async () => {
+    const jsFile = initialData().allOrgScript;
+    const response = await fetch(`http://127.0.0.1:8080/${jsFile}`);
+    expect(response.status).toEqual(200);
+  });
 });
