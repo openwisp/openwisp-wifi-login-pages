@@ -42,6 +42,7 @@ describe("Selenium tests to check JS file injection in organization page", () =>
   });
 
   it("should serve the extra js file with correct content type", async () => {
+    await driver.get(urls.login);
     const jsFile = initialData().allOrgScript;
     const result = await driver.executeScript(
       `return fetch("/${jsFile}").then(r => ({
