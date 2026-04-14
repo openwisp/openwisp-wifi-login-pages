@@ -34,12 +34,23 @@ describe("Selenium tests for expired password flow />", () => {
     await driver.wait(until.urlContains("change-password"), 5000);
     let successToastDiv = await getElementByCss(driver, "div[role=alert]");
     await driver.wait(until.elementIsVisible(successToastDiv));
+    await driver.wait(
+      until.elementTextContains(successToastDiv, "Login successful"),
+      5000,
+    );
     expect(await successToastDiv.getText()).toEqual("Login successful");
     const warningToastMessage = await getElementByCss(
       driver,
       ".Toastify__toast--warning",
     );
     await driver.wait(until.elementIsVisible(warningToastMessage));
+    await driver.wait(
+      until.elementTextContains(
+        warningToastMessage,
+        "Your password has expired",
+      ),
+      5000,
+    );
     expect(await warningToastMessage.getText()).toEqual(
       "Your password has expired, please update it.",
     );
@@ -86,6 +97,10 @@ describe("Selenium tests for expired password flow />", () => {
     await getElementByCss(driver, "div#status");
     successToastDiv = await getElementByCss(driver, "div[role=alert]");
     await driver.wait(until.elementIsVisible(successToastDiv));
+    await driver.wait(
+      until.elementTextContains(successToastDiv, "Login successful"),
+      5000,
+    );
     expect(await successToastDiv.getText()).toEqual("Login successful");
   });
 });
