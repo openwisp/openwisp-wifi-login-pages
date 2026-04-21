@@ -84,10 +84,12 @@ describe("add-org command", () => {
   it("runs interactively and creates config (smoke test)", () => {
     // Use expect to spawn and simulate user input if possible
     // Here, just check that the process starts and prompts for input
-    const proc = spawnSync("yarn", ["add-org"], {
+    // Run node directly (not via yarn) so proc.stdout captures the child's output
+    const proc = spawnSync("node", ["config/add-org.js"], {
       input: "\n", // send empty input to first prompt
       encoding: "utf-8",
       timeout: 5000,
+      cwd: path.resolve(__dirname, "../.."),
     });
     expect(proc.stdout).toMatch(/What is the name of the organization/);
     // Should not create config file with empty input
