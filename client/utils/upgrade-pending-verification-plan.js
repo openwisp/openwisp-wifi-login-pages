@@ -1,9 +1,14 @@
 import axios from "axios";
 
-import {updateMethodApiUrl} from "../constants";
+import {upgradePlanApiUrl} from "../constants";
 import getLanguageHeaders from "./get-language-headers";
 
-const updateRegistrationMethod = (orgSlug, method, authToken, language) =>
+const upgradePendingVerificationPlan = (
+  orgSlug,
+  planPricing,
+  authToken,
+  language,
+) =>
   axios({
     method: "post",
     headers: {
@@ -11,8 +16,10 @@ const updateRegistrationMethod = (orgSlug, method, authToken, language) =>
       "accept-language": getLanguageHeaders(language),
       Authorization: `Bearer ${authToken}`,
     },
-    url: updateMethodApiUrl(orgSlug),
-    data: {method},
+    url: upgradePlanApiUrl.replace("{orgSlug}", orgSlug),
+    data: {
+      plan_pricing: planPricing,
+    },
   }).then((response) => response.data);
 
-export default updateRegistrationMethod;
+export default upgradePendingVerificationPlan;
