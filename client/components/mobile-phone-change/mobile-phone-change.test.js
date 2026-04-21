@@ -423,6 +423,16 @@ describe("Change Phone Number: corner cases", () => {
     expect(wrapper.find(StatusMock)).toHaveLength(0);
   });
 
+  it("should redirect if user registration method is pending_verification", async () => {
+    validateToken.mockReturnValue(true);
+    props.userData = userData;
+    props.userData.is_active = true;
+    props.userData.method = "pending_verification";
+    props.settings.mobile_phone_verification = true;
+    wrapper = await mountComponent(props);
+    expect(wrapper.find(StatusMock)).toHaveLength(1);
+  });
+
   it("should validate token", async () => {
     wrapper = await mountComponent(props);
     expect(validateToken).toHaveBeenCalledWith(

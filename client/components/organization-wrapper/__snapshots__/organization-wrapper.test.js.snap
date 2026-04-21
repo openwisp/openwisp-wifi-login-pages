@@ -210,6 +210,14 @@ exports[`<OrganizationWrapper /> interactions should render main title if pageTi
           }
           path="payment/:status"
         />
+        <Route
+          element={
+            <Navigate
+              to="/default/status"
+            />
+          }
+          path="complete-signup"
+        />
       </Routes>
       <Routes>
         <Route
@@ -439,6 +447,14 @@ exports[`<OrganizationWrapper /> interactions should render pageTitle if it is n
             </React.Suspense>
           }
           path="payment/:status"
+        />
+        <Route
+          element={
+            <Navigate
+              to="/default/status"
+            />
+          }
+          path="complete-signup"
         />
       </Routes>
       <Routes>
@@ -670,6 +686,14 @@ exports[`<OrganizationWrapper /> interactions should show route for authenticate
           }
           path="payment/:status"
         />
+        <Route
+          element={
+            <Navigate
+              to="/default/status"
+            />
+          }
+          path="complete-signup"
+        />
       </Routes>
       <Routes>
         <Route
@@ -894,6 +918,14 @@ exports[`Test Organization Wrapper for authenticated and unverified users should
           }
           path="payment/:status"
         />
+        <Route
+          element={
+            <Navigate
+              to="/default/mobile-phone-verification"
+            />
+          }
+          path="complete-signup"
+        />
       </Routes>
       <Routes>
         <Route
@@ -1090,6 +1122,14 @@ exports[`Test Organization Wrapper for unauthenticated users should show route f
             </React.Suspense>
           }
           path="payment/:status"
+        />
+        <Route
+          element={
+            <Navigate
+              to="/default/login"
+            />
+          }
+          path="complete-signup"
         />
       </Routes>
       <Routes>
