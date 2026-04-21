@@ -77,14 +77,12 @@ describe("registration-method-controller", () => {
   });
 
   it("handles error response with error.response.status", async () => {
-    axios.mockImplementationOnce(() =>
-      Promise.reject({
-        response: {
-          status: 400,
-          data: {response_code: "BAD_REQUEST"},
-        },
-      }),
-    );
+    const error = new Error("Bad request");
+    error.response = {
+      status: 400,
+      data: {response_code: "BAD_REQUEST"},
+    };
+    axios.mockImplementationOnce(() => Promise.reject(error));
     const res = createResponse();
     updateRegistrationMethod(
       {
@@ -97,21 +95,21 @@ describe("registration-method-controller", () => {
       },
       res,
     );
-    await new Promise((resolve) => setTimeout(resolve, 10));
+    await new Promise((resolve) => {
+      setTimeout(resolve, 10);
+    });
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.type).toHaveBeenCalledWith("application/json");
     expect(res.send).toHaveBeenCalledWith({response_code: "BAD_REQUEST"});
   });
 
   it("handles error without error.response.status (internal error)", async () => {
-    axios.mockImplementationOnce(() =>
-      Promise.reject({
-        response: {
-          status: 500,
-          data: {response_code: "INTERNAL_SERVER_ERROR"},
-        },
-      }),
-    );
+    const error = new Error("Internal server error");
+    error.response = {
+      status: 500,
+      data: {response_code: "INTERNAL_SERVER_ERROR"},
+    };
+    axios.mockImplementationOnce(() => Promise.reject(error));
     const res = createResponse();
     updateRegistrationMethod(
       {
@@ -124,7 +122,9 @@ describe("registration-method-controller", () => {
       },
       res,
     );
-    await new Promise((resolve) => setTimeout(resolve, 10));
+    await new Promise((resolve) => {
+      setTimeout(resolve, 10);
+    });
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.type).toHaveBeenCalledWith("application/json");
     expect(res.send).toHaveBeenCalledWith({
