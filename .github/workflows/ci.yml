@@ -107,7 +107,8 @@ jobs:
 
       - name: Get openwisp-radius
         run: |
-          git clone --depth=1 https://github.com/openwisp/openwisp-radius/ openwisp-radius
+          # TODO: Remove branch before merging
+          git clone --depth=1 --branch issues/692-different-identity-verification https://github.com/openwisp/openwisp-radius/ openwisp-radius
           cd openwisp-radius
           echo "OpenWISP RADIUS commit: $(git rev-parse HEAD)"
           echo "OW_RADIUS_VERSION=$(git rev-parse HEAD)" >> $GITHUB_ENV
