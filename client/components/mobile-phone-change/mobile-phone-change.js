@@ -94,7 +94,7 @@ class MobilePhoneChange extends React.Component {
       }),
     })
       .then(() => {
-        this.setState({
+        this.setStateSafe({
           errors: {},
         });
         setUserData({...userData, is_verified: false, phone_number});
@@ -110,7 +110,7 @@ class MobilePhoneChange extends React.Component {
           toast.error(errorText);
         }
         setLoading(false);
-        this.setState({
+        this.setStateSafe({
           errors: {
             ...errors,
             ...(data.phone_number ? {phone_number: data.phone_number} : null),

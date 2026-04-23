@@ -25,7 +25,7 @@ const getPlans = async (
     .catch((error) => {
       toast.error(t`ERR_OCCUR`);
       logError(error, "Error while fetching plans");
-      if (failureCallback) {
+      if (typeof failureCallback === "function") {
         failureCallback();
       }
     });
