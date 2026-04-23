@@ -10,8 +10,10 @@ jest.mock("../config.json", () => [
     slug: "default",
     host: "https://radius.test",
     timeout: 10,
-    subscriptions: true,
-    phone_verification: true,
+    settings: {
+      subscriptions: true,
+      mobile_phone_verification: true,
+    },
   },
 ]);
 
@@ -197,31 +199,26 @@ describe("registration-method-controller", () => {
   });
 
   it("rejects bank_card when subscriptions are disabled", () => {
-    jest.resetModules();
-    jest.doMock(
-      "../config.json",
-      () => [
-        {
-          slug: "default",
-          host: "https://radius.test",
-          timeout: 10,
+    const mockConfig = [
+      {
+        slug: "default",
+        host: "https://radius.test",
+        timeout: 10,
+        settings: {
           subscriptions: false,
-          phone_verification: true,
+          mobile_phone_verification: true,
         },
-      ],
-      {virtual: true},
-    );
-    // eslint-disable-next-line global-require, import/no-dynamic-require
-    const updateRegistrationMethodWithConfig =
-      require("./registration-method-controller").default;
+      },
+    ];
     const res = createResponse();
-    updateRegistrationMethodWithConfig(
+    updateRegistrationMethod(
       {
         params: {organization: "default"},
         body: {method: "bank_card"},
         headers: {},
       },
       res,
+      mockConfig,
     );
     expect(axios).not.toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(400);
@@ -232,31 +229,26 @@ describe("registration-method-controller", () => {
   });
 
   it("rejects mobile_phone when phone verification is disabled", () => {
-    jest.resetModules();
-    jest.doMock(
-      "../config.json",
-      () => [
-        {
-          slug: "default",
-          host: "https://radius.test",
-          timeout: 10,
+    const mockConfig = [
+      {
+        slug: "default",
+        host: "https://radius.test",
+        timeout: 10,
+        settings: {
           subscriptions: true,
-          phone_verification: false,
+          mobile_phone_verification: false,
         },
-      ],
-      {virtual: true},
-    );
-    // eslint-disable-next-line global-require, import/no-dynamic-require
-    const updateRegistrationMethodWithConfig =
-      require("./registration-method-controller").default;
+      },
+    ];
     const res = createResponse();
-    updateRegistrationMethodWithConfig(
+    updateRegistrationMethod(
       {
         params: {organization: "default"},
         body: {method: "mobile_phone"},
         headers: {},
       },
       res,
+      mockConfig,
     );
     expect(axios).not.toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(400);

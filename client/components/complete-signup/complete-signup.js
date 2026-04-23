@@ -17,6 +17,14 @@ import upgradePlan from "../../utils/upgrade-plan";
 import updateRegistrationMethod from "../../utils/update-registration-method";
 import Contact from "../contact-box";
 
+const handleFlowError = (error) => {
+  const errorText = error.response
+    ? getErrorText(error, t`ERR_OCCUR`)
+    : t`ERR_OCCUR`;
+  logError(error, errorText);
+  toast.error(errorText);
+};
+
 export default class CompleteSignup extends React.Component {
   constructor(props) {
     super(props);
@@ -87,14 +95,6 @@ export default class CompleteSignup extends React.Component {
     toast.error(t`Failed to load plans`);
   };
 
-  handleFlowError = (error) => {
-    const errorText = error.response
-      ? getErrorText(error, t`ERR_OCCUR`)
-      : t`ERR_OCCUR`;
-    logError(error, errorText);
-    toast.error(errorText);
-  };
-
   finalOperations = (nextUserData, route) => {
     const {setLoading} = this.context;
     const {setUserData, navigate} = this.props;
@@ -141,7 +141,7 @@ export default class CompleteSignup extends React.Component {
         this.finalOperations(nextUserData, `/${orgSlug}/status`);
       } catch (error) {
         if (this.isComponentMounted) {
-          this.handleFlowError(error);
+          handleFlowError(error);
           setLoading(false);
         }
       }
@@ -243,7 +243,7 @@ export default class CompleteSignup extends React.Component {
       this.finalOperations(nextUserData, `/${orgSlug}/status`);
     } catch (error) {
       if (this.isComponentMounted) {
-        this.handleFlowError(error);
+        handleFlowError(error);
         setLoading(false);
       }
     }

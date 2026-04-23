@@ -14,12 +14,10 @@ import InfinteScroll from "react-infinite-scroll-component";
 import {t, gettext} from "ttag";
 import {filesize} from "filesize";
 import {timeFromSeconds} from "duration-formatter";
-import getLanguageHeaders from "../../utils/get-language-headers";
 
 import {
   getUserRadiusSessionsUrl,
   getUserRadiusUsageUrl,
-  upgradePlanApiUrl,
   mainToastId,
 } from "../../constants";
 import LoadingContext from "../../utils/loading-context";
@@ -468,7 +466,6 @@ export default class Status extends React.Component {
       setUserData,
       captivePortalSyncAuth,
     } = this.props;
-    const upgradePlanUrl = upgradePlanApiUrl.replace("{orgSlug}", orgSlug);
     const auth_token = cookies.get(`${orgSlug}_auth_token`);
     const {upgradePlans} = this.state;
     handleSession(orgSlug, auth_token, cookies);
