@@ -65,6 +65,39 @@ describe("registration-method-controller", () => {
     expect(res.send).toHaveBeenCalledWith({method: "mobile_phone"});
   });
 
+  it("proxies empty registration method updates", async () => {
+    axios.mockResolvedValueOnce({
+      status: 200,
+      data: {method: ""},
+    });
+    const res = createResponse();
+    await updateRegistrationMethod(
+      {
+        params: {organization: "default"},
+        body: {method: ""},
+        headers: {
+          authorization: "Bearer test-token",
+          "accept-language": "en",
+        },
+      },
+      res,
+    );
+    expect(axios).toHaveBeenCalledWith({
+      method: "post",
+      headers: {
+        "content-type": "application/json",
+        Authorization: "Bearer test-token",
+        "accept-language": "en",
+      },
+      url: "https://radius.test/api/v1/radius/organization/default/account/registration-method/",
+      timeout: 10000,
+      data: {method: ""},
+    });
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.type).toHaveBeenCalledWith("application/json");
+    expect(res.send).toHaveBeenCalledWith({method: ""});
+  });
+
   it("returns 404 for an invalid organization slug", () => {
     const res = createResponse();
     updateRegistrationMethod(
@@ -80,6 +113,24 @@ describe("registration-method-controller", () => {
     expect(res.type).toHaveBeenCalledWith("application/json");
     expect(res.send).toHaveBeenCalledWith({
       response_code: "NOT_FOUND",
+    });
+  });
+
+  it("returns 400 for unsupported registration methods", () => {
+    const res = createResponse();
+    updateRegistrationMethod(
+      {
+        params: {organization: "default"},
+        body: {method: "sms"},
+        headers: {},
+      },
+      res,
+    );
+    expect(axios).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.type).toHaveBeenCalledWith("application/json");
+    expect(res.send).toHaveBeenCalledWith({
+      response_code: "INVALID_METHOD",
     });
   });
 
@@ -112,10 +163,6 @@ describe("registration-method-controller", () => {
 
   it("handles error without error.response.status (internal error)", async () => {
     const error = new Error("Internal server error");
-    error.response = {
-      status: 500,
-      data: {response_code: "INTERNAL_SERVER_ERROR"},
-    };
     axios.mockImplementationOnce(() => Promise.reject(error));
     const res = createResponse();
     await updateRegistrationMethod(

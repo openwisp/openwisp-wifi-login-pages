@@ -20,7 +20,7 @@ const updateRegistrationMethod = (req, res) => {
       const requestHeaders = req.headers || {};
 
       // compute allowed methods from config
-      const allowedMethods = [];
+      const allowedMethods = [""];
       if (settings && settings.subscriptions) {
         allowedMethods.push("bank_card");
       }

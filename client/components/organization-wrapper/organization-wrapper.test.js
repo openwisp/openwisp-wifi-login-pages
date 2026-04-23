@@ -601,6 +601,30 @@ describe("Test Organization Wrapper for authenticated and unverified users", () 
       <Navigate to="/default/status" />,
     );
   });
+
+  it("should route complete-signup to payment draft when bank card verification is pending", () => {
+    needsVerify.mockImplementation((method) => method === "bank_card");
+    userPendingVerification.mockReturnValue(false);
+    const component = shallow(<OrganizationWrapper {...props} />, {
+      disableLifecycleMethods: true,
+    });
+    component
+      .instance()
+      .setState({translationLoaded: true, configLoaded: true});
+
+    const pathMap = component.find(Route).reduce((mapRoute, route) => {
+      const map = mapRoute;
+      const routeProps = route.props();
+      if (routeProps.path === "*")
+        map["*"] = [...(map["*"] || []), routeProps.element];
+      else map[routeProps.path] = routeProps.element;
+      return map;
+    }, {});
+
+    expect(pathMap["complete-signup"]).toEqual(
+      <Navigate to="/default/payment/draft" />,
+    );
+  });
 });
 
 describe("Test Organization Wrapper for pending verification user", () => {

@@ -4,6 +4,7 @@ import {shallow} from "enzyme";
 import {toast} from "react-toastify";
 import PropTypes from "prop-types";
 
+import {t} from "ttag";
 import {loadingContextValue} from "../../utils/loading-context";
 import CompleteSignup from "./complete-signup";
 import getPlans from "../../utils/get-plans";
@@ -105,6 +106,9 @@ describe("<CompleteSignup />", () => {
       "en",
     );
     expect(getPlans).not.toHaveBeenCalled();
+    expect(props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({method: "mobile_phone"}),
+    );
     expect(props.navigate).toHaveBeenCalledWith(
       "/default/mobile-phone-verification",
     );
@@ -130,6 +134,9 @@ describe("<CompleteSignup />", () => {
       "en",
     );
     expect(getPlans).not.toHaveBeenCalled();
+    expect(props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({method: ""}),
+    );
     expect(props.navigate).toHaveBeenCalledWith("/default/status");
   });
 
@@ -153,6 +160,27 @@ describe("<CompleteSignup />", () => {
     await Promise.resolve();
 
     expect(errorToast).toHaveBeenCalled();
+    expect(props.navigate).not.toHaveBeenCalled();
+  });
+
+  it("shows generic error toast when auto-transition fails without response", async () => {
+    getPlans.mockClear();
+    props = createTestProps({
+      settings: {
+        mobile_phone_verification: false,
+        subscriptions: false,
+      },
+    });
+    const errorToast = jest.spyOn(toast, "error").mockImplementation(() => {});
+    updateRegistrationMethod.mockRejectedValue(new Error("network error"));
+
+    wrapper = shallow(<CompleteSignup {...props} />, {
+      context: loadingContextValue,
+    });
+
+    await Promise.resolve();
+
+    expect(errorToast).toHaveBeenCalledWith(t`ERR_OCCUR`);
     expect(props.navigate).not.toHaveBeenCalled();
   });
 
@@ -193,6 +221,23 @@ describe("<CompleteSignup />", () => {
       wrapper.instance().handlePlansSuccess,
       wrapper.instance().handlePlansFailure,
     );
+  });
+
+  it("clears retry state before fetching plans again", () => {
+    wrapper.instance().handlePlansFailure();
+    wrapper.setState({message: "Registration is disabled"});
+
+    wrapper.instance().handlePlansRetry();
+
+    expect(wrapper.instance().state.plansError).toBe(null);
+    expect(wrapper.instance().state.message).toBe(null);
+  });
+
+  it("shows disabled registration message when plans are null", () => {
+    wrapper.instance().handlePlansSuccess(null);
+
+    expect(wrapper.find(".complete-signup-error")).toHaveLength(1);
+    expect(wrapper.find(".plans")).toHaveLength(0);
   });
 
   it("handles free plan selection with phone verification enabled", async () => {
@@ -240,6 +285,9 @@ describe("<CompleteSignup />", () => {
       "test-token",
       "en",
     );
+    expect(props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({method: ""}),
+    );
     expect(props.navigate).toHaveBeenCalledWith("/default/status");
   });
 
@@ -273,6 +321,40 @@ describe("<CompleteSignup />", () => {
     expect(props.navigate).toHaveBeenCalledWith("/default/payment/draft");
   });
 
+  it("ignores invalid plan submission indexes", async () => {
+    wrapper.instance().handlePlansSuccess(plans);
+
+    await wrapper.instance().handleSubmitPlan(9);
+
+    expect(upgradePlan).not.toHaveBeenCalled();
+    expect(updateRegistrationMethod).not.toHaveBeenCalled();
+    expect(props.navigate).not.toHaveBeenCalled();
+  });
+
+  it("submits plans from handlePlanChange when the selection is valid", () => {
+    const handleSubmitPlan = jest
+      .spyOn(wrapper.instance(), "handleSubmitPlan")
+      .mockImplementation(() => Promise.resolve());
+    wrapper.instance().handlePlansSuccess(plans);
+
+    wrapper.instance().handlePlanChange({target: {value: "0"}});
+
+    expect(wrapper.instance().state.selectedPlan).toBe("0");
+    expect(handleSubmitPlan).toHaveBeenCalledWith("0");
+  });
+
+  it("ignores invalid selections in handlePlanChange", () => {
+    const handleSubmitPlan = jest
+      .spyOn(wrapper.instance(), "handleSubmitPlan")
+      .mockImplementation(() => Promise.resolve());
+    wrapper.instance().handlePlansSuccess(plans);
+
+    wrapper.instance().handlePlanChange({target: {value: "10"}});
+
+    expect(wrapper.instance().state.selectedPlan).toBe(null);
+    expect(handleSubmitPlan).not.toHaveBeenCalled();
+  });
+
   it("shows an error toast when plan submission fails", async () => {
     const errorToast = jest.spyOn(toast, "error").mockImplementation(() => {});
     updateRegistrationMethod.mockRejectedValue({
@@ -285,6 +367,17 @@ describe("<CompleteSignup />", () => {
 
     expect(props.navigate).not.toHaveBeenCalled();
     expect(errorToast).toHaveBeenCalled();
+  });
+
+  it("shows generic error toast when plan submission fails without response", async () => {
+    const errorToast = jest.spyOn(toast, "error").mockImplementation(() => {});
+    upgradePlan.mockRejectedValue(new Error("network error"));
+    wrapper.instance().handlePlansSuccess(plans);
+
+    await wrapper.instance().handleSubmitPlan(0);
+
+    expect(props.navigate).not.toHaveBeenCalled();
+    expect(errorToast).toHaveBeenCalledWith(t`ERR_OCCUR`);
   });
 
   it("does not set local state after unmount", () => {
