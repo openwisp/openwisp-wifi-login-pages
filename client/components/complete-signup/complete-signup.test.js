@@ -185,7 +185,7 @@ describe("<CompleteSignup />", () => {
   });
 
   it("renders generic copy with organization name", () => {
-    expect(wrapper.text()).toContain("Please complete your registration to");
+    expect(wrapper.text()).toContain(t`REGISTRATION_COMPLETE_PROMPT`);
     expect(wrapper.text()).toContain("Default");
   });
 

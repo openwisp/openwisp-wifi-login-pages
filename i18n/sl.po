@@ -664,3 +664,20 @@ msgstr "Oprostite, iskane strani ni bilo mogoče najti."
 #: client/components/404/404.js:37
 msgid "HOME_PG_LINK_TXT"
 msgstr "Nazaj na domačo stran"
+
+#: client/components/complete-signup/complete-signup.js:77
+msgid "ORG_REGISTRATION_DISABLED"
+msgstr "Registracija je trenutno onemogočena za to organizacijo"
+
+#: client/components/complete-signup/complete-signup.js:92
+#: client/components/complete-signup/complete-signup.js:95
+msgid "PLANS_FETCH_ERR"
+msgstr "Ni bilo mogoče naložiti načrte"
+
+#: client/components/complete-signup/complete-signup.js:288
+msgid "REGISTRATION_COMPLETE_PROMPT"
+msgstr "Prosimo, dokončajte svojo registracijo za"
+
+#: client/components/complete-signup/complete-signup.js:300
+msgid "RETRY"
+msgstr "Poskusi znova"

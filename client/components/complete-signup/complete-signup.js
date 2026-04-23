@@ -17,12 +17,15 @@ import upgradePlan from "../../utils/upgrade-plan";
 import updateRegistrationMethod from "../../utils/update-registration-method";
 import Contact from "../contact-box";
 
-const handleFlowError = (error) => {
+const handleFlowError = (error, setErrorsState) => {
   const errorText = error.response
     ? getErrorText(error, t`ERR_OCCUR`)
     : t`ERR_OCCUR`;
   logError(error, errorText);
   toast.error(errorText);
+  if (setErrorsState) {
+    setErrorsState({nonfield: [errorText]});
+  }
 };
 
 export default class CompleteSignup extends React.Component {
@@ -35,6 +38,8 @@ export default class CompleteSignup extends React.Component {
       plansFetched: false,
       plansError: null,
       selectedPlan: null,
+      message: null,
+      submitting: false,
     };
   }
 
@@ -74,7 +79,7 @@ export default class CompleteSignup extends React.Component {
 
     if (!plans || plans.length === 0) {
       // Empty plans array (200 OK) means org has disabled registration
-      message = t`Registration is currently disabled for this organization`;
+      message = t`ORG_REGISTRATION_DISABLED`;
     }
     this.setStateSafe({plans, plansFetched: true, plansError, message});
     setLoading(false);
@@ -89,10 +94,10 @@ export default class CompleteSignup extends React.Component {
     this.setStateSafe({
       plans: [],
       plansFetched: true,
-      plansError: t`Failed to load plans`,
+      plansError: t`PLANS_FETCH_ERR`,
     });
     setLoading(false);
-    toast.error(t`Failed to load plans`);
+    toast.error(t`PLANS_FETCH_ERR`);
   };
 
   finalOperations = (nextUserData, route) => {
@@ -141,7 +146,7 @@ export default class CompleteSignup extends React.Component {
         this.finalOperations(nextUserData, `/${orgSlug}/status`);
       } catch (error) {
         if (this.isComponentMounted) {
-          handleFlowError(error);
+          handleFlowError(error, (errors) => this.setStateSafe({errors}));
           setLoading(false);
         }
       }
@@ -169,20 +174,20 @@ export default class CompleteSignup extends React.Component {
     const {setLoading} = this.context;
     const {orgSlug, userData, setUserData, navigate, settings, language} =
       this.props;
-    const {plans} = this.state;
+    const {plans, submitting} = this.state;
     const selectedPlan = plans[planIndex];
-    if (!selectedPlan) {
+    if (!selectedPlan || submitting) {
       return;
     }
 
     const requiresPayment = selectedPlan.requires_payment === true;
-    this.setStateSafe({errors: {}});
+    this.setStateSafe({errors: {}, submitting: true});
     setLoading(true);
 
     try {
       // Upgrade to selected plan
       let paymentUrl = null;
-      if (selectedPlan && selectedPlan.id) {
+      if (selectedPlan.id) {
         const response = await upgradePlan(
           orgSlug,
           selectedPlan.id,
@@ -243,7 +248,9 @@ export default class CompleteSignup extends React.Component {
       this.finalOperations(nextUserData, `/${orgSlug}/status`);
     } catch (error) {
       if (this.isComponentMounted) {
-        handleFlowError(error);
+        handleFlowError(error, (errors) =>
+          this.setStateSafe({errors, submitting: false}),
+        );
         setLoading(false);
       }
     }
@@ -264,7 +271,7 @@ export default class CompleteSignup extends React.Component {
     const {orgSlug, language} = this.props;
     const {setLoading} = this.context;
     setLoading(true);
-    this.setStateSafe({plansError: null, message: null}, () => {
+    this.setStateSafe({errors: {}, plansError: null, message: null}, () => {
       getPlans(
         orgSlug,
         language,
@@ -285,7 +292,7 @@ export default class CompleteSignup extends React.Component {
             <div className="inner">
               <h2 className="row">{t`REGISTRATION_TITLE`}</h2>
               <div className="row">
-                {t`Please complete your registration to ${orgName}.`}
+                {t`REGISTRATION_COMPLETE_PROMPT`} {orgName}.
               </div>
               {getError(errors)}
               {/* HTTP error state - show error with retry button */}
@@ -297,7 +304,7 @@ export default class CompleteSignup extends React.Component {
                     className="btn btn-primary"
                     onClick={this.handlePlansRetry}
                   >
-                    {t`Retry`}
+                    {t`RETRY`}
                   </button>
                 </div>
               )}
