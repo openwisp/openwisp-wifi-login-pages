@@ -132,6 +132,7 @@ jobs:
           pip install -U pip setuptools wheel
           pip install -U -e ".[saml]"
           pip install -U -r requirements-test.txt
+          pip install --no-deps --no-cache-dir --force-reinstall "https://github.com/openwisp/openwisp-users/tarball/issues/497-export-users"
           pip install -U "Django~=5.2.0"
           ./tests/manage.py migrate
 

@@ -19,5 +19,13 @@
     "method": "mobile_phone",
     "changePhoneNumber": "+393660011333"
   },
+  "crossOrgPhoneVerificationUser": {
+    "email": "crossorg-phone@openwisp.org",
+    "password": "testuser",
+    "sourceOrganization": "default",
+    "targetOrganization": "mobile",
+    "phoneNumber": "+911234567890",
+    "method": "mobile_phone"
+  },
   "allOrgScript": "analytics.js"
 }
