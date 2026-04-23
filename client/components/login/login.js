@@ -316,7 +316,10 @@ export default class Login extends React.Component {
       authenticate(true);
       return;
     }
-    if (nextUserData.method === "bank_card" && data.is_verified === false) {
+    if (
+      nextUserData.method === "bank_card" &&
+      nextUserData.is_verified === false
+    ) {
       redirectToPayment(orgSlug, navigate);
       authenticate(true);
       return;

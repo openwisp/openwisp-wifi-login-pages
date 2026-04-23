@@ -3,12 +3,7 @@ import axios from "axios";
 import {upgradePlanApiUrl} from "../constants";
 import getLanguageHeaders from "./get-language-headers";
 
-const upgradePendingVerificationPlan = (
-  orgSlug,
-  planPricing,
-  authToken,
-  language,
-) =>
+const upgradePlan = (orgSlug, planPricing, authToken, language) =>
   axios({
     method: "post",
     headers: {
@@ -22,4 +17,4 @@ const upgradePendingVerificationPlan = (
     },
   }).then((response) => response.data);
 
-export default upgradePendingVerificationPlan;
+export default upgradePlan;

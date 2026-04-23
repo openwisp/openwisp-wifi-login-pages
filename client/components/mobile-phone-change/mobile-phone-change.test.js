@@ -388,8 +388,8 @@ describe("Change Phone Number: corner cases", () => {
 
   it("should recognize if user is active", async () => {
     validateToken.mockReturnValue(true);
-    userData.is_active = true;
-    props.userData = userData;
+    const localUser = {...userData, is_active: true};
+    props.userData = localUser;
     wrapper = await mountComponent(props);
     const component = wrapper.find(MobilePhoneChange);
     expect(component.instance().state.phone_number).toBe("+393660011222");
@@ -406,8 +406,8 @@ describe("Change Phone Number: corner cases", () => {
 
   it("shouldn't redirect if user is active and mobile verificaton is true", async () => {
     validateToken.mockReturnValue(true);
-    props.userData = userData;
-    props.userData.is_active = true;
+    const localUser = {...userData, is_active: true};
+    props.userData = localUser;
     props.settings.mobile_phone_verification = true;
     wrapper = await mountComponent(props);
     expect(wrapper.find(StatusMock)).toHaveLength(0);
@@ -415,9 +415,8 @@ describe("Change Phone Number: corner cases", () => {
 
   it("should not redirect if user registration method is mobile_phone", async () => {
     validateToken.mockReturnValue(true);
-    props.userData = userData;
-    props.userData.is_active = true;
-    props.userData.method = "mobile_phone";
+    const localUser = {...userData, is_active: true, method: "mobile_phone"};
+    props.userData = localUser;
     props.settings.mobile_phone_verification = true;
     wrapper = await mountComponent(props);
     expect(wrapper.find(StatusMock)).toHaveLength(0);
@@ -437,9 +436,12 @@ describe("Change Phone Number: corner cases", () => {
 
   it("should redirect if user registration method is pending_verification", async () => {
     validateToken.mockReturnValue(true);
-    props.userData = userData;
-    props.userData.is_active = true;
-    props.userData.method = "pending_verification";
+    const localUser = {
+      ...userData,
+      is_active: true,
+      method: "pending_verification",
+    };
+    props.userData = localUser;
     props.settings.mobile_phone_verification = true;
     wrapper = await mountComponent(props);
     expect(wrapper.find(StatusMock)).toHaveLength(1);
@@ -453,9 +455,8 @@ describe("Change Phone Number: corner cases", () => {
 
   it("should redirect if user registration method is not mobile_phone", async () => {
     validateToken.mockReturnValue(true);
-    props.userData = userData;
-    props.userData.is_active = true;
-    props.userData.method = "saml";
+    const localUser = {...userData, is_active: true, method: "saml"};
+    props.userData = localUser;
     props.settings.mobile_phone_verification = true;
     wrapper = await mountComponent(props);
     expect(wrapper.find(StatusMock)).toHaveLength(1);

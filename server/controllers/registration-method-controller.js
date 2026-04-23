@@ -17,6 +17,23 @@ const updateRegistrationMethod = (req, res) => {
       const url = reverse("update_registration_method", getSlug(conf));
       const timeout = conf.timeout * 1000;
       const requestHeaders = req.headers || {};
+
+      // compute allowed methods from config
+      const allowedMethods = [];
+      if (conf.subscriptions) {
+        allowedMethods.push("bank_card");
+      }
+      if (conf.phone_verification) {
+        allowedMethods.push("mobile_phone");
+      }
+      // validate method against allowed methods
+      if (!allowedMethods.includes(req.body.method)) {
+        res.status(400).type("application/json").send({
+          response_code: "INVALID_METHOD",
+        });
+        return;
+      }
+
       // make AJAX request
       axios({
         method: "post",

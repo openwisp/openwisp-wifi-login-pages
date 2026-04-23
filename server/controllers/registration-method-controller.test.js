@@ -6,7 +6,13 @@ jest.mock("../utils/logger", () => ({
   logResponseError: jest.fn(),
 }));
 jest.mock("../config.json", () => [
-  {slug: "default", host: "https://radius.test", timeout: 10},
+  {
+    slug: "default",
+    host: "https://radius.test",
+    timeout: 10,
+    subscriptions: true,
+    phone_verification: true,
+  },
 ]);
 
 const createResponse = () => {
@@ -30,7 +36,7 @@ describe("registration-method-controller", () => {
       data: {method: "mobile_phone"},
     });
     const res = createResponse();
-    updateRegistrationMethod(
+    await updateRegistrationMethod(
       {
         params: {organization: "default"},
         body: {method: "mobile_phone"},
@@ -41,7 +47,6 @@ describe("registration-method-controller", () => {
       },
       res,
     );
-    await Promise.resolve();
     expect(axios).toHaveBeenCalledWith({
       method: "post",
       headers: {
@@ -84,10 +89,10 @@ describe("registration-method-controller", () => {
     };
     axios.mockImplementationOnce(() => Promise.reject(error));
     const res = createResponse();
-    updateRegistrationMethod(
+    await updateRegistrationMethod(
       {
         params: {organization: "default"},
-        body: {method: "invalid"},
+        body: {method: "mobile_phone"},
         headers: {
           authorization: "Bearer test-token",
           "accept-language": "en",
@@ -111,7 +116,7 @@ describe("registration-method-controller", () => {
     };
     axios.mockImplementationOnce(() => Promise.reject(error));
     const res = createResponse();
-    updateRegistrationMethod(
+    await updateRegistrationMethod(
       {
         params: {organization: "default"},
         body: {method: "mobile_phone"},
@@ -138,7 +143,7 @@ describe("registration-method-controller", () => {
       data: {method: "mobile_phone"},
     });
     const res = createResponse();
-    updateRegistrationMethod(
+    await updateRegistrationMethod(
       {
         params: {organization: "default"},
         body: {method: "mobile_phone"},
@@ -146,7 +151,6 @@ describe("registration-method-controller", () => {
       },
       res,
     );
-    await Promise.resolve();
     expect(axios).toHaveBeenCalledWith({
       method: "post",
       headers: {
@@ -169,15 +173,13 @@ describe("registration-method-controller", () => {
       data: {method: "mobile_phone"},
     });
     const res = createResponse();
-    updateRegistrationMethod(
+    await updateRegistrationMethod(
       {
         params: {organization: "default"},
         body: {method: "mobile_phone"},
-        // headers is undefined
       },
       res,
     );
-    await Promise.resolve();
     expect(axios).toHaveBeenCalledWith({
       method: "post",
       headers: {
@@ -192,5 +194,75 @@ describe("registration-method-controller", () => {
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.type).toHaveBeenCalledWith("application/json");
     expect(res.send).toHaveBeenCalledWith({method: "mobile_phone"});
+  });
+
+  it("rejects bank_card when subscriptions are disabled", () => {
+    jest.resetModules();
+    jest.doMock(
+      "../config.json",
+      () => [
+        {
+          slug: "default",
+          host: "https://radius.test",
+          timeout: 10,
+          subscriptions: false,
+          phone_verification: true,
+        },
+      ],
+      {virtual: true},
+    );
+    // eslint-disable-next-line global-require, import/no-dynamic-require
+    const updateRegistrationMethodWithConfig =
+      require("./registration-method-controller").default;
+    const res = createResponse();
+    updateRegistrationMethodWithConfig(
+      {
+        params: {organization: "default"},
+        body: {method: "bank_card"},
+        headers: {},
+      },
+      res,
+    );
+    expect(axios).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.type).toHaveBeenCalledWith("application/json");
+    expect(res.send).toHaveBeenCalledWith({
+      response_code: "INVALID_METHOD",
+    });
+  });
+
+  it("rejects mobile_phone when phone verification is disabled", () => {
+    jest.resetModules();
+    jest.doMock(
+      "../config.json",
+      () => [
+        {
+          slug: "default",
+          host: "https://radius.test",
+          timeout: 10,
+          subscriptions: true,
+          phone_verification: false,
+        },
+      ],
+      {virtual: true},
+    );
+    // eslint-disable-next-line global-require, import/no-dynamic-require
+    const updateRegistrationMethodWithConfig =
+      require("./registration-method-controller").default;
+    const res = createResponse();
+    updateRegistrationMethodWithConfig(
+      {
+        params: {organization: "default"},
+        body: {method: "mobile_phone"},
+        headers: {},
+      },
+      res,
+    );
+    expect(axios).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.type).toHaveBeenCalledWith("application/json");
+    expect(res.send).toHaveBeenCalledWith({
+      response_code: "INVALID_METHOD",
+    });
   });
 });

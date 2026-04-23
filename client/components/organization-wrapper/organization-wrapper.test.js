@@ -606,6 +606,7 @@ describe("Test Organization Wrapper for authenticated and unverified users", () 
 describe("Test Organization Wrapper for pending verification user", () => {
   let props;
   let wrapper;
+  let originalError;
 
   const getPathMap = (component = wrapper) =>
     component.find(Route).reduce((mapRoute, route) => {
@@ -618,11 +619,16 @@ describe("Test Organization Wrapper for pending verification user", () => {
     }, {});
 
   beforeEach(() => {
+    originalError = console.error;
     console.error = jest.fn();
     props = createTestProps();
     needsVerify.mockReturnValue(false);
     userPendingVerification.mockReturnValue(true);
     wrapper = shallow(<OrganizationWrapper {...props} />);
+  });
+
+  afterEach(() => {
+    console.error = originalError;
   });
 
   it("should route authenticated pending verification users to complete-signup", () => {

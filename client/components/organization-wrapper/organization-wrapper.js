@@ -120,7 +120,7 @@ export default class OrganizationWrapper extends React.Component {
     const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
     const needsVerifyPhone = needsVerify("mobile_phone", userData, settings);
     const needsVerifyBankCard = needsVerify("bank_card", userData, settings);
-    const needsMethodSelection = userPendingVerification(userData, settings);
+    const needsMethodSelection = userPendingVerification(userData);
     if (organization.exists === true) {
       const {setLoading} = this;
       let extraClasses = "";

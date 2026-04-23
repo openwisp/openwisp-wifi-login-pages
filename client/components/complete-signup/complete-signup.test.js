@@ -7,12 +7,12 @@ import PropTypes from "prop-types";
 import {loadingContextValue} from "../../utils/loading-context";
 import CompleteSignup from "./complete-signup";
 import getPlans from "../../utils/get-plans";
-import upgradePendingVerificationPlan from "../../utils/upgrade-pending-verification-plan";
+import upgradePlan from "../../utils/upgrade-plan";
 import updateRegistrationMethod from "../../utils/update-registration-method";
 
 jest.mock("../../utils/update-registration-method");
 jest.mock("../../utils/get-plans");
-jest.mock("../../utils/upgrade-pending-verification-plan");
+jest.mock("../../utils/upgrade-plan");
 
 const plans = [
   {
@@ -64,7 +64,7 @@ describe("<CompleteSignup />", () => {
     props = createTestProps();
     updateRegistrationMethod.mockReset();
     getPlans.mockReset();
-    upgradePendingVerificationPlan.mockReset();
+    upgradePlan.mockReset();
     CompleteSignup.contextTypes = {
       setLoading: PropTypes.func,
     };
@@ -110,6 +110,52 @@ describe("<CompleteSignup />", () => {
     );
   });
 
+  it("auto-transitions to status when subscriptions and phone verification are disabled", async () => {
+    getPlans.mockClear();
+    props = createTestProps({
+      settings: {
+        mobile_phone_verification: false,
+        subscriptions: false,
+      },
+    });
+    updateRegistrationMethod.mockResolvedValue({method: ""});
+    wrapper = shallow(<CompleteSignup {...props} />, {
+      context: loadingContextValue,
+    });
+    await Promise.resolve();
+    expect(updateRegistrationMethod).toHaveBeenCalledWith(
+      "default",
+      "",
+      "test-token",
+      "en",
+    );
+    expect(getPlans).not.toHaveBeenCalled();
+    expect(props.navigate).toHaveBeenCalledWith("/default/status");
+  });
+
+  it("shows error toast when auto-transition fails", async () => {
+    getPlans.mockClear();
+    props = createTestProps({
+      settings: {
+        mobile_phone_verification: true,
+        subscriptions: false,
+      },
+    });
+    const errorToast = jest.spyOn(toast, "error").mockImplementation(() => {});
+    updateRegistrationMethod.mockRejectedValue({
+      response: {data: {detail: "token expired"}},
+    });
+
+    wrapper = shallow(<CompleteSignup {...props} />, {
+      context: loadingContextValue,
+    });
+
+    await Promise.resolve();
+
+    expect(errorToast).toHaveBeenCalled();
+    expect(props.navigate).not.toHaveBeenCalled();
+  });
+
   it("renders generic copy with organization name", () => {
     expect(wrapper.text()).toContain("Please complete your registration to");
     expect(wrapper.text()).toContain("Default");
@@ -121,14 +167,42 @@ describe("<CompleteSignup />", () => {
     expect(wrapper.find(".plans")).toHaveLength(1);
   });
 
+  it("shows error UI when plans fetch fails", () => {
+    wrapper.instance().handlePlansFailure();
+
+    expect(wrapper.find(".complete-signup-error")).toHaveLength(1);
+    expect(wrapper.find(".plans")).toHaveLength(0);
+    expect(props.navigate).not.toHaveBeenCalled();
+  });
+
+  it("shows message when plans fetch returns empty array", () => {
+    wrapper.instance().handlePlansSuccess([]);
+
+    expect(wrapper.find(".complete-signup-error")).toHaveLength(1);
+    expect(wrapper.find(".plans")).toHaveLength(0);
+    expect(props.navigate).not.toHaveBeenCalled();
+  });
+
+  it("retries plan fetch on retry button click", () => {
+    wrapper.instance().handlePlansFailure();
+    wrapper.instance().handlePlansRetry();
+
+    expect(getPlans).toHaveBeenCalledWith(
+      "default",
+      "en",
+      wrapper.instance().handlePlansSuccess,
+      wrapper.instance().handlePlansFailure,
+    );
+  });
+
   it("handles free plan selection with phone verification enabled", async () => {
-    upgradePendingVerificationPlan.mockResolvedValue({});
+    upgradePlan.mockResolvedValue({});
     updateRegistrationMethod.mockResolvedValue({method: "mobile_phone"});
     wrapper.instance().handlePlansSuccess(plans);
 
-    await wrapper.instance().handleSubmitFreePlan(0);
+    await wrapper.instance().handleSubmitPlan(0);
 
-    expect(upgradePendingVerificationPlan).toHaveBeenCalledWith(
+    expect(upgradePlan).toHaveBeenCalledWith(
       "default",
       "free-plan",
       "test-token",
@@ -155,10 +229,10 @@ describe("<CompleteSignup />", () => {
     wrapper = shallow(<CompleteSignup {...props} />, {
       context: loadingContextValue,
     });
-    upgradePendingVerificationPlan.mockResolvedValue({});
+    upgradePlan.mockResolvedValue({});
     wrapper.instance().handlePlansSuccess(plans);
 
-    await wrapper.instance().handleSubmitFreePlan(0);
+    await wrapper.instance().handleSubmitPlan(0);
 
     expect(updateRegistrationMethod).toHaveBeenCalledWith(
       "default",
@@ -169,25 +243,14 @@ describe("<CompleteSignup />", () => {
     expect(props.navigate).toHaveBeenCalledWith("/default/status");
   });
 
-  it("does not submit paid plan on focus", () => {
-    wrapper.instance().handlePlansSuccess(plans);
-
-    wrapper.instance().handlePlanFocus({target: {value: "1"}});
-
-    expect(wrapper.state("selectedPlan")).toBe("1");
-    expect(updateRegistrationMethod).not.toHaveBeenCalled();
-    expect(upgradePendingVerificationPlan).not.toHaveBeenCalled();
-  });
-
   it("submits paid plan and redirects to payment draft", async () => {
     updateRegistrationMethod.mockResolvedValue({method: "bank_card"});
-    upgradePendingVerificationPlan.mockResolvedValue({
+    upgradePlan.mockResolvedValue({
       payment_url: "https://payment.example/1",
     });
     wrapper.instance().handlePlansSuccess(plans);
-    wrapper.setState({selectedPlan: "1"});
 
-    await wrapper.instance().handleSubmitPaidPlan();
+    await wrapper.instance().handleSubmitPlan(1);
 
     expect(updateRegistrationMethod).toHaveBeenCalledWith(
       "default",
@@ -195,24 +258,30 @@ describe("<CompleteSignup />", () => {
       "test-token",
       "en",
     );
-    expect(upgradePendingVerificationPlan).toHaveBeenCalledWith(
+    expect(upgradePlan).toHaveBeenCalledWith(
       "default",
       "paid-plan",
       "test-token",
       "en",
     );
+    expect(props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({
+        method: "bank_card",
+        payment_url: "https://payment.example/1",
+      }),
+    );
     expect(props.navigate).toHaveBeenCalledWith("/default/payment/draft");
   });
 
-  it("shows an error toast when free plan submission fails", async () => {
+  it("shows an error toast when plan submission fails", async () => {
     const errorToast = jest.spyOn(toast, "error").mockImplementation(() => {});
     updateRegistrationMethod.mockRejectedValue({
       response: {data: {detail: "bad request"}},
     });
-    upgradePendingVerificationPlan.mockResolvedValue({});
+    upgradePlan.mockResolvedValue({});
     wrapper.instance().handlePlansSuccess(plans);
 
-    await wrapper.instance().handleSubmitFreePlan(0);
+    await wrapper.instance().handleSubmitPlan(0);
 
     expect(props.navigate).not.toHaveBeenCalled();
     expect(errorToast).toHaveBeenCalled();
