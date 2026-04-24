@@ -82,7 +82,9 @@ if create_mobile_verification_org:
 
 if cross_org_phone_verification_tests:
     data = test_data["crossOrgPhoneVerificationUser"]
-    target_org, _ = Organization.objects.get_or_create(slug=data["targetOrganization"], name=data["targetOrganization"])
+    target_org, _ = Organization.objects.get_or_create(
+        slug=data["targetOrganization"], name=data["targetOrganization"]
+    )
     target_settings, created = OrganizationRadiusSettings.objects.get_or_create(
         organization=target_org,
         defaults={
@@ -102,8 +104,19 @@ if cross_org_phone_verification_tests:
         email=data["email"],
         phone_number=data["phoneNumber"],
     )
-    source_org = Organization.objects.get(slug=data["sourceOrganization"])
-    OrganizationUser.objects.create(organization=source_org, user=cross_org_user)
+    try:
+        source_org = Organization.objects.get(slug=data["sourceOrganization"])
+    except Organization.DoesNotExist:
+        print(
+            (
+                f"The source organization {data['sourceOrganization']} does not exist "
+                f"in the OpenWISP Radius environment specified ({OPENWISP_RADIUS_PATH}), "
+                f"please create it and repeat the tests."
+            ),
+            file=sys.stderr,
+        )
+    else:
+        OrganizationUser.objects.create(organization=source_org, user=cross_org_user)
     RegisteredUser.objects.create(
         user=cross_org_user, method=data["method"], is_verified=True
     )

@@ -180,9 +180,9 @@ export default class CompleteSignup extends React.Component {
       return;
     }
 
-    const requiresPayment = selectedPlan.requires_payment === true;
-    this.setStateSafe({errors: {}, submitting: true});
     setLoading(true);
+    this.setStateSafe({errors: {}, submitting: true});
+    const requiresPayment = selectedPlan.requires_payment === true;
 
     try {
       // Upgrade to selected plan
@@ -252,6 +252,10 @@ export default class CompleteSignup extends React.Component {
           this.setStateSafe({errors, submitting: false}),
         );
         setLoading(false);
+      }
+    } finally {
+      if (this.isComponentMounted) {
+        this.setStateSafe({submitting: false});
       }
     }
   };

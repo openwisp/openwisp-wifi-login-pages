@@ -30,6 +30,8 @@ import getPaymentStatusRedirectUrl from "./get-payment-status";
 import withRouteProps from "./with-route-props";
 import updateRegistrationMethod from "./update-registration-method";
 import getPlans from "./get-plans";
+import upgradePlan from "./upgrade-plan";
+import {upgradePlanApiUrl} from "../constants";
 
 jest.mock("axios");
 jest.mock("./load-translation");
@@ -877,6 +879,7 @@ describe("getPaymentStatusRedirectUrl tests", () => {
 describe("update-registration-method", () => {
   afterEach(() => {
     jest.clearAllMocks();
+    jest.restoreAllMocks();
   });
 
   it("posts the selected registration method and returns response data", async () => {
@@ -930,6 +933,7 @@ describe("update-registration-method", () => {
 describe("get-plans", () => {
   afterEach(() => {
     jest.clearAllMocks();
+    jest.restoreAllMocks();
   });
 
   it("fetches plans and passes response data to the success callback", async () => {
@@ -1004,5 +1008,32 @@ describe("withRouteProps test", () => {
       params: {},
       props: {extra: true},
     });
+  });
+});
+describe("upgrade-plan", () => {
+  it("makes POST request with correct URL, headers and body", async () => {
+    const mockResponse = {payment_url: "/default/payment/success"};
+    axios.mockResolvedValueOnce({data: mockResponse});
+    const result = await upgradePlan("default", "premium", "test-token", "en");
+    expect(axios).toHaveBeenCalledWith(
+      expect.objectContaining({
+        method: "post",
+        headers: expect.objectContaining({
+          "content-type": "application/json",
+          Authorization: "Bearer test-token",
+        }),
+        url: upgradePlanApiUrl.replace("{orgSlug}", "default"),
+        data: {plan_pricing: "premium"},
+      }),
+    );
+    expect(result).toBe(mockResponse);
+  });
+
+  it("rejects on request failure", async () => {
+    const error = new Error("request failed");
+    axios.mockRejectedValueOnce(error);
+    await expect(
+      upgradePlan("default", "premium", "test-token", "en"),
+    ).rejects.toBe(error);
   });
 });

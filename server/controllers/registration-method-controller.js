@@ -28,7 +28,11 @@ const updateRegistrationMethod = (req, res) => {
         allowedMethods.push("mobile_phone");
       }
       // validate method against allowed methods
-      if (!allowedMethods.includes(req.body.method)) {
+      if (
+        !req.body ||
+        typeof req.body.method !== "string" ||
+        !allowedMethods.includes(req.body.method)
+      ) {
         return res.status(400).type("application/json").send({
           response_code: "INVALID_METHOD",
         });

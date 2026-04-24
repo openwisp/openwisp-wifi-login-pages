@@ -153,9 +153,7 @@ describe("registration-method-controller", () => {
       },
       res,
     );
-    await new Promise((resolve) => {
-      setTimeout(resolve, 10);
-    });
+    await Promise.resolve();
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.type).toHaveBeenCalledWith("application/json");
     expect(res.send).toHaveBeenCalledWith({response_code: "BAD_REQUEST"});
@@ -176,9 +174,7 @@ describe("registration-method-controller", () => {
       },
       res,
     );
-    await new Promise((resolve) => {
-      setTimeout(resolve, 10);
-    });
+    await Promise.resolve();
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.type).toHaveBeenCalledWith("application/json");
     expect(res.send).toHaveBeenCalledWith({

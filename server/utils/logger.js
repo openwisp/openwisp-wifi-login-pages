@@ -119,18 +119,53 @@ try {
   // no op
 }
 
+const redactHeaders = (headers = {}) => {
+  const h = {...headers};
+  Object.keys(h).forEach((key) => {
+    if (key.toLowerCase() === "authorization") {
+      h[key] = "[REDACTED]";
+    }
+  });
+  return h;
+};
+
+const sanitizeResponse = (response) => {
+  if (!response) return response;
+  return {
+    status: response.status,
+    data: response.data,
+    config: {
+      url: response.config?.url,
+      method: response.config?.method,
+      headers: redactHeaders(response.config?.headers),
+    },
+  };
+};
+
+const sanitizeRequest = (request) => {
+  if (!request) return request;
+  return {
+    path: request.path ?? request.URL?.pathname,
+    method: request.method,
+  };
+};
+
 export const logResponseError = (error) => {
   try {
     if (error.response) {
       const {status, data, config} = error.response;
-      if (status >= 500) Logger.error(error.response);
-      else
+      const safeResponse = sanitizeResponse(error.response);
+      if (status >= 500) {
+        Logger.error(safeResponse);
+      } else
         Logger.info(
           `Request to ${config.url} failed with ${status}:\n${JSON.stringify(data)}`,
         );
     } else if (error.request) {
-      // The request was made but no response was received
-      Logger.error({error, request: error.request});
+      Logger.error({
+        message: error.message,
+        request: sanitizeRequest(error.request),
+      });
     } else Logger.error(error.message);
   } catch (err) {
     Logger.error(err);
