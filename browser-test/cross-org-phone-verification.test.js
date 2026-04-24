@@ -40,7 +40,7 @@ describe("Selenium tests for cross-organization phone verification", () => {
       5000,
     );
     const codeInput = await getElementByCss(driver, "input#code");
-    const token = getPhoneToken();
+    const token = getPhoneToken(data.phoneNumber);
     await codeInput.sendKeys(token);
     const verifyBtn = await getElementByCss(driver, "button[type='submit']");
     await verifyBtn.click();
