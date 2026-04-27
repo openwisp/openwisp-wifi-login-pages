@@ -196,11 +196,14 @@ describe("<CompleteSignup />", () => {
   });
 
   it("shows error UI when plans fetch fails", () => {
+    const errorToast = jest.spyOn(toast, "error").mockImplementation(() => {});
+    jest.clearAllMocks();
     wrapper.instance().handlePlansFailure();
-
     expect(wrapper.find(".complete-signup-error")).toHaveLength(1);
     expect(wrapper.find(".plans")).toHaveLength(0);
     expect(props.navigate).not.toHaveBeenCalled();
+    expect(errorToast).not.toHaveBeenCalled();
+    errorToast.mockRestore();
   });
 
   it("shows message when plans fetch returns empty array", () => {

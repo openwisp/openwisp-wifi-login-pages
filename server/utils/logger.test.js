@@ -1,18 +1,19 @@
-jest.mock("../utils/logger", () => ({
-  logResponseError: jest.fn(),
-}));
+import Logger, {logResponseError} from "./logger";
 
 describe("logResponseError sanitization", () => {
-  let logResponseError;
+  let errorSpy;
+  let infoSpy;
 
   beforeEach(() => {
-    jest.clearAllMocks();
-    jest.resetModules();
-    // eslint-disable-next-line global-require
-    ({logResponseError} = require("./logger"));
+    errorSpy = jest.spyOn(Logger, "error").mockImplementation(() => {});
+    infoSpy = jest.spyOn(Logger, "info").mockImplementation(() => {});
   });
 
-  it("passes error to logResponseError (sanitization happens internally)", () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  it("redacts authorization headers for 5xx responses", () => {
     const error = {
       response: {
         status: 500,
@@ -30,10 +31,17 @@ describe("logResponseError sanitization", () => {
       },
     };
     logResponseError(error);
-    expect(logResponseError).toHaveBeenCalledWith(error);
+    expect(errorSpy).toHaveBeenCalledTimes(1);
+    const loggedArg = errorSpy.mock.calls[0][0];
+    expect(loggedArg.config.headers).toEqual({
+      Authorization: "[REDACTED]",
+      authorization: "[REDACTED]",
+      AUTHORIZATION: "[REDACTED]",
+      "content-type": "application/json",
+    });
   });
 
-  it("calls logResponseError with raw error (sanitization is internal)", () => {
+  it("does not log headers for non-5xx but logs message safely", () => {
     const error = {
       response: {
         status: 400,
@@ -48,10 +56,13 @@ describe("logResponseError sanitization", () => {
       },
     };
     logResponseError(error);
-    expect(logResponseError).toHaveBeenCalledWith(error);
+    expect(infoSpy).toHaveBeenCalledTimes(1);
+    const message = infoSpy.mock.calls[0][0];
+    expect(message).not.toContain("secret-token");
+    expect(message).toContain("400");
   });
 
-  it("handles error.request by logging sanitized request", () => {
+  it("sanitizes request object (no headers leakage)", () => {
     const error = {
       message: "Network Error",
       request: {
@@ -63,14 +74,20 @@ describe("logResponseError sanitization", () => {
       },
     };
     logResponseError(error);
-    expect(logResponseError).toHaveBeenCalledWith(error);
+    expect(errorSpy).toHaveBeenCalledTimes(1);
+    const loggedArg = errorSpy.mock.calls[0][0];
+    expect(loggedArg.request).toEqual({
+      path: "/api/v1/test",
+      method: "post",
+    });
+    expect(JSON.stringify(loggedArg)).not.toContain("secret-token");
   });
 
-  it("handles generic error with message only", () => {
+  it("logs generic error message safely", () => {
     const error = {
       message: "Something went wrong",
     };
     logResponseError(error);
-    expect(logResponseError).toHaveBeenCalledWith(error);
+    expect(errorSpy).toHaveBeenCalledWith("Something went wrong");
   });
 });

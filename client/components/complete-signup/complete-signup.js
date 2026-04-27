@@ -57,7 +57,7 @@ export default class CompleteSignup extends React.Component {
     const {setLoading} = this.context;
     const {setTitle, orgName, settings, orgSlug, language, userData} =
       this.props;
-    setTitle(t`REGISTRATION_TITLE`, orgName);
+    setTitle(t`REGISTRATION_TITL`, orgName);
     setLoading(true);
     this.handleAutoTransition({
       orgSlug,
@@ -97,7 +97,6 @@ export default class CompleteSignup extends React.Component {
       plansError: t`PLANS_FETCH_ERR`,
     });
     setLoading(false);
-    toast.error(t`PLANS_FETCH_ERR`);
   };
 
   finalOperations = (nextUserData, route) => {
@@ -294,7 +293,7 @@ export default class CompleteSignup extends React.Component {
         <div className="inner">
           <div className="main-column single">
             <div className="inner">
-              <h2 className="row">{t`REGISTRATION_TITLE`}</h2>
+              <h2 className="row">{t`REGISTRATION_TITL`}</h2>
               <div className="row">
                 {t`REGISTRATION_COMPLETE_PROMPT`} {orgName}.
               </div>
