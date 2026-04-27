@@ -107,7 +107,8 @@ jobs:
 
       - name: Get openwisp-radius
         run: |
-          git clone --depth=1 https://github.com/openwisp/openwisp-radius/ openwisp-radius
+          # TODO: Remove branch before merging
+          git clone --depth=1 --branch issues/692-different-identity-verification https://github.com/openwisp/openwisp-radius/ openwisp-radius
           cd openwisp-radius
           echo "OpenWISP RADIUS commit: $(git rev-parse HEAD)"
           echo "OW_RADIUS_VERSION=$(git rev-parse HEAD)" >> $GITHUB_ENV
@@ -131,6 +132,7 @@ jobs:
           pip install -U pip setuptools wheel
           pip install -U -e ".[saml]"
           pip install -U -r requirements-test.txt
+          pip install --no-deps --no-cache-dir --force-reinstall "https://github.com/openwisp/openwisp-users/tarball/issues/497-export-users"
           pip install -U "Django~=5.2.0"
           ./tests/manage.py migrate
 

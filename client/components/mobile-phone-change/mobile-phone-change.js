@@ -33,8 +33,19 @@ class MobilePhoneChange extends React.Component {
       phone_number: "",
       errors: {},
     };
+    this.isComponentMounted = true;
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+  }
+
+  setStateSafe(state, callback) {
+    if (this.isComponentMounted) {
+      this.setState(state, callback);
+    }
+  }
+
+  componentWillUnmount() {
+    this.isComponentMounted = false;
   }
 
   async componentDidMount() {
@@ -55,9 +66,11 @@ class MobilePhoneChange extends React.Component {
     if (isValid) {
       ({userData} = this.props);
       const {phone_number} = userData;
-      this.setState({phone_number});
+      this.setStateSafe({phone_number});
     }
-    setLoading(false);
+    if (this.isComponentMounted) {
+      setLoading(false);
+    }
   }
 
   handleSubmit(event) {
@@ -81,7 +94,7 @@ class MobilePhoneChange extends React.Component {
       }),
     })
       .then(() => {
-        this.setState({
+        this.setStateSafe({
           errors: {},
         });
         setUserData({...userData, is_verified: false, phone_number});
@@ -97,7 +110,7 @@ class MobilePhoneChange extends React.Component {
           toast.error(errorText);
         }
         setLoading(false);
-        this.setState({
+        this.setStateSafe({
           errors: {
             ...errors,
             ...(data.phone_number ? {phone_number: data.phone_number} : null),

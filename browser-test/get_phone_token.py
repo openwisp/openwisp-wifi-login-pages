@@ -39,11 +39,13 @@ User = get_user_model()
 PhoneToken = load_model("openwisp_radius", "PhoneToken")
 
 test_data = load_test_data()
+phone_number = (
+    sys.argv[2]
+    if len(sys.argv) > 1
+    else test_data["mobileVerificationTestUser"]["phoneNumber"]
+)
 try:
-    user = User.objects.filter(
-        username=test_data["mobileVerificationTestUser"]["phoneNumber"]
-    ).first()
-    phone_token = PhoneToken.objects.filter(user=user).first()
+    phone_token = PhoneToken.objects.filter(phone_number=phone_number).first()
     sys.stdout.write(phone_token.token)
     sys.exit(0)
 except Exception as e:

@@ -17,6 +17,7 @@ import LoadingContext from "../../utils/loading-context";
 import Loader from "../../utils/loader";
 import needsVerify from "../../utils/needs-verify";
 import loadTranslation from "../../utils/load-translation";
+import {userPendingVerification} from "../../utils/pending-verification";
 import Login from "../login";
 import {
   Registration,
@@ -28,6 +29,7 @@ import {
   MobilePhoneVerification,
   PaymentStatus,
   PaymentProcess,
+  CompleteSignup,
   ConnectedDoesNotExist,
   DoesNotExist,
 } from "./lazy-import";
@@ -117,6 +119,8 @@ export default class OrganizationWrapper extends React.Component {
     if (cssPath) css.push(cssPath);
     const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
     const needsVerifyPhone = needsVerify("mobile_phone", userData, settings);
+    const needsVerifyBankCard = needsVerify("bank_card", userData, settings);
+    const needsMethodSelection = userPendingVerification(userData);
     if (organization.exists === true) {
       const {setLoading} = this;
       let extraClasses = "";
@@ -153,6 +157,9 @@ export default class OrganizationWrapper extends React.Component {
                   <Route
                     path="registration/*"
                     element={(() => {
+                      if (isAuthenticated && needsMethodSelection) {
+                        return <Navigate to={`/${orgSlug}/complete-signup`} />;
+                      }
                       if (isAuthenticated && !needsVerifyPhone) {
                         return <Navigate to={`/${orgSlug}/status`} />;
                       }
@@ -173,6 +180,9 @@ export default class OrganizationWrapper extends React.Component {
                   <Route
                     path="mobile-phone-verification"
                     element={(() => {
+                      if (isAuthenticated && needsMethodSelection) {
+                        return <Navigate to={`/${orgSlug}/complete-signup`} />;
+                      }
                       if (
                         isAuthenticated &&
                         needsVerifyPhone === false &&
@@ -217,26 +227,44 @@ export default class OrganizationWrapper extends React.Component {
                   />
                   <Route
                     path="login/*"
-                    element={
-                      isAuthenticated && is_active ? (
-                        <Navigate
-                          to={`/${orgSlug}/status${location.search || ""}`}
-                        />
-                      ) : (
-                        <Login navigate={navigate} />
-                      )
-                    }
+                    element={(() => {
+                      if (isAuthenticated) {
+                        if (needsMethodSelection) {
+                          return (
+                            <Navigate
+                              to={`/${orgSlug}/complete-signup${
+                                location.search || ""
+                              }`}
+                            />
+                          );
+                        }
+                        if (is_active) {
+                          return (
+                            <Navigate
+                              to={`/${orgSlug}/status${location.search || ""}`}
+                            />
+                          );
+                        }
+                      }
+                      return <Login navigate={navigate} />;
+                    })()}
                   />
                   <Route
                     path="status"
                     element={(() => {
-                      if (isAuthenticated && needsVerifyPhone)
-                        return (
-                          <Navigate
-                            to={`/${orgSlug}/mobile-phone-verification`}
-                          />
-                        );
                       if (isAuthenticated) {
+                        if (needsMethodSelection) {
+                          return (
+                            <Navigate to={`/${orgSlug}/complete-signup`} />
+                          );
+                        }
+                        if (needsVerifyPhone) {
+                          return (
+                            <Navigate
+                              to={`/${orgSlug}/mobile-phone-verification`}
+                            />
+                          );
+                        }
                         return (
                           <Suspense fallback={<Loader />}>
                             <Status
@@ -311,6 +339,32 @@ export default class OrganizationWrapper extends React.Component {
                         <PaymentStatus cookies={cookies} />
                       </Suspense>
                     }
+                  />
+                  <Route
+                    path="complete-signup"
+                    element={(() => {
+                      if (!isAuthenticated) {
+                        return <Navigate to={`/${orgSlug}/login`} />;
+                      }
+                      if (!needsMethodSelection) {
+                        if (needsVerifyPhone) {
+                          return (
+                            <Navigate
+                              to={`/${orgSlug}/mobile-phone-verification`}
+                            />
+                          );
+                        }
+                        if (needsVerifyBankCard) {
+                          return <Navigate to={`/${orgSlug}/payment/draft`} />;
+                        }
+                        return <Navigate to={`/${orgSlug}/status`} />;
+                      }
+                      return (
+                        <Suspense fallback={<Loader />}>
+                          <CompleteSignup navigate={navigate} />
+                        </Suspense>
+                      );
+                    })()}
                   />
                 </Routes>
                 <Routes>
@@ -395,6 +449,7 @@ OrganizationWrapper.propTypes = {
       userData: PropTypes.object,
       settings: PropTypes.shape({
         mobile_phone_verification: PropTypes.bool,
+        subscriptions: PropTypes.bool,
       }),
       js: PropTypes.array,
     }),

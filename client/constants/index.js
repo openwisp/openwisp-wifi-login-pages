@@ -20,6 +20,8 @@ export const verifyMobilePhoneTokenUrl = (orgSlug) =>
   `${prefix}/${orgSlug}/account/phone/verify`;
 export const mobilePhoneChangeUrl = (orgSlug) =>
   `${prefix}/${orgSlug}/account/phone/change`;
+export const updateMethodApiUrl = (orgSlug) =>
+  `${prefix}/${orgSlug}/account/registration-method/`;
 export const plansApiUrl = `${prefix}/{orgSlug}/plan/`;
 export const upgradePlanApiUrl = `${prefix}/{orgSlug}/plan/upgrade`;
 export const modalContentUrl = (orgSlug) => `${prefix}/${orgSlug}/modal`;
