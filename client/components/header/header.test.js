@@ -1,6 +1,6 @@
 import {shallow} from "enzyme";
 import React from "react";
-import {BrowserRouter as Router} from "react-router-dom";
+import {MemoryRouter as Router} from "react-router-dom";
 import renderer from "react-test-renderer";
 
 import getConfig from "../../utils/get-config";
@@ -104,8 +104,9 @@ describe("<Header /> rendering", () => {
         authenticated: true,
       },
     ];
+    isInternalLink.mockClear();
     wrapper = shallow(<Header {...props} />);
-    expect(isInternalLink).toHaveBeenCalledTimes(6);
+    expect(isInternalLink).toHaveBeenCalledTimes(2);
     expect(isInternalLink).toHaveBeenCalledWith("/default/login");
   });
   it("should render without authenticated links when not authenticated", () => {
