@@ -6293,9 +6293,9 @@ file-stream-rotator@^0.6.1:
     moment "^2.29.1"
 
 filesize@^11.0.13:
-  version "11.0.13"
-  resolved "https://registry.yarnpkg.com/filesize/-/filesize-11.0.13.tgz#8e61c5c4e8d7463c71d573c4f8051fb1ba4ff883"
-  integrity sha512-mYJ/qXKvREuO0uH8LTQJ6v7GsUvVOguqxg2VTwQUkyTPXXRRWPdjuUPVqdBrJQhvci48OHlNGRnux+Slr2Rnvw==
+  version "11.0.17"
+  resolved "https://registry.yarnpkg.com/filesize/-/filesize-11.0.17.tgz#fea569a71f0f716129fd7f5110427b7868499823"
+  integrity sha512-oHLTvMLw6imZUl1se/RBQrFlyy50nXce4sU7yGR6Qc0JgCwqnfiFsAnEwotdGmfKLD7SArGUk2/5STU0k8LOBQ==
 
 fill-range@^7.1.1:
   version "7.1.1"
