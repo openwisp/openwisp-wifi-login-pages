@@ -22,6 +22,10 @@ import LoadingContext from "../../utils/loading-context";
 import logError from "../../utils/log-error";
 import renderAdditionalInfo from "../../utils/render-additional-info";
 import handleChange from "../../utils/handle-change";
+import {
+  getEmailTypoSuggestion,
+  getSafeEmailPattern,
+} from "../../utils/email-validation";
 import Contact from "../contact-box";
 import Modal from "../modal";
 import {Status} from "../organization-wrapper/lazy-import";
@@ -124,6 +128,10 @@ export default class Login extends React.Component {
     const patternDesc = input_fields.username.pattern_description
       ? getText(input_fields.username.pattern_description, language)
       : t`USERNAME_LOG_TITL`;
+    const usernamePattern =
+      input_fields.username.type === "email"
+        ? getSafeEmailPattern(input_fields.username.pattern)
+        : input_fields.username.pattern;
     return (
       <div className="row username">
         <label htmlFor="username">{label}</label>
@@ -137,7 +145,7 @@ export default class Login extends React.Component {
           onChange={this.handleChange}
           required
           placeholder={placeholder}
-          pattern={input_fields.username.pattern}
+          pattern={usernamePattern}
           autoComplete="username"
           title={patternDesc}
         />
@@ -204,9 +212,24 @@ export default class Login extends React.Component {
   handleSubmit(event, sesame_token = null) {
     const {setLoading} = this.context;
     if (event) event.preventDefault();
-    const {orgSlug, setUserData, language, settings} = this.props;
+    const {orgSlug, setUserData, language, settings, loginForm} = this.props;
     const {radius_realms} = settings;
     const {username, password, errors} = this.state;
+    const suggestedEmail =
+      loginForm.input_fields.username.type === "email"
+        ? getEmailTypoSuggestion(username)
+        : null;
+
+    if (suggestedEmail) {
+      this.setState({
+        errors: {
+          ...errors,
+          username: `Did you mean ${suggestedEmail}?`,
+        },
+      });
+      return false;
+    }
+
     const url = loginApiUrl(orgSlug);
     this.setState({
       errors: {},

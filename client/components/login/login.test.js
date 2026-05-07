@@ -291,6 +291,23 @@ describe("<Login /> interactions", () => {
     expect(wrapper.state("remember_me")).toEqual(false);
   });
 
+  it("should block login when email domain typo is detected", () => {
+    axios.mockClear();
+    wrapper.setState({
+      username: "vikramk2101@gmal.com",
+      password: "test-password",
+    });
+
+    const result = wrapper.instance().handleSubmit({preventDefault: () => {}});
+
+    wrapper.update();
+    expect(result).toBe(false);
+    expect(axios).not.toHaveBeenCalled();
+    expect(wrapper.state("errors")).toEqual({
+      username: "Did you mean vikramk2101@gmail.com?",
+    });
+  });
+
   it("should execute handleSubmit correctly when form is submitted", () => {
     axios
       .mockImplementationOnce(() =>
