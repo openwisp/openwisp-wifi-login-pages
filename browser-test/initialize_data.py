@@ -23,6 +23,7 @@ if OPENWISP_RADIUS_PATH == "":
 # do not initialize data for registration tests
 registration_tests = "register" in sys.argv
 create_mobile_verification_org = "mobileVerification" in sys.argv
+cross_org_phone_verification_tests = "crossOrgPhoneVerification" in sys.argv
 expired_password_tests = "expiredPassword" in sys.argv
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -78,6 +79,47 @@ if create_mobile_verification_org:
     )
     RegisteredUser.objects.create(user=user, method=data["method"])
     OrganizationUser.objects.create(organization=org, user=user)
+
+if cross_org_phone_verification_tests:
+    data = test_data["crossOrgPhoneVerificationUser"]
+    target_org, _ = Organization.objects.get_or_create(
+        slug=data["targetOrganization"], name=data["targetOrganization"]
+    )
+    target_settings, created = OrganizationRadiusSettings.objects.get_or_create(
+        organization=target_org,
+        defaults={
+            "needs_identity_verification": True,
+            "sms_verification": True,
+            "sms_sender": data["email"],
+        },
+    )
+    if not created:
+        target_settings.needs_identity_verification = True
+        target_settings.sms_verification = True
+        target_settings.sms_sender = data["email"]
+        target_settings.save()
+    cross_org_user = User.objects.create_user(
+        username=data["phoneNumber"],
+        password=data["password"],
+        email=data["email"],
+        phone_number=data["phoneNumber"],
+    )
+    try:
+        source_org = Organization.objects.get(slug=data["sourceOrganization"])
+    except Organization.DoesNotExist:
+        print(
+            (
+                f"The source organization {data['sourceOrganization']} does not exist "
+                f"in the OpenWISP Radius environment specified ({OPENWISP_RADIUS_PATH}), "
+                f"please create it and repeat the tests."
+            ),
+            file=sys.stderr,
+        )
+    else:
+        OrganizationUser.objects.create(organization=source_org, user=cross_org_user)
+    RegisteredUser.objects.create(
+        user=cross_org_user, method=data["method"], is_verified=True
+    )
 
 
 try:

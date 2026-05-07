@@ -1,0 +1,9 @@
+#complete-signup .complete-signup-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#complete-signup .complete-signup-plans {
+  margin-top: 1rem;
+}

@@ -685,3 +685,20 @@ msgstr "Lo sentimos, no pudimos encontrar la página que estabas buscando."
 #: client/components/404/404.js:37
 msgid "HOME_PG_LINK_TXT"
 msgstr "Volver a la página de inicio"
+
+#: client/components/complete-signup/complete-signup.js:77
+msgid "ORG_REGISTRATION_DISABLED"
+msgstr "El registro está actualmente deshabilitado para esta organización"
+
+#: client/components/complete-signup/complete-signup.js:92
+#: client/components/complete-signup/complete-signup.js:95
+msgid "PLANS_FETCH_ERR"
+msgstr "No se pudieron cargar los planes"
+
+#: client/components/complete-signup/complete-signup.js:288
+msgid "REGISTRATION_COMPLETE_PROMPT"
+msgstr "Por favor, complete su registro a"
+
+#: client/components/complete-signup/complete-signup.js:300
+msgid "RETRY"
+msgstr "Reintentar"

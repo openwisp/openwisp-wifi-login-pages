@@ -13,6 +13,7 @@ import {
   mobilePhoneTokenStatus,
 } from "../controllers/mobile-phone-token-controller";
 import mobilePhoneNumberChange from "../controllers/mobile-phone-number-change-controller";
+import updateRegistrationMethod from "../controllers/registration-method-controller";
 import errorHandler from "../utils/error-handler";
 
 const router = Router({mergeParams: true});
@@ -29,5 +30,6 @@ router.post("/phone/token", errorHandler(createMobilePhoneToken));
 router.get("/phone/token/status", errorHandler(mobilePhoneTokenStatus));
 router.post("/phone/verify", errorHandler(verifyMobilePhoneToken));
 router.post("/phone/change", errorHandler(mobilePhoneNumberChange));
+router.post("/registration-method", errorHandler(updateRegistrationMethod));
 
 export default router;

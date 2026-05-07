@@ -72,8 +72,8 @@ export const tearDown = async (driver) => {
   driver.close();
 };
 
-export const getPhoneToken = () => {
-  const result = spawnSync("./browser-test/get_phone_token.py");
+export const getPhoneToken = (phoneNumber) => {
+  const result = spawnSync("./browser-test/get_phone_token.py", [phoneNumber]);
   return result.stdout.toString();
 };
 

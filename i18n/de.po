@@ -678,3 +678,20 @@ msgstr "Die gesuchte Seite konnte leider nicht gefunden werden."
 #: client/components/404/404.js:37
 msgid "HOME_PG_LINK_TXT"
 msgstr "Zurück zur ersten Seite"
+
+#: client/components/complete-signup/complete-signup.js:77
+msgid "ORG_REGISTRATION_DISABLED"
+msgstr "Die Registrierung ist für diese Organisation derzeit deaktiviert"
+
+#: client/components/complete-signup/complete-signup.js:92
+#: client/components/complete-signup/complete-signup.js:95
+msgid "PLANS_FETCH_ERR"
+msgstr "Pläne konnten nicht geladen werden"
+
+#: client/components/complete-signup/complete-signup.js:288
+msgid "REGISTRATION_COMPLETE_PROMPT"
+msgstr "Bitte schließen Sie Ihre Registrierung ab bei"
+
+#: client/components/complete-signup/complete-signup.js:300
+msgid "RETRY"
+msgstr "Erneut versuchen"
