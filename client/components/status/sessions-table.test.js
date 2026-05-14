@@ -39,6 +39,20 @@ describe("<SessionsTable /> rendering and interactions", () => {
     expect(wrapper.find(".large-table").exists()).toBe(false);
   });
 
+  it("should render small table at boundary screenWidth = 656", () => {
+    props.screenWidth = 656;
+    const wrapper = shallow(<SessionsTable {...props} />);
+    expect(wrapper.find(".small-table").exists()).toBe(true);
+    expect(wrapper.find(".large-table").exists()).toBe(false);
+  });
+
+  it("should render large table just above boundary screenWidth = 657", () => {
+    props.screenWidth = 657;
+    const wrapper = shallow(<SessionsTable {...props} />);
+    expect(wrapper.find(".large-table").exists()).toBe(true);
+    expect(wrapper.find(".small-table").exists()).toBe(false);
+  });
+
   it("should call handleSessionLogout when logout button is clicked", () => {
     props.activeSessions.push({...sessionData, session_id: 2});
 

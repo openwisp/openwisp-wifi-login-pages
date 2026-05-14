@@ -270,9 +270,20 @@ function SessionsTable({
   );
 }
 
+const SessionShape = PropTypes.shape({
+  session_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    .isRequired,
+  start_time: PropTypes.string.isRequired,
+  stop_time: PropTypes.string,
+  input_octets: PropTypes.number,
+  output_octets: PropTypes.number,
+  session_time: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  calling_station_id: PropTypes.string,
+});
+
 SessionsTable.propTypes = {
-  activeSessions: PropTypes.array.isRequired,
-  pastSessions: PropTypes.array.isRequired,
+  activeSessions: PropTypes.arrayOf(SessionShape).isRequired,
+  pastSessions: PropTypes.arrayOf(SessionShape).isRequired,
   language: PropTypes.string.isRequired,
   statusPage: PropTypes.shape({
     accounting_swap_octets: PropTypes.bool,
