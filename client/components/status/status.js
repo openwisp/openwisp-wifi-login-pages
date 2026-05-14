@@ -1309,7 +1309,7 @@ export default class Status extends React.Component {
     };
   };
 
-  renderUsageCheckContent = (check, color, icon, label) => (
+  renderUsageCheckContentSmall = (check, color, icon, label) => (
     <div className="usage-check-content">
       <div className="usage-check-header">
         <img src={icon} alt={`${label} Icon`} />
@@ -1345,6 +1345,45 @@ export default class Status extends React.Component {
       </div>
     </div>
   );
+  renderUsageCheckContentBig = (check, color, icon, label) => {
+    const percentage = (check.result / check.value) * 100;
+    return (
+      <div className="usage-check-content">
+        <div className="usage-check-header">
+          <img src={icon} alt={`${label} Icon`} />
+          <div>{label}</div>
+        </div>
+        <div className="usage-progress-wrapper-big">
+          <div className="usage-progress-bar-container">
+            <div
+              className="usage-progress-bar-fill"
+              style={{
+                width: `${Math.min(percentage, 100)}%`,
+                backgroundColor: color,
+              }}
+            />
+          </div>
+          <div className="usage-progress-text-bottom">
+            <div style={{fontWeight:"400", color:"#71717A"}}>
+              {this.getUserCheckFormattedValue(
+                check.value,
+                check.type,
+                check.result,
+              )}{" "}
+              {t`USAGE_REMAINING`}
+            </div>
+            <div style={{color:"#52525B"}}>
+              {this.getUserCheckUsedValue(
+                check.value,
+                check.type,
+                check.result,
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   render() {
     const {
@@ -1429,7 +1468,7 @@ export default class Status extends React.Component {
                   </h3>
                 )}
                 {userChecks && (
-                  <div>
+                  <div style={{width: "100%"}}>
                     <div className="usage-checks-container">
                       {userChecks.map((check) => {
                         const valueNum = Number(check.value);
@@ -1461,17 +1500,24 @@ export default class Status extends React.Component {
                           return null;
                         }
                         return (
-                          <div
-                            className="usage-box usage-box-inner"
-                            key={check.attribute}
-                          >
-                            {this.renderUsageCheckContent(
-                              normalizedCheck,
-                              color,
-                              icon,
-                              label,
-                            )}
-                          </div>
+                          <React.Fragment key={check.attribute}>
+                            <div className="usage-box-inner-big">
+                              {this.renderUsageCheckContentBig(
+                                normalizedCheck,
+                                color,
+                                icon,
+                                label,
+                              )}
+                            </div>
+                            <div className="usage-box-inner-small">
+                              {this.renderUsageCheckContentSmall(
+                                normalizedCheck,
+                                color,
+                                icon,
+                                label,
+                              )}
+                            </div>
+                          </React.Fragment>
                         );
                       })}
                     </div>

@@ -4,6 +4,7 @@ import {shallow} from "enzyme";
 import PropTypes from "prop-types";
 import React from "react";
 import {Cookies} from "react-cookie";
+import {CircularProgressbarWithChildren} from "react-circular-progressbar";
 import ShallowRenderer from "react-test-renderer/shallow";
 import {toast} from "react-toastify";
 import getConfig from "../../utils/get-config";
@@ -186,6 +187,197 @@ describe("<Status /> rendering", () => {
       setPlanExhausted: expect.any(Function),
       setTitle: expect.any(Function),
     });
+  });
+});
+
+describe("<Status /> usage rendering helpers", () => {
+  let wrapper;
+
+  const usageCheck = {
+    attribute: "Max-Daily-Session",
+    op: ":=",
+    value: "10800",
+    result: 5400,
+    type: "seconds",
+  };
+
+  beforeEach(() => {
+    loadTranslation("en", "default");
+    wrapper = shallow(<Status {...createTestProps()} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+  });
+
+  it("should return the correct usage color thresholds", () => {
+    const instance = wrapper.instance();
+    const cases = [
+      {
+        result: 0,
+        color: "#1AAA55",
+        timerIcon: "/assets/default/timerIconGreen.svg",
+        dataIcon: "/assets/default/dataIconGreen.svg",
+      },
+      {
+        result: 50,
+        color: "#1AAA55",
+        timerIcon: "/assets/default/timerIconGreen.svg",
+        dataIcon: "/assets/default/dataIconGreen.svg",
+      },
+      {
+        result: 51,
+        color: "#FBBF24",
+        timerIcon: "/assets/default/timerIconYellow.svg",
+        dataIcon: "/assets/default/dataIconYellow.svg",
+      },
+      {
+        result: 79,
+        color: "#FBBF24",
+        timerIcon: "/assets/default/timerIconYellow.svg",
+        dataIcon: "/assets/default/dataIconYellow.svg",
+      },
+      {
+        result: 80,
+        color: "#FBBF24",
+        timerIcon: "/assets/default/timerIconYellow.svg",
+        dataIcon: "/assets/default/dataIconYellow.svg",
+      },
+      {
+        result: 81,
+        color: "#DB3B21",
+        timerIcon: "/assets/default/timerIconRed.svg",
+        dataIcon: "/assets/default/dataIconRed.svg",
+      },
+      {
+        result: 100,
+        color: "#DB3B21",
+        timerIcon: "/assets/default/timerIconRed.svg",
+        dataIcon: "/assets/default/dataIconRed.svg",
+      },
+    ];
+
+    cases.forEach(({result, color, timerIcon, dataIcon}) => {
+      expect(instance.getUsageColorAndIcons(100, result)).toEqual({
+        color,
+        timerIcon,
+        dataIcon,
+      });
+    });
+  });
+
+  it("should render the circular usage content in all color zones", () => {
+    const instance = wrapper.instance();
+    const cases = [
+      {
+        color: "#1AAA55",
+        icon: "/assets/default/timerIconGreen.svg",
+      },
+      {
+        color: "#FBBF24",
+        icon: "/assets/default/timerIconYellow.svg",
+      },
+      {
+        color: "#DB3B21",
+        icon: "/assets/default/timerIconRed.svg",
+      },
+    ];
+
+    cases.forEach(({color, icon}) => {
+      const element = shallow(
+        instance.renderUsageCheckContentSmall(
+          usageCheck,
+          color,
+          icon,
+          "USAGE_TIME",
+        ),
+      );
+
+      expect(element.find(".usage-check-header").text()).toContain(
+        "USAGE_TIME",
+      );
+      expect(element.find(".usage-check-used").text()).toContain(
+        "1TIME_HOUR_ABBR 30TIME_MINUTE_ABBR USAGE_USED_OF 3TIME_HOUR_ABBR",
+      );
+
+      const progressbar = element.find(CircularProgressbarWithChildren);
+      expect(progressbar.exists()).toBe(true);
+      expect(progressbar.prop("value")).toBe(5400);
+      expect(progressbar.prop("maxValue")).toBe("10800");
+      expect(progressbar.prop("styles").path.stroke).toBe(color);
+    });
+  });
+
+  it("should render the horizontal usage content in all color zones", () => {
+    const instance = wrapper.instance();
+    const cases = [
+      {
+        color: "#1AAA55",
+        icon: "/assets/default/timerIconGreen.svg",
+      },
+      {
+        color: "#FBBF24",
+        icon: "/assets/default/timerIconYellow.svg",
+      },
+      {
+        color: "#DB3B21",
+        icon: "/assets/default/timerIconRed.svg",
+      },
+    ];
+
+    cases.forEach(({color, icon}) => {
+      const element = shallow(
+        instance.renderUsageCheckContentBig(
+          usageCheck,
+          color,
+          icon,
+          "USAGE_TIME",
+        ),
+      );
+
+      expect(element.find(".usage-check-header").text()).toContain(
+        "USAGE_TIME",
+      );
+      expect(element.find(".usage-progress-bar-fill").prop("style")).toEqual({
+        width: "50%",
+        backgroundColor: color,
+      });
+      expect(element.find(".usage-progress-text-bottom").text()).toContain(
+        "USAGE_REMAINING",
+      );
+    });
+  });
+
+  it("should render both usage variants in the status page", () => {
+    const prop = createTestProps();
+    prop.statusPage.radius_usage_enabled = true;
+    const component = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+
+    component.setState({
+      showRadiusUsage: true,
+      radiusUsageSpinner: false,
+      userChecks: [usageCheck],
+      userPlan: {},
+      userInfo: {},
+      activeSessions: [],
+      pastSessions: [],
+      sessionsToLogout: [],
+      loadSpinner: false,
+      upgradePlans: [],
+      warningMessage: null,
+      modalActive: false,
+      rememberMe: false,
+      showUpgradeBtn: true,
+    });
+
+    expect(component.find(".usage-box-inner-big")).toHaveLength(1);
+    expect(component.find(".usage-box-inner-small")).toHaveLength(1);
+    expect(component.find(".usage-progress-bar-fill").exists()).toBe(true);
+    expect(
+      component.find(CircularProgressbarWithChildren).exists(),
+    ).toBe(true);
   });
 });
 

@@ -31,13 +31,79 @@ exports[`<Status /> interactions should hide check if check.value is zero 1`] = 
       <p>
         DAILY_USAGE_OVERVIEW_DESCRIPTION
       </p>
-      <div>
+      <div
+        style={
+          {
+            "width": "100%",
+          }
+        }
+      >
         <div
           className="usage-checks-container"
         >
           <div
-            className="usage-box usage-box-inner"
-            key="Max-Daily-Session"
+            className="usage-box-inner-big"
+          >
+            <div
+              className="usage-check-content"
+            >
+              <div
+                className="usage-check-header"
+              >
+                <img
+                  alt="USAGE_TIME Icon"
+                  src="/assets/default/timerIconGreen.svg"
+                />
+                <div>
+                  USAGE_TIME
+                </div>
+              </div>
+              <div
+                className="usage-progress-wrapper-big"
+              >
+                <div
+                  className="usage-progress-bar-container"
+                >
+                  <div
+                    className="usage-progress-bar-fill"
+                    style={
+                      {
+                        "backgroundColor": "#1AAA55",
+                        "width": "0%",
+                      }
+                    }
+                  />
+                </div>
+                <div
+                  className="usage-progress-text-bottom"
+                >
+                  <div
+                    style={
+                      {
+                        "color": "#71717A",
+                        "fontWeight": "400",
+                      }
+                    }
+                  >
+                    3TIME_HOUR_ABBR
+                     
+                    USAGE_REMAINING
+                  </div>
+                  <div
+                    style={
+                      {
+                        "color": "#52525B",
+                      }
+                    }
+                  >
+                    0 USAGE_USED_OF 3TIME_HOUR_ABBR
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="usage-box-inner-small"
           >
             <div
               className="usage-check-content"
@@ -428,13 +494,79 @@ exports[`<Status /> interactions should show user's radius usage 1`] = `
       <p>
         DAILY_USAGE_OVERVIEW_DESCRIPTION
       </p>
-      <div>
+      <div
+        style={
+          {
+            "width": "100%",
+          }
+        }
+      >
         <div
           className="usage-checks-container"
         >
           <div
-            className="usage-box usage-box-inner"
-            key="Max-Daily-Session"
+            className="usage-box-inner-big"
+          >
+            <div
+              className="usage-check-content"
+            >
+              <div
+                className="usage-check-header"
+              >
+                <img
+                  alt="USAGE_TIME Icon"
+                  src="/assets/default/timerIconGreen.svg"
+                />
+                <div>
+                  USAGE_TIME
+                </div>
+              </div>
+              <div
+                className="usage-progress-wrapper-big"
+              >
+                <div
+                  className="usage-progress-bar-container"
+                >
+                  <div
+                    className="usage-progress-bar-fill"
+                    style={
+                      {
+                        "backgroundColor": "#1AAA55",
+                        "width": "0%",
+                      }
+                    }
+                  />
+                </div>
+                <div
+                  className="usage-progress-text-bottom"
+                >
+                  <div
+                    style={
+                      {
+                        "color": "#71717A",
+                        "fontWeight": "400",
+                      }
+                    }
+                  >
+                    3TIME_HOUR_ABBR
+                     
+                    USAGE_REMAINING
+                  </div>
+                  <div
+                    style={
+                      {
+                        "color": "#52525B",
+                      }
+                    }
+                  >
+                    0 USAGE_USED_OF 3TIME_HOUR_ABBR
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="usage-box-inner-small"
           >
             <div
               className="usage-check-content"
@@ -497,8 +629,68 @@ exports[`<Status /> interactions should show user's radius usage 1`] = `
             </div>
           </div>
           <div
-            className="usage-box usage-box-inner"
-            key="Max-Daily-Session-Traffic"
+            className="usage-box-inner-big"
+          >
+            <div
+              className="usage-check-content"
+            >
+              <div
+                className="usage-check-header"
+              >
+                <img
+                  alt="USAGE_DATA Icon"
+                  src="/assets/default/dataIconGreen.svg"
+                />
+                <div>
+                  USAGE_DATA
+                </div>
+              </div>
+              <div
+                className="usage-progress-wrapper-big"
+              >
+                <div
+                  className="usage-progress-bar-container"
+                >
+                  <div
+                    className="usage-progress-bar-fill"
+                    style={
+                      {
+                        "backgroundColor": "#1AAA55",
+                        "width": "0%",
+                      }
+                    }
+                  />
+                </div>
+                <div
+                  className="usage-progress-text-bottom"
+                >
+                  <div
+                    style={
+                      {
+                        "color": "#71717A",
+                        "fontWeight": "400",
+                      }
+                    }
+                  >
+                    3 GB
+                     
+                    USAGE_REMAINING
+                  </div>
+                  <div
+                    style={
+                      {
+                        "color": "#52525B",
+                      }
+                    }
+                  >
+                    0 USAGE_USED_OF 3 GB
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="usage-box-inner-small"
           >
             <div
               className="usage-check-content"
@@ -751,7 +943,13 @@ exports[`<Status /> interactions subscriptions: should hide checks and show upgr
          
         Premium
       </h3>
-      <div>
+      <div
+        style={
+          {
+            "width": "100%",
+          }
+        }
+      >
         <div
           className="usage-checks-container"
         />
@@ -944,13 +1142,79 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
          
         Premium
       </h3>
-      <div>
+      <div
+        style={
+          {
+            "width": "100%",
+          }
+        }
+      >
         <div
           className="usage-checks-container"
         >
           <div
-            className="usage-box usage-box-inner"
-            key="Max-Daily-Session"
+            className="usage-box-inner-big"
+          >
+            <div
+              className="usage-check-content"
+            >
+              <div
+                className="usage-check-header"
+              >
+                <img
+                  alt="USAGE_TIME Icon"
+                  src="/assets/default/timerIconRed.svg"
+                />
+                <div>
+                  USAGE_TIME
+                </div>
+              </div>
+              <div
+                className="usage-progress-wrapper-big"
+              >
+                <div
+                  className="usage-progress-bar-container"
+                >
+                  <div
+                    className="usage-progress-bar-fill"
+                    style={
+                      {
+                        "backgroundColor": "#DB3B21",
+                        "width": "99.07407407407408%",
+                      }
+                    }
+                  />
+                </div>
+                <div
+                  className="usage-progress-text-bottom"
+                >
+                  <div
+                    style={
+                      {
+                        "color": "#71717A",
+                        "fontWeight": "400",
+                      }
+                    }
+                  >
+                    1TIME_MINUTE_ABBR
+                     
+                    USAGE_REMAINING
+                  </div>
+                  <div
+                    style={
+                      {
+                        "color": "#52525B",
+                      }
+                    }
+                  >
+                    2TIME_HOUR_ABBR 58TIME_MINUTE_ABBR USAGE_USED_OF 3TIME_HOUR_ABBR
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="usage-box-inner-small"
           >
             <div
               className="usage-check-content"
@@ -1013,8 +1277,68 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
             </div>
           </div>
           <div
-            className="usage-box usage-box-inner"
-            key="Max-Daily-Session-Traffic"
+            className="usage-box-inner-big"
+          >
+            <div
+              className="usage-check-content"
+            >
+              <div
+                className="usage-check-header"
+              >
+                <img
+                  alt="USAGE_DATA Icon"
+                  src="/assets/default/dataIconRed.svg"
+                />
+                <div>
+                  USAGE_DATA
+                </div>
+              </div>
+              <div
+                className="usage-progress-wrapper-big"
+              >
+                <div
+                  className="usage-progress-bar-container"
+                >
+                  <div
+                    className="usage-progress-bar-fill"
+                    style={
+                      {
+                        "backgroundColor": "#DB3B21",
+                        "width": "100%",
+                      }
+                    }
+                  />
+                </div>
+                <div
+                  className="usage-progress-text-bottom"
+                >
+                  <div
+                    style={
+                      {
+                        "color": "#71717A",
+                        "fontWeight": "400",
+                      }
+                    }
+                  >
+                    0
+                     
+                    USAGE_REMAINING
+                  </div>
+                  <div
+                    style={
+                      {
+                        "color": "#52525B",
+                      }
+                    }
+                  >
+                    3 GB USAGE_USED_OF 3 GB
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="usage-box-inner-small"
           >
             <div
               className="usage-check-content"
@@ -1348,13 +1672,79 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
          
         Premium
       </h3>
-      <div>
+      <div
+        style={
+          {
+            "width": "100%",
+          }
+        }
+      >
         <div
           className="usage-checks-container"
         >
           <div
-            className="usage-box usage-box-inner"
-            key="Max-Daily-Session"
+            className="usage-box-inner-big"
+          >
+            <div
+              className="usage-check-content"
+            >
+              <div
+                className="usage-check-header"
+              >
+                <img
+                  alt="USAGE_TIME Icon"
+                  src="/assets/default/timerIconRed.svg"
+                />
+                <div>
+                  USAGE_TIME
+                </div>
+              </div>
+              <div
+                className="usage-progress-wrapper-big"
+              >
+                <div
+                  className="usage-progress-bar-container"
+                >
+                  <div
+                    className="usage-progress-bar-fill"
+                    style={
+                      {
+                        "backgroundColor": "#DB3B21",
+                        "width": "99.07407407407408%",
+                      }
+                    }
+                  />
+                </div>
+                <div
+                  className="usage-progress-text-bottom"
+                >
+                  <div
+                    style={
+                      {
+                        "color": "#71717A",
+                        "fontWeight": "400",
+                      }
+                    }
+                  >
+                    1TIME_MINUTE_ABBR
+                     
+                    USAGE_REMAINING
+                  </div>
+                  <div
+                    style={
+                      {
+                        "color": "#52525B",
+                      }
+                    }
+                  >
+                    2TIME_HOUR_ABBR 58TIME_MINUTE_ABBR USAGE_USED_OF 3TIME_HOUR_ABBR
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="usage-box-inner-small"
           >
             <div
               className="usage-check-content"
@@ -1417,8 +1807,68 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
             </div>
           </div>
           <div
-            className="usage-box usage-box-inner"
-            key="Max-Daily-Session-Traffic"
+            className="usage-box-inner-big"
+          >
+            <div
+              className="usage-check-content"
+            >
+              <div
+                className="usage-check-header"
+              >
+                <img
+                  alt="USAGE_DATA Icon"
+                  src="/assets/default/dataIconRed.svg"
+                />
+                <div>
+                  USAGE_DATA
+                </div>
+              </div>
+              <div
+                className="usage-progress-wrapper-big"
+              >
+                <div
+                  className="usage-progress-bar-container"
+                >
+                  <div
+                    className="usage-progress-bar-fill"
+                    style={
+                      {
+                        "backgroundColor": "#DB3B21",
+                        "width": "100%",
+                      }
+                    }
+                  />
+                </div>
+                <div
+                  className="usage-progress-text-bottom"
+                >
+                  <div
+                    style={
+                      {
+                        "color": "#71717A",
+                        "fontWeight": "400",
+                      }
+                    }
+                  >
+                    0
+                     
+                    USAGE_REMAINING
+                  </div>
+                  <div
+                    style={
+                      {
+                        "color": "#52525B",
+                      }
+                    }
+                  >
+                    3 GB USAGE_USED_OF 3 GB
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="usage-box-inner-small"
           >
             <div
               className="usage-check-content"
@@ -1670,13 +2120,79 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
          
         Free
       </h3>
-      <div>
+      <div
+        style={
+          {
+            "width": "100%",
+          }
+        }
+      >
         <div
           className="usage-checks-container"
         >
           <div
-            className="usage-box usage-box-inner"
-            key="Max-Daily-Session"
+            className="usage-box-inner-big"
+          >
+            <div
+              className="usage-check-content"
+            >
+              <div
+                className="usage-check-header"
+              >
+                <img
+                  alt="USAGE_TIME Icon"
+                  src="/assets/default/timerIconRed.svg"
+                />
+                <div>
+                  USAGE_TIME
+                </div>
+              </div>
+              <div
+                className="usage-progress-wrapper-big"
+              >
+                <div
+                  className="usage-progress-bar-container"
+                >
+                  <div
+                    className="usage-progress-bar-fill"
+                    style={
+                      {
+                        "backgroundColor": "#DB3B21",
+                        "width": "99.07407407407408%",
+                      }
+                    }
+                  />
+                </div>
+                <div
+                  className="usage-progress-text-bottom"
+                >
+                  <div
+                    style={
+                      {
+                        "color": "#71717A",
+                        "fontWeight": "400",
+                      }
+                    }
+                  >
+                    1TIME_MINUTE_ABBR
+                     
+                    USAGE_REMAINING
+                  </div>
+                  <div
+                    style={
+                      {
+                        "color": "#52525B",
+                      }
+                    }
+                  >
+                    2TIME_HOUR_ABBR 58TIME_MINUTE_ABBR USAGE_USED_OF 3TIME_HOUR_ABBR
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="usage-box-inner-small"
           >
             <div
               className="usage-check-content"
@@ -1739,8 +2255,68 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
             </div>
           </div>
           <div
-            className="usage-box usage-box-inner"
-            key="Max-Daily-Session-Traffic"
+            className="usage-box-inner-big"
+          >
+            <div
+              className="usage-check-content"
+            >
+              <div
+                className="usage-check-header"
+              >
+                <img
+                  alt="USAGE_DATA Icon"
+                  src="/assets/default/dataIconRed.svg"
+                />
+                <div>
+                  USAGE_DATA
+                </div>
+              </div>
+              <div
+                className="usage-progress-wrapper-big"
+              >
+                <div
+                  className="usage-progress-bar-container"
+                >
+                  <div
+                    className="usage-progress-bar-fill"
+                    style={
+                      {
+                        "backgroundColor": "#DB3B21",
+                        "width": "100%",
+                      }
+                    }
+                  />
+                </div>
+                <div
+                  className="usage-progress-text-bottom"
+                >
+                  <div
+                    style={
+                      {
+                        "color": "#71717A",
+                        "fontWeight": "400",
+                      }
+                    }
+                  >
+                    0
+                     
+                    USAGE_REMAINING
+                  </div>
+                  <div
+                    style={
+                      {
+                        "color": "#52525B",
+                      }
+                    }
+                  >
+                    3 GB USAGE_USED_OF 3 GB
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="usage-box-inner-small"
           >
             <div
               className="usage-check-content"
@@ -2074,13 +2650,79 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
          
         Free
       </h3>
-      <div>
+      <div
+        style={
+          {
+            "width": "100%",
+          }
+        }
+      >
         <div
           className="usage-checks-container"
         >
           <div
-            className="usage-box usage-box-inner"
-            key="Max-Daily-Session"
+            className="usage-box-inner-big"
+          >
+            <div
+              className="usage-check-content"
+            >
+              <div
+                className="usage-check-header"
+              >
+                <img
+                  alt="USAGE_TIME Icon"
+                  src="/assets/default/timerIconRed.svg"
+                />
+                <div>
+                  USAGE_TIME
+                </div>
+              </div>
+              <div
+                className="usage-progress-wrapper-big"
+              >
+                <div
+                  className="usage-progress-bar-container"
+                >
+                  <div
+                    className="usage-progress-bar-fill"
+                    style={
+                      {
+                        "backgroundColor": "#DB3B21",
+                        "width": "99.07407407407408%",
+                      }
+                    }
+                  />
+                </div>
+                <div
+                  className="usage-progress-text-bottom"
+                >
+                  <div
+                    style={
+                      {
+                        "color": "#71717A",
+                        "fontWeight": "400",
+                      }
+                    }
+                  >
+                    1TIME_MINUTE_ABBR
+                     
+                    USAGE_REMAINING
+                  </div>
+                  <div
+                    style={
+                      {
+                        "color": "#52525B",
+                      }
+                    }
+                  >
+                    2TIME_HOUR_ABBR 58TIME_MINUTE_ABBR USAGE_USED_OF 3TIME_HOUR_ABBR
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="usage-box-inner-small"
           >
             <div
               className="usage-check-content"
@@ -2143,8 +2785,68 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
             </div>
           </div>
           <div
-            className="usage-box usage-box-inner"
-            key="Max-Daily-Session-Traffic"
+            className="usage-box-inner-big"
+          >
+            <div
+              className="usage-check-content"
+            >
+              <div
+                className="usage-check-header"
+              >
+                <img
+                  alt="USAGE_DATA Icon"
+                  src="/assets/default/dataIconRed.svg"
+                />
+                <div>
+                  USAGE_DATA
+                </div>
+              </div>
+              <div
+                className="usage-progress-wrapper-big"
+              >
+                <div
+                  className="usage-progress-bar-container"
+                >
+                  <div
+                    className="usage-progress-bar-fill"
+                    style={
+                      {
+                        "backgroundColor": "#DB3B21",
+                        "width": "100%",
+                      }
+                    }
+                  />
+                </div>
+                <div
+                  className="usage-progress-text-bottom"
+                >
+                  <div
+                    style={
+                      {
+                        "color": "#71717A",
+                        "fontWeight": "400",
+                      }
+                    }
+                  >
+                    0
+                     
+                    USAGE_REMAINING
+                  </div>
+                  <div
+                    style={
+                      {
+                        "color": "#52525B",
+                      }
+                    }
+                  >
+                    3 GB USAGE_USED_OF 3 GB
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="usage-box-inner-small"
           >
             <div
               className="usage-check-content"
@@ -2395,7 +3097,13 @@ exports[`<Status /> rendering should render correctly 1`] = `
         full={false}
         small={true}
       />
-      <div>
+      <div
+        style={
+          {
+            "width": "100%",
+          }
+        }
+      >
         <div
           className="usage-checks-container"
         />
@@ -2570,7 +3278,13 @@ exports[`<Status /> rendering with placeholder translation tags should render tr
         full={false}
         small={true}
       />
-      <div>
+      <div
+        style={
+          {
+            "width": "100%",
+          }
+        }
+      >
         <div
           className="usage-checks-container"
         />
