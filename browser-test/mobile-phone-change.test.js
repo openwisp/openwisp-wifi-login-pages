@@ -46,11 +46,11 @@ describe("Selenium tests for <MobilePhoneChange />", () => {
   it("should test mobile phone change flow", async () => {
     const data = initialData().mobileVerificationTestUser;
     await driver.get(urls.verificationLogin(data.organization));
+    await fillPhoneField(driver, data);
     const password = await getElementByCss(driver, "input#password");
     await password.sendKeys(data.password);
-    await fillPhoneField(driver, data);
     let submitBtn = await getElementByCss(driver, "input[type=submit]");
-    submitBtn.click();
+    await submitBtn.click();
     let successToastDiv = await getElementByCss(driver, successToastSelector);
     await driver.wait(until.elementIsVisible(successToastDiv));
     expect(await driver.getCurrentUrl()).toEqual(
@@ -60,10 +60,10 @@ describe("Selenium tests for <MobilePhoneChange />", () => {
     let codeInput = await getElementByCss(driver, "input#code");
     await driver.wait(until.elementIsVisible(codeInput));
     const token = getPhoneToken();
-    codeInput.sendKeys(token);
+    await codeInput.sendKeys(token);
     submitBtn = await getElementByCss(driver, "button[type='submit']");
     await driver.wait(until.elementIsVisible(submitBtn));
-    submitBtn.click();
+    await submitBtn.click();
     await getElementByCss(driver, "div#status");
     let activeSessionTr = await getElementByCss(
       driver,
@@ -81,14 +81,14 @@ describe("Selenium tests for <MobilePhoneChange />", () => {
       "input[name='phone_number']",
     );
     await driver.wait(until.elementIsVisible(phoneField));
-    phoneField.click();
+    await phoneField.click();
     await driver.executeScript((el) => el.select(), phoneField);
     await phoneField.sendKeys(Key.BACK_SPACE);
     await driver.sleep(250);
     await phoneField.sendKeys(data.changePhoneNumber);
     submitBtn = await getElementByCss(driver, "input[type='submit']");
     await driver.wait(until.elementIsVisible(submitBtn));
-    submitBtn.click();
+    await submitBtn.click();
     successToastDiv = await getElementByCss(driver, "div[role=alert]");
     await driver.wait(until.elementIsVisible(successToastDiv));
     expect(await successToastDiv.getText()).toEqual(
@@ -97,9 +97,9 @@ describe("Selenium tests for <MobilePhoneChange />", () => {
     const newToken = getPhoneToken();
     codeInput = await getElementByCss(driver, "input#code");
     await driver.wait(until.elementIsVisible(codeInput));
-    codeInput.sendKeys(newToken);
+    await codeInput.sendKeys(newToken);
     submitBtn = await getElementByCss(driver, "button[type='submit']");
-    submitBtn.click();
+    await submitBtn.click();
     await driver.wait(until.urlContains("status"), 5000);
     await getElementByCss(driver, "div#status");
     const emailElement = await getElementByCss(

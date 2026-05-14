@@ -86,7 +86,10 @@ const mountComponent = function (props) {
 
   return mount(
     <Provider store={mockedStore}>
-      <Router history={historyMock}>
+      <Router
+        history={historyMock}
+        future={{v7_startTransition: true, v7_relativeSplatPath: true}}
+      >
         <Routes>
           <Route path="/test-org-2/status" element={<StatusMock />} />
           <Route path="" element={<MobilePhoneChange {...props} />} />

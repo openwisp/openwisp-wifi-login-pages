@@ -86,7 +86,7 @@ describe("<Header /> rendering", () => {
     props = createTestProps(links);
     const component = renderer
       .create(
-        <Router>
+        <Router future={{v7_startTransition: true, v7_relativeSplatPath: true}}>
           <Header {...props} />
         </Router>,
       )
@@ -131,7 +131,7 @@ describe("<Header /> rendering", () => {
   it("should render with links", () => {
     const component = renderer
       .create(
-        <Router>
+        <Router future={{v7_startTransition: true, v7_relativeSplatPath: true}}>
           <Header {...props} />
         </Router>,
       )
