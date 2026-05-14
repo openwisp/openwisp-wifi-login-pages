@@ -4,7 +4,9 @@ import SessionsTable from "./sessions-table";
 
 describe("<SessionsTable /> rendering and interactions", () => {
   let props;
-  const sessionData = {
+  let sessionData;
+
+  const buildSessionData = (overrides = {}) => ({
     session_id: 1,
     start_time: "2020-09-08T00:22:28-04:00",
     stop_time: null,
@@ -12,9 +14,11 @@ describe("<SessionsTable /> rendering and interactions", () => {
     output_octets: 1000,
     session_time: 3600,
     calling_station_id: "00:11:22:33:44:55",
-  };
+    ...overrides,
+  });
 
   beforeEach(() => {
+    sessionData = buildSessionData();
     props = {
       activeSessions: [sessionData],
       pastSessions: [],
@@ -24,6 +28,14 @@ describe("<SessionsTable /> rendering and interactions", () => {
       screenWidth: 1024,
       handleSessionLogout: jest.fn(),
     };
+  });
+
+  it("should render correctly with no active or past sessions", () => {
+    props.activeSessions = [];
+    props.pastSessions = [];
+    const wrapper = shallow(<SessionsTable {...props} />);
+    expect(wrapper.exists()).toBe(true);
+    expect(wrapper.find("tbody tr").length).toBe(0);
   });
 
   it("should render large table when screenWidth > 656", () => {
@@ -53,15 +65,26 @@ describe("<SessionsTable /> rendering and interactions", () => {
     expect(wrapper.find(".small-table").exists()).toBe(false);
   });
 
+  it("should not render logout button when there is only one active session", () => {
+    const wrapper = shallow(<SessionsTable {...props} />);
+    const logoutBtn = wrapper.find(".session-logout");
+    expect(logoutBtn.exists()).toBe(false);
+  });
+
+  it("should not render logout button when logout_by_session is false", () => {
+    props.activeSessions.push({...sessionData, session_id: 2});
+    props.captivePortalLogoutForm.logout_by_session = false;
+    const wrapper = shallow(<SessionsTable {...props} />);
+    const logoutBtn = wrapper.find(".session-logout");
+    expect(logoutBtn.exists()).toBe(false);
+  });
+
   it("should call handleSessionLogout when logout button is clicked", () => {
     props.activeSessions.push({...sessionData, session_id: 2});
-
     const wrapper = shallow(<SessionsTable {...props} />);
     const logoutBtn = wrapper.find(".session-logout").first();
-
     expect(logoutBtn.exists()).toBe(true);
     logoutBtn.simulate("click");
-
     expect(props.handleSessionLogout).toHaveBeenCalledWith(sessionData);
   });
 
@@ -84,11 +107,7 @@ describe("<SessionsTable /> rendering and interactions", () => {
     props.screenWidth = 600;
     props.statusPage.accounting_swap_octets = true;
     const wrapper = shallow(<SessionsTable {...props} />);
-
-    // In the small table, rows are inside a tbody. We need the 4th and 5th tr inside it.
     const rows = wrapper.find("tbody").first().find("tr");
-
-    // download row (index 3) and upload row (index 4)
     expect(rows.at(3).find("td").text()).toBe("1 kB");
     expect(rows.at(4).find("td").text()).toBe("2 kB");
   });
@@ -109,7 +128,6 @@ describe("<SessionsTable /> rendering and interactions", () => {
     let wrapper = shallow(<SessionsTable {...props} />);
     expect(wrapper.find(".large-table").exists()).toBe(true);
 
-    // Verify plural duration formatting
     const durationCell = wrapper.find("tbody tr").at(1).find("td").at(2);
     expect(durationCell.text()).toBe("2 hrs 2 mins 2 secs ");
 
@@ -133,14 +151,11 @@ describe("<SessionsTable /> rendering and interactions", () => {
   it("should format duration correctly with single minutes and seconds", () => {
     props.activeSessions[0].session_time = 3661;
     const wrapper = shallow(<SessionsTable {...props} />);
-
-    // Check the actual text output of the large table's duration cell
     const durationCell = wrapper.find("tbody tr").first().find("td").at(2);
     expect(durationCell.text()).toBe("1 hr 1 min 1 sec ");
   });
 
   it("should handle 0 seconds and invalid inputs correctly", () => {
-    // This covers the new bug fix for 0 seconds
     props.activeSessions[0].session_time = 0;
     let wrapper = shallow(<SessionsTable {...props} />);
     expect(wrapper.find("tbody tr").first().find("td").at(2).text()).toBe(
