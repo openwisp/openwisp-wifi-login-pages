@@ -586,7 +586,10 @@ describe("Test <OrganizationWrapper /> routes", () => {
 
   const mountComponent = async (passedProps, initialEntries) => {
     const component = await mount(
-      <MemoryRouter initialEntries={initialEntries}>
+      <MemoryRouter
+        initialEntries={initialEntries}
+        future={{v7_startTransition: true, v7_relativeSplatPath: true}}
+      >
         <Provider store={mockedStore}>
           <OrganizationWrapper {...passedProps} />
         </Provider>

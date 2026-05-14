@@ -16,6 +16,8 @@ import {toast} from "react-toastify";
 import InfinteScroll from "react-infinite-scroll-component";
 import prettyBytes from "pretty-bytes";
 import {t, gettext} from "ttag";
+import {filesize} from "filesize";
+import {timeFromSeconds} from "duration-formatter";
 import getLanguageHeaders from "../../utils/get-language-headers";
 import {
   getUserRadiusSessionsUrl,
@@ -70,6 +72,7 @@ export default class Status extends React.Component {
       showUpgradeBtn: true,
     };
     this.repeatLogin = false;
+    this.isComponentMounted = true;
     this.getUserRadiusSessions = this.getUserRadiusSessions.bind(this);
     this.getUserRadiusUsage = this.getUserRadiusUsage.bind(this);
     this.getPlansSuccessCallback = this.getPlansSuccessCallback.bind(this);
@@ -78,6 +81,16 @@ export default class Status extends React.Component {
     this.fetchMoreSessions = this.fetchMoreSessions.bind(this);
     this.updateScreenWidth = this.updateScreenWidth.bind(this);
     this.updateSpinner = this.updateSpinner.bind(this);
+  }
+
+  /**
+   * Safely sets state only if component is still mounted.
+   * Prevents "setState on unmounted component" warnings.
+   */
+  setStateSafe(state, callback) {
+    if (this.isComponentMounted) {
+      this.setState(state, callback);
+    }
   }
 
   async componentDidMount() {
@@ -132,8 +145,8 @@ export default class Status extends React.Component {
         language,
       );
 
-      // stop here if token is invalid
-      if (isValid === false) {
+      // stop here if token is invalid or component unmounted
+      if (isValid === false || !this.isComponentMounted) {
         setLoading(false);
         return;
       }
@@ -237,12 +250,15 @@ export default class Status extends React.Component {
   }
 
   componentWillUnmount() {
+    this.isComponentMounted = false;
     const {statusPage} = this.props;
     clearInterval(this.intervalId);
     if (statusPage.radius_usage_enabled) {
       clearInterval(this.usageIntervalId);
     }
+    clearTimeout(this.usageRetryTimeoutId);
     window.removeEventListener("resize", this.updateScreenWidth);
+    window.removeEventListener("message", this.handlePostMessage);
   }
 
   async finalOperations() {
@@ -283,6 +299,10 @@ export default class Status extends React.Component {
       setLoading(false);
       // if verification is needed, stop here
     } else {
+      return;
+    }
+
+    if (!this.isComponentMounted) {
       return;
     }
 
@@ -335,8 +355,11 @@ export default class Status extends React.Component {
       }
       options.hasMoreSessions =
         "link" in headers && headers.link.includes("next");
-      this.setState(options);
+      this.setStateSafe(options);
     } catch (error) {
+      if (!this.isComponentMounted) {
+        return;
+      }
       // logout only if unauthorized or forbidden
       if (
         error.response &&
@@ -405,13 +428,16 @@ export default class Status extends React.Component {
           }
         }
       }
-      this.setState(options);
+      this.setStateSafe(options);
     } catch (error) {
+      if (!this.isComponentMounted) {
+        return;
+      }
       if (error.response) {
         // Do not retry for client side errors
         if (error.response.status >= 400 && error.response.status < 500) {
           // Logout only if unauthorized or forbidden
-          this.setState({showRadiusUsage: false});
+          this.setStateSafe({showRadiusUsage: false});
           if (error.response.status === 401 || error.response.status === 403) {
             logout(cookies, orgSlug);
             toast.error(t`ERR_OCCUR`, {
@@ -424,12 +450,12 @@ export default class Status extends React.Component {
         }
       }
       logError(error, t`ERR_OCCUR`);
-      setTimeout(this.getUserRadiusUsage, 10000);
+      this.usageRetryTimeoutId = setTimeout(this.getUserRadiusUsage, 10000);
     }
   }
 
   getPlansSuccessCallback(plans) {
-    this.setState({
+    this.setStateSafe({
       upgradePlans: plans.filter((plan) => plan.price !== "0.00"),
     });
   }
@@ -554,7 +580,7 @@ export default class Status extends React.Component {
     if (sessionsToLogout.length > 0) {
       if (this.logoutFormRef && this.logoutFormRef.current) {
         if (!repeatLogin) {
-          this.setState({loggedOut: true});
+          this.setStateSafe({loggedOut: true});
         } else {
           this.repeatLogin = true;
         }
@@ -747,7 +773,7 @@ export default class Status extends React.Component {
         /* disable ttag */
         toast.info(gettext(message), {toastId: mainToastId});
         /* enable ttag */
-        this.setState(
+        this.setStateSafe(
           {
             warningMessage: warningMessage || "USAGE_LIMIT_EXHAUSTED_TXT",
             ...(showUpgradeBtn !== undefined && {showUpgradeBtn}),
@@ -768,7 +794,7 @@ export default class Status extends React.Component {
           toastId: mainToastId,
         });
         /* enable ttag */
-        this.setState({loggedOut: true}, () => {
+        this.setStateSafe({loggedOut: true}, () => {
           // Logout after state update and a small delay
           // The delay ensures the component has sufficient time to unmount
           // and complete any ongoing XHR requests. Without this, erroring
@@ -843,30 +869,32 @@ export default class Status extends React.Component {
   };
 
   updateScreenWidth = () => {
-    this.setState({screenWidth: window.innerWidth});
+    this.setStateSafe({screenWidth: window.innerWidth});
   };
 
   updateSpinner = () => {
     const {activeSessions, pastSessions} = this.state;
-    this.setState({loadSpinner: activeSessions.length || pastSessions.length});
+    this.setStateSafe({
+      loadSpinner: activeSessions.length || pastSessions.length,
+    });
   };
 
   toggleModal = () => {
     const {modalActive} = this.state;
-    this.setState({modalActive: !modalActive});
+    this.setStateSafe({modalActive: !modalActive});
   };
 
   toggleUpgradePlanModal = async () => {
     const {orgSlug, language} = this.props;
     const {upgradePlanModalActive, upgradePlans} = this.state;
-    this.setState({upgradePlanModalActive: !upgradePlanModalActive});
+    this.setStateSafe({upgradePlanModalActive: !upgradePlanModalActive});
     if (!upgradePlans.length) {
       await getPlans(orgSlug, language, this.getPlansSuccessCallback);
     }
   };
 
   async handleSessionLogout(session) {
-    this.setState({
+    this.setStateSafe({
       sessionsToLogout: [session],
       pastSessions: [],
       activeSessions: [],
@@ -937,18 +965,8 @@ export default class Status extends React.Component {
             : this.getDateTimeFormat(language, time_option, session.stop_time)}
         </td>
         <td>{this.getDuration(session.session_time)}</td>
-        <td>
-          {prettyBytes(downloadOctets, {
-            maximumFractionDigits: 0,
-            space: true,
-          })}
-        </td>
-        <td>
-          {prettyBytes(uploadOctets, {
-            maximumFractionDigits: 0,
-            space: true,
-          })}
-        </td>
+        <td>{filesize(downloadOctets, {round: 0})}</td>
+        <td>{filesize(uploadOctets, {round: 0})}</td>
         <td>
           {session.calling_station_id}
           {session.stop_time == null && showLogoutButton && (
@@ -1020,24 +1038,14 @@ export default class Status extends React.Component {
           className={session.stop_time === null ? "active-session" : ""}
         >
           <th>{session_info.header.download}:</th>
-          <td>
-            {prettyBytes(downloadOctets, {
-              maximumFractionDigits: 0,
-              space: true,
-            })}
-          </td>
+          <td>{filesize(downloadOctets, {round: 0})}</td>
         </tr>
         <tr
           key={`${session.session_id}upload`}
           className={session.stop_time === null ? "active-session" : ""}
         >
           <th>{session_info.header.upload}:</th>
-          <td>
-            {prettyBytes(uploadOctets, {
-              maximumFractionDigits: 0,
-              space: true,
-            })}
-          </td>
+          <td>{filesize(uploadOctets, {round: 0})}</td>
         </tr>
         <tr
           key={`${session.session_id}device_address`}
@@ -1195,6 +1203,9 @@ export default class Status extends React.Component {
         }
         return t`TIME_LESS_THAN_MINUTE`;
       }
+        return intValue === 0 ? 0 : filesize(intValue, {round: 2});
+      case "seconds":
+        return timeFromSeconds(intValue);
       default:
         return `${remaining}`;
     }

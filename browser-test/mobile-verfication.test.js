@@ -44,35 +44,35 @@ describe("Selenium tests for <MobileVerification />", () => {
   it("should test mobile verification flow (with one failed attempt and successful attempt)", async () => {
     const data = initialData().mobileVerificationTestUser;
     await driver.get(urls.verificationLogin(data.organization));
-    const password = await getElementByCss(driver, "input#password");
-    password.sendKeys(data.password);
     await fillPhoneField(driver, data);
+    const password = await getElementByCss(driver, "input#password");
+    await password.sendKeys(data.password);
     let submitBtn = await getElementByCss(driver, "input[type=submit]");
-    submitBtn.click();
+    await submitBtn.click();
     const successToastDiv = await getElementByCss(driver, successToastSelector);
     await driver.wait(until.elementIsVisible(successToastDiv));
     expect(await driver.getCurrentUrl()).toEqual(
       urls.mobileVerification(data.organization),
     );
     expect(await successToastDiv.getText()).toEqual("Login successful");
-    driver.navigate().refresh();
+    await driver.navigate().refresh();
     let codeInput = await getElementByCss(driver, "input#code");
     await driver.wait(until.elementIsVisible(codeInput));
-    codeInput.sendKeys("123456");
+    await codeInput.sendKeys("123456");
     submitBtn = await getElementByCss(driver, "button[type='submit']");
     await driver.wait(until.elementIsVisible(submitBtn));
-    submitBtn.click();
+    await submitBtn.click();
     const failureToastDiv = await getElementByCss(driver, "div[role=alert]");
     await driver.wait(until.elementIsVisible(failureToastDiv));
     expect(await failureToastDiv.getText()).toEqual("Invalid code.");
-    driver.navigate().refresh();
+    await driver.navigate().refresh();
     const token = getPhoneToken();
     codeInput = await getElementByCss(driver, "input#code");
-    codeInput.clear();
-    codeInput.sendKeys(token);
+    await codeInput.clear();
+    await codeInput.sendKeys(token);
     submitBtn = await getElementByCss(driver, "button[type='submit']");
     await driver.wait(until.elementIsVisible(submitBtn));
-    submitBtn.click();
+    await submitBtn.click();
     await getElementByCss(driver, "div#status");
     const emailElement = await getElementByCss(
       driver,

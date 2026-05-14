@@ -1,7 +1,9 @@
 const fs = require("fs");
 const path = require("path");
 const yaml = require("js-yaml");
-const {prompt} = require("inquirer");
+const {createPromptModule} = require("inquirer");
+
+const prompt = createPromptModule();
 const _ = require("lodash");
 const {detailedDiff} = require("deep-object-diff");
 const organizationExists = require("../internals/generators/utils/organizationExists");
