@@ -14,10 +14,8 @@ import {Cookies} from "react-cookie";
 import {Link} from "react-router-dom";
 import {toast} from "react-toastify";
 import InfinteScroll from "react-infinite-scroll-component";
-import prettyBytes from "pretty-bytes";
 import {t, gettext} from "ttag";
 import {filesize} from "filesize";
-import {timeFromSeconds} from "duration-formatter";
 import getLanguageHeaders from "../../utils/get-language-headers";
 import {
   getUserRadiusSessionsUrl,
@@ -1183,9 +1181,7 @@ export default class Status extends React.Component {
     const remaining = Math.max(0, intValue - intResult);
     switch (type) {
       case "bytes":
-        return remaining === 0
-          ? t`0`
-          : `${prettyBytes(remaining, {space: true, maximumFractionDigits: 2})}`;
+        return remaining === 0 ? t`0` : `${filesize(remaining, {round: 2})}`;
       case "seconds": {
         if (remaining === 0) {
           return t`0`;
@@ -1203,9 +1199,6 @@ export default class Status extends React.Component {
         }
         return t`TIME_LESS_THAN_MINUTE`;
       }
-        return intValue === 0 ? 0 : filesize(intValue, {round: 2});
-      case "seconds":
-        return timeFromSeconds(intValue);
       default:
         return `${remaining}`;
     }
@@ -1239,14 +1232,8 @@ export default class Status extends React.Component {
 
     switch (type) {
       case "bytes": {
-        const usedFormatted =
-          used === 0
-            ? "0"
-            : prettyBytes(used, {space: true, maximumFractionDigits: 2});
-        const totalFormatted = prettyBytes(intValue, {
-          space: true,
-          maximumFractionDigits: 2,
-        });
+        const usedFormatted = used === 0 ? "0" : filesize(used, {round: 2});
+        const totalFormatted = filesize(intValue, {round: 2});
         return `${usedFormatted} ${t`USAGE_USED_OF`} ${totalFormatted}`;
       }
       case "seconds": {
@@ -1356,6 +1343,7 @@ export default class Status extends React.Component {
       </div>
     </div>
   );
+
   renderUsageCheckContentBig = (check, color, icon, label) => {
     const percentage = (check.result / check.value) * 100;
     return (
@@ -1375,7 +1363,7 @@ export default class Status extends React.Component {
             />
           </div>
           <div className="usage-progress-text-bottom">
-            <div style={{fontWeight:"400", color:"#71717A"}}>
+            <div style={{fontWeight: "400", color: "#71717A"}}>
               {this.getUserCheckFormattedValue(
                 check.value,
                 check.type,
@@ -1383,7 +1371,7 @@ export default class Status extends React.Component {
               )}{" "}
               {t`USAGE_REMAINING`}
             </div>
-            <div style={{color:"#52525B"}}>
+            <div style={{color: "#52525B"}}>
               {this.getUserCheckUsedValue(
                 check.value,
                 check.type,
