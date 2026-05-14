@@ -492,7 +492,6 @@ describe("<Login /> interactions", () => {
     expect(props.authenticate).toHaveBeenCalledWith(true);
     expect(props.setUserData).toHaveBeenCalledWith({
       ...testUserData,
-      key: testUserData.auth_token,
       mustLogin: true,
     });
   });
@@ -548,7 +547,6 @@ describe("<Login /> interactions", () => {
     expect(props.authenticate).toHaveBeenCalledWith(true);
     expect(props.setUserData).toHaveBeenCalledWith({
       ...data,
-      key: data.auth_token,
       mustLogin: true,
     });
   });
@@ -821,7 +819,6 @@ describe("<Login /> interactions", () => {
     });
     expect(props.setUserData).toHaveBeenCalledWith({
       ...userData,
-      key: userData.auth_token,
       mustLogin: true,
     });
   });
@@ -862,7 +859,6 @@ describe("<Login /> interactions", () => {
     expect(props.setUserData).toHaveBeenCalledWith({
       username: userData.username,
       auth_token: userData.auth_token,
-      key: userData.auth_token,
       is_active: true,
       radius_user_token: undefined,
       mustLogin: true,
@@ -913,7 +909,6 @@ describe("<Login /> interactions", () => {
       // Component transforms key -> auth_token
       expect(props.setUserData).toHaveBeenCalledWith({
         ...userData,
-        key: userData.auth_token,
         mustLogin: true,
       });
     });

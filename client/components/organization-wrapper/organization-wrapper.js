@@ -42,6 +42,10 @@ export default class OrganizationWrapper extends React.Component {
       configLoaded: false,
     };
     this.loadLanguage = this.loadLanguage.bind(this);
+    this.loadingContextValue = {
+      setLoading: this.setLoading,
+      getLoading: this.getLoading,
+    };
   }
 
   getLoading = () => {
@@ -49,10 +53,7 @@ export default class OrganizationWrapper extends React.Component {
     return loading;
   };
 
-  getLoadingContextValue = () => ({
-    setLoading: this.setLoading,
-    getLoading: this.getLoading,
-  });
+  getLoadingContextValue = () => this.loadingContextValue;
 
   async componentDidMount() {
     const {params, setOrganization, cookies} = this.props;

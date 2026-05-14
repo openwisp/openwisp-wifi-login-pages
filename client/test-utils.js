@@ -13,24 +13,8 @@ const routerFutureFlags = {
   v7_relativeSplatPath: true,
 };
 
-/**
- * Renders a component wrapped with MemoryRouter and v7 future flags
- * @param {React.ReactElement} component - Component to render
- * @param {Object} options - Render options
- * @param {string[]} options.initialEntries - Initial router entries (default: ["/"])
- * @param {Object} options.routerProps - Additional props for MemoryRouter
- * @returns {Object} - Render result from @testing-library/react
- */
-
-/**
- * Renders a component wrapped with Redux Provider and MemoryRouter with v7 future flags
- * @param {React.ReactElement} component - Component to render
- * @param {Object} options - Render options
- * @param {Object} options.store - Redux store (required)
- * @param {string[]} options.initialEntries - Initial router entries (default: ["/"])
- * @param {Object} options.routerProps - Additional props for MemoryRouter
- * @returns {Object} - Render result from @testing-library/react
- */
+// Removed unused JSDoc stubs for render helpers; file now only
+// provides `TestRouter` and `routerFutureFlags` for tests.
 
 /**
  * TestRouter component that wraps children with MemoryRouter and v7 future flags
