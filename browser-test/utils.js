@@ -6,6 +6,7 @@ const firefox = require("selenium-webdriver/firefox");
 
 const waitTime = 5000;
 const orgSlug = "default";
+export const baseUrl = "http://127.0.0.1:8080";
 
 export const executeCommand = (command, argv) => {
   const result = spawnSync(command, [argv]);
@@ -77,22 +78,20 @@ export const getPhoneToken = () => {
 };
 
 export const urls = {
-  registration: `http://127.0.0.1:8080/${orgSlug}/registration`,
-  registrationTos: `http://127.0.0.1:8080/${orgSlug}/registration/terms-and-conditions`,
-  registrationPrivacy: `http://127.0.0.1:8080/${orgSlug}/registration/privacy-policy`,
-  login: `http://127.0.0.1:8080/${orgSlug}/login`,
-  loginTos: `http://127.0.0.1:8080/${orgSlug}/login/terms-and-conditions`,
-  loginPrivacy: `http://127.0.0.1:8080/${orgSlug}/login/privacy-policy`,
-  status: `http://127.0.0.1:8080/${orgSlug}/status`,
-  passwordChange: `http://127.0.0.1:8080/${orgSlug}/change-password`,
-  passwordReset: `http://127.0.0.1:8080/${orgSlug}/password/reset`,
+  registration: `${baseUrl}/${orgSlug}/registration`,
+  registrationTos: `${baseUrl}/${orgSlug}/registration/terms-and-conditions`,
+  registrationPrivacy: `${baseUrl}/${orgSlug}/registration/privacy-policy`,
+  login: `${baseUrl}/${orgSlug}/login`,
+  loginTos: `${baseUrl}/${orgSlug}/login/terms-and-conditions`,
+  loginPrivacy: `${baseUrl}/${orgSlug}/login/privacy-policy`,
+  status: `${baseUrl}/${orgSlug}/status`,
+  passwordChange: `${baseUrl}/${orgSlug}/change-password`,
+  passwordReset: `${baseUrl}/${orgSlug}/password/reset`,
   passwordConfirm: (uid, token) =>
-    `http://127.0.0.1:8080/${orgSlug}/password/reset/confirm/${uid}/${token}`,
-  verificationLogin: (slug) => `http://127.0.0.1:8080/${slug}/login`,
-  mobileVerification: (slug) =>
-    `http://127.0.0.1:8080/${slug}/mobile-phone-verification`,
-  mobilePhoneChange: (slug) =>
-    `http://127.0.0.1:8080/${slug}/change-phone-number`,
+    `${baseUrl}/${orgSlug}/password/reset/confirm/${uid}/${token}`,
+  verificationLogin: (slug) => `${baseUrl}/${slug}/login`,
+  mobileVerification: (slug) => `${baseUrl}/${slug}/mobile-phone-verification`,
+  mobilePhoneChange: (slug) => `${baseUrl}/${slug}/change-phone-number`,
 };
 
 export const successToastSelector = ".Toastify__toast--success div[role=alert]";
