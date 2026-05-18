@@ -158,8 +158,11 @@ describe("<CompleteSignup />", () => {
     });
 
     await Promise.resolve();
+    wrapper.update();
 
     expect(errorToast).toHaveBeenCalled();
+    expect(wrapper.instance().state.errors.nonField).toBe("token expired");
+    expect(wrapper.find(".error.non-field .text").text()).toBe("token expired");
     expect(props.navigate).not.toHaveBeenCalled();
   });
 
@@ -360,16 +363,18 @@ describe("<CompleteSignup />", () => {
 
   it("shows an error toast when plan submission fails", async () => {
     const errorToast = jest.spyOn(toast, "error").mockImplementation(() => {});
-    updateRegistrationMethod.mockRejectedValue({
+    upgradePlan.mockRejectedValue({
       response: {data: {detail: "bad request"}},
     });
-    upgradePlan.mockResolvedValue({});
     wrapper.instance().handlePlansSuccess(plans);
 
     await wrapper.instance().handleSubmitPlan(0);
+    wrapper.update();
 
     expect(props.navigate).not.toHaveBeenCalled();
     expect(errorToast).toHaveBeenCalled();
+    expect(wrapper.instance().state.errors.nonField).toBe("bad request");
+    expect(wrapper.find(".error.non-field .text").text()).toBe("bad request");
   });
 
   it("shows generic error toast when plan submission fails without response", async () => {

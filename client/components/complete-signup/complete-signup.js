@@ -24,7 +24,7 @@ const handleFlowError = (error, setErrorsState) => {
   logError(error, errorText);
   toast.error(errorText);
   if (setErrorsState) {
-    setErrorsState({nonfield: [errorText]});
+    setErrorsState({nonField: errorText});
   }
 };
 

@@ -41,7 +41,7 @@ PhoneToken = load_model("openwisp_radius", "PhoneToken")
 test_data = load_test_data()
 phone_number = (
     sys.argv[2]
-    if len(sys.argv) > 1
+    if len(sys.argv) > 2
     else test_data["mobileVerificationTestUser"]["phoneNumber"]
 )
 try:
