@@ -77,7 +77,9 @@ describe("<PasswordConfirm /> rendering", () => {
     const component = renderer
       .create(
         <Provider store={mockedStore}>
-          <Router>
+          <Router
+            future={{v7_startTransition: true, v7_relativeSplatPath: true}}
+          >
             <PasswordConfirm {...props} />
           </Router>
         </Provider>,

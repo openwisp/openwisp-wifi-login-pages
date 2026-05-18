@@ -25,7 +25,10 @@ class BaseApp extends React.Component {
 
   render() {
     return (
-      <Router history={history}>
+      <Router
+        history={history}
+        future={{v7_startTransition: true, v7_relativeSplatPath: true}}
+      >
         <ToastContainer className={isOldBrowser() ? "oldbrowser" : null} />
         <Routes>
           <Route path="*" element={<OrganizationRoutes />} />
