@@ -1,4 +1,4 @@
-import { shallow } from "enzyme";
+import {shallow} from "enzyme";
 import React from "react";
 import ShallowRenderer from "react-test-renderer/shallow";
 
@@ -12,21 +12,21 @@ jest.mock("../../utils/load-translation");
 const defaultConfig = getConfig("default", true);
 const links = [
   {
-    alt: { en: "x" },
+    alt: {en: "x"},
     icon: "x.svg",
     url: "https://x.com/openwisp",
     authenticated: true,
     css: "x",
   },
   {
-    alt: { en: "facebook" },
+    alt: {en: "facebook"},
     icon: "facebook.svg",
     url: "https://facebook.com/openwisp",
     authenticated: false,
     css: "facebook",
   },
   {
-    alt: { en: "google" },
+    alt: {en: "google"},
     icon: "google.svg",
     url: "https://google.com/openwisp",
     css: "google",
@@ -36,7 +36,7 @@ const createTestProps = (props) => ({
   language: "en",
   orgSlug: "default",
   contactPage: defaultConfig.components.contact_page,
-  userData: { is_verified: true },
+  userData: {is_verified: true},
   ...props,
 });
 
