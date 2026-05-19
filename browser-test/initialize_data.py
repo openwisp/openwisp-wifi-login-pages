@@ -118,7 +118,7 @@ if cross_org_phone_verification_tests:
     else:
         OrganizationUser.objects.create(organization=source_org, user=cross_org_user)
     RegisteredUser.objects.create(
-        user=cross_org_user, method=data["method"], is_verified=True, organization=target_org
+        user=cross_org_user, method=data["method"], is_verified=True, organization=source_org
     )
 
 
