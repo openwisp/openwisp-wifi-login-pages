@@ -77,7 +77,7 @@ if create_mobile_verification_org:
         email=data["email"],
         phone_number=data["phoneNumber"],
     )
-    RegisteredUser.objects.create(user=user, method=data["method"])
+    RegisteredUser.objects.create(user=user, method=data["method"], organization=org)
     OrganizationUser.objects.create(organization=org, user=user)
 
 if cross_org_phone_verification_tests:
@@ -118,7 +118,7 @@ if cross_org_phone_verification_tests:
     else:
         OrganizationUser.objects.create(organization=source_org, user=cross_org_user)
     RegisteredUser.objects.create(
-        user=cross_org_user, method=data["method"], is_verified=True
+        user=cross_org_user, method=data["method"], is_verified=True, organization=target_org
     )
 
 
