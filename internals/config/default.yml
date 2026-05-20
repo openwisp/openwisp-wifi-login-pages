@@ -101,7 +101,7 @@ client:
 
     status_page:
       accounting_swap_octets: false
-      radius_usage_enabled: false
+      radius_usage_enabled: true
       links: []
 
     login_form:

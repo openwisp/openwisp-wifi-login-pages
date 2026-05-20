@@ -133,6 +133,137 @@ progress + p.progress {
   border: 1px solid #464646 !important;
 }
 
+.usage-overview {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.usage-overview-title {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.usage-checks-container {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.usage-box-inner-small {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #e4e4e7;
+  height: 236px;
+  width: 174px;
+  border-radius: 16px;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+
+.usage-box-inner-big {
+  display: none;
+  width: 100%;
+  flex-direction: column;
+  padding: 8px 12px;
+  box-sizing: border-box;
+  align-items: start;
+  justify-content: center;
+  border: 1px solid #e4e4e7;
+  border-radius: 16px;
+}
+
+@media screen and (min-width: 601px) {
+  .usage-box-inner-small {
+    display: none;
+  }
+  .usage-box-inner-big {
+    display: flex;
+  }
+  .usage-checks-container {
+    flex-direction: column;
+  }
+  .usage-check-content {
+    width: 100%;
+  }
+}
+
+.usage-check-content {
+  display: flex;
+  gap: 16px;
+  flex-direction: column;
+}
+
+.usage-check-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.usage-progress-wrapper {
+  width: 120px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.usage-progress-wrapper-big {
+  width: 100%;
+  gap: 8px;
+}
+
+.usage-progress-bar-container {
+  width: 100%;
+  height: 8px;
+  background-color: #eaecf0;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.usage-progress-bar-fill {
+  height: 100%;
+  border-radius: 8px;
+  transition: width 0.5s ease;
+  min-width: 0;
+}
+
+.usage-progress-text {
+  text-align: center;
+}
+
+.usage-progress-text-bottom {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 8px;
+  gap: 2px;
+}
+
+.usage-progress-remaining {
+  font-size: 12px;
+}
+
+.usage-check-used {
+  font-size: 12px;
+  text-align: center;
+}
+
+.usage-reset-info {
+  font-size: 12px;
+}
+
 @media screen and (min-width: 0px) and (max-width: 500px) {
   .logout-modal-container p.message {
     margin: 0 6%;
