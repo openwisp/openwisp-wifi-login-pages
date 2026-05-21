@@ -17,7 +17,7 @@ import LoadingContext from "../../utils/loading-context";
 import Loader from "../../utils/loader";
 import needsVerify from "../../utils/needs-verify";
 import loadTranslation from "../../utils/load-translation";
-import Login from "../login";
+import LoginComponent from "../login";
 import {
   Registration,
   Status,
@@ -223,7 +223,7 @@ export default class OrganizationWrapper extends React.Component {
                           to={`/${orgSlug}/status${location.search || ""}`}
                         />
                       ) : (
-                        <Login navigate={navigate} />
+                        <LoginComponent navigate={navigate} />
                       )
                     }
                   />

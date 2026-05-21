@@ -12,7 +12,7 @@ import Footer from "../footer";
 import Header from "../header";
 import Loader from "../../utils/loader";
 import needsVerify from "../../utils/needs-verify";
-import Login from "../login";
+import LoginComponent from "../login";
 import {
   Registration,
   Status,
@@ -404,7 +404,7 @@ describe("Test Organization Wrapper for unauthenticated users", () => {
       ),
     );
     element = pathMap["login/*"];
-    expect(JSON.stringify(element)).toEqual(JSON.stringify(<Login />));
+    expect(JSON.stringify(element)).toEqual(JSON.stringify(<LoginComponent />));
     element = pathMap.status;
     // userAutoLogin is true
     expect(element).toEqual(<Navigate to="/default/logout" />);
