@@ -37,6 +37,7 @@ import {localStorage} from "../../utils/storage";
 import handleSession from "../../utils/session";
 import getPlanSelection from "../../utils/get-plan-selection";
 import getPlans from "../../utils/get-plans";
+import checkMixedContent from "../../utils/check-mixed-content";
 
 export default class Status extends React.Component {
   constructor(props) {
@@ -89,6 +90,20 @@ export default class Status extends React.Component {
       this.setState(state, callback);
     }
   }
+
+  submitCaptivePortalForm = (formRef) => {
+    const {setLoading} = this.context;
+    try {
+      checkMixedContent(formRef.current.action);
+      formRef.current.submit();
+      return true;
+    } catch (error) {
+      setLoading(false);
+      toast.error(`Security/Network Error: ${error.message}`);
+      console.error("Mixed Content Exception:", error);
+      return false;
+    }
+  };
 
   async componentDidMount() {
     const {
@@ -234,7 +249,7 @@ export default class Status extends React.Component {
           cookies,
         );
         this.notifyCpLogin(userData);
-        this.loginFormRef.current.submit();
+        this.submitCaptivePortalForm(this.loginFormRef);
       } else if (!shouldLogin) {
         // If the user is already logged in, we need to handle the
         // the response from the captive portal.
@@ -588,7 +603,7 @@ export default class Status extends React.Component {
             true,
             cookies,
           );
-          this.logoutFormRef.current.submit();
+          this.submitCaptivePortalForm(this.logoutFormRef);
         }
         return;
       }
@@ -900,7 +915,9 @@ export default class Status extends React.Component {
     });
     const {setLoading} = this.context;
     if (this.logoutFormRef && this.logoutFormRef.current) {
-      this.logoutFormRef.current.submit();
+      if (!this.submitCaptivePortalForm(this.logoutFormRef)) {
+        return;
+      }
     }
     setLoading(true);
     await this.getUserPastRadiusSessions();

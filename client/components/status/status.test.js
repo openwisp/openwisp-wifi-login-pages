@@ -2886,4 +2886,54 @@ describe("<Status /> accounting_swap_octets", () => {
     expect(rows.at(3).find("td").text()).toBe("1 kB");
     expect(rows.at(4).find("td").text()).toBe("2 kB");
   });
+
+  it("should catch mixed content exceptions in submitCaptivePortalForm", () => {
+    props = createTestProps();
+    const setLoadingMock = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: setLoadingMock},
+      disableLifecycleMethods: true,
+    });
+    jest.spyOn(toast, "error");
+
+    const mockFormRef = {
+      current: {
+        action: "http://example.com",
+        submit: () => {
+          throw new Error(
+            "Mixed Content: Cannot submit insecure HTTP form from a secure HTTPS page.",
+          );
+        },
+      },
+    };
+
+    const result = wrapper.instance().submitCaptivePortalForm(mockFormRef);
+
+    expect(result).toBe(false);
+    expect(setLoadingMock).toHaveBeenCalledWith(false);
+    expect(toast.error).toHaveBeenCalled();
+    expect(toast.error.mock.calls[0][0]).toContain("Mixed Content");
+  });
+
+  it("should abort handleSessionLogout if mixed content is detected", async () => {
+    wrapper.instance().logoutFormRef = {
+      current: {action: "http://example.com"},
+    };
+    jest
+      .spyOn(wrapper.instance(), "submitCaptivePortalForm")
+      .mockReturnValue(false);
+    jest
+      .spyOn(wrapper.instance(), "getUserPastRadiusSessions")
+      .mockImplementation(() => Promise.resolve());
+
+    // Attempt to log out a dummy session
+    await wrapper.instance().handleSessionLogout({id: "dummy-session"});
+
+    // Verify that because it returned false, the rest of the function aborted
+    expect(wrapper.instance().getUserPastRadiusSessions).not.toHaveBeenCalled();
+
+    // Restore spies
+    wrapper.instance().submitCaptivePortalForm.mockRestore();
+    wrapper.instance().getUserPastRadiusSessions.mockRestore();
+  });
 });

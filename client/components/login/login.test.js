@@ -850,4 +850,30 @@ describe("<Login /> interactions", () => {
     wrapper.instance().handleSubmit({preventDefault: () => {}});
     expect(mockRef.submit).toHaveBeenCalled();
   });
+  it("should catch mixed content exceptions in radius realms form submit", async () => {
+    wrapper = shallow(<Login {...props} />, {context: loadingContextValue});
+    props.settings.radius_realms = true;
+    props.captivePortalLoginForm.additional_fields = [];
+    wrapper = shallow(<Login {...props} />, {context: loadingContextValue});
+    jest.spyOn(dependency.toast, "error");
+
+    wrapper.instance().setState({username: "realms@", password: "testing"});
+
+    const mockRef = {
+      action: "http://example.com",
+      submit: () => {
+        throw new Error(
+          "Mixed Content: Cannot submit insecure HTTP form from a secure HTTPS page.",
+        );
+      },
+    };
+    wrapper.instance().realmsRadiusLoginForm.current = mockRef;
+
+    wrapper.instance().handleSubmit({preventDefault: () => {}});
+
+    expect(dependency.toast.error).toHaveBeenCalled();
+    expect(dependency.toast.error).toHaveBeenCalledWith(
+      expect.stringContaining("Mixed Content"),
+    );
+  });
 });
