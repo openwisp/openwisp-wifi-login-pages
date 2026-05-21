@@ -15,6 +15,7 @@ import {t, gettext} from "ttag";
 import {filesize} from "filesize";
 import {timeFromSeconds} from "duration-formatter";
 import getLanguageHeaders from "../../utils/get-language-headers";
+import SessionsTable from "./sessions-table";
 
 import {
   getUserRadiusSessionsUrl,
@@ -914,242 +915,7 @@ export default class Status extends React.Component {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  getDuration = (seconds) => {
-    const number = Number(seconds);
-    const h = Math.floor(number / 3600);
-    const m = Math.floor((number % 3600) / 60);
-    const s = Math.floor((number % 3600) % 60);
-    const hDisplay = h > 0 ? h + (h === 1 ? " hr " : " hrs ") : "";
-    const mDisplay = m > 0 ? m + (m === 1 ? " min " : " mins ") : "";
-    const sDisplay = s > 0 ? s + (s === 1 ? " sec " : " secs ") : "";
-    return hDisplay + mDisplay + sDisplay;
-  };
-
-  // eslint-disable-next-line class-methods-use-this
-  getDateTimeFormat = (language, time_option, date) => {
-    if (typeof Intl !== "undefined") {
-      return new Intl.DateTimeFormat(language, time_option).format(
-        new Date(date),
-      );
-    }
-    return String(new Date(date));
-  };
-
-  getLargeTableRow = (session, sessionSettings, showLogoutButton = false) => {
-    const {language, statusPage} = this.props;
-    const {accounting_swap_octets} = statusPage;
-    let downloadOctets = session.input_octets;
-    let uploadOctets = session.output_octets;
-
-    if (accounting_swap_octets) {
-      downloadOctets = session.output_octets;
-      uploadOctets = session.input_octets;
-    }
-    const time_option = {
-      dateStyle: "medium",
-      timeStyle: "short",
-      hour12: false,
-    };
-    const activeSessionText = t`ACCT_ACTIVE`;
-    return (
-      <>
-        <td>
-          {this.getDateTimeFormat(language, time_option, session.start_time)}
-        </td>
-        <td>
-          {session.stop_time === null
-            ? activeSessionText
-            : this.getDateTimeFormat(language, time_option, session.stop_time)}
-        </td>
-        <td>{this.getDuration(session.session_time)}</td>
-        <td>{filesize(downloadOctets, {round: 0})}</td>
-        <td>{filesize(uploadOctets, {round: 0})}</td>
-        <td>
-          {session.calling_station_id}
-          {session.stop_time == null && showLogoutButton && (
-            <input
-              type="button"
-              className="button small session-logout"
-              value={t`LOGOUT`}
-              onClick={() => {
-                this.handleSessionLogout(session);
-              }}
-            />
-          )}
-        </td>
-      </>
-    );
-  };
-
-  getSmallTableRow = (session, session_info) => {
-    const {captivePortalLogoutForm, language, statusPage} = this.props;
-    const {accounting_swap_octets} = statusPage;
-    let downloadOctets = session.input_octets;
-    let uploadOctets = session.output_octets;
-
-    if (accounting_swap_octets) {
-      downloadOctets = session.output_octets;
-      uploadOctets = session.input_octets;
-    }
-    const time_option = {
-      dateStyle: "medium",
-      timeStyle: "short",
-      hour12: false,
-    };
-    const activeSessionText = session_info.settings.active_session;
-    return (
-      <tbody key={session.session_id}>
-        <tr
-          key={`${session.session_id}start_time`}
-          className={session.stop_time === null ? "active-session" : ""}
-        >
-          <th>{session_info.header.start_time}:</th>
-          <td>
-            {this.getDateTimeFormat(language, time_option, session.start_time)}
-          </td>
-        </tr>
-        <tr
-          key={`${session.session_id}stop_time`}
-          className={session.stop_time === null ? "active-session" : ""}
-        >
-          <th>{session_info.header.stop_time}:</th>
-          <td>
-            {session.stop_time === null
-              ? activeSessionText
-              : this.getDateTimeFormat(
-                  language,
-                  time_option,
-                  session.stop_time,
-                )}
-          </td>
-        </tr>
-        <tr
-          key={`${session.session_id}duration`}
-          className={session.stop_time === null ? "active-session" : ""}
-        >
-          <th>{session_info.header.duration}:</th>
-          <td>{this.getDuration(session.session_time)}</td>
-        </tr>
-        <tr
-          key={`${session.session_id}download`}
-          className={session.stop_time === null ? "active-session" : ""}
-        >
-          <th>{session_info.header.download}:</th>
-          <td>{filesize(downloadOctets, {round: 0})}</td>
-        </tr>
-        <tr
-          key={`${session.session_id}upload`}
-          className={session.stop_time === null ? "active-session" : ""}
-        >
-          <th>{session_info.header.upload}:</th>
-          <td>{filesize(uploadOctets, {round: 0})}</td>
-        </tr>
-        <tr
-          key={`${session.session_id}device_address`}
-          className={session.stop_time === null ? "active-session" : ""}
-        >
-          <th>{session_info.header.device_address}:</th>
-          <td>{session.calling_station_id}</td>
-        </tr>
-        {session.stop_time == null &&
-          captivePortalLogoutForm.logout_by_session && (
-            <tr key={`${session.session_id}logout`} className="active-session">
-              <td className="row logout" colSpan="2">
-                <input
-                  type="button"
-                  className="button full"
-                  value={t`LOGOUT`}
-                  onClick={() => {
-                    this.handleSessionLogout(session);
-                  }}
-                  aria-label={t`LOGOUT`}
-                />
-              </td>
-            </tr>
-          )}
-      </tbody>
-    );
-  };
-
-  getLargeTable = (session_info) => {
-    const {activeSessions, pastSessions} = this.state;
-    const {captivePortalLogoutForm} = this.props;
-    const showLogoutButton =
-      captivePortalLogoutForm.logout_by_session && activeSessions.length > 1;
-    return (
-      <table className="large-table bg">
-        <thead>
-          <tr>
-            {Object.keys(session_info.header).map((key) => (
-              <th key={key}>{session_info.header[key]}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {activeSessions.map((session) => (
-            <tr
-              key={session.session_id}
-              className={session.stop_time === null ? "active-session" : ""}
-            >
-              {this.getLargeTableRow(
-                session,
-                session_info.settings,
-                showLogoutButton,
-              )}
-            </tr>
-          ))}
-          {pastSessions.map((session) => (
-            <tr
-              key={session.session_id}
-              className={session.stop_time === null ? "active-session" : ""}
-            >
-              {this.getLargeTableRow(session, session_info.settings)}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    );
-  };
-
-  getSmallTable = (session_info) => {
-    const {activeSessions, pastSessions} = this.state;
-    return (
-      <table className="small-table bg">
-        {activeSessions.map((session) =>
-          this.getSmallTableRow(session, session_info),
-        )}
-        {pastSessions.map((session) =>
-          this.getSmallTableRow(session, session_info),
-        )}
-      </table>
-    );
-  };
-
-  getTable = (session_info) => {
-    const {screenWidth} = this.state;
-    if (screenWidth > 656) {
-      return this.getLargeTable(session_info);
-    }
-    return this.getSmallTable(session_info);
-  };
-
-  // eslint-disable-next-line class-methods-use-this
   getSpinner = () => <Loader full={false} small />;
-
-  // eslint-disable-next-line class-methods-use-this
-  getSessionInfo = () => ({
-    header: {
-      start_time: t`ACCT_START_TIME`,
-      stop_time: t`ACCT_STOP_TIME`,
-      duration: t`ACCT_DURATION`,
-      download: t`ACCT_DOWNLOAD`,
-      upload: t`ACCT_UPLOAD`,
-      device_address: t`ACCT_DEVICE_ADDRESS`,
-    },
-    settings: {
-      active_session: t`ACCT_ACTIVE`,
-    },
-  });
 
   // eslint-disable-next-line class-methods-use-this
   getUserInfo = () => ({
@@ -1216,6 +982,7 @@ export default class Status extends React.Component {
       warningMessage,
       modalActive,
       rememberMe,
+      screenWidth,
     } = this.state;
     const user_info = this.getUserInfo();
     const contentArr = t`STATUS_CONTENT`.split("\n");
@@ -1377,7 +1144,15 @@ export default class Status extends React.Component {
               loader={this.getSpinner()}
               style={{overflow: false}}
             >
-              <>{this.getTable(this.getSessionInfo())}</>
+              <SessionsTable
+                activeSessions={activeSessions}
+                pastSessions={pastSessions}
+                language={language}
+                statusPage={statusPage}
+                captivePortalLogoutForm={captivePortalLogoutForm}
+                screenWidth={screenWidth}
+                handleSessionLogout={this.handleSessionLogout}
+              />
             </InfinteScroll>
           )) ||
             (loadSpinner ? this.getSpinner() : null)}
