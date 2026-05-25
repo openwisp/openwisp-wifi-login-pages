@@ -248,7 +248,11 @@ export default class CompleteSignup extends React.Component {
     } catch (error) {
       if (this.isComponentMounted) {
         handleFlowError(error, (errors) =>
-          this.setStateSafe({errors, submitting: false}),
+          this.setStateSafe({
+            errors,
+            selectedPlan: null,
+            submitting: false,
+          }),
         );
         setLoading(false);
       }
@@ -331,6 +335,9 @@ export default class CompleteSignup extends React.Component {
                       plans,
                       selectedPlan,
                       this.handlePlanChange,
+                      undefined,
+                      undefined,
+                      true,
                     )}
                   </div>
                 )}

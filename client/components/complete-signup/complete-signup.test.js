@@ -377,6 +377,31 @@ describe("<CompleteSignup />", () => {
     expect(wrapper.find(".error.non-field .text").text()).toBe("bad request");
   });
 
+  it("clears selectedPlan after a submission failure so the same plan can be retried", async () => {
+    const errorToast = jest.spyOn(toast, "error").mockImplementation(() => {});
+    upgradePlan.mockRejectedValueOnce({
+      response: {data: {detail: "bad request"}},
+    });
+    upgradePlan.mockResolvedValueOnce({});
+    updateRegistrationMethod.mockResolvedValue({method: "mobile_phone"});
+    wrapper.instance().handlePlansSuccess(plans);
+    await wrapper.instance().handlePlanChange({target: {value: "0"}});
+    expect(wrapper.instance().state.selectedPlan).toBe(null);
+    expect(wrapper.find("input#radio0").prop("checked")).toBe(false);
+    await wrapper.instance().handlePlanChange({target: {value: "0"}});
+    expect(upgradePlan).toHaveBeenCalledTimes(2);
+    expect(updateRegistrationMethod).toHaveBeenCalledWith(
+      "default",
+      "mobile_phone",
+      "test-token",
+      "en",
+    );
+    expect(props.navigate).toHaveBeenCalledWith(
+      "/default/mobile-phone-verification",
+    );
+    errorToast.mockRestore();
+  });
+
   it("shows generic error toast when plan submission fails without response", async () => {
     const errorToast = jest.spyOn(toast, "error").mockImplementation(() => {});
     upgradePlan.mockRejectedValue(new Error("network error"));
