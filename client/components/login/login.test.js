@@ -37,6 +37,7 @@ const createTestProps = (props) => ({
   termsAndConditions: defaultConfig.terms_and_conditions,
   settings: {
     mobile_phone_verification: false,
+    subscriptions: false,
     radius_realms: false,
     passwordless_auth_token_name: "sesame",
   },
@@ -503,6 +504,86 @@ describe("<Login /> interactions", () => {
     const authenticateMock = login.props().authenticate.mock;
     expect(redirectToPayment).toHaveBeenCalledWith("default", props.navigate);
     expect(authenticateMock.calls.length).toBe(1);
+  });
+  it("should redirect when pending verification has only phone enabled", async () => {
+    props.settings = {
+      mobile_phone_verification: true,
+      subscriptions: false,
+    };
+    wrapper = mountComponent(props);
+    const login = wrapper.find(Login);
+    await login.instance().handleAuthentication({
+      ...responseData,
+      is_verified: false,
+      method: "pending_verification",
+    });
+    expect(login.instance().props.setUserData).toHaveBeenCalledWith({
+      ...userData,
+      is_verified: false,
+      method: "pending_verification",
+      auth_token: responseData.key,
+      mustLogin: true,
+    });
+    expect(props.navigate).toHaveBeenCalledWith("/default/complete-signup");
+    expect(login.instance().props.authenticate).toHaveBeenCalledWith(true);
+  });
+  it("should redirect to complete signup when pending verification has only subscriptions enabled", async () => {
+    props.settings = {
+      mobile_phone_verification: false,
+      subscriptions: true,
+    };
+    wrapper = mountComponent(props);
+    const login = wrapper.find(Login);
+    await login.instance().handleAuthentication({
+      ...responseData,
+      is_verified: false,
+      method: "pending_verification",
+    });
+    expect(login.instance().props.setUserData).toHaveBeenCalledWith({
+      ...userData,
+      is_verified: false,
+      method: "pending_verification",
+      auth_token: responseData.key,
+      mustLogin: true,
+    });
+    expect(props.navigate).toHaveBeenCalledWith("/default/complete-signup");
+    expect(login.instance().props.authenticate).toHaveBeenCalledWith(true);
+  });
+  it("should redirect to complete signup when multiple verification methods are enabled", async () => {
+    props.settings = {
+      mobile_phone_verification: true,
+      subscriptions: true,
+    };
+    wrapper = mountComponent(props);
+    const login = wrapper.find(Login);
+    await login.instance().handleAuthentication({
+      ...responseData,
+      is_verified: false,
+      method: "pending_verification",
+    });
+    expect(login.instance().props.setUserData).toHaveBeenCalledWith({
+      ...userData,
+      is_verified: false,
+      method: "pending_verification",
+      auth_token: responseData.key,
+      mustLogin: true,
+    });
+    expect(props.navigate).toHaveBeenCalledWith("/default/complete-signup");
+    expect(login.instance().props.authenticate).toHaveBeenCalledWith(true);
+  });
+  it("should NOT redirect to complete signup when method is not pending_verification", async () => {
+    props.settings = {
+      mobile_phone_verification: true,
+      subscriptions: true,
+    };
+    wrapper = mountComponent(props);
+    const login = wrapper.find(Login);
+    await login.instance().handleAuthentication({
+      ...responseData,
+      is_verified: false,
+      method: "mobile_phone",
+    });
+    expect(props.navigate).not.toHaveBeenCalledWith("/default/complete-signup");
   });
   it("phone_number field should be present if mobile phone verification is on", async () => {
     props.settings = {mobile_phone_verification: true};

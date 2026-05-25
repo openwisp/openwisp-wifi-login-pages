@@ -66,7 +66,7 @@ describe("Selenium tests for <MobileVerification />", () => {
     await driver.wait(until.elementIsVisible(failureToastDiv));
     expect(await failureToastDiv.getText()).toEqual("Invalid code.");
     await driver.navigate().refresh();
-    const token = getPhoneToken();
+    const token = getPhoneToken(data.phoneNumber);
     codeInput = await getElementByCss(driver, "input#code");
     await codeInput.clear();
     await codeInput.sendKeys(token);

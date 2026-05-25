@@ -13,6 +13,7 @@ const paths = {
   mobile_phone_token_status: "/account/phone/token/active",
   verify_mobile_phone_token: "/account/phone/verify",
   mobile_phone_number_change: "/account/phone/change",
+  update_registration_method: "/account/registration-method",
   plans: "/plan",
   payment_status: "/payment/{paymentId}/status",
 };

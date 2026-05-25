@@ -34,6 +34,9 @@ export const PaymentStatus = React.lazy(
 export const PaymentProcess = React.lazy(
   () => import(/* webpackChunkName: 'PaymentProcess' */ "../payment-process"),
 );
+export const CompleteSignup = React.lazy(
+  () => import(/* webpackChunkName: 'CompleteSignup' */ "../complete-signup"),
+);
 export const ConnectedDoesNotExist = React.lazy(
   () => import(/* webpackChunkName: 'ConnectedDoesNotExist' */ "../404"),
 );

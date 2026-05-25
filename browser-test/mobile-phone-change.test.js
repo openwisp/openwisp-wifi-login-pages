@@ -59,7 +59,7 @@ describe("Selenium tests for <MobilePhoneChange />", () => {
     expect(await successToastDiv.getText()).toEqual("Login successful");
     let codeInput = await getElementByCss(driver, "input#code");
     await driver.wait(until.elementIsVisible(codeInput));
-    const token = getPhoneToken();
+    const token = getPhoneToken(data.phoneNumber);
     await codeInput.sendKeys(token);
     submitBtn = await getElementByCss(driver, "button[type='submit']");
     await driver.wait(until.elementIsVisible(submitBtn));
@@ -94,7 +94,7 @@ describe("Selenium tests for <MobilePhoneChange />", () => {
     expect(await successToastDiv.getText()).toEqual(
       "SMS verification code sent successfully.",
     );
-    const newToken = getPhoneToken();
+    const newToken = getPhoneToken(data.changePhoneNumber);
     codeInput = await getElementByCss(driver, "input#code");
     await driver.wait(until.elementIsVisible(codeInput));
     await codeInput.sendKeys(newToken);

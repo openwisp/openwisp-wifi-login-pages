@@ -5,6 +5,7 @@ import {Cookies} from "react-cookie";
 import {shallow, mount} from "enzyme";
 import * as dependency from "react-toastify";
 import {createMemoryHistory} from "history";
+import {t} from "ttag";
 import authenticate from "./authenticate";
 import isInternalLink from "./check-internal-links";
 import customMerge from "./custom-merge";
@@ -27,6 +28,10 @@ import {initialState} from "../reducers/organization";
 import {localStorage, sessionStorage, storageFallback} from "./storage";
 import getPaymentStatusRedirectUrl from "./get-payment-status";
 import withRouteProps from "./with-route-props";
+import updateRegistrationMethod from "./update-registration-method";
+import getPlans from "./get-plans";
+import upgradePlan from "./upgrade-plan";
+import {upgradePlanApiUrl} from "../constants";
 
 jest.mock("axios");
 jest.mock("./load-translation");
@@ -300,7 +305,7 @@ describe("Validate Token tests", () => {
         response_code: "INTERNAL_SERVER_ERROR",
       },
     };
-    jest.spyOn(global.console, "log").mockImplementation();
+    const consoleLog = jest.spyOn(global.console, "log").mockImplementation();
     axios.mockImplementationOnce(() => Promise.resolve(response));
     const errorMethod = jest.spyOn(dependency.toast, "error");
     const {orgSlug, cookies, setUserData, userData, logout, language} =
@@ -320,7 +325,7 @@ describe("Validate Token tests", () => {
     expect(logout).toHaveBeenCalledWith(expect.any(Cookies), "default");
     const cookiesArg = logout.mock.calls[0][0];
     expect(cookiesArg.cookies).toEqual({default_auth_token: "token"});
-    expect(console.log).toHaveBeenCalledWith(response);
+    expect(consoleLog).toHaveBeenCalledWith(response);
   });
   it("should show error toast on invalid token", async () => {
     const response = {
@@ -331,7 +336,7 @@ describe("Validate Token tests", () => {
       },
     };
     axios.mockImplementationOnce(() => Promise.reject(response));
-    jest.spyOn(global.console, "log").mockImplementation();
+    const consoleLog = jest.spyOn(global.console, "log").mockImplementation();
     const errorMethod = jest.spyOn(dependency.toast, "error");
     const {orgSlug, cookies, setUserData, userData, logout, language} =
       getArgs();
@@ -349,7 +354,7 @@ describe("Validate Token tests", () => {
     const cookiesArg = logout.mock.calls[0][0];
     expect(cookiesArg.cookies).toEqual({default_auth_token: "token"});
     expect(setUserData.mock.calls.length).toBe(1);
-    expect(console.log).toHaveBeenCalledWith(response);
+    expect(consoleLog).toHaveBeenCalledWith(response);
     expect(setUserData.mock.calls.pop()).toEqual([initialState.userData]);
   });
   it("should show error if user is locked out", async () => {
@@ -871,6 +876,125 @@ describe("getPaymentStatusRedirectUrl tests", () => {
     expect(consoleLog).toHaveBeenCalledWith(response);
   });
 });
+describe("update-registration-method", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+    jest.restoreAllMocks();
+  });
+
+  it("posts the selected registration method and returns response data", async () => {
+    axios.mockResolvedValueOnce({
+      data: {method: "mobile_phone"},
+    });
+
+    const response = await updateRegistrationMethod(
+      "default",
+      "mobile_phone",
+      "test-token",
+      "en",
+    );
+
+    expect(axios).toHaveBeenCalledWith({
+      method: "post",
+      headers: {
+        "content-type": "application/json",
+        "accept-language": "en,en-US,en",
+        Authorization: "Bearer test-token",
+      },
+      url: "/api/v1/default/account/registration-method/",
+      data: {method: "mobile_phone"},
+    });
+    expect(response).toEqual({method: "mobile_phone"});
+  });
+
+  it("supports empty registration methods", async () => {
+    axios.mockResolvedValueOnce({
+      data: {method: ""},
+    });
+
+    await updateRegistrationMethod("default", "", "test-token", "en");
+
+    expect(axios).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: {method: ""},
+      }),
+    );
+  });
+
+  it("propagates request failures", async () => {
+    const error = new Error("request failed");
+    axios.mockRejectedValueOnce(error);
+
+    await expect(
+      updateRegistrationMethod("default", "bank_card", "test-token", "en"),
+    ).rejects.toBe(error);
+  });
+});
+describe("get-plans", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+    jest.restoreAllMocks();
+  });
+
+  it("fetches plans and passes response data to the success callback", async () => {
+    const successCallback = jest.fn();
+    const failureCallback = jest.fn();
+    axios.mockResolvedValueOnce({
+      data: [{id: "free-plan"}],
+    });
+
+    await getPlans("default", "en", successCallback, failureCallback);
+    await Promise.resolve();
+
+    expect(axios).toHaveBeenCalledWith({
+      method: "get",
+      headers: {
+        "content-type": "application/x-www-form-urlencoded",
+        "accept-language": "en,en-US,en",
+      },
+      url: "/api/v1/default/plan/",
+      data: {},
+    });
+    expect(successCallback).toHaveBeenCalledWith([{id: "free-plan"}]);
+    expect(failureCallback).not.toHaveBeenCalled();
+  });
+
+  it("shows an error toast, logs the error and calls failure callback", async () => {
+    const successCallback = jest.fn();
+    const failureCallback = jest.fn();
+    const consoleLog = jest.spyOn(global.console, "log").mockImplementation();
+    const errorToast = jest
+      .spyOn(dependency.toast, "error")
+      .mockImplementation(() => {});
+    const error = new Error("network error");
+    axios.mockRejectedValueOnce(error);
+
+    await getPlans("default", "en", successCallback, failureCallback);
+    await Promise.resolve();
+
+    expect(errorToast).toHaveBeenCalledWith(t`ERR_OCCUR`);
+    expect(consoleLog).toHaveBeenCalledWith(error);
+    expect(failureCallback).toHaveBeenCalledTimes(1);
+    expect(successCallback).not.toHaveBeenCalled();
+  });
+
+  it("handles failures without a failure callback", async () => {
+    const successCallback = jest.fn();
+    const consoleLog = jest.spyOn(global.console, "log").mockImplementation();
+    const errorToast = jest
+      .spyOn(dependency.toast, "error")
+      .mockImplementation(() => {});
+    const error = new Error("network error");
+    axios.mockRejectedValueOnce(error);
+
+    await getPlans("default", "en", successCallback);
+    await Promise.resolve();
+
+    expect(errorToast).toHaveBeenCalledWith(t`ERR_OCCUR`);
+    expect(consoleLog).toHaveBeenCalledWith(error);
+    expect(successCallback).not.toHaveBeenCalled();
+  });
+});
 describe("withRouteProps test", () => {
   it("should add route props to component", () => {
     const Component = () => React.Component;
@@ -884,5 +1008,32 @@ describe("withRouteProps test", () => {
       params: {},
       props: {extra: true},
     });
+  });
+});
+describe("upgrade-plan", () => {
+  it("makes POST request with correct URL, headers and body", async () => {
+    const mockResponse = {payment_url: "/default/payment/success"};
+    axios.mockResolvedValueOnce({data: mockResponse});
+    const result = await upgradePlan("default", "premium", "test-token", "en");
+    expect(axios).toHaveBeenCalledWith(
+      expect.objectContaining({
+        method: "post",
+        headers: expect.objectContaining({
+          "content-type": "application/json",
+          Authorization: "Bearer test-token",
+        }),
+        url: upgradePlanApiUrl.replace("{orgSlug}", "default"),
+        data: {plan_pricing: "premium"},
+      }),
+    );
+    expect(result).toBe(mockResponse);
+  });
+
+  it("rejects on request failure", async () => {
+    const error = new Error("request failed");
+    axios.mockRejectedValueOnce(error);
+    await expect(
+      upgradePlan("default", "premium", "test-token", "en"),
+    ).rejects.toBe(error);
   });
 });

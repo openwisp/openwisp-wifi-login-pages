@@ -12,6 +12,7 @@ import Footer from "../footer";
 import Header from "../header";
 import Loader from "../../utils/loader";
 import needsVerify from "../../utils/needs-verify";
+import {userPendingVerification} from "../../utils/pending-verification";
 import Login from "../login";
 import {
   Registration,
@@ -23,6 +24,7 @@ import {
   MobilePhoneVerification,
   PaymentStatus,
   PaymentProcess,
+  CompleteSignup,
   ConnectedDoesNotExist,
 } from "./lazy-import";
 import Logout from "./lazy-logout";
@@ -30,6 +32,7 @@ import Logout from "./lazy-logout";
 jest.mock("../../utils/get-config");
 jest.mock("../../utils/load-translation");
 jest.mock("../../utils/needs-verify");
+jest.mock("../../utils/pending-verification");
 
 const userData = {
   is_active: true,
@@ -165,6 +168,7 @@ describe("<OrganizationWrapper /> interactions", () => {
 
   beforeEach(() => {
     needsVerify.mockReturnValue(false);
+    userPendingVerification.mockReturnValue(false);
     originalError = console.error;
     lastConsoleOutuput = null;
     console.error = (data) => {
@@ -327,6 +331,8 @@ describe("<OrganizationWrapper /> interactions", () => {
         </Suspense>,
       ),
     );
+    element = pathMap["complete-signup"];
+    expect(element).toEqual(<Navigate to="/default/status" />);
     const elements = pathMap["*"];
     expect(JSON.stringify(elements[0])).toEqual(
       JSON.stringify(
@@ -354,6 +360,7 @@ describe("Test Organization Wrapper for unauthenticated users", () => {
     console.error = () => {};
     props = createTestProps();
     props.organization.configuration.isAuthenticated = false;
+    userPendingVerification.mockReturnValue(false);
     localStorage.setItem("userAutoLogin", true);
     wrapper = shallow(<OrganizationWrapper {...props} />);
   });
@@ -436,6 +443,8 @@ describe("Test Organization Wrapper for unauthenticated users", () => {
         </Suspense>,
       ),
     );
+    element = pathMap["complete-signup"];
+    expect(element).toEqual(<Navigate to="/default/login" />);
     const elements = pathMap["*"];
     expect(JSON.stringify(elements[0])).toEqual(
       JSON.stringify(
@@ -464,6 +473,7 @@ describe("Test Organization Wrapper for authenticated and unverified users", () 
     console.error = () => {};
     props = createTestProps();
     needsVerify.mockReturnValue(true);
+    userPendingVerification.mockReturnValue(false);
     wrapper = shallow(<OrganizationWrapper {...props} />);
   });
 
@@ -541,6 +551,10 @@ describe("Test Organization Wrapper for authenticated and unverified users", () 
         </Suspense>,
       ),
     );
+    element = pathMap["complete-signup"];
+    expect(element).toEqual(
+      <Navigate to="/default/mobile-phone-verification" />,
+    );
     const elements = pathMap["*"];
     expect(JSON.stringify(elements[0])).toEqual(
       JSON.stringify(
@@ -555,6 +569,121 @@ describe("Test Organization Wrapper for authenticated and unverified users", () 
       ),
     );
     expect(JSON.stringify(elements[2])).toEqual(JSON.stringify(<Footer />));
+  });
+
+  it("should route complete-signup based on remaining phone verification need", () => {
+    let pathMap = {};
+    pathMap = wrapper.find(Route).reduce((mapRoute, route) => {
+      const map = mapRoute;
+      const routeProps = route.props();
+      if (routeProps.path === "*")
+        map["*"] = [...(map["*"] || []), routeProps.element];
+      else map[routeProps.path] = routeProps.element;
+      return map;
+    }, {});
+    expect(pathMap["complete-signup"]).toEqual(
+      <Navigate to="/default/mobile-phone-verification" />,
+    );
+    needsVerify.mockReturnValue(false);
+    wrapper.setProps({organization: {...props.organization}});
+    pathMap = wrapper.find(Route).reduce((mapRoute, route) => {
+      const map = mapRoute;
+      const routeProps = route.props();
+      if (routeProps.path === "*")
+        map["*"] = [...(map["*"] || []), routeProps.element];
+      else map[routeProps.path] = routeProps.element;
+      return map;
+    }, {});
+    expect(pathMap["complete-signup"]).toEqual(
+      <Navigate to="/default/status" />,
+    );
+    expect(pathMap["mobile-phone-verification"]).toEqual(
+      <Navigate to="/default/status" />,
+    );
+  });
+
+  it("should route complete-signup to payment draft when bank card verification is pending", () => {
+    needsVerify.mockImplementation((method) => method === "bank_card");
+    userPendingVerification.mockReturnValue(false);
+    const component = shallow(<OrganizationWrapper {...props} />, {
+      disableLifecycleMethods: true,
+    });
+    component
+      .instance()
+      .setState({translationLoaded: true, configLoaded: true});
+
+    const pathMap = component.find(Route).reduce((mapRoute, route) => {
+      const map = mapRoute;
+      const routeProps = route.props();
+      if (routeProps.path === "*")
+        map["*"] = [...(map["*"] || []), routeProps.element];
+      else map[routeProps.path] = routeProps.element;
+      return map;
+    }, {});
+
+    expect(pathMap["complete-signup"]).toEqual(
+      <Navigate to="/default/payment/draft" />,
+    );
+  });
+});
+
+describe("Test Organization Wrapper for pending verification user", () => {
+  let props;
+  let wrapper;
+  let originalError;
+
+  const getPathMap = (component = wrapper) =>
+    component.find(Route).reduce((mapRoute, route) => {
+      const map = mapRoute;
+      const routeProps = route.props();
+      if (routeProps.path === "*")
+        map["*"] = [...(map["*"] || []), routeProps.element];
+      else map[routeProps.path] = routeProps.element;
+      return map;
+    }, {});
+
+  beforeEach(() => {
+    originalError = console.error;
+    console.error = jest.fn();
+    props = createTestProps();
+    needsVerify.mockReturnValue(false);
+    userPendingVerification.mockReturnValue(true);
+    wrapper = shallow(<OrganizationWrapper {...props} />);
+  });
+
+  afterEach(() => {
+    console.error = originalError;
+  });
+
+  it("should route authenticated pending verification users to complete-signup", () => {
+    const pathMap = getPathMap();
+    expect(pathMap["registration/*"]).toEqual(
+      <Navigate to="/default/complete-signup" />,
+    );
+    expect(pathMap["login/*"]).toEqual(
+      <Navigate to="/default/complete-signup" />,
+    );
+    expect(pathMap.status).toEqual(<Navigate to="/default/complete-signup" />);
+    expect(pathMap["mobile-phone-verification"]).toEqual(
+      <Navigate to="/default/complete-signup" />,
+    );
+    expect(JSON.stringify(pathMap["complete-signup"])).toEqual(
+      JSON.stringify(
+        <Suspense fallback={<Loader />}>
+          <CompleteSignup navigate={props.navigate} />
+        </Suspense>,
+      ),
+    );
+  });
+
+  it("should preserve query params when redirecting pending verification users from login", () => {
+    wrapper.setProps({
+      location: {pathname: "", search: "?next=/default/status"},
+    });
+    const pathMap = getPathMap();
+    expect(pathMap["login/*"]).toEqual(
+      <Navigate to="/default/complete-signup?next=/default/status" />,
+    );
   });
 });
 
