@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 
 import {t} from "ttag";
 import {loadingContextValue} from "../../utils/loading-context";
+import tick from "../../utils/tick";
 import CompleteSignup from "./complete-signup";
 import getPlans from "../../utils/get-plans";
 import upgradePlan from "../../utils/upgrade-plan";
@@ -385,10 +386,14 @@ describe("<CompleteSignup />", () => {
     upgradePlan.mockResolvedValueOnce({});
     updateRegistrationMethod.mockResolvedValue({method: "mobile_phone"});
     wrapper.instance().handlePlansSuccess(plans);
-    await wrapper.instance().handlePlanChange({target: {value: "0"}});
+    wrapper.instance().handlePlanChange({target: {value: "0"}});
+    await tick();
+    wrapper.update();
     expect(wrapper.instance().state.selectedPlan).toBe(null);
     expect(wrapper.find("input#radio0").prop("checked")).toBe(false);
-    await wrapper.instance().handlePlanChange({target: {value: "0"}});
+    wrapper.instance().handlePlanChange({target: {value: "0"}});
+    await tick();
+    wrapper.update();
     expect(upgradePlan).toHaveBeenCalledTimes(2);
     expect(updateRegistrationMethod).toHaveBeenCalledWith(
       "default",
