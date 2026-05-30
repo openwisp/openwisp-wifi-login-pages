@@ -737,15 +737,17 @@ export default class Status extends React.Component {
       setPlanExhausted,
     } = this.props;
     const {setLoading} = this.context;
-    const {message, type, warningMessage, showUpgradeBtn} = event.data || {};
+    const eventData = event?.data || {};
+    const {message, type, warningMessage, showUpgradeBtn} = eventData;
 
     // Only accept messages from trusted origins,
     // For more info read: https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage#security_concern
     let actionOrigin = null;
 
     try {
-      if (captivePortalLoginForm.action?.trim()) {
-        actionOrigin = new URL(captivePortalLoginForm.action).origin;
+      const action = captivePortalLoginForm?.action?.trim();
+      if (action) {
+        actionOrigin = new URL(action).origin;
       }
     } catch {
       // invalid URL, ignore

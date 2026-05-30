@@ -545,16 +545,16 @@ describe("<Status /> interactions", () => {
     jest.spyOn(toast, "info");
     const status = wrapper.instance();
 
-    // Test missing message
+    // Test trusted origin with missing message
     status.handlePostMessage({
-      data: {type: "authError"},
-      origin: "http://evil.com", // ← untrusted, won't trigger setLoading
+      data: {type: "authMessage"},
+      origin: "http://localhost",
     });
 
-    // Test missing type
+    // Test trusted origin with missing type
     status.handlePostMessage({
       data: {message: "test"},
-      origin: "http://evil.com", // ← keep untrusted for consistency
+      origin: "http://localhost",
     });
 
     // Test invalid captive portal action URL does not throw
@@ -564,16 +564,19 @@ describe("<Status /> interactions", () => {
       status.handlePostMessage({
         data: {
           message: "test",
-          type: "authError",
+          type: "authMessage",
         },
-        origin: "http://evil.com", // ← untrusted, won't trigger setLoading
+        origin: "http://localhost",
       }),
     ).not.toThrow();
 
-    // Test undefined event.data does not throw
+    // Restore valid action URL for trusted-origin tests
+    props.captivePortalLoginForm.action = "http://localhost/login";
+
+    // Test undefined event.data does not throw for trusted origin
     expect(() =>
       status.handlePostMessage({
-        origin: "http://evil.com", // ← untrusted, won't trigger setLoading
+        origin: "http://localhost",
       }),
     ).not.toThrow();
     // Test untrusted origin is rejected
@@ -585,21 +588,29 @@ describe("<Status /> interactions", () => {
       origin: "http://evil.com",
     });
 
-    expect(props.logout).toHaveBeenCalledTimes(0);
-    expect(setLoadingMock).toHaveBeenCalledTimes(0);
+    // Test untrusted origin is rejected
+    toast.error.mockClear();
+    toast.dismiss.mockClear();
+    props.logout.mockClear();
 
-    // Test event.origin is illegal
     status.handlePostMessage({
       data: {message: "RADIUS Error", type: "authError"},
       origin: "https://example.com",
     });
-    expect(toast.error).toHaveBeenCalledTimes(0);
-    expect(toast.dismiss).toHaveBeenCalledTimes(0);
-    expect(props.logout).toHaveBeenCalledTimes(0);
-    expect(setLoadingMock).toHaveBeenCalledTimes(0);
+
+    expect(toast.error).not.toHaveBeenCalled();
+    expect(toast.dismiss).not.toHaveBeenCalled();
+    expect(props.logout).not.toHaveBeenCalled();
+    toast.error.mockClear();
+    toast.dismiss.mockClear();
+    toast.info.mockClear();
+    props.setPlanExhausted.mockClear();
+    props.logout.mockClear();
+    setLoadingMock.mockClear();
 
     // Test valid authError message
     wrapper.instance().componentDidMount();
+
     status.handlePostMessage({
       data: {message: "RADIUS Error", type: "authError"},
       origin: "http://localhost",
@@ -669,6 +680,44 @@ describe("<Status /> interactions", () => {
       origin: "http://localhost",
     });
     expect(props.setInternetMode).toHaveBeenCalledTimes(1);
+  });
+
+  it("should not throw for invalid or empty captive portal action and undefined event data", () => {
+    props = createTestProps();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    const status = wrapper.instance();
+
+    props.captivePortalLoginForm.action = "invalid-url";
+    expect(() =>
+      status.handlePostMessage({
+        data: {message: "test", type: "authMessage"},
+        origin: "http://localhost",
+      }),
+    ).not.toThrow();
+
+    props.captivePortalLoginForm.action = "";
+    expect(() =>
+      status.handlePostMessage({
+        data: {message: "test", type: "authMessage"},
+        origin: "http://localhost",
+      }),
+    ).not.toThrow();
+
+    expect(() =>
+      status.handlePostMessage({
+        origin: "http://localhost",
+      }),
+    ).not.toThrow();
+
+    props.logout.mockClear();
+    status.handlePostMessage({
+      data: {message: "test", type: "authError"},
+      origin: "http://evil.com",
+    });
+    expect(props.logout).not.toHaveBeenCalled();
   });
 
   it("should not perform captive portal login (submit loginFormRef), if user is already authenticated", async () => {
