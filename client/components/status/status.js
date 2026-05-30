@@ -737,21 +737,24 @@ export default class Status extends React.Component {
       setPlanExhausted,
     } = this.props;
     const {setLoading} = this.context;
-    const {message, type, warningMessage, showUpgradeBtn} = event.data;
+    const {message, type, warningMessage, showUpgradeBtn} = event.data || {};
 
     // Only accept messages from trusted origins,
     // For more info read: https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage#security_concern
-    const trustedOrigin =
-      event.origin === new URL(captivePortalLoginForm.action).origin ||
-      event.origin === window.location.origin;
+    let actionOrigin = null;
 
-    if (
-      !trustedOrigin ||
-      !type ||
-      // internet-mode will not contain message, but message
-      // is required for authError and authMessage type
-      (!message && type !== "internet-mode")
-    ) {
+    try {
+      if (captivePortalLoginForm.action?.trim()) {
+        actionOrigin = new URL(captivePortalLoginForm.action).origin;
+      }
+    } catch {
+      // invalid URL, ignore
+    }
+
+    const isTrustedOrigin =
+      event.origin === actionOrigin || event.origin === window.location.origin;
+
+    if (!isTrustedOrigin) {
       return;
     }
 

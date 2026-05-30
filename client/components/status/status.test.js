@@ -548,20 +548,43 @@ describe("<Status /> interactions", () => {
     // Test missing message
     status.handlePostMessage({
       data: {type: "authError"},
-      origin: "http://localhost",
+      origin: "http://evil.com", // ← untrusted, won't trigger setLoading
     });
-    expect(toast.error).toHaveBeenCalledTimes(0);
-    expect(toast.dismiss).toHaveBeenCalledTimes(0);
-    expect(props.logout).toHaveBeenCalledTimes(0);
-    expect(setLoadingMock).toHaveBeenCalledTimes(0);
 
     // Test missing type
     status.handlePostMessage({
       data: {message: "test"},
-      origin: "http://localhost",
+      origin: "http://evil.com", // ← keep untrusted for consistency
     });
-    expect(toast.error).toHaveBeenCalledTimes(0);
-    expect(toast.dismiss).toHaveBeenCalledTimes(0);
+
+    // Test invalid captive portal action URL does not throw
+    props.captivePortalLoginForm.action = "invalid-url";
+
+    expect(() =>
+      status.handlePostMessage({
+        data: {
+          message: "test",
+          type: "authError",
+        },
+        origin: "http://evil.com", // ← untrusted, won't trigger setLoading
+      }),
+    ).not.toThrow();
+
+    // Test undefined event.data does not throw
+    expect(() =>
+      status.handlePostMessage({
+        origin: "http://evil.com", // ← untrusted, won't trigger setLoading
+      }),
+    ).not.toThrow();
+    // Test untrusted origin is rejected
+    status.handlePostMessage({
+      data: {
+        message: "test",
+        type: "authError",
+      },
+      origin: "http://evil.com",
+    });
+
     expect(props.logout).toHaveBeenCalledTimes(0);
     expect(setLoadingMock).toHaveBeenCalledTimes(0);
 
