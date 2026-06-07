@@ -14,12 +14,10 @@ import InfinteScroll from "react-infinite-scroll-component";
 import {t, gettext} from "ttag";
 import {filesize} from "filesize";
 import {timeFromSeconds} from "duration-formatter";
-import getLanguageHeaders from "../../utils/get-language-headers";
 
 import {
   getUserRadiusSessionsUrl,
   getUserRadiusUsageUrl,
-  upgradePlanApiUrl,
   mainToastId,
 } from "../../constants";
 import LoadingContext from "../../utils/loading-context";
@@ -37,6 +35,7 @@ import {localStorage} from "../../utils/storage";
 import handleSession from "../../utils/session";
 import getPlanSelection from "../../utils/get-plan-selection";
 import getPlans from "../../utils/get-plans";
+import upgradePlan from "../../utils/upgrade-plan";
 
 export default class Status extends React.Component {
   constructor(props) {
@@ -467,29 +466,22 @@ export default class Status extends React.Component {
       setUserData,
       captivePortalSyncAuth,
     } = this.props;
-    const upgradePlanUrl = upgradePlanApiUrl.replace("{orgSlug}", orgSlug);
     const auth_token = cookies.get(`${orgSlug}_auth_token`);
     const {upgradePlans} = this.state;
     handleSession(orgSlug, auth_token, cookies);
-    axios({
-      method: "post",
-      headers: {
-        "content-type": "application/json",
-        "accept-language": getLanguageHeaders(language),
-        Authorization: `Bearer ${userData.auth_token}`,
-      },
-      url: upgradePlanUrl,
-      data: {
-        plan_pricing: upgradePlans[event.target.value].id,
-      },
-    })
+    upgradePlan(
+      orgSlug,
+      upgradePlans[event.target.value].id,
+      userData.auth_token,
+      language,
+    )
       .then((response) => {
         toast.success(t`SUCCESS_UPGRADE_PLAN`, {
           onOpen: () => toast.dismiss(mainToastId),
         });
         setUserData({
           ...userData,
-          payment_url: response.data.payment_url,
+          payment_url: response.payment_url,
         });
         // After a successful payment, the user is redirected back to the status page.
         // If the user plan was previously exhausted, they need to be logged into the captive portal
