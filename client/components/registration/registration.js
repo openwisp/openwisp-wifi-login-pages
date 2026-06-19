@@ -3,17 +3,17 @@ import "./index.css";
 
 import axios from "axios";
 import PropTypes from "prop-types";
-import React, {Suspense} from "react";
+import React, { Suspense } from "react";
 import Select from "react-select";
-import {Link, Route, Routes} from "react-router-dom";
-import {toast} from "react-toastify";
+import { Link, Route, Routes } from "react-router-dom";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {t} from "ttag";
+import { t } from "ttag";
 import "react-phone-input-2/lib/style.css";
 import countries from "./countries.json";
 import LoadingContext from "../../utils/loading-context";
 import PasswordToggleIcon from "../../utils/password-toggle";
-import {mainToastId, registerApiUrl} from "../../constants";
+import { mainToastId, registerApiUrl } from "../../constants";
 import getErrorText from "../../utils/get-error-text";
 import logError from "../../utils/log-error";
 import handleChange from "../../utils/handle-change";
@@ -69,8 +69,8 @@ export default class Registration extends React.Component {
   }
 
   componentDidMount() {
-    const {orgSlug, settings, setTitle, orgName, language} = this.props;
-    const {setLoading} = this.context;
+    const { orgSlug, settings, setTitle, orgName, language } = this.props;
+    const { setLoading } = this.context;
 
     setTitle(t`REGISTRATION_TITL`, orgName);
 
@@ -82,9 +82,9 @@ export default class Registration extends React.Component {
   }
 
   async componentDidUpdate(prevProps) {
-    const {plans} = this.state;
-    const {settings, loading} = this.props;
-    const {setLoading} = this.context;
+    const { plans } = this.state;
+    const { settings, loading } = this.props;
+    const { setLoading } = this.context;
     if (
       settings.subscriptions &&
       plans.length === 0 &&
@@ -96,8 +96,8 @@ export default class Registration extends React.Component {
   }
 
   getPlansSuccessCallback(plans) {
-    const {setLoading} = this.context;
-    this.setState({plans, plansFetched: true});
+    const { setLoading } = this.context;
+    this.setState({ plans, plansFetched: true });
     setLoading(false);
   }
 
@@ -106,14 +106,14 @@ export default class Registration extends React.Component {
   }
 
   toggleModal = () => {
-    const {modalActive} = this.state;
-    this.setState({modalActive: !modalActive});
+    const { modalActive } = this.state;
+    this.setState({ modalActive: !modalActive });
   };
 
   handleSubmit(event) {
-    const {setLoading} = this.context;
+    const { setLoading } = this.context;
     event.preventDefault();
-    const {orgSlug, authenticate, settings, language, setUserData, navigate} =
+    const { orgSlug, authenticate, settings, language, setUserData, navigate } =
       this.props;
     const {
       phone_number,
@@ -144,12 +144,18 @@ export default class Registration extends React.Component {
       return false;
     }
 
-    this.setState({errors: {...errors, password2: null}});
+    this.setState({ errors: { ...errors, password2: null } });
     const url = registerApiUrl.replace("{orgSlug}", orgSlug);
     // prepare post data
+
+    const generateUsername = (email) => {
+      return email.replace(/[@.]/g, "_"); // user@gmail.com → user_gmail_com
+    };
+
+
     const postData = {
       email,
-      username: email,
+      username: generateUsername(email), // NEW
       first_name,
       last_name,
       birth_date,
@@ -211,7 +217,7 @@ export default class Registration extends React.Component {
     })
       .then((res = {}) => {
         if (!res && !res.data) throw new Error();
-        const {key: auth_token} = res.data;
+        const { key: auth_token } = res.data;
         setUserData({
           is_verified: false,
           auth_token,
@@ -238,7 +244,7 @@ export default class Registration extends React.Component {
         authenticate(true);
       })
       .catch((error) => {
-        const {data, status} = error.response;
+        const { data, status } = error.response;
         if (status === 404) {
           setLoading(false);
           toast.error(t`404_PG_TITL`);
@@ -247,7 +253,7 @@ export default class Registration extends React.Component {
         if (status === 409) {
           setLoading(false);
           this.toggleModal();
-          this.setState({errors: {...errors, ...data}});
+          this.setState({ errors: { ...errors, ...data } });
           return;
         }
         if ("billing_info" in data) {
@@ -262,71 +268,71 @@ export default class Registration extends React.Component {
         this.setState({
           errors: {
             ...errors,
-            ...(data.phone_number ? {phone_number: data.phone_number} : null),
-            ...(data.email ? {email: data.email.toString()} : {email: ""}),
+            ...(data.phone_number ? { phone_number: data.phone_number } : null),
+            ...(data.email ? { email: data.email.toString() } : { email: "" }),
             ...(data.username
-              ? {username: data.username.toString()}
-              : {username: ""}),
+              ? { username: data.username.toString() }
+              : { username: "" }),
             ...(data.first_name
-              ? {first_name: data.first_name.toString()}
-              : {first_name: ""}),
+              ? { first_name: data.first_name.toString() }
+              : { first_name: "" }),
             ...(data.last_name
-              ? {last_name: data.last_name.toString()}
-              : {last_name: ""}),
+              ? { last_name: data.last_name.toString() }
+              : { last_name: "" }),
             ...(data.birth_date
-              ? {birth_date: data.birth_date.toString()}
-              : {birth_date: ""}),
+              ? { birth_date: data.birth_date.toString() }
+              : { birth_date: "" }),
             ...(data.location
-              ? {location: data.location.toString()}
-              : {location: ""}),
+              ? { location: data.location.toString() }
+              : { location: "" }),
             ...(data.tax_number
-              ? {tax_number: data.tax_number.toString()}
-              : {tax_number: ""}),
-            ...(data.street ? {street: data.street.toString()} : {street: ""}),
-            ...(data.city ? {city: data.city.toString()} : {city: ""}),
+              ? { tax_number: data.tax_number.toString() }
+              : { tax_number: "" }),
+            ...(data.street ? { street: data.street.toString() } : { street: "" }),
+            ...(data.city ? { city: data.city.toString() } : { city: "" }),
             ...(data.zipcode
-              ? {zipcode: data.zipcode.toString()}
-              : {zipcode: ""}),
+              ? { zipcode: data.zipcode.toString() }
+              : { zipcode: "" }),
             ...(data.country
-              ? {country: data.country.toString()}
-              : {country: ""}),
+              ? { country: data.country.toString() }
+              : { country: "" }),
             ...(data.password1
-              ? {password1: data.password1.toString()}
-              : {password1: ""}),
+              ? { password1: data.password1.toString() }
+              : { password1: "" }),
             ...(data.password2
-              ? {password2: data.password2.toString()}
-              : {password2: ""}),
+              ? { password2: data.password2.toString() }
+              : { password2: "" }),
           },
         });
       });
   }
 
   selectedCountry = (data) => {
-    this.setState({countrySelected: data, country: data.value});
+    this.setState({ countrySelected: data, country: data.value });
   };
 
   changePlan = (event) => {
-    this.setState({selectedPlan: event.target.value});
+    this.setState({ selectedPlan: event.target.value });
   };
 
   autoSelectFirstPlan = () => {
-    const {registration} = this.props;
+    const { registration } = this.props;
     if (registration.auto_select_first_plan) {
-      this.changePlan({target: {value: 0}});
+      this.changePlan({ target: { value: 0 } });
     }
   };
 
   isPlanIdentityVerifier = () => {
     // If a payment is required, the plan is valid for identity verification
-    const {selectedPlan, plans} = this.state;
+    const { selectedPlan, plans } = this.state;
     return (
       selectedPlan !== null && plans[selectedPlan].requires_payment === true
     );
   };
 
   doesPlanRequireInvoice = () => {
-    const {settings} = this.props;
-    const {selectedPlan, plans} = this.state;
+    const { settings } = this.props;
+    const { selectedPlan, plans } = this.state;
     return (
       settings.subscriptions &&
       selectedPlan !== null &&
@@ -335,7 +341,7 @@ export default class Registration extends React.Component {
   };
 
   handleResponse = (response) => {
-    const {orgSlug, navigate} = this.props;
+    const { orgSlug, navigate } = this.props;
     if (response) {
       toast.info(t`PLEASE_LOGIN`);
       return navigate(`/${orgSlug}/login`);
@@ -344,8 +350,8 @@ export default class Registration extends React.Component {
   };
 
   getForm = () => {
-    const {registration, settings, orgSlug, defaultLanguage} = this.props;
-    const {additional_info_text, input_fields, links, auto_select_first_plan} =
+    const { registration, settings, orgSlug, defaultLanguage } = this.props;
+    const { additional_info_text, input_fields, links, auto_select_first_plan } =
       registration;
     const {
       success,
@@ -391,19 +397,53 @@ export default class Registration extends React.Component {
                     )}
                   {(plans.length === 0 ||
                     (plans.length > 0 && selectedPlan !== null)) && (
-                    <>
-                      {!this.isPlanIdentityVerifier() &&
-                        settings.mobile_phone_verification &&
-                        input_fields.phone_number && (
-                          <div className="row phone-number">
-                            <label htmlFor="phone-number">{t`PHONE_LBL`}</label>
-                            {getError(errors, "phone_number")}
-                            <Suspense
-                              fallback={
-                                <input
-                                  type="tel"
-                                  className="input"
+                      <>
+                        {!this.isPlanIdentityVerifier() &&
+                          settings.mobile_phone_verification &&
+                          input_fields.phone_number && (
+                            <div className="row phone-number">
+                              <label htmlFor="phone-number">{t`PHONE_LBL`}</label>
+                              {getError(errors, "phone_number")}
+                              <Suspense
+                                fallback={
+                                  <input
+                                    type="tel"
+                                    className="input"
+                                    name="phone_number"
+                                    value={phone_number}
+                                    onChange={(value) =>
+                                      this.handleChange({
+                                        target: {
+                                          name: "phone_number",
+                                          value: `+${value}`,
+                                        },
+                                      })
+                                    }
+                                    onKeyDown={(event) => {
+                                      submitOnEnter(
+                                        event,
+                                        this,
+                                        "registration-form",
+                                      );
+                                    }}
+                                    placeholder={t`PHONE_PHOLD`}
+                                  />
+                                }
+                              >
+                                <PhoneInput
                                   name="phone_number"
+                                  country={input_fields.phone_number.country}
+                                  onlyCountries={
+                                    input_fields.phone_number.only_countries || []
+                                  }
+                                  preferredCountries={
+                                    input_fields.phone_number
+                                      .preferred_countries || []
+                                  }
+                                  excludeCountries={
+                                    input_fields.phone_number.exclude_countries ||
+                                    []
+                                  }
                                   value={phone_number}
                                   onChange={(value) =>
                                     this.handleChange({
@@ -421,324 +461,289 @@ export default class Registration extends React.Component {
                                     );
                                   }}
                                   placeholder={t`PHONE_PHOLD`}
+                                  enableSearch={Boolean(
+                                    input_fields.phone_number.enable_search,
+                                  )}
+                                  inputProps={{
+                                    name: "phone_number",
+                                    id: "phone-number",
+                                    className: `form-control input ${errors.phone_number ? "error" : ""
+                                      }`,
+                                    required: true,
+                                    autoComplete: "tel",
+                                  }}
                                 />
-                              }
-                            >
-                              <PhoneInput
-                                name="phone_number"
-                                country={input_fields.phone_number.country}
-                                onlyCountries={
-                                  input_fields.phone_number.only_countries || []
-                                }
-                                preferredCountries={
-                                  input_fields.phone_number
-                                    .preferred_countries || []
-                                }
-                                excludeCountries={
-                                  input_fields.phone_number.exclude_countries ||
-                                  []
-                                }
-                                value={phone_number}
-                                onChange={(value) =>
-                                  this.handleChange({
-                                    target: {
-                                      name: "phone_number",
-                                      value: `+${value}`,
-                                    },
-                                  })
-                                }
-                                onKeyDown={(event) => {
-                                  submitOnEnter(
-                                    event,
-                                    this,
-                                    "registration-form",
-                                  );
-                                }}
-                                placeholder={t`PHONE_PHOLD`}
-                                enableSearch={Boolean(
-                                  input_fields.phone_number.enable_search,
-                                )}
-                                inputProps={{
-                                  name: "phone_number",
-                                  id: "phone-number",
-                                  className: `form-control input ${
-                                    errors.phone_number ? "error" : ""
-                                  }`,
-                                  required: true,
-                                  autoComplete: "tel",
-                                }}
-                              />
-                            </Suspense>
+                              </Suspense>
+                            </div>
+                          )}
+
+                        <div className="row email">
+                          <label htmlFor="email">{t`EMAIL`}</label>
+                          {getError(errors, "email")}
+                          <input
+                            className={`input ${errors.email ? "error" : ""}`}
+                            type="email"
+                            id="email"
+                            required
+                            name="email"
+                            value={email}
+                            onChange={this.handleChange}
+                            placeholder={t`EMAIL_PHOLD`}
+                            pattern={input_fields.email.pattern}
+                            autoComplete="email"
+                            title={t`EMAIL_PTRN_DESC`}
+                          />
+                        </div>
+
+                        {this.isPlanIdentityVerifier() && (
+                          <div className="row username">
+                            <label htmlFor="username">{t`USERNAME_REG_LBL`}</label>
+                            {getError(errors, "username")}
+                            <input
+                              className={`input ${errors.username ? "error" : ""}`}
+                              type="text"
+                              id="username"
+                              required
+                              name="username"
+                              value={username}
+                              onChange={this.handleChange}
+                              placeholder={t`USERNAME_REG_PHOLD`}
+                              pattern={input_fields.username.pattern}
+                              autoComplete="username"
+                              title={t`USERNAME_PTRN_DESC`}
+                            />
                           </div>
                         )}
 
-                      <div className="row email">
-                        <label htmlFor="email">{t`EMAIL`}</label>
-                        {getError(errors, "email")}
-                        <input
-                          className={`input ${errors.email ? "error" : ""}`}
-                          type="email"
-                          id="email"
-                          required
-                          name="email"
-                          value={email}
-                          onChange={this.handleChange}
-                          placeholder={t`EMAIL_PHOLD`}
-                          pattern={input_fields.email.pattern}
-                          autoComplete="email"
-                          title={t`EMAIL_PTRN_DESC`}
-                        />
-                      </div>
+                        {(input_fields.first_name.setting !== "disabled" ||
+                          this.doesPlanRequireInvoice()) && (
+                            <div className="row first_name">
+                              <label htmlFor="first_name">
+                                {input_fields.first_name.setting === "mandatory"
+                                  ? t`FIRST_NAME_LBL`
+                                  : `${t`FIRST_NAME_LBL`} (${t`OPTIONAL`})`}
+                              </label>
+                              {getError(errors, "first_name")}
+                              <input
+                                className={`input ${errors.first_name ? "error" : ""}`}
+                                type="text"
+                                id="first_name"
+                                required={
+                                  input_fields.first_name.setting === "mandatory" ||
+                                  settings.subscriptions
+                                }
+                                name="first_name"
+                                value={first_name}
+                                onChange={this.handleChange}
+                                autoComplete="given-name"
+                                placeholder={t`FIRST_NAME_PHOLD`}
+                              />
+                            </div>
+                          )}
 
-                      {this.isPlanIdentityVerifier() && (
-                        <div className="row username">
-                          <label htmlFor="username">{t`USERNAME_REG_LBL`}</label>
-                          {getError(errors, "username")}
+                        {(input_fields.last_name.setting !== "disabled" ||
+                          this.doesPlanRequireInvoice()) && (
+                            <div className="row last_name">
+                              <label htmlFor="last_name">
+                                {input_fields.last_name.setting === "mandatory"
+                                  ? t`LAST_NAME_LBL`
+                                  : `${t`LAST_NAME_LBL`} (${t`OPTIONAL`})`}
+                              </label>
+                              {getError(errors, "last_name")}
+                              <input
+                                className={`input ${errors.last_name ? "error" : ""}`}
+                                type="text"
+                                id="last_name"
+                                required={
+                                  input_fields.last_name.setting === "mandatory" ||
+                                  settings.subscriptions
+                                }
+                                name="last_name"
+                                value={last_name}
+                                onChange={this.handleChange}
+                                autoComplete="family-name"
+                                placeholder={t`LAST_NAME_PHOLD`}
+                              />
+                            </div>
+                          )}
+
+                        {input_fields.birth_date.setting !== "disabled" && (
+                          <div className="row birth_date">
+                            <label htmlFor="birth_date">
+                              {input_fields.birth_date.setting === "mandatory"
+                                ? t`BIRTH_DATE_LBL`
+                                : `${t`BIRTH_DATE_LBL`} (${t`OPTIONAL`})`}
+                            </label>
+                            {getError(errors, "birth_date")}
+                            <input
+                              className={`input ${errors.birth_date ? "error" : ""}`}
+                              type="date"
+                              id="birth_date"
+                              required={
+                                input_fields.birth_date.setting === "mandatory"
+                              }
+                              name="birth_date"
+                              value={birth_date}
+                              onChange={this.handleChange}
+                              autoComplete="bday"
+                            />
+                          </div>
+                        )}
+
+                        {input_fields.location.setting !== "disabled" && (
+                          <div className="row location">
+                            <label htmlFor="location">
+                              {input_fields.location.setting === "mandatory"
+                                ? t`LOCATION_LBL`
+                                : `${t`LOCATION_LBL`} (${t`OPTIONAL`})`}
+                            </label>
+                            {getError(errors, "location")}
+                            <input
+                              className={`input ${errors.location ? "error" : ""}`}
+                              type="text"
+                              id="location"
+                              required={
+                                input_fields.location.setting === "mandatory"
+                              }
+                              name="location"
+                              value={location}
+                              onChange={this.handleChange}
+                              placeholder={t`LOCATION_PHOLD`}
+                              pattern={input_fields.location.pattern}
+                              autoComplete="street-address"
+                              title={t`LOCATION_PTRN_DESC`}
+                            />
+                          </div>
+                        )}
+
+                        <div className="row password">
+                          <label htmlFor="password">{t`PWD_LBL`}</label>
+                          {getError(errors, "password1")}
                           <input
-                            className={`input ${errors.username ? "error" : ""}`}
-                            type="text"
-                            id="username"
+                            className={`input ${errors.password1 ? "error" : ""}`}
+                            type="password"
+                            id="password"
                             required
-                            name="username"
-                            value={username}
+                            name="password1"
+                            value={password1}
                             onChange={this.handleChange}
-                            placeholder={t`USERNAME_REG_PHOLD`}
-                            pattern={input_fields.username.pattern}
-                            autoComplete="username"
-                            title={t`USERNAME_PTRN_DESC`}
+                            placeholder={t`PWD_PHOLD`}
+                            pattern={input_fields.password.pattern}
+                            title={t`PWD_PTRN_DESC`}
+                            ref={this.passwordToggleRef}
+                            autoComplete="new-password"
                           />
-                        </div>
-                      )}
-
-                      {(input_fields.first_name.setting !== "disabled" ||
-                        this.doesPlanRequireInvoice()) && (
-                        <div className="row first_name">
-                          <label htmlFor="first_name">
-                            {input_fields.first_name.setting === "mandatory"
-                              ? t`FIRST_NAME_LBL`
-                              : `${t`FIRST_NAME_LBL`} (${t`OPTIONAL`})`}
-                          </label>
-                          {getError(errors, "first_name")}
-                          <input
-                            className={`input ${errors.first_name ? "error" : ""}`}
-                            type="text"
-                            id="first_name"
-                            required={
-                              input_fields.first_name.setting === "mandatory" ||
-                              settings.subscriptions
+                          <PasswordToggleIcon
+                            inputRef={this.passwordToggleRef}
+                            secondInputRef={this.confirmPasswordToggleRef}
+                            hidePassword={hidePassword}
+                            toggler={() =>
+                              this.setState({ hidePassword: !hidePassword })
                             }
-                            name="first_name"
-                            value={first_name}
-                            onChange={this.handleChange}
-                            autoComplete="given-name"
-                            placeholder={t`FIRST_NAME_PHOLD`}
                           />
                         </div>
-                      )}
 
-                      {(input_fields.last_name.setting !== "disabled" ||
-                        this.doesPlanRequireInvoice()) && (
-                        <div className="row last_name">
-                          <label htmlFor="last_name">
-                            {input_fields.last_name.setting === "mandatory"
-                              ? t`LAST_NAME_LBL`
-                              : `${t`LAST_NAME_LBL`} (${t`OPTIONAL`})`}
-                          </label>
-                          {getError(errors, "last_name")}
+                        <div className="row password-confirm">
+                          <label htmlFor="password-confirm">{t`CONFIRM_PWD_LBL`}</label>
+                          {getError(errors, "password2")}
                           <input
-                            className={`input ${errors.last_name ? "error" : ""}`}
-                            type="text"
-                            id="last_name"
-                            required={
-                              input_fields.last_name.setting === "mandatory" ||
-                              settings.subscriptions
-                            }
-                            name="last_name"
-                            value={last_name}
+                            className={`input ${errors.password2 ? "error" : ""}`}
+                            type="password"
+                            id="password-confirm"
+                            required
+                            name="password2"
+                            value={password2}
                             onChange={this.handleChange}
-                            autoComplete="family-name"
-                            placeholder={t`LAST_NAME_PHOLD`}
+                            placeholder={t`CONFIRM_PWD_PHOLD`}
+                            pattern={input_fields.password.pattern}
+                            title={t`PWD_PTRN_DESC`}
+                            ref={this.confirmPasswordToggleRef}
+                            autoComplete="new-password"
+                          />
+                          <PasswordToggleIcon
+                            inputRef={this.confirmPasswordToggleRef}
+                            secondInputRef={this.passwordToggleRef}
+                            hidePassword={hidePassword}
+                            toggler={() =>
+                              this.setState({ hidePassword: !hidePassword })
+                            }
                           />
                         </div>
-                      )}
 
-                      {input_fields.birth_date.setting !== "disabled" && (
-                        <div className="row birth_date">
-                          <label htmlFor="birth_date">
-                            {input_fields.birth_date.setting === "mandatory"
-                              ? t`BIRTH_DATE_LBL`
-                              : `${t`BIRTH_DATE_LBL`} (${t`OPTIONAL`})`}
-                          </label>
-                          {getError(errors, "birth_date")}
-                          <input
-                            className={`input ${errors.birth_date ? "error" : ""}`}
-                            type="date"
-                            id="birth_date"
-                            required={
-                              input_fields.birth_date.setting === "mandatory"
-                            }
-                            name="birth_date"
-                            value={birth_date}
-                            onChange={this.handleChange}
-                            autoComplete="bday"
-                          />
-                        </div>
-                      )}
-
-                      {input_fields.location.setting !== "disabled" && (
-                        <div className="row location">
-                          <label htmlFor="location">
-                            {input_fields.location.setting === "mandatory"
-                              ? t`LOCATION_LBL`
-                              : `${t`LOCATION_LBL`} (${t`OPTIONAL`})`}
-                          </label>
-                          {getError(errors, "location")}
-                          <input
-                            className={`input ${errors.location ? "error" : ""}`}
-                            type="text"
-                            id="location"
-                            required={
-                              input_fields.location.setting === "mandatory"
-                            }
-                            name="location"
-                            value={location}
-                            onChange={this.handleChange}
-                            placeholder={t`LOCATION_PHOLD`}
-                            pattern={input_fields.location.pattern}
-                            autoComplete="street-address"
-                            title={t`LOCATION_PTRN_DESC`}
-                          />
-                        </div>
-                      )}
-
-                      <div className="row password">
-                        <label htmlFor="password">{t`PWD_LBL`}</label>
-                        {getError(errors, "password1")}
-                        <input
-                          className={`input ${errors.password1 ? "error" : ""}`}
-                          type="password"
-                          id="password"
-                          required
-                          name="password1"
-                          value={password1}
-                          onChange={this.handleChange}
-                          placeholder={t`PWD_PHOLD`}
-                          pattern={input_fields.password.pattern}
-                          title={t`PWD_PTRN_DESC`}
-                          ref={this.passwordToggleRef}
-                          autoComplete="new-password"
-                        />
-                        <PasswordToggleIcon
-                          inputRef={this.passwordToggleRef}
-                          secondInputRef={this.confirmPasswordToggleRef}
-                          hidePassword={hidePassword}
-                          toggler={() =>
-                            this.setState({hidePassword: !hidePassword})
-                          }
-                        />
-                      </div>
-
-                      <div className="row password-confirm">
-                        <label htmlFor="password-confirm">{t`CONFIRM_PWD_LBL`}</label>
-                        {getError(errors, "password2")}
-                        <input
-                          className={`input ${errors.password2 ? "error" : ""}`}
-                          type="password"
-                          id="password-confirm"
-                          required
-                          name="password2"
-                          value={password2}
-                          onChange={this.handleChange}
-                          placeholder={t`CONFIRM_PWD_PHOLD`}
-                          pattern={input_fields.password.pattern}
-                          title={t`PWD_PTRN_DESC`}
-                          ref={this.confirmPasswordToggleRef}
-                          autoComplete="new-password"
-                        />
-                        <PasswordToggleIcon
-                          inputRef={this.confirmPasswordToggleRef}
-                          secondInputRef={this.passwordToggleRef}
-                          hidePassword={hidePassword}
-                          toggler={() =>
-                            this.setState({hidePassword: !hidePassword})
-                          }
-                        />
-                      </div>
-
-                      {this.doesPlanRequireInvoice() && (
-                        <div className="billing-info">
-                          <div className="row country">
-                            <label htmlFor="country">{t`COUNTRY_LBL`}</label>
-                            {getError(errors, "country")}
-                            <Select
-                              options={countries}
-                              value={countrySelected}
-                              onChange={this.selectedCountry}
-                            />
+                        {this.doesPlanRequireInvoice() && (
+                          <div className="billing-info">
+                            <div className="row country">
+                              <label htmlFor="country">{t`COUNTRY_LBL`}</label>
+                              {getError(errors, "country")}
+                              <Select
+                                options={countries}
+                                value={countrySelected}
+                                onChange={this.selectedCountry}
+                              />
+                            </div>
+                            <div className="row city">
+                              <label htmlFor="city">{t`CITY_LBL`}</label>
+                              {getError(errors, "city")}
+                              <input
+                                className={`input ${errors.city ? "error" : ""}`}
+                                type="text"
+                                id="city"
+                                required
+                                name="city"
+                                value={city}
+                                onChange={this.handleChange}
+                                autoComplete="address-level2"
+                                placeholder={t`CITY_PHOLD`}
+                              />
+                            </div>
+                            <div className="row street">
+                              <label htmlFor="street">{t`STREET_LBL`}</label>
+                              {getError(errors, "street")}
+                              <input
+                                className={`input ${errors.street ? "error" : ""}`}
+                                type="text"
+                                id="street"
+                                required
+                                name="street"
+                                value={street}
+                                onChange={this.handleChange}
+                                autoComplete="address"
+                                placeholder={t`STREET_PHOLD`}
+                              />
+                            </div>
+                            <div className="row zipcode">
+                              <label htmlFor="zipcode">{t`ZIP_CODE_LBL`}</label>
+                              {getError(errors, "zipcode")}
+                              <input
+                                className={`input ${errors.zipcode ? "error" : ""}`}
+                                type="number"
+                                id="zipcode"
+                                required
+                                name="zipcode"
+                                value={zipcode}
+                                onChange={this.handleChange}
+                                autoComplete="postal-code"
+                              />
+                            </div>
+                            <div className="row tax_number">
+                              <label htmlFor="tax_number">{t`TAX_NUMBER_LBL`}</label>
+                              {getError(errors, "tax_number")}
+                              <input
+                                className={`input ${errors.tax_number ? "error" : ""}`}
+                                type="text"
+                                id="tax_number"
+                                name="tax_number"
+                                value={tax_number}
+                                onChange={this.handleChange}
+                                placeholder={t`TAX_NUMBER_PHOLD`}
+                                pattern={input_fields.tax_number.pattern}
+                                title={t`TAX_NUMBER_PTRN_DESC`}
+                              />
+                            </div>
                           </div>
-                          <div className="row city">
-                            <label htmlFor="city">{t`CITY_LBL`}</label>
-                            {getError(errors, "city")}
-                            <input
-                              className={`input ${errors.city ? "error" : ""}`}
-                              type="text"
-                              id="city"
-                              required
-                              name="city"
-                              value={city}
-                              onChange={this.handleChange}
-                              autoComplete="address-level2"
-                              placeholder={t`CITY_PHOLD`}
-                            />
-                          </div>
-                          <div className="row street">
-                            <label htmlFor="street">{t`STREET_LBL`}</label>
-                            {getError(errors, "street")}
-                            <input
-                              className={`input ${errors.street ? "error" : ""}`}
-                              type="text"
-                              id="street"
-                              required
-                              name="street"
-                              value={street}
-                              onChange={this.handleChange}
-                              autoComplete="address"
-                              placeholder={t`STREET_PHOLD`}
-                            />
-                          </div>
-                          <div className="row zipcode">
-                            <label htmlFor="zipcode">{t`ZIP_CODE_LBL`}</label>
-                            {getError(errors, "zipcode")}
-                            <input
-                              className={`input ${errors.zipcode ? "error" : ""}`}
-                              type="number"
-                              id="zipcode"
-                              required
-                              name="zipcode"
-                              value={zipcode}
-                              onChange={this.handleChange}
-                              autoComplete="postal-code"
-                            />
-                          </div>
-                          <div className="row tax_number">
-                            <label htmlFor="tax_number">{t`TAX_NUMBER_LBL`}</label>
-                            {getError(errors, "tax_number")}
-                            <input
-                              className={`input ${errors.tax_number ? "error" : ""}`}
-                              type="text"
-                              id="tax_number"
-                              name="tax_number"
-                              value={tax_number}
-                              onChange={this.handleChange}
-                              placeholder={t`TAX_NUMBER_PHOLD`}
-                              pattern={input_fields.tax_number.pattern}
-                              title={t`TAX_NUMBER_PTRN_DESC`}
-                            />
-                          </div>
-                        </div>
-                      )}
-                    </>
-                  )}
+                        )}
+                      </>
+                    )}
                 </div>
 
                 {(plans.length === 0 ||
@@ -756,12 +761,12 @@ export default class Registration extends React.Component {
                 <div className="row register">
                   {(plans.length === 0 ||
                     (plans.length > 0 && selectedPlan !== null)) && (
-                    <input
-                      type="submit"
-                      className="button full"
-                      value={t`REGISTER_BTN_TXT`}
-                    />
-                  )}
+                      <input
+                        type="submit"
+                        className="button full"
+                        value={t`REGISTER_BTN_TXT`}
+                      />
+                    )}
                 </div>
 
                 {links && (
@@ -802,8 +807,8 @@ export default class Registration extends React.Component {
   };
 
   render() {
-    const {settings} = this.props;
-    const {plansFetched, modalActive, errors} = this.state;
+    const { settings } = this.props;
+    const { plansFetched, modalActive, errors } = this.state;
 
     if (settings.subscriptions && !plansFetched) {
       return null;
