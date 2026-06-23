@@ -155,7 +155,7 @@ exports[`<Registration /> rendering should render correctly 1`] = `
                 id="email"
                 name="email"
                 onChange={[Function]}
-                pattern=".+@.+\\..+"
+                pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
                 placeholder="email address"
                 required={true}
                 title="enter valid email address"
@@ -334,7 +334,7 @@ exports[`<Registration /> rendering with placeholder translation tags should ren
                 id="email"
                 name="email"
                 onChange={[Function]}
-                pattern=".+@.+\\..+"
+                pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
                 placeholder="EMAIL_PHOLD"
                 required={true}
                 title="EMAIL_PTRN_DESC"
