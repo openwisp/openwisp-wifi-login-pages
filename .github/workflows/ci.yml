@@ -39,6 +39,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
+          python-version: "3.13"
           cache: "pip"
           cache-dependency-path: "**/requirements*.txt"
 
@@ -102,6 +103,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
+          python-version: "3.13"
           cache: "pip"
           cache-dependency-path: "**/requirements*.txt"
 
@@ -129,9 +131,12 @@ jobs:
         run: |
           cd openwisp-radius
           pip install -U pip setuptools wheel
-          pip install -U -e ".[saml]"
-          pip install -U -r requirements-test.txt
-          pip install -U "Django~=5.2.0"
+          pip install "Django~=5.2.0"
+          # remove some test dependencies not used here
+          sed -i '/openwisp-monitoring/d' requirements-test.txt
+          sed -i '/mock-ssh-server/d' requirements-test.txt
+          pip install -r requirements-test.txt
+          pip install -e ".[saml]"
           ./tests/manage.py migrate
 
       - name: Creating configuration of organization (supports mobile verification)
