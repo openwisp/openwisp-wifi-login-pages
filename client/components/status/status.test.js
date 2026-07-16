@@ -2324,6 +2324,33 @@ describe("<Status /> interactions", () => {
     await tick();
     expect(toast.error.mock.calls.length).toBe(1);
   });
+  it("test upgradeUserPlan stores in_upgrade", async () => {
+    axios.mockImplementation(() =>
+      Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: {
+          payment_url: "https://payment.example.com/pay/1",
+          in_upgrade: true,
+        },
+      }),
+    );
+    props = createTestProps();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    wrapper.setState({upgradePlans: [{id: "1"}]});
+    wrapper.instance().upgradeUserPlan({target: {value: 0}});
+    await tick();
+    expect(props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({
+        payment_url: "https://payment.example.com/pay/1",
+        in_upgrade: true,
+      }),
+    );
+    expect(props.navigate).toHaveBeenCalledWith("/default/payment/process");
+  });
   it("should hide limit-info element if getUserRadiusUsage fails", async () => {
     validateToken.mockReturnValue(true);
     axios.mockImplementation(() =>

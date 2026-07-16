@@ -482,6 +482,7 @@ export default class Status extends React.Component {
         setUserData({
           ...userData,
           payment_url: response.payment_url,
+          in_upgrade: response.in_upgrade,
         });
         // After a successful payment, the user is redirected back to the status page.
         // If the user plan was previously exhausted, they need to be logged into the captive portal

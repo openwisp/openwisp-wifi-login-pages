@@ -300,6 +300,93 @@ describe("Test <PaymentStatus /> cases", () => {
     expect(spyToast.mock.calls.length).toBe(0);
   });
 
+  it("should render failed state when a plan upgrade payment fails", async () => {
+    props = createTestProps({
+      params: {status: "failed"},
+      settings: {subscriptions: true, mobile_phone_verification: true},
+      userData: {
+        ...responseData,
+        method: "mobile_phone",
+        is_verified: true,
+        in_upgrade: true,
+        payment_url: "https://payment.example.com/pay/1",
+      },
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    expect(wrapper.find("Navigate").length).toEqual(0);
+    expect(wrapper.find(".payment-status-row-1").length).toEqual(1);
+    expect(
+      wrapper.find(".payment-status-row-3 .button").at(0).props().to,
+    ).toEqual("/default/payment/process");
+  });
+
+  it("should go back to status without bailing out on plan upgrade", async () => {
+    props = createTestProps({
+      params: {status: "failed"},
+      settings: {subscriptions: true, mobile_phone_verification: true},
+      userData: {
+        ...responseData,
+        method: "mobile_phone",
+        is_verified: true,
+        in_upgrade: true,
+        payment_url: "https://payment.example.com/pay/1",
+      },
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    wrapper.find(".payment-status-row-4 .button").simulate("click", {});
+    expect(props.navigate).toHaveBeenCalledWith("/default/status");
+    expect(props.logout).not.toHaveBeenCalled();
+  });
+
+  it("should hide the continue button if the payment url is not available", async () => {
+    props = createTestProps({
+      params: {status: "failed"},
+      settings: {subscriptions: true, mobile_phone_verification: true},
+      userData: {
+        ...responseData,
+        method: "mobile_phone",
+        is_verified: true,
+        in_upgrade: true,
+        payment_url: null,
+      },
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    expect(wrapper.find("Navigate").length).toEqual(0);
+    expect(wrapper.find(".payment-status-row-3").length).toEqual(0);
+    expect(wrapper.find(".payment-status-row-4 .button").length).toEqual(1);
+  });
+
+  it("should redirect to status if verified and not upgrading", async () => {
+    props = createTestProps({
+      params: {status: "failed"},
+      settings: {subscriptions: true, mobile_phone_verification: true},
+      userData: {
+        ...responseData,
+        method: "mobile_phone",
+        is_verified: true,
+      },
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    expect(wrapper.find("Navigate").length).toEqual(1);
+    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
+  });
+
   it("should redirect to login if not authenticated", async () => {
     const spyToast = jest.spyOn(toast, "success");
     props = createTestProps({

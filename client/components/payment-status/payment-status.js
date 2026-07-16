@@ -63,6 +63,13 @@ export default class PaymentStatus extends React.Component {
     }
   }
 
+  // a user who gives up on a plan upgrade keeps the plan they already
+  // paid for, so they are sent back to the status page without logging out
+  backToStatus = () => {
+    const {orgSlug, navigate} = this.props;
+    navigate(`/${orgSlug}/status`);
+  };
+
   logout = () => {
     const {logout, cookies, orgSlug, setUserData, userData, navigate} =
       this.props;
@@ -82,26 +89,27 @@ export default class PaymentStatus extends React.Component {
   render() {
     const {orgSlug, params, isAuthenticated, userData} = this.props;
     const {status} = params;
-    const {method, is_verified: isVerified} = userData;
+    const {method, is_verified: isVerified, in_upgrade: inUpgrade} = userData;
     const redirectToStatus = () => <Navigate to={`/${orgSlug}/status`} />;
     const acceptedValues = ["success", "failed", "draft"];
     const {isTokenValid} = this.state;
-
-    // not registered with bank card flow
-    if (
-      (method && method !== "bank_card") ||
-      !acceptedValues.includes(status)
-    ) {
-      return redirectToStatus();
-    }
-
-    // likely somebody opening this page by mistake
-    if (
+    // a user upgrading their plan keeps the registration method and the
+    // verified flag they already had, so the checks written for the bank
+    // card registration flow would send them away from this page
+    const isFailedUpgrade = Boolean(inUpgrade) && status === "failed";
+    // invalid status, not registered with bank card flow, or likely
+    // somebody opening this page by mistake
+    const shouldRedirectToStatus =
+      !acceptedValues.includes(status) ||
+      (!isFailedUpgrade && method && method !== "bank_card") ||
       (isAuthenticated === false && status !== "draft") ||
-      (["failed", "draft"].includes(status) && isVerified === true) ||
+      (!isFailedUpgrade &&
+        ["failed", "draft"].includes(status) &&
+        isVerified === true) ||
       (status === "success" && isVerified === false) ||
-      isTokenValid === false
-    ) {
+      isTokenValid === false;
+
+    if (shouldRedirectToStatus) {
       return redirectToStatus();
     }
 
@@ -117,7 +125,7 @@ export default class PaymentStatus extends React.Component {
       return redirectToStatus();
     }
 
-    return this.renderFailed();
+    return this.renderFailed(isFailedUpgrade);
   }
 
   paymentProceedHandler() {
@@ -182,8 +190,14 @@ export default class PaymentStatus extends React.Component {
     );
   }
 
-  renderFailed() {
-    const {orgSlug} = this.props;
+  renderFailed(isFailedUpgrade = false) {
+    const {orgSlug, userData} = this.props;
+    const retryUrl = isFailedUpgrade
+      ? `/${orgSlug}/payment/process`
+      : `/${orgSlug}/payment/draft`;
+    // an upgrade which ran out of allowed payment attempts has no
+    // payment URL left to send the user to
+    const showRetry = !isFailedUpgrade || Boolean(userData.payment_url);
     // failed payment case
     return (
       <div className="container content">
@@ -192,20 +206,22 @@ export default class PaymentStatus extends React.Component {
             <div className="inner">
               <h2 className="row payment-status-row-1">{t`PAY_FAIL`}</h2>
               <div className="row payment-status-row-2">{t`PAY_SUB_H`}</div>
-              <div className="row payment-status-row-3">
-                <Link className="button full" to={`/${orgSlug}/payment/draft`}>
-                  {t`PAY_TRY_AGAIN_BTN`}
-                </Link>
-              </div>
+              {showRetry && (
+                <div className="row payment-status-row-3">
+                  <Link className="button full" to={retryUrl}>
+                    {t`PAY_TRY_AGAIN_BTN`}
+                  </Link>
+                </div>
+              )}
 
               <div className="row payment-status-row-4">
                 <p>{t`PAY_GIVE_UP_TXT`}</p>
                 <button
                   type="button"
                   className="button full"
-                  onClick={this.logout}
+                  onClick={isFailedUpgrade ? this.backToStatus : this.logout}
                 >
-                  {t`PAY_GIVE_UP_BTN`}
+                  {isFailedUpgrade ? t`PAY_GO_BACK_BTN` : t`PAY_GIVE_UP_BTN`}
                 </button>
               </div>
             </div>

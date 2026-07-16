@@ -451,6 +451,11 @@ msgstr ""
 "Si no puede completar la transacción puede intentar ponerse en contacto con "
 "su banco o cancelar la operación."
 
+#.  failed payment case
+#: client/components/payment-status/payment-status.js:230
+msgid "PAY_GO_BACK_BTN"
+msgstr "Cancelar operación y volver a tu cuenta"
+
 #: client/components/password-reset/password-reset.js:32
 msgid "PWD_RESET_TITL"
 msgstr "Restablecer contraseña"

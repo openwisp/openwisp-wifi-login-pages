@@ -446,6 +446,11 @@ msgstr ""
 "Wenn ihre Transaktion nicht erfolgreich war, wenden Sie sich bitte an den "
 "Support an"
 
+#.  failed payment case
+#: client/components/payment-status/payment-status.js:230
+msgid "PAY_GO_BACK_BTN"
+msgstr "Vorgang abbrechen und zu Ihrem Konto zurückkehren"
+
 #: client/components/password-reset/password-reset.js:32
 msgid "PWD_RESET_TITL"
 msgstr "Passwort zurücksetzen"
