@@ -6,6 +6,7 @@ import {Link, Navigate} from "react-router-dom";
 import {toast} from "react-toastify";
 import {t} from "ttag";
 import LoadingContext from "../../utils/loading-context";
+import Loader from "../../utils/loader";
 import Contact from "../contact-box";
 import validateToken from "../../utils/validate-token";
 import handleLogout from "../../utils/handle-logout";
@@ -123,6 +124,13 @@ export default class PaymentStatus extends React.Component {
     if (isTokenValid === true && status === "success" && isVerified === true) {
       toast.success(t`PAY_SUCCESS`);
       return redirectToStatus();
+    }
+
+    // isTokenValid is still null while validateToken() is resolving, so
+    // in_upgrade (and therefore isFailedUpgrade) isn't reliable yet on a cold
+    // reload; show a loader instead of flashing the wrong failed-page variant
+    if (status === "failed" && isTokenValid === null) {
+      return <Loader />;
     }
 
     return this.renderFailed(isFailedUpgrade);

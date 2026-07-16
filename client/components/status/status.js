@@ -469,7 +469,7 @@ export default class Status extends React.Component {
     const auth_token = cookies.get(`${orgSlug}_auth_token`);
     const {upgradePlans} = this.state;
     handleSession(orgSlug, auth_token, cookies);
-    upgradePlan(
+    return upgradePlan(
       orgSlug,
       upgradePlans[event.target.value].id,
       userData.auth_token,

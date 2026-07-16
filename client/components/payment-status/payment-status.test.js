@@ -9,6 +9,7 @@ import {t} from "ttag";
 import {loadingContextValue} from "../../utils/loading-context";
 import getConfig from "../../utils/get-config";
 import PaymentStatus from "./payment-status";
+import Loader from "../../utils/loader";
 import tick from "../../utils/tick";
 import validateToken from "../../utils/validate-token";
 import loadTranslation from "../../utils/load-translation";
@@ -55,7 +56,12 @@ describe("<PaymentStatus /> rendering with placeholder translation tags", () => 
   });
   it("should render translation placeholder correctly", () => {
     const renderer = new ShallowRenderer();
-    const wrapper = renderer.render(<PaymentStatus {...props} />);
+    renderer.render(<PaymentStatus {...props} />);
+    // ShallowRenderer does not run componentDidMount, so isTokenValid stays
+    // at its initial null; move it to a resolved value to exercise the
+    // actual failed-page markup instead of the cold-load loader guard
+    renderer.getMountedInstance().setState({isTokenValid: true});
+    const wrapper = renderer.getRenderOutput();
     expect(wrapper).toMatchSnapshot();
   });
 });
@@ -104,6 +110,23 @@ describe("Test <PaymentStatus /> cases", () => {
     ).toEqual("/default/payment/draft");
     expect(wrapper.find(".payment-status-row-4 .button").length).toEqual(1);
     expect(wrapper.find("Navigate").length).toEqual(0);
+  });
+
+  it("should show a loader instead of the wrong failed variant on cold load", () => {
+    // simulates a fresh reload landing on /payment/failed before
+    // validateToken() has resolved and repopulated userData: in_upgrade is
+    // not known yet, so neither failed variant should paint
+    props = createTestProps({
+      userData: {},
+      params: {status: "failed"},
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    expect(wrapper.find(Loader)).toHaveLength(1);
+    expect(wrapper.find("Navigate").length).toEqual(0);
+    expect(wrapper.find(".payment-status-row-1").length).toEqual(0);
   });
 
   it("should call logout correctly when clicking on logout button", async () => {
