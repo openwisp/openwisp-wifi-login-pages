@@ -2341,12 +2341,37 @@ describe("<Status /> interactions", () => {
       disableLifecycleMethods: true,
     });
     wrapper.setState({upgradePlans: [{id: "1"}]});
-    wrapper.instance().upgradeUserPlan({target: {value: 0}});
-    await tick();
+    await wrapper.instance().upgradeUserPlan({target: {value: 0}});
     expect(props.setUserData).toHaveBeenCalledWith(
       expect.objectContaining({
         payment_url: "https://payment.example.com/pay/1",
         in_upgrade: true,
+      }),
+    );
+    expect(props.navigate).toHaveBeenCalledWith("/default/payment/process");
+  });
+  it("test upgradeUserPlan stores in_upgrade false", async () => {
+    axios.mockImplementation(() =>
+      Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: {
+          payment_url: "https://payment.example.com/pay/1",
+          in_upgrade: false,
+        },
+      }),
+    );
+    props = createTestProps();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    wrapper.setState({upgradePlans: [{id: "1"}]});
+    await wrapper.instance().upgradeUserPlan({target: {value: 0}});
+    expect(props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({
+        payment_url: "https://payment.example.com/pay/1",
+        in_upgrade: false,
       }),
     );
     expect(props.navigate).toHaveBeenCalledWith("/default/payment/process");
