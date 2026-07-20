@@ -22,6 +22,7 @@ import {
 } from "../../constants";
 import LoadingContext from "../../utils/loading-context";
 import getText from "../../utils/get-text";
+import getErrorText from "../../utils/get-error-text";
 import logError from "../../utils/log-error";
 import Contact from "../contact-box";
 import shouldLinkBeShown from "../../utils/should-link-be-shown";
@@ -485,17 +486,16 @@ export default class Status extends React.Component {
           payment_url: response.payment_url,
           in_upgrade: response.in_upgrade,
         });
-        // After a successful payment, the user is redirected back to the status page.
-        // When the captive portal supports CoA, the backend restores access
-        // transparently, so no forced re-login is needed here.
-        if (!settings.captive_portal_supports_coa) {
-          this.storeValue(
-            captivePortalSyncAuth,
-            `${orgSlug}_mustLogin`,
-            true,
-            cookies,
-          );
-        }
+        // The user must be logged into the captive portal (under a
+        // temporary/limited group if their previous plan was exhausted) so
+        // they can reach the payment gateway. This is unrelated to CoA
+        // support: CoA only affects what happens after payment succeeds.
+        this.storeValue(
+          captivePortalSyncAuth,
+          `${orgSlug}_mustLogin`,
+          true,
+          cookies,
+        );
         // When the payment gateway requires internet access, the user must first
         // be logged into the captive portal. Send them to the draft payment page
         // (which warns about the limited payment window) and route the "proceed"
@@ -508,7 +508,8 @@ export default class Status extends React.Component {
         }
       })
       .catch((error) => {
-        toast.error(t`ERR_OCCUR`);
+        const errorText = getErrorText(error, t`ERR_OCCUR`);
+        toast.error(errorText);
         logError(error, "Error while upgrading plan");
       });
   }

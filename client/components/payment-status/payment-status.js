@@ -72,11 +72,13 @@ export default class PaymentStatus extends React.Component {
     }
   }
 
-  // a user who gives up on a plan upgrade keeps their existing plan,
-  // so they are sent back to the status page without logging out.
+  // A user who gives up on a plan upgrade keeps their existing plan.
   // The backend must cancel the pending upgrade order and stale
   // upgrade/login flags must be cleared, otherwise status.js can still
-  // bounce the user back to payment/draft.
+  // bounce the user back to payment/draft. The captive portal session
+  // established to reach the payment gateway was granted under a
+  // temporary/limited group for this upgrade attempt, so it must be
+  // logged out too, letting the user reconnect under their actual plan.
   backToStatus = async () => {
     const {orgSlug, navigate, setUserData, userData, language} = this.props;
     try {
@@ -91,6 +93,7 @@ export default class PaymentStatus extends React.Component {
         auth_token: response.auth_token || response.key || userData.auth_token,
         proceedToPayment: false,
         mustLogin: undefined,
+        mustLogout: true,
       });
     } catch (error) {
       if (!error.response || error.response.status !== 404) {
@@ -103,6 +106,7 @@ export default class PaymentStatus extends React.Component {
         proceedToPayment: false,
         payment_url: null,
         mustLogin: undefined,
+        mustLogout: true,
       });
     }
     navigate(`/${orgSlug}/status`);

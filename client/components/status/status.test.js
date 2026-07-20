@@ -2407,6 +2407,30 @@ describe("<Status /> interactions", () => {
     await tick();
     expect(toast.error.mock.calls.length).toBe(1);
   });
+  it("test upgradeUserPlan relays the backend error message on 429 (too many orders)", async () => {
+    jest.spyOn(toast, "error");
+    axios.mockImplementation(() =>
+      Promise.reject({
+        response: {
+          status: 429,
+          statusText: "TOO_MANY_REQUESTS",
+          data: {
+            detail: "You have reached the maximum number of allowed orders.",
+          },
+        },
+      }),
+    );
+    props = createTestProps();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    wrapper.setState({upgradePlans: [{id: "1"}]});
+    await wrapper.instance().upgradeUserPlan({target: {value: 0}});
+    expect(toast.error).toHaveBeenCalledWith(
+      "You have reached the maximum number of allowed orders.",
+    );
+  });
   it("test upgradeUserPlan stores in_upgrade", async () => {
     axios.mockImplementation(() =>
       Promise.resolve({
@@ -2491,7 +2515,10 @@ describe("<Status /> interactions", () => {
     expect(props.navigate).toHaveBeenCalledWith("/default/payment/draft");
     expect(props.navigate).not.toHaveBeenCalledWith("/default/payment/process");
   });
-  it("test upgradeUserPlan does not force mustLogin when captive portal supports CoA", async () => {
+  it("test upgradeUserPlan forces mustLogin when captive portal supports CoA", async () => {
+    // the initial captive portal login is needed to reach the payment
+    // gateway regardless of CoA support: CoA only affects what happens
+    // after payment succeeds, not this initial login
     axios.mockImplementation(() =>
       Promise.resolve({
         status: 200,
@@ -2518,9 +2545,7 @@ describe("<Status /> interactions", () => {
         in_upgrade: true,
       }),
     );
-    // the backend restores access transparently via CoA, so the frontend
-    // must not force a captive portal re-login
-    expect(localStorage.getItem("default_mustLogin")).toBe(null);
+    expect(localStorage.getItem("default_mustLogin")).toBe("true");
   });
   it("should hide limit-info element if getUserRadiusUsage fails", async () => {
     validateToken.mockReturnValue(true);

@@ -405,6 +405,7 @@ describe("Test <PaymentStatus /> cases", () => {
       proceedToPayment: false,
       payment_url: null,
       mustLogin: undefined,
+      mustLogout: true,
     });
     expect(props.navigate).toHaveBeenCalledWith("/default/status");
     expect(props.logout).not.toHaveBeenCalled();
@@ -656,7 +657,7 @@ describe("Test <PaymentStatus /> cases", () => {
     );
   });
 
-  it("should go back to status without logout from the upgrade draft page", async () => {
+  it("should log out of captive portal (not of the app) when going back from the upgrade draft page", async () => {
     props = createTestProps({
       settings: {
         subscriptions: true,
@@ -698,9 +699,12 @@ describe("Test <PaymentStatus /> cases", () => {
         proceedToPayment: false,
         payment_url: null,
         mustLogin: undefined,
+        mustLogout: true,
       }),
     );
     expect(props.navigate).toHaveBeenCalledWith(`/${props.orgSlug}/status`);
+    // the app-level (WLP) session must stay intact; only the captive
+    // portal session is torn down via the mustLogout flag above
     expect(props.logout).not.toHaveBeenCalled();
   });
 });
