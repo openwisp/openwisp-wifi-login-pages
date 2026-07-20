@@ -270,7 +270,7 @@ export default class Status extends React.Component {
     const {setLoading} = this.context;
     // if the user needs bank card verification,
     // redirect to payment page and stop here
-    if (needsVerify("bank_card", userData, settings)) {
+    if (needsVerify("bank_card", userData, settings) || userData.in_upgrade) {
       // avoid redirect loop from proceed to payment
       if (settings.payment_requires_internet && userData.proceedToPayment) {
         // reset proceedToPayment
@@ -465,6 +465,7 @@ export default class Status extends React.Component {
       navigate,
       setUserData,
       captivePortalSyncAuth,
+      settings,
     } = this.props;
     const auth_token = cookies.get(`${orgSlug}_auth_token`);
     const {upgradePlans} = this.state;
@@ -493,7 +494,16 @@ export default class Status extends React.Component {
           true,
           cookies,
         );
-        navigate(`/${orgSlug}/payment/process`);
+        // When the payment gateway requires internet access, the user must first
+        // be logged into the captive portal. Send them to the draft payment page
+        // (which warns about the limited payment window) and route the "proceed"
+        // action through /status for the captive portal login, mirroring the
+        // bank_card draft flow. Otherwise go straight to the payment gateway.
+        if (settings.payment_requires_internet) {
+          navigate(`/${orgSlug}/payment/draft`);
+        } else {
+          navigate(`/${orgSlug}/payment/process`);
+        }
       })
       .catch((error) => {
         toast.error(t`ERR_OCCUR`);

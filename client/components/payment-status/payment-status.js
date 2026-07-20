@@ -54,8 +54,9 @@ export default class PaymentStatus extends React.Component {
       });
     } else if (
       status === "draft" &&
-      method === "bank_card" &&
-      isVerified === false
+      // User will need internet access for completing the payment whether
+      // they are registering with a paid plan or upgrade to one.
+      (userData.in_upgrade || (method === "bank_card" && isVerified === false))
     ) {
       setUserData({
         ...userData,
@@ -98,13 +99,18 @@ export default class PaymentStatus extends React.Component {
     // verified flag they already had, so the checks written for the bank
     // card registration flow would send them away from this page
     const isFailedUpgrade = Boolean(inUpgrade) && status === "failed";
+    // a user upgrading their plan keeps the registration method and the
+    // verified flag they already had, so the draft page checks written for
+    // the bank card registration flow would otherwise send them away
+    const isDraftUpgrade = Boolean(inUpgrade) && status === "draft";
     // invalid status, not registered with bank card flow, or likely
     // somebody opening this page by mistake
     const shouldRedirectToStatus =
       !acceptedValues.includes(status) ||
-      (!isFailedUpgrade && method && method !== "bank_card") ||
+      (!inUpgrade && method && method !== "bank_card") ||
       (isAuthenticated === false && status !== "draft") ||
       (!isFailedUpgrade &&
+        !isDraftUpgrade &&
         ["failed", "draft"].includes(status) &&
         isVerified === true) ||
       (status === "success" && isVerified === false) ||
@@ -117,7 +123,7 @@ export default class PaymentStatus extends React.Component {
     // draft case
     // if (isAuthenticated === false && status === "draft") {
     if (status === "draft") {
-      return this.renderDraft();
+      return this.renderDraft(isDraftUpgrade);
     }
 
     // success case
@@ -151,7 +157,7 @@ export default class PaymentStatus extends React.Component {
     authenticate(true);
   }
 
-  renderDraft() {
+  renderDraft(isDraftUpgrade = false) {
     const {orgSlug, page = {}, settings} = this.props;
     const {timeout = 5, max_attempts: maxAttempts = 3} = page;
     const payProceedUrl = settings.payment_requires_internet
@@ -186,9 +192,9 @@ export default class PaymentStatus extends React.Component {
                 <button
                   type="button"
                   className="button full"
-                  onClick={this.logout}
+                  onClick={isDraftUpgrade ? this.backToStatus : this.logout}
                 >
-                  {t`PAY_GIVE_UP_BTN`}
+                  {isDraftUpgrade ? t`PAY_GO_BACK_BTN` : t`PAY_GIVE_UP_BTN`}
                 </button>
               </div>
             </div>

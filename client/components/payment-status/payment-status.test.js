@@ -534,4 +534,103 @@ describe("Test <PaymentStatus /> cases", () => {
       mustLogin: true,
     });
   });
+
+  it("should render the draft page for a plan upgrade", async () => {
+    props = createTestProps({
+      settings: {subscriptions: true, mobile_phone_verification: true},
+      userData: {
+        ...responseData,
+        method: "mobile_phone",
+        is_verified: true,
+        in_upgrade: true,
+        payment_url: "https://payment.example.com/pay/1",
+      },
+      params: {status: "draft"},
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    // the upgrader must not be bounced off the draft page
+    expect(wrapper.find("Navigate").length).toEqual(0);
+    const payProcButton = wrapper
+      .find("Link.button.full")
+      .findWhere((node) => node.text() === t`PAY_PROC_BTN`)
+      .first();
+    expect(payProcButton.length).toEqual(1);
+  });
+
+  it("should set mustLogin on draft arrival for a plan upgrade requiring internet", async () => {
+    props = createTestProps({
+      settings: {
+        subscriptions: true,
+        mobile_phone_verification: true,
+        payment_requires_internet: true,
+      },
+      userData: {
+        ...responseData,
+        method: "mobile_phone",
+        is_verified: true,
+        in_upgrade: true,
+      },
+      params: {status: "draft"},
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({mustLogin: true}),
+    );
+  });
+
+  it("should not set mustLogin on draft arrival for an upgrade not requiring internet", async () => {
+    props = createTestProps({
+      settings: {
+        subscriptions: true,
+        mobile_phone_verification: true,
+        payment_requires_internet: false,
+      },
+      userData: {
+        ...responseData,
+        method: "mobile_phone",
+        is_verified: true,
+        in_upgrade: true,
+      },
+      params: {status: "draft"},
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({mustLogin: undefined}),
+    );
+  });
+
+  it("should go back to status without logout from the upgrade draft page", async () => {
+    props = createTestProps({
+      settings: {subscriptions: true, mobile_phone_verification: true},
+      userData: {
+        ...responseData,
+        method: "mobile_phone",
+        is_verified: true,
+        in_upgrade: true,
+        payment_url: "https://payment.example.com/pay/1",
+      },
+      params: {status: "draft"},
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    // the second button is the "go back" action for an upgrader
+    wrapper.find(".button").at(1).simulate("click", {});
+    expect(props.navigate).toHaveBeenCalledWith(`/${props.orgSlug}/status`);
+    expect(props.logout).not.toHaveBeenCalled();
+  });
 });

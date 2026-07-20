@@ -1387,6 +1387,60 @@ describe("<Status /> interactions", () => {
     });
   });
 
+  it("should redirect an upgrader to /payment/process after captive portal login", async () => {
+    validateToken.mockReturnValue(true);
+    props = createTestProps();
+    props.userData = {
+      ...responseData,
+      payment_url: "https://account.openwisp.io/payment/123",
+      in_upgrade: true,
+      mustLogin: true,
+      proceedToPayment: true,
+    };
+    props.settings.subscriptions = true;
+    props.settings.payment_requires_internet = true;
+    const setLoading = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading},
+    });
+    const mockRef = {submit: jest.fn()};
+    wrapper.instance().loginIframeRef.current = {};
+    wrapper.instance().loginFormRef.current = mockRef;
+    wrapper.instance().handleLoginIframe();
+    // ensure the user is forwarded to the payment gateway
+    expect(props.navigate).toHaveBeenCalledWith(
+      `/${props.orgSlug}/payment/process`,
+    );
+    // ensure proceedToPayment is reset
+    expect(props.setUserData).toHaveBeenCalledWith({
+      ...props.userData,
+      proceedToPayment: false,
+    });
+  });
+
+  it("should not forward an upgrader to payment when proceedToPayment is false", async () => {
+    validateToken.mockReturnValue(true);
+    jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
+    jest.spyOn(Status.prototype, "getUserPastRadiusSessions");
+    props = createTestProps();
+    props.userData = {
+      ...responseData,
+      in_upgrade: true,
+      proceedToPayment: false,
+    };
+    props.settings.subscriptions = true;
+    props.settings.payment_requires_internet = true;
+    const setLoading = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading},
+    });
+    await tick();
+    // a normal /status visit by an upgrader must not be redirected
+    expect(props.navigate).not.toHaveBeenCalledWith(
+      `/${props.orgSlug}/payment/process`,
+    );
+  });
+
   it("should logout if mustLogout is true", async () => {
     validateToken.mockReturnValue(true);
     jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
@@ -2336,6 +2390,7 @@ describe("<Status /> interactions", () => {
       }),
     );
     props = createTestProps();
+    props.settings.payment_requires_internet = false;
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: true,
@@ -2362,6 +2417,7 @@ describe("<Status /> interactions", () => {
       }),
     );
     props = createTestProps();
+    props.settings.payment_requires_internet = false;
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: true,
@@ -2375,6 +2431,36 @@ describe("<Status /> interactions", () => {
       }),
     );
     expect(props.navigate).toHaveBeenCalledWith("/default/payment/process");
+  });
+  it("test upgradeUserPlan redirects to draft when payment_requires_internet", async () => {
+    axios.mockImplementation(() =>
+      Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: {
+          payment_url: "https://payment.example.com/pay/1",
+          in_upgrade: true,
+        },
+      }),
+    );
+    props = createTestProps();
+    props.settings.payment_requires_internet = true;
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    wrapper.setState({upgradePlans: [{id: "1"}]});
+    await wrapper.instance().upgradeUserPlan({target: {value: 0}});
+    expect(props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({
+        payment_url: "https://payment.example.com/pay/1",
+        in_upgrade: true,
+      }),
+    );
+    // the captive portal login must happen before the payment gateway,
+    // so the user is sent to the draft page, not straight to the gateway
+    expect(props.navigate).toHaveBeenCalledWith("/default/payment/draft");
+    expect(props.navigate).not.toHaveBeenCalledWith("/default/payment/process");
   });
   it("should hide limit-info element if getUserRadiusUsage fails", async () => {
     validateToken.mockReturnValue(true);
@@ -2729,7 +2815,7 @@ describe("<Status /> interactions", () => {
     toast.success.mock.calls.pop()[1].onOpen();
     expect(toast.dismiss).toHaveBeenCalledWith("main_toast_id");
     expect(prop.navigate).toHaveBeenCalledWith(
-      `/${prop.orgSlug}/payment/process`,
+      `/${prop.orgSlug}/payment/draft`,
     );
     expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith({
       ...prop.userData,
@@ -2850,7 +2936,7 @@ describe("<Status /> interactions", () => {
     toast.success.mock.calls.pop()[1].onOpen();
     expect(toast.dismiss).toHaveBeenCalledWith("main_toast_id");
     expect(prop.navigate).toHaveBeenCalledWith(
-      `/${prop.orgSlug}/payment/process`,
+      `/${prop.orgSlug}/payment/draft`,
     );
     expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith({
       ...prop.userData,
