@@ -485,6 +485,13 @@ export default class Status extends React.Component {
           ...userData,
           payment_url: response.payment_url,
           in_upgrade: response.in_upgrade,
+          // The radius_user_token the user already has was consumed by
+          // their earlier captive portal login, so it must be cleared here.
+          // Otherwise validateToken() would skip refetching it (it only
+          // refetches when radius_user_token is undefined) and the
+          // mustLogin re-login below would replay the same stale, already
+          // consumed token, silently failing to authenticate the user.
+          radius_user_token: undefined,
         });
         // The user must be logged into the captive portal (under a
         // temporary/limited group if their previous plan was exhausted) so

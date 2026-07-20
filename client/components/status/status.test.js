@@ -2547,6 +2547,31 @@ describe("<Status /> interactions", () => {
     );
     expect(localStorage.getItem("default_mustLogin")).toBe("true");
   });
+  it("test upgradeUserPlan resets radius_user_token so a fresh one is fetched", async () => {
+    axios.mockImplementation(() =>
+      Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: {
+          payment_url: "https://payment.example.com/pay/1",
+          in_upgrade: true,
+        },
+      }),
+    );
+    props = createTestProps();
+    props.settings.payment_requires_internet = false;
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    wrapper.setState({upgradePlans: [{id: "1"}]});
+    await wrapper.instance().upgradeUserPlan({target: {value: 0}});
+    expect(props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({
+        radius_user_token: undefined,
+      }),
+    );
+  });
   it("should hide limit-info element if getUserRadiusUsage fails", async () => {
     validateToken.mockReturnValue(true);
     axios.mockImplementation(() =>
