@@ -227,6 +227,28 @@ describe("Test <PaymentStatus /> cases", () => {
     ]);
   });
 
+  it("does not force logout/relogin on success when captive portal supports CoA", async () => {
+    const spyToast = jest.spyOn(toast, "success");
+    props = createTestProps({
+      userData: {...responseData, is_verified: true},
+      params: {status: "success"},
+    });
+    props.settings.captive_portal_supports_coa = true;
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+      disableLifecycleMethods: true,
+    });
+    const comp = wrapper.instance();
+    comp.componentDidMount();
+    await tick();
+    expect(wrapper.find("Navigate").length).toEqual(1);
+    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
+    expect(spyToast.mock.calls.length).toBe(1);
+    expect(comp.props.logout).not.toHaveBeenCalled();
+    expect(comp.props.setUserData).not.toHaveBeenCalled();
+  });
+
   it("should set proceedToPayment in userData when navigating to /status", async () => {
     // If the payment requires internet, proceedToPayment should
     // be set to true in userData

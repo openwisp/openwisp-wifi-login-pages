@@ -2491,6 +2491,37 @@ describe("<Status /> interactions", () => {
     expect(props.navigate).toHaveBeenCalledWith("/default/payment/draft");
     expect(props.navigate).not.toHaveBeenCalledWith("/default/payment/process");
   });
+  it("test upgradeUserPlan does not force mustLogin when captive portal supports CoA", async () => {
+    axios.mockImplementation(() =>
+      Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: {
+          payment_url: "https://payment.example.com/pay/1",
+          in_upgrade: true,
+        },
+      }),
+    );
+    localStorage.clear();
+    props = createTestProps();
+    props.captivePortalSyncAuth = true;
+    props.settings.captive_portal_supports_coa = true;
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    wrapper.setState({upgradePlans: [{id: "1"}]});
+    await wrapper.instance().upgradeUserPlan({target: {value: 0}});
+    expect(props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({
+        payment_url: "https://payment.example.com/pay/1",
+        in_upgrade: true,
+      }),
+    );
+    // the backend restores access transparently via CoA, so the frontend
+    // must not force a captive portal re-login
+    expect(localStorage.getItem("default_mustLogin")).toBe(null);
+  });
   it("should hide limit-info element if getUserRadiusUsage fails", async () => {
     validateToken.mockReturnValue(true);
     axios.mockImplementation(() =>

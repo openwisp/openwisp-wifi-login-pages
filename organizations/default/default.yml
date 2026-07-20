@@ -5,6 +5,7 @@ slug: "default"
 settings:
   mobile_phone_verification: false
   subscriptions: false
+  captive_portal_supports_coa: false
 
 # configuration variables for the server app
 server:

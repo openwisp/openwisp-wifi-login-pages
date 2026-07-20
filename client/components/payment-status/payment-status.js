@@ -48,12 +48,17 @@ export default class PaymentStatus extends React.Component {
     const {method, is_verified: isVerified} = userData;
     // flag user to repeat login in order to restart session with new radius group
     if (status === "success" && method === "bank_card" && isVerified === true) {
-      setUserData({
-        ...userData,
-        mustLogin: !settings.payment_requires_internet,
-        mustLogout: settings.payment_requires_internet,
-        repeatLogin: settings.payment_requires_internet,
-      });
+      // when the captive portal supports CoA, the backend transitions the
+      // session to the new radius group transparently, so no logout/login
+      // cycle is needed here
+      if (!settings.captive_portal_supports_coa) {
+        setUserData({
+          ...userData,
+          mustLogin: !settings.payment_requires_internet,
+          mustLogout: settings.payment_requires_internet,
+          repeatLogin: settings.payment_requires_internet,
+        });
+      }
     } else if (
       status === "draft" &&
       // User will need internet access for completing the payment whether
@@ -291,6 +296,7 @@ PaymentStatus.propTypes = {
   cookies: PropTypes.instanceOf(Cookies).isRequired,
   settings: PropTypes.shape({
     payment_requires_internet: PropTypes.bool,
+    captive_portal_supports_coa: PropTypes.bool,
   }).isRequired,
   params: PropTypes.shape({
     status: PropTypes.string,

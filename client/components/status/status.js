@@ -486,14 +486,16 @@ export default class Status extends React.Component {
           in_upgrade: response.in_upgrade,
         });
         // After a successful payment, the user is redirected back to the status page.
-        // If the user plan was previously exhausted, they need to be logged into the captive portal
-        // to regain internet access. This ensures seamless browsing after upgrading their plan.
-        this.storeValue(
-          captivePortalSyncAuth,
-          `${orgSlug}_mustLogin`,
-          true,
-          cookies,
-        );
+        // When the captive portal supports CoA, the backend restores access
+        // transparently, so no forced re-login is needed here.
+        if (!settings.captive_portal_supports_coa) {
+          this.storeValue(
+            captivePortalSyncAuth,
+            `${orgSlug}_mustLogin`,
+            true,
+            cookies,
+          );
+        }
         // When the payment gateway requires internet access, the user must first
         // be logged into the captive portal. Send them to the draft payment page
         // (which warns about the limited payment window) and route the "proceed"
@@ -1548,6 +1550,7 @@ Status.propTypes = {
     mobile_phone_verification: PropTypes.bool,
     subscriptions: PropTypes.bool,
     payment_requires_internet: PropTypes.bool,
+    captive_portal_supports_coa: PropTypes.bool,
   }).isRequired,
   setUserData: PropTypes.func.isRequired,
   setInternetMode: PropTypes.func.isRequired,
