@@ -10,6 +10,8 @@ import Loader from "../../utils/loader";
 import Contact from "../contact-box";
 import validateToken from "../../utils/validate-token";
 import handleLogout from "../../utils/handle-logout";
+import cancelUpgradePlan from "../../utils/cancel-upgrade-plan";
+import logError from "../../utils/log-error";
 
 export default class PaymentStatus extends React.Component {
   constructor(props) {
@@ -65,10 +67,39 @@ export default class PaymentStatus extends React.Component {
     }
   }
 
-  // a user who gives up on a plan upgrade keeps the plan they already
-  // paid for, so they are sent back to the status page without logging out
-  backToStatus = () => {
-    const {orgSlug, navigate} = this.props;
+  // a user who gives up on a plan upgrade keeps their existing plan,
+  // so they are sent back to the status page without logging out.
+  // The backend must cancel the pending upgrade order and stale
+  // upgrade/login flags must be cleared, otherwise status.js can still
+  // bounce the user back to payment/draft.
+  backToStatus = async () => {
+    const {orgSlug, navigate, setUserData, userData, language} = this.props;
+    try {
+      const response = await cancelUpgradePlan(
+        orgSlug,
+        userData.auth_token || userData.key,
+        language,
+      );
+      setUserData({
+        ...userData,
+        ...response,
+        auth_token: response.auth_token || response.key || userData.auth_token,
+        proceedToPayment: false,
+        mustLogin: undefined,
+      });
+    } catch (error) {
+      if (!error.response || error.response.status !== 404) {
+        toast.error(t`ERR_OCCUR`);
+        logError(error, "Error while cancelling plan upgrade");
+      }
+      setUserData({
+        ...userData,
+        in_upgrade: false,
+        proceedToPayment: false,
+        payment_url: null,
+        mustLogin: undefined,
+      });
+    }
     navigate(`/${orgSlug}/status`);
   };
 

@@ -1441,6 +1441,35 @@ describe("<Status /> interactions", () => {
     );
   });
 
+  it("should not redirect to payment/draft after an upgrade was abandoned via backToStatus", async () => {
+    validateToken.mockReturnValue(true);
+    jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
+    jest.spyOn(Status.prototype, "getUserPastRadiusSessions");
+    props = createTestProps();
+    // reflects the userData left behind by PaymentStatus.backToStatus()
+    // after the user gives up on a plan upgrade
+    props.userData = {
+      ...responseData,
+      in_upgrade: false,
+      proceedToPayment: false,
+      payment_url: null,
+      mustLogin: undefined,
+    };
+    props.settings.subscriptions = true;
+    props.settings.payment_requires_internet = true;
+    const setLoading = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading},
+    });
+    await tick();
+    expect(props.navigate).not.toHaveBeenCalledWith(
+      `/${props.orgSlug}/payment/draft`,
+    );
+    expect(props.navigate).not.toHaveBeenCalledWith(
+      `/${props.orgSlug}/payment/process`,
+    );
+  });
+
   it("should logout if mustLogout is true", async () => {
     validateToken.mockReturnValue(true);
     jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");

@@ -13,11 +13,13 @@ import Loader from "../../utils/loader";
 import tick from "../../utils/tick";
 import validateToken from "../../utils/validate-token";
 import loadTranslation from "../../utils/load-translation";
+import cancelUpgradePlan from "../../utils/cancel-upgrade-plan";
 
 jest.mock("axios");
 jest.mock("../../utils/get-config");
 jest.mock("../../utils/validate-token");
 jest.mock("../../utils/load-translation");
+jest.mock("../../utils/cancel-upgrade-plan");
 
 const defaultConfig = getConfig("default", true);
 const createTestProps = (props) => ({
@@ -360,11 +362,28 @@ describe("Test <PaymentStatus /> cases", () => {
       },
     });
     validateToken.mockReturnValue(true);
+    cancelUpgradePlan.mockResolvedValue({
+      in_upgrade: false,
+      payment_url: null,
+    });
     wrapper = shallow(<PaymentStatus {...props} />, {
       context: loadingContextValue,
     });
     await tick();
     wrapper.find(".payment-status-row-4 .button").simulate("click", {});
+    await tick();
+    expect(cancelUpgradePlan).toHaveBeenCalledWith(
+      props.orgSlug,
+      props.userData.auth_token || props.userData.key,
+      props.language,
+    );
+    expect(props.setUserData).toHaveBeenCalledWith({
+      ...props.userData,
+      in_upgrade: false,
+      proceedToPayment: false,
+      payment_url: null,
+      mustLogin: undefined,
+    });
     expect(props.navigate).toHaveBeenCalledWith("/default/status");
     expect(props.logout).not.toHaveBeenCalled();
   });
@@ -382,6 +401,10 @@ describe("Test <PaymentStatus /> cases", () => {
       },
     });
     validateToken.mockReturnValue(true);
+    cancelUpgradePlan.mockResolvedValue({
+      in_upgrade: false,
+      payment_url: null,
+    });
     wrapper = shallow(<PaymentStatus {...props} />, {
       context: loadingContextValue,
     });
@@ -613,7 +636,11 @@ describe("Test <PaymentStatus /> cases", () => {
 
   it("should go back to status without logout from the upgrade draft page", async () => {
     props = createTestProps({
-      settings: {subscriptions: true, mobile_phone_verification: true},
+      settings: {
+        subscriptions: true,
+        mobile_phone_verification: true,
+        payment_requires_internet: true,
+      },
       userData: {
         ...responseData,
         method: "mobile_phone",
@@ -628,8 +655,29 @@ describe("Test <PaymentStatus /> cases", () => {
       context: loadingContextValue,
     });
     await tick();
+    // componentDidMount sets mustLogin so /status performs the
+    // captive-portal login once the user proceeds with the payment
+    expect(props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({mustLogin: true}),
+    );
     // the second button is the "go back" action for an upgrader
     wrapper.find(".button").at(1).simulate("click", {});
+    await tick();
+    expect(cancelUpgradePlan).toHaveBeenCalledWith(
+      props.orgSlug,
+      props.userData.auth_token || props.userData.key,
+      props.language,
+    );
+    // giving up must clear the stale upgrade/login flags, not just navigate,
+    // otherwise /status bounces the user straight back to /payment/draft
+    expect(props.setUserData).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        in_upgrade: false,
+        proceedToPayment: false,
+        payment_url: null,
+        mustLogin: undefined,
+      }),
+    );
     expect(props.navigate).toHaveBeenCalledWith(`/${props.orgSlug}/status`);
     expect(props.logout).not.toHaveBeenCalled();
   });
