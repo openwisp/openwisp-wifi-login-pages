@@ -1466,6 +1466,67 @@ describe("<Status /> interactions", () => {
     );
   });
 
+  it("should restore proceedToPayment from cookie after a sync-auth page reload", async () => {
+    // Synchronous captive portal auth reloads the page on login, wiping the
+    // in-memory proceedToPayment flag. It must be restored from the cookie
+    // that was persisted before the reload, otherwise the user is not
+    // forwarded to /payment/process (see PaymentStatus.paymentProceedHandler).
+    validateToken.mockReturnValue(true);
+    const cookies = new Cookies();
+    cookies.set("default_proceedToPayment", "true", {path: "/", maxAge: 60});
+    props = createTestProps({
+      captivePortalSyncAuth: true,
+      location: {search: ""},
+      cookies,
+      userData: {
+        ...responseData,
+        in_upgrade: true,
+        mustLogin: false,
+      },
+    });
+    props.settings.payment_requires_internet = true;
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+    });
+    await tick();
+    expect(props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({proceedToPayment: true}),
+    );
+  });
+
+  it("should clear the persisted proceedToPayment flag after redirecting to payment/process", async () => {
+    validateToken.mockReturnValue(true);
+    props = createTestProps();
+    const cookies = new Cookies();
+    cookies.set("default_proceedToPayment", "true", {path: "/", maxAge: 60});
+    localStorage.setItem("default_proceedToPayment", "true");
+    props.cookies = cookies;
+    props.userData = {
+      ...responseData,
+      is_verified: false,
+      method: "bank_card",
+      payment_url: "https://account.openwisp.io/payment/123",
+      mustLogin: true,
+      proceedToPayment: true,
+    };
+    props.settings.subscriptions = true;
+    props.settings.payment_requires_internet = true;
+    const setLoading = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading},
+    });
+    const mockRef = {submit: jest.fn()};
+    wrapper.instance().loginIframeRef.current = {};
+    wrapper.instance().loginFormRef.current = mockRef;
+    wrapper.instance().handleLoginIframe();
+    expect(props.navigate).toHaveBeenCalledWith(
+      `/${props.orgSlug}/payment/process`,
+    );
+    // Stale flag must be cleared to prevent a redirect loop on the next visit
+    expect(cookies.get("default_proceedToPayment")).toBeUndefined();
+    expect(localStorage.getItem("default_proceedToPayment")).toBeNull();
+  });
+
   it("should logout if mustLogout is true", async () => {
     validateToken.mockReturnValue(true);
     jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");

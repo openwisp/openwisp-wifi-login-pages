@@ -12,6 +12,7 @@ import validateToken from "../../utils/validate-token";
 import handleLogout from "../../utils/handle-logout";
 import cancelUpgradePlan from "../../utils/cancel-upgrade-plan";
 import logError from "../../utils/log-error";
+import {storeValue, clearStoredValue} from "../../utils/synced-storage";
 
 export default class PaymentStatus extends React.Component {
   constructor(props) {
@@ -71,7 +72,8 @@ export default class PaymentStatus extends React.Component {
 
   // Abandon upgrade: cancel order, clear flags, reconnect under current plan
   backToStatus = async () => {
-    const {orgSlug, navigate, setUserData, userData, language} = this.props;
+    const {orgSlug, navigate, setUserData, userData, language, cookies} =
+      this.props;
     try {
       const response = await cancelUpgradePlan(
         orgSlug,
@@ -102,6 +104,8 @@ export default class PaymentStatus extends React.Component {
         captivePortalLogoutOnly: true,
       });
     }
+    // Clear persisted proceedToPayment flag
+    clearStoredValue(`${orgSlug}_proceedToPayment`, cookies);
     navigate(`/${orgSlug}/status`);
   };
 
@@ -167,7 +171,15 @@ export default class PaymentStatus extends React.Component {
   }
 
   paymentProceedHandler() {
-    const {authenticate, setUserData, userData, settings} = this.props;
+    const {
+      authenticate,
+      setUserData,
+      userData,
+      settings,
+      cookies,
+      orgSlug,
+      captivePortalSyncAuth,
+    } = this.props;
     // Payment gateway may require internet access.
     // Since, captive portal login is handled by the Status component,
     // the user is navigated to the "/status" for captive portal login
@@ -177,6 +189,13 @@ export default class PaymentStatus extends React.Component {
         ...userData,
         proceedToPayment: true,
       });
+      // Persist so it survives page reload during sync captive portal auth
+      storeValue(
+        captivePortalSyncAuth,
+        `${orgSlug}_proceedToPayment`,
+        "true",
+        cookies,
+      );
     }
     authenticate(true);
   }
@@ -277,6 +296,7 @@ PaymentStatus.propTypes = {
   userData: PropTypes.object.isRequired,
   setUserData: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
+  captivePortalSyncAuth: PropTypes.bool,
   authenticate: PropTypes.func.isRequired,
   page: PropTypes.object,
   logout: PropTypes.func.isRequired,

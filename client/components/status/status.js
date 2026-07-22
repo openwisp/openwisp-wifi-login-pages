@@ -37,6 +37,11 @@ import handleSession from "../../utils/session";
 import getPlanSelection from "../../utils/get-plan-selection";
 import getPlans from "../../utils/get-plans";
 import upgradePlan from "../../utils/upgrade-plan";
+import {
+  storeValue,
+  resolveStoredValue,
+  clearStoredValue,
+} from "../../utils/synced-storage";
 
 export default class Status extends React.Component {
   constructor(props) {
@@ -154,14 +159,15 @@ export default class Status extends React.Component {
         mustLogout: userMustLogout,
         captivePortalLogoutOnly: userCaptivePortalLogoutOnly,
         repeatLogin,
+        proceedToPayment: userProceedToPayment,
       } = userData;
-      const mustLogin = this.resolveStoredValue(
+      const mustLogin = resolveStoredValue(
         captivePortalSyncAuth,
         `${orgSlug}_mustLogin`,
         userMustLogin,
         cookies,
       );
-      const mustLogout = this.resolveStoredValue(
+      const mustLogout = resolveStoredValue(
         captivePortalSyncAuth,
         `${orgSlug}_mustLogout`,
         userMustLogout,
@@ -169,14 +175,34 @@ export default class Status extends React.Component {
       );
       // Captive-portal-only logout: tear down RADIUS session, keep WLP session intact
       this.captivePortalLogoutOnly = Boolean(
-        this.resolveStoredValue(
+        resolveStoredValue(
           captivePortalSyncAuth,
           `${orgSlug}_captivePortalLogoutOnly`,
           userCaptivePortalLogoutOnly,
           cookies,
         ),
       );
+      // Restore proceedToPayment flag that may have been lost during
+      // the page reload caused by synchronous captive portal auth.
+      const proceedToPayment = resolveStoredValue(
+        captivePortalSyncAuth,
+        `${orgSlug}_proceedToPayment`,
+        userProceedToPayment,
+        cookies,
+      );
       ({userData} = this.props);
+      // Apply the persisted proceedToPayment flag to userData if it
+      // was restored from cookie/localStorage after a page reload.
+      if (
+        proceedToPayment !== undefined &&
+        proceedToPayment !== userData.proceedToPayment
+      ) {
+        setUserData({
+          ...userData,
+          proceedToPayment,
+        });
+        ({userData} = this.props);
+      }
       if (userData.password_expired === true) {
         toast.warning(t`PASSWORD_EXPIRED`);
         setUserData({
@@ -238,7 +264,7 @@ export default class Status extends React.Component {
         shouldLogin = shouldLogin && settings.payment_requires_internet;
       }
       if (this.loginFormRef && this.loginFormRef.current && shouldLogin) {
-        this.storeValue(
+        storeValue(
           captivePortalSyncAuth,
           `${orgSlug}_mustLogin`,
           false,
@@ -302,6 +328,7 @@ export default class Status extends React.Component {
       setUserData,
       statusPage,
       internetMode,
+      cookies,
     } = this.props;
     const {setLoading} = this.context;
     // if the user needs bank card verification,
@@ -314,6 +341,8 @@ export default class Status extends React.Component {
           ...userData,
           proceedToPayment: false,
         });
+        // Clear persisted proceedToPayment flag
+        clearStoredValue(`${orgSlug}_proceedToPayment`, cookies);
         navigate(`/${orgSlug}/payment/process`);
         return;
       }
@@ -524,7 +553,7 @@ export default class Status extends React.Component {
           radius_user_token: undefined,
         });
         // Portal login needed to reach payment gateway (unrelated to CoA)
-        this.storeValue(
+        storeValue(
           captivePortalSyncAuth,
           `${orgSlug}_mustLogin`,
           true,
@@ -618,14 +647,14 @@ export default class Status extends React.Component {
           this.repeatLogin = true;
         }
         if (!internetMode) {
-          this.storeValue(
+          storeValue(
             captivePortalSyncAuth,
             `${orgSlug}_mustLogout`,
             true,
             cookies,
           );
           if (this.captivePortalLogoutOnly) {
-            this.storeValue(
+            storeValue(
               captivePortalSyncAuth,
               `${orgSlug}_captivePortalLogoutOnly`,
               true,
@@ -748,7 +777,7 @@ export default class Status extends React.Component {
     const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
     if (
       loggedOut ||
-      this.resolveStoredValue(
+      resolveStoredValue(
         captivePortalSyncAuth,
         `${orgSlug}_mustLogout`,
         false,
@@ -757,7 +786,7 @@ export default class Status extends React.Component {
     ) {
       const captivePortalLogoutOnly =
         this.captivePortalLogoutOnly ||
-        this.resolveStoredValue(
+        resolveStoredValue(
           captivePortalSyncAuth,
           `${orgSlug}_captivePortalLogoutOnly`,
           false,
@@ -871,60 +900,6 @@ export default class Status extends React.Component {
         // Unknown message type, do nothing
         break;
     }
-  };
-
-  // eslint-disable-next-line class-methods-use-this
-  storeValue = (captivePortalSyncAuth, key, value, cookies) => {
-    /**
-     * Stores a value in both cookies and localStorage if synchronous
-     * captive portal authentication is enabled.
-     *
-     * In synchronous authentication, submitting the captive portal form
-     * triggers a page reload, which resets the component state.
-     * Storing the value in cookies ensures it persists across reloads.
-     *
-     * The value is also saved in localStorage as a fallback in case the browser does not support cookies.
-     *
-     * @param {boolean} captivePortalSyncAuth - Whether synchronous authentication is enabled.
-     * @param {string} key - The key under which the value is stored.
-     * @param {boolean} value - The value to store.
-     * @param {Cookies} cookies - The cookies instance used to set the cookie.
-     */
-    if (!captivePortalSyncAuth) {
-      return;
-    }
-    localStorage.setItem(key, value);
-    cookies.set(key, value, {path: "/", maxAge: 60});
-  };
-
-  // eslint-disable-next-line class-methods-use-this
-  resolveStoredValue = (captivePortalSyncAuth, key, fallback, cookies) => {
-    /**
-     * Resolves the correct value by checking cookies, then localStorage,
-     * falling back to a default value if neither is found.
-     *
-     * @param {boolean} captivePortalSyncAuth - Whether synchronization is enabled.
-     * @param {string} cookieKey - The key to look for in cookies and localStorage.
-     * @param {*} fallback - The fallback value if no valid stored value is found.
-     * @returns {*} - The selected value based on storage or fallback.
-     */
-    if (!captivePortalSyncAuth) {
-      return fallback;
-    }
-
-    const cookieValue = cookies.get(key);
-    if (cookieValue !== undefined) {
-      localStorage.removeItem(key);
-      return cookieValue;
-    }
-
-    const localStorageValue = localStorage.getItem(key);
-    if (localStorageValue !== null) {
-      localStorage.removeItem(key);
-      return localStorageValue === "true";
-    }
-
-    return fallback;
   };
 
   updateScreenWidth = () => {

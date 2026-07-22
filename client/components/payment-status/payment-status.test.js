@@ -287,6 +287,93 @@ describe("Test <PaymentStatus /> cases", () => {
     });
   });
 
+  it("should persist proceedToPayment cookie for sync auth", async () => {
+    validateToken.mockReturnValue(true);
+    const mockCookiesSet = jest.fn();
+    const mockCookiesRemove = jest.fn();
+    const mockCookiesGet = jest.fn();
+    props = createTestProps({
+      userData: {...responseData, is_verified: false},
+      params: {status: "draft"},
+      captivePortalSyncAuth: true,
+      cookies: {
+        set: mockCookiesSet,
+        remove: mockCookiesRemove,
+        get: mockCookiesGet,
+      },
+    });
+    props.settings.payment_requires_internet = true;
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    const payProcButton = wrapper
+      .find("Link.button.full")
+      .findWhere((node) => node.text() === t`PAY_PROC_BTN`)
+      .first();
+    payProcButton.simulate("click");
+    // Verify the cookie was set
+    expect(mockCookiesSet).toHaveBeenCalledWith(
+      "default_proceedToPayment",
+      "true",
+      {path: "/", maxAge: 60},
+    );
+    // Verify userData was updated with proceedToPayment
+    expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({proceedToPayment: true}),
+    );
+  });
+
+  it("should not persist proceedToPayment when internet is not required", async () => {
+    validateToken.mockReturnValue(true);
+    const mockCookiesSet = jest.fn();
+    props = createTestProps({
+      userData: {...responseData, is_verified: false},
+      params: {status: "draft"},
+      cookies: {set: mockCookiesSet, get: jest.fn(), remove: jest.fn()},
+    });
+    props.settings.payment_requires_internet = false;
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    const payProcButton = wrapper
+      .find("Link.button.full")
+      .findWhere((node) => node.text() === t`PAY_PROC_BTN`)
+      .first();
+    payProcButton.simulate("click");
+    // No cookie should be set: internet access isn't needed before payment
+    expect(mockCookiesSet).not.toHaveBeenCalled();
+    // userData should not be flagged with proceedToPayment either
+    expect(wrapper.instance().props.setUserData).not.toHaveBeenCalledWith(
+      expect.objectContaining({proceedToPayment: true}),
+    );
+  });
+
+  it("should not persist proceedToPayment cookie in async auth mode", async () => {
+    validateToken.mockReturnValue(true);
+    const mockCookiesSet = jest.fn();
+    props = createTestProps({
+      userData: {...responseData, is_verified: false},
+      params: {status: "draft"},
+      captivePortalSyncAuth: false,
+      cookies: {set: mockCookiesSet, get: jest.fn(), remove: jest.fn()},
+    });
+    props.settings.payment_requires_internet = true;
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    const payProcButton = wrapper
+      .find("Link.button.full")
+      .findWhere((node) => node.text() === t`PAY_PROC_BTN`)
+      .first();
+    payProcButton.simulate("click");
+    // Async auth never reloads the page, so there is nothing to survive
+    // and the flag doesn't need to be persisted outside Redux.
+    expect(mockCookiesSet).not.toHaveBeenCalled();
+    expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({proceedToPayment: true}),
+    );
+  });
+
   it("should redirect to status if success but unverified", async () => {
     const spyToast = jest.spyOn(toast, "success");
     props = createTestProps({
@@ -406,6 +493,44 @@ describe("Test <PaymentStatus /> cases", () => {
     });
     expect(props.navigate).toHaveBeenCalledWith("/default/status");
     expect(props.logout).not.toHaveBeenCalled();
+  });
+
+  it("should clear the persisted proceedToPayment flag when abandoning an upgrade", async () => {
+    const mockCookiesRemove = jest.fn();
+    props = createTestProps({
+      params: {status: "failed"},
+      settings: {subscriptions: true, mobile_phone_verification: true},
+      userData: {
+        ...responseData,
+        method: "mobile_phone",
+        is_verified: true,
+        in_upgrade: true,
+        payment_url: "https://payment.example.com/pay/1",
+      },
+      cookies: {
+        set: jest.fn(),
+        get: jest.fn(),
+        remove: mockCookiesRemove,
+      },
+    });
+    localStorage.setItem("default_proceedToPayment", "true");
+    validateToken.mockReturnValue(true);
+    cancelUpgradePlan.mockResolvedValue({
+      in_upgrade: false,
+      payment_url: null,
+    });
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    wrapper.find(".payment-status-row-4 .button").simulate("click", {});
+    await tick();
+    // Stale flag must be cleared, otherwise a later status reload could
+    // wrongly force the user back into the payment flow.
+    expect(mockCookiesRemove).toHaveBeenCalledWith("default_proceedToPayment", {
+      path: "/",
+    });
+    expect(localStorage.getItem("default_proceedToPayment")).toBeNull();
   });
 
   it("should hide the continue button if the payment url is not available", async () => {

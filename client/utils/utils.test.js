@@ -32,6 +32,11 @@ import updateRegistrationMethod from "./update-registration-method";
 import getPlans from "./get-plans";
 import upgradePlan from "./upgrade-plan";
 import cancelUpgradePlan from "./cancel-upgrade-plan";
+import {
+  storeValue,
+  resolveStoredValue,
+  clearStoredValue,
+} from "./synced-storage";
 import {cancelUpgradePlanApiUrl, upgradePlanApiUrl} from "../constants";
 
 jest.mock("axios");
@@ -778,6 +783,69 @@ describe("storage tests", () => {
     storageMock.setItem("organization", "openwisp");
     storageMock.clear();
     expect(storageMock.getItem("organization")).toEqual(undefined);
+  });
+});
+describe("synced-storage tests", () => {
+  afterEach(() => {
+    localStorage.clear();
+    new Cookies().remove("test_key", {path: "/"});
+  });
+
+  it("storeValue should do nothing if sync auth is disabled", () => {
+    const cookies = new Cookies();
+    storeValue(false, "test_key", "true", cookies);
+    expect(cookies.get("test_key")).toBeUndefined();
+    expect(localStorage.getItem("test_key")).toEqual(null);
+  });
+
+  it("storeValue should persist to cookies and localStorage if sync auth is enabled", () => {
+    const cookies = new Cookies();
+    storeValue(true, "test_key", "true", cookies);
+    expect(cookies.get("test_key")).toEqual(true);
+    expect(localStorage.getItem("test_key")).toEqual("true");
+  });
+
+  it("resolveStoredValue should return the fallback if sync auth is disabled", () => {
+    const cookies = new Cookies();
+    cookies.set("test_key", "true", {path: "/", maxAge: 60});
+    expect(resolveStoredValue(false, "test_key", "fallback", cookies)).toEqual(
+      "fallback",
+    );
+  });
+
+  it("resolveStoredValue should read from cookies and clear localStorage", () => {
+    const cookies = new Cookies();
+    cookies.set("test_key", "true", {path: "/", maxAge: 60});
+    localStorage.setItem("test_key", "true");
+    expect(resolveStoredValue(true, "test_key", undefined, cookies)).toEqual(
+      true,
+    );
+    expect(localStorage.getItem("test_key")).toEqual(null);
+  });
+
+  it("resolveStoredValue should fall back to localStorage if cookies are unavailable", () => {
+    const cookies = new Cookies();
+    localStorage.setItem("test_key", "true");
+    expect(resolveStoredValue(true, "test_key", undefined, cookies)).toEqual(
+      true,
+    );
+    expect(localStorage.getItem("test_key")).toEqual(null);
+  });
+
+  it("resolveStoredValue should return the fallback if nothing is stored", () => {
+    const cookies = new Cookies();
+    expect(resolveStoredValue(true, "test_key", "fallback", cookies)).toEqual(
+      "fallback",
+    );
+  });
+
+  it("clearStoredValue should remove the value from cookies and localStorage", () => {
+    const cookies = new Cookies();
+    cookies.set("test_key", "true", {path: "/", maxAge: 60});
+    localStorage.setItem("test_key", "true");
+    clearStoredValue("test_key", cookies);
+    expect(cookies.get("test_key")).toBeUndefined();
+    expect(localStorage.getItem("test_key")).toEqual(null);
   });
 });
 describe("getPaymentStatusRedirectUrl tests", () => {
