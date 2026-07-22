@@ -1407,11 +1407,9 @@ describe("<Status /> interactions", () => {
     wrapper.instance().loginIframeRef.current = {};
     wrapper.instance().loginFormRef.current = mockRef;
     wrapper.instance().handleLoginIframe();
-    // ensure the user is forwarded to the payment gateway
     expect(props.navigate).toHaveBeenCalledWith(
       `/${props.orgSlug}/payment/process`,
     );
-    // ensure proceedToPayment is reset
     expect(props.setUserData).toHaveBeenCalledWith({
       ...props.userData,
       proceedToPayment: false,
@@ -1435,7 +1433,6 @@ describe("<Status /> interactions", () => {
       context: {setLoading},
     });
     await tick();
-    // a normal /status visit by an upgrader must not be redirected
     expect(props.navigate).not.toHaveBeenCalledWith(
       `/${props.orgSlug}/payment/process`,
     );
@@ -1446,8 +1443,7 @@ describe("<Status /> interactions", () => {
     jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
     jest.spyOn(Status.prototype, "getUserPastRadiusSessions");
     props = createTestProps();
-    // reflects the userData left behind by PaymentStatus.backToStatus()
-    // after the user gives up on a plan upgrade
+    // Simulate userData after PaymentStatus.backToStatus() cleanup
     props.userData = {
       ...responseData,
       in_upgrade: false,
@@ -1516,6 +1512,63 @@ describe("<Status /> interactions", () => {
     expect(Status.prototype.getUserActiveRadiusSessions.mock.calls.length).toBe(
       1,
     );
+  });
+
+  it("should log out of captive portal only and keep the app session when captivePortalLogoutOnly is true", async () => {
+    validateToken.mockReturnValue(true);
+    jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: [
+          {
+            session_id: 1,
+            start_time: "2020-09-08T00:22:28-04:00",
+            stop_time: "2020-09-08T00:22:29-04:00",
+            input_octets: 100000,
+            output_octets: 100000,
+          },
+        ],
+        headers: {},
+      }),
+    );
+    const spyToast = jest.spyOn(toast, "success");
+    props = createTestProps({
+      userData: {
+        ...responseData,
+        mustLogout: true,
+        captivePortalLogoutOnly: true,
+      },
+    });
+    const setLoading = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading},
+      disableLifecycleMethods: true,
+    });
+    const status = wrapper.instance();
+    const mockRef = {submit: jest.fn()};
+    const {setUserData} = status.props;
+    status.logoutFormRef = {current: mockRef};
+    status.logoutIframeRef = {current: {}};
+    status.componentDidMount();
+    await tick();
+    status.handleLogoutIframe();
+    await tick();
+    // Captive portal session torn down but WLP session preserved
+    expect(mockRef.submit).toHaveBeenCalledTimes(1);
+    expect(status.props.logout).not.toHaveBeenCalled();
+    expect(setUserData).not.toHaveBeenCalledWith(initialState.userData);
+    // Transient flags cleared; userData preserved for authentication
+    expect(setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({
+        mustLogin: undefined,
+        mustLogout: undefined,
+        captivePortalLogoutOnly: undefined,
+      }),
+    );
+    expect(status.state.loggedOut).toBe(false);
+    expect(spyToast).not.toHaveBeenCalled();
   });
 
   it("should logout if activeSession do not contain current MAC", async () => {
@@ -2510,15 +2563,12 @@ describe("<Status /> interactions", () => {
         in_upgrade: true,
       }),
     );
-    // the captive portal login must happen before the payment gateway,
-    // so the user is sent to the draft page, not straight to the gateway
+    // Route through draft to enforce portal login before gateway payment
     expect(props.navigate).toHaveBeenCalledWith("/default/payment/draft");
     expect(props.navigate).not.toHaveBeenCalledWith("/default/payment/process");
   });
   it("test upgradeUserPlan forces mustLogin when captive portal supports CoA", async () => {
-    // the initial captive portal login is needed to reach the payment
-    // gateway regardless of CoA support: CoA only affects what happens
-    // after payment succeeds, not this initial login
+    // Portal login needed regardless of CoA support (CoA only applies post-payment)
     axios.mockImplementation(() =>
       Promise.resolve({
         status: 200,

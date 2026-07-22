@@ -48,9 +48,7 @@ export default class PaymentStatus extends React.Component {
     const {method, is_verified: isVerified} = userData;
     // flag user to repeat login in order to restart session with new radius group
     if (status === "success" && method === "bank_card" && isVerified === true) {
-      // when the captive portal supports CoA, the backend transitions the
-      // session to the new radius group transparently, so no logout/login
-      // cycle is needed here
+      // Skip logout/login cycle if CoA handles session group updates transparently
       if (!settings.captive_portal_supports_coa) {
         setUserData({
           ...userData,
@@ -61,8 +59,7 @@ export default class PaymentStatus extends React.Component {
       }
     } else if (
       status === "draft" &&
-      // User will need internet access for completing the payment whether
-      // they are registering with a paid plan or upgrade to one.
+      // Payment completion needs internet for both new registrations and upgrades
       (userData.in_upgrade || (method === "bank_card" && isVerified === false))
     ) {
       setUserData({
@@ -72,13 +69,7 @@ export default class PaymentStatus extends React.Component {
     }
   }
 
-  // A user who gives up on a plan upgrade keeps their existing plan.
-  // The backend must cancel the pending upgrade order and stale
-  // upgrade/login flags must be cleared, otherwise status.js can still
-  // bounce the user back to payment/draft. The captive portal session
-  // established to reach the payment gateway was granted under a
-  // temporary/limited group for this upgrade attempt, so it must be
-  // logged out too, letting the user reconnect under their actual plan.
+  // Abandon upgrade: cancel order, clear flags, reconnect under current plan
   backToStatus = async () => {
     const {orgSlug, navigate, setUserData, userData, language} = this.props;
     try {
@@ -94,6 +85,7 @@ export default class PaymentStatus extends React.Component {
         proceedToPayment: false,
         mustLogin: undefined,
         mustLogout: true,
+        captivePortalLogoutOnly: true,
       });
     } catch (error) {
       if (!error.response || error.response.status !== 404) {
@@ -107,6 +99,7 @@ export default class PaymentStatus extends React.Component {
         payment_url: null,
         mustLogin: undefined,
         mustLogout: true,
+        captivePortalLogoutOnly: true,
       });
     }
     navigate(`/${orgSlug}/status`);
@@ -135,16 +128,9 @@ export default class PaymentStatus extends React.Component {
     const redirectToStatus = () => <Navigate to={`/${orgSlug}/status`} />;
     const acceptedValues = ["success", "failed", "draft"];
     const {isTokenValid} = this.state;
-    // a user upgrading their plan keeps the registration method and the
-    // verified flag they already had, so the checks written for the bank
-    // card registration flow would send them away from this page
+    // Upgraders retain their existing registration state; bypass bank-card redirect guards
     const isFailedUpgrade = Boolean(inUpgrade) && status === "failed";
-    // a user upgrading their plan keeps the registration method and the
-    // verified flag they already had, so the draft page checks written for
-    // the bank card registration flow would otherwise send them away
     const isDraftUpgrade = Boolean(inUpgrade) && status === "draft";
-    // invalid status, not registered with bank card flow, or likely
-    // somebody opening this page by mistake
     const shouldRedirectToStatus =
       !acceptedValues.includes(status) ||
       (!inUpgrade && method && method !== "bank_card") ||
@@ -172,9 +158,7 @@ export default class PaymentStatus extends React.Component {
       return redirectToStatus();
     }
 
-    // isTokenValid is still null while validateToken() is resolving, so
-    // in_upgrade (and therefore isFailedUpgrade) isn't reliable yet on a cold
-    // reload; show a loader instead of flashing the wrong failed-page variant
+    // Show loader while validateToken resolves in_upgrade state on cold reload
     if (status === "failed" && isTokenValid === null) {
       return <Loader />;
     }
@@ -249,8 +233,7 @@ export default class PaymentStatus extends React.Component {
     const retryUrl = isFailedUpgrade
       ? `/${orgSlug}/payment/process`
       : `/${orgSlug}/payment/draft`;
-    // an upgrade which ran out of allowed payment attempts has no
-    // payment URL left to send the user to
+    // No retry when upgrade payment attempts exhausted (no payment_url)
     const showRetry = !isFailedUpgrade || Boolean(userData.payment_url);
     // failed payment case
     return (

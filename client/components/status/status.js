@@ -69,6 +69,7 @@ export default class Status extends React.Component {
       showUpgradeBtn: true,
     };
     this.repeatLogin = false;
+    this.captivePortalLogoutOnly = false;
     this.isComponentMounted = true;
     this.getUserRadiusSessions = this.getUserRadiusSessions.bind(this);
     this.getUserRadiusUsage = this.getUserRadiusUsage.bind(this);
@@ -151,6 +152,7 @@ export default class Status extends React.Component {
       const {
         mustLogin: userMustLogin,
         mustLogout: userMustLogout,
+        captivePortalLogoutOnly: userCaptivePortalLogoutOnly,
         repeatLogin,
       } = userData;
       const mustLogin = this.resolveStoredValue(
@@ -164,6 +166,15 @@ export default class Status extends React.Component {
         `${orgSlug}_mustLogout`,
         userMustLogout,
         cookies,
+      );
+      // Captive-portal-only logout: tear down RADIUS session, keep WLP session intact
+      this.captivePortalLogoutOnly = Boolean(
+        this.resolveStoredValue(
+          captivePortalSyncAuth,
+          `${orgSlug}_captivePortalLogoutOnly`,
+          userCaptivePortalLogoutOnly,
+          cookies,
+        ),
       );
       ({userData} = this.props);
       if (userData.password_expired === true) {
@@ -257,6 +268,30 @@ export default class Status extends React.Component {
     window.removeEventListener("resize", this.updateScreenWidth);
     window.removeEventListener("message", this.handlePostMessage);
   }
+
+  // After captive-portal-only logout: skip redux logout and userData reset to preserve WLP session
+  finishCaptivePortalLogoutOnly = () => {
+    const {orgSlug, cookies, setUserData, userData} = this.props;
+    const {setLoading} = this.context;
+    [
+      `${orgSlug}_mustLogin`,
+      `${orgSlug}_mustLogout`,
+      `${orgSlug}_captivePortalLogoutOnly`,
+    ].forEach((key) => {
+      cookies.remove(key, {path: "/"});
+      localStorage.removeItem(key);
+    });
+    this.captivePortalLogoutOnly = false;
+    this.setStateSafe({loggedOut: false});
+    setUserData({
+      ...userData,
+      mustLogin: undefined,
+      mustLogout: undefined,
+      captivePortalLogoutOnly: undefined,
+    });
+    setLoading(false);
+    this.finalOperations();
+  };
 
   async finalOperations() {
     const {
@@ -485,29 +520,17 @@ export default class Status extends React.Component {
           ...userData,
           payment_url: response.payment_url,
           in_upgrade: response.in_upgrade,
-          // The radius_user_token the user already has was consumed by
-          // their earlier captive portal login, so it must be cleared here.
-          // Otherwise validateToken() would skip refetching it (it only
-          // refetches when radius_user_token is undefined) and the
-          // mustLogin re-login below would replay the same stale, already
-          // consumed token, silently failing to authenticate the user.
+          // Token consumed by portal login; clear so validateToken refetches one
           radius_user_token: undefined,
         });
-        // The user must be logged into the captive portal (under a
-        // temporary/limited group if their previous plan was exhausted) so
-        // they can reach the payment gateway. This is unrelated to CoA
-        // support: CoA only affects what happens after payment succeeds.
+        // Portal login needed to reach payment gateway (unrelated to CoA)
         this.storeValue(
           captivePortalSyncAuth,
           `${orgSlug}_mustLogin`,
           true,
           cookies,
         );
-        // When the payment gateway requires internet access, the user must first
-        // be logged into the captive portal. Send them to the draft payment page
-        // (which warns about the limited payment window) and route the "proceed"
-        // action through /status for the captive portal login, mirroring the
-        // bank_card draft flow. Otherwise go straight to the payment gateway.
+        // Route through draft page to enforce portal login before gateway
         if (settings.payment_requires_internet) {
           navigate(`/${orgSlug}/payment/draft`);
         } else {
@@ -601,6 +624,14 @@ export default class Status extends React.Component {
             true,
             cookies,
           );
+          if (this.captivePortalLogoutOnly) {
+            this.storeValue(
+              captivePortalSyncAuth,
+              `${orgSlug}_captivePortalLogoutOnly`,
+              true,
+              cookies,
+            );
+          }
           this.logoutFormRef.current.submit();
         }
         return;
@@ -608,6 +639,11 @@ export default class Status extends React.Component {
     }
 
     if (repeatLogin) {
+      return;
+    }
+    // No active portal session; settle page directly for captive-portal-only logout
+    if (this.captivePortalLogoutOnly) {
+      this.finishCaptivePortalLogoutOnly();
       return;
     }
     setUserData(initialState.userData);
@@ -719,6 +755,19 @@ export default class Status extends React.Component {
         cookies,
       )
     ) {
+      const captivePortalLogoutOnly =
+        this.captivePortalLogoutOnly ||
+        this.resolveStoredValue(
+          captivePortalSyncAuth,
+          `${orgSlug}_captivePortalLogoutOnly`,
+          false,
+          cookies,
+        );
+      // Portal session already torn down; keep WLP session for captive-portal-only logout
+      if (captivePortalLogoutOnly) {
+        this.finishCaptivePortalLogoutOnly();
+        return;
+      }
       logout(cookies, orgSlug, userAutoLogin);
       toast.success(t`LOGOUT_SUCCESS`);
 

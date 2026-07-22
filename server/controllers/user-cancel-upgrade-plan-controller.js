@@ -10,7 +10,6 @@ const userCancelUpgradePlan = (req, res) => {
   const reqOrg = req.params.organization;
   const validSlug = config.some((org) => {
     if (org.slug === reqOrg) {
-      // merge default config and custom config
       const conf = merge(defaultConfig, org);
       const {host} = conf;
       const userUpgradePlanUrl = reverse(
@@ -18,7 +17,6 @@ const userCancelUpgradePlan = (req, res) => {
         getSlug(conf),
       );
       const timeout = conf.timeout * 1000;
-      // make AJAX request
       axios({
         method: "post",
         headers: {
@@ -37,7 +35,6 @@ const userCancelUpgradePlan = (req, res) => {
         })
         .catch((error) => {
           logResponseError(error);
-          // forward error
           try {
             res
               .status(error.response.status)
@@ -52,7 +49,6 @@ const userCancelUpgradePlan = (req, res) => {
     }
     return org.slug === reqOrg;
   });
-  // return 404 for invalid organization slug or org not listed in config
   if (!validSlug) {
     res.status(404).type("application/json").send({
       response_code: "NOT_FOUND",

@@ -59,9 +59,7 @@ describe("<PaymentStatus /> rendering with placeholder translation tags", () => 
   it("should render translation placeholder correctly", () => {
     const renderer = new ShallowRenderer();
     renderer.render(<PaymentStatus {...props} />);
-    // ShallowRenderer does not run componentDidMount, so isTokenValid stays
-    // at its initial null; move it to a resolved value to exercise the
-    // actual failed-page markup instead of the cold-load loader guard
+    // ShallowRenderer skips componentDidMount; advance isTokenValid past null for markup
     renderer.getMountedInstance().setState({isTokenValid: true});
     const wrapper = renderer.getRenderOutput();
     expect(wrapper).toMatchSnapshot();
@@ -115,9 +113,7 @@ describe("Test <PaymentStatus /> cases", () => {
   });
 
   it("should show a loader instead of the wrong failed variant on cold load", () => {
-    // simulates a fresh reload landing on /payment/failed before
-    // validateToken() has resolved and repopulated userData: in_upgrade is
-    // not known yet, so neither failed variant should paint
+    // Cold reload: in_upgrade unknown until validateToken resolves, show loader
     props = createTestProps({
       userData: {},
       params: {status: "failed"},
@@ -406,6 +402,7 @@ describe("Test <PaymentStatus /> cases", () => {
       payment_url: null,
       mustLogin: undefined,
       mustLogout: true,
+      captivePortalLogoutOnly: true,
     });
     expect(props.navigate).toHaveBeenCalledWith("/default/status");
     expect(props.logout).not.toHaveBeenCalled();
@@ -598,7 +595,6 @@ describe("Test <PaymentStatus /> cases", () => {
       context: loadingContextValue,
     });
     await tick();
-    // the upgrader must not be bounced off the draft page
     expect(wrapper.find("Navigate").length).toEqual(0);
     const payProcButton = wrapper
       .find("Link.button.full")
@@ -678,12 +674,10 @@ describe("Test <PaymentStatus /> cases", () => {
       context: loadingContextValue,
     });
     await tick();
-    // componentDidMount sets mustLogin so /status performs the
-    // captive-portal login once the user proceeds with the payment
+    // componentDidMount sets mustLogin so /status performs captive-portal login on proceed
     expect(props.setUserData).toHaveBeenCalledWith(
       expect.objectContaining({mustLogin: true}),
     );
-    // the second button is the "go back" action for an upgrader
     wrapper.find(".button").at(1).simulate("click", {});
     await tick();
     expect(cancelUpgradePlan).toHaveBeenCalledWith(
@@ -691,8 +685,7 @@ describe("Test <PaymentStatus /> cases", () => {
       props.userData.auth_token || props.userData.key,
       props.language,
     );
-    // giving up must clear the stale upgrade/login flags, not just navigate,
-    // otherwise /status bounces the user straight back to /payment/draft
+    // Clear stale flags to prevent /status redirecting back to /payment/draft
     expect(props.setUserData).toHaveBeenLastCalledWith(
       expect.objectContaining({
         in_upgrade: false,
@@ -700,11 +693,11 @@ describe("Test <PaymentStatus /> cases", () => {
         payment_url: null,
         mustLogin: undefined,
         mustLogout: true,
+        captivePortalLogoutOnly: true,
       }),
     );
     expect(props.navigate).toHaveBeenCalledWith(`/${props.orgSlug}/status`);
-    // the app-level (WLP) session must stay intact; only the captive
-    // portal session is torn down via the mustLogout flag above
+    // Keep WLP session intact; only tear down captive portal session
     expect(props.logout).not.toHaveBeenCalled();
   });
 });
