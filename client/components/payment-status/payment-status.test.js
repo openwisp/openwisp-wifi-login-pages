@@ -550,7 +550,9 @@ describe("Test <PaymentStatus /> cases", () => {
     wrapper.find(".payment-status-row-3 .button").at(0).simulate("click");
     expect(mockCookiesSet).not.toHaveBeenCalled();
     expect(wrapper.instance().props.setUserData).not.toHaveBeenCalled();
-    expect(props.authenticate).toHaveBeenCalledWith(true);
+    // No captive portal login needed when internet is not required, so the
+    // retry is a plain navigation and paymentProceedHandler must not run.
+    expect(props.authenticate).not.toHaveBeenCalled();
   });
 
   it("should go back to status without bailing out on plan upgrade", async () => {
@@ -592,6 +594,37 @@ describe("Test <PaymentStatus /> cases", () => {
     });
     expect(props.navigate).toHaveBeenCalledWith("/default/status");
     expect(props.logout).not.toHaveBeenCalled();
+  });
+
+  it("should clear in_upgrade even when the cancel response omits it", async () => {
+    props = createTestProps({
+      params: {status: "failed"},
+      settings: {subscriptions: true, mobile_phone_verification: true},
+      userData: {
+        ...responseData,
+        method: "mobile_phone",
+        is_verified: true,
+        in_upgrade: true,
+        payment_url: "https://payment.example.com/pay/1",
+      },
+    });
+    validateToken.mockReturnValue(true);
+    // The cancel API response does not echo back in_upgrade.
+    cancelUpgradePlan.mockResolvedValue({});
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    wrapper.find(".payment-status-row-4 .button").simulate("click", {});
+    await tick();
+    expect(props.setUserData).toHaveBeenCalledWith({
+      ...props.userData,
+      in_upgrade: false,
+      proceedToPayment: false,
+      mustLogin: undefined,
+      mustLogout: true,
+      captivePortalLogoutOnly: true,
+    });
   });
 
   it("should clear the persisted proceedToPayment flag when abandoning an upgrade", async () => {

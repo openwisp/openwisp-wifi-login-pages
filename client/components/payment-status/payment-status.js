@@ -84,6 +84,7 @@ export default class PaymentStatus extends React.Component {
         ...userData,
         ...response,
         auth_token: response.auth_token || response.key || userData.auth_token,
+        in_upgrade: false,
         proceedToPayment: false,
         mustLogin: undefined,
         mustLogout: true,
@@ -151,7 +152,6 @@ export default class PaymentStatus extends React.Component {
     }
 
     // draft case
-    // if (isAuthenticated === false && status === "draft") {
     if (status === "draft") {
       return this.renderDraft(isDraftUpgrade);
     }
@@ -162,7 +162,9 @@ export default class PaymentStatus extends React.Component {
       return redirectToStatus();
     }
 
-    // Show loader while validateToken resolves in_upgrade state on cold reload
+    // Prevent a brief render of the non-upgrade failed page while validateToken
+    // is resolving on a cold reload. The draft flow doesn't need this because it
+    // doesn't branch on in_upgrade until the payment-proceed step.
     if (status === "failed" && isTokenValid === null) {
       return <Loader />;
     }
@@ -255,7 +257,7 @@ export default class PaymentStatus extends React.Component {
   }
 
   renderFailed(isFailedUpgrade = false) {
-    const {orgSlug, userData} = this.props;
+    const {orgSlug, userData, settings} = this.props;
     // User might have exhausted the temporary session quota while completing
     // the payment. Thus, we need to login them back in the captive portal
     // before directing them to the payment gateway.
@@ -264,6 +266,10 @@ export default class PaymentStatus extends React.Component {
       : `/${orgSlug}/payment/draft`;
     // No retry when upgrade payment attempts exhausted (no payment_url)
     const showRetry = !isFailedUpgrade || Boolean(userData.payment_url);
+    // Only re-run the captive portal login when internet is actually required;
+    // otherwise the retry is a plain navigation to the payment gateway.
+    const needsPortalLogin =
+      isFailedUpgrade && settings.payment_requires_internet;
     // failed payment case
     return (
       <div className="container content">
@@ -278,7 +284,7 @@ export default class PaymentStatus extends React.Component {
                     className="button full"
                     to={retryUrl}
                     onClick={
-                      isFailedUpgrade ? this.paymentProceedHandler : undefined
+                      needsPortalLogin ? this.paymentProceedHandler : undefined
                     }
                   >
                     {t`PAY_TRY_AGAIN_BTN`}
