@@ -187,9 +187,11 @@ export default class PaymentStatus extends React.Component {
     if (settings.payment_requires_internet) {
       setUserData({
         ...userData,
+        mustLogin: true,
         proceedToPayment: true,
       });
       // Persist so it survives page reload during sync captive portal auth
+      storeValue(captivePortalSyncAuth, `${orgSlug}_mustLogin`, true, cookies);
       storeValue(
         captivePortalSyncAuth,
         `${orgSlug}_proceedToPayment`,
@@ -200,12 +202,17 @@ export default class PaymentStatus extends React.Component {
     authenticate(true);
   }
 
-  renderDraft(isDraftUpgrade = false) {
-    const {orgSlug, page = {}, settings} = this.props;
-    const {timeout = 5, max_attempts: maxAttempts = 3} = page;
-    const payProceedUrl = settings.payment_requires_internet
+  getProceedUrl() {
+    const {orgSlug, settings} = this.props;
+    return settings.payment_requires_internet
       ? `/${orgSlug}/status`
       : `/${orgSlug}/payment/process`;
+  }
+
+  renderDraft(isDraftUpgrade = false) {
+    const {page = {}} = this.props;
+    const {timeout = 5, max_attempts: maxAttempts = 3} = page;
+    const payProceedUrl = this.getProceedUrl();
 
     return (
       <div className="container content">
@@ -249,8 +256,11 @@ export default class PaymentStatus extends React.Component {
 
   renderFailed(isFailedUpgrade = false) {
     const {orgSlug, userData} = this.props;
+    // User might have exhausted the temporary session quota while completing
+    // the payment. Thus, we need to login them back in the captive portal
+    // before directing them to the payment gateway.
     const retryUrl = isFailedUpgrade
-      ? `/${orgSlug}/payment/process`
+      ? this.getProceedUrl()
       : `/${orgSlug}/payment/draft`;
     // No retry when upgrade payment attempts exhausted (no payment_url)
     const showRetry = !isFailedUpgrade || Boolean(userData.payment_url);
@@ -264,7 +274,13 @@ export default class PaymentStatus extends React.Component {
               <div className="row payment-status-row-2">{t`PAY_SUB_H`}</div>
               {showRetry && (
                 <div className="row payment-status-row-3">
-                  <Link className="button full" to={retryUrl}>
+                  <Link
+                    className="button full"
+                    to={retryUrl}
+                    onClick={
+                      isFailedUpgrade ? this.paymentProceedHandler : undefined
+                    }
+                  >
                     {t`PAY_TRY_AGAIN_BTN`}
                   </Link>
                 </div>
