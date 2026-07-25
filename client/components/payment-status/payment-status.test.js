@@ -14,12 +14,14 @@ import tick from "../../utils/tick";
 import validateToken from "../../utils/validate-token";
 import loadTranslation from "../../utils/load-translation";
 import cancelUpgradePlan from "../../utils/cancel-upgrade-plan";
+import logError from "../../utils/log-error";
 
 jest.mock("axios");
 jest.mock("../../utils/get-config");
 jest.mock("../../utils/validate-token");
 jest.mock("../../utils/load-translation");
 jest.mock("../../utils/cancel-upgrade-plan");
+jest.mock("../../utils/log-error");
 
 const defaultConfig = getConfig("default", true);
 const createTestProps = (props) => ({
@@ -245,15 +247,17 @@ describe("Test <PaymentStatus /> cases", () => {
     expect(comp.props.setUserData).not.toHaveBeenCalled();
   });
 
-  it("should set proceedToPayment in userData when navigating to /status", async () => {
+  it("should set proceedToPayment in userData and not persist it without sync auth", async () => {
     // If the payment requires internet, proceedToPayment should
     // be set to true in userData
     validateToken.mockReturnValue(true);
 
     // Test payment_requires_internet is set to false
+    let mockCookiesSet = jest.fn();
     props = createTestProps({
       userData: {...responseData, is_verified: false},
       params: {status: "draft"},
+      cookies: {set: mockCookiesSet, get: jest.fn(), remove: jest.fn()},
     });
     props.settings.payment_requires_internet = false;
     wrapper = shallow(<PaymentStatus {...props} />, {
@@ -265,11 +269,14 @@ describe("Test <PaymentStatus /> cases", () => {
       .first();
     payProcButton.simulate("click");
     expect(wrapper.instance().props.setUserData).not.toHaveBeenCalled();
+    expect(mockCookiesSet).not.toHaveBeenCalled();
 
-    // Test payment_requires_internet is set to true
+    // Test payment_requires_internet is set to true, without sync auth
+    mockCookiesSet = jest.fn();
     props = createTestProps({
       userData: {...responseData, is_verified: false},
       params: {status: "draft"},
+      cookies: {set: mockCookiesSet, get: jest.fn(), remove: jest.fn()},
     });
     props.settings.payment_requires_internet = true;
     wrapper = shallow(<PaymentStatus {...props} />, {
@@ -286,6 +293,9 @@ describe("Test <PaymentStatus /> cases", () => {
       mustLogin: true,
       proceedToPayment: true,
     });
+    // Async auth never reloads the page, so there is nothing to survive
+    // and the flag doesn't need to be persisted outside Redux.
+    expect(mockCookiesSet).not.toHaveBeenCalled();
   });
 
   it("should persist proceedToPayment cookie for sync auth", async () => {
@@ -319,57 +329,6 @@ describe("Test <PaymentStatus /> cases", () => {
       {path: "/", maxAge: 60},
     );
     // Verify userData was updated with proceedToPayment
-    expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith(
-      expect.objectContaining({proceedToPayment: true}),
-    );
-  });
-
-  it("should not persist proceedToPayment when internet is not required", async () => {
-    validateToken.mockReturnValue(true);
-    const mockCookiesSet = jest.fn();
-    props = createTestProps({
-      userData: {...responseData, is_verified: false},
-      params: {status: "draft"},
-      cookies: {set: mockCookiesSet, get: jest.fn(), remove: jest.fn()},
-    });
-    props.settings.payment_requires_internet = false;
-    wrapper = shallow(<PaymentStatus {...props} />, {
-      context: loadingContextValue,
-    });
-    const payProcButton = wrapper
-      .find("Link.button.full")
-      .findWhere((node) => node.text() === t`PAY_PROC_BTN`)
-      .first();
-    payProcButton.simulate("click");
-    // No cookie should be set: internet access isn't needed before payment
-    expect(mockCookiesSet).not.toHaveBeenCalled();
-    // userData should not be flagged with proceedToPayment either
-    expect(wrapper.instance().props.setUserData).not.toHaveBeenCalledWith(
-      expect.objectContaining({proceedToPayment: true}),
-    );
-  });
-
-  it("should not persist proceedToPayment cookie in async auth mode", async () => {
-    validateToken.mockReturnValue(true);
-    const mockCookiesSet = jest.fn();
-    props = createTestProps({
-      userData: {...responseData, is_verified: false},
-      params: {status: "draft"},
-      captivePortalSyncAuth: false,
-      cookies: {set: mockCookiesSet, get: jest.fn(), remove: jest.fn()},
-    });
-    props.settings.payment_requires_internet = true;
-    wrapper = shallow(<PaymentStatus {...props} />, {
-      context: loadingContextValue,
-    });
-    const payProcButton = wrapper
-      .find("Link.button.full")
-      .findWhere((node) => node.text() === t`PAY_PROC_BTN`)
-      .first();
-    payProcButton.simulate("click");
-    // Async auth never reloads the page, so there is nothing to survive
-    // and the flag doesn't need to be persisted outside Redux.
-    expect(mockCookiesSet).not.toHaveBeenCalled();
     expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith(
       expect.objectContaining({proceedToPayment: true}),
     );
@@ -431,10 +390,16 @@ describe("Test <PaymentStatus /> cases", () => {
     expect(spyToast.mock.calls.length).toBe(0);
   });
 
-  it("should render failed state when a plan upgrade payment fails", async () => {
+  it("should not force captive portal login when retrying and payment does not require internet", async () => {
+    const mockCookiesSet = jest.fn();
     props = createTestProps({
       params: {status: "failed"},
-      settings: {subscriptions: true, mobile_phone_verification: true},
+      cookies: {set: mockCookiesSet, get: jest.fn(), remove: jest.fn()},
+      settings: {
+        subscriptions: true,
+        mobile_phone_verification: true,
+        payment_requires_internet: false,
+      },
       userData: {
         ...responseData,
         method: "mobile_phone",
@@ -453,32 +418,12 @@ describe("Test <PaymentStatus /> cases", () => {
     expect(
       wrapper.find(".payment-status-row-3 .button").at(0).props().to,
     ).toEqual("/default/payment/process");
-  });
-
-  it("should route failed-upgrade retry through /status when payment requires internet", async () => {
-    props = createTestProps({
-      params: {status: "failed"},
-      settings: {
-        subscriptions: true,
-        mobile_phone_verification: true,
-        payment_requires_internet: true,
-      },
-      userData: {
-        ...responseData,
-        method: "mobile_phone",
-        is_verified: true,
-        in_upgrade: true,
-        payment_url: "https://payment.example.com/pay/1",
-      },
-    });
-    validateToken.mockReturnValue(true);
-    wrapper = shallow(<PaymentStatus {...props} />, {
-      context: loadingContextValue,
-    });
-    await tick();
-    expect(
-      wrapper.find(".payment-status-row-3 .button").at(0).props().to,
-    ).toEqual("/default/status");
+    wrapper.find(".payment-status-row-3 .button").at(0).simulate("click");
+    expect(mockCookiesSet).not.toHaveBeenCalled();
+    expect(wrapper.instance().props.setUserData).not.toHaveBeenCalled();
+    // No captive portal login needed when internet is not required, so the
+    // retry is a plain navigation and paymentProceedHandler must not run.
+    expect(props.authenticate).not.toHaveBeenCalled();
   });
 
   it("should log into the captive portal when retrying a failed upgrade", async () => {
@@ -505,6 +450,9 @@ describe("Test <PaymentStatus /> cases", () => {
       context: loadingContextValue,
     });
     await tick();
+    expect(
+      wrapper.find(".payment-status-row-3 .button").at(0).props().to,
+    ).toEqual("/default/status");
     wrapper.find(".payment-status-row-3 .button").at(0).simulate("click");
     expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith(
       expect.objectContaining({mustLogin: true, proceedToPayment: true}),
@@ -519,81 +467,6 @@ describe("Test <PaymentStatus /> cases", () => {
       {path: "/", maxAge: 60},
     );
     expect(props.authenticate).toHaveBeenCalledWith(true);
-  });
-
-  it("should not force captive portal login when retrying and payment does not require internet", async () => {
-    const mockCookiesSet = jest.fn();
-    props = createTestProps({
-      params: {status: "failed"},
-      cookies: {set: mockCookiesSet, get: jest.fn(), remove: jest.fn()},
-      settings: {
-        subscriptions: true,
-        mobile_phone_verification: true,
-        payment_requires_internet: false,
-      },
-      userData: {
-        ...responseData,
-        method: "mobile_phone",
-        is_verified: true,
-        in_upgrade: true,
-        payment_url: "https://payment.example.com/pay/1",
-      },
-    });
-    validateToken.mockReturnValue(true);
-    wrapper = shallow(<PaymentStatus {...props} />, {
-      context: loadingContextValue,
-    });
-    await tick();
-    expect(
-      wrapper.find(".payment-status-row-3 .button").at(0).props().to,
-    ).toEqual("/default/payment/process");
-    wrapper.find(".payment-status-row-3 .button").at(0).simulate("click");
-    expect(mockCookiesSet).not.toHaveBeenCalled();
-    expect(wrapper.instance().props.setUserData).not.toHaveBeenCalled();
-    // No captive portal login needed when internet is not required, so the
-    // retry is a plain navigation and paymentProceedHandler must not run.
-    expect(props.authenticate).not.toHaveBeenCalled();
-  });
-
-  it("should go back to status without bailing out on plan upgrade", async () => {
-    props = createTestProps({
-      params: {status: "failed"},
-      settings: {subscriptions: true, mobile_phone_verification: true},
-      userData: {
-        ...responseData,
-        method: "mobile_phone",
-        is_verified: true,
-        in_upgrade: true,
-        payment_url: "https://payment.example.com/pay/1",
-      },
-    });
-    validateToken.mockReturnValue(true);
-    cancelUpgradePlan.mockResolvedValue({
-      in_upgrade: false,
-      payment_url: null,
-    });
-    wrapper = shallow(<PaymentStatus {...props} />, {
-      context: loadingContextValue,
-    });
-    await tick();
-    wrapper.find(".payment-status-row-4 .button").simulate("click", {});
-    await tick();
-    expect(cancelUpgradePlan).toHaveBeenCalledWith(
-      props.orgSlug,
-      props.userData.auth_token || props.userData.key,
-      props.language,
-    );
-    expect(props.setUserData).toHaveBeenCalledWith({
-      ...props.userData,
-      in_upgrade: false,
-      proceedToPayment: false,
-      payment_url: null,
-      mustLogin: undefined,
-      mustLogout: true,
-      captivePortalLogoutOnly: true,
-    });
-    expect(props.navigate).toHaveBeenCalledWith("/default/status");
-    expect(props.logout).not.toHaveBeenCalled();
   });
 
   it("should clear in_upgrade even when the cancel response omits it", async () => {
@@ -657,12 +530,104 @@ describe("Test <PaymentStatus /> cases", () => {
     await tick();
     wrapper.find(".payment-status-row-4 .button").simulate("click", {});
     await tick();
+    expect(cancelUpgradePlan).toHaveBeenCalledWith(
+      props.orgSlug,
+      props.userData.auth_token || props.userData.key,
+      props.language,
+    );
+    expect(props.setUserData).toHaveBeenCalledWith({
+      ...props.userData,
+      in_upgrade: false,
+      proceedToPayment: false,
+      payment_url: null,
+      mustLogin: undefined,
+      mustLogout: true,
+      captivePortalLogoutOnly: true,
+    });
+    expect(props.navigate).toHaveBeenCalledWith("/default/status");
+    expect(props.logout).not.toHaveBeenCalled();
     // Stale flag must be cleared, otherwise a later status reload could
     // wrongly force the user back into the payment flow.
     expect(mockCookiesRemove).toHaveBeenCalledWith("default_proceedToPayment", {
       path: "/",
     });
     expect(localStorage.getItem("default_proceedToPayment")).toBeNull();
+  });
+
+  it("should silently ignore a 404 when cancelling an non-existent upgrade", async () => {
+    const spyToastError = jest.spyOn(toast, "error");
+    props = createTestProps({
+      params: {status: "failed"},
+      settings: {subscriptions: true, mobile_phone_verification: true},
+      userData: {
+        ...responseData,
+        method: "mobile_phone",
+        is_verified: true,
+        in_upgrade: true,
+        payment_url: "https://payment.example.com/pay/1",
+      },
+    });
+    validateToken.mockReturnValue(true);
+    cancelUpgradePlan.mockRejectedValue({response: {status: 404}});
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    wrapper.find(".payment-status-row-4 .button").simulate("click", {});
+    await tick();
+    // The order does not existing on OpenWISP
+    expect(spyToastError).not.toHaveBeenCalled();
+    expect(logError).not.toHaveBeenCalled();
+    expect(props.setUserData).toHaveBeenCalledWith({
+      ...props.userData,
+      in_upgrade: false,
+      proceedToPayment: false,
+      payment_url: null,
+      mustLogin: undefined,
+      mustLogout: true,
+      captivePortalLogoutOnly: true,
+    });
+    expect(props.navigate).toHaveBeenCalledWith("/default/status");
+  });
+
+  it("should report an error and still go back to status when cancelling fails unexpectedly", async () => {
+    const spyToastError = jest.spyOn(toast, "error");
+    props = createTestProps({
+      params: {status: "failed"},
+      settings: {subscriptions: true, mobile_phone_verification: true},
+      userData: {
+        ...responseData,
+        method: "mobile_phone",
+        is_verified: true,
+        in_upgrade: true,
+        payment_url: "https://payment.example.com/pay/1",
+      },
+    });
+    validateToken.mockReturnValue(true);
+    cancelUpgradePlan.mockRejectedValue({response: {status: 500}});
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    wrapper.find(".payment-status-row-4 .button").simulate("click", {});
+    await tick();
+    expect(spyToastError).toHaveBeenCalledTimes(1);
+    expect(logError).toHaveBeenCalledWith(
+      {response: {status: 500}},
+      "Error while cancelling plan upgrade",
+    );
+    // The user must still be able to leave the failed page even if the
+    // cancel request itself errored out.
+    expect(props.setUserData).toHaveBeenCalledWith({
+      ...props.userData,
+      in_upgrade: false,
+      proceedToPayment: false,
+      payment_url: null,
+      mustLogin: undefined,
+      mustLogout: true,
+      captivePortalLogoutOnly: true,
+    });
+    expect(props.navigate).toHaveBeenCalledWith("/default/status");
   });
 
   it("should hide the continue button if the payment url is not available", async () => {
@@ -835,9 +800,13 @@ describe("Test <PaymentStatus /> cases", () => {
     });
   });
 
-  it("should render the draft page for a plan upgrade", async () => {
+  it("should not set mustLogin on draft arrival for an upgrade not requiring internet", async () => {
     props = createTestProps({
-      settings: {subscriptions: true, mobile_phone_verification: true},
+      settings: {
+        subscriptions: true,
+        mobile_phone_verification: true,
+        payment_requires_internet: false,
+      },
       userData: {
         ...responseData,
         method: "mobile_phone",
@@ -858,53 +827,6 @@ describe("Test <PaymentStatus /> cases", () => {
       .findWhere((node) => node.text() === t`PAY_PROC_BTN`)
       .first();
     expect(payProcButton.length).toEqual(1);
-  });
-
-  it("should set mustLogin on draft arrival for a plan upgrade requiring internet", async () => {
-    props = createTestProps({
-      settings: {
-        subscriptions: true,
-        mobile_phone_verification: true,
-        payment_requires_internet: true,
-      },
-      userData: {
-        ...responseData,
-        method: "mobile_phone",
-        is_verified: true,
-        in_upgrade: true,
-      },
-      params: {status: "draft"},
-    });
-    validateToken.mockReturnValue(true);
-    wrapper = shallow(<PaymentStatus {...props} />, {
-      context: loadingContextValue,
-    });
-    await tick();
-    expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith(
-      expect.objectContaining({mustLogin: true}),
-    );
-  });
-
-  it("should not set mustLogin on draft arrival for an upgrade not requiring internet", async () => {
-    props = createTestProps({
-      settings: {
-        subscriptions: true,
-        mobile_phone_verification: true,
-        payment_requires_internet: false,
-      },
-      userData: {
-        ...responseData,
-        method: "mobile_phone",
-        is_verified: true,
-        in_upgrade: true,
-      },
-      params: {status: "draft"},
-    });
-    validateToken.mockReturnValue(true);
-    wrapper = shallow(<PaymentStatus {...props} />, {
-      context: loadingContextValue,
-    });
-    await tick();
     expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith(
       expect.objectContaining({mustLogin: undefined}),
     );
