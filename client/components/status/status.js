@@ -831,6 +831,7 @@ export default class Status extends React.Component {
       orgSlug,
       setInternetMode,
       setPlanExhausted,
+      userData,
     } = this.props;
     const {setLoading} = this.context;
     const {message, type, warningMessage, showUpgradeBtn, planExhausted} =
@@ -871,7 +872,12 @@ export default class Status extends React.Component {
             if (planExhausted !== false) {
               setPlanExhausted(true);
             }
-            setLoading(false);
+            // When redirected to /status solely to complete captive portal
+            // login before payment, keep the loader on so the status page
+            // contents stay hidden while finalOperations() navigates away.
+            if (!userData.proceedToPayment) {
+              setLoading(false);
+            }
           },
         );
         break;

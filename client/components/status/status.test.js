@@ -706,6 +706,25 @@ describe("<Status /> interactions", () => {
     expect(setLoadingMock).toHaveBeenLastCalledWith(false);
   });
 
+  it("authMessage keeps loader on during payment login redirect", async () => {
+    props = createTestProps({userData: {proceedToPayment: true}});
+    const setLoadingMock = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: setLoadingMock},
+      disableLifecycleMethods: true,
+    });
+    jest.spyOn(toast, "info");
+    const status = wrapper.instance();
+    status.handlePostMessage({
+      data: {message: "RADIUS Info", type: "authMessage"},
+      origin: "http://localhost",
+    });
+    expect(toast.info).toHaveBeenCalledTimes(1);
+    expect(props.setPlanExhausted).toHaveBeenCalledTimes(1);
+    expect(setLoadingMock).toHaveBeenCalledTimes(1);
+    expect(setLoadingMock).toHaveBeenLastCalledWith(true);
+  });
+
   it("test handlePostMessage internet-mode", async () => {
     props = createTestProps();
     const setLoadingMock = jest.fn();
