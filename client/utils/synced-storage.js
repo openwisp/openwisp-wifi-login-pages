@@ -60,7 +60,8 @@ export const resolveStoredValue = (
 
 /**
  * Removes a value previously persisted via storeValue from both
- * cookies and localStorage.
+ * cookies and localStorage. Unlike storeValue/resolveStoredValue, this
+ * runs unconditionally: clearing is safe even if sync auth is off.
  *
  * @param {string} key - The key to remove.
  * @param {Cookies} cookies - The cookies instance used to remove the cookie.

@@ -333,7 +333,10 @@ export default class Status extends React.Component {
     const {setLoading} = this.context;
     // if the user needs bank card verification,
     // redirect to payment page and stop here
-    if (needsVerify("bank_card", userData, settings) || userData.in_upgrade) {
+    if (
+      needsVerify("bank_card", userData, settings) ||
+      (userData.in_upgrade && userData.payment_url)
+    ) {
       // avoid redirect loop from proceed to payment
       if (settings.payment_requires_internet && userData.proceedToPayment) {
         // reset proceedToPayment
@@ -529,7 +532,6 @@ export default class Status extends React.Component {
       userData,
       navigate,
       setUserData,
-      captivePortalSyncAuth,
       settings,
     } = this.props;
     const auth_token = cookies.get(`${orgSlug}_auth_token`);
@@ -552,13 +554,6 @@ export default class Status extends React.Component {
           // Token consumed by portal login; clear so validateToken refetches one
           radius_user_token: undefined,
         });
-        // Portal login needed to reach payment gateway (unrelated to CoA)
-        storeValue(
-          captivePortalSyncAuth,
-          `${orgSlug}_mustLogin`,
-          true,
-          cookies,
-        );
         // Route through draft page to enforce portal login before gateway
         if (settings.payment_requires_internet) {
           navigate(`/${orgSlug}/payment/draft`);
@@ -634,35 +629,37 @@ export default class Status extends React.Component {
     } = this.props;
     const macaddr = cookies.get(`${orgSlug}_macaddr`);
     const params = {calling_station_id: macaddr};
-    localStorage.setItem("userAutoLogin", String(userAutoLogin));
+    if (!this.captivePortalLogoutOnly) {
+      localStorage.setItem("userAutoLogin", String(userAutoLogin));
+    }
     setLoading(true);
     await this.getUserActiveRadiusSessions(params);
     const {sessionsToLogout} = this.state;
 
-    if (sessionsToLogout.length > 0) {
+    // In internet mode there is no captive portal session to tear down, so
+    // skip the logout form and settle the page directly below.
+    if (sessionsToLogout.length > 0 && !internetMode) {
       if (this.logoutFormRef && this.logoutFormRef.current) {
         if (!repeatLogin) {
           this.setStateSafe({loggedOut: true});
         } else {
           this.repeatLogin = true;
         }
-        if (!internetMode) {
+        storeValue(
+          captivePortalSyncAuth,
+          `${orgSlug}_mustLogout`,
+          true,
+          cookies,
+        );
+        if (this.captivePortalLogoutOnly) {
           storeValue(
             captivePortalSyncAuth,
-            `${orgSlug}_mustLogout`,
+            `${orgSlug}_captivePortalLogoutOnly`,
             true,
             cookies,
           );
-          if (this.captivePortalLogoutOnly) {
-            storeValue(
-              captivePortalSyncAuth,
-              `${orgSlug}_captivePortalLogoutOnly`,
-              true,
-              cookies,
-            );
-          }
-          this.logoutFormRef.current.submit();
         }
+        this.logoutFormRef.current.submit();
         return;
       }
     }
@@ -1582,7 +1579,6 @@ Status.propTypes = {
     mobile_phone_verification: PropTypes.bool,
     subscriptions: PropTypes.bool,
     payment_requires_internet: PropTypes.bool,
-    captive_portal_supports_coa: PropTypes.bool,
   }).isRequired,
   setUserData: PropTypes.func.isRequired,
   setInternetMode: PropTypes.func.isRequired,

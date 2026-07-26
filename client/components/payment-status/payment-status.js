@@ -83,15 +83,23 @@ export default class PaymentStatus extends React.Component {
       setUserData({
         ...userData,
         ...response,
-        auth_token: response.auth_token || response.key || userData.auth_token,
         in_upgrade: false,
         proceedToPayment: false,
+        payment_url: null,
         mustLogin: undefined,
         mustLogout: true,
         captivePortalLogoutOnly: true,
       });
     } catch (error) {
-      if (!error.response || error.response.status !== 404) {
+      // The API replies 404 when there is no pending upgrade order left to
+      // cancel, which is a no-op for the user rather than an error. A 404
+      // from our own server carries response_code NOT_FOUND and means the
+      // org slug is unknown, so keep surfacing that one.
+      const noPendingOrder =
+        error.response &&
+        error.response.status === 404 &&
+        (error.response.data || {}).response_code !== "NOT_FOUND";
+      if (!noPendingOrder) {
         toast.error(t`ERR_OCCUR`);
         logError(error, "Error while cancelling plan upgrade");
       }
@@ -151,6 +159,10 @@ export default class PaymentStatus extends React.Component {
       return redirectToStatus();
     }
 
+    if (isTokenValid === null) {
+      return <Loader />;
+    }
+
     // draft case
     if (status === "draft") {
       return this.renderDraft(isDraftUpgrade);
@@ -160,13 +172,6 @@ export default class PaymentStatus extends React.Component {
     if (isTokenValid === true && status === "success" && isVerified === true) {
       toast.success(t`PAY_SUCCESS`);
       return redirectToStatus();
-    }
-
-    // Prevent a brief render of the non-upgrade failed page while validateToken
-    // is resolving on a cold reload. The draft flow doesn't need this because it
-    // doesn't branch on in_upgrade until the payment-proceed step.
-    if (status === "failed" && isTokenValid === null) {
-      return <Loader />;
     }
 
     return this.renderFailed(isFailedUpgrade);
@@ -197,7 +202,7 @@ export default class PaymentStatus extends React.Component {
       storeValue(
         captivePortalSyncAuth,
         `${orgSlug}_proceedToPayment`,
-        "true",
+        true,
         cookies,
       );
     }

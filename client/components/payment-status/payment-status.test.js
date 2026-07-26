@@ -129,6 +129,24 @@ describe("Test <PaymentStatus /> cases", () => {
     expect(wrapper.find(".payment-status-row-1").length).toEqual(0);
   });
 
+  it("should show a loader instead of the wrong abandon button on a cold draft load", () => {
+    // Cold reload: in_upgrade unknown until validateToken resolves, so
+    // isDraftUpgrade cannot be decided yet. Rendering renderDraft early would
+    // briefly wire the abandon button to logout instead of backToStatus.
+    props = createTestProps({
+      userData: {},
+      params: {status: "draft"},
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    expect(wrapper.find(Loader)).toHaveLength(1);
+    expect(wrapper.find("Navigate").length).toEqual(0);
+    expect(wrapper.find(".main-column.single").length).toEqual(0);
+    expect(wrapper.find("button.button.full").length).toEqual(0);
+  });
+
   it("should call logout correctly when clicking on logout button", async () => {
     const spyToast = jest.spyOn(toast, "success");
     props = createTestProps({
@@ -263,6 +281,8 @@ describe("Test <PaymentStatus /> cases", () => {
     wrapper = shallow(<PaymentStatus {...props} />, {
       context: loadingContextValue,
     });
+    await tick();
+    wrapper.instance().props.setUserData.mockClear();
     let payProcButton = wrapper
       .find("Link.button.full")
       .findWhere((node) => node.text() === t`PAY_PROC_BTN`)
@@ -282,6 +302,7 @@ describe("Test <PaymentStatus /> cases", () => {
     wrapper = shallow(<PaymentStatus {...props} />, {
       context: loadingContextValue,
     });
+    await tick();
     payProcButton = wrapper
       .find("Link.button.full")
       .findWhere((node) => node.text() === t`PAY_PROC_BTN`)
@@ -317,6 +338,7 @@ describe("Test <PaymentStatus /> cases", () => {
     wrapper = shallow(<PaymentStatus {...props} />, {
       context: loadingContextValue,
     });
+    await tick();
     const payProcButton = wrapper
       .find("Link.button.full")
       .findWhere((node) => node.text() === t`PAY_PROC_BTN`)
@@ -325,7 +347,7 @@ describe("Test <PaymentStatus /> cases", () => {
     // Verify the cookie was set
     expect(mockCookiesSet).toHaveBeenCalledWith(
       "default_proceedToPayment",
-      "true",
+      true,
       {path: "/", maxAge: 60},
     );
     // Verify userData was updated with proceedToPayment
@@ -463,7 +485,7 @@ describe("Test <PaymentStatus /> cases", () => {
     });
     expect(mockCookiesSet).toHaveBeenCalledWith(
       "default_proceedToPayment",
-      "true",
+      true,
       {path: "/", maxAge: 60},
     );
     expect(props.authenticate).toHaveBeenCalledWith(true);
@@ -494,6 +516,7 @@ describe("Test <PaymentStatus /> cases", () => {
       ...props.userData,
       in_upgrade: false,
       proceedToPayment: false,
+      payment_url: null,
       mustLogin: undefined,
       mustLogout: true,
       captivePortalLogoutOnly: true,
@@ -587,6 +610,39 @@ describe("Test <PaymentStatus /> cases", () => {
       mustLogout: true,
       captivePortalLogoutOnly: true,
     });
+    expect(props.navigate).toHaveBeenCalledWith("/default/status");
+  });
+
+  it("should surface a 404 that carries response_code NOT_FOUND", async () => {
+    // Our own server also answers 404 for an unknown organization slug, in
+    // that shape. That must not be swallowed as "nothing to cancel".
+    const spyToastError = jest.spyOn(toast, "error");
+    props = createTestProps({
+      params: {status: "failed"},
+      settings: {subscriptions: true, mobile_phone_verification: true},
+      userData: {
+        ...responseData,
+        method: "mobile_phone",
+        is_verified: true,
+        in_upgrade: true,
+        payment_url: "https://payment.example.com/pay/1",
+      },
+    });
+    validateToken.mockReturnValue(true);
+    cancelUpgradePlan.mockRejectedValue({
+      response: {status: 404, data: {response_code: "NOT_FOUND"}},
+    });
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    wrapper.find(".payment-status-row-4 .button").simulate("click", {});
+    await tick();
+    expect(spyToastError).toHaveBeenCalledTimes(1);
+    expect(logError).toHaveBeenCalledWith(
+      {response: {status: 404, data: {response_code: "NOT_FOUND"}}},
+      "Error while cancelling plan upgrade",
+    );
     expect(props.navigate).toHaveBeenCalledWith("/default/status");
   });
 

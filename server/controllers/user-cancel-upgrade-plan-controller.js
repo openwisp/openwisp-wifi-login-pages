@@ -12,8 +12,8 @@ const userCancelUpgradePlan = (req, res) => {
     if (org.slug === reqOrg) {
       const conf = merge(defaultConfig, org);
       const {host} = conf;
-      const userUpgradePlanUrl = reverse(
-        "user_plan_radius_usage",
+      const userUpgradeCancelUrl = reverse(
+        "user_plan_radius_usage_cancel",
         getSlug(conf),
       );
       const timeout = conf.timeout * 1000;
@@ -24,7 +24,7 @@ const userCancelUpgradePlan = (req, res) => {
           Authorization: req.headers.authorization,
           "accept-language": req.headers["accept-language"],
         },
-        url: `${host}${userUpgradePlanUrl}/cancel/`,
+        url: `${host}${userUpgradeCancelUrl}`,
         timeout,
       })
         .then((response) => {

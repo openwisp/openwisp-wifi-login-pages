@@ -1435,6 +1435,7 @@ describe("<Status /> interactions", () => {
       ...responseData,
       in_upgrade: true,
       proceedToPayment: false,
+      payment_url: "https://payment.example.com/pay/1",
     };
     props.settings.subscriptions = true;
     props.settings.payment_requires_internet = true;
@@ -2103,6 +2104,46 @@ describe("<Status /> interactions", () => {
     await tick();
     expect(mockRef.submit).toHaveBeenCalledTimes(1);
   });
+  it("should complete the logout instead of hanging when there are open sessions in internetMode", async () => {
+    const setLoading = jest.fn();
+    const session = {start_time: "2021-07-08T00:22:28-04:00", stop_time: null};
+    const spyToastSuccess = jest.spyOn(toast, "success");
+    props = createTestProps({internetMode: true});
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading},
+      disableLifecycleMethods: true,
+    });
+    wrapper
+      .instance()
+      .setState({sessionsToLogout: [session], activeSession: [session]});
+    await wrapper.instance().handleLogout(false);
+    expect(props.setUserData).toHaveBeenCalledWith(initialState.userData);
+    expect(props.logout).toHaveBeenCalledWith(
+      props.cookies,
+      props.orgSlug,
+      false,
+    );
+    expect(setLoading).toHaveBeenCalledWith(false);
+    expect(spyToastSuccess).toHaveBeenCalled();
+  });
+  it("should not overwrite userAutoLogin during a captive-portal-only logout", async () => {
+    // captivePortalLogoutOnly keeps the WLP session alive, so the flag that
+    // controls auto-login on the next WLP visit must not be touched by it.
+    localStorage.removeItem("userAutoLogin");
+    const setLoading = jest.fn();
+    props = createTestProps();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading},
+      disableLifecycleMethods: true,
+    });
+    wrapper.instance().captivePortalLogoutOnly = true;
+    await wrapper.instance().handleLogout(true);
+    expect(localStorage.getItem("userAutoLogin")).toBeNull();
+    // The captive-portal-only settle path must still run to completion.
+    expect(props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({captivePortalLogoutOnly: undefined}),
+    );
+  });
   it("should not display STATUS_CONTENT and radius usage when logged in internetMode", async () => {
     const prop = createTestProps({
       internetMode: true,
@@ -2572,8 +2613,7 @@ describe("<Status /> interactions", () => {
       expect.objectContaining({in_upgrade: false}),
     );
   });
-  it("test upgradeUserPlan redirects to draft and persists mustLogin when payment_requires_internet", async () => {
-    // Portal login needed regardless of CoA support (CoA only applies post-payment)
+  it("test upgradeUserPlan redirects to draft when payment_requires_internet", async () => {
     axios.mockImplementation(() =>
       Promise.resolve({
         status: 200,
@@ -2588,7 +2628,6 @@ describe("<Status /> interactions", () => {
     props = createTestProps();
     props.settings.payment_requires_internet = true;
     props.captivePortalSyncAuth = true;
-    props.settings.captive_portal_supports_coa = true;
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: true,
@@ -2604,7 +2643,6 @@ describe("<Status /> interactions", () => {
     // Route through draft to enforce portal login before gateway payment
     expect(props.navigate).toHaveBeenCalledWith("/default/payment/draft");
     expect(props.navigate).not.toHaveBeenCalledWith("/default/payment/process");
-    expect(localStorage.getItem("default_mustLogin")).toBe("true");
   });
   it("should hide limit-info element if getUserRadiusUsage fails", async () => {
     validateToken.mockReturnValue(true);
