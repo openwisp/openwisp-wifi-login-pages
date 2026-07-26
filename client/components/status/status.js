@@ -833,7 +833,8 @@ export default class Status extends React.Component {
       setPlanExhausted,
     } = this.props;
     const {setLoading} = this.context;
-    const {message, type, warningMessage, showUpgradeBtn} = event.data;
+    const {message, type, warningMessage, showUpgradeBtn, planExhausted} =
+      event.data;
 
     // Only accept messages from trusted origins,
     // For more info read: https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage#security_concern
@@ -864,8 +865,12 @@ export default class Status extends React.Component {
             ...(showUpgradeBtn !== undefined && {showUpgradeBtn}),
           },
           () => {
-            // Change the message on the status page to reflect plan exhaustion
-            setPlanExhausted(true);
+            // Only set planExhausted if the captive portal explicitly
+            // indicates plan exhaustion. For backward compatibility,
+            // default to true when the flag is not provided.
+            if (planExhausted !== false) {
+              setPlanExhausted(true);
+            }
             setLoading(false);
           },
         );

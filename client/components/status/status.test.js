@@ -633,6 +633,79 @@ describe("<Status /> interactions", () => {
     jest.useRealTimers();
   });
 
+  it("authMessage planExhausted: false skips setPlanExhausted", async () => {
+    props = createTestProps();
+    const setLoadingMock = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: setLoadingMock},
+      disableLifecycleMethods: true,
+    });
+    jest.spyOn(toast, "info");
+    const status = wrapper.instance();
+    status.handlePostMessage({
+      data: {
+        message: "Informative message",
+        type: "authMessage",
+        planExhausted: false,
+      },
+      origin: "http://localhost",
+    });
+    expect(toast.info).toHaveBeenCalledTimes(1);
+    expect(props.setPlanExhausted).toHaveBeenCalledTimes(0);
+    expect(status.state.warningMessage).toBe("USAGE_LIMIT_EXHAUSTED_TXT");
+    expect(setLoadingMock).toHaveBeenCalledTimes(2);
+    expect(setLoadingMock).toHaveBeenLastCalledWith(false);
+  });
+
+  it("authMessage planExhausted: true calls setPlanExhausted", async () => {
+    props = createTestProps();
+    const setLoadingMock = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: setLoadingMock},
+      disableLifecycleMethods: true,
+    });
+    jest.spyOn(toast, "info");
+    const status = wrapper.instance();
+    status.handlePostMessage({
+      data: {
+        message: "PLAN_EXHAUSTED_TOAST",
+        type: "authMessage",
+        warningMessage: "USAGE_LIMIT_EXHAUSTED_TXT",
+        planExhausted: true,
+      },
+      origin: "http://localhost",
+    });
+    expect(toast.info).toHaveBeenCalledTimes(1);
+    expect(props.setPlanExhausted).toHaveBeenCalledTimes(1);
+    expect(status.state.warningMessage).toBe("USAGE_LIMIT_EXHAUSTED_TXT");
+    expect(setLoadingMock).toHaveBeenCalledTimes(2);
+    expect(setLoadingMock).toHaveBeenLastCalledWith(false);
+  });
+
+  it("authMessage without planExhausted defaults to true", async () => {
+    props = createTestProps();
+    const setLoadingMock = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: setLoadingMock},
+      disableLifecycleMethods: true,
+    });
+    jest.spyOn(toast, "info");
+    const status = wrapper.instance();
+    status.handlePostMessage({
+      data: {
+        message: "PLAN_EXHAUSTED_TOAST",
+        type: "authMessage",
+        warningMessage: "USAGE_LIMIT_EXHAUSTED_TXT",
+      },
+      origin: "http://localhost",
+    });
+    expect(toast.info).toHaveBeenCalledTimes(1);
+    expect(props.setPlanExhausted).toHaveBeenCalledTimes(1);
+    expect(status.state.warningMessage).toBe("USAGE_LIMIT_EXHAUSTED_TXT");
+    expect(setLoadingMock).toHaveBeenCalledTimes(2);
+    expect(setLoadingMock).toHaveBeenLastCalledWith(false);
+  });
+
   it("test handlePostMessage internet-mode", async () => {
     props = createTestProps();
     const setLoadingMock = jest.fn();
