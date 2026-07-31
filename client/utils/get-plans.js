@@ -5,7 +5,12 @@ import getLanguageHeaders from "./get-language-headers";
 import {plansApiUrl} from "../constants";
 import logError from "./log-error";
 
-const getPlans = async (orgSlug, language, successCallback) => {
+const getPlans = async (
+  orgSlug,
+  language,
+  successCallback,
+  failureCallback,
+) => {
   const plansUrl = plansApiUrl.replace("{orgSlug}", orgSlug);
   axios({
     method: "get",
@@ -20,6 +25,9 @@ const getPlans = async (orgSlug, language, successCallback) => {
     .catch((error) => {
       toast.error(t`ERR_OCCUR`);
       logError(error, "Error while fetching plans");
+      if (typeof failureCallback === "function") {
+        failureCallback();
+      }
     });
 };
 

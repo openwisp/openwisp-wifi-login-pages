@@ -28,7 +28,7 @@ const poToObject = (file) => {
   let result = {};
   try {
     result = childProcess.execSync(
-      `npx ttag po2json ${path.join(i18nDir, file)}`,
+      `node_modules/.bin/ttag po2json ${path.join(i18nDir, file)}`,
     );
   } catch (err) {
     console.error(err);

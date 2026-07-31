@@ -673,3 +673,20 @@ msgstr "Sorry, we couldn't find the page you were looking for."
 #: client/components/404/404.js:37
 msgid "HOME_PG_LINK_TXT"
 msgstr "Go back to homepage"
+
+#: client/components/complete-signup/complete-signup.js:77
+msgid "ORG_REGISTRATION_DISABLED"
+msgstr "Registration is currently disabled for this organization"
+
+#: client/components/complete-signup/complete-signup.js:92
+#: client/components/complete-signup/complete-signup.js:95
+msgid "PLANS_FETCH_ERR"
+msgstr "Failed to load plans"
+
+#: client/components/complete-signup/complete-signup.js:288
+msgid "REGISTRATION_COMPLETE_PROMPT"
+msgstr "Please complete your registration to"
+
+#: client/components/complete-signup/complete-signup.js:300
+msgid "RETRY"
+msgstr "Retry"

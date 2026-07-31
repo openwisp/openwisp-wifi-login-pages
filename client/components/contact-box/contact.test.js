@@ -12,11 +12,11 @@ jest.mock("../../utils/load-translation");
 const defaultConfig = getConfig("default", true);
 const links = [
   {
-    alt: {en: "twitter"},
-    icon: "twiter.svg",
-    url: "https://twitter.com/openwisp",
+    alt: {en: "x"},
+    icon: "x.svg",
+    url: "https://x.com/openwisp",
     authenticated: true,
-    css: "twitter",
+    css: "x",
   },
   {
     alt: {en: "facebook"},
@@ -69,7 +69,7 @@ describe("<Status /> rendering", () => {
     expect(wrapper.find(".contact-image")).toHaveLength(2);
     expect(wrapper.find(".link.google")).toHaveLength(1);
     expect(wrapper.find(".link.facebook")).toHaveLength(1);
-    expect(wrapper.find(".link.twitter")).toHaveLength(0);
+    expect(wrapper.find(".link.x")).toHaveLength(0);
   });
 
   it("should render with authenticated links when authenticated", () => {
@@ -79,7 +79,7 @@ describe("<Status /> rendering", () => {
     const wrapper = shallow(<Contact {...props} />);
     expect(wrapper.find(".contact-image")).toHaveLength(2);
     expect(wrapper.find(".link.google")).toHaveLength(1);
-    expect(wrapper.find(".link.twitter")).toHaveLength(1);
+    expect(wrapper.find(".link.x")).toHaveLength(1);
     expect(wrapper.find(".link.facebook")).toHaveLength(0);
   });
 });

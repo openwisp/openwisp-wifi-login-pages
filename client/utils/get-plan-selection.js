@@ -32,17 +32,24 @@ const getPlanSelection = (
   onChange,
   onFocus,
   hideSelection,
+  isCheckedControlled,
 ) => {
+  const normalizedSelectedPlan =
+    selectedPlan !== null ? String(selectedPlan) : null;
   let index = 0;
   return (
     <div className={`plans ${hideSelection ? "hidden" : ""}`}>
       <p className="intro">{t`PLAN_SETTING_TXT`}.</p>
       {plans.map((plan) => {
         const currentIndex = String(index);
+        const isSelected = normalizedSelectedPlan === currentIndex;
         let planClass = "plan";
-        if (selectedPlan === currentIndex) {
+        if (isSelected) {
           planClass += " active";
-        } else if (selectedPlan !== null && selectedPlan !== currentIndex) {
+        } else if (
+          normalizedSelectedPlan !== null &&
+          normalizedSelectedPlan !== currentIndex
+        ) {
           planClass += " inactive";
         }
         index += 1;
@@ -56,6 +63,7 @@ const getPlanSelection = (
               onChange={onChange}
               onFocus={onFocus}
               tabIndex={currentIndex}
+              checked={isCheckedControlled ? isSelected : undefined}
             />
             {getPlan(plan, currentIndex, language)}
           </div>

@@ -27,6 +27,7 @@ import Modal from "../modal";
 import {Status} from "../organization-wrapper/lazy-import";
 import getError from "../../utils/get-error";
 import getLanguageHeaders from "../../utils/get-language-headers";
+import {userPendingVerification} from "../../utils/pending-verification";
 import redirectToPayment from "../../utils/redirect-to-payment";
 import {localStorage, sessionStorage} from "../../utils/storage";
 
@@ -299,16 +300,29 @@ export default class Login extends React.Component {
     if (!remember_me || useSessionStorage) {
       sessionStorage.setItem(`${orgSlug}_auth_token`, data.key);
     }
+    const {key: auth_token, ...authenticatedUser} = data;
+    const nextUserData = {
+      ...authenticatedUser,
+      auth_token,
+      mustLogin: true,
+    };
     this.dismissWait();
     toast.success(t`LOGIN_SUCCESS`, {
       toastId: mainToastId,
     });
-    const {key: auth_token} = data;
-    delete data.key; // eslint-disable-line no-param-reassign
-    setUserData({...data, auth_token, mustLogin: true});
-    // if requires payment redirect to payment status component
-    if (data.method === "bank_card" && data.is_verified === false) {
+    setUserData(nextUserData);
+    if (userPendingVerification(data)) {
+      navigate(`/${orgSlug}/complete-signup`);
+      authenticate(true);
+      return;
+    }
+    if (
+      nextUserData.method === "bank_card" &&
+      nextUserData.is_verified === false
+    ) {
       redirectToPayment(orgSlug, navigate);
+      authenticate(true);
+      return;
     }
     authenticate(true);
   };

@@ -21,6 +21,7 @@ if OPENWISP_RADIUS_PATH == "":
     print("OPENWISP_RADIUS_PATH is needed.", file=sys.stderr)
     sys.exit(1)
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(OPENWISP_RADIUS_PATH, "tests"))
 sys.argv.insert(1, "browser-test")
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "openwisp2.settings")
@@ -35,22 +36,7 @@ except ImportError:
     sys.exit(1)
 
 
-from django.contrib.auth import get_user_model
-
-User = get_user_model()
-RadiusAccounting = swapper.load_model("openwisp_radius", "RadiusAccounting")
-Organization = swapper.load_model("openwisp_users", "Organization")
+from browser_test_utils import cleanup_test_data
 
 test_data = load_test_data()
-
-User.objects.filter(username=test_data["testuser"]["email"]).delete()
-User.objects.filter(
-    username=test_data["mobileVerificationTestUser"]["phoneNumber"]
-).delete()
-User.objects.filter(
-    username=test_data["mobileVerificationTestUser"]["changePhoneNumber"]
-).delete()
-Organization.objects.filter(
-    name=test_data["mobileVerificationTestUser"]["organization"]
-).delete()
-RadiusAccounting.objects.filter(username=test_data["testuser"]["email"]).delete()
+cleanup_test_data(test_data)

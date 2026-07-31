@@ -13,5 +13,6 @@
     "src/**/*.{js,jsx}"
   ],
   "ignore": ["client/assets/*/*.js"],
-  "ignoreExportsUsedInFile": true
+  "ignoreExportsUsedInFile": true,
+  "ignoreDependencies": ["@babel/runtime"]
 }
