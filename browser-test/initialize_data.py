@@ -23,8 +23,10 @@ if OPENWISP_RADIUS_PATH == "":
 # do not initialize data for registration tests
 registration_tests = "register" in sys.argv
 create_mobile_verification_org = "mobileVerification" in sys.argv
+cross_org_phone_verification_tests = "crossOrgPhoneVerification" in sys.argv
 expired_password_tests = "expiredPassword" in sys.argv
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(OPENWISP_RADIUS_PATH, "tests"))
 sys.argv.insert(1, "browser-test")
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "openwisp2.settings")
@@ -37,6 +39,7 @@ except ImportError:
     )
     sys.exit(1)
 
+from browser_test_utils import cleanup_test_data  # relative import
 from django.contrib.auth import get_user_model
 from django.utils.timezone import now, timedelta
 from swapper import load_model
@@ -52,8 +55,11 @@ test_user_email = test_data["testuser"]["email"]
 test_user_password = test_data["testuser"]["password"]
 test_user_organization = test_data["testuser"]["organization"]
 
+# Clean up any leftover data from previously interrupted test runs
+# to prevent UNIQUE constraint errors on subsequent runs.
+cleanup_test_data(test_data)
+
 if registration_tests:
-    User.objects.filter(username=test_user_email).delete()
     sys.exit(0)
 
 if create_mobile_verification_org:
@@ -71,8 +77,49 @@ if create_mobile_verification_org:
         email=data["email"],
         phone_number=data["phoneNumber"],
     )
-    RegisteredUser.objects.create(user=user, method=data["method"])
+    RegisteredUser.objects.create(user=user, method=data["method"], organization=org)
     OrganizationUser.objects.create(organization=org, user=user)
+
+if cross_org_phone_verification_tests:
+    data = test_data["crossOrgPhoneVerificationUser"]
+    target_org, _ = Organization.objects.get_or_create(
+        slug=data["targetOrganization"], name=data["targetOrganization"]
+    )
+    target_settings, created = OrganizationRadiusSettings.objects.get_or_create(
+        organization=target_org,
+        defaults={
+            "needs_identity_verification": True,
+            "sms_verification": True,
+            "sms_sender": data["email"],
+        },
+    )
+    if not created:
+        target_settings.needs_identity_verification = True
+        target_settings.sms_verification = True
+        target_settings.sms_sender = data["email"]
+        target_settings.save()
+    cross_org_user = User.objects.create_user(
+        username=data["phoneNumber"],
+        password=data["password"],
+        email=data["email"],
+        phone_number=data["phoneNumber"],
+    )
+    try:
+        source_org = Organization.objects.get(slug=data["sourceOrganization"])
+    except Organization.DoesNotExist:
+        print(
+            (
+                f"The source organization {data['sourceOrganization']} does not exist "
+                f"in the OpenWISP Radius environment specified ({OPENWISP_RADIUS_PATH}), "
+                f"please create it and repeat the tests."
+            ),
+            file=sys.stderr,
+        )
+    else:
+        OrganizationUser.objects.create(organization=source_org, user=cross_org_user)
+    RegisteredUser.objects.create(
+        user=cross_org_user, method=data["method"], is_verified=True, organization=source_org
+    )
 
 
 try:

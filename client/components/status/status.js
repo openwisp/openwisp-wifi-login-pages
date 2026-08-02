@@ -12,14 +12,12 @@ import {Link} from "react-router-dom";
 import {toast} from "react-toastify";
 import InfinteScroll from "react-infinite-scroll-component";
 import {t, gettext} from "ttag";
-import prettyBytes from "pretty-bytes";
+import {filesize} from "filesize";
 import {timeFromSeconds} from "duration-formatter";
-import getLanguageHeaders from "../../utils/get-language-headers";
 
 import {
   getUserRadiusSessionsUrl,
   getUserRadiusUsageUrl,
-  upgradePlanApiUrl,
   mainToastId,
 } from "../../constants";
 import LoadingContext from "../../utils/loading-context";
@@ -37,6 +35,7 @@ import {localStorage} from "../../utils/storage";
 import handleSession from "../../utils/session";
 import getPlanSelection from "../../utils/get-plan-selection";
 import getPlans from "../../utils/get-plans";
+import upgradePlan from "../../utils/upgrade-plan";
 
 export default class Status extends React.Component {
   constructor(props) {
@@ -468,29 +467,22 @@ export default class Status extends React.Component {
       setUserData,
       captivePortalSyncAuth,
     } = this.props;
-    const upgradePlanUrl = upgradePlanApiUrl.replace("{orgSlug}", orgSlug);
     const auth_token = cookies.get(`${orgSlug}_auth_token`);
     const {upgradePlans} = this.state;
     handleSession(orgSlug, auth_token, cookies);
-    axios({
-      method: "post",
-      headers: {
-        "content-type": "application/json",
-        "accept-language": getLanguageHeaders(language),
-        Authorization: `Bearer ${userData.auth_token}`,
-      },
-      url: upgradePlanUrl,
-      data: {
-        plan_pricing: upgradePlans[event.target.value].id,
-      },
-    })
+    upgradePlan(
+      orgSlug,
+      upgradePlans[event.target.value].id,
+      userData.auth_token,
+      language,
+    )
       .then((response) => {
         toast.success(t`SUCCESS_UPGRADE_PLAN`, {
           onOpen: () => toast.dismiss(mainToastId),
         });
         setUserData({
           ...userData,
-          payment_url: response.data.payment_url,
+          payment_url: response.payment_url,
         });
         // After a successful payment, the user is redirected back to the status page.
         // If the user plan was previously exhausted, they need to be logged into the captive portal
@@ -963,18 +955,8 @@ export default class Status extends React.Component {
             : this.getDateTimeFormat(language, time_option, session.stop_time)}
         </td>
         <td>{this.getDuration(session.session_time)}</td>
-        <td>
-          {prettyBytes(downloadOctets, {
-            maximumFractionDigits: 0,
-            space: true,
-          })}
-        </td>
-        <td>
-          {prettyBytes(uploadOctets, {
-            maximumFractionDigits: 0,
-            space: true,
-          })}
-        </td>
+        <td>{filesize(downloadOctets, {round: 0})}</td>
+        <td>{filesize(uploadOctets, {round: 0})}</td>
         <td>
           {session.calling_station_id}
           {session.stop_time == null && showLogoutButton && (
@@ -1046,24 +1028,14 @@ export default class Status extends React.Component {
           className={session.stop_time === null ? "active-session" : ""}
         >
           <th>{session_info.header.download}:</th>
-          <td>
-            {prettyBytes(downloadOctets, {
-              maximumFractionDigits: 0,
-              space: true,
-            })}
-          </td>
+          <td>{filesize(downloadOctets, {round: 0})}</td>
         </tr>
         <tr
           key={`${session.session_id}upload`}
           className={session.stop_time === null ? "active-session" : ""}
         >
           <th>{session_info.header.upload}:</th>
-          <td>
-            {prettyBytes(uploadOctets, {
-              maximumFractionDigits: 0,
-              space: true,
-            })}
-          </td>
+          <td>{filesize(uploadOctets, {round: 0})}</td>
         </tr>
         <tr
           key={`${session.session_id}device_address`}
@@ -1194,9 +1166,7 @@ export default class Status extends React.Component {
     const intValue = parseInt(value, 10);
     switch (type) {
       case "bytes":
-        return intValue === 0
-          ? 0
-          : prettyBytes(intValue, {space: true, maximumFractionDigits: 2});
+        return intValue === 0 ? 0 : filesize(intValue, {round: 2});
       case "seconds":
         return timeFromSeconds(intValue);
       default:

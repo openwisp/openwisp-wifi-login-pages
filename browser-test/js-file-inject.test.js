@@ -4,6 +4,7 @@ import {
   urls,
   tearDown,
   initialData,
+  baseUrl,
 } from "./utils";
 
 describe("Selenium tests to check JS file injection in organization page", () => {
@@ -27,9 +28,7 @@ describe("Selenium tests to check JS file injection in organization page", () =>
         scriptSources.push(await script.getAttribute("src"));
       }),
     );
-    expect(scriptSources.includes(`http://127.0.0.1:8080/${jsFile}`)).toEqual(
-      true,
-    );
+    expect(scriptSources.includes(`${baseUrl}/${jsFile}`)).toEqual(true);
     const data = initialData().mobileVerificationTestUser;
     await driver.get(urls.verificationLogin(data.organization));
     scriptSources = [];
@@ -39,8 +38,19 @@ describe("Selenium tests to check JS file injection in organization page", () =>
         scriptSources.push(await script.getAttribute("src"));
       }),
     );
-    expect(scriptSources.includes(`http://127.0.0.1:8080/${jsFile}`)).toEqual(
-      true,
+    expect(scriptSources.includes(`${baseUrl}/${jsFile}`)).toEqual(true);
+  });
+
+  it("should serve the extra js file with correct content type", async () => {
+    await driver.get(urls.login);
+    const jsFile = initialData().allOrgScript;
+    const result = await driver.executeScript(
+      `return fetch("/${jsFile}").then(r => ({
+        status: r.status,
+        contentType: r.headers.get('content-type'),
+      }))`,
     );
+    expect(result.status).toEqual(200);
+    expect(result.contentType).toEqual(expect.stringContaining("javascript"));
   });
 });

@@ -1,4 +1,4 @@
-import {until} from "selenium-webdriver";
+import {By, until} from "selenium-webdriver";
 import {
   getDriver,
   getElementByCss,
@@ -26,20 +26,31 @@ describe("Selenium tests for expired password flow />", () => {
     await driver.get(urls.login);
     const data = initialData();
     let username = await getElementByCss(driver, "input#username");
-    username.sendKeys(data.expiredPasswordUser.email);
+    await username.sendKeys(data.expiredPasswordUser.email);
     let password = await getElementByCss(driver, "input#password");
-    password.sendKeys(data.expiredPasswordUser.password);
+    await password.sendKeys(data.expiredPasswordUser.password);
     let submitBtn = await getElementByCss(driver, "input[type=submit]");
-    submitBtn.click();
+    await submitBtn.click();
     await driver.wait(until.urlContains("change-password"), 5000);
     let successToastDiv = await getElementByCss(driver, "div[role=alert]");
     await driver.wait(until.elementIsVisible(successToastDiv));
+    await driver.wait(
+      until.elementTextContains(successToastDiv, "Login successful"),
+      10000,
+    );
     expect(await successToastDiv.getText()).toEqual("Login successful");
     const warningToastMessage = await getElementByCss(
       driver,
       ".Toastify__toast--warning",
     );
     await driver.wait(until.elementIsVisible(warningToastMessage));
+    await driver.wait(
+      until.elementTextContains(
+        warningToastMessage,
+        "Your password has expired",
+      ),
+      10000,
+    );
     expect(await warningToastMessage.getText()).toEqual(
       "Your password has expired, please update it.",
     );
@@ -64,20 +75,24 @@ describe("Selenium tests for expired password flow />", () => {
       driver,
       "input#current-password",
     );
-    currPassword.sendKeys(data.expiredPasswordUser.password);
+    await currPassword.sendKeys(data.expiredPasswordUser.password);
     const newPassword = "newPassword@";
     const changePassword = await getElementByCss(driver, "input#new-password");
-    changePassword.sendKeys(newPassword);
+    await changePassword.sendKeys(newPassword);
     const changePasswordConfirm = await getElementByCss(
       driver,
       "input#password-confirm",
     );
-    changePasswordConfirm.sendKeys(newPassword);
+    await changePasswordConfirm.sendKeys(newPassword);
     submitBtn = await getElementByCss(driver, "input[type=submit]");
-    submitBtn.click();
+    await submitBtn.click();
     await getElementByCss(driver, "div#status");
     successToastDiv = await getElementByCss(driver, successToastSelector);
     await driver.wait(until.elementIsVisible(successToastDiv));
+    await driver.wait(
+      until.elementTextContains(successToastDiv, "Password updated"),
+      10000,
+    );
     expect(await successToastDiv.getText()).toEqual(
       "Password updated successfully",
     );
@@ -87,14 +102,64 @@ describe("Selenium tests for expired password flow />", () => {
     await driver.get(urls.login);
     await driver.wait(until.urlContains("login"), 5000);
     username = await getElementByCss(driver, "input#username");
-    username.sendKeys(data.expiredPasswordUser.email);
+    await username.sendKeys(data.expiredPasswordUser.email);
     password = await getElementByCss(driver, "input#password");
-    password.sendKeys(newPassword);
+    await password.sendKeys(newPassword);
     submitBtn = await getElementByCss(driver, "input[type=submit]");
-    submitBtn.click();
+    await submitBtn.click();
     await getElementByCss(driver, "div#status");
     successToastDiv = await getElementByCss(driver, "div[role=alert]");
     await driver.wait(until.elementIsVisible(successToastDiv));
+    await driver.wait(
+      until.elementTextContains(successToastDiv, "Login successful"),
+      10000,
+    );
     expect(await successToastDiv.getText()).toEqual("Login successful");
+  });
+});
+
+describe("Selenium tests for expired password logout />", () => {
+  let driver;
+
+  beforeAll(async () => {
+    await initializeData("expiredPassword");
+    driver = await getDriver();
+  }, 30000);
+
+  afterAll(async () => {
+    await tearDown(driver);
+  });
+
+  it("should allow logout from change-password page when password is expired", async () => {
+    await driver.get(urls.login);
+    const data = initialData();
+    const username = await getElementByCss(driver, "input#username");
+    await username.sendKeys(data.expiredPasswordUser.email);
+    const password = await getElementByCss(driver, "input#password");
+    await password.sendKeys(data.expiredPasswordUser.password);
+    const submitBtn = await getElementByCss(driver, "input[type=submit]");
+    await submitBtn.click();
+    await driver.wait(until.urlContains("change-password"), 5000);
+
+    await getElementByCss(driver, "#password-expired-warning");
+    // Click immediately after locating to avoid stale refs from toast re-renders
+    await (await getElementByCss(driver, ".row.logout button")).click();
+
+    // Logout redirects via status, then to login when unauthenticated
+    await driver.wait(until.urlContains("login"), 10000);
+    await getElementByCss(driver, "input#username");
+    await getElementByCss(driver, "input#password");
+    // Re-query toast each poll so SPA redirects do not leave a stale reference
+    await driver.wait(async () => {
+      const toasts = await driver.findElements(By.css(successToastSelector));
+      if (!toasts.length) {
+        return false;
+      }
+      try {
+        return (await toasts[0].getText()).includes("Logout successful");
+      } catch (err) {
+        return false;
+      }
+    }, 10000);
   });
 });
