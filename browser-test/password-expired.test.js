@@ -44,6 +44,15 @@ describe("Selenium tests for expired password flow />", () => {
       "Your password has expired, please update it.",
     );
 
+    const warningBox = await getElementByCss(
+      driver,
+      "#password-expired-warning",
+    );
+    await driver.wait(until.elementIsVisible(warningBox));
+    expect(await warningBox.getText()).toEqual(
+      "Your password has expired, please update it.",
+    );
+
     // Try visiting the status page, but the user should redirected
     // back to change password page
     await driver.get(urls.status);

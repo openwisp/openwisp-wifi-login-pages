@@ -18,6 +18,7 @@ import handleChange from "../../utils/handle-change";
 import validateToken from "../../utils/validate-token";
 import getError from "../../utils/get-error";
 import getLanguageHeaders from "../../utils/get-language-headers";
+import handleLogout from "../../utils/handle-logout";
 
 export default class PasswordChange extends React.Component {
   constructor(props) {
@@ -162,7 +163,15 @@ export default class PasswordChange extends React.Component {
   };
 
   render() {
-    const {passwordChange, orgSlug, userData} = this.props;
+    const {
+      passwordChange,
+      orgSlug,
+      userData,
+      logout,
+      cookies,
+      setUserData,
+      navigate,
+    } = this.props;
     const {errors, newPassword1, newPassword2, hidePassword, currentPassword} =
       this.state;
     const toggler = () => this.setState({hidePassword: !hidePassword});
@@ -175,6 +184,12 @@ export default class PasswordChange extends React.Component {
             <div className="inner">
               <h1>{t`PWD_CHANGE_TITL`}</h1>
               <p>{t`PWD_CHANGE_HELP_TXT`}</p>
+              {userData.password_expired && (
+                <div className="error non-field" id="password-expired-warning">
+                  <span className="icon" />
+                  <span className="text">{t`PASSWORD_EXPIRED`}</span>
+                </div>
+              )}
               {getError(errors)}
 
               {this.getPasswordField({
@@ -221,11 +236,31 @@ export default class PasswordChange extends React.Component {
                 />
               </div>
 
-              {userData.password_expired !== true && (
+              {userData.password_expired !== true ? (
                 <div className="row cancel">
                   <Link className="button full" to={`/${orgSlug}/status`}>
                     {t`CANCEL`}
                   </Link>
+                </div>
+              ) : (
+                <div className="row logout">
+                  <button
+                    type="button"
+                    className="button full"
+                    onClick={() =>
+                      handleLogout(
+                        logout,
+                        cookies,
+                        orgSlug,
+                        setUserData,
+                        userData,
+                        true,
+                        () => navigate(`/${orgSlug}/status`),
+                      )
+                    }
+                  >
+                    {t`LOGOUT`}
+                  </button>
                 </div>
               )}
             </div>

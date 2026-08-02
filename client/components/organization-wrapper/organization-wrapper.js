@@ -255,8 +255,14 @@ export default class OrganizationWrapper extends React.Component {
                   <Route
                     path="logout"
                     element={(() => {
-                      if (isAuthenticated)
+                      if (isAuthenticated && !userData.password_expired)
                         return <Navigate to={`/${orgSlug}/status`} />;
+                      if (isAuthenticated && userData.password_expired)
+                        return (
+                          <Suspense fallback={<Loader />}>
+                            <Logout />
+                          </Suspense>
+                        );
                       if (userAutoLogin)
                         return (
                           <Suspense fallback={<Loader />}>

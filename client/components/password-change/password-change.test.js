@@ -9,6 +9,7 @@ import getConfig from "../../utils/get-config";
 import logError from "../../utils/log-error";
 import tick from "../../utils/tick";
 import loadTranslation from "../../utils/load-translation";
+import handleLogout from "../../utils/handle-logout";
 import PasswordChange from "./password-change";
 import PasswordToggleIcon from "../../utils/password-toggle";
 import validateToken from "../../utils/validate-token";
@@ -65,11 +66,24 @@ describe("<PasswordChange /> rendering", () => {
     expect(wrapper).toMatchSnapshot();
   });
 
-  it("should not show 'cancel' button if password is expired", async () => {
+  it("should show logout button and password expired warning message if password is expired", async () => {
     props = createTestProps();
     props.userData.password_expired = true;
     loadTranslation("en", "default");
     const wrapper = createShallow(props);
+    expect(wrapper.find("#password-expired-warning")).toHaveLength(1);
+    expect(wrapper.find(".row.logout button")).toHaveLength(1);
+    expect(wrapper.find(".row.cancel")).toHaveLength(0);
+    wrapper.find(".row.logout button").simulate("click");
+    expect(handleLogout).toHaveBeenCalledWith(
+      props.logout,
+      props.cookies,
+      props.orgSlug,
+      props.setUserData,
+      props.userData,
+      true,
+      expect.any(Function),
+    );
     expect(wrapper).toMatchSnapshot();
   });
 });
