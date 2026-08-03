@@ -142,8 +142,18 @@ describe("Selenium tests for expired password logout />", () => {
     await driver.wait(until.urlContains("change-password"), 5000);
 
     await getElementByCss(driver, "#password-expired-warning");
-    // Click immediately after locating to avoid stale refs from toast re-renders
-    await (await getElementByCss(driver, ".row.logout button")).click();
+    await driver.wait(async () => {
+      const loaders = await driver.findElements(
+        By.css(".loader-container.full"),
+      );
+      const visibleLoaders = await Promise.all(
+        loaders.map((loader) => loader.isDisplayed().catch(() => false)),
+      );
+      return !visibleLoaders.includes(true);
+    }, 10000);
+    const logoutButton = await getElementByCss(driver, ".row.logout button");
+    await driver.wait(until.elementIsVisible(logoutButton));
+    await logoutButton.click();
 
     // Logout redirects via status, then to login when unauthenticated
     await driver.wait(until.urlContains("login"), 10000);
