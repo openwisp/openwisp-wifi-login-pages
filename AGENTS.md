@@ -47,6 +47,7 @@ If instructions conflict, repository config and CI workflows win first, docs nex
 ## Testing and QA
 
 - Use targeted Jest tests while iterating and browser tests for user-facing flow changes.
+- Keep helpers and classes used by only one test method inside that method. Promote them to class or module scope only when genuinely reused.
 
 ## Security Notes
 
