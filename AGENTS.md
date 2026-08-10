@@ -36,6 +36,7 @@ If instructions conflict, repository config and CI workflows win first, docs nex
 
 ## Development Rules
 
+- Follow the DRY principle: do not duplicate information or code across files.
 - Preserve public configuration, organization override behavior, routing, i18n keys, API contracts with OpenWISP RADIUS, and build outputs unless explicitly required.
 - Edit `client/`, `server/`, `public/`, organization YAML, and translation `.po` files; regenerate `dist/`, configuration, organization assets, and translations with the documented Yarn commands instead of editing their output directly.
 - Be careful with authentication flows, signup, password reset, phone/SMS verification, social login, SAML, plan selection, and organization-specific assets.
