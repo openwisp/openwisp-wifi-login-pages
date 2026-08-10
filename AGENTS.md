@@ -34,7 +34,7 @@ If instructions conflict, repository config and CI workflows win first, docs nex
 - Add an explanatory commit body only for substantial changes, new features, or non-obvious bug fixes. The releaser automatically publishes the subject of `[feature]`, `[change]`, `[change!]`, `[deps]`, and `[fix]` commits, including scoped variants, in the changelog. Write those subjects in clear, user-friendly language suitable for release notes.
 - Send new commits in response to review feedback instead of amending existing commits.
 
-## Development Notes
+## Development Rules
 
 - Preserve public configuration, organization override behavior, routing, i18n keys, API contracts with OpenWISP RADIUS, and build outputs unless explicitly required.
 - Edit `client/`, `server/`, `public/`, organization YAML, and translation `.po` files; regenerate `dist/`, configuration, organization assets, and translations with the documented Yarn commands instead of editing their output directly.
@@ -49,7 +49,7 @@ If instructions conflict, repository config and CI workflows win first, docs nex
 - Use targeted Jest tests while iterating and browser tests for user-facing flow changes.
 - Keep helpers and classes used by only one test method inside that method. Promote them to class or module scope only when genuinely reused.
 
-## Security Notes
+## Security Rules
 
 - Watch for auth bypasses, unsafe redirects, token/session leaks, DOM injection, unsafe URL handling, cross-organization data leaks, and exposed secrets.
 - Preserve validation and safe handling around login/signup payloads, phone verification, social/SAML responses, plan data, organization config, and external URLs.
