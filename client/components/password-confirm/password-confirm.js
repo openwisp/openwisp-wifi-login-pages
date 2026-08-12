@@ -84,7 +84,7 @@ export default class PasswordConfirm extends React.Component {
         toast.success(response.data.detail);
       })
       .catch((error) => {
-        const {data} = error.response;
+        const data = error.response?.data ?? {};
         let errorText = data.detail;
         if (!errorText && (data.new_password1 || data.new_password2)) {
           errorText = data.new_password1
@@ -99,6 +99,7 @@ export default class PasswordConfirm extends React.Component {
           // user, so a generic message is shown instead of the raw one.
           errorText = t`INVALID_PWD_RESET_URL`;
         }
+        if (!errorText) errorText = t`ERR_OCCUR`;
         logError(error, errorText);
         toast.error(errorText);
         setLoading(false);

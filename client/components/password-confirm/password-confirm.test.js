@@ -130,8 +130,8 @@ describe("<PasswordConfirm /> interactions", () => {
   beforeEach(() => {
     originalError = console.error;
     lastConsoleOutuput = null;
-    console.error = (data) => {
-      lastConsoleOutuput = data;
+    console.error = (...args) => {
+      lastConsoleOutuput = args;
     };
     PasswordConfirm.contextTypes = {
       setLoading: PropTypes.func,
@@ -139,7 +139,7 @@ describe("<PasswordConfirm /> interactions", () => {
     };
     props = createTestProps();
     wrapper = shallow(<PasswordConfirm {...props} />, {
-      context: loadingContextValue,
+      context: {...loadingContextValue, setLoading: jest.fn()},
     });
   });
 
@@ -187,6 +187,14 @@ describe("<PasswordConfirm /> interactions", () => {
           },
         }),
       )
+      .mockImplementationOnce(() =>
+        Promise.reject({
+          response: {
+            data: {new_password2: ["This password is too common."]},
+          },
+        }),
+      )
+      .mockImplementationOnce(() => Promise.reject({message: "Network Error"}))
       .mockImplementationOnce(() => Promise.resolve({data: {detail: true}}));
     wrapper.setState({
       newPassword1: "wrong password",
@@ -221,7 +229,13 @@ describe("<PasswordConfirm /> interactions", () => {
             expect(wrapper.instance().state.errors.nonField).toEqual(
               getTranslationString("INVALID_PWD_RESET_URL"),
             );
-            expect(lastConsoleOutuput).not.toBe(null);
+            expect(lastConsoleOutuput).toEqual([
+              "Status",
+              undefined,
+              undefined,
+              ":",
+              getTranslationString("INVALID_PWD_RESET_URL"),
+            ]);
             expect(spyToastError.mock.calls.length).toBe(2);
             expect(spyToastSuccess.mock.calls.length).toBe(0);
             lastConsoleOutuput = null;
@@ -263,8 +277,43 @@ describe("<PasswordConfirm /> interactions", () => {
             expect(wrapper.instance().state.errors.nonField).toEqual(
               "This password is too common.",
             );
-            expect(lastConsoleOutuput).not.toBe(null);
+            expect(lastConsoleOutuput).toEqual([
+              "Status",
+              undefined,
+              undefined,
+              ":",
+              "This password is too common.",
+            ]);
             expect(spyToastError.mock.calls.length).toBe(5);
+            expect(spyToastSuccess.mock.calls.length).toBe(0);
+            lastConsoleOutuput = null;
+          }),
+      )
+      .then(() =>
+        wrapper
+          .instance()
+          .handleSubmit({preventDefault: () => {}})
+          .then(() => {
+            expect(wrapper.instance().state.errors.nonField).toEqual(
+              "This password is too common.",
+            );
+            expect(lastConsoleOutuput).not.toBe(null);
+            expect(spyToastError.mock.calls.length).toBe(6);
+            expect(spyToastSuccess.mock.calls.length).toBe(0);
+            lastConsoleOutuput = null;
+          }),
+      )
+      .then(() =>
+        wrapper
+          .instance()
+          .handleSubmit({preventDefault: () => {}})
+          .then(() => {
+            const {setLoading} = wrapper.instance().context;
+            expect(wrapper.instance().state.errors.nonField).toEqual(
+              getTranslationString("ERR_OCCUR"),
+            );
+            expect(setLoading).toHaveBeenLastCalledWith(false);
+            expect(spyToastError.mock.calls.length).toBe(7);
             expect(spyToastSuccess.mock.calls.length).toBe(0);
             lastConsoleOutuput = null;
           }),
@@ -279,7 +328,7 @@ describe("<PasswordConfirm /> interactions", () => {
             expect(wrapper.find(".input.error")).toHaveLength(0);
             expect(wrapper.find(".success")).toHaveLength(1);
             expect(lastConsoleOutuput).toBe(null);
-            expect(spyToastError.mock.calls.length).toBe(5);
+            expect(spyToastError.mock.calls.length).toBe(7);
             expect(spyToastSuccess.mock.calls.length).toBe(1);
             lastConsoleOutuput = null;
           }),

@@ -295,7 +295,7 @@
       },
       "INVALID_PWD_RESET_URL": {
         "msgid": "INVALID_PWD_RESET_URL",
-        "msgstr": ["Invalid password reset URL."]
+        "msgstr": ["Invalid password reset URL"]
       },
       "CONFIRM_PWD_LBL": {
         "msgid": "CONFIRM_PWD_LBL",
