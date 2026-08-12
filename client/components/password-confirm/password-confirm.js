@@ -11,7 +11,6 @@ import LoadingContext from "../../utils/loading-context";
 import PasswordToggleIcon from "../../utils/password-toggle";
 
 import {confirmApiUrl} from "../../constants";
-import getErrorText from "../../utils/get-error-text";
 import logError from "../../utils/log-error";
 import handleChange from "../../utils/handle-change";
 import getError from "../../utils/get-error";
@@ -85,9 +84,20 @@ export default class PasswordConfirm extends React.Component {
         toast.success(response.data.detail);
       })
       .catch((error) => {
-        let errorText = getErrorText(error);
-        if (!errorText && error.response.data.token[0]) {
-          errorText = `token: ${error.response.data.token[0]}`;
+        const {data} = error.response;
+        let errorText = data.detail;
+        if (!errorText && (data.new_password1 || data.new_password2)) {
+          errorText = data.new_password1
+            ? data.new_password1[0]
+            : data.new_password2[0];
+        } else if (
+          !errorText &&
+          (data.uid || data.token || data.non_field_errors)
+        ) {
+          // uid/token errors (including a malformed uid, which the backend
+          // reports under non_field_errors) are never actionable by the
+          // user, so a generic message is shown instead of the raw one.
+          errorText = t`INVALID_PWD_RESET_URL`;
         }
         logError(error, errorText);
         toast.error(errorText);

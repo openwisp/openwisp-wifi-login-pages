@@ -502,6 +502,10 @@ msgstr "Torne a impuestâ la password"
 msgid "PWD_CONFIRM_ADD_TXT"
 msgstr "Inserìs la password gnove achì."
 
+#: client/components/password-confirm/password-confirm.js:91
+msgid "INVALID_PWD_RESET_URL"
+msgstr "URL no valide par tornâ a impuestâ la password"
+
 #: client/components/password-confirm/password-confirm.js:205
 msgid "PWD_CONFIRM"
 msgstr "Conferme il cambi de password"

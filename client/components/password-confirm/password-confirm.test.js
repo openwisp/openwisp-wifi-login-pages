@@ -165,12 +165,26 @@ describe("<PasswordConfirm /> interactions", () => {
       )
       .mockImplementationOnce(() =>
         Promise.reject({
-          response: {data: {non_field_errors: ["non field errors"]}},
+          response: {
+            data: {non_field_errors: ["“uid” is not a valid UUID."]},
+          },
         }),
       )
       .mockImplementationOnce(() =>
         Promise.reject({
-          response: {data: {token: ["Invalid token"]}},
+          response: {data: {token: ["Invalid value"]}},
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.reject({
+          response: {data: {uid: ["Invalid value"]}},
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.reject({
+          response: {
+            data: {new_password1: ["This password is too common."]},
+          },
         }),
       )
       .mockImplementationOnce(() => Promise.resolve({data: {detail: true}}));
@@ -205,7 +219,7 @@ describe("<PasswordConfirm /> interactions", () => {
           .handleSubmit({preventDefault: () => {}})
           .then(() => {
             expect(wrapper.instance().state.errors.nonField).toEqual(
-              "non field errors",
+              getTranslationString("INVALID_PWD_RESET_URL"),
             );
             expect(lastConsoleOutuput).not.toBe(null);
             expect(spyToastError.mock.calls.length).toBe(2);
@@ -219,10 +233,38 @@ describe("<PasswordConfirm /> interactions", () => {
           .handleSubmit({preventDefault: () => {}})
           .then(() => {
             expect(wrapper.instance().state.errors.nonField).toEqual(
-              "token: Invalid token",
+              getTranslationString("INVALID_PWD_RESET_URL"),
             );
             expect(lastConsoleOutuput).not.toBe(null);
             expect(spyToastError.mock.calls.length).toBe(3);
+            expect(spyToastSuccess.mock.calls.length).toBe(0);
+            lastConsoleOutuput = null;
+          }),
+      )
+      .then(() =>
+        wrapper
+          .instance()
+          .handleSubmit({preventDefault: () => {}})
+          .then(() => {
+            expect(wrapper.instance().state.errors.nonField).toEqual(
+              getTranslationString("INVALID_PWD_RESET_URL"),
+            );
+            expect(lastConsoleOutuput).not.toBe(null);
+            expect(spyToastError.mock.calls.length).toBe(4);
+            expect(spyToastSuccess.mock.calls.length).toBe(0);
+            lastConsoleOutuput = null;
+          }),
+      )
+      .then(() =>
+        wrapper
+          .instance()
+          .handleSubmit({preventDefault: () => {}})
+          .then(() => {
+            expect(wrapper.instance().state.errors.nonField).toEqual(
+              "This password is too common.",
+            );
+            expect(lastConsoleOutuput).not.toBe(null);
+            expect(spyToastError.mock.calls.length).toBe(5);
             expect(spyToastSuccess.mock.calls.length).toBe(0);
             lastConsoleOutuput = null;
           }),
@@ -237,7 +279,7 @@ describe("<PasswordConfirm /> interactions", () => {
             expect(wrapper.find(".input.error")).toHaveLength(0);
             expect(wrapper.find(".success")).toHaveLength(1);
             expect(lastConsoleOutuput).toBe(null);
-            expect(spyToastError.mock.calls.length).toBe(3);
+            expect(spyToastError.mock.calls.length).toBe(5);
             expect(spyToastSuccess.mock.calls.length).toBe(1);
             lastConsoleOutuput = null;
           }),
