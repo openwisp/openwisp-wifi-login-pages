@@ -125,12 +125,17 @@ describe("<PasswordConfirm /> interactions", () => {
   let props;
   let wrapper;
   let originalError;
+  let originalLog;
   let lastConsoleOutuput;
 
   beforeEach(() => {
     originalError = console.error;
+    originalLog = console.log;
     lastConsoleOutuput = null;
     console.error = (...args) => {
+      lastConsoleOutuput = args;
+    };
+    console.log = (...args) => {
       lastConsoleOutuput = args;
     };
     PasswordConfirm.contextTypes = {
@@ -145,6 +150,7 @@ describe("<PasswordConfirm /> interactions", () => {
 
   afterEach(() => {
     console.error = originalError;
+    console.log = originalLog;
   });
 
   it("should change state values when handleChange function is invoked", () => {
