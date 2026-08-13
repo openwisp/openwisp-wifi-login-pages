@@ -498,6 +498,10 @@ msgstr "Reset your password"
 msgid "PWD_CONFIRM_ADD_TXT"
 msgstr "Please enter your new password below."
 
+#: client/components/password-confirm/password-confirm.js:91
+msgid "INVALID_PWD_RESET_URL"
+msgstr "Invalid password reset URL"
+
 #: client/components/password-confirm/password-confirm.js:205
 msgid "PWD_CONFIRM"
 msgstr "Change password"

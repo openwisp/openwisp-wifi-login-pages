@@ -20,7 +20,7 @@ describe("Selenium tests for <PasswordReset />", () => {
     await tearDown(driver);
   });
 
-  it("should show not found on password confirm", async () => {
+  it("should show invalid password reset URL error on password confirm", async () => {
     await driver.get(urls.passwordConfirm("uid", "token"));
     const data = initialData();
     const password = await getElementByCss(driver, "input#password");
@@ -34,6 +34,8 @@ describe("Selenium tests for <PasswordReset />", () => {
     submitBtn.click();
     const successToastDiv = await getElementByCss(driver, "div[role=alert]");
     await driver.wait(until.elementIsVisible(successToastDiv));
-    expect(await successToastDiv.getText()).toEqual("Not found.");
+    expect(await successToastDiv.getText()).toEqual(
+      "Invalid password reset URL",
+    );
   });
 });

@@ -505,6 +505,10 @@ msgstr "Reimposta password"
 msgid "PWD_CONFIRM_ADD_TXT"
 msgstr "Inserisci la nuova password di seguito."
 
+#: client/components/password-confirm/password-confirm.js:91
+msgid "INVALID_PWD_RESET_URL"
+msgstr "URL per reimpostare la password non valida"
+
 #: client/components/password-confirm/password-confirm.js:205
 msgid "PWD_CONFIRM"
 msgstr "Conferma cambio password"
