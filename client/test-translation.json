@@ -293,6 +293,10 @@
         "msgid": "PWD_CONFIRM_ADD_TXT",
         "msgstr": ["Please enter your new password below."]
       },
+      "INVALID_PWD_RESET_URL": {
+        "msgid": "INVALID_PWD_RESET_URL",
+        "msgstr": ["Invalid password reset URL"]
+      },
       "CONFIRM_PWD_LBL": {
         "msgid": "CONFIRM_PWD_LBL",
         "msgstr": ["Confirm password"]

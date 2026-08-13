@@ -503,6 +503,10 @@ msgstr "Подтвердите пароль"
 msgid "PWD_CONFIRM_ADD_TXT"
 msgstr "Введите новый пароль ещё раз"
 
+#: client/components/password-confirm/password-confirm.js:91
+msgid "INVALID_PWD_RESET_URL"
+msgstr "Недействительный URL для сброса пароля"
+
 #: client/components/password-confirm/password-confirm.js:205
 msgid "PWD_CONFIRM"
 msgstr "Подтвердите смену пароля"

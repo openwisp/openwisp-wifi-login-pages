@@ -504,6 +504,10 @@ msgstr "Passwort zurücksetzen"
 msgid "PWD_CONFIRM_ADD_TXT"
 msgstr "Bitte geben Sie Ihr neues Passwort nachfolgend ein"
 
+#: client/components/password-confirm/password-confirm.js:91
+msgid "INVALID_PWD_RESET_URL"
+msgstr "Ungültige URL zum Zurücksetzen des Passworts"
+
 #: client/components/password-confirm/password-confirm.js:205
 msgid "PWD_CONFIRM"
 msgstr "Bestätigen Sie die Passwortänderung"
