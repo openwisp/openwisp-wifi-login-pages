@@ -509,6 +509,10 @@ msgstr "Restablecer su contraseña"
 msgid "PWD_CONFIRM_ADD_TXT"
 msgstr "Por favor, introduzca su nueva contraseña a continuación."
 
+#: client/components/password-confirm/password-confirm.js:91
+msgid "INVALID_PWD_RESET_URL"
+msgstr "URL de restablecimiento de contraseña no válida"
+
 #: client/components/password-confirm/password-confirm.js:205
 msgid "PWD_CONFIRM"
 msgstr "Cambiar la contraseña"

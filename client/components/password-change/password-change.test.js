@@ -274,4 +274,24 @@ describe("<PasswordChange /> interactions", () => {
     expect(wrapper.find("Navigate").length).toEqual(1);
     expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
   });
+  it("should allow SAML / Social Login users to change password if password is expired", async () => {
+    props = createTestProps();
+    PasswordChange.contextTypes = {
+      setLoading: PropTypes.func,
+      getLoading: PropTypes.func,
+    };
+    props.userData.method = "saml";
+    props.userData.password_expired = true;
+    wrapper = await shallow(<PasswordChange {...props} />, {
+      context: {setLoading: jest.fn(), getLoading: jest.fn()},
+    });
+    expect(wrapper.find("Navigate").length).toEqual(0);
+    expect(wrapper.find("form").length).toEqual(1);
+    props.userData.method = "social_login";
+    wrapper = await shallow(<PasswordChange {...props} />, {
+      context: {setLoading: jest.fn(), getLoading: jest.fn()},
+    });
+    expect(wrapper.find("Navigate").length).toEqual(0);
+    expect(wrapper.find("form").length).toEqual(1);
+  });
 });

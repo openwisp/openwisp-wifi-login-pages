@@ -175,7 +175,11 @@ export default class PasswordChange extends React.Component {
     const {errors, newPassword1, newPassword2, hidePassword, currentPassword} =
       this.state;
     const toggler = () => this.setState({hidePassword: !hidePassword});
-    if (userData && ["saml", "social_login"].includes(userData.method))
+    if (
+      userData &&
+      ["saml", "social_login"].includes(userData.method) &&
+      userData.password_expired !== true
+    )
       return <Navigate to={`/${orgSlug}/status`} />;
     return (
       <div className="container content" id="password-change">

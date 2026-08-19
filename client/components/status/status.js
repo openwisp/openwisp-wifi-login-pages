@@ -161,7 +161,6 @@ export default class Status extends React.Component {
       const hasStoredLogoutMarker =
         cookies.get(`${orgSlug}_mustLogout`) !== undefined ||
         localStorage.getItem(`${orgSlug}_mustLogout`) !== null;
-
       const mustLogout = this.resolveStoredValue(
         captivePortalSyncAuth,
         `${orgSlug}_mustLogout`,
