@@ -489,6 +489,10 @@ msgstr "Ponastavite geslo"
 msgid "PWD_CONFIRM_ADD_TXT"
 msgstr "Vpišite novo geslos."
 
+#: client/components/password-confirm/password-confirm.js:91
+msgid "INVALID_PWD_RESET_URL"
+msgstr "Neveljaven URL za ponastavitev gesla"
+
 #: client/components/password-confirm/password-confirm.js:205
 msgid "PWD_CONFIRM"
 msgstr "Potrdite spremembo gesla"
