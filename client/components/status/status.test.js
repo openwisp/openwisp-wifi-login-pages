@@ -945,6 +945,50 @@ describe("<Status /> interactions", () => {
     expect(localStorage.getItem("default_mustLogout")).toBe(null);
   });
 
+  it("should call handleLogout on initial transition after password change with sync captive portal auth", async () => {
+    validateToken.mockReturnValue(true);
+    props = createTestProps({
+      captivePortalSyncAuth: true,
+      userData: {...responseData, mustLogout: true},
+    });
+    props.cookies.remove("default_mustLogout", {path: "/"});
+    localStorage.removeItem("default_mustLogout");
+    const setLoading = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading},
+      disableLifecycleMethods: true,
+    });
+    const handleLogout = jest
+      .spyOn(wrapper.instance(), "handleLogout")
+      .mockImplementation(async () => {});
+    wrapper.instance().componentDidMount();
+    await tick();
+    expect(props.cookies.get("default_mustLogout")).toBeUndefined();
+    expect(localStorage.getItem("default_mustLogout")).toBe(null);
+    expect(handleLogout).toHaveBeenCalledTimes(1);
+    expect(handleLogout).toHaveBeenCalledWith(false, undefined);
+    handleLogout.mockRestore();
+  });
+
+  it("should call handleLogoutIframe on reload after password change with sync captive portal auth", async () => {
+    validateToken.mockReturnValue(true);
+    props = createTestProps({
+      captivePortalSyncAuth: true,
+      userData: {...responseData, mustLogout: true},
+    });
+    props.cookies.set("default_mustLogout", true, {path: "/"});
+    const setLoading = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading},
+    });
+    const status = wrapper.instance();
+    status.logoutIframeRef.current = {};
+    const handleLogoutIframe = jest.spyOn(status, "handleLogoutIframe");
+    await tick();
+    expect(handleLogoutIframe).toHaveBeenCalledTimes(1);
+    expect(status.state.loggedOut).toBe(true);
+  });
+
   it("test active session table", async () => {
     axios
       .mockImplementationOnce(() =>

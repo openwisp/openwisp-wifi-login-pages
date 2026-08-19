@@ -158,6 +158,10 @@ export default class Status extends React.Component {
         userMustLogin,
         cookies,
       );
+      const hasStoredLogoutMarker =
+        cookies.get(`${orgSlug}_mustLogout`) !== undefined ||
+        localStorage.getItem(`${orgSlug}_mustLogout`) !== null;
+
       const mustLogout = this.resolveStoredValue(
         captivePortalSyncAuth,
         `${orgSlug}_mustLogout`,
@@ -165,6 +169,22 @@ export default class Status extends React.Component {
         cookies,
       );
       ({userData} = this.props);
+
+      if (mustLogout) {
+        if (captivePortalSyncAuth && hasStoredLogoutMarker) {
+          // In synchronous captive portal authentication, the page reloads
+          // after form submission, so handleLogoutIframe() must be called manually here.
+          // This completion path is reserved for the reload after the _self logout form
+          // has persisted ${orgSlug}_mustLogout.
+          this.setState({loggedOut: mustLogout}, () => {
+            this.handleLogoutIframe();
+          });
+        } else {
+          await this.handleLogout(false, repeatLogin);
+        }
+        return;
+      }
+
       if (userData.password_expired === true) {
         toast.warning(t`PASSWORD_EXPIRED`);
         setUserData({
@@ -205,19 +225,6 @@ export default class Status extends React.Component {
 
       // stop here if user is banned
       if (is_active === false) {
-        return;
-      }
-
-      if (mustLogout) {
-        if (captivePortalSyncAuth) {
-          // In synchronous captive portal authentication, the page reloads
-          // after form submission, so handleLogoutIframe() must be called manually here.
-          // (handleLogout() is already triggered when the user clicks the "Logout" button.)
-          this.setState({loggedOut: mustLogout});
-          this.handleLogoutIframe();
-        } else {
-          await this.handleLogout(false, repeatLogin);
-        }
         return;
       }
 
