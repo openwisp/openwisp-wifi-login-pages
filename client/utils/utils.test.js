@@ -31,7 +31,13 @@ import withRouteProps from "./with-route-props";
 import updateRegistrationMethod from "./update-registration-method";
 import getPlans from "./get-plans";
 import upgradePlan from "./upgrade-plan";
-import {upgradePlanApiUrl} from "../constants";
+import cancelUpgradePlan from "./cancel-upgrade-plan";
+import {
+  storeValue,
+  resolveStoredValue,
+  clearStoredValue,
+} from "./synced-storage";
+import {cancelUpgradePlanApiUrl, upgradePlanApiUrl} from "../constants";
 
 jest.mock("axios");
 jest.mock("./load-translation");
@@ -262,6 +268,48 @@ describe("Validate Token tests", () => {
     expect(axios.mock.calls.length).toBe(0);
     expect(result).toBe(true);
     expect(setUserData.mock.calls.length).toBe(0);
+    expect(logout.mock.calls.length).toBe(0);
+  });
+  it("should make api call if user is upgrading and payment_url is missing", async () => {
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: {
+          response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+          radius_user_token: "o6AQLY0aQjD3yuihRKLknTn8krcQwuy2Av6MCsFB",
+          username: "tester@tester.com",
+          is_active: true,
+          is_verified: true,
+          method: "mobile_phone",
+          in_upgrade: true,
+          payment_url: "https://payment.example.com/pay/2",
+        },
+      }),
+    );
+    const {orgSlug, cookies, setUserData, userData, logout, language} =
+      getArgs();
+    cookies.set(`${orgSlug}_auth_token`, "token");
+    userData.radius_user_token = "token";
+    userData.method = "mobile_phone";
+    userData.is_verified = true;
+    userData.in_upgrade = true;
+    userData.payment_url = null;
+    const result = await validateToken(
+      cookies,
+      orgSlug,
+      setUserData,
+      userData,
+      logout,
+      language,
+    );
+    expect(axios).toHaveBeenCalled();
+    expect(result).toBe(true);
+    expect(setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({
+        payment_url: "https://payment.example.com/pay/2",
+      }),
+    );
     expect(logout.mock.calls.length).toBe(0);
   });
   it("should make api call if radius token is present but password_expired is true", async () => {
@@ -737,6 +785,69 @@ describe("storage tests", () => {
     expect(storageMock.getItem("organization")).toEqual(undefined);
   });
 });
+describe("synced-storage tests", () => {
+  afterEach(() => {
+    localStorage.clear();
+    new Cookies().remove("test_key", {path: "/"});
+  });
+
+  it("storeValue should do nothing if sync auth is disabled", () => {
+    const cookies = new Cookies();
+    storeValue(false, "test_key", "true", cookies);
+    expect(cookies.get("test_key")).toBeUndefined();
+    expect(localStorage.getItem("test_key")).toEqual(null);
+  });
+
+  it("storeValue should persist to cookies and localStorage if sync auth is enabled", () => {
+    const cookies = new Cookies();
+    storeValue(true, "test_key", "true", cookies);
+    expect(cookies.get("test_key")).toEqual(true);
+    expect(localStorage.getItem("test_key")).toEqual("true");
+  });
+
+  it("resolveStoredValue should return the fallback if sync auth is disabled", () => {
+    const cookies = new Cookies();
+    cookies.set("test_key", "true", {path: "/", maxAge: 60});
+    expect(resolveStoredValue(false, "test_key", "fallback", cookies)).toEqual(
+      "fallback",
+    );
+  });
+
+  it("resolveStoredValue should read from cookies and clear localStorage", () => {
+    const cookies = new Cookies();
+    cookies.set("test_key", "true", {path: "/", maxAge: 60});
+    localStorage.setItem("test_key", "true");
+    expect(resolveStoredValue(true, "test_key", undefined, cookies)).toEqual(
+      true,
+    );
+    expect(localStorage.getItem("test_key")).toEqual(null);
+  });
+
+  it("resolveStoredValue should fall back to localStorage if cookies are unavailable", () => {
+    const cookies = new Cookies();
+    localStorage.setItem("test_key", "true");
+    expect(resolveStoredValue(true, "test_key", undefined, cookies)).toEqual(
+      true,
+    );
+    expect(localStorage.getItem("test_key")).toEqual(null);
+  });
+
+  it("resolveStoredValue should return the fallback if nothing is stored", () => {
+    const cookies = new Cookies();
+    expect(resolveStoredValue(true, "test_key", "fallback", cookies)).toEqual(
+      "fallback",
+    );
+  });
+
+  it("clearStoredValue should remove the value from cookies and localStorage", () => {
+    const cookies = new Cookies();
+    cookies.set("test_key", "true", {path: "/", maxAge: 60});
+    localStorage.setItem("test_key", "true");
+    clearStoredValue("test_key", cookies);
+    expect(cookies.get("test_key")).toBeUndefined();
+    expect(localStorage.getItem("test_key")).toEqual(null);
+  });
+});
 describe("getPaymentStatusRedirectUrl tests", () => {
   afterEach(() => {
     jest.clearAllMocks();
@@ -1035,5 +1146,32 @@ describe("upgrade-plan", () => {
     await expect(
       upgradePlan("default", "premium", "test-token", "en"),
     ).rejects.toBe(error);
+  });
+});
+
+describe("cancel-upgrade-plan", () => {
+  it("makes POST request with correct URL and headers", async () => {
+    const mockResponse = {in_upgrade: false, payment_url: null};
+    axios.mockResolvedValueOnce({data: mockResponse});
+    const result = await cancelUpgradePlan("default", "test-token", "en");
+    expect(axios).toHaveBeenCalledWith(
+      expect.objectContaining({
+        method: "post",
+        headers: expect.objectContaining({
+          "content-type": "application/json",
+          Authorization: "Bearer test-token",
+        }),
+        url: cancelUpgradePlanApiUrl.replace("{orgSlug}", "default"),
+      }),
+    );
+    expect(result).toBe(mockResponse);
+  });
+
+  it("rejects on request failure", async () => {
+    const error = new Error("request failed");
+    axios.mockRejectedValueOnce(error);
+    await expect(cancelUpgradePlan("default", "test-token", "en")).rejects.toBe(
+      error,
+    );
   });
 });

@@ -124,6 +124,18 @@ browsers may fail to detect successful login when this method is used.
 Set ``captive_portal_sync_auth`` to ``true`` to submit the login form
 synchronously and trigger a full page reload upon authentication:
 
+``captive_portal_supports_coa``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- **Type**: ``boolean``
+- **Default**: ``false``
+
+Set this option to ``true`` when your captive portal supports RADIUS
+Change of Authorization (CoA). After a successful payment, OpenWISP
+updates the session's RadiusGroup, and the captive portal applies the new
+plan's limits automatically. This avoids the logout/login cycle that WiFi
+Login Pages would otherwise require.
+
 Status Page Settings
 --------------------
 
