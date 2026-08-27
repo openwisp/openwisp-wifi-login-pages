@@ -11,7 +11,7 @@ within the OpenWISP architecture.
     :align: center
     :alt: OpenWISP Architecture: WiFi Login Pages module
 
-    **OpenWISP Architecture: highlighted wifi login pages module**
+    **OpenWISP Architecture: highlighted WiFi Login Pages module**
 
 .. important::
 
