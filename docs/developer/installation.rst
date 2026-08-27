@@ -3,6 +3,23 @@ Developer Installation Instructions
 
 .. include:: ../partials/developer-docs.rst
 
+The following diagram illustrates the role of the WiFi Login Pages module
+within the OpenWISP architecture.
+
+.. figure:: ../images/architecture-v2-wifi-login-pages.png
+    :target: ../../_images/architecture-v2-wifi-login-pages.png
+    :align: center
+    :alt: OpenWISP Architecture: WiFi Login Pages module
+
+    **OpenWISP Architecture: highlighted wifi login pages module**
+
+.. important::
+
+    For an enhanced viewing experience, open the image above in a new
+    browser tab.
+
+    Refer to :doc:`/general/architecture` for more information.
+
 .. contents:: **Table of contents**:
     :depth: 1
     :local:
