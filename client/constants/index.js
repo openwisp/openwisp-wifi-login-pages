@@ -24,5 +24,6 @@ export const updateMethodApiUrl = (orgSlug) =>
   `${prefix}/${orgSlug}/account/registration-method/`;
 export const plansApiUrl = `${prefix}/{orgSlug}/plan/`;
 export const upgradePlanApiUrl = `${prefix}/{orgSlug}/plan/upgrade`;
+export const cancelUpgradePlanApiUrl = `${prefix}/{orgSlug}/plan/cancel`;
 export const modalContentUrl = (orgSlug) => `${prefix}/${orgSlug}/modal`;
 export const mainToastId = "main_toast_id";
