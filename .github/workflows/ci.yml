@@ -37,7 +37,7 @@ jobs:
           restore-keys: ${{ runner.os }}-yarn-
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: "3.13"
           cache: "pip"
@@ -101,7 +101,7 @@ jobs:
       # all the steps below are needed to run selenium browser tests
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: "3.13"
           cache: "pip"
