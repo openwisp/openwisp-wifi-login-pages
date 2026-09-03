@@ -1,8 +1,66 @@
 # Change log
 
-## Version 1.3.0 [unreleased]
+## Version 1.3.0 [2026-09-04]
 
-Work in progress.
+### Features
+
+- Added [cross-organization login flow](https://github.com/openwisp/openwisp-wifi-login-pages/issues/1055)
+  to ensure organization-specific requirements are completed when users log in
+  to a different organization.
+- Added [automatic logout when the RADIUS session is terminated](https://github.com/openwisp/openwisp-wifi-login-pages/issues/933),
+  keeping WiFi Login Pages synchronized with the active RADIUS session.
+
+### Changes
+
+#### Other changes
+
+- Removed Captive Portal API.
+- Updated [references to Twitter to X](https://github.com/openwisp/openwisp-wifi-login-pages/issues/1043).
+
+#### Dependencies
+
+- Added [`@babel/runtime` `^7.28.6`](https://github.com/babel/babel/releases/tag/v7.28.6).
+- Added [`@sentry/node` `^10.40.0`](https://github.com/getsentry/sentry-javascript/releases/tag/10.40.0).
+- Bumped `axios` from `^1.10.0` to
+  [`^1.13.2`](https://github.com/axios/axios/blob/v1.x/CHANGELOG.md).
+- Bumped `concurrently` from `^8.2.1` to
+  [`^10.0.5`](https://github.com/open-cli-tools/concurrently/releases/tag/v10.0.5).
+- Bumped `core-js` from `^3.19.0` to
+  [`^3.47.0`](https://core-js.io/changelog).
+- Bumped `deepmerge` from `^4.2.2` to
+  [`^4.3.1`](https://github.com/TehShrike/deepmerge/blob/master/changelog.md).
+- Bumped `dompurify` from `^3.0.6` to
+  [`^3.3.3`](https://github.com/cure53/DOMPurify/releases/tag/3.3.3).
+- Bumped `duration-formatter` from `^1.0.7` to `^1.1.1`.
+- Bumped `express` from `^5.1.0` to
+  [`^5.2.1`](https://github.com/expressjs/express/releases/tag/v5.2.1).
+- Bumped `fs-extra` from `^11.1.0` to
+  [`^11.3.3`](https://github.com/jprichardson/node-fs-extra/blob/master/CHANGELOG.md).
+- Bumped `inquirer` from `^8.1.1` to
+  [`^14.0.2`](https://github.com/SBoudrias/Inquirer.js/releases/tag/inquirer%4014.0.2).
+- Bumped `jsdom` from `^22.1.0` to
+  [`^30.0.1`](https://github.com/jsdom/jsdom/releases/tag/v30.0.1).
+- Bumped `marked` from `^16.3.0` to
+  [`^18.0.4`](https://github.com/markedjs/marked/releases/tag/v18.0.4).
+- Bumped `node-plop` from `^0.32.0` to
+  [`^0.32.3`](https://github.com/plopjs/plop/releases/tag/node-plop%400.32.3).
+- Replaced `pretty-bytes` `^7.0.0` with
+  [`filesize` `^11.0.13`](https://github.com/avoidwork/filesize.js/blob/master/CHANGELOG.md).
+- Bumped `qs` from `^6.9.4` to
+  [`^6.14.0`](https://github.com/ljharb/qs/blob/main/CHANGELOG.md).
+- Bumped `ttag` from `^1.7.24` to
+  [`^1.8.12`](https://ttag.js.org/docs/changelog.html).
+
+### Bugfixes
+
+- Fixed Social Login and SAML users being unable to change their password when
+  it has expired.
+- Improved [password reset error messages](https://github.com/openwisp/openwisp-wifi-login-pages/issues/1172)
+  so invalid reset URLs and password validation errors are clearly reported.
+- Fixed organization-wide extra JavaScript files not being copied to the
+  distribution build after upgrading `copy-webpack-plugin`.
+- Fixed [JavaScript transpilation to ES5](https://github.com/openwisp/openwisp-wifi-login-pages/issues/1071),
+  restoring compatibility with older browsers.
 
 ## Version 1.2.2 [2026-02-06]
 
