@@ -1,5 +1,9 @@
 # Change log
 
+## Version 1.4.0 [unreleased]
+
+Work in progress.
+
 ## Version 1.3.0 [2026-09-04]
 
 ### Features
