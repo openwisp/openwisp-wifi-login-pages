@@ -432,6 +432,11 @@ msgid "PAY_GIVE_UP_TXT"
 msgstr ""
 "Če transakcija ni bila uspešna, se obrite na službo za podporo uporabnikom."
 
+#.  failed payment case
+#: client/components/payment-status/payment-status.js:230
+msgid "PAY_GO_BACK_BTN"
+msgstr "Preklic in vrnitev na račun"
+
 #: client/components/password-reset/password-reset.js:32
 msgid "PWD_RESET_TITL"
 msgstr "Ponastavite geslo"

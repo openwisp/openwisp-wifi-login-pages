@@ -12,6 +12,7 @@ const mapStateToProps = (state, ownProps) => {
     userData: conf.userData,
     settings: conf.settings,
     isAuthenticated: conf.isAuthenticated,
+    captivePortalSyncAuth: conf.components.captive_portal_sync_auth,
     cookies: ownProps.cookies,
     status: ownProps.status,
   };

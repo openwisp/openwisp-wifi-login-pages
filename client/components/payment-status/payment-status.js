@@ -6,9 +6,13 @@ import {Link, Navigate} from "react-router-dom";
 import {toast} from "react-toastify";
 import {t} from "ttag";
 import LoadingContext from "../../utils/loading-context";
+import Loader from "../../utils/loader";
 import Contact from "../contact-box";
 import validateToken from "../../utils/validate-token";
 import handleLogout from "../../utils/handle-logout";
+import cancelUpgradePlan from "../../utils/cancel-upgrade-plan";
+import logError from "../../utils/log-error";
+import {storeValue, clearStoredValue} from "../../utils/synced-storage";
 
 export default class PaymentStatus extends React.Component {
   constructor(props) {
@@ -45,16 +49,19 @@ export default class PaymentStatus extends React.Component {
     const {method, is_verified: isVerified} = userData;
     // flag user to repeat login in order to restart session with new radius group
     if (status === "success" && method === "bank_card" && isVerified === true) {
-      setUserData({
-        ...userData,
-        mustLogin: !settings.payment_requires_internet,
-        mustLogout: settings.payment_requires_internet,
-        repeatLogin: settings.payment_requires_internet,
-      });
+      // Skip logout/login cycle if CoA handles session group updates transparently
+      if (!settings.captive_portal_supports_coa) {
+        setUserData({
+          ...userData,
+          mustLogin: !settings.payment_requires_internet,
+          mustLogout: settings.payment_requires_internet,
+          repeatLogin: settings.payment_requires_internet,
+        });
+      }
     } else if (
       status === "draft" &&
-      method === "bank_card" &&
-      isVerified === false
+      // Payment completion needs internet for both new registrations and upgrades
+      (userData.in_upgrade || (method === "bank_card" && isVerified === false))
     ) {
       setUserData({
         ...userData,
@@ -62,6 +69,54 @@ export default class PaymentStatus extends React.Component {
       });
     }
   }
+
+  // Abandon upgrade: cancel order, clear flags, reconnect under current plan
+  backToStatus = async () => {
+    const {orgSlug, navigate, setUserData, userData, language, cookies} =
+      this.props;
+    try {
+      const response = await cancelUpgradePlan(
+        orgSlug,
+        userData.auth_token || userData.key,
+        language,
+      );
+      setUserData({
+        ...userData,
+        ...response,
+        in_upgrade: false,
+        proceedToPayment: false,
+        payment_url: null,
+        mustLogin: undefined,
+        mustLogout: true,
+        captivePortalLogoutOnly: true,
+      });
+    } catch (error) {
+      // The API replies 404 when there is no pending upgrade order left to
+      // cancel, which is a no-op for the user rather than an error. A 404
+      // from our own server carries response_code NOT_FOUND and means the
+      // org slug is unknown, so keep surfacing that one.
+      const noPendingOrder =
+        error.response &&
+        error.response.status === 404 &&
+        (error.response.data || {}).response_code !== "NOT_FOUND";
+      if (!noPendingOrder) {
+        toast.error(t`ERR_OCCUR`);
+        logError(error, "Error while cancelling plan upgrade");
+      }
+      setUserData({
+        ...userData,
+        in_upgrade: false,
+        proceedToPayment: false,
+        payment_url: null,
+        mustLogin: undefined,
+        mustLogout: true,
+        captivePortalLogoutOnly: true,
+      });
+    }
+    // Clear persisted proceedToPayment flag
+    clearStoredValue(`${orgSlug}_proceedToPayment`, cookies);
+    navigate(`/${orgSlug}/status`);
+  };
 
   logout = () => {
     const {logout, cookies, orgSlug, setUserData, userData, navigate} =
@@ -82,33 +137,35 @@ export default class PaymentStatus extends React.Component {
   render() {
     const {orgSlug, params, isAuthenticated, userData} = this.props;
     const {status} = params;
-    const {method, is_verified: isVerified} = userData;
+    const {method, is_verified: isVerified, in_upgrade: inUpgrade} = userData;
     const redirectToStatus = () => <Navigate to={`/${orgSlug}/status`} />;
     const acceptedValues = ["success", "failed", "draft"];
     const {isTokenValid} = this.state;
+    // Upgraders retain their existing registration state; bypass bank-card redirect guards
+    const isFailedUpgrade = Boolean(inUpgrade) && status === "failed";
+    const isDraftUpgrade = Boolean(inUpgrade) && status === "draft";
+    const shouldRedirectToStatus =
+      !acceptedValues.includes(status) ||
+      (!inUpgrade && method && method !== "bank_card") ||
+      (isAuthenticated === false && status !== "draft") ||
+      (!isFailedUpgrade &&
+        !isDraftUpgrade &&
+        ["failed", "draft"].includes(status) &&
+        isVerified === true) ||
+      (status === "success" && isVerified === false) ||
+      isTokenValid === false;
 
-    // not registered with bank card flow
-    if (
-      (method && method !== "bank_card") ||
-      !acceptedValues.includes(status)
-    ) {
+    if (shouldRedirectToStatus) {
       return redirectToStatus();
     }
 
-    // likely somebody opening this page by mistake
-    if (
-      (isAuthenticated === false && status !== "draft") ||
-      (["failed", "draft"].includes(status) && isVerified === true) ||
-      (status === "success" && isVerified === false) ||
-      isTokenValid === false
-    ) {
-      return redirectToStatus();
+    if (isTokenValid === null) {
+      return <Loader />;
     }
 
     // draft case
-    // if (isAuthenticated === false && status === "draft") {
     if (status === "draft") {
-      return this.renderDraft();
+      return this.renderDraft(isDraftUpgrade);
     }
 
     // success case
@@ -117,11 +174,19 @@ export default class PaymentStatus extends React.Component {
       return redirectToStatus();
     }
 
-    return this.renderFailed();
+    return this.renderFailed(isFailedUpgrade);
   }
 
   paymentProceedHandler() {
-    const {authenticate, setUserData, userData, settings} = this.props;
+    const {
+      authenticate,
+      setUserData,
+      userData,
+      settings,
+      cookies,
+      orgSlug,
+      captivePortalSyncAuth,
+    } = this.props;
     // Payment gateway may require internet access.
     // Since, captive portal login is handled by the Status component,
     // the user is navigated to the "/status" for captive portal login
@@ -129,18 +194,32 @@ export default class PaymentStatus extends React.Component {
     if (settings.payment_requires_internet) {
       setUserData({
         ...userData,
+        mustLogin: true,
         proceedToPayment: true,
       });
+      // Persist so it survives page reload during sync captive portal auth
+      storeValue(captivePortalSyncAuth, `${orgSlug}_mustLogin`, true, cookies);
+      storeValue(
+        captivePortalSyncAuth,
+        `${orgSlug}_proceedToPayment`,
+        true,
+        cookies,
+      );
     }
     authenticate(true);
   }
 
-  renderDraft() {
-    const {orgSlug, page = {}, settings} = this.props;
-    const {timeout = 5, max_attempts: maxAttempts = 3} = page;
-    const payProceedUrl = settings.payment_requires_internet
+  getProceedUrl() {
+    const {orgSlug, settings} = this.props;
+    return settings.payment_requires_internet
       ? `/${orgSlug}/status`
       : `/${orgSlug}/payment/process`;
+  }
+
+  renderDraft(isDraftUpgrade = false) {
+    const {page = {}} = this.props;
+    const {timeout = 5, max_attempts: maxAttempts = 3} = page;
+    const payProceedUrl = this.getProceedUrl();
 
     return (
       <div className="container content">
@@ -170,9 +249,9 @@ export default class PaymentStatus extends React.Component {
                 <button
                   type="button"
                   className="button full"
-                  onClick={this.logout}
+                  onClick={isDraftUpgrade ? this.backToStatus : this.logout}
                 >
-                  {t`PAY_GIVE_UP_BTN`}
+                  {isDraftUpgrade ? t`PAY_GO_BACK_BTN` : t`PAY_GIVE_UP_BTN`}
                 </button>
               </div>
             </div>
@@ -182,8 +261,20 @@ export default class PaymentStatus extends React.Component {
     );
   }
 
-  renderFailed() {
-    const {orgSlug} = this.props;
+  renderFailed(isFailedUpgrade = false) {
+    const {orgSlug, userData, settings} = this.props;
+    // User might have exhausted the temporary session quota while completing
+    // the payment. Thus, we need to login them back in the captive portal
+    // before directing them to the payment gateway.
+    const retryUrl = isFailedUpgrade
+      ? this.getProceedUrl()
+      : `/${orgSlug}/payment/draft`;
+    // No retry when upgrade payment attempts exhausted (no payment_url)
+    const showRetry = !isFailedUpgrade || Boolean(userData.payment_url);
+    // Only re-run the captive portal login when internet is actually required;
+    // otherwise the retry is a plain navigation to the payment gateway.
+    const needsPortalLogin =
+      isFailedUpgrade && settings.payment_requires_internet;
     // failed payment case
     return (
       <div className="container content">
@@ -192,20 +283,28 @@ export default class PaymentStatus extends React.Component {
             <div className="inner">
               <h2 className="row payment-status-row-1">{t`PAY_FAIL`}</h2>
               <div className="row payment-status-row-2">{t`PAY_SUB_H`}</div>
-              <div className="row payment-status-row-3">
-                <Link className="button full" to={`/${orgSlug}/payment/draft`}>
-                  {t`PAY_TRY_AGAIN_BTN`}
-                </Link>
-              </div>
+              {showRetry && (
+                <div className="row payment-status-row-3">
+                  <Link
+                    className="button full"
+                    to={retryUrl}
+                    onClick={
+                      needsPortalLogin ? this.paymentProceedHandler : undefined
+                    }
+                  >
+                    {t`PAY_TRY_AGAIN_BTN`}
+                  </Link>
+                </div>
+              )}
 
               <div className="row payment-status-row-4">
                 <p>{t`PAY_GIVE_UP_TXT`}</p>
                 <button
                   type="button"
                   className="button full"
-                  onClick={this.logout}
+                  onClick={isFailedUpgrade ? this.backToStatus : this.logout}
                 >
-                  {t`PAY_GIVE_UP_BTN`}
+                  {isFailedUpgrade ? t`PAY_GO_BACK_BTN` : t`PAY_GIVE_UP_BTN`}
                 </button>
               </div>
             </div>
@@ -224,12 +323,14 @@ PaymentStatus.propTypes = {
   userData: PropTypes.object.isRequired,
   setUserData: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
+  captivePortalSyncAuth: PropTypes.bool,
   authenticate: PropTypes.func.isRequired,
   page: PropTypes.object,
   logout: PropTypes.func.isRequired,
   cookies: PropTypes.instanceOf(Cookies).isRequired,
   settings: PropTypes.shape({
     payment_requires_internet: PropTypes.bool,
+    captive_portal_supports_coa: PropTypes.bool,
   }).isRequired,
   params: PropTypes.shape({
     status: PropTypes.string,

@@ -633,6 +633,98 @@ describe("<Status /> interactions", () => {
     jest.useRealTimers();
   });
 
+  it("authMessage planExhausted: false skips setPlanExhausted", async () => {
+    props = createTestProps();
+    const setLoadingMock = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: setLoadingMock},
+      disableLifecycleMethods: true,
+    });
+    jest.spyOn(toast, "info");
+    const status = wrapper.instance();
+    status.handlePostMessage({
+      data: {
+        message: "Informative message",
+        type: "authMessage",
+        planExhausted: false,
+      },
+      origin: "http://localhost",
+    });
+    expect(toast.info).toHaveBeenCalledTimes(1);
+    expect(props.setPlanExhausted).toHaveBeenCalledTimes(0);
+    expect(status.state.warningMessage).toBe("USAGE_LIMIT_EXHAUSTED_TXT");
+    expect(setLoadingMock).toHaveBeenCalledTimes(2);
+    expect(setLoadingMock).toHaveBeenLastCalledWith(false);
+  });
+
+  it("authMessage planExhausted: true calls setPlanExhausted", async () => {
+    props = createTestProps();
+    const setLoadingMock = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: setLoadingMock},
+      disableLifecycleMethods: true,
+    });
+    jest.spyOn(toast, "info");
+    const status = wrapper.instance();
+    status.handlePostMessage({
+      data: {
+        message: "PLAN_EXHAUSTED_TOAST",
+        type: "authMessage",
+        warningMessage: "USAGE_LIMIT_EXHAUSTED_TXT",
+        planExhausted: true,
+      },
+      origin: "http://localhost",
+    });
+    expect(toast.info).toHaveBeenCalledTimes(1);
+    expect(props.setPlanExhausted).toHaveBeenCalledTimes(1);
+    expect(status.state.warningMessage).toBe("USAGE_LIMIT_EXHAUSTED_TXT");
+    expect(setLoadingMock).toHaveBeenCalledTimes(2);
+    expect(setLoadingMock).toHaveBeenLastCalledWith(false);
+  });
+
+  it("authMessage without planExhausted defaults to true", async () => {
+    props = createTestProps();
+    const setLoadingMock = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: setLoadingMock},
+      disableLifecycleMethods: true,
+    });
+    jest.spyOn(toast, "info");
+    const status = wrapper.instance();
+    status.handlePostMessage({
+      data: {
+        message: "PLAN_EXHAUSTED_TOAST",
+        type: "authMessage",
+        warningMessage: "USAGE_LIMIT_EXHAUSTED_TXT",
+      },
+      origin: "http://localhost",
+    });
+    expect(toast.info).toHaveBeenCalledTimes(1);
+    expect(props.setPlanExhausted).toHaveBeenCalledTimes(1);
+    expect(status.state.warningMessage).toBe("USAGE_LIMIT_EXHAUSTED_TXT");
+    expect(setLoadingMock).toHaveBeenCalledTimes(2);
+    expect(setLoadingMock).toHaveBeenLastCalledWith(false);
+  });
+
+  it("authMessage keeps loader on during payment login redirect", async () => {
+    props = createTestProps({userData: {proceedToPayment: true}});
+    const setLoadingMock = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: setLoadingMock},
+      disableLifecycleMethods: true,
+    });
+    jest.spyOn(toast, "info");
+    const status = wrapper.instance();
+    status.handlePostMessage({
+      data: {message: "RADIUS Info", type: "authMessage"},
+      origin: "http://localhost",
+    });
+    expect(toast.info).toHaveBeenCalledTimes(1);
+    expect(props.setPlanExhausted).toHaveBeenCalledTimes(1);
+    expect(setLoadingMock).toHaveBeenCalledTimes(1);
+    expect(setLoadingMock).toHaveBeenLastCalledWith(true);
+  });
+
   it("test handlePostMessage internet-mode", async () => {
     props = createTestProps();
     const setLoadingMock = jest.fn();
@@ -1366,6 +1458,13 @@ describe("<Status /> interactions", () => {
     };
     props.settings.subscriptions = true;
     props.settings.payment_requires_internet = true;
+    // Seed a persisted proceedToPayment flag to verify it gets cleared
+    // once the redirect to /payment/process happens.
+    props.cookies.set("default_proceedToPayment", "true", {
+      path: "/",
+      maxAge: 60,
+    });
+    localStorage.setItem("default_proceedToPayment", "true");
     const setLoading = jest.fn();
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading},
@@ -1385,6 +1484,122 @@ describe("<Status /> interactions", () => {
       ...props.userData,
       proceedToPayment: false,
     });
+    // Stale flag must be cleared to prevent a redirect loop on the next visit
+    expect(props.cookies.get("default_proceedToPayment")).toBeUndefined();
+    expect(localStorage.getItem("default_proceedToPayment")).toBeNull();
+  });
+
+  it("should redirect an upgrader to /payment/process after captive portal login", async () => {
+    validateToken.mockReturnValue(true);
+    props = createTestProps();
+    props.userData = {
+      ...responseData,
+      payment_url: "https://account.openwisp.io/payment/123",
+      in_upgrade: true,
+      mustLogin: true,
+      proceedToPayment: true,
+    };
+    props.settings.subscriptions = true;
+    props.settings.payment_requires_internet = true;
+    const setLoading = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading},
+    });
+    const mockRef = {submit: jest.fn()};
+    wrapper.instance().loginIframeRef.current = {};
+    wrapper.instance().loginFormRef.current = mockRef;
+    wrapper.instance().handleLoginIframe();
+    expect(props.navigate).toHaveBeenCalledWith(
+      `/${props.orgSlug}/payment/process`,
+    );
+    expect(props.setUserData).toHaveBeenCalledWith({
+      ...props.userData,
+      proceedToPayment: false,
+    });
+  });
+
+  it("should send an upgrader to the draft page when proceedToPayment is false", async () => {
+    validateToken.mockReturnValue(true);
+    jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
+    jest.spyOn(Status.prototype, "getUserPastRadiusSessions");
+    props = createTestProps();
+    props.userData = {
+      ...responseData,
+      in_upgrade: true,
+      proceedToPayment: false,
+      payment_url: "https://payment.example.com/pay/1",
+    };
+    props.settings.subscriptions = true;
+    props.settings.payment_requires_internet = true;
+    const setLoading = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading},
+    });
+    await tick();
+    // in_upgrade without proceedToPayment routes through the draft page,
+    // not straight to the payment gateway.
+    expect(props.navigate).toHaveBeenCalledWith(
+      `/${props.orgSlug}/payment/draft`,
+    );
+    expect(props.navigate).not.toHaveBeenCalledWith(
+      `/${props.orgSlug}/payment/process`,
+    );
+  });
+
+  it("should not redirect to payment/draft after an upgrade was abandoned via backToStatus", async () => {
+    validateToken.mockReturnValue(true);
+    jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
+    jest.spyOn(Status.prototype, "getUserPastRadiusSessions");
+    props = createTestProps();
+    // Simulate userData after PaymentStatus.backToStatus() cleanup
+    props.userData = {
+      ...responseData,
+      in_upgrade: false,
+      proceedToPayment: false,
+      payment_url: null,
+      mustLogin: undefined,
+    };
+    props.settings.subscriptions = true;
+    props.settings.payment_requires_internet = true;
+    const setLoading = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading},
+    });
+    await tick();
+    expect(props.navigate).not.toHaveBeenCalledWith(
+      `/${props.orgSlug}/payment/draft`,
+    );
+    expect(props.navigate).not.toHaveBeenCalledWith(
+      `/${props.orgSlug}/payment/process`,
+    );
+  });
+
+  it("should restore proceedToPayment from cookie after a sync-auth page reload", async () => {
+    // Synchronous captive portal auth reloads the page on login, wiping the
+    // in-memory proceedToPayment flag. It must be restored from the cookie
+    // that was persisted before the reload, otherwise the user is not
+    // forwarded to /payment/process (see PaymentStatus.paymentProceedHandler).
+    validateToken.mockReturnValue(true);
+    const cookies = new Cookies();
+    cookies.set("default_proceedToPayment", "true", {path: "/", maxAge: 60});
+    props = createTestProps({
+      captivePortalSyncAuth: true,
+      location: {search: ""},
+      cookies,
+      userData: {
+        ...responseData,
+        in_upgrade: true,
+        mustLogin: false,
+      },
+    });
+    props.settings.payment_requires_internet = true;
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+    });
+    await tick();
+    expect(props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({proceedToPayment: true}),
+    );
   });
 
   it("should logout if mustLogout is true", async () => {
@@ -1433,6 +1648,63 @@ describe("<Status /> interactions", () => {
     expect(Status.prototype.getUserActiveRadiusSessions.mock.calls.length).toBe(
       1,
     );
+  });
+
+  it("should log out of captive portal only and keep the app session when captivePortalLogoutOnly is true", async () => {
+    validateToken.mockReturnValue(true);
+    jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: [
+          {
+            session_id: 1,
+            start_time: "2020-09-08T00:22:28-04:00",
+            stop_time: "2020-09-08T00:22:29-04:00",
+            input_octets: 100000,
+            output_octets: 100000,
+          },
+        ],
+        headers: {},
+      }),
+    );
+    const spyToast = jest.spyOn(toast, "success");
+    props = createTestProps({
+      userData: {
+        ...responseData,
+        mustLogout: true,
+        captivePortalLogoutOnly: true,
+      },
+    });
+    const setLoading = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading},
+      disableLifecycleMethods: true,
+    });
+    const status = wrapper.instance();
+    const mockRef = {submit: jest.fn()};
+    const {setUserData} = status.props;
+    status.logoutFormRef = {current: mockRef};
+    status.logoutIframeRef = {current: {}};
+    status.componentDidMount();
+    await tick();
+    status.handleLogoutIframe();
+    await tick();
+    // Captive portal session torn down but WLP session preserved
+    expect(mockRef.submit).toHaveBeenCalledTimes(1);
+    expect(status.props.logout).not.toHaveBeenCalled();
+    expect(setUserData).not.toHaveBeenCalledWith(initialState.userData);
+    // Transient flags cleared; userData preserved for authentication
+    expect(setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({
+        mustLogin: undefined,
+        mustLogout: undefined,
+        captivePortalLogoutOnly: undefined,
+      }),
+    );
+    expect(status.state.loggedOut).toBe(false);
+    expect(spyToast).not.toHaveBeenCalled();
   });
 
   it("should logout if activeSession do not contain current MAC", async () => {
@@ -1924,6 +2196,46 @@ describe("<Status /> interactions", () => {
     await tick();
     expect(mockRef.submit).toHaveBeenCalledTimes(1);
   });
+  it("should complete the logout instead of hanging when there are open sessions in internetMode", async () => {
+    const setLoading = jest.fn();
+    const session = {start_time: "2021-07-08T00:22:28-04:00", stop_time: null};
+    const spyToastSuccess = jest.spyOn(toast, "success");
+    props = createTestProps({internetMode: true});
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading},
+      disableLifecycleMethods: true,
+    });
+    wrapper
+      .instance()
+      .setState({sessionsToLogout: [session], activeSession: [session]});
+    await wrapper.instance().handleLogout(false);
+    expect(props.setUserData).toHaveBeenCalledWith(initialState.userData);
+    expect(props.logout).toHaveBeenCalledWith(
+      props.cookies,
+      props.orgSlug,
+      false,
+    );
+    expect(setLoading).toHaveBeenCalledWith(false);
+    expect(spyToastSuccess).toHaveBeenCalled();
+  });
+  it("should not overwrite userAutoLogin during a captive-portal-only logout", async () => {
+    // captivePortalLogoutOnly keeps the WLP session alive, so the flag that
+    // controls auto-login on the next WLP visit must not be touched by it.
+    localStorage.removeItem("userAutoLogin");
+    const setLoading = jest.fn();
+    props = createTestProps();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading},
+      disableLifecycleMethods: true,
+    });
+    wrapper.instance().captivePortalLogoutOnly = true;
+    await wrapper.instance().handleLogout(true);
+    expect(localStorage.getItem("userAutoLogin")).toBeNull();
+    // The captive-portal-only settle path must still run to completion.
+    expect(props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({captivePortalLogoutOnly: undefined}),
+    );
+  });
   it("should not display STATUS_CONTENT and radius usage when logged in internetMode", async () => {
     const prop = createTestProps({
       internetMode: true,
@@ -2324,6 +2636,106 @@ describe("<Status /> interactions", () => {
     await tick();
     expect(toast.error.mock.calls.length).toBe(1);
   });
+  it("test upgradeUserPlan relays the backend error message on 429 (too many orders)", async () => {
+    jest.spyOn(toast, "error");
+    axios.mockImplementation(() =>
+      Promise.reject({
+        response: {
+          status: 429,
+          statusText: "TOO_MANY_REQUESTS",
+          data: {
+            detail: "You have reached the maximum number of allowed orders.",
+          },
+        },
+      }),
+    );
+    props = createTestProps();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    wrapper.setState({upgradePlans: [{id: "1"}]});
+    await wrapper.instance().upgradeUserPlan({target: {value: 0}});
+    expect(toast.error).toHaveBeenCalledWith(
+      "You have reached the maximum number of allowed orders.",
+    );
+  });
+  it("test upgradeUserPlan stores in_upgrade from the response", async () => {
+    props = createTestProps();
+    props.settings.payment_requires_internet = false;
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    wrapper.setState({upgradePlans: [{id: "1"}]});
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: {
+          payment_url: "https://payment.example.com/pay/1",
+          in_upgrade: true,
+        },
+      }),
+    );
+    await wrapper.instance().upgradeUserPlan({target: {value: 0}});
+    expect(props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({
+        payment_url: "https://payment.example.com/pay/1",
+        in_upgrade: true,
+        // Token consumed by portal login; must be cleared so a fresh one is fetched
+        radius_user_token: undefined,
+      }),
+    );
+    expect(props.navigate).toHaveBeenCalledWith("/default/payment/process");
+
+    // A falsy in_upgrade must survive the assignment untouched
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: {
+          payment_url: "https://payment.example.com/pay/1",
+          in_upgrade: false,
+        },
+      }),
+    );
+    await wrapper.instance().upgradeUserPlan({target: {value: 0}});
+    expect(props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({in_upgrade: false}),
+    );
+  });
+  it("test upgradeUserPlan redirects to draft when payment_requires_internet", async () => {
+    axios.mockImplementation(() =>
+      Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: {
+          payment_url: "https://payment.example.com/pay/1",
+          in_upgrade: true,
+        },
+      }),
+    );
+    localStorage.clear();
+    props = createTestProps();
+    props.settings.payment_requires_internet = true;
+    props.captivePortalSyncAuth = true;
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    wrapper.setState({upgradePlans: [{id: "1"}]});
+    await wrapper.instance().upgradeUserPlan({target: {value: 0}});
+    expect(props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({
+        payment_url: "https://payment.example.com/pay/1",
+        in_upgrade: true,
+      }),
+    );
+    // Route through draft to enforce portal login before gateway payment
+    expect(props.navigate).toHaveBeenCalledWith("/default/payment/draft");
+    expect(props.navigate).not.toHaveBeenCalledWith("/default/payment/process");
+  });
   it("should hide limit-info element if getUserRadiusUsage fails", async () => {
     validateToken.mockReturnValue(true);
     axios.mockImplementation(() =>
@@ -2677,7 +3089,7 @@ describe("<Status /> interactions", () => {
     toast.success.mock.calls.pop()[1].onOpen();
     expect(toast.dismiss).toHaveBeenCalledWith("main_toast_id");
     expect(prop.navigate).toHaveBeenCalledWith(
-      `/${prop.orgSlug}/payment/process`,
+      `/${prop.orgSlug}/payment/draft`,
     );
     expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith({
       ...prop.userData,
@@ -2798,7 +3210,7 @@ describe("<Status /> interactions", () => {
     toast.success.mock.calls.pop()[1].onOpen();
     expect(toast.dismiss).toHaveBeenCalledWith("main_toast_id");
     expect(prop.navigate).toHaveBeenCalledWith(
-      `/${prop.orgSlug}/payment/process`,
+      `/${prop.orgSlug}/payment/draft`,
     );
     expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith({
       ...prop.userData,

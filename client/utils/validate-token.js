@@ -29,7 +29,8 @@ const validateToken = async (
         userData.password_expired === true)) ||
       (userData.method === "bank_card" &&
         userData.is_verified !== true &&
-        !userData.payment_url))
+        !userData.payment_url) ||
+      (userData.in_upgrade === true && !userData.payment_url))
   ) {
     try {
       const response = await axios({

@@ -450,6 +450,11 @@ msgstr "Попробуйте снова"
 msgid "PAY_GIVE_UP_TXT"
 msgstr "В случае возникновения проблем обращайтесь в сервис"
 
+#.  failed payment case
+#: client/components/payment-status/payment-status.js:230
+msgid "PAY_GO_BACK_BTN"
+msgstr "Отменить и вернуться в личный кабинет"
+
 #: client/components/password-reset/password-reset.js:32
 msgid "PWD_RESET_TITL"
 msgstr "Изменить пароль"
