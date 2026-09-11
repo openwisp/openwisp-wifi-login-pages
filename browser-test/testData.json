@@ -24,7 +24,7 @@
     "password": "testuser",
     "sourceOrganization": "default",
     "targetOrganization": "mobile",
-    "phoneNumber": "+911234567899",
+    "phoneNumber": "+393664351809",
     "method": "mobile_phone"
   },
   "allOrgScript": "analytics.js"

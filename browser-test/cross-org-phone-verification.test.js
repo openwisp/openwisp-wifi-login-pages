@@ -1,4 +1,4 @@
-import {until} from "selenium-webdriver";
+import {By, until} from "selenium-webdriver";
 import {
   getDriver,
   getElementByCss,
@@ -48,9 +48,11 @@ describe("Selenium tests for cross-organization phone verification", () => {
       until.urlContains(`/${data.targetOrganization}/status`),
       5000,
     );
-    const emailElement = await getElementByCss(
-      driver,
-      "div > p:nth-child(5) > span",
+    const emailElement = await driver.wait(
+      until.elementLocated(
+        By.xpath("//div[@id='status']//p[label[normalize-space()='EMAIL:']]/span"),
+      ),
+      5000,
     );
     expect(await emailElement.getText()).toEqual(data.email);
   });
