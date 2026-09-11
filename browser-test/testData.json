@@ -10,7 +10,7 @@
     "organization": "default"
   },
   "mobileVerificationTestUser": {
-    "phoneNumber": "+911234567890",
+    "phoneNumber": "+393664351808",
     "password": "testuser",
     "organization": "mobile",
     "email": "testuser2@openwisp.org",
