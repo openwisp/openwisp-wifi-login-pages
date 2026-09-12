@@ -50,7 +50,9 @@ describe("Selenium tests for cross-organization phone verification", () => {
     );
     const emailElement = await driver.wait(
       until.elementLocated(
-        By.xpath("//div[@id='status']//p[label[normalize-space()='EMAIL:']]/span"),
+        By.xpath(
+          `//div[@id='status']//span[normalize-space()="${data.email}"]`,
+        ),
       ),
       5000,
     );
