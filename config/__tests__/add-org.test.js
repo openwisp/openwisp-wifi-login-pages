@@ -26,6 +26,64 @@ const validData = {
   assets_confirm: false,
 };
 
+const interactiveData = {
+  ...validData,
+  name: "Interactive Test Organization",
+  uuid: "interactive-test-uuid",
+  secret_key: "interactive-test-secret",
+};
+
+const interactiveRunner = `
+  const fs = require("fs");
+  const path = require("path");
+  const response = JSON.parse(process.argv[1]);
+  const outputPath = path.resolve(
+    "organizations",
+    response.slug,
+    \`\${response.slug}.yml\`,
+  );
+
+  process.on("uncaughtException", (error) => {
+    console.error(error);
+    process.exit(1);
+  });
+
+  process.on("unhandledRejection", (error) => {
+    console.error(error);
+    process.exit(1);
+  });
+
+  const inquirerPath = require.resolve("inquirer");
+  require.cache[inquirerPath] = {
+    id: inquirerPath,
+    filename: inquirerPath,
+    loaded: true,
+    exports: {prompt: async () => response},
+  };
+
+  process.argv = ["node", path.resolve("config/add-org.js")];
+  require(path.resolve("config/add-org.js"));
+
+  const start = Date.now();
+  const waitForOutput = () => {
+    if (fs.existsSync(outputPath)) process.exit(0);
+    if (Date.now() - start > 5000) {
+      console.error("Timed out waiting for interactive config creation");
+      process.exit(1);
+    }
+    setTimeout(waitForOutput, 50);
+  };
+
+  waitForOutput();
+`;
+
+const runInteractiveAddOrg = (response) =>
+  spawnSync("node", ["-e", interactiveRunner, JSON.stringify(response)], {
+    encoding: "utf-8",
+    cwd: path.resolve(__dirname, "../.."),
+    timeout: 10000,
+  });
+
 describe("add-org command", () => {
   const cleanTestOrgDir = () => {
     if (fs.existsSync(testOrgDir)) {
@@ -79,6 +137,17 @@ describe("add-org command", () => {
     );
     expect(result.status).not.toBe(0);
     expect(result.stderr).toMatch(/already exists/);
+  });
+
+  it("runs interactively and creates config from prompt answers", () => {
+    const result = runInteractiveAddOrg(interactiveData);
+    expect(result.status).toBe(0);
+    expect(fs.existsSync(testOrgConfig)).toBe(true);
+    const config = yaml.load(fs.readFileSync(testOrgConfig, "utf8"));
+    expect(config.name).toBe(interactiveData.name);
+    expect(config.slug).toBe(interactiveData.slug);
+    expect(config.server.uuid).toBe(interactiveData.uuid);
+    expect(config.server.secret_key).toBe(interactiveData.secret_key);
   });
 
   it("runs interactively and creates config (smoke test)", () => {
