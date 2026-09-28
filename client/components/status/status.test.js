@@ -520,6 +520,23 @@ describe("<Status /> usage rendering helpers", () => {
     expect(component.find("#plan-upgrade-btn").hasClass("full")).toBe(true);
   });
 
+  it("should hide the upgrade action when top ups are disabled", () => {
+    const prop = createTestProps();
+    prop.settings.subscriptions = true;
+    prop.statusPage.radius_usage_enabled = true;
+    prop.statusPage.top_up_enabled = false;
+    const component = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    component.setState({
+      radiusUsageSpinner: false,
+      showUpgradeBtn: true,
+      userPlan: {is_free: true},
+    });
+    expect(component.find("#plan-upgrade-btn")).toHaveLength(0);
+  });
+
   it("should center the loader in the usage overview while usage data loads", () => {
     const prop = createTestProps();
     prop.statusPage.radius_usage_enabled = true;

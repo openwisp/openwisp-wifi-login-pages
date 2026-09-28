@@ -1554,7 +1554,8 @@ export default class Status extends React.Component {
                         </strong>
                       </p>
                     )}
-                    {settings.subscriptions &&
+                    {statusPage.top_up_enabled !== false &&
+                      settings.subscriptions &&
                       (userPlan.is_free || planExhausted) &&
                       showUpgradeBtn && (
                         <p className="usage-upgrade">
@@ -1765,6 +1766,7 @@ Status.propTypes = {
       }),
     ),
     radius_usage_enabled: PropTypes.bool,
+    top_up_enabled: PropTypes.bool,
     saml_logout_url: PropTypes.string,
     accounting_swap_octets: PropTypes.bool,
   }).isRequired,

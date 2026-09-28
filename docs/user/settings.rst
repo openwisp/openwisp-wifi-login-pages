@@ -166,6 +166,25 @@ Example:
     status_page:
       radius_usage_enabled: true
 
+``top_up_enabled``
+~~~~~~~~~~~~~~~~~~
+
+This setting controls whether the top-up button can be displayed on the
+status page.
+
+- **Type**: ``boolean``
+- **Default**: ``true``
+
+When set to ``false``, the top-up button is hidden even when subscriptions
+are enabled and the user's plan is free or exhausted.
+
+Example:
+
+.. code-block:: yaml
+
+    status_page:
+      top_up_enabled: false
+
 .. _wlp_menu_items:
 
 Menu Items
