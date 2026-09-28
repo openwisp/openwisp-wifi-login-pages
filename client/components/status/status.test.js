@@ -405,7 +405,7 @@ describe("<Status /> usage rendering helpers", () => {
     });
   });
 
-  it("should render reset time remaining once for the usage overview", () => {
+  it("should render the earliest future reset time for the usage overview", () => {
     const now = 1_700_000_000;
     const dateSpy = jest.spyOn(Date, "now").mockReturnValue(now * 1000);
     const prop = createTestProps();
@@ -419,11 +419,16 @@ describe("<Status /> usage rendering helpers", () => {
       showRadiusUsage: true,
       radiusUsageSpinner: false,
       userChecks: [
-        {...usageCheck, reset: now + 9000},
+        {...usageCheck, reset: now - 1},
         {
           ...usageCheck,
           attribute: "Max-Daily-Session-Traffic",
           type: "bytes",
+          reset: now + 9000,
+        },
+        {
+          ...usageCheck,
+          attribute: "Max-Daily-Session-Time",
           reset: now + 3600,
         },
       ],
@@ -445,7 +450,7 @@ describe("<Status /> usage rendering helpers", () => {
     expect(component.text()).not.toContain("USAGE_OVERVIEW_DESCRIPTION");
     expect(component.find(".usage-reset-info")).toHaveLength(1);
     expect(component.find(".usage-reset-info").text()).toBe(
-      "USAGE_LIMITS_RESET_IN 2TIME_HOUR_ABBR\u00a030TIME_MINUTE_ABBR",
+      "USAGE_LIMITS_RESET_IN 1TIME_HOUR_ABBR",
     );
     dateSpy.mockRestore();
   });

@@ -1416,8 +1416,12 @@ export default class Status extends React.Component {
       modalActive,
       rememberMe,
     } = this.state;
-    const usageResetTime =
-      userChecks[0]?.reset && this.getResetTimeRemaining(userChecks[0].reset);
+    const now = Math.floor(Date.now() / 1000);
+    const resetTimes = userChecks
+      .map(({reset}) => Number(reset))
+      .filter((reset) => Number.isFinite(reset) && reset > now);
+    const nextResetTime = resetTimes.length ? Math.min(...resetTimes) : null;
+    const usageResetTime = this.getResetTimeRemaining(nextResetTime);
     const user_info = this.getUserInfo();
     const contentArr = t`STATUS_CONTENT`.split("\n");
     if (planExhausted) {
