@@ -2946,7 +2946,7 @@ describe("<Status /> interactions", () => {
     await tick();
     expect(toast.error.mock.calls.length).toBe(1);
   });
-  it("should stop showing the usage loader if getUserRadiusUsage returns 500", async () => {
+  it("should hide the usage overview if getUserRadiusUsage returns 404", async () => {
     validateToken.mockReturnValue(true);
     axios.mockImplementation(() =>
       Promise.reject({
