@@ -39,8 +39,9 @@ describe("Selenium tests for <Login />", () => {
     await getElementByCss(driver, "div#status");
     const emailElement = await getElementByCss(
       driver,
-      "div > p:nth-child(5) > span",
+      "#status .main-column > .inner > p:nth-child(5) > span",
     );
+    await driver.wait(until.elementTextIs(emailElement, data.testuser.email));
     expect(await emailElement.getText()).toEqual(data.testuser.email);
 
     const successToastDiv = await getElementByCss(driver, "div[role=alert]");
