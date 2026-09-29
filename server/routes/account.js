@@ -1,4 +1,5 @@
 import {Router} from "express";
+import rateLimit from "express-rate-limit";
 import obtainToken from "../controllers/obtain-token-controller";
 import passwordChange from "../controllers/password-change-controller";
 import passwordResetConfirm from "../controllers/password-reset-confirm-controller";
@@ -18,7 +19,17 @@ import errorHandler from "../utils/error-handler";
 
 const router = Router({mergeParams: true});
 
-router.post("/token", errorHandler(obtainToken));
+// Throttle authentication attempts to mitigate credential
+// stuffing / brute-force attacks against user accounts.
+const tokenRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 20, // limit each IP to 20 requests per window
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {response_code: "TOO_MANY_REQUESTS"},
+});
+
+router.post("/token", tokenRateLimiter, errorHandler(obtainToken));
 router.post("/token/validate", errorHandler(validateToken));
 router.post("/password/change", errorHandler(passwordChange));
 router.post("/password/reset/confirm", errorHandler(passwordResetConfirm));
