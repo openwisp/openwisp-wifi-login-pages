@@ -125,13 +125,18 @@ describe("<PasswordConfirm /> interactions", () => {
   let props;
   let wrapper;
   let originalError;
+  let originalLog;
   let lastConsoleOutuput;
 
   beforeEach(() => {
     originalError = console.error;
+    originalLog = console.log;
     lastConsoleOutuput = null;
-    console.error = (data) => {
-      lastConsoleOutuput = data;
+    console.error = (...args) => {
+      lastConsoleOutuput = args;
+    };
+    console.log = (...args) => {
+      lastConsoleOutuput = args;
     };
     PasswordConfirm.contextTypes = {
       setLoading: PropTypes.func,
@@ -139,12 +144,13 @@ describe("<PasswordConfirm /> interactions", () => {
     };
     props = createTestProps();
     wrapper = shallow(<PasswordConfirm {...props} />, {
-      context: loadingContextValue,
+      context: {...loadingContextValue, setLoading: jest.fn()},
     });
   });
 
   afterEach(() => {
     console.error = originalError;
+    console.log = originalLog;
   });
 
   it("should change state values when handleChange function is invoked", () => {
@@ -165,14 +171,36 @@ describe("<PasswordConfirm /> interactions", () => {
       )
       .mockImplementationOnce(() =>
         Promise.reject({
-          response: {data: {non_field_errors: ["non field errors"]}},
+          response: {
+            data: {non_field_errors: ["“uid” is not a valid UUID."]},
+          },
         }),
       )
       .mockImplementationOnce(() =>
         Promise.reject({
-          response: {data: {token: ["Invalid token"]}},
+          response: {data: {token: ["Invalid value"]}},
         }),
       )
+      .mockImplementationOnce(() =>
+        Promise.reject({
+          response: {data: {uid: ["Invalid value"]}},
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.reject({
+          response: {
+            data: {new_password1: ["This password is too common."]},
+          },
+        }),
+      )
+      .mockImplementationOnce(() =>
+        Promise.reject({
+          response: {
+            data: {new_password2: ["This password is too common."]},
+          },
+        }),
+      )
+      .mockImplementationOnce(() => Promise.reject({message: "Network Error"}))
       .mockImplementationOnce(() => Promise.resolve({data: {detail: true}}));
     wrapper.setState({
       newPassword1: "wrong password",
@@ -205,9 +233,15 @@ describe("<PasswordConfirm /> interactions", () => {
           .handleSubmit({preventDefault: () => {}})
           .then(() => {
             expect(wrapper.instance().state.errors.nonField).toEqual(
-              "non field errors",
+              getTranslationString("INVALID_PWD_RESET_URL"),
             );
-            expect(lastConsoleOutuput).not.toBe(null);
+            expect(lastConsoleOutuput).toEqual([
+              "Status",
+              undefined,
+              undefined,
+              ":",
+              getTranslationString("INVALID_PWD_RESET_URL"),
+            ]);
             expect(spyToastError.mock.calls.length).toBe(2);
             expect(spyToastSuccess.mock.calls.length).toBe(0);
             lastConsoleOutuput = null;
@@ -219,10 +253,73 @@ describe("<PasswordConfirm /> interactions", () => {
           .handleSubmit({preventDefault: () => {}})
           .then(() => {
             expect(wrapper.instance().state.errors.nonField).toEqual(
-              "token: Invalid token",
+              getTranslationString("INVALID_PWD_RESET_URL"),
             );
             expect(lastConsoleOutuput).not.toBe(null);
             expect(spyToastError.mock.calls.length).toBe(3);
+            expect(spyToastSuccess.mock.calls.length).toBe(0);
+            lastConsoleOutuput = null;
+          }),
+      )
+      .then(() =>
+        wrapper
+          .instance()
+          .handleSubmit({preventDefault: () => {}})
+          .then(() => {
+            expect(wrapper.instance().state.errors.nonField).toEqual(
+              getTranslationString("INVALID_PWD_RESET_URL"),
+            );
+            expect(lastConsoleOutuput).not.toBe(null);
+            expect(spyToastError.mock.calls.length).toBe(4);
+            expect(spyToastSuccess.mock.calls.length).toBe(0);
+            lastConsoleOutuput = null;
+          }),
+      )
+      .then(() =>
+        wrapper
+          .instance()
+          .handleSubmit({preventDefault: () => {}})
+          .then(() => {
+            expect(wrapper.instance().state.errors.nonField).toEqual(
+              "This password is too common.",
+            );
+            expect(lastConsoleOutuput).toEqual([
+              "Status",
+              undefined,
+              undefined,
+              ":",
+              "This password is too common.",
+            ]);
+            expect(spyToastError.mock.calls.length).toBe(5);
+            expect(spyToastSuccess.mock.calls.length).toBe(0);
+            lastConsoleOutuput = null;
+          }),
+      )
+      .then(() =>
+        wrapper
+          .instance()
+          .handleSubmit({preventDefault: () => {}})
+          .then(() => {
+            expect(wrapper.instance().state.errors.nonField).toEqual(
+              "This password is too common.",
+            );
+            expect(lastConsoleOutuput).not.toBe(null);
+            expect(spyToastError.mock.calls.length).toBe(6);
+            expect(spyToastSuccess.mock.calls.length).toBe(0);
+            lastConsoleOutuput = null;
+          }),
+      )
+      .then(() =>
+        wrapper
+          .instance()
+          .handleSubmit({preventDefault: () => {}})
+          .then(() => {
+            const {setLoading} = wrapper.instance().context;
+            expect(wrapper.instance().state.errors.nonField).toEqual(
+              getTranslationString("ERR_OCCUR"),
+            );
+            expect(setLoading).toHaveBeenLastCalledWith(false);
+            expect(spyToastError.mock.calls.length).toBe(7);
             expect(spyToastSuccess.mock.calls.length).toBe(0);
             lastConsoleOutuput = null;
           }),
@@ -237,7 +334,7 @@ describe("<PasswordConfirm /> interactions", () => {
             expect(wrapper.find(".input.error")).toHaveLength(0);
             expect(wrapper.find(".success")).toHaveLength(1);
             expect(lastConsoleOutuput).toBe(null);
-            expect(spyToastError.mock.calls.length).toBe(3);
+            expect(spyToastError.mock.calls.length).toBe(7);
             expect(spyToastSuccess.mock.calls.length).toBe(1);
             lastConsoleOutuput = null;
           }),

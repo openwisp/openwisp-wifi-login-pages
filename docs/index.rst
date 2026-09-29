@@ -20,23 +20,6 @@ Refer to :doc:`user/intro` for a complete overview of features.
 **Need a quick overview?** `Try the demo instance of OpenWISP WiFi Login
 Pages <https://wifi.openwisp.io/demo/login>`_!
 
-The following diagram illustrates the role of the WiFi Login Pages module
-within the OpenWISP architecture.
-
-.. figure:: images/architecture-v2-wifi-login-pages.png
-    :target: ../_images/architecture-v2-wifi-login-pages.png
-    :align: center
-    :alt: OpenWISP Architecture: WiFi Login Pages module
-
-    **OpenWISP Architecture: highlighted wifi login pages module**
-
-.. important::
-
-    For an enhanced viewing experience, open the image above in a new
-    browser tab.
-
-    Refer to :doc:`/general/architecture` for more information.
-
 .. toctree::
     :caption: WiFi Login Pages Usage Docs
     :maxdepth: 1

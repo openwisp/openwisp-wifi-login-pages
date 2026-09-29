@@ -1,19 +1,18 @@
 /* eslint-disable camelcase */
 /* eslint jsx-a11y/label-has-associated-control: 0 */
 import "./index.css";
-
+import "react-circular-progressbar/dist/styles.css";
 import "react-toastify/dist/ReactToastify.css";
-
 import axios from "axios";
 import PropTypes from "prop-types";
 import React from "react";
+import {CircularProgressbarWithChildren} from "react-circular-progressbar";
 import {Cookies} from "react-cookie";
 import {Link} from "react-router-dom";
 import {toast} from "react-toastify";
 import InfinteScroll from "react-infinite-scroll-component";
 import {t, gettext} from "ttag";
 import {filesize} from "filesize";
-import {timeFromSeconds} from "duration-formatter";
 
 import {
   getUserRadiusSessionsUrl,
@@ -42,6 +41,46 @@ import {
   resolveStoredValue,
   clearStoredValue,
 } from "../../utils/synced-storage";
+
+const formatUsageTime = (seconds) => {
+  const days = Math.floor(seconds / 86400);
+  const hours = Math.floor((seconds % 86400) / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const parts = [];
+  if (days > 0) {
+    parts.push(`${days}${t`TIME_DAY_ABBR`}`);
+  }
+  if (hours > 0) {
+    parts.push(`${hours}${t`TIME_HOUR_ABBR`}`);
+  }
+  if (minutes > 0) {
+    parts.push(`${minutes}${t`TIME_MINUTE_ABBR`}`);
+  }
+  return parts.length ? parts.join("\u00a0") : t`TIME_LESS_THAN_MINUTE`;
+};
+
+// Keep a formatted value and its unit on the same line.
+const formatUsageBytes = (bytes) =>
+  filesize(bytes, {round: 2}).replace(/ /g, "\u00a0");
+
+const getUsageNumber = (value) => {
+  if (
+    value === null ||
+    value === undefined ||
+    (typeof value === "string" && value.trim() === "") ||
+    typeof value === "boolean"
+  ) {
+    return null;
+  }
+  const number = Number(value);
+  return Number.isFinite(number) ? number : null;
+};
+
+function getDynamicTranslation(message) {
+  /* disable ttag */
+  return gettext(message);
+  /* enable ttag */
+}
 
 export default class Status extends React.Component {
   constructor(props) {
@@ -726,9 +765,7 @@ export default class Status extends React.Component {
         logout(cookies, orgSlug);
       }
       if (reply && !toast.isActive(mainToastId)) {
-        /* disable ttag */
-        toast.error(gettext(reply));
-        /* enable ttag */
+        toast.error(getDynamicTranslation(reply));
       }
       if (macaddr) {
         cookies.set(`${orgSlug}_macaddr`, macaddr, {path: "/"});
@@ -857,9 +894,7 @@ export default class Status extends React.Component {
       case "authMessage":
         setLoading(true);
         toast.dismiss();
-        /* disable ttag */
-        toast.info(gettext(message), {toastId: mainToastId});
-        /* enable ttag */
+        toast.info(getDynamicTranslation(message), {toastId: mainToastId});
         this.setStateSafe(
           {
             warningMessage: warningMessage || "USAGE_LIMIT_EXHAUSTED_TXT",
@@ -884,12 +919,10 @@ export default class Status extends React.Component {
       case "authError":
         setLoading(true);
         toast.dismiss();
-        /* disable ttag */
-        toast.error(gettext(message), {
+        toast.error(getDynamicTranslation(message), {
           autoClose: 10000,
           toastId: mainToastId,
         });
-        /* enable ttag */
         this.setStateSafe({loggedOut: true}, () => {
           // Logout after state update and a small delay
           // The delay ensures the component has sufficient time to unmount
@@ -1214,17 +1247,191 @@ export default class Status extends React.Component {
   });
 
   // eslint-disable-next-line class-methods-use-this
-  getUserCheckFormattedValue = (value, type) => {
-    const intValue = parseInt(value, 10);
+  getUserCheckFormattedValue = (value, type, result) => {
+    const total = Number(value);
+    const used = Number(result);
+    if (!Number.isFinite(total) || !Number.isFinite(used)) {
+      return t`N/A`;
+    }
+    const remaining = Math.max(0, total - used);
     switch (type) {
       case "bytes":
-        return intValue === 0 ? 0 : filesize(intValue, {round: 2});
+        return formatUsageBytes(remaining);
       case "seconds":
-        return timeFromSeconds(intValue);
+        return remaining === 0
+          ? `0${t`TIME_MINUTE_ABBR`}`
+          : formatUsageTime(remaining);
       default:
-        return value;
+        return `${remaining}`;
     }
   };
+
+  // eslint-disable-next-line class-methods-use-this
+  getUserCheckUsedValue = (value, type, result, multiline = false) => {
+    const total = Number(value);
+    const resultNumber = Number(result);
+    if (!Number.isFinite(total) || !Number.isFinite(resultNumber)) {
+      return t`N/A`;
+    }
+    const used = Math.min(resultNumber, total);
+    let usedFormatted = used;
+    let totalFormatted = total;
+    if (type === "bytes") {
+      usedFormatted = formatUsageBytes(used);
+      totalFormatted = formatUsageBytes(total);
+    } else if (type === "seconds") {
+      usedFormatted = formatUsageTime(used);
+      totalFormatted = formatUsageTime(total);
+    }
+    const usedValue = `${usedFormatted} ${t`USAGE_USED_OF`} ${totalFormatted}`;
+    return multiline
+      ? `${usedFormatted}\n${t`USAGE_USED_OF`} ${totalFormatted}`
+      : usedValue;
+  };
+
+  // eslint-disable-next-line class-methods-use-this
+  getResetTimeRemaining = (resetTimestamp) => {
+    if (!resetTimestamp) {
+      return null;
+    }
+    const now = Math.floor(Date.now() / 1000);
+    const secondsRemaining = resetTimestamp - now;
+    if (secondsRemaining <= 0) {
+      return null;
+    }
+    return formatUsageTime(secondsRemaining);
+  };
+
+  // eslint-disable-next-line class-methods-use-this
+  getWarningMessage = (message) => {
+    if (message === "USAGE_LIMIT_EXHAUSTED_TXT") {
+      return t`USAGE_LIMIT_EXHAUSTED_TXT`;
+    }
+    return getDynamicTranslation(message);
+  };
+
+  // eslint-disable-next-line class-methods-use-this
+  getUsageClass = (value, result) => {
+    const numValue = Number(value);
+    const numResult = Number(result);
+    // Default to green (low usage) if value is 0 or non-numeric
+    if (!numValue || Number.isNaN(numValue)) {
+      return "usage-low";
+    }
+    const usagePercentage = (numResult / numValue) * 100;
+    if (usagePercentage <= 50) {
+      return "usage-low";
+    }
+    if (usagePercentage <= 80) {
+      return "usage-medium";
+    }
+    return "usage-high";
+  };
+
+  renderUsageCheckContentSmall = (check, usageClass, icon, label) => {
+    const remaining = this.getUserCheckFormattedValue(
+      check.value,
+      check.type,
+      check.result,
+    );
+    return (
+      <div className={`usage-check-content ${usageClass}`}>
+        <div className="usage-check-header">
+          <span
+            aria-hidden="true"
+            className={`usage-check-icon ${icon}-icon`}
+          />
+          <div>{label}</div>
+        </div>
+        <div className="usage-progress-details">
+          <div className="usage-progress-wrapper">
+            <CircularProgressbarWithChildren
+              id={check.attribute}
+              strokeWidth={12}
+              value={check.result}
+              maxValue={check.value}
+              aria-label={label}
+            >
+              <div className="usage-progress-text">
+                <strong>{remaining}</strong>
+                <div className="usage-progress-remaining">
+                  {t`USAGE_REMAINING`}
+                </div>
+              </div>
+            </CircularProgressbarWithChildren>
+          </div>
+          <div className="usage-check-used">
+            {this.getUserCheckUsedValue(
+              check.value,
+              check.type,
+              check.result,
+              true,
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  renderUsageCheckContentBig = (check, usageClass, icon, label) => {
+    const percentage = (check.result / check.value) * 100;
+    const remaining = this.getUserCheckFormattedValue(
+      check.value,
+      check.type,
+      check.result,
+    );
+    return (
+      <div className={`usage-check-content ${usageClass}`}>
+        <div className="usage-check-header">
+          <span
+            aria-hidden="true"
+            className={`usage-check-icon ${icon}-icon`}
+          />
+          <div>{label}</div>
+        </div>
+        <div className="usage-progress-wrapper-big">
+          <div className="usage-progress-bar-container">
+            <div
+              className="usage-progress-bar-fill"
+              role="progressbar"
+              aria-label={label}
+              aria-valuemin={0}
+              aria-valuemax={check.value}
+              aria-valuenow={Math.min(check.result, check.value)}
+              style={{
+                width: `${Math.min(percentage, 100)}%`,
+              }}
+            />
+          </div>
+          <div className="usage-progress-text-bottom">
+            <div className="usage-progress-summary-used">
+              {this.getUserCheckUsedValue(
+                check.value,
+                check.type,
+                check.result,
+              )}
+            </div>
+            <div className="usage-progress-summary-remaining">
+              {remaining} {t`USAGE_REMAINING`}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // eslint-disable-next-line class-methods-use-this
+  renderUsageCheckUnavailable = (usageClass, icon, label) => (
+    <div
+      className={`usage-check-content usage-check-unavailable ${usageClass}`}
+    >
+      <div className="usage-check-header">
+        <span aria-hidden="true" className={`usage-check-icon ${icon}-icon`} />
+        <div>{label}</div>
+      </div>
+      <div>{t`USAGE_UNAVAILABLE`}</div>
+    </div>
+  );
 
   render() {
     const {
@@ -1262,6 +1469,12 @@ export default class Status extends React.Component {
       modalActive,
       rememberMe,
     } = this.state;
+    const now = Math.floor(Date.now() / 1000);
+    const resetTimes = userChecks
+      .map(({reset}) => Number(reset))
+      .filter((reset) => Number.isFinite(reset) && reset > now);
+    const nextResetTime = resetTimes.length ? Math.min(...resetTimes) : null;
+    const usageResetTime = this.getResetTimeRemaining(nextResetTime);
     const user_info = this.getUserInfo();
     const contentArr = t`STATUS_CONTENT`.split("\n");
     if (planExhausted) {
@@ -1299,61 +1512,122 @@ export default class Status extends React.Component {
           {statusPage.radius_usage_enabled &&
             showRadiusUsage &&
             !internetMode && (
-              <div className="inner flex-row limit-info">
-                <div className="bg row">
-                  {radiusUsageSpinner ? this.getSpinner() : null}
-                  {settings.subscriptions && userPlan.name && (
-                    <h3>
-                      {t`CURRENT_SUBSCRIPTION_TXT`} {userPlan.name}
-                    </h3>
-                  )}
-                  {userChecks &&
-                    userChecks.map(
-                      (check) =>
-                        check.value !== "0" && (
-                          <div key={check.attribute}>
-                            <progress
-                              id={check.attribute}
-                              max={check.value}
-                              value={check.result}
-                            />
-                            <p className="progress">
-                              <strong>
-                                {this.getUserCheckFormattedValue(
-                                  check.result,
-                                  check.type,
-                                )}
-                              </strong>{" "}
-                              of{" "}
-                              {this.getUserCheckFormattedValue(
-                                check.value,
-                                check.type,
-                              )}{" "}
-                              used
-                            </p>
-                          </div>
-                        ),
-                    )}
-                  {warningMessage && (
-                    <p className="important">
-                      <strong>{gettext(warningMessage)}</strong>
-                    </p>
-                  )}
-                  {settings.subscriptions &&
-                    (userPlan.is_free || planExhausted) &&
-                    showUpgradeBtn && (
-                      <p>
-                        <button
-                          id="plan-upgrade-btn"
-                          type="button"
-                          className="button partial"
-                          onClick={this.toggleUpgradePlanModal}
-                        >
-                          {t`PLAN_UPGRADE_BTN_TXT`}
-                        </button>
+              <div className="usage-overview bg row">
+                {radiusUsageSpinner ? (
+                  <div className="usage-overview-loader">
+                    {this.getSpinner()}
+                  </div>
+                ) : (
+                  <>
+                    <div className="usage-overview-title">{t`USAGE_OVERVIEW`}</div>
+                    {settings.subscriptions && userPlan.name && (
+                      <p className="usage-overview-subscription">
+                        {t`CURRENT_SUBSCRIPTION_TXT`}
+                        {"\u00a0"}
+                        <strong>{getDynamicTranslation(userPlan.name)}</strong>
                       </p>
                     )}
-                </div>
+                    {userChecks && (
+                      <div className="usage-details">
+                        <div className="usage-checks-container">
+                          {userChecks.map((check) => {
+                            const valueNum = getUsageNumber(check.value);
+                            const resultNum = getUsageNumber(check.result);
+                            if (
+                              valueNum === null ||
+                              valueNum <= 0 ||
+                              !["seconds", "bytes"].includes(check.type)
+                            ) {
+                              return null;
+                            }
+                            const usageClass = this.getUsageClass(
+                              valueNum,
+                              resultNum,
+                            );
+                            const icon =
+                              check.type === "seconds" ? "timer" : "data";
+                            const label =
+                              check.type === "seconds"
+                                ? t`USAGE_TIME`
+                                : t`USAGE_DATA`;
+                            if (resultNum === null) {
+                              return (
+                                <React.Fragment key={check.attribute}>
+                                  <div className="usage-box-inner-big">
+                                    {this.renderUsageCheckUnavailable(
+                                      usageClass,
+                                      icon,
+                                      label,
+                                    )}
+                                  </div>
+                                  <div className="usage-box-inner-small">
+                                    {this.renderUsageCheckUnavailable(
+                                      usageClass,
+                                      icon,
+                                      label,
+                                    )}
+                                  </div>
+                                </React.Fragment>
+                              );
+                            }
+                            const normalizedCheck = {
+                              ...check,
+                              value: valueNum,
+                              result: resultNum,
+                            };
+                            return (
+                              <React.Fragment key={check.attribute}>
+                                <div className="usage-box-inner-big">
+                                  {this.renderUsageCheckContentBig(
+                                    normalizedCheck,
+                                    usageClass,
+                                    icon,
+                                    label,
+                                  )}
+                                </div>
+                                <div className="usage-box-inner-small">
+                                  {this.renderUsageCheckContentSmall(
+                                    normalizedCheck,
+                                    usageClass,
+                                    icon,
+                                    label,
+                                  )}
+                                </div>
+                              </React.Fragment>
+                            );
+                          })}
+                        </div>
+                        {usageResetTime && (
+                          <div className="usage-reset-info">
+                            {t`USAGE_LIMITS_RESET_IN`} {usageResetTime}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    {warningMessage && (
+                      <p className="important">
+                        <strong>
+                          {this.getWarningMessage(warningMessage)}
+                        </strong>
+                      </p>
+                    )}
+                    {statusPage.top_up_enabled !== false &&
+                      settings.subscriptions &&
+                      (userPlan.is_free || planExhausted) &&
+                      showUpgradeBtn && (
+                        <p className="usage-upgrade">
+                          <button
+                            id="plan-upgrade-btn"
+                            type="button"
+                            className="button full"
+                            onClick={this.toggleUpgradePlanModal}
+                          >
+                            {t`PLAN_UPGRADE_BTN_TXT`}
+                          </button>
+                        </p>
+                      )}
+                  </>
+                )}
               </div>
             )}
           <div className="inner">
@@ -1549,6 +1823,7 @@ Status.propTypes = {
       }),
     ),
     radius_usage_enabled: PropTypes.bool,
+    top_up_enabled: PropTypes.bool,
     saml_logout_url: PropTypes.string,
     accounting_swap_octets: PropTypes.bool,
   }).isRequired,

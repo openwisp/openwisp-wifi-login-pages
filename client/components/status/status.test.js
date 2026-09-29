@@ -4,8 +4,11 @@ import {shallow} from "enzyme";
 import PropTypes from "prop-types";
 import React from "react";
 import {Cookies} from "react-cookie";
+import {CircularProgressbarWithChildren} from "react-circular-progressbar";
+import {filesize as formatBytes} from "filesize";
 import ShallowRenderer from "react-test-renderer/shallow";
 import {toast} from "react-toastify";
+import {addLocale, useLocale} from "ttag";
 import getConfig from "../../utils/get-config";
 import loadTranslation from "../../utils/load-translation";
 import logError from "../../utils/log-error";
@@ -186,6 +189,627 @@ describe("<Status /> rendering", () => {
       setPlanExhausted: expect.any(Function),
       setTitle: expect.any(Function),
     });
+  });
+});
+
+describe("<Status /> usage rendering helpers", () => {
+  let wrapper;
+  const usageCheck = {
+    attribute: "Max-Daily-Session",
+    op: ":=",
+    value: "10800",
+    result: 5400,
+    type: "seconds",
+  };
+
+  beforeEach(() => {
+    loadTranslation("en", "default");
+    wrapper = shallow(<Status {...createTestProps()} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+  });
+
+  it("should return the correct usage color thresholds", () => {
+    const instance = wrapper.instance();
+    const cases = [
+      {
+        value: 0,
+        result: 0,
+        usageClass: "usage-low",
+      },
+      {
+        result: 0,
+        value: 100,
+        usageClass: "usage-low",
+      },
+      {
+        result: 50,
+        usageClass: "usage-low",
+      },
+      {
+        value: 10800,
+        result: 5400,
+        usageClass: "usage-low",
+      },
+      {
+        result: 51,
+        usageClass: "usage-medium",
+      },
+      {
+        result: 79,
+        usageClass: "usage-medium",
+      },
+      {
+        result: 80,
+        usageClass: "usage-medium",
+      },
+      {
+        result: 81,
+        usageClass: "usage-high",
+      },
+      {
+        result: 100,
+        usageClass: "usage-high",
+      },
+    ];
+    cases.forEach(({value = 100, result, usageClass}) => {
+      expect(instance.getUsageClass(value, result)).toBe(usageClass);
+    });
+  });
+
+  it("should render the circular usage content in all color zones", () => {
+    const instance = wrapper.instance();
+    const cases = [
+      {
+        usageClass: "usage-low",
+        icon: "timer",
+      },
+      {
+        usageClass: "usage-medium",
+        icon: "timer",
+      },
+      {
+        usageClass: "usage-high",
+        icon: "timer",
+      },
+    ];
+    cases.forEach(({usageClass, icon}) => {
+      const element = shallow(
+        instance.renderUsageCheckContentSmall(
+          usageCheck,
+          usageClass,
+          icon,
+          "USAGE_TIME",
+        ),
+      );
+      expect(element.find(".usage-check-header").text()).toContain(
+        "USAGE_TIME",
+      );
+      expect(element.find(".usage-check-used").text()).toContain(
+        "1TIME_HOUR_ABBR\u00a030TIME_MINUTE_ABBR\nUSAGE_USED_OF 3TIME_HOUR_ABBR",
+      );
+      expect(element.find(".usage-progress-details")).toHaveLength(1);
+      expect(element.find(".usage-progress-remaining").text()).toBe(
+        "USAGE_REMAINING",
+      );
+      const progressbar = element.find(CircularProgressbarWithChildren);
+      expect(progressbar.exists()).toBe(true);
+      expect(progressbar.prop("value")).toBe(5400);
+      expect(progressbar.prop("maxValue")).toBe("10800");
+      expect(progressbar.prop("styles")).toBeUndefined();
+    });
+  });
+  it("should render the horizontal usage content in all color zones", () => {
+    const instance = wrapper.instance();
+    const cases = [
+      {
+        usageClass: "usage-low",
+        icon: "timer",
+      },
+      {
+        usageClass: "usage-medium",
+        icon: "timer",
+      },
+      {
+        usageClass: "usage-high",
+        icon: "timer",
+      },
+    ];
+    cases.forEach(({usageClass, icon}) => {
+      const element = shallow(
+        instance.renderUsageCheckContentBig(
+          usageCheck,
+          usageClass,
+          icon,
+          "USAGE_TIME",
+        ),
+      );
+
+      expect(element.find(".usage-check-header").text()).toContain(
+        "USAGE_TIME",
+      );
+      expect(element.find(".usage-progress-bar-fill").prop("style")).toEqual({
+        width: "50%",
+      });
+      expect(element.find(".usage-progress-summary-used").text()).toContain(
+        "USAGE_USED_OF",
+      );
+      expect(
+        element.find(".usage-progress-summary-remaining").text(),
+      ).toContain("USAGE_REMAINING");
+    });
+  });
+
+  it("should skip unsupported usage types in the status usage list", () => {
+    const prop = createTestProps();
+    prop.statusPage.radius_usage_enabled = true;
+    prop.isAuthenticated = true;
+    const component = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+
+    component.setState({
+      showRadiusUsage: true,
+      radiusUsageSpinner: false,
+      userChecks: [
+        {
+          attribute: "Unknown-Usage",
+          op: ":=",
+          value: "100",
+          result: 10,
+          type: "unsupported",
+        },
+      ],
+      userPlan: {},
+      userInfo: {},
+      activeSessions: [],
+      pastSessions: [],
+      sessionsToLogout: [],
+      loadSpinner: false,
+      upgradePlans: [],
+      warningMessage: null,
+      modalActive: false,
+      rememberMe: false,
+      showUpgradeBtn: true,
+    });
+
+    expect(component.find(".usage-box-inner-big")).toHaveLength(0);
+    expect(component.find(".usage-box-inner-small")).toHaveLength(0);
+  });
+
+  it("should render byte usage values with filesize formatting", () => {
+    const instance = wrapper.instance();
+    const element = shallow(
+      instance.renderUsageCheckContentBig(
+        {
+          attribute: "Max-All-Session-Octets",
+          op: ":=",
+          value: 2048,
+          result: 1536,
+          type: "bytes",
+        },
+        "usage-low",
+        "data",
+        "USAGE_DATA",
+      ),
+    );
+
+    expect(element.find(".usage-check-header").text()).toContain("USAGE_DATA");
+    expect(element.text()).toContain(
+      `${formatBytes(1536, {round: 2}).replace(" ", "\u00a0")} USAGE_USED_OF ${formatBytes(2048, {round: 2}).replace(" ", "\u00a0")}`,
+    );
+    expect(element.find(".usage-progress-bar-fill").prop("style")).toEqual({
+      width: "75%",
+    });
+  });
+
+  it("should render the earliest future reset time for the usage overview", () => {
+    const now = 1_700_000_000;
+    const dateSpy = jest.spyOn(Date, "now").mockReturnValue(now * 1000);
+    const prop = createTestProps();
+    prop.statusPage.radius_usage_enabled = true;
+    prop.isAuthenticated = true;
+    const component = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    component.setState({
+      showRadiusUsage: true,
+      radiusUsageSpinner: false,
+      userChecks: [
+        {...usageCheck, reset: now - 1},
+        {
+          ...usageCheck,
+          attribute: "Max-Daily-Session-Traffic",
+          type: "bytes",
+          reset: now + 9000,
+        },
+        {
+          ...usageCheck,
+          attribute: "Max-Daily-Session-Time",
+          reset: now + 3600,
+        },
+      ],
+      userPlan: {},
+      userInfo: {},
+      activeSessions: [],
+      pastSessions: [],
+      sessionsToLogout: [],
+      loadSpinner: false,
+      upgradePlans: [],
+      warningMessage: null,
+      modalActive: false,
+      rememberMe: false,
+      showUpgradeBtn: true,
+    });
+    expect(component.find(".usage-overview-title").text()).toBe(
+      "USAGE_OVERVIEW",
+    );
+    expect(component.text()).not.toContain("USAGE_OVERVIEW_DESCRIPTION");
+    expect(component.find(".usage-reset-info")).toHaveLength(1);
+    expect(component.find(".usage-reset-info").text()).toBe(
+      "USAGE_LIMITS_RESET_IN 1TIME_HOUR_ABBR",
+    );
+    dateSpy.mockRestore();
+  });
+
+  it("should render the subscription as bold text below the usage overview", () => {
+    const prop = createTestProps();
+    prop.settings.subscriptions = true;
+    prop.statusPage.radius_usage_enabled = true;
+    const component = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    component.setState({
+      radiusUsageSpinner: false,
+      userPlan: {name: "Premium"},
+    });
+    expect(component.find(".usage-overview h3")).toHaveLength(0);
+    expect(component.find(".usage-overview-subscription").text()).toBe(
+      "CURRENT_SUBSCRIPTION_TXT\u00a0Premium",
+    );
+    expect(component.find(".usage-overview-subscription strong").text()).toBe(
+      "Premium",
+    );
+  });
+
+  it("should render the subscription name in the selected language", () => {
+    const translatedPlan = "Piano Premium";
+    addLocale("test", {
+      headers: {
+        "content-type": "text/plain; charset=utf-8",
+        "plural-forms": "nplurals = 2; plural = (n != 1);",
+      },
+      translations: {
+        "": {
+          Premium: {
+            msgid: "Premium",
+            msgstr: [translatedPlan],
+          },
+        },
+      },
+    });
+    useLocale("test");
+    const prop = createTestProps();
+    prop.settings.subscriptions = true;
+    prop.statusPage.radius_usage_enabled = true;
+    const component = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    component.setState({
+      radiusUsageSpinner: false,
+      userPlan: {name: "Premium"},
+    });
+    expect(component.find(".usage-overview-subscription strong").text()).toBe(
+      translatedPlan,
+    );
+  });
+
+  it("should use the shared full button class for the upgrade action", () => {
+    const prop = createTestProps();
+    prop.settings.subscriptions = true;
+    prop.statusPage.radius_usage_enabled = true;
+    const component = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    component.setState({
+      radiusUsageSpinner: false,
+      showUpgradeBtn: true,
+      userPlan: {is_free: true},
+    });
+    expect(component.find("#plan-upgrade-btn").hasClass("full")).toBe(true);
+  });
+
+  it("should hide the upgrade action when top ups are disabled", () => {
+    const prop = createTestProps();
+    prop.settings.subscriptions = true;
+    prop.statusPage.radius_usage_enabled = true;
+    prop.statusPage.top_up_enabled = false;
+    const component = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    component.setState({
+      radiusUsageSpinner: false,
+      showUpgradeBtn: true,
+      userPlan: {is_free: true},
+    });
+    expect(component.find("#plan-upgrade-btn")).toHaveLength(0);
+  });
+
+  it("should center the loader in the usage overview while usage data loads", () => {
+    const prop = createTestProps();
+    prop.statusPage.radius_usage_enabled = true;
+    const component = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    expect(component.find(".usage-overview")).toHaveLength(1);
+    expect(component.find(".usage-overview-loader")).toHaveLength(1);
+    expect(component.find(".usage-overview-title")).toHaveLength(0);
+  });
+
+  it("should format reset times longer than a day with days", () => {
+    const now = 1_700_000_000;
+    const dateSpy = jest.spyOn(Date, "now").mockReturnValue(now * 1000);
+    expect(
+      wrapper.instance().getResetTimeRemaining(now + 3 * 86400 + 9000),
+    ).toBe("3TIME_DAY_ABBR\u00a02TIME_HOUR_ABBR\u00a030TIME_MINUTE_ABBR");
+
+    dateSpy.mockRestore();
+  });
+
+  it("should handle getUserCheckFormattedValue edge cases", () => {
+    const instance = wrapper.instance();
+
+    // Non-numeric values should return N/A placeholder
+    expect(instance.getUserCheckFormattedValue("foo", "bytes", "bar")).toBe(
+      "N/A",
+    );
+
+    // Bytes remaining equals zero should return 0
+    expect(instance.getUserCheckFormattedValue(100, "bytes", 100)).toBe(
+      formatBytes(0, {round: 2}).replace(" ", "\u00a0"),
+    );
+
+    // Seconds remaining equals zero should return 0
+    expect(instance.getUserCheckFormattedValue(60, "seconds", 60)).toBe(
+      "0TIME_MINUTE_ABBR",
+    );
+
+    // Default type should return numeric remaining as string
+    expect(instance.getUserCheckFormattedValue(100, "custom", 20)).toBe("80");
+  });
+
+  it("should format remaining seconds when only minutes are present", () => {
+    const instance = wrapper.instance();
+    // total 300s, used 240s => remaining 60s => 1 minute
+    expect(instance.getUserCheckFormattedValue(300, "seconds", 240)).toBe(
+      "1TIME_MINUTE_ABBR",
+    );
+  });
+
+  it("should format used values for seconds and bytes correctly", () => {
+    const instance = wrapper.instance();
+
+    // Seconds: used 5400 (1h30m) of total 9000 (2h30m)
+    expect(instance.getUserCheckUsedValue(9000, "seconds", 5400)).toBe(
+      "1TIME_HOUR_ABBR\u00a030TIME_MINUTE_ABBR USAGE_USED_OF 2TIME_HOUR_ABBR\u00a030TIME_MINUTE_ABBR",
+    );
+
+    // Bytes: used 0 should include the byte unit
+    expect(instance.getUserCheckUsedValue(2048, "bytes", 0)).toBe(
+      `${formatBytes(0, {round: 2}).replace(" ", "\u00a0")} USAGE_USED_OF ${formatBytes(2048, {round: 2}).replace(" ", "\u00a0")}`,
+    );
+
+    expect(instance.getUserCheckUsedValue(3072, "bytes", 1536)).toContain(
+      "\u00a0",
+    );
+  });
+
+  it("should return session and user info shapes and default usage color", () => {
+    const instance = wrapper.instance();
+
+    const sessionInfo = instance.getSessionInfo();
+    expect(sessionInfo.header).toHaveProperty("start_time");
+    expect(sessionInfo.header).toHaveProperty("stop_time");
+
+    const userInfo = instance.getUserInfo();
+    expect(userInfo).toHaveProperty("status");
+    expect(userInfo).toHaveProperty("email");
+
+    // Default usage color when value is zero or non-numeric
+    expect(instance.getUsageClass(0, 0)).toBe("usage-low");
+    expect(instance.getUsageClass("", 10)).toBe("usage-low");
+  });
+
+  it("should show unavailable usage without rendering a meter", () => {
+    const prop = createTestProps();
+    prop.statusPage.radius_usage_enabled = true;
+    const component = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    component.setState({
+      showRadiusUsage: true,
+      radiusUsageSpinner: false,
+      userChecks: [
+        {...usageCheck, result: null},
+        {...usageCheck, attribute: "Invalid-Usage", result: "not-a-number"},
+      ],
+    });
+    expect(component.find(".usage-check-unavailable")).toHaveLength(4);
+    expect(component.find(CircularProgressbarWithChildren)).toHaveLength(0);
+    expect(component.find(".usage-progress-bar-fill")).toHaveLength(0);
+  });
+
+  it("should hide reset time info when the reset time has passed", () => {
+    const now = 1_700_000_000;
+    const dateSpy = jest.spyOn(Date, "now").mockReturnValue(now * 1000);
+    const prop = createTestProps();
+    prop.statusPage.radius_usage_enabled = true;
+    prop.isAuthenticated = true;
+    const component = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    component.setState({
+      showRadiusUsage: true,
+      radiusUsageSpinner: false,
+      userChecks: [{...usageCheck, reset: now - 1}],
+      userPlan: {},
+      userInfo: {},
+      activeSessions: [],
+      pastSessions: [],
+      sessionsToLogout: [],
+      loadSpinner: false,
+      upgradePlans: [],
+      warningMessage: null,
+      modalActive: false,
+      rememberMe: false,
+      showUpgradeBtn: true,
+    });
+
+    expect(component.find(".usage-reset-info")).toHaveLength(0);
+
+    dateSpy.mockRestore();
+  });
+
+  it("should render translated warning messages", () => {
+    const translatedWarning = "Your data limit has been reached";
+    addLocale("test", {
+      headers: {
+        "content-type": "text/plain; charset=utf-8",
+        "plural-forms": "nplurals = 2; plural = (n != 1);",
+      },
+      translations: {
+        "": {
+          USAGE_LIMIT_EXHAUSTED_TXT: {
+            msgid: "USAGE_LIMIT_EXHAUSTED_TXT",
+            msgstr: [translatedWarning],
+          },
+        },
+      },
+    });
+    useLocale("test");
+    const prop = createTestProps();
+    prop.statusPage.radius_usage_enabled = true;
+    const component = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    component.setState({
+      radiusUsageSpinner: false,
+      warningMessage: "USAGE_LIMIT_EXHAUSTED_TXT",
+    });
+    expect(component.find(".important strong").text()).toBe(translatedWarning);
+  });
+
+  it("should use a static translation for the default warning message", () => {
+    const translatedWarning = "Translated default warning";
+    jest.isolateModules(() => {
+      jest.doMock("ttag", () => ({
+        t: (strings, ...values) => {
+          const text = String.raw({raw: strings}, ...values);
+          return text === "USAGE_LIMIT_EXHAUSTED_TXT"
+            ? translatedWarning
+            : text;
+        },
+        gettext: (text) => text,
+        addLocale: jest.fn(),
+        useLocale: jest.fn(),
+      }));
+      // eslint-disable-next-line global-require
+      const StatusWithMockedTtag = require("./status").default;
+      const prop = createTestProps();
+      prop.statusPage.radius_usage_enabled = true;
+      const component = shallow(<StatusWithMockedTtag {...prop} />, {
+        context: {setLoading: jest.fn()},
+        disableLifecycleMethods: true,
+      });
+      component.setState({
+        radiusUsageSpinner: false,
+        warningMessage: "USAGE_LIMIT_EXHAUSTED_TXT",
+      });
+      expect(component.find(".important strong").text()).toBe(
+        translatedWarning,
+      );
+    });
+  });
+
+  it("should skip empty status content lines", () => {
+    jest.isolateModules(() => {
+      jest.doMock("ttag", () => ({
+        t: (strings, ...values) => {
+          const text = String.raw({raw: strings}, ...values);
+          if (text === "STATUS_CONTENT") {
+            return "First line\n\nSecond line";
+          }
+          return text;
+        },
+        gettext: (text) => text,
+        addLocale: jest.fn(),
+        useLocale: jest.fn(),
+      }));
+
+      // Re-require Status with the mocked ttag module.
+      // eslint-disable-next-line global-require
+      const StatusWithMockedTtag = require("./status").default;
+      const component = shallow(
+        <StatusWithMockedTtag {...createTestProps()} />,
+        {
+          context: {setLoading: jest.fn()},
+          disableLifecycleMethods: true,
+        },
+      );
+
+      const contentBlocks = component
+        .find(".status-content")
+        .filterWhere(
+          (node) =>
+            node.text() === "First line" || node.text() === "Second line",
+        );
+
+      expect(contentBlocks).toHaveLength(2);
+      expect(component.text()).toContain("First line");
+      expect(component.text()).toContain("Second line");
+    });
+  });
+
+  it("should render both usage variants in the status page", () => {
+    const prop = createTestProps();
+    prop.statusPage.radius_usage_enabled = true;
+    const component = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+
+    component.setState({
+      showRadiusUsage: true,
+      radiusUsageSpinner: false,
+      userChecks: [usageCheck],
+      userPlan: {},
+      userInfo: {},
+      activeSessions: [],
+      pastSessions: [],
+      sessionsToLogout: [],
+      loadSpinner: false,
+      upgradePlans: [],
+      warningMessage: null,
+      modalActive: false,
+      rememberMe: false,
+      showUpgradeBtn: true,
+    });
+
+    expect(component.find(".usage-box-inner-big")).toHaveLength(1);
+    expect(component.find(".usage-box-inner-small")).toHaveLength(1);
+    expect(component.find(".usage-progress-bar-fill").exists()).toBe(true);
+    expect(component.find(CircularProgressbarWithChildren).exists()).toBe(true);
   });
 });
 
@@ -2491,6 +3115,7 @@ describe("<Status /> interactions", () => {
     jest.spyOn(toast, "dismiss");
     jest.spyOn(global, "setTimeout");
     props = createTestProps();
+    props.statusPage.radius_usage_enabled = true;
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: true,
@@ -2529,6 +3154,7 @@ describe("<Status /> interactions", () => {
               value: "10800",
               result: 0,
               type: "seconds",
+              reset: Math.floor(Date.now() / 1000) + 3600,
             },
           ],
         },
@@ -2539,6 +3165,7 @@ describe("<Status /> interactions", () => {
     await tick();
     expect(wrapper.instance().state.userChecks.length).toBe(1);
     expect(wrapper.instance().state.showRadiusUsage).toBe(true);
+    expect(wrapper.find(".usage-reset-info")).toHaveLength(1);
 
     // A free plan is present in the response
     axios.mockImplementationOnce(() =>
@@ -2736,7 +3363,7 @@ describe("<Status /> interactions", () => {
     expect(props.navigate).toHaveBeenCalledWith("/default/payment/draft");
     expect(props.navigate).not.toHaveBeenCalledWith("/default/payment/process");
   });
-  it("should hide limit-info element if getUserRadiusUsage fails", async () => {
+  it("should hide the usage overview if getUserRadiusUsage returns 404", async () => {
     validateToken.mockReturnValue(true);
     axios.mockImplementation(() =>
       Promise.reject({
@@ -2754,9 +3381,9 @@ describe("<Status /> interactions", () => {
       context: {setLoading: jest.fn()},
     });
     await tick();
-    expect(wrapper.find(".limit-info").exists()).toBe(false);
+    expect(wrapper.find(".usage-overview-loader").exists()).toBe(false);
   });
-  it("should hide limit-info element if user plan has no checks", async () => {
+  it("should hide the usage overview if user plan has no checks", async () => {
     validateToken.mockReturnValue(true);
     axios
       // Response for getUserRadiusSessions
@@ -2788,7 +3415,7 @@ describe("<Status /> interactions", () => {
       context: {setLoading: jest.fn()},
     });
     await tick();
-    expect(wrapper.find(".limit-info").exists()).toBe(false);
+    expect(wrapper.find(".usage-overview").exists()).toBe(false);
   });
   it("should show user's radius usage", async () => {
     validateToken.mockReturnValue(true);

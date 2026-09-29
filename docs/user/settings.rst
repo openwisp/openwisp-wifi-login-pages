@@ -166,10 +166,10 @@ This setting controls whether RADIUS usage information (such as data
 usage, session time, etc.) is displayed on the status page.
 
 - **Type**: ``boolean``
-- **Default**: ``false``
+- **Default**: ``true``
 
-When set to ``true``, the user's session and accounting information will
-be displayed.
+When set to ``true``, the user's RADIUS usage information will be
+displayed.
 
 Example:
 
@@ -177,6 +177,25 @@ Example:
 
     status_page:
       radius_usage_enabled: true
+
+``top_up_enabled``
+~~~~~~~~~~~~~~~~~~
+
+This setting controls whether the top-up button can be displayed on the
+status page.
+
+- **Type**: ``boolean``
+- **Default**: ``true``
+
+When set to ``false``, the top-up button is hidden even when subscriptions
+are enabled and the user's plan is free or exhausted.
+
+Example:
+
+.. code-block:: yaml
+
+    status_page:
+      top_up_enabled: false
 
 .. _wlp_menu_items:
 
