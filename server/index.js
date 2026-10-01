@@ -2,6 +2,7 @@ import compression from "compression";
 import cookieParser from "cookie-parser";
 import cookiesMiddleware from "universal-cookie-express";
 import express from "express";
+import rateLimit from "express-rate-limit";
 import net from "net";
 import path from "path";
 import routes from "./routes";
@@ -16,8 +17,16 @@ app.use(cookieParser());
 app.use(cookiesMiddleware());
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
+// Mitigates brute force / credential stuffing attacks on account endpoints
+// (login, password reset, session checks, etc).
+const accountRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 const prefix = "/api/v1/:organization";
-app.use(`${prefix}/account`, routes.account);
+app.use(`${prefix}/account`, accountRateLimiter, routes.account);
 app.use(`${prefix}/modal`, routes.modal);
 app.use(`${prefix}/plan`, routes.plans);
 app.use(`${prefix}/payment`, routes.payment);
