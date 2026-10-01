@@ -166,6 +166,32 @@ Example:
     status_page:
       radius_usage_enabled: true
 
+``radial_usage_display``
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+This setting controls when the radial (circular) usage visualization is
+shown on the status page.
+
+- **Type**: ``string``
+- **Default**: ``only on narrow screens``
+- **Accepted values**: ``disabled``, ``always``, ``only on narrow screens``
+
+When set to ``only on narrow screens`` (the default), the radial
+visualization is shown only on screens narrower than 400px, replacing
+the horizontal bar view.
+
+When set to ``always``, the radial visualization is shown at all screen
+widths.
+
+When set to ``disabled``, the radial visualization is never shown.
+
+Example:
+
+.. code-block:: yaml
+
+    status_page:
+      radial_usage_display: "always"
+
 ``top_up_enabled``
 ~~~~~~~~~~~~~~~~~~
 

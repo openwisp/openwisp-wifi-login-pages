@@ -811,6 +811,44 @@ describe("<Status /> usage rendering helpers", () => {
     expect(component.find(".usage-progress-bar-fill").exists()).toBe(true);
     expect(component.find(CircularProgressbarWithChildren).exists()).toBe(true);
   });
+
+  it("should apply the correct class for each radial_usage_display mode", () => {
+    const cases = ["always", "disabled", "only on narrow screens"];
+    cases.forEach((mode) => {
+      const prop = createTestProps();
+      prop.statusPage.radius_usage_enabled = true;
+      prop.statusPage.radial_usage_display = mode;
+      const component = shallow(<Status {...prop} />, {
+        context: {setLoading: jest.fn()},
+        disableLifecycleMethods: true,
+      });
+      component.setState({
+        showRadiusUsage: true,
+        radiusUsageSpinner: false,
+        userChecks: [usageCheck],
+      });
+      const container = component.find(".usage-checks-container");
+      expect(container.hasClass("radial-always")).toBe(mode === "always");
+      expect(container.hasClass("radial-disabled")).toBe(mode === "disabled");
+    });
+  });
+
+  it("should default to narrow-screen-only behavior when radial_usage_display is not set", () => {
+    const prop = createTestProps();
+    prop.statusPage.radius_usage_enabled = true;
+    const component = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    component.setState({
+      showRadiusUsage: true,
+      radiusUsageSpinner: false,
+      userChecks: [usageCheck],
+    });
+    const container = component.find(".usage-checks-container");
+    expect(container.hasClass("radial-always")).toBe(false);
+    expect(container.hasClass("radial-disabled")).toBe(false);
+  });
 });
 
 describe("<Status /> interactions", () => {

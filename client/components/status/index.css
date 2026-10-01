@@ -389,6 +389,20 @@ progress + p.progress {
   .usage-box-inner-small .usage-check-used {
     flex: 0;
   }
+
+  .usage-progress-text-bottom {
+    flex-direction: column;
+  }
+}
+
+.radial-always .usage-box-inner-small {
+  display: flex;
+}
+.radial-always .usage-box-inner-big {
+  display: none;
+}
+.radial-disabled .usage-box-inner-small {
+  display: none !important;
 }
 
 @media screen and (min-width: 0px) and (max-width: 500px) {

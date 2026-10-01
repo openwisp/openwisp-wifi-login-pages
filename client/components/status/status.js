@@ -1428,6 +1428,11 @@ export default class Status extends React.Component {
       user_info.status.value = t`TRAFFIC_EXHAUSTED`;
     }
     userInfo.status = user_info.status.value;
+    const radialMode =
+      statusPage.radial_usage_display || "only on narrow screens";
+    let radialClass = "";
+    if (radialMode === "always") radialClass = " radial-always";
+    else if (radialMode === "disabled") radialClass = " radial-disabled";
     return (
       <>
         <InfoModal
@@ -1476,7 +1481,7 @@ export default class Status extends React.Component {
                     )}
                     {userChecks && (
                       <div className="usage-details">
-                        <div className="usage-checks-container">
+                        <div className={`usage-checks-container${radialClass}`}>
                           {userChecks.map((check) => {
                             const valueNum = getUsageNumber(check.value);
                             const resultNum = getUsageNumber(check.result);
@@ -1770,6 +1775,7 @@ Status.propTypes = {
       }),
     ),
     radius_usage_enabled: PropTypes.bool,
+    radial_usage_display: PropTypes.string,
     top_up_enabled: PropTypes.bool,
     saml_logout_url: PropTypes.string,
     accounting_swap_octets: PropTypes.bool,
