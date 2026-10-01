@@ -1,4 +1,4 @@
-import {until} from "selenium-webdriver";
+import {By, until} from "selenium-webdriver";
 import {
   getDriver,
   getElementByCss,
@@ -55,6 +55,15 @@ describe("Selenium tests for expired password flow />", () => {
       "Your password has expired, please update it.",
     );
 
+    const warningBox = await getElementByCss(
+      driver,
+      "#password-expired-warning",
+    );
+    await driver.wait(until.elementIsVisible(warningBox));
+    expect(await warningBox.getText()).toEqual(
+      "Your password has expired, please update it.",
+    );
+
     // Try visiting the status page, but the user should redirected
     // back to change password page
     await driver.get(urls.status);
@@ -106,5 +115,61 @@ describe("Selenium tests for expired password flow />", () => {
       10000,
     );
     expect(await successToastDiv.getText()).toEqual("Login successful");
+  });
+});
+
+describe("Selenium tests for expired password logout />", () => {
+  let driver;
+
+  beforeAll(async () => {
+    await initializeData("expiredPassword");
+    driver = await getDriver();
+  }, 30000);
+
+  afterAll(async () => {
+    await tearDown(driver);
+  });
+
+  it("should allow logout from change-password page when password is expired", async () => {
+    await driver.get(urls.login);
+    const data = initialData();
+    const username = await getElementByCss(driver, "input#username");
+    await username.sendKeys(data.expiredPasswordUser.email);
+    const password = await getElementByCss(driver, "input#password");
+    await password.sendKeys(data.expiredPasswordUser.password);
+    const submitBtn = await getElementByCss(driver, "input[type=submit]");
+    await submitBtn.click();
+    await driver.wait(until.urlContains("change-password"), 5000);
+
+    await getElementByCss(driver, "#password-expired-warning");
+    await driver.wait(async () => {
+      const loaders = await driver.findElements(
+        By.css(".loader-container.full"),
+      );
+      const visibleLoaders = await Promise.all(
+        loaders.map((loader) => loader.isDisplayed().catch(() => false)),
+      );
+      return !visibleLoaders.includes(true);
+    }, 10000);
+    const logoutButton = await getElementByCss(driver, ".row.logout button");
+    await driver.wait(until.elementIsVisible(logoutButton));
+    await logoutButton.click();
+
+    // Logout redirects via status, then to login when unauthenticated
+    await driver.wait(until.urlContains("login"), 10000);
+    await getElementByCss(driver, "input#username");
+    await getElementByCss(driver, "input#password");
+    // Re-query toast each poll so SPA redirects do not leave a stale reference
+    await driver.wait(async () => {
+      const toasts = await driver.findElements(By.css(successToastSelector));
+      if (!toasts.length) {
+        return false;
+      }
+      try {
+        return (await toasts[0].getText()).includes("Logout successful");
+      } catch (err) {
+        return false;
+      }
+    }, 10000);
   });
 });
