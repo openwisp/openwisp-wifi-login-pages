@@ -477,6 +477,11 @@ msgstr "Try again"
 msgid "PAY_GIVE_UP_TXT"
 msgstr "If you cannot complete the transaction you can either try to get in touch with your bank or cancel the operation."
 
+#.  failed payment case
+#: client/components/payment-status/payment-status.js:230
+msgid "PAY_GO_BACK_BTN"
+msgstr "Cancel operation and go back to your account"
+
 #: client/components/password-reset/password-reset.js:32
 msgid "PWD_RESET_TITL"
 msgstr "Reset Password"

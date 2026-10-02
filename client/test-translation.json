@@ -257,6 +257,10 @@
         "msgid": "PAY_GIVE_UP_BTN",
         "msgstr": ["Cancel operation and log out"]
       },
+      "PAY_GO_BACK_BTN": {
+        "msgid": "PAY_GO_BACK_BTN",
+        "msgstr": ["Cancel operation and go back to your account"]
+      },
       "PWD_RESET_TITL": {
         "msgid": "PWD_RESET_TITL",
         "msgstr": ["Reset Password"]
