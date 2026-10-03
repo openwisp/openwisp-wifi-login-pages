@@ -183,7 +183,7 @@ exports[`Change Phone Number: standard flow should render successfully 1`] = `
                     "type": "text",
                   },
                   "email": {
-                    "pattern": ".+@.+\\..+",
+                    "pattern": "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
                     "type": "email",
                   },
                   "first_name": {
