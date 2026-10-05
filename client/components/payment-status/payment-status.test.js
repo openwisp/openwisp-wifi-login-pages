@@ -9,14 +9,19 @@ import {t} from "ttag";
 import {loadingContextValue} from "../../utils/loading-context";
 import getConfig from "../../utils/get-config";
 import PaymentStatus from "./payment-status";
+import Loader from "../../utils/loader";
 import tick from "../../utils/tick";
 import validateToken from "../../utils/validate-token";
 import loadTranslation from "../../utils/load-translation";
+import cancelUpgradePlan from "../../utils/cancel-upgrade-plan";
+import logError from "../../utils/log-error";
 
 jest.mock("axios");
 jest.mock("../../utils/get-config");
 jest.mock("../../utils/validate-token");
 jest.mock("../../utils/load-translation");
+jest.mock("../../utils/cancel-upgrade-plan");
+jest.mock("../../utils/log-error");
 
 const defaultConfig = getConfig("default", true);
 const createTestProps = (props) => ({
@@ -55,7 +60,10 @@ describe("<PaymentStatus /> rendering with placeholder translation tags", () => 
   });
   it("should render translation placeholder correctly", () => {
     const renderer = new ShallowRenderer();
-    const wrapper = renderer.render(<PaymentStatus {...props} />);
+    renderer.render(<PaymentStatus {...props} />);
+    // ShallowRenderer skips componentDidMount; advance isTokenValid past null for markup
+    renderer.getMountedInstance().setState({isTokenValid: true});
+    const wrapper = renderer.getRenderOutput();
     expect(wrapper).toMatchSnapshot();
   });
 });
@@ -104,6 +112,39 @@ describe("Test <PaymentStatus /> cases", () => {
     ).toEqual("/default/payment/draft");
     expect(wrapper.find(".payment-status-row-4 .button").length).toEqual(1);
     expect(wrapper.find("Navigate").length).toEqual(0);
+  });
+
+  it("should show a loader instead of the wrong failed variant on cold load", () => {
+    // Cold reload: in_upgrade unknown until validateToken resolves, show loader
+    props = createTestProps({
+      userData: {},
+      params: {status: "failed"},
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    expect(wrapper.find(Loader)).toHaveLength(1);
+    expect(wrapper.find("Navigate").length).toEqual(0);
+    expect(wrapper.find(".payment-status-row-1").length).toEqual(0);
+  });
+
+  it("should show a loader instead of the wrong abandon button on a cold draft load", () => {
+    // Cold reload: in_upgrade unknown until validateToken resolves, so
+    // isDraftUpgrade cannot be decided yet. Rendering renderDraft early would
+    // briefly wire the abandon button to logout instead of backToStatus.
+    props = createTestProps({
+      userData: {},
+      params: {status: "draft"},
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    expect(wrapper.find(Loader)).toHaveLength(1);
+    expect(wrapper.find("Navigate").length).toEqual(0);
+    expect(wrapper.find(".main-column.single").length).toEqual(0);
+    expect(wrapper.find("button.button.full").length).toEqual(0);
   });
 
   it("should call logout correctly when clicking on logout button", async () => {
@@ -202,36 +243,66 @@ describe("Test <PaymentStatus /> cases", () => {
     ]);
   });
 
-  it("should set proceedToPayment in userData when navigating to /status", async () => {
+  it("does not force logout/relogin on success when captive portal supports CoA", async () => {
+    const spyToast = jest.spyOn(toast, "success");
+    props = createTestProps({
+      userData: {...responseData, is_verified: true},
+      params: {status: "success"},
+    });
+    props.settings.captive_portal_supports_coa = true;
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+      disableLifecycleMethods: true,
+    });
+    const comp = wrapper.instance();
+    comp.componentDidMount();
+    await tick();
+    expect(wrapper.find("Navigate").length).toEqual(1);
+    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
+    expect(spyToast.mock.calls.length).toBe(1);
+    expect(comp.props.logout).not.toHaveBeenCalled();
+    expect(comp.props.setUserData).not.toHaveBeenCalled();
+  });
+
+  it("should set proceedToPayment in userData and not persist it without sync auth", async () => {
     // If the payment requires internet, proceedToPayment should
     // be set to true in userData
     validateToken.mockReturnValue(true);
 
     // Test payment_requires_internet is set to false
+    let mockCookiesSet = jest.fn();
     props = createTestProps({
       userData: {...responseData, is_verified: false},
       params: {status: "draft"},
+      cookies: {set: mockCookiesSet, get: jest.fn(), remove: jest.fn()},
     });
     props.settings.payment_requires_internet = false;
     wrapper = shallow(<PaymentStatus {...props} />, {
       context: loadingContextValue,
     });
+    await tick();
+    wrapper.instance().props.setUserData.mockClear();
     let payProcButton = wrapper
       .find("Link.button.full")
       .findWhere((node) => node.text() === t`PAY_PROC_BTN`)
       .first();
     payProcButton.simulate("click");
     expect(wrapper.instance().props.setUserData).not.toHaveBeenCalled();
+    expect(mockCookiesSet).not.toHaveBeenCalled();
 
-    // Test payment_requires_internet is set to true
+    // Test payment_requires_internet is set to true, without sync auth
+    mockCookiesSet = jest.fn();
     props = createTestProps({
       userData: {...responseData, is_verified: false},
       params: {status: "draft"},
+      cookies: {set: mockCookiesSet, get: jest.fn(), remove: jest.fn()},
     });
     props.settings.payment_requires_internet = true;
     wrapper = shallow(<PaymentStatus {...props} />, {
       context: loadingContextValue,
     });
+    await tick();
     payProcButton = wrapper
       .find("Link.button.full")
       .findWhere((node) => node.text() === t`PAY_PROC_BTN`)
@@ -240,8 +311,49 @@ describe("Test <PaymentStatus /> cases", () => {
     expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith({
       ...responseData,
       is_verified: false,
+      mustLogin: true,
       proceedToPayment: true,
     });
+    // Async auth never reloads the page, so there is nothing to survive
+    // and the flag doesn't need to be persisted outside Redux.
+    expect(mockCookiesSet).not.toHaveBeenCalled();
+  });
+
+  it("should persist proceedToPayment cookie for sync auth", async () => {
+    validateToken.mockReturnValue(true);
+    const mockCookiesSet = jest.fn();
+    const mockCookiesRemove = jest.fn();
+    const mockCookiesGet = jest.fn();
+    props = createTestProps({
+      userData: {...responseData, is_verified: false},
+      params: {status: "draft"},
+      captivePortalSyncAuth: true,
+      cookies: {
+        set: mockCookiesSet,
+        remove: mockCookiesRemove,
+        get: mockCookiesGet,
+      },
+    });
+    props.settings.payment_requires_internet = true;
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    const payProcButton = wrapper
+      .find("Link.button.full")
+      .findWhere((node) => node.text() === t`PAY_PROC_BTN`)
+      .first();
+    payProcButton.simulate("click");
+    // Verify the cookie was set
+    expect(mockCookiesSet).toHaveBeenCalledWith(
+      "default_proceedToPayment",
+      true,
+      {path: "/", maxAge: 60},
+    );
+    // Verify userData was updated with proceedToPayment
+    expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({proceedToPayment: true}),
+    );
   });
 
   it("should redirect to status if success but unverified", async () => {
@@ -298,6 +410,325 @@ describe("Test <PaymentStatus /> cases", () => {
     expect(wrapper.find("Navigate").length).toEqual(1);
     expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
     expect(spyToast.mock.calls.length).toBe(0);
+  });
+
+  it("should not force captive portal login when retrying and payment does not require internet", async () => {
+    const mockCookiesSet = jest.fn();
+    props = createTestProps({
+      params: {status: "failed"},
+      cookies: {set: mockCookiesSet, get: jest.fn(), remove: jest.fn()},
+      settings: {
+        subscriptions: true,
+        mobile_phone_verification: true,
+        payment_requires_internet: false,
+      },
+      userData: {
+        ...responseData,
+        method: "mobile_phone",
+        is_verified: true,
+        in_upgrade: true,
+        payment_url: "https://payment.example.com/pay/1",
+      },
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    expect(wrapper.find("Navigate").length).toEqual(0);
+    expect(wrapper.find(".payment-status-row-1").length).toEqual(1);
+    expect(
+      wrapper.find(".payment-status-row-3 .button").at(0).props().to,
+    ).toEqual("/default/payment/process");
+    wrapper.find(".payment-status-row-3 .button").at(0).simulate("click");
+    expect(mockCookiesSet).not.toHaveBeenCalled();
+    expect(wrapper.instance().props.setUserData).not.toHaveBeenCalled();
+    // No captive portal login needed when internet is not required, so the
+    // retry is a plain navigation and paymentProceedHandler must not run.
+    expect(props.authenticate).not.toHaveBeenCalled();
+  });
+
+  it("should log into the captive portal when retrying a failed upgrade", async () => {
+    const mockCookiesSet = jest.fn();
+    props = createTestProps({
+      params: {status: "failed"},
+      captivePortalSyncAuth: true,
+      cookies: {set: mockCookiesSet, get: jest.fn(), remove: jest.fn()},
+      settings: {
+        subscriptions: true,
+        mobile_phone_verification: true,
+        payment_requires_internet: true,
+      },
+      userData: {
+        ...responseData,
+        method: "mobile_phone",
+        is_verified: true,
+        in_upgrade: true,
+        payment_url: "https://payment.example.com/pay/1",
+      },
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    expect(
+      wrapper.find(".payment-status-row-3 .button").at(0).props().to,
+    ).toEqual("/default/status");
+    wrapper.find(".payment-status-row-3 .button").at(0).simulate("click");
+    expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({mustLogin: true, proceedToPayment: true}),
+    );
+    expect(mockCookiesSet).toHaveBeenCalledWith("default_mustLogin", true, {
+      path: "/",
+      maxAge: 60,
+    });
+    expect(mockCookiesSet).toHaveBeenCalledWith(
+      "default_proceedToPayment",
+      true,
+      {path: "/", maxAge: 60},
+    );
+    expect(props.authenticate).toHaveBeenCalledWith(true);
+  });
+
+  it("should clear in_upgrade even when the cancel response omits it", async () => {
+    props = createTestProps({
+      params: {status: "failed"},
+      settings: {subscriptions: true, mobile_phone_verification: true},
+      userData: {
+        ...responseData,
+        method: "mobile_phone",
+        is_verified: true,
+        in_upgrade: true,
+        payment_url: "https://payment.example.com/pay/1",
+      },
+    });
+    validateToken.mockReturnValue(true);
+    // The cancel API response does not echo back in_upgrade.
+    cancelUpgradePlan.mockResolvedValue({});
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    wrapper.find(".payment-status-row-4 .button").simulate("click", {});
+    await tick();
+    expect(props.setUserData).toHaveBeenCalledWith({
+      ...props.userData,
+      in_upgrade: false,
+      proceedToPayment: false,
+      payment_url: null,
+      mustLogin: undefined,
+      mustLogout: true,
+      captivePortalLogoutOnly: true,
+    });
+  });
+
+  it("should clear the persisted proceedToPayment flag when abandoning an upgrade", async () => {
+    const mockCookiesRemove = jest.fn();
+    props = createTestProps({
+      params: {status: "failed"},
+      settings: {subscriptions: true, mobile_phone_verification: true},
+      userData: {
+        ...responseData,
+        method: "mobile_phone",
+        is_verified: true,
+        in_upgrade: true,
+        payment_url: "https://payment.example.com/pay/1",
+      },
+      cookies: {
+        set: jest.fn(),
+        get: jest.fn(),
+        remove: mockCookiesRemove,
+      },
+    });
+    localStorage.setItem("default_proceedToPayment", "true");
+    validateToken.mockReturnValue(true);
+    cancelUpgradePlan.mockResolvedValue({
+      in_upgrade: false,
+      payment_url: null,
+    });
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    wrapper.find(".payment-status-row-4 .button").simulate("click", {});
+    await tick();
+    expect(cancelUpgradePlan).toHaveBeenCalledWith(
+      props.orgSlug,
+      props.userData.auth_token || props.userData.key,
+      props.language,
+    );
+    expect(props.setUserData).toHaveBeenCalledWith({
+      ...props.userData,
+      in_upgrade: false,
+      proceedToPayment: false,
+      payment_url: null,
+      mustLogin: undefined,
+      mustLogout: true,
+      captivePortalLogoutOnly: true,
+    });
+    expect(props.navigate).toHaveBeenCalledWith("/default/status");
+    expect(props.logout).not.toHaveBeenCalled();
+    // Stale flag must be cleared, otherwise a later status reload could
+    // wrongly force the user back into the payment flow.
+    expect(mockCookiesRemove).toHaveBeenCalledWith("default_proceedToPayment", {
+      path: "/",
+    });
+    expect(localStorage.getItem("default_proceedToPayment")).toBeNull();
+  });
+
+  it("should silently ignore a 404 when cancelling an non-existent upgrade", async () => {
+    const spyToastError = jest.spyOn(toast, "error");
+    props = createTestProps({
+      params: {status: "failed"},
+      settings: {subscriptions: true, mobile_phone_verification: true},
+      userData: {
+        ...responseData,
+        method: "mobile_phone",
+        is_verified: true,
+        in_upgrade: true,
+        payment_url: "https://payment.example.com/pay/1",
+      },
+    });
+    validateToken.mockReturnValue(true);
+    cancelUpgradePlan.mockRejectedValue({response: {status: 404}});
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    wrapper.find(".payment-status-row-4 .button").simulate("click", {});
+    await tick();
+    // The order does not existing on OpenWISP
+    expect(spyToastError).not.toHaveBeenCalled();
+    expect(logError).not.toHaveBeenCalled();
+    expect(props.setUserData).toHaveBeenCalledWith({
+      ...props.userData,
+      in_upgrade: false,
+      proceedToPayment: false,
+      payment_url: null,
+      mustLogin: undefined,
+      mustLogout: true,
+      captivePortalLogoutOnly: true,
+    });
+    expect(props.navigate).toHaveBeenCalledWith("/default/status");
+  });
+
+  it("should surface a 404 that carries response_code NOT_FOUND", async () => {
+    // Our own server also answers 404 for an unknown organization slug, in
+    // that shape. That must not be swallowed as "nothing to cancel".
+    const spyToastError = jest.spyOn(toast, "error");
+    props = createTestProps({
+      params: {status: "failed"},
+      settings: {subscriptions: true, mobile_phone_verification: true},
+      userData: {
+        ...responseData,
+        method: "mobile_phone",
+        is_verified: true,
+        in_upgrade: true,
+        payment_url: "https://payment.example.com/pay/1",
+      },
+    });
+    validateToken.mockReturnValue(true);
+    cancelUpgradePlan.mockRejectedValue({
+      response: {status: 404, data: {response_code: "NOT_FOUND"}},
+    });
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    wrapper.find(".payment-status-row-4 .button").simulate("click", {});
+    await tick();
+    expect(spyToastError).toHaveBeenCalledTimes(1);
+    expect(logError).toHaveBeenCalledWith(
+      {response: {status: 404, data: {response_code: "NOT_FOUND"}}},
+      "Error while cancelling plan upgrade",
+    );
+    expect(props.navigate).toHaveBeenCalledWith("/default/status");
+  });
+
+  it("should report an error and still go back to status when cancelling fails unexpectedly", async () => {
+    const spyToastError = jest.spyOn(toast, "error");
+    props = createTestProps({
+      params: {status: "failed"},
+      settings: {subscriptions: true, mobile_phone_verification: true},
+      userData: {
+        ...responseData,
+        method: "mobile_phone",
+        is_verified: true,
+        in_upgrade: true,
+        payment_url: "https://payment.example.com/pay/1",
+      },
+    });
+    validateToken.mockReturnValue(true);
+    cancelUpgradePlan.mockRejectedValue({response: {status: 500}});
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    wrapper.find(".payment-status-row-4 .button").simulate("click", {});
+    await tick();
+    expect(spyToastError).toHaveBeenCalledTimes(1);
+    expect(logError).toHaveBeenCalledWith(
+      {response: {status: 500}},
+      "Error while cancelling plan upgrade",
+    );
+    // The user must still be able to leave the failed page even if the
+    // cancel request itself errored out.
+    expect(props.setUserData).toHaveBeenCalledWith({
+      ...props.userData,
+      in_upgrade: false,
+      proceedToPayment: false,
+      payment_url: null,
+      mustLogin: undefined,
+      mustLogout: true,
+      captivePortalLogoutOnly: true,
+    });
+    expect(props.navigate).toHaveBeenCalledWith("/default/status");
+  });
+
+  it("should hide the continue button if the payment url is not available", async () => {
+    props = createTestProps({
+      params: {status: "failed"},
+      settings: {subscriptions: true, mobile_phone_verification: true},
+      userData: {
+        ...responseData,
+        method: "mobile_phone",
+        is_verified: true,
+        in_upgrade: true,
+        payment_url: null,
+      },
+    });
+    validateToken.mockReturnValue(true);
+    cancelUpgradePlan.mockResolvedValue({
+      in_upgrade: false,
+      payment_url: null,
+    });
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    expect(wrapper.find("Navigate").length).toEqual(0);
+    expect(wrapper.find(".payment-status-row-3").length).toEqual(0);
+    expect(wrapper.find(".payment-status-row-4 .button").length).toEqual(1);
+  });
+
+  it("should redirect to status if verified and not upgrading", async () => {
+    props = createTestProps({
+      params: {status: "failed"},
+      settings: {subscriptions: true, mobile_phone_verification: true},
+      userData: {
+        ...responseData,
+        method: "mobile_phone",
+        is_verified: true,
+      },
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    expect(wrapper.find("Navigate").length).toEqual(1);
+    expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
   });
 
   it("should redirect to login if not authenticated", async () => {
@@ -423,5 +854,85 @@ describe("Test <PaymentStatus /> cases", () => {
       ...responseData,
       mustLogin: true,
     });
+  });
+
+  it("should not set mustLogin on draft arrival for an upgrade not requiring internet", async () => {
+    props = createTestProps({
+      settings: {
+        subscriptions: true,
+        mobile_phone_verification: true,
+        payment_requires_internet: false,
+      },
+      userData: {
+        ...responseData,
+        method: "mobile_phone",
+        is_verified: true,
+        in_upgrade: true,
+        payment_url: "https://payment.example.com/pay/1",
+      },
+      params: {status: "draft"},
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    expect(wrapper.find("Navigate").length).toEqual(0);
+    const payProcButton = wrapper
+      .find("Link.button.full")
+      .findWhere((node) => node.text() === t`PAY_PROC_BTN`)
+      .first();
+    expect(payProcButton.length).toEqual(1);
+    expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({mustLogin: undefined}),
+    );
+  });
+
+  it("should log out of captive portal (not of the app) when going back from the upgrade draft page", async () => {
+    props = createTestProps({
+      settings: {
+        subscriptions: true,
+        mobile_phone_verification: true,
+        payment_requires_internet: true,
+      },
+      userData: {
+        ...responseData,
+        method: "mobile_phone",
+        is_verified: true,
+        in_upgrade: true,
+        payment_url: "https://payment.example.com/pay/1",
+      },
+      params: {status: "draft"},
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    // componentDidMount sets mustLogin so /status performs captive-portal login on proceed
+    expect(props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({mustLogin: true}),
+    );
+    wrapper.find(".button").at(1).simulate("click", {});
+    await tick();
+    expect(cancelUpgradePlan).toHaveBeenCalledWith(
+      props.orgSlug,
+      props.userData.auth_token || props.userData.key,
+      props.language,
+    );
+    // Clear stale flags to prevent /status redirecting back to /payment/draft
+    expect(props.setUserData).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        in_upgrade: false,
+        proceedToPayment: false,
+        payment_url: null,
+        mustLogin: undefined,
+        mustLogout: true,
+        captivePortalLogoutOnly: true,
+      }),
+    );
+    expect(props.navigate).toHaveBeenCalledWith(`/${props.orgSlug}/status`);
+    // Keep WLP session intact; only tear down captive portal session
+    expect(props.logout).not.toHaveBeenCalled();
   });
 });

@@ -8,7 +8,11 @@ const logout = (cookies, orgSlug, userAutoLogin = false) => {
     cookies.remove(`${orgSlug}_macaddr`, {path: "/"});
     sessionStorage.clear();
   }
-  [`${orgSlug}_mustLogin`, `${orgSlug}_mustLogout`].forEach((element) => {
+  [
+    `${orgSlug}_mustLogin`,
+    `${orgSlug}_mustLogout`,
+    `${orgSlug}_captivePortalLogoutOnly`,
+  ].forEach((element) => {
     cookies.remove(element, {path: "/"});
     localStorage.removeItem(element);
   });
