@@ -1786,6 +1786,21 @@ describe("<Status /> interactions", () => {
     expect(clearInterval).toHaveBeenCalledWith(intervalId);
   });
 
+  it("should clear usage interval for subscription-only status pages", () => {
+    props = createTestProps();
+    props.settings.subscriptions = true;
+    props.statusPage.radius_usage_enabled = false;
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    const usageIntervalId = 123;
+    wrapper.instance().usageIntervalId = usageIntervalId;
+    jest.spyOn(window, "clearInterval");
+    wrapper.instance().componentWillUnmount();
+    expect(clearInterval).toHaveBeenCalledWith(usageIntervalId);
+  });
+
   it("test loading spinner", async () => {
     const prop = createTestProps();
     prop.statusPage.links = links;

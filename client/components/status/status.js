@@ -286,11 +286,8 @@ export default class Status extends React.Component {
 
   componentWillUnmount() {
     this.isComponentMounted = false;
-    const {statusPage} = this.props;
     clearInterval(this.intervalId);
-    if (statusPage.radius_usage_enabled) {
-      clearInterval(this.usageIntervalId);
-    }
+    clearInterval(this.usageIntervalId);
     clearTimeout(this.usageRetryTimeoutId);
     window.removeEventListener("resize", this.updateScreenWidth);
     window.removeEventListener("message", this.handlePostMessage);
