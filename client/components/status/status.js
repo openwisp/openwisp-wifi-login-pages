@@ -1406,7 +1406,7 @@ export default class Status extends React.Component {
       settings,
       defaultLanguage,
     } = this.props;
-    const radialUsageDisplay = ["disabled", "always"].includes(
+    const radialUsageDisplay = ["disabled", "small"].includes(
       statusPage.radial_usage_display,
     )
       ? statusPage.radial_usage_display
@@ -1433,9 +1433,9 @@ export default class Status extends React.Component {
       modalActive,
       rememberMe,
     } = this.state;
-    // Select the radial layout only when configured or on narrow screens.
+    // Select the radial layout for the configured screen-width range.
     const useRadial =
-      radialUsageDisplay === "always" ||
+      (radialUsageDisplay === "small" && screenWidth < 768) ||
       (radialUsageDisplay === "narrow" && screenWidth <= 480);
     const usageBoxClass = useRadial
       ? "usage-box-inner-small"

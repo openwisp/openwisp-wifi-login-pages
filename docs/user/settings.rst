@@ -176,12 +176,9 @@ usage.
 - **Default**: ``narrow``
 - **Choices**:
 
-  - ``disabled``: use horizontal bars at all screen widths.
-  - ``always``: explicitly enable radial charts at every screen width,
-    including laptops and desktops.
-  - ``narrow``: use radial charts on screens 480 pixels wide or less.
-
-The default, ``narrow``, keeps horizontal bars on laptops and desktops.
+  - ``narrow``: use radial charts on screens up to 480 pixels wide.
+  - ``small``: use radial charts on screens up to 767 pixels wide.
+  - ``disabled``: always use horizontal bars.
 
 Example:
 
