@@ -36,6 +36,7 @@ exports[`<Status /> interactions should hide check if check.value is zero 1`] = 
         >
           <div
             className="usage-box-inner-big"
+            key="Max-Daily-Session"
           >
             <div
               className="usage-check-content usage-low"
@@ -86,59 +87,6 @@ exports[`<Status /> interactions should hide check if check.value is zero 1`] = 
                      
                     USAGE_REMAINING
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            className="usage-box-inner-small"
-          >
-            <div
-              className="usage-check-content usage-low"
-            >
-              <div
-                className="usage-check-header"
-              >
-                <span
-                  aria-hidden="true"
-                  className="usage-check-icon timer-icon"
-                />
-                <div>
-                  USAGE_TIME
-                </div>
-              </div>
-              <div
-                className="usage-progress-details"
-              >
-                <div
-                  className="usage-progress-wrapper"
-                >
-                  <CircularProgressbarWithChildren
-                    aria-label="USAGE_TIME"
-                    id="Max-Daily-Session"
-                    maxValue={10800}
-                    strokeWidth={12}
-                    value={0}
-                  >
-                    <div
-                      className="usage-progress-text"
-                    >
-                      <strong>
-                        3TIME_HOUR_ABBR
-                      </strong>
-                      <div
-                        className="usage-progress-remaining"
-                      >
-                        USAGE_REMAINING
-                      </div>
-                    </div>
-                  </CircularProgressbarWithChildren>
-                </div>
-                <div
-                  className="usage-check-used"
-                >
-                  TIME_LESS_THAN_MINUTE
-USAGE_USED_OF 3TIME_HOUR_ABBR
                 </div>
               </div>
             </div>
@@ -477,6 +425,7 @@ exports[`<Status /> interactions should show user's radius usage 1`] = `
         >
           <div
             className="usage-box-inner-big"
+            key="Max-Daily-Session"
           >
             <div
               className="usage-check-content usage-low"
@@ -532,60 +481,8 @@ exports[`<Status /> interactions should show user's radius usage 1`] = `
             </div>
           </div>
           <div
-            className="usage-box-inner-small"
-          >
-            <div
-              className="usage-check-content usage-low"
-            >
-              <div
-                className="usage-check-header"
-              >
-                <span
-                  aria-hidden="true"
-                  className="usage-check-icon timer-icon"
-                />
-                <div>
-                  USAGE_TIME
-                </div>
-              </div>
-              <div
-                className="usage-progress-details"
-              >
-                <div
-                  className="usage-progress-wrapper"
-                >
-                  <CircularProgressbarWithChildren
-                    aria-label="USAGE_TIME"
-                    id="Max-Daily-Session"
-                    maxValue={10800}
-                    strokeWidth={12}
-                    value={0}
-                  >
-                    <div
-                      className="usage-progress-text"
-                    >
-                      <strong>
-                        3TIME_HOUR_ABBR
-                      </strong>
-                      <div
-                        className="usage-progress-remaining"
-                      >
-                        USAGE_REMAINING
-                      </div>
-                    </div>
-                  </CircularProgressbarWithChildren>
-                </div>
-                <div
-                  className="usage-check-used"
-                >
-                  TIME_LESS_THAN_MINUTE
-USAGE_USED_OF 3TIME_HOUR_ABBR
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
             className="usage-box-inner-big"
+            key="Max-Daily-Session-Traffic"
           >
             <div
               className="usage-check-content usage-low"
@@ -636,59 +533,6 @@ USAGE_USED_OF 3TIME_HOUR_ABBR
                      
                     USAGE_REMAINING
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            className="usage-box-inner-small"
-          >
-            <div
-              className="usage-check-content usage-low"
-            >
-              <div
-                className="usage-check-header"
-              >
-                <span
-                  aria-hidden="true"
-                  className="usage-check-icon data-icon"
-                />
-                <div>
-                  USAGE_DATA
-                </div>
-              </div>
-              <div
-                className="usage-progress-details"
-              >
-                <div
-                  className="usage-progress-wrapper"
-                >
-                  <CircularProgressbarWithChildren
-                    aria-label="USAGE_DATA"
-                    id="Max-Daily-Session-Traffic"
-                    maxValue={3000000000}
-                    strokeWidth={12}
-                    value={0}
-                  >
-                    <div
-                      className="usage-progress-text"
-                    >
-                      <strong>
-                        3 GB
-                      </strong>
-                      <div
-                        className="usage-progress-remaining"
-                      >
-                        USAGE_REMAINING
-                      </div>
-                    </div>
-                  </CircularProgressbarWithChildren>
-                </div>
-                <div
-                  className="usage-check-used"
-                >
-                  0 B
-USAGE_USED_OF 3 GB
                 </div>
               </div>
             </div>
@@ -1091,6 +935,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
         >
           <div
             className="usage-box-inner-big"
+            key="Max-Daily-Session"
           >
             <div
               className="usage-check-content usage-high"
@@ -1146,60 +991,8 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
             </div>
           </div>
           <div
-            className="usage-box-inner-small"
-          >
-            <div
-              className="usage-check-content usage-high"
-            >
-              <div
-                className="usage-check-header"
-              >
-                <span
-                  aria-hidden="true"
-                  className="usage-check-icon timer-icon"
-                />
-                <div>
-                  USAGE_TIME
-                </div>
-              </div>
-              <div
-                className="usage-progress-details"
-              >
-                <div
-                  className="usage-progress-wrapper"
-                >
-                  <CircularProgressbarWithChildren
-                    aria-label="USAGE_TIME"
-                    id="Max-Daily-Session"
-                    maxValue={10800}
-                    strokeWidth={12}
-                    value={10700}
-                  >
-                    <div
-                      className="usage-progress-text"
-                    >
-                      <strong>
-                        1TIME_MINUTE_ABBR
-                      </strong>
-                      <div
-                        className="usage-progress-remaining"
-                      >
-                        USAGE_REMAINING
-                      </div>
-                    </div>
-                  </CircularProgressbarWithChildren>
-                </div>
-                <div
-                  className="usage-check-used"
-                >
-                  2TIME_HOUR_ABBR 58TIME_MINUTE_ABBR
-USAGE_USED_OF 3TIME_HOUR_ABBR
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
             className="usage-box-inner-big"
+            key="Max-Daily-Session-Traffic"
           >
             <div
               className="usage-check-content usage-high"
@@ -1250,59 +1043,6 @@ USAGE_USED_OF 3TIME_HOUR_ABBR
                      
                     USAGE_REMAINING
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            className="usage-box-inner-small"
-          >
-            <div
-              className="usage-check-content usage-high"
-            >
-              <div
-                className="usage-check-header"
-              >
-                <span
-                  aria-hidden="true"
-                  className="usage-check-icon data-icon"
-                />
-                <div>
-                  USAGE_DATA
-                </div>
-              </div>
-              <div
-                className="usage-progress-details"
-              >
-                <div
-                  className="usage-progress-wrapper"
-                >
-                  <CircularProgressbarWithChildren
-                    aria-label="USAGE_DATA"
-                    id="Max-Daily-Session-Traffic"
-                    maxValue={3000000000}
-                    strokeWidth={12}
-                    value={3000000000}
-                  >
-                    <div
-                      className="usage-progress-text"
-                    >
-                      <strong>
-                        0 B
-                      </strong>
-                      <div
-                        className="usage-progress-remaining"
-                      >
-                        USAGE_REMAINING
-                      </div>
-                    </div>
-                  </CircularProgressbarWithChildren>
-                </div>
-                <div
-                  className="usage-check-used"
-                >
-                  3 GB
-USAGE_USED_OF 3 GB
                 </div>
               </div>
             </div>
@@ -1590,6 +1330,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
         >
           <div
             className="usage-box-inner-big"
+            key="Max-Daily-Session"
           >
             <div
               className="usage-check-content usage-high"
@@ -1645,60 +1386,8 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
             </div>
           </div>
           <div
-            className="usage-box-inner-small"
-          >
-            <div
-              className="usage-check-content usage-high"
-            >
-              <div
-                className="usage-check-header"
-              >
-                <span
-                  aria-hidden="true"
-                  className="usage-check-icon timer-icon"
-                />
-                <div>
-                  USAGE_TIME
-                </div>
-              </div>
-              <div
-                className="usage-progress-details"
-              >
-                <div
-                  className="usage-progress-wrapper"
-                >
-                  <CircularProgressbarWithChildren
-                    aria-label="USAGE_TIME"
-                    id="Max-Daily-Session"
-                    maxValue={10800}
-                    strokeWidth={12}
-                    value={10700}
-                  >
-                    <div
-                      className="usage-progress-text"
-                    >
-                      <strong>
-                        1TIME_MINUTE_ABBR
-                      </strong>
-                      <div
-                        className="usage-progress-remaining"
-                      >
-                        USAGE_REMAINING
-                      </div>
-                    </div>
-                  </CircularProgressbarWithChildren>
-                </div>
-                <div
-                  className="usage-check-used"
-                >
-                  2TIME_HOUR_ABBR 58TIME_MINUTE_ABBR
-USAGE_USED_OF 3TIME_HOUR_ABBR
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
             className="usage-box-inner-big"
+            key="Max-Daily-Session-Traffic"
           >
             <div
               className="usage-check-content usage-high"
@@ -1749,59 +1438,6 @@ USAGE_USED_OF 3TIME_HOUR_ABBR
                      
                     USAGE_REMAINING
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            className="usage-box-inner-small"
-          >
-            <div
-              className="usage-check-content usage-high"
-            >
-              <div
-                className="usage-check-header"
-              >
-                <span
-                  aria-hidden="true"
-                  className="usage-check-icon data-icon"
-                />
-                <div>
-                  USAGE_DATA
-                </div>
-              </div>
-              <div
-                className="usage-progress-details"
-              >
-                <div
-                  className="usage-progress-wrapper"
-                >
-                  <CircularProgressbarWithChildren
-                    aria-label="USAGE_DATA"
-                    id="Max-Daily-Session-Traffic"
-                    maxValue={3000000000}
-                    strokeWidth={12}
-                    value={3000000000}
-                  >
-                    <div
-                      className="usage-progress-text"
-                    >
-                      <strong>
-                        0 B
-                      </strong>
-                      <div
-                        className="usage-progress-remaining"
-                      >
-                        USAGE_REMAINING
-                      </div>
-                    </div>
-                  </CircularProgressbarWithChildren>
-                </div>
-                <div
-                  className="usage-check-used"
-                >
-                  3 GB
-USAGE_USED_OF 3 GB
                 </div>
               </div>
             </div>
@@ -2007,6 +1643,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
         >
           <div
             className="usage-box-inner-big"
+            key="Max-Daily-Session"
           >
             <div
               className="usage-check-content usage-high"
@@ -2062,60 +1699,8 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
             </div>
           </div>
           <div
-            className="usage-box-inner-small"
-          >
-            <div
-              className="usage-check-content usage-high"
-            >
-              <div
-                className="usage-check-header"
-              >
-                <span
-                  aria-hidden="true"
-                  className="usage-check-icon timer-icon"
-                />
-                <div>
-                  USAGE_TIME
-                </div>
-              </div>
-              <div
-                className="usage-progress-details"
-              >
-                <div
-                  className="usage-progress-wrapper"
-                >
-                  <CircularProgressbarWithChildren
-                    aria-label="USAGE_TIME"
-                    id="Max-Daily-Session"
-                    maxValue={10800}
-                    strokeWidth={12}
-                    value={10700}
-                  >
-                    <div
-                      className="usage-progress-text"
-                    >
-                      <strong>
-                        1TIME_MINUTE_ABBR
-                      </strong>
-                      <div
-                        className="usage-progress-remaining"
-                      >
-                        USAGE_REMAINING
-                      </div>
-                    </div>
-                  </CircularProgressbarWithChildren>
-                </div>
-                <div
-                  className="usage-check-used"
-                >
-                  2TIME_HOUR_ABBR 58TIME_MINUTE_ABBR
-USAGE_USED_OF 3TIME_HOUR_ABBR
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
             className="usage-box-inner-big"
+            key="Max-Daily-Session-Traffic"
           >
             <div
               className="usage-check-content usage-high"
@@ -2166,59 +1751,6 @@ USAGE_USED_OF 3TIME_HOUR_ABBR
                      
                     USAGE_REMAINING
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            className="usage-box-inner-small"
-          >
-            <div
-              className="usage-check-content usage-high"
-            >
-              <div
-                className="usage-check-header"
-              >
-                <span
-                  aria-hidden="true"
-                  className="usage-check-icon data-icon"
-                />
-                <div>
-                  USAGE_DATA
-                </div>
-              </div>
-              <div
-                className="usage-progress-details"
-              >
-                <div
-                  className="usage-progress-wrapper"
-                >
-                  <CircularProgressbarWithChildren
-                    aria-label="USAGE_DATA"
-                    id="Max-Daily-Session-Traffic"
-                    maxValue={3000000000}
-                    strokeWidth={12}
-                    value={3000000000}
-                  >
-                    <div
-                      className="usage-progress-text"
-                    >
-                      <strong>
-                        0 B
-                      </strong>
-                      <div
-                        className="usage-progress-remaining"
-                      >
-                        USAGE_REMAINING
-                      </div>
-                    </div>
-                  </CircularProgressbarWithChildren>
-                </div>
-                <div
-                  className="usage-check-used"
-                >
-                  3 GB
-USAGE_USED_OF 3 GB
                 </div>
               </div>
             </div>
@@ -2506,6 +2038,7 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
         >
           <div
             className="usage-box-inner-big"
+            key="Max-Daily-Session"
           >
             <div
               className="usage-check-content usage-high"
@@ -2561,60 +2094,8 @@ exports[`<Status /> interactions subscriptions: should show upgrade option when 
             </div>
           </div>
           <div
-            className="usage-box-inner-small"
-          >
-            <div
-              className="usage-check-content usage-high"
-            >
-              <div
-                className="usage-check-header"
-              >
-                <span
-                  aria-hidden="true"
-                  className="usage-check-icon timer-icon"
-                />
-                <div>
-                  USAGE_TIME
-                </div>
-              </div>
-              <div
-                className="usage-progress-details"
-              >
-                <div
-                  className="usage-progress-wrapper"
-                >
-                  <CircularProgressbarWithChildren
-                    aria-label="USAGE_TIME"
-                    id="Max-Daily-Session"
-                    maxValue={10800}
-                    strokeWidth={12}
-                    value={10700}
-                  >
-                    <div
-                      className="usage-progress-text"
-                    >
-                      <strong>
-                        1TIME_MINUTE_ABBR
-                      </strong>
-                      <div
-                        className="usage-progress-remaining"
-                      >
-                        USAGE_REMAINING
-                      </div>
-                    </div>
-                  </CircularProgressbarWithChildren>
-                </div>
-                <div
-                  className="usage-check-used"
-                >
-                  2TIME_HOUR_ABBR 58TIME_MINUTE_ABBR
-USAGE_USED_OF 3TIME_HOUR_ABBR
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
             className="usage-box-inner-big"
+            key="Max-Daily-Session-Traffic"
           >
             <div
               className="usage-check-content usage-high"
@@ -2665,59 +2146,6 @@ USAGE_USED_OF 3TIME_HOUR_ABBR
                      
                     USAGE_REMAINING
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            className="usage-box-inner-small"
-          >
-            <div
-              className="usage-check-content usage-high"
-            >
-              <div
-                className="usage-check-header"
-              >
-                <span
-                  aria-hidden="true"
-                  className="usage-check-icon data-icon"
-                />
-                <div>
-                  USAGE_DATA
-                </div>
-              </div>
-              <div
-                className="usage-progress-details"
-              >
-                <div
-                  className="usage-progress-wrapper"
-                >
-                  <CircularProgressbarWithChildren
-                    aria-label="USAGE_DATA"
-                    id="Max-Daily-Session-Traffic"
-                    maxValue={3000000000}
-                    strokeWidth={12}
-                    value={3000000000}
-                  >
-                    <div
-                      className="usage-progress-text"
-                    >
-                      <strong>
-                        0 B
-                      </strong>
-                      <div
-                        className="usage-progress-remaining"
-                      >
-                        USAGE_REMAINING
-                      </div>
-                    </div>
-                  </CircularProgressbarWithChildren>
-                </div>
-                <div
-                  className="usage-check-used"
-                >
-                  3 GB
-USAGE_USED_OF 3 GB
                 </div>
               </div>
             </div>

@@ -102,6 +102,7 @@ client:
     status_page:
       accounting_swap_octets: false
       radius_usage_enabled: true
+      radial_usage_display: narrow
       top_up_enabled: true
       links: []
 
