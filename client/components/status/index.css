@@ -360,9 +360,7 @@ progress + p.progress {
     width: 100%;
     padding: 8px 0;
   }
-}
 
-@media screen and (max-width: 656px) {
   .usage-box-inner-small {
     height: auto;
     min-height: 304px;
