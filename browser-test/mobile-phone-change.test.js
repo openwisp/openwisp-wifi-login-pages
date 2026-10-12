@@ -104,12 +104,16 @@ describe("Selenium tests for <MobilePhoneChange />", () => {
     await getElementByCss(driver, "div#status");
     const emailElement = await getElementByCss(
       driver,
-      "div > p:nth-child(5) > span",
+      "#status .main-column > .inner > p:nth-child(5) > span",
     );
+    await driver.wait(until.elementTextIs(emailElement, data.email));
     expect(await emailElement.getText()).toEqual(data.email);
     const phoneElement = await getElementByCss(
       driver,
-      "div > p:nth-child(6) > span",
+      "#status .main-column > .inner > p:nth-child(6) > span",
+    );
+    await driver.wait(
+      until.elementTextIs(phoneElement, data.changePhoneNumber),
     );
     expect(await phoneElement.getText()).toEqual(data.changePhoneNumber);
     activeSessionTr = await getElementByCss(driver, "table tr.active-session");

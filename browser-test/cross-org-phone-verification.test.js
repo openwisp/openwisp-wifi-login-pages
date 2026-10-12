@@ -56,6 +56,7 @@ describe("Selenium tests for cross-organization phone verification", () => {
       ),
       5000,
     );
+    await driver.wait(until.elementTextIs(emailElement, data.email));
     expect(await emailElement.getText()).toEqual(data.email);
   });
 });
