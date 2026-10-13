@@ -57,7 +57,8 @@ Installing for Development
 
 Fork the `openwisp-wifi-login-pages repository
 <https://github.com/openwisp/openwisp-wifi-login-pages>`_ on GitHub, then
-clone your fork. Replace ``YOUR_GITHUB_USERNAME`` with your GitHub username:
+clone your fork. Replace ``YOUR_GITHUB_USERNAME`` with your GitHub
+username:
 
 .. code-block:: shell
 
