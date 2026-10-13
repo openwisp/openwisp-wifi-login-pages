@@ -55,11 +55,13 @@ this by following these steps:
 Installing for Development
 --------------------------
 
-Fork and clone the forked repository:
+Fork the `openwisp-wifi-login-pages repository
+<https://github.com/openwisp/openwisp-wifi-login-pages>`_ on GitHub, then
+clone your fork. Replace ``YOUR_GITHUB_USERNAME`` with your GitHub username:
 
 .. code-block:: shell
 
-    git clone https://github.com/<your_fork>/openwisp-wifi-login-pages.git
+    git clone git@github.com:YOUR_GITHUB_USERNAME/openwisp-wifi-login-pages.git
 
 Navigate into the cloned repository:
 
