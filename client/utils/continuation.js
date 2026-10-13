@@ -102,13 +102,27 @@ export const readContinuation = (orgSlug, {now = Date.now()} = {}) => {
   }
 };
 
-// Starts a continuation from the `next` query param of the login URL.
-// Any previous continuation is discarded; invalid or repeated `next` is ignored.
+// Expands a route alias (eg: `pay`) into the destination path of the
+// organization, returns `null` if the value is not an alias.
+const expandAlias = (alias, orgSlug) => {
+  const route = Object.values(routes).find(
+    (entry) => entry.alias && entry.alias === alias,
+  );
+  return route ? `/${orgSlug}/${route.path}` : null;
+};
+
+// Starts a continuation from the `next` query param of the login URL, or
+// from its short form `n` when `next` is absent. `next` accepts a path or
+// an alias, `n` only an alias. Any previous continuation is discarded;
+// invalid or repeated values are ignored.
 export const beginContinuation = (search, orgSlug, {now = Date.now()} = {}) => {
   clearContinuation();
   try {
     decodeURIComponent(search);
-    const values = new URLSearchParams(search).getAll("next");
+    const params = new URLSearchParams(search);
+    const values = params.has("next")
+      ? params.getAll("next").map((v) => expandAlias(v, orgSlug) || v)
+      : params.getAll("n").map((v) => expandAlias(v, orgSlug));
     const destination =
       values.length === 1 && resolveDestination(values[0], orgSlug);
     if (!destination) return null;

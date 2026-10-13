@@ -22,6 +22,36 @@ Any other value (external URLs, other organizations, unknown pages, query
 strings or fragments) is ignored and the user follows the usual login
 navigation.
 
+Compact Links
+-------------
+
+To keep links short, the following aliases are supported on the login URL:
+
+- ``pay``: short form of ``payment/process`` of the organization, usable
+  as the value of ``next`` or through the shorter ``n`` parameter (for
+  example ``n=pay``). ``n`` accepts only aliases.
+- ``sid``: short form of the passwordless authentication token parameter
+  (``sesame`` by default, see ``passwordless_auth_token_name``).
+
+.. code-block:: shell
+
+    https://wifi.openwisp.io/default/login?n=pay&sid=<token>
+
+This is equivalent to:
+
+.. code-block:: shell
+
+    https://wifi.openwisp.io/default/login?next=%2Fdefault%2Fpayment%2Fprocess&sesame=<token>
+
+.. important::
+
+    ``n`` and ``sid`` can be used independently. If both a long and a
+    short parameter are present, the long one is used (``next`` over
+    ``n``, the configured token parameter over ``sid``). Unknown, empty or
+    repeated values are ignored. The token is never forwarded to the
+    destination and all these parameters are removed from the address bar
+    after login.
+
 Behavior
 --------
 

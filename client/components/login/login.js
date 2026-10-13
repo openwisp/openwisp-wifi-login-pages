@@ -62,9 +62,17 @@ export default class Login extends React.Component {
     const username = getParameterByName("username");
     const token = getParameterByName("token");
     const {loginForm, setTitle, orgName, orgSlug, settings} = this.props;
-    const sesame_token = getParameterByName(
+    const search = new URLSearchParams(window.location.search);
+    let sesame_token = getParameterByName(
       settings.passwordless_auth_token_name,
     );
+    // `sid` is the short form of the passwordless token param. It is used
+    // only if the configured param is absent and `sid` appears exactly once
+    // (a repeated `sid` is ambiguous, so it is ignored).
+    if (!search.has(settings.passwordless_auth_token_name)) {
+      const sidValues = search.getAll("sid");
+      if (sidValues.length === 1 && sidValues[0]) [sesame_token] = sidValues;
+    }
     const loginMethod = getParameterByName("login_method");
     beginContinuation(window.location.search, orgSlug);
     this.removeContinuationParams();
@@ -382,8 +390,8 @@ export default class Login extends React.Component {
     const {navigate, settings} = this.props;
     const {pathname, search} = window.location;
     const params = new URLSearchParams(search);
-    ["next", settings.passwordless_auth_token_name].forEach((name) =>
-      params.delete(name),
+    ["next", "n", "sid", settings.passwordless_auth_token_name].forEach(
+      (name) => params.delete(name),
     );
     const clean = params.toString();
     if (clean !== new URLSearchParams(search).toString()) {

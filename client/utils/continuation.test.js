@@ -84,6 +84,44 @@ describe("continuation destinations", () => {
     expect(beginContinuation(search, orgSlug)).toBeNull();
   });
 
+  it.each(["default", "other-org"])(
+    "expands n=pay to the payment process of %s",
+    (slug) => {
+      expect(beginContinuation("?n=pay", slug)).toMatchObject({
+        destination: `/${slug}/payment/process/`,
+      });
+    },
+  );
+
+  it.each([
+    "?n=",
+    "?n=PAY",
+    "?n=pp",
+    "?n=status",
+    "?n=/default/status",
+    "?n=pay&n=pay",
+    "?next=&n=pay",
+    "?n=pay&next=",
+    "?next=https://example.com&n=pay",
+    "?n=pay&next=%2Fdefault%2Fstatus%3Fview%3D1",
+    "?next=/default/status&next=/default/status&n=pay",
+  ])("does not resolve %j through the alias", (search) => {
+    expect(beginContinuation(search, orgSlug)).toBeNull();
+  });
+
+  it("prefers next over n", () => {
+    expect(
+      beginContinuation("?n=pay&next=/default/change-password", orgSlug),
+    ).toMatchObject({destination: "/default/change-password"});
+  });
+
+  it("accepts the alias in the next param too", () => {
+    expect(beginContinuation("?next=pay", orgSlug)).toMatchObject({
+      destination: "/default/payment/process/",
+    });
+    expect(beginContinuation("?next=pay&next=pay", orgSlug)).toBeNull();
+  });
+
   it.each([
     ["/default/status", true],
     ["/default/status/", true],

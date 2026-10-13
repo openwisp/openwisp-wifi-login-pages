@@ -124,6 +124,62 @@ describe("<Login /> next continuation", () => {
     });
   });
 
+  it("logs in with the short sid and n=pay params and cleans the URL", async () => {
+    axios.mockResolvedValueOnce({data: responseData});
+    const {props, wrapper} = mountLogin(
+      "/default/login?n=pay&sid=short-secret&username=alice",
+    );
+    wrapper.instance().componentDidMount();
+    await tick();
+    expect(props.navigate.mock.calls[0]).toEqual([
+      "/default/login?username=alice",
+      {replace: true},
+    ]);
+    expect(axios.mock.calls[0][0].headers.Authorization).toBe(
+      "sesame short-secret",
+    );
+    expect(props.navigate).toHaveBeenLastCalledWith("/default/payment/process");
+    expect(readContinuation("default")).toBeNull();
+  });
+
+  it("uses the configured token param name for sid", async () => {
+    axios.mockResolvedValueOnce({data: responseData});
+    const props = createTestProps({
+      settings: {
+        ...createTestProps().settings,
+        passwordless_auth_token_name: "sesame_id",
+      },
+    });
+    const {wrapper} = mountLogin("/default/login?sid=short-secret", props);
+    wrapper.instance().componentDidMount();
+    await tick();
+    expect(axios.mock.calls[0][0].headers.Authorization).toBe(
+      "sesame_id short-secret",
+    );
+  });
+
+  it.each([
+    ["the configured param wins over sid", "sesame=long&sid=short", "long"],
+    ["the configured param wins when first", "sid=short&sesame=long", "long"],
+  ])("%s", async (label, query, expected) => {
+    axios.mockResolvedValueOnce({data: responseData});
+    const {wrapper} = mountLogin(`/default/login?${query}`);
+    wrapper.instance().componentDidMount();
+    await tick();
+    expect(axios.mock.calls[0][0].headers.Authorization).toBe(
+      `sesame ${expected}`,
+    );
+  });
+
+  it.each(["sid=a&sid=b", "sid=", "sesame=&sid=short"])(
+    "does not log in with %s",
+    (query) => {
+      const {wrapper} = mountLogin(`/default/login?${query}`);
+      wrapper.instance().componentDidMount();
+      expect(axios).not.toHaveBeenCalled();
+    },
+  );
+
   it("leaves every other destination to the status page", () => {
     const {props, wrapper} = mountLogin(
       "/default/login?next=/default/change-password",
