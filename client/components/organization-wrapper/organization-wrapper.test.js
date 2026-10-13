@@ -411,7 +411,9 @@ describe("Test Organization Wrapper for unauthenticated users", () => {
       ),
     );
     element = pathMap["login/*"];
-    expect(JSON.stringify(element)).toEqual(JSON.stringify(<Login />));
+    expect(JSON.stringify(element)).toEqual(
+      JSON.stringify(<Login cookies={cookies} />),
+    );
     element = pathMap.status;
     // userAutoLogin is true
     expect(element).toEqual(<Navigate to="/default/logout" />);

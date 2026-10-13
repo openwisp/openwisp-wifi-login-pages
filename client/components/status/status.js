@@ -26,6 +26,13 @@ import logError from "../../utils/log-error";
 import Contact from "../contact-box";
 import shouldLinkBeShown from "../../utils/should-link-be-shown";
 import validateToken from "../../utils/validate-token";
+import {
+  readContinuation,
+  takeContinuation,
+  clearContinuation,
+  isRoute,
+} from "../../utils/continuation";
+import routes from "../../constants/routes";
 import needsVerify from "../../utils/needs-verify";
 import Loader from "../../utils/loader";
 import {initialState} from "../../reducers/organization";
@@ -197,7 +204,7 @@ export default class Status extends React.Component {
         mustLogin: userMustLogin,
         mustLogout: userMustLogout,
         captivePortalLogoutOnly: userCaptivePortalLogoutOnly,
-        repeatLogin,
+        repeatLogin: userRepeatLogin,
         proceedToPayment: userProceedToPayment,
       } = userData;
       const mustLogin = resolveStoredValue(
@@ -210,6 +217,12 @@ export default class Status extends React.Component {
         captivePortalSyncAuth,
         `${orgSlug}_mustLogout`,
         userMustLogout,
+        cookies,
+      );
+      const repeatLogin = resolveStoredValue(
+        captivePortalSyncAuth,
+        `${orgSlug}_repeatLogin`,
+        userRepeatLogin,
         cookies,
       );
       // Captive-portal-only logout: tear down RADIUS session, keep WLP session intact
@@ -290,6 +303,7 @@ export default class Status extends React.Component {
           // In synchronous captive portal authentication, the page reloads
           // after form submission, so handleLogoutIframe() must be called manually here.
           // (handleLogout() is already triggered when the user clicks the "Logout" button.)
+          this.repeatLogin = Boolean(repeatLogin);
           this.setState({loggedOut: mustLogout});
           this.handleLogoutIframe();
         } else {
@@ -407,6 +421,17 @@ export default class Status extends React.Component {
 
     if (!this.isComponentMounted) {
       return;
+    }
+
+    const continuation = readContinuation(orgSlug);
+    if (continuation && continuation.username === userData.username) {
+      const {url} = takeContinuation(orgSlug, userData.username);
+      if (!isRoute(url, orgSlug, routes.status)) {
+        navigate(url, {replace: true});
+        return;
+      }
+    } else if (continuation && continuation.username) {
+      clearContinuation();
     }
 
     // if everything went fine, load the user sessions
@@ -704,6 +729,14 @@ export default class Status extends React.Component {
     }
 
     if (repeatLogin) {
+      // no portal session to log out, so just log in again
+      if (this.loginFormRef && this.loginFormRef.current) {
+        const {userData} = this.props;
+        this.notifyCpLogin(userData);
+        this.loginFormRef.current.submit();
+      } else {
+        setLoading(false);
+      }
       return;
     }
     // No active portal session; settle page directly for captive-portal-only logout
@@ -764,8 +797,11 @@ export default class Status extends React.Component {
       if (title.indexOf("404") >= 0) {
         logout(cookies, orgSlug);
       }
-      if (reply && !toast.isActive(mainToastId)) {
-        toast.error(getDynamicTranslation(reply));
+      if (reply) {
+        clearContinuation();
+        if (!toast.isActive(mainToastId)) {
+          toast.error(getDynamicTranslation(reply));
+        }
       }
       if (macaddr) {
         cookies.set(`${orgSlug}_macaddr`, macaddr, {path: "/"});
@@ -810,13 +846,14 @@ export default class Status extends React.Component {
     const logoutMethod = localStorage.getItem(logoutMethodKey);
     const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
     if (
-      loggedOut ||
-      resolveStoredValue(
-        captivePortalSyncAuth,
-        `${orgSlug}_mustLogout`,
-        false,
-        cookies,
-      )
+      !repeatLogin &&
+      (loggedOut ||
+        resolveStoredValue(
+          captivePortalSyncAuth,
+          `${orgSlug}_mustLogout`,
+          false,
+          cookies,
+        ))
     ) {
       const captivePortalLogoutOnly =
         this.captivePortalLogoutOnly ||
@@ -848,6 +885,7 @@ export default class Status extends React.Component {
 
     if (repeatLogin) {
       this.repeatLogin = false;
+      clearStoredValue(`${orgSlug}_repeatLogin`, cookies);
       // wait to trigger login to avoid getting stuck
       // in captive portal firewall rule reloading
       toast.info(t`PLEASE_WAIT`, {autoClose: wait_after});

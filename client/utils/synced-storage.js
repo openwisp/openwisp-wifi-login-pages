@@ -70,3 +70,10 @@ export const clearStoredValue = (key, cookies) => {
   localStorage.removeItem(key);
   cookies.remove(key, {path: "/"});
 };
+
+// Clears the flags which drive the captive portal login/logout steps.
+export const clearCaptivePortalFlags = (orgSlug, cookies) => {
+  ["mustLogin", "mustLogout", "repeatLogin", "captivePortalLogoutOnly"].forEach(
+    (flag) => clearStoredValue(`${orgSlug}_${flag}`, cookies),
+  );
+};

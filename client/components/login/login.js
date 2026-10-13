@@ -3,6 +3,7 @@ import "./index.css";
 
 import axios from "axios";
 import PropTypes from "prop-types";
+import {Cookies} from "react-cookie";
 import qs from "qs";
 import React, {Suspense} from "react";
 import {Link, Route, Routes} from "react-router-dom";
@@ -30,6 +31,14 @@ import getLanguageHeaders from "../../utils/get-language-headers";
 import {userPendingVerification} from "../../utils/pending-verification";
 import redirectToPayment from "../../utils/redirect-to-payment";
 import {localStorage, sessionStorage} from "../../utils/storage";
+import {
+  beginContinuation,
+  bindContinuation,
+  clearContinuation,
+  isRoute,
+} from "../../utils/continuation";
+import {storeValue} from "../../utils/synced-storage";
+import routes from "../../constants/routes";
 
 const PhoneInput = React.lazy(
   () => import(/* webpackChunkName: 'PhoneInput' */ "react-phone-input-2"),
@@ -56,6 +65,9 @@ export default class Login extends React.Component {
     const sesame_token = getParameterByName(
       settings.passwordless_auth_token_name,
     );
+    const loginMethod = getParameterByName("login_method");
+    beginContinuation(window.location.search, orgSlug);
+    this.removeContinuationParams();
     setTitle(t`LOGIN`, orgName);
     let remember_me;
 
@@ -69,7 +81,6 @@ export default class Login extends React.Component {
 
     // social login / SAML login
     if (username && token) {
-      const loginMethod = getParameterByName("login_method");
       if (loginMethod) {
         // we have to use localStorage because the page may be
         // closed and the information may be lost if we use sessionStorage
@@ -311,6 +322,9 @@ export default class Login extends React.Component {
       toastId: mainToastId,
     });
     setUserData(nextUserData);
+    // An expired password must be changed first: drop the continuation.
+    if (data.password_expired) clearContinuation();
+    const continuation = bindContinuation(orgSlug, data.username);
     if (userPendingVerification(data)) {
       navigate(`/${orgSlug}/complete-signup`);
       authenticate(true);
@@ -324,7 +338,57 @@ export default class Login extends React.Component {
       authenticate(true);
       return;
     }
+    // Other destinations are followed by Status once the captive portal
+    // login is complete, only payment/process needs handling here.
+    if (
+      continuation &&
+      isRoute(continuation.destination, orgSlug, routes.paymentProcess)
+    ) {
+      this.proceedToPayment(nextUserData);
+      return;
+    }
     authenticate(true);
+  };
+
+  // Skips the draft page: opens the payment page directly, after the captive
+  // portal login when the payment needs internet access.
+  proceedToPayment = (user) => {
+    const {
+      orgSlug,
+      settings,
+      authenticate,
+      navigate,
+      setUserData,
+      cookies,
+      captivePortalSyncAuth,
+    } = this.props;
+    clearContinuation();
+    if (settings.payment_requires_internet) {
+      const flags = {proceedToPayment: true, mustLogin: true};
+      setUserData({...user, ...flags});
+      Object.entries(flags).forEach(([key, value]) =>
+        storeValue(captivePortalSyncAuth, `${orgSlug}_${key}`, value, cookies),
+      );
+      authenticate(true);
+      return;
+    }
+    authenticate(true);
+    navigate(`/${orgSlug}/payment/process`);
+  };
+
+  // Removes the continuation and SESAME token params from the URL so that
+  // they are not kept in the browser history.
+  removeContinuationParams = () => {
+    const {navigate, settings} = this.props;
+    const {pathname, search} = window.location;
+    const params = new URLSearchParams(search);
+    ["next", settings.passwordless_auth_token_name].forEach((name) =>
+      params.delete(name),
+    );
+    const clean = params.toString();
+    if (clean !== new URLSearchParams(search).toString()) {
+      navigate(`${pathname}${clean ? `?${clean}` : ""}`, {replace: true});
+    }
   };
 
   handleCheckBoxChange = (event) => {
@@ -577,6 +641,7 @@ Login.propTypes = {
     mobile_phone_verification: PropTypes.bool,
     subscriptions: PropTypes.bool,
     passwordless_auth_token_name: PropTypes.string,
+    payment_requires_internet: PropTypes.bool,
   }).isRequired,
   setTitle: PropTypes.func.isRequired,
   captivePortalLoginForm: PropTypes.shape({
@@ -589,4 +654,9 @@ Login.propTypes = {
     additional_fields: PropTypes.array,
   }).isRequired,
   navigate: PropTypes.func.isRequired,
+  cookies: PropTypes.instanceOf(Cookies).isRequired,
+  captivePortalSyncAuth: PropTypes.bool,
+};
+Login.defaultProps = {
+  captivePortalSyncAuth: false,
 };

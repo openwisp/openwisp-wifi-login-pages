@@ -36,6 +36,7 @@ import {
   storeValue,
   resolveStoredValue,
   clearStoredValue,
+  clearCaptivePortalFlags,
 } from "./synced-storage";
 import {cancelUpgradePlanApiUrl, upgradePlanApiUrl} from "../constants";
 
@@ -846,6 +847,20 @@ describe("synced-storage tests", () => {
     clearStoredValue("test_key", cookies);
     expect(cookies.get("test_key")).toBeUndefined();
     expect(localStorage.getItem("test_key")).toEqual(null);
+  });
+
+  it("clearCaptivePortalFlags should remove all captive portal flags", () => {
+    const cookies = new Cookies();
+    const flags = ["mustLogin", "mustLogout", "repeatLogin"];
+    flags.forEach((flag) => {
+      cookies.set(`default_${flag}`, "true", {path: "/"});
+      localStorage.setItem(`default_${flag}`, "true");
+    });
+    clearCaptivePortalFlags("default", cookies);
+    flags.forEach((flag) => {
+      expect(cookies.get(`default_${flag}`)).toBeUndefined();
+      expect(localStorage.getItem(`default_${flag}`)).toEqual(null);
+    });
   });
 });
 describe("getPaymentStatusRedirectUrl tests", () => {

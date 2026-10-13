@@ -214,6 +214,35 @@ describe("Test <PaymentStatus /> cases", () => {
     ]);
   });
 
+  it.each([
+    [true, {mustLogin: "false", mustLogout: "true", repeatLogin: "true"}],
+    [false, {mustLogin: "true", mustLogout: "false", repeatLogin: "false"}],
+  ])(
+    "persists the captive portal flags on success with sync auth (payment_requires_internet: %s)",
+    async (paymentRequiresInternet, expected) => {
+      props = createTestProps({
+        userData: {...responseData, is_verified: true},
+        params: {status: "success"},
+        captivePortalSyncAuth: true,
+        cookies: new Cookies(),
+      });
+      props.settings.payment_requires_internet = paymentRequiresInternet;
+      validateToken.mockReturnValue(true);
+      wrapper = shallow(<PaymentStatus {...props} />, {
+        context: loadingContextValue,
+        disableLifecycleMethods: true,
+      });
+      wrapper.instance().componentDidMount();
+      await tick();
+      Object.entries(expected).forEach(([flag, value]) => {
+        expect(String(props.cookies.get(`default_${flag}`))).toBe(value);
+        expect(localStorage.getItem(`default_${flag}`)).toBe(value);
+        props.cookies.remove(`default_${flag}`, {path: "/"});
+        localStorage.removeItem(`default_${flag}`);
+      });
+    },
+  );
+
   it("redirect to status + cp login on success when payment does not require internet", async () => {
     const spyToast = jest.spyOn(toast, "success");
     props = createTestProps({

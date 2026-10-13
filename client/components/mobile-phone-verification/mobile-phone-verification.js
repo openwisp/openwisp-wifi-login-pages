@@ -26,6 +26,7 @@ import handleLogout from "../../utils/handle-logout";
 import getError from "../../utils/get-error";
 import getLanguageHeaders from "../../utils/get-language-headers";
 import {sessionStorage} from "../../utils/storage";
+import {rebindContinuation} from "../../utils/continuation";
 
 export default class MobilePhoneVerification extends React.Component {
   phoneTokenSentKey = "owPhoneTokenSent";
@@ -106,6 +107,9 @@ export default class MobilePhoneVerification extends React.Component {
       }),
     })
       .then(() => {
+        // Verification replaces the username with the phone number, keep
+        // the continuation bound to the same user.
+        rebindContinuation(orgSlug, userData.username, userData.phone_number);
         this.setState({
           errors: {},
         });

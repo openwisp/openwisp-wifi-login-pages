@@ -1043,6 +1043,15 @@ exports[`Test Organization Wrapper for unauthenticated users should show route f
         <Route
           element={
             <Memo(Connect(Login))
+              cookies={
+                Cookies {
+                  "HAS_DOCUMENT_COOKIE": true,
+                  "changeListeners": [],
+                  "cookies": {},
+                  "defaultSetOptions": {},
+                  "update": [Function],
+                }
+              }
               navigate={[MockFunction]}
             />
           }

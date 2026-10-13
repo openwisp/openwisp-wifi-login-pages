@@ -24,8 +24,16 @@ export default class PaymentStatus extends React.Component {
   }
 
   async componentDidMount() {
-    const {cookies, orgSlug, setUserData, logout, params, settings, language} =
-      this.props;
+    const {
+      cookies,
+      orgSlug,
+      setUserData,
+      logout,
+      params,
+      settings,
+      language,
+      captivePortalSyncAuth,
+    } = this.props;
     const {status} = params;
     let {userData} = this.props;
     const {setLoading} = this.context;
@@ -51,12 +59,21 @@ export default class PaymentStatus extends React.Component {
     if (status === "success" && method === "bank_card" && isVerified === true) {
       // Skip logout/login cycle if CoA handles session group updates transparently
       if (!settings.captive_portal_supports_coa) {
-        setUserData({
-          ...userData,
+        const flags = {
           mustLogin: !settings.payment_requires_internet,
-          mustLogout: settings.payment_requires_internet,
-          repeatLogin: settings.payment_requires_internet,
-        });
+          mustLogout: Boolean(settings.payment_requires_internet),
+          repeatLogin: Boolean(settings.payment_requires_internet),
+        };
+        setUserData({...userData, ...flags});
+        // keep the flags across the page reload of synchronous auth
+        Object.entries(flags).forEach(([key, value]) =>
+          storeValue(
+            captivePortalSyncAuth,
+            `${orgSlug}_${key}`,
+            value,
+            cookies,
+          ),
+        );
       }
     } else if (
       status === "draft" &&

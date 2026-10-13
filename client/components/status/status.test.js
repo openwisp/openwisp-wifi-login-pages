@@ -17,6 +17,12 @@ import Status from "./status";
 import validateToken from "../../utils/validate-token";
 import {initialState} from "../../reducers/organization";
 import Modal from "../../utils/modal";
+import {
+  beginContinuation,
+  bindContinuation,
+  readContinuation,
+} from "../../utils/continuation";
+import {sessionStorage} from "../../utils/storage";
 import {mapStateToProps, mapDispatchToProps} from "./index";
 
 jest.mock("axios");
@@ -3924,5 +3930,113 @@ describe("<Status /> accounting_swap_octets", () => {
     // download is the 4th row, upload is the 5th
     expect(rows.at(3).find("td").text()).toBe("1 kB");
     expect(rows.at(4).find("td").text()).toBe("2 kB");
+  });
+});
+
+describe("<Status /> login continuation", () => {
+  const destination = "/default/change-password";
+  const mountStatus = async (userProps = {}, propsOverride = {}) => {
+    validateToken.mockReturnValue(true);
+    axios.mockResolvedValue({status: 200, data: [], headers: {}});
+    const props = createTestProps({
+      userData: {...responseData, ...userProps},
+      location: {search: ""},
+      ...propsOverride,
+    });
+    const wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    const status = wrapper.instance();
+    status.loginFormRef.current = {submit: jest.fn()};
+    return {props, status};
+  };
+  const startContinuation = (username = "tester") => {
+    beginContinuation(`?next=${destination}`, "default");
+    bindContinuation("default", username);
+  };
+
+  beforeEach(() => {
+    Status.contextTypes = {setLoading: PropTypes.func};
+    loadTranslation("en", "default");
+    startContinuation();
+  });
+
+  afterEach(() => {
+    sessionStorage.clear();
+    window.history.replaceState({}, "", "/");
+    axios.mockReset();
+    jest.resetAllMocks();
+    jest.restoreAllMocks();
+  });
+
+  it("follows next once the sync captive portal login returned", async () => {
+    const {props, status} = await mountStatus(
+      {},
+      {captivePortalSyncAuth: true},
+    );
+    await status.componentDidMount();
+    await tick();
+    expect(props.navigate).toHaveBeenCalledWith(destination, {replace: true});
+    expect(readContinuation("default")).toBeNull();
+  });
+
+  it("drops next when the sync captive portal login failed", async () => {
+    const toastError = jest.spyOn(toast, "error");
+    window.history.replaceState({}, "", "/default/status?reply=Auth+failed");
+    const {props, status} = await mountStatus(
+      {},
+      {captivePortalSyncAuth: true},
+    );
+    await status.componentDidMount();
+    await tick();
+    expect(props.navigate).not.toHaveBeenCalled();
+    expect(readContinuation("default")).toBeNull();
+    expect(toastError).toHaveBeenCalledTimes(1);
+    expect(status.context.setLoading).toHaveBeenLastCalledWith(false);
+  });
+
+  it("follows next after a cross-origin captive portal iframe load", async () => {
+    const {props, status} = await mountStatus();
+    status.loginIframeRef.current = {
+      contentWindow: {
+        get location() {
+          throw new Error("cross-origin");
+        },
+      },
+    };
+    status.handleLoginIframe();
+    await tick();
+    expect(props.navigate).toHaveBeenCalledWith(destination, {replace: true});
+    expect(readContinuation("default")).toBeNull();
+  });
+
+  it("does not follow next while the phone verification is pending", async () => {
+    const {props, status} = await mountStatus({
+      is_verified: false,
+      method: "mobile_phone",
+    });
+    props.settings.mobile_phone_verification = true;
+    await status.finalOperations();
+    expect(props.navigate).not.toHaveBeenCalledWith(
+      destination,
+      expect.anything(),
+    );
+    expect(readContinuation("default")).not.toBeNull();
+  });
+
+  it("clears next bound to another user without following it", async () => {
+    sessionStorage.clear();
+    startContinuation("someone-else");
+    const {props, status} = await mountStatus();
+    await status.finalOperations();
+    expect(props.navigate).not.toHaveBeenCalled();
+    expect(readContinuation("default")).toBeNull();
+  });
+
+  it("logs in again when repeatLogin is set and there is no portal session", async () => {
+    const {status} = await mountStatus();
+    await status.handleLogout(false, true);
+    expect(status.loginFormRef.current.submit).toHaveBeenCalledTimes(1);
   });
 });
