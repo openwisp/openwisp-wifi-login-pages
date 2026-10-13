@@ -20,7 +20,9 @@ export default class PaymentStatus extends React.Component {
     this.state = {
       isTokenValid: null,
     };
+    this.paymentUrlInput = React.createRef();
     this.paymentProceedHandler = this.paymentProceedHandler.bind(this);
+    this.copyPaymentUrl = this.copyPaymentUrl.bind(this);
   }
 
   async componentDidMount() {
@@ -233,9 +235,60 @@ export default class PaymentStatus extends React.Component {
       : `/${orgSlug}/payment/process`;
   }
 
+  selectPaymentUrl() {
+    const input = this.paymentUrlInput.current;
+    if (!input) {
+      return false;
+    }
+    input.focus();
+    input.select();
+    return true;
+  }
+
+  async copyPaymentUrl() {
+    const {userData} = this.props;
+    const {payment_url: paymentUrl} = userData;
+    let error;
+
+    if (
+      typeof navigator !== "undefined" &&
+      navigator.clipboard &&
+      typeof navigator.clipboard.writeText === "function"
+    ) {
+      try {
+        await navigator.clipboard.writeText(paymentUrl);
+        toast.success(t`PAY_LINK_COPIED`, {autoClose: 3000});
+        return;
+      } catch (clipboardError) {
+        error = clipboardError;
+      }
+    }
+
+    try {
+      if (
+        this.selectPaymentUrl() &&
+        typeof document !== "undefined" &&
+        typeof document.execCommand === "function" &&
+        document.execCommand("copy")
+      ) {
+        toast.success(t`PAY_LINK_COPIED`, {autoClose: 3000});
+        return;
+      }
+    } catch (fallbackError) {
+      error = fallbackError;
+    }
+
+    toast.error(t`PAY_LINK_COPY_FAIL`);
+    logError(
+      error || new Error("Payment link copy fallback failed"),
+      "Unable to copy payment link",
+    );
+  }
+
   renderDraft(isDraftUpgrade = false) {
-    const {page = {}} = this.props;
+    const {page = {}, userData} = this.props;
     const {timeout = 5, max_attempts: maxAttempts = 3} = page;
+    const {payment_url: paymentUrl} = userData;
     const payProceedUrl = this.getProceedUrl();
 
     return (
@@ -251,6 +304,51 @@ export default class PaymentStatus extends React.Component {
                   __html: t`PAY_WARN${timeout}${maxAttempts}`,
                 }}
               />
+
+              {paymentUrl && (
+                <div className="row payment-link">
+                  <p
+                    id="payment-link-help"
+                    dangerouslySetInnerHTML={{__html: t`PAY_LINK_HELP`}}
+                  />
+                  <label htmlFor="payment-link">{t`PAY_LINK_LBL`}</label>
+                  <div className="payment-link-control">
+                    <input
+                      id="payment-link"
+                      ref={this.paymentUrlInput}
+                      className="input payment-link-input"
+                      type="text"
+                      value={paymentUrl}
+                      readOnly
+                      title={t`PAY_LINK_COPY_HINT`}
+                      aria-describedby="payment-link-help"
+                      onClick={this.copyPaymentUrl}
+                    />
+                    <button
+                      type="button"
+                      className="button partial payment-link-copy"
+                      aria-label={t`PAY_LINK_COPY_BTN`}
+                      onClick={this.copyPaymentUrl}
+                    >
+                      <svg
+                        aria-hidden="true"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        width="18"
+                        height="18"
+                      >
+                        <rect x="8" y="8" width="12" height="13" rx="2" />
+                        <path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h3" />
+                      </svg>
+                      <span>{t`PAY_LINK_COPY_BTN`}</span>
+                    </button>
+                  </div>
+                </div>
+              )}
 
               <div className="row">
                 <Link

@@ -445,7 +445,7 @@ msgstr "Pagamento richiesto per procedere"
 #: client/components/payment-status/payment-status.js:155
 #, javascript-format
 msgid "PAY_WARN${ timeout }${ maxAttempts }"
-msgstr "<p>Cliccando sul pulsante sottostante raggiungerai il servizio di pagamento dove potrai inserire i dati della tua carta di credito/debito in totale sicurezza. Dopodichè raggiungerai il sito web della tua banca per confermare la transazione.</p><p>Avrai a disposizione ${ timeout } minuti per completare il processo.<br /><strong>Per questo motivo ti consigliamo di preparare la tua carta debito/credito prima di avviare il processo di pagamento.</strong></p><p>Se per qualsiasi motivo il processo non viene completato entro il tempo disponibile, la connessione internet che ti permette di raggiungere il sito web della tua banca verrà chiusa, se ciò accade puoi accedere nuovamente con le credenziali appena registrate e ripetere il processo fino ad un massimo di ${ maxAttempts } volte.</p>"
+msgstr "<p>Verrai reindirizzato a un servizio di pagamento sicuro per completare il pagamento.</p><p>Avrai <strong>${ timeout } minuti</strong> per completare il pagamento, quindi ti consigliamo di tenere la carta a portata di mano prima di procedere.</p><p>Se il tempo scade, il tuo accesso temporaneo a internet terminerà. Puoi accedere nuovamente con le credenziali registrate e riprovare il pagamento, fino a un massimo di <strong>${ maxAttempts } tentativi</strong>.</p>"
 
 #: client/components/payment-status/payment-status.js:165
 #: client/components/payment-status/payment-status.test.js:221
@@ -482,6 +482,25 @@ msgstr "Se non riesci a completare la transazione puoi provare a metterti in con
 #: client/components/payment-status/payment-status.js:230
 msgid "PAY_GO_BACK_BTN"
 msgstr "Annulla e torna al tuo account"
+
+#: client/components/payment-status/payment-status.js
+msgid "PAY_LINK_COPIED"
+msgstr "Link di pagamento copiato"
+
+msgid "PAY_LINK_COPY_FAIL"
+msgstr "Impossibile copiare il link di pagamento. Selezionalo e copialo manualmente."
+
+msgid "PAY_LINK_LBL"
+msgstr "Link di pagamento"
+
+msgid "PAY_LINK_COPY_BTN"
+msgstr "Copia link"
+
+msgid "PAY_LINK_COPY_HINT"
+msgstr "Clicca per copiare"
+
+msgid "PAY_LINK_HELP"
+msgstr "<strong>Prima di continuare</strong>, copia il link di pagamento qui sotto. Se questa finestra si chiude, apri una nuova finestra del browser e incolla il link nella barra degli indirizzi per completare il pagamento."
 
 #: client/components/password-reset/password-reset.js:32
 msgid "PWD_RESET_TITL"

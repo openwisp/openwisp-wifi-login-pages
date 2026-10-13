@@ -1,0 +1,52 @@
+.payment-link {
+  margin-top: -10px;
+}
+
+.payment-link > label {
+  display: block;
+  margin: 0 0 8px;
+}
+
+.payment-link-control {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+}
+
+body .payment-link-input {
+  min-width: 0;
+  width: auto !important;
+  flex: 1;
+  font-family: inherit;
+  font-weight: normal;
+  color: inherit;
+  background-color: #eee;
+  opacity: 0.6;
+  cursor: copy;
+}
+
+.payment-link-copy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  gap: 8px;
+  min-height: 40px;
+  box-sizing: border-box;
+}
+
+.payment-link-copy svg {
+  flex-shrink: 0;
+}
+
+.payment-link-input:focus-visible,
+.payment-link-copy:focus-visible {
+  outline: 2px solid #8b8b8b;
+  outline-offset: 2px;
+}
+
+@media (max-width: 480px) {
+  .payment-link-copy span {
+    display: none;
+  }
+}

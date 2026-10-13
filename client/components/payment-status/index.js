@@ -1,3 +1,5 @@
+import "./index.css";
+
 import {connect} from "react-redux";
 import Component from "./payment-status";
 import {authenticate, logout, setUserData} from "../../actions/dispatchers";

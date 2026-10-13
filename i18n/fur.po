@@ -445,7 +445,7 @@ msgstr "Si domande il paiament par lâ indevant"
 #: client/components/payment-status/payment-status.js:155
 #, javascript-format
 msgid "PAY_WARN${ timeout }${ maxAttempts }"
-msgstr "<p>Clicant sul boton chi sot tu rivarâs al servizi di paiament, dulà che tu podarâs inserî i dâts de tô cjarte di credit/debit in sigurece. Po dopo tu rivarâs al sît web de tô bancje par confermâ la transazion.</p><p>Tu varâs a disposizion ${ timeout } minûts par completâ il procès.<br /><strong>Par chest ti conseìn di preparâ la tô cjarte di debit/credit prime di inviâ il procès di paiament.</strong></p><p>Se par cualsisedi motîf il procès nol ven completât dentri dal timp a disposizion, la conession internet che ti permet di rivâ al sît web de tô bancje e sarà sierade; se chest al ves di capitâ, tu puedis jentrâ di gnûf cu lis credenziâls a pene regjistradis e ripeti il procès fin a un massim di ${ maxAttempts } voltis.</p>"
+msgstr "<p>Tu vignarâs indreçât a un servizi di paiament sigûr par completâ il paiament.</p><p>Tu varâs <strong>${ timeout } minûts</strong> par completâ il paiament, duncje ti conseìn di tignî la tô cjarte pronte prime di continuâ.</p><p>Se il timp al finìs, il to acès temporani a internet al scjadarà. Tu puedis jentrâ di gnûf cu lis tôs credenziâls regjistradis e tornâ a provâ il paiament, fin a un massim di <strong>${ maxAttempts } tentatîfs</strong>.</p>"
 
 #: client/components/payment-status/payment-status.js:165
 #: client/components/payment-status/payment-status.test.js:221
@@ -482,6 +482,25 @@ msgstr "Se non riesci a completare la transazione puoi provare a metterti in con
 #: client/components/payment-status/payment-status.js:230
 msgid "PAY_GO_BACK_BTN"
 msgstr "Anule e torne al to account"
+
+#: client/components/payment-status/payment-status.js
+msgid "PAY_LINK_COPIED"
+msgstr "Colieg pal paiament copiât"
+
+msgid "PAY_LINK_COPY_FAIL"
+msgstr "Impussibil copiâ il colieg pal paiament. Selezionilu e copilu a man."
+
+msgid "PAY_LINK_LBL"
+msgstr "Colieg pal paiament"
+
+msgid "PAY_LINK_COPY_BTN"
+msgstr "Copie colieg"
+
+msgid "PAY_LINK_COPY_HINT"
+msgstr "Cliche par copiâ"
+
+msgid "PAY_LINK_HELP"
+msgstr "<strong>Prime di continuâ</strong>, copie il colieg pal paiament ca sot. Se chest barcon si siere, vierç un gnûf barcon dal navigadôr e tache il colieg te bare des direzions par completâ il paiament."
 
 #: client/components/password-reset/password-reset.js:32
 msgid "PWD_RESET_TITL"

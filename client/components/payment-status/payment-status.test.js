@@ -71,6 +71,8 @@ describe("<PaymentStatus /> rendering with placeholder translation tags", () => 
 describe("Test <PaymentStatus /> cases", () => {
   let props;
   let wrapper;
+  let clipboardDescriptor;
+  let execCommand;
   const originalLog = console.log;
 
   beforeEach(() => {
@@ -82,9 +84,20 @@ describe("Test <PaymentStatus /> cases", () => {
     console.error = jest.fn();
     loadTranslation("en", "default");
     validateToken.mockClear();
+    clipboardDescriptor = Object.getOwnPropertyDescriptor(
+      navigator,
+      "clipboard",
+    );
+    execCommand = document.execCommand;
   });
 
   afterEach(() => {
+    if (clipboardDescriptor) {
+      Object.defineProperty(navigator, "clipboard", clipboardDescriptor);
+    } else {
+      delete navigator.clipboard;
+    }
+    document.execCommand = execCommand;
     jest.clearAllMocks();
     jest.resetAllMocks();
     jest.restoreAllMocks();
@@ -885,6 +898,180 @@ describe("Test <PaymentStatus /> cases", () => {
     });
   });
 
+  it("should show a copyable payment link on a paid signup draft", async () => {
+    const paymentUrl = "https://payment.example.com/pay/1?order=123";
+    props = createTestProps({
+      userData: {
+        ...responseData,
+        is_verified: false,
+        payment_url: paymentUrl,
+      },
+      params: {status: "draft"},
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    const input = wrapper.find("input#payment-link");
+    const copyButton = wrapper.find("button.payment-link-copy");
+    expect(input).toHaveLength(1);
+    expect(input.prop("value")).toEqual(paymentUrl);
+    expect(input.prop("readOnly")).toEqual(true);
+    expect(input.prop("title")).toEqual(t`PAY_LINK_COPY_HINT`);
+    expect(input.prop("disabled")).toBeUndefined();
+    expect(copyButton.prop("type")).toEqual("button");
+    expect(copyButton.hasClass("partial")).toEqual(true);
+    expect(copyButton.text()).toEqual(t`PAY_LINK_COPY_BTN`);
+    expect(copyButton.find("svg").prop("aria-hidden")).toEqual("true");
+    expect(input.prop("aria-describedby")).toEqual("payment-link-help");
+    expect(copyButton.prop("aria-label")).toEqual(t`PAY_LINK_COPY_BTN`);
+    expect(
+      wrapper.find("#payment-link-help").prop("dangerouslySetInnerHTML"),
+    ).toEqual({__html: t`PAY_LINK_HELP`});
+    expect(wrapper.find(".payment-link").childAt(0).prop("id")).toEqual(
+      "payment-link-help",
+    );
+  });
+
+  it("should copy the payment link from either draft control", async () => {
+    const paymentUrl = "https://payment.example.com/pay/1?order=123";
+    const writeText = jest.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, "clipboard", {
+      configurable: true,
+      value: {writeText},
+    });
+    const successToast = jest.spyOn(toast, "success");
+    props = createTestProps({
+      userData: {
+        ...responseData,
+        is_verified: false,
+        payment_url: paymentUrl,
+      },
+      params: {status: "draft"},
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    await wrapper.find("input#payment-link").prop("onClick")();
+    await wrapper.find("button.payment-link-copy").prop("onClick")();
+    expect(writeText).toHaveBeenNthCalledWith(1, paymentUrl);
+    expect(writeText).toHaveBeenNthCalledWith(2, paymentUrl);
+    expect(successToast).toHaveBeenCalledWith(t`PAY_LINK_COPIED`, {
+      autoClose: 3000,
+    });
+    expect(props.authenticate).not.toHaveBeenCalled();
+    expect(props.navigate).not.toHaveBeenCalled();
+  });
+
+  it("should wait for clipboard success before confirming the copy", async () => {
+    const paymentUrl = "https://payment.example.com/pay/1?order=123";
+    let resolveCopy;
+    Object.defineProperty(navigator, "clipboard", {
+      configurable: true,
+      value: {
+        writeText: jest.fn(
+          () =>
+            new Promise((resolve) => {
+              resolveCopy = resolve;
+            }),
+        ),
+      },
+    });
+    const successToast = jest.spyOn(toast, "success");
+    props = createTestProps({
+      userData: {
+        ...responseData,
+        is_verified: false,
+        payment_url: paymentUrl,
+      },
+      params: {status: "draft"},
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    const copy = wrapper.instance().copyPaymentUrl();
+    expect(successToast).not.toHaveBeenCalled();
+    resolveCopy();
+    await copy;
+    expect(successToast).toHaveBeenCalledWith(t`PAY_LINK_COPIED`, {
+      autoClose: 3000,
+    });
+  });
+
+  it("should use a selected input when Clipboard API access fails", async () => {
+    const paymentUrl = "https://payment.example.com/pay/1?order=123";
+    const focus = jest.fn();
+    const select = jest.fn();
+    Object.defineProperty(navigator, "clipboard", {
+      configurable: true,
+      value: {writeText: jest.fn().mockRejectedValue(new Error("Denied"))},
+    });
+    document.execCommand = jest.fn().mockReturnValue(true);
+    const successToast = jest.spyOn(toast, "success");
+    props = createTestProps({
+      userData: {
+        ...responseData,
+        is_verified: false,
+        payment_url: paymentUrl,
+      },
+      params: {status: "draft"},
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    wrapper.instance().paymentUrlInput.current = {focus, select};
+    await wrapper.instance().copyPaymentUrl();
+    expect(focus).toHaveBeenCalled();
+    expect(select).toHaveBeenCalled();
+    expect(document.execCommand).toHaveBeenCalledWith("copy");
+    expect(successToast).toHaveBeenCalledWith(t`PAY_LINK_COPIED`, {
+      autoClose: 3000,
+    });
+  });
+
+  it("should surface a copy error when manual copying is required", async () => {
+    const paymentUrl = "https://payment.example.com/pay/1?order=123";
+    const focus = jest.fn();
+    const select = jest.fn();
+    Object.defineProperty(navigator, "clipboard", {
+      configurable: true,
+      value: {writeText: jest.fn().mockRejectedValue(new Error("Denied"))},
+    });
+    document.execCommand = jest.fn().mockReturnValue(false);
+    const successToast = jest.spyOn(toast, "success");
+    const errorToast = jest.spyOn(toast, "error");
+    props = createTestProps({
+      userData: {
+        ...responseData,
+        is_verified: false,
+        payment_url: paymentUrl,
+      },
+      params: {status: "draft"},
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    wrapper.instance().paymentUrlInput.current = {focus, select};
+    await wrapper.instance().copyPaymentUrl();
+    expect(focus).toHaveBeenCalled();
+    expect(select).toHaveBeenCalled();
+    expect(successToast).not.toHaveBeenCalled();
+    expect(errorToast).toHaveBeenCalledWith(t`PAY_LINK_COPY_FAIL`);
+    expect(logError).toHaveBeenCalledWith(
+      expect.any(Error),
+      "Unable to copy payment link",
+    );
+  });
+
   it("should not set mustLogin on draft arrival for an upgrade not requiring internet", async () => {
     props = createTestProps({
       settings: {
@@ -942,7 +1129,7 @@ describe("Test <PaymentStatus /> cases", () => {
     expect(props.setUserData).toHaveBeenCalledWith(
       expect.objectContaining({mustLogin: true}),
     );
-    wrapper.find(".button").at(1).simulate("click", {});
+    wrapper.find("button.button.full").simulate("click", {});
     await tick();
     expect(cancelUpgradePlan).toHaveBeenCalledWith(
       props.orgSlug,

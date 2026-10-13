@@ -442,7 +442,7 @@ msgstr "Plačilo je potrebno za nadaljevanje"
 #: client/components/payment-status/payment-status.js:155
 #, javascript-format
 msgid "PAY_WARN${ timeout }${ maxAttempts }"
-msgstr "<p>S klikom na spodnji gumb boste preusmerjeni na naš plačilni prehod, kjer lahko varno uporabite svojo kreditno/debetno kartico. Od tam boste preusmerjeni na spletno mesto svoje banke, kjer boste potrdili transakcijo.</p><p>Za dokončanje postopka boste imeli ${ timeout } minut.<br /><strong>Zato priporočamo, da pred začetkom plačilnega postopka pripravite svojo debetno/kreditno kartico.</strong></p><p>Če postopek iz kakršnega koli razloga ni dokončan v razpoložljivem času, bo internetna povezava, ki vam omogoča dostop do spletnega mesta vaše banke, prekinjena. Če se to zgodi, se lahko znova prijavite s poverilnicami, ki ste jih pravkar registrirali, in postopek ponovite največ ${ maxAttempts }-krat.</p>"
+msgstr "<p>Za dokončanje plačila boste preusmerjeni na varen plačilni prehod.</p><p>Za dokončanje plačila boste imeli <strong>${ timeout } minut</strong>, zato priporočamo, da pred nadaljevanjem pripravite svojo kartico.</p><p>Če čas poteče, bo vaš začasni dostop do interneta potekel. Znova se lahko prijavite s svojimi registriranimi prijavnimi podatki in ponovite plačilo, do največ <strong>${ maxAttempts } poskusov</strong>.</p>"
 
 #: client/components/payment-status/payment-status.js:165
 #: client/components/payment-status/payment-status.test.js:221
@@ -479,6 +479,25 @@ msgstr "Če transakcija ni bila uspešna, se obrite na službo za podporo uporab
 #: client/components/payment-status/payment-status.js:230
 msgid "PAY_GO_BACK_BTN"
 msgstr "Preklic in vrnitev na račun"
+
+#: client/components/payment-status/payment-status.js
+msgid "PAY_LINK_COPIED"
+msgstr "Povezava za plačilo je kopirana"
+
+msgid "PAY_LINK_COPY_FAIL"
+msgstr "Povezave za plačilo ni bilo mogoče kopirati. Izberite jo in jo kopirajte ročno."
+
+msgid "PAY_LINK_LBL"
+msgstr "Povezava za plačilo"
+
+msgid "PAY_LINK_COPY_BTN"
+msgstr "Kopiraj povezavo"
+
+msgid "PAY_LINK_COPY_HINT"
+msgstr "Kliknite za kopiranje"
+
+msgid "PAY_LINK_HELP"
+msgstr "<strong>Preden nadaljujete</strong>, kopirajte spodnjo povezavo za plačilo. Če se to okno zapre, odprite novo okno brskalnika in prilepite povezavo v naslovno vrstico, da dokončate plačilo."
 
 #: client/components/password-reset/password-reset.js:32
 msgid "PWD_RESET_TITL"
