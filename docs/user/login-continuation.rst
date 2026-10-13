@@ -10,7 +10,6 @@ change password page right after they log in:
     # https://<wlp-host>/<organization-slug>/login?next=%2F<organization-slug>%2Fchange-password
     https://wifi.openwisp.io/default/login?next=%2Fdefault%2Fchange-password
 
-
 Supported Destinations
 ----------------------
 
