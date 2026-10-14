@@ -20,9 +20,9 @@ export default class PaymentStatus extends React.Component {
     this.state = {
       isTokenValid: null,
     };
-    this.paymentUrlInput = React.createRef();
+    this.paymentReturnUrlInput = React.createRef();
     this.paymentProceedHandler = this.paymentProceedHandler.bind(this);
-    this.copyPaymentUrl = this.copyPaymentUrl.bind(this);
+    this.copyPaymentReturnUrl = this.copyPaymentReturnUrl.bind(this);
   }
 
   async componentDidMount() {
@@ -105,6 +105,7 @@ export default class PaymentStatus extends React.Component {
         in_upgrade: false,
         proceedToPayment: false,
         payment_url: null,
+        payment_return_url: null,
         mustLogin: undefined,
         mustLogout: true,
         captivePortalLogoutOnly: true,
@@ -127,6 +128,7 @@ export default class PaymentStatus extends React.Component {
         in_upgrade: false,
         proceedToPayment: false,
         payment_url: null,
+        payment_return_url: null,
         mustLogin: undefined,
         mustLogout: true,
         captivePortalLogoutOnly: true,
@@ -235,8 +237,8 @@ export default class PaymentStatus extends React.Component {
       : `/${orgSlug}/payment/process`;
   }
 
-  selectPaymentUrl() {
-    const input = this.paymentUrlInput.current;
+  selectPaymentReturnUrl() {
+    const input = this.paymentReturnUrlInput.current;
     if (!input) {
       return false;
     }
@@ -245,9 +247,9 @@ export default class PaymentStatus extends React.Component {
     return true;
   }
 
-  async copyPaymentUrl() {
+  async copyPaymentReturnUrl() {
     const {userData} = this.props;
-    const {payment_url: paymentUrl} = userData;
+    const {payment_return_url: paymentReturnUrl} = userData;
     let error;
 
     if (
@@ -256,7 +258,7 @@ export default class PaymentStatus extends React.Component {
       typeof navigator.clipboard.writeText === "function"
     ) {
       try {
-        await navigator.clipboard.writeText(paymentUrl);
+        await navigator.clipboard.writeText(paymentReturnUrl);
         toast.success(t`PAY_LINK_COPIED`, {autoClose: 3000});
         return;
       } catch (clipboardError) {
@@ -266,7 +268,7 @@ export default class PaymentStatus extends React.Component {
 
     try {
       if (
-        this.selectPaymentUrl() &&
+        this.selectPaymentReturnUrl() &&
         typeof document !== "undefined" &&
         typeof document.execCommand === "function" &&
         document.execCommand("copy")
@@ -286,9 +288,9 @@ export default class PaymentStatus extends React.Component {
   }
 
   renderDraft(isDraftUpgrade = false) {
-    const {page = {}, userData} = this.props;
+    const {page = {}, settings, userData} = this.props;
     const {timeout = 5, max_attempts: maxAttempts = 3} = page;
-    const {payment_url: paymentUrl} = userData;
+    const {payment_return_url: paymentReturnUrl} = userData;
     const payProceedUrl = this.getProceedUrl();
 
     return (
@@ -305,7 +307,7 @@ export default class PaymentStatus extends React.Component {
                 }}
               />
 
-              {paymentUrl && (
+              {settings.payment_requires_internet && paymentReturnUrl && (
                 <div className="row payment-link">
                   <p
                     id="payment-link-help"
@@ -315,20 +317,20 @@ export default class PaymentStatus extends React.Component {
                   <div className="payment-link-control">
                     <input
                       id="payment-link"
-                      ref={this.paymentUrlInput}
+                      ref={this.paymentReturnUrlInput}
                       className="input payment-link-input"
                       type="text"
-                      value={paymentUrl}
+                      value={paymentReturnUrl}
                       readOnly
                       title={t`PAY_LINK_COPY_HINT`}
                       aria-describedby="payment-link-help"
-                      onClick={this.copyPaymentUrl}
+                      onClick={this.copyPaymentReturnUrl}
                     />
                     <button
                       type="button"
                       className="button partial payment-link-copy"
                       aria-label={t`PAY_LINK_COPY_BTN`}
-                      onClick={this.copyPaymentUrl}
+                      onClick={this.copyPaymentReturnUrl}
                     >
                       <svg
                         aria-hidden="true"

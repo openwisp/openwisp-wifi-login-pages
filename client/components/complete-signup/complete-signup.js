@@ -186,6 +186,7 @@ export default class CompleteSignup extends React.Component {
     try {
       // Upgrade to selected plan
       let paymentUrl = null;
+      let paymentReturnUrl = null;
       if (selectedPlan.id) {
         const response = await upgradePlan(
           orgSlug,
@@ -194,6 +195,7 @@ export default class CompleteSignup extends React.Component {
           language,
         );
         paymentUrl = response.payment_url;
+        paymentReturnUrl = response.payment_return_url;
       }
 
       // Update registration method based on plan and settings
@@ -211,6 +213,7 @@ export default class CompleteSignup extends React.Component {
           ...userData,
           method: "bank_card",
           payment_url: paymentUrl,
+          payment_return_url: paymentReturnUrl,
         };
         if (this.isComponentMounted) {
           setUserData(nextUserData);

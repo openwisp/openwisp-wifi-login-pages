@@ -302,6 +302,7 @@ describe("<CompleteSignup />", () => {
     updateRegistrationMethod.mockResolvedValue({method: "bank_card"});
     upgradePlan.mockResolvedValue({
       payment_url: "https://payment.example/1",
+      payment_return_url: "https://wifi.example/default/login?n=pay&sid=secret",
     });
     wrapper.instance().handlePlansSuccess(plans);
 
@@ -323,6 +324,8 @@ describe("<CompleteSignup />", () => {
       expect.objectContaining({
         method: "bank_card",
         payment_url: "https://payment.example/1",
+        payment_return_url:
+          "https://wifi.example/default/login?n=pay&sid=secret",
       }),
     );
     expect(props.navigate).toHaveBeenCalledWith("/default/payment/draft");

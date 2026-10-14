@@ -56,6 +56,7 @@ try {
     data.mobileVerificationTestUser.organization,
     {mobile_phone_verification: true},
     (content) => {
+      Object.assign(content, {server: {...content.server, timeout: 5}});
       const {client} = content;
       client.languages = [
         {text: "english", slug: "en"},

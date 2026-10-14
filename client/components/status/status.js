@@ -614,6 +614,7 @@ export default class Status extends React.Component {
         setUserData({
           ...userData,
           payment_url: response.payment_url,
+          payment_return_url: response.payment_return_url,
           in_upgrade: response.in_upgrade,
           // Token consumed by portal login; clear so validateToken refetches one
           radius_user_token: undefined,

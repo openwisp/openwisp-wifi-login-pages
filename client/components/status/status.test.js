@@ -3307,6 +3307,8 @@ describe("<Status /> interactions", () => {
         statusText: "OK",
         data: {
           payment_url: "https://payment.example.com/pay/1",
+          payment_return_url:
+            "https://wifi.example.com/default/login?n=pay&sid=secret",
           in_upgrade: true,
         },
       }),
@@ -3315,6 +3317,8 @@ describe("<Status /> interactions", () => {
     expect(props.setUserData).toHaveBeenCalledWith(
       expect.objectContaining({
         payment_url: "https://payment.example.com/pay/1",
+        payment_return_url:
+          "https://wifi.example.com/default/login?n=pay&sid=secret",
         in_upgrade: true,
         // Token consumed by portal login; must be cleared so a fresh one is fetched
         radius_user_token: undefined,

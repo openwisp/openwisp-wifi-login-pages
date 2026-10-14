@@ -559,6 +559,7 @@ describe("Test <PaymentStatus /> cases", () => {
       in_upgrade: false,
       proceedToPayment: false,
       payment_url: null,
+      payment_return_url: null,
       mustLogin: undefined,
       mustLogout: true,
       captivePortalLogoutOnly: true,
@@ -605,6 +606,7 @@ describe("Test <PaymentStatus /> cases", () => {
       in_upgrade: false,
       proceedToPayment: false,
       payment_url: null,
+      payment_return_url: null,
       mustLogin: undefined,
       mustLogout: true,
       captivePortalLogoutOnly: true,
@@ -648,6 +650,7 @@ describe("Test <PaymentStatus /> cases", () => {
       in_upgrade: false,
       proceedToPayment: false,
       payment_url: null,
+      payment_return_url: null,
       mustLogin: undefined,
       mustLogout: true,
       captivePortalLogoutOnly: true,
@@ -721,6 +724,7 @@ describe("Test <PaymentStatus /> cases", () => {
       in_upgrade: false,
       proceedToPayment: false,
       payment_url: null,
+      payment_return_url: null,
       mustLogin: undefined,
       mustLogout: true,
       captivePortalLogoutOnly: true,
@@ -900,11 +904,14 @@ describe("Test <PaymentStatus /> cases", () => {
 
   it("should show a copyable payment link on a paid signup draft", async () => {
     const paymentUrl = "https://payment.example.com/pay/1?order=123";
+    const paymentReturnUrl =
+      "https://wifi.example.com/default/login?n=pay&sid=secret";
     props = createTestProps({
       userData: {
         ...responseData,
         is_verified: false,
         payment_url: paymentUrl,
+        payment_return_url: paymentReturnUrl,
       },
       params: {status: "draft"},
     });
@@ -916,7 +923,7 @@ describe("Test <PaymentStatus /> cases", () => {
     const input = wrapper.find("input#payment-link");
     const copyButton = wrapper.find("button.payment-link-copy");
     expect(input).toHaveLength(1);
-    expect(input.prop("value")).toEqual(paymentUrl);
+    expect(input.prop("value")).toEqual(paymentReturnUrl);
     expect(input.prop("readOnly")).toEqual(true);
     expect(input.prop("title")).toEqual(t`PAY_LINK_COPY_HINT`);
     expect(input.prop("disabled")).toBeUndefined();
@@ -936,6 +943,8 @@ describe("Test <PaymentStatus /> cases", () => {
 
   it("should copy the payment link from either draft control", async () => {
     const paymentUrl = "https://payment.example.com/pay/1?order=123";
+    const paymentReturnUrl =
+      "https://wifi.example.com/default/login?n=pay&sid=secret";
     const writeText = jest.fn().mockResolvedValue(undefined);
     Object.defineProperty(navigator, "clipboard", {
       configurable: true,
@@ -947,6 +956,7 @@ describe("Test <PaymentStatus /> cases", () => {
         ...responseData,
         is_verified: false,
         payment_url: paymentUrl,
+        payment_return_url: paymentReturnUrl,
       },
       params: {status: "draft"},
     });
@@ -957,8 +967,9 @@ describe("Test <PaymentStatus /> cases", () => {
     await tick();
     await wrapper.find("input#payment-link").prop("onClick")();
     await wrapper.find("button.payment-link-copy").prop("onClick")();
-    expect(writeText).toHaveBeenNthCalledWith(1, paymentUrl);
-    expect(writeText).toHaveBeenNthCalledWith(2, paymentUrl);
+    expect(writeText).toHaveBeenNthCalledWith(1, paymentReturnUrl);
+    expect(writeText).toHaveBeenNthCalledWith(2, paymentReturnUrl);
+    expect(writeText).not.toHaveBeenCalledWith(paymentUrl);
     expect(successToast).toHaveBeenCalledWith(t`PAY_LINK_COPIED`, {
       autoClose: 3000,
     });
@@ -967,7 +978,8 @@ describe("Test <PaymentStatus /> cases", () => {
   });
 
   it("should wait for clipboard success before confirming the copy", async () => {
-    const paymentUrl = "https://payment.example.com/pay/1?order=123";
+    const paymentReturnUrl =
+      "https://wifi.example.com/default/login?n=pay&sid=secret";
     let resolveCopy;
     Object.defineProperty(navigator, "clipboard", {
       configurable: true,
@@ -985,7 +997,8 @@ describe("Test <PaymentStatus /> cases", () => {
       userData: {
         ...responseData,
         is_verified: false,
-        payment_url: paymentUrl,
+        payment_url: "https://payment.example.com/pay/1?order=123",
+        payment_return_url: paymentReturnUrl,
       },
       params: {status: "draft"},
     });
@@ -994,7 +1007,7 @@ describe("Test <PaymentStatus /> cases", () => {
       context: loadingContextValue,
     });
     await tick();
-    const copy = wrapper.instance().copyPaymentUrl();
+    const copy = wrapper.instance().copyPaymentReturnUrl();
     expect(successToast).not.toHaveBeenCalled();
     resolveCopy();
     await copy;
@@ -1004,7 +1017,8 @@ describe("Test <PaymentStatus /> cases", () => {
   });
 
   it("should use a selected input when Clipboard API access fails", async () => {
-    const paymentUrl = "https://payment.example.com/pay/1?order=123";
+    const paymentReturnUrl =
+      "https://wifi.example.com/default/login?n=pay&sid=secret";
     const focus = jest.fn();
     const select = jest.fn();
     Object.defineProperty(navigator, "clipboard", {
@@ -1017,7 +1031,8 @@ describe("Test <PaymentStatus /> cases", () => {
       userData: {
         ...responseData,
         is_verified: false,
-        payment_url: paymentUrl,
+        payment_url: "https://payment.example.com/pay/1?order=123",
+        payment_return_url: paymentReturnUrl,
       },
       params: {status: "draft"},
     });
@@ -1026,8 +1041,8 @@ describe("Test <PaymentStatus /> cases", () => {
       context: loadingContextValue,
     });
     await tick();
-    wrapper.instance().paymentUrlInput.current = {focus, select};
-    await wrapper.instance().copyPaymentUrl();
+    wrapper.instance().paymentReturnUrlInput.current = {focus, select};
+    await wrapper.instance().copyPaymentReturnUrl();
     expect(focus).toHaveBeenCalled();
     expect(select).toHaveBeenCalled();
     expect(document.execCommand).toHaveBeenCalledWith("copy");
@@ -1037,7 +1052,8 @@ describe("Test <PaymentStatus /> cases", () => {
   });
 
   it("should surface a copy error when manual copying is required", async () => {
-    const paymentUrl = "https://payment.example.com/pay/1?order=123";
+    const paymentReturnUrl =
+      "https://wifi.example.com/default/login?n=pay&sid=secret";
     const focus = jest.fn();
     const select = jest.fn();
     Object.defineProperty(navigator, "clipboard", {
@@ -1051,7 +1067,8 @@ describe("Test <PaymentStatus /> cases", () => {
       userData: {
         ...responseData,
         is_verified: false,
-        payment_url: paymentUrl,
+        payment_url: "https://payment.example.com/pay/1?order=123",
+        payment_return_url: paymentReturnUrl,
       },
       params: {status: "draft"},
     });
@@ -1060,8 +1077,8 @@ describe("Test <PaymentStatus /> cases", () => {
       context: loadingContextValue,
     });
     await tick();
-    wrapper.instance().paymentUrlInput.current = {focus, select};
-    await wrapper.instance().copyPaymentUrl();
+    wrapper.instance().paymentReturnUrlInput.current = {focus, select};
+    await wrapper.instance().copyPaymentReturnUrl();
     expect(focus).toHaveBeenCalled();
     expect(select).toHaveBeenCalled();
     expect(successToast).not.toHaveBeenCalled();
@@ -1071,6 +1088,38 @@ describe("Test <PaymentStatus /> cases", () => {
       "Unable to copy payment link",
     );
   });
+
+  it.each([
+    ["the payment return URL is unavailable", true, null],
+    [
+      "payment does not require internet access",
+      false,
+      "https://wifi.example.com/default/login?n=pay&sid=secret",
+    ],
+  ])(
+    "should hide the copyable payment link when %s",
+    async (_, requiresInternet, paymentReturnUrl) => {
+      props = createTestProps({
+        settings: {
+          subscriptions: true,
+          payment_requires_internet: requiresInternet,
+        },
+        userData: {
+          ...responseData,
+          is_verified: false,
+          payment_url: "https://payment.example.com/pay/1?order=123",
+          payment_return_url: paymentReturnUrl,
+        },
+        params: {status: "draft"},
+      });
+      validateToken.mockReturnValue(true);
+      wrapper = shallow(<PaymentStatus {...props} />, {
+        context: loadingContextValue,
+      });
+      await tick();
+      expect(wrapper.find(".payment-link")).toHaveLength(0);
+    },
+  );
 
   it("should not set mustLogin on draft arrival for an upgrade not requiring internet", async () => {
     props = createTestProps({
@@ -1142,6 +1191,7 @@ describe("Test <PaymentStatus /> cases", () => {
         in_upgrade: false,
         proceedToPayment: false,
         payment_url: null,
+        payment_return_url: null,
         mustLogin: undefined,
         mustLogout: true,
         captivePortalLogoutOnly: true,
