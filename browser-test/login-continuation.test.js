@@ -76,19 +76,23 @@ describe("login continuation browser integration", () => {
     );
   };
 
+  beforeAll(async () => {
+    driver = await getDriver();
+  }, 30000);
+
   beforeEach(async () => {
     fixtures = await initializeData("continuation", true);
-    driver = await getDriver();
     await driver.get(`${baseUrl}/default/login`);
   }, 30000);
 
   afterEach(async () => {
-    try {
-      if (driver) await tearDown(driver);
-    } finally {
-      if (driver) await driver.quit();
-      driver = null;
-    }
+    await driver.executeScript("window.sessionStorage.clear()");
+    await driver.executeScript("window.localStorage.clear()");
+    await driver.manage().deleteAllCookies();
+  });
+
+  afterAll(async () => {
+    await tearDown(driver);
   });
 
   it("fresh SESAME continuation to change password", async () => {
