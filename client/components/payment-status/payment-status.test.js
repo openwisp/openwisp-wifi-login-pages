@@ -84,6 +84,7 @@ describe("Test <PaymentStatus /> cases", () => {
     console.error = jest.fn();
     loadTranslation("en", "default");
     validateToken.mockClear();
+    // Preserve browser APIs before individual tests replace them with mocks.
     clipboardDescriptor = Object.getOwnPropertyDescriptor(
       navigator,
       "clipboard",
@@ -92,6 +93,7 @@ describe("Test <PaymentStatus /> cases", () => {
   });
 
   afterEach(() => {
+    // Restore browser APIs so test-specific mocks do not leak to later tests.
     if (clipboardDescriptor) {
       Object.defineProperty(navigator, "clipboard", clipboardDescriptor);
     } else {
@@ -930,7 +932,9 @@ describe("Test <PaymentStatus /> cases", () => {
     expect(copyButton.prop("type")).toEqual("button");
     expect(copyButton.hasClass("partial")).toEqual(true);
     expect(copyButton.text()).toEqual(t`PAY_LINK_COPY_BTN`);
-    expect(copyButton.find("svg").prop("aria-hidden")).toEqual("true");
+    expect(copyButton.find(".payment-link-copy-icon").prop("aria-hidden")).toEqual(
+      "true",
+    );
     expect(input.prop("aria-describedby")).toEqual("payment-link-help");
     expect(copyButton.prop("aria-label")).toEqual(t`PAY_LINK_COPY_BTN`);
     expect(
@@ -941,7 +945,7 @@ describe("Test <PaymentStatus /> cases", () => {
     );
   });
 
-  it("should copy the payment link from either draft control", async () => {
+  it("should copy the payment link when the input or button is clicked", async () => {
     const paymentUrl = "https://payment.example.com/pay/1?order=123";
     const paymentReturnUrl =
       "https://wifi.example.com/default/login?n=pay&sid=secret";
@@ -1016,7 +1020,7 @@ describe("Test <PaymentStatus /> cases", () => {
     });
   });
 
-  it("should use a selected input when Clipboard API access fails", async () => {
+  it("should fall back to the selected input when Clipboard API access fails", async () => {
     const paymentReturnUrl =
       "https://wifi.example.com/default/login?n=pay&sid=secret";
     const focus = jest.fn();

@@ -35,8 +35,13 @@ body .payment-link-input {
   box-sizing: border-box;
 }
 
-.payment-link-copy svg {
+.payment-link-copy-icon {
+  width: 18px;
+  height: 18px;
   flex-shrink: 0;
+  background-color: currentColor;
+  mask-image: url("../../assets/copy.svg");
+  -webkit-mask-image: url("../../assets/copy.svg");
 }
 
 .payment-link-input:focus-visible,

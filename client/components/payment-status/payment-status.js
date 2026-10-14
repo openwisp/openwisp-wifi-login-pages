@@ -237,6 +237,7 @@ export default class PaymentStatus extends React.Component {
       : `/${orgSlug}/payment/process`;
   }
 
+  // Selects the visible return URL for the legacy copy fallback.
   selectPaymentReturnUrl() {
     const input = this.paymentReturnUrlInput.current;
     if (!input) {
@@ -247,11 +248,13 @@ export default class PaymentStatus extends React.Component {
     return true;
   }
 
+  /**
+   * Copies the return URL with the Clipboard API or a selected-input fallback.
+   */
   async copyPaymentReturnUrl() {
     const {userData} = this.props;
     const {payment_return_url: paymentReturnUrl} = userData;
     let error;
-
     if (
       typeof navigator !== "undefined" &&
       navigator.clipboard &&
@@ -266,6 +269,7 @@ export default class PaymentStatus extends React.Component {
       }
     }
 
+    // Select the visible URL before using the legacy document copy fallback.
     try {
       if (
         this.selectPaymentReturnUrl() &&
@@ -332,20 +336,10 @@ export default class PaymentStatus extends React.Component {
                       aria-label={t`PAY_LINK_COPY_BTN`}
                       onClick={this.copyPaymentReturnUrl}
                     >
-                      <svg
+                      <span
+                        className="payment-link-copy-icon"
                         aria-hidden="true"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.8"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        width="18"
-                        height="18"
-                      >
-                        <rect x="8" y="8" width="12" height="13" rx="2" />
-                        <path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h3" />
-                      </svg>
+                      />
                       <span>{t`PAY_LINK_COPY_BTN`}</span>
                     </button>
                   </div>
