@@ -15,7 +15,12 @@ jest.mock("../config.json", () => [
 
 const createResponse = () => {
   const res = {};
-  res.status = jest.fn(() => res);
+  res.status = jest.fn((status) => {
+    if (!Number.isInteger(status)) {
+      throw new TypeError("Invalid status code");
+    }
+    return res;
+  });
   res.type = jest.fn(() => res);
   res.send = jest.fn(() => res);
   return res;
@@ -94,14 +99,16 @@ describe("user-cancel-upgrade-plan-controller", () => {
       },
       res,
     );
-    await Promise.resolve();
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.type).toHaveBeenCalledWith("application/json");
     expect(res.send).toHaveBeenCalledWith({response_code: "BAD_REQUEST"});
   });
 
-  it("handles error without error.response.status (internal error)", async () => {
+  it("returns 500 when the upstream error response omits its status", async () => {
     const error = new Error("Internal server error");
+    error.response = {
+      data: {response_code: "INTERNAL_SERVER_ERROR"},
+    };
     axios.mockImplementationOnce(() => Promise.reject(error));
     const res = createResponse();
     await userCancelUpgradePlan(
@@ -114,7 +121,6 @@ describe("user-cancel-upgrade-plan-controller", () => {
       },
       res,
     );
-    await Promise.resolve();
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.type).toHaveBeenCalledWith("application/json");
     expect(res.send).toHaveBeenCalledWith({

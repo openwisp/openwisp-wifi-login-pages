@@ -2,6 +2,7 @@ import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
 
 import axios from "axios";
+import {Cookies} from "react-cookie";
 import * as types from "../constants/action-types";
 import testOrgConfig from "../test-config.json";
 import {
@@ -22,7 +23,11 @@ import {
   bindContinuation,
   readContinuation,
 } from "../utils/continuation";
-import {sessionStorage as safeSessionStorage} from "../utils/storage";
+import {
+  localStorage as safeLocalStorage,
+  sessionStorage as safeSessionStorage,
+} from "../utils/storage";
+import {resolveStoredValue} from "../utils/synced-storage";
 
 jest.mock("../utils/get-config");
 jest.mock("../utils/authenticate");
@@ -41,6 +46,7 @@ describe("actions testing", () => {
   });
   afterEach(() => {
     jest.resetAllMocks();
+    safeLocalStorage.clear();
     safeSessionStorage.clear();
   });
   it("should create an action to parse organizations", () => {
@@ -166,6 +172,39 @@ describe("actions testing", () => {
     expect(store.getActions()).toEqual(expectedActions);
     expect(sessionStorage.getItem("test")).toBe(null);
   });
+
+  it.each([false, true])(
+    "clears persisted captive portal flags on logout with auto-login %s",
+    (userAutoLogin) => {
+      const orgSlug = "default";
+      const browserCookies = new Cookies();
+      const flags = [
+        "mustLogin",
+        "mustLogout",
+        "repeatLogin",
+        "captivePortalLogoutOnly",
+        "proceedToPayment",
+      ];
+      flags.forEach((flag) => {
+        const key = `${orgSlug}_${flag}`;
+        browserCookies.set(key, "true", {path: "/"});
+        safeLocalStorage.setItem(key, "true");
+      });
+      browserCookies.set("other_mustLogin", "true", {path: "/"});
+      safeLocalStorage.setItem("other_mustLogin", "true");
+      logout(browserCookies, orgSlug, userAutoLogin);
+      flags.forEach((flag) => {
+        const key = `${orgSlug}_${flag}`;
+        expect(browserCookies.get(key)).toBeUndefined();
+        expect(safeLocalStorage.getItem(key)).toBeNull();
+        expect(resolveStoredValue(true, key, undefined, browserCookies)).toBe(
+          undefined,
+        );
+      });
+      expect(browserCookies.get("other_mustLogin")).toBe(true);
+      expect(safeLocalStorage.getItem("other_mustLogin")).toBe("true");
+    },
+  );
 
   const validationResponse = {
     data: {

@@ -271,6 +271,30 @@ describe("Validate Token tests", () => {
     expect(setUserData.mock.calls.length).toBe(0);
     expect(logout.mock.calls.length).toBe(0);
   });
+  it("should not validate again if an upgrader has a payment URL", async () => {
+    const {orgSlug, cookies, setUserData, userData, logout, language} =
+      getArgs();
+    cookies.set(`${orgSlug}_auth_token`, "token");
+    Object.assign(userData, {
+      radius_user_token: "token",
+      method: "mobile_phone",
+      is_verified: true,
+      in_upgrade: true,
+      payment_url: "https://payment.example.com/pay/1",
+    });
+    const result = await validateToken(
+      cookies,
+      orgSlug,
+      setUserData,
+      userData,
+      logout,
+      language,
+    );
+    expect(axios).not.toHaveBeenCalled();
+    expect(result).toBe(true);
+    expect(setUserData).not.toHaveBeenCalled();
+    expect(logout).not.toHaveBeenCalled();
+  });
   it("should make api call if user is upgrading and payment_url is missing", async () => {
     axios.mockImplementationOnce(() =>
       Promise.resolve({
@@ -291,11 +315,13 @@ describe("Validate Token tests", () => {
     const {orgSlug, cookies, setUserData, userData, logout, language} =
       getArgs();
     cookies.set(`${orgSlug}_auth_token`, "token");
-    userData.radius_user_token = "token";
-    userData.method = "mobile_phone";
-    userData.is_verified = true;
-    userData.in_upgrade = true;
-    userData.payment_url = null;
+    Object.assign(userData, {
+      radius_user_token: "token",
+      method: "mobile_phone",
+      is_verified: true,
+      in_upgrade: true,
+      payment_url: null,
+    });
     const result = await validateToken(
       cookies,
       orgSlug,
@@ -312,6 +338,37 @@ describe("Validate Token tests", () => {
       }),
     );
     expect(logout.mock.calls.length).toBe(0);
+  });
+  it("should return false when refreshing an upgrade payment URL fails", async () => {
+    const error = new Error("Network error");
+    const consoleLog = jest.spyOn(global.console, "log").mockImplementation();
+    axios.mockRejectedValueOnce(error);
+    const {orgSlug, cookies, setUserData, userData, logout, language} =
+      getArgs();
+    cookies.set(`${orgSlug}_auth_token`, "token");
+    userData.radius_user_token = "token";
+    userData.method = "mobile_phone";
+    userData.is_verified = true;
+    userData.in_upgrade = true;
+    userData.payment_url = null;
+    const result = await validateToken(
+      cookies,
+      orgSlug,
+      setUserData,
+      userData,
+      logout,
+      language,
+    );
+    expect(axios).toHaveBeenCalledTimes(1);
+    expect(result).toBe(false);
+    expect(setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({
+        mustLogout: true,
+        payment_url: null,
+      }),
+    );
+    expect(logout).not.toHaveBeenCalled();
+    expect(consoleLog).toHaveBeenCalledWith(error);
   });
   it("should make api call if radius token is present but password_expired is true", async () => {
     axios.mockImplementationOnce(() =>
@@ -851,7 +908,13 @@ describe("synced-storage tests", () => {
 
   it("clearCaptivePortalFlags should remove all captive portal flags", () => {
     const cookies = new Cookies();
-    const flags = ["mustLogin", "mustLogout", "repeatLogin"];
+    const flags = [
+      "mustLogin",
+      "mustLogout",
+      "repeatLogin",
+      "captivePortalLogoutOnly",
+      "proceedToPayment",
+    ];
     flags.forEach((flag) => {
       cookies.set(`default_${flag}`, "true", {path: "/"});
       localStorage.setItem(`default_${flag}`, "true");

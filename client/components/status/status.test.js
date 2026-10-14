@@ -8,7 +8,7 @@ import {CircularProgressbarWithChildren} from "react-circular-progressbar";
 import {filesize as formatBytes} from "filesize";
 import ShallowRenderer from "react-test-renderer/shallow";
 import {toast} from "react-toastify";
-import {addLocale, useLocale} from "ttag";
+import {addLocale, t, useLocale} from "ttag";
 import getConfig from "../../utils/get-config";
 import loadTranslation from "../../utils/load-translation";
 import logError from "../../utils/log-error";
@@ -22,7 +22,10 @@ import {
   bindContinuation,
   readContinuation,
 } from "../../utils/continuation";
-import {sessionStorage} from "../../utils/storage";
+import {
+  localStorage as safeLocalStorage,
+  sessionStorage,
+} from "../../utils/storage";
 import {mapStateToProps, mapDispatchToProps} from "./index";
 
 jest.mock("axios");
@@ -838,6 +841,8 @@ describe("<Status /> interactions", () => {
     cookies.remove("default_mustLogin");
     cookies.remove("default_mustLogout");
     cookies.remove("default_macaddr");
+    cookies.remove("default_proceedToPayment", {path: "/"});
+    safeLocalStorage.removeItem("default_proceedToPayment");
     axios.mockReset();
     jest.resetAllMocks();
     jest.restoreAllMocks();
@@ -3265,9 +3270,22 @@ describe("<Status /> interactions", () => {
     });
     jest.spyOn(wrapper.instance(), "upgradeUserPlan");
     wrapper.setState({upgradePlans: [{id: "1"}]});
-    wrapper.instance().upgradeUserPlan({target: {value: 0}});
-    await tick();
+    await wrapper.instance().upgradeUserPlan({target: {value: 0}});
     expect(toast.error.mock.calls.length).toBe(1);
+  });
+  it("shows an error for a network failure while upgrading a plan", async () => {
+    const error = new Error("Network error");
+    jest.spyOn(toast, "error");
+    axios.mockRejectedValueOnce(error);
+    props = createTestProps();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    wrapper.setState({upgradePlans: [{id: "1"}]});
+    await wrapper.instance().upgradeUserPlan({target: {value: 0}});
+    expect(toast.error).toHaveBeenCalledWith(t`ERR_OCCUR`);
+    expect(logError).toHaveBeenCalledWith(error, "Error while upgrading plan");
   });
   it("test upgradeUserPlan relays the backend error message on 429 (too many orders)", async () => {
     jest.spyOn(toast, "error");
