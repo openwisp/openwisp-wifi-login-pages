@@ -2071,7 +2071,7 @@ describe("<Status /> interactions", () => {
 
     // ensure user is redirected to payment URL
     expect(props.navigate).toHaveBeenCalledWith(
-      `/${props.orgSlug}/payment/draft`,
+      `/${props.orgSlug}/payment/process`,
     );
     // ensure sessions are not fetched
     expect(Status.prototype.getUserActiveRadiusSessions).not.toHaveBeenCalled();

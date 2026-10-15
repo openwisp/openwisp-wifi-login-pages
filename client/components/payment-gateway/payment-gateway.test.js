@@ -71,8 +71,11 @@ describe("<PaymentGateway />", () => {
 
   it("translates API-provided gateway labels at runtime", () => {
     addLocale("gateway-test", {
-      headers: {"plural-forms": "nplurals = 2; plural = (n != 1);"},
-      contexts: {
+      headers: {
+        "content-type": "text/plain; charset=utf-8",
+        "plural-forms": "nplurals = 2; plural = (n != 1);",
+      },
+      translations: {
         "": {
           "Pay online": {
             msgid: "Pay online",
