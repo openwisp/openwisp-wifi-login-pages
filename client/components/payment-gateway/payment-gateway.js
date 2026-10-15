@@ -26,7 +26,8 @@ export default class PaymentGateway extends React.Component {
   }
 
   renderLogo(url) {
-    if (this.state.logoStatus[url] === "failed") {
+    const {logoStatus} = this.state;
+    if (logoStatus[url] === "failed") {
       return null;
     }
     return (
