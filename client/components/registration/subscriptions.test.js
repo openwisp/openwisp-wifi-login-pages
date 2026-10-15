@@ -286,6 +286,7 @@ describe("test subscriptions", () => {
         payment_id: "payment-id",
         payment_gateway: null,
         payment_requires_internet: null,
+        radius_user_token: undefined,
       }),
     );
     expect(redirectToPayment).toHaveBeenCalledWith(

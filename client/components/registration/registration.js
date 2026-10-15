@@ -216,6 +216,9 @@ export default class Registration extends React.Component {
           ...registeredUser,
           is_verified: false,
           auth_token,
+          // Dropped so that the token is validated again, which loads the
+          // username and enables the RADIUS token for captive portal login.
+          radius_user_token: undefined,
           mustLogin: !postData.requires_payment,
         };
         setUserData(nextUserData);
