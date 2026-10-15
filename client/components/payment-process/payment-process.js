@@ -8,6 +8,11 @@ import {t} from "ttag";
 import LoadingContext from "../../utils/loading-context";
 import validateToken from "../../utils/validate-token";
 import getPaymentStatusRedirectUrl from "../../utils/get-payment-status";
+import {
+  gatewayRoute,
+  getPaymentRoute,
+  usesPaymentIframe,
+} from "../../utils/payment";
 
 export default class PaymentProcess extends React.Component {
   constructor(props) {
@@ -109,7 +114,15 @@ export default class PaymentProcess extends React.Component {
       return redirectToStatus();
     }
 
-    if (isTokenValid === true && !settings.payment_iframe) {
+    // checked before token validation to never load an unselected payment
+    if (getPaymentRoute(orgSlug, userData, settings) === gatewayRoute(orgSlug)) {
+      return <Navigate to={gatewayRoute(orgSlug)} />;
+    }
+
+    if (
+      isTokenValid === true &&
+      usesPaymentIframe(userData, settings) === false
+    ) {
       this.redirectToPaymentUrl(userData.payment_url);
       return null;
     }

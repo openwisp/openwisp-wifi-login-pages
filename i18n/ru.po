@@ -447,6 +447,10 @@ msgstr "Оплачено"
 msgid "PAY_REQ"
 msgstr "Требуется платёж"
 
+#: client/components/payment-gateway/payment-gateway.js:67
+msgid "PAY_GATEWAY_REQ"
+msgstr "Выберите способ оплаты"
+
 #: client/components/payment-status/payment-status.js:155
 #, javascript-format
 msgid "PAY_WARN${ timeout }${ maxAttempts }"

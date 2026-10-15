@@ -36,6 +36,7 @@ import {
 import Logout from "./lazy-logout";
 import {localStorage} from "../../utils/storage";
 import isOldBrowser from "../../utils/is-old-browser";
+import {getPaymentRoute, hasPendingPayment} from "../../utils/payment";
 import routes from "../../constants/routes";
 
 export default class OrganizationWrapper extends React.Component {
@@ -360,7 +361,10 @@ export default class OrganizationWrapper extends React.Component {
                           );
                         }
                         if (needsVerifyBankCard) {
-                          return <Navigate to={`/${orgSlug}/payment/draft`} />;
+                          const paymentRoute = hasPendingPayment(userData)
+                            ? getPaymentRoute(orgSlug, userData, settings)
+                            : `/${orgSlug}/payment/draft`;
+                          return <Navigate to={paymentRoute} />;
                         }
                         return <Navigate to={`/${orgSlug}/status`} />;
                       }

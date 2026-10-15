@@ -821,6 +821,21 @@ describe("handle-change tests", () => {
     wrapper.find("button").simulate("click", {});
     expect(navigate).toHaveBeenCalled();
   });
+
+  it("routes an unselected payment to gateway selection", () => {
+    const navigate = jest.fn();
+    redirectToPayment(
+      "default",
+      navigate,
+      {
+        payment_id: "payment-id",
+        payment_requires_internet: null,
+        payment_url: "https://payments.example/select",
+      },
+      {payment_requires_internet: true},
+    );
+    expect(navigate).toHaveBeenCalledWith("/default/payment/gateway");
+  });
 });
 describe("storage tests", () => {
   it("should store, get and clear data in window.localStorage", () => {

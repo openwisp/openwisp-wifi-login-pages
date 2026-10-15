@@ -348,6 +348,18 @@ describe("<OrganizationWrapper /> interactions", () => {
     );
     expect(JSON.stringify(elements[2])).toEqual(JSON.stringify(<Footer />));
   });
+
+  it("keeps an authenticated session when opening a payment return link", () => {
+    const search = "?n=pay";
+    wrapper.setProps({location: {pathname: "", search}});
+    const loginRoute = wrapper
+      .find(Route)
+      .filterWhere((route) => route.props().path === "login/*");
+    expect(loginRoute.props().element).toEqual(
+      <Navigate to={`/default/status${search}`} />,
+    );
+    expect(wrapper.find(Login)).toHaveLength(0);
+  });
 });
 
 describe("Test Organization Wrapper for unauthenticated users", () => {
@@ -625,6 +637,40 @@ describe("Test Organization Wrapper for authenticated and unverified users", () 
 
     expect(pathMap["complete-signup"]).toEqual(
       <Navigate to="/default/payment/draft" />,
+    );
+  });
+
+  it("routes an unselected payment to gateway selection", () => {
+    needsVerify.mockImplementation((method) => method === "bank_card");
+    userPendingVerification.mockReturnValue(false);
+    const organization = {
+      ...props.organization,
+      configuration: {
+        ...props.organization.configuration,
+        userData: {
+          ...userData,
+          method: "bank_card",
+          is_verified: false,
+          payment_id: "payment-id",
+          payment_requires_internet: null,
+          payment_url: "https://payments.example/select",
+        },
+      },
+    };
+    const component = shallow(
+      <OrganizationWrapper {...props} organization={organization} />,
+      {disableLifecycleMethods: true},
+    );
+    component
+      .instance()
+      .setState({translationLoaded: true, configLoaded: true});
+    const pathMap = component.find(Route).reduce((mapRoute, route) => {
+      const map = mapRoute;
+      map[route.props().path] = route.props().element;
+      return map;
+    }, {});
+    expect(pathMap["complete-signup"]).toEqual(
+      <Navigate to="/default/payment/gateway" />,
     );
   });
 });

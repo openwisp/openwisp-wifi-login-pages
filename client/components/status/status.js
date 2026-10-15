@@ -42,6 +42,7 @@ import {localStorage} from "../../utils/storage";
 import handleSession from "../../utils/session";
 import getPlanSelection from "../../utils/get-plan-selection";
 import getPlans from "../../utils/get-plans";
+import {getPaymentRoute, requiresInternet} from "../../utils/payment";
 import upgradePlan from "../../utils/upgrade-plan";
 import {
   storeValue,
@@ -314,7 +315,7 @@ export default class Status extends React.Component {
 
       let shouldLogin = mustLogin;
       if (method === "bank_card" && isVerified === false) {
-        shouldLogin = shouldLogin && settings.payment_requires_internet;
+        shouldLogin = shouldLogin && requiresInternet(userData, settings);
       }
       if (this.loginFormRef && this.loginFormRef.current && shouldLogin) {
         storeValue(
@@ -391,7 +392,7 @@ export default class Status extends React.Component {
       (userData.in_upgrade && userData.payment_url)
     ) {
       // avoid redirect loop from proceed to payment
-      if (settings.payment_requires_internet && userData.proceedToPayment) {
+      if (requiresInternet(userData, settings) && userData.proceedToPayment) {
         // reset proceedToPayment
         setUserData({
           ...userData,
@@ -402,7 +403,7 @@ export default class Status extends React.Component {
         navigate(`/${orgSlug}/payment/process`);
         return;
       }
-      navigate(`/${orgSlug}/payment/draft`);
+      navigate(getPaymentRoute(orgSlug, userData, settings));
       return;
     }
 
@@ -611,20 +612,14 @@ export default class Status extends React.Component {
         toast.success(t`SUCCESS_UPGRADE_PLAN`, {
           onOpen: () => toast.dismiss(mainToastId),
         });
-        setUserData({
+        const nextUserData = {
           ...userData,
-          payment_url: response.payment_url,
-          payment_return_url: response.payment_return_url,
-          in_upgrade: response.in_upgrade,
+          ...response,
           // Token consumed by portal login; clear so validateToken refetches one
           radius_user_token: undefined,
-        });
-        // Route through draft page to enforce portal login before gateway
-        if (settings.payment_requires_internet) {
-          navigate(`/${orgSlug}/payment/draft`);
-        } else {
-          navigate(`/${orgSlug}/payment/process`);
-        }
+        };
+        setUserData(nextUserData);
+        navigate(getPaymentRoute(orgSlug, nextUserData, settings));
       })
       .catch((error) => {
         const errorText = getErrorText(error, t`ERR_OCCUR`);

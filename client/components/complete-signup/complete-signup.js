@@ -12,6 +12,7 @@ import getError from "../../utils/get-error";
 import getPlanSelection from "../../utils/get-plan-selection";
 import getPlans from "../../utils/get-plans";
 import logError from "../../utils/log-error";
+import {getPaymentRoute} from "../../utils/payment";
 import {getVerificationRoute} from "../../utils/pending-verification";
 import upgradePlan from "../../utils/upgrade-plan";
 import updateRegistrationMethod from "../../utils/update-registration-method";
@@ -185,17 +186,14 @@ export default class CompleteSignup extends React.Component {
 
     try {
       // Upgrade to selected plan
-      let paymentUrl = null;
-      let paymentReturnUrl = null;
+      let payment = {};
       if (selectedPlan.id) {
-        const response = await upgradePlan(
+        payment = await upgradePlan(
           orgSlug,
           selectedPlan.id,
           userData.auth_token,
           language,
         );
-        paymentUrl = response.payment_url;
-        paymentReturnUrl = response.payment_return_url;
       }
 
       // Update registration method based on plan and settings
@@ -211,13 +209,12 @@ export default class CompleteSignup extends React.Component {
         );
         nextUserData = {
           ...userData,
+          ...payment,
           method: "bank_card",
-          payment_url: paymentUrl,
-          payment_return_url: paymentReturnUrl,
         };
         if (this.isComponentMounted) {
           setUserData(nextUserData);
-          navigate(getVerificationRoute(orgSlug, "bank_card"));
+          navigate(getPaymentRoute(orgSlug, nextUserData, settings));
           setLoading(false);
         }
         return;

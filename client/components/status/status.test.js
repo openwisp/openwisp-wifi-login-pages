@@ -2080,6 +2080,39 @@ describe("<Status /> interactions", () => {
     expect(setLoading.mock.calls.length).toBe(1);
   });
 
+  it("does not use the organization requirement for an offline selected payment", async () => {
+    // also verifies that the value reported by the backend takes
+    // precedence over the organization configuration
+    validateToken.mockReturnValue(true);
+    props = createTestProps();
+    props.userData = {
+      ...responseData,
+      is_verified: false,
+      method: "bank_card",
+      payment_id: "payment-id",
+      // the backend reports that the payment gateway does not require internet
+      payment_requires_internet: false,
+      payment_url: "https://account.openwisp.io/payment/123",
+      mustLogin: true,
+    };
+    props.location.search = "";
+    props.settings.mobile_phone_verification = true;
+    props.settings.subscriptions = true;
+    // the organization configuration requires internet for payments
+    props.settings.payment_requires_internet = true;
+    const setLoading = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading},
+    });
+    const submit = jest.fn();
+    wrapper.instance().loginFormRef.current = {submit};
+    await tick();
+    expect(submit).not.toHaveBeenCalled();
+    expect(props.navigate).toHaveBeenCalledWith(
+      `/${props.orgSlug}/payment/process`,
+    );
+  });
+
   it("should redirect to /payment/process if proceedToPayment is true", async () => {
     validateToken.mockReturnValue(true);
     props = createTestProps();

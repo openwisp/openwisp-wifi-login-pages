@@ -447,6 +447,10 @@ msgstr "Pago recibido exitosamente."
 msgid "PAY_REQ"
 msgstr "Se requiere pago para continuar"
 
+#: client/components/payment-gateway/payment-gateway.js:67
+msgid "PAY_GATEWAY_REQ"
+msgstr "Elige el método de pago"
+
 #: client/components/payment-status/payment-status.js:155
 #, javascript-format
 msgid "PAY_WARN${ timeout }${ maxAttempts }"

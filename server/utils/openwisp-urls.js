@@ -17,6 +17,7 @@ const paths = {
   update_registration_method: "/account/registration-method",
   plans: "/plan",
   payment_status: "/payment/{paymentId}/status",
+  payment_gateway: "/payment/{paymentId}/gateway",
 };
 
 const reverse = (name, orgSlug) => {
@@ -27,6 +28,7 @@ const reverse = (name, orgSlug) => {
   }
   if (
     name === "plans" ||
+    name === "payment_gateway" ||
     name === "payment_status" ||
     name === "user_plan_radius_usage" ||
     name === "user_plan_radius_usage_cancel"

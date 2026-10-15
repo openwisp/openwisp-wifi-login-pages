@@ -47,6 +47,7 @@ const responseData = {
   birth_date: null,
   location: "",
   payment_url: "https://account.openwisp.io/payment/123",
+  payment_iframe: true,
 };
 
 describe("Test <PaymentProcess /> cases", () => {
@@ -84,6 +85,76 @@ describe("Test <PaymentProcess /> cases", () => {
     await tick();
     expect(wrapper.find("Navigate").length).toEqual(1);
     expect(wrapper.find("Navigate").props().to).toEqual("/default/status");
+  });
+
+  it("redirects an unselected payment to gateway selection", async () => {
+    const redirectToPaymentUrl = jest.spyOn(
+      PaymentProcess.prototype,
+      "redirectToPaymentUrl",
+    );
+    props = createTestProps({
+      userData: {
+        ...responseData,
+        payment_id: "payment-id",
+        payment_gateway: null,
+        payment_requires_internet: null,
+        payment_iframe: null,
+      },
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentProcess {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    expect(wrapper.find("Navigate").prop("to")).toEqual(
+      "/default/payment/gateway",
+    );
+    expect(wrapper.find("iframe")).toHaveLength(0);
+    expect(redirectToPaymentUrl).not.toHaveBeenCalled();
+  });
+
+  it("redirects an unselected payment before token validation", () => {
+    const redirectToPaymentUrl = jest.spyOn(
+      PaymentProcess.prototype,
+      "redirectToPaymentUrl",
+    );
+    props = createTestProps({
+      userData: {
+        ...responseData,
+        payment_id: "payment-id",
+        payment_gateway: null,
+        payment_requires_internet: null,
+        payment_iframe: null,
+      },
+    });
+    wrapper = shallow(<PaymentProcess {...props} />, {
+      context: loadingContextValue,
+      disableLifecycleMethods: true,
+    });
+    expect(wrapper.state("isTokenValid")).toBe(null);
+    expect(wrapper.find("Navigate").prop("to")).toEqual(
+      "/default/payment/gateway",
+    );
+    expect(wrapper.find("iframe")).toHaveLength(0);
+    expect(redirectToPaymentUrl).not.toHaveBeenCalled();
+  });
+
+  it("keeps a selected internet-requiring payment on the processing page", async () => {
+    props = createTestProps({
+      userData: {
+        ...responseData,
+        payment_id: "payment-id",
+        payment_gateway: "online",
+        payment_requires_internet: true,
+      },
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentProcess {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    expect(wrapper.find("Navigate")).toHaveLength(0);
+    expect(wrapper.find("iframe")).toHaveLength(1);
   });
 
   it("should redirect unauthenticated users", async () => {
@@ -207,9 +278,44 @@ describe("Test <PaymentProcess /> cases", () => {
     expect(wrapper.instance().state.iframeHeight).toBe(800);
   });
 
-  it("should redirect to payment_url if payment_iframe set to false", async () => {
+  it("redirects to payment_url when the selected gateway disables iframes", async () => {
     props = createTestProps({
-      userData: responseData,
+      userData: {...responseData, payment_iframe: false},
+      settings: {...props.settings, payment_iframe: true},
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentProcess {...props} />, {
+      context: loadingContextValue,
+    });
+    wrapper.instance().redirectToPaymentUrl = jest.fn();
+    await tick();
+    expect(wrapper.instance().redirectToPaymentUrl).toHaveBeenCalledWith(
+      responseData.payment_url,
+    );
+  });
+
+  it("renders an iframe when the selected gateway enables iframes", async () => {
+    const redirectToPaymentUrl = jest
+      .spyOn(PaymentProcess.prototype, "redirectToPaymentUrl")
+      .mockImplementation();
+    props = createTestProps({
+      userData: {...responseData, payment_iframe: true},
+      settings: {...props.settings, payment_iframe: false},
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentProcess {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    expect(wrapper.find("iframe")).toHaveLength(1);
+    expect(redirectToPaymentUrl).not.toHaveBeenCalled();
+  });
+
+  it("redirects a legacy payment when the organization disables iframes", async () => {
+    const userData = {...responseData};
+    delete userData.payment_iframe;
+    props = createTestProps({
+      userData,
       settings: {...props.settings, payment_iframe: false},
     });
     validateToken.mockReturnValue(true);

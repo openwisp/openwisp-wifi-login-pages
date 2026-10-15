@@ -439,6 +439,10 @@ msgstr "Plačilo je bilo prejeto."
 msgid "PAY_REQ"
 msgstr "Plačilo je potrebno za nadaljevanje"
 
+#: client/components/payment-gateway/payment-gateway.js:67
+msgid "PAY_GATEWAY_REQ"
+msgstr "Izberite način plačila"
+
 #: client/components/payment-status/payment-status.js:155
 #, javascript-format
 msgid "PAY_WARN${ timeout }${ maxAttempts }"

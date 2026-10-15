@@ -18,7 +18,7 @@ import Modal from "../modal";
 import getParameterByName from "../../utils/get-parameter-by-name";
 import {mapStateToProps, mapDispatchToProps} from "./index";
 import redirectToPayment from "../../utils/redirect-to-payment";
-import {readContinuation} from "../../utils/continuation";
+import {beginContinuation, readContinuation} from "../../utils/continuation";
 import {sessionStorage, localStorage} from "../../utils/storage";
 
 jest.mock("axios");
@@ -219,7 +219,7 @@ describe("<Login /> next continuation", () => {
   });
 
   describe("next=payment/process skips the draft payment page", () => {
-    const process = (settings) => {
+    const process = (settings, payment = {}) => {
       const props = createTestProps({
         cookies: new Cookies(),
         captivePortalSyncAuth: true,
@@ -230,7 +230,7 @@ describe("<Login /> next continuation", () => {
         props,
       );
       wrapper.instance().componentDidMount();
-      wrapper.instance().handleAuthentication(responseData);
+      wrapper.instance().handleAuthentication({...responseData, ...payment});
       return props;
     };
     afterEach(() => localStorage.clear());
@@ -256,6 +256,27 @@ describe("<Login /> next continuation", () => {
       );
       expect(readContinuation("default")).toBeNull();
     });
+
+    it.each([
+      [false, "/default/payment/process"],
+      [null, "/default/payment/gateway"],
+    ])(
+      "follows payment_requires_internet=%s over the organization setting",
+      (requirement, route) => {
+        const props = process(
+          {payment_requires_internet: true},
+          {payment_requires_internet: requirement},
+        );
+        expect(props.setUserData).not.toHaveBeenCalledWith(
+          expect.objectContaining({proceedToPayment: true}),
+        );
+        expect(localStorage.getItem("default_proceedToPayment")).toBeNull();
+        expect(localStorage.getItem("default_mustLogin")).toBeNull();
+        expect(props.authenticate).toHaveBeenCalledWith(true);
+        expect(props.navigate).toHaveBeenLastCalledWith(route);
+        expect(readContinuation("default")).toBeNull();
+      },
+    );
   });
 
   it("drops next when the password is expired", () => {
@@ -688,6 +709,9 @@ describe("<Login /> interactions", () => {
     data.username = "tester";
     data.is_verified = false;
     data.method = "bank_card";
+    data.payment_id = "payment-id";
+    data.payment_gateway = null;
+    data.payment_requires_internet = null;
     data.payment_url = "https://account.openwisp.io/payment/123";
     axios.mockImplementationOnce(() =>
       Promise.resolve({
@@ -710,8 +734,45 @@ describe("<Login /> interactions", () => {
     await tick();
     expect(handleSubmit).toHaveBeenCalled();
     const authenticateMock = login.props().authenticate.mock;
-    expect(redirectToPayment).toHaveBeenCalledWith("default", props.navigate);
+    expect(redirectToPayment).toHaveBeenCalledWith(
+      "default",
+      props.navigate,
+      expect.objectContaining({
+        payment_id: "payment-id",
+        payment_gateway: null,
+        payment_requires_internet: null,
+      }),
+      props.settings,
+    );
     expect(authenticateMock.calls.length).toBe(1);
+  });
+
+  it("resumes the current payment of a return link", () => {
+    props.settings = {subscriptions: true};
+    wrapper = mountComponent(props);
+    const login = wrapper.find(Login);
+    beginContinuation("?n=pay", "default");
+    axios.mockClear();
+    login.instance().handleAuthentication({
+      ...userData,
+      key: "test-token",
+      method: "bank_card",
+      is_verified: false,
+      payment_id: "current-payment-id",
+      payment_requires_internet: false,
+      payment_url: "https://payments.example/current",
+    });
+    expect(axios).not.toHaveBeenCalled();
+    expect(redirectToPayment).toHaveBeenCalledWith(
+      "default",
+      props.navigate,
+      expect.objectContaining({
+        payment_id: "current-payment-id",
+        payment_requires_internet: false,
+        payment_url: "https://payments.example/current",
+      }),
+      props.settings,
+    );
   });
   it("should redirect when pending verification has only phone enabled", async () => {
     props.settings = {

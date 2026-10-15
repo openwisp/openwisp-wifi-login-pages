@@ -20,6 +20,7 @@ describe("continuation destinations", () => {
     "/default/change-password",
     "/default/change-phone-number",
     "/default/payment/draft",
+    "/default/payment/gateway",
     "/default/payment/success",
     "/default/payment/failed",
     "/default/payment/process/",
@@ -135,6 +136,7 @@ describe("continuation destinations", () => {
     ["/default/payment/process/", routes.paymentProcess],
     ["/default/payment/process", routes.paymentProcess],
     ["/default/payment/failed", routes.paymentStatus],
+    ["/default/payment/gateway", routes.paymentStatus],
   ])("matches %s with the same rule as resolveDestination", (path, route) => {
     expect(isRoute(path, orgSlug, route)).toBe(true);
   });

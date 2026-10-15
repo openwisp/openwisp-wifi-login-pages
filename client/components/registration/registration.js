@@ -211,12 +211,14 @@ export default class Registration extends React.Component {
     })
       .then((res = {}) => {
         if (!res && !res.data) throw new Error();
-        const {key: auth_token} = res.data;
-        setUserData({
+        const {key: auth_token, ...registeredUser} = res.data;
+        const nextUserData = {
+          ...registeredUser,
           is_verified: false,
           auth_token,
           mustLogin: !postData.requires_payment,
-        });
+        };
+        setUserData(nextUserData);
         this.setState({
           errors: {},
           phone_number: "",
@@ -231,7 +233,7 @@ export default class Registration extends React.Component {
         // if requires_payment
         // redirect to payment status component
         if (postData.requires_payment === true) {
-          redirectToPayment(orgSlug, navigate);
+          redirectToPayment(orgSlug, navigate, nextUserData, settings);
         }
         // will redirect to status which will validate data again
         // and initiate any verification if needed

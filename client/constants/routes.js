@@ -19,7 +19,7 @@ const routes = {
   paymentStatus: {
     path: "payment/:status",
     continuation: true,
-    statuses: ["draft", "success", "failed"],
+    statuses: ["draft", "success", "failed", "gateway"],
   },
   signup: {path: "complete-signup"},
 };

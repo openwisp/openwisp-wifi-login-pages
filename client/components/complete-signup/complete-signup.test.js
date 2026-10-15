@@ -301,6 +301,9 @@ describe("<CompleteSignup />", () => {
   it("submits paid plan and redirects to payment draft", async () => {
     updateRegistrationMethod.mockResolvedValue({method: "bank_card"});
     upgradePlan.mockResolvedValue({
+      payment_id: "payment-id",
+      payment_gateway: null,
+      payment_requires_internet: null,
       payment_url: "https://payment.example/1",
       payment_return_url: "https://wifi.example/default/login?n=pay&sid=secret",
     });
@@ -323,12 +326,15 @@ describe("<CompleteSignup />", () => {
     expect(props.setUserData).toHaveBeenCalledWith(
       expect.objectContaining({
         method: "bank_card",
+        payment_id: "payment-id",
+        payment_gateway: null,
+        payment_requires_internet: null,
         payment_url: "https://payment.example/1",
         payment_return_url:
           "https://wifi.example/default/login?n=pay&sid=secret",
       }),
     );
-    expect(props.navigate).toHaveBeenCalledWith("/default/payment/draft");
+    expect(props.navigate).toHaveBeenCalledWith("/default/payment/gateway");
   });
 
   it("ignores invalid plan submission indexes", async () => {

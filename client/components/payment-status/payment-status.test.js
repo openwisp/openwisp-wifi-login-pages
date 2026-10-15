@@ -15,6 +15,8 @@ import validateToken from "../../utils/validate-token";
 import loadTranslation from "../../utils/load-translation";
 import cancelUpgradePlan from "../../utils/cancel-upgrade-plan";
 import logError from "../../utils/log-error";
+import {getGateways, selectGateway} from "../../utils/payment";
+import PaymentGateway from "../payment-gateway";
 
 jest.mock("axios");
 jest.mock("../../utils/get-config");
@@ -22,6 +24,14 @@ jest.mock("../../utils/validate-token");
 jest.mock("../../utils/load-translation");
 jest.mock("../../utils/cancel-upgrade-plan");
 jest.mock("../../utils/log-error");
+jest.mock("../../utils/payment", () => {
+  const actual = jest.requireActual("../../utils/payment");
+  return {
+    ...actual,
+    getGateways: jest.fn(),
+    selectGateway: jest.fn(),
+  };
+});
 
 const defaultConfig = getConfig("default", true);
 const createTestProps = (props) => ({
@@ -127,6 +137,233 @@ describe("Test <PaymentStatus /> cases", () => {
     ).toEqual("/default/payment/draft");
     expect(wrapper.find(".payment-status-row-4 .button").length).toEqual(1);
     expect(wrapper.find("Navigate").length).toEqual(0);
+  });
+
+  it("selects a gateway only after the user proceeds", async () => {
+    const payment = {
+      payment_id: "payment-id",
+      payment_gateway: null,
+      payment_requires_internet: null,
+      payment_url: "https://payments.example/select",
+    };
+    getGateways.mockResolvedValue({
+      ...payment,
+      gateways: [{key: "offline", label: "Pay at a retailer"}],
+    });
+    props = createTestProps({
+      userData: {...responseData, ...payment, is_verified: false},
+      params: {status: "gateway"},
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+
+    const selector = wrapper.find(PaymentGateway);
+    expect(selector).toHaveLength(1);
+    expect(selectGateway).not.toHaveBeenCalled();
+    selector.prop("onSelect")("offline");
+    expect(selectGateway).not.toHaveBeenCalled();
+
+    selectGateway.mockResolvedValue({
+      ...payment,
+      payment_gateway: "offline",
+      payment_requires_internet: false,
+      payment_url: "https://payments.example/process",
+    });
+    await selector.prop("onProceed")();
+
+    expect(selectGateway).toHaveBeenCalledWith(
+      "default",
+      "payment-id",
+      "offline",
+      responseData.auth_token || responseData.key,
+      props.language,
+    );
+    expect(props.setUserData).toHaveBeenCalledWith({
+      ...props.userData,
+      payment_gateway: "offline",
+      payment_requires_internet: false,
+      payment_url: "https://payments.example/process",
+    });
+    expect(props.navigate).toHaveBeenCalledWith("/default/payment/process");
+    expect(props.authenticate).not.toHaveBeenCalled();
+  });
+
+  it("re-enables gateway selection when the response still requires it", async () => {
+    const payment = {
+      payment_id: "payment-id",
+      payment_gateway: null,
+      payment_requires_internet: null,
+      payment_url: "https://payments.example/select",
+    };
+    getGateways.mockResolvedValue({
+      ...payment,
+      gateways: [{key: "offline", label: "Pay at a retailer"}],
+    });
+    selectGateway.mockResolvedValue(payment);
+    props = createTestProps({
+      userData: {...responseData, ...payment},
+      params: {status: "gateway"},
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+
+    wrapper.find(PaymentGateway).prop("onSelect")("offline");
+    await wrapper.find(PaymentGateway).prop("onProceed")();
+
+    const selector = wrapper.find(PaymentGateway);
+    expect(selector.prop("submitting")).toBe(false);
+    expect(selector.prop("error")).toBe(false);
+    await selector.prop("onProceed")();
+    expect(selectGateway).toHaveBeenCalledTimes(2);
+  });
+
+  it("prepares the draft page after a gateway is selected", async () => {
+    const payment = {
+      payment_id: "payment-id",
+      payment_gateway: null,
+      payment_requires_internet: null,
+      payment_url: "https://payments.example/select",
+    };
+    getGateways.mockResolvedValue({
+      ...payment,
+      gateways: [{key: "online", label: "Card"}],
+    });
+    props = createTestProps({
+      userData: {...responseData, ...payment},
+      params: {status: "gateway"},
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    const selectedUserData = {
+      ...responseData,
+      ...payment,
+      payment_gateway: "online",
+      payment_requires_internet: true,
+      payment_url: "https://payments.example/online",
+    };
+
+    wrapper.setProps({params: {status: "draft"}, userData: selectedUserData});
+    await tick();
+
+    expect(props.setUserData).toHaveBeenCalledTimes(1);
+    expect(props.setUserData).toHaveBeenCalledWith({
+      ...selectedUserData,
+      mustLogin: true,
+    });
+    expect(validateToken).toHaveBeenCalledTimes(1);
+    expect(getGateways).toHaveBeenCalledTimes(1);
+    expect(selectGateway).not.toHaveBeenCalled();
+  });
+
+  it("skips gateway selection when the payment is already selected", async () => {
+    props = createTestProps({
+      userData: {
+        ...responseData,
+        payment_id: "payment-id",
+        payment_gateway: "offline",
+        payment_requires_internet: false,
+        payment_url: "https://payments.example/process",
+      },
+      params: {status: "gateway"},
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+
+    expect(getGateways).not.toHaveBeenCalled();
+    expect(wrapper.find(PaymentGateway)).toHaveLength(0);
+    expect(wrapper.find("Navigate").prop("to")).toBe(
+      "/default/payment/process",
+    );
+  });
+
+  it("shows a retry action when loading gateways fails", async () => {
+    props = createTestProps({
+      userData: {
+        ...responseData,
+        payment_id: "payment-id",
+        payment_gateway: null,
+        payment_requires_internet: null,
+        payment_url: "https://payments.example/select",
+      },
+      params: {status: "gateway"},
+    });
+    getGateways.mockRejectedValue(new Error("Network error"));
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+
+    const selector = wrapper.find(PaymentGateway);
+    expect(selector.prop("error")).toBe(true);
+    expect(props.authenticate).not.toHaveBeenCalled();
+
+    getGateways.mockResolvedValue({gateways: []});
+    await selector.prop("onRetry")();
+    expect(getGateways).toHaveBeenCalledTimes(2);
+    expect(wrapper.find(PaymentGateway).prop("error")).toBe(false);
+  });
+
+  it("redirects unauthenticated users away from gateway selection", async () => {
+    props = createTestProps({
+      userData: {},
+      params: {status: "gateway"},
+      isAuthenticated: false,
+    });
+    validateToken.mockReturnValue(false);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    expect(wrapper.find(Loader)).toHaveLength(0);
+    expect(wrapper.find("Navigate").prop("to")).toBe("/default/status");
+    await tick();
+    expect(getGateways).not.toHaveBeenCalled();
+    expect(wrapper.find(PaymentGateway)).toHaveLength(0);
+  });
+
+  it.each([
+    ["no pending payment", {}],
+    [
+      "not bank_card",
+      {
+        payment_id: "payment-id",
+        payment_requires_internet: null,
+        method: "mobile_phone",
+      },
+    ],
+    [
+      "verified and not upgrading",
+      {
+        payment_id: "payment-id",
+        payment_requires_internet: null,
+        is_verified: true,
+      },
+    ],
+  ])("redirects to status from gateway selection: %s", async (_, overrides) => {
+    props = createTestProps({
+      userData: {...responseData, ...overrides},
+      params: {status: "gateway"},
+      isAuthenticated: true,
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    expect(wrapper.find("Navigate").prop("to")).toBe("/default/status");
+    expect(getGateways).not.toHaveBeenCalled();
   });
 
   it("should show a loader instead of the wrong failed variant on cold load", () => {
@@ -400,6 +637,36 @@ describe("Test <PaymentStatus /> cases", () => {
     );
   });
 
+  it("uses the selected gateway requirement instead of the organization fallback", async () => {
+    const mockCookiesSet = jest.fn();
+    props = createTestProps({
+      userData: {
+        ...responseData,
+        is_verified: false,
+        payment_requires_internet: false,
+      },
+      params: {status: "draft"},
+      captivePortalSyncAuth: true,
+      cookies: {set: mockCookiesSet, get: jest.fn(), remove: jest.fn()},
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+
+    const payProcButton = wrapper
+      .find("Link.button.full")
+      .findWhere((node) => node.text() === t`PAY_PROC_BTN`)
+      .first();
+    expect(payProcButton.prop("to")).toBe("/default/payment/process");
+    props.setUserData.mockClear();
+    payProcButton.simulate("click");
+
+    expect(props.setUserData).not.toHaveBeenCalled();
+    expect(mockCookiesSet).not.toHaveBeenCalled();
+  });
+
   it("should redirect to status if success but unverified", async () => {
     const spyToast = jest.spyOn(toast, "success");
     props = createTestProps({
@@ -489,6 +756,50 @@ describe("Test <PaymentStatus /> cases", () => {
     expect(wrapper.instance().props.setUserData).not.toHaveBeenCalled();
     // No captive portal login needed when internet is not required, so the
     // retry is a plain navigation and paymentProceedHandler must not run.
+    expect(props.authenticate).not.toHaveBeenCalled();
+  });
+
+  it("should retry a failed payment on the gateway page when no gateway is selected", async () => {
+    props = createTestProps({
+      params: {status: "failed"},
+      userData: {
+        ...responseData,
+        payment_id: "payment-id",
+        payment_url: "https://payment.example.com/pay/1",
+        payment_requires_internet: null,
+      },
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    expect(
+      wrapper.find(".payment-status-row-3 .button").at(0).props().to,
+    ).toEqual("/default/payment/gateway");
+  });
+
+  it("should retry a failed upgrade on the gateway page when no gateway is selected", async () => {
+    props = createTestProps({
+      params: {status: "failed"},
+      userData: {
+        ...responseData,
+        method: "mobile_phone",
+        is_verified: true,
+        in_upgrade: true,
+        payment_id: "payment-id",
+        payment_url: "https://payment.example.com/pay/1",
+        payment_requires_internet: null,
+      },
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    const retryButton = wrapper.find(".payment-status-row-3 .button").at(0);
+    expect(retryButton.props().to).toEqual("/default/payment/gateway");
+    retryButton.simulate("click");
     expect(props.authenticate).not.toHaveBeenCalled();
   });
 
@@ -932,9 +1243,9 @@ describe("Test <PaymentStatus /> cases", () => {
     expect(copyButton.prop("type")).toEqual("button");
     expect(copyButton.hasClass("partial")).toEqual(true);
     expect(copyButton.text()).toEqual(t`PAY_LINK_COPY_BTN`);
-    expect(copyButton.find(".payment-link-copy-icon").prop("aria-hidden")).toEqual(
-      "true",
-    );
+    expect(
+      copyButton.find(".payment-link-copy-icon").prop("aria-hidden"),
+    ).toEqual("true");
     expect(input.prop("aria-describedby")).toEqual("payment-link-help");
     expect(copyButton.prop("aria-label")).toEqual(t`PAY_LINK_COPY_BTN`);
     expect(

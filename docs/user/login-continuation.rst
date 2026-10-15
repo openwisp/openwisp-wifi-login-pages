@@ -14,9 +14,15 @@ Supported Destinations
 ----------------------
 
 The destination must be a path of the same organization, one of:
-``status``, ``change-password``, ``change-phone-number``,
-``payment/process``, ``payment/draft``, ``payment/success`` or
-``payment/failed``.
+
+- ``/status``
+- ``/change-password``
+- ``/change-phone-number``
+- ``/payment/process``
+- ``/payment/draft``
+- ``/payment/gateway``
+- ``/payment/success``
+- ``/payment/failed``
 
 Any other value (external URLs, other organizations, unknown pages, query
 strings or fragments) is ignored and the user follows the usual login

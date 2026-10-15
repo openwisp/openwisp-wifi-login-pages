@@ -38,6 +38,7 @@ import {
   isRoute,
 } from "../../utils/continuation";
 import {storeValue} from "../../utils/synced-storage";
+import {gatewayRoute, requiresInternet} from "../../utils/payment";
 import routes from "../../constants/routes";
 
 const PhoneInput = React.lazy(
@@ -306,7 +307,7 @@ export default class Login extends React.Component {
   };
 
   handleAuthentication = (data = {}, useSessionStorage = false) => {
-    const {orgSlug, authenticate, setUserData, navigate} = this.props;
+    const {orgSlug, authenticate, setUserData, navigate, settings} = this.props;
     const {remember_me} = this.state;
     // useSessionStorage=true is passed from social login or SAML
     // user needs to repeat the login process each time
@@ -342,7 +343,7 @@ export default class Login extends React.Component {
       nextUserData.method === "bank_card" &&
       nextUserData.is_verified === false
     ) {
-      redirectToPayment(orgSlug, navigate);
+      redirectToPayment(orgSlug, navigate, nextUserData, settings);
       authenticate(true);
       return;
     }
@@ -371,7 +372,8 @@ export default class Login extends React.Component {
       captivePortalSyncAuth,
     } = this.props;
     clearContinuation();
-    if (settings.payment_requires_internet) {
+    const isInternetRequired = requiresInternet(user, settings);
+    if (isInternetRequired) {
       const flags = {proceedToPayment: true, mustLogin: true};
       setUserData({...user, ...flags});
       Object.entries(flags).forEach(([key, value]) =>
@@ -381,7 +383,11 @@ export default class Login extends React.Component {
       return;
     }
     authenticate(true);
-    navigate(`/${orgSlug}/payment/process`);
+    navigate(
+      isInternetRequired === null
+        ? gatewayRoute(orgSlug)
+        : `/${orgSlug}/payment/process`,
+    );
   };
 
   // Removes the continuation and SESAME token params from the URL so that
