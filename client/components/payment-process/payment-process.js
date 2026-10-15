@@ -115,7 +115,9 @@ export default class PaymentProcess extends React.Component {
     }
 
     // checked before token validation to never load an unselected payment
-    if (getPaymentRoute(orgSlug, userData, settings) === gatewayRoute(orgSlug)) {
+    if (
+      getPaymentRoute(orgSlug, userData, settings) === gatewayRoute(orgSlug)
+    ) {
       return <Navigate to={gatewayRoute(orgSlug)} />;
     }
 
