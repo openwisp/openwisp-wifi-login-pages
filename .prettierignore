@@ -43,3 +43,4 @@ client/configs/
 client/organizations.json
 server/assets/*
 organizations/
+/openwisp-radius/
