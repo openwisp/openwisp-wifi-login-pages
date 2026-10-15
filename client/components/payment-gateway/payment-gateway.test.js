@@ -1,6 +1,7 @@
 import {shallow} from "enzyme";
 import React from "react";
 import {addLocale, useLocale} from "ttag";
+import Loader from "../../utils/loader";
 import PaymentGateway from "./payment-gateway";
 
 const gateways = [
@@ -25,6 +26,8 @@ describe("<PaymentGateway />", () => {
         submitting={false}
         onSelect={jest.fn()}
         onProceed={jest.fn()}
+        onCancel={jest.fn()}
+        cancelLabel="PAY_GO_BACK_BTN"
       />,
     );
 
@@ -49,6 +52,48 @@ describe("<PaymentGateway />", () => {
     });
   });
 
+  describe("logo loading", () => {
+    it("shows one page loader until every logo has settled", () => {
+      const wrapper = shallow(
+        <PaymentGateway
+          gateways={[
+            {key: "one", label: "One", logo_url: "https://example.com/1.svg"},
+            {key: "two", label: "Two", logo_url: "https://example.com/2.svg"},
+          ]}
+          selected={null}
+          submitting={false}
+          onSelect={jest.fn()}
+          onProceed={jest.fn()}
+          onCancel={jest.fn()}
+          cancelLabel="PAY_GO_BACK_BTN"
+        />,
+      );
+      expect(wrapper.find(Loader)).toHaveLength(1);
+      expect(wrapper.find(".payment-gateway-loading")).toHaveLength(1);
+      wrapper.find("img").at(0).simulate("load");
+      expect(wrapper.find(Loader)).toHaveLength(1);
+      wrapper.find("img").at(1).simulate("error");
+      expect(wrapper.find(Loader)).toHaveLength(0);
+      expect(wrapper.find(".payment-gateway-loading")).toHaveLength(0);
+      expect(wrapper.find("img")).toHaveLength(1);
+    });
+
+    it("shows no loader when no gateway has a logo", () => {
+      const wrapper = shallow(
+        <PaymentGateway
+          gateways={[{key: "offline", label: "Pay at a retailer"}]}
+          selected={null}
+          submitting={false}
+          onSelect={jest.fn()}
+          onProceed={jest.fn()}
+          onCancel={jest.fn()}
+          cancelLabel="PAY_GO_BACK_BTN"
+        />,
+      );
+      expect(wrapper.find(Loader)).toHaveLength(0);
+    });
+  });
+
   it("keeps every gateway readable regardless of selection", () => {
     const wrapper = shallow(
       <PaymentGateway
@@ -57,6 +102,8 @@ describe("<PaymentGateway />", () => {
         submitting={false}
         onSelect={jest.fn()}
         onProceed={jest.fn()}
+        onCancel={jest.fn()}
+        cancelLabel="PAY_GO_BACK_BTN"
       />,
     );
 
@@ -93,6 +140,8 @@ describe("<PaymentGateway />", () => {
         submitting={false}
         onSelect={jest.fn()}
         onProceed={jest.fn()}
+        onCancel={jest.fn()}
+        cancelLabel="PAY_GO_BACK_BTN"
       />,
     );
 
@@ -109,6 +158,8 @@ describe("<PaymentGateway />", () => {
         submitting={false}
         onSelect={onSelect}
         onProceed={onProceed}
+        onCancel={jest.fn()}
+        cancelLabel="PAY_GO_BACK_BTN"
       />,
     );
 
@@ -118,8 +169,31 @@ describe("<PaymentGateway />", () => {
     expect(onSelect).toHaveBeenCalledWith("offline");
     expect(onProceed).not.toHaveBeenCalled();
 
-    wrapper.find("button.button.full").simulate("click");
+    wrapper.find("button.button.full").at(0).simulate("click");
     expect(onProceed).toHaveBeenCalledTimes(1);
+  });
+
+  it("offers a cancel action next to the proceed action", () => {
+    const onCancel = jest.fn();
+    const onProceed = jest.fn();
+    const wrapper = shallow(
+      <PaymentGateway
+        gateways={gateways}
+        selected={null}
+        submitting={false}
+        onSelect={jest.fn()}
+        onProceed={onProceed}
+        onCancel={onCancel}
+        cancelLabel="PAY_GO_BACK_BTN"
+      />,
+    );
+
+    const cancelButton = wrapper.find("button.button.full").at(1);
+    expect(cancelButton.text()).toBe("PAY_GO_BACK_BTN");
+    expect(cancelButton.prop("disabled")).toBeUndefined();
+    cancelButton.simulate("click");
+    expect(onCancel).toHaveBeenCalledTimes(1);
+    expect(onProceed).not.toHaveBeenCalled();
   });
 
   it("disables proceeding without a choice or while submitting", () => {
@@ -130,12 +204,18 @@ describe("<PaymentGateway />", () => {
         submitting={false}
         onSelect={jest.fn()}
         onProceed={jest.fn()}
+        onCancel={jest.fn()}
+        cancelLabel="PAY_GO_BACK_BTN"
       />,
     );
-    expect(wrapper.find("button.button.full").prop("disabled")).toBe(true);
+    expect(wrapper.find("button.button.full").at(0).prop("disabled")).toBe(
+      true,
+    );
 
     wrapper.setProps({selected: "online", submitting: true});
-    expect(wrapper.find("button.button.full").prop("disabled")).toBe(true);
+    expect(wrapper.find("button.button.full").at(0).prop("disabled")).toBe(
+      true,
+    );
   });
 
   it("shows that selection is unavailable when no gateways are returned", () => {
@@ -146,15 +226,20 @@ describe("<PaymentGateway />", () => {
         submitting={false}
         onSelect={jest.fn()}
         onProceed={jest.fn()}
+        onCancel={jest.fn()}
+        cancelLabel="PAY_GO_BACK_BTN"
       />,
     );
 
     expect(wrapper.find(".payment-gateway-unavailable")).toHaveLength(1);
-    expect(wrapper.find("button.button.full").prop("disabled")).toBe(true);
+    expect(wrapper.find("button.button.full").at(0).prop("disabled")).toBe(
+      true,
+    );
   });
 
   it("shows a retry action instead of choices on error", () => {
     const onRetry = jest.fn();
+    const onCancel = jest.fn();
     const wrapper = shallow(
       <PaymentGateway
         gateways={gateways}
@@ -163,13 +248,17 @@ describe("<PaymentGateway />", () => {
         error
         onSelect={jest.fn()}
         onProceed={jest.fn()}
+        onCancel={onCancel}
+        cancelLabel="PAY_GO_BACK_BTN"
         onRetry={onRetry}
       />,
     );
 
     expect(wrapper.find(".alert-danger")).toHaveLength(1);
     expect(wrapper.find("input[type='radio']")).toHaveLength(0);
-    wrapper.find("button.button.full").simulate("click");
+    wrapper.find("button.button.full").at(0).simulate("click");
     expect(onRetry).toHaveBeenCalledTimes(1);
+    wrapper.find("button.button.full").at(1).simulate("click");
+    expect(onCancel).toHaveBeenCalledTimes(1);
   });
 });

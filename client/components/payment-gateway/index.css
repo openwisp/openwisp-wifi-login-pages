@@ -47,3 +47,7 @@
 .payment-gateways .plan label:has(input:focus-visible) {
   outline: 1px dotted #000;
 }
+
+.payment-gateway-loading {
+  visibility: hidden;
+}

@@ -307,6 +307,7 @@ export default class PaymentStatus extends React.Component {
     if (gateways === null && !gatewayError) {
       return <Loader />;
     }
+    const isUpgrade = Boolean(userData.in_upgrade);
     return (
       <PaymentGateway
         gateways={gateways || []}
@@ -315,6 +316,8 @@ export default class PaymentStatus extends React.Component {
         error={gatewayError}
         onSelect={this.selectGateway}
         onProceed={this.proceedWithGateway}
+        onCancel={isUpgrade ? this.backToStatus : this.logout}
+        cancelLabel={isUpgrade ? t`PAY_GO_BACK_BTN` : t`PAY_GIVE_UP_BTN`}
         onRetry={() => this.loadGateways(userData)}
       />
     );
@@ -462,7 +465,9 @@ export default class PaymentStatus extends React.Component {
                         className="payment-link-copy-icon"
                         aria-hidden="true"
                       />
-                      <span>{t`PAY_LINK_COPY_BTN`}</span>
+                      <span className="payment-link-copy-label">
+                        {t`PAY_LINK_COPY_BTN`}
+                      </span>
                     </button>
                   </div>
                 </div>

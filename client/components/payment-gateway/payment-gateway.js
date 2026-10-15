@@ -2,10 +2,45 @@
 import PropTypes from "prop-types";
 import React from "react";
 import {gettext, t} from "ttag";
+import Loader from "../../utils/loader";
 import "../../utils/plan.css";
 import "./index.css";
 
 export default class PaymentGateway extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {logoStatus: {}};
+  }
+
+  setLogoStatus(url, status) {
+    this.setState((state) => ({logoStatus: {...state.logoStatus, [url]: status}}));
+  }
+
+  hasPendingLogos() {
+    const {gateways} = this.props;
+    const {logoStatus} = this.state;
+    return gateways.some(
+      (gateway) => gateway.logo_url && !logoStatus[gateway.logo_url],
+    );
+  }
+
+  renderLogo(url) {
+    if (this.state.logoStatus[url] === "failed") {
+      return null;
+    }
+    return (
+      <span className="payment-gateway-logo">
+        <img
+          src={url}
+          alt=""
+          aria-hidden="true"
+          onLoad={() => this.setLogoStatus(url, "loaded")}
+          onError={() => this.setLogoStatus(url, "failed")}
+        />
+      </span>
+    );
+  }
+
   renderChoices() {
     const {gateways, selected, onSelect} = this.props;
     if (!gateways.length) {
@@ -31,11 +66,7 @@ export default class PaymentGateway extends React.Component {
             <div className={planClass} key={gateway.key}>
               <label htmlFor={`payment-gateway-${gateway.key}`}>
                 <span className="title">{gatewayLabel}</span>
-                {gateway.logo_url && (
-                  <span className="payment-gateway-logo">
-                    <img src={gateway.logo_url} alt="" aria-hidden="true" />
-                  </span>
-                )}
+                {gateway.logo_url && this.renderLogo(gateway.logo_url)}
                 <input
                   id={`payment-gateway-${gateway.key}`}
                   type="radio"
@@ -52,6 +83,17 @@ export default class PaymentGateway extends React.Component {
     );
   }
 
+  renderCancel() {
+    const {onCancel, cancelLabel} = this.props;
+    return (
+      <div className="row">
+        <button type="button" className="button full" onClick={onCancel}>
+          {cancelLabel}
+        </button>
+      </div>
+    );
+  }
+
   renderError() {
     const {onRetry} = this.props;
     return (
@@ -62,12 +104,14 @@ export default class PaymentGateway extends React.Component {
             {t`PAY_TRY_AGAIN_BTN`}
           </button>
         </div>
+        {this.renderCancel()}
       </>
     );
   }
 
   render() {
     const {selected, submitting, error, onProceed} = this.props;
+    const loading = !error && this.hasPendingLogos();
     return (
       <div className="container content">
         <div className="inner">
@@ -76,7 +120,7 @@ export default class PaymentGateway extends React.Component {
               {error ? (
                 this.renderError()
               ) : (
-                <>
+                <div className={loading ? "payment-gateway-loading" : undefined}>
                   <h2 className="row" id="payment-gateway-title">
                     {t`PAY_GATEWAY_REQ`}
                   </h2>
@@ -91,11 +135,13 @@ export default class PaymentGateway extends React.Component {
                       {t`PAY_PROC_BTN`}
                     </button>
                   </div>
-                </>
+                  {this.renderCancel()}
+                </div>
               )}
             </div>
           </div>
         </div>
+        {loading && <Loader />}
       </div>
     );
   }
@@ -114,5 +160,7 @@ PaymentGateway.propTypes = {
   error: PropTypes.bool,
   onSelect: PropTypes.func.isRequired,
   onProceed: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  cancelLabel: PropTypes.string.isRequired,
   onRetry: PropTypes.func,
 };

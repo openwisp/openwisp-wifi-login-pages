@@ -288,6 +288,90 @@ describe("Test <PaymentStatus /> cases", () => {
     );
   });
 
+  it("lets an upgrading user abandon the upgrade from gateway selection", async () => {
+    const payment = {
+      payment_id: "payment-id",
+      payment_gateway: null,
+      payment_requires_internet: null,
+    };
+    getGateways.mockResolvedValue({
+      gateways: [{key: "offline", label: "Pay at a retailer"}],
+    });
+    cancelUpgradePlan.mockResolvedValue({});
+    props = createTestProps({
+      userData: {
+        ...responseData,
+        ...payment,
+        method: "mobile_phone",
+        is_verified: true,
+        in_upgrade: true,
+      },
+      params: {status: "gateway"},
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+
+    const selector = wrapper.find(PaymentGateway);
+    expect(selector.prop("cancelLabel")).toEqual(
+      "Cancel operation and go back to your account",
+    );
+    await selector.prop("onCancel")();
+
+    expect(cancelUpgradePlan).toHaveBeenCalledWith(
+      props.orgSlug,
+      props.userData.auth_token || props.userData.key,
+      props.language,
+    );
+    expect(props.setUserData).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        in_upgrade: false,
+        proceedToPayment: false,
+        payment_url: null,
+        payment_return_url: null,
+        mustLogin: undefined,
+        mustLogout: true,
+        captivePortalLogoutOnly: true,
+      }),
+    );
+    expect(props.navigate).toHaveBeenCalledWith(`/${props.orgSlug}/status`);
+    expect(props.logout).not.toHaveBeenCalled();
+  });
+
+  it("lets a new user give up from gateway selection", async () => {
+    const payment = {
+      payment_id: "payment-id",
+      payment_gateway: null,
+      payment_requires_internet: null,
+    };
+    getGateways.mockResolvedValue({
+      gateways: [{key: "offline", label: "Pay at a retailer"}],
+    });
+    props = createTestProps({
+      userData: {...responseData, ...payment, is_verified: false},
+      params: {status: "gateway"},
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+
+    const selector = wrapper.find(PaymentGateway);
+    expect(selector.prop("cancelLabel")).toEqual(
+      "Cancel operation and log out",
+    );
+    selector.prop("onCancel")();
+
+    expect(cancelUpgradePlan).not.toHaveBeenCalled();
+    expect(props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({mustLogout: true}),
+    );
+    expect(props.navigate).toHaveBeenCalledWith(`/${props.orgSlug}/status`);
+  });
+
   it("shows a retry action when loading gateways fails", async () => {
     props = createTestProps({
       userData: {
@@ -1248,6 +1332,12 @@ describe("Test <PaymentStatus /> cases", () => {
     ).toEqual("true");
     expect(input.prop("aria-describedby")).toEqual("payment-link-help");
     expect(copyButton.prop("aria-label")).toEqual(t`PAY_LINK_COPY_BTN`);
+    expect(copyButton.find(".payment-link-copy-label").text()).toEqual(
+      t`PAY_LINK_COPY_BTN`,
+    );
+    expect(
+      copyButton.find(".payment-link-copy-icon").hasClass("payment-link-copy-label"),
+    ).toEqual(false);
     expect(
       wrapper.find("#payment-link-help").prop("dangerouslySetInnerHTML"),
     ).toEqual({__html: t`PAY_LINK_HELP`});

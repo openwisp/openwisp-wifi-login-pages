@@ -51,7 +51,7 @@ body .payment-link-input {
 }
 
 @media (max-width: 480px) {
-  .payment-link-copy span {
+  .payment-link-copy-label {
     display: none;
   }
 }
