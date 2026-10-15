@@ -451,10 +451,13 @@ msgstr "Se requiere pago para continuar"
 msgid "PAY_GATEWAY_REQ"
 msgstr "Elige el método de pago"
 
-#: client/components/payment-status/payment-status.js:155
 #, javascript-format
-msgid "PAY_WARN${ timeout }${ maxAttempts }"
-msgstr "<p>Se le redirigirá a una pasarela de pagos segura para completar el pago.</p><p>Tendrá <strong>${ timeout } minutos</strong> para completar el pago, por lo que le recomendamos tener su tarjeta a mano antes de continuar.</p><p>Si se agota el tiempo, su acceso temporal a internet caducará. Puede iniciar sesión de nuevo con sus credenciales registradas y volver a intentar el pago, hasta un máximo de <strong>${ maxAttempts } intentos</strong>.</p>"
+msgid "PAY_LINK_INTRO${ timeout }"
+msgstr "<p>Tiene <strong>${ timeout } minutos</strong> para completar el pago. Asegúrese de estar listo antes de continuar.</p><p>Copie el enlace de pago que aparece a continuación. Si esta ventana se cierra, puede pegar el enlace en su navegador para continuar.</p>"
+
+#, javascript-format
+msgid "PAY_RETRY_LIMIT${ maxAttempts }"
+msgstr "<p>Si se agota el tiempo, inicie sesión de nuevo para volver a intentarlo. Tiene hasta <strong>${ maxAttempts } intentos</strong>.</p>"
 
 #: client/components/payment-status/payment-status.js:165
 #: client/components/payment-status/payment-status.test.js:221
@@ -507,9 +510,6 @@ msgstr "Copiar enlace"
 
 msgid "PAY_LINK_COPY_HINT"
 msgstr "Haga clic para copiar"
-
-msgid "PAY_LINK_HELP"
-msgstr "<strong>Antes de continuar</strong>, copie el enlace de pago de abajo. Si esta ventana se cierra, abra una nueva ventana del navegador y pegue el enlace en la barra de direcciones para completar el pago."
 
 #: client/components/password-reset/password-reset.js:32
 msgid "PWD_RESET_TITL"

@@ -1,0 +1,111 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`<PaymentGateway /> renders API-provided gateway choices and absolute logo URLs with native radios 1`] = `
+<div
+  className="container content"
+>
+  <div
+    className="inner"
+  >
+    <div
+      className="main-column single"
+    >
+      <div
+        className="inner payment-gateway-loading"
+      >
+        <h2
+          className="row"
+          id="payment-gateway-title"
+        >
+          PAY_GATEWAY_REQ
+        </h2>
+        <div
+          aria-labelledby="payment-gateway-title"
+          className="row payment-gateways"
+          role="radiogroup"
+        >
+          <div
+            className="payment-gateway-option"
+            key="offline"
+          >
+            <label
+              htmlFor="payment-gateway-offline"
+            >
+              <span
+                className="payment-gateway-name"
+              >
+                Pay at a retailer
+              </span>
+              <input
+                checked={false}
+                id="payment-gateway-offline"
+                name="payment_gateway"
+                onChange={[Function]}
+                type="radio"
+                value="offline"
+              />
+            </label>
+          </div>
+          <div
+            className="payment-gateway-option payment-gateway-option-selected"
+            key="online"
+          >
+            <label
+              htmlFor="payment-gateway-online"
+            >
+              <span
+                className="payment-gateway-name"
+              >
+                Pay online
+              </span>
+              <span
+                className="payment-gateway-logo"
+              >
+                <img
+                  alt=""
+                  aria-hidden="true"
+                  onError={[Function]}
+                  onLoad={[Function]}
+                  src="https://subscriptions.example/static/pay-online.svg"
+                />
+              </span>
+              <input
+                checked={true}
+                id="payment-gateway-online"
+                name="payment_gateway"
+                onChange={[Function]}
+                type="radio"
+                value="online"
+              />
+            </label>
+          </div>
+        </div>
+        <div
+          className="row"
+        >
+          <button
+            className="button full"
+            disabled={false}
+            onClick={[MockFunction]}
+            type="button"
+          >
+            PAY_PROC_BTN
+          </button>
+        </div>
+        <div
+          className="row"
+        >
+          <button
+            className="button full"
+            onClick={[MockFunction]}
+            type="button"
+          >
+            PAY_GO_BACK_BTN
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <loader />
+</div>
+`;

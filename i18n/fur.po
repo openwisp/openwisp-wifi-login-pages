@@ -446,10 +446,13 @@ msgstr "Si domande il paiament par lâ indevant"
 msgid "PAY_GATEWAY_REQ"
 msgstr "Sielç il metodi di paiament"
 
-#: client/components/payment-status/payment-status.js:155
 #, javascript-format
-msgid "PAY_WARN${ timeout }${ maxAttempts }"
-msgstr "<p>Tu vignarâs indreçât a un servizi di paiament sigûr par completâ il paiament.</p><p>Tu varâs <strong>${ timeout } minûts</strong> par completâ il paiament, duncje ti conseìn di tignî la tô cjarte pronte prime di continuâ.</p><p>Se il timp al finìs, il to acès temporani a internet al scjadarà. Tu puedis jentrâ di gnûf cu lis tôs credenziâls regjistradis e tornâ a provâ il paiament, fin a un massim di <strong>${ maxAttempts } tentatîfs</strong>.</p>"
+msgid "PAY_LINK_INTRO${ timeout }"
+msgstr "<p>Tu âs <strong>${ timeout } minûts</strong> par completâ il paiament. Siguriti di jessi pront prime di continuâ.</p><p>Copie il colieg pal paiament ca sot. Se chest barcon si siere, tu puedis tacâ il colieg tal navigadôr par continuâ.</p>"
+
+#, javascript-format
+msgid "PAY_RETRY_LIMIT${ maxAttempts }"
+msgstr "<p>Se il timp al finìs, jentre di gnûf par tornâ a provâ. Tu âs fin a <strong>${ maxAttempts } tentatîfs</strong>.</p>"
 
 #: client/components/payment-status/payment-status.js:165
 #: client/components/payment-status/payment-status.test.js:221
@@ -502,9 +505,6 @@ msgstr "Copie colieg"
 
 msgid "PAY_LINK_COPY_HINT"
 msgstr "Cliche par copiâ"
-
-msgid "PAY_LINK_HELP"
-msgstr "<strong>Prime di continuâ</strong>, copie il colieg pal paiament ca sot. Se chest barcon si siere, vierç un gnûf barcon dal navigadôr e tache il colieg te bare des direzions par completâ il paiament."
 
 #: client/components/password-reset/password-reset.js:32
 msgid "PWD_RESET_TITL"

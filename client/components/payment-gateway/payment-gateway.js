@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import React from "react";
 import {gettext, t} from "ttag";
 import Loader from "../../utils/loader";
-import "../../utils/plan.css";
 import "./index.css";
 
 export default class PaymentGateway extends React.Component {
@@ -13,7 +12,9 @@ export default class PaymentGateway extends React.Component {
   }
 
   setLogoStatus(url, status) {
-    this.setState((state) => ({logoStatus: {...state.logoStatus, [url]: status}}));
+    this.setState((state) => ({
+      logoStatus: {...state.logoStatus, [url]: status},
+    }));
   }
 
   hasPendingLogos() {
@@ -50,22 +51,22 @@ export default class PaymentGateway extends React.Component {
     }
     return (
       <div
-        className="row plans payment-gateways"
+        className="row payment-gateways"
         role="radiogroup"
         aria-labelledby="payment-gateway-title"
       >
         {gateways.map((gateway) => {
-          let planClass = "plan";
+          let optionClass = "payment-gateway-option";
           if (selected === gateway.key) {
-            planClass += " active";
+            optionClass += " payment-gateway-option-selected";
           }
           /* disable ttag */
           const gatewayLabel = gettext(gateway.label);
           /* enable ttag */
           return (
-            <div className={planClass} key={gateway.key}>
+            <div className={optionClass} key={gateway.key}>
               <label htmlFor={`payment-gateway-${gateway.key}`}>
-                <span className="title">{gatewayLabel}</span>
+                <span className="payment-gateway-name">{gatewayLabel}</span>
                 {gateway.logo_url && this.renderLogo(gateway.logo_url)}
                 <input
                   id={`payment-gateway-${gateway.key}`}
@@ -116,11 +117,13 @@ export default class PaymentGateway extends React.Component {
       <div className="container content">
         <div className="inner">
           <div className="main-column single">
-            <div className="inner">
+            <div
+              className={`inner${loading ? " payment-gateway-loading" : ""}`}
+            >
               {error ? (
                 this.renderError()
               ) : (
-                <div className={loading ? "payment-gateway-loading" : undefined}>
+                <>
                   <h2 className="row" id="payment-gateway-title">
                     {t`PAY_GATEWAY_REQ`}
                   </h2>
@@ -136,7 +139,7 @@ export default class PaymentGateway extends React.Component {
                     </button>
                   </div>
                   {this.renderCancel()}
-                </div>
+                </>
               )}
             </div>
           </div>

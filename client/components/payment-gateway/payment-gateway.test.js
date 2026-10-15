@@ -31,6 +31,7 @@ describe("<PaymentGateway />", () => {
       />,
     );
 
+    expect(wrapper.find(".main-column > .inner > h2")).toHaveLength(1);
     expect(wrapper.find("input[type='radio']")).toHaveLength(2);
     expect(wrapper.find("h2").text()).toBe("PAY_GATEWAY_REQ");
     expect(wrapper.find('[role="radiogroup"]').prop("aria-labelledby")).toBe(
@@ -50,6 +51,7 @@ describe("<PaymentGateway />", () => {
         1,
       );
     });
+    expect(wrapper).toMatchSnapshot();
   });
 
   describe("logo loading", () => {
@@ -107,13 +109,15 @@ describe("<PaymentGateway />", () => {
       />,
     );
 
-    expect(wrapper.find(".plan")).toHaveLength(2);
-    expect(wrapper.find(".plan.inactive")).toHaveLength(0);
+    expect(wrapper.find(".payment-gateway-option")).toHaveLength(2);
+    expect(wrapper.find(".plans")).toHaveLength(0);
+    expect(wrapper.find(".plan")).toHaveLength(0);
 
     wrapper.setProps({selected: "online"});
 
-    expect(wrapper.find(".plan.active")).toHaveLength(1);
-    expect(wrapper.find(".plan.inactive")).toHaveLength(0);
+    expect(wrapper.find(".payment-gateway-option-selected")).toHaveLength(1);
+    expect(wrapper.find(".plans")).toHaveLength(0);
+    expect(wrapper.find(".plan")).toHaveLength(0);
   });
 
   it("translates API-provided gateway labels at runtime", () => {

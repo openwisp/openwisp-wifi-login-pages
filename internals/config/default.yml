@@ -106,6 +106,10 @@ client:
       top_up_enabled: true
       links: []
 
+    payment_status_page:
+      timeout: 10
+      max_attempts: 3
+
     login_form:
       social_login:
         links: []

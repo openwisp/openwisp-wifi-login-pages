@@ -443,10 +443,13 @@ msgstr "Plačilo je potrebno za nadaljevanje"
 msgid "PAY_GATEWAY_REQ"
 msgstr "Izberite način plačila"
 
-#: client/components/payment-status/payment-status.js:155
 #, javascript-format
-msgid "PAY_WARN${ timeout }${ maxAttempts }"
-msgstr "<p>Za dokončanje plačila boste preusmerjeni na varen plačilni prehod.</p><p>Za dokončanje plačila boste imeli <strong>${ timeout } minut</strong>, zato priporočamo, da pred nadaljevanjem pripravite svojo kartico.</p><p>Če čas poteče, bo vaš začasni dostop do interneta potekel. Znova se lahko prijavite s svojimi registriranimi prijavnimi podatki in ponovite plačilo, do največ <strong>${ maxAttempts } poskusov</strong>.</p>"
+msgid "PAY_LINK_INTRO${ timeout }"
+msgstr "<p>Za dokončanje plačila imate <strong>${ timeout } minut</strong>. Pred nadaljevanjem se prepričajte, da ste pripravljeni.</p><p>Kopirajte spodnjo povezavo za plačilo. Če se to okno zapre, lahko povezavo prilepite v brskalnik in nadaljujete.</p>"
+
+#, javascript-format
+msgid "PAY_RETRY_LIMIT${ maxAttempts }"
+msgstr "<p>Če čas poteče, se znova prijavite in poskusite ponovno. Na voljo imate do <strong>${ maxAttempts } poskusov</strong>.</p>"
 
 #: client/components/payment-status/payment-status.js:165
 #: client/components/payment-status/payment-status.test.js:221
@@ -499,9 +502,6 @@ msgstr "Kopiraj povezavo"
 
 msgid "PAY_LINK_COPY_HINT"
 msgstr "Kliknite za kopiranje"
-
-msgid "PAY_LINK_HELP"
-msgstr "<strong>Preden nadaljujete</strong>, kopirajte spodnjo povezavo za plačilo. Če se to okno zapre, odprite novo okno brskalnika in prilepite povezavo v naslovno vrstico, da dokončate plačilo."
 
 #: client/components/password-reset/password-reset.js:32
 msgid "PWD_RESET_TITL"

@@ -1,18 +1,47 @@
-.payment-gateways .plan {
-  border-color: #ccc;
+.payment-gateways {
+  text-align: start;
 }
 
-.payment-gateways .plan.active {
+.payment-gateway-option {
+  margin: 0 0 10px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  line-height: 30px;
+}
+
+.payment-gateway-option:hover {
+  border-color: #888;
+}
+
+.payment-gateway-option.payment-gateway-option-selected {
   border-color: currentColor;
 }
 
-.payment-gateways .plan label {
+.payment-gateway-option label {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 10px;
   align-items: start;
   margin: 0;
+  padding: 10px 15px;
+  font-weight: normal;
   opacity: 1;
+  cursor: pointer;
+}
+
+.payment-gateway-option:last-child {
+  margin: 0;
+}
+
+.payment-gateway-option-selected label {
+  cursor: default;
+}
+
+.payment-gateway-name {
+  display: block;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .payment-gateways input {
@@ -29,12 +58,13 @@
   cursor: pointer;
 }
 
-.payment-gateways .payment-gateway-logo {
+.payment-gateway-logo {
+  display: block;
   grid-column: 1 / -1;
   min-width: 0;
 }
 
-.payment-gateways .plan img {
+.payment-gateway-logo img {
   display: block;
   width: 100%;
   max-width: 480px;
@@ -44,7 +74,7 @@
   margin: 0 auto;
 }
 
-.payment-gateways .plan label:has(input:focus-visible) {
+.payment-gateway-option label:has(input:focus-visible) {
   outline: 1px dotted #000;
 }
 

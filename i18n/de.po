@@ -443,10 +443,13 @@ msgstr "Zahlung erforderlich, um fortzufahren"
 msgid "PAY_GATEWAY_REQ"
 msgstr "Zahlungsmethode auswählen"
 
-#: client/components/payment-status/payment-status.js:155
 #, javascript-format
-msgid "PAY_WARN${ timeout }${ maxAttempts }"
-msgstr "<p>Sie werden zu einem sicheren Zahlungsdienst weitergeleitet, um die Zahlung abzuschließen.</p><p>Sie haben <strong>${ timeout } Minuten</strong> Zeit, um die Zahlung abzuschließen. Wir empfehlen daher, Ihre Karte bereitzuhalten, bevor Sie fortfahren.</p><p>Wenn die Zeit abläuft, endet Ihr vorübergehender Internetzugang. Sie können sich mit Ihren registrierten Zugangsdaten erneut anmelden und die Zahlung wiederholen, bis zu insgesamt <strong>${ maxAttempts } Versuchen</strong>.</p>"
+msgid "PAY_LINK_INTRO${ timeout }"
+msgstr "<p>Sie haben <strong>${ timeout } Minuten</strong> Zeit, um Ihre Zahlung abzuschließen. Stellen Sie sicher, dass Sie bereit sind, bevor Sie fortfahren.</p><p>Kopieren Sie den Zahlungslink unten. Wenn dieses Fenster geschlossen wird, können Sie den Link in Ihren Browser einfügen, um fortzufahren.</p>"
+
+#, javascript-format
+msgid "PAY_RETRY_LIMIT${ maxAttempts }"
+msgstr "<p>Wenn die Zeit abläuft, melden Sie sich erneut an, um es noch einmal zu versuchen. Sie haben bis zu <strong>${ maxAttempts } Versuche</strong>.</p>"
 
 #: client/components/payment-status/payment-status.js:165
 #: client/components/payment-status/payment-status.test.js:221
@@ -499,9 +502,6 @@ msgstr "Link kopieren"
 
 msgid "PAY_LINK_COPY_HINT"
 msgstr "Zum Kopieren klicken"
-
-msgid "PAY_LINK_HELP"
-msgstr "<strong>Bevor Sie fortfahren</strong>, kopieren Sie den Zahlungslink unten. Wenn dieses Fenster geschlossen wird, öffnen Sie ein neues Browserfenster und fügen Sie den Link in die Adressleiste ein, um Ihre Zahlung abzuschließen."
 
 #: client/components/password-reset/password-reset.js:32
 msgid "PWD_RESET_TITL"

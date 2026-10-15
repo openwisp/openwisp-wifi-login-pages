@@ -56,6 +56,7 @@ const responseData = {
   username: "tester",
   key: "b72dad1cca4807dc21c00b0b2f171d29415ac541",
   radius_user_token: "jwyVSZYOze16ej6cc1AW5cxhRjahesLzh1Tm2y0d",
+  payment_return_url: "https://wifi.example.com/default/login?n=pay&sid=secret",
   first_name: "",
   last_name: "",
   birth_date: null,
@@ -1272,8 +1273,8 @@ describe("Test <PaymentStatus /> cases", () => {
       context: loadingContextValue,
     });
     await tick();
-    expect(wrapper.find(".button").length).toEqual(2);
-    wrapper.find(".button").at(1).simulate("click", {});
+    expect(wrapper.find("button.button.full")).toHaveLength(1);
+    wrapper.find("button.button.full").simulate("click", {});
     expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith({
       ...responseData,
       mustLogout: true,
@@ -1312,6 +1313,7 @@ describe("Test <PaymentStatus /> cases", () => {
       },
       params: {status: "draft"},
     });
+    expect(props.page).toEqual({timeout: 10, max_attempts: 3});
     validateToken.mockReturnValue(true);
     wrapper = shallow(<PaymentStatus {...props} />, {
       context: loadingContextValue,
@@ -1336,14 +1338,35 @@ describe("Test <PaymentStatus /> cases", () => {
       t`PAY_LINK_COPY_BTN`,
     );
     expect(
-      copyButton.find(".payment-link-copy-icon").hasClass("payment-link-copy-label"),
+      copyButton
+        .find(".payment-link-copy-icon")
+        .hasClass("payment-link-copy-label"),
     ).toEqual(false);
+    expect(wrapper.find(".payment-instructions")).toHaveLength(2);
     expect(
-      wrapper.find("#payment-link-help").prop("dangerouslySetInnerHTML"),
-    ).toEqual({__html: t`PAY_LINK_HELP`});
-    expect(wrapper.find(".payment-link").childAt(0).prop("id")).toEqual(
-      "payment-link-help",
-    );
+      wrapper
+        .find(".payment-instructions")
+        .at(0)
+        .prop("dangerouslySetInnerHTML"),
+    ).toEqual({
+      __html:
+        "<p>You have <strong>10 minutes</strong> to complete your payment. Make sure you're ready before proceeding.</p><p>Copy the payment link below. If this window closes, you can paste the link into your browser to continue.</p>",
+    });
+    expect(
+      wrapper
+        .find(".payment-instructions")
+        .at(1)
+        .prop("dangerouslySetInnerHTML"),
+    ).toEqual({
+      __html:
+        "<p>If you run out of time, log in again to retry. You have up to <strong>3 attempts</strong>.</p>",
+    });
+    expect(input.prop("aria-describedby")).toEqual("payment-link-help");
+    expect(wrapper.find("#payment-link-help").exists()).toEqual(true);
+    const content = wrapper.find(".main-column > .inner").children();
+    expect(content.at(1).hasClass("payment-instructions")).toEqual(true);
+    expect(content.at(2).hasClass("payment-link")).toEqual(true);
+    expect(content.at(3).hasClass("payment-instructions")).toEqual(true);
   });
 
   it("should copy the payment link when the input or button is clicked", async () => {
@@ -1493,38 +1516,6 @@ describe("Test <PaymentStatus /> cases", () => {
       "Unable to copy payment link",
     );
   });
-
-  it.each([
-    ["the payment return URL is unavailable", true, null],
-    [
-      "payment does not require internet access",
-      false,
-      "https://wifi.example.com/default/login?n=pay&sid=secret",
-    ],
-  ])(
-    "should hide the copyable payment link when %s",
-    async (_, requiresInternet, paymentReturnUrl) => {
-      props = createTestProps({
-        settings: {
-          subscriptions: true,
-          payment_requires_internet: requiresInternet,
-        },
-        userData: {
-          ...responseData,
-          is_verified: false,
-          payment_url: "https://payment.example.com/pay/1?order=123",
-          payment_return_url: paymentReturnUrl,
-        },
-        params: {status: "draft"},
-      });
-      validateToken.mockReturnValue(true);
-      wrapper = shallow(<PaymentStatus {...props} />, {
-        context: loadingContextValue,
-      });
-      await tick();
-      expect(wrapper.find(".payment-link")).toHaveLength(0);
-    },
-  );
 
   it("should not set mustLogin on draft arrival for an upgrade not requiring internet", async () => {
     props = createTestProps({

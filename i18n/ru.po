@@ -451,10 +451,13 @@ msgstr "Требуется платёж"
 msgid "PAY_GATEWAY_REQ"
 msgstr "Выберите способ оплаты"
 
-#: client/components/payment-status/payment-status.js:155
 #, javascript-format
-msgid "PAY_WARN${ timeout }${ maxAttempts }"
-msgstr "<p>Вы будете перенаправлены на безопасный платёжный шлюз для завершения оплаты.</p><p>У вас будет <strong>${ timeout } минут</strong> на завершение оплаты, поэтому рекомендуем подготовить карту, прежде чем продолжить.</p><p>Если время истечёт, ваш временный доступ к интернету будет прекращён. Вы можете снова войти в систему со своими регистрационными данными и повторить оплату. Всего доступно не более <strong>${ maxAttempts } попыток</strong>.</p>"
+msgid "PAY_LINK_INTRO${ timeout }"
+msgstr "<p>У вас есть <strong>${ timeout } минут</strong>, чтобы завершить оплату. Убедитесь, что вы готовы, прежде чем продолжить.</p><p>Скопируйте ссылку для оплаты ниже. Если это окно закроется, вы сможете вставить ссылку в браузер и продолжить.</p>"
+
+#, javascript-format
+msgid "PAY_RETRY_LIMIT${ maxAttempts }"
+msgstr "<p>Если время истечёт, войдите снова, чтобы повторить попытку. Вам доступно до <strong>${ maxAttempts } попыток</strong>.</p>"
 
 #: client/components/payment-status/payment-status.js:165
 #: client/components/payment-status/payment-status.test.js:221
@@ -507,9 +510,6 @@ msgstr "Копировать ссылку"
 
 msgid "PAY_LINK_COPY_HINT"
 msgstr "Нажмите, чтобы скопировать"
-
-msgid "PAY_LINK_HELP"
-msgstr "<strong>Прежде чем продолжить</strong>, скопируйте ссылку для оплаты ниже. Если это окно закроется, откройте новое окно браузера и вставьте ссылку в адресную строку, чтобы завершить оплату."
 
 #: client/components/password-reset/password-reset.js:32
 msgid "PWD_RESET_TITL"

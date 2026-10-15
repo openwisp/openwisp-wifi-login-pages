@@ -445,10 +445,13 @@ msgstr "Payment required to proceed"
 msgid "PAY_GATEWAY_REQ"
 msgstr "Choose payment method"
 
-#: client/components/payment-status/payment-status.js:155
 #, javascript-format
-msgid "PAY_WARN${ timeout }${ maxAttempts }"
-msgstr "<p>You'll be redirected to a secure payment gateway to complete the payment.</p><p>You'll have <strong>${ timeout } minutes</strong> to complete the payment, so we recommend keeping your card ready before proceeding.</p><p>If you run out of time, your temporary internet access will expire. You can log in again with your registered credentials and retry the payment, up to a maximum of <strong>${ maxAttempts } attempts</strong>.</p>"
+msgid "PAY_LINK_INTRO${ timeout }"
+msgstr "<p>You have <strong>${ timeout } minutes</strong> to complete your payment. Make sure you're ready before proceeding.</p><p>Copy the payment link below. If this window closes, you can paste the link into your browser to continue.</p>"
+
+#, javascript-format
+msgid "PAY_RETRY_LIMIT${ maxAttempts }"
+msgstr "<p>If you run out of time, log in again to retry. You have up to <strong>${ maxAttempts } attempts</strong>.</p>"
 
 #: client/components/payment-status/payment-status.js:165
 #: client/components/payment-status/payment-status.test.js:221
@@ -501,9 +504,6 @@ msgstr "Copy Link"
 
 msgid "PAY_LINK_COPY_HINT"
 msgstr "Click to copy"
-
-msgid "PAY_LINK_HELP"
-msgstr "<strong>Before you continue</strong>, copy the payment link below. If this window closes, open a new browser window and paste the link into the address bar to complete your payment."
 
 #: client/components/password-reset/password-reset.js:32
 msgid "PWD_RESET_TITL"

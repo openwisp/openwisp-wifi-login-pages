@@ -417,8 +417,8 @@ export default class PaymentStatus extends React.Component {
   }
 
   renderDraft(isDraftUpgrade = false) {
-    const {page = {}, settings, userData} = this.props;
-    const {timeout = 5, max_attempts: maxAttempts = 3} = page;
+    const {page, userData} = this.props;
+    const {timeout, max_attempts: maxAttempts} = page;
     const {payment_return_url: paymentReturnUrl} = userData;
     const payProceedUrl = this.getProceedUrl();
 
@@ -430,48 +430,50 @@ export default class PaymentStatus extends React.Component {
               <h2 className="row">{t`PAY_REQ`}</h2>
 
               <div
-                className="row"
+                id="payment-link-help"
+                className="row payment-instructions"
                 dangerouslySetInnerHTML={{
-                  __html: t`PAY_WARN${timeout}${maxAttempts}`,
+                  __html: t`PAY_LINK_INTRO${timeout}`,
                 }}
               />
 
-              {requiresInternet(userData, settings) && paymentReturnUrl && (
-                <div className="row payment-link">
-                  <p
-                    id="payment-link-help"
-                    dangerouslySetInnerHTML={{__html: t`PAY_LINK_HELP`}}
+              <div className="row payment-link">
+                <div className="payment-link-control">
+                  <input
+                    id="payment-link"
+                    ref={this.paymentReturnUrlInput}
+                    className="input payment-link-input"
+                    type="text"
+                    value={paymentReturnUrl}
+                    readOnly
+                    title={t`PAY_LINK_COPY_HINT`}
+                    aria-label={t`PAY_LINK_LBL`}
+                    aria-describedby="payment-link-help"
+                    onClick={this.copyPaymentReturnUrl}
                   />
-                  <label htmlFor="payment-link">{t`PAY_LINK_LBL`}</label>
-                  <div className="payment-link-control">
-                    <input
-                      id="payment-link"
-                      ref={this.paymentReturnUrlInput}
-                      className="input payment-link-input"
-                      type="text"
-                      value={paymentReturnUrl}
-                      readOnly
-                      title={t`PAY_LINK_COPY_HINT`}
-                      aria-describedby="payment-link-help"
-                      onClick={this.copyPaymentReturnUrl}
+                  <button
+                    type="button"
+                    className="button partial payment-link-copy"
+                    aria-label={t`PAY_LINK_COPY_BTN`}
+                    onClick={this.copyPaymentReturnUrl}
+                  >
+                    <span
+                      className="payment-link-copy-icon"
+                      aria-hidden="true"
                     />
-                    <button
-                      type="button"
-                      className="button partial payment-link-copy"
-                      aria-label={t`PAY_LINK_COPY_BTN`}
-                      onClick={this.copyPaymentReturnUrl}
-                    >
-                      <span
-                        className="payment-link-copy-icon"
-                        aria-hidden="true"
-                      />
-                      <span className="payment-link-copy-label">
-                        {t`PAY_LINK_COPY_BTN`}
-                      </span>
-                    </button>
-                  </div>
+                    <span className="payment-link-copy-label">
+                      {t`PAY_LINK_COPY_BTN`}
+                    </span>
+                  </button>
                 </div>
-              )}
+              </div>
+
+              <div
+                className="row payment-instructions"
+                dangerouslySetInnerHTML={{
+                  __html: t`PAY_RETRY_LIMIT${maxAttempts}`,
+                }}
+              />
 
               <div className="row">
                 <Link
@@ -567,7 +569,10 @@ PaymentStatus.propTypes = {
   isAuthenticated: PropTypes.bool,
   captivePortalSyncAuth: PropTypes.bool,
   authenticate: PropTypes.func.isRequired,
-  page: PropTypes.object,
+  page: PropTypes.shape({
+    timeout: PropTypes.number.isRequired,
+    max_attempts: PropTypes.number.isRequired,
+  }).isRequired,
   logout: PropTypes.func.isRequired,
   cookies: PropTypes.instanceOf(Cookies).isRequired,
   settings: PropTypes.shape({
