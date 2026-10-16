@@ -439,10 +439,17 @@ msgstr "Die Zahlung wurde erfolgreich übermittelt."
 msgid "PAY_REQ"
 msgstr "Zahlung erforderlich, um fortzufahren"
 
-#: client/components/payment-status/payment-status.js:155
+#: client/components/payment-gateway/payment-gateway.js:67
+msgid "PAY_GATEWAY_REQ"
+msgstr "Zahlungsmethode auswählen"
+
 #, javascript-format
-msgid "PAY_WARN${ timeout }${ maxAttempts }"
-msgstr "<p>Durch Klicken auf die Schaltfläche unten werden Sie zu unserem Payment Gateway Service, bei dem Sie Ihre Kredit-/Debitkarte sicher verwenden können. Von dort werden Sie auf die Website Ihrer Bank weitergeleitet zu Bestätigen Sie die Transaktion.</p><p>Sie haben ${ timeout } Minuten Zeit, um den Vorgang abzuschließen.<br /><strong>Aus diesem Grund empfehlen wir Ihnen, Ihre Lastschrift/Gutschrift vorzubereiten Karte, bevor Sie den Zahlungsvorgang einleiten.</strong></p><p>Wenn der Vorgang aus irgendeinem Grund nicht innerhalb der verfügbare Zeit, die Internetverbindung, mit der Sie Wenn dies passiert, wird die Website Ihrer Bank geschlossen. Sie können sich einfach mit den soeben registrierten Zugangsdaten erneut einloggen und Wiederholen Sie den Vorgang maximal ${ maxAttempts } Mal.</p>"
+msgid "PAY_LINK_INTRO${ timeout }"
+msgstr "<p>Sie haben <strong>${ timeout } Minuten</strong> Zeit, um Ihre Zahlung abzuschließen. Stellen Sie sicher, dass Sie bereit sind, bevor Sie fortfahren.</p><p>Kopieren Sie den Zahlungslink unten. Wenn dieses Fenster geschlossen wird, können Sie den Link in Ihren Browser einfügen, um fortzufahren.</p>"
+
+#, javascript-format
+msgid "PAY_RETRY_LIMIT${ maxAttempts }"
+msgstr "<p>Wenn die Zeit abläuft, melden Sie sich erneut an, um es noch einmal zu versuchen. Sie haben bis zu <strong>${ maxAttempts } Versuche</strong>.</p>"
 
 #: client/components/payment-status/payment-status.js:165
 #: client/components/payment-status/payment-status.test.js:221
@@ -474,6 +481,27 @@ msgstr "Erneut versuchen"
 #. failed payment case
 msgid "PAY_GIVE_UP_TXT"
 msgstr "Wenn ihre Transaktion nicht erfolgreich war, wenden Sie sich bitte an den Support an"
+
+#.  failed payment case
+#: client/components/payment-status/payment-status.js:230
+msgid "PAY_GO_BACK_BTN"
+msgstr "Vorgang abbrechen und zu Ihrem Konto zurückkehren"
+
+#: client/components/payment-status/payment-status.js
+msgid "PAY_LINK_COPIED"
+msgstr "Zahlungslink kopiert"
+
+msgid "PAY_LINK_COPY_FAIL"
+msgstr "Der Zahlungslink konnte nicht kopiert werden. Wählen Sie ihn aus und kopieren Sie ihn manuell."
+
+msgid "PAY_LINK_LBL"
+msgstr "Zahlungslink"
+
+msgid "PAY_LINK_COPY_BTN"
+msgstr "Link kopieren"
+
+msgid "PAY_LINK_COPY_HINT"
+msgstr "Zum Kopieren klicken"
 
 #: client/components/password-reset/password-reset.js:32
 msgid "PWD_RESET_TITL"

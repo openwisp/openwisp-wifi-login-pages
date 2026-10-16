@@ -442,10 +442,17 @@ msgstr "Il pagamento è stato ricevuto con successo."
 msgid "PAY_REQ"
 msgstr "Pagamento richiesto per procedere"
 
-#: client/components/payment-status/payment-status.js:155
+#: client/components/payment-gateway/payment-gateway.js:67
+msgid "PAY_GATEWAY_REQ"
+msgstr "Scegli il metodo di pagamento"
+
 #, javascript-format
-msgid "PAY_WARN${ timeout }${ maxAttempts }"
-msgstr "<p>Cliccando sul pulsante sottostante raggiungerai il servizio di pagamento dove potrai inserire i dati della tua carta di credito/debito in totale sicurezza. Dopodichè raggiungerai il sito web della tua banca per confermare la transazione.</p><p>Avrai a disposizione ${ timeout } minuti per completare il processo.<br /><strong>Per questo motivo ti consigliamo di preparare la tua carta debito/credito prima di avviare il processo di pagamento.</strong></p><p>Se per qualsiasi motivo il processo non viene completato entro il tempo disponibile, la connessione internet che ti permette di raggiungere il sito web della tua banca verrà chiusa, se ciò accade puoi accedere nuovamente con le credenziali appena registrate e ripetere il processo fino ad un massimo di ${ maxAttempts } volte.</p>"
+msgid "PAY_LINK_INTRO${ timeout }"
+msgstr "<p>Hai <strong>${ timeout } minuti</strong> per completare il pagamento. Assicurati di essere pronto prima di procedere.</p><p>Copia il link di pagamento qui sotto. Se questa finestra si chiude, puoi incollare il link nel browser per continuare.</p>"
+
+#, javascript-format
+msgid "PAY_RETRY_LIMIT${ maxAttempts }"
+msgstr "<p>Se il tempo scade, accedi di nuovo per riprovare. Hai a disposizione fino a <strong>${ maxAttempts } tentativi</strong>.</p>"
 
 #: client/components/payment-status/payment-status.js:165
 #: client/components/payment-status/payment-status.test.js:221
@@ -477,6 +484,27 @@ msgstr "Riprova"
 #. failed payment case
 msgid "PAY_GIVE_UP_TXT"
 msgstr "Se non riesci a completare la transazione puoi provare a metterti in contatto con la tua banca o annullare l'operazione."
+
+#.  failed payment case
+#: client/components/payment-status/payment-status.js:230
+msgid "PAY_GO_BACK_BTN"
+msgstr "Annulla e torna al tuo account"
+
+#: client/components/payment-status/payment-status.js
+msgid "PAY_LINK_COPIED"
+msgstr "Link di pagamento copiato"
+
+msgid "PAY_LINK_COPY_FAIL"
+msgstr "Impossibile copiare il link di pagamento. Selezionalo e copialo manualmente."
+
+msgid "PAY_LINK_LBL"
+msgstr "Link di pagamento"
+
+msgid "PAY_LINK_COPY_BTN"
+msgstr "Copia link"
+
+msgid "PAY_LINK_COPY_HINT"
+msgstr "Clicca per copiare"
 
 #: client/components/password-reset/password-reset.js:32
 msgid "PWD_RESET_TITL"

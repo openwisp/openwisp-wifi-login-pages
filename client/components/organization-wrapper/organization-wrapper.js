@@ -36,6 +36,8 @@ import {
 import Logout from "./lazy-logout";
 import {localStorage} from "../../utils/storage";
 import isOldBrowser from "../../utils/is-old-browser";
+import {getPaymentRoute, hasPendingPayment} from "../../utils/payment";
+import routes from "../../constants/routes";
 
 export default class OrganizationWrapper extends React.Component {
   constructor(props) {
@@ -49,17 +51,21 @@ export default class OrganizationWrapper extends React.Component {
   }
 
   async componentDidMount() {
-    const {params, setOrganization, cookies} = this.props;
+    const {params, setOrganization, cookies, location} = this.props;
     const organizationSlug = params.organization;
-    if (organizationSlug) await setOrganization(organizationSlug, cookies);
+    if (organizationSlug) {
+      await setOrganization(organizationSlug, cookies, location);
+    }
     this.setState({translationLoaded: false, configLoaded: true});
   }
 
   async componentDidUpdate(prevProps) {
-    const {setOrganization, params, cookies, language} = this.props;
+    const {setOrganization, params, cookies, language, location} = this.props;
     const {translationLoaded, configLoaded} = this.state;
     if (prevProps.params.organization !== params.organization) {
-      if (params.organization) setOrganization(params.organization, cookies);
+      if (params.organization) {
+        setOrganization(params.organization, cookies, location);
+      }
     }
     if (translationLoaded !== true && configLoaded === true) {
       const userLangChoice = localStorage.getItem(
@@ -136,18 +142,18 @@ export default class OrganizationWrapper extends React.Component {
               <div className={`app-container ${extraClasses}`}>
                 <Routes>
                   <Route
-                    path="*"
+                    path={routes.notFound.path}
                     element={<Header location={location} params={params} />}
                   />
                 </Routes>
                 <Routes>
                   <Route
-                    path=""
+                    path={routes.root.path}
                     exact
                     element={<Navigate to={`/${orgSlug}/login`} />}
                   />
                   <Route
-                    path="*"
+                    path={routes.notFound.path}
                     element={
                       <Suspense fallback={<Loader />}>
                         <ConnectedDoesNotExist />
@@ -155,7 +161,7 @@ export default class OrganizationWrapper extends React.Component {
                     }
                   />
                   <Route
-                    path="registration/*"
+                    path={routes.registration.path}
                     element={(() => {
                       if (isAuthenticated && needsMethodSelection) {
                         return <Navigate to={`/${orgSlug}/complete-signup`} />;
@@ -178,7 +184,7 @@ export default class OrganizationWrapper extends React.Component {
                     })()}
                   />
                   <Route
-                    path="mobile-phone-verification"
+                    path={routes.verification.path}
                     element={(() => {
                       if (isAuthenticated && needsMethodSelection) {
                         return <Navigate to={`/${orgSlug}/complete-signup`} />;
@@ -201,7 +207,7 @@ export default class OrganizationWrapper extends React.Component {
                     })()}
                   />
                   <Route
-                    path="password/reset/confirm/:uid/:token"
+                    path={routes.passwordConfirm.path}
                     element={
                       isAuthenticated ? (
                         <Navigate to={`/${orgSlug}/status`} />
@@ -213,7 +219,7 @@ export default class OrganizationWrapper extends React.Component {
                     }
                   />
                   <Route
-                    path="password/reset"
+                    path={routes.passwordReset.path}
                     exact
                     element={
                       isAuthenticated ? (
@@ -226,7 +232,7 @@ export default class OrganizationWrapper extends React.Component {
                     }
                   />
                   <Route
-                    path="login/*"
+                    path={routes.login.path}
                     element={(() => {
                       if (isAuthenticated) {
                         if (needsMethodSelection) {
@@ -246,11 +252,11 @@ export default class OrganizationWrapper extends React.Component {
                           );
                         }
                       }
-                      return <Login navigate={navigate} />;
+                      return <Login navigate={navigate} cookies={cookies} />;
                     })()}
                   />
                   <Route
-                    path="status"
+                    path={routes.status.path}
                     element={(() => {
                       if (isAuthenticated) {
                         if (needsMethodSelection) {
@@ -281,7 +287,7 @@ export default class OrganizationWrapper extends React.Component {
                     })()}
                   />
                   <Route
-                    path="logout"
+                    path={routes.logout.path}
                     element={(() => {
                       if (isAuthenticated)
                         return <Navigate to={`/${orgSlug}/status`} />;
@@ -295,7 +301,7 @@ export default class OrganizationWrapper extends React.Component {
                     })()}
                   />
                   <Route
-                    path="change-password"
+                    path={routes.passwordChange.path}
                     element={
                       isAuthenticated ? (
                         <Suspense fallback={<Loader />}>
@@ -310,7 +316,7 @@ export default class OrganizationWrapper extends React.Component {
                     }
                   />
                   <Route
-                    path="change-phone-number"
+                    path={routes.phoneChange.path}
                     element={
                       isAuthenticated ? (
                         <Suspense fallback={<Loader />}>
@@ -325,7 +331,7 @@ export default class OrganizationWrapper extends React.Component {
                     }
                   />
                   <Route
-                    path="payment/process/"
+                    path={routes.paymentProcess.path}
                     element={
                       <Suspense fallback={<Loader />}>
                         <PaymentProcess cookies={cookies} navigate={navigate} />
@@ -333,7 +339,7 @@ export default class OrganizationWrapper extends React.Component {
                     }
                   />
                   <Route
-                    path="payment/:status"
+                    path={routes.paymentStatus.path}
                     element={
                       <Suspense fallback={<Loader />}>
                         <PaymentStatus cookies={cookies} />
@@ -341,7 +347,7 @@ export default class OrganizationWrapper extends React.Component {
                     }
                   />
                   <Route
-                    path="complete-signup"
+                    path={routes.signup.path}
                     element={(() => {
                       if (!isAuthenticated) {
                         return <Navigate to={`/${orgSlug}/login`} />;
@@ -355,7 +361,10 @@ export default class OrganizationWrapper extends React.Component {
                           );
                         }
                         if (needsVerifyBankCard) {
-                          return <Navigate to={`/${orgSlug}/payment/draft`} />;
+                          const paymentRoute = hasPendingPayment(userData)
+                            ? getPaymentRoute(orgSlug, userData, settings)
+                            : `/${orgSlug}/payment/draft`;
+                          return <Navigate to={paymentRoute} />;
                         }
                         return <Navigate to={`/${orgSlug}/status`} />;
                       }

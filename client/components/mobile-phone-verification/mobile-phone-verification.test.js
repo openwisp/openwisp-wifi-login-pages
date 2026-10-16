@@ -15,6 +15,11 @@ import validateToken from "../../utils/validate-token";
 import loadTranslation from "../../utils/load-translation";
 import logError from "../../utils/log-error";
 import handleLogout from "../../utils/handle-logout";
+import {
+  beginContinuation,
+  bindContinuation,
+  readContinuation,
+} from "../../utils/continuation";
 
 jest.mock("../../utils/get-config");
 jest.mock("../../utils/validate-token");
@@ -48,6 +53,48 @@ const userData = {
   is_verified: false,
   phone_number: "+393660011222",
 };
+
+describe("continuation after phone number verification", () => {
+  const orgSlug = "test-org-2";
+  const oldNumber = "+393660011111";
+  const newNumber = "+393660011222";
+  const mountVerification = () => {
+    beginContinuation("?next=/test-org-2/status", orgSlug);
+    bindContinuation(orgSlug, oldNumber);
+    const props = createTestProps({
+      userData: {...userData, username: oldNumber, phone_number: newNumber},
+    });
+    const wrapper = shallow(<MobilePhoneVerification {...props} />, {
+      disableLifecycleMethods: true,
+    });
+    wrapper.instance().context = {setLoading: jest.fn()};
+    return {props, wrapper};
+  };
+  afterEach(() => {
+    sessionStorage.clear();
+    jest.clearAllMocks();
+  });
+
+  it("moves the continuation to the new phone number", async () => {
+    axios.mockResolvedValueOnce({data: {}});
+    const {props, wrapper} = mountVerification();
+    await wrapper.instance().handleSubmit({preventDefault: jest.fn()});
+    expect(props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({username: newNumber, is_verified: true}),
+    );
+    expect(readContinuation(orgSlug).username).toBe(newNumber);
+  });
+
+  it("keeps the continuation unchanged if the verification fails", async () => {
+    axios.mockRejectedValueOnce({
+      response: {status: 400, data: {code: "invalid"}},
+    });
+    const {props, wrapper} = mountVerification();
+    await wrapper.instance().handleSubmit({preventDefault: jest.fn()});
+    expect(props.setUserData).not.toHaveBeenCalled();
+    expect(readContinuation(orgSlug).username).toBe(oldNumber);
+  });
+});
 
 describe("<MobilePhoneVerification /> rendering with placeholder translation tags", () => {
   const props = createTestProps();
