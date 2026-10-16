@@ -917,7 +917,9 @@ export default class Status extends React.Component {
       orgSlug,
       setInternetMode,
       setPlanExhausted,
+      setUserData,
       userData,
+      captivePortalSyncAuth,
     } = this.props;
     const {setLoading} = this.context;
     const {message, type, warningMessage, showUpgradeBtn, planExhausted} =
@@ -940,10 +942,19 @@ export default class Status extends React.Component {
     }
 
     switch (type) {
-      case "authMessage":
+      case "authMessage": {
         setLoading(true);
         toast.dismiss();
         toast.info(getDynamicTranslation(message), {toastId: mainToastId});
+        const proceedToPayment = resolveStoredValue(
+          captivePortalSyncAuth,
+          `${orgSlug}_proceedToPayment`,
+          userData.proceedToPayment,
+          cookies,
+        );
+        if (proceedToPayment && !userData.proceedToPayment) {
+          setUserData({...userData, proceedToPayment});
+        }
         this.setStateSafe(
           {
             warningMessage: warningMessage || "USAGE_LIMIT_EXHAUSTED_TXT",
@@ -959,12 +970,13 @@ export default class Status extends React.Component {
             // When redirected to /status solely to complete captive portal
             // login before payment, keep the loader on so the status page
             // contents stay hidden while finalOperations() navigates away.
-            if (!userData.proceedToPayment) {
+            if (!proceedToPayment) {
               setLoading(false);
             }
           },
         );
         break;
+      }
       case "authError":
         setLoading(true);
         toast.dismiss();

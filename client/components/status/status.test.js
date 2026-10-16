@@ -1349,7 +1349,14 @@ describe("<Status /> interactions", () => {
   });
 
   it("authMessage keeps loader on during payment login redirect", async () => {
-    props = createTestProps({userData: {proceedToPayment: true}});
+    const cookies = new Cookies();
+    cookies.set("default_proceedToPayment", true, {path: "/", maxAge: 60});
+    props = createTestProps({
+      captivePortalSyncAuth: true,
+      cookies,
+      userData: {},
+    });
+    props.settings.captive_portal_supports_coa = true;
     const setLoadingMock = jest.fn();
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: setLoadingMock},
@@ -1365,6 +1372,7 @@ describe("<Status /> interactions", () => {
     expect(props.setPlanExhausted).toHaveBeenCalledTimes(1);
     expect(setLoadingMock).toHaveBeenCalledTimes(1);
     expect(setLoadingMock).toHaveBeenLastCalledWith(true);
+    expect(props.setUserData).toHaveBeenCalledWith({proceedToPayment: true});
   });
 
   it("test handlePostMessage internet-mode", async () => {
