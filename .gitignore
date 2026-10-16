@@ -10,6 +10,7 @@
 
 # production
 /dist
+/files
 
 # misc
 .DS_Store
@@ -54,3 +55,6 @@ server/config.json
 compilation-stats.json
 client/config.json
 sentry-env.json
+
+# openwisp-radius clone used by browser tests
+/openwisp-radius/
