@@ -17,21 +17,19 @@ export default class PaymentGateway extends React.Component {
     }));
   }
 
-  hasPendingLogos() {
-    const {gateways} = this.props;
-    const {logoStatus} = this.state;
-    return gateways.some(
-      (gateway) => gateway.logo_url && !logoStatus[gateway.logo_url],
-    );
-  }
-
   renderLogo(url) {
     const {logoStatus} = this.state;
     if (logoStatus[url] === "failed") {
       return null;
     }
+    const loading = logoStatus[url] !== "loaded";
     return (
-      <span className="payment-gateway-logo">
+      <span
+        className={`payment-gateway-logo${
+          loading ? " payment-gateway-logo-loading" : ""
+        }`}
+      >
+        {loading && <Loader full={false} small />}
         <img
           src={url}
           alt=""
@@ -113,14 +111,11 @@ export default class PaymentGateway extends React.Component {
 
   render() {
     const {selected, submitting, error, onProceed} = this.props;
-    const loading = !error && this.hasPendingLogos();
     return (
       <div className="container content">
         <div className="inner">
           <div className="main-column single">
-            <div
-              className={`inner${loading ? " payment-gateway-loading" : ""}`}
-            >
+            <div className="inner">
               {error ? (
                 this.renderError()
               ) : (
@@ -145,7 +140,6 @@ export default class PaymentGateway extends React.Component {
             </div>
           </div>
         </div>
-        {loading && <Loader />}
       </div>
     );
   }

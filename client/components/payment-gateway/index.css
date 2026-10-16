@@ -62,6 +62,13 @@
   display: block;
   grid-column: 1 / -1;
   min-width: 0;
+  min-height: 150px;
+  position: relative;
+}
+
+.payment-gateway-logo-loading .loader-container {
+  position: absolute;
+  inset: 0;
 }
 
 .payment-gateway-logo img {
@@ -76,8 +83,4 @@
 
 .payment-gateway-option label:has(input:focus-visible) {
   outline: 1px dotted #000;
-}
-
-.payment-gateway-loading {
-  visibility: hidden;
 }

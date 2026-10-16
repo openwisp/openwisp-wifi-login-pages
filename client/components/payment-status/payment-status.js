@@ -34,6 +34,8 @@ export default class PaymentStatus extends React.Component {
       gatewayError: false,
     };
     this.paymentReturnUrlInput = React.createRef();
+    this.isComponentMounted = true;
+    this.gatewaySelectionId = 0;
     this.paymentProceedHandler = this.paymentProceedHandler.bind(this);
     this.copyPaymentReturnUrl = this.copyPaymentReturnUrl.bind(this);
     this.selectGateway = this.selectGateway.bind(this);
@@ -70,6 +72,11 @@ export default class PaymentStatus extends React.Component {
     if (isTokenValid && params.status !== prevProps.params.status) {
       this.prepareStatus();
     }
+  }
+
+  componentWillUnmount() {
+    this.isComponentMounted = false;
+    this.gatewaySelectionId += 1;
   }
 
   // Runs the preparation of the current status, after token validation.
@@ -156,6 +163,8 @@ export default class PaymentStatus extends React.Component {
     if (!selectedGateway || submittingGateway) {
       return;
     }
+    this.gatewaySelectionId += 1;
+    const {gatewaySelectionId: selectionId} = this;
     this.setState({submittingGateway: true, gatewayError: false});
     try {
       const response = await selectGateway(
@@ -165,19 +174,28 @@ export default class PaymentStatus extends React.Component {
         userData.auth_token || userData.key,
         language,
       );
+      if (!this.isComponentMounted || selectionId !== this.gatewaySelectionId) {
+        return;
+      }
       const nextUserData = {...userData, ...response};
       setUserData(nextUserData);
       navigate(getPaymentRoute(orgSlug, nextUserData, settings));
     } catch (error) {
+      if (!this.isComponentMounted || selectionId !== this.gatewaySelectionId) {
+        return;
+      }
       logError(error, "Unable to select payment gateway");
       this.setState({gatewayError: true});
     } finally {
-      this.setState({submittingGateway: false});
+      if (this.isComponentMounted && selectionId === this.gatewaySelectionId) {
+        this.setState({submittingGateway: false});
+      }
     }
   }
 
   // Abandon upgrade: cancel order, clear flags, reconnect under current plan
   backToStatus = async () => {
+    this.gatewaySelectionId += 1;
     const {orgSlug, navigate, setUserData, userData, language, cookies} =
       this.props;
     try {
@@ -227,6 +245,7 @@ export default class PaymentStatus extends React.Component {
   };
 
   logout = () => {
+    this.gatewaySelectionId += 1;
     const {logout, cookies, orgSlug, setUserData, userData, navigate} =
       this.props;
     const redirectToStatus = (statusUrl = `/${orgSlug}/status`) =>
@@ -379,6 +398,9 @@ export default class PaymentStatus extends React.Component {
   async copyPaymentReturnUrl() {
     const {userData} = this.props;
     const {payment_return_url: paymentReturnUrl} = userData;
+    if (!paymentReturnUrl) {
+      return;
+    }
     let error;
     if (
       typeof navigator !== "undefined" &&
@@ -429,44 +451,48 @@ export default class PaymentStatus extends React.Component {
             <div className="inner">
               <h2 className="row">{t`PAY_REQ`}</h2>
 
-              <div
-                id="payment-link-help"
-                className="row payment-instructions"
-                dangerouslySetInnerHTML={{
-                  __html: t`PAY_LINK_INTRO${timeout}`,
-                }}
-              />
-
-              <div className="row payment-link">
-                <div className="payment-link-control">
-                  <input
-                    id="payment-link"
-                    ref={this.paymentReturnUrlInput}
-                    className="input payment-link-input"
-                    type="text"
-                    value={paymentReturnUrl}
-                    readOnly
-                    title={t`PAY_LINK_COPY_HINT`}
-                    aria-label={t`PAY_LINK_LBL`}
-                    aria-describedby="payment-link-help"
-                    onClick={this.copyPaymentReturnUrl}
+              {paymentReturnUrl && (
+                <>
+                  <div
+                    id="payment-link-help"
+                    className="row payment-instructions"
+                    dangerouslySetInnerHTML={{
+                      __html: t`PAY_LINK_INTRO${timeout}`,
+                    }}
                   />
-                  <button
-                    type="button"
-                    className="button partial payment-link-copy"
-                    aria-label={t`PAY_LINK_COPY_BTN`}
-                    onClick={this.copyPaymentReturnUrl}
-                  >
-                    <span
-                      className="payment-link-copy-icon"
-                      aria-hidden="true"
-                    />
-                    <span className="payment-link-copy-label">
-                      {t`PAY_LINK_COPY_BTN`}
-                    </span>
-                  </button>
-                </div>
-              </div>
+
+                  <div className="row payment-link">
+                    <div className="payment-link-control">
+                      <input
+                        id="payment-link"
+                        ref={this.paymentReturnUrlInput}
+                        className="input payment-link-input"
+                        type="text"
+                        value={paymentReturnUrl}
+                        readOnly
+                        title={t`PAY_LINK_COPY_HINT`}
+                        aria-label={t`PAY_LINK_LBL`}
+                        aria-describedby="payment-link-help"
+                        onClick={this.copyPaymentReturnUrl}
+                      />
+                      <button
+                        type="button"
+                        className="button partial payment-link-copy"
+                        aria-label={t`PAY_LINK_COPY_BTN`}
+                        onClick={this.copyPaymentReturnUrl}
+                      >
+                        <span
+                          className="payment-link-copy-icon"
+                          aria-hidden="true"
+                        />
+                        <span className="payment-link-copy-label">
+                          {t`PAY_LINK_COPY_BTN`}
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </>
+              )}
 
               <div
                 className="row payment-instructions"

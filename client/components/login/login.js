@@ -371,7 +371,6 @@ export default class Login extends React.Component {
       cookies,
       captivePortalSyncAuth,
     } = this.props;
-    clearContinuation();
     const isInternetRequired = requiresInternet(user, settings);
     if (isInternetRequired) {
       const flags = {proceedToPayment: true, mustLogin: true};
@@ -382,6 +381,8 @@ export default class Login extends React.Component {
       authenticate(true);
       return;
     }
+    // Retain the continuation until synchronous captive portal login returns.
+    clearContinuation();
     authenticate(true);
     navigate(
       isInternetRequired === null

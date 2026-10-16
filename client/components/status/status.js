@@ -214,9 +214,14 @@ export default class Status extends React.Component {
         userMustLogin,
         cookies,
       );
+      const mustLogoutKey = `${orgSlug}_mustLogout`;
+      const isReturningFromSynchronousLogout =
+        captivePortalSyncAuth &&
+        (cookies.get(mustLogoutKey) !== undefined ||
+          localStorage.getItem(mustLogoutKey) !== null);
       const mustLogout = resolveStoredValue(
         captivePortalSyncAuth,
-        `${orgSlug}_mustLogout`,
+        mustLogoutKey,
         userMustLogout,
         cookies,
       );
@@ -300,13 +305,12 @@ export default class Status extends React.Component {
       }
 
       if (mustLogout) {
-        if (captivePortalSyncAuth) {
-          // In synchronous captive portal authentication, the page reloads
-          // after form submission, so handleLogoutIframe() must be called manually here.
-          // (handleLogout() is already triggered when the user clicks the "Logout" button.)
+        if (isReturningFromSynchronousLogout) {
+          // Complete the logout iframe after synchronous form submission
+          // reloads the page, without submitting the logout form again.
           this.repeatLogin = Boolean(repeatLogin);
-          this.setState({loggedOut: mustLogout});
-          this.handleLogoutIframe();
+          this.setState({loggedOut: true});
+          await this.handleLogoutIframe();
         } else {
           await this.handleLogout(false, repeatLogin);
         }
@@ -400,6 +404,8 @@ export default class Status extends React.Component {
         });
         // Clear persisted proceedToPayment flag
         clearStoredValue(`${orgSlug}_proceedToPayment`, cookies);
+        // The continuation is fulfilled by the direct payment-process redirect.
+        clearContinuation();
         navigate(`/${orgSlug}/payment/process`);
         return;
       }
@@ -726,8 +732,17 @@ export default class Status extends React.Component {
 
     if (repeatLogin) {
       // no portal session to log out, so just log in again
+      const {userData} = this.props;
+      this.repeatLogin = false;
+      // Prevent logout flags from restarting the flow after synchronous login.
+      clearStoredValue(`${orgSlug}_mustLogout`, cookies);
+      clearStoredValue(`${orgSlug}_repeatLogin`, cookies);
+      setUserData({
+        ...userData,
+        mustLogout: undefined,
+        repeatLogin: undefined,
+      });
       if (this.loginFormRef && this.loginFormRef.current) {
-        const {userData} = this.props;
         this.notifyCpLogin(userData);
         this.loginFormRef.current.submit();
       } else {

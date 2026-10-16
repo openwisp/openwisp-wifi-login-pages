@@ -192,6 +192,100 @@ describe("Test <PaymentStatus /> cases", () => {
     expect(props.authenticate).not.toHaveBeenCalled();
   });
 
+  it("ignores a gateway response that arrives after cancellation", async () => {
+    let resolveSelection;
+    const payment = {
+      payment_id: "payment-id",
+      payment_gateway: null,
+      payment_requires_internet: null,
+      payment_url: "https://payments.example/select",
+    };
+    getGateways.mockResolvedValue({
+      gateways: [{key: "online", label: "Card"}],
+    });
+    selectGateway.mockReturnValue(
+      new Promise((resolve) => {
+        resolveSelection = resolve;
+      }),
+    );
+    cancelUpgradePlan.mockResolvedValue({});
+    props = createTestProps({
+      userData: {
+        ...responseData,
+        ...payment,
+        method: "mobile_phone",
+        is_verified: true,
+        in_upgrade: true,
+      },
+      params: {status: "gateway"},
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    wrapper.find(PaymentGateway).prop("onSelect")("online");
+    const selection = wrapper.find(PaymentGateway).prop("onProceed")();
+
+    await wrapper.find(PaymentGateway).prop("onCancel")();
+    resolveSelection({
+      ...payment,
+      payment_gateway: "online",
+      payment_requires_internet: true,
+      payment_url: "https://payments.example/process",
+    });
+    await selection;
+
+    expect(props.setUserData).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        in_upgrade: false,
+        payment_url: null,
+      }),
+    );
+    expect(props.navigate).toHaveBeenLastCalledWith("/default/status");
+    expect(props.navigate).not.toHaveBeenCalledWith("/default/payment/draft");
+  });
+
+  it("ignores a gateway response after unmounting", async () => {
+    let resolveSelection;
+    const payment = {
+      payment_id: "payment-id",
+      payment_gateway: null,
+      payment_requires_internet: null,
+      payment_url: "https://payments.example/select",
+    };
+    getGateways.mockResolvedValue({
+      gateways: [{key: "online", label: "Card"}],
+    });
+    selectGateway.mockReturnValue(
+      new Promise((resolve) => {
+        resolveSelection = resolve;
+      }),
+    );
+    props = createTestProps({
+      userData: {...responseData, ...payment},
+      params: {status: "gateway"},
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    wrapper.find(PaymentGateway).prop("onSelect")("online");
+    const selection = wrapper.find(PaymentGateway).prop("onProceed")();
+    wrapper.unmount();
+    resolveSelection({
+      ...payment,
+      payment_gateway: "online",
+      payment_requires_internet: true,
+      payment_url: "https://payments.example/process",
+    });
+    await selection;
+
+    expect(props.setUserData).not.toHaveBeenCalled();
+    expect(props.navigate).not.toHaveBeenCalled();
+  });
+
   it("re-enables gateway selection when the response still requires it", async () => {
     const payment = {
       payment_id: "payment-id",
@@ -1367,6 +1461,37 @@ describe("Test <PaymentStatus /> cases", () => {
     expect(content.at(1).hasClass("payment-instructions")).toEqual(true);
     expect(content.at(2).hasClass("payment-link")).toEqual(true);
     expect(content.at(3).hasClass("payment-instructions")).toEqual(true);
+  });
+
+  it("should hide and refuse to copy a missing payment return link", async () => {
+    const writeText = jest.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, "clipboard", {
+      configurable: true,
+      value: {writeText},
+    });
+    const successToast = jest.spyOn(toast, "success");
+    props = createTestProps({
+      userData: {
+        ...responseData,
+        is_verified: false,
+        payment_url: "https://payment.example.com/pay/1?order=123",
+        payment_return_url: null,
+      },
+      params: {status: "draft"},
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+
+    expect(wrapper.find("#payment-link-help")).toHaveLength(0);
+    expect(wrapper.find("input#payment-link")).toHaveLength(0);
+    expect(wrapper.find("button.payment-link-copy")).toHaveLength(0);
+    expect(wrapper.find(".payment-instructions")).toHaveLength(1);
+    await wrapper.instance().copyPaymentReturnUrl();
+    expect(writeText).not.toHaveBeenCalled();
+    expect(successToast).not.toHaveBeenCalled();
   });
 
   it("should copy the payment link when the input or button is clicked", async () => {

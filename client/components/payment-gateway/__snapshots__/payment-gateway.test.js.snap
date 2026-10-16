@@ -11,7 +11,7 @@ exports[`<PaymentGateway /> renders API-provided gateway choices and absolute lo
       className="main-column single"
     >
       <div
-        className="inner payment-gateway-loading"
+        className="inner"
       >
         <h2
           className="row"
@@ -59,8 +59,12 @@ exports[`<PaymentGateway /> renders API-provided gateway choices and absolute lo
                 Pay online
               </span>
               <span
-                className="payment-gateway-logo"
+                className="payment-gateway-logo payment-gateway-logo-loading"
               >
+                <loader
+                  full={false}
+                  small={true}
+                />
                 <img
                   alt=""
                   aria-hidden="true"
@@ -106,6 +110,5 @@ exports[`<PaymentGateway /> renders API-provided gateway choices and absolute lo
       </div>
     </div>
   </div>
-  <loader />
 </div>
 `;

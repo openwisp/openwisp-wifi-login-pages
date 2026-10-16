@@ -224,7 +224,7 @@ describe("actions testing", () => {
   it.each([false, true])(
     "restores an owned controlled return with auto-login disabled (session %s)",
     async (useSession) => {
-      beginContinuation("?next=/test-org-1/payment/success", "test-org-1");
+      beginContinuation("?next=/test-org-1/payment/process/", "test-org-1");
       bindContinuation("test-org-1", "alice");
       if (useSession)
         safeSessionStorage.setItem(

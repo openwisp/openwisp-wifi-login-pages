@@ -211,14 +211,10 @@ export default class Registration extends React.Component {
     })
       .then((res = {}) => {
         if (!res && !res.data) throw new Error();
-        const {key: auth_token, ...registeredUser} = res.data;
+        const {key: auth_token} = res.data;
         const nextUserData = {
-          ...registeredUser,
           is_verified: false,
           auth_token,
-          // Dropped so that the token is validated again, which loads the
-          // username and enables the RADIUS token for captive portal login.
-          radius_user_token: undefined,
           mustLogin: !postData.requires_payment,
         };
         setUserData(nextUserData);
@@ -236,7 +232,7 @@ export default class Registration extends React.Component {
         // if requires_payment
         // redirect to payment status component
         if (postData.requires_payment === true) {
-          redirectToPayment(orgSlug, navigate, nextUserData, settings);
+          redirectToPayment(orgSlug, navigate, res.data, settings);
         }
         // will redirect to status which will validate data again
         // and initiate any verification if needed

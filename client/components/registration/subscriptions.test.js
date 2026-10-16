@@ -281,14 +281,11 @@ describe("test subscriptions", () => {
     const mockVerify = registration.props.verifyMobileNumber;
     expect(mockVerify.mock.calls.length).toBe(0);
     const authenticateMock = registration.props.authenticate.mock;
-    expect(props.setUserData).toHaveBeenCalledWith(
-      expect.objectContaining({
-        payment_id: "payment-id",
-        payment_gateway: null,
-        payment_requires_internet: null,
-        radius_user_token: undefined,
-      }),
-    );
+    expect(props.setUserData).toHaveBeenCalledWith({
+      is_verified: false,
+      auth_token: data.key,
+      mustLogin: false,
+    });
     expect(redirectToPayment).toHaveBeenCalledWith(
       "default",
       props.navigate,

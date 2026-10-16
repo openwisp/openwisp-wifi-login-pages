@@ -219,7 +219,7 @@ describe("<Login /> next continuation", () => {
   });
 
   describe("next=payment/process skips the draft payment page", () => {
-    const process = (settings, payment = {}) => {
+    const authenticatePaymentProcess = (settings, payment = {}) => {
       const props = createTestProps({
         cookies: new Cookies(),
         captivePortalSyncAuth: true,
@@ -236,7 +236,9 @@ describe("<Login /> next continuation", () => {
     afterEach(() => localStorage.clear());
 
     it("logs in to the captive portal first if internet is required", () => {
-      const props = process({payment_requires_internet: true});
+      const props = authenticatePaymentProcess({
+        payment_requires_internet: true,
+      });
       expect(props.setUserData).toHaveBeenLastCalledWith(
         expect.objectContaining({proceedToPayment: true, mustLogin: true}),
       );
@@ -245,11 +247,16 @@ describe("<Login /> next continuation", () => {
       expect(props.navigate).not.toHaveBeenCalledWith(
         "/default/payment/process",
       );
-      expect(readContinuation("default")).toBeNull();
+      expect(readContinuation("default")).toMatchObject({
+        destination: "/default/payment/process/",
+        username: responseData.username,
+      });
     });
 
     it("opens the payment page directly if internet is not required", () => {
-      const props = process({payment_requires_internet: false});
+      const props = authenticatePaymentProcess({
+        payment_requires_internet: false,
+      });
       expect(props.authenticate).toHaveBeenCalledWith(true);
       expect(props.navigate).toHaveBeenLastCalledWith(
         "/default/payment/process",
@@ -263,7 +270,7 @@ describe("<Login /> next continuation", () => {
     ])(
       "follows payment_requires_internet=%s over the organization setting",
       (requirement, route) => {
-        const props = process(
+        const props = authenticatePaymentProcess(
           {payment_requires_internet: true},
           {payment_requires_internet: requirement},
         );

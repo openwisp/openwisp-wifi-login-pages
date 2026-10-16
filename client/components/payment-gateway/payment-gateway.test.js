@@ -55,7 +55,8 @@ describe("<PaymentGateway />", () => {
   });
 
   describe("logo loading", () => {
-    it("shows one page loader until every logo has settled", () => {
+    it("renders a loader for each pending logo", () => {
+      const onCancel = jest.fn();
       const wrapper = shallow(
         <PaymentGateway
           gateways={[
@@ -66,21 +67,23 @@ describe("<PaymentGateway />", () => {
           submitting={false}
           onSelect={jest.fn()}
           onProceed={jest.fn()}
-          onCancel={jest.fn()}
+          onCancel={onCancel}
           cancelLabel="PAY_GO_BACK_BTN"
         />,
       );
-      expect(wrapper.find(Loader)).toHaveLength(1);
-      expect(wrapper.find(".payment-gateway-loading")).toHaveLength(1);
+      expect(wrapper.find(Loader)).toHaveLength(2);
+      expect(wrapper.find(".payment-gateway-logo-loading")).toHaveLength(2);
+      expect(wrapper.find("input[type='radio']")).toHaveLength(2);
+      expect(wrapper.find("button.button.full")).toHaveLength(2);
+      wrapper.find("button.button.full").at(1).simulate("click");
+      expect(onCancel).toHaveBeenCalledTimes(1);
       wrapper.find("img").at(0).simulate("load");
-      expect(wrapper.find(Loader)).toHaveLength(1);
       wrapper.find("img").at(1).simulate("error");
       expect(wrapper.find(Loader)).toHaveLength(0);
-      expect(wrapper.find(".payment-gateway-loading")).toHaveLength(0);
       expect(wrapper.find("img")).toHaveLength(1);
     });
 
-    it("shows no loader when no gateway has a logo", () => {
+    it("renders controls when no gateway has a logo", () => {
       const wrapper = shallow(
         <PaymentGateway
           gateways={[{key: "offline", label: "Pay at a retailer"}]}
@@ -92,7 +95,8 @@ describe("<PaymentGateway />", () => {
           cancelLabel="PAY_GO_BACK_BTN"
         />,
       );
-      expect(wrapper.find(Loader)).toHaveLength(0);
+      expect(wrapper.find("input[type='radio']")).toHaveLength(1);
+      expect(wrapper.find("button.button.full")).toHaveLength(2);
     });
   });
 

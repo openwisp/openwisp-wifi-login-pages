@@ -838,8 +838,15 @@ describe("<Status /> interactions", () => {
 
   afterEach(() => {
     const cookies = new Cookies();
-    cookies.remove("default_mustLogin");
-    cookies.remove("default_mustLogout");
+    [
+      "default_mustLogin",
+      "default_mustLogout",
+      "default_repeatLogin",
+      "default_captivePortalLogoutOnly",
+    ].forEach((key) => {
+      cookies.remove(key, {path: "/"});
+      safeLocalStorage.removeItem(key);
+    });
     cookies.remove("default_macaddr");
     cookies.remove("default_proceedToPayment", {path: "/"});
     safeLocalStorage.removeItem("default_proceedToPayment");
@@ -1614,39 +1621,31 @@ describe("<Status /> interactions", () => {
   });
 
   it("should perform captive portal logout (sync auth)", async () => {
-    axios
-      .mockImplementationOnce(() =>
-        Promise.resolve({
-          response: {
-            status: 200,
-            statusText: "OK",
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: [
+          {
+            session_id: 1,
+            start_time: "2020-09-08T00:22:28-04:00",
+            stop_time: "2020-09-08T00:22:29-04:00",
+            input_octets: 100000,
+            output_octets: 100000,
           },
-          data: [],
-          headers: {},
-        }),
-      )
-      .mockImplementationOnce(() =>
-        Promise.resolve({
-          status: 200,
-          statusText: "OK",
-          data: [
-            {
-              session_id: 1,
-              start_time: "2020-09-08T00:22:28-04:00",
-              stop_time: "2020-09-08T00:22:29-04:00",
-              input_octets: 100000,
-              output_octets: 100000,
-            },
-          ],
-          headers: {},
-        }),
-      );
+        ],
+        headers: {},
+      }),
+    );
+    validateToken.mockReturnValue(true);
     props = createTestProps({
       captivePortalSyncAuth: true,
     });
     const logoutFormRef = jest.fn();
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
+      // Assign the form refs before simulating the captive portal return.
+      disableLifecycleMethods: true,
     });
     const status = wrapper.instance();
     status.logoutFormRef.current = {submit: logoutFormRef};
@@ -1665,6 +1664,7 @@ describe("<Status /> interactions", () => {
     // (simulate redirecting back from the captive portal)
     status.componentDidMount();
     await tick();
+    expect(axios).toHaveBeenCalledTimes(1);
     expect(status.props.logout).toHaveBeenCalled();
     expect(status.props.setUserData).toHaveBeenCalledWith(
       initialState.userData,
@@ -2375,6 +2375,42 @@ describe("<Status /> interactions", () => {
     expect(spyToast).not.toHaveBeenCalled();
   });
 
+  it("should submit captive portal logout before finishing a synchronous cancellation", async () => {
+    validateToken.mockReturnValue(true);
+    axios.mockResolvedValueOnce({
+      status: 200,
+      statusText: "OK",
+      data: [{session_id: 1}],
+      headers: {},
+    });
+    props = createTestProps({
+      captivePortalSyncAuth: true,
+      userData: {
+        ...responseData,
+        mustLogout: true,
+        captivePortalLogoutOnly: true,
+      },
+    });
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    const status = wrapper.instance();
+    const logoutForm = {submit: jest.fn()};
+    status.logoutFormRef = {current: logoutForm};
+    status.logoutIframeRef = {current: {}};
+    await status.componentDidMount();
+    await tick();
+    expect(logoutForm.submit).toHaveBeenCalledTimes(1);
+    expect(props.logout).not.toHaveBeenCalled();
+    expect(props.setUserData).not.toHaveBeenCalledWith(
+      expect.objectContaining({
+        mustLogout: undefined,
+        captivePortalLogoutOnly: undefined,
+      }),
+    );
+  });
+
   it("should logout if activeSession do not contain current MAC", async () => {
     validateToken.mockReturnValue(true);
     const successToast = jest.spyOn(toast, "success");
@@ -2827,7 +2863,11 @@ describe("<Status /> interactions", () => {
     });
     const result = await wrapper.instance().handleLogout(true, true);
     expect(localStorage).toEqual({userAutoLogin: "true"});
-    expect(prop.setUserData).not.toHaveBeenCalled();
+    expect(prop.setUserData).toHaveBeenCalledWith({
+      ...prop.userData,
+      mustLogout: undefined,
+      repeatLogin: undefined,
+    });
     expect(toast.success).not.toHaveBeenCalled();
     expect(result).toBe();
   });
@@ -4036,6 +4076,25 @@ describe("<Status /> login continuation", () => {
     expect(readContinuation("default")).toBeNull();
   });
 
+  it("consumes a payment continuation after synchronous login returns", async () => {
+    sessionStorage.clear();
+    beginContinuation("?next=/default/payment/process/", "default");
+    bindContinuation("default", "tester");
+    const {props, status} = await mountStatus(
+      {
+        in_upgrade: true,
+        payment_url: "https://payments.example/process",
+        proceedToPayment: true,
+      },
+      {captivePortalSyncAuth: true},
+    );
+    props.settings.payment_requires_internet = true;
+    await status.componentDidMount();
+    await tick();
+    expect(props.navigate).toHaveBeenCalledWith("/default/payment/process");
+    expect(readContinuation("default")).toBeNull();
+  });
+
   it("drops next when the sync captive portal login failed", async () => {
     const toastError = jest.spyOn(toast, "error");
     window.history.replaceState({}, "", "/default/status?reply=Auth+failed");
@@ -4089,9 +4148,28 @@ describe("<Status /> login continuation", () => {
     expect(readContinuation("default")).toBeNull();
   });
 
-  it("logs in again when repeatLogin is set and there is no portal session", async () => {
-    const {status} = await mountStatus();
+  it("consumes logout flags before logging in without a portal session", async () => {
+    const {props, status} = await mountStatus({
+      mustLogout: true,
+      repeatLogin: true,
+    });
+    props.cookies.set("default_mustLogout", "true", {path: "/"});
+    props.cookies.set("default_repeatLogin", "true", {path: "/"});
+    localStorage.setItem("default_mustLogout", "true");
+    localStorage.setItem("default_repeatLogin", "true");
+
     await status.handleLogout(false, true);
+
     expect(status.loginFormRef.current.submit).toHaveBeenCalledTimes(1);
+    expect(props.cookies.get("default_mustLogout")).toBeUndefined();
+    expect(props.cookies.get("default_repeatLogin")).toBeUndefined();
+    expect(localStorage.getItem("default_mustLogout")).toBeNull();
+    expect(localStorage.getItem("default_repeatLogin")).toBeNull();
+    expect(props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({
+        mustLogout: undefined,
+        repeatLogin: undefined,
+      }),
+    );
   });
 });
