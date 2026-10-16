@@ -725,6 +725,57 @@ describe("Test <PaymentStatus /> cases", () => {
     expect(comp.props.setUserData).not.toHaveBeenCalled();
   });
 
+  it("logs an offline upgrade into the captive portal after payment with CoA", async () => {
+    const cookies = new Cookies();
+    const expectedFlags = {
+      mustLogin: true,
+      mustLogout: false,
+      repeatLogin: false,
+    };
+    props = createTestProps({
+      userData: {
+        ...responseData,
+        method: "mobile_phone",
+        is_verified: true,
+        in_upgrade: true,
+      },
+      params: {status: "success"},
+      captivePortalSyncAuth: true,
+      cookies,
+    });
+    props.settings.payment_requires_internet = false;
+    props.settings.captive_portal_supports_coa = true;
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+      disableLifecycleMethods: true,
+    });
+    const validatedUser = {
+      ...responseData,
+      method: "mobile_phone",
+      is_verified: true,
+      in_upgrade: undefined,
+    };
+    validateToken.mockImplementation(async () => {
+      wrapper.setProps({userData: validatedUser});
+      return true;
+    });
+
+    await wrapper.instance().componentDidMount();
+
+    expect(props.setUserData).toHaveBeenCalledWith({
+      ...validatedUser,
+      ...expectedFlags,
+    });
+    ["mustLogin", "mustLogout", "repeatLogin"].forEach((flag) => {
+      expect(String(cookies.get(`default_${flag}`))).toBe(
+        String(expectedFlags[flag]),
+      );
+      expect(localStorage.getItem(`default_${flag}`)).toBe(
+        String(expectedFlags[flag]),
+      );
+    });
+  });
+
   it("should set proceedToPayment in userData and not persist it without sync auth", async () => {
     // If the payment requires internet, proceedToPayment should
     // be set to true in userData

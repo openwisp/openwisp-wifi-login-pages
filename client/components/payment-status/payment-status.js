@@ -36,6 +36,7 @@ export default class PaymentStatus extends React.Component {
     this.paymentReturnUrlInput = React.createRef();
     this.isComponentMounted = true;
     this.gatewaySelectionId = 0;
+    this.wasUpgrade = false;
     this.paymentProceedHandler = this.paymentProceedHandler.bind(this);
     this.copyPaymentReturnUrl = this.copyPaymentReturnUrl.bind(this);
     this.selectGateway = this.selectGateway.bind(this);
@@ -46,6 +47,7 @@ export default class PaymentStatus extends React.Component {
     const {cookies, orgSlug, setUserData, userData, logout, language} =
       this.props;
     const {setLoading} = this.context;
+    this.wasUpgrade = Boolean(userData.in_upgrade);
 
     setLoading(true);
     const isTokenValid = await validateToken(
@@ -102,15 +104,24 @@ export default class PaymentStatus extends React.Component {
     }
     const {method, is_verified: isVerified} = userData;
     const paymentRequiresInternet = requiresInternet(userData, settings);
-    // flag user to repeat login in order to restart session with new radius group
-    if (status === "success" && method === "bank_card" && isVerified === true) {
-      // Skip logout/login cycle if CoA handles session group updates transparently
+    // Restore captive portal access after payment completes.
+    if (
+      status === "success" &&
+      isVerified === true &&
+      (method === "bank_card" || this.wasUpgrade)
+    ) {
+      let flags;
       if (!settings.captive_portal_supports_coa) {
-        const flags = {
+        flags = {
           mustLogin: !paymentRequiresInternet,
           mustLogout: Boolean(paymentRequiresInternet),
           repeatLogin: Boolean(paymentRequiresInternet),
         };
+      } else if (paymentRequiresInternet === false) {
+        // CoA cannot authorize a user who did not have a portal session.
+        flags = {mustLogin: true, mustLogout: false, repeatLogin: false};
+      }
+      if (flags) {
         setUserData({...userData, ...flags});
         // keep the flags across the page reload of synchronous auth
         Object.entries(flags).forEach(([key, value]) =>
