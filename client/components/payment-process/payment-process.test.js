@@ -10,6 +10,7 @@ import tick from "../../utils/tick";
 import validateToken from "../../utils/validate-token";
 import loadTranslation from "../../utils/load-translation";
 import getPaymentStatusRedirectUrl from "../../utils/get-payment-status";
+import {takePaymentReturnContext} from "../../utils/payment";
 
 jest.mock("axios");
 jest.mock("../../utils/get-config");
@@ -291,6 +292,65 @@ describe("Test <PaymentProcess /> cases", () => {
     await tick();
     expect(wrapper.instance().redirectToPaymentUrl).toHaveBeenCalledWith(
       responseData.payment_url,
+    );
+  });
+
+  it("stores the selected gateway context before an external payment redirect", async () => {
+    props = createTestProps({
+      userData: {
+        ...responseData,
+        in_upgrade: true,
+        payment_iframe: false,
+        payment_requires_internet: false,
+      },
+      settings: {...props.settings, payment_requires_internet: true},
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentProcess {...props} />, {
+      context: loadingContextValue,
+    });
+    wrapper.instance().redirectToPaymentUrl = jest.fn();
+    await tick();
+
+    expect(takePaymentReturnContext()).toEqual(
+      expect.objectContaining({
+        inUpgrade: true,
+        paymentRequiresInternet: false,
+      }),
+    );
+  });
+
+  it("preserves gateway context before an iframe token refresh", async () => {
+    props = createTestProps({
+      userData: {
+        ...responseData,
+        in_upgrade: true,
+        payment_requires_internet: false,
+      },
+      settings: {...props.settings, payment_requires_internet: true},
+    });
+    wrapper = shallow(<PaymentProcess {...props} />, {
+      context: loadingContextValue,
+      disableLifecycleMethods: true,
+    });
+    validateToken.mockImplementation(async () => {
+      wrapper.setProps({
+        userData: {
+          ...responseData,
+          in_upgrade: undefined,
+          payment_requires_internet: undefined,
+        },
+      });
+      return true;
+    });
+
+    await wrapper.instance().componentDidMount();
+
+    expect(takePaymentReturnContext()).toEqual(
+      expect.objectContaining({
+        inUpgrade: true,
+        paymentRequiresInternet: false,
+      }),
     );
   });
 

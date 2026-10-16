@@ -2,6 +2,9 @@ import axios from "axios";
 
 import {paymentGatewayUrl} from "../constants";
 import getLanguageHeaders from "./get-language-headers";
+import {sessionStorage} from "./storage";
+
+const paymentReturnContextKey = "ow_payment_return_context";
 
 // Whether the backend reported if the selected payment gateway needs
 // internet access (older backends do not send this metadata).
@@ -66,6 +69,45 @@ export const usesPaymentIframe = (userData, settings) => {
     return userData.payment_iframe;
   }
   return Boolean(settings.payment_iframe);
+};
+
+export const storePaymentReturnContext = (userData, settings) => {
+  const paymentRequiresInternet = requiresInternet(userData, settings);
+  if (typeof paymentRequiresInternet !== "boolean") {
+    return;
+  }
+  sessionStorage.setItem(
+    paymentReturnContextKey,
+    JSON.stringify({
+      inUpgrade: Boolean(userData.in_upgrade),
+      paymentRequiresInternet,
+    }),
+  );
+};
+
+export const clearPaymentReturnContext = () => {
+  sessionStorage.removeItem(paymentReturnContextKey);
+};
+
+export const takePaymentReturnContext = () => {
+  try {
+    const context = JSON.parse(
+      sessionStorage.getItem(paymentReturnContextKey) || "null",
+    );
+    if (
+      !context ||
+      typeof context.inUpgrade !== "boolean" ||
+      typeof context.paymentRequiresInternet !== "boolean"
+    ) {
+      clearPaymentReturnContext();
+      return null;
+    }
+    clearPaymentReturnContext();
+    return context;
+  } catch {
+    clearPaymentReturnContext();
+    return null;
+  }
 };
 
 // Picks the page where a pending payment is continued:

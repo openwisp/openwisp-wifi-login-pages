@@ -28,6 +28,10 @@ import {
   sessionStorage as safeSessionStorage,
 } from "../utils/storage";
 import {resolveStoredValue} from "../utils/synced-storage";
+import {
+  storePaymentReturnContext,
+  takePaymentReturnContext,
+} from "../utils/payment";
 
 jest.mock("../utils/get-config");
 jest.mock("../utils/authenticate");
@@ -217,8 +221,13 @@ describe("actions testing", () => {
 
   it("clears continuation even when logout retains auto-login credentials", () => {
     beginContinuation("?next=/default/status", "default");
+    storePaymentReturnContext(
+      {in_upgrade: true, payment_requires_internet: false},
+      {},
+    );
     logout(cookies, "default", true);
     expect(readContinuation("default")).toBeNull();
+    expect(takePaymentReturnContext()).toBeNull();
   });
 
   it.each([false, true])(

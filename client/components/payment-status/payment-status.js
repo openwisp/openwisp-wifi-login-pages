@@ -14,11 +14,13 @@ import cancelUpgradePlan from "../../utils/cancel-upgrade-plan";
 import logError from "../../utils/log-error";
 import {storeValue, clearStoredValue} from "../../utils/synced-storage";
 import {
+  clearPaymentReturnContext,
   gatewayRoute,
   getGateways,
   getPaymentRoute,
   requiresInternet,
   selectGateway,
+  takePaymentReturnContext,
 } from "../../utils/payment";
 import routes from "../../constants/routes";
 import PaymentGateway from "../payment-gateway";
@@ -93,6 +95,12 @@ export default class PaymentStatus extends React.Component {
       captivePortalSyncAuth,
     } = this.props;
     const {status} = params;
+    let paymentReturnContext = null;
+    if (status === "success") {
+      paymentReturnContext = takePaymentReturnContext();
+    } else if (status === "failed") {
+      clearPaymentReturnContext();
+    }
     if (status === "gateway") {
       if (
         this.shouldRedirectToStatus() ||
@@ -103,12 +111,16 @@ export default class PaymentStatus extends React.Component {
       await this.loadGateways(userData);
     }
     const {method, is_verified: isVerified} = userData;
-    const paymentRequiresInternet = requiresInternet(userData, settings);
+    const paymentRequiresInternet = paymentReturnContext
+      ? paymentReturnContext.paymentRequiresInternet
+      : requiresInternet(userData, settings);
     // Restore captive portal access after payment completes.
     if (
       status === "success" &&
       isVerified === true &&
-      (method === "bank_card" || this.wasUpgrade)
+      (method === "bank_card" ||
+        this.wasUpgrade ||
+        (paymentReturnContext && paymentReturnContext.inUpgrade))
     ) {
       let flags;
       if (!settings.captive_portal_supports_coa) {
@@ -252,6 +264,7 @@ export default class PaymentStatus extends React.Component {
     }
     // Clear persisted proceedToPayment flag
     clearStoredValue(`${orgSlug}_proceedToPayment`, cookies);
+    clearPaymentReturnContext();
     navigate(`/${orgSlug}/status`);
   };
 

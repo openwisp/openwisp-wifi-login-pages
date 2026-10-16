@@ -3,14 +3,19 @@ import {
   getGateways,
   getPaymentRoute,
   requiresInternet,
+  clearPaymentReturnContext,
   selectGateway,
+  storePaymentReturnContext,
+  takePaymentReturnContext,
   usesPaymentIframe,
 } from "./payment";
+import {sessionStorage} from "./storage";
 
 jest.mock("axios");
 
 describe("payment utilities", () => {
   afterEach(() => {
+    sessionStorage.clear();
     jest.clearAllMocks();
     jest.resetAllMocks();
     jest.restoreAllMocks();
@@ -85,6 +90,48 @@ describe("payment utilities", () => {
 
   it("keeps an unselected payment iframe policy as null", () => {
     expect(usesPaymentIframe({payment_iframe: null}, {})).toBe(null);
+  });
+
+  it("restores an external payment return context once", () => {
+    const userData = {
+      in_upgrade: true,
+      payment_requires_internet: false,
+    };
+    storePaymentReturnContext(userData, {});
+
+    expect(takePaymentReturnContext()).toEqual({
+      inUpgrade: true,
+      paymentRequiresInternet: false,
+    });
+    expect(takePaymentReturnContext()).toBe(null);
+  });
+
+  it("clears a pending payment return context", () => {
+    storePaymentReturnContext(
+      {in_upgrade: true, payment_requires_internet: false},
+      {},
+    );
+
+    clearPaymentReturnContext();
+
+    expect(takePaymentReturnContext()).toBe(null);
+  });
+
+  it("rejects malformed payment return contexts", () => {
+    sessionStorage.setItem("ow_payment_return_context", "not json");
+
+    expect(takePaymentReturnContext()).toBe(null);
+  });
+
+  it("does not store a context before gateway selection", () => {
+    storePaymentReturnContext(
+      {
+        payment_requires_internet: null,
+      },
+      {},
+    );
+
+    expect(takePaymentReturnContext()).toBe(null);
   });
 
   it("routes an unselected gateway-aware payment to the gateway page", () => {

@@ -15,7 +15,12 @@ import validateToken from "../../utils/validate-token";
 import loadTranslation from "../../utils/load-translation";
 import cancelUpgradePlan from "../../utils/cancel-upgrade-plan";
 import logError from "../../utils/log-error";
-import {getGateways, selectGateway} from "../../utils/payment";
+import {
+  getGateways,
+  selectGateway,
+  takePaymentReturnContext,
+  storePaymentReturnContext,
+} from "../../utils/payment";
 import PaymentGateway from "../payment-gateway";
 
 jest.mock("axios");
@@ -122,6 +127,10 @@ describe("Test <PaymentStatus /> cases", () => {
       userData: responseData,
       params: {status: "failed"},
     });
+    storePaymentReturnContext(
+      {in_upgrade: true, payment_requires_internet: false},
+      {},
+    );
     validateToken.mockReturnValue(true);
     wrapper = shallow(<PaymentStatus {...props} />, {
       context: loadingContextValue,
@@ -138,6 +147,7 @@ describe("Test <PaymentStatus /> cases", () => {
     ).toEqual("/default/payment/draft");
     expect(wrapper.find(".payment-status-row-4 .button").length).toEqual(1);
     expect(wrapper.find("Navigate").length).toEqual(0);
+    expect(takePaymentReturnContext()).toBe(null);
   });
 
   it("selects a gateway only after the user proceeds", async () => {
@@ -725,7 +735,7 @@ describe("Test <PaymentStatus /> cases", () => {
     expect(comp.props.setUserData).not.toHaveBeenCalled();
   });
 
-  it("logs an offline upgrade into the captive portal after payment with CoA", async () => {
+  it("logs an external offline upgrade into the captive portal after payment with CoA", async () => {
     const cookies = new Cookies();
     const expectedFlags = {
       mustLogin: true,
@@ -733,18 +743,21 @@ describe("Test <PaymentStatus /> cases", () => {
       repeatLogin: false,
     };
     props = createTestProps({
-      userData: {
-        ...responseData,
-        method: "mobile_phone",
-        is_verified: true,
-        in_upgrade: true,
-      },
+      userData: {},
       params: {status: "success"},
       captivePortalSyncAuth: true,
       cookies,
     });
     props.settings.payment_requires_internet = false;
     props.settings.captive_portal_supports_coa = true;
+    storePaymentReturnContext(
+      {
+        ...responseData,
+        in_upgrade: true,
+        payment_requires_internet: false,
+      },
+      props.settings,
+    );
     wrapper = shallow(<PaymentStatus {...props} />, {
       context: loadingContextValue,
       disableLifecycleMethods: true,
@@ -775,6 +788,53 @@ describe("Test <PaymentStatus /> cases", () => {
       );
     });
   });
+
+  it.each([
+    ["keeps CoA handling", true, null],
+    [
+      "restarts the portal session without CoA",
+      false,
+      {mustLogin: false, mustLogout: true, repeatLogin: true},
+    ],
+  ])(
+    "%s for an external online upgrade",
+    async (_, captivePortalSupportsCoa, expectedFlags) => {
+      props = createTestProps({
+        userData: {},
+        params: {status: "success"},
+      });
+      props.settings.payment_requires_internet = false;
+      props.settings.captive_portal_supports_coa = captivePortalSupportsCoa;
+      storePaymentReturnContext(
+        {
+          ...responseData,
+          in_upgrade: true,
+          payment_requires_internet: true,
+        },
+        props.settings,
+      );
+      wrapper = shallow(<PaymentStatus {...props} />, {
+        context: loadingContextValue,
+        disableLifecycleMethods: true,
+      });
+      const validatedUser = {
+        ...responseData,
+        method: "mobile_phone",
+        is_verified: true,
+        in_upgrade: undefined,
+      };
+      validateToken.mockImplementation(async () => {
+        wrapper.setProps({userData: validatedUser});
+        return true;
+      });
+
+      await wrapper.instance().componentDidMount();
+
+      expect(props.setUserData.mock.calls).toEqual(
+        expectedFlags ? [[{...validatedUser, ...expectedFlags}]] : [],
+      );
+    },
+  );
 
   it("should set proceedToPayment in userData and not persist it without sync auth", async () => {
     // If the payment requires internet, proceedToPayment should
@@ -1128,6 +1188,7 @@ describe("Test <PaymentStatus /> cases", () => {
       },
     });
     localStorage.setItem("default_proceedToPayment", "true");
+    storePaymentReturnContext(props.userData, props.settings);
     validateToken.mockReturnValue(true);
     cancelUpgradePlan.mockResolvedValue({
       in_upgrade: false,
@@ -1162,6 +1223,7 @@ describe("Test <PaymentStatus /> cases", () => {
       path: "/",
     });
     expect(localStorage.getItem("default_proceedToPayment")).toBeNull();
+    expect(takePaymentReturnContext()).toBe(null);
   });
 
   it("should silently ignore a 404 when cancelling an non-existent upgrade", async () => {

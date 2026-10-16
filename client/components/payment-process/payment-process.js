@@ -11,6 +11,7 @@ import getPaymentStatusRedirectUrl from "../../utils/get-payment-status";
 import {
   gatewayRoute,
   getPaymentRoute,
+  storePaymentReturnContext,
   usesPaymentIframe,
 } from "../../utils/payment";
 
@@ -25,10 +26,11 @@ export default class PaymentProcess extends React.Component {
   }
 
   async componentDidMount() {
-    const {cookies, orgSlug, setUserData, logout} = this.props;
+    const {cookies, orgSlug, setUserData, logout, settings} = this.props;
     let {userData} = this.props;
     const {setLoading} = this.context;
 
+    storePaymentReturnContext(userData, settings);
     setLoading(true);
     toast.info(t`PLEASE_WAIT`, {autoClose: 10000});
     const isTokenValid = await validateToken(

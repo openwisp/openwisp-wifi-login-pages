@@ -1,10 +1,12 @@
 import {SET_AUTHENTICATION_STATUS} from "../constants/action-types";
 import {sessionStorage} from "../utils/storage";
 import {clearContinuation} from "../utils/continuation";
+import {clearPaymentReturnContext} from "../utils/payment";
 import {clearCaptivePortalFlags} from "../utils/synced-storage";
 
 const logout = (cookies, orgSlug, userAutoLogin = false) => {
   clearContinuation();
+  clearPaymentReturnContext();
   if (!userAutoLogin) {
     cookies.remove(`${orgSlug}_auth_token`, {path: "/"});
     cookies.remove(`${orgSlug}_username`, {path: "/"});
