@@ -95,7 +95,7 @@ export default class Status extends React.Component {
       hasMoreSessions: false,
       screenWidth: window.innerWidth,
       loadSpinner: true,
-      showRadiusUsage: true,
+      showUsageOverview: true,
       radiusUsageSpinner: true,
       modalActive: false,
       rememberMe: false,
@@ -286,11 +286,8 @@ export default class Status extends React.Component {
 
   componentWillUnmount() {
     this.isComponentMounted = false;
-    const {statusPage} = this.props;
     clearInterval(this.intervalId);
-    if (statusPage.radius_usage_enabled) {
-      clearInterval(this.usageIntervalId);
-    }
+    clearInterval(this.usageIntervalId);
     clearTimeout(this.usageRetryTimeoutId);
     window.removeEventListener("resize", this.updateScreenWidth);
     window.removeEventListener("message", this.handlePostMessage);
@@ -349,7 +346,10 @@ export default class Status extends React.Component {
       this.logoutIfCurrentRadiusSessionIsInactive();
     }, 60000);
     // We don't show radius usage in the internet mode.
-    if (statusPage.radius_usage_enabled && !internetMode) {
+    if (
+      (statusPage.radius_usage_enabled || settings.subscriptions) &&
+      !internetMode
+    ) {
       await this.getUserRadiusUsage();
       this.usageIntervalId = setInterval(() => {
         this.getUserRadiusUsage();
@@ -415,6 +415,8 @@ export default class Status extends React.Component {
       orgSlug,
       logout,
       userData,
+      settings,
+      statusPage,
       planExhausted,
       setPlanExhausted,
     } = this.props;
@@ -433,15 +435,18 @@ export default class Status extends React.Component {
         },
         url,
       });
-      if (response.data.plan) {
-        options.userPlan = response.data.plan;
-      }
-      // Ensures showRadiusUsage is set to a boolean value even if response.data.checks is undefined.
-      // This check confirms if the checks property exists, is an array, and contains elements.
-      options.showRadiusUsage =
-        Array.isArray(response.data.checks) && response.data.checks.length > 0;
-      if (options.showRadiusUsage) {
-        options.userChecks = response.data.checks;
+      options.userPlan = response.data.plan || {};
+      options.userChecks = Array.isArray(response.data.checks)
+        ? response.data.checks
+        : [];
+      const hasUsageChecks = options.userChecks.length > 0;
+      const hasSubscriptionPlan = Boolean(
+        settings.subscriptions && options.userPlan.name,
+      );
+      options.showUsageOverview =
+        (statusPage.radius_usage_enabled && hasUsageChecks) ||
+        hasSubscriptionPlan;
+      if (hasUsageChecks) {
         const isAnyQuotaExceeded = options.userChecks.some((check) => {
           const quota = Number(check.value);
           const usage = check.result;
@@ -451,16 +456,21 @@ export default class Status extends React.Component {
           (check) => Number(check.value) === 0,
         );
         isPlanExhausted = isAnyQuotaExceeded || allQuotasZero;
-        if (isPlanExhausted && !warningMessage) {
-          options.warningMessage = "USAGE_LIMIT_EXHAUSTED_TXT";
-        }
-        if (planExhausted !== isPlanExhausted) {
-          setPlanExhausted(isPlanExhausted);
-          if (isPlanExhausted) {
-            toast.info(t`PLAN_EXHAUSTED_TOAST`, {
-              toastId: mainToastId,
-            });
-          }
+      }
+      if (isPlanExhausted && !warningMessage) {
+        options.warningMessage = "USAGE_LIMIT_EXHAUSTED_TXT";
+      } else if (
+        !isPlanExhausted &&
+        warningMessage === "USAGE_LIMIT_EXHAUSTED_TXT"
+      ) {
+        options.warningMessage = null;
+      }
+      if (planExhausted !== isPlanExhausted) {
+        setPlanExhausted(isPlanExhausted);
+        if (isPlanExhausted) {
+          toast.info(t`PLAN_EXHAUSTED_TOAST`, {
+            toastId: mainToastId,
+          });
         }
       }
       this.setStateSafe(options);
@@ -472,7 +482,7 @@ export default class Status extends React.Component {
         // Do not retry for client side errors
         if (error.response.status >= 400 && error.response.status < 500) {
           // Logout only if unauthorized or forbidden
-          this.setStateSafe({showRadiusUsage: false});
+          this.setStateSafe({showUsageOverview: false});
           if (error.response.status === 401 || error.response.status === 403) {
             logout(cookies, orgSlug);
             toast.error(t`ERR_OCCUR`, {
@@ -1301,9 +1311,7 @@ export default class Status extends React.Component {
             >
               <div className="usage-progress-text">
                 <strong>{remaining}</strong>
-                <div className="usage-progress-remaining">
-                  {t`USAGE_REMAINING`}
-                </div>
+                <div className="usage-progress-remaining">{t`USAGE_REMAINING`}</div>
               </div>
             </CircularProgressbarWithChildren>
           </div>
@@ -1395,6 +1403,11 @@ export default class Status extends React.Component {
       settings,
       defaultLanguage,
     } = this.props;
+    const radialUsageDisplay = ["disabled", "small"].includes(
+      statusPage.radial_usage_display,
+    )
+      ? statusPage.radial_usage_display
+      : "narrow";
     const {links} = statusPage;
     const {
       username,
@@ -1407,7 +1420,8 @@ export default class Status extends React.Component {
       sessionsToLogout,
       hasMoreSessions,
       loadSpinner,
-      showRadiusUsage,
+      showUsageOverview,
+      screenWidth,
       radiusUsageSpinner,
       upgradePlanModalActive,
       upgradePlans,
@@ -1416,6 +1430,16 @@ export default class Status extends React.Component {
       modalActive,
       rememberMe,
     } = this.state;
+    // Select the radial layout for the configured screen-width range.
+    const useRadial =
+      (radialUsageDisplay === "small" && screenWidth < 768) ||
+      (radialUsageDisplay === "narrow" && screenWidth <= 480);
+    const usageBoxClass = useRadial
+      ? "usage-box-inner-small"
+      : "usage-box-inner-big";
+    const renderUsageCheck = useRadial
+      ? this.renderUsageCheckContentSmall
+      : this.renderUsageCheckContentBig;
     const now = Math.floor(Date.now() / 1000);
     const resetTimes = userChecks
       .map(({reset}) => Number(reset))
@@ -1456,8 +1480,8 @@ export default class Status extends React.Component {
               }
             />
           )}
-          {statusPage.radius_usage_enabled &&
-            showRadiusUsage &&
+          {(statusPage.radius_usage_enabled || settings.subscriptions) &&
+            showUsageOverview &&
             !internetMode && (
               <div className="usage-overview bg row">
                 {radiusUsageSpinner ? (
@@ -1474,83 +1498,71 @@ export default class Status extends React.Component {
                         <strong>{getDynamicTranslation(userPlan.name)}</strong>
                       </p>
                     )}
-                    {userChecks && (
-                      <div className="usage-details">
-                        <div className="usage-checks-container">
-                          {userChecks.map((check) => {
-                            const valueNum = getUsageNumber(check.value);
-                            const resultNum = getUsageNumber(check.result);
-                            if (
-                              valueNum === null ||
-                              valueNum <= 0 ||
-                              !["seconds", "bytes"].includes(check.type)
-                            ) {
-                              return null;
-                            }
-                            const usageClass = this.getUsageClass(
-                              valueNum,
-                              resultNum,
-                            );
-                            const icon =
-                              check.type === "seconds" ? "timer" : "data";
-                            const label =
-                              check.type === "seconds"
-                                ? t`USAGE_TIME`
-                                : t`USAGE_DATA`;
-                            if (resultNum === null) {
-                              return (
-                                <React.Fragment key={check.attribute}>
-                                  <div className="usage-box-inner-big">
-                                    {this.renderUsageCheckUnavailable(
-                                      usageClass,
-                                      icon,
-                                      label,
-                                    )}
-                                  </div>
-                                  <div className="usage-box-inner-small">
-                                    {this.renderUsageCheckUnavailable(
-                                      usageClass,
-                                      icon,
-                                      label,
-                                    )}
-                                  </div>
-                                </React.Fragment>
+                    {statusPage.radius_usage_enabled &&
+                      userChecks.length > 0 && (
+                        <div className="usage-details">
+                          <div className="usage-checks-container">
+                            {userChecks.map((check) => {
+                              const valueNum = getUsageNumber(check.value);
+                              const resultNum = getUsageNumber(check.result);
+                              if (
+                                valueNum === null ||
+                                valueNum <= 0 ||
+                                !["seconds", "bytes"].includes(check.type)
+                              ) {
+                                return null;
+                              }
+                              const usageClass = this.getUsageClass(
+                                valueNum,
+                                resultNum,
                               );
-                            }
-                            const normalizedCheck = {
-                              ...check,
-                              value: valueNum,
-                              result: resultNum,
-                            };
-                            return (
-                              <React.Fragment key={check.attribute}>
-                                <div className="usage-box-inner-big">
-                                  {this.renderUsageCheckContentBig(
+                              const icon =
+                                check.type === "seconds" ? "timer" : "data";
+                              const label =
+                                check.type === "seconds"
+                                  ? t`USAGE_TIME`
+                                  : t`USAGE_DATA`;
+                              if (resultNum === null) {
+                                return (
+                                  <div
+                                    className={usageBoxClass}
+                                    key={check.attribute}
+                                  >
+                                    {this.renderUsageCheckUnavailable(
+                                      usageClass,
+                                      icon,
+                                      label,
+                                    )}
+                                  </div>
+                                );
+                              }
+                              const normalizedCheck = {
+                                ...check,
+                                value: valueNum,
+                                result: resultNum,
+                              };
+                              return (
+                                <div
+                                  className={usageBoxClass}
+                                  key={check.attribute}
+                                >
+                                  {renderUsageCheck(
                                     normalizedCheck,
                                     usageClass,
                                     icon,
                                     label,
                                   )}
                                 </div>
-                                <div className="usage-box-inner-small">
-                                  {this.renderUsageCheckContentSmall(
-                                    normalizedCheck,
-                                    usageClass,
-                                    icon,
-                                    label,
-                                  )}
-                                </div>
-                              </React.Fragment>
-                            );
-                          })}
-                        </div>
-                        {usageResetTime && (
-                          <div className="usage-reset-info">
-                            {t`USAGE_LIMITS_RESET_IN`} {usageResetTime}
+                              );
+                            })}
                           </div>
-                        )}
-                      </div>
-                    )}
+                          {usageResetTime && (
+                            <div className="usage-reset-info">
+                              {t`USAGE_LIMITS_RESET_IN`} {usageResetTime}
+                            </div>
+                          )}
+                        </div>
+                      )}
                     {warningMessage && (
                       <p className="important">
                         <strong>
@@ -1771,6 +1783,7 @@ Status.propTypes = {
     ),
     radius_usage_enabled: PropTypes.bool,
     top_up_enabled: PropTypes.bool,
+    radial_usage_display: PropTypes.string,
     saml_logout_url: PropTypes.string,
     accounting_swap_octets: PropTypes.bool,
   }).isRequired,

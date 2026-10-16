@@ -351,7 +351,7 @@ describe("<Status /> usage rendering helpers", () => {
     });
 
     component.setState({
-      showRadiusUsage: true,
+      showUsageOverview: true,
       radiusUsageSpinner: false,
       userChecks: [
         {
@@ -416,7 +416,7 @@ describe("<Status /> usage rendering helpers", () => {
       disableLifecycleMethods: true,
     });
     component.setState({
-      showRadiusUsage: true,
+      showUsageOverview: true,
       radiusUsageSpinner: false,
       userChecks: [
         {...usageCheck, reset: now - 1},
@@ -636,14 +636,14 @@ describe("<Status /> usage rendering helpers", () => {
       disableLifecycleMethods: true,
     });
     component.setState({
-      showRadiusUsage: true,
+      showUsageOverview: true,
       radiusUsageSpinner: false,
       userChecks: [
         {...usageCheck, result: null},
         {...usageCheck, attribute: "Invalid-Usage", result: "not-a-number"},
       ],
     });
-    expect(component.find(".usage-check-unavailable")).toHaveLength(4);
+    expect(component.find(".usage-check-unavailable")).toHaveLength(2);
     expect(component.find(CircularProgressbarWithChildren)).toHaveLength(0);
     expect(component.find(".usage-progress-bar-fill")).toHaveLength(0);
   });
@@ -659,7 +659,7 @@ describe("<Status /> usage rendering helpers", () => {
       disableLifecycleMethods: true,
     });
     component.setState({
-      showRadiusUsage: true,
+      showUsageOverview: true,
       radiusUsageSpinner: false,
       userChecks: [{...usageCheck, reset: now - 1}],
       userPlan: {},
@@ -781,16 +781,16 @@ describe("<Status /> usage rendering helpers", () => {
     });
   });
 
-  it("should render both usage variants in the status page", () => {
+  it("should update the rendered usage variant when the screen is resized", () => {
     const prop = createTestProps();
     prop.statusPage.radius_usage_enabled = true;
     const component = shallow(<Status {...prop} />, {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: true,
     });
-
     component.setState({
-      showRadiusUsage: true,
+      screenWidth: 657,
+      showUsageOverview: true,
       radiusUsageSpinner: false,
       userChecks: [usageCheck],
       userPlan: {},
@@ -805,12 +805,64 @@ describe("<Status /> usage rendering helpers", () => {
       rememberMe: false,
       showUpgradeBtn: true,
     });
-
     expect(component.find(".usage-box-inner-big")).toHaveLength(1);
-    expect(component.find(".usage-box-inner-small")).toHaveLength(1);
+    expect(component.find(".usage-box-inner-small")).toHaveLength(0);
     expect(component.find(".usage-progress-bar-fill").exists()).toBe(true);
+    expect(component.find(CircularProgressbarWithChildren).exists()).toBe(
+      false,
+    );
+    const originalWidth = window.innerWidth;
+    window.innerWidth = 480;
+    component.instance().updateScreenWidth();
+    expect(component.find(".usage-box-inner-big")).toHaveLength(0);
+    expect(component.find(".usage-box-inner-small")).toHaveLength(1);
+    expect(component.find(".usage-progress-bar-fill").exists()).toBe(false);
     expect(component.find(CircularProgressbarWithChildren).exists()).toBe(true);
+    window.innerWidth = originalWidth;
   });
+
+  // Verify each display mode at its responsive breakpoint and representative widths.
+  it.each([
+    {configuredMode: undefined, width: 480, radial: true},
+    {configuredMode: undefined, width: 481, radial: false},
+    {configuredMode: "disabled", width: 320, radial: false},
+    {configuredMode: "disabled", width: 656, radial: false},
+    {configuredMode: "disabled", width: 1200, radial: false},
+    {configuredMode: "small", width: 320, radial: true},
+    {configuredMode: "small", width: 767, radial: true},
+    {configuredMode: "small", width: 768, radial: false},
+    {configuredMode: "small", width: 1200, radial: false},
+    {configuredMode: "narrow", width: 480, radial: true},
+    {configuredMode: "narrow", width: 481, radial: false},
+    {configuredMode: "narrow", width: 1200, radial: false},
+  ])(
+    "should render radial=$radial for mode=$configuredMode at $width pixels",
+    ({configuredMode, width, radial}) => {
+      const prop = createTestProps();
+      prop.statusPage.radius_usage_enabled = true;
+      prop.statusPage.radial_usage_display = configuredMode;
+      const component = shallow(<Status {...prop} />, {
+        context: {setLoading: jest.fn()},
+        disableLifecycleMethods: true,
+      });
+      component.setState({
+        screenWidth: width,
+        showUsageOverview: true,
+        radiusUsageSpinner: false,
+        userChecks: [usageCheck],
+      });
+      expect(component.find(CircularProgressbarWithChildren).exists()).toBe(
+        radial,
+      );
+      expect(component.find(".usage-progress-bar-fill").exists()).toBe(!radial);
+      expect(component.find(".usage-box-inner-small")).toHaveLength(
+        radial ? 1 : 0,
+      );
+      expect(component.find(".usage-box-inner-big")).toHaveLength(
+        radial ? 0 : 1,
+      );
+    },
+  );
 });
 
 describe("<Status /> interactions", () => {
@@ -1732,6 +1784,21 @@ describe("<Status /> interactions", () => {
     const {intervalId} = wrapper.instance();
     wrapper.instance().componentWillUnmount();
     expect(clearInterval).toHaveBeenCalledWith(intervalId);
+  });
+
+  it("should clear usage interval for subscription-only status pages", () => {
+    props = createTestProps();
+    props.settings.subscriptions = true;
+    props.statusPage.radius_usage_enabled = false;
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    const usageIntervalId = 123;
+    wrapper.instance().usageIntervalId = usageIntervalId;
+    jest.spyOn(window, "clearInterval");
+    wrapper.instance().componentWillUnmount();
+    expect(clearInterval).toHaveBeenCalledWith(usageIntervalId);
   });
 
   it("test loading spinner", async () => {
@@ -2852,7 +2919,7 @@ describe("<Status /> interactions", () => {
     wrapper.instance().getUserRadiusUsage();
     await tick();
     expect(wrapper.instance().state.userChecks.length).toBe(1);
-    expect(wrapper.instance().state.showRadiusUsage).toBe(true);
+    expect(wrapper.instance().state.showUsageOverview).toBe(true);
     expect(wrapper.find(".usage-reset-info")).toHaveLength(1);
 
     // A free plan is present in the response
@@ -2876,7 +2943,7 @@ describe("<Status /> interactions", () => {
     wrapper.instance().getUserRadiusUsage();
     await tick();
     expect(wrapper.instance().state.userPlan.is_free).toBe(true);
-    expect(wrapper.instance().state.showRadiusUsage).toBe(false);
+    expect(wrapper.instance().state.showUsageOverview).toBe(false);
 
     // User has exhausted plan quota
     axios.mockImplementationOnce(() =>
@@ -2926,6 +2993,186 @@ describe("<Status /> interactions", () => {
     expect(toast.dismiss).toHaveBeenCalledWith("main_toast_id");
     expect(wrapper.instance().props.logout.mock.calls.length).toBe(1);
   });
+  it.each([
+    {checks: [], plan: {name: "Unlimited"}},
+    {plan: {name: "Unlimited"}},
+    {checks: []},
+    {},
+    {
+      checks: [
+        {
+          attribute: "Max-Daily-Session",
+          value: "10800",
+          result: 0,
+          type: "seconds",
+        },
+      ],
+    },
+  ])(
+    "should clear stale usage and quota exhaustion on polling: %j",
+    async (data) => {
+      const prop = createTestProps({planExhausted: true});
+      prop.settings.subscriptions = true;
+      prop.statusPage.radius_usage_enabled = true;
+      wrapper = shallow(<Status {...prop} />, {
+        context: {setLoading: jest.fn()},
+        disableLifecycleMethods: true,
+      });
+      wrapper.setState({
+        userChecks: [
+          {
+            attribute: "Max-Daily-Session",
+            value: "10800",
+            result: 10800,
+            type: "seconds",
+            reset: Math.floor(Date.now() / 1000) + 3600,
+          },
+        ],
+        userPlan: {name: "Old bundle", is_free: true},
+        warningMessage: "USAGE_LIMIT_EXHAUSTED_TXT",
+      });
+      axios.mockResolvedValueOnce({data});
+      await wrapper.instance().getUserRadiusUsage();
+      expect(wrapper.state("userChecks")).toEqual(data.checks || []);
+      expect(wrapper.state("userPlan")).toEqual(data.plan || {});
+      expect(wrapper.state("warningMessage")).toBeNull();
+      expect(prop.setPlanExhausted).toHaveBeenCalledWith(false);
+      expect(wrapper.find(".usage-reset-info").exists()).toBe(false);
+      expect(wrapper.find(".usage-overview").exists()).toBe(
+        Boolean(data.checks?.length || data.plan?.name),
+      );
+    },
+  );
+  it("should hide a plan-only overview when subscriptions are disabled", async () => {
+    const prop = createTestProps();
+    prop.settings.subscriptions = false;
+    prop.statusPage.radius_usage_enabled = true;
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    axios.mockResolvedValueOnce({
+      data: {checks: [], plan: {name: "Unlimited"}},
+    });
+    await wrapper.instance().getUserRadiusUsage();
+    expect(wrapper.find(".usage-overview").exists()).toBe(false);
+  });
+  it("should show RADIUS usage when subscriptions are disabled", async () => {
+    const prop = createTestProps();
+    prop.settings.subscriptions = false;
+    prop.statusPage.radius_usage_enabled = true;
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    axios.mockResolvedValueOnce({
+      data: {
+        checks: [
+          {
+            attribute: "Max-Daily-Session",
+            value: "10800",
+            result: 0,
+            type: "seconds",
+          },
+        ],
+      },
+    });
+    await wrapper.instance().getUserRadiusUsage();
+    expect(wrapper.find(".usage-overview").exists()).toBe(true);
+    expect(wrapper.find(".usage-checks-container").exists()).toBe(true);
+    expect(wrapper.find(".usage-overview-subscription").exists()).toBe(false);
+  });
+  it("should hide plan-only usage in internet mode", () => {
+    const prop = createTestProps({internetMode: true});
+    prop.settings.subscriptions = true;
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    wrapper.setState({
+      showUsageOverview: true,
+      radiusUsageSpinner: false,
+      userChecks: [],
+      userPlan: {name: "Unlimited"},
+    });
+    expect(wrapper.find(".usage-overview").exists()).toBe(false);
+  });
+  it("should show a subscription plan but not checks when RADIUS usage is disabled", async () => {
+    const prop = createTestProps({
+      statusPage: {
+        ...defaultConfig.components.status_page,
+        radius_usage_enabled: false,
+      },
+    });
+    prop.settings.subscriptions = true;
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    axios.mockResolvedValueOnce({
+      data: {
+        checks: [
+          {
+            attribute: "Max-Daily-Session",
+            value: "10800",
+            result: 0,
+            type: "seconds",
+          },
+        ],
+        plan: {name: "Unlimited"},
+      },
+    });
+    await wrapper.instance().getUserRadiusUsage();
+    expect(wrapper.find(".usage-overview").exists()).toBe(true);
+    expect(wrapper.find(".usage-overview-subscription").text()).toContain(
+      "Unlimited",
+    );
+    expect(wrapper.find(".usage-checks-container").exists()).toBe(false);
+  });
+  it("should load the subscription plan when RADIUS usage is disabled", async () => {
+    const prop = createTestProps();
+    prop.isAuthenticated = true;
+    prop.settings.subscriptions = true;
+    prop.statusPage.radius_usage_enabled = false;
+    validateToken.mockReturnValue(true);
+    axios
+      .mockResolvedValueOnce({data: [], headers: {}})
+      .mockResolvedValueOnce({data: [], headers: {}})
+      .mockResolvedValueOnce({data: {checks: [], plan: {name: "Unlimited"}}});
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+    });
+    await tick();
+    expect(wrapper.find(".usage-overview-subscription").text()).toContain(
+      "Unlimited",
+    );
+    expect(wrapper.find(".usage-checks-container").exists()).toBe(false);
+  });
+  it("should hide the overview when both subscriptions and usage are disabled", async () => {
+    const prop = createTestProps();
+    prop.settings.subscriptions = false;
+    prop.statusPage.radius_usage_enabled = false;
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    axios.mockResolvedValueOnce({
+      data: {
+        plan: {name: "Unlimited"},
+        checks: [
+          {
+            attribute: "Max-Daily-Session",
+            value: "10800",
+            result: 0,
+            type: "seconds",
+          },
+        ],
+      },
+    });
+    await wrapper.instance().getUserRadiusUsage();
+    expect(wrapper.state("showUsageOverview")).toBe(false);
+    expect(wrapper.find(".usage-overview").exists()).toBe(false);
+  });
   it("test upgradeUserPlan method handle error", async () => {
     jest.spyOn(toast, "error");
     jest.spyOn(toast, "dismiss");
@@ -2971,10 +3218,11 @@ describe("<Status /> interactions", () => {
     await tick();
     expect(wrapper.find(".usage-overview-loader").exists()).toBe(false);
   });
-  it("should hide the usage overview if user plan has no checks", async () => {
+  it("should hide the usage overview if there are no checks or subscription plan", async () => {
     validateToken.mockReturnValue(true);
+    // Responses for getUserRadiusSessions
     axios
-      // Response for getUserRadiusSessions
+      // Response for getUserActiveRadiusSessions
       .mockImplementationOnce(() =>
         Promise.resolve({
           response: {
@@ -2985,7 +3233,18 @@ describe("<Status /> interactions", () => {
           headers: {},
         }),
       )
-      // Resonse for getUserRadiusUsage
+      // Response for getUserPastRadiusSessions
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          response: {
+            status: 200,
+            statusText: "OK",
+          },
+          data: [],
+          headers: {},
+        }),
+      )
+      // Response for getUserRadiusUsage
       .mockImplementationOnce(() =>
         Promise.resolve({
           status: 200,
@@ -2998,12 +3257,66 @@ describe("<Status /> interactions", () => {
       );
     const prop = createTestProps();
     prop.statusPage.links = links;
+    prop.statusPage.radius_usage_enabled = true;
     prop.isAuthenticated = true;
     wrapper = shallow(<Status {...prop} />, {
       context: {setLoading: jest.fn()},
     });
     await tick();
     expect(wrapper.find(".usage-overview").exists()).toBe(false);
+  });
+  it("should show the subscription plan when there are no usage checks", async () => {
+    validateToken.mockReturnValue(true);
+    axios
+      // Response for getUserActiveRadiusSessions
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          response: {
+            status: 200,
+            statusText: "OK",
+          },
+          data: [],
+          headers: {},
+        }),
+      )
+      // Response for getUserPastRadiusSessions
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          response: {
+            status: 200,
+            statusText: "OK",
+          },
+          data: [],
+          headers: {},
+        }),
+      )
+      // Response for getUserRadiusUsage
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          response: {
+            status: 200,
+            statusText: "OK",
+          },
+          data: {
+            checks: [],
+            plan: {name: "1 GB bundle"},
+          },
+          headers: {},
+        }),
+      );
+    const prop = createTestProps();
+    prop.settings.subscriptions = true;
+    prop.statusPage.radius_usage_enabled = true;
+    prop.isAuthenticated = true;
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+    });
+    await tick();
+    expect(wrapper.find(".usage-overview").exists()).toBe(true);
+    expect(wrapper.find(".usage-overview-subscription").text()).toBe(
+      "CURRENT_SUBSCRIPTION_TXT\u00a01 GB bundle",
+    );
+    expect(wrapper.find(".usage-checks-container").exists()).toBe(false);
   });
   it("should show user's radius usage", async () => {
     validateToken.mockReturnValue(true);
@@ -3291,7 +3604,7 @@ describe("<Status /> interactions", () => {
     wrapper = shallow(<Status {...prop} />, {
       context: {setLoading: jest.fn()},
     });
-    wrapper.setState({showRadiusUsage: false});
+    wrapper.setState({showUsageOverview: false});
     await tick();
     expect(wrapper).toMatchSnapshot();
     expect(prop.setPlanExhausted).toHaveBeenCalledTimes(0);
@@ -3412,7 +3725,7 @@ describe("<Status /> interactions", () => {
     wrapper = shallow(<Status {...prop} />, {
       context: {setLoading: jest.fn()},
     });
-    wrapper.setState({showRadiusUsage: false});
+    wrapper.setState({showUsageOverview: false});
     await tick();
     expect(wrapper).toMatchSnapshot();
     expect(prop.setPlanExhausted).toHaveBeenCalledTimes(0);

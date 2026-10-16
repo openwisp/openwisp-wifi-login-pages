@@ -166,6 +166,27 @@ Example:
     status_page:
       radius_usage_enabled: true
 
+``radial_usage_display``
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+This setting controls when the radial visualization is used for RADIUS
+usage.
+
+- **Type**: ``string``
+- **Default**: ``narrow``
+- **Choices**:
+
+  - ``narrow``: use radial charts on screens up to 480 pixels wide.
+  - ``small``: use radial charts on screens up to 767 pixels wide.
+  - ``disabled``: always use horizontal bars.
+
+Example:
+
+.. code-block:: yaml
+
+    status_page:
+      radial_usage_display: narrow
+
 ``top_up_enabled``
 ~~~~~~~~~~~~~~~~~~
 
