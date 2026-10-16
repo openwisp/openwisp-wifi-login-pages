@@ -46,7 +46,7 @@ export default class PaymentStatus extends React.Component {
   }
 
   async componentDidMount() {
-    const {cookies, orgSlug, setUserData, userData, logout, language} =
+    const {cookies, orgSlug, setUserData, userData, logout, language, params} =
       this.props;
     const {setLoading} = this.context;
     this.wasUpgrade = Boolean(userData.in_upgrade);
@@ -61,10 +61,16 @@ export default class PaymentStatus extends React.Component {
       language,
     );
     setLoading(false);
-    this.setState({isTokenValid});
     if (isTokenValid === false) {
+      this.setState({isTokenValid});
       return;
     }
+    if (params.status === "success") {
+      await this.prepareStatus();
+      this.setState({isTokenValid});
+      return;
+    }
+    this.setState({isTokenValid});
     await this.prepareStatus();
   }
 
@@ -312,6 +318,10 @@ export default class PaymentStatus extends React.Component {
     const {isTokenValid} = this.state;
     const isFailedUpgrade = Boolean(inUpgrade) && status === "failed";
     const isDraftUpgrade = Boolean(inUpgrade) && status === "draft";
+
+    if (status === "success" && isTokenValid === null) {
+      return <Loader />;
+    }
 
     if (this.shouldRedirectToStatus()) {
       return redirectToStatus();

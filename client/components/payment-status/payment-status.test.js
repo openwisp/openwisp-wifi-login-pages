@@ -1,6 +1,9 @@
 /* eslint-disable prefer-promise-reject-errors */
-import {shallow} from "enzyme";
+import {mount, shallow} from "enzyme";
 import React from "react";
+import {act} from "react-dom/test-utils";
+import {MemoryRouter, Route, Routes} from "react-router-dom";
+import {Provider} from "react-redux";
 import {toast} from "react-toastify";
 import PropTypes from "prop-types";
 import {Cookies} from "react-cookie";
@@ -22,6 +25,7 @@ import {
   storePaymentReturnContext,
 } from "../../utils/payment";
 import PaymentGateway from "../payment-gateway";
+import Status from "../status/status";
 
 jest.mock("axios");
 jest.mock("../../utils/get-config");
@@ -787,6 +791,119 @@ describe("Test <PaymentStatus /> cases", () => {
         String(expectedFlags[flag]),
       );
     });
+  });
+
+  it("submits the captive portal login after an offline iframe upgrade", async () => {
+    const cookies = new Cookies();
+    const settings = {
+      ...defaultConfig.settings,
+      payment_iframe: true,
+      payment_requires_internet: false,
+      captive_portal_supports_coa: true,
+    };
+    const validatedUser = {
+      ...responseData,
+      method: "mobile_phone",
+      is_verified: true,
+      in_upgrade: undefined,
+    };
+    storePaymentReturnContext(
+      {...validatedUser, in_upgrade: true, payment_requires_internet: false},
+      settings,
+    );
+    let resolvePaymentValidation;
+    validateToken
+      .mockImplementationOnce(
+        () =>
+          new Promise((resolve) => {
+            resolvePaymentValidation = resolve;
+          }),
+      )
+      .mockResolvedValue(true);
+    const submit = jest
+      .spyOn(HTMLFormElement.prototype, "submit")
+      .mockImplementation(() => {});
+    const store = {
+      subscribe: () => {},
+      dispatch: () => {},
+      getState: () => ({
+        organization: {
+          configuration: {
+            ...defaultConfig,
+            isAuthenticated: true,
+            userData: validatedUser,
+          },
+        },
+        language: "en",
+      }),
+    };
+    const setUserData = jest.fn((data) => Object.assign(validatedUser, data));
+    const paymentProps = createTestProps({
+      cookies,
+      params: {status: "success"},
+      settings,
+      userData: validatedUser,
+      setUserData,
+      isAuthenticated: true,
+      captivePortalSyncAuth: true,
+    });
+    const statusProps = {
+      ...paymentProps,
+      orgName: "default",
+      statusPage: defaultConfig.components.status_page,
+      captivePortalLoginForm:
+        defaultConfig.components.captive_portal_login_form,
+      captivePortalLogoutForm:
+        defaultConfig.components.captive_portal_logout_form,
+      location: {search: ""},
+      internetMode: false,
+      planExhausted: false,
+      setTitle: jest.fn(),
+      setInternetMode: jest.fn(),
+      setPlanExhausted: jest.fn(),
+      defaultLanguage: defaultConfig.default_language,
+    };
+
+    wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={["/default/payment/success"]}
+          future={{v7_startTransition: true, v7_relativeSplatPath: true}}
+        >
+          <Routes>
+            <Route
+              path="/default/payment/success"
+              element={<PaymentStatus {...paymentProps} />}
+            />
+            <Route
+              path="/default/status"
+              element={<Status {...statusProps} />}
+            />
+          </Routes>
+        </MemoryRouter>
+      </Provider>,
+    );
+    await tick();
+    wrapper.update();
+    expect(wrapper.find("Router").prop("location").pathname).toBe(
+      "/default/payment/success",
+    );
+
+    await act(async () => {
+      resolvePaymentValidation(true);
+      await tick();
+    });
+    wrapper.update();
+
+    expect(wrapper.find("Router").prop("location").pathname).toBe(
+      "/default/status",
+    );
+    expect(submit).toHaveBeenCalledTimes(1);
+    ["mustLogin", "mustLogout", "repeatLogin"].forEach((flag) => {
+      cookies.remove(`default_${flag}`, {path: "/"});
+      localStorage.removeItem(`default_${flag}`);
+    });
+    wrapper.unmount();
   });
 
   it.each([
