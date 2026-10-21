@@ -76,6 +76,7 @@ export const clearCaptivePortalFlags = (orgSlug, cookies) => {
   [
     "mustLogin",
     "mustLogout",
+    "logoutFormSubmitted",
     "repeatLogin",
     "captivePortalLogoutOnly",
     "proceedToPayment",

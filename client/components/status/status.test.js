@@ -893,6 +893,7 @@ describe("<Status /> interactions", () => {
     [
       "default_mustLogin",
       "default_mustLogout",
+      "default_logoutFormSubmitted",
       "default_repeatLogin",
       "default_captivePortalLogoutOnly",
     ].forEach((key) => {
@@ -1719,6 +1720,8 @@ describe("<Status /> interactions", () => {
     // mustLogin is set to true in cookie and localStorage to prevent redirect loop
     expect(status.props.cookies.get("default_mustLogout")).toBe(true);
     expect(localStorage.getItem("default_mustLogout")).toBe("true");
+    expect(status.props.cookies.get("default_logoutFormSubmitted")).toBe(true);
+    expect(localStorage.getItem("default_logoutFormSubmitted")).toBe("true");
     expect(status.props.logout).not.toHaveBeenCalled();
     // Reloading page will clear localStorage
     // (simulate redirecting back from the captive portal)
@@ -1730,7 +1733,26 @@ describe("<Status /> interactions", () => {
       initialState.userData,
     );
     expect(localStorage.getItem("default_mustLogout")).toBe(null);
+    expect(localStorage.getItem("default_logoutFormSubmitted")).toBe(null);
+    expect(
+      status.props.cookies.get("default_logoutFormSubmitted"),
+    ).toBeUndefined();
   });
+
+  it.each([
+    [false, "owisp-auth-logout-iframe"],
+    [true, "_self"],
+  ])(
+    "targets the logout form at %s for synchronous auth %s",
+    (captivePortalSyncAuth, target) => {
+      props = createTestProps({captivePortalSyncAuth});
+      wrapper = shallow(<Status {...props} />, {
+        context: {setLoading: jest.fn()},
+        disableLifecycleMethods: true,
+      });
+      expect(wrapper.find("#cp-logout-form").prop("target")).toBe(target);
+    },
+  );
 
   it("test active session table", async () => {
     axios
@@ -2477,6 +2499,7 @@ describe("<Status /> interactions", () => {
     await status.componentDidMount();
     await tick();
     expect(logoutForm.submit).toHaveBeenCalledTimes(1);
+    expect(props.cookies.get("default_logoutFormSubmitted")).toBe(true);
     expect(props.logout).not.toHaveBeenCalled();
     expect(props.setUserData).not.toHaveBeenCalledWith(
       expect.objectContaining({
@@ -2484,6 +2507,52 @@ describe("<Status /> interactions", () => {
         captivePortalLogoutOnly: undefined,
       }),
     );
+    await status.handleLogoutIframe();
+    expect(props.cookies.get("default_logoutFormSubmitted")).toBeUndefined();
+    expect(localStorage.getItem("default_logoutFormSubmitted")).toBe(null);
+  });
+
+  it("should submit synchronous logout once after payment success requests it", async () => {
+    validateToken.mockReturnValue(true);
+    axios.mockResolvedValueOnce({
+      status: 200,
+      statusText: "OK",
+      data: [{session_id: 1}],
+      headers: {},
+    });
+    jest.useFakeTimers({legacyFakeTimers: true});
+    const cookies = new Cookies();
+    ["mustLogout", "repeatLogin"].forEach((flag) => {
+      cookies.set(`default_${flag}`, true, {path: "/", maxAge: 60});
+      localStorage.setItem(`default_${flag}`, "true");
+    });
+    props = createTestProps({
+      captivePortalSyncAuth: true,
+      cookies,
+      userData: {...responseData, mustLogout: true, repeatLogin: true},
+    });
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    const status = wrapper.instance();
+    const logoutForm = {submit: jest.fn()};
+    const loginForm = {submit: jest.fn()};
+    status.logoutFormRef = {current: logoutForm};
+    status.logoutIframeRef = {current: {}};
+    status.loginFormRef = {current: loginForm};
+    await status.componentDidMount();
+    await tick();
+    expect(logoutForm.submit).toHaveBeenCalledTimes(1);
+    expect(cookies.get("default_logoutFormSubmitted")).toBe(true);
+    await status.componentDidMount();
+    await tick();
+    jest.runOnlyPendingTimers();
+    await tick();
+    expect(logoutForm.submit).toHaveBeenCalledTimes(1);
+    expect(loginForm.submit).toHaveBeenCalledTimes(1);
+    expect(props.logout).not.toHaveBeenCalled();
+    expect(cookies.get("default_logoutFormSubmitted")).toBeUndefined();
   });
 
   it("should logout if activeSession do not contain current MAC", async () => {
@@ -2675,9 +2744,11 @@ describe("<Status /> interactions", () => {
     const status = wrapper.instance();
     const handleLogout = jest.spyOn(status, "handleLogout");
     const mockRef = {submit: jest.fn()};
+    const loginForm = {submit: jest.fn()};
     const {setUserData} = status.props;
     status.logoutFormRef = {current: mockRef};
     status.logoutIframeRef = {current: {}};
+    status.loginFormRef = {current: loginForm};
     status.componentDidMount();
     jest.useFakeTimers({legacyFakeTimers: true});
     const componentDidMount = jest.spyOn(status, "componentDidMount");
@@ -2689,14 +2760,19 @@ describe("<Status /> interactions", () => {
     expect(status.repeatLogin).toBe(false);
     expect(mockRef.submit.mock.calls.length).toBe(1);
     expect(handleLogout).toHaveBeenCalledWith(false, true);
-    expect(status.props.logout).toHaveBeenCalled();
+    expect(loginForm.submit).toHaveBeenCalledTimes(1);
+    expect(status.props.logout).not.toHaveBeenCalled();
     expect(setLoading.mock.calls).toEqual([[true], [true], [false]]);
     expect(Status.prototype.getUserActiveRadiusSessions.mock.calls.length).toBe(
       1,
     );
     expect(componentDidMount.mock.calls.length).toBe(0);
     expect(setUserData.mock.calls.length).toBe(1);
-    expect(setUserData).toHaveBeenCalledWith(initialState.userData);
+    expect(setUserData).toHaveBeenCalledWith({
+      ...responseData,
+      mustLogout: undefined,
+      repeatLogin: undefined,
+    });
     expect(spyToast.mock.calls.length).toBe(0);
   });
 

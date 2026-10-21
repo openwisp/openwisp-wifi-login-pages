@@ -926,6 +926,7 @@ describe("synced-storage tests", () => {
     const flags = [
       "mustLogin",
       "mustLogout",
+      "logoutFormSubmitted",
       "repeatLogin",
       "captivePortalLogoutOnly",
       "proceedToPayment",

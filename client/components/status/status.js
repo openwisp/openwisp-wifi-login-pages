@@ -215,16 +215,19 @@ export default class Status extends React.Component {
         cookies,
       );
       const mustLogoutKey = `${orgSlug}_mustLogout`;
-      const isReturningFromSynchronousLogout =
-        captivePortalSyncAuth &&
-        (cookies.get(mustLogoutKey) !== undefined ||
-          localStorage.getItem(mustLogoutKey) !== null);
       const mustLogout = resolveStoredValue(
         captivePortalSyncAuth,
         mustLogoutKey,
         userMustLogout,
         cookies,
       );
+      const logoutSubmitted = resolveStoredValue(
+        captivePortalSyncAuth,
+        `${orgSlug}_logoutFormSubmitted`,
+        false,
+        cookies,
+      );
+      const isReturningFromSynchronousLogout = Boolean(logoutSubmitted);
       const repeatLogin = resolveStoredValue(
         captivePortalSyncAuth,
         `${orgSlug}_repeatLogin`,
@@ -357,6 +360,7 @@ export default class Status extends React.Component {
     [
       `${orgSlug}_mustLogin`,
       `${orgSlug}_mustLogout`,
+      `${orgSlug}_logoutFormSubmitted`,
       `${orgSlug}_captivePortalLogoutOnly`,
     ].forEach((key) => {
       cookies.remove(key, {path: "/"});
@@ -735,6 +739,12 @@ export default class Status extends React.Component {
             cookies,
           );
         }
+        storeValue(
+          captivePortalSyncAuth,
+          `${orgSlug}_logoutFormSubmitted`,
+          true,
+          cookies,
+        );
         this.logoutFormRef.current.submit();
         return;
       }
@@ -746,6 +756,7 @@ export default class Status extends React.Component {
       this.repeatLogin = false;
       // Prevent logout flags from restarting the flow after synchronous login.
       clearStoredValue(`${orgSlug}_mustLogout`, cookies);
+      clearStoredValue(`${orgSlug}_logoutFormSubmitted`, cookies);
       clearStoredValue(`${orgSlug}_repeatLogin`, cookies);
       setUserData({
         ...userData,
@@ -876,6 +887,7 @@ export default class Status extends React.Component {
           cookies,
         ))
     ) {
+      clearStoredValue(`${orgSlug}_logoutFormSubmitted`, cookies);
       const captivePortalLogoutOnly =
         this.captivePortalLogoutOnly ||
         resolveStoredValue(
@@ -906,15 +918,23 @@ export default class Status extends React.Component {
 
     if (repeatLogin) {
       this.repeatLogin = false;
+      clearStoredValue(`${orgSlug}_mustLogout`, cookies);
+      clearStoredValue(`${orgSlug}_logoutFormSubmitted`, cookies);
       clearStoredValue(`${orgSlug}_repeatLogin`, cookies);
-      // wait to trigger login to avoid getting stuck
-      // in captive portal firewall rule reloading
       toast.info(t`PLEASE_WAIT`, {autoClose: wait_after});
       setTimeout(async () => {
         toast.info(t`PLEASE_LOGIN`, {autoClose: 10000});
-        setUserData(initialState.userData);
+        const {userData} = this.props;
+        setUserData({
+          ...userData,
+          mustLogout: undefined,
+          repeatLogin: undefined,
+        });
         setLoading(false);
-        logout(cookies, orgSlug, userAutoLogin);
+        if (this.loginFormRef && this.loginFormRef.current) {
+          this.notifyCpLogin(userData);
+          this.loginFormRef.current.submit();
+        }
       }, wait_after);
     }
   };

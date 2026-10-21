@@ -1,4 +1,5 @@
 /* eslint-disable prefer-promise-reject-errors */
+import axios from "axios";
 import {shallow} from "enzyme";
 import React from "react";
 import PropTypes from "prop-types";
@@ -9,7 +10,6 @@ import PaymentProcess from "./payment-process";
 import tick from "../../utils/tick";
 import validateToken from "../../utils/validate-token";
 import loadTranslation from "../../utils/load-translation";
-import getPaymentStatusRedirectUrl from "../../utils/get-payment-status";
 import {takePaymentReturnContext} from "../../utils/payment";
 
 jest.mock("axios");
@@ -17,7 +17,6 @@ jest.mock("../../utils/get-config");
 jest.mock("../../utils/validate-token");
 jest.mock("../../utils/load-translation");
 jest.mock("../../utils/history");
-jest.mock("../../utils/get-payment-status");
 
 const defaultConfig = getConfig("default", true);
 const createTestProps = (props) => ({
@@ -63,7 +62,6 @@ describe("Test <PaymentProcess /> cases", () => {
     };
     console.log = jest.fn();
     console.error = jest.fn();
-    getPaymentStatusRedirectUrl.mockClear();
     loadTranslation("en", "default");
     validateToken.mockClear();
   });
@@ -232,9 +230,7 @@ describe("Test <PaymentProcess /> cases", () => {
 
   it("should redirect to /payment/:status on completed transaction", async () => {
     props = createTestProps({userData: responseData});
-    getPaymentStatusRedirectUrl.mockReturnValue(
-      `/${props.orgSlug}/payment/success/`,
-    );
+    axios.mockResolvedValueOnce({status: 200, data: {status: "success"}});
     wrapper = shallow(<PaymentProcess {...props} />, {
       context: {setLoading: jest.fn()},
       disableLifecycleMethods: true,
@@ -248,9 +244,49 @@ describe("Test <PaymentProcess /> cases", () => {
       origin: "http://localhost",
     });
     expect(props.navigate).toHaveBeenCalledWith(
-      `/${props.orgSlug}/payment/success/`,
+      `/${props.orgSlug}/payment/success`,
     );
   });
+
+  it.each([
+    // A failed registration returns to the failed payment page.
+    ["a failed registration", "failed", false, {status: "failed"}],
+    // A failed upgrade returns to the failed payment page.
+    ["a failed upgrade", "failed", true, {status: "failed"}],
+    // A cancelled registration returns to the cancelled payment page.
+    [
+      "a cancelled registration",
+      "cancelled",
+      false,
+      {status: "failed", reason: "cancelled"},
+    ],
+    // A cancelled upgrade returns to the cancelled payment page.
+    [
+      "a cancelled upgrade",
+      "cancelled",
+      true,
+      {status: "failed", reason: "cancelled"},
+    ],
+  ])(
+    "navigates %s to the %s payment page",
+    async (_, paymentStatus, inUpgrade, payment) => {
+      props = createTestProps({
+        userData: {...responseData, in_upgrade: inUpgrade},
+      });
+      axios.mockResolvedValueOnce({status: 200, data: payment});
+      wrapper = shallow(<PaymentProcess {...props} />, {
+        context: {setLoading: jest.fn()},
+        disableLifecycleMethods: true,
+      });
+      await wrapper.instance().handlePostMessage({
+        data: {type: "paymentClose", message: {paymentId: "payment-id"}},
+        origin: window.location.origin,
+      });
+      expect(props.navigate).toHaveBeenCalledWith(
+        `/${props.orgSlug}/payment/${paymentStatus}`,
+      );
+    },
+  );
 
   it("should handle postMessage", async () => {
     props = createTestProps();

@@ -213,7 +213,9 @@ client:
       action: http://localhost:8000/captive-portal-mock/logout/
       fields:
         id: logout_id
-      additional_fields: []
+      additional_fields:
+        - name: redirurl
+          value: http://localhost:8080/default/status
       logout_by_session: true
       wait_after: 3000
 

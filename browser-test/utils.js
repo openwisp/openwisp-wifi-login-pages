@@ -2,7 +2,7 @@ import {Builder, By, until} from "selenium-webdriver";
 import {spawnSync} from "child_process";
 import testData from "./testData.json";
 
-const firefox = require("selenium-webdriver/firefox");
+const chrome = require("selenium-webdriver/chrome");
 
 const waitTime = 5000;
 const orgSlug = "default";
@@ -26,12 +26,15 @@ export const executeCommand = (command, argv, json = false) => {
 };
 
 export const getDriver = async () => {
-  const options = new firefox.Options();
+  const options = new chrome.Options().setChromeBinaryPath(
+    "/home/pandafy/bin/chromium",
+  );
+  options.addArguments("--no-sandbox", "--disable-dev-shm-usage");
   return new Builder()
-    .forBrowser("firefox")
-    .setFirefoxOptions(
+    .forBrowser("chrome")
+    .setChromeOptions(
       process.env.SELENIUM_HEADLESS === "1"
-        ? options.addArguments("-headless")
+        ? options.addArguments("--headless=new")
         : options,
     )
     .build();

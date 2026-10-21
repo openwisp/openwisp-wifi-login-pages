@@ -424,9 +424,7 @@ describe("Test <PaymentStatus /> cases", () => {
     await tick();
 
     const selector = wrapper.find(PaymentGateway);
-    expect(selector.prop("cancelLabel")).toEqual(
-      "Cancel operation and go back to your account",
-    );
+    expect(selector.prop("cancelLabel")).toEqual("Cancel");
     await selector.prop("onCancel")();
 
     expect(cancelUpgradePlan).toHaveBeenCalledWith(
@@ -782,6 +780,56 @@ describe("Test <PaymentStatus /> cases", () => {
     expect(comp.props.logout).not.toHaveBeenCalled();
     expect(comp.props.setUserData).not.toHaveBeenCalled();
   });
+
+  it.each([
+    // Internet-required payment without CoA must log out then log in again.
+    [
+      "an internet-required payment without CoA",
+      true,
+      false,
+      {mustLogin: false, mustLogout: true, repeatLogin: true},
+    ],
+    // An offline payment must establish a portal session after it succeeds.
+    [
+      "a payment that does not require Internet without CoA",
+      false,
+      false,
+      {mustLogin: true, mustLogout: false, repeatLogin: false},
+    ],
+    // CoA restores portal access without any login or logout action.
+    ["an internet-required payment with CoA", true, true, null],
+    // Without a prior portal session, CoA cannot authorize the user.
+    [
+      "a payment that does not require Internet with CoA",
+      false,
+      true,
+      {mustLogin: true, mustLogout: false, repeatLogin: false},
+    ],
+  ])(
+    "sets payment success flags for %s",
+    async (
+      _,
+      paymentRequiresInternet,
+      captivePortalSupportsCoa,
+      expectedFlags,
+    ) => {
+      props = createTestProps({
+        userData: {...responseData, is_verified: true},
+        params: {status: "success"},
+      });
+      props.settings.payment_requires_internet = paymentRequiresInternet;
+      props.settings.captive_portal_supports_coa = captivePortalSupportsCoa;
+      validateToken.mockReturnValue(true);
+      wrapper = shallow(<PaymentStatus {...props} />, {
+        context: loadingContextValue,
+        disableLifecycleMethods: true,
+      });
+      await wrapper.instance().componentDidMount();
+      expect(props.setUserData.mock.calls).toEqual(
+        expectedFlags ? [[{...props.userData, ...expectedFlags}]] : [],
+      );
+    },
+  );
 
   it("logs an external offline upgrade into the captive portal after payment with CoA", async () => {
     const cookies = new Cookies();

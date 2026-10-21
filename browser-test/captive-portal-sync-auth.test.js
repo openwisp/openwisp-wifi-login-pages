@@ -50,6 +50,13 @@ describe("Selenium tests for synchronous captive portal authentication", () => {
     );
     const loginForm = await getElementByCss(driver, "#cp-login-form");
     expect(await loginForm.getAttribute("target")).toEqual("_self");
+    const loginRedirect = await getElementByCss(
+      driver,
+      "#cp-login-form input[name=redirurl]",
+    );
+    expect(await loginRedirect.getAttribute("value")).toEqual(
+      `${baseUrl}/${data.organization}/status`,
+    );
     const emailElement = await getElementByCss(
       driver,
       "#status .main-column > .inner > p:nth-child(5) > span",
@@ -61,6 +68,13 @@ describe("Selenium tests for synchronous captive portal authentication", () => {
       "table tr.active-session",
     );
     await driver.wait(until.elementIsVisible(activeSessionTr));
+    const logoutRedirect = await getElementByCss(
+      driver,
+      "#cp-logout-form input[name=redirurl]",
+    );
+    expect(await logoutRedirect.getAttribute("value")).toEqual(
+      `${baseUrl}/${data.organization}/status`,
+    );
     await setMarker(driver);
     const logoutBtn = await getElementByCss(driver, ".logout input.button");
     await logoutBtn.click();

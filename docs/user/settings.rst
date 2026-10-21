@@ -110,9 +110,20 @@ You can adjust any other parameter based on the expectations of the
 captive portal: most captive portal programs expect ``POST`` requests,
 although some may also accept ``GET``.
 
+When :ref:`captive_portal_sync_auth <wlp_captive_portal_sync_auth>` is
+enabled, the logout form is submitted in the top-level window. Configure
+any redirect field required by the captive portal, such as ``redirurl``,
+to return to the WiFi Login Pages status URL. This URL must use the same
+origin as WiFi Login Pages so that the browser can restore the logout
+state after the redirect.
+
 .. code-block:: yaml
 
-    additional_fields: []
+    additional_fields:
+      - name: redirurl
+        value: https://wifi-login-pages.example.com/default/status
+
+.. _wlp_captive_portal_sync_auth:
 
 ``captive_portal_sync_auth``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~

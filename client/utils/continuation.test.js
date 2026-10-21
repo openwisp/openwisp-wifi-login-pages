@@ -8,10 +8,22 @@ import {
   clearContinuation,
   rebindContinuation,
   isRoute,
+  cleanContinuationSearch,
 } from "./continuation";
 import {sessionStorage} from "./storage";
 
 const orgSlug = "default";
+
+describe("continuation query cleanup", () => {
+  it("removes continuation and passwordless token params only", () => {
+    expect(
+      cleanContinuationSearch(
+        "?n=pay&next=%2Fdefault%2Fstatus&sid=short&sesame=long&gw_id=portal-1",
+        "sesame",
+      ),
+    ).toBe("?gw_id=portal-1");
+  });
+});
 
 describe("continuation destinations", () => {
   it.each([

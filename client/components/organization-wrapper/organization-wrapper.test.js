@@ -349,14 +349,14 @@ describe("<OrganizationWrapper /> interactions", () => {
     expect(JSON.stringify(elements[2])).toEqual(JSON.stringify(<Footer />));
   });
 
-  it("keeps an authenticated session when opening a payment return link", () => {
-    const search = "?n=pay";
+  it("cleans continuation params from authenticated login redirects", () => {
+    const search = "?n=pay&sid=short-secret&sesame=long-secret&gw_id=portal-1";
     wrapper.setProps({location: {pathname: "", search}});
     const loginRoute = wrapper
       .find(Route)
       .filterWhere((route) => route.props().path === "login/*");
     expect(loginRoute.props().element).toEqual(
-      <Navigate to={`/default/status${search}`} />,
+      <Navigate to="/default/status?gw_id=portal-1" />,
     );
     expect(wrapper.find(Login)).toHaveLength(0);
   });
@@ -730,7 +730,7 @@ describe("Test Organization Wrapper for pending verification user", () => {
     });
     const pathMap = getPathMap();
     expect(pathMap["login/*"]).toEqual(
-      <Navigate to="/default/complete-signup?next=/default/status" />,
+      <Navigate to="/default/complete-signup" />,
     );
   });
 });

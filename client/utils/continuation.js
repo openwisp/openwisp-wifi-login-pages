@@ -11,6 +11,15 @@ const hasControls = (value) =>
         character.charCodeAt(0) < 32 || character.charCodeAt(0) === 127,
     );
 
+export const cleanContinuationSearch = (search, tokenName) => {
+  const params = new URLSearchParams(search);
+  ["next", "n", "sid", tokenName]
+    .filter(Boolean)
+    .forEach((name) => params.delete(name));
+  const clean = params.toString();
+  return clean ? `?${clean}` : "";
+};
+
 const matchRoute = (route, orgSlug, path) =>
   matchPath(
     {path: `/${orgSlug}/${route.path}`, end: true, caseSensitive: true},

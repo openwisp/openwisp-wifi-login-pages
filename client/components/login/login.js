@@ -35,6 +35,7 @@ import {
   beginContinuation,
   bindContinuation,
   clearContinuation,
+  cleanContinuationSearch,
   isRoute,
 } from "../../utils/continuation";
 import {storeValue} from "../../utils/synced-storage";
@@ -396,13 +397,12 @@ export default class Login extends React.Component {
   removeContinuationParams = () => {
     const {navigate, settings} = this.props;
     const {pathname, search} = window.location;
-    const params = new URLSearchParams(search);
-    ["next", "n", "sid", settings.passwordless_auth_token_name].forEach(
-      (name) => params.delete(name),
+    const clean = cleanContinuationSearch(
+      search,
+      settings.passwordless_auth_token_name,
     );
-    const clean = params.toString();
     if (clean !== new URLSearchParams(search).toString()) {
-      navigate(`${pathname}${clean ? `?${clean}` : ""}`, {replace: true});
+      navigate(`${pathname}${clean}`, {replace: true});
     }
   };
 

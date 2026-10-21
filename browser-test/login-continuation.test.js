@@ -166,12 +166,15 @@ describe("login continuation browser integration", () => {
     await waitForContinuationCleared();
     await assertPortalSession();
     await driver.get(
-      loginUrl(fixtures.expiredPasswordUser.token, "/default/change-password"),
+      `${loginUrl(
+        fixtures.expiredPasswordUser.token,
+        "/default/change-password",
+      )}&sid=short-secret&gw_id=portal-1`,
     );
     await getElementByCss(driver, "#status");
-    expect(new URL(await driver.getCurrentUrl()).pathname).toBe(
-      "/default/status",
-    );
+    const url = new URL(await driver.getCurrentUrl());
+    expect(url.pathname).toBe("/default/status");
+    expect(url.search).toBe("?gw_id=portal-1");
     await waitForContinuationCleared();
     await assertIdentity(account.username);
   });

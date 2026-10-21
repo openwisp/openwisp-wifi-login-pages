@@ -37,6 +37,7 @@ import Logout from "./lazy-logout";
 import {localStorage} from "../../utils/storage";
 import isOldBrowser from "../../utils/is-old-browser";
 import {getPaymentRoute, hasPendingPayment} from "../../utils/payment";
+import {cleanContinuationSearch} from "../../utils/continuation";
 import routes from "../../constants/routes";
 
 export default class OrganizationWrapper extends React.Component {
@@ -120,6 +121,10 @@ export default class OrganizationWrapper extends React.Component {
       js,
     } = organization.configuration;
     const {is_active} = userData;
+    const loginSearch = cleanContinuationSearch(
+      location.search,
+      settings && settings.passwordless_auth_token_name,
+    );
     let {css} = organization.configuration;
     if (!css) css = [];
     if (cssPath) css.push(cssPath);
@@ -238,17 +243,13 @@ export default class OrganizationWrapper extends React.Component {
                         if (needsMethodSelection) {
                           return (
                             <Navigate
-                              to={`/${orgSlug}/complete-signup${
-                                location.search || ""
-                              }`}
+                              to={`/${orgSlug}/complete-signup${loginSearch}`}
                             />
                           );
                         }
                         if (is_active) {
                           return (
-                            <Navigate
-                              to={`/${orgSlug}/status${location.search || ""}`}
-                            />
+                            <Navigate to={`/${orgSlug}/status${loginSearch}`} />
                           );
                         }
                       }
@@ -459,6 +460,7 @@ OrganizationWrapper.propTypes = {
       settings: PropTypes.shape({
         mobile_phone_verification: PropTypes.bool,
         subscriptions: PropTypes.bool,
+        passwordless_auth_token_name: PropTypes.string,
       }),
       js: PropTypes.array,
     }),
