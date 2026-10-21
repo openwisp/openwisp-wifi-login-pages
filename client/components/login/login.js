@@ -382,7 +382,7 @@ export default class Login extends React.Component {
       authenticate(true);
       return;
     }
-    // Retain the continuation until synchronous captive portal login returns.
+    // Direct navigation fulfills the continuation.
     clearContinuation();
     authenticate(true);
     navigate(

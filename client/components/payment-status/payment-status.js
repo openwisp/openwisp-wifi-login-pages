@@ -61,6 +61,9 @@ export default class PaymentStatus extends React.Component {
       language,
     );
     setLoading(false);
+    if (!this.isComponentMounted) {
+      return;
+    }
     if (isTokenValid === false) {
       this.setState({isTokenValid});
       return;

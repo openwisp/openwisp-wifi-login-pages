@@ -362,10 +362,7 @@ export default class Status extends React.Component {
       `${orgSlug}_mustLogout`,
       `${orgSlug}_logoutFormSubmitted`,
       `${orgSlug}_captivePortalLogoutOnly`,
-    ].forEach((key) => {
-      cookies.remove(key, {path: "/"});
-      localStorage.removeItem(key);
-    });
+    ].forEach((key) => clearStoredValue(key, cookies));
     this.captivePortalLogoutOnly = false;
     this.setStateSafe({loggedOut: false});
     setUserData({

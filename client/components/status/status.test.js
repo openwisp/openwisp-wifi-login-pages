@@ -3024,7 +3024,15 @@ describe("<Status /> interactions", () => {
   });
   it("test handleLogout internetMode", async () => {
     validateToken.mockReturnValue(true);
-    const session = {start_time: "2021-07-08T00:22:28-04:00", stop_time: null};
+    const session = {
+      session_id: 1,
+      start_time: "2021-07-08T00:22:28-04:00",
+      stop_time: null,
+      session_time: 0,
+      input_octets: 0,
+      output_octets: 0,
+      calling_station_id: "00:00:00:00:00:00",
+    };
     const mockRef = {submit: jest.fn()};
     // Test user logged in from internet(internetMode)
     const prop = createTestProps({internetMode: true});
@@ -3035,7 +3043,7 @@ describe("<Status /> interactions", () => {
     wrapper.instance().logoutFormRef = {current: mockRef};
     wrapper
       .instance()
-      .setState({sessionsToLogout: [session], activeSession: [session]});
+      .setState({sessionsToLogout: [session], activeSessions: [session]});
 
     wrapper.instance().handleLogout(true, true);
     await tick();
@@ -3050,14 +3058,22 @@ describe("<Status /> interactions", () => {
     wrapper.instance().logoutFormRef = {current: mockRef};
     wrapper
       .instance()
-      .setState({sessionsToLogout: [session], activeSession: [session]});
+      .setState({sessionsToLogout: [session], activeSessions: [session]});
     wrapper.instance().handleLogout(true, true);
     await tick();
     expect(mockRef.submit).toHaveBeenCalledTimes(1);
   });
   it("should complete the logout instead of hanging when there are open sessions in internetMode", async () => {
     const setLoading = jest.fn();
-    const session = {start_time: "2021-07-08T00:22:28-04:00", stop_time: null};
+    const session = {
+      session_id: 1,
+      start_time: "2021-07-08T00:22:28-04:00",
+      stop_time: null,
+      session_time: 0,
+      input_octets: 0,
+      output_octets: 0,
+      calling_station_id: "00:00:00:00:00:00",
+    };
     const spyToastSuccess = jest.spyOn(toast, "success");
     props = createTestProps({internetMode: true});
     wrapper = shallow(<Status {...props} />, {
@@ -3066,7 +3082,7 @@ describe("<Status /> interactions", () => {
     });
     wrapper
       .instance()
-      .setState({sessionsToLogout: [session], activeSession: [session]});
+      .setState({sessionsToLogout: [session], activeSessions: [session]});
     await wrapper.instance().handleLogout(false);
     expect(props.setUserData).toHaveBeenCalledWith(initialState.userData);
     expect(props.logout).toHaveBeenCalledWith(
@@ -3254,7 +3270,15 @@ describe("<Status /> interactions", () => {
   });
   it("should clear userData on logout", async () => {
     validateToken.mockReturnValue(true);
-    const session = {start_time: "2021-07-08T00:22:28-04:00", stop_time: null};
+    const session = {
+      session_id: 1,
+      start_time: "2021-07-08T00:22:28-04:00",
+      stop_time: null,
+      session_time: 0,
+      input_octets: 0,
+      output_octets: 0,
+      calling_station_id: "00:00:00:00:00:00",
+    };
     const prop = createTestProps();
     prop.userData.username = "sankalp";
     const mockRef = {submit: jest.fn()};
@@ -3266,7 +3290,7 @@ describe("<Status /> interactions", () => {
     wrapper.instance().logoutIframeRef = {current: {}};
     wrapper.instance().setState({
       sessionsToLogout: [session],
-      activeSession: [session],
+      activeSessions: [session],
       loggedOut: true,
     });
     await wrapper.instance().handleLogout(false);

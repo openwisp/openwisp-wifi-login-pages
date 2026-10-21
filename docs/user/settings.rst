@@ -135,6 +135,10 @@ browsers may fail to detect successful login when this method is used.
 Set ``captive_portal_sync_auth`` to ``true`` to submit the login form
 synchronously and trigger a full page reload upon authentication:
 
+.. code-block:: yaml
+
+    captive_portal_sync_auth: true
+
 ``captive_portal_supports_coa``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

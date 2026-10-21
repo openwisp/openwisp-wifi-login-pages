@@ -300,6 +300,31 @@ describe("Test <PaymentStatus /> cases", () => {
     expect(props.navigate).not.toHaveBeenCalled();
   });
 
+  it("does not prepare payment status after unmounting during token validation", async () => {
+    let resolveValidation;
+    props = createTestProps({
+      userData: {...responseData, is_verified: true},
+      params: {status: "success"},
+    });
+    validateToken.mockImplementation(
+      () =>
+        new Promise((resolve) => {
+          resolveValidation = resolve;
+        }),
+    );
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+      disableLifecycleMethods: true,
+    });
+    const prepareStatus = jest.spyOn(wrapper.instance(), "prepareStatus");
+    const mounting = wrapper.instance().componentDidMount();
+    wrapper.unmount();
+    resolveValidation(true);
+    await mounting;
+    expect(prepareStatus).not.toHaveBeenCalled();
+    expect(props.setUserData).not.toHaveBeenCalled();
+  });
+
   it("re-enables gateway selection when the response still requires it", async () => {
     const payment = {
       payment_id: "payment-id",
@@ -1433,6 +1458,46 @@ describe("Test <PaymentStatus /> cases", () => {
     });
     expect(localStorage.getItem("default_proceedToPayment")).toBeNull();
     expect(takePaymentReturnContext()).toBe(null);
+  });
+
+  it("should finish upgrade cancellation cleanup after unmounting", async () => {
+    let resolveCancellation;
+    props = createTestProps({
+      params: {status: "failed"},
+      settings: {subscriptions: true, mobile_phone_verification: true},
+      userData: {
+        ...responseData,
+        method: "mobile_phone",
+        is_verified: true,
+        in_upgrade: true,
+        payment_url: "https://payment.example.com/pay/1",
+      },
+    });
+    cancelUpgradePlan.mockImplementation(
+      () =>
+        new Promise((resolve) => {
+          resolveCancellation = resolve;
+        }),
+    );
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+      disableLifecycleMethods: true,
+    });
+    const cancellation = wrapper.instance().backToStatus();
+    wrapper.unmount();
+    resolveCancellation({});
+    await cancellation;
+    expect(props.setUserData).toHaveBeenCalledWith({
+      ...props.userData,
+      in_upgrade: false,
+      proceedToPayment: false,
+      payment_url: null,
+      payment_return_url: null,
+      mustLogin: undefined,
+      mustLogout: true,
+      captivePortalLogoutOnly: true,
+    });
+    expect(props.navigate).toHaveBeenCalledWith("/default/status");
   });
 
   it("should silently ignore a 404 when cancelling an non-existent upgrade", async () => {
