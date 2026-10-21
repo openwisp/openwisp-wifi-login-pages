@@ -3254,6 +3254,7 @@ describe("<Status /> interactions", () => {
     console.error = jest.fn();
     prop.captivePortalLogoutForm.additional_fields = [
       {name: "mac_address", value: "4e:ed:11:2b:17:ae"},
+      {name: "nas_ip_address", value: "192.0.2.1"},
     ];
     wrapper = shallow(<Status {...prop} />, {
       context: {setLoading: jest.fn()},
@@ -3261,12 +3262,16 @@ describe("<Status /> interactions", () => {
     });
     const additionalField = wrapper.find("input[name='mac_address']");
     expect(additionalField.length).toEqual(1);
+    expect(additionalField.key()).toEqual("cp-logout-mac_address");
     expect(additionalField.props()).toEqual({
       name: "mac_address",
       readOnly: true,
       type: "text",
       value: "4e:ed:11:2b:17:ae",
     });
+    const nasIpAddressField = wrapper.find("input[name='nas_ip_address']");
+    expect(nasIpAddressField.length).toEqual(1);
+    expect(nasIpAddressField.key()).toEqual("cp-logout-nas_ip_address");
   });
   it("should clear userData on logout", async () => {
     validateToken.mockReturnValue(true);

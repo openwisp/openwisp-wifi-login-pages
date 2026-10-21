@@ -1869,6 +1869,7 @@ export default class Status extends React.Component {
                     type="text"
                     name={field.name}
                     value={field.value}
+                    key={`cp-logout-${field.name}`}
                   />
                 ))}
             </form>
