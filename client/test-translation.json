@@ -259,7 +259,7 @@
       },
       "PAY_GO_BACK_BTN": {
         "msgid": "PAY_GO_BACK_BTN",
-        "msgstr": ["Cancel operation and go back to your account"]
+        "msgstr": ["Cancel"]
       },
       "PWD_RESET_TITL": {
         "msgid": "PWD_RESET_TITL",

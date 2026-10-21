@@ -485,7 +485,7 @@ msgstr "Če transakcija ni bila uspešna, se obrite na službo za podporo uporab
 #.  failed payment case
 #: client/components/payment-status/payment-status.js:230
 msgid "PAY_GO_BACK_BTN"
-msgstr "Preklic in vrnitev na račun"
+msgstr "Prekliči"
 
 #: client/components/payment-status/payment-status.js
 msgid "PAY_LINK_COPIED"

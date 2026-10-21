@@ -487,7 +487,7 @@ msgstr "If you cannot complete the transaction you can either try to get in touc
 #.  failed payment case
 #: client/components/payment-status/payment-status.js:230
 msgid "PAY_GO_BACK_BTN"
-msgstr "Cancel operation and go back to your account"
+msgstr "Cancel"
 
 #: client/components/payment-status/payment-status.js
 msgid "PAY_LINK_COPIED"

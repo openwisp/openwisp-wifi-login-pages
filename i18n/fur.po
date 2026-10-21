@@ -488,7 +488,7 @@ msgstr "Se non riesci a completare la transazione puoi provare a metterti in con
 #.  failed payment case
 #: client/components/payment-status/payment-status.js:230
 msgid "PAY_GO_BACK_BTN"
-msgstr "Anule e torne al to account"
+msgstr "Anule"
 
 #: client/components/payment-status/payment-status.js
 msgid "PAY_LINK_COPIED"
