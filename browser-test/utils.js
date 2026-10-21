@@ -2,16 +2,16 @@ import {Builder, By, until} from "selenium-webdriver";
 import {spawnSync} from "child_process";
 import testData from "./testData.json";
 
-const chrome = require("selenium-webdriver/chrome");
+const firefox = require("selenium-webdriver/firefox");
 
 const waitTime = 5000;
 const orgSlug = "default";
 export const baseUrl = "http://127.0.0.1:8080";
 
-export const executeCommand = (command, argv, json = false) => {
+export const executeCommand = (command, argv) => {
   const result = spawnSync(command, [argv]);
 
-  if (result.stdout && !json) {
+  if (result.stdout) {
     process.stdout.write(`${result.stdout}\n`);
   }
   if (result.stderr) {
@@ -20,21 +20,15 @@ export const executeCommand = (command, argv, json = false) => {
   if (result.status !== 0) {
     process.exit(result.status);
   }
-  return json
-    ? JSON.parse(result.stdout.toString().trim().split("\n").pop())
-    : undefined;
 };
 
 export const getDriver = async () => {
-  const options = new chrome.Options().setChromeBinaryPath(
-    "/home/pandafy/bin/chromium",
-  );
-  options.addArguments("--no-sandbox", "--disable-dev-shm-usage");
+  const options = new firefox.Options();
   return new Builder()
-    .forBrowser("chrome")
-    .setChromeOptions(
+    .forBrowser("firefox")
+    .setFirefoxOptions(
       process.env.SELENIUM_HEADLESS === "1"
-        ? options.addArguments("--headless=new")
+        ? options.addArguments("-headless")
         : options,
     )
     .build();
@@ -62,8 +56,9 @@ export const getElementsByCss = async (driver, css) => {
 
 export const initialData = () => testData;
 
-export const initializeData = async (argv = null, json = false) =>
-  executeCommand(`./browser-test/initialize_data.py`, argv, json);
+export const initializeData = async (argv = null) => {
+  await executeCommand(`./browser-test/initialize_data.py`, argv);
+};
 
 export const clearData = async () => {
   await executeCommand("./browser-test/clear_data.py", () => {});
