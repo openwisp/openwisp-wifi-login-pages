@@ -99,8 +99,29 @@ export default class PaymentStatus extends React.Component {
       params,
       settings,
       captivePortalSyncAuth,
+      navigate,
     } = this.props;
     const {status} = params;
+    if (status === "cancelled") {
+      // Upgrades have a server-side order to cancel and must restore the current plan.
+      if (userData.in_upgrade) {
+        await this.backToStatus();
+      } else {
+        // Registrations have no upgrade order, so clear the abandoned payment locally.
+        clearStoredValue(`${orgSlug}_proceedToPayment`, cookies);
+        clearPaymentReturnContext();
+        setUserData({
+          ...userData,
+          payment_id: null,
+          payment_gateway: null,
+          payment_url: null,
+          payment_return_url: null,
+          proceedToPayment: false,
+        });
+        navigate(`/${orgSlug}/status`);
+      }
+      return;
+    }
     let paymentReturnContext = null;
     if (status === "success") {
       paymentReturnContext = takePaymentReturnContext();
@@ -320,6 +341,10 @@ export default class PaymentStatus extends React.Component {
     const isDraftUpgrade = Boolean(inUpgrade) && status === "draft";
 
     if (status === "success" && isTokenValid === null) {
+      return <Loader />;
+    }
+
+    if (status === "cancelled") {
       return <Loader />;
     }
 

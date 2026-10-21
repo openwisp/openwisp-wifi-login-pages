@@ -1037,6 +1037,28 @@ describe("getPaymentStatusRedirectUrl tests", () => {
     expect(errorToast).toHaveBeenCalledTimes(1);
     expect(errorToast).toHaveBeenCalledWith("Payment failed");
   });
+  it("should return cancellation URL if payment was cancelled", async () => {
+    const {orgSlug, paymentId, tokenInfo, setUserData, userData} = getArgs();
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: {
+          status: "failed",
+          reason: "cancelled",
+        },
+      }),
+    );
+    const result = await getPaymentStatusRedirectUrl(
+      orgSlug,
+      paymentId,
+      tokenInfo,
+      setUserData,
+      userData,
+    );
+    expect(result).toBe(`/${orgSlug}/payment/cancelled`);
+    expect(setUserData).not.toHaveBeenCalled();
+  });
   it("should log error if request fails", async () => {
     const {orgSlug, paymentId, tokenInfo, setUserData, userData} = getArgs();
     const consoleLog = jest.spyOn(global.console, "log").mockImplementation();

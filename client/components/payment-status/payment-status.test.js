@@ -631,6 +631,50 @@ describe("Test <PaymentStatus /> cases", () => {
     expect(spyToast.mock.calls.length).toBe(0);
   });
 
+  it("should cancel an upgrade when payment is cancelled", async () => {
+    props = createTestProps({
+      userData: {...responseData, in_upgrade: true},
+      params: {status: "cancelled"},
+    });
+    cancelUpgradePlan.mockResolvedValue({in_upgrade: false, payment_url: null});
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    expect(cancelUpgradePlan).toHaveBeenCalledWith(
+      props.orgSlug,
+      responseData.key,
+      undefined,
+    );
+    expect(props.navigate).toHaveBeenCalledWith(`/${props.orgSlug}/status`);
+  });
+
+  it("should clear a cancelled payment before returning to status", async () => {
+    props = createTestProps({
+      userData: {
+        ...responseData,
+        payment_id: "payment-id",
+        payment_gateway: "offline",
+      },
+      params: {status: "cancelled"},
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    expect(props.setUserData).toHaveBeenCalledWith({
+      ...props.userData,
+      payment_id: null,
+      payment_gateway: null,
+      payment_url: null,
+      payment_return_url: null,
+      proceedToPayment: false,
+    });
+    expect(props.navigate).toHaveBeenCalledWith(`/${props.orgSlug}/status`);
+  });
+
   it("redirect to status + cp logout on success when payment requires internet", async () => {
     const spyToast = jest.spyOn(toast, "success");
     props = createTestProps({
