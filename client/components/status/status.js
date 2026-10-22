@@ -1023,7 +1023,9 @@ export default class Status extends React.Component {
         });
         break;
       case "internet-mode":
-        setInternetMode(true);
+        if (!captivePortalSyncAuth) {
+          setInternetMode(true);
+        }
         break;
       default:
         // Unknown message type, do nothing

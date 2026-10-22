@@ -1428,20 +1428,26 @@ describe("<Status /> interactions", () => {
     expect(props.setUserData).toHaveBeenCalledWith({proceedToPayment: true});
   });
 
-  it("test handlePostMessage internet-mode", async () => {
-    props = createTestProps();
-    const setLoadingMock = jest.fn();
-    wrapper = shallow(<Status {...props} />, {
-      context: {setLoading: setLoadingMock},
-      disableLifecycleMethods: true,
-    });
-    const status = wrapper.instance();
-    status.handlePostMessage({
-      data: {type: "internet-mode"},
-      origin: "http://localhost",
-    });
-    expect(props.setInternetMode).toHaveBeenCalledTimes(1);
-  });
+  it.each([
+    [false, 1],
+    [true, 0],
+  ])(
+    "handles internet-mode messages when captivePortalSyncAuth is %s",
+    async (captivePortalSyncAuth, calls) => {
+      props = createTestProps({captivePortalSyncAuth});
+      const setLoadingMock = jest.fn();
+      wrapper = shallow(<Status {...props} />, {
+        context: {setLoading: setLoadingMock},
+        disableLifecycleMethods: true,
+      });
+      const status = wrapper.instance();
+      status.handlePostMessage({
+        data: {type: "internet-mode"},
+        origin: "http://localhost",
+      });
+      expect(props.setInternetMode).toHaveBeenCalledTimes(calls);
+    },
+  );
 
   it("should not perform captive portal login (submit loginFormRef), if user is already authenticated", async () => {
     validateToken.mockReturnValue(true);
