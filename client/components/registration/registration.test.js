@@ -354,6 +354,7 @@ describe("<Registration /> interactions", () => {
       {
         is_verified: false,
         auth_token: responseData.key,
+        radius_user_token: undefined,
         mustLogin: !responseData.requires_payment,
       },
     ]);
@@ -572,6 +573,7 @@ describe("Registration and Mobile Phone Verification interactions", () => {
       {
         is_verified: false,
         auth_token: responseData.key,
+        radius_user_token: undefined,
         mustLogin: !responseData.requires_payment,
       },
     ]);

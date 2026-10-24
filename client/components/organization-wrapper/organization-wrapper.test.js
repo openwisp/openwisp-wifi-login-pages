@@ -348,6 +348,18 @@ describe("<OrganizationWrapper /> interactions", () => {
     );
     expect(JSON.stringify(elements[2])).toEqual(JSON.stringify(<Footer />));
   });
+
+  it("cleans continuation params from authenticated login redirects", () => {
+    const search = "?n=pay&sid=short-secret&sesame=long-secret&gw_id=portal-1";
+    wrapper.setProps({location: {pathname: "", search}});
+    const loginRoute = wrapper
+      .find(Route)
+      .filterWhere((route) => route.props().path === "login/*");
+    expect(loginRoute.props().element).toEqual(
+      <Navigate to="/default/status?gw_id=portal-1" />,
+    );
+    expect(wrapper.find(Login)).toHaveLength(0);
+  });
 });
 
 describe("Test Organization Wrapper for unauthenticated users", () => {
@@ -411,7 +423,9 @@ describe("Test Organization Wrapper for unauthenticated users", () => {
       ),
     );
     element = pathMap["login/*"];
-    expect(JSON.stringify(element)).toEqual(JSON.stringify(<Login />));
+    expect(JSON.stringify(element)).toEqual(
+      JSON.stringify(<Login cookies={cookies} />),
+    );
     element = pathMap.status;
     // userAutoLogin is true
     expect(element).toEqual(<Navigate to="/default/logout" />);
@@ -625,6 +639,40 @@ describe("Test Organization Wrapper for authenticated and unverified users", () 
       <Navigate to="/default/payment/draft" />,
     );
   });
+
+  it("routes an unselected payment to gateway selection", () => {
+    needsVerify.mockImplementation((method) => method === "bank_card");
+    userPendingVerification.mockReturnValue(false);
+    const organization = {
+      ...props.organization,
+      configuration: {
+        ...props.organization.configuration,
+        userData: {
+          ...userData,
+          method: "bank_card",
+          is_verified: false,
+          payment_id: "payment-id",
+          payment_requires_internet: null,
+          payment_url: "https://payments.example/select",
+        },
+      },
+    };
+    const component = shallow(
+      <OrganizationWrapper {...props} organization={organization} />,
+      {disableLifecycleMethods: true},
+    );
+    component
+      .instance()
+      .setState({translationLoaded: true, configLoaded: true});
+    const pathMap = component.find(Route).reduce((mapRoute, route) => {
+      const map = mapRoute;
+      map[route.props().path] = route.props().element;
+      return map;
+    }, {});
+    expect(pathMap["complete-signup"]).toEqual(
+      <Navigate to="/default/payment/gateway" />,
+    );
+  });
 });
 
 describe("Test Organization Wrapper for pending verification user", () => {
@@ -682,7 +730,7 @@ describe("Test Organization Wrapper for pending verification user", () => {
     });
     const pathMap = getPathMap();
     expect(pathMap["login/*"]).toEqual(
-      <Navigate to="/default/complete-signup?next=/default/status" />,
+      <Navigate to="/default/complete-signup" />,
     );
   });
 });

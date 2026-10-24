@@ -10,7 +10,9 @@ below instructions to avoid hanging of authentication flow.
 
 Create a small web application which can serve the endpoints entered in
 ``captive_portal_login_form.action`` and
-``captive_portal_logout_form.action`` of organization configuration.
+``captive_portal_logout_form.action`` of organization configuration. Add a
+``redirurl`` field to both forms which points to the same-origin WiFi
+Login Pages status URL.
 
 The web application should serve the following HTML on those endpoints:
 
@@ -20,10 +22,21 @@ The web application should serve the following HTML on those endpoints:
     <html>
       <body>
         <script>
-          window.parent.postMessage(
-            {type: "internet-mode"},
-            "https://wifi-login-pages.example.com/",
-          );
+          const wlpOrigin = "https://wifi-login-pages.example.com";
+          const fallbackUrl = `${wlpOrigin}/default/status`;
+          const redirurl = new URLSearchParams(window.location.search).get("redirurl");
+          const statusUrl = redirurl?.startsWith(`${wlpOrigin}/`)
+            ? redirurl
+            : fallbackUrl;
+
+          if (window.top === window.self) {
+            window.location.replace(statusUrl);
+          } else {
+            window.parent.postMessage(
+              {type: "internet-mode"},
+              wlpOrigin,
+            );
+          }
         </script>
       </body>
     </html>

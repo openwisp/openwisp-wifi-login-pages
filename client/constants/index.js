@@ -8,6 +8,8 @@ export const validateApiUrl = (orgSlug) =>
   `${prefix}/${orgSlug}/account/token/validate`;
 export const paymentStatusUrl = (orgSlug, paymentId) =>
   `${prefix}/${orgSlug}/payment/status/${paymentId}`;
+export const paymentGatewayUrl = (orgSlug, paymentId) =>
+  `${prefix}/${orgSlug}/payment/${paymentId}/gateway`;
 export const getUserRadiusSessionsUrl = (orgSlug) =>
   `${prefix}/${orgSlug}/account/session`;
 export const getUserRadiusUsageUrl = (orgSlug) =>
@@ -24,5 +26,6 @@ export const updateMethodApiUrl = (orgSlug) =>
   `${prefix}/${orgSlug}/account/registration-method/`;
 export const plansApiUrl = `${prefix}/{orgSlug}/plan/`;
 export const upgradePlanApiUrl = `${prefix}/{orgSlug}/plan/upgrade`;
+export const cancelUpgradePlanApiUrl = `${prefix}/{orgSlug}/plan/cancel`;
 export const modalContentUrl = (orgSlug) => `${prefix}/${orgSlug}/modal`;
 export const mainToastId = "main_toast_id";
