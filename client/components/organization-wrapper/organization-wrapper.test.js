@@ -265,6 +265,57 @@ describe("<OrganizationWrapper /> interactions", () => {
       true,
     );
   });
+  it("should render Login for authenticated users with incoming SAML/OAuth credentials", () => {
+    props.location = {
+      pathname: "/default/login/",
+      search: "?username=new-user&token=new-token&login_method=saml",
+    };
+    wrapper = shallow(<OrganizationWrapper {...props} />);
+    wrapper.instance().setState({translationLoaded: true, configLoaded: true});
+
+    const loginRoute = wrapper
+      .find(Route)
+      .filterWhere((route) => route.prop("path") === "login/*");
+
+    expect(loginRoute.prop("element")).toEqual(
+      <Login navigate={props.navigate} />,
+    );
+  });
+
+  it("should render Login for authenticated users with incoming sesame token", () => {
+    props.location = {
+      pathname: "/default/login/",
+      search: "?sesame=new-sesame-token",
+    };
+    wrapper = shallow(<OrganizationWrapper {...props} />);
+    wrapper.instance().setState({translationLoaded: true, configLoaded: true});
+
+    const loginRoute = wrapper
+      .find(Route)
+      .filterWhere((route) => route.prop("path") === "login/*");
+
+    expect(loginRoute.prop("element")).toEqual(
+      <Login navigate={props.navigate} />,
+    );
+  });
+
+  it("should redirect authenticated users to status when visiting login without credentials", () => {
+    props.location = {
+      pathname: "/default/login/",
+      search: "",
+    };
+    wrapper = shallow(<OrganizationWrapper {...props} />);
+    wrapper.instance().setState({translationLoaded: true, configLoaded: true});
+
+    const loginRoute = wrapper
+      .find(Route)
+      .filterWhere((route) => route.prop("path") === "login/*");
+
+    expect(loginRoute.prop("element")).toEqual(
+      <Navigate to="/default/status" />,
+    );
+  });
+
   it("should show route for authenticated users", async () => {
     let pathMap = {};
     pathMap = wrapper.find(Route).reduce((mapRoute, route) => {
@@ -684,6 +735,17 @@ describe("Test Organization Wrapper for pending verification user", () => {
     expect(pathMap["login/*"]).toEqual(
       <Navigate to="/default/complete-signup?next=/default/status" />,
     );
+  });
+
+  it("should render Login for pending verification users with incoming credentials", () => {
+    wrapper.setProps({
+      location: {
+        pathname: "/default/login/",
+        search: "?username=new-user&token=new-token&login_method=saml",
+      },
+    });
+    const pathMap = getPathMap();
+    expect(pathMap["login/*"]).toEqual(<Login navigate={props.navigate} />);
   });
 });
 
