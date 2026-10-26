@@ -24,8 +24,11 @@ jobs:
     runs-on: ubuntu-latest
     # Only run the edited activity when the PR base branch changed.
     if: github.event.action != 'edited' || github.event.changes.base.ref.from != ''
+    concurrency:
+      group: zizmor-${{ github.repository }}-${{ github.event.pull_request.number || github.ref }}
+      cancel-in-progress: true
     permissions:
-      security-events: write
+      security-events: write # Uploads zizmor findings to GitHub code scanning.
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
