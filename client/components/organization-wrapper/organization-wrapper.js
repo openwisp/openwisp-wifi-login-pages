@@ -38,6 +38,19 @@ import Logout from "./lazy-logout";
 import {localStorage} from "../../utils/storage";
 import isOldBrowser from "../../utils/is-old-browser";
 
+export const cleanSearch = (search, passwordlessTokenName) => {
+  if (!search) return "";
+  const params = new URLSearchParams(search);
+  params.delete("username");
+  params.delete("token");
+  if (passwordlessTokenName) {
+    params.delete(passwordlessTokenName);
+  }
+  params.delete("login_method");
+  const remaining = params.toString();
+  return remaining ? `?${remaining}` : "";
+};
+
 export default class OrganizationWrapper extends React.Component {
   constructor(props) {
     super(props);
@@ -229,16 +242,32 @@ export default class OrganizationWrapper extends React.Component {
                   <Route
                     path="login/*"
                     element={(() => {
-                      const hasIncomingCredentials = Boolean(
-                        (getParameterByName("username", location.search) &&
-                          getParameterByName("token", location.search)) ||
-                        (settings &&
-                          settings.passwordless_auth_token_name &&
-                          getParameterByName(
-                            settings.passwordless_auth_token_name,
-                            location.search,
-                          )),
+                      const incomingUsername = getParameterByName(
+                        "username",
+                        location.search,
                       );
+                      const incomingToken = getParameterByName(
+                        "token",
+                        location.search,
+                      );
+                      const isAlreadyUsingCredentials = Boolean(
+                        incomingUsername &&
+                        incomingToken &&
+                        userData &&
+                        userData.username === incomingUsername &&
+                        userData.auth_token === incomingToken,
+                      );
+                      const hasIncomingCredentials =
+                        !isAlreadyUsingCredentials &&
+                        Boolean(
+                          (incomingUsername && incomingToken) ||
+                          (settings &&
+                            settings.passwordless_auth_token_name &&
+                            getParameterByName(
+                              settings.passwordless_auth_token_name,
+                              location.search,
+                            )),
+                        );
                       if (isAuthenticated && !hasIncomingCredentials) {
                         if (needsMethodSelection) {
                           return (
@@ -252,7 +281,15 @@ export default class OrganizationWrapper extends React.Component {
                         if (is_active) {
                           return (
                             <Navigate
-                              to={`/${orgSlug}/status${location.search || ""}`}
+                              to={
+                                isAlreadyUsingCredentials
+                                  ? `/${orgSlug}/status${cleanSearch(
+                                      location.search,
+                                      settings &&
+                                        settings.passwordless_auth_token_name,
+                                    )}`
+                                  : `/${orgSlug}/status${location.search || ""}`
+                              }
                             />
                           );
                         }

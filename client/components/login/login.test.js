@@ -585,6 +585,123 @@ describe("<Login /> interactions", () => {
     });
     expect(props.navigate).not.toHaveBeenCalledWith("/default/complete-signup");
   });
+  it("should navigate to status on successful authentication for active users", async () => {
+    wrapper = mountComponent(props);
+    const login = wrapper.find(Login);
+    props.navigate.mockClear();
+    await login.instance().handleAuthentication(responseData);
+    expect(props.navigate).toHaveBeenCalledWith("/default/status");
+    expect(login.instance().props.authenticate).toHaveBeenCalledWith(true);
+  });
+  it("should stage pending user and request status logout when switching to a different user", async () => {
+    const propsWithUser = {
+      ...props,
+      userData: {
+        username: "bob",
+        auth_token: "bob_token",
+        radius_user_token: "secret",
+      },
+    };
+    wrapper = mountComponent(propsWithUser);
+    const login = wrapper.find(Login);
+
+    props.navigate.mockClear();
+    await login.instance().handleAuthentication(
+      {
+        username: "alice",
+        key: "alice_token",
+        is_active: true,
+      },
+      true,
+    );
+
+    expect(login.instance().props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({
+        username: "bob",
+        mustLogout: true,
+        pendingUser: expect.objectContaining({
+          username: "alice",
+          auth_token: "alice_token",
+          mustLogin: true,
+          useSessionStorage: true,
+        }),
+      }),
+    );
+    expect(props.navigate).toHaveBeenCalledWith("/default/status");
+    expect(login.instance().props.authenticate).toHaveBeenCalledWith(true);
+  });
+  it("should preserve session state when re-authenticating the same user", async () => {
+    const logoutMock = jest.fn();
+    const propsWithUser = {
+      ...props,
+      logout: logoutMock,
+      userData: {
+        username: "bob",
+        auth_token: "old_bob_token",
+      },
+    };
+    wrapper = mountComponent(propsWithUser);
+    const login = wrapper.find(Login);
+    props.navigate.mockClear();
+    await login.instance().handleAuthentication({
+      username: "bob",
+      key: "new_bob_token",
+      is_active: true,
+    });
+    expect(logoutMock).not.toHaveBeenCalled();
+    expect(login.instance().props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({
+        username: "bob",
+        auth_token: "new_bob_token",
+        mustLogin: true,
+      }),
+    );
+    expect(props.navigate).toHaveBeenCalledWith("/default/status");
+    expect(login.instance().props.authenticate).toHaveBeenCalledWith(true);
+  });
+  it("should preserve captive portal query parameters when navigating to status", async () => {
+    const propsWithLocation = {
+      ...props,
+      location: {
+        pathname: "/default/login/",
+        search:
+          "?username=alice&token=alice_token&mac=00%3A11%3A22%3A33%3A44%3A55&uamip=192.168.1.1",
+      },
+    };
+    wrapper = mountComponent(propsWithLocation);
+    const login = wrapper.find(Login);
+    props.navigate.mockClear();
+    await login.instance().handleAuthentication(responseData);
+    expect(props.navigate).toHaveBeenCalledWith(
+      "/default/status?mac=00%3A11%3A22%3A33%3A44%3A55&uamip=192.168.1.1",
+    );
+    expect(login.instance().props.authenticate).toHaveBeenCalledWith(true);
+  });
+  it("should preserve captive portal query parameters when navigating to complete-signup", async () => {
+    const propsWithLocation = {
+      ...props,
+      location: {
+        pathname: "/default/login/",
+        search:
+          "?username=alice&token=alice_token&mac=00%3A11%3A22%3A33%3A44%3A55",
+      },
+    };
+    wrapper = mountComponent(propsWithLocation);
+    const login = wrapper.find(Login);
+    props.navigate.mockClear();
+    await login.instance().handleAuthentication({
+      ...responseData,
+      is_active: false,
+      is_verified: false,
+      method: "pending_verification",
+    });
+    expect(props.navigate).toHaveBeenCalledWith(
+      "/default/complete-signup?mac=00%3A11%3A22%3A33%3A44%3A55",
+    );
+    expect(props.navigate).not.toHaveBeenCalledWith(
+      expect.stringContaining("/default/status"),
+    );
+  });
   it("phone_number field should be present if mobile phone verification is on", async () => {
     props.settings = {mobile_phone_verification: true};
     wrapper = mountComponent(props);

@@ -7,7 +7,7 @@ import {Provider} from "react-redux";
 import {Helmet} from "react-helmet";
 import getConfig from "../../utils/get-config";
 import loadTranslation from "../../utils/load-translation";
-import OrganizationWrapper from "./organization-wrapper";
+import OrganizationWrapper, {cleanSearch} from "./organization-wrapper";
 import Footer from "../footer";
 import Header from "../header";
 import Loader from "../../utils/loader";
@@ -314,6 +314,65 @@ describe("<OrganizationWrapper /> interactions", () => {
     expect(loginRoute.prop("element")).toEqual(
       <Navigate to="/default/status" />,
     );
+  });
+
+  it("should redirect authenticated users to status when incoming credentials match current user", () => {
+    props.location = {
+      pathname: "/default/login/",
+      search: "?username=current-user&token=current-token",
+    };
+    props.organization.configuration.userData = {
+      username: "current-user",
+      auth_token: "current-token",
+      is_active: true,
+    };
+    wrapper = shallow(<OrganizationWrapper {...props} />);
+    wrapper.instance().setState({translationLoaded: true, configLoaded: true});
+
+    const loginRoute = wrapper
+      .find(Route)
+      .filterWhere((route) => route.prop("path") === "login/*");
+
+    expect(loginRoute.prop("element")).toEqual(
+      <Navigate to="/default/status" />,
+    );
+  });
+
+  it("should redirect authenticated users to status and preserve non-credential query parameters when incoming credentials match current user", () => {
+    props.location = {
+      pathname: "/default/login/",
+      search:
+        "?username=current-user&token=current-token&mac=00%3A11%3A22%3A33%3A44%3A55&uamip=192.168.1.1",
+    };
+    props.organization.configuration.userData = {
+      username: "current-user",
+      auth_token: "current-token",
+      is_active: true,
+    };
+    wrapper = shallow(<OrganizationWrapper {...props} />);
+    wrapper.instance().setState({translationLoaded: true, configLoaded: true});
+
+    const loginRoute = wrapper
+      .find(Route)
+      .filterWhere((route) => route.prop("path") === "login/*");
+
+    expect(loginRoute.prop("element")).toEqual(
+      <Navigate to="/default/status?mac=00%3A11%3A22%3A33%3A44%3A55&uamip=192.168.1.1" />,
+    );
+  });
+
+  it("should remove credential params and keep other query params via cleanSearch", () => {
+    expect(
+      cleanSearch(
+        "?username=user&token=pass&login_method=saml&mac=00%3A11&uamip=1.1.1.1",
+        "sesame",
+      ),
+    ).toBe("?mac=00%3A11&uamip=1.1.1.1");
+    expect(cleanSearch("?sesame=token123&mac=00%3A11", "sesame")).toBe(
+      "?mac=00%3A11",
+    );
+    expect(cleanSearch("?username=user&token=pass")).toBe("");
+    expect(cleanSearch("")).toBe("");
   });
 
   it("should show route for authenticated users", async () => {
