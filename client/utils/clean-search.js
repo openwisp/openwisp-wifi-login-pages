@@ -16,5 +16,3 @@ export const cleanSearch = (search, passwordlessTokenName) => {
   const remaining = params.toString();
   return remaining ? `?${remaining}` : "";
 };
-
-export default cleanSearch;
