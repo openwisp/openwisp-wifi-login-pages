@@ -729,6 +729,64 @@ describe("<Login /> interactions", () => {
       expect.stringContaining("/default/status"),
     );
   });
+  it("should discard expired pending user from localStorage upon mounting and not authenticate", async () => {
+    const expiredPendingUser = {
+      username: "alice",
+      auth_token: "alice_token",
+      is_active: true,
+      useSessionStorage: false,
+      expiresAt: Date.now() - 10000,
+    };
+    localStorage.setItem(
+      "default_pending_user",
+      JSON.stringify(expiredPendingUser),
+    );
+    props.navigate.mockClear();
+    props.setUserData.mockClear();
+    wrapper = mountComponent(props);
+    await tick();
+
+    expect(localStorage.getItem("default_pending_user")).toBeNull();
+    expect(props.setUserData).not.toHaveBeenCalled();
+    expect(props.navigate).not.toHaveBeenCalled();
+  });
+  it("should not stage user switch when applying a pending user even if userData has different username", async () => {
+    const propsWithUser = {
+      ...props,
+      userData: {
+        username: "bob",
+        auth_token: "bob_token",
+      },
+    };
+    wrapper = mountComponent(propsWithUser);
+    const login = wrapper.find(Login);
+    props.setUserData.mockClear();
+    props.navigate.mockClear();
+
+    await login.instance().handleAuthentication(
+      {
+        username: "alice",
+        auth_token: "alice_token",
+        is_active: true,
+      },
+      false,
+      true,
+    );
+
+    expect(props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({
+        username: "alice",
+        auth_token: "alice_token",
+      }),
+    );
+    expect(props.setUserData).not.toHaveBeenCalledWith(
+      expect.objectContaining({
+        mustLogout: true,
+      }),
+    );
+    expect(localStorage.getItem("default_pending_user")).toBeNull();
+    expect(props.navigate).toHaveBeenCalledWith("/default/status");
+  });
   it("phone_number field should be present if mobile phone verification is on", async () => {
     props.settings = {mobile_phone_verification: true};
     wrapper = mountComponent(props);

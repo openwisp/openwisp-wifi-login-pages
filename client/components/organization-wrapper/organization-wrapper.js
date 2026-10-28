@@ -256,26 +256,25 @@ export default class OrganizationWrapper extends React.Component {
                               search,
                             )),
                         );
+                      const cleanTargetSearch = cleanSearch(
+                        search,
+                        settings && settings.passwordless_auth_token_name,
+                      );
+                      const targetSearch = isAlreadyUsingCredentials
+                        ? cleanTargetSearch
+                        : search;
                       if (isAuthenticated && !hasIncomingCredentials) {
                         if (needsMethodSelection) {
                           return (
                             <Navigate
-                              to={`/${orgSlug}/complete-signup${search}`}
+                              to={`/${orgSlug}/complete-signup${targetSearch}`}
                             />
                           );
                         }
                         if (is_active) {
                           return (
                             <Navigate
-                              to={
-                                isAlreadyUsingCredentials
-                                  ? `/${orgSlug}/status${cleanSearch(
-                                      search,
-                                      settings &&
-                                        settings.passwordless_auth_token_name,
-                                    )}`
-                                  : `/${orgSlug}/status${search}`
-                              }
+                              to={`/${orgSlug}/status${targetSearch}`}
                             />
                           );
                         }

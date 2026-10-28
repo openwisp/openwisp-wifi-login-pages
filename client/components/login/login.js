@@ -87,8 +87,17 @@ export default class Login extends React.Component {
       localStorage.removeItem(pendingUserKey);
       try {
         const pendingUser = JSON.parse(pendingUserData);
-        if (pendingUser && (pendingUser.auth_token || pendingUser.key)) {
-          const {readyAt, ...userToApply} = pendingUser;
+        const isExpired = Boolean(
+          pendingUser &&
+          pendingUser.expiresAt &&
+          Date.now() > pendingUser.expiresAt,
+        );
+        if (
+          !isExpired &&
+          pendingUser &&
+          (pendingUser.auth_token || pendingUser.key)
+        ) {
+          const {readyAt, expiresAt, ...userToApply} = pendingUser;
           const delay = readyAt ? Math.max(0, readyAt - Date.now()) : 0;
           if (delay > 0) {
             toast.info(t`PLEASE_WAIT`, {autoClose: delay});
@@ -96,12 +105,14 @@ export default class Login extends React.Component {
               this.handleAuthentication(
                 userToApply,
                 userToApply.useSessionStorage,
+                true,
               );
             }, delay);
           } else {
             this.handleAuthentication(
               userToApply,
               userToApply.useSessionStorage,
+              true,
             );
           }
           return;
@@ -336,7 +347,11 @@ export default class Login extends React.Component {
     if (waitToast) toast.dismiss(this.waitToast);
   };
 
-  handleAuthentication = (data = {}, useSessionStorage = false) => {
+  handleAuthentication = (
+    data = {},
+    useSessionStorage = false,
+    skipUserSwitch = false,
+  ) => {
     const {
       orgSlug,
       authenticate,
@@ -345,23 +360,30 @@ export default class Login extends React.Component {
       userData = {},
       settings,
       location,
+      captivePortalLogoutForm,
     } = this.props;
     const {remember_me} = this.state;
-    const isDifferentUser = Boolean(
-      userData &&
-      userData.username &&
-      data.username &&
-      userData.username !== data.username,
-    );
+    const isDifferentUser =
+      !skipUserSwitch &&
+      Boolean(
+        userData &&
+        userData.username &&
+        data.username &&
+        userData.username !== data.username,
+      );
     if (isDifferentUser) {
       const {key, auth_token: rawAuthToken, ...authenticatedUser} = data;
       const auth_token = key || rawAuthToken;
+      const waitAfter =
+        (captivePortalLogoutForm && captivePortalLogoutForm.wait_after) || 0;
+      const expiresAt = Date.now() + waitAfter + 60000;
       const pendingUser = {
         ...initialState.userData,
         ...authenticatedUser,
         auth_token,
         mustLogin: true,
         useSessionStorage: Boolean(useSessionStorage || !remember_me),
+        expiresAt,
       };
       localStorage.setItem(
         `${orgSlug}_pending_user`,
@@ -626,8 +648,12 @@ Login.contextType = LoadingContext;
 Login.defaultProps = {
   userData: {},
   location: undefined,
+  captivePortalLogoutForm: undefined,
 };
 Login.propTypes = {
+  captivePortalLogoutForm: PropTypes.shape({
+    wait_after: PropTypes.number,
+  }),
   loginForm: PropTypes.shape({
     social_login: PropTypes.shape({
       divider_text: PropTypes.object,

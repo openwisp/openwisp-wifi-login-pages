@@ -45,20 +45,17 @@ export default class PasswordChange extends React.Component {
     setLoading(true);
     setTitle(t`PWD_CHANGE_TITL`, orgName);
     const {mustLogin, mustLogout, repeatLogin} = userData;
-    try {
-      await validateToken(
-        cookies,
-        orgSlug,
-        setUserData,
-        userData,
-        logout,
-        language,
-      );
-      ({userData} = this.props);
-      setUserData({...userData, mustLogin, mustLogout, repeatLogin});
-    } finally {
-      setLoading(false);
-    }
+    await validateToken(
+      cookies,
+      orgSlug,
+      setUserData,
+      userData,
+      logout,
+      language,
+    );
+    ({userData} = this.props);
+    setUserData({...userData, mustLogin, mustLogout, repeatLogin});
+    setLoading(false);
   }
 
   handleSubmit(e) {

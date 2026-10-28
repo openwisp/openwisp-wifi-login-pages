@@ -806,6 +806,25 @@ describe("Test Organization Wrapper for pending verification user", () => {
     const pathMap = getPathMap();
     expect(pathMap["login/*"]).toEqual(<Login navigate={props.navigate} />);
   });
+
+  it("should clean credentials from complete-signup redirect when incoming credentials match current user", () => {
+    props.organization.configuration.userData = {
+      username: "current-user",
+      auth_token: "current-token",
+    };
+    wrapper.setProps({
+      organization: {...props.organization},
+      location: {
+        pathname: "/default/login/",
+        search:
+          "?username=current-user&token=current-token&next=%2Fdefault%2Fstatus",
+      },
+    });
+    const pathMap = getPathMap();
+    expect(pathMap["login/*"]).toEqual(
+      <Navigate to="/default/complete-signup?next=%2Fdefault%2Fstatus" />,
+    );
+  });
 });
 
 describe("Test <OrganizationWrapper /> routes", () => {

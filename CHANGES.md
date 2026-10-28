@@ -2,7 +2,14 @@
 
 ## Version 1.4.0 [unreleased]
 
-Work in progress.
+### Bugfixes
+
+- Fixed login page not re-authenticating when an already authenticated user
+  receives new SAML/OAuth credentials (`username` and `token`) or the configured
+  passwordless authentication token ([#1214](https://github.com/openwisp/openwisp-wifi-login-pages/issues/1214)).
+  The previous session is terminated and replaced with the new user's credentials,
+  while preserving existing redirect behavior and cleaning sensitive credentials
+  from query parameters when incoming credentials already match the current session.
 
 ## Version 1.3.0 [2026-09-04]
 

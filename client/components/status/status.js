@@ -183,10 +183,24 @@ export default class Status extends React.Component {
     const pendingFromStorage = localStorage.getItem(pendingUserKey);
     if (!this.pendingUser) {
       if (userData && userData.pendingUser) {
-        this.pendingUser = userData.pendingUser;
+        const isExpired = Boolean(
+          userData.pendingUser.expiresAt &&
+          Date.now() > userData.pendingUser.expiresAt,
+        );
+        if (!isExpired) {
+          this.pendingUser = userData.pendingUser;
+        }
       } else if (pendingFromStorage) {
         try {
-          this.pendingUser = JSON.parse(pendingFromStorage);
+          const parsed = JSON.parse(pendingFromStorage);
+          const isExpired = Boolean(
+            parsed && parsed.expiresAt && Date.now() > parsed.expiresAt,
+          );
+          if (isExpired) {
+            localStorage.removeItem(pendingUserKey);
+          } else {
+            this.pendingUser = parsed;
+          }
         } catch {
           // ignore
         }
@@ -214,8 +228,13 @@ export default class Status extends React.Component {
         const target = this.pendingUser;
         this.pendingUser = null;
         localStorage.removeItem(pendingUserKey);
-        await this.applyPendingUser(target);
-        return;
+        const isExpired = Boolean(
+          target.expiresAt && Date.now() > target.expiresAt,
+        );
+        if (!isExpired) {
+          await this.applyPendingUser(target);
+          return;
+        }
       }
       setLoading(false);
       return;
@@ -228,7 +247,12 @@ export default class Status extends React.Component {
       pendingUser,
     } = userData;
     if (pendingUser) {
-      this.pendingUser = pendingUser;
+      const isExpired = Boolean(
+        pendingUser.expiresAt && Date.now() > pendingUser.expiresAt,
+      );
+      if (!isExpired) {
+        this.pendingUser = pendingUser;
+      }
     }
     const mustLogin = this.resolveStoredValue(
       captivePortalSyncAuth,
@@ -336,7 +360,14 @@ export default class Status extends React.Component {
     } = this.props;
     localStorage.removeItem(`${orgSlug}_pending_user`);
     this.pendingUser = null;
-    const {useSessionStorage, ...newUser} = pendingUser;
+    if (
+      pendingUser &&
+      pendingUser.expiresAt &&
+      Date.now() > pendingUser.expiresAt
+    ) {
+      return;
+    }
+    const {useSessionStorage, readyAt, expiresAt, ...newUser} = pendingUser;
     if (useSessionStorage) {
       sessionStorage.setItem(`${orgSlug}_auth_token`, newUser.auth_token);
     } else {
@@ -732,11 +763,13 @@ export default class Status extends React.Component {
     if (this.pendingUser) {
       const targetUser = this.pendingUser;
       this.pendingUser = null;
+      const expiresAt = targetUser.expiresAt || Date.now() + 60000;
       localStorage.setItem(
         `${orgSlug}_pending_user`,
         JSON.stringify({
           ...targetUser,
           readyAt: Date.now(),
+          expiresAt,
         }),
       );
       await this.applyPendingUser(targetUser);
@@ -855,11 +888,14 @@ export default class Status extends React.Component {
         const targetUser = this.pendingUser;
         this.pendingUser = null;
         localStorage.removeItem(logoutMethodKey);
+        const expiresAt =
+          targetUser.expiresAt || Date.now() + (wait_after || 0) + 60000;
         localStorage.setItem(
           `${orgSlug}_pending_user`,
           JSON.stringify({
             ...targetUser,
             readyAt: Date.now() + (wait_after || 0),
+            expiresAt,
           }),
         );
         toast.info(t`PLEASE_WAIT`, {autoClose: wait_after});

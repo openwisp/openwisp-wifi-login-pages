@@ -2623,7 +2623,7 @@ describe("<Status /> interactions", () => {
     expect(loginMockRef.submit).toHaveBeenCalledTimes(1);
   });
 
-  it("should persist pendingUser in localStorage across Status unmount and allow Login to authenticate new user", async () => {
+  it("should persist pendingUser in localStorage across Status unmount", async () => {
     localStorage.clear();
     validateToken.mockReturnValue(true);
     axios.mockImplementationOnce(() =>
@@ -2689,6 +2689,27 @@ describe("<Status /> interactions", () => {
 
     // Storage still contains pending user after Status unmount
     expect(localStorage.getItem("default_pending_user")).not.toBeNull();
+    localStorage.removeItem("default_pending_user");
+  });
+
+  it("should discard expired pendingUser from localStorage during initStatus", async () => {
+    localStorage.clear();
+    const expiredUser = {
+      username: "alice",
+      auth_token: "alice_token",
+      expiresAt: Date.now() - 10000,
+    };
+    localStorage.setItem("default_pending_user", JSON.stringify(expiredUser));
+    const prop = createTestProps();
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    const status = wrapper.instance();
+    await status.initStatus();
+
+    expect(localStorage.getItem("default_pending_user")).toBeNull();
+    expect(status.pendingUser).toBeNull();
   });
   it("should render small table row and it should contain logout if logout_by_session is enabled", () => {
     const prop = createTestProps();
