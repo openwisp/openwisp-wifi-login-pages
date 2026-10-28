@@ -223,6 +223,7 @@ describe("<Login /> interactions", () => {
 
   afterEach(() => {
     console.error = originalError;
+    jest.useRealTimers();
   });
 
   const mountComponent = function (passedProps) {
@@ -596,6 +597,7 @@ describe("<Login /> interactions", () => {
   it("should stage pending user and request status logout when switching to a different user", async () => {
     const propsWithUser = {
       ...props,
+      isAuthenticated: true,
       userData: {
         username: "bob",
         auth_token: "bob_token",
@@ -629,6 +631,40 @@ describe("<Login /> interactions", () => {
     );
     expect(props.navigate).toHaveBeenCalledWith("/default/status");
     expect(login.instance().props.authenticate).toHaveBeenCalledWith(true);
+  });
+  it("should not stage user switch if user is not authenticated even if userData has a different username", async () => {
+    const propsUnauthenticated = {
+      ...props,
+      isAuthenticated: false,
+      userData: {
+        username: "bob",
+        auth_token: "bob_token",
+      },
+    };
+    wrapper = mountComponent(propsUnauthenticated);
+    const login = wrapper.find(Login);
+    props.setUserData.mockClear();
+    props.navigate.mockClear();
+
+    await login.instance().handleAuthentication({
+      username: "alice",
+      auth_token: "alice_token",
+      is_active: true,
+    });
+
+    expect(props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({
+        username: "alice",
+        auth_token: "alice_token",
+      }),
+    );
+    expect(props.setUserData).not.toHaveBeenCalledWith(
+      expect.objectContaining({
+        mustLogout: true,
+      }),
+    );
+    expect(localStorage.getItem("default_pending_user")).toBeNull();
+    expect(props.navigate).toHaveBeenCalledWith("/default/status");
   });
   it("should preserve session state when re-authenticating the same user", async () => {
     localStorage.removeItem("default_pending_user");
@@ -786,6 +822,195 @@ describe("<Login /> interactions", () => {
     );
     expect(localStorage.getItem("default_pending_user")).toBeNull();
     expect(props.navigate).toHaveBeenCalledWith("/default/status");
+  });
+  it("should retain pendingUser in localStorage during readyAt delay and remove it after authentication completes", async () => {
+    jest.useFakeTimers({legacyFakeTimers: true});
+    const delay = 2000;
+    const pendingUser = {
+      username: "alice",
+      auth_token: "alice_token",
+      is_active: true,
+      useSessionStorage: false,
+      readyAt: Date.now() + delay,
+      expiresAt: Date.now() + delay + 60000,
+    };
+    localStorage.setItem("default_pending_user", JSON.stringify(pendingUser));
+    const testProps = {
+      ...props,
+      navigate: jest.fn(),
+      setUserData: jest.fn(),
+    };
+
+    wrapper = mountComponent(testProps);
+    expect(localStorage.getItem("default_pending_user")).not.toBeNull();
+    expect(testProps.setUserData).not.toHaveBeenCalled();
+
+    jest.runOnlyPendingTimers();
+    await tick();
+
+    expect(localStorage.getItem("default_pending_user")).toBeNull();
+    expect(testProps.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({
+        username: "alice",
+        auth_token: "alice_token",
+        mustLogin: true,
+      }),
+    );
+    expect(testProps.navigate).toHaveBeenCalledWith("/default/status");
+    jest.useRealTimers();
+  });
+  it("should discard pendingUser and not authenticate if pendingUser expires before delayed timer fires", async () => {
+    jest.useFakeTimers({legacyFakeTimers: true});
+    const delay = 2000;
+    const pendingUser = {
+      username: "alice",
+      auth_token: "alice_token",
+      is_active: true,
+      useSessionStorage: false,
+      readyAt: Date.now() + delay,
+      expiresAt: Date.now() + delay,
+    };
+    localStorage.setItem("default_pending_user", JSON.stringify(pendingUser));
+    const testProps = {
+      ...props,
+      navigate: jest.fn(),
+      setUserData: jest.fn(),
+    };
+
+    wrapper = mountComponent(testProps);
+    expect(localStorage.getItem("default_pending_user")).not.toBeNull();
+    expect(testProps.setUserData).not.toHaveBeenCalled();
+
+    const realDateNow = Date.now;
+    Date.now = () => pendingUser.expiresAt + 1000;
+    try {
+      jest.runOnlyPendingTimers();
+      await tick();
+
+      expect(localStorage.getItem("default_pending_user")).toBeNull();
+      expect(testProps.setUserData).not.toHaveBeenCalled();
+      expect(testProps.navigate).not.toHaveBeenCalled();
+    } finally {
+      Date.now = realDateNow;
+      jest.useRealTimers();
+    }
+  });
+  it("should cancel pendingUser timeout on unmount and preserve pendingUser in localStorage", () => {
+    jest.useFakeTimers({legacyFakeTimers: true});
+    const delay = 5000;
+    const pendingUser = {
+      username: "alice",
+      auth_token: "alice_token",
+      is_active: true,
+      useSessionStorage: false,
+      readyAt: Date.now() + delay,
+      expiresAt: Date.now() + delay + 60000,
+    };
+    localStorage.setItem("default_pending_user", JSON.stringify(pendingUser));
+
+    wrapper = mountComponent(props);
+    expect(localStorage.getItem("default_pending_user")).not.toBeNull();
+
+    wrapper.unmount();
+    expect(localStorage.getItem("default_pending_user")).not.toBeNull();
+
+    jest.runOnlyPendingTimers();
+    expect(localStorage.getItem("default_pending_user")).not.toBeNull();
+    localStorage.removeItem("default_pending_user");
+    jest.useRealTimers();
+  });
+  it("should remove corrupt pendingUser from localStorage when handleAuthentication fails", async () => {
+    const pendingUser = {
+      username: "alice",
+      auth_token: "alice_token",
+      readyAt: Date.now(),
+    };
+    localStorage.setItem("default_pending_user", JSON.stringify(pendingUser));
+    const failingProps = {
+      ...props,
+      setUserData: jest.fn(() => {
+        throw new Error("Authentication failure");
+      }),
+    };
+    wrapper = mountComponent(failingProps);
+    await tick();
+
+    expect(localStorage.getItem("default_pending_user")).toBeNull();
+  });
+  it("should bypass isDifferentUser staging for delayed pending user even when userData has different username", async () => {
+    jest.useFakeTimers({legacyFakeTimers: true});
+    const delay = 1000;
+    const pendingUser = {
+      username: "alice",
+      auth_token: "alice_token",
+      readyAt: Date.now() + delay,
+      expiresAt: Date.now() + delay + 60000,
+    };
+    localStorage.setItem("default_pending_user", JSON.stringify(pendingUser));
+    const propsWithUser = {
+      ...props,
+      isAuthenticated: true,
+      userData: {
+        username: "bob",
+        auth_token: "bob_token",
+      },
+      navigate: jest.fn(),
+      setUserData: jest.fn(),
+    };
+    wrapper = mountComponent(propsWithUser);
+
+    jest.runOnlyPendingTimers();
+    await tick();
+
+    expect(propsWithUser.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({
+        username: "alice",
+        auth_token: "alice_token",
+        mustLogin: true,
+      }),
+    );
+    expect(propsWithUser.setUserData).not.toHaveBeenCalledWith(
+      expect.objectContaining({
+        mustLogout: true,
+      }),
+    );
+    expect(localStorage.getItem("default_pending_user")).toBeNull();
+    jest.useRealTimers();
+  });
+  it("should bypass isDifferentUser staging for immediate pending user even when userData has different username", async () => {
+    const pendingUser = {
+      username: "alice",
+      auth_token: "alice_token",
+      readyAt: Date.now() - 1000,
+      expiresAt: Date.now() + 60000,
+    };
+    localStorage.setItem("default_pending_user", JSON.stringify(pendingUser));
+    const propsWithUser = {
+      ...props,
+      isAuthenticated: true,
+      userData: {
+        username: "bob",
+        auth_token: "bob_token",
+      },
+      navigate: jest.fn(),
+      setUserData: jest.fn(),
+    };
+    wrapper = mountComponent(propsWithUser);
+    await tick();
+
+    expect(propsWithUser.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({
+        username: "alice",
+        auth_token: "alice_token",
+        mustLogin: true,
+      }),
+    );
+    expect(propsWithUser.setUserData).not.toHaveBeenCalledWith(
+      expect.objectContaining({
+        mustLogout: true,
+      }),
+    );
+    expect(localStorage.getItem("default_pending_user")).toBeNull();
   });
   it("phone_number field should be present if mobile phone verification is on", async () => {
     props.settings = {mobile_phone_verification: true};

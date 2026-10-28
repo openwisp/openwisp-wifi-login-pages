@@ -36,6 +36,7 @@ import handleSession from "../../utils/session";
 import getPlanSelection from "../../utils/get-plan-selection";
 import getPlans from "../../utils/get-plans";
 import upgradePlan from "../../utils/upgrade-plan";
+import isPendingUserExpired from "../../utils/pending-user";
 
 const formatUsageTime = (seconds) => {
   const days = Math.floor(seconds / 86400);
@@ -183,20 +184,13 @@ export default class Status extends React.Component {
     const pendingFromStorage = localStorage.getItem(pendingUserKey);
     if (!this.pendingUser) {
       if (userData && userData.pendingUser) {
-        const isExpired = Boolean(
-          userData.pendingUser.expiresAt &&
-          Date.now() > userData.pendingUser.expiresAt,
-        );
-        if (!isExpired) {
+        if (!isPendingUserExpired(userData.pendingUser)) {
           this.pendingUser = userData.pendingUser;
         }
       } else if (pendingFromStorage) {
         try {
           const parsed = JSON.parse(pendingFromStorage);
-          const isExpired = Boolean(
-            parsed && parsed.expiresAt && Date.now() > parsed.expiresAt,
-          );
-          if (isExpired) {
+          if (isPendingUserExpired(parsed)) {
             localStorage.removeItem(pendingUserKey);
           } else {
             this.pendingUser = parsed;
@@ -228,10 +222,7 @@ export default class Status extends React.Component {
         const target = this.pendingUser;
         this.pendingUser = null;
         localStorage.removeItem(pendingUserKey);
-        const isExpired = Boolean(
-          target.expiresAt && Date.now() > target.expiresAt,
-        );
-        if (!isExpired) {
+        if (!isPendingUserExpired(target)) {
           await this.applyPendingUser(target);
           return;
         }
@@ -247,10 +238,7 @@ export default class Status extends React.Component {
       pendingUser,
     } = userData;
     if (pendingUser) {
-      const isExpired = Boolean(
-        pendingUser.expiresAt && Date.now() > pendingUser.expiresAt,
-      );
-      if (!isExpired) {
+      if (!isPendingUserExpired(pendingUser)) {
         this.pendingUser = pendingUser;
       }
     }
@@ -358,13 +346,12 @@ export default class Status extends React.Component {
       captivePortalSyncAuth,
       navigate,
     } = this.props;
+    const {setLoading} = this.context;
     localStorage.removeItem(`${orgSlug}_pending_user`);
     this.pendingUser = null;
-    if (
-      pendingUser &&
-      pendingUser.expiresAt &&
-      Date.now() > pendingUser.expiresAt
-    ) {
+    if (isPendingUserExpired(pendingUser)) {
+      setUserData(initialState.userData);
+      setLoading(false);
       return;
     }
     const {useSessionStorage, readyAt, expiresAt, ...newUser} = pendingUser;

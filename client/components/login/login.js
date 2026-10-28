@@ -32,6 +32,7 @@ import redirectToPayment from "../../utils/redirect-to-payment";
 import {localStorage, sessionStorage} from "../../utils/storage";
 import {initialState} from "../../reducers/organization";
 import {cleanSearch, getSearch} from "../../utils/clean-search";
+import isPendingUserExpired from "../../utils/pending-user";
 
 export {cleanSearch};
 
@@ -84,41 +85,50 @@ export default class Login extends React.Component {
     const pendingUserKey = `${orgSlug}_pending_user`;
     const pendingUserData = localStorage.getItem(pendingUserKey);
     if (pendingUserData) {
-      localStorage.removeItem(pendingUserKey);
       try {
         const pendingUser = JSON.parse(pendingUserData);
-        const isExpired = Boolean(
-          pendingUser &&
-          pendingUser.expiresAt &&
-          Date.now() > pendingUser.expiresAt,
-        );
-        if (
-          !isExpired &&
-          pendingUser &&
-          (pendingUser.auth_token || pendingUser.key)
-        ) {
+        if (isPendingUserExpired(pendingUser)) {
+          localStorage.removeItem(pendingUserKey);
+        } else if (pendingUser && (pendingUser.auth_token || pendingUser.key)) {
           const {readyAt, expiresAt, ...userToApply} = pendingUser;
           const delay = readyAt ? Math.max(0, readyAt - Date.now()) : 0;
           if (delay > 0) {
             toast.info(t`PLEASE_WAIT`, {autoClose: delay});
             this.pendingUserTimeoutId = setTimeout(() => {
+              this.pendingUserTimeoutId = null;
+              if (isPendingUserExpired(pendingUser)) {
+                localStorage.removeItem(pendingUserKey);
+                return;
+              }
+              try {
+                this.handleAuthentication(
+                  userToApply,
+                  userToApply.useSessionStorage,
+                  true,
+                );
+              } catch (error) {
+                localStorage.removeItem(pendingUserKey);
+                logError(error);
+              }
+            }, delay);
+          } else {
+            try {
               this.handleAuthentication(
                 userToApply,
                 userToApply.useSessionStorage,
                 true,
               );
-            }, delay);
-          } else {
-            this.handleAuthentication(
-              userToApply,
-              userToApply.useSessionStorage,
-              true,
-            );
+            } catch (error) {
+              localStorage.removeItem(pendingUserKey);
+              logError(error);
+            }
           }
           return;
+        } else {
+          localStorage.removeItem(pendingUserKey);
         }
       } catch {
-        // ignore
+        localStorage.removeItem(pendingUserKey);
       }
     }
 
@@ -152,7 +162,10 @@ export default class Login extends React.Component {
   }
 
   componentWillUnmount() {
-    clearTimeout(this.pendingUserTimeoutId);
+    if (this.pendingUserTimeoutId) {
+      clearTimeout(this.pendingUserTimeoutId);
+      this.pendingUserTimeoutId = null;
+    }
   }
 
   getUsernameField = (input_fields) => {
@@ -350,7 +363,7 @@ export default class Login extends React.Component {
   handleAuthentication = (
     data = {},
     useSessionStorage = false,
-    skipUserSwitch = false,
+    isPendingUser = false,
   ) => {
     const {
       orgSlug,
@@ -361,11 +374,13 @@ export default class Login extends React.Component {
       settings,
       location,
       captivePortalLogoutForm,
+      isAuthenticated,
     } = this.props;
     const {remember_me} = this.state;
     const isDifferentUser =
-      !skipUserSwitch &&
+      !isPendingUser &&
       Boolean(
+        isAuthenticated &&
         userData &&
         userData.username &&
         data.username &&
@@ -407,6 +422,11 @@ export default class Login extends React.Component {
       authenticate(true);
       return;
     }
+    if (this.pendingUserTimeoutId) {
+      clearTimeout(this.pendingUserTimeoutId);
+      this.pendingUserTimeoutId = null;
+    }
+    localStorage.removeItem(`${orgSlug}_pending_user`);
     // useSessionStorage=true is passed from social login or SAML
     // user needs to repeat the login process each time
     localStorage.setItem(
@@ -649,11 +669,13 @@ Login.defaultProps = {
   userData: {},
   location: undefined,
   captivePortalLogoutForm: undefined,
+  isAuthenticated: false,
 };
 Login.propTypes = {
   captivePortalLogoutForm: PropTypes.shape({
     wait_after: PropTypes.number,
   }),
+  isAuthenticated: PropTypes.bool,
   loginForm: PropTypes.shape({
     social_login: PropTypes.shape({
       divider_text: PropTypes.object,

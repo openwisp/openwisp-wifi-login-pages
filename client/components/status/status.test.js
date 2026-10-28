@@ -2711,6 +2711,32 @@ describe("<Status /> interactions", () => {
     expect(localStorage.getItem("default_pending_user")).toBeNull();
     expect(status.pendingUser).toBeNull();
   });
+
+  it("should reset user data and turn off loading when applyPendingUser receives an expired pendingUser", async () => {
+    localStorage.clear();
+    const expiredUser = {
+      username: "alice",
+      auth_token: "alice_token",
+      expiresAt: Date.now() - 10000,
+    };
+    localStorage.setItem("default_pending_user", JSON.stringify(expiredUser));
+    const setLoading = jest.fn();
+    const prop = createTestProps();
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading},
+      disableLifecycleMethods: true,
+    });
+    const status = wrapper.instance();
+    status.pendingUser = expiredUser;
+    prop.setUserData.mockClear();
+
+    await status.applyPendingUser(expiredUser);
+
+    expect(localStorage.getItem("default_pending_user")).toBeNull();
+    expect(status.pendingUser).toBeNull();
+    expect(prop.setUserData).toHaveBeenCalledWith(initialState.userData);
+    expect(setLoading).toHaveBeenCalledWith(false);
+  });
   it("should render small table row and it should contain logout if logout_by_session is enabled", () => {
     const prop = createTestProps();
     prop.captivePortalLogoutForm.logout_by_session = true;

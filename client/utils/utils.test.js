@@ -33,6 +33,7 @@ import getPlans from "./get-plans";
 import upgradePlan from "./upgrade-plan";
 import {upgradePlanApiUrl} from "../constants";
 import {cleanSearch, getSearch} from "./clean-search";
+import isPendingUserExpired from "./pending-user";
 
 jest.mock("axios");
 jest.mock("./load-translation");
@@ -1058,5 +1059,40 @@ describe("clean-search and getSearch tests", () => {
     expect(getSearch({search: "?test=1"})).toBe("?test=1");
     expect(getSearch({})).toBe("");
     expect(getSearch(null)).toBe("");
+  });
+});
+
+describe("isPendingUserExpired tests", () => {
+  it("should return false for valid pending user without expiry", () => {
+    expect(isPendingUserExpired({username: "alice"})).toBe(false);
+  });
+
+  it("should return false for pending user with future expiresAt", () => {
+    expect(
+      isPendingUserExpired({username: "alice", expiresAt: Date.now() + 60000}),
+    ).toBe(false);
+  });
+
+  it("should return true for pending user with past expiresAt", () => {
+    expect(
+      isPendingUserExpired({username: "alice", expiresAt: Date.now() - 1000}),
+    ).toBe(true);
+  });
+
+  it("should return false for legacy record with recent readyAt", () => {
+    expect(isPendingUserExpired({username: "alice", readyAt: Date.now()})).toBe(
+      false,
+    );
+  });
+
+  it("should return true for legacy record with expired readyAt", () => {
+    expect(
+      isPendingUserExpired({username: "alice", readyAt: Date.now() - 70000}),
+    ).toBe(true);
+  });
+
+  it("should return false for null or undefined", () => {
+    expect(isPendingUserExpired(null)).toBe(false);
+    expect(isPendingUserExpired(undefined)).toBe(false);
   });
 });
