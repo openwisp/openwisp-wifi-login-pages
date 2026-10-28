@@ -32,6 +32,7 @@ import updateRegistrationMethod from "./update-registration-method";
 import getPlans from "./get-plans";
 import upgradePlan from "./upgrade-plan";
 import {upgradePlanApiUrl} from "../constants";
+import {cleanSearch, getSearch} from "./clean-search";
 
 jest.mock("axios");
 jest.mock("./load-translation");
@@ -1035,5 +1036,27 @@ describe("upgrade-plan", () => {
     await expect(
       upgradePlan("default", "premium", "test-token", "en"),
     ).rejects.toBe(error);
+  });
+});
+
+describe("clean-search and getSearch tests", () => {
+  it("cleanSearch removes credential params and retains others", () => {
+    expect(
+      cleanSearch(
+        "?username=alice&token=token123&login_method=saml&mac=00%3A11&ip=10.0.0.1",
+      ),
+    ).toBe("?mac=00%3A11&ip=10.0.0.1");
+    expect(cleanSearch("?sesame=token123&mac=00%3A11", "sesame")).toBe(
+      "?mac=00%3A11",
+    );
+    expect(cleanSearch("?username=user&token=pass")).toBe("");
+    expect(cleanSearch("")).toBe("");
+    expect(cleanSearch(null)).toBe("");
+  });
+
+  it("getSearch retrieves search from location or fallback", () => {
+    expect(getSearch({search: "?test=1"})).toBe("?test=1");
+    expect(getSearch({})).toBe("");
+    expect(getSearch(null)).toBe("");
   });
 });

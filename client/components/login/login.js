@@ -31,23 +31,13 @@ import {userPendingVerification} from "../../utils/pending-verification";
 import redirectToPayment from "../../utils/redirect-to-payment";
 import {localStorage, sessionStorage} from "../../utils/storage";
 import {initialState} from "../../reducers/organization";
+import {cleanSearch, getSearch} from "../../utils/clean-search";
+
+export {cleanSearch};
 
 const PhoneInput = React.lazy(
   () => import(/* webpackChunkName: 'PhoneInput' */ "react-phone-input-2"),
 );
-
-export const cleanSearch = (search, passwordlessTokenName) => {
-  if (!search) return "";
-  const params = new URLSearchParams(search);
-  params.delete("username");
-  params.delete("token");
-  if (passwordlessTokenName) {
-    params.delete(passwordlessTokenName);
-  }
-  params.delete("login_method");
-  const remaining = params.toString();
-  return remaining ? `?${remaining}` : "";
-};
 
 export default class Login extends React.Component {
   constructor(props) {
@@ -67,11 +57,7 @@ export default class Login extends React.Component {
   componentDidMount() {
     const {loginForm, setTitle, orgName, orgSlug, settings, location} =
       this.props;
-    const search =
-      (location && location.search) ||
-      (typeof window !== "undefined" && window.location
-        ? window.location.search
-        : "");
+    const search = getSearch(location);
     const username = search
       ? getParameterByName("username", search)
       : getParameterByName("username");
@@ -94,6 +80,36 @@ export default class Login extends React.Component {
     }
     this.setState({remember_me});
     Status.preload();
+
+    const pendingUserKey = `${orgSlug}_pending_user`;
+    const pendingUserData = localStorage.getItem(pendingUserKey);
+    if (pendingUserData) {
+      localStorage.removeItem(pendingUserKey);
+      try {
+        const pendingUser = JSON.parse(pendingUserData);
+        if (pendingUser && (pendingUser.auth_token || pendingUser.key)) {
+          const {readyAt, ...userToApply} = pendingUser;
+          const delay = readyAt ? Math.max(0, readyAt - Date.now()) : 0;
+          if (delay > 0) {
+            toast.info(t`PLEASE_WAIT`, {autoClose: delay});
+            this.pendingUserTimeoutId = setTimeout(() => {
+              this.handleAuthentication(
+                userToApply,
+                userToApply.useSessionStorage,
+              );
+            }, delay);
+          } else {
+            this.handleAuthentication(
+              userToApply,
+              userToApply.useSessionStorage,
+            );
+          }
+          return;
+        }
+      } catch {
+        // ignore
+      }
+    }
 
     // social login / SAML login
     if (username && token) {
@@ -122,6 +138,10 @@ export default class Login extends React.Component {
     if (sesame_token) {
       this.handleSubmit(null, sesame_token);
     }
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.pendingUserTimeoutId);
   }
 
   getUsernameField = (input_fields) => {
@@ -334,7 +354,8 @@ export default class Login extends React.Component {
       userData.username !== data.username,
     );
     if (isDifferentUser) {
-      const {key: auth_token, ...authenticatedUser} = data;
+      const {key, auth_token: rawAuthToken, ...authenticatedUser} = data;
+      const auth_token = key || rawAuthToken;
       const pendingUser = {
         ...initialState.userData,
         ...authenticatedUser,
@@ -342,6 +363,10 @@ export default class Login extends React.Component {
         mustLogin: true,
         useSessionStorage: Boolean(useSessionStorage || !remember_me),
       };
+      localStorage.setItem(
+        `${orgSlug}_pending_user`,
+        JSON.stringify(pendingUser),
+      );
       this.dismissWait();
       toast.success(t`LOGIN_SUCCESS`, {
         toastId: mainToastId,
@@ -351,11 +376,7 @@ export default class Login extends React.Component {
         mustLogout: true,
         pendingUser,
       });
-      const search =
-        (location && location.search) ||
-        (typeof window !== "undefined" && window.location
-          ? window.location.search
-          : "");
+      const search = getSearch(location);
       const cleanQuery = cleanSearch(
         search,
         settings && settings.passwordless_auth_token_name,
@@ -370,12 +391,13 @@ export default class Login extends React.Component {
       "rememberMe",
       String(remember_me && !useSessionStorage),
     );
+    const {key, auth_token: rawAuthToken, ...authenticatedUser} = data;
+    const auth_token = key || rawAuthToken;
     // if remember me checkbox is unchecked
     // store auth token in sessionStorage instead of cookie
     if (!remember_me || useSessionStorage) {
-      sessionStorage.setItem(`${orgSlug}_auth_token`, data.key);
+      sessionStorage.setItem(`${orgSlug}_auth_token`, auth_token);
     }
-    const {key: auth_token, ...authenticatedUser} = data;
     const nextUserData = {
       ...authenticatedUser,
       auth_token,
@@ -386,11 +408,7 @@ export default class Login extends React.Component {
       toastId: mainToastId,
     });
     setUserData(nextUserData);
-    const search =
-      (location && location.search) ||
-      (typeof window !== "undefined" && window.location
-        ? window.location.search
-        : "");
+    const search = getSearch(location);
     const cleanQuery = cleanSearch(
       search,
       settings && settings.passwordless_auth_token_name,

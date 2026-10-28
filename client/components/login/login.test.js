@@ -631,10 +631,9 @@ describe("<Login /> interactions", () => {
     expect(login.instance().props.authenticate).toHaveBeenCalledWith(true);
   });
   it("should preserve session state when re-authenticating the same user", async () => {
-    const logoutMock = jest.fn();
+    localStorage.removeItem("default_pending_user");
     const propsWithUser = {
       ...props,
-      logout: logoutMock,
       userData: {
         username: "bob",
         auth_token: "old_bob_token",
@@ -648,7 +647,6 @@ describe("<Login /> interactions", () => {
       key: "new_bob_token",
       is_active: true,
     });
-    expect(logoutMock).not.toHaveBeenCalled();
     expect(login.instance().props.setUserData).toHaveBeenCalledWith(
       expect.objectContaining({
         username: "bob",
@@ -656,8 +654,37 @@ describe("<Login /> interactions", () => {
         mustLogin: true,
       }),
     );
+    expect(login.instance().props.setUserData).not.toHaveBeenCalledWith(
+      expect.objectContaining({
+        mustLogout: true,
+      }),
+    );
+    expect(localStorage.getItem("default_pending_user")).toBeNull();
     expect(props.navigate).toHaveBeenCalledWith("/default/status");
     expect(login.instance().props.authenticate).toHaveBeenCalledWith(true);
+  });
+  it("should pick up pending user from localStorage upon mounting and complete authentication", async () => {
+    const pendingUser = {
+      username: "alice",
+      auth_token: "alice_token",
+      is_active: true,
+      useSessionStorage: false,
+    };
+    localStorage.setItem("default_pending_user", JSON.stringify(pendingUser));
+    props.navigate.mockClear();
+    wrapper = mountComponent(props);
+    await tick();
+
+    expect(localStorage.getItem("default_pending_user")).toBeNull();
+    expect(props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({
+        username: "alice",
+        auth_token: "alice_token",
+        mustLogin: true,
+      }),
+    );
+    expect(props.navigate).toHaveBeenCalledWith("/default/status");
+    expect(props.authenticate).toHaveBeenCalledWith(true);
   });
   it("should preserve captive portal query parameters when navigating to status", async () => {
     const propsWithLocation = {

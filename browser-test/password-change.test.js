@@ -1,4 +1,4 @@
-import {until} from "selenium-webdriver";
+import {By, until} from "selenium-webdriver";
 import {
   getDriver,
   getElementByCss,
@@ -40,6 +40,11 @@ describe("Selenium tests for <PasswordChange />", () => {
     await driver.get(urls.passwordChange);
     await driver.wait(until.urlContains("change-password"), 5000);
     await getElementByCss(driver, "div#password-change");
+    await driver.wait(
+      async () =>
+        (await driver.findElements(By.css(".loader-container"))).length === 0,
+      5000,
+    );
     const currPassword = await getElementByCss(
       driver,
       "input#current-password",
@@ -54,7 +59,8 @@ describe("Selenium tests for <PasswordChange />", () => {
     );
     changePasswordConfirm.sendKeys(newPassword);
     submitBtn = await getElementByCss(driver, "input[type=submit]");
-    submitBtn.click();
+    await driver.wait(until.elementIsVisible(submitBtn));
+    await submitBtn.click();
     await getElementByCss(driver, "div#status");
     successToastDiv = await getElementByCss(driver, "div[role=alert]");
     await driver.wait(until.elementIsVisible(successToastDiv));

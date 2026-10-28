@@ -179,15 +179,30 @@ export default class Status extends React.Component {
       //
     }
 
-    if (userData && userData.pendingUser) {
-      this.pendingUser = userData.pendingUser;
+    const pendingUserKey = `${orgSlug}_pending_user`;
+    const pendingFromStorage = localStorage.getItem(pendingUserKey);
+    if (!this.pendingUser) {
+      if (userData && userData.pendingUser) {
+        this.pendingUser = userData.pendingUser;
+      } else if (pendingFromStorage) {
+        try {
+          this.pendingUser = JSON.parse(pendingFromStorage);
+        } catch {
+          // ignore
+        }
+      }
     }
 
     setLoading(true);
+    let validatedUserData = null;
+    const captureSetUserData = (data) => {
+      validatedUserData = data;
+      setUserData(data);
+    };
     const isValid = await validateToken(
       cookies,
       orgSlug,
-      setUserData,
+      captureSetUserData,
       userData,
       logout,
       language,
@@ -198,6 +213,7 @@ export default class Status extends React.Component {
       if (this.pendingUser) {
         const target = this.pendingUser;
         this.pendingUser = null;
+        localStorage.removeItem(pendingUserKey);
         await this.applyPendingUser(target);
         return;
       }
@@ -227,15 +243,17 @@ export default class Status extends React.Component {
       cookies,
     );
     const {userData: latestUserData} = this.props;
-    userData = overrideUserData || latestUserData;
+    userData = {
+      ...(overrideUserData || {}),
+      ...latestUserData,
+      ...(validatedUserData || {}),
+      mustLogin,
+      mustLogout,
+      repeatLogin,
+    };
     if (userData.password_expired === true) {
       toast.warning(t`PASSWORD_EXPIRED`);
-      setUserData({
-        ...userData,
-        mustLogin,
-        mustLogout,
-        repeatLogin,
-      });
+      setUserData(userData);
       navigate(`/${orgSlug}/change-password`);
       return;
     }
@@ -316,6 +334,8 @@ export default class Status extends React.Component {
       captivePortalSyncAuth,
       navigate,
     } = this.props;
+    localStorage.removeItem(`${orgSlug}_pending_user`);
+    this.pendingUser = null;
     const {useSessionStorage, ...newUser} = pendingUser;
     if (useSessionStorage) {
       sessionStorage.setItem(`${orgSlug}_auth_token`, newUser.auth_token);
@@ -712,6 +732,13 @@ export default class Status extends React.Component {
     if (this.pendingUser) {
       const targetUser = this.pendingUser;
       this.pendingUser = null;
+      localStorage.setItem(
+        `${orgSlug}_pending_user`,
+        JSON.stringify({
+          ...targetUser,
+          readyAt: Date.now(),
+        }),
+      );
       await this.applyPendingUser(targetUser);
       return;
     }
@@ -828,6 +855,13 @@ export default class Status extends React.Component {
         const targetUser = this.pendingUser;
         this.pendingUser = null;
         localStorage.removeItem(logoutMethodKey);
+        localStorage.setItem(
+          `${orgSlug}_pending_user`,
+          JSON.stringify({
+            ...targetUser,
+            readyAt: Date.now() + (wait_after || 0),
+          }),
+        );
         toast.info(t`PLEASE_WAIT`, {autoClose: wait_after});
         this.pendingUserTimeoutId = setTimeout(async () => {
           if (!this.isComponentMounted) {
