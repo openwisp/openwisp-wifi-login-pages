@@ -33,6 +33,7 @@ import {localStorage, sessionStorage} from "../../utils/storage";
 import {initialState} from "../../reducers/organization";
 import {cleanSearch, getSearch} from "../../utils/clean-search";
 import isPendingUserExpired from "../../utils/pending-user";
+import hasIncomingCredentials from "../../utils/has-incoming-credentials";
 
 export {cleanSearch};
 
@@ -83,23 +84,48 @@ export default class Login extends React.Component {
     Status.preload();
 
     const pendingUserKey = `${orgSlug}_pending_user`;
-    const pendingUserData = localStorage.getItem(pendingUserKey);
-    if (pendingUserData) {
-      try {
-        const pendingUser = JSON.parse(pendingUserData);
-        if (isPendingUserExpired(pendingUser)) {
-          localStorage.removeItem(pendingUserKey);
-        } else if (pendingUser && (pendingUser.auth_token || pendingUser.key)) {
-          const {readyAt, expiresAt, ...userToApply} = pendingUser;
-          const delay = readyAt ? Math.max(0, readyAt - Date.now()) : 0;
-          if (delay > 0) {
-            toast.info(t`PLEASE_WAIT`, {autoClose: delay});
-            this.pendingUserTimeoutId = setTimeout(() => {
-              this.pendingUserTimeoutId = null;
-              if (isPendingUserExpired(pendingUser)) {
-                localStorage.removeItem(pendingUserKey);
-                return;
-              }
+    const incoming = hasIncomingCredentials(settings, search, {
+      username,
+      token,
+      sesameToken: sesame_token,
+    });
+
+    if (incoming) {
+      // Fresh credentials in the URL always win over a stale pending user.
+      localStorage.removeItem(pendingUserKey);
+    } else {
+      const pendingUserData = localStorage.getItem(pendingUserKey);
+      if (pendingUserData) {
+        try {
+          const pendingUser = JSON.parse(pendingUserData);
+          if (isPendingUserExpired(pendingUser)) {
+            localStorage.removeItem(pendingUserKey);
+          } else if (
+            pendingUser &&
+            (pendingUser.auth_token || pendingUser.key)
+          ) {
+            const {readyAt, expiresAt, ...userToApply} = pendingUser;
+            const delay = readyAt ? Math.max(0, readyAt - Date.now()) : 0;
+            if (delay > 0) {
+              toast.info(t`PLEASE_WAIT`, {autoClose: delay});
+              this.pendingUserTimeoutId = setTimeout(() => {
+                this.pendingUserTimeoutId = null;
+                if (isPendingUserExpired(pendingUser)) {
+                  localStorage.removeItem(pendingUserKey);
+                  return;
+                }
+                try {
+                  this.handleAuthentication(
+                    userToApply,
+                    userToApply.useSessionStorage,
+                    true,
+                  );
+                } catch (error) {
+                  localStorage.removeItem(pendingUserKey);
+                  logError(error);
+                }
+              }, delay);
+            } else {
               try {
                 this.handleAuthentication(
                   userToApply,
@@ -110,25 +136,14 @@ export default class Login extends React.Component {
                 localStorage.removeItem(pendingUserKey);
                 logError(error);
               }
-            }, delay);
-          } else {
-            try {
-              this.handleAuthentication(
-                userToApply,
-                userToApply.useSessionStorage,
-                true,
-              );
-            } catch (error) {
-              localStorage.removeItem(pendingUserKey);
-              logError(error);
             }
+            return;
+          } else {
+            localStorage.removeItem(pendingUserKey);
           }
-          return;
-        } else {
+        } catch {
           localStorage.removeItem(pendingUserKey);
         }
-      } catch {
-        localStorage.removeItem(pendingUserKey);
       }
     }
 
@@ -150,6 +165,7 @@ export default class Login extends React.Component {
           key: token,
           is_active: true,
           radius_user_token: undefined,
+          logout_method: loginMethod,
         },
         true,
       );

@@ -34,6 +34,7 @@ import upgradePlan from "./upgrade-plan";
 import {upgradePlanApiUrl} from "../constants";
 import {cleanSearch, getSearch} from "./clean-search";
 import isPendingUserExpired from "./pending-user";
+import hasIncomingCredentials from "./has-incoming-credentials";
 
 jest.mock("axios");
 jest.mock("./load-translation");
@@ -1094,5 +1095,35 @@ describe("isPendingUserExpired tests", () => {
   it("should return false for null or undefined", () => {
     expect(isPendingUserExpired(null)).toBe(false);
     expect(isPendingUserExpired(undefined)).toBe(false);
+  });
+});
+
+describe("hasIncomingCredentials tests", () => {
+  it("should return false when only username is present", () => {
+    expect(hasIncomingCredentials({}, "?username=alice")).toBe(false);
+  });
+
+  it("should return false when only token is present", () => {
+    expect(hasIncomingCredentials({}, "?token=abc123xyz")).toBe(false);
+  });
+
+  it("should return true when both username and token are present", () => {
+    expect(hasIncomingCredentials({}, "?username=alice&token=abc123xyz")).toBe(
+      true,
+    );
+  });
+
+  it("should return true when Sesame token is present with settings", () => {
+    const settings = {passwordless_auth_token_name: "sesame"};
+    expect(hasIncomingCredentials(settings, "?sesame=token123")).toBe(true);
+  });
+
+  it("should return false when Sesame token is present but setting is missing", () => {
+    expect(hasIncomingCredentials({}, "?sesame=token123")).toBe(false);
+    expect(hasIncomingCredentials(null, "?sesame=token123")).toBe(false);
+  });
+
+  it("should return false for empty search", () => {
+    expect(hasIncomingCredentials({}, "")).toBe(false);
   });
 });

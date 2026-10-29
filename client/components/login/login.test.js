@@ -1012,6 +1012,102 @@ describe("<Login /> interactions", () => {
     );
     expect(localStorage.getItem("default_pending_user")).toBeNull();
   });
+  it("should prioritize URL credentials over unexpired pending user", async () => {
+    const pendingUser = {
+      username: "old_user",
+      auth_token: "old_token",
+      is_active: true,
+      readyAt: Date.now(),
+      expiresAt: Date.now() + 60000,
+    };
+    localStorage.setItem("default_pending_user", JSON.stringify(pendingUser));
+    getParameterByName
+      .mockImplementationOnce(() => "new_user")
+      .mockImplementationOnce(() => "new_token")
+      .mockImplementationOnce(() => null)
+      .mockImplementationOnce(() => "saml");
+    const testProps = {
+      ...props,
+      navigate: jest.fn(),
+      setUserData: jest.fn(),
+      authenticate: jest.fn(),
+    };
+    wrapper = mountComponent(testProps);
+    await tick();
+
+    expect(localStorage.getItem("default_pending_user")).toBeNull();
+    expect(testProps.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({
+        username: "new_user",
+        auth_token: "new_token",
+        mustLogin: true,
+      }),
+    );
+    expect(testProps.navigate).toHaveBeenCalledWith("/default/status");
+  });
+  it("should prioritize Sesame token over unexpired pending user", async () => {
+    const pendingUser = {
+      username: "old_user",
+      auth_token: "old_token",
+      is_active: true,
+      readyAt: Date.now(),
+      expiresAt: Date.now() + 60000,
+    };
+    localStorage.setItem("default_pending_user", JSON.stringify(pendingUser));
+    getParameterByName
+      .mockImplementationOnce(() => null)
+      .mockImplementationOnce(() => null)
+      .mockImplementationOnce(() => "sesame-token");
+    const testProps = {
+      ...props,
+      navigate: jest.fn(),
+      setUserData: jest.fn(),
+    };
+    wrapper = shallow(<Login {...testProps} />, {
+      context: loadingContextValue,
+      disableLifecycleMethods: true,
+    });
+    wrapper.instance().handleSubmit = jest.fn();
+    wrapper.instance().componentDidMount();
+
+    expect(localStorage.getItem("default_pending_user")).toBeNull();
+    expect(wrapper.instance().handleSubmit).toHaveBeenCalledWith(
+      null,
+      "sesame-token",
+    );
+  });
+  it("should clear expired pending user and authenticate URL user when incoming credentials present", async () => {
+    const expiredPendingUser = {
+      username: "old_user",
+      auth_token: "old_token",
+      expiresAt: Date.now() - 10000,
+    };
+    localStorage.setItem(
+      "default_pending_user",
+      JSON.stringify(expiredPendingUser),
+    );
+    getParameterByName
+      .mockImplementationOnce(() => "new_user")
+      .mockImplementationOnce(() => "new_token")
+      .mockImplementationOnce(() => null)
+      .mockImplementationOnce(() => "saml");
+    const testProps = {
+      ...props,
+      navigate: jest.fn(),
+      setUserData: jest.fn(),
+      authenticate: jest.fn(),
+    };
+    wrapper = mountComponent(testProps);
+    await tick();
+
+    expect(localStorage.getItem("default_pending_user")).toBeNull();
+    expect(testProps.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({
+        username: "new_user",
+        auth_token: "new_token",
+      }),
+    );
+  });
   it("phone_number field should be present if mobile phone verification is on", async () => {
     props.settings = {mobile_phone_verification: true};
     wrapper = mountComponent(props);
@@ -1214,6 +1310,7 @@ describe("<Login /> interactions", () => {
         is_active: true,
         radius_user_token: undefined,
         mustLogin: true,
+        logout_method: "saml",
       },
     ]);
     const authenticateMock = login.props().authenticate.mock;

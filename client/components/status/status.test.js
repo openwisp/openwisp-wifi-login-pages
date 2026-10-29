@@ -2737,6 +2737,57 @@ describe("<Status /> interactions", () => {
     expect(prop.setUserData).toHaveBeenCalledWith(initialState.userData);
     expect(setLoading).toHaveBeenCalledWith(false);
   });
+  it("should clear old auth cookies and sessionStorage when applyPendingUser applies new user", async () => {
+    localStorage.clear();
+    sessionStorage.clear();
+    const pendingUser = {
+      username: "alice",
+      auth_token: "alice_token",
+      useSessionStorage: false,
+    };
+    const prop = createTestProps();
+    prop.cookies.remove = jest.fn();
+    prop.cookies.set = jest.fn();
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    const status = wrapper.instance();
+    status.initStatus = jest.fn();
+
+    await status.applyPendingUser(pendingUser);
+
+    expect(prop.cookies.remove).toHaveBeenCalledWith("default_auth_token", {
+      path: "/",
+    });
+    expect(prop.cookies.remove).toHaveBeenCalledWith("default_username", {
+      path: "/",
+    });
+    expect(prop.cookies.set).toHaveBeenCalledWith(
+      "default_auth_token",
+      "alice_token",
+      {path: "/"},
+    );
+  });
+  it("should restore logout_method into localStorage if present on newUser", async () => {
+    localStorage.clear();
+    const pendingUser = {
+      username: "alice",
+      auth_token: "alice_token",
+      logout_method: "saml",
+    };
+    const prop = createTestProps();
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    const status = wrapper.instance();
+    status.initStatus = jest.fn();
+
+    await status.applyPendingUser(pendingUser);
+
+    expect(localStorage.getItem("default_logout_method")).toBe("saml");
+  });
   it("should render small table row and it should contain logout if logout_by_session is enabled", () => {
     const prop = createTestProps();
     prop.captivePortalLogoutForm.logout_by_session = true;

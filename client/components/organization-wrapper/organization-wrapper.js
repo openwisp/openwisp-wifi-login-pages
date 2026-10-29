@@ -38,6 +38,7 @@ import Logout from "./lazy-logout";
 import {localStorage} from "../../utils/storage";
 import isOldBrowser from "../../utils/is-old-browser";
 import {cleanSearch, getSearch} from "../../utils/clean-search";
+import hasIncomingCredentials from "../../utils/has-incoming-credentials";
 
 export {cleanSearch};
 
@@ -245,17 +246,9 @@ export default class OrganizationWrapper extends React.Component {
                         userData.username === incomingUsername &&
                         userData.auth_token === incomingToken,
                       );
-                      const hasIncomingCredentials =
+                      const hasCredentials =
                         !isAlreadyUsingCredentials &&
-                        Boolean(
-                          (incomingUsername && incomingToken) ||
-                          (settings &&
-                            settings.passwordless_auth_token_name &&
-                            getParameterByName(
-                              settings.passwordless_auth_token_name,
-                              search,
-                            )),
-                        );
+                        hasIncomingCredentials(settings, search);
                       const cleanTargetSearch = cleanSearch(
                         search,
                         settings && settings.passwordless_auth_token_name,
@@ -263,7 +256,7 @@ export default class OrganizationWrapper extends React.Component {
                       const targetSearch = isAlreadyUsingCredentials
                         ? cleanTargetSearch
                         : search;
-                      if (isAuthenticated && !hasIncomingCredentials) {
+                      if (isAuthenticated && !hasCredentials) {
                         if (needsMethodSelection) {
                           return (
                             <Navigate

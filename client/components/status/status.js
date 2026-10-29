@@ -355,6 +355,12 @@ export default class Status extends React.Component {
       return;
     }
     const {useSessionStorage, readyAt, expiresAt, ...newUser} = pendingUser;
+    cookies.remove(`${orgSlug}_auth_token`, {path: "/"});
+    cookies.remove(`${orgSlug}_username`, {path: "/"});
+    sessionStorage.removeItem(`${orgSlug}_auth_token`);
+    if (newUser.logout_method) {
+      localStorage.setItem(`${orgSlug}_logout_method`, newUser.logout_method);
+    }
     if (useSessionStorage) {
       sessionStorage.setItem(`${orgSlug}_auth_token`, newUser.auth_token);
     } else {
