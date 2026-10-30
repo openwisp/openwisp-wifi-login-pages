@@ -16,9 +16,7 @@ jest.mock("axios");
 describe("payment utilities", () => {
   afterEach(() => {
     sessionStorage.clear();
-    jest.clearAllMocks();
     jest.resetAllMocks();
-    jest.restoreAllMocks();
   });
 
   it("fetches gateway metadata", async () => {
@@ -98,7 +96,6 @@ describe("payment utilities", () => {
       payment_requires_internet: false,
     };
     storePaymentReturnContext(userData, {});
-
     expect(takePaymentReturnContext()).toEqual({
       inUpgrade: true,
       paymentRequiresInternet: false,
@@ -111,15 +108,12 @@ describe("payment utilities", () => {
       {in_upgrade: true, payment_requires_internet: false},
       {},
     );
-
     clearPaymentReturnContext();
-
     expect(takePaymentReturnContext()).toBe(null);
   });
 
   it("rejects malformed payment return contexts", () => {
     sessionStorage.setItem("ow_payment_return_context", "not json");
-
     expect(takePaymentReturnContext()).toBe(null);
   });
 
@@ -130,7 +124,6 @@ describe("payment utilities", () => {
       },
       {},
     );
-
     expect(takePaymentReturnContext()).toBe(null);
   });
 

@@ -3782,7 +3782,6 @@ describe("<Status /> interactions", () => {
       }),
     );
     expect(props.navigate).toHaveBeenCalledWith("/default/payment/process");
-
     // A falsy in_upgrade must survive the assignment untouched
     axios.mockImplementationOnce(() =>
       Promise.resolve({
@@ -4589,9 +4588,7 @@ describe("<Status /> login continuation", () => {
     props.cookies.set("default_repeatLogin", "true", {path: "/"});
     localStorage.setItem("default_mustLogout", "true");
     localStorage.setItem("default_repeatLogin", "true");
-
     await status.handleLogout(false, true);
-
     expect(status.loginFormRef.current.submit).toHaveBeenCalledTimes(1);
     expect(props.cookies.get("default_mustLogout")).toBeUndefined();
     expect(props.cookies.get("default_repeatLogin")).toBeUndefined();

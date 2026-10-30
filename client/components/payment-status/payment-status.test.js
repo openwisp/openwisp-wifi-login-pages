@@ -178,13 +178,11 @@ describe("Test <PaymentStatus /> cases", () => {
       context: loadingContextValue,
     });
     await tick();
-
     const selector = wrapper.find(PaymentGateway);
     expect(selector).toHaveLength(1);
     expect(selectGateway).not.toHaveBeenCalled();
     selector.prop("onSelect")("offline");
     expect(selectGateway).not.toHaveBeenCalled();
-
     selectGateway.mockResolvedValue({
       ...payment,
       payment_gateway: "offline",
@@ -192,7 +190,6 @@ describe("Test <PaymentStatus /> cases", () => {
       payment_url: "https://payments.example/process",
     });
     await selector.prop("onProceed")();
-
     expect(selectGateway).toHaveBeenCalledWith(
       "default",
       "payment-id",
@@ -244,7 +241,6 @@ describe("Test <PaymentStatus /> cases", () => {
     await tick();
     wrapper.find(PaymentGateway).prop("onSelect")("online");
     const selection = wrapper.find(PaymentGateway).prop("onProceed")();
-
     await wrapper.find(PaymentGateway).prop("onCancel")();
     resolveSelection({
       ...payment,
@@ -253,7 +249,6 @@ describe("Test <PaymentStatus /> cases", () => {
       payment_url: "https://payments.example/process",
     });
     await selection;
-
     expect(props.setUserData).toHaveBeenLastCalledWith(
       expect.objectContaining({
         in_upgrade: false,
@@ -299,7 +294,6 @@ describe("Test <PaymentStatus /> cases", () => {
       payment_url: "https://payments.example/process",
     });
     await selection;
-
     expect(props.setUserData).not.toHaveBeenCalled();
     expect(props.navigate).not.toHaveBeenCalled();
   });
@@ -350,10 +344,8 @@ describe("Test <PaymentStatus /> cases", () => {
       context: loadingContextValue,
     });
     await tick();
-
     wrapper.find(PaymentGateway).prop("onSelect")("offline");
     await wrapper.find(PaymentGateway).prop("onProceed")();
-
     const selector = wrapper.find(PaymentGateway);
     expect(selector.prop("submitting")).toBe(false);
     expect(selector.prop("error")).toBe(false);
@@ -388,10 +380,8 @@ describe("Test <PaymentStatus /> cases", () => {
       payment_requires_internet: true,
       payment_url: "https://payments.example/online",
     };
-
     wrapper.setProps({params: {status: "draft"}, userData: selectedUserData});
     await tick();
-
     expect(props.setUserData).toHaveBeenCalledTimes(1);
     expect(props.setUserData).toHaveBeenCalledWith({
       ...selectedUserData,
@@ -418,7 +408,6 @@ describe("Test <PaymentStatus /> cases", () => {
       context: loadingContextValue,
     });
     await tick();
-
     expect(getGateways).not.toHaveBeenCalled();
     expect(wrapper.find(PaymentGateway)).toHaveLength(0);
     expect(wrapper.find("Navigate").prop("to")).toBe(
@@ -451,11 +440,9 @@ describe("Test <PaymentStatus /> cases", () => {
       context: loadingContextValue,
     });
     await tick();
-
     const selector = wrapper.find(PaymentGateway);
     expect(selector.prop("cancelLabel")).toEqual("Cancel");
     await selector.prop("onCancel")();
-
     expect(cancelUpgradePlan).toHaveBeenCalledWith(
       props.orgSlug,
       props.userData.auth_token || props.userData.key,
@@ -494,13 +481,11 @@ describe("Test <PaymentStatus /> cases", () => {
       context: loadingContextValue,
     });
     await tick();
-
     const selector = wrapper.find(PaymentGateway);
     expect(selector.prop("cancelLabel")).toEqual(
       "Cancel operation and log out",
     );
     selector.prop("onCancel")();
-
     expect(cancelUpgradePlan).not.toHaveBeenCalled();
     expect(props.setUserData).toHaveBeenCalledWith(
       expect.objectContaining({mustLogout: true}),
@@ -525,11 +510,9 @@ describe("Test <PaymentStatus /> cases", () => {
       context: loadingContextValue,
     });
     await tick();
-
     const selector = wrapper.find(PaymentGateway);
     expect(selector.prop("error")).toBe(true);
     expect(props.authenticate).not.toHaveBeenCalled();
-
     getGateways.mockResolvedValue({gateways: []});
     await selector.prop("onRetry")();
     expect(getGateways).toHaveBeenCalledTimes(2);
@@ -941,9 +924,7 @@ describe("Test <PaymentStatus /> cases", () => {
       wrapper.setProps({userData: validatedUser});
       return true;
     });
-
     await wrapper.instance().componentDidMount();
-
     expect(props.setUserData).toHaveBeenCalledWith({
       ...validatedUser,
       ...expectedFlags,
@@ -1028,7 +1009,6 @@ describe("Test <PaymentStatus /> cases", () => {
       setPlanExhausted: jest.fn(),
       defaultLanguage: defaultConfig.default_language,
     };
-
     wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
@@ -1053,13 +1033,11 @@ describe("Test <PaymentStatus /> cases", () => {
     expect(wrapper.find("Router").prop("location").pathname).toBe(
       "/default/payment/success",
     );
-
     await act(async () => {
       resolvePaymentValidation(true);
       await tick();
     });
     wrapper.update();
-
     expect(wrapper.find("Router").prop("location").pathname).toBe(
       "/default/status",
     );
@@ -1109,9 +1087,7 @@ describe("Test <PaymentStatus /> cases", () => {
         wrapper.setProps({userData: validatedUser});
         return true;
       });
-
       await wrapper.instance().componentDidMount();
-
       expect(props.setUserData.mock.calls).toEqual(
         expectedFlags ? [[{...validatedUser, ...expectedFlags}]] : [],
       );
@@ -1122,7 +1098,6 @@ describe("Test <PaymentStatus /> cases", () => {
     // If the payment requires internet, proceedToPayment should
     // be set to true in userData
     validateToken.mockReturnValue(true);
-
     // Test payment_requires_internet is set to false
     let mockCookiesSet = jest.fn();
     props = createTestProps({
@@ -1143,7 +1118,6 @@ describe("Test <PaymentStatus /> cases", () => {
     payProcButton.simulate("click");
     expect(wrapper.instance().props.setUserData).not.toHaveBeenCalled();
     expect(mockCookiesSet).not.toHaveBeenCalled();
-
     // Test payment_requires_internet is set to true, without sync auth
     mockCookiesSet = jest.fn();
     props = createTestProps({
@@ -1226,7 +1200,6 @@ describe("Test <PaymentStatus /> cases", () => {
       context: loadingContextValue,
     });
     await tick();
-
     const payProcButton = wrapper
       .find("Link.button.full")
       .findWhere((node) => node.text() === t`PAY_PROC_BTN`)
@@ -1234,7 +1207,6 @@ describe("Test <PaymentStatus /> cases", () => {
     expect(payProcButton.prop("to")).toBe("/default/payment/process");
     props.setUserData.mockClear();
     payProcButton.simulate("click");
-
     expect(props.setUserData).not.toHaveBeenCalled();
     expect(mockCookiesSet).not.toHaveBeenCalled();
   });
@@ -1953,7 +1925,6 @@ describe("Test <PaymentStatus /> cases", () => {
       context: loadingContextValue,
     });
     await tick();
-
     expect(wrapper.find("#payment-link-help")).toHaveLength(0);
     expect(wrapper.find("input#payment-link")).toHaveLength(0);
     expect(wrapper.find("button.payment-link-copy")).toHaveLength(0);

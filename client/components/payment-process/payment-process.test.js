@@ -360,7 +360,6 @@ describe("Test <PaymentProcess /> cases", () => {
     });
     wrapper.instance().redirectToPaymentUrl = jest.fn();
     await tick();
-
     expect(takePaymentReturnContext()).toEqual(
       expect.objectContaining({
         inUpgrade: true,
@@ -624,9 +623,7 @@ describe("Test <PaymentProcess /> cases", () => {
       });
       return true;
     });
-
     await wrapper.instance().componentDidMount();
-
     expect(takePaymentReturnContext()).toEqual(
       expect.objectContaining({
         inUpgrade: true,
