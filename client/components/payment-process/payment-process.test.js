@@ -151,6 +151,38 @@ describe("Test <PaymentProcess /> cases", () => {
     expect(redirectToPaymentUrl).not.toHaveBeenCalled();
   });
 
+  it("does not finish validation after unmounting", async () => {
+    let resolveValidation;
+    props = createTestProps({
+      userData: {...responseData, in_upgrade: true},
+    });
+    validateToken.mockReturnValue(
+      new Promise((resolve) => {
+        resolveValidation = resolve;
+      }),
+    );
+    const addEventListener = jest.spyOn(window, "addEventListener");
+    wrapper = shallow(<PaymentProcess {...props} />, {
+      context: loadingContextValue,
+      disableLifecycleMethods: true,
+    });
+    const paymentProcess = wrapper.instance();
+    const setState = jest
+      .spyOn(paymentProcess, "setState")
+      .mockImplementation();
+    const mounting = paymentProcess.componentDidMount();
+    wrapper.unmount();
+    resolveValidation(true);
+    await mounting;
+    expect(setState).not.toHaveBeenCalled();
+    expect(props.setUserData).not.toHaveBeenCalled();
+    expect(takePaymentReturnContext()).toBe(null);
+    expect(addEventListener).not.toHaveBeenCalledWith(
+      "message",
+      paymentProcess.handlePostMessage,
+    );
+  });
+
   it("keeps a selected internet-requiring payment on the processing page", async () => {
     props = createTestProps({
       userData: {

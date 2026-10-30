@@ -21,6 +21,7 @@ export default class PaymentProcess extends React.Component {
   constructor(props) {
     super(props);
     this.iframeRef = React.createRef();
+    this.isComponentMounted = true;
     this.state = {
       isTokenValid: null,
       iframeHeight: 450,
@@ -48,6 +49,9 @@ export default class PaymentProcess extends React.Component {
       logout,
     );
 
+    if (!this.isComponentMounted) {
+      return;
+    }
     if (isTokenValid === false) {
       setLoading(false);
       return;
@@ -73,6 +77,7 @@ export default class PaymentProcess extends React.Component {
   }
 
   componentWillUnmount() {
+    this.isComponentMounted = false;
     window.removeEventListener("message", this.handlePostMessage);
   }
 

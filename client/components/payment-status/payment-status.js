@@ -297,6 +297,9 @@ export default class PaymentStatus extends React.Component {
         if (currentParams.status === "cancelled" && this.isComponentMounted) {
           this.setState({cancellationError: true});
         }
+        if (this.isComponentMounted) {
+          this.setState({submittingGateway: false});
+        }
         return;
       }
       setUserData({

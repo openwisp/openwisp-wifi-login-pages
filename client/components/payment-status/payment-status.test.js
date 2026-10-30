@@ -259,6 +259,61 @@ describe("Test <PaymentStatus /> cases", () => {
     expect(props.navigate).not.toHaveBeenCalledWith("/default/payment/draft");
   });
 
+  it("allows retrying gateway selection after cancellation fails", async () => {
+    let resolveSelection;
+    let rejectCancellation;
+    const payment = {
+      payment_id: "payment-id",
+      payment_gateway: null,
+      payment_requires_internet: null,
+      payment_url: "https://payments.example/select",
+    };
+    getGateways.mockResolvedValue({
+      gateways: [{key: "online", label: "Card"}],
+    });
+    selectGateway.mockReturnValueOnce(
+      new Promise((resolve) => {
+        resolveSelection = resolve;
+      }),
+    );
+    cancelUpgradePlan.mockReturnValue(
+      new Promise((resolve, reject) => {
+        rejectCancellation = reject;
+      }),
+    );
+    props = createTestProps({
+      userData: {
+        ...responseData,
+        ...payment,
+        method: "mobile_phone",
+        is_verified: true,
+        in_upgrade: true,
+      },
+      params: {status: "gateway"},
+    });
+    validateToken.mockReturnValue(true);
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    wrapper.find(PaymentGateway).prop("onSelect")("online");
+    const selection = wrapper.find(PaymentGateway).prop("onProceed")();
+    const cancellation = wrapper.find(PaymentGateway).prop("onCancel")();
+    expect(wrapper.find(PaymentGateway).prop("submitting")).toBe(true);
+    rejectCancellation(new Error("Cancellation failed"));
+    await cancellation;
+    expect(wrapper.find(PaymentGateway).prop("submitting")).toBe(false);
+    expect(props.navigate).not.toHaveBeenCalled();
+    resolveSelection({...payment, payment_gateway: "online"});
+    await selection;
+    expect(props.setUserData).not.toHaveBeenCalled();
+    expect(props.navigate).not.toHaveBeenCalled();
+    selectGateway.mockResolvedValue({...payment, payment_gateway: "online"});
+    await wrapper.find(PaymentGateway).prop("onProceed")();
+    expect(selectGateway).toHaveBeenCalledTimes(2);
+    expect(props.setUserData).toHaveBeenCalledTimes(1);
+  });
+
   it("ignores a gateway response after unmounting", async () => {
     let resolveSelection;
     const payment = {
