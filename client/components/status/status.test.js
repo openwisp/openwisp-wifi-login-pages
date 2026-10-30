@@ -188,6 +188,7 @@ describe("<Status /> rendering", () => {
       setInternetMode: expect.any(Function),
       setPlanExhausted: expect.any(Function),
       setTitle: expect.any(Function),
+      authenticate: expect.any(Function),
     });
   });
 });
@@ -2399,6 +2400,393 @@ describe("<Status /> interactions", () => {
       props.statusPage.saml_logout_url,
     );
     expect(localStorage.getItem("default_logout_method")).toBe(null);
+  });
+
+  it("should logout previous gateway session and apply pendingUser when switching users", async () => {
+    validateToken.mockReturnValue(true);
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: [
+          {
+            session_id: "active-123",
+            start_time: "2021-07-08T00:22:28-04:00",
+            stop_time: null,
+            calling_station_id: "4e:ed:11:2b:17:ae",
+            input_octets: 100000,
+            output_octets: 100000,
+          },
+        ],
+        headers: {},
+      }),
+    );
+    const pendingUser = {
+      username: "alice",
+      auth_token: "alice_token",
+      radius_user_token: "alice_secret",
+      useSessionStorage: false,
+    };
+    const authenticate = jest.fn();
+    const prop = createTestProps({
+      authenticate,
+      userData: {
+        ...responseData,
+        username: "bob",
+        mustLogout: true,
+        pendingUser,
+      },
+    });
+    const setLoading = jest.fn();
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading},
+      disableLifecycleMethods: true,
+    });
+    const status = wrapper.instance();
+    const logoutMockRef = {submit: jest.fn()};
+    const loginMockRef = {submit: jest.fn()};
+    status.logoutFormRef = {current: logoutMockRef};
+    status.loginFormRef = {current: loginMockRef};
+    status.logoutIframeRef = {current: {}};
+    jest.useFakeTimers({legacyFakeTimers: true});
+
+    status.componentDidMount();
+    await tick();
+
+    // Previous user had active radius session -> gateway logout form submitted
+    expect(logoutMockRef.submit).toHaveBeenCalledTimes(1);
+    expect(status.state.loggedOut).toBe(true);
+
+    // Gateway logout completes in iframe
+    await status.handleLogoutIframe();
+    expect(prop.logout).toHaveBeenCalled();
+
+    // Advance wait_after timeout for firewall reloading
+    jest.runOnlyPendingTimers();
+    await tick();
+
+    // Incoming user is applied and logged in via captive portal
+    expect(prop.cookies.get("default_auth_token")).toBe("alice_token");
+    expect(authenticate).toHaveBeenCalledWith(true);
+    expect(prop.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({
+        username: "alice",
+        auth_token: "alice_token",
+        mustLogin: true,
+      }),
+    );
+    expect(loginMockRef.submit).toHaveBeenCalledTimes(1);
+  });
+
+  it("should immediately apply pendingUser when switching users if no active gateway sessions exist", async () => {
+    validateToken.mockReturnValue(true);
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: [],
+        headers: {},
+      }),
+    );
+    const pendingUser = {
+      username: "alice",
+      auth_token: "alice_token",
+      radius_user_token: "alice_secret",
+      useSessionStorage: true,
+    };
+    const authenticate = jest.fn();
+    const prop = createTestProps({
+      authenticate,
+      userData: {
+        ...responseData,
+        username: "bob",
+        mustLogout: true,
+        pendingUser,
+      },
+    });
+    const setLoading = jest.fn();
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading},
+      disableLifecycleMethods: true,
+    });
+    const status = wrapper.instance();
+    const logoutMockRef = {submit: jest.fn()};
+    const loginMockRef = {submit: jest.fn()};
+    status.logoutFormRef = {current: logoutMockRef};
+    status.loginFormRef = {current: loginMockRef};
+    status.logoutIframeRef = {current: {}};
+
+    status.componentDidMount();
+    await tick();
+
+    // No active sessions -> logoutFormRef.submit is bypassed
+    expect(logoutMockRef.submit).not.toHaveBeenCalled();
+    expect(prop.logout).toHaveBeenCalled();
+
+    // Pending user is applied immediately
+    expect(sessionStorage.getItem("default_auth_token")).toBe("alice_token");
+    expect(authenticate).toHaveBeenCalledWith(true);
+    expect(prop.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({
+        username: "alice",
+        auth_token: "alice_token",
+        mustLogin: true,
+      }),
+    );
+    expect(loginMockRef.submit).toHaveBeenCalledTimes(1);
+  });
+
+  it("should apply pendingUser when previous user token validation fails", async () => {
+    validateToken.mockReturnValueOnce(false);
+    const pendingUser = {
+      username: "alice",
+      auth_token: "alice_token",
+      radius_user_token: "alice_secret",
+      useSessionStorage: false,
+    };
+    const authenticate = jest.fn();
+    const prop = createTestProps({
+      authenticate,
+      userData: {
+        ...responseData,
+        username: "bob",
+        mustLogout: true,
+        pendingUser,
+      },
+    });
+    const setLoading = jest.fn();
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading},
+      disableLifecycleMethods: true,
+    });
+    const status = wrapper.instance();
+    const loginMockRef = {submit: jest.fn()};
+    status.loginFormRef = {current: loginMockRef};
+
+    // When pendingUser is applied, validateToken for alice will succeed
+    validateToken.mockReturnValueOnce(true);
+
+    status.componentDidMount();
+    await tick();
+
+    expect(prop.cookies.get("default_auth_token")).toBe("alice_token");
+    expect(authenticate).toHaveBeenCalledWith(true);
+    expect(prop.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({
+        username: "alice",
+        auth_token: "alice_token",
+        mustLogin: true,
+      }),
+    );
+    expect(loginMockRef.submit).toHaveBeenCalledTimes(1);
+  });
+
+  it("should preserve validated radius_user_token from validateToken when incoming credentials lack password", async () => {
+    const validatedData = {
+      response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+      radius_user_token: "validated_password_secret",
+      auth_token: "saml_auth_token_xyz",
+      username: "saml_user",
+      email: "saml@example.com",
+      is_active: true,
+      is_verified: true,
+      method: "saml",
+    };
+    validateToken.mockImplementationOnce(
+      async (cookies, orgSlug, setUserData) => {
+        setUserData(validatedData);
+        return true;
+      },
+    );
+    const prop = createTestProps({
+      userData: {
+        username: "saml_user",
+        auth_token: "saml_auth_token_xyz",
+        radius_user_token: undefined,
+        mustLogin: true,
+      },
+    });
+    const setLoading = jest.fn();
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading},
+      disableLifecycleMethods: true,
+    });
+    const status = wrapper.instance();
+    const loginMockRef = {submit: jest.fn()};
+    status.loginFormRef = {current: loginMockRef};
+
+    status.componentDidMount();
+    await tick();
+
+    // Verify status state received the validated radius_user_token as password
+    expect(status.state.password).toBe("validated_password_secret");
+    expect(loginMockRef.submit).toHaveBeenCalledTimes(1);
+  });
+
+  it("should persist pendingUser in localStorage across Status unmount", async () => {
+    localStorage.clear();
+    validateToken.mockReturnValue(true);
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: [
+          {
+            session_id: "active-123",
+            start_time: "2021-07-08T00:22:28-04:00",
+            stop_time: null,
+            calling_station_id: "4e:ed:11:2b:17:ae",
+            input_octets: 100000,
+            output_octets: 100000,
+          },
+        ],
+        headers: {},
+      }),
+    );
+    const pendingUser = {
+      username: "alice",
+      auth_token: "alice_token",
+      radius_user_token: "alice_secret",
+      useSessionStorage: false,
+    };
+    const prop = createTestProps({
+      userData: {
+        ...responseData,
+        username: "bob",
+        mustLogout: true,
+        pendingUser,
+      },
+    });
+    const setLoading = jest.fn();
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading},
+      disableLifecycleMethods: true,
+    });
+    const status = wrapper.instance();
+    const logoutMockRef = {submit: jest.fn()};
+    status.logoutFormRef = {current: logoutMockRef};
+    status.logoutIframeRef = {current: {}};
+
+    status.componentDidMount();
+    await tick();
+
+    // Gateway logout form submitted
+    expect(logoutMockRef.submit).toHaveBeenCalledTimes(1);
+
+    // Logout completes in iframe
+    await status.handleLogoutIframe();
+
+    // Verify pending_user was persisted in localStorage for survival across unmount
+    const storedPending = localStorage.getItem("default_pending_user");
+    expect(storedPending).not.toBeNull();
+    const parsedPending = JSON.parse(storedPending);
+    expect(parsedPending.username).toBe("alice");
+    expect(parsedPending.auth_token).toBe("alice_token");
+
+    // Simulate Status unmounting (as route changes to /login when isAuthenticated becomes false)
+    wrapper.unmount();
+    expect(status.isComponentMounted).toBe(false);
+
+    // Storage still contains pending user after Status unmount
+    expect(localStorage.getItem("default_pending_user")).not.toBeNull();
+    localStorage.removeItem("default_pending_user");
+  });
+
+  it("should discard expired pendingUser from localStorage during initStatus", async () => {
+    localStorage.clear();
+    const expiredUser = {
+      username: "alice",
+      auth_token: "alice_token",
+      expiresAt: Date.now() - 10000,
+    };
+    localStorage.setItem("default_pending_user", JSON.stringify(expiredUser));
+    const prop = createTestProps();
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    const status = wrapper.instance();
+    await status.initStatus();
+
+    expect(localStorage.getItem("default_pending_user")).toBeNull();
+    expect(status.pendingUser).toBeNull();
+  });
+
+  it("should reset user data and turn off loading when applyPendingUser receives an expired pendingUser", async () => {
+    localStorage.clear();
+    const expiredUser = {
+      username: "alice",
+      auth_token: "alice_token",
+      expiresAt: Date.now() - 10000,
+    };
+    localStorage.setItem("default_pending_user", JSON.stringify(expiredUser));
+    const setLoading = jest.fn();
+    const prop = createTestProps();
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading},
+      disableLifecycleMethods: true,
+    });
+    const status = wrapper.instance();
+    status.pendingUser = expiredUser;
+    prop.setUserData.mockClear();
+
+    await status.applyPendingUser(expiredUser);
+
+    expect(localStorage.getItem("default_pending_user")).toBeNull();
+    expect(status.pendingUser).toBeNull();
+    expect(prop.setUserData).toHaveBeenCalledWith(initialState.userData);
+    expect(setLoading).toHaveBeenCalledWith(false);
+  });
+  it("should clear old auth cookies and sessionStorage when applyPendingUser applies new user", async () => {
+    localStorage.clear();
+    sessionStorage.clear();
+    const pendingUser = {
+      username: "alice",
+      auth_token: "alice_token",
+      useSessionStorage: false,
+    };
+    const prop = createTestProps();
+    prop.cookies.remove = jest.fn();
+    prop.cookies.set = jest.fn();
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    const status = wrapper.instance();
+    status.initStatus = jest.fn();
+
+    await status.applyPendingUser(pendingUser);
+
+    expect(prop.cookies.remove).toHaveBeenCalledWith("default_auth_token", {
+      path: "/",
+    });
+    expect(prop.cookies.remove).toHaveBeenCalledWith("default_username", {
+      path: "/",
+    });
+    expect(prop.cookies.set).toHaveBeenCalledWith(
+      "default_auth_token",
+      "alice_token",
+      {path: "/"},
+    );
+  });
+  it("should restore logout_method into localStorage if present on newUser", async () => {
+    localStorage.clear();
+    const pendingUser = {
+      username: "alice",
+      auth_token: "alice_token",
+      logout_method: "saml",
+    };
+    const prop = createTestProps();
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    const status = wrapper.instance();
+    status.initStatus = jest.fn();
+
+    await status.applyPendingUser(pendingUser);
+
+    expect(localStorage.getItem("default_logout_method")).toBe("saml");
   });
   it("should render small table row and it should contain logout if logout_by_session is enabled", () => {
     const prop = createTestProps();

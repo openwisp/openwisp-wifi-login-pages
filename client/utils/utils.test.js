@@ -32,6 +32,9 @@ import updateRegistrationMethod from "./update-registration-method";
 import getPlans from "./get-plans";
 import upgradePlan from "./upgrade-plan";
 import {upgradePlanApiUrl} from "../constants";
+import {cleanSearch, getSearch} from "./clean-search";
+import isPendingUserExpired from "./pending-user";
+import hasIncomingCredentials from "./has-incoming-credentials";
 
 jest.mock("axios");
 jest.mock("./load-translation");
@@ -1035,5 +1038,92 @@ describe("upgrade-plan", () => {
     await expect(
       upgradePlan("default", "premium", "test-token", "en"),
     ).rejects.toBe(error);
+  });
+});
+
+describe("clean-search and getSearch tests", () => {
+  it("cleanSearch removes credential params and retains others", () => {
+    expect(
+      cleanSearch(
+        "?username=alice&token=token123&login_method=saml&mac=00%3A11&ip=10.0.0.1",
+      ),
+    ).toBe("?mac=00%3A11&ip=10.0.0.1");
+    expect(cleanSearch("?sesame=token123&mac=00%3A11", "sesame")).toBe(
+      "?mac=00%3A11",
+    );
+    expect(cleanSearch("?username=user&token=pass")).toBe("");
+    expect(cleanSearch("")).toBe("");
+    expect(cleanSearch(null)).toBe("");
+  });
+
+  it("getSearch retrieves search from location or fallback", () => {
+    expect(getSearch({search: "?test=1"})).toBe("?test=1");
+    expect(getSearch({})).toBe("");
+    expect(getSearch(null)).toBe("");
+  });
+});
+
+describe("isPendingUserExpired tests", () => {
+  it("should return false for valid pending user without expiry", () => {
+    expect(isPendingUserExpired({username: "alice"})).toBe(false);
+  });
+
+  it("should return false for pending user with future expiresAt", () => {
+    expect(
+      isPendingUserExpired({username: "alice", expiresAt: Date.now() + 60000}),
+    ).toBe(false);
+  });
+
+  it("should return true for pending user with past expiresAt", () => {
+    expect(
+      isPendingUserExpired({username: "alice", expiresAt: Date.now() - 1000}),
+    ).toBe(true);
+  });
+
+  it("should return false for legacy record with recent readyAt", () => {
+    expect(isPendingUserExpired({username: "alice", readyAt: Date.now()})).toBe(
+      false,
+    );
+  });
+
+  it("should return true for legacy record with expired readyAt", () => {
+    expect(
+      isPendingUserExpired({username: "alice", readyAt: Date.now() - 70000}),
+    ).toBe(true);
+  });
+
+  it("should return false for null or undefined", () => {
+    expect(isPendingUserExpired(null)).toBe(false);
+    expect(isPendingUserExpired(undefined)).toBe(false);
+  });
+});
+
+describe("hasIncomingCredentials tests", () => {
+  it("should return false when only username is present", () => {
+    expect(hasIncomingCredentials({}, "?username=alice")).toBe(false);
+  });
+
+  it("should return false when only token is present", () => {
+    expect(hasIncomingCredentials({}, "?token=abc123xyz")).toBe(false);
+  });
+
+  it("should return true when both username and token are present", () => {
+    expect(hasIncomingCredentials({}, "?username=alice&token=abc123xyz")).toBe(
+      true,
+    );
+  });
+
+  it("should return true when Sesame token is present with settings", () => {
+    const settings = {passwordless_auth_token_name: "sesame"};
+    expect(hasIncomingCredentials(settings, "?sesame=token123")).toBe(true);
+  });
+
+  it("should return false when Sesame token is present but setting is missing", () => {
+    expect(hasIncomingCredentials({}, "?sesame=token123")).toBe(false);
+    expect(hasIncomingCredentials(null, "?sesame=token123")).toBe(false);
+  });
+
+  it("should return false for empty search", () => {
+    expect(hasIncomingCredentials({}, "")).toBe(false);
   });
 });

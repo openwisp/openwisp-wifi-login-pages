@@ -280,4 +280,26 @@ describe("<PasswordChange /> interactions", () => {
     expect(wrapper.find("Navigate").length).toEqual(0);
     expect(wrapper.find("form").length).toEqual(1);
   });
+  it("should set loading to false when validateToken resolves", async () => {
+    props = createTestProps();
+    const setLoading = jest.fn();
+    validateToken.mockResolvedValueOnce(true);
+    const component = new PasswordChange(props);
+    component.context = {setLoading};
+    await component.componentDidMount();
+    expect(setLoading).toHaveBeenCalledWith(true);
+    expect(setLoading).toHaveBeenLastCalledWith(false);
+  });
+  it("should set loading to false when validateToken rejects", async () => {
+    props = createTestProps();
+    const setLoading = jest.fn();
+    validateToken.mockRejectedValueOnce(new Error("Token validation failed"));
+    const component = new PasswordChange(props);
+    component.context = {setLoading};
+    await expect(component.componentDidMount()).rejects.toThrow(
+      "Token validation failed",
+    );
+    expect(setLoading).toHaveBeenCalledWith(true);
+    expect(setLoading).toHaveBeenLastCalledWith(false);
+  });
 });

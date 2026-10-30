@@ -30,11 +30,13 @@ import Loader from "../../utils/loader";
 import {initialState} from "../../reducers/organization";
 import Logout from "../organization-wrapper/lazy-logout";
 import InfoModal from "../../utils/modal";
-import {localStorage} from "../../utils/storage";
+import {localStorage, sessionStorage} from "../../utils/storage";
+import {userPendingVerification} from "../../utils/pending-verification";
 import handleSession from "../../utils/session";
 import getPlanSelection from "../../utils/get-plan-selection";
 import getPlans from "../../utils/get-plans";
 import upgradePlan from "../../utils/upgrade-plan";
+import isPendingUserExpired from "../../utils/pending-user";
 
 const formatUsageTime = (seconds) => {
   const days = Math.floor(seconds / 86400);
@@ -107,6 +109,7 @@ export default class Status extends React.Component {
       showUpgradeBtn: true,
     };
     this.repeatLogin = false;
+    this.pendingUser = null;
     this.isComponentMounted = true;
     this.getUserRadiusSessions = this.getUserRadiusSessions.bind(this);
     this.getUserRadiusUsage = this.getUserRadiusUsage.bind(this);
@@ -129,21 +132,8 @@ export default class Status extends React.Component {
   }
 
   async componentDidMount() {
-    const {
-      cookies,
-      orgSlug,
-      settings,
-      setUserData,
-      logout,
-      setTitle,
-      orgName,
-      language,
-      navigate,
-      captivePortalSyncAuth,
-    } = this.props;
+    const {setTitle, orgName} = this.props;
     setTitle(t`STATUS_TITL`, orgName);
-    const {setLoading} = this.context;
-    let {userData} = this.props;
     this.setState({
       rememberMe: localStorage.getItem("rememberMe") === "true",
     });
@@ -151,144 +141,270 @@ export default class Status extends React.Component {
 
     // to prevent recursive call in case redirect url is status page
     if (window.top === window.self) {
-      try {
-        const {location, captivePortalLoginForm} = this.props;
-        const searchParams = new URLSearchParams(location.search);
-        const macaddr = searchParams.get(
-          captivePortalLoginForm.macaddr_param_name,
-        );
-
-        window.addEventListener("message", this.handlePostMessage);
-        window.postMessage({type: "owlp-ready"}, window.location.origin);
-
-        if (macaddr) {
-          cookies.set(`${orgSlug}_macaddr`, macaddr, {path: "/"});
-        } else {
-          cookies.remove(`${orgSlug}_macaddr`, {path: "/"});
-        }
-      } catch {
-        //
-      }
-
-      setLoading(true);
-      const isValid = await validateToken(
-        cookies,
-        orgSlug,
-        setUserData,
-        userData,
-        logout,
-        language,
-      );
-
-      // stop here if token is invalid or component unmounted
-      if (isValid === false || !this.isComponentMounted) {
-        setLoading(false);
-        return;
-      }
-
-      const {
-        mustLogin: userMustLogin,
-        mustLogout: userMustLogout,
-        repeatLogin,
-      } = userData;
-      const mustLogin = this.resolveStoredValue(
-        captivePortalSyncAuth,
-        `${orgSlug}_mustLogin`,
-        userMustLogin,
-        cookies,
-      );
-      const mustLogout = this.resolveStoredValue(
-        captivePortalSyncAuth,
-        `${orgSlug}_mustLogout`,
-        userMustLogout,
-        cookies,
-      );
-      ({userData} = this.props);
-      if (userData.password_expired === true) {
-        toast.warning(t`PASSWORD_EXPIRED`);
-        setUserData({
-          ...userData,
-          mustLogin,
-          mustLogout,
-          repeatLogin,
-        });
-        navigate(`/${orgSlug}/change-password`);
-        return;
-      }
-      const {
-        radius_user_token: password,
-        username,
-        email,
-        phone_number,
-        is_active,
-        method,
-        is_verified: isVerified,
-      } = userData;
-      const userInfo = {};
-      userInfo.status = "";
-      userInfo.email = email;
-      if (username !== email && username !== phone_number) {
-        userInfo.username = username;
-      }
-      if (settings.mobile_phone_verification && phone_number) {
-        userInfo.phone_number = phone_number;
-      }
-      this.setState({username, password, userInfo}, () => {
-        // if the user is being automatically logged in but it's not
-        // active anymore (eg: has been banned)
-        // automatically perform log out
-        if (is_active === false) {
-          this.handleLogout(false);
-        }
-      });
-
-      // stop here if user is banned
-      if (is_active === false) {
-        return;
-      }
-
-      if (mustLogout) {
-        if (captivePortalSyncAuth) {
-          // In synchronous captive portal authentication, the page reloads
-          // after form submission, so handleLogoutIframe() must be called manually here.
-          // (handleLogout() is already triggered when the user clicks the "Logout" button.)
-          this.setState({loggedOut: mustLogout});
-          this.handleLogoutIframe();
-        } else {
-          await this.handleLogout(false, repeatLogin);
-        }
-        return;
-      }
-
-      let shouldLogin = mustLogin;
-      if (method === "bank_card" && isVerified === false) {
-        shouldLogin = shouldLogin && settings.payment_requires_internet;
-      }
-      if (this.loginFormRef && this.loginFormRef.current && shouldLogin) {
-        this.storeValue(
-          captivePortalSyncAuth,
-          `${orgSlug}_mustLogin`,
-          false,
-          cookies,
-        );
-        this.notifyCpLogin(userData);
-        this.loginFormRef.current.submit();
-      } else if (!shouldLogin) {
-        // If the user is already logged in, we need to handle the
-        // the response from the captive portal.
-        if (captivePortalSyncAuth) {
-          this.handleLogin();
-        }
-        this.finalOperations();
-      }
+      await this.initStatus();
     }
   }
+
+  initStatus = async (overrideUserData) => {
+    const {
+      cookies,
+      orgSlug,
+      settings,
+      setUserData,
+      logout,
+      language,
+      navigate,
+      captivePortalSyncAuth,
+      captivePortalLoginForm,
+      userData: propUserData,
+    } = this.props;
+    const {setLoading} = this.context;
+    let userData = overrideUserData || propUserData;
+
+    try {
+      const {location} = this.props;
+      const searchParams = new URLSearchParams(location.search);
+      const macaddr =
+        captivePortalLoginForm &&
+        searchParams.get(captivePortalLoginForm.macaddr_param_name);
+
+      window.addEventListener("message", this.handlePostMessage);
+      window.postMessage({type: "owlp-ready"}, window.location.origin);
+
+      if (macaddr) {
+        cookies.set(`${orgSlug}_macaddr`, macaddr, {path: "/"});
+      } else {
+        cookies.remove(`${orgSlug}_macaddr`, {path: "/"});
+      }
+    } catch {
+      //
+    }
+
+    const pendingUserKey = `${orgSlug}_pending_user`;
+    const pendingFromStorage = localStorage.getItem(pendingUserKey);
+    if (!this.pendingUser) {
+      if (userData && userData.pendingUser) {
+        if (!isPendingUserExpired(userData.pendingUser)) {
+          this.pendingUser = userData.pendingUser;
+        }
+      } else if (pendingFromStorage) {
+        try {
+          const parsed = JSON.parse(pendingFromStorage);
+          if (isPendingUserExpired(parsed)) {
+            localStorage.removeItem(pendingUserKey);
+          } else {
+            this.pendingUser = parsed;
+          }
+        } catch {
+          // ignore
+        }
+      }
+    }
+
+    setLoading(true);
+    let validatedUserData = null;
+    const captureSetUserData = (data) => {
+      validatedUserData = data;
+      setUserData(data);
+    };
+    const isValid = await validateToken(
+      cookies,
+      orgSlug,
+      captureSetUserData,
+      userData,
+      logout,
+      language,
+    );
+
+    // stop here if token is invalid or component unmounted
+    if (isValid === false || !this.isComponentMounted) {
+      if (this.pendingUser) {
+        const target = this.pendingUser;
+        this.pendingUser = null;
+        localStorage.removeItem(pendingUserKey);
+        if (!isPendingUserExpired(target)) {
+          await this.applyPendingUser(target);
+          return;
+        }
+      }
+      setLoading(false);
+      return;
+    }
+
+    const {
+      mustLogin: userMustLogin,
+      mustLogout: userMustLogout,
+      repeatLogin,
+      pendingUser,
+    } = userData;
+    if (pendingUser) {
+      if (!isPendingUserExpired(pendingUser)) {
+        this.pendingUser = pendingUser;
+      }
+    }
+    const mustLogin = this.resolveStoredValue(
+      captivePortalSyncAuth,
+      `${orgSlug}_mustLogin`,
+      userMustLogin,
+      cookies,
+    );
+    const mustLogout = this.resolveStoredValue(
+      captivePortalSyncAuth,
+      `${orgSlug}_mustLogout`,
+      userMustLogout,
+      cookies,
+    );
+    const {userData: latestUserData} = this.props;
+    userData = {
+      ...(overrideUserData || {}),
+      ...latestUserData,
+      ...(validatedUserData || {}),
+      mustLogin,
+      mustLogout,
+      repeatLogin,
+    };
+    if (userData.password_expired === true) {
+      toast.warning(t`PASSWORD_EXPIRED`);
+      setUserData(userData);
+      navigate(`/${orgSlug}/change-password`);
+      return;
+    }
+    const {
+      radius_user_token: password,
+      username,
+      email,
+      phone_number,
+      is_active,
+      method,
+      is_verified: isVerified,
+    } = userData;
+    const userInfo = {};
+    userInfo.status = "";
+    userInfo.email = email;
+    if (username !== email && username !== phone_number) {
+      userInfo.username = username;
+    }
+    if (settings.mobile_phone_verification && phone_number) {
+      userInfo.phone_number = phone_number;
+    }
+    this.setState({username, password, userInfo}, () => {
+      // if the user is being automatically logged in but it's not
+      // active anymore (eg: has been banned)
+      // automatically perform log out
+      if (is_active === false) {
+        this.handleLogout(false);
+      }
+    });
+
+    // stop here if user is banned
+    if (is_active === false) {
+      return;
+    }
+
+    if (mustLogout) {
+      if (captivePortalSyncAuth) {
+        // In synchronous captive portal authentication, the page reloads
+        // after form submission, so handleLogoutIframe() must be called manually here.
+        // (handleLogout() is already triggered when the user clicks the "Logout" button.)
+        this.setState({loggedOut: mustLogout});
+        this.handleLogoutIframe();
+      } else {
+        await this.handleLogout(false, repeatLogin);
+      }
+      return;
+    }
+
+    let shouldLogin = mustLogin;
+    if (method === "bank_card" && isVerified === false) {
+      shouldLogin = shouldLogin && settings.payment_requires_internet;
+    }
+    if (this.loginFormRef && this.loginFormRef.current && shouldLogin) {
+      this.storeValue(
+        captivePortalSyncAuth,
+        `${orgSlug}_mustLogin`,
+        false,
+        cookies,
+      );
+      this.notifyCpLogin(userData);
+      this.loginFormRef.current.submit();
+    } else if (!shouldLogin) {
+      // If the user is already logged in, we need to handle the
+      // the response from the captive portal.
+      if (captivePortalSyncAuth) {
+        this.handleLogin();
+      }
+      this.finalOperations();
+    }
+  };
+
+  applyPendingUser = async (pendingUser) => {
+    const {
+      orgSlug,
+      cookies,
+      setUserData,
+      authenticate,
+      captivePortalSyncAuth,
+      navigate,
+    } = this.props;
+    const {setLoading} = this.context;
+    localStorage.removeItem(`${orgSlug}_pending_user`);
+    this.pendingUser = null;
+    if (isPendingUserExpired(pendingUser)) {
+      setUserData(initialState.userData);
+      setLoading(false);
+      return;
+    }
+    const {useSessionStorage, readyAt, expiresAt, ...newUser} = pendingUser;
+    cookies.remove(`${orgSlug}_auth_token`, {path: "/"});
+    cookies.remove(`${orgSlug}_username`, {path: "/"});
+    sessionStorage.removeItem(`${orgSlug}_auth_token`);
+    if (newUser.logout_method) {
+      localStorage.setItem(`${orgSlug}_logout_method`, newUser.logout_method);
+    }
+    if (useSessionStorage) {
+      sessionStorage.setItem(`${orgSlug}_auth_token`, newUser.auth_token);
+    } else {
+      cookies.set(`${orgSlug}_auth_token`, newUser.auth_token, {path: "/"});
+    }
+    const finalUserData = {
+      ...initialState.userData,
+      ...newUser,
+      mustLogin: true,
+      mustLogout: false,
+    };
+    this.storeValue(
+      captivePortalSyncAuth,
+      `${orgSlug}_mustLogout`,
+      false,
+      cookies,
+    );
+    this.storeValue(
+      captivePortalSyncAuth,
+      `${orgSlug}_mustLogin`,
+      true,
+      cookies,
+    );
+    setUserData(finalUserData);
+    if (authenticate) {
+      authenticate(true);
+    }
+    this.setStateSafe({
+      loggedOut: false,
+      sessionsToLogout: [],
+    });
+    if (userPendingVerification(finalUserData)) {
+      navigate(`/${orgSlug}/complete-signup`);
+      return;
+    }
+    await this.initStatus(finalUserData);
+  };
 
   componentWillUnmount() {
     this.isComponentMounted = false;
     clearInterval(this.intervalId);
     clearInterval(this.usageIntervalId);
     clearTimeout(this.usageRetryTimeoutId);
+    clearTimeout(this.pendingUserTimeoutId);
     window.removeEventListener("resize", this.updateScreenWidth);
     window.removeEventListener("message", this.handlePostMessage);
   }
@@ -615,22 +731,20 @@ export default class Status extends React.Component {
     await this.getUserActiveRadiusSessions(params);
     const {sessionsToLogout} = this.state;
 
-    if (sessionsToLogout.length > 0) {
+    if (!internetMode && sessionsToLogout.length > 0) {
       if (this.logoutFormRef && this.logoutFormRef.current) {
         if (!repeatLogin) {
           this.setStateSafe({loggedOut: true});
         } else {
           this.repeatLogin = true;
         }
-        if (!internetMode) {
-          this.storeValue(
-            captivePortalSyncAuth,
-            `${orgSlug}_mustLogout`,
-            true,
-            cookies,
-          );
-          this.logoutFormRef.current.submit();
-        }
+        this.storeValue(
+          captivePortalSyncAuth,
+          `${orgSlug}_mustLogout`,
+          true,
+          cookies,
+        );
+        this.logoutFormRef.current.submit();
         return;
       }
     }
@@ -638,8 +752,23 @@ export default class Status extends React.Component {
     if (repeatLogin) {
       return;
     }
-    setUserData(initialState.userData);
     logout(cookies, orgSlug, userAutoLogin);
+    if (this.pendingUser) {
+      const targetUser = this.pendingUser;
+      this.pendingUser = null;
+      const expiresAt = targetUser.expiresAt || Date.now() + 60000;
+      localStorage.setItem(
+        `${orgSlug}_pending_user`,
+        JSON.stringify({
+          ...targetUser,
+          readyAt: Date.now(),
+          expiresAt,
+        }),
+      );
+      await this.applyPendingUser(targetUser);
+      return;
+    }
+    setUserData(initialState.userData);
     setLoading(false);
     toast[toastLevel](toastMessage);
   };
@@ -747,6 +876,30 @@ export default class Status extends React.Component {
     ) {
       logout(cookies, orgSlug, userAutoLogin);
       toast.success(t`LOGOUT_SUCCESS`);
+
+      if (this.pendingUser) {
+        const targetUser = this.pendingUser;
+        this.pendingUser = null;
+        localStorage.removeItem(logoutMethodKey);
+        const expiresAt =
+          targetUser.expiresAt || Date.now() + (wait_after || 0) + 60000;
+        localStorage.setItem(
+          `${orgSlug}_pending_user`,
+          JSON.stringify({
+            ...targetUser,
+            readyAt: Date.now() + (wait_after || 0),
+            expiresAt,
+          }),
+        );
+        toast.info(t`PLEASE_WAIT`, {autoClose: wait_after});
+        this.pendingUserTimeoutId = setTimeout(async () => {
+          if (!this.isComponentMounted) {
+            return;
+          }
+          await this.applyPendingUser(targetUser);
+        }, wait_after);
+        return;
+      }
 
       if (saml_logout_url && logoutMethod === "saml") {
         toast.info(t`PLEASE_WAIT`, {autoClose: wait_after});
@@ -1769,11 +1922,13 @@ export default class Status extends React.Component {
 }
 Status.contextType = LoadingContext;
 Status.defaultProps = {
+  authenticate: () => {},
   isAuthenticated: false,
   internetMode: false,
   planExhausted: false,
 };
 Status.propTypes = {
+  authenticate: PropTypes.func,
   statusPage: PropTypes.shape({
     links: PropTypes.arrayOf(
       PropTypes.shape({

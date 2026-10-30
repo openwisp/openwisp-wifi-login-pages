@@ -18,6 +18,7 @@ import Loader from "../../utils/loader";
 import needsVerify from "../../utils/needs-verify";
 import loadTranslation from "../../utils/load-translation";
 import {userPendingVerification} from "../../utils/pending-verification";
+import getParameterByName from "../../utils/get-parameter-by-name";
 import Login from "../login";
 import {
   Registration,
@@ -36,6 +37,10 @@ import {
 import Logout from "./lazy-logout";
 import {localStorage} from "../../utils/storage";
 import isOldBrowser from "../../utils/is-old-browser";
+import {cleanSearch, getSearch} from "../../utils/clean-search";
+import hasIncomingCredentials from "../../utils/has-incoming-credentials";
+
+export {cleanSearch};
 
 export default class OrganizationWrapper extends React.Component {
   constructor(props) {
@@ -228,20 +233,41 @@ export default class OrganizationWrapper extends React.Component {
                   <Route
                     path="login/*"
                     element={(() => {
-                      if (isAuthenticated) {
+                      const search = getSearch(location);
+                      const incomingUsername = getParameterByName(
+                        "username",
+                        search,
+                      );
+                      const incomingToken = getParameterByName("token", search);
+                      const isAlreadyUsingCredentials = Boolean(
+                        incomingUsername &&
+                        incomingToken &&
+                        userData &&
+                        userData.username === incomingUsername &&
+                        userData.auth_token === incomingToken,
+                      );
+                      const hasCredentials =
+                        !isAlreadyUsingCredentials &&
+                        hasIncomingCredentials(settings, search);
+                      const cleanTargetSearch = cleanSearch(
+                        search,
+                        settings && settings.passwordless_auth_token_name,
+                      );
+                      const targetSearch = isAlreadyUsingCredentials
+                        ? cleanTargetSearch
+                        : search;
+                      if (isAuthenticated && !hasCredentials) {
                         if (needsMethodSelection) {
                           return (
                             <Navigate
-                              to={`/${orgSlug}/complete-signup${
-                                location.search || ""
-                              }`}
+                              to={`/${orgSlug}/complete-signup${targetSearch}`}
                             />
                           );
                         }
                         if (is_active) {
                           return (
                             <Navigate
-                              to={`/${orgSlug}/status${location.search || ""}`}
+                              to={`/${orgSlug}/status${targetSearch}`}
                             />
                           );
                         }
@@ -450,6 +476,7 @@ OrganizationWrapper.propTypes = {
       settings: PropTypes.shape({
         mobile_phone_verification: PropTypes.bool,
         subscriptions: PropTypes.bool,
+        passwordless_auth_token_name: PropTypes.string,
       }),
       js: PropTypes.array,
     }),

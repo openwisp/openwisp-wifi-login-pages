@@ -30,10 +30,17 @@ import getLanguageHeaders from "../../utils/get-language-headers";
 import {userPendingVerification} from "../../utils/pending-verification";
 import redirectToPayment from "../../utils/redirect-to-payment";
 import {localStorage, sessionStorage} from "../../utils/storage";
+import {initialState} from "../../reducers/organization";
+import {cleanSearch, getSearch} from "../../utils/clean-search";
+import isPendingUserExpired from "../../utils/pending-user";
+import hasIncomingCredentials from "../../utils/has-incoming-credentials";
+
+export {cleanSearch};
 
 const PhoneInput = React.lazy(
   () => import(/* webpackChunkName: 'PhoneInput' */ "react-phone-input-2"),
 );
+
 export default class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -50,12 +57,21 @@ export default class Login extends React.Component {
   }
 
   componentDidMount() {
-    const username = getParameterByName("username");
-    const token = getParameterByName("token");
-    const {loginForm, setTitle, orgName, orgSlug, settings} = this.props;
-    const sesame_token = getParameterByName(
-      settings.passwordless_auth_token_name,
-    );
+    const {loginForm, setTitle, orgName, orgSlug, settings, location} =
+      this.props;
+    const search = getSearch(location);
+    const username = search
+      ? getParameterByName("username", search)
+      : getParameterByName("username");
+    const token = search
+      ? getParameterByName("token", search)
+      : getParameterByName("token");
+    let sesame_token = null;
+    if (settings && settings.passwordless_auth_token_name) {
+      sesame_token = search
+        ? getParameterByName(settings.passwordless_auth_token_name, search)
+        : getParameterByName(settings.passwordless_auth_token_name);
+    }
     setTitle(t`LOGIN`, orgName);
     let remember_me;
 
@@ -67,9 +83,75 @@ export default class Login extends React.Component {
     this.setState({remember_me});
     Status.preload();
 
+    const pendingUserKey = `${orgSlug}_pending_user`;
+    const incoming = hasIncomingCredentials(settings, search, {
+      username,
+      token,
+      sesameToken: sesame_token,
+    });
+
+    if (incoming) {
+      // Fresh credentials in the URL always win over a stale pending user.
+      localStorage.removeItem(pendingUserKey);
+    } else {
+      const pendingUserData = localStorage.getItem(pendingUserKey);
+      if (pendingUserData) {
+        try {
+          const pendingUser = JSON.parse(pendingUserData);
+          if (isPendingUserExpired(pendingUser)) {
+            localStorage.removeItem(pendingUserKey);
+          } else if (
+            pendingUser &&
+            (pendingUser.auth_token || pendingUser.key)
+          ) {
+            const {readyAt, expiresAt, ...userToApply} = pendingUser;
+            const delay = readyAt ? Math.max(0, readyAt - Date.now()) : 0;
+            if (delay > 0) {
+              toast.info(t`PLEASE_WAIT`, {autoClose: delay});
+              this.pendingUserTimeoutId = setTimeout(() => {
+                this.pendingUserTimeoutId = null;
+                if (isPendingUserExpired(pendingUser)) {
+                  localStorage.removeItem(pendingUserKey);
+                  return;
+                }
+                try {
+                  this.handleAuthentication(
+                    userToApply,
+                    userToApply.useSessionStorage,
+                    true,
+                  );
+                } catch (error) {
+                  localStorage.removeItem(pendingUserKey);
+                  logError(error);
+                }
+              }, delay);
+            } else {
+              try {
+                this.handleAuthentication(
+                  userToApply,
+                  userToApply.useSessionStorage,
+                  true,
+                );
+              } catch (error) {
+                localStorage.removeItem(pendingUserKey);
+                logError(error);
+              }
+            }
+            return;
+          } else {
+            localStorage.removeItem(pendingUserKey);
+          }
+        } catch {
+          localStorage.removeItem(pendingUserKey);
+        }
+      }
+    }
+
     // social login / SAML login
     if (username && token) {
-      const loginMethod = getParameterByName("login_method");
+      const loginMethod = search
+        ? getParameterByName("login_method", search)
+        : getParameterByName("login_method");
       if (loginMethod) {
         // we have to use localStorage because the page may be
         // closed and the information may be lost if we use sessionStorage
@@ -83,6 +165,7 @@ export default class Login extends React.Component {
           key: token,
           is_active: true,
           radius_user_token: undefined,
+          logout_method: loginMethod,
         },
         true,
       );
@@ -91,6 +174,13 @@ export default class Login extends React.Component {
     // password-less authentication
     if (sesame_token) {
       this.handleSubmit(null, sesame_token);
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.pendingUserTimeoutId) {
+      clearTimeout(this.pendingUserTimeoutId);
+      this.pendingUserTimeoutId = null;
     }
   }
 
@@ -286,21 +376,86 @@ export default class Login extends React.Component {
     if (waitToast) toast.dismiss(this.waitToast);
   };
 
-  handleAuthentication = (data = {}, useSessionStorage = false) => {
-    const {orgSlug, authenticate, setUserData, navigate} = this.props;
+  handleAuthentication = (
+    data = {},
+    useSessionStorage = false,
+    isPendingUser = false,
+  ) => {
+    const {
+      orgSlug,
+      authenticate,
+      setUserData,
+      navigate,
+      userData = {},
+      settings,
+      location,
+      captivePortalLogoutForm,
+      isAuthenticated,
+    } = this.props;
     const {remember_me} = this.state;
+    const isDifferentUser =
+      !isPendingUser &&
+      Boolean(
+        isAuthenticated &&
+        userData &&
+        userData.username &&
+        data.username &&
+        userData.username !== data.username,
+      );
+    if (isDifferentUser) {
+      const {key, auth_token: rawAuthToken, ...authenticatedUser} = data;
+      const auth_token = key || rawAuthToken;
+      const waitAfter =
+        (captivePortalLogoutForm && captivePortalLogoutForm.wait_after) || 0;
+      const expiresAt = Date.now() + waitAfter + 60000;
+      const pendingUser = {
+        ...initialState.userData,
+        ...authenticatedUser,
+        auth_token,
+        mustLogin: true,
+        useSessionStorage: Boolean(useSessionStorage || !remember_me),
+        expiresAt,
+      };
+      localStorage.setItem(
+        `${orgSlug}_pending_user`,
+        JSON.stringify(pendingUser),
+      );
+      this.dismissWait();
+      toast.success(t`LOGIN_SUCCESS`, {
+        toastId: mainToastId,
+      });
+      setUserData({
+        ...userData,
+        mustLogout: true,
+        pendingUser,
+      });
+      const search = getSearch(location);
+      const cleanQuery = cleanSearch(
+        search,
+        settings && settings.passwordless_auth_token_name,
+      );
+      navigate(`/${orgSlug}/status${cleanQuery}`);
+      authenticate(true);
+      return;
+    }
+    if (this.pendingUserTimeoutId) {
+      clearTimeout(this.pendingUserTimeoutId);
+      this.pendingUserTimeoutId = null;
+    }
+    localStorage.removeItem(`${orgSlug}_pending_user`);
     // useSessionStorage=true is passed from social login or SAML
     // user needs to repeat the login process each time
     localStorage.setItem(
       "rememberMe",
       String(remember_me && !useSessionStorage),
     );
+    const {key, auth_token: rawAuthToken, ...authenticatedUser} = data;
+    const auth_token = key || rawAuthToken;
     // if remember me checkbox is unchecked
     // store auth token in sessionStorage instead of cookie
     if (!remember_me || useSessionStorage) {
-      sessionStorage.setItem(`${orgSlug}_auth_token`, data.key);
+      sessionStorage.setItem(`${orgSlug}_auth_token`, auth_token);
     }
-    const {key: auth_token, ...authenticatedUser} = data;
     const nextUserData = {
       ...authenticatedUser,
       auth_token,
@@ -311,8 +466,13 @@ export default class Login extends React.Component {
       toastId: mainToastId,
     });
     setUserData(nextUserData);
+    const search = getSearch(location);
+    const cleanQuery = cleanSearch(
+      search,
+      settings && settings.passwordless_auth_token_name,
+    );
     if (userPendingVerification(data)) {
-      navigate(`/${orgSlug}/complete-signup`);
+      navigate(`/${orgSlug}/complete-signup${cleanQuery}`);
       authenticate(true);
       return;
     }
@@ -324,6 +484,7 @@ export default class Login extends React.Component {
       authenticate(true);
       return;
     }
+    navigate(`/${orgSlug}/status${cleanQuery}`);
     authenticate(true);
   };
 
@@ -520,7 +681,17 @@ export default class Login extends React.Component {
 }
 
 Login.contextType = LoadingContext;
+Login.defaultProps = {
+  userData: {},
+  location: undefined,
+  captivePortalLogoutForm: undefined,
+  isAuthenticated: false,
+};
 Login.propTypes = {
+  captivePortalLogoutForm: PropTypes.shape({
+    wait_after: PropTypes.number,
+  }),
+  isAuthenticated: PropTypes.bool,
   loginForm: PropTypes.shape({
     social_login: PropTypes.shape({
       divider_text: PropTypes.object,
@@ -589,4 +760,6 @@ Login.propTypes = {
     additional_fields: PropTypes.array,
   }).isRequired,
   navigate: PropTypes.func.isRequired,
+  userData: PropTypes.object,
+  location: PropTypes.object,
 };
