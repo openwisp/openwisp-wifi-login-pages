@@ -447,10 +447,17 @@ msgstr "Оплачено"
 msgid "PAY_REQ"
 msgstr "Требуется платёж"
 
-#: client/components/payment-status/payment-status.js:155
+#: client/components/payment-gateway/payment-gateway.js:67
+msgid "PAY_GATEWAY_REQ"
+msgstr "Выберите способ оплаты"
+
 #, javascript-format
-msgid "PAY_WARN${ timeout }${ maxAttempts }"
-msgstr "<p>Нажав на кнопку ниже, вы будете перенаправлены на наш платежный шлюз, где сможете безопасно использовать свою кредитную карту. Оттуда вы будете перенаправлены на сайт вашего банка для подтверждения транзакции.</p><p>У вас еще ${ timeout } минут на выполнение<br /><strong>Пожалуйста, держите под рукой свою кредитную карту перед тем, как начать платёж.</strong></p><p>Если по какой-либо причине процедура не будет завершена в течение доступного времени, подключение к Интернету, которое позволяет вам получить доступ к веб-сайту вашего банка, будет закрыто, и в этом случае вы можете просто снова войти в систему с учетными данными, которые вы только зарегистрировали, и повторить процедуру. Максимум ${ maxAttempts } попытки.</p>"
+msgid "PAY_LINK_INTRO${ timeout }"
+msgstr "<p>У вас есть <strong>${ timeout } минут</strong>, чтобы завершить оплату. Убедитесь, что вы готовы, прежде чем продолжить.</p><p>Скопируйте ссылку для оплаты ниже. Если это окно закроется, вы сможете вставить ссылку в браузер и продолжить.</p>"
+
+#, javascript-format
+msgid "PAY_RETRY_LIMIT${ maxAttempts }"
+msgstr "<p>Если время истечёт, войдите снова, чтобы повторить попытку. Вам доступно до <strong>${ maxAttempts } попыток</strong>.</p>"
 
 #: client/components/payment-status/payment-status.js:165
 #: client/components/payment-status/payment-status.test.js:221
@@ -482,6 +489,27 @@ msgstr "Попробуйте снова"
 #. failed payment case
 msgid "PAY_GIVE_UP_TXT"
 msgstr "В случае возникновения проблем обращайтесь в сервис"
+
+#.  failed payment case
+#: client/components/payment-status/payment-status.js:230
+msgid "PAY_GO_BACK_BTN"
+msgstr "Отменить"
+
+#: client/components/payment-status/payment-status.js
+msgid "PAY_LINK_COPIED"
+msgstr "Ссылка для оплаты скопирована"
+
+msgid "PAY_LINK_COPY_FAIL"
+msgstr "Не удалось скопировать ссылку для оплаты. Выделите её и скопируйте вручную."
+
+msgid "PAY_LINK_LBL"
+msgstr "Ссылка для оплаты"
+
+msgid "PAY_LINK_COPY_BTN"
+msgstr "Копировать ссылку"
+
+msgid "PAY_LINK_COPY_HINT"
+msgstr "Нажмите, чтобы скопировать"
 
 #: client/components/password-reset/password-reset.js:32
 msgid "PWD_RESET_TITL"

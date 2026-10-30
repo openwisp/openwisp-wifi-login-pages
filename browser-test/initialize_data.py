@@ -24,7 +24,9 @@ if OPENWISP_RADIUS_PATH == "":
 registration_tests = "register" in sys.argv
 create_mobile_verification_org = "mobileVerification" in sys.argv
 cross_org_phone_verification_tests = "crossOrgPhoneVerification" in sys.argv
-expired_password_tests = "expiredPassword" in sys.argv
+continuation_tests = "continuation" in sys.argv
+expired_password_tests = "expiredPassword" in sys.argv or continuation_tests
+sync_auth_tests = "syncAuth" in sys.argv
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(OPENWISP_RADIUS_PATH, "tests"))
@@ -42,6 +44,7 @@ except ImportError:
 from browser_test_utils import cleanup_test_data  # relative import
 from django.contrib.auth import get_user_model
 from django.utils.timezone import now, timedelta
+from sesame.utils import get_token
 from swapper import load_model
 
 User = get_user_model()
@@ -118,9 +121,20 @@ if cross_org_phone_verification_tests:
     else:
         OrganizationUser.objects.create(organization=source_org, user=cross_org_user)
     RegisteredUser.objects.create(
-        user=cross_org_user, method=data["method"], is_verified=True, organization=source_org
+        user=cross_org_user,
+        method=data["method"],
+        is_verified=True,
+        organization=source_org,
     )
 
+if sync_auth_tests:
+    data = test_data["syncAuthTestUser"]
+    sync_auth_org = Organization.objects.create(name=data["organization"])
+    OrganizationRadiusSettings.objects.create(organization=sync_auth_org)
+    sync_auth_user = User.objects.create_user(
+        username=data["email"], password=data["password"], email=data["email"]
+    )
+    OrganizationUser.objects.create(organization=sync_auth_org, user=sync_auth_user)
 
 try:
     org = Organization.objects.get(slug=test_user_organization)
@@ -149,3 +163,21 @@ if expired_password_tests:
         password_updated=now().date() - timedelta(days=180),
     )
     OrganizationUser.objects.create(organization=org, user=expired_password_user)
+
+if continuation_tests:
+    RegisteredUser.objects.create(
+        user=user, organization=org, method="email", is_verified=True
+    )
+    fixtures = {}
+    for key, fixture_user in [
+        ("testuser", user),
+        ("expiredPasswordUser", expired_password_user),
+    ]:
+        fixtures[key] = {
+            "username": fixture_user.username,
+            "email": fixture_user.email,
+            "password": test_data[key]["password"],
+            "token": get_token(fixture_user),
+        }
+    # printed on the last line, which is parsed by the browser tests
+    print(json.dumps(fixtures))

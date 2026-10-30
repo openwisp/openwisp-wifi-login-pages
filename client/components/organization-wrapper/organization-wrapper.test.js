@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import {shallow, mount} from "enzyme";
 import React, {Suspense} from "react";
+import {act} from "react-dom/test-utils";
 import {MemoryRouter, Navigate, Route} from "react-router-dom";
 import {Cookies} from "react-cookie";
 import {Provider} from "react-redux";
@@ -11,9 +12,12 @@ import OrganizationWrapper from "./organization-wrapper";
 import Footer from "../footer";
 import Header from "../header";
 import Loader from "../../utils/loader";
+import LoadingContext from "../../utils/loading-context";
+import * as tokenValidation from "../../utils/validate-token";
 import needsVerify from "../../utils/needs-verify";
 import {userPendingVerification} from "../../utils/pending-verification";
 import Login from "../login";
+import PaymentProcessPage from "../payment-process/payment-process";
 import {
   Registration,
   Status,
@@ -179,6 +183,7 @@ describe("<OrganizationWrapper /> interactions", () => {
   });
 
   afterEach(() => {
+    jest.restoreAllMocks();
     console.error = originalError;
   });
 
@@ -215,6 +220,78 @@ describe("<OrganizationWrapper /> interactions", () => {
     wrapper.instance().setLoading(true);
     expect(wrapper.instance().state.loading).toBe(true);
   });
+
+  it("does not let a previous loading owner hide a newer loader", () => {
+    const previousOwner = {};
+    const nextOwner = {};
+    const organizationWrapper = wrapper.instance();
+    organizationWrapper.setLoading(true, previousOwner);
+    organizationWrapper.setLoading(true, nextOwner);
+    organizationWrapper.setLoading(false, previousOwner);
+    expect(organizationWrapper.state.loading).toBe(true);
+    organizationWrapper.setLoading(false, nextOwner);
+    expect(organizationWrapper.state.loading).toBe(false);
+  });
+
+  it("does not let a loading owner hide an unowned newer loader", () => {
+    const previousOwner = {};
+    const organizationWrapper = wrapper.instance();
+    organizationWrapper.setLoading(true, previousOwner);
+    organizationWrapper.setLoading(true);
+    organizationWrapper.setLoading(false, previousOwner);
+    expect(organizationWrapper.state.loading).toBe(true);
+  });
+
+  it.each([false, true])(
+    "releases payment loading on navigation without hiding newer loading: %s",
+    async (newerLoading) => {
+      let resolveValidation;
+      const validation = new Promise((resolve) => {
+        resolveValidation = resolve;
+      });
+      jest.spyOn(tokenValidation, "default").mockReturnValue(validation);
+      const organizationWrapper = wrapper.instance();
+      const loadingContext = {setLoading: organizationWrapper.setLoading};
+      const paymentPage = mount(
+        <LoadingContext.Provider value={loadingContext}>
+          <MemoryRouter>
+            <PaymentProcessPage
+              orgSlug="default"
+              userData={{
+                ...userData,
+                payment_url: "https://payment.example/pay",
+              }}
+              setUserData={jest.fn()}
+              cookies={props.cookies}
+              settings={{payment_iframe: true}}
+              logout={jest.fn()}
+              navigate={jest.fn()}
+              isAuthenticated
+            />
+          </MemoryRouter>
+        </LoadingContext.Provider>,
+      );
+      expect(organizationWrapper.state.loading).toBe(true);
+      if (newerLoading) {
+        organizationWrapper.setLoading(true);
+      }
+      paymentPage.setProps({
+        children: (
+          <MemoryRouter>
+            <div id="login" />
+          </MemoryRouter>
+        ),
+      });
+      expect(paymentPage.find("#login")).toHaveLength(1);
+      expect(organizationWrapper.state.loading).toBe(newerLoading);
+      await act(async () => {
+        resolveValidation(true);
+        await validation;
+      });
+      expect(organizationWrapper.state.loading).toBe(newerLoading);
+      paymentPage.unmount();
+    },
+  );
   it("should render main title if pageTitle is undefined", () => {
     expect(wrapper).toMatchSnapshot();
     expect(wrapper.props().pageTitle).toBe(undefined);
@@ -348,6 +425,18 @@ describe("<OrganizationWrapper /> interactions", () => {
     );
     expect(JSON.stringify(elements[2])).toEqual(JSON.stringify(<Footer />));
   });
+
+  it("cleans continuation params from authenticated login redirects", () => {
+    const search = "?n=pay&sid=short-secret&sesame=long-secret&gw_id=portal-1";
+    wrapper.setProps({location: {pathname: "", search}});
+    const loginRoute = wrapper
+      .find(Route)
+      .filterWhere((route) => route.props().path === "login/*");
+    expect(loginRoute.props().element).toEqual(
+      <Navigate to="/default/status?gw_id=portal-1" />,
+    );
+    expect(wrapper.find(Login)).toHaveLength(0);
+  });
 });
 
 describe("Test Organization Wrapper for unauthenticated users", () => {
@@ -411,7 +500,9 @@ describe("Test Organization Wrapper for unauthenticated users", () => {
       ),
     );
     element = pathMap["login/*"];
-    expect(JSON.stringify(element)).toEqual(JSON.stringify(<Login />));
+    expect(JSON.stringify(element)).toEqual(
+      JSON.stringify(<Login cookies={cookies} />),
+    );
     element = pathMap.status;
     // userAutoLogin is true
     expect(element).toEqual(<Navigate to="/default/logout" />);
@@ -625,6 +716,40 @@ describe("Test Organization Wrapper for authenticated and unverified users", () 
       <Navigate to="/default/payment/draft" />,
     );
   });
+
+  it("routes an unselected payment to gateway selection", () => {
+    needsVerify.mockImplementation((method) => method === "bank_card");
+    userPendingVerification.mockReturnValue(false);
+    const organization = {
+      ...props.organization,
+      configuration: {
+        ...props.organization.configuration,
+        userData: {
+          ...userData,
+          method: "bank_card",
+          is_verified: false,
+          payment_id: "payment-id",
+          payment_requires_internet: null,
+          payment_url: "https://payments.example/select",
+        },
+      },
+    };
+    const component = shallow(
+      <OrganizationWrapper {...props} organization={organization} />,
+      {disableLifecycleMethods: true},
+    );
+    component
+      .instance()
+      .setState({translationLoaded: true, configLoaded: true});
+    const pathMap = component.find(Route).reduce((mapRoute, route) => {
+      const map = mapRoute;
+      map[route.props().path] = route.props().element;
+      return map;
+    }, {});
+    expect(pathMap["complete-signup"]).toEqual(
+      <Navigate to="/default/payment/gateway" />,
+    );
+  });
 });
 
 describe("Test Organization Wrapper for pending verification user", () => {
@@ -682,7 +807,7 @@ describe("Test Organization Wrapper for pending verification user", () => {
     });
     const pathMap = getPathMap();
     expect(pathMap["login/*"]).toEqual(
-      <Navigate to="/default/complete-signup?next=/default/status" />,
+      <Navigate to="/default/complete-signup" />,
     );
   });
 });

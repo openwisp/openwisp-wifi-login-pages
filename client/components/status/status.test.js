@@ -8,7 +8,7 @@ import {CircularProgressbarWithChildren} from "react-circular-progressbar";
 import {filesize as formatBytes} from "filesize";
 import ShallowRenderer from "react-test-renderer/shallow";
 import {toast} from "react-toastify";
-import {addLocale, useLocale} from "ttag";
+import {addLocale, t, useLocale} from "ttag";
 import getConfig from "../../utils/get-config";
 import loadTranslation from "../../utils/load-translation";
 import logError from "../../utils/log-error";
@@ -17,6 +17,15 @@ import Status from "./status";
 import validateToken from "../../utils/validate-token";
 import {initialState} from "../../reducers/organization";
 import Modal from "../../utils/modal";
+import {
+  beginContinuation,
+  bindContinuation,
+  readContinuation,
+} from "../../utils/continuation";
+import {
+  localStorage as safeLocalStorage,
+  sessionStorage,
+} from "../../utils/storage";
 import {mapStateToProps, mapDispatchToProps} from "./index";
 
 jest.mock("axios");
@@ -881,9 +890,19 @@ describe("<Status /> interactions", () => {
 
   afterEach(() => {
     const cookies = new Cookies();
-    cookies.remove("default_mustLogin");
-    cookies.remove("default_mustLogout");
+    [
+      "default_mustLogin",
+      "default_mustLogout",
+      "default_logoutFormSubmitted",
+      "default_repeatLogin",
+      "default_captivePortalLogoutOnly",
+    ].forEach((key) => {
+      cookies.remove(key, {path: "/"});
+      safeLocalStorage.removeItem(key);
+    });
     cookies.remove("default_macaddr");
+    cookies.remove("default_proceedToPayment", {path: "/"});
+    safeLocalStorage.removeItem("default_proceedToPayment");
     axios.mockReset();
     jest.resetAllMocks();
     jest.restoreAllMocks();
@@ -1309,20 +1328,126 @@ describe("<Status /> interactions", () => {
     jest.useRealTimers();
   });
 
-  it("test handlePostMessage internet-mode", async () => {
+  it("authMessage planExhausted: false skips setPlanExhausted", async () => {
     props = createTestProps();
     const setLoadingMock = jest.fn();
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: setLoadingMock},
       disableLifecycleMethods: true,
     });
+    jest.spyOn(toast, "info");
     const status = wrapper.instance();
     status.handlePostMessage({
-      data: {type: "internet-mode"},
+      data: {
+        message: "Informative message",
+        type: "authMessage",
+        planExhausted: false,
+      },
       origin: "http://localhost",
     });
-    expect(props.setInternetMode).toHaveBeenCalledTimes(1);
+    expect(toast.info).toHaveBeenCalledTimes(1);
+    expect(props.setPlanExhausted).toHaveBeenCalledTimes(0);
+    expect(status.state.warningMessage).toBe("USAGE_LIMIT_EXHAUSTED_TXT");
+    expect(setLoadingMock).toHaveBeenCalledTimes(2);
+    expect(setLoadingMock).toHaveBeenLastCalledWith(false);
   });
+
+  it("authMessage planExhausted: true calls setPlanExhausted", async () => {
+    props = createTestProps();
+    const setLoadingMock = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: setLoadingMock},
+      disableLifecycleMethods: true,
+    });
+    jest.spyOn(toast, "info");
+    const status = wrapper.instance();
+    status.handlePostMessage({
+      data: {
+        message: "PLAN_EXHAUSTED_TOAST",
+        type: "authMessage",
+        warningMessage: "USAGE_LIMIT_EXHAUSTED_TXT",
+        planExhausted: true,
+      },
+      origin: "http://localhost",
+    });
+    expect(toast.info).toHaveBeenCalledTimes(1);
+    expect(props.setPlanExhausted).toHaveBeenCalledTimes(1);
+    expect(status.state.warningMessage).toBe("USAGE_LIMIT_EXHAUSTED_TXT");
+    expect(setLoadingMock).toHaveBeenCalledTimes(2);
+    expect(setLoadingMock).toHaveBeenLastCalledWith(false);
+  });
+
+  it("authMessage without planExhausted defaults to true", async () => {
+    props = createTestProps();
+    const setLoadingMock = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: setLoadingMock},
+      disableLifecycleMethods: true,
+    });
+    jest.spyOn(toast, "info");
+    const status = wrapper.instance();
+    status.handlePostMessage({
+      data: {
+        message: "PLAN_EXHAUSTED_TOAST",
+        type: "authMessage",
+        warningMessage: "USAGE_LIMIT_EXHAUSTED_TXT",
+      },
+      origin: "http://localhost",
+    });
+    expect(toast.info).toHaveBeenCalledTimes(1);
+    expect(props.setPlanExhausted).toHaveBeenCalledTimes(1);
+    expect(status.state.warningMessage).toBe("USAGE_LIMIT_EXHAUSTED_TXT");
+    expect(setLoadingMock).toHaveBeenCalledTimes(2);
+    expect(setLoadingMock).toHaveBeenLastCalledWith(false);
+  });
+
+  it("authMessage keeps loader on during payment login redirect", async () => {
+    const cookies = new Cookies();
+    cookies.set("default_proceedToPayment", true, {path: "/", maxAge: 60});
+    props = createTestProps({
+      captivePortalSyncAuth: true,
+      cookies,
+      userData: {},
+    });
+    props.settings.captive_portal_supports_coa = true;
+    const setLoadingMock = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: setLoadingMock},
+      disableLifecycleMethods: true,
+    });
+    jest.spyOn(toast, "info");
+    const status = wrapper.instance();
+    status.handlePostMessage({
+      data: {message: "RADIUS Info", type: "authMessage"},
+      origin: "http://localhost",
+    });
+    expect(toast.info).toHaveBeenCalledTimes(1);
+    expect(props.setPlanExhausted).toHaveBeenCalledTimes(1);
+    expect(setLoadingMock).toHaveBeenCalledTimes(1);
+    expect(setLoadingMock).toHaveBeenLastCalledWith(true);
+    expect(props.setUserData).toHaveBeenCalledWith({proceedToPayment: true});
+  });
+
+  it.each([
+    [false, 1],
+    [true, 0],
+  ])(
+    "handles internet-mode messages when captivePortalSyncAuth is %s",
+    async (captivePortalSyncAuth, calls) => {
+      props = createTestProps({captivePortalSyncAuth});
+      const setLoadingMock = jest.fn();
+      wrapper = shallow(<Status {...props} />, {
+        context: {setLoading: setLoadingMock},
+        disableLifecycleMethods: true,
+      });
+      const status = wrapper.instance();
+      status.handlePostMessage({
+        data: {type: "internet-mode"},
+        origin: "http://localhost",
+      });
+      expect(props.setInternetMode).toHaveBeenCalledTimes(calls);
+    },
+  );
 
   it("should not perform captive portal login (submit loginFormRef), if user is already authenticated", async () => {
     validateToken.mockReturnValue(true);
@@ -1563,39 +1688,31 @@ describe("<Status /> interactions", () => {
   });
 
   it("should perform captive portal logout (sync auth)", async () => {
-    axios
-      .mockImplementationOnce(() =>
-        Promise.resolve({
-          response: {
-            status: 200,
-            statusText: "OK",
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: [
+          {
+            session_id: 1,
+            start_time: "2020-09-08T00:22:28-04:00",
+            stop_time: "2020-09-08T00:22:29-04:00",
+            input_octets: 100000,
+            output_octets: 100000,
           },
-          data: [],
-          headers: {},
-        }),
-      )
-      .mockImplementationOnce(() =>
-        Promise.resolve({
-          status: 200,
-          statusText: "OK",
-          data: [
-            {
-              session_id: 1,
-              start_time: "2020-09-08T00:22:28-04:00",
-              stop_time: "2020-09-08T00:22:29-04:00",
-              input_octets: 100000,
-              output_octets: 100000,
-            },
-          ],
-          headers: {},
-        }),
-      );
+        ],
+        headers: {},
+      }),
+    );
+    validateToken.mockReturnValue(true);
     props = createTestProps({
       captivePortalSyncAuth: true,
     });
     const logoutFormRef = jest.fn();
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading: jest.fn()},
+      // Assign the form refs before simulating the captive portal return.
+      disableLifecycleMethods: true,
     });
     const status = wrapper.instance();
     status.logoutFormRef.current = {submit: logoutFormRef};
@@ -1609,17 +1726,39 @@ describe("<Status /> interactions", () => {
     // mustLogin is set to true in cookie and localStorage to prevent redirect loop
     expect(status.props.cookies.get("default_mustLogout")).toBe(true);
     expect(localStorage.getItem("default_mustLogout")).toBe("true");
+    expect(status.props.cookies.get("default_logoutFormSubmitted")).toBe(true);
+    expect(localStorage.getItem("default_logoutFormSubmitted")).toBe("true");
     expect(status.props.logout).not.toHaveBeenCalled();
     // Reloading page will clear localStorage
     // (simulate redirecting back from the captive portal)
     status.componentDidMount();
     await tick();
+    expect(axios).toHaveBeenCalledTimes(1);
     expect(status.props.logout).toHaveBeenCalled();
     expect(status.props.setUserData).toHaveBeenCalledWith(
       initialState.userData,
     );
     expect(localStorage.getItem("default_mustLogout")).toBe(null);
+    expect(localStorage.getItem("default_logoutFormSubmitted")).toBe(null);
+    expect(
+      status.props.cookies.get("default_logoutFormSubmitted"),
+    ).toBeUndefined();
   });
+
+  it.each([
+    [false, "owisp-auth-logout-iframe"],
+    [true, "_self"],
+  ])(
+    "targets the logout form at %s for synchronous auth %s",
+    (captivePortalSyncAuth, target) => {
+      props = createTestProps({captivePortalSyncAuth});
+      wrapper = shallow(<Status {...props} />, {
+        context: {setLoading: jest.fn()},
+        disableLifecycleMethods: true,
+      });
+      expect(wrapper.find("#cp-logout-form").prop("target")).toBe(target);
+    },
+  );
 
   it("test active session table", async () => {
     axios
@@ -2035,13 +2174,46 @@ describe("<Status /> interactions", () => {
 
     // ensure user is redirected to payment URL
     expect(props.navigate).toHaveBeenCalledWith(
-      `/${props.orgSlug}/payment/draft`,
+      `/${props.orgSlug}/payment/process`,
     );
     // ensure sessions are not fetched
     expect(Status.prototype.getUserActiveRadiusSessions).not.toHaveBeenCalled();
     expect(Status.prototype.getUserPastRadiusSessions).not.toHaveBeenCalled();
     // ensure loading overlay not removed
     expect(setLoading.mock.calls.length).toBe(1);
+  });
+
+  it("does not use the organization requirement for an offline selected payment", async () => {
+    // also verifies that the value reported by the backend takes
+    // precedence over the organization configuration
+    validateToken.mockReturnValue(true);
+    props = createTestProps();
+    props.userData = {
+      ...responseData,
+      is_verified: false,
+      method: "bank_card",
+      payment_id: "payment-id",
+      // the backend reports that the payment gateway does not require internet
+      payment_requires_internet: false,
+      payment_url: "https://account.openwisp.io/payment/123",
+      mustLogin: true,
+    };
+    props.location.search = "";
+    props.settings.mobile_phone_verification = true;
+    props.settings.subscriptions = true;
+    // the organization configuration requires internet for payments
+    props.settings.payment_requires_internet = true;
+    const setLoading = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading},
+    });
+    const submit = jest.fn();
+    wrapper.instance().loginFormRef.current = {submit};
+    await tick();
+    expect(submit).not.toHaveBeenCalled();
+    expect(props.navigate).toHaveBeenCalledWith(
+      `/${props.orgSlug}/payment/process`,
+    );
   });
 
   it("should redirect to /payment/process if proceedToPayment is true", async () => {
@@ -2057,6 +2229,13 @@ describe("<Status /> interactions", () => {
     };
     props.settings.subscriptions = true;
     props.settings.payment_requires_internet = true;
+    // Seed a persisted proceedToPayment flag to verify it gets cleared
+    // once the redirect to /payment/process happens.
+    props.cookies.set("default_proceedToPayment", "true", {
+      path: "/",
+      maxAge: 60,
+    });
+    localStorage.setItem("default_proceedToPayment", "true");
     const setLoading = jest.fn();
     wrapper = shallow(<Status {...props} />, {
       context: {setLoading},
@@ -2076,6 +2255,122 @@ describe("<Status /> interactions", () => {
       ...props.userData,
       proceedToPayment: false,
     });
+    // Stale flag must be cleared to prevent a redirect loop on the next visit
+    expect(props.cookies.get("default_proceedToPayment")).toBeUndefined();
+    expect(localStorage.getItem("default_proceedToPayment")).toBeNull();
+  });
+
+  it("should redirect an upgrader to /payment/process after captive portal login", async () => {
+    validateToken.mockReturnValue(true);
+    props = createTestProps();
+    props.userData = {
+      ...responseData,
+      payment_url: "https://account.openwisp.io/payment/123",
+      in_upgrade: true,
+      mustLogin: true,
+      proceedToPayment: true,
+    };
+    props.settings.subscriptions = true;
+    props.settings.payment_requires_internet = true;
+    const setLoading = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading},
+    });
+    const mockRef = {submit: jest.fn()};
+    wrapper.instance().loginIframeRef.current = {};
+    wrapper.instance().loginFormRef.current = mockRef;
+    wrapper.instance().handleLoginIframe();
+    expect(props.navigate).toHaveBeenCalledWith(
+      `/${props.orgSlug}/payment/process`,
+    );
+    expect(props.setUserData).toHaveBeenCalledWith({
+      ...props.userData,
+      proceedToPayment: false,
+    });
+  });
+
+  it("should send an upgrader to the draft page when proceedToPayment is false", async () => {
+    validateToken.mockReturnValue(true);
+    jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
+    jest.spyOn(Status.prototype, "getUserPastRadiusSessions");
+    props = createTestProps();
+    props.userData = {
+      ...responseData,
+      in_upgrade: true,
+      proceedToPayment: false,
+      payment_url: "https://payment.example.com/pay/1",
+    };
+    props.settings.subscriptions = true;
+    props.settings.payment_requires_internet = true;
+    const setLoading = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading},
+    });
+    await tick();
+    // in_upgrade without proceedToPayment routes through the draft page,
+    // not straight to the payment gateway.
+    expect(props.navigate).toHaveBeenCalledWith(
+      `/${props.orgSlug}/payment/draft`,
+    );
+    expect(props.navigate).not.toHaveBeenCalledWith(
+      `/${props.orgSlug}/payment/process`,
+    );
+  });
+
+  it("should not redirect to payment/draft after an upgrade was abandoned via backToStatus", async () => {
+    validateToken.mockReturnValue(true);
+    jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
+    jest.spyOn(Status.prototype, "getUserPastRadiusSessions");
+    props = createTestProps();
+    // Simulate userData after PaymentStatus.backToStatus() cleanup
+    props.userData = {
+      ...responseData,
+      in_upgrade: false,
+      proceedToPayment: false,
+      payment_url: null,
+      mustLogin: undefined,
+    };
+    props.settings.subscriptions = true;
+    props.settings.payment_requires_internet = true;
+    const setLoading = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading},
+    });
+    await tick();
+    expect(props.navigate).not.toHaveBeenCalledWith(
+      `/${props.orgSlug}/payment/draft`,
+    );
+    expect(props.navigate).not.toHaveBeenCalledWith(
+      `/${props.orgSlug}/payment/process`,
+    );
+  });
+
+  it("should restore proceedToPayment from cookie after a sync-auth page reload", async () => {
+    // Synchronous captive portal auth reloads the page on login, wiping the
+    // in-memory proceedToPayment flag. It must be restored from the cookie
+    // that was persisted before the reload, otherwise the user is not
+    // forwarded to /payment/process (see PaymentStatus.paymentProceedHandler).
+    validateToken.mockReturnValue(true);
+    const cookies = new Cookies();
+    cookies.set("default_proceedToPayment", "true", {path: "/", maxAge: 60});
+    props = createTestProps({
+      captivePortalSyncAuth: true,
+      location: {search: ""},
+      cookies,
+      userData: {
+        ...responseData,
+        in_upgrade: true,
+        mustLogin: false,
+      },
+    });
+    props.settings.payment_requires_internet = true;
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+    });
+    await tick();
+    expect(props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({proceedToPayment: true}),
+    );
   });
 
   it("should logout if mustLogout is true", async () => {
@@ -2124,6 +2419,146 @@ describe("<Status /> interactions", () => {
     expect(Status.prototype.getUserActiveRadiusSessions.mock.calls.length).toBe(
       1,
     );
+  });
+
+  it("should log out of captive portal only and keep the app session when captivePortalLogoutOnly is true", async () => {
+    validateToken.mockReturnValue(true);
+    jest.spyOn(Status.prototype, "getUserActiveRadiusSessions");
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: [
+          {
+            session_id: 1,
+            start_time: "2020-09-08T00:22:28-04:00",
+            stop_time: "2020-09-08T00:22:29-04:00",
+            input_octets: 100000,
+            output_octets: 100000,
+          },
+        ],
+        headers: {},
+      }),
+    );
+    const spyToast = jest.spyOn(toast, "success");
+    props = createTestProps({
+      userData: {
+        ...responseData,
+        mustLogout: true,
+        captivePortalLogoutOnly: true,
+      },
+    });
+    const setLoading = jest.fn();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading},
+      disableLifecycleMethods: true,
+    });
+    const status = wrapper.instance();
+    const mockRef = {submit: jest.fn()};
+    const {setUserData} = status.props;
+    status.logoutFormRef = {current: mockRef};
+    status.logoutIframeRef = {current: {}};
+    status.componentDidMount();
+    await tick();
+    status.handleLogoutIframe();
+    await tick();
+    // Captive portal session torn down but WLP session preserved
+    expect(mockRef.submit).toHaveBeenCalledTimes(1);
+    expect(status.props.logout).not.toHaveBeenCalled();
+    expect(setUserData).not.toHaveBeenCalledWith(initialState.userData);
+    // Transient flags cleared; userData preserved for authentication
+    expect(setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({
+        mustLogin: undefined,
+        mustLogout: undefined,
+        captivePortalLogoutOnly: undefined,
+      }),
+    );
+    expect(status.state.loggedOut).toBe(false);
+    expect(spyToast).not.toHaveBeenCalled();
+  });
+
+  it("should submit captive portal logout before finishing a synchronous cancellation", async () => {
+    validateToken.mockReturnValue(true);
+    axios.mockResolvedValueOnce({
+      status: 200,
+      statusText: "OK",
+      data: [{session_id: 1}],
+      headers: {},
+    });
+    props = createTestProps({
+      captivePortalSyncAuth: true,
+      userData: {
+        ...responseData,
+        mustLogout: true,
+        captivePortalLogoutOnly: true,
+      },
+    });
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    const status = wrapper.instance();
+    const logoutForm = {submit: jest.fn()};
+    status.logoutFormRef = {current: logoutForm};
+    status.logoutIframeRef = {current: {}};
+    await status.componentDidMount();
+    await tick();
+    expect(logoutForm.submit).toHaveBeenCalledTimes(1);
+    expect(props.cookies.get("default_logoutFormSubmitted")).toBe(true);
+    expect(props.logout).not.toHaveBeenCalled();
+    expect(props.setUserData).not.toHaveBeenCalledWith(
+      expect.objectContaining({
+        mustLogout: undefined,
+        captivePortalLogoutOnly: undefined,
+      }),
+    );
+    await status.handleLogoutIframe();
+    expect(props.cookies.get("default_logoutFormSubmitted")).toBeUndefined();
+    expect(localStorage.getItem("default_logoutFormSubmitted")).toBe(null);
+  });
+
+  it("should submit synchronous logout once after payment success requests it", async () => {
+    validateToken.mockReturnValue(true);
+    axios.mockResolvedValueOnce({
+      status: 200,
+      statusText: "OK",
+      data: [{session_id: 1}],
+      headers: {},
+    });
+    jest.useFakeTimers({legacyFakeTimers: true});
+    const cookies = new Cookies();
+    ["mustLogout", "repeatLogin"].forEach((flag) => {
+      cookies.set(`default_${flag}`, true, {path: "/", maxAge: 60});
+      localStorage.setItem(`default_${flag}`, "true");
+    });
+    props = createTestProps({
+      captivePortalSyncAuth: true,
+      cookies,
+      userData: {...responseData, mustLogout: true, repeatLogin: true},
+    });
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    const status = wrapper.instance();
+    const logoutForm = {submit: jest.fn()};
+    const loginForm = {submit: jest.fn()};
+    status.logoutFormRef = {current: logoutForm};
+    status.logoutIframeRef = {current: {}};
+    status.loginFormRef = {current: loginForm};
+    await status.componentDidMount();
+    await tick();
+    expect(logoutForm.submit).toHaveBeenCalledTimes(1);
+    expect(cookies.get("default_logoutFormSubmitted")).toBe(true);
+    await status.componentDidMount();
+    await tick();
+    jest.runOnlyPendingTimers();
+    await tick();
+    expect(logoutForm.submit).toHaveBeenCalledTimes(1);
+    expect(loginForm.submit).toHaveBeenCalledTimes(1);
+    expect(props.logout).not.toHaveBeenCalled();
+    expect(cookies.get("default_logoutFormSubmitted")).toBeUndefined();
   });
 
   it("should logout if activeSession do not contain current MAC", async () => {
@@ -2315,9 +2750,11 @@ describe("<Status /> interactions", () => {
     const status = wrapper.instance();
     const handleLogout = jest.spyOn(status, "handleLogout");
     const mockRef = {submit: jest.fn()};
+    const loginForm = {submit: jest.fn()};
     const {setUserData} = status.props;
     status.logoutFormRef = {current: mockRef};
     status.logoutIframeRef = {current: {}};
+    status.loginFormRef = {current: loginForm};
     status.componentDidMount();
     jest.useFakeTimers({legacyFakeTimers: true});
     const componentDidMount = jest.spyOn(status, "componentDidMount");
@@ -2329,14 +2766,19 @@ describe("<Status /> interactions", () => {
     expect(status.repeatLogin).toBe(false);
     expect(mockRef.submit.mock.calls.length).toBe(1);
     expect(handleLogout).toHaveBeenCalledWith(false, true);
-    expect(status.props.logout).toHaveBeenCalled();
+    expect(loginForm.submit).toHaveBeenCalledTimes(1);
+    expect(status.props.logout).not.toHaveBeenCalled();
     expect(setLoading.mock.calls).toEqual([[true], [true], [false]]);
     expect(Status.prototype.getUserActiveRadiusSessions.mock.calls.length).toBe(
       1,
     );
     expect(componentDidMount.mock.calls.length).toBe(0);
     expect(setUserData.mock.calls.length).toBe(1);
-    expect(setUserData).toHaveBeenCalledWith(initialState.userData);
+    expect(setUserData).toHaveBeenCalledWith({
+      ...responseData,
+      mustLogout: undefined,
+      repeatLogin: undefined,
+    });
     expect(spyToast.mock.calls.length).toBe(0);
   });
 
@@ -2578,13 +3020,25 @@ describe("<Status /> interactions", () => {
     });
     const result = await wrapper.instance().handleLogout(true, true);
     expect(localStorage).toEqual({userAutoLogin: "true"});
-    expect(prop.setUserData).not.toHaveBeenCalled();
+    expect(prop.setUserData).toHaveBeenCalledWith({
+      ...prop.userData,
+      mustLogout: undefined,
+      repeatLogin: undefined,
+    });
     expect(toast.success).not.toHaveBeenCalled();
     expect(result).toBe();
   });
   it("test handleLogout internetMode", async () => {
     validateToken.mockReturnValue(true);
-    const session = {start_time: "2021-07-08T00:22:28-04:00", stop_time: null};
+    const session = {
+      session_id: 1,
+      start_time: "2021-07-08T00:22:28-04:00",
+      stop_time: null,
+      session_time: 0,
+      input_octets: 0,
+      output_octets: 0,
+      calling_station_id: "00:00:00:00:00:00",
+    };
     const mockRef = {submit: jest.fn()};
     // Test user logged in from internet(internetMode)
     const prop = createTestProps({internetMode: true});
@@ -2595,7 +3049,7 @@ describe("<Status /> interactions", () => {
     wrapper.instance().logoutFormRef = {current: mockRef};
     wrapper
       .instance()
-      .setState({sessionsToLogout: [session], activeSession: [session]});
+      .setState({sessionsToLogout: [session], activeSessions: [session]});
 
     wrapper.instance().handleLogout(true, true);
     await tick();
@@ -2610,10 +3064,58 @@ describe("<Status /> interactions", () => {
     wrapper.instance().logoutFormRef = {current: mockRef};
     wrapper
       .instance()
-      .setState({sessionsToLogout: [session], activeSession: [session]});
+      .setState({sessionsToLogout: [session], activeSessions: [session]});
     wrapper.instance().handleLogout(true, true);
     await tick();
     expect(mockRef.submit).toHaveBeenCalledTimes(1);
+  });
+  it("should complete the logout instead of hanging when there are open sessions in internetMode", async () => {
+    const setLoading = jest.fn();
+    const session = {
+      session_id: 1,
+      start_time: "2021-07-08T00:22:28-04:00",
+      stop_time: null,
+      session_time: 0,
+      input_octets: 0,
+      output_octets: 0,
+      calling_station_id: "00:00:00:00:00:00",
+    };
+    const spyToastSuccess = jest.spyOn(toast, "success");
+    props = createTestProps({internetMode: true});
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading},
+      disableLifecycleMethods: true,
+    });
+    wrapper
+      .instance()
+      .setState({sessionsToLogout: [session], activeSessions: [session]});
+    await wrapper.instance().handleLogout(false);
+    expect(props.setUserData).toHaveBeenCalledWith(initialState.userData);
+    expect(props.logout).toHaveBeenCalledWith(
+      props.cookies,
+      props.orgSlug,
+      false,
+    );
+    expect(setLoading).toHaveBeenCalledWith(false);
+    expect(spyToastSuccess).toHaveBeenCalled();
+  });
+  it("should not overwrite userAutoLogin during a captive-portal-only logout", async () => {
+    // captivePortalLogoutOnly keeps the WLP session alive, so the flag that
+    // controls auto-login on the next WLP visit must not be touched by it.
+    localStorage.removeItem("userAutoLogin");
+    const setLoading = jest.fn();
+    props = createTestProps();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading},
+      disableLifecycleMethods: true,
+    });
+    wrapper.instance().captivePortalLogoutOnly = true;
+    await wrapper.instance().handleLogout(true);
+    expect(localStorage.getItem("userAutoLogin")).toBeNull();
+    // The captive-portal-only settle path must still run to completion.
+    expect(props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({captivePortalLogoutOnly: undefined}),
+    );
   });
   it("should not display STATUS_CONTENT and radius usage when logged in internetMode", async () => {
     const prop = createTestProps({
@@ -2758,6 +3260,7 @@ describe("<Status /> interactions", () => {
     console.error = jest.fn();
     prop.captivePortalLogoutForm.additional_fields = [
       {name: "mac_address", value: "4e:ed:11:2b:17:ae"},
+      {name: "nas_ip_address", value: "192.0.2.1"},
     ];
     wrapper = shallow(<Status {...prop} />, {
       context: {setLoading: jest.fn()},
@@ -2765,16 +3268,28 @@ describe("<Status /> interactions", () => {
     });
     const additionalField = wrapper.find("input[name='mac_address']");
     expect(additionalField.length).toEqual(1);
+    expect(additionalField.key()).toEqual("cp-logout-mac_address");
     expect(additionalField.props()).toEqual({
       name: "mac_address",
       readOnly: true,
       type: "text",
       value: "4e:ed:11:2b:17:ae",
     });
+    const nasIpAddressField = wrapper.find("input[name='nas_ip_address']");
+    expect(nasIpAddressField.length).toEqual(1);
+    expect(nasIpAddressField.key()).toEqual("cp-logout-nas_ip_address");
   });
   it("should clear userData on logout", async () => {
     validateToken.mockReturnValue(true);
-    const session = {start_time: "2021-07-08T00:22:28-04:00", stop_time: null};
+    const session = {
+      session_id: 1,
+      start_time: "2021-07-08T00:22:28-04:00",
+      stop_time: null,
+      session_time: 0,
+      input_octets: 0,
+      output_octets: 0,
+      calling_station_id: "00:00:00:00:00:00",
+    };
     const prop = createTestProps();
     prop.userData.username = "sankalp";
     const mockRef = {submit: jest.fn()};
@@ -2786,7 +3301,7 @@ describe("<Status /> interactions", () => {
     wrapper.instance().logoutIframeRef = {current: {}};
     wrapper.instance().setState({
       sessionsToLogout: [session],
-      activeSession: [session],
+      activeSessions: [session],
       loggedOut: true,
     });
     await wrapper.instance().handleLogout(false);
@@ -3194,9 +3709,125 @@ describe("<Status /> interactions", () => {
     });
     jest.spyOn(wrapper.instance(), "upgradeUserPlan");
     wrapper.setState({upgradePlans: [{id: "1"}]});
-    wrapper.instance().upgradeUserPlan({target: {value: 0}});
-    await tick();
+    await wrapper.instance().upgradeUserPlan({target: {value: 0}});
     expect(toast.error.mock.calls.length).toBe(1);
+  });
+  it("shows an error for a network failure while upgrading a plan", async () => {
+    const error = new Error("Network error");
+    jest.spyOn(toast, "error");
+    axios.mockRejectedValueOnce(error);
+    props = createTestProps();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    wrapper.setState({upgradePlans: [{id: "1"}]});
+    await wrapper.instance().upgradeUserPlan({target: {value: 0}});
+    expect(toast.error).toHaveBeenCalledWith(t`ERR_OCCUR`);
+    expect(logError).toHaveBeenCalledWith(error, "Error while upgrading plan");
+  });
+  it("test upgradeUserPlan relays the backend error message on 429 (too many orders)", async () => {
+    jest.spyOn(toast, "error");
+    axios.mockImplementation(() =>
+      Promise.reject({
+        response: {
+          status: 429,
+          statusText: "TOO_MANY_REQUESTS",
+          data: {
+            detail: "You have reached the maximum number of allowed orders.",
+          },
+        },
+      }),
+    );
+    props = createTestProps();
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    wrapper.setState({upgradePlans: [{id: "1"}]});
+    await wrapper.instance().upgradeUserPlan({target: {value: 0}});
+    expect(toast.error).toHaveBeenCalledWith(
+      "You have reached the maximum number of allowed orders.",
+    );
+  });
+  it("test upgradeUserPlan stores in_upgrade from the response", async () => {
+    props = createTestProps();
+    props.settings.payment_requires_internet = false;
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    wrapper.setState({upgradePlans: [{id: "1"}]});
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: {
+          payment_url: "https://payment.example.com/pay/1",
+          payment_return_url:
+            "https://wifi.example.com/default/login?n=pay&sid=secret",
+          in_upgrade: true,
+        },
+      }),
+    );
+    await wrapper.instance().upgradeUserPlan({target: {value: 0}});
+    expect(props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({
+        payment_url: "https://payment.example.com/pay/1",
+        payment_return_url:
+          "https://wifi.example.com/default/login?n=pay&sid=secret",
+        in_upgrade: true,
+        // Token consumed by portal login; must be cleared so a fresh one is fetched
+        radius_user_token: undefined,
+      }),
+    );
+    expect(props.navigate).toHaveBeenCalledWith("/default/payment/process");
+    // A falsy in_upgrade must survive the assignment untouched
+    axios.mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: {
+          payment_url: "https://payment.example.com/pay/1",
+          in_upgrade: false,
+        },
+      }),
+    );
+    await wrapper.instance().upgradeUserPlan({target: {value: 0}});
+    expect(props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({in_upgrade: false}),
+    );
+  });
+  it("test upgradeUserPlan redirects to draft when payment_requires_internet", async () => {
+    axios.mockImplementation(() =>
+      Promise.resolve({
+        status: 200,
+        statusText: "OK",
+        data: {
+          payment_url: "https://payment.example.com/pay/1",
+          in_upgrade: true,
+        },
+      }),
+    );
+    localStorage.clear();
+    props = createTestProps();
+    props.settings.payment_requires_internet = true;
+    props.captivePortalSyncAuth = true;
+    wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    wrapper.setState({upgradePlans: [{id: "1"}]});
+    await wrapper.instance().upgradeUserPlan({target: {value: 0}});
+    expect(props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({
+        payment_url: "https://payment.example.com/pay/1",
+        in_upgrade: true,
+      }),
+    );
+    // Route through draft to enforce portal login before gateway payment
+    expect(props.navigate).toHaveBeenCalledWith("/default/payment/draft");
+    expect(props.navigate).not.toHaveBeenCalledWith("/default/payment/process");
   });
   it("should hide the usage overview if getUserRadiusUsage returns 404", async () => {
     validateToken.mockReturnValue(true);
@@ -3617,7 +4248,7 @@ describe("<Status /> interactions", () => {
     toast.success.mock.calls.pop()[1].onOpen();
     expect(toast.dismiss).toHaveBeenCalledWith("main_toast_id");
     expect(prop.navigate).toHaveBeenCalledWith(
-      `/${prop.orgSlug}/payment/process`,
+      `/${prop.orgSlug}/payment/draft`,
     );
     expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith({
       ...prop.userData,
@@ -3738,7 +4369,7 @@ describe("<Status /> interactions", () => {
     toast.success.mock.calls.pop()[1].onOpen();
     expect(toast.dismiss).toHaveBeenCalledWith("main_toast_id");
     expect(prop.navigate).toHaveBeenCalledWith(
-      `/${prop.orgSlug}/payment/process`,
+      `/${prop.orgSlug}/payment/draft`,
     );
     expect(wrapper.instance().props.setUserData).toHaveBeenCalledWith({
       ...prop.userData,
@@ -3825,5 +4456,149 @@ describe("<Status /> accounting_swap_octets", () => {
     // download is the 4th row, upload is the 5th
     expect(rows.at(3).find("td").text()).toBe("1 kB");
     expect(rows.at(4).find("td").text()).toBe("2 kB");
+  });
+});
+
+describe("<Status /> login continuation", () => {
+  const destination = "/default/change-password";
+  const mountStatus = async (userProps = {}, propsOverride = {}) => {
+    validateToken.mockReturnValue(true);
+    axios.mockResolvedValue({status: 200, data: [], headers: {}});
+    const props = createTestProps({
+      userData: {...responseData, ...userProps},
+      location: {search: ""},
+      ...propsOverride,
+    });
+    const wrapper = shallow(<Status {...props} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    const status = wrapper.instance();
+    status.loginFormRef.current = {submit: jest.fn()};
+    return {props, status};
+  };
+  const startContinuation = (username = "tester") => {
+    beginContinuation(`?next=${destination}`, "default");
+    bindContinuation("default", username);
+  };
+
+  beforeEach(() => {
+    Status.contextTypes = {setLoading: PropTypes.func};
+    loadTranslation("en", "default");
+    startContinuation();
+  });
+
+  afterEach(() => {
+    sessionStorage.clear();
+    window.history.replaceState({}, "", "/");
+    axios.mockReset();
+    jest.resetAllMocks();
+    jest.restoreAllMocks();
+  });
+
+  it("follows next once the sync captive portal login returned", async () => {
+    const {props, status} = await mountStatus(
+      {},
+      {captivePortalSyncAuth: true},
+    );
+    await status.componentDidMount();
+    await tick();
+    expect(props.navigate).toHaveBeenCalledWith(destination, {replace: true});
+    expect(readContinuation("default")).toBeNull();
+  });
+
+  it("consumes a payment continuation after synchronous login returns", async () => {
+    sessionStorage.clear();
+    beginContinuation("?next=/default/payment/process/", "default");
+    bindContinuation("default", "tester");
+    const {props, status} = await mountStatus(
+      {
+        in_upgrade: true,
+        payment_url: "https://payments.example/process",
+        proceedToPayment: true,
+      },
+      {captivePortalSyncAuth: true},
+    );
+    props.settings.payment_requires_internet = true;
+    await status.componentDidMount();
+    await tick();
+    expect(props.navigate).toHaveBeenCalledWith("/default/payment/process");
+    expect(readContinuation("default")).toBeNull();
+  });
+
+  it("drops next when the sync captive portal login failed", async () => {
+    const toastError = jest.spyOn(toast, "error");
+    window.history.replaceState({}, "", "/default/status?reply=Auth+failed");
+    const {props, status} = await mountStatus(
+      {},
+      {captivePortalSyncAuth: true},
+    );
+    await status.componentDidMount();
+    await tick();
+    expect(props.navigate).not.toHaveBeenCalled();
+    expect(readContinuation("default")).toBeNull();
+    expect(toastError).toHaveBeenCalledTimes(1);
+    expect(status.context.setLoading).toHaveBeenLastCalledWith(false);
+  });
+
+  it("follows next after a cross-origin captive portal iframe load", async () => {
+    const {props, status} = await mountStatus();
+    status.loginIframeRef.current = {
+      contentWindow: {
+        get location() {
+          throw new Error("cross-origin");
+        },
+      },
+    };
+    status.handleLoginIframe();
+    await tick();
+    expect(props.navigate).toHaveBeenCalledWith(destination, {replace: true});
+    expect(readContinuation("default")).toBeNull();
+  });
+
+  it("does not follow next while the phone verification is pending", async () => {
+    const {props, status} = await mountStatus({
+      is_verified: false,
+      method: "mobile_phone",
+    });
+    props.settings.mobile_phone_verification = true;
+    await status.finalOperations();
+    expect(props.navigate).not.toHaveBeenCalledWith(
+      destination,
+      expect.anything(),
+    );
+    expect(readContinuation("default")).not.toBeNull();
+  });
+
+  it("clears next bound to another user without following it", async () => {
+    sessionStorage.clear();
+    startContinuation("someone-else");
+    const {props, status} = await mountStatus();
+    await status.finalOperations();
+    expect(props.navigate).not.toHaveBeenCalled();
+    expect(readContinuation("default")).toBeNull();
+  });
+
+  it("consumes logout flags before logging in without a portal session", async () => {
+    const {props, status} = await mountStatus({
+      mustLogout: true,
+      repeatLogin: true,
+    });
+    props.cookies.set("default_mustLogout", "true", {path: "/"});
+    props.cookies.set("default_repeatLogin", "true", {path: "/"});
+    localStorage.setItem("default_mustLogout", "true");
+    localStorage.setItem("default_repeatLogin", "true");
+    await status.handleLogout(false, true);
+    expect(status.loginFormRef.current.submit).toHaveBeenCalledTimes(1);
+    expect(props.cookies.get("default_mustLogout")).toBeUndefined();
+    expect(props.cookies.get("default_repeatLogin")).toBeUndefined();
+    expect(localStorage.getItem("default_mustLogout")).toBeNull();
+    expect(localStorage.getItem("default_repeatLogin")).toBeNull();
+    expect(props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({
+        mustLogout: undefined,
+        repeatLogin: undefined,
+      }),
+    );
   });
 });

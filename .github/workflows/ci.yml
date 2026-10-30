@@ -119,7 +119,9 @@ jobs:
 
       - name: Get openwisp-radius
         run: |
-          git clone --depth=1 https://github.com/openwisp/openwisp-radius/ openwisp-radius
+          # TODO: switch back to master once the captive portal mock
+          # redirect is merged in openwisp-radius
+          git clone --depth=1 --branch captive-portal-mock-redirect https://github.com/openwisp/openwisp-radius/ openwisp-radius
           cd openwisp-radius
           echo "OpenWISP RADIUS commit: $(git rev-parse HEAD)"
           echo "OW_RADIUS_VERSION=$(git rev-parse HEAD)" >> $GITHUB_ENV
@@ -149,8 +151,8 @@ jobs:
           pip install -e ".[saml]"
           ./tests/manage.py migrate
 
-      - name: Creating configuration of organization (supports mobile verification)
-        run: node browser-test/create-mobile-configuration.js
+      - name: Creating configuration of organizations (mobile verification and sync auth)
+        run: node browser-test/create-test-organizations.js
 
       - name: Run OpenWISP WiFi Login Pages dev server
         run: yarn start &

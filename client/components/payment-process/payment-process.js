@@ -6,13 +6,22 @@ import {Navigate} from "react-router-dom";
 import {toast} from "react-toastify";
 import {t} from "ttag";
 import LoadingContext from "../../utils/loading-context";
+import Loader from "../../utils/loader";
 import validateToken from "../../utils/validate-token";
 import getPaymentStatusRedirectUrl from "../../utils/get-payment-status";
+import {
+  gatewayRoute,
+  getPaymentRoute,
+  hasPendingPayment,
+  storePaymentReturnContext,
+  usesPaymentIframe,
+} from "../../utils/payment";
 
 export default class PaymentProcess extends React.Component {
   constructor(props) {
     super(props);
     this.iframeRef = React.createRef();
+    this.isComponentMounted = true;
     this.state = {
       isTokenValid: null,
       iframeHeight: 450,
@@ -20,32 +29,57 @@ export default class PaymentProcess extends React.Component {
   }
 
   async componentDidMount() {
-    const {cookies, orgSlug, setUserData, logout} = this.props;
+    const {cookies, orgSlug, setUserData, logout, settings} = this.props;
     let {userData} = this.props;
+    const initialUserData = userData;
+    let validatedUserData;
     const {setLoading} = this.context;
 
-    setLoading(true);
+    setLoading(true, this);
     toast.info(t`PLEASE_WAIT`, {autoClose: 10000});
     const isTokenValid = await validateToken(
       cookies,
       orgSlug,
-      setUserData,
+      (data) => {
+        // Connected props may not yet reflect the validation update.
+        validatedUserData = data;
+        setUserData(data);
+      },
       userData,
       logout,
     );
 
-    if (isTokenValid === false) {
-      setLoading(false);
+    if (!this.isComponentMounted) {
       return;
     }
-    this.setState({isTokenValid});
-
+    if (isTokenValid === false) {
+      setLoading(false, this);
+      return;
+    }
     ({userData} = this.props);
+    userData = validatedUserData || userData;
+    const initialPayment = hasPendingPayment(initialUserData);
+    // A completed-payment refresh can clear fields needed to restore portal
+    // access, so retain the pending payment's original context in that case.
+    const preserveInitialContext =
+      initialPayment &&
+      (!hasPendingPayment(userData) ||
+        (initialUserData.in_upgrade && !userData.in_upgrade) ||
+        (typeof initialUserData.payment_requires_internet === "boolean" &&
+          userData.payment_requires_internet === undefined));
+    const paymentData = preserveInitialContext ? initialUserData : userData;
+    if (hasPendingPayment(paymentData)) {
+      storePaymentReturnContext(paymentData, settings);
+    }
     setUserData({...userData});
+    this.setState({isTokenValid});
     window.addEventListener("message", this.handlePostMessage);
   }
 
   componentWillUnmount() {
+    this.isComponentMounted = false;
+    const {setLoading} = this.context;
+    setLoading(false, this);
     window.removeEventListener("message", this.handlePostMessage);
   }
 
@@ -76,11 +110,11 @@ export default class PaymentProcess extends React.Component {
           break;
         }
         case "showLoader":
-          setLoading(true);
+          setLoading(true, this);
           break;
         case "setHeight":
           this.setState({iframeHeight: message});
-          setLoading(false);
+          setLoading(false, this);
           toast.dismiss();
           break;
         default:
@@ -109,7 +143,22 @@ export default class PaymentProcess extends React.Component {
       return redirectToStatus();
     }
 
-    if (isTokenValid === true && !settings.payment_iframe) {
+    // checked before token validation to never load an unselected payment
+    if (
+      getPaymentRoute(orgSlug, userData, settings) === gatewayRoute(orgSlug)
+    ) {
+      return <Navigate to={gatewayRoute(orgSlug)} />;
+    }
+
+    // The return context must be saved before either payment presentation starts.
+    if (isTokenValid !== true) {
+      return <Loader />;
+    }
+
+    if (
+      isTokenValid === true &&
+      usesPaymentIframe(userData, settings) === false
+    ) {
       this.redirectToPaymentUrl(userData.payment_url);
       return null;
     }

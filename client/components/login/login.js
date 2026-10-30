@@ -3,6 +3,7 @@ import "./index.css";
 
 import axios from "axios";
 import PropTypes from "prop-types";
+import {Cookies} from "react-cookie";
 import qs from "qs";
 import React, {Suspense} from "react";
 import {Link, Route, Routes} from "react-router-dom";
@@ -30,6 +31,16 @@ import getLanguageHeaders from "../../utils/get-language-headers";
 import {userPendingVerification} from "../../utils/pending-verification";
 import redirectToPayment from "../../utils/redirect-to-payment";
 import {localStorage, sessionStorage} from "../../utils/storage";
+import {
+  beginContinuation,
+  bindContinuation,
+  clearContinuation,
+  cleanContinuationSearch,
+  isRoute,
+} from "../../utils/continuation";
+import {storeValue} from "../../utils/synced-storage";
+import {gatewayRoute, requiresInternet} from "../../utils/payment";
+import routes from "../../constants/routes";
 
 const PhoneInput = React.lazy(
   () => import(/* webpackChunkName: 'PhoneInput' */ "react-phone-input-2"),
@@ -53,9 +64,20 @@ export default class Login extends React.Component {
     const username = getParameterByName("username");
     const token = getParameterByName("token");
     const {loginForm, setTitle, orgName, orgSlug, settings} = this.props;
-    const sesame_token = getParameterByName(
+    const search = new URLSearchParams(window.location.search);
+    let sesame_token = getParameterByName(
       settings.passwordless_auth_token_name,
     );
+    // `sid` is the short form of the passwordless token param. It is used
+    // only if the configured param is absent and `sid` appears exactly once
+    // (a repeated `sid` is ambiguous, so it is ignored).
+    if (!search.has(settings.passwordless_auth_token_name)) {
+      const sidValues = search.getAll("sid");
+      if (sidValues.length === 1 && sidValues[0]) [sesame_token] = sidValues;
+    }
+    const loginMethod = getParameterByName("login_method");
+    beginContinuation(window.location.search, orgSlug);
+    this.removeContinuationParams();
     setTitle(t`LOGIN`, orgName);
     let remember_me;
 
@@ -69,7 +91,6 @@ export default class Login extends React.Component {
 
     // social login / SAML login
     if (username && token) {
-      const loginMethod = getParameterByName("login_method");
       if (loginMethod) {
         // we have to use localStorage because the page may be
         // closed and the information may be lost if we use sessionStorage
@@ -287,7 +308,7 @@ export default class Login extends React.Component {
   };
 
   handleAuthentication = (data = {}, useSessionStorage = false) => {
-    const {orgSlug, authenticate, setUserData, navigate} = this.props;
+    const {orgSlug, authenticate, setUserData, navigate, settings} = this.props;
     const {remember_me} = this.state;
     // useSessionStorage=true is passed from social login or SAML
     // user needs to repeat the login process each time
@@ -311,6 +332,9 @@ export default class Login extends React.Component {
       toastId: mainToastId,
     });
     setUserData(nextUserData);
+    // An expired password must be changed first: drop the continuation.
+    if (data.password_expired) clearContinuation();
+    const continuation = bindContinuation(orgSlug, data.username);
     if (userPendingVerification(data)) {
       navigate(`/${orgSlug}/complete-signup`);
       authenticate(true);
@@ -320,11 +344,67 @@ export default class Login extends React.Component {
       nextUserData.method === "bank_card" &&
       nextUserData.is_verified === false
     ) {
-      redirectToPayment(orgSlug, navigate);
+      redirectToPayment(orgSlug, navigate, nextUserData, settings);
       authenticate(true);
       return;
     }
+    // Other destinations are followed by Status once the captive portal
+    // login is complete, only payment/process needs handling here.
+    if (
+      continuation &&
+      isRoute(continuation.destination, orgSlug, routes.paymentProcess)
+    ) {
+      this.proceedToPayment(nextUserData);
+      return;
+    }
     authenticate(true);
+  };
+
+  // Skips the draft page: opens the payment page directly, after the captive
+  // portal login when the payment needs internet access.
+  proceedToPayment = (user) => {
+    const {
+      orgSlug,
+      settings,
+      authenticate,
+      navigate,
+      setUserData,
+      cookies,
+      captivePortalSyncAuth,
+    } = this.props;
+    const isInternetRequired = requiresInternet(user, settings);
+    if (isInternetRequired) {
+      const flags = {proceedToPayment: true, mustLogin: true};
+      setUserData({...user, ...flags});
+      Object.entries(flags).forEach(([key, value]) =>
+        storeValue(captivePortalSyncAuth, `${orgSlug}_${key}`, value, cookies),
+      );
+      authenticate(true);
+      return;
+    }
+    // Direct navigation fulfills the continuation.
+    clearContinuation();
+    authenticate(true);
+    navigate(
+      isInternetRequired === null
+        ? gatewayRoute(orgSlug)
+        : `/${orgSlug}/payment/process`,
+    );
+  };
+
+  // Removes the continuation and SESAME token params from the URL so that
+  // they are not kept in the browser history.
+  removeContinuationParams = () => {
+    const {navigate, settings} = this.props;
+    const {pathname, search} = window.location;
+    const clean = cleanContinuationSearch(
+      search,
+      settings.passwordless_auth_token_name,
+    );
+    const current = new URLSearchParams(search).toString();
+    if (clean !== (current ? `?${current}` : "")) {
+      navigate(`${pathname}${clean}`, {replace: true});
+    }
   };
 
   handleCheckBoxChange = (event) => {
@@ -577,6 +657,7 @@ Login.propTypes = {
     mobile_phone_verification: PropTypes.bool,
     subscriptions: PropTypes.bool,
     passwordless_auth_token_name: PropTypes.string,
+    payment_requires_internet: PropTypes.bool,
   }).isRequired,
   setTitle: PropTypes.func.isRequired,
   captivePortalLoginForm: PropTypes.shape({
@@ -589,4 +670,9 @@ Login.propTypes = {
     additional_fields: PropTypes.array,
   }).isRequired,
   navigate: PropTypes.func.isRequired,
+  cookies: PropTypes.instanceOf(Cookies).isRequired,
+  captivePortalSyncAuth: PropTypes.bool,
+};
+Login.defaultProps = {
+  captivePortalSyncAuth: false,
 };
