@@ -153,6 +153,7 @@ describe("Test <PaymentProcess /> cases", () => {
 
   it("does not finish validation after unmounting", async () => {
     let resolveValidation;
+    const setLoading = jest.fn();
     props = createTestProps({
       userData: {...responseData, in_upgrade: true},
     });
@@ -163,7 +164,7 @@ describe("Test <PaymentProcess /> cases", () => {
     );
     const addEventListener = jest.spyOn(window, "addEventListener");
     wrapper = shallow(<PaymentProcess {...props} />, {
-      context: loadingContextValue,
+      context: {setLoading},
       disableLifecycleMethods: true,
     });
     const paymentProcess = wrapper.instance();
@@ -171,9 +172,12 @@ describe("Test <PaymentProcess /> cases", () => {
       .spyOn(paymentProcess, "setState")
       .mockImplementation();
     const mounting = paymentProcess.componentDidMount();
+    expect(setLoading).toHaveBeenCalledWith(true, paymentProcess);
     wrapper.unmount();
+    expect(setLoading).toHaveBeenLastCalledWith(false, paymentProcess);
     resolveValidation(true);
     await mounting;
+    expect(setLoading).toHaveBeenCalledTimes(2);
     expect(setState).not.toHaveBeenCalled();
     expect(props.setUserData).not.toHaveBeenCalled();
     expect(takePaymentReturnContext()).toBe(null);
@@ -181,6 +185,20 @@ describe("Test <PaymentProcess /> cases", () => {
       "message",
       paymentProcess.handlePostMessage,
     );
+  });
+
+  it("releases loading on unmount after validation completes", async () => {
+    const setLoading = jest.fn();
+    props = createTestProps({userData: responseData});
+    validateToken.mockResolvedValue(true);
+    wrapper = shallow(<PaymentProcess {...props} />, {
+      context: {setLoading},
+      disableLifecycleMethods: true,
+    });
+    const paymentProcess = wrapper.instance();
+    await paymentProcess.componentDidMount();
+    wrapper.unmount();
+    expect(setLoading).toHaveBeenLastCalledWith(false, paymentProcess);
   });
 
   it("keeps a selected internet-requiring payment on the processing page", async () => {
@@ -225,7 +243,7 @@ describe("Test <PaymentProcess /> cases", () => {
       context: {setLoading},
     });
     await tick();
-    expect(setLoading).toHaveBeenCalledWith(false);
+    expect(setLoading).toHaveBeenCalledWith(false, wrapper.instance());
   });
 
   it("should render payment_url in iframe", async () => {

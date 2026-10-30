@@ -83,7 +83,11 @@ export default class OrganizationWrapper extends React.Component {
     }
   }
 
-  setLoading = (value) => {
+  setLoading = (value, owner) => {
+    if (!value && owner !== undefined && owner !== this.loadingOwner) {
+      return;
+    }
+    this.loadingOwner = value ? owner : undefined;
     this.setState({loading: value});
   };
 

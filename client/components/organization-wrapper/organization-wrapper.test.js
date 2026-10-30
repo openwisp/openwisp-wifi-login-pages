@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import {shallow, mount} from "enzyme";
 import React, {Suspense} from "react";
+import {act} from "react-dom/test-utils";
 import {MemoryRouter, Navigate, Route} from "react-router-dom";
 import {Cookies} from "react-cookie";
 import {Provider} from "react-redux";
@@ -11,9 +12,12 @@ import OrganizationWrapper from "./organization-wrapper";
 import Footer from "../footer";
 import Header from "../header";
 import Loader from "../../utils/loader";
+import LoadingContext from "../../utils/loading-context";
+import * as tokenValidation from "../../utils/validate-token";
 import needsVerify from "../../utils/needs-verify";
 import {userPendingVerification} from "../../utils/pending-verification";
 import Login from "../login";
+import PaymentProcessPage from "../payment-process/payment-process";
 import {
   Registration,
   Status,
@@ -179,6 +183,7 @@ describe("<OrganizationWrapper /> interactions", () => {
   });
 
   afterEach(() => {
+    jest.restoreAllMocks();
     console.error = originalError;
   });
 
@@ -215,6 +220,78 @@ describe("<OrganizationWrapper /> interactions", () => {
     wrapper.instance().setLoading(true);
     expect(wrapper.instance().state.loading).toBe(true);
   });
+
+  it("does not let a previous loading owner hide a newer loader", () => {
+    const previousOwner = {};
+    const nextOwner = {};
+    const organizationWrapper = wrapper.instance();
+    organizationWrapper.setLoading(true, previousOwner);
+    organizationWrapper.setLoading(true, nextOwner);
+    organizationWrapper.setLoading(false, previousOwner);
+    expect(organizationWrapper.state.loading).toBe(true);
+    organizationWrapper.setLoading(false, nextOwner);
+    expect(organizationWrapper.state.loading).toBe(false);
+  });
+
+  it("does not let a loading owner hide an unowned newer loader", () => {
+    const previousOwner = {};
+    const organizationWrapper = wrapper.instance();
+    organizationWrapper.setLoading(true, previousOwner);
+    organizationWrapper.setLoading(true);
+    organizationWrapper.setLoading(false, previousOwner);
+    expect(organizationWrapper.state.loading).toBe(true);
+  });
+
+  it.each([false, true])(
+    "releases payment loading on navigation without hiding newer loading: %s",
+    async (newerLoading) => {
+      let resolveValidation;
+      const validation = new Promise((resolve) => {
+        resolveValidation = resolve;
+      });
+      jest.spyOn(tokenValidation, "default").mockReturnValue(validation);
+      const organizationWrapper = wrapper.instance();
+      const loadingContext = {setLoading: organizationWrapper.setLoading};
+      const paymentPage = mount(
+        <LoadingContext.Provider value={loadingContext}>
+          <MemoryRouter>
+            <PaymentProcessPage
+              orgSlug="default"
+              userData={{
+                ...userData,
+                payment_url: "https://payment.example/pay",
+              }}
+              setUserData={jest.fn()}
+              cookies={props.cookies}
+              settings={{payment_iframe: true}}
+              logout={jest.fn()}
+              navigate={jest.fn()}
+              isAuthenticated
+            />
+          </MemoryRouter>
+        </LoadingContext.Provider>,
+      );
+      expect(organizationWrapper.state.loading).toBe(true);
+      if (newerLoading) {
+        organizationWrapper.setLoading(true);
+      }
+      paymentPage.setProps({
+        children: (
+          <MemoryRouter>
+            <div id="login" />
+          </MemoryRouter>
+        ),
+      });
+      expect(paymentPage.find("#login")).toHaveLength(1);
+      expect(organizationWrapper.state.loading).toBe(newerLoading);
+      await act(async () => {
+        resolveValidation(true);
+        await validation;
+      });
+      expect(organizationWrapper.state.loading).toBe(newerLoading);
+      paymentPage.unmount();
+    },
+  );
   it("should render main title if pageTitle is undefined", () => {
     expect(wrapper).toMatchSnapshot();
     expect(wrapper.props().pageTitle).toBe(undefined);

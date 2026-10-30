@@ -35,7 +35,7 @@ export default class PaymentProcess extends React.Component {
     let validatedUserData;
     const {setLoading} = this.context;
 
-    setLoading(true);
+    setLoading(true, this);
     toast.info(t`PLEASE_WAIT`, {autoClose: 10000});
     const isTokenValid = await validateToken(
       cookies,
@@ -53,7 +53,7 @@ export default class PaymentProcess extends React.Component {
       return;
     }
     if (isTokenValid === false) {
-      setLoading(false);
+      setLoading(false, this);
       return;
     }
     ({userData} = this.props);
@@ -78,6 +78,8 @@ export default class PaymentProcess extends React.Component {
 
   componentWillUnmount() {
     this.isComponentMounted = false;
+    const {setLoading} = this.context;
+    setLoading(false, this);
     window.removeEventListener("message", this.handlePostMessage);
   }
 
@@ -108,11 +110,11 @@ export default class PaymentProcess extends React.Component {
           break;
         }
         case "showLoader":
-          setLoading(true);
+          setLoading(true, this);
           break;
         case "setHeight":
           this.setState({iframeHeight: message});
-          setLoading(false);
+          setLoading(false, this);
           toast.dismiss();
           break;
         default:
