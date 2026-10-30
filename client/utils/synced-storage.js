@@ -45,6 +45,8 @@ export const resolveStoredValue = (
 
   const cookieValue = cookies.get(key);
   if (cookieValue !== undefined) {
+    // Keep the cookie because the logout iframe handler may read the flag again.
+    // It is cleared when the operation finishes or expires after one minute.
     localStorage.removeItem(key);
     return cookieValue;
   }

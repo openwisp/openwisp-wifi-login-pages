@@ -21,9 +21,11 @@ import logError from "../../utils/log-error";
 import {
   getGateways,
   selectGateway,
+  clearPaymentReturnContext,
   takePaymentReturnContext,
   storePaymentReturnContext,
 } from "../../utils/payment";
+import {clearCaptivePortalFlags} from "../../utils/synced-storage";
 import PaymentGateway from "../payment-gateway";
 import Status from "../status/status";
 
@@ -113,6 +115,8 @@ describe("Test <PaymentStatus /> cases", () => {
   });
 
   afterEach(() => {
+    clearPaymentReturnContext();
+    clearCaptivePortalFlags("default", new Cookies());
     // Restore browser APIs so test-specific mocks do not leak to later tests.
     if (clipboardDescriptor) {
       Object.defineProperty(navigator, "clipboard", clipboardDescriptor);
@@ -671,6 +675,50 @@ describe("Test <PaymentStatus /> cases", () => {
       undefined,
     );
     expect(props.navigate).toHaveBeenCalledWith(`/${props.orgSlug}/status`);
+  });
+
+  it.each([
+    ["token validation fails", true, false],
+    ["the user is unauthenticated", false, false],
+  ])(
+    "redirects a cancelled payment when %s",
+    async (_, isAuthenticated, valid) => {
+      props = createTestProps({
+        userData: {},
+        params: {status: "cancelled"},
+        isAuthenticated,
+      });
+      validateToken.mockResolvedValue(valid);
+      wrapper = shallow(<PaymentStatus {...props} />, {
+        context: loadingContextValue,
+      });
+      await tick();
+      expect(wrapper.find("Navigate").prop("to")).toBe("/default/status");
+      expect(cancelUpgradePlan).not.toHaveBeenCalled();
+    },
+  );
+
+  it("keeps the cancellation loader while a valid cancellation is pending", async () => {
+    let resolveCancellation;
+    props = createTestProps({
+      userData: {...responseData, in_upgrade: true},
+      params: {status: "cancelled"},
+      isAuthenticated: true,
+    });
+    validateToken.mockResolvedValue(true);
+    cancelUpgradePlan.mockReturnValue(
+      new Promise((resolve) => {
+        resolveCancellation = resolve;
+      }),
+    );
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    expect(wrapper.find(Loader)).toHaveLength(1);
+    expect(props.navigate).not.toHaveBeenCalled();
+    resolveCancellation({});
+    await tick();
   });
 
   it("should clear a cancelled payment before returning to status", async () => {
@@ -1567,10 +1615,11 @@ describe("Test <PaymentStatus /> cases", () => {
       {response: {status: 404, data: {response_code: "NOT_FOUND"}}},
       "Error while cancelling plan upgrade",
     );
-    expect(props.navigate).toHaveBeenCalledWith("/default/status");
+    expect(props.setUserData).not.toHaveBeenCalled();
+    expect(props.navigate).not.toHaveBeenCalled();
   });
 
-  it("should report an error and still go back to status when cancelling fails unexpectedly", async () => {
+  it("preserves a pending upgrade and allows cancellation to be retried after an error", async () => {
     const spyToastError = jest.spyOn(toast, "error");
     props = createTestProps({
       params: {status: "failed"},
@@ -1584,11 +1633,14 @@ describe("Test <PaymentStatus /> cases", () => {
       },
     });
     validateToken.mockReturnValue(true);
-    cancelUpgradePlan.mockRejectedValue({response: {status: 500}});
+    cancelUpgradePlan.mockRejectedValueOnce({response: {status: 500}});
+    cancelUpgradePlan.mockResolvedValueOnce({});
     wrapper = shallow(<PaymentStatus {...props} />, {
       context: loadingContextValue,
     });
     await tick();
+    localStorage.setItem("default_proceedToPayment", "true");
+    storePaymentReturnContext(props.userData, props.settings);
     wrapper.find(".payment-status-row-4 .button").simulate("click", {});
     await tick();
     expect(spyToastError).toHaveBeenCalledTimes(1);
@@ -1596,18 +1648,48 @@ describe("Test <PaymentStatus /> cases", () => {
       {response: {status: 500}},
       "Error while cancelling plan upgrade",
     );
-    // The user must still be able to leave the failed page even if the
-    // cancel request itself errored out.
-    expect(props.setUserData).toHaveBeenCalledWith({
-      ...props.userData,
-      in_upgrade: false,
-      proceedToPayment: false,
-      payment_url: null,
-      payment_return_url: null,
-      mustLogin: undefined,
-      mustLogout: true,
-      captivePortalLogoutOnly: true,
+    expect(props.setUserData).not.toHaveBeenCalled();
+    expect(props.navigate).not.toHaveBeenCalled();
+    expect(localStorage.getItem("default_proceedToPayment")).toBe("true");
+    expect(takePaymentReturnContext()).toEqual({
+      inUpgrade: true,
+      paymentRequiresInternet: false,
     });
+    wrapper.find(".payment-status-row-4 .button").simulate("click", {});
+    await tick();
+    expect(cancelUpgradePlan).toHaveBeenCalledTimes(2);
+    expect(props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({in_upgrade: false, payment_url: null}),
+    );
+    expect(props.navigate).toHaveBeenCalledWith("/default/status");
+  });
+
+  it("offers cancellation retry after a cancelled gateway return fails", async () => {
+    props = createTestProps({
+      params: {status: "cancelled"},
+      isAuthenticated: true,
+      userData: {
+        ...responseData,
+        method: "mobile_phone",
+        is_verified: true,
+        in_upgrade: true,
+        payment_url: "https://payment.example.com/pay/1",
+      },
+    });
+    validateToken.mockResolvedValue(true);
+    cancelUpgradePlan.mockRejectedValueOnce(new Error("Network error"));
+    cancelUpgradePlan.mockResolvedValueOnce({});
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    expect(props.setUserData).not.toHaveBeenCalled();
+    expect(props.navigate).not.toHaveBeenCalled();
+    expect(wrapper.find(Loader)).toHaveLength(0);
+    expect(wrapper.find("button.button.full")).toHaveLength(1);
+    wrapper.find("button.button.full").simulate("click");
+    await tick();
+    expect(cancelUpgradePlan).toHaveBeenCalledTimes(2);
     expect(props.navigate).toHaveBeenCalledWith("/default/status");
   });
 

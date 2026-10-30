@@ -1,16 +1,25 @@
 /* eslint-disable prefer-promise-reject-errors */
 import axios from "axios";
-import {shallow} from "enzyme";
+import {mount, shallow} from "enzyme";
 import React from "react";
 import PropTypes from "prop-types";
 import {Cookies} from "react-cookie";
-import {loadingContextValue} from "../../utils/loading-context";
+import {Provider} from "react-redux";
+import {MemoryRouter} from "react-router-dom";
+import {createStore} from "redux";
+import LoadingContext, {loadingContextValue} from "../../utils/loading-context";
 import getConfig from "../../utils/get-config";
 import PaymentProcess from "./payment-process";
+import ConnectedPaymentProcess from "./index";
 import tick from "../../utils/tick";
 import validateToken from "../../utils/validate-token";
 import loadTranslation from "../../utils/load-translation";
-import {takePaymentReturnContext} from "../../utils/payment";
+import {
+  clearPaymentReturnContext,
+  storePaymentReturnContext,
+  takePaymentReturnContext,
+} from "../../utils/payment";
+import PaymentStatus from "../payment-status/payment-status";
 
 jest.mock("axios");
 jest.mock("../../utils/get-config");
@@ -60,6 +69,9 @@ describe("Test <PaymentProcess /> cases", () => {
     PaymentProcess.contextTypes = {
       setLoading: PropTypes.func,
     };
+    PaymentStatus.contextTypes = {
+      setLoading: PropTypes.func,
+    };
     console.log = jest.fn();
     console.error = jest.fn();
     loadTranslation("en", "default");
@@ -67,6 +79,7 @@ describe("Test <PaymentProcess /> cases", () => {
   });
 
   afterEach(() => {
+    clearPaymentReturnContext();
     jest.clearAllMocks();
     jest.resetAllMocks();
     jest.restoreAllMocks();
@@ -356,6 +369,238 @@ describe("Test <PaymentProcess /> cases", () => {
     );
   });
 
+  it.each([true, false])(
+    "stores a cold offline upgrade before presenting payment (iframe: %s)",
+    async (paymentIframe) => {
+      const settings = {
+        ...props.settings,
+        payment_requires_internet: true,
+        captive_portal_supports_coa: true,
+      };
+      const pendingUser = {
+        ...responseData,
+        method: "mobile_phone",
+        is_verified: true,
+        in_upgrade: true,
+        payment_id: "payment-id",
+        payment_requires_internet: false,
+        payment_iframe: paymentIframe,
+      };
+      let finishValidation;
+      let redirectContext = null;
+      props = createTestProps({userData: {}, settings});
+      validateToken.mockImplementation(
+        () =>
+          new Promise((resolve) => {
+            finishValidation = resolve;
+          }),
+      );
+      const redirectToPaymentUrl = jest
+        .spyOn(PaymentProcess.prototype, "redirectToPaymentUrl")
+        .mockImplementation(() => {
+          redirectContext = takePaymentReturnContext();
+          storePaymentReturnContext(pendingUser, settings);
+        });
+      wrapper = shallow(<PaymentProcess {...props} />, {
+        context: loadingContextValue,
+      });
+      expect(wrapper.find("iframe")).toHaveLength(0);
+      expect(redirectToPaymentUrl).not.toHaveBeenCalled();
+      wrapper.setProps({userData: pendingUser});
+      finishValidation(true);
+      await tick();
+      const expectedContext = {inUpgrade: true, paymentRequiresInternet: false};
+      expect(wrapper.find("iframe")).toHaveLength(paymentIframe ? 1 : 0);
+      expect(redirectToPaymentUrl.mock.calls).toEqual(
+        paymentIframe ? [] : [[pendingUser.payment_url]],
+      );
+      expect(redirectContext).toEqual(paymentIframe ? null : expectedContext);
+      expect(takePaymentReturnContext()).toEqual(expectedContext);
+      storePaymentReturnContext(pendingUser, settings);
+      const completedUser = {
+        ...pendingUser,
+        in_upgrade: undefined,
+        payment_url: null,
+        payment_requires_internet: undefined,
+      };
+      const statusProps = {
+        ...props,
+        userData: completedUser,
+        params: {status: "success"},
+      };
+      validateToken.mockResolvedValue(true);
+      wrapper = shallow(<PaymentStatus {...statusProps} />, {
+        context: loadingContextValue,
+      });
+      await tick();
+      expect(props.setUserData).toHaveBeenCalledWith({
+        ...completedUser,
+        mustLogin: true,
+        mustLogout: false,
+        repeatLogin: false,
+      });
+    },
+  );
+
+  it("preserves a stored context when a cold refresh finds no pending payment", async () => {
+    storePaymentReturnContext(
+      {in_upgrade: true, payment_requires_internet: false},
+      {},
+    );
+    props = createTestProps({
+      userData: {},
+      settings: {...props.settings, payment_requires_internet: true},
+    });
+    validateToken.mockResolvedValue(true);
+    wrapper = shallow(<PaymentProcess {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    expect(takePaymentReturnContext()).toEqual({
+      inUpgrade: true,
+      paymentRequiresInternet: false,
+    });
+  });
+
+  it("does not replace a stored context when token validation fails", async () => {
+    storePaymentReturnContext(
+      {in_upgrade: true, payment_requires_internet: false},
+      {},
+    );
+    props = createTestProps({
+      userData: {},
+      settings: {...props.settings, payment_requires_internet: true},
+    });
+    validateToken.mockResolvedValue(false);
+    wrapper = shallow(<PaymentProcess {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    expect(takePaymentReturnContext()).toEqual({
+      inUpgrade: true,
+      paymentRequiresInternet: false,
+    });
+    expect(wrapper.find("iframe")).toHaveLength(0);
+  });
+
+  it("uses the account returned by validation before connected props update", async () => {
+    const pendingUser = {
+      ...responseData,
+      method: "mobile_phone",
+      in_upgrade: true,
+      payment_requires_internet: false,
+    };
+    props = createTestProps({
+      userData: {},
+      settings: {...props.settings, payment_requires_internet: true},
+    });
+    validateToken.mockImplementation(async (cookies, slug, setUserData) => {
+      setUserData(pendingUser);
+      return true;
+    });
+    wrapper = shallow(<PaymentProcess {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    expect(takePaymentReturnContext()).toEqual({
+      inUpgrade: true,
+      paymentRequiresInternet: false,
+    });
+    expect(props.setUserData).toHaveBeenLastCalledWith(pendingUser);
+  });
+
+  it("presents a cold payment after Redux receives the validated account", async () => {
+    const pendingUser = {
+      ...responseData,
+      method: "mobile_phone",
+      in_upgrade: true,
+      payment_requires_internet: false,
+      payment_iframe: false,
+    };
+    const configuration = {
+      slug: "default",
+      userData: {},
+      settings: {payment_requires_internet: true},
+      isAuthenticated: true,
+    };
+    const store = createStore(
+      (state, action) => {
+        if (action.type === "SET_USER_DATA") {
+          return {
+            organization: {
+              configuration: {
+                ...state.organization.configuration,
+                userData: action.payload,
+              },
+            },
+          };
+        }
+        return state;
+      },
+      {organization: {configuration}},
+    );
+    validateToken.mockImplementation(async (cookies, slug, setUserData) => {
+      setUserData(pendingUser);
+      return true;
+    });
+    const redirectToPaymentUrl = jest
+      .spyOn(PaymentProcess.prototype, "redirectToPaymentUrl")
+      .mockImplementation(() => {
+        expect(takePaymentReturnContext()).toEqual({
+          inUpgrade: true,
+          paymentRequiresInternet: false,
+        });
+      });
+    wrapper = mount(
+      <Provider store={store}>
+        <LoadingContext.Provider value={loadingContextValue}>
+          <MemoryRouter
+            future={{v7_startTransition: true, v7_relativeSplatPath: true}}
+          >
+            <ConnectedPaymentProcess cookies={new Cookies()} />
+          </MemoryRouter>
+        </LoadingContext.Provider>
+      </Provider>,
+    );
+    await tick();
+    wrapper.update();
+    expect(store.getState().organization.configuration.userData).toEqual(
+      pendingUser,
+    );
+    expect(redirectToPaymentUrl).toHaveBeenCalledWith(pendingUser.payment_url);
+    wrapper.unmount();
+  });
+
+  it("does not overwrite a stored context for an unselected gateway", async () => {
+    storePaymentReturnContext(
+      {in_upgrade: true, payment_requires_internet: false},
+      {},
+    );
+    props = createTestProps({userData: {}});
+    wrapper = shallow(<PaymentProcess {...props} />, {
+      context: loadingContextValue,
+      disableLifecycleMethods: true,
+    });
+    validateToken.mockImplementation(async () => {
+      wrapper.setProps({
+        userData: {
+          ...responseData,
+          payment_id: "payment-id",
+          payment_requires_internet: null,
+        },
+      });
+      return true;
+    });
+    await wrapper.instance().componentDidMount();
+    expect(wrapper.find("Navigate").prop("to")).toBe(
+      "/default/payment/gateway",
+    );
+    expect(takePaymentReturnContext()).toEqual({
+      inUpgrade: true,
+      paymentRequiresInternet: false,
+    });
+  });
+
   it("preserves gateway context before an iframe token refresh", async () => {
     props = createTestProps({
       userData: {
@@ -388,6 +633,101 @@ describe("Test <PaymentProcess /> cases", () => {
         paymentRequiresInternet: false,
       }),
     );
+  });
+
+  it("preserves the initial pending context when validation clears payment fields", async () => {
+    props = createTestProps({
+      userData: {
+        ...responseData,
+        in_upgrade: true,
+        payment_requires_internet: false,
+      },
+      settings: {...props.settings, payment_requires_internet: true},
+    });
+    wrapper = shallow(<PaymentProcess {...props} />, {
+      context: loadingContextValue,
+      disableLifecycleMethods: true,
+    });
+    validateToken.mockImplementation(async () => {
+      wrapper.setProps({userData: {method: "mobile_phone", is_verified: true}});
+      return true;
+    });
+    await wrapper.instance().componentDidMount();
+    expect(takePaymentReturnContext()).toEqual({
+      inUpgrade: true,
+      paymentRequiresInternet: false,
+    });
+  });
+
+  it("preserves the selected requirement if validation omits it", async () => {
+    props = createTestProps({
+      userData: {
+        ...responseData,
+        in_upgrade: true,
+        payment_requires_internet: false,
+      },
+      settings: {...props.settings, payment_requires_internet: true},
+    });
+    wrapper = shallow(<PaymentProcess {...props} />, {
+      context: loadingContextValue,
+      disableLifecycleMethods: true,
+    });
+    validateToken.mockImplementation(async () => {
+      wrapper.setProps({
+        userData: {
+          ...responseData,
+          in_upgrade: true,
+          payment_requires_internet: undefined,
+        },
+      });
+      return true;
+    });
+    await wrapper.instance().componentDidMount();
+    expect(takePaymentReturnContext()).toEqual({
+      inUpgrade: true,
+      paymentRequiresInternet: false,
+    });
+  });
+
+  it("uses refreshed gateway metadata for a still-pending upgrade", async () => {
+    props = createTestProps({
+      userData: {
+        ...responseData,
+        in_upgrade: true,
+        payment_requires_internet: true,
+      },
+    });
+    wrapper = shallow(<PaymentProcess {...props} />, {
+      context: loadingContextValue,
+      disableLifecycleMethods: true,
+    });
+    validateToken.mockImplementation(async () => {
+      wrapper.setProps({
+        userData: {...props.userData, payment_requires_internet: false},
+      });
+      return true;
+    });
+    await wrapper.instance().componentDidMount();
+    expect(takePaymentReturnContext()).toEqual({
+      inUpgrade: true,
+      paymentRequiresInternet: false,
+    });
+  });
+
+  it("uses the organization fallback for a legacy pending payment", async () => {
+    props = createTestProps({
+      userData: {...responseData, in_upgrade: true},
+      settings: {...props.settings, payment_requires_internet: true},
+    });
+    validateToken.mockResolvedValue(true);
+    wrapper = shallow(<PaymentProcess {...props} />, {
+      context: loadingContextValue,
+    });
+    await tick();
+    expect(takePaymentReturnContext()).toEqual({
+      inUpgrade: true,
+      paymentRequiresInternet: true,
+    });
   });
 
   it("renders an iframe when the selected gateway enables iframes", async () => {

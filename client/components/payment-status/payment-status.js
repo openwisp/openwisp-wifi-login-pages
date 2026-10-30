@@ -34,6 +34,7 @@ export default class PaymentStatus extends React.Component {
       selectedGateway: null,
       submittingGateway: false,
       gatewayError: false,
+      cancellationError: false,
     };
     this.paymentReturnUrlInput = React.createRef();
     this.isComponentMounted = true;
@@ -111,6 +112,8 @@ export default class PaymentStatus extends React.Component {
         await this.backToStatus();
       } else {
         // Registrations have no upgrade order, so clear the abandoned payment locally.
+        // Gateway cancellation keeps the user signed in; the draft and gateway
+        // selection pages offer a separate cancel-and-logout action.
         clearStoredValue(`${orgSlug}_proceedToPayment`, cookies);
         clearPaymentReturnContext();
         setUserData({
@@ -249,8 +252,18 @@ export default class PaymentStatus extends React.Component {
   // Abandon upgrade: cancel order, clear flags, reconnect under current plan
   backToStatus = async () => {
     this.gatewaySelectionId += 1;
-    const {orgSlug, navigate, setUserData, userData, language, cookies} =
-      this.props;
+    const {
+      orgSlug,
+      navigate,
+      setUserData,
+      userData,
+      language,
+      cookies,
+      params,
+    } = this.props;
+    if (params.status === "cancelled" && this.isComponentMounted) {
+      this.setState({cancellationError: false});
+    }
     try {
       const response = await cancelUpgradePlan(
         orgSlug,
@@ -280,6 +293,11 @@ export default class PaymentStatus extends React.Component {
       if (!noPendingOrder) {
         toast.error(t`ERR_OCCUR`);
         logError(error, "Error while cancelling plan upgrade");
+        const {params: currentParams} = this.props;
+        if (currentParams.status === "cancelled" && this.isComponentMounted) {
+          this.setState({cancellationError: true});
+        }
+        return;
       }
       setUserData({
         ...userData,
@@ -335,11 +353,11 @@ export default class PaymentStatus extends React.Component {
   }
 
   render() {
-    const {orgSlug, params, userData} = this.props;
+    const {orgSlug, params, userData, isAuthenticated} = this.props;
     const {status} = params;
     const {is_verified: isVerified, in_upgrade: inUpgrade} = userData;
     const redirectToStatus = () => <Navigate to={`/${orgSlug}/status`} />;
-    const {isTokenValid} = this.state;
+    const {isTokenValid, cancellationError} = this.state;
     const isFailedUpgrade = Boolean(inUpgrade) && status === "failed";
     const isDraftUpgrade = Boolean(inUpgrade) && status === "draft";
 
@@ -348,7 +366,10 @@ export default class PaymentStatus extends React.Component {
     }
 
     if (status === "cancelled") {
-      return <Loader />;
+      if (isAuthenticated === false || isTokenValid === false) {
+        return redirectToStatus();
+      }
+      return cancellationError ? this.renderDraft(true) : <Loader />;
     }
 
     if (this.shouldRedirectToStatus()) {
