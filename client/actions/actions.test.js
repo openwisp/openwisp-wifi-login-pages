@@ -312,6 +312,31 @@ describe("actions testing", () => {
     });
   });
 
+  it("restores a bound continuation despite a stale captivePortalLogoutOnly flag", async () => {
+    beginContinuation("?next=/test-org-1/payment/process/", "test-org-1");
+    bindContinuation("test-org-1", "alice");
+    safeSessionStorage.setItem("test-org-1_auth_token", "fixture-api-token");
+    safeLocalStorage.setItem("test-org-1_captivePortalLogoutOnly", "true");
+    const browserCookies = {
+      get: (key) =>
+        key === "test-org-1_captivePortalLogoutOnly" ? true : undefined,
+      remove: jest.fn(),
+    };
+    axios.mockResolvedValueOnce(validationResponse);
+    const store = mockStore({organization: {}});
+    await store.dispatch(
+      setOrganization("test-org-1", browserCookies, {
+        pathname: "/test-org-1/status",
+      }),
+    );
+    expect(axios).toHaveBeenCalledTimes(1);
+    expect(store.getActions()).toContainEqual({
+      type: types.SET_AUTHENTICATION_STATUS,
+      payload: true,
+    });
+    expect(readContinuation("test-org-1").username).toBe("alice");
+  });
+
   it("should create an action to set page title", () => {
     const title = "default name";
     const expectedActions = [

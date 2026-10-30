@@ -124,6 +124,15 @@ describe("<Login /> next continuation", () => {
     });
   });
 
+  it.each(["", "?username=alice", "?macaddr=aa:bb&username=alice"])(
+    "does not rewrite login URLs without continuation or token parameters: %s",
+    (search) => {
+      const {props, wrapper} = mountLogin(`/default/login${search}`);
+      wrapper.instance().componentDidMount();
+      expect(props.navigate).not.toHaveBeenCalled();
+    },
+  );
+
   it("logs in with the short sid and n=pay params and cleans the URL", async () => {
     axios.mockResolvedValueOnce({data: responseData});
     const {props, wrapper} = mountLogin(

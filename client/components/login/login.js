@@ -401,7 +401,8 @@ export default class Login extends React.Component {
       search,
       settings.passwordless_auth_token_name,
     );
-    if (clean !== new URLSearchParams(search).toString()) {
+    const current = new URLSearchParams(search).toString();
+    if (clean !== (current ? `?${current}` : "")) {
       navigate(`${pathname}${clean}`, {replace: true});
     }
   };

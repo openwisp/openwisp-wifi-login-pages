@@ -43,8 +43,8 @@ The web application should serve the following HTML on those endpoints:
 
 .. note::
 
-    Replace ``https://wifi-login-pages.example.com/`` with ``origin`` of
-    your **OpenWISP WiFi Login Pages** service.
+    Replace ``https://wifi-login-pages.example.com`` with the origin of
+    your **OpenWISP WiFi Login Pages** service, without a trailing slash.
 
 Assign a dedicated DNS name to be used by both systems: the captive portal
 and the web application which simulates it. Then configure your captive
