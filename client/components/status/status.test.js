@@ -1337,7 +1337,7 @@ describe("<Status /> interactions", () => {
     });
     jest.spyOn(toast, "info");
     const status = wrapper.instance();
-    status.handlePostMessage({
+    await status.handlePostMessage({
       data: {
         message: "Informative message",
         type: "authMessage",
@@ -1361,7 +1361,7 @@ describe("<Status /> interactions", () => {
     });
     jest.spyOn(toast, "info");
     const status = wrapper.instance();
-    status.handlePostMessage({
+    await status.handlePostMessage({
       data: {
         message: "PLAN_EXHAUSTED_TOAST",
         type: "authMessage",
@@ -1386,7 +1386,7 @@ describe("<Status /> interactions", () => {
     });
     jest.spyOn(toast, "info");
     const status = wrapper.instance();
-    status.handlePostMessage({
+    await status.handlePostMessage({
       data: {
         message: "PLAN_EXHAUSTED_TOAST",
         type: "authMessage",
@@ -1417,7 +1417,7 @@ describe("<Status /> interactions", () => {
     });
     jest.spyOn(toast, "info");
     const status = wrapper.instance();
-    status.handlePostMessage({
+    await status.handlePostMessage({
       data: {message: "RADIUS Info", type: "authMessage"},
       origin: "http://localhost",
     });
