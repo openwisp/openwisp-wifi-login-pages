@@ -1,17 +1,19 @@
 import {SET_AUTHENTICATION_STATUS} from "../constants/action-types";
-import {sessionStorage, localStorage} from "../utils/storage";
+import {sessionStorage} from "../utils/storage";
+import {clearContinuation} from "../utils/continuation";
+import {clearPaymentReturnContext} from "../utils/payment";
+import {clearCaptivePortalFlags} from "../utils/synced-storage";
 
 const logout = (cookies, orgSlug, userAutoLogin = false) => {
+  clearContinuation();
+  clearPaymentReturnContext();
   if (!userAutoLogin) {
     cookies.remove(`${orgSlug}_auth_token`, {path: "/"});
     cookies.remove(`${orgSlug}_username`, {path: "/"});
     cookies.remove(`${orgSlug}_macaddr`, {path: "/"});
     sessionStorage.clear();
   }
-  [`${orgSlug}_mustLogin`, `${orgSlug}_mustLogout`].forEach((element) => {
-    cookies.remove(element, {path: "/"});
-    localStorage.removeItem(element);
-  });
+  clearCaptivePortalFlags(orgSlug, cookies);
 
   return {
     type: SET_AUTHENTICATION_STATUS,

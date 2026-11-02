@@ -8,6 +8,7 @@ settings:
   subscriptions: false
   payment_iframe: false
   payment_requires_internet: false
+  captive_portal_supports_coa: false
   passwordless_auth_token_name: "sesame"
 
 # configuration variables for the server app
@@ -16,7 +17,7 @@ server:
   host: "http://127.0.0.1:8000"
   uuid: organization_uuid
   secret_key: organization_secret_key
-  timeout: 2 #request timeout period in seconds
+  timeout: 5 #request timeout period in seconds
 
 # configuration variables for the client
 # Path of all the assets should be defined relative to the organization's folder
@@ -105,6 +106,10 @@ client:
       radial_usage_display: narrow
       top_up_enabled: true
       links: []
+
+    payment_status_page:
+      timeout: 10
+      max_attempts: 3
 
     login_form:
       social_login:

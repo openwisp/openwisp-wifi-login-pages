@@ -9,11 +9,15 @@ RadiusAccounting = load_model("openwisp_radius", "RadiusAccounting")
 def cleanup_test_data(test_data):
     mobile_data = test_data["mobileVerificationTestUser"]
     cross_org_data = test_data["crossOrgPhoneVerificationUser"]
+    sync_auth_data = test_data["syncAuthTestUser"]
     User.objects.filter(username=test_data["testuser"]["email"]).delete()
     User.objects.filter(username=test_data["expiredPasswordUser"]["email"]).delete()
     User.objects.filter(username=cross_org_data["phoneNumber"]).delete()
     User.objects.filter(username=mobile_data["phoneNumber"]).delete()
     User.objects.filter(username=mobile_data["changePhoneNumber"]).delete()
+    User.objects.filter(username=sync_auth_data["email"]).delete()
     Organization.objects.filter(name=mobile_data["organization"]).delete()
+    Organization.objects.filter(name=sync_auth_data["organization"]).delete()
     RadiusAccounting.objects.filter(username=test_data["testuser"]["email"]).delete()
     RadiusAccounting.objects.filter(username=cross_org_data["phoneNumber"]).delete()
+    RadiusAccounting.objects.filter(username=sync_auth_data["email"]).delete()

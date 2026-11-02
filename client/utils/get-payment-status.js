@@ -24,7 +24,7 @@ export const getPaymentStatus = async (orgSlug, paymentId, tokenInfo) => {
           toast.info(response.data.message);
         }
       }
-      return response.data.status;
+      return response.data;
     }
     logError(response, "get-payment-status returned a non 200 response status");
     return false;
@@ -41,7 +41,8 @@ const getPaymentStatusRedirectUrl = async (
   setUserData,
   userData,
 ) => {
-  const paymentStatus = await getPaymentStatus(orgSlug, paymentId, tokenInfo);
+  const payment = await getPaymentStatus(orgSlug, paymentId, tokenInfo);
+  const {status: paymentStatus, reason} = payment || {};
   switch (paymentStatus) {
     case "waiting":
       return `/${orgSlug}/payment/draft`;
@@ -60,6 +61,9 @@ const getPaymentStatusRedirectUrl = async (
       }
       return `/${orgSlug}/payment/${paymentStatus}`;
     case "failed":
+      if (reason === "cancelled") {
+        return `/${orgSlug}/payment/cancelled`;
+      }
       setUserData({...userData, payment_url: null});
       return `/${orgSlug}/payment/${paymentStatus}`;
     default:

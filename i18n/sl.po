@@ -439,10 +439,17 @@ msgstr "Plačilo je bilo prejeto."
 msgid "PAY_REQ"
 msgstr "Plačilo je potrebno za nadaljevanje"
 
-#: client/components/payment-status/payment-status.js:155
+#: client/components/payment-gateway/payment-gateway.js:67
+msgid "PAY_GATEWAY_REQ"
+msgstr "Izberite način plačila"
+
 #, javascript-format
-msgid "PAY_WARN${ timeout }${ maxAttempts }"
-msgstr "<p>S klikom na spodnji gumb boste preusmerjeni na naš plačilni prehod, kjer lahko varno uporabite svojo kreditno/debetno kartico. Od tam boste preusmerjeni na spletno mesto svoje banke, kjer boste potrdili transakcijo.</p><p>Za dokončanje postopka boste imeli ${ timeout } minut.<br /><strong>Zato priporočamo, da pred začetkom plačilnega postopka pripravite svojo debetno/kreditno kartico.</strong></p><p>Če postopek iz kakršnega koli razloga ni dokončan v razpoložljivem času, bo internetna povezava, ki vam omogoča dostop do spletnega mesta vaše banke, prekinjena. Če se to zgodi, se lahko znova prijavite s poverilnicami, ki ste jih pravkar registrirali, in postopek ponovite največ ${ maxAttempts }-krat.</p>"
+msgid "PAY_LINK_INTRO${ timeout }"
+msgstr "<p>Za dokončanje plačila imate <strong>${ timeout } minut</strong>. Pred nadaljevanjem se prepričajte, da ste pripravljeni.</p><p>Kopirajte spodnjo povezavo za plačilo. Če se to okno zapre, lahko povezavo prilepite v brskalnik in nadaljujete.</p>"
+
+#, javascript-format
+msgid "PAY_RETRY_LIMIT${ maxAttempts }"
+msgstr "<p>Če čas poteče, se znova prijavite in poskusite ponovno. Na voljo imate do <strong>${ maxAttempts } poskusov</strong>.</p>"
 
 #: client/components/payment-status/payment-status.js:165
 #: client/components/payment-status/payment-status.test.js:221
@@ -474,6 +481,27 @@ msgstr "Poskusite znova"
 #. failed payment case
 msgid "PAY_GIVE_UP_TXT"
 msgstr "Če transakcija ni bila uspešna, se obrite na službo za podporo uporabnikom."
+
+#.  failed payment case
+#: client/components/payment-status/payment-status.js:230
+msgid "PAY_GO_BACK_BTN"
+msgstr "Prekliči"
+
+#: client/components/payment-status/payment-status.js
+msgid "PAY_LINK_COPIED"
+msgstr "Povezava za plačilo je kopirana"
+
+msgid "PAY_LINK_COPY_FAIL"
+msgstr "Povezave za plačilo ni bilo mogoče kopirati. Izberite jo in jo kopirajte ročno."
+
+msgid "PAY_LINK_LBL"
+msgstr "Povezava za plačilo"
+
+msgid "PAY_LINK_COPY_BTN"
+msgstr "Kopiraj povezavo"
+
+msgid "PAY_LINK_COPY_HINT"
+msgstr "Kliknite za kopiranje"
 
 #: client/components/password-reset/password-reset.js:32
 msgid "PWD_RESET_TITL"

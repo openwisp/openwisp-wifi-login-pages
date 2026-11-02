@@ -21,10 +21,18 @@ import {
 } from "../../constants";
 import LoadingContext from "../../utils/loading-context";
 import getText from "../../utils/get-text";
+import getErrorText from "../../utils/get-error-text";
 import logError from "../../utils/log-error";
 import Contact from "../contact-box";
 import shouldLinkBeShown from "../../utils/should-link-be-shown";
 import validateToken from "../../utils/validate-token";
+import {
+  readContinuation,
+  takeContinuation,
+  clearContinuation,
+  isRoute,
+} from "../../utils/continuation";
+import routes from "../../constants/routes";
 import needsVerify from "../../utils/needs-verify";
 import Loader from "../../utils/loader";
 import {initialState} from "../../reducers/organization";
@@ -34,7 +42,13 @@ import {localStorage} from "../../utils/storage";
 import handleSession from "../../utils/session";
 import getPlanSelection from "../../utils/get-plan-selection";
 import getPlans from "../../utils/get-plans";
+import {getPaymentRoute, requiresInternet} from "../../utils/payment";
 import upgradePlan from "../../utils/upgrade-plan";
+import {
+  storeValue,
+  resolveStoredValue,
+  clearStoredValue,
+} from "../../utils/synced-storage";
 
 const formatUsageTime = (seconds) => {
   const days = Math.floor(seconds / 86400);
@@ -107,6 +121,7 @@ export default class Status extends React.Component {
       showUpgradeBtn: true,
     };
     this.repeatLogin = false;
+    this.captivePortalLogoutOnly = false;
     this.isComponentMounted = true;
     this.getUserRadiusSessions = this.getUserRadiusSessions.bind(this);
     this.getUserRadiusUsage = this.getUserRadiusUsage.bind(this);
@@ -189,21 +204,66 @@ export default class Status extends React.Component {
       const {
         mustLogin: userMustLogin,
         mustLogout: userMustLogout,
-        repeatLogin,
+        captivePortalLogoutOnly: userCaptivePortalLogoutOnly,
+        repeatLogin: userRepeatLogin,
+        proceedToPayment: userProceedToPayment,
       } = userData;
-      const mustLogin = this.resolveStoredValue(
+      const mustLogin = resolveStoredValue(
         captivePortalSyncAuth,
         `${orgSlug}_mustLogin`,
         userMustLogin,
         cookies,
       );
-      const mustLogout = this.resolveStoredValue(
+      const mustLogoutKey = `${orgSlug}_mustLogout`;
+      const mustLogout = resolveStoredValue(
         captivePortalSyncAuth,
-        `${orgSlug}_mustLogout`,
+        mustLogoutKey,
         userMustLogout,
         cookies,
       );
+      const logoutSubmitted = resolveStoredValue(
+        captivePortalSyncAuth,
+        `${orgSlug}_logoutFormSubmitted`,
+        false,
+        cookies,
+      );
+      const isReturningFromSynchronousLogout = Boolean(logoutSubmitted);
+      const repeatLogin = resolveStoredValue(
+        captivePortalSyncAuth,
+        `${orgSlug}_repeatLogin`,
+        userRepeatLogin,
+        cookies,
+      );
+      // Captive-portal-only logout: tear down RADIUS session, keep WLP session intact
+      this.captivePortalLogoutOnly = Boolean(
+        resolveStoredValue(
+          captivePortalSyncAuth,
+          `${orgSlug}_captivePortalLogoutOnly`,
+          userCaptivePortalLogoutOnly,
+          cookies,
+        ),
+      );
+      // Restore proceedToPayment flag that may have been lost during
+      // the page reload caused by synchronous captive portal auth.
+      const proceedToPayment = resolveStoredValue(
+        captivePortalSyncAuth,
+        `${orgSlug}_proceedToPayment`,
+        userProceedToPayment,
+        cookies,
+      );
       ({userData} = this.props);
+      // Apply the persisted proceedToPayment flag to userData if it
+      // was restored from cookie/localStorage after a page reload.
+      if (
+        proceedToPayment !== undefined &&
+        proceedToPayment !== userData.proceedToPayment
+      ) {
+        setUserData({
+          ...userData,
+          proceedToPayment,
+        });
+        ({userData} = this.props);
+      }
       if (userData.password_expired === true) {
         toast.warning(t`PASSWORD_EXPIRED`);
         setUserData({
@@ -248,12 +308,12 @@ export default class Status extends React.Component {
       }
 
       if (mustLogout) {
-        if (captivePortalSyncAuth) {
-          // In synchronous captive portal authentication, the page reloads
-          // after form submission, so handleLogoutIframe() must be called manually here.
-          // (handleLogout() is already triggered when the user clicks the "Logout" button.)
-          this.setState({loggedOut: mustLogout});
-          this.handleLogoutIframe();
+        if (isReturningFromSynchronousLogout) {
+          // Complete the logout iframe after synchronous form submission
+          // reloads the page, without submitting the logout form again.
+          this.repeatLogin = Boolean(repeatLogin);
+          this.setState({loggedOut: true});
+          await this.handleLogoutIframe();
         } else {
           await this.handleLogout(false, repeatLogin);
         }
@@ -262,10 +322,10 @@ export default class Status extends React.Component {
 
       let shouldLogin = mustLogin;
       if (method === "bank_card" && isVerified === false) {
-        shouldLogin = shouldLogin && settings.payment_requires_internet;
+        shouldLogin = shouldLogin && requiresInternet(userData, settings);
       }
       if (this.loginFormRef && this.loginFormRef.current && shouldLogin) {
-        this.storeValue(
+        storeValue(
           captivePortalSyncAuth,
           `${orgSlug}_mustLogin`,
           false,
@@ -293,6 +353,28 @@ export default class Status extends React.Component {
     window.removeEventListener("message", this.handlePostMessage);
   }
 
+  // After captive-portal-only logout: skip redux logout and userData reset to preserve WLP session
+  finishCaptivePortalLogoutOnly = () => {
+    const {orgSlug, cookies, setUserData, userData} = this.props;
+    const {setLoading} = this.context;
+    [
+      `${orgSlug}_mustLogin`,
+      `${orgSlug}_mustLogout`,
+      `${orgSlug}_logoutFormSubmitted`,
+      `${orgSlug}_captivePortalLogoutOnly`,
+    ].forEach((key) => clearStoredValue(key, cookies));
+    this.captivePortalLogoutOnly = false;
+    this.setStateSafe({loggedOut: false});
+    setUserData({
+      ...userData,
+      mustLogin: undefined,
+      mustLogout: undefined,
+      captivePortalLogoutOnly: undefined,
+    });
+    setLoading(false);
+    this.finalOperations();
+  };
+
   async finalOperations() {
     const {
       userData,
@@ -302,22 +384,30 @@ export default class Status extends React.Component {
       setUserData,
       statusPage,
       internetMode,
+      cookies,
     } = this.props;
     const {setLoading} = this.context;
     // if the user needs bank card verification,
     // redirect to payment page and stop here
-    if (needsVerify("bank_card", userData, settings)) {
+    if (
+      needsVerify("bank_card", userData, settings) ||
+      (userData.in_upgrade && userData.payment_url)
+    ) {
       // avoid redirect loop from proceed to payment
-      if (settings.payment_requires_internet && userData.proceedToPayment) {
+      if (requiresInternet(userData, settings) && userData.proceedToPayment) {
         // reset proceedToPayment
         setUserData({
           ...userData,
           proceedToPayment: false,
         });
+        // Clear persisted proceedToPayment flag
+        clearStoredValue(`${orgSlug}_proceedToPayment`, cookies);
+        // The continuation is fulfilled by the direct payment-process redirect.
+        clearContinuation();
         navigate(`/${orgSlug}/payment/process`);
         return;
       }
-      navigate(`/${orgSlug}/payment/draft`);
+      navigate(getPaymentRoute(orgSlug, userData, settings));
       return;
     }
 
@@ -336,6 +426,17 @@ export default class Status extends React.Component {
 
     if (!this.isComponentMounted) {
       return;
+    }
+
+    const continuation = readContinuation(orgSlug);
+    if (continuation && continuation.username === userData.username) {
+      const {url} = takeContinuation(orgSlug, userData.username);
+      if (!isRoute(url, orgSlug, routes.status)) {
+        navigate(url, {replace: true});
+        return;
+      }
+    } else if (continuation && continuation.username) {
+      clearContinuation();
     }
 
     // if everything went fine, load the user sessions
@@ -513,12 +614,12 @@ export default class Status extends React.Component {
       userData,
       navigate,
       setUserData,
-      captivePortalSyncAuth,
+      settings,
     } = this.props;
     const auth_token = cookies.get(`${orgSlug}_auth_token`);
     const {upgradePlans} = this.state;
     handleSession(orgSlug, auth_token, cookies);
-    upgradePlan(
+    return upgradePlan(
       orgSlug,
       upgradePlans[event.target.value].id,
       userData.auth_token,
@@ -528,23 +629,18 @@ export default class Status extends React.Component {
         toast.success(t`SUCCESS_UPGRADE_PLAN`, {
           onOpen: () => toast.dismiss(mainToastId),
         });
-        setUserData({
+        const nextUserData = {
           ...userData,
-          payment_url: response.payment_url,
-        });
-        // After a successful payment, the user is redirected back to the status page.
-        // If the user plan was previously exhausted, they need to be logged into the captive portal
-        // to regain internet access. This ensures seamless browsing after upgrading their plan.
-        this.storeValue(
-          captivePortalSyncAuth,
-          `${orgSlug}_mustLogin`,
-          true,
-          cookies,
-        );
-        navigate(`/${orgSlug}/payment/process`);
+          ...response,
+          // Token consumed by portal login; clear so validateToken refetches one
+          radius_user_token: undefined,
+        };
+        setUserData(nextUserData);
+        navigate(getPaymentRoute(orgSlug, nextUserData, settings));
       })
       .catch((error) => {
-        toast.error(t`ERR_OCCUR`);
+        const errorText = getErrorText(error, t`ERR_OCCUR`);
+        toast.error(errorText);
         logError(error, "Error while upgrading plan");
       });
   }
@@ -610,32 +706,71 @@ export default class Status extends React.Component {
     } = this.props;
     const macaddr = cookies.get(`${orgSlug}_macaddr`);
     const params = {calling_station_id: macaddr};
-    localStorage.setItem("userAutoLogin", String(userAutoLogin));
+    if (!this.captivePortalLogoutOnly) {
+      localStorage.setItem("userAutoLogin", String(userAutoLogin));
+    }
     setLoading(true);
     await this.getUserActiveRadiusSessions(params);
     const {sessionsToLogout} = this.state;
 
-    if (sessionsToLogout.length > 0) {
+    // In internet mode there is no captive portal session to tear down, so
+    // skip the logout form and settle the page directly below.
+    if (sessionsToLogout.length > 0 && !internetMode) {
       if (this.logoutFormRef && this.logoutFormRef.current) {
         if (!repeatLogin) {
           this.setStateSafe({loggedOut: true});
         } else {
           this.repeatLogin = true;
         }
-        if (!internetMode) {
-          this.storeValue(
+        storeValue(
+          captivePortalSyncAuth,
+          `${orgSlug}_mustLogout`,
+          true,
+          cookies,
+        );
+        if (this.captivePortalLogoutOnly) {
+          storeValue(
             captivePortalSyncAuth,
-            `${orgSlug}_mustLogout`,
+            `${orgSlug}_captivePortalLogoutOnly`,
             true,
             cookies,
           );
-          this.logoutFormRef.current.submit();
         }
+        storeValue(
+          captivePortalSyncAuth,
+          `${orgSlug}_logoutFormSubmitted`,
+          true,
+          cookies,
+        );
+        this.logoutFormRef.current.submit();
         return;
       }
     }
 
     if (repeatLogin) {
+      // no portal session to log out, so just log in again
+      const {userData} = this.props;
+      this.repeatLogin = false;
+      // Prevent logout flags from restarting the flow after synchronous login.
+      clearStoredValue(`${orgSlug}_mustLogout`, cookies);
+      clearStoredValue(`${orgSlug}_logoutFormSubmitted`, cookies);
+      clearStoredValue(`${orgSlug}_repeatLogin`, cookies);
+      setUserData({
+        ...userData,
+        mustLogout: undefined,
+        repeatLogin: undefined,
+      });
+      if (this.loginFormRef && this.loginFormRef.current) {
+        this.notifyCpLogin(userData);
+        this.loginFormRef.current.submit();
+      } else {
+        setLoading(false);
+      }
+      return;
+    }
+    // No active portal session; settle page directly for captive-portal-only logout
+    if (this.captivePortalLogoutOnly) {
+      this.finishCaptivePortalLogoutOnly();
       return;
     }
     setUserData(initialState.userData);
@@ -691,8 +826,11 @@ export default class Status extends React.Component {
       if (title.indexOf("404") >= 0) {
         logout(cookies, orgSlug);
       }
-      if (reply && !toast.isActive(mainToastId)) {
-        toast.error(getDynamicTranslation(reply));
+      if (reply) {
+        clearContinuation();
+        if (!toast.isActive(mainToastId)) {
+          toast.error(getDynamicTranslation(reply));
+        }
       }
       if (macaddr) {
         cookies.set(`${orgSlug}_macaddr`, macaddr, {path: "/"});
@@ -737,14 +875,29 @@ export default class Status extends React.Component {
     const logoutMethod = localStorage.getItem(logoutMethodKey);
     const userAutoLogin = localStorage.getItem("userAutoLogin") === "true";
     if (
-      loggedOut ||
-      this.resolveStoredValue(
-        captivePortalSyncAuth,
-        `${orgSlug}_mustLogout`,
-        false,
-        cookies,
-      )
+      !repeatLogin &&
+      (loggedOut ||
+        resolveStoredValue(
+          captivePortalSyncAuth,
+          `${orgSlug}_mustLogout`,
+          false,
+          cookies,
+        ))
     ) {
+      clearStoredValue(`${orgSlug}_logoutFormSubmitted`, cookies);
+      const captivePortalLogoutOnly =
+        this.captivePortalLogoutOnly ||
+        resolveStoredValue(
+          captivePortalSyncAuth,
+          `${orgSlug}_captivePortalLogoutOnly`,
+          false,
+          cookies,
+        );
+      // Portal session already torn down; keep WLP session for captive-portal-only logout
+      if (captivePortalLogoutOnly) {
+        this.finishCaptivePortalLogoutOnly();
+        return;
+      }
       logout(cookies, orgSlug, userAutoLogin);
       toast.success(t`LOGOUT_SUCCESS`);
 
@@ -762,14 +915,23 @@ export default class Status extends React.Component {
 
     if (repeatLogin) {
       this.repeatLogin = false;
-      // wait to trigger login to avoid getting stuck
-      // in captive portal firewall rule reloading
+      clearStoredValue(`${orgSlug}_mustLogout`, cookies);
+      clearStoredValue(`${orgSlug}_logoutFormSubmitted`, cookies);
+      clearStoredValue(`${orgSlug}_repeatLogin`, cookies);
       toast.info(t`PLEASE_WAIT`, {autoClose: wait_after});
       setTimeout(async () => {
         toast.info(t`PLEASE_LOGIN`, {autoClose: 10000});
-        setUserData(initialState.userData);
+        const {userData} = this.props;
+        setUserData({
+          ...userData,
+          mustLogout: undefined,
+          repeatLogin: undefined,
+        });
         setLoading(false);
-        logout(cookies, orgSlug, userAutoLogin);
+        if (this.loginFormRef && this.loginFormRef.current) {
+          this.notifyCpLogin(userData);
+          this.loginFormRef.current.submit();
+        }
       }, wait_after);
     }
   };
@@ -782,9 +944,13 @@ export default class Status extends React.Component {
       orgSlug,
       setInternetMode,
       setPlanExhausted,
+      setUserData,
+      userData,
+      captivePortalSyncAuth,
     } = this.props;
     const {setLoading} = this.context;
-    const {message, type, warningMessage, showUpgradeBtn} = event.data;
+    const {message, type, warningMessage, showUpgradeBtn, planExhausted} =
+      event.data;
 
     // Only accept messages from trusted origins,
     // For more info read: https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage#security_concern
@@ -803,22 +969,41 @@ export default class Status extends React.Component {
     }
 
     switch (type) {
-      case "authMessage":
+      case "authMessage": {
         setLoading(true);
         toast.dismiss();
         toast.info(getDynamicTranslation(message), {toastId: mainToastId});
+        const proceedToPayment = resolveStoredValue(
+          captivePortalSyncAuth,
+          `${orgSlug}_proceedToPayment`,
+          userData.proceedToPayment,
+          cookies,
+        );
+        if (proceedToPayment && !userData.proceedToPayment) {
+          setUserData({...userData, proceedToPayment});
+        }
         this.setStateSafe(
           {
             warningMessage: warningMessage || "USAGE_LIMIT_EXHAUSTED_TXT",
             ...(showUpgradeBtn !== undefined && {showUpgradeBtn}),
           },
           () => {
-            // Change the message on the status page to reflect plan exhaustion
-            setPlanExhausted(true);
-            setLoading(false);
+            // Only set planExhausted if the captive portal explicitly
+            // indicates plan exhaustion. For backward compatibility,
+            // default to true when the flag is not provided.
+            if (planExhausted !== false) {
+              setPlanExhausted(true);
+            }
+            // When redirected to /status solely to complete captive portal
+            // login before payment, keep the loader on so the status page
+            // contents stay hidden while finalOperations() navigates away.
+            if (!proceedToPayment) {
+              setLoading(false);
+            }
           },
         );
         break;
+      }
       case "authError":
         setLoading(true);
         toast.dismiss();
@@ -838,66 +1023,14 @@ export default class Status extends React.Component {
         });
         break;
       case "internet-mode":
-        setInternetMode(true);
+        if (!captivePortalSyncAuth) {
+          setInternetMode(true);
+        }
         break;
       default:
         // Unknown message type, do nothing
         break;
     }
-  };
-
-  // eslint-disable-next-line class-methods-use-this
-  storeValue = (captivePortalSyncAuth, key, value, cookies) => {
-    /**
-     * Stores a value in both cookies and localStorage if synchronous
-     * captive portal authentication is enabled.
-     *
-     * In synchronous authentication, submitting the captive portal form
-     * triggers a page reload, which resets the component state.
-     * Storing the value in cookies ensures it persists across reloads.
-     *
-     * The value is also saved in localStorage as a fallback in case the browser does not support cookies.
-     *
-     * @param {boolean} captivePortalSyncAuth - Whether synchronous authentication is enabled.
-     * @param {string} key - The key under which the value is stored.
-     * @param {boolean} value - The value to store.
-     * @param {Cookies} cookies - The cookies instance used to set the cookie.
-     */
-    if (!captivePortalSyncAuth) {
-      return;
-    }
-    localStorage.setItem(key, value);
-    cookies.set(key, value, {path: "/", maxAge: 60});
-  };
-
-  // eslint-disable-next-line class-methods-use-this
-  resolveStoredValue = (captivePortalSyncAuth, key, fallback, cookies) => {
-    /**
-     * Resolves the correct value by checking cookies, then localStorage,
-     * falling back to a default value if neither is found.
-     *
-     * @param {boolean} captivePortalSyncAuth - Whether synchronization is enabled.
-     * @param {string} cookieKey - The key to look for in cookies and localStorage.
-     * @param {*} fallback - The fallback value if no valid stored value is found.
-     * @returns {*} - The selected value based on storage or fallback.
-     */
-    if (!captivePortalSyncAuth) {
-      return fallback;
-    }
-
-    const cookieValue = cookies.get(key);
-    if (cookieValue !== undefined) {
-      localStorage.removeItem(key);
-      return cookieValue;
-    }
-
-    const localStorageValue = localStorage.getItem(key);
-    if (localStorageValue !== null) {
-      localStorage.removeItem(key);
-      return localStorageValue === "true";
-    }
-
-    return fallback;
   };
 
   updateScreenWidth = () => {
@@ -1738,6 +1871,7 @@ export default class Status extends React.Component {
                     type="text"
                     name={field.name}
                     value={field.value}
+                    key={`cp-logout-${field.name}`}
                   />
                 ))}
             </form>

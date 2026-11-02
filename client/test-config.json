@@ -127,6 +127,9 @@
     "auto_login": false,
     "settings": {
       "mobile_phone_verification": false
+    },
+    "components": {
+      "captive_portal_sync_auth": true
     }
   },
   {

@@ -26,6 +26,7 @@ export const initialState = {
     auth_token: undefined,
     radius_user_token: undefined,
     payment_url: undefined,
+    in_upgrade: undefined,
   },
   settings: {
     mobile_phone_verification: undefined,

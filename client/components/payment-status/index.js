@@ -1,3 +1,5 @@
+import "./index.css";
+
 import {connect} from "react-redux";
 import Component from "./payment-status";
 import {authenticate, logout, setUserData} from "../../actions/dispatchers";
@@ -12,6 +14,7 @@ const mapStateToProps = (state, ownProps) => {
     userData: conf.userData,
     settings: conf.settings,
     isAuthenticated: conf.isAuthenticated,
+    captivePortalSyncAuth: conf.components.captive_portal_sync_auth,
     cookies: ownProps.cookies,
     status: ownProps.status,
   };

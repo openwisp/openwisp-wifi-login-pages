@@ -27,5 +27,10 @@
     "phoneNumber": "+393664351809",
     "method": "mobile_phone"
   },
+  "syncAuthTestUser": {
+    "email": "syncauth@openwisp.org",
+    "password": "testuser",
+    "organization": "sync-auth"
+  },
   "allOrgScript": "analytics.js"
 }

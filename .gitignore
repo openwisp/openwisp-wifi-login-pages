@@ -46,6 +46,7 @@ server/assets/*
 !client/assets/warning.svg
 !client/assets/data.svg
 !client/assets/timer.svg
+!client/assets/copy.svg
 !client/assets/fonts/
 client/translations/
 i18n/*

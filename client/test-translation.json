@@ -257,6 +257,10 @@
         "msgid": "PAY_GIVE_UP_BTN",
         "msgstr": ["Cancel operation and log out"]
       },
+      "PAY_GO_BACK_BTN": {
+        "msgid": "PAY_GO_BACK_BTN",
+        "msgstr": ["Cancel"]
+      },
       "PWD_RESET_TITL": {
         "msgid": "PWD_RESET_TITL",
         "msgstr": ["Reset Password"]
@@ -515,10 +519,16 @@
         "msgid": "PAY_PROC_BTN",
         "msgstr": ["Proceed with the payment"]
       },
-      "PAY_WARN${ timeout }${ maxAttempts }": {
-        "msgid": "PAY_WARN${ timeout }${ maxAttempts }",
+      "PAY_LINK_INTRO${ timeout }": {
+        "msgid": "PAY_LINK_INTRO${ timeout }",
         "msgstr": [
-          "<p>By clicking on the button below you will be redirected to our payment gateway service where you can safely use your credit/debit card. From there you will be redirected to the website of your bank to confirm the transaction.</p><p>You will have ${ timeout } minutes to complete the process.<br /><strong>For this reason we recommend preparing your debit/credit card before initiating the payment process.</strong></p><p>If for any reason the process is not completed within the available time, the internet connection which allows you to reach the website of your bank will be closed, if this happens you can just log in again with the credentials you just registered and repeat the process up a maximum of ${ maxAttempts } times.</p>"
+          "<p>You have <strong>${ timeout } minutes</strong> to complete your payment. Make sure you're ready before proceeding.</p><p>Copy the payment link below. If this window closes, you can paste the link into your browser to continue.</p>"
+        ]
+      },
+      "PAY_RETRY_LIMIT${ maxAttempts }": {
+        "msgid": "PAY_RETRY_LIMIT${ maxAttempts }",
+        "msgstr": [
+          "<p>If you run out of time, log in again to retry. You have up to <strong>${ maxAttempts } attempts</strong>.</p>"
         ]
       },
       "PLEASE_WAIT": {

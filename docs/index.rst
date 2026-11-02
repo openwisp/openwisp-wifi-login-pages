@@ -27,6 +27,7 @@ Pages <https://wifi.openwisp.io/demo/login>`_!
     ./user/intro.rst
     ./user/setup.rst
     ./user/internet-mode.rst
+    ./user/login-continuation.rst
     ./user/translations.rst
     ./user/handling-radius-errors.rst
     ./user/extra-js.rst

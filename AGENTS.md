@@ -9,6 +9,7 @@ Core code lives in this repository root:
 - `client/` contains React UI, client utilities, styles, and tests.
 - `server/` contains the Node.js server, routes, controllers, and utilities.
 - `browser-test/` contains end-to-end browser tests.
+- `openwisp-radius/` is a temporary checkout used only for browser tests. Changes there are out of scope; report and ignore changes from `openwisp-qa-format`, `yarn format`, or `yarn lint`. Do not delete, reset, or revert it.
 - `organizations/`, `config/`, `i18n/`, `public/`, and `scripts/` provide tenant configuration, translations, assets, and tooling.
 - `docs/` is incorporated into the unified, versioned OpenWISP documentation built by `openwisp-docs`, not a standalone site; use `docs/user/` for end users and `docs/developer/` for contributors and developers of extensions, downstream, or derivative apps.
 - `dist/`, generated configuration, organization assets, and translations contain build output.
