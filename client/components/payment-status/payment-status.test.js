@@ -557,6 +557,34 @@ describe("Test <PaymentStatus /> cases", () => {
     },
   );
 
+  it.each([
+    ["absent", false, {}, undefined],
+    ["absent", true, {}, true],
+    ["undefined", false, {payment_requires_internet: undefined}, undefined],
+    ["undefined", true, {payment_requires_internet: undefined}, true],
+  ])(
+    "uses the organization setting when payment requirement is %s and the setting is %s",
+    async (description, internetRequired, payment, expectedLogout) => {
+      cancelUpgradePlan.mockResolvedValue({});
+      props = createTestProps({
+        settings: {payment_requires_internet: internetRequired},
+        userData: {...responseData, in_upgrade: true, ...payment},
+        params: {status: "failed"},
+      });
+      wrapper = shallow(<PaymentStatus {...props} />, {
+        context: loadingContextValue,
+        disableLifecycleMethods: true,
+      });
+      await wrapper.instance().backToStatus();
+      expect(props.setUserData).toHaveBeenCalledWith(
+        expect.objectContaining({
+          mustLogout: expectedLogout,
+          captivePortalLogoutOnly: expectedLogout,
+        }),
+      );
+    },
+  );
+
   it("preserves the portal session when an offline upgrade is already cancelled", async () => {
     cancelUpgradePlan.mockRejectedValue({response: {status: 404}});
     props = createTestProps({
@@ -1512,7 +1540,11 @@ describe("Test <PaymentStatus /> cases", () => {
   it("should clear in_upgrade even when the cancel response omits it", async () => {
     props = createTestProps({
       params: {status: "failed"},
-      settings: {subscriptions: true, mobile_phone_verification: true},
+      settings: {
+        subscriptions: true,
+        mobile_phone_verification: true,
+        payment_requires_internet: true,
+      },
       userData: {
         ...responseData,
         method: "mobile_phone",
@@ -1546,7 +1578,11 @@ describe("Test <PaymentStatus /> cases", () => {
     const mockCookiesRemove = jest.fn();
     props = createTestProps({
       params: {status: "failed"},
-      settings: {subscriptions: true, mobile_phone_verification: true},
+      settings: {
+        subscriptions: true,
+        mobile_phone_verification: true,
+        payment_requires_internet: true,
+      },
       userData: {
         ...responseData,
         method: "mobile_phone",
@@ -1603,7 +1639,11 @@ describe("Test <PaymentStatus /> cases", () => {
     let resolveCancellation;
     props = createTestProps({
       params: {status: "failed"},
-      settings: {subscriptions: true, mobile_phone_verification: true},
+      settings: {
+        subscriptions: true,
+        mobile_phone_verification: true,
+        payment_requires_internet: true,
+      },
       userData: {
         ...responseData,
         method: "mobile_phone",
@@ -1643,7 +1683,11 @@ describe("Test <PaymentStatus /> cases", () => {
     const spyToastError = jest.spyOn(toast, "error");
     props = createTestProps({
       params: {status: "failed"},
-      settings: {subscriptions: true, mobile_phone_verification: true},
+      settings: {
+        subscriptions: true,
+        mobile_phone_verification: true,
+        payment_requires_internet: true,
+      },
       userData: {
         ...responseData,
         method: "mobile_phone",

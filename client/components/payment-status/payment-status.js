@@ -260,6 +260,7 @@ export default class PaymentStatus extends React.Component {
       language,
       cookies,
       params,
+      settings,
     } = this.props;
     if (params.status === "cancelled" && this.isComponentMounted) {
       this.setState({cancellationError: false});
@@ -294,9 +295,12 @@ export default class PaymentStatus extends React.Component {
       }
     }
     // An unselected or offline gateway cannot have initiated payment login.
+    const paymentRequiresInternet =
+      userData.payment_requires_internet === undefined
+        ? Boolean(settings.payment_requires_internet)
+        : userData.payment_requires_internet;
     const noPaymentLogin =
-      userData.payment_requires_internet === null ||
-      userData.payment_requires_internet === false;
+      paymentRequiresInternet === null || paymentRequiresInternet === false;
     if (noPaymentLogin) {
       [
         "mustLogin",
