@@ -85,5 +85,6 @@ try {
   });
   fs.writeFileSync(path.join(jsDir, data.allOrgScript), "");
 } catch (err) {
-  console.log(err);
+  console.error(err);
+  process.exitCode = 1;
 }
