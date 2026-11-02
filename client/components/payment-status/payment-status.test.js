@@ -510,11 +510,75 @@ describe("Test <PaymentStatus /> cases", () => {
         payment_url: null,
         payment_return_url: null,
         mustLogin: undefined,
-        mustLogout: true,
-        captivePortalLogoutOnly: true,
+        mustLogout: undefined,
+        captivePortalLogoutOnly: undefined,
       }),
     );
     expect(props.navigate).toHaveBeenCalledWith(`/${props.orgSlug}/status`);
+    expect(props.logout).not.toHaveBeenCalled();
+  });
+
+  it.each([false, true])(
+    "preserves the portal session on an offline gateway return with sync auth %s",
+    async (captivePortalSyncAuth) => {
+      cancelUpgradePlan.mockResolvedValue({});
+      props = createTestProps({
+        captivePortalSyncAuth,
+        userData: {
+          ...responseData,
+          is_verified: true,
+          in_upgrade: true,
+          payment_id: "payment-id",
+          payment_gateway: "offline",
+          payment_requires_internet: false,
+        },
+        params: {status: "cancelled"},
+        isAuthenticated: true,
+      });
+      props.cookies.set("default_mustLogin", true, {path: "/"});
+      localStorage.setItem("default_mustLogin", "true");
+      validateToken.mockResolvedValue(true);
+      wrapper = shallow(<PaymentStatus {...props} />, {
+        context: loadingContextValue,
+      });
+      await tick();
+      expect(props.setUserData).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          in_upgrade: false,
+          mustLogin: undefined,
+          mustLogout: undefined,
+          captivePortalLogoutOnly: undefined,
+        }),
+      );
+      expect(props.logout).not.toHaveBeenCalled();
+      expect(props.navigate).toHaveBeenCalledWith("/default/status");
+      expect(props.cookies.get("default_mustLogin")).toBeUndefined();
+      expect(localStorage.getItem("default_mustLogin")).toBeNull();
+    },
+  );
+
+  it("preserves the portal session when an offline upgrade is already cancelled", async () => {
+    cancelUpgradePlan.mockRejectedValue({response: {status: 404}});
+    props = createTestProps({
+      userData: {
+        ...responseData,
+        in_upgrade: true,
+        payment_requires_internet: false,
+      },
+      params: {status: "failed"},
+    });
+    wrapper = shallow(<PaymentStatus {...props} />, {
+      context: loadingContextValue,
+      disableLifecycleMethods: true,
+    });
+    await wrapper.instance().backToStatus();
+    expect(props.setUserData).toHaveBeenCalledWith(
+      expect.objectContaining({
+        in_upgrade: false,
+        mustLogout: undefined,
+        captivePortalLogoutOnly: undefined,
+      }),
+    );
     expect(props.logout).not.toHaveBeenCalled();
   });
 

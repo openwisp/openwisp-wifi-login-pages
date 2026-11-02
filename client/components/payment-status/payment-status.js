@@ -264,23 +264,13 @@ export default class PaymentStatus extends React.Component {
     if (params.status === "cancelled" && this.isComponentMounted) {
       this.setState({cancellationError: false});
     }
+    let response;
     try {
-      const response = await cancelUpgradePlan(
+      response = await cancelUpgradePlan(
         orgSlug,
         userData.auth_token || userData.key,
         language,
       );
-      setUserData({
-        ...userData,
-        ...response,
-        in_upgrade: false,
-        proceedToPayment: false,
-        payment_url: null,
-        payment_return_url: null,
-        mustLogin: undefined,
-        mustLogout: true,
-        captivePortalLogoutOnly: true,
-      });
     } catch (error) {
       // The API replies 404 when there is no pending upgrade order left to
       // cancel, which is a no-op for the user rather than an error. A 404
@@ -302,17 +292,31 @@ export default class PaymentStatus extends React.Component {
         }
         return;
       }
-      setUserData({
-        ...userData,
-        in_upgrade: false,
-        proceedToPayment: false,
-        payment_url: null,
-        payment_return_url: null,
-        mustLogin: undefined,
-        mustLogout: true,
-        captivePortalLogoutOnly: true,
-      });
     }
+    // An unselected or offline gateway cannot have initiated payment login.
+    const noPaymentLogin =
+      userData.payment_requires_internet === null ||
+      userData.payment_requires_internet === false;
+    if (noPaymentLogin) {
+      [
+        "mustLogin",
+        "mustLogout",
+        "repeatLogin",
+        "captivePortalLogoutOnly",
+      ].forEach((key) => clearStoredValue(`${orgSlug}_${key}`, cookies));
+    }
+    setUserData({
+      ...userData,
+      ...response,
+      in_upgrade: false,
+      proceedToPayment: false,
+      payment_url: null,
+      payment_return_url: null,
+      mustLogin: undefined,
+      mustLogout: noPaymentLogin ? undefined : true,
+      captivePortalLogoutOnly: noPaymentLogin ? undefined : true,
+      ...(noPaymentLogin && {repeatLogin: undefined}),
+    });
     // Clear persisted proceedToPayment flag
     clearStoredValue(`${orgSlug}_proceedToPayment`, cookies);
     clearPaymentReturnContext();
