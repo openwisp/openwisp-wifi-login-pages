@@ -54,6 +54,18 @@ class CiEntrypointTests(unittest.TestCase):
     def test_returns_runner_status(self):
         self.assertEqual(self.run_script("--coverage", status=17).returncode, 17)
 
+    def test_default_mode_and_conflicting_arguments(self):
+        self.assertEqual(self.run_script().stdout.splitlines(), ["test"])
+        for arguments in (
+            ("--coverage", "--es5"),
+            ("--coverage", "client/utils/continuation.test.js"),
+        ):
+            with self.subTest(arguments=arguments):
+                result = self.run_script(*arguments)
+                self.assertEqual(result.returncode, 2)
+                self.assertIn("unsupported", result.stderr.lower())
+                self.assertEqual(result.stdout, "")
+
     def test_focused_unit_test_path(self):
         result = self.run_script("client/utils/continuation.test.js", "--runInBand")
         self.assertEqual(result.returncode, 0, result.stderr)

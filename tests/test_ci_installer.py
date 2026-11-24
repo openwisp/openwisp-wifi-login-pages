@@ -16,7 +16,10 @@ class CiInstallerTests(unittest.TestCase):
             log = path / "calls"
             for name in ("sudo", "python", "yarn"):
                 fake = path / name
-                fake.write_text(f'#!/bin/sh\nprintf "%s\\n" "{name} $*" >> "$CALLS"\n')
+                fake.write_text(
+                    f'#!/bin/sh\nprintf "%s\\n" "{name} $*" >> "$CALLS"\n'
+                    f'[ "${{FAIL_MATCH:-}}" != "{name} $*" ] || exit 17\n'
+                )
                 fake.chmod(0o755)
             env = os.environ.copy()
             for key in ("CI_SYSTEM_DEPS_ONLY", "CI_SYSTEM_DEPS_READY", "CI_QA"):
@@ -50,3 +53,14 @@ class CiInstallerTests(unittest.TestCase):
         result, calls = self.run_installer(CI_SYSTEM_DEPS_READY="1")
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(calls, ["yarn install"])
+
+    def test_failures_stop_later_commands(self):
+        for command, variables in (
+            ("sudo apt update -qq", {}),
+            ("yarn install", {"CI_QA": "1"}),
+            ("python -m pip install -r requirements-qa.txt", {"CI_QA": "1"}),
+        ):
+            with self.subTest(command=command):
+                result, calls = self.run_installer(FAIL_MATCH=command, **variables)
+                self.assertEqual(result.returncode, 17)
+                self.assertEqual(calls[-1], command)
