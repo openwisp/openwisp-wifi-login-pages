@@ -1,0 +1,47 @@
+#!/bin/bash
+# Run reviewed Jest and browser test commands.
+set -e
+mode=unit
+mode_selected=0
+files=()
+flags=()
+for argument in "$@"; do
+    case "$argument" in
+        --coverage|--es5|--browser)
+            if [ "$mode_selected" -ne 0 ]; then
+                echo "Unsupported test argument: $argument" >&2
+                exit 2
+            fi
+            mode=${argument#--}
+            mode_selected=1
+            ;;
+        --runInBand) flags+=("$argument") ;;
+        *)
+            if [[ ! "$argument" =~ ^(client|server|config|browser-test)/[[:alnum:]_./-]+\.(test|spec)\.jsx?$ ]] ||
+               [[ "$argument" == *..* ]] || [ -L "$argument" ] || [ ! -f "$argument" ]; then
+                echo "Unsupported test argument: $argument" >&2
+                exit 2
+            fi
+            files+=("$argument")
+            ;;
+    esac
+done
+if [ "${#files[@]}" -gt 0 ]; then
+    if [ "$mode" != unit ]; then
+        echo "Unsupported test arguments: select files without a CI mode" >&2
+        exit 2
+    fi
+    for file in "${files[@]}"; do
+        if [[ "$file" == browser-test/* ]]; then
+            echo "Unsupported test argument: use --browser for browser tests" >&2
+            exit 2
+        fi
+    done
+    exec yarn jest --runTestsByPath "${files[@]}" "${flags[@]}"
+fi
+case "$mode" in
+    unit) exec yarn test "${flags[@]}" ;;
+    coverage) exec yarn coverage "${flags[@]}" ;;
+    es5) exec yarn test-es5 "${flags[@]}" ;;
+    browser) exec yarn browser-test "${flags[@]}" ;;
+esac
