@@ -90,10 +90,7 @@ Run tests with:
 
     ./runtests
 
-Pass a unit test file path to run it alone. The entry point accepts
-``--runInBand``, ``--coverage``, ``--es5``, and ``--browser``. The latter
-three select the corresponding complete CI test mode. Test code remains
-untrusted.
+Pass a unit test file path to run it alone.
 
 ES5 Compliance Test
 -------------------
