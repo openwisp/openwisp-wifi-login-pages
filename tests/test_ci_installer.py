@@ -52,7 +52,9 @@ class CiInstallerTests(unittest.TestCase):
     def test_reviewer_skips_privileged_phase(self):
         result, calls = self.run_installer(CI_SYSTEM_DEPS_READY="1")
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertEqual(calls, ["yarn install"])
+        self.assertEqual(
+            calls, ["yarn install", "python -m pip install -r requirements-qa.txt"]
+        )
 
     def test_failures_stop_later_commands(self):
         for command, variables in (
@@ -64,3 +66,16 @@ class CiInstallerTests(unittest.TestCase):
                 result, calls = self.run_installer(FAIL_MATCH=command, **variables)
                 self.assertEqual(result.returncode, 17)
                 self.assertEqual(calls[-1], command)
+
+    def test_default_installs_the_shared_test_runner(self):
+        result, calls = self.run_installer()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(
+            calls,
+            [
+                "sudo apt update -qq",
+                "sudo apt install -qq -y libssl-dev libffi-dev",
+                "yarn install",
+                "python -m pip install -r requirements-qa.txt",
+            ],
+        )

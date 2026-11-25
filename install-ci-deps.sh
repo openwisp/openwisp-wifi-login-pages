@@ -9,6 +9,4 @@ if [ "${CI_SYSTEM_DEPS_ONLY:-0}" = 1 ]; then
     exit 0
 fi
 yarn install
-if [ "${CI_QA:-0}" = 1 ]; then
-    python -m pip install -r requirements-qa.txt
-fi
+python -m pip install -r requirements-qa.txt

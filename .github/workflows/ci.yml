@@ -120,6 +120,16 @@ jobs:
         id: platform
         run: echo "image_os=$ImageOS" >> "$GITHUB_OUTPUT"
 
+      - name: Cache pip downloads
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.cache/pip
+          key: >-
+            ${{ format('{0}-{1}-{2}-pip-{3}-{4}', runner.os, runner.arch,
+                steps.platform.outputs.image_os, steps.python.outputs.python-version,
+                hashFiles('requirements-test.txt', 'requirements.txt', 'requirements-qa.txt', 'setup.py',
+                'install-ci-deps.sh', 'install-dev.sh')) }}
+
       - name: Cache yarn
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         id: cache

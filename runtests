@@ -1,47 +1,55 @@
-#!/bin/bash
-# Run reviewed Jest and browser test commands.
-set -e
-mode=unit
-mode_selected=0
-files=()
-flags=()
-for argument in "$@"; do
-    case "$argument" in
-        --coverage|--es5|--browser)
-            if [ "$mode_selected" -ne 0 ]; then
-                echo "Unsupported test argument: $argument" >&2
-                exit 2
-            fi
-            mode=${argument#--}
-            mode_selected=1
-            ;;
-        --runInBand) flags+=("$argument") ;;
-        *)
-            if [[ ! "$argument" =~ ^(client|server|config|browser-test)/[[:alnum:]_./-]+\.(test|spec)\.jsx?$ ]] ||
-               [[ "$argument" == *..* ]] || [ -L "$argument" ] || [ ! -f "$argument" ]; then
-                echo "Unsupported test argument: $argument" >&2
-                exit 2
-            fi
-            files+=("$argument")
-            ;;
-    esac
-done
-if [ "${#files[@]}" -gt 0 ]; then
-    if [ "$mode" != unit ]; then
-        echo "Unsupported test arguments: select files without a CI mode" >&2
-        exit 2
-    fi
-    for file in "${files[@]}"; do
-        if [[ "$file" == browser-test/* ]]; then
-            echo "Unsupported test argument: use --browser for browser tests" >&2
-            exit 2
-        fi
-    done
-    exec yarn jest --runTestsByPath "${files[@]}" "${flags[@]}"
-fi
-case "$mode" in
-    unit) exec yarn test "${flags[@]}" ;;
-    coverage) exec yarn coverage "${flags[@]}" ;;
-    es5) exec yarn test-es5 "${flags[@]}" ;;
-    browser) exec yarn browser-test "${flags[@]}" ;;
-esac
+#!/usr/bin/env python3
+"""Run reviewed Jest and browser test commands."""
+
+import os
+import sys
+
+from openwisp_utils.test.runner import (
+    InvalidTestArgument,
+    compile_test_file_pattern,
+    parse_test_files,
+)
+
+
+def main():
+    pattern = compile_test_file_pattern(
+        ("client", "server", "config", "browser-test"), kind="jest"
+    )
+    try:
+        files, flags = parse_test_files(
+            sys.argv[1:],
+            pattern,
+            ("--coverage", "--es5", "--browser", "--runInBand"),
+        )
+        modes = [flag for flag in flags if flag != "--runInBand"]
+        if len(modes) > 1:
+            raise InvalidTestArgument(f"Unsupported test argument: {modes[1]}")
+        mode = modes[0] if modes else ""
+        if files and mode:
+            raise InvalidTestArgument(
+                "Unsupported test arguments: select files without a CI mode"
+            )
+        paths = [match.group(0) for match in files]
+        if any(path.startswith("browser-test/") for path in paths):
+            raise InvalidTestArgument(
+                "Unsupported test argument: use --browser for browser tests"
+            )
+    except InvalidTestArgument as error:
+        print(error, file=sys.stderr)
+        return 2
+    runner_flags = [flag for flag in flags if flag == "--runInBand"]
+    if paths:
+        arguments = ["jest", "--runTestsByPath", *paths, *runner_flags]
+    else:
+        command = {
+            "": "test",
+            "--coverage": "coverage",
+            "--es5": "test-es5",
+            "--browser": "browser-test",
+        }
+        arguments = [command[mode], *runner_flags]
+    os.execvp("yarn", ["yarn", *arguments])
+
+
+if __name__ == "__main__":
+    sys.exit(main())
