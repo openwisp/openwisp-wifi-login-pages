@@ -73,10 +73,54 @@ exports[`Test <PaymentStatus /> cases should render draft correctly 1`] = `
           Payment required to proceed
         </h2>
         <div
-          className="row"
+          className="row payment-instructions"
           dangerouslySetInnerHTML={
             {
-              "__html": "<p>By clicking on the button below you will be redirected to our payment gateway service where you can safely use your credit/debit card. From there you will be redirected to the website of your bank to confirm the transaction.</p><p>You will have 5 minutes to complete the process.<br /><strong>For this reason we recommend preparing your debit/credit card before initiating the payment process.</strong></p><p>If for any reason the process is not completed within the available time, the internet connection which allows you to reach the website of your bank will be closed, if this happens you can just log in again with the credentials you just registered and repeat the process up a maximum of 3 times.</p>",
+              "__html": "<p>You have <strong>10 minutes</strong> to complete your payment. Make sure you're ready before proceeding.</p><p>Copy the payment link below. If this window closes, you can paste the link into your browser to continue.</p>",
+            }
+          }
+          id="payment-link-help"
+        />
+        <div
+          className="row payment-link"
+        >
+          <div
+            className="payment-link-control"
+          >
+            <input
+              aria-describedby="payment-link-help"
+              aria-label="PAY_LINK_LBL"
+              className="input payment-link-input"
+              id="payment-link"
+              onClick={[Function]}
+              readOnly={true}
+              title="PAY_LINK_COPY_HINT"
+              type="text"
+              value="https://wifi.example.com/default/login?n=pay&sid=secret"
+            />
+            <button
+              aria-label="PAY_LINK_COPY_BTN"
+              className="button partial payment-link-copy"
+              onClick={[Function]}
+              type="button"
+            >
+              <span
+                aria-hidden="true"
+                className="payment-link-copy-icon"
+              />
+              <span
+                className="payment-link-copy-label"
+              >
+                PAY_LINK_COPY_BTN
+              </span>
+            </button>
+          </div>
+        </div>
+        <div
+          className="row payment-instructions"
+          dangerouslySetInnerHTML={
+            {
+              "__html": "<p>If you run out of time, log in again to retry. You have up to <strong>3 attempts</strong>.</p>",
             }
           }
         />

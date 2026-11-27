@@ -84,11 +84,19 @@ Launch development server:
 
 You can access the application at http://localhost:8080/default/login/
 
+Install the Python dependencies used by the test entry point:
+
+.. code-block:: shell
+
+    python -m pip install -r requirements-qa.txt
+
 Run tests with:
 
 .. code-block::
 
-    yarn test
+    ./runtests
+
+Pass a unit test file path to run it alone.
 
 ES5 Compliance Test
 -------------------
@@ -141,12 +149,13 @@ Prerequisites for running browser tests:
 
 4. If a virtual environment is used to run openwisp-radius then this needs
    to be activated before running browser tests.
-5. Configuration file of ``mobile`` organization is needed before running
-   ``yarn start``. ``mobile`` organization can be created by running:
+5. Configuration files of the ``mobile`` and ``sync-auth`` organizations
+   are needed before running ``yarn start``. They can be created by
+   running:
 
    .. code-block:: shell
 
-       node browser-test/create-mobile-configuration.js
+       node browser-test/create-test-organizations.js
 
 6. In the test environment of openwisp-radius, the ``default``
    organization must be present.

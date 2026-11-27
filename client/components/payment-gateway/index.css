@@ -1,0 +1,86 @@
+.payment-gateways {
+  text-align: start;
+}
+
+.payment-gateway-option {
+  margin: 0 0 10px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  line-height: 30px;
+}
+
+.payment-gateway-option:hover {
+  border-color: #888;
+}
+
+.payment-gateway-option.payment-gateway-option-selected {
+  border-color: currentColor;
+}
+
+.payment-gateway-option label {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: start;
+  margin: 0;
+  padding: 10px 15px;
+  font-weight: normal;
+  opacity: 1;
+  cursor: pointer;
+}
+
+.payment-gateway-option:last-child {
+  margin: 0;
+}
+
+.payment-gateway-option-selected label {
+  cursor: default;
+}
+
+.payment-gateway-name {
+  display: block;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.payment-gateways input {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: start;
+  float: none;
+  width: 16px;
+  height: 16px;
+  line-height: inherit;
+  margin: calc((1lh - 16px) / 2) 0 0;
+  opacity: 1;
+  accent-color: currentColor;
+  cursor: pointer;
+}
+
+.payment-gateway-logo {
+  display: block;
+  grid-column: 1 / -1;
+  min-width: 0;
+  min-height: 150px;
+  position: relative;
+}
+
+.payment-gateway-logo-loading .loader-container {
+  position: absolute;
+  inset: 0;
+}
+
+.payment-gateway-logo img {
+  display: block;
+  width: 100%;
+  max-width: 480px;
+  max-height: 150px;
+  height: auto;
+  object-fit: contain;
+  margin: 0 auto;
+}
+
+.payment-gateway-option label:has(input:focus-visible) {
+  outline: 1px dotted #000;
+}

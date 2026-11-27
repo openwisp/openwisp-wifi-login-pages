@@ -6,6 +6,7 @@ import ShallowRenderer from "react-test-renderer/shallow";
 import * as dependency from "react-toastify";
 import PropTypes from "prop-types";
 import {Provider} from "react-redux";
+import {Cookies} from "react-cookie";
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import {createMemoryHistory} from "history";
 import {loadingContextValue} from "../../utils/loading-context";
@@ -17,6 +18,8 @@ import Modal from "../modal";
 import getParameterByName from "../../utils/get-parameter-by-name";
 import {mapStateToProps, mapDispatchToProps} from "./index";
 import redirectToPayment from "../../utils/redirect-to-payment";
+import {beginContinuation, readContinuation} from "../../utils/continuation";
+import {sessionStorage, localStorage} from "../../utils/storage";
 
 jest.mock("axios");
 jest.mock("../../utils/get-config");
@@ -76,6 +79,248 @@ const userData = {
 };
 const responseData = {...userData, key: userData.auth_token};
 delete responseData.auth_token;
+
+describe("<Login /> next continuation", () => {
+  const mountLogin = (url, props = createTestProps()) => {
+    window.history.replaceState({}, "", url);
+    const wrapper = shallow(<Login {...props} />, {
+      context: loadingContextValue,
+      disableLifecycleMethods: true,
+    });
+    return {props, wrapper};
+  };
+  beforeEach(() => {
+    Login.contextTypes = {setLoading: PropTypes.func};
+    getParameterByName.mockImplementation((name) =>
+      new URLSearchParams(window.location.search).get(name),
+    );
+  });
+  afterEach(() => {
+    window.history.replaceState({}, "", "/");
+    sessionStorage.clear();
+    getParameterByName.mockReset();
+    jest.clearAllMocks();
+  });
+
+  it("removes next and the SESAME token from the URL after SESAME login", async () => {
+    axios.mockResolvedValueOnce({data: responseData});
+    const {props, wrapper} = mountLogin(
+      "/default/login?sesame=login-secret&next=/default/payment/failed&username=alice&macaddr=aa:bb",
+    );
+    wrapper.instance().componentDidMount();
+    await tick();
+    expect(props.navigate.mock.calls[0]).toEqual([
+      "/default/login?username=alice&macaddr=aa%3Abb",
+      {replace: true},
+    ]);
+    expect(axios.mock.calls[0][0].headers.Authorization).toBe(
+      "sesame login-secret",
+    );
+    expect(props.authenticate).toHaveBeenCalledWith(true);
+    expect(props.navigate).toHaveBeenCalledTimes(1);
+    expect(readContinuation("default")).toMatchObject({
+      destination: "/default/payment/failed",
+      username: userData.username,
+    });
+  });
+
+  it.each(["", "?username=alice", "?macaddr=aa:bb&username=alice"])(
+    "does not rewrite login URLs without continuation or token parameters: %s",
+    (search) => {
+      const {props, wrapper} = mountLogin(`/default/login${search}`);
+      wrapper.instance().componentDidMount();
+      expect(props.navigate).not.toHaveBeenCalled();
+    },
+  );
+
+  it("logs in with the short sid and n=pay params and cleans the URL", async () => {
+    axios.mockResolvedValueOnce({data: responseData});
+    const {props, wrapper} = mountLogin(
+      "/default/login?n=pay&sid=short-secret&username=alice",
+    );
+    wrapper.instance().componentDidMount();
+    await tick();
+    expect(props.navigate.mock.calls[0]).toEqual([
+      "/default/login?username=alice",
+      {replace: true},
+    ]);
+    expect(axios.mock.calls[0][0].headers.Authorization).toBe(
+      "sesame short-secret",
+    );
+    expect(props.navigate).toHaveBeenLastCalledWith("/default/payment/process");
+    expect(readContinuation("default")).toBeNull();
+  });
+
+  it("uses the configured token param name for sid", async () => {
+    axios.mockResolvedValueOnce({data: responseData});
+    const props = createTestProps({
+      settings: {
+        ...createTestProps().settings,
+        passwordless_auth_token_name: "sesame_id",
+      },
+    });
+    const {wrapper} = mountLogin("/default/login?sid=short-secret", props);
+    wrapper.instance().componentDidMount();
+    await tick();
+    expect(axios.mock.calls[0][0].headers.Authorization).toBe(
+      "sesame_id short-secret",
+    );
+  });
+
+  it.each([
+    ["the configured param wins over sid", "sesame=long&sid=short", "long"],
+    ["the configured param wins when first", "sid=short&sesame=long", "long"],
+  ])("%s", async (label, query, expected) => {
+    axios.mockResolvedValueOnce({data: responseData});
+    const {wrapper} = mountLogin(`/default/login?${query}`);
+    wrapper.instance().componentDidMount();
+    await tick();
+    expect(axios.mock.calls[0][0].headers.Authorization).toBe(
+      `sesame ${expected}`,
+    );
+  });
+
+  it.each(["sid=a&sid=b", "sid=", "sesame=&sid=short"])(
+    "does not log in with %s",
+    (query) => {
+      const {wrapper} = mountLogin(`/default/login?${query}`);
+      wrapper.instance().componentDidMount();
+      expect(axios).not.toHaveBeenCalled();
+    },
+  );
+
+  it("leaves every other destination to the status page", () => {
+    const {props, wrapper} = mountLogin(
+      "/default/login?next=/default/change-password",
+    );
+    wrapper.instance().componentDidMount();
+    wrapper.instance().handleAuthentication(responseData);
+    expect(props.navigate).not.toHaveBeenCalledWith(
+      "/default/change-password",
+      expect.anything(),
+    );
+    expect(readContinuation("default")).toMatchObject({
+      destination: "/default/change-password",
+      username: userData.username,
+    });
+  });
+
+  it("goes to complete-signup first when verification is pending", () => {
+    const {props, wrapper} = mountLogin(
+      "/default/login?next=/default/payment/failed",
+    );
+    wrapper.instance().componentDidMount();
+    props.navigate.mockClear();
+    wrapper.instance().handleAuthentication({
+      ...responseData,
+      method: "pending_verification",
+      is_verified: false,
+    });
+    expect(props.navigate.mock.calls).toEqual([["/default/complete-signup"]]);
+    expect(props.authenticate).toHaveBeenCalledWith(true);
+    // the continuation is kept, bound to the user, for after the signup
+    expect(readContinuation("default")).toEqual(
+      expect.objectContaining({
+        destination: "/default/payment/failed",
+        username: responseData.username,
+      }),
+    );
+  });
+
+  describe("next=payment/process skips the draft payment page", () => {
+    const authenticatePaymentProcess = (settings, payment = {}) => {
+      const props = createTestProps({
+        cookies: new Cookies(),
+        captivePortalSyncAuth: true,
+        settings: {...createTestProps().settings, ...settings},
+      });
+      const {wrapper} = mountLogin(
+        "/default/login?next=/default/payment/process/",
+        props,
+      );
+      wrapper.instance().componentDidMount();
+      wrapper.instance().handleAuthentication({...responseData, ...payment});
+      return props;
+    };
+    afterEach(() => localStorage.clear());
+
+    it("logs in to the captive portal first if internet is required", () => {
+      const props = authenticatePaymentProcess({
+        payment_requires_internet: true,
+      });
+      expect(props.setUserData).toHaveBeenLastCalledWith(
+        expect.objectContaining({proceedToPayment: true, mustLogin: true}),
+      );
+      expect(localStorage.getItem("default_proceedToPayment")).toBe("true");
+      expect(localStorage.getItem("default_mustLogin")).toBe("true");
+      expect(props.navigate).not.toHaveBeenCalledWith(
+        "/default/payment/process",
+      );
+      expect(readContinuation("default")).toMatchObject({
+        destination: "/default/payment/process/",
+        username: responseData.username,
+      });
+    });
+
+    it("opens the payment page directly if internet is not required", () => {
+      const props = authenticatePaymentProcess({
+        payment_requires_internet: false,
+      });
+      expect(props.authenticate).toHaveBeenCalledWith(true);
+      expect(props.navigate).toHaveBeenLastCalledWith(
+        "/default/payment/process",
+      );
+      expect(readContinuation("default")).toBeNull();
+    });
+
+    it.each([
+      [false, "/default/payment/process"],
+      [null, "/default/payment/gateway"],
+    ])(
+      "follows payment_requires_internet=%s over the organization setting",
+      (requirement, route) => {
+        const props = authenticatePaymentProcess(
+          {payment_requires_internet: true},
+          {payment_requires_internet: requirement},
+        );
+        expect(props.setUserData).not.toHaveBeenCalledWith(
+          expect.objectContaining({proceedToPayment: true}),
+        );
+        expect(localStorage.getItem("default_proceedToPayment")).toBeNull();
+        expect(localStorage.getItem("default_mustLogin")).toBeNull();
+        expect(props.authenticate).toHaveBeenCalledWith(true);
+        expect(props.navigate).toHaveBeenLastCalledWith(route);
+        expect(readContinuation("default")).toBeNull();
+      },
+    );
+  });
+
+  it("drops next when the password is expired", () => {
+    const {props, wrapper} = mountLogin(
+      "/default/login?next=%2Fdefault%2Fstatus",
+    );
+    wrapper.instance().componentDidMount();
+    wrapper
+      .instance()
+      .handleAuthentication({...responseData, password_expired: true});
+    expect(readContinuation("default")).toBeNull();
+    expect(props.authenticate).toHaveBeenCalledWith(true);
+  });
+
+  it("follows the normal flow when next is rejected", () => {
+    const {props, wrapper} = mountLogin(
+      "/default/login?next=https://example.com",
+    );
+    wrapper.instance().componentDidMount();
+    wrapper.instance().handleAuthentication(responseData);
+    expect(readContinuation("default")).toBeNull();
+    expect(props.authenticate).toHaveBeenCalledWith(true);
+    expect(props.navigate).toHaveBeenCalledTimes(1);
+    expect(props.navigate).toHaveBeenCalledWith("/default/login", {
+      replace: true,
+    });
+  });
+});
 
 describe("<Login /> rendering with placeholder translation tags", () => {
   const props = createTestProps();
@@ -480,6 +725,9 @@ describe("<Login /> interactions", () => {
     data.username = "tester";
     data.is_verified = false;
     data.method = "bank_card";
+    data.payment_id = "payment-id";
+    data.payment_gateway = null;
+    data.payment_requires_internet = null;
     data.payment_url = "https://account.openwisp.io/payment/123";
     axios.mockImplementationOnce(() =>
       Promise.resolve({
@@ -502,8 +750,45 @@ describe("<Login /> interactions", () => {
     await tick();
     expect(handleSubmit).toHaveBeenCalled();
     const authenticateMock = login.props().authenticate.mock;
-    expect(redirectToPayment).toHaveBeenCalledWith("default", props.navigate);
+    expect(redirectToPayment).toHaveBeenCalledWith(
+      "default",
+      props.navigate,
+      expect.objectContaining({
+        payment_id: "payment-id",
+        payment_gateway: null,
+        payment_requires_internet: null,
+      }),
+      props.settings,
+    );
     expect(authenticateMock.calls.length).toBe(1);
+  });
+
+  it("resumes the current payment of a return link", () => {
+    props.settings = {subscriptions: true};
+    wrapper = mountComponent(props);
+    const login = wrapper.find(Login);
+    beginContinuation("?n=pay", "default");
+    axios.mockClear();
+    login.instance().handleAuthentication({
+      ...userData,
+      key: "test-token",
+      method: "bank_card",
+      is_verified: false,
+      payment_id: "current-payment-id",
+      payment_requires_internet: false,
+      payment_url: "https://payments.example/current",
+    });
+    expect(axios).not.toHaveBeenCalled();
+    expect(redirectToPayment).toHaveBeenCalledWith(
+      "default",
+      props.navigate,
+      expect.objectContaining({
+        payment_id: "current-payment-id",
+        payment_requires_internet: false,
+        payment_url: "https://payments.example/current",
+      }),
+      props.settings,
+    );
   });
   it("should redirect when pending verification has only phone enabled", async () => {
     props.settings = {
