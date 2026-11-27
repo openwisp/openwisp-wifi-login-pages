@@ -119,6 +119,24 @@ describe("<Registration /> interactions", () => {
     expect(wrapper.state("password2")).toEqual("testpassword");
   });
 
+  it("should block registration when email domain typo is detected", () => {
+    axios.mockClear();
+    wrapper.setState({
+      email: "vikramk2101@gmal.com",
+      password1: "testpassword",
+      password2: "testpassword",
+    });
+
+    const result = wrapper.instance().handleSubmit({preventDefault: () => {}});
+
+    wrapper.update();
+    expect(result).toBe(false);
+    expect(axios).not.toHaveBeenCalled();
+    expect(wrapper.state("errors")).toEqual({
+      email: "Did you mean vikramk2101@gmail.com?",
+    });
+  });
+
   it("should execute handleSubmit correctly when form is submitted", () => {
     axios
       .mockImplementationOnce(() =>

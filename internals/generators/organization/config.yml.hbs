@@ -117,7 +117,7 @@ client:
         username:
           pattern: '[a-zA-Z@.+\-_\d]{1,150}'
         email:
-          pattern: '.+@.+\..+'
+          pattern: '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
         password:
           pattern: ".{6,}"
         password_confirm:
@@ -225,7 +225,7 @@ client:
       input_fields:
         username:
           type: "email"
-          pattern: '.+@.+\..+'
+          pattern: '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
         password:
           pattern: ".{6,}"
         remember_me:
