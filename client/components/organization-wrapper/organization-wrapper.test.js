@@ -950,6 +950,39 @@ describe("Test Organization Wrapper for pending verification user", () => {
       <Navigate to="/default/complete-signup?next=%2Fdefault%2Fstatus" />,
     );
   });
+
+  it("should render Status for pending verification user if active staged account switch is present", () => {
+    props.organization.configuration.userData = {
+      ...props.organization.configuration.userData,
+      pendingUser: {
+        username: "alice",
+        auth_token: "alice_token",
+        expiresAt: Date.now() + 60000,
+      },
+    };
+    wrapper.setProps({organization: {...props.organization}});
+    const pathMap = getPathMap();
+    expect(pathMap.status).toEqual(
+      <Suspense fallback={<Loader />}>
+        <Status
+          cookies={props.cookies}
+          location={props.location}
+          navigate={props.navigate}
+        />
+      </Suspense>,
+    );
+  });
+
+  it("should render Login for pending verification user when continuation param is empty and credentials are present", () => {
+    wrapper.setProps({
+      location: {
+        pathname: "/default/login/",
+        search: "?next=&username=new-user&token=new-token&login_method=saml",
+      },
+    });
+    const pathMap = getPathMap();
+    expect(pathMap["login/*"]).toEqual(<Login navigate={props.navigate} />);
+  });
 });
 
 describe("Test <OrganizationWrapper /> routes", () => {

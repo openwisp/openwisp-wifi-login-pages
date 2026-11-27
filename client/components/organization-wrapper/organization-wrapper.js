@@ -39,6 +39,7 @@ import {localStorage} from "../../utils/storage";
 import isOldBrowser from "../../utils/is-old-browser";
 import {cleanSearch, getSearch} from "../../utils/clean-search";
 import hasIncomingCredentials from "../../utils/has-incoming-credentials";
+import isPendingUserExpired from "../../utils/pending-user";
 import {getPaymentRoute, hasPendingPayment} from "../../utils/payment";
 import {cleanContinuationSearch} from "../../utils/continuation";
 import routes from "../../constants/routes";
@@ -258,8 +259,9 @@ export default class OrganizationWrapper extends React.Component {
                         userData.auth_token === incomingToken,
                       );
                       const searchParams = new URLSearchParams(search);
-                      const hasContinuationParam =
-                        searchParams.has("next") || searchParams.has("n");
+                      const hasContinuationParam = Boolean(
+                        searchParams.get("next") || searchParams.get("n"),
+                      );
                       const hasCredentials =
                         !isAlreadyUsingCredentials &&
                         !hasContinuationParam &&
@@ -313,17 +315,34 @@ export default class OrganizationWrapper extends React.Component {
                     path={routes.status.path}
                     element={(() => {
                       if (isAuthenticated) {
-                        if (needsMethodSelection) {
-                          return (
-                            <Navigate to={`/${orgSlug}/complete-signup`} />
-                          );
+                        let pendingUser =
+                          (userData && userData.pendingUser) || null;
+                        if (!pendingUser && orgSlug) {
+                          try {
+                            const raw = localStorage.getItem(
+                              `${orgSlug}_pending_user`,
+                            );
+                            if (raw) pendingUser = JSON.parse(raw);
+                          } catch {
+                            // ignore
+                          }
                         }
-                        if (needsVerifyPhone) {
-                          return (
-                            <Navigate
-                              to={`/${orgSlug}/mobile-phone-verification`}
-                            />
-                          );
+                        const hasActiveStagedSwitch = Boolean(
+                          pendingUser && !isPendingUserExpired(pendingUser),
+                        );
+                        if (!hasActiveStagedSwitch) {
+                          if (needsMethodSelection) {
+                            return (
+                              <Navigate to={`/${orgSlug}/complete-signup`} />
+                            );
+                          }
+                          if (needsVerifyPhone) {
+                            return (
+                              <Navigate
+                                to={`/${orgSlug}/mobile-phone-verification`}
+                              />
+                            );
+                          }
                         }
                         return (
                           <Suspense fallback={<Loader />}>

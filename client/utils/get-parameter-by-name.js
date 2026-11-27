@@ -5,6 +5,10 @@ const getParameterByName = (name, url) => {
   const results = regex.exec(u);
   if (!results) return null;
   if (!results[2]) return "";
-  return decodeURIComponent(results[2].replace(/\+/g, " "));
+  try {
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+  } catch {
+    return null;
+  }
 };
 export default getParameterByName;

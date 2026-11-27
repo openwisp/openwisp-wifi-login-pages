@@ -151,6 +151,9 @@ export default class Login extends React.Component {
               toast.info(t`PLEASE_WAIT`, {autoClose: delay});
               this.pendingUserTimeoutId = setTimeout(() => {
                 this.pendingUserTimeoutId = null;
+                if (localStorage.getItem(pendingUserKey) !== pendingUserData) {
+                  return;
+                }
                 if (isPendingUserExpired(pendingUser)) {
                   localStorage.removeItem(pendingUserKey);
                   return;
@@ -163,7 +166,8 @@ export default class Login extends React.Component {
                   );
                 } catch (error) {
                   localStorage.removeItem(pendingUserKey);
-                  logError(error);
+                  /* eslint-disable-next-line no-console */
+                  console.error(error);
                 }
               }, delay);
             } else {
@@ -175,7 +179,8 @@ export default class Login extends React.Component {
                 );
               } catch (error) {
                 localStorage.removeItem(pendingUserKey);
-                logError(error);
+                /* eslint-disable-next-line no-console */
+                console.error(error);
               }
             }
             return;
@@ -369,6 +374,8 @@ export default class Login extends React.Component {
       })
       .catch((error = {}) => {
         if (!error.response || !error.response.data || !error) {
+          this.dismissWait();
+          setLoading(false);
           toast.error(t`ERR_OCCUR`);
           return;
         }

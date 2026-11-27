@@ -2979,7 +2979,12 @@ describe("<Status /> interactions", () => {
   });
 
   it("should apply pendingUser when previous user token validation fails", async () => {
-    validateToken.mockReturnValueOnce(false);
+    validateToken.mockImplementationOnce(
+      async (cookies, orgSlug, setUserData, userData, logout) => {
+        if (logout) logout(cookies, orgSlug);
+        return false;
+      },
+    );
     const pendingUser = {
       username: "alice",
       auth_token: "alice_token",
@@ -3011,6 +3016,7 @@ describe("<Status /> interactions", () => {
     status.componentDidMount();
     await tick();
 
+    expect(prop.logout).toHaveBeenCalled();
     expect(prop.cookies.get("default_auth_token")).toBe("alice_token");
     expect(authenticate).toHaveBeenCalledWith(true);
     expect(prop.setUserData).toHaveBeenCalledWith(
@@ -3182,6 +3188,7 @@ describe("<Status /> interactions", () => {
   it("should clear old auth cookies and sessionStorage when applyPendingUser applies new user", async () => {
     localStorage.clear();
     sessionStorage.clear();
+    sessionStorage.setItem("default_auth_token", "old_session_token");
     const pendingUser = {
       username: "alice",
       auth_token: "alice_token",
@@ -3199,6 +3206,7 @@ describe("<Status /> interactions", () => {
 
     await status.applyPendingUser(pendingUser);
 
+    expect(sessionStorage.getItem("default_auth_token")).toBeNull();
     expect(prop.cookies.remove).toHaveBeenCalledWith("default_auth_token", {
       path: "/",
     });
@@ -3210,6 +3218,43 @@ describe("<Status /> interactions", () => {
       "alice_token",
       {path: "/"},
     );
+  });
+
+  it("should safely clear corrupt JSON pendingUser from localStorage in initStatus and warn", async () => {
+    localStorage.setItem("default_pending_user", "{invalid-json");
+    const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+    const prop = createTestProps();
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    const status = wrapper.instance();
+    await status.initStatus();
+
+    expect(localStorage.getItem("default_pending_user")).toBeNull();
+    expect(warnSpy).toHaveBeenCalledWith(
+      "Failed to parse pending user from storage",
+    );
+    warnSpy.mockRestore();
+  });
+
+  it("should preserve pendingUser and not proceed with logout if active RADIUS session lookup fails", async () => {
+    const prop = createTestProps();
+    wrapper = shallow(<Status {...prop} />, {
+      context: {setLoading: jest.fn()},
+      disableLifecycleMethods: true,
+    });
+    const status = wrapper.instance();
+    status.pendingUser = {username: "alice", auth_token: "alice_token"};
+    status.getUserActiveRadiusSessions = jest.fn().mockResolvedValue(false);
+
+    await status.handleLogout(false);
+
+    expect(status.pendingUser).toEqual({
+      username: "alice",
+      auth_token: "alice_token",
+    });
+    expect(prop.logout).not.toHaveBeenCalled();
   });
   it("should restore logout_method into localStorage if present on newUser", async () => {
     localStorage.clear();

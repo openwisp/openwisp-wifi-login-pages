@@ -211,7 +211,9 @@ export default class Status extends React.Component {
             this.pendingUser = parsed;
           }
         } catch {
-          // ignore
+          localStorage.removeItem(pendingUserKey);
+          /* eslint-disable-next-line no-console */
+          console.warn("Failed to parse pending user from storage");
         }
       }
     }
@@ -593,9 +595,10 @@ export default class Status extends React.Component {
       options.hasMoreSessions =
         "link" in headers && headers.link.includes("next");
       this.setStateSafe(options);
+      return true;
     } catch (error) {
       if (!this.isComponentMounted) {
-        return;
+        return false;
       }
       // logout only if unauthorized or forbidden
       if (
@@ -608,6 +611,7 @@ export default class Status extends React.Component {
         });
       }
       logError(error, t`ERR_OCCUR`);
+      return false;
     }
   }
 
@@ -751,7 +755,7 @@ export default class Status extends React.Component {
       is_open: true,
       ...params,
     };
-    await this.getUserRadiusSessions(para);
+    return this.getUserRadiusSessions(para);
   }
 
   async getUserPastRadiusSessions(params = {}) {
@@ -811,7 +815,11 @@ export default class Status extends React.Component {
       localStorage.setItem("userAutoLogin", String(userAutoLogin));
     }
     setLoading(true);
-    await this.getUserActiveRadiusSessions(params);
+    const lookupOk = await this.getUserActiveRadiusSessions(params);
+    if (lookupOk === false && this.pendingUser) {
+      setLoading(false);
+      return;
+    }
     const {sessionsToLogout} = this.state;
 
     // In internet mode there is no captive portal session to tear down, so

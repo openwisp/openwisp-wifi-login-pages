@@ -127,6 +127,11 @@ describe("getParameterByName tests", () => {
       getParameterByName("username", "/default/login?username=vivek"),
     ).toBe("vivek");
   });
+
+  it("should return null for malformed URI encoding without throwing", () => {
+    expect(getParameterByName("username", "?username=%")).toBeNull();
+    expect(getParameterByName("username", "?username=%E0%A4%A")).toBeNull();
+  });
 });
 describe("shouldLinkBeShown tests", () => {
   const createArgs = (link, isAuthenticated, userData) => ({
@@ -1379,5 +1384,27 @@ describe("hasIncomingCredentials tests", () => {
 
   it("should return false for empty search", () => {
     expect(hasIncomingCredentials({}, "")).toBe(false);
+  });
+
+  it("should return false for malformed URI queries without throwing", () => {
+    expect(hasIncomingCredentials({}, "?username=%&token=%")).toBe(false);
+  });
+
+  it("should return false when username or token appear more than once", () => {
+    expect(
+      hasIncomingCredentials({}, "?username=user1&username=user2&token=tok"),
+    ).toBe(false);
+    expect(
+      hasIncomingCredentials({}, "?username=user1&token=tok1&token=tok2"),
+    ).toBe(false);
+  });
+
+  it("should return true for single non-empty sid alias when setting is not configured", () => {
+    expect(hasIncomingCredentials({}, "?sid=token123")).toBe(true);
+    expect(hasIncomingCredentials(null, "?sid=token123")).toBe(true);
+  });
+
+  it("should return false for repeated sid alias", () => {
+    expect(hasIncomingCredentials({}, "?sid=token1&sid=token2")).toBe(false);
   });
 });

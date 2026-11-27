@@ -629,6 +629,18 @@ describe("<Login /> interactions", () => {
           }),
       );
   });
+
+  it("should clear loading and dismiss wait toast when login request fails without response data", async () => {
+    axios.mockRejectedValueOnce(new Error("Network Error"));
+    const setLoading = jest.fn();
+    wrapper = mountComponent(props);
+    const loginInstance = wrapper.find(Login).instance();
+    loginInstance.context = {setLoading};
+    await loginInstance.handleSubmit({preventDefault: () => {}});
+
+    expect(setLoading).toHaveBeenCalledWith(true);
+    expect(setLoading).toHaveBeenLastCalledWith(false);
+  });
   it("should execute setUserData if mobile phone verification needed", async () => {
     props.settings = {mobile_phone_verification: true};
     wrapper = mountComponent(props);
@@ -1296,6 +1308,63 @@ describe("<Login /> interactions", () => {
       }),
     );
     expect(localStorage.getItem("default_pending_user")).toBeNull();
+  });
+
+  it("should not authenticate pendingUser if localStorage was modified during delay", async () => {
+    jest.useFakeTimers({legacyFakeTimers: true});
+    const delay = 3000;
+    const pendingUser = {
+      username: "alice",
+      auth_token: "alice_token",
+      is_active: true,
+      useSessionStorage: false,
+      readyAt: Date.now() + delay,
+      expiresAt: Date.now() + delay + 60000,
+    };
+    localStorage.setItem("default_pending_user", JSON.stringify(pendingUser));
+    const testProps = {
+      ...props,
+      navigate: jest.fn(),
+      setUserData: jest.fn(),
+    };
+
+    wrapper = mountComponent(testProps);
+    localStorage.setItem(
+      "default_pending_user",
+      JSON.stringify({username: "bob"}),
+    );
+
+    jest.runOnlyPendingTimers();
+    await tick();
+
+    expect(testProps.setUserData).not.toHaveBeenCalled();
+    expect(testProps.navigate).not.toHaveBeenCalled();
+    localStorage.removeItem("default_pending_user");
+    jest.useRealTimers();
+  });
+
+  it("should log errors via console.error when authentication recovery throws", async () => {
+    const pendingUser = {
+      username: "alice",
+      auth_token: "alice_token",
+      readyAt: Date.now(),
+    };
+    localStorage.setItem("default_pending_user", JSON.stringify(pendingUser));
+    const consoleErrorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    const failingProps = {
+      ...props,
+      setUserData: jest.fn(() => {
+        throw new Error("Recovery exception");
+      }),
+    };
+    wrapper = mountComponent(failingProps);
+    await tick();
+
+    expect(consoleErrorSpy).toHaveBeenCalled();
+    expect(localStorage.getItem("default_pending_user")).toBeNull();
+    consoleErrorSpy.mockRestore();
   });
   it("should prioritize URL credentials over unexpired pending user", async () => {
     const pendingUser = {
