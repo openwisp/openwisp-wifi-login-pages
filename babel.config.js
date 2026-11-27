@@ -16,7 +16,7 @@ module.exports = (api) => {
       "@babel/preset-react",
     ],
     plugins: [
-      ["@babel/plugin-transform-runtime", {regenerator: true}],
+      ["@babel/plugin-transform-runtime", {regenerator: false}],
       ["@babel/plugin-transform-private-methods", {loose: true}],
       ["@babel/plugin-proposal-class-properties", {loose: true}],
       ["@babel/plugin-proposal-private-property-in-object", {loose: true}],

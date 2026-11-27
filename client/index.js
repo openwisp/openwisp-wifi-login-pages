@@ -1,4 +1,5 @@
 import "core-js/es/promise";
+import "regenerator-runtime/runtime";
 
 if (typeof window.fetch !== "undefined") {
   import("./app").then((module) => module.default());
