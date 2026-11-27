@@ -3,6 +3,7 @@ import "./index.css";
 
 import axios from "axios";
 import PropTypes from "prop-types";
+import {Cookies} from "react-cookie";
 import qs from "qs";
 import React, {Suspense} from "react";
 import {Link, Route, Routes} from "react-router-dom";
@@ -34,6 +35,16 @@ import {initialState} from "../../reducers/organization";
 import {cleanSearch, getSearch} from "../../utils/clean-search";
 import isPendingUserExpired from "../../utils/pending-user";
 import hasIncomingCredentials from "../../utils/has-incoming-credentials";
+import {
+  beginContinuation,
+  bindContinuation,
+  clearContinuation,
+  cleanContinuationSearch,
+  isRoute,
+} from "../../utils/continuation";
+import {storeValue} from "../../utils/synced-storage";
+import {gatewayRoute, requiresInternet} from "../../utils/payment";
+import routes from "../../constants/routes";
 
 export {cleanSearch};
 
@@ -54,12 +65,19 @@ export default class Login extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.passwordToggleRef = React.createRef();
+    this.continuationParamsCleaned = false;
   }
 
   componentDidMount() {
     const {loginForm, setTitle, orgName, orgSlug, settings, location} =
       this.props;
     const search = getSearch(location);
+    const searchParams = new URLSearchParams(
+      search ||
+        (typeof window !== "undefined" && window.location
+          ? window.location.search
+          : ""),
+    );
     const username = search
       ? getParameterByName("username", search)
       : getParameterByName("username");
@@ -72,6 +90,29 @@ export default class Login extends React.Component {
         ? getParameterByName(settings.passwordless_auth_token_name, search)
         : getParameterByName(settings.passwordless_auth_token_name);
     }
+    // `sid` is the short form of the passwordless token param. It is used
+    // only if the configured param is absent and `sid` appears exactly once
+    // (a repeated `sid` is ambiguous, so it is ignored).
+    if (
+      !sesame_token &&
+      (!settings ||
+        !settings.passwordless_auth_token_name ||
+        !searchParams.has(settings.passwordless_auth_token_name))
+    ) {
+      const sidValues = searchParams.getAll("sid");
+      if (sidValues.length === 1 && sidValues[0]) [sesame_token] = sidValues;
+    }
+    const loginMethod = search
+      ? getParameterByName("login_method", search)
+      : getParameterByName("login_method");
+    beginContinuation(
+      search ||
+        (typeof window !== "undefined" && window.location
+          ? window.location.search
+          : ""),
+      orgSlug,
+    );
+    this.removeContinuationParams();
     setTitle(t`LOGIN`, orgName);
     let remember_me;
 
@@ -149,9 +190,6 @@ export default class Login extends React.Component {
 
     // social login / SAML login
     if (username && token) {
-      const loginMethod = search
-        ? getParameterByName("login_method", search)
-        : getParameterByName("login_method");
       if (loginMethod) {
         // we have to use localStorage because the page may be
         // closed and the information may be lost if we use sessionStorage
@@ -430,8 +468,12 @@ export default class Login extends React.Component {
         pendingUser,
       });
       const search = getSearch(location);
-      const cleanQuery = cleanSearch(
+      const cleanContinuation = cleanContinuationSearch(
         search,
+        settings && settings.passwordless_auth_token_name,
+      );
+      const cleanQuery = cleanSearch(
+        cleanContinuation,
         settings && settings.passwordless_auth_token_name,
       );
       navigate(`/${orgSlug}/status${cleanQuery}`);
@@ -467,10 +509,17 @@ export default class Login extends React.Component {
     });
     setUserData(nextUserData);
     const search = getSearch(location);
-    const cleanQuery = cleanSearch(
+    const cleanContinuation = cleanContinuationSearch(
       search,
       settings && settings.passwordless_auth_token_name,
     );
+    const cleanQuery = cleanSearch(
+      cleanContinuation,
+      settings && settings.passwordless_auth_token_name,
+    );
+    // An expired password must be changed first: drop the continuation.
+    if (data.password_expired) clearContinuation();
+    const continuation = bindContinuation(orgSlug, data.username);
     if (userPendingVerification(data)) {
       navigate(`/${orgSlug}/complete-signup${cleanQuery}`);
       authenticate(true);
@@ -480,12 +529,71 @@ export default class Login extends React.Component {
       nextUserData.method === "bank_card" &&
       nextUserData.is_verified === false
     ) {
-      redirectToPayment(orgSlug, navigate);
+      redirectToPayment(orgSlug, navigate, nextUserData, settings);
       authenticate(true);
       return;
     }
-    navigate(`/${orgSlug}/status${cleanQuery}`);
+    // Other destinations are followed by Status once the captive portal
+    // login is complete, only payment/process needs handling here.
+    if (
+      continuation &&
+      isRoute(continuation.destination, orgSlug, routes.paymentProcess)
+    ) {
+      this.proceedToPayment(nextUserData);
+      return;
+    }
+    if (!continuation && !this.continuationParamsCleaned) {
+      navigate(`/${orgSlug}/status${cleanQuery}`);
+    }
     authenticate(true);
+  };
+
+  // Skips the draft page: opens the payment page directly, after the captive
+  // portal login when the payment needs internet access.
+  proceedToPayment = (user) => {
+    const {
+      orgSlug,
+      settings,
+      authenticate,
+      navigate,
+      setUserData,
+      cookies,
+      captivePortalSyncAuth,
+    } = this.props;
+    const isInternetRequired = requiresInternet(user, settings);
+    if (isInternetRequired) {
+      const flags = {proceedToPayment: true, mustLogin: true};
+      setUserData({...user, ...flags});
+      Object.entries(flags).forEach(([key, value]) =>
+        storeValue(captivePortalSyncAuth, `${orgSlug}_${key}`, value, cookies),
+      );
+      authenticate(true);
+      return;
+    }
+    // Direct navigation fulfills the continuation.
+    clearContinuation();
+    authenticate(true);
+    navigate(
+      isInternetRequired === null
+        ? gatewayRoute(orgSlug)
+        : `/${orgSlug}/payment/process`,
+    );
+  };
+
+  // Removes the continuation and SESAME token params from the URL so that
+  // they are not kept in the browser history.
+  removeContinuationParams = () => {
+    const {navigate, settings} = this.props;
+    const {pathname, search} = window.location;
+    const clean = cleanContinuationSearch(
+      search,
+      settings && settings.passwordless_auth_token_name,
+    );
+    const current = new URLSearchParams(search).toString();
+    if (clean !== (current ? `?${current}` : "")) {
+      this.continuationParamsCleaned = true;
+      navigate(`${pathname}${clean}`, {replace: true});
+    }
   };
 
   handleCheckBoxChange = (event) => {
@@ -748,6 +856,7 @@ Login.propTypes = {
     mobile_phone_verification: PropTypes.bool,
     subscriptions: PropTypes.bool,
     passwordless_auth_token_name: PropTypes.string,
+    payment_requires_internet: PropTypes.bool,
   }).isRequired,
   setTitle: PropTypes.func.isRequired,
   captivePortalLoginForm: PropTypes.shape({
@@ -762,4 +871,9 @@ Login.propTypes = {
   navigate: PropTypes.func.isRequired,
   userData: PropTypes.object,
   location: PropTypes.object,
+  cookies: PropTypes.instanceOf(Cookies).isRequired,
+  captivePortalSyncAuth: PropTypes.bool,
+};
+Login.defaultProps = {
+  captivePortalSyncAuth: false,
 };

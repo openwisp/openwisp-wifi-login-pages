@@ -8,10 +8,10 @@ const waitTime = 5000;
 const orgSlug = "default";
 export const baseUrl = "http://127.0.0.1:8080";
 
-export const executeCommand = (command, argv) => {
+export const executeCommand = (command, argv, json = false) => {
   const result = spawnSync(command, [argv]);
 
-  if (result.stdout) {
+  if (result.stdout && !json) {
     process.stdout.write(`${result.stdout}\n`);
   }
   if (result.stderr) {
@@ -20,6 +20,9 @@ export const executeCommand = (command, argv) => {
   if (result.status !== 0) {
     process.exit(result.status);
   }
+  return json
+    ? JSON.parse(result.stdout.toString().trim().split("\n").pop())
+    : undefined;
 };
 
 export const getDriver = async () => {
@@ -56,9 +59,8 @@ export const getElementsByCss = async (driver, css) => {
 
 export const initialData = () => testData;
 
-export const initializeData = async (argv = null) => {
-  await executeCommand(`./browser-test/initialize_data.py`, argv);
-};
+export const initializeData = async (argv = null, json = false) =>
+  executeCommand(`./browser-test/initialize_data.py`, argv, json);
 
 export const clearData = async () => {
   await executeCommand("./browser-test/clear_data.py", () => {});

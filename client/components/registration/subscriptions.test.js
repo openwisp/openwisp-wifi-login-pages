@@ -251,6 +251,9 @@ describe("test subscriptions", () => {
   it("redirect to payment after registration with payment flow", async () => {
     const data = {
       ...responseData,
+      payment_id: "payment-id",
+      payment_gateway: null,
+      payment_requires_internet: null,
       payment_url: "https://account.openwisp.io/payment/123",
     };
     axios
@@ -278,7 +281,21 @@ describe("test subscriptions", () => {
     const mockVerify = registration.props.verifyMobileNumber;
     expect(mockVerify.mock.calls.length).toBe(0);
     const authenticateMock = registration.props.authenticate.mock;
-    expect(redirectToPayment).toHaveBeenCalledWith("default", props.navigate);
+    expect(props.setUserData).toHaveBeenCalledWith({
+      is_verified: false,
+      auth_token: data.key,
+      mustLogin: false,
+    });
+    expect(redirectToPayment).toHaveBeenCalledWith(
+      "default",
+      props.navigate,
+      expect.objectContaining({
+        payment_id: "payment-id",
+        payment_gateway: null,
+        payment_requires_internet: null,
+      }),
+      props.settings,
+    );
     expect(authenticateMock.calls.length).toBe(1);
   });
 

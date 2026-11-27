@@ -1,5 +1,5 @@
 const getErrorText = (error, fallbackVal = "") => {
-  const {data} = error.response;
+  const data = (error.response && error.response.data) || {};
   // eslint-disable-next-line no-nested-ternary
   return data.detail
     ? data.detail

@@ -1,6 +1,8 @@
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
 
+import axios from "axios";
+import {Cookies} from "react-cookie";
 import * as types from "../constants/action-types";
 import testOrgConfig from "../test-config.json";
 import {
@@ -16,9 +18,24 @@ import parseOrganizations from "./parse-organizations";
 import setLanguage from "./set-language";
 import setOrganization from "./set-organization";
 import {initialState} from "../reducers/organization";
+import {
+  beginContinuation,
+  bindContinuation,
+  readContinuation,
+} from "../utils/continuation";
+import {
+  localStorage as safeLocalStorage,
+  sessionStorage as safeSessionStorage,
+} from "../utils/storage";
+import {resolveStoredValue} from "../utils/synced-storage";
+import {
+  storePaymentReturnContext,
+  takePaymentReturnContext,
+} from "../utils/payment";
 
 jest.mock("../utils/get-config");
 jest.mock("../utils/authenticate");
+jest.mock("axios");
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 describe("actions testing", () => {
@@ -33,6 +50,8 @@ describe("actions testing", () => {
   });
   afterEach(() => {
     jest.resetAllMocks();
+    safeLocalStorage.clear();
+    safeSessionStorage.clear();
   });
   it("should create an action to parse organizations", () => {
     const expectedActions = [
@@ -157,6 +176,167 @@ describe("actions testing", () => {
     expect(store.getActions()).toEqual(expectedActions);
     expect(sessionStorage.getItem("test")).toBe(null);
   });
+
+  it.each([false, true])(
+    "clears persisted captive portal flags on logout with auto-login %s",
+    (userAutoLogin) => {
+      const orgSlug = "default";
+      const browserCookies = new Cookies();
+      const flags = [
+        "mustLogin",
+        "mustLogout",
+        "repeatLogin",
+        "captivePortalLogoutOnly",
+        "proceedToPayment",
+      ];
+      flags.forEach((flag) => {
+        const key = `${orgSlug}_${flag}`;
+        browserCookies.set(key, "true", {path: "/"});
+        safeLocalStorage.setItem(key, "true");
+      });
+      browserCookies.set("other_mustLogin", "true", {path: "/"});
+      safeLocalStorage.setItem("other_mustLogin", "true");
+      logout(browserCookies, orgSlug, userAutoLogin);
+      flags.forEach((flag) => {
+        const key = `${orgSlug}_${flag}`;
+        expect(browserCookies.get(key)).toBeUndefined();
+        expect(safeLocalStorage.getItem(key)).toBeNull();
+        expect(resolveStoredValue(true, key, undefined, browserCookies)).toBe(
+          undefined,
+        );
+      });
+      expect(browserCookies.get("other_mustLogin")).toBe(true);
+      expect(safeLocalStorage.getItem("other_mustLogin")).toBe("true");
+    },
+  );
+
+  const validationResponse = {
+    data: {
+      response_code: "AUTH_TOKEN_VALIDATION_SUCCESSFUL",
+      username: "alice",
+      auth_token: "fixture-api-token",
+      is_active: true,
+    },
+  };
+
+  it("clears continuation even when logout retains auto-login credentials", () => {
+    beginContinuation("?next=/default/status", "default");
+    storePaymentReturnContext(
+      {in_upgrade: true, payment_requires_internet: false},
+      {},
+    );
+    logout(cookies, "default", true);
+    expect(readContinuation("default")).toBeNull();
+    expect(takePaymentReturnContext()).toBeNull();
+  });
+
+  it.each([false, true])(
+    "restores an owned controlled return with auto-login disabled (session %s)",
+    async (useSession) => {
+      beginContinuation("?next=/test-org-1/payment/process/", "test-org-1");
+      bindContinuation("test-org-1", "alice");
+      if (useSession)
+        safeSessionStorage.setItem(
+          "test-org-1_auth_token",
+          "fixture-api-token",
+        );
+      const browserCookies = {
+        get: (key) =>
+          ({
+            "test-org-1_auth_token": useSession
+              ? undefined
+              : "fixture-api-token",
+            "test-org-1_username": "alice",
+          })[key],
+        remove: jest.fn(),
+      };
+      axios.mockResolvedValueOnce(validationResponse);
+      const store = mockStore({organization: {}});
+      await store.dispatch(
+        setOrganization("test-org-1", browserCookies, {
+          pathname: "/test-org-1/status",
+        }),
+      );
+      expect(store.getActions()).toContainEqual({
+        type: types.SET_AUTHENTICATION_STATUS,
+        payload: true,
+      });
+      expect(axios).toHaveBeenCalledTimes(1);
+      expect(readContinuation("test-org-1").username).toBe("alice");
+    },
+  );
+
+  it("clears the previous organization's continuation on organization change", async () => {
+    beginContinuation("?next=/test-org-1/status", "test-org-1");
+    const store = mockStore({organization: {}});
+    await store.dispatch(setOrganization("default", cookies));
+    expect(safeSessionStorage.getItem("ow_continuation")).toBeFalsy();
+    expect(readContinuation("test-org-1")).toBeNull();
+  });
+
+  it("falls back to logout without a bound continuation (sync auth, auto_login false)", async () => {
+    safeSessionStorage.setItem("test-org-1_auth_token", "fixture-api-token");
+    const browserCookies = {get: jest.fn(), remove: jest.fn()};
+    const store = mockStore({organization: {}});
+    await store.dispatch(
+      setOrganization("test-org-1", browserCookies, {
+        pathname: "/test-org-1/status",
+      }),
+    );
+    expect(axios).not.toHaveBeenCalled();
+    expect(store.getActions()).not.toContainEqual({
+      type: types.SET_AUTHENTICATION_STATUS,
+      payload: true,
+    });
+  });
+
+  it("ignores a stale captivePortalLogoutOnly flag", async () => {
+    safeSessionStorage.setItem("test-org-1_auth_token", "fixture-api-token");
+    localStorage.setItem("test-org-1_captivePortalLogoutOnly", "true");
+    const browserCookies = {
+      get: (key) =>
+        key === "test-org-1_captivePortalLogoutOnly" ? true : undefined,
+      remove: jest.fn(),
+    };
+    const store = mockStore({organization: {}});
+    await store.dispatch(
+      setOrganization("test-org-1", browserCookies, {
+        pathname: "/test-org-1/status",
+      }),
+    );
+    localStorage.removeItem("test-org-1_captivePortalLogoutOnly");
+    expect(axios).not.toHaveBeenCalled();
+    expect(store.getActions()).not.toContainEqual({
+      type: types.SET_AUTHENTICATION_STATUS,
+      payload: true,
+    });
+  });
+
+  it("restores a bound continuation despite a stale captivePortalLogoutOnly flag", async () => {
+    beginContinuation("?next=/test-org-1/payment/process/", "test-org-1");
+    bindContinuation("test-org-1", "alice");
+    safeSessionStorage.setItem("test-org-1_auth_token", "fixture-api-token");
+    safeLocalStorage.setItem("test-org-1_captivePortalLogoutOnly", "true");
+    const browserCookies = {
+      get: (key) =>
+        key === "test-org-1_captivePortalLogoutOnly" ? true : undefined,
+      remove: jest.fn(),
+    };
+    axios.mockResolvedValueOnce(validationResponse);
+    const store = mockStore({organization: {}});
+    await store.dispatch(
+      setOrganization("test-org-1", browserCookies, {
+        pathname: "/test-org-1/status",
+      }),
+    );
+    expect(axios).toHaveBeenCalledTimes(1);
+    expect(store.getActions()).toContainEqual({
+      type: types.SET_AUTHENTICATION_STATUS,
+      payload: true,
+    });
+    expect(readContinuation("test-org-1").username).toBe("alice");
+  });
+
   it("should create an action to set page title", () => {
     const title = "default name";
     const expectedActions = [

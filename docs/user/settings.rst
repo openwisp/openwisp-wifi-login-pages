@@ -110,9 +110,20 @@ You can adjust any other parameter based on the expectations of the
 captive portal: most captive portal programs expect ``POST`` requests,
 although some may also accept ``GET``.
 
+When :ref:`captive_portal_sync_auth <wlp_captive_portal_sync_auth>` is
+enabled, the logout form is submitted in the top-level window. Configure
+any redirect field required by the captive portal, such as ``redirurl``,
+to return to the WiFi Login Pages status URL. This URL must use the same
+origin as WiFi Login Pages so that the browser can restore the logout
+state after the redirect.
+
 .. code-block:: yaml
 
-    additional_fields: []
+    additional_fields:
+      - name: redirurl
+        value: https://wifi-login-pages.example.com/default/status
+
+.. _wlp_captive_portal_sync_auth:
 
 ``captive_portal_sync_auth``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -123,6 +134,22 @@ browsers may fail to detect successful login when this method is used.
 
 Set ``captive_portal_sync_auth`` to ``true`` to submit the login form
 synchronously and trigger a full page reload upon authentication:
+
+.. code-block:: yaml
+
+    captive_portal_sync_auth: true
+
+``captive_portal_supports_coa``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- **Type**: ``boolean``
+- **Default**: ``false``
+
+Set this option to ``true`` when your captive portal supports RADIUS
+Change of Authorization (CoA). After a successful payment, OpenWISP
+updates the session's RadiusGroup, and the captive portal applies the new
+plan's limits automatically. This avoids the logout/login cycle that WiFi
+Login Pages would otherwise require.
 
 Status Page Settings
 --------------------
