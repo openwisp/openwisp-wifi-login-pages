@@ -31,6 +31,10 @@ import getLanguageHeaders from "../../utils/get-language-headers";
 import {userPendingVerification} from "../../utils/pending-verification";
 import redirectToPayment from "../../utils/redirect-to-payment";
 import {localStorage, sessionStorage} from "../../utils/storage";
+import {initialState} from "../../reducers/organization";
+import {cleanSearch, getSearch} from "../../utils/clean-search";
+import isPendingUserExpired from "../../utils/pending-user";
+import hasIncomingCredentials from "../../utils/has-incoming-credentials";
 import {
   beginContinuation,
   bindContinuation,
@@ -42,9 +46,12 @@ import {storeValue} from "../../utils/synced-storage";
 import {gatewayRoute, requiresInternet} from "../../utils/payment";
 import routes from "../../constants/routes";
 
+export {cleanSearch};
+
 const PhoneInput = React.lazy(
   () => import(/* webpackChunkName: 'PhoneInput' */ "react-phone-input-2"),
 );
+
 export default class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -58,25 +65,53 @@ export default class Login extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.passwordToggleRef = React.createRef();
+    this.continuationParamsCleaned = false;
   }
 
   componentDidMount() {
-    const username = getParameterByName("username");
-    const token = getParameterByName("token");
-    const {loginForm, setTitle, orgName, orgSlug, settings} = this.props;
-    const search = new URLSearchParams(window.location.search);
-    let sesame_token = getParameterByName(
-      settings.passwordless_auth_token_name,
+    const {loginForm, setTitle, orgName, orgSlug, settings, location} =
+      this.props;
+    const search = getSearch(location);
+    const searchParams = new URLSearchParams(
+      search ||
+        (typeof window !== "undefined" && window.location
+          ? window.location.search
+          : ""),
     );
+    const username = search
+      ? getParameterByName("username", search)
+      : getParameterByName("username");
+    const token = search
+      ? getParameterByName("token", search)
+      : getParameterByName("token");
+    let sesame_token = null;
+    if (settings && settings.passwordless_auth_token_name) {
+      sesame_token = search
+        ? getParameterByName(settings.passwordless_auth_token_name, search)
+        : getParameterByName(settings.passwordless_auth_token_name);
+    }
     // `sid` is the short form of the passwordless token param. It is used
     // only if the configured param is absent and `sid` appears exactly once
     // (a repeated `sid` is ambiguous, so it is ignored).
-    if (!search.has(settings.passwordless_auth_token_name)) {
-      const sidValues = search.getAll("sid");
+    if (
+      !sesame_token &&
+      (!settings ||
+        !settings.passwordless_auth_token_name ||
+        !searchParams.has(settings.passwordless_auth_token_name))
+    ) {
+      const sidValues = searchParams.getAll("sid");
       if (sidValues.length === 1 && sidValues[0]) [sesame_token] = sidValues;
     }
-    const loginMethod = getParameterByName("login_method");
-    beginContinuation(window.location.search, orgSlug);
+    const loginMethod = search
+      ? getParameterByName("login_method", search)
+      : getParameterByName("login_method");
+    beginContinuation(
+      search ||
+        (typeof window !== "undefined" && window.location
+          ? window.location.search
+          : ""),
+      orgSlug,
+    );
     this.removeContinuationParams();
     setTitle(t`LOGIN`, orgName);
     let remember_me;
@@ -88,6 +123,79 @@ export default class Login extends React.Component {
     }
     this.setState({remember_me});
     Status.preload();
+
+    const pendingUserKey = `${orgSlug}_pending_user`;
+    const incoming = hasIncomingCredentials(settings, search, {
+      username,
+      token,
+      sesameToken: sesame_token,
+    });
+
+    if (incoming) {
+      // Fresh credentials in the URL always win over a stale pending user.
+      localStorage.removeItem(pendingUserKey);
+    } else {
+      const pendingUserData = localStorage.getItem(pendingUserKey);
+      if (pendingUserData) {
+        try {
+          const pendingUser = JSON.parse(pendingUserData);
+          if (isPendingUserExpired(pendingUser)) {
+            localStorage.removeItem(pendingUserKey);
+          } else if (
+            pendingUser &&
+            (pendingUser.auth_token || pendingUser.key) &&
+            typeof pendingUser.readyAt === "number"
+          ) {
+            const {readyAt, expiresAt, ...userToApply} = pendingUser;
+            const delay = Math.max(0, readyAt - Date.now());
+            if (delay > 0) {
+              toast.info(t`PLEASE_WAIT`, {autoClose: delay});
+              this.pendingUserTimeoutId = setTimeout(() => {
+                this.pendingUserTimeoutId = null;
+                if (localStorage.getItem(pendingUserKey) !== pendingUserData) {
+                  return;
+                }
+                if (isPendingUserExpired(pendingUser)) {
+                  localStorage.removeItem(pendingUserKey);
+                  return;
+                }
+                try {
+                  this.handleAuthentication(
+                    userToApply,
+                    userToApply.useSessionStorage,
+                    true,
+                  );
+                } catch (error) {
+                  localStorage.removeItem(pendingUserKey);
+                  /* eslint-disable-next-line no-console */
+                  console.error(error);
+                }
+              }, delay);
+            } else {
+              try {
+                this.handleAuthentication(
+                  userToApply,
+                  userToApply.useSessionStorage,
+                  true,
+                );
+              } catch (error) {
+                localStorage.removeItem(pendingUserKey);
+                /* eslint-disable-next-line no-console */
+                console.error(error);
+              }
+            }
+            return;
+          } else if (
+            !pendingUser ||
+            (!pendingUser.auth_token && !pendingUser.key)
+          ) {
+            localStorage.removeItem(pendingUserKey);
+          }
+        } catch {
+          localStorage.removeItem(pendingUserKey);
+        }
+      }
+    }
 
     // social login / SAML login
     if (username && token) {
@@ -104,6 +212,7 @@ export default class Login extends React.Component {
           key: token,
           is_active: true,
           radius_user_token: undefined,
+          logout_method: loginMethod,
         },
         true,
       );
@@ -112,6 +221,13 @@ export default class Login extends React.Component {
     // password-less authentication
     if (sesame_token) {
       this.handleSubmit(null, sesame_token);
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.pendingUserTimeoutId) {
+      clearTimeout(this.pendingUserTimeoutId);
+      this.pendingUserTimeoutId = null;
     }
   }
 
@@ -262,6 +378,8 @@ export default class Login extends React.Component {
       })
       .catch((error = {}) => {
         if (!error.response || !error.response.data || !error) {
+          this.dismissWait();
+          setLoading(false);
           toast.error(t`ERR_OCCUR`);
           return;
         }
@@ -307,21 +425,90 @@ export default class Login extends React.Component {
     if (waitToast) toast.dismiss(this.waitToast);
   };
 
-  handleAuthentication = (data = {}, useSessionStorage = false) => {
-    const {orgSlug, authenticate, setUserData, navigate, settings} = this.props;
+  handleAuthentication = (
+    data = {},
+    useSessionStorage = false,
+    isPendingUser = false,
+  ) => {
+    const {
+      orgSlug,
+      authenticate,
+      setUserData,
+      navigate,
+      userData = {},
+      settings,
+      location,
+      captivePortalLogoutForm,
+      isAuthenticated,
+    } = this.props;
     const {remember_me} = this.state;
+    const isDifferentUser =
+      !isPendingUser &&
+      Boolean(
+        isAuthenticated &&
+        userData &&
+        userData.username &&
+        data.username &&
+        userData.username !== data.username,
+      );
+    if (isDifferentUser) {
+      const {key, auth_token: rawAuthToken, ...authenticatedUser} = data;
+      const auth_token = key || rawAuthToken;
+      const waitAfter =
+        (captivePortalLogoutForm && captivePortalLogoutForm.wait_after) || 0;
+      const expiresAt = Date.now() + waitAfter + 60000;
+      const pendingUser = {
+        ...initialState.userData,
+        ...authenticatedUser,
+        auth_token,
+        mustLogin: true,
+        useSessionStorage: Boolean(useSessionStorage || !remember_me),
+        expiresAt,
+      };
+      localStorage.setItem(
+        `${orgSlug}_pending_user`,
+        JSON.stringify(pendingUser),
+      );
+      this.dismissWait();
+      toast.success(t`LOGIN_SUCCESS`, {
+        toastId: mainToastId,
+      });
+      setUserData({
+        ...userData,
+        mustLogout: true,
+        pendingUser,
+      });
+      const search = getSearch(location);
+      const cleanContinuation = cleanContinuationSearch(
+        search,
+        settings && settings.passwordless_auth_token_name,
+      );
+      const cleanQuery = cleanSearch(
+        cleanContinuation,
+        settings && settings.passwordless_auth_token_name,
+      );
+      navigate(`/${orgSlug}/status${cleanQuery}`);
+      authenticate(true);
+      return;
+    }
+    if (this.pendingUserTimeoutId) {
+      clearTimeout(this.pendingUserTimeoutId);
+      this.pendingUserTimeoutId = null;
+    }
+    localStorage.removeItem(`${orgSlug}_pending_user`);
     // useSessionStorage=true is passed from social login or SAML
     // user needs to repeat the login process each time
     localStorage.setItem(
       "rememberMe",
       String(remember_me && !useSessionStorage),
     );
+    const {key, auth_token: rawAuthToken, ...authenticatedUser} = data;
+    const auth_token = key || rawAuthToken;
     // if remember me checkbox is unchecked
     // store auth token in sessionStorage instead of cookie
     if (!remember_me || useSessionStorage) {
-      sessionStorage.setItem(`${orgSlug}_auth_token`, data.key);
+      sessionStorage.setItem(`${orgSlug}_auth_token`, auth_token);
     }
-    const {key: auth_token, ...authenticatedUser} = data;
     const nextUserData = {
       ...authenticatedUser,
       auth_token,
@@ -332,11 +519,20 @@ export default class Login extends React.Component {
       toastId: mainToastId,
     });
     setUserData(nextUserData);
+    const search = getSearch(location);
+    const cleanContinuation = cleanContinuationSearch(
+      search,
+      settings && settings.passwordless_auth_token_name,
+    );
+    const cleanQuery = cleanSearch(
+      cleanContinuation,
+      settings && settings.passwordless_auth_token_name,
+    );
     // An expired password must be changed first: drop the continuation.
     if (data.password_expired) clearContinuation();
     const continuation = bindContinuation(orgSlug, data.username);
     if (userPendingVerification(data)) {
-      navigate(`/${orgSlug}/complete-signup`);
+      navigate(`/${orgSlug}/complete-signup${cleanQuery}`);
       authenticate(true);
       return;
     }
@@ -356,6 +552,9 @@ export default class Login extends React.Component {
     ) {
       this.proceedToPayment(nextUserData);
       return;
+    }
+    if (!continuation && !this.continuationParamsCleaned) {
+      navigate(`/${orgSlug}/status${cleanQuery}`);
     }
     authenticate(true);
   };
@@ -399,10 +598,11 @@ export default class Login extends React.Component {
     const {pathname, search} = window.location;
     const clean = cleanContinuationSearch(
       search,
-      settings.passwordless_auth_token_name,
+      settings && settings.passwordless_auth_token_name,
     );
     const current = new URLSearchParams(search).toString();
     if (clean !== (current ? `?${current}` : "")) {
+      this.continuationParamsCleaned = true;
       navigate(`${pathname}${clean}`, {replace: true});
     }
   };
@@ -600,7 +800,17 @@ export default class Login extends React.Component {
 }
 
 Login.contextType = LoadingContext;
+Login.defaultProps = {
+  userData: {},
+  location: undefined,
+  captivePortalLogoutForm: undefined,
+  isAuthenticated: false,
+};
 Login.propTypes = {
+  captivePortalLogoutForm: PropTypes.shape({
+    wait_after: PropTypes.number,
+  }),
+  isAuthenticated: PropTypes.bool,
   loginForm: PropTypes.shape({
     social_login: PropTypes.shape({
       divider_text: PropTypes.object,
@@ -670,6 +880,8 @@ Login.propTypes = {
     additional_fields: PropTypes.array,
   }).isRequired,
   navigate: PropTypes.func.isRequired,
+  userData: PropTypes.object,
+  location: PropTypes.object,
   cookies: PropTypes.instanceOf(Cookies).isRequired,
   captivePortalSyncAuth: PropTypes.bool,
 };

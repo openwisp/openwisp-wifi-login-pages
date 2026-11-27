@@ -18,6 +18,7 @@ import Loader from "../../utils/loader";
 import needsVerify from "../../utils/needs-verify";
 import loadTranslation from "../../utils/load-translation";
 import {userPendingVerification} from "../../utils/pending-verification";
+import getParameterByName from "../../utils/get-parameter-by-name";
 import Login from "../login";
 import {
   Registration,
@@ -36,9 +37,14 @@ import {
 import Logout from "./lazy-logout";
 import {localStorage} from "../../utils/storage";
 import isOldBrowser from "../../utils/is-old-browser";
+import {cleanSearch, getSearch} from "../../utils/clean-search";
+import hasIncomingCredentials from "../../utils/has-incoming-credentials";
+import isPendingUserExpired from "../../utils/pending-user";
 import {getPaymentRoute, hasPendingPayment} from "../../utils/payment";
 import {cleanContinuationSearch} from "../../utils/continuation";
 import routes from "../../constants/routes";
+
+export {cleanSearch};
 
 export default class OrganizationWrapper extends React.Component {
   constructor(props) {
@@ -125,10 +131,6 @@ export default class OrganizationWrapper extends React.Component {
       js,
     } = organization.configuration;
     const {is_active} = userData;
-    const loginSearch = cleanContinuationSearch(
-      location.search,
-      settings && settings.passwordless_auth_token_name,
-    );
     let {css} = organization.configuration;
     if (!css) css = [];
     if (cssPath) css.push(cssPath);
@@ -243,38 +245,104 @@ export default class OrganizationWrapper extends React.Component {
                   <Route
                     path={routes.login.path}
                     element={(() => {
-                      if (isAuthenticated) {
+                      const search = getSearch(location);
+                      const incomingUsername = getParameterByName(
+                        "username",
+                        search,
+                      );
+                      const incomingToken = getParameterByName("token", search);
+                      const isAlreadyUsingCredentials = Boolean(
+                        incomingUsername &&
+                        incomingToken &&
+                        userData &&
+                        userData.username === incomingUsername &&
+                        userData.auth_token === incomingToken,
+                      );
+                      const searchParams = new URLSearchParams(search);
+                      const hasContinuationParam = Boolean(
+                        searchParams.get("next") || searchParams.get("n"),
+                      );
+                      const hasCredentials =
+                        !isAlreadyUsingCredentials &&
+                        !hasContinuationParam &&
+                        hasIncomingCredentials(settings, search);
+                      const cleanTargetSearch = cleanContinuationSearch(
+                        cleanSearch(
+                          search,
+                          settings && settings.passwordless_auth_token_name,
+                        ),
+                        settings && settings.passwordless_auth_token_name,
+                      );
+                      const targetSearch =
+                        isAlreadyUsingCredentials || hasContinuationParam
+                          ? cleanTargetSearch
+                          : cleanSearch(
+                              search,
+                              settings && settings.passwordless_auth_token_name,
+                            );
+                      if (isAuthenticated && !hasCredentials) {
                         if (needsMethodSelection) {
+                          const completeSignupSearch = isAlreadyUsingCredentials
+                            ? cleanSearch(
+                                search,
+                                settings &&
+                                  settings.passwordless_auth_token_name,
+                              )
+                            : cleanTargetSearch;
                           return (
                             <Navigate
-                              to={`/${orgSlug}/complete-signup${loginSearch}`}
+                              to={`/${orgSlug}/complete-signup${completeSignupSearch}`}
                             />
                           );
                         }
                         if (is_active) {
                           return (
-                            <Navigate to={`/${orgSlug}/status${loginSearch}`} />
+                            <Navigate
+                              to={`/${orgSlug}/status${targetSearch}`}
+                            />
                           );
                         }
                       }
-                      return <Login navigate={navigate} cookies={cookies} />;
+                      return (
+                        <Login
+                          navigate={navigate}
+                          {...(!isAuthenticated ? {cookies} : {})}
+                        />
+                      );
                     })()}
                   />
                   <Route
                     path={routes.status.path}
                     element={(() => {
                       if (isAuthenticated) {
-                        if (needsMethodSelection) {
-                          return (
-                            <Navigate to={`/${orgSlug}/complete-signup`} />
-                          );
+                        let pendingUser =
+                          (userData && userData.pendingUser) || null;
+                        if (!pendingUser && orgSlug) {
+                          try {
+                            const raw = localStorage.getItem(
+                              `${orgSlug}_pending_user`,
+                            );
+                            if (raw) pendingUser = JSON.parse(raw);
+                          } catch {
+                            // ignore
+                          }
                         }
-                        if (needsVerifyPhone) {
-                          return (
-                            <Navigate
-                              to={`/${orgSlug}/mobile-phone-verification`}
-                            />
-                          );
+                        const hasActiveStagedSwitch = Boolean(
+                          pendingUser && !isPendingUserExpired(pendingUser),
+                        );
+                        if (!hasActiveStagedSwitch) {
+                          if (needsMethodSelection) {
+                            return (
+                              <Navigate to={`/${orgSlug}/complete-signup`} />
+                            );
+                          }
+                          if (needsVerifyPhone) {
+                            return (
+                              <Navigate
+                                to={`/${orgSlug}/mobile-phone-verification`}
+                              />
+                            );
+                          }
                         }
                         return (
                           <Suspense fallback={<Loader />}>

@@ -19,6 +19,8 @@ export const mapStateToProps = (state) => {
     language: state.language,
     captivePortalSyncAuth: conf.components.captive_portal_sync_auth,
     captivePortalLoginForm: conf.components.captive_portal_login_form,
+    captivePortalLogoutForm: conf.components.captive_portal_logout_form,
+    isAuthenticated: conf.isAuthenticated,
   };
 };
 

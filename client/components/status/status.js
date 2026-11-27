@@ -38,12 +38,14 @@ import Loader from "../../utils/loader";
 import {initialState} from "../../reducers/organization";
 import Logout from "../organization-wrapper/lazy-logout";
 import InfoModal from "../../utils/modal";
-import {localStorage} from "../../utils/storage";
+import {localStorage, sessionStorage} from "../../utils/storage";
+import {userPendingVerification} from "../../utils/pending-verification";
 import handleSession from "../../utils/session";
 import getPlanSelection from "../../utils/get-plan-selection";
 import getPlans from "../../utils/get-plans";
 import {getPaymentRoute, requiresInternet} from "../../utils/payment";
 import upgradePlan from "../../utils/upgrade-plan";
+import isPendingUserExpired from "../../utils/pending-user";
 import {
   storeValue,
   resolveStoredValue,
@@ -121,6 +123,7 @@ export default class Status extends React.Component {
       showUpgradeBtn: true,
     };
     this.repeatLogin = false;
+    this.pendingUser = null;
     this.captivePortalLogoutOnly = false;
     this.isComponentMounted = true;
     this.getUserRadiusSessions = this.getUserRadiusSessions.bind(this);
@@ -144,21 +147,8 @@ export default class Status extends React.Component {
   }
 
   async componentDidMount() {
-    const {
-      cookies,
-      orgSlug,
-      settings,
-      setUserData,
-      logout,
-      setTitle,
-      orgName,
-      language,
-      navigate,
-      captivePortalSyncAuth,
-    } = this.props;
+    const {setTitle, orgName} = this.props;
     setTitle(t`STATUS_TITL`, orgName);
-    const {setLoading} = this.context;
-    let {userData} = this.props;
     this.setState({
       rememberMe: localStorage.getItem("rememberMe") === "true",
     });
@@ -166,189 +156,311 @@ export default class Status extends React.Component {
 
     // to prevent recursive call in case redirect url is status page
     if (window.top === window.self) {
-      try {
-        const {location, captivePortalLoginForm} = this.props;
-        const searchParams = new URLSearchParams(location.search);
-        const macaddr = searchParams.get(
-          captivePortalLoginForm.macaddr_param_name,
-        );
-
-        window.addEventListener("message", this.handlePostMessage);
-        window.postMessage({type: "owlp-ready"}, window.location.origin);
-
-        if (macaddr) {
-          cookies.set(`${orgSlug}_macaddr`, macaddr, {path: "/"});
-        } else {
-          cookies.remove(`${orgSlug}_macaddr`, {path: "/"});
-        }
-      } catch {
-        //
-      }
-
-      setLoading(true);
-      const isValid = await validateToken(
-        cookies,
-        orgSlug,
-        setUserData,
-        userData,
-        logout,
-        language,
-      );
-
-      // stop here if token is invalid or component unmounted
-      if (isValid === false || !this.isComponentMounted) {
-        setLoading(false);
-        return;
-      }
-
-      const {
-        mustLogin: userMustLogin,
-        mustLogout: userMustLogout,
-        captivePortalLogoutOnly: userCaptivePortalLogoutOnly,
-        repeatLogin: userRepeatLogin,
-        proceedToPayment: userProceedToPayment,
-      } = userData;
-      const mustLogin = resolveStoredValue(
-        captivePortalSyncAuth,
-        `${orgSlug}_mustLogin`,
-        userMustLogin,
-        cookies,
-      );
-      const mustLogoutKey = `${orgSlug}_mustLogout`;
-      const mustLogout = resolveStoredValue(
-        captivePortalSyncAuth,
-        mustLogoutKey,
-        userMustLogout,
-        cookies,
-      );
-      const logoutSubmitted = resolveStoredValue(
-        captivePortalSyncAuth,
-        `${orgSlug}_logoutFormSubmitted`,
-        false,
-        cookies,
-      );
-      const isReturningFromSynchronousLogout = Boolean(logoutSubmitted);
-      const repeatLogin = resolveStoredValue(
-        captivePortalSyncAuth,
-        `${orgSlug}_repeatLogin`,
-        userRepeatLogin,
-        cookies,
-      );
-      // Captive-portal-only logout: tear down RADIUS session, keep WLP session intact
-      this.captivePortalLogoutOnly = Boolean(
-        resolveStoredValue(
-          captivePortalSyncAuth,
-          `${orgSlug}_captivePortalLogoutOnly`,
-          userCaptivePortalLogoutOnly,
-          cookies,
-        ),
-      );
-      // Restore proceedToPayment flag that may have been lost during
-      // the page reload caused by synchronous captive portal auth.
-      const proceedToPayment = resolveStoredValue(
-        captivePortalSyncAuth,
-        `${orgSlug}_proceedToPayment`,
-        userProceedToPayment,
-        cookies,
-      );
-      ({userData} = this.props);
-      // Apply the persisted proceedToPayment flag to userData if it
-      // was restored from cookie/localStorage after a page reload.
-      if (
-        proceedToPayment !== undefined &&
-        proceedToPayment !== userData.proceedToPayment
-      ) {
-        setUserData({
-          ...userData,
-          proceedToPayment,
-        });
-        ({userData} = this.props);
-      }
-      if (userData.password_expired === true) {
-        toast.warning(t`PASSWORD_EXPIRED`);
-        setUserData({
-          ...userData,
-          mustLogin,
-          mustLogout,
-          repeatLogin,
-        });
-        navigate(`/${orgSlug}/change-password`);
-        return;
-      }
-      const {
-        radius_user_token: password,
-        username,
-        email,
-        phone_number,
-        is_active,
-        method,
-        is_verified: isVerified,
-      } = userData;
-      const userInfo = {};
-      userInfo.status = "";
-      userInfo.email = email;
-      if (username !== email && username !== phone_number) {
-        userInfo.username = username;
-      }
-      if (settings.mobile_phone_verification && phone_number) {
-        userInfo.phone_number = phone_number;
-      }
-      this.setState({username, password, userInfo}, () => {
-        // if the user is being automatically logged in but it's not
-        // active anymore (eg: has been banned)
-        // automatically perform log out
-        if (is_active === false) {
-          this.handleLogout(false);
-        }
-      });
-
-      // stop here if user is banned
-      if (is_active === false) {
-        return;
-      }
-
-      if (mustLogout) {
-        if (isReturningFromSynchronousLogout) {
-          // Complete the logout iframe after synchronous form submission
-          // reloads the page, without submitting the logout form again.
-          this.repeatLogin = Boolean(repeatLogin);
-          this.setState({loggedOut: true});
-          await this.handleLogoutIframe();
-        } else {
-          await this.handleLogout(false, repeatLogin);
-        }
-        return;
-      }
-
-      let shouldLogin = mustLogin;
-      if (method === "bank_card" && isVerified === false) {
-        shouldLogin = shouldLogin && requiresInternet(userData, settings);
-      }
-      if (this.loginFormRef && this.loginFormRef.current && shouldLogin) {
-        storeValue(
-          captivePortalSyncAuth,
-          `${orgSlug}_mustLogin`,
-          false,
-          cookies,
-        );
-        this.notifyCpLogin(userData);
-        this.loginFormRef.current.submit();
-      } else if (!shouldLogin) {
-        // If the user is already logged in, we need to handle the
-        // the response from the captive portal.
-        if (captivePortalSyncAuth) {
-          this.handleLogin();
-        }
-        this.finalOperations();
-      }
+      await this.initStatus();
     }
   }
+
+  initStatus = async (overrideUserData) => {
+    const {
+      cookies,
+      orgSlug,
+      settings,
+      setUserData,
+      logout,
+      language,
+      navigate,
+      captivePortalSyncAuth,
+      captivePortalLoginForm,
+      userData: propUserData,
+    } = this.props;
+    const {setLoading} = this.context;
+    let userData = overrideUserData || propUserData;
+
+    try {
+      const {location} = this.props;
+      const searchParams = new URLSearchParams(location.search);
+      const macaddr =
+        captivePortalLoginForm &&
+        searchParams.get(captivePortalLoginForm.macaddr_param_name);
+
+      window.addEventListener("message", this.handlePostMessage);
+      window.postMessage({type: "owlp-ready"}, window.location.origin);
+
+      if (macaddr) {
+        cookies.set(`${orgSlug}_macaddr`, macaddr, {path: "/"});
+      } else {
+        cookies.remove(`${orgSlug}_macaddr`, {path: "/"});
+      }
+    } catch {
+      //
+    }
+
+    const pendingUserKey = `${orgSlug}_pending_user`;
+    const pendingFromStorage = localStorage.getItem(pendingUserKey);
+    if (!this.pendingUser) {
+      if (userData && userData.pendingUser) {
+        if (!isPendingUserExpired(userData.pendingUser)) {
+          this.pendingUser = userData.pendingUser;
+        }
+      } else if (pendingFromStorage) {
+        try {
+          const parsed = JSON.parse(pendingFromStorage);
+          if (isPendingUserExpired(parsed)) {
+            localStorage.removeItem(pendingUserKey);
+          } else {
+            this.pendingUser = parsed;
+          }
+        } catch {
+          localStorage.removeItem(pendingUserKey);
+          /* eslint-disable-next-line no-console */
+          console.warn("Failed to parse pending user from storage");
+        }
+      }
+    }
+
+    setLoading(true);
+    let validatedUserData = null;
+    const captureSetUserData = (data) => {
+      validatedUserData = data;
+      setUserData(data);
+    };
+    const isValid = await validateToken(
+      cookies,
+      orgSlug,
+      captureSetUserData,
+      userData,
+      logout,
+      language,
+    );
+
+    // stop here if token is invalid or component unmounted
+    if (isValid === false || !this.isComponentMounted) {
+      if (!this.isComponentMounted) {
+        return;
+      }
+      if (this.pendingUser) {
+        const target = this.pendingUser;
+        this.pendingUser = null;
+        localStorage.removeItem(pendingUserKey);
+        if (!isPendingUserExpired(target)) {
+          await this.applyPendingUser(target);
+          return;
+        }
+      }
+      setLoading(false);
+      return;
+    }
+
+    const {
+      mustLogin: userMustLogin,
+      mustLogout: userMustLogout,
+      captivePortalLogoutOnly: userCaptivePortalLogoutOnly,
+      repeatLogin: userRepeatLogin,
+      proceedToPayment: userProceedToPayment,
+      pendingUser,
+    } = userData;
+    if (pendingUser) {
+      if (!isPendingUserExpired(pendingUser)) {
+        this.pendingUser = pendingUser;
+      }
+    }
+    const mustLogin = resolveStoredValue(
+      captivePortalSyncAuth,
+      `${orgSlug}_mustLogin`,
+      userMustLogin,
+      cookies,
+    );
+    const mustLogoutKey = `${orgSlug}_mustLogout`;
+    const mustLogout = resolveStoredValue(
+      captivePortalSyncAuth,
+      mustLogoutKey,
+      userMustLogout,
+      cookies,
+    );
+    const logoutSubmitted = resolveStoredValue(
+      captivePortalSyncAuth,
+      `${orgSlug}_logoutFormSubmitted`,
+      false,
+      cookies,
+    );
+    const isReturningFromSynchronousLogout = Boolean(logoutSubmitted);
+    const repeatLogin = resolveStoredValue(
+      captivePortalSyncAuth,
+      `${orgSlug}_repeatLogin`,
+      userRepeatLogin,
+      cookies,
+    );
+    // Captive-portal-only logout: tear down RADIUS session, keep WLP session intact
+    this.captivePortalLogoutOnly = Boolean(
+      resolveStoredValue(
+        captivePortalSyncAuth,
+        `${orgSlug}_captivePortalLogoutOnly`,
+        userCaptivePortalLogoutOnly,
+        cookies,
+      ),
+    );
+    // Restore proceedToPayment flag that may have been lost during
+    // the page reload caused by synchronous captive portal auth.
+    const proceedToPayment = resolveStoredValue(
+      captivePortalSyncAuth,
+      `${orgSlug}_proceedToPayment`,
+      userProceedToPayment,
+      cookies,
+    );
+    const {userData: latestUserData} = this.props;
+    userData = {
+      ...(overrideUserData || {}),
+      ...latestUserData,
+      ...(validatedUserData || {}),
+      mustLogin,
+      mustLogout,
+      repeatLogin,
+    };
+    // Apply the persisted proceedToPayment flag to userData if it
+    // was restored from cookie/localStorage after a page reload.
+    if (
+      proceedToPayment !== undefined &&
+      proceedToPayment !== userData.proceedToPayment
+    ) {
+      userData = {
+        ...userData,
+        proceedToPayment,
+      };
+      setUserData(userData);
+    }
+    if (userData.password_expired === true) {
+      toast.warning(t`PASSWORD_EXPIRED`);
+      setUserData(userData);
+      navigate(`/${orgSlug}/change-password`);
+      return;
+    }
+    const {
+      radius_user_token: password,
+      username,
+      email,
+      phone_number,
+      is_active,
+      method,
+      is_verified: isVerified,
+    } = userData;
+    const userInfo = {};
+    userInfo.status = "";
+    userInfo.email = email;
+    if (username !== email && username !== phone_number) {
+      userInfo.username = username;
+    }
+    if (settings.mobile_phone_verification && phone_number) {
+      userInfo.phone_number = phone_number;
+    }
+    this.setState({username, password, userInfo}, () => {
+      // if the user is being automatically logged in but it's not
+      // active anymore (eg: has been banned)
+      // automatically perform log out
+      if (is_active === false) {
+        this.handleLogout(false);
+      }
+    });
+
+    // stop here if user is banned
+    if (is_active === false) {
+      return;
+    }
+
+    if (mustLogout) {
+      if (isReturningFromSynchronousLogout) {
+        // Complete the logout iframe after synchronous form submission
+        // reloads the page, without submitting the logout form again.
+        this.repeatLogin = Boolean(repeatLogin);
+        this.setState({loggedOut: true});
+        await this.handleLogoutIframe();
+      } else {
+        await this.handleLogout(false, repeatLogin);
+      }
+      return;
+    }
+
+    let shouldLogin = mustLogin;
+    if (method === "bank_card" && isVerified === false) {
+      shouldLogin = shouldLogin && requiresInternet(userData, settings);
+    }
+    if (this.loginFormRef && this.loginFormRef.current && shouldLogin) {
+      storeValue(captivePortalSyncAuth, `${orgSlug}_mustLogin`, false, cookies);
+      this.notifyCpLogin(userData);
+      this.loginFormRef.current.submit();
+    } else if (!shouldLogin) {
+      // If the user is already logged in, we need to handle the
+      // the response from the captive portal.
+      if (captivePortalSyncAuth) {
+        this.handleLogin();
+      }
+      this.finalOperations();
+    }
+  };
+
+  applyPendingUser = async (pendingUser) => {
+    if (!this.isComponentMounted) {
+      return;
+    }
+    const {
+      orgSlug,
+      cookies,
+      setUserData,
+      authenticate,
+      captivePortalSyncAuth,
+      navigate,
+    } = this.props;
+    const {setLoading} = this.context;
+    localStorage.removeItem(`${orgSlug}_pending_user`);
+    this.pendingUser = null;
+    if (isPendingUserExpired(pendingUser)) {
+      setUserData(initialState.userData);
+      setLoading(false);
+      return;
+    }
+    const {useSessionStorage, readyAt, expiresAt, ...newUser} = pendingUser;
+    cookies.remove(`${orgSlug}_auth_token`, {path: "/"});
+    cookies.remove(`${orgSlug}_username`, {path: "/"});
+    sessionStorage.removeItem(`${orgSlug}_auth_token`);
+    if (newUser.logout_method) {
+      localStorage.setItem(`${orgSlug}_logout_method`, newUser.logout_method);
+    }
+    if (useSessionStorage) {
+      sessionStorage.setItem(`${orgSlug}_auth_token`, newUser.auth_token);
+    } else {
+      cookies.set(`${orgSlug}_auth_token`, newUser.auth_token, {path: "/"});
+    }
+    const finalUserData = {
+      ...initialState.userData,
+      ...newUser,
+      mustLogin: true,
+      mustLogout: false,
+    };
+    storeValue(captivePortalSyncAuth, `${orgSlug}_mustLogout`, false, cookies);
+    storeValue(captivePortalSyncAuth, `${orgSlug}_mustLogin`, true, cookies);
+    setUserData(finalUserData);
+    if (authenticate) {
+      authenticate(true);
+    }
+    this.setStateSafe({
+      loggedOut: false,
+      sessionsToLogout: [],
+    });
+    if (userPendingVerification(finalUserData)) {
+      navigate(`/${orgSlug}/complete-signup`);
+      return;
+    }
+    if (!this.isComponentMounted) {
+      return;
+    }
+    await this.initStatus(finalUserData);
+  };
 
   componentWillUnmount() {
     this.isComponentMounted = false;
     clearInterval(this.intervalId);
     clearInterval(this.usageIntervalId);
     clearTimeout(this.usageRetryTimeoutId);
+    clearTimeout(this.pendingUserTimeoutId);
     window.removeEventListener("resize", this.updateScreenWidth);
     window.removeEventListener("message", this.handlePostMessage);
   }
@@ -492,9 +604,10 @@ export default class Status extends React.Component {
       options.hasMoreSessions =
         "link" in headers && headers.link.includes("next");
       this.setStateSafe(options);
+      return true;
     } catch (error) {
       if (!this.isComponentMounted) {
-        return;
+        return false;
       }
       // logout only if unauthorized or forbidden
       if (
@@ -507,6 +620,7 @@ export default class Status extends React.Component {
         });
       }
       logError(error, t`ERR_OCCUR`);
+      return false;
     }
   }
 
@@ -650,7 +764,7 @@ export default class Status extends React.Component {
       is_open: true,
       ...params,
     };
-    await this.getUserRadiusSessions(para);
+    return this.getUserRadiusSessions(para);
   }
 
   async getUserPastRadiusSessions(params = {}) {
@@ -710,7 +824,11 @@ export default class Status extends React.Component {
       localStorage.setItem("userAutoLogin", String(userAutoLogin));
     }
     setLoading(true);
-    await this.getUserActiveRadiusSessions(params);
+    const lookupOk = await this.getUserActiveRadiusSessions(params);
+    if (lookupOk === false && this.pendingUser) {
+      setLoading(false);
+      return;
+    }
     const {sessionsToLogout} = this.state;
 
     // In internet mode there is no captive portal session to tear down, so
@@ -773,8 +891,26 @@ export default class Status extends React.Component {
       this.finishCaptivePortalLogoutOnly();
       return;
     }
-    setUserData(initialState.userData);
     logout(cookies, orgSlug, userAutoLogin);
+    if (this.pendingUser) {
+      const targetUser = this.pendingUser;
+      this.pendingUser = null;
+      const expiresAt = targetUser.expiresAt || Date.now() + 60000;
+      localStorage.setItem(
+        `${orgSlug}_pending_user`,
+        JSON.stringify({
+          ...targetUser,
+          readyAt: Date.now(),
+          expiresAt,
+        }),
+      );
+      if (!this.isComponentMounted) {
+        return;
+      }
+      await this.applyPendingUser(targetUser);
+      return;
+    }
+    setUserData(initialState.userData);
     setLoading(false);
     toast[toastLevel](toastMessage);
   };
@@ -900,6 +1036,30 @@ export default class Status extends React.Component {
       }
       logout(cookies, orgSlug, userAutoLogin);
       toast.success(t`LOGOUT_SUCCESS`);
+
+      if (this.pendingUser) {
+        const targetUser = this.pendingUser;
+        this.pendingUser = null;
+        localStorage.removeItem(logoutMethodKey);
+        const expiresAt =
+          targetUser.expiresAt || Date.now() + (wait_after || 0) + 60000;
+        localStorage.setItem(
+          `${orgSlug}_pending_user`,
+          JSON.stringify({
+            ...targetUser,
+            readyAt: Date.now() + (wait_after || 0),
+            expiresAt,
+          }),
+        );
+        toast.info(t`PLEASE_WAIT`, {autoClose: wait_after});
+        this.pendingUserTimeoutId = setTimeout(async () => {
+          if (!this.isComponentMounted) {
+            return;
+          }
+          await this.applyPendingUser(targetUser);
+        }, wait_after);
+        return;
+      }
 
       if (saml_logout_url && logoutMethod === "saml") {
         toast.info(t`PLEASE_WAIT`, {autoClose: wait_after});
@@ -1903,11 +2063,13 @@ export default class Status extends React.Component {
 }
 Status.contextType = LoadingContext;
 Status.defaultProps = {
+  authenticate: () => {},
   isAuthenticated: false,
   internetMode: false,
   planExhausted: false,
 };
 Status.propTypes = {
+  authenticate: PropTypes.func,
   statusPage: PropTypes.shape({
     links: PropTypes.arrayOf(
       PropTypes.shape({
