@@ -84,11 +84,19 @@ Launch development server:
 
 You can access the application at http://localhost:8080/default/login/
 
+Install the Python dependencies used by the test entry point:
+
+.. code-block:: shell
+
+    python -m pip install -r requirements-qa.txt
+
 Run tests with:
 
 .. code-block::
 
-    yarn test
+    ./runtests
+
+Pass a unit test file path to run it alone.
 
 ES5 Compliance Test
 -------------------
