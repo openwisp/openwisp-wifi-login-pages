@@ -967,6 +967,7 @@ describe("<Login /> interactions", () => {
     localStorage.removeItem("default_pending_user");
     const propsWithUser = {
       ...props,
+      isAuthenticated: true,
       userData: {
         username: "bob",
         auth_token: "old_bob_token",
@@ -1002,6 +1003,7 @@ describe("<Login /> interactions", () => {
       auth_token: "alice_token",
       is_active: true,
       useSessionStorage: false,
+      readyAt: Date.now(),
     };
     localStorage.setItem("default_pending_user", JSON.stringify(pendingUser));
     props.navigate.mockClear();
@@ -1018,6 +1020,24 @@ describe("<Login /> interactions", () => {
     );
     expect(props.navigate).toHaveBeenCalledWith("/default/status");
     expect(props.authenticate).toHaveBeenCalledWith(true);
+  });
+  it("should not resume staged pending user from localStorage without readyAt and preserve it", async () => {
+    const pendingUser = {
+      username: "alice",
+      auth_token: "alice_token",
+      is_active: true,
+      useSessionStorage: false,
+    };
+    localStorage.setItem("default_pending_user", JSON.stringify(pendingUser));
+    props.navigate.mockClear();
+    props.setUserData.mockClear();
+    wrapper = mountComponent(props);
+    await tick();
+
+    expect(localStorage.getItem("default_pending_user")).not.toBeNull();
+    expect(props.setUserData).not.toHaveBeenCalled();
+    expect(props.navigate).not.toHaveBeenCalled();
+    localStorage.removeItem("default_pending_user");
   });
   it("should preserve captive portal query parameters when navigating to status", async () => {
     const propsWithLocation = {
@@ -1086,6 +1106,7 @@ describe("<Login /> interactions", () => {
   it("should not stage user switch when applying a pending user even if userData has different username", async () => {
     const propsWithUser = {
       ...props,
+      isAuthenticated: true,
       userData: {
         username: "bob",
         auth_token: "bob_token",

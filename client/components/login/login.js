@@ -143,10 +143,11 @@ export default class Login extends React.Component {
             localStorage.removeItem(pendingUserKey);
           } else if (
             pendingUser &&
-            (pendingUser.auth_token || pendingUser.key)
+            (pendingUser.auth_token || pendingUser.key) &&
+            typeof pendingUser.readyAt === "number"
           ) {
             const {readyAt, expiresAt, ...userToApply} = pendingUser;
-            const delay = readyAt ? Math.max(0, readyAt - Date.now()) : 0;
+            const delay = Math.max(0, readyAt - Date.now());
             if (delay > 0) {
               toast.info(t`PLEASE_WAIT`, {autoClose: delay});
               this.pendingUserTimeoutId = setTimeout(() => {
@@ -184,7 +185,10 @@ export default class Login extends React.Component {
               }
             }
             return;
-          } else {
+          } else if (
+            !pendingUser ||
+            (!pendingUser.auth_token && !pendingUser.key)
+          ) {
             localStorage.removeItem(pendingUserKey);
           }
         } catch {

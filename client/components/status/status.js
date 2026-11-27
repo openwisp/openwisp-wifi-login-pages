@@ -235,6 +235,9 @@ export default class Status extends React.Component {
 
     // stop here if token is invalid or component unmounted
     if (isValid === false || !this.isComponentMounted) {
+      if (!this.isComponentMounted) {
+        return;
+      }
       if (this.pendingUser) {
         const target = this.pendingUser;
         this.pendingUser = null;
@@ -395,6 +398,9 @@ export default class Status extends React.Component {
   };
 
   applyPendingUser = async (pendingUser) => {
+    if (!this.isComponentMounted) {
+      return;
+    }
     const {
       orgSlug,
       cookies,
@@ -441,6 +447,9 @@ export default class Status extends React.Component {
     });
     if (userPendingVerification(finalUserData)) {
       navigate(`/${orgSlug}/complete-signup`);
+      return;
+    }
+    if (!this.isComponentMounted) {
       return;
     }
     await this.initStatus(finalUserData);
@@ -895,6 +904,9 @@ export default class Status extends React.Component {
           expiresAt,
         }),
       );
+      if (!this.isComponentMounted) {
+        return;
+      }
       await this.applyPendingUser(targetUser);
       return;
     }
